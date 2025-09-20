@@ -23,39 +23,40 @@ class TutorialDialog extends StatefulWidget {
 }
 
 class _TutorialDialogState extends State<TutorialDialog> {
-  int? _focusIndex;
-  int? _blurIndex;
-  List<PieceColor> _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
+  static const int _maxIndex = 6;
+  static const int _placingPhaseStep = 1;
+  static const int _counterStep = 2;
+  static const int _movingPhaseStep = 3;
+  static const int _millStep = 4;
+  static const int _flyingStep = 5;
 
   int _curIndex = 0;
-  final int _maxIndex = 6;
+  int? _focusIndex;
+  int? _blurIndex;
+  Offset? _maskOffset;
+  Orientation? _orientation;
+  List<PieceColor> _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
 
   bool get isFinally => _curIndex == _maxIndex;
-
   bool get isStart => _curIndex == 0;
+  bool get _isLandscape => _orientation == Orientation.landscape;
 
-  Offset? _maskOffset;
-
-  Size get _size => _isLandscape
+  Size get _boardSize => _isLandscape
       ? Size(landscapeBoardWidth, landscapeBoardWidth)
       : Size(
           deviceWidth(context) - AppTheme.boardPadding * 2,
           deviceWidth(context) - AppTheme.boardPadding * 2,
         );
 
-  Orientation? _orientation;
-
   double get landscapeBoardWidth => deviceWidth(context) * 0.6;
 
-  double get pieceWidth => _size.width * DB().displaySettings.pieceWidth / 7;
-
-  bool get _isLandscape => _orientation == Orientation.landscape;
+  double get pieceWidth => _boardSize.width * DB().displaySettings.pieceWidth / 7;
 
   @override
   void initState() {
     super.initState();
-    _pieceList[getPieceIndex(3, 1)] = PieceColor.black;
-    _pieceList[getPieceIndex(3, 5)] = PieceColor.white;
+    _pieceList[_boardIndex(3, 1)] = PieceColor.black;
+    _pieceList[_boardIndex(3, 5)] = PieceColor.white;
   }
 
   @override
@@ -72,236 +73,189 @@ class _TutorialDialogState extends State<TutorialDialog> {
       },
       child: OrientationBuilder(
         key: const Key('orientation_builder'),
-        builder: (BuildContext context, Orientation orientation) {
-          if (_orientation != orientation) {
-            _orientation = orientation;
-            setPiece();
-          }
-          return Scaffold(
-            key: const Key('scaffold'),
-            backgroundColor: DB().colorSettings.darkBackgroundColor,
-            body: _isLandscape
-                ? SafeArea(
-                    key: const Key('landscape_safe_area'),
-                    child: Stack(
-                      key: const Key('stack_landscape'),
-                      children: <Widget>[
-                        Align(
-                          child: SizedBox(
-                            width: landscapeBoardWidth,
-                            height: landscapeBoardWidth,
-                            child: TutorialBoard(
-                              key: const Key('tutorial_board_landscape'),
-                              focusIndex: _focusIndex,
-                              blurIndex: _blurIndex,
-                              pieceList: _pieceList,
-                            ),
-                          ),
-                        ),
-                        CustomPaint(
-                          key: const Key('custom_paint_landscape'),
-                          painter: TutorialMaskPainter(
-                            maskOffset: _maskOffset,
-                            maskRadius: pieceWidth * 1.5,
-                          ),
-                        ),
-                        Column(
-                          key: const Key('column_landscape'),
-                          children: <Widget>[
-                            Container(
-                              height: kToolbarHeight,
-                              color: Colors.white,
-                              child: Row(
-                                children: <Widget>[
-                                  Semantics(
-                                    label: S.of(context).previous,
-                                    child: IconButton(
-                                      key: const Key(
-                                          'landscape_previous_button'),
-                                      onPressed:
-                                          _curIndex <= 0 ? null : prevStep,
-                                      icon: Icon(
-                                        Icons.arrow_back,
-                                        color: isStart
-                                            ? Colors.grey
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  IconButton(
-                                    key: const Key('landscape_skip_button'),
-                                    tooltip: isFinally
-                                        ? S.of(context).gotIt
-                                        : S.of(context).skip,
-                                    onPressed: () {
-                                      _finishTutorial(context);
-                                    },
-                                    icon: isFinally
-                                        ? const Icon(
-                                            Icons.done_outline,
-                                            color: Colors.black,
-                                          )
-                                        : const Icon(
-                                            FluentIcons.arrow_exit_20_regular,
-                                            color: Colors.black,
-                                          ),
-                                  ),
-                                  const Spacer(),
-                                  Semantics(
-                                    label: S.of(context).next,
-                                    child: IconButton(
-                                      key: const Key('landscape_next_button'),
-                                      onPressed: _curIndex >= _maxIndex
-                                          ? null
-                                          : nextStep,
-                                      icon: Icon(
-                                        Icons.arrow_forward_rounded,
-                                        color: isFinally
-                                            ? Colors.grey
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                key: const Key('gesture_detector_landscape'),
-                                onTap: () {
-                                  if (_curIndex >= _maxIndex) {
-                                    _finishTutorial(context);
-                                  } else {
-                                    nextStep();
-                                  }
-                                },
-                                behavior: HitTestBehavior.opaque,
-                                child: AnimatedSwitcher(
-                                  key: const Key('animated_switcher_landscape'),
-                                  duration: const Duration(milliseconds: 400),
-                                  child: getTutorial(),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+        builder: _buildForOrientation,
+      ),
+    );
+  }
+
+  Widget _buildForOrientation(
+      BuildContext context, Orientation orientation) {
+    if (_orientation != orientation) {
+      _orientation = orientation;
+      _applyStepBoardState();
+    }
+    return Scaffold(
+      key: const Key('scaffold'),
+      backgroundColor: DB().colorSettings.darkBackgroundColor,
+      body: _isLandscape
+          ? _buildLandscapeLayout()
+          : _buildPortraitLayout(),
+    );
+  }
+
+  Widget _buildLandscapeLayout() {
+    return SafeArea(
+      key: const Key('landscape_safe_area'),
+      child: Stack(
+        key: const Key('stack_landscape'),
+        children: <Widget>[
+          Align(
+            child: SizedBox(
+              width: landscapeBoardWidth,
+              height: landscapeBoardWidth,
+              child: _buildBoard(const Key('tutorial_board_landscape')),
+            ),
+          ),
+          _buildMask(const Key('custom_paint_landscape')),
+          Column(
+            key: const Key('column_landscape'),
+            children: <Widget>[
+              _buildNavigationBar(
+                previousButtonKey: const Key('landscape_previous_button'),
+                finishButtonKey: const Key('landscape_skip_button'),
+                nextButtonKey: const Key('landscape_next_button'),
+              ),
+              Expanded(
+                child: _buildInteractiveStepArea(
+                  gestureDetectorKey: const Key('gesture_detector_landscape'),
+                  switcherKey: const Key('animated_switcher_landscape'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPortraitLayout() {
+    return Stack(
+      key: const Key('stack_portrait'),
+      children: <Widget>[
+        SafeArea(
+          key: const Key('portrait_safe_area'),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: AppTheme.boardPadding,
+              right: AppTheme.boardPadding,
+              top: kToolbarHeight + AppTheme.boardPadding,
+            ),
+            child: _buildBoard(const Key('tutorial_board_portrait')),
+          ),
+        ),
+        _buildMask(const Key('custom_paint_portrait')),
+        SafeArea(
+          child: Column(
+            key: const Key('column_portrait'),
+            children: <Widget>[
+              _buildNavigationBar(
+                previousButtonKey: const Key('portrait_previous_button'),
+                finishButtonKey: const Key('portrait_finish_button'),
+                nextButtonKey: const Key('portrait_next_button'),
+              ),
+              Expanded(
+                child: _buildInteractiveStepArea(
+                  gestureDetectorKey: const Key('gesture_detector_portrait'),
+                  switcherKey: const Key('animated_switcher_portrait'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBoard(Key key) {
+    return TutorialBoard(
+      key: key,
+      focusIndex: _focusIndex,
+      blurIndex: _blurIndex,
+      pieceList: _pieceList,
+    );
+  }
+
+  Widget _buildMask(Key key) {
+    return CustomPaint(
+      key: key,
+      painter: TutorialMaskPainter(
+        maskOffset: _maskOffset,
+        maskRadius: pieceWidth * 1.5,
+      ),
+    );
+  }
+
+  Widget _buildNavigationBar({
+    required Key previousButtonKey,
+    required Key finishButtonKey,
+    required Key nextButtonKey,
+  }) {
+    return Container(
+      height: kToolbarHeight,
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Semantics(
+            label: S.of(context).previous,
+            child: IconButton(
+              key: previousButtonKey,
+              onPressed: isStart ? null : prevStep,
+              icon: Icon(
+                Icons.arrow_back,
+                color: isStart ? Colors.grey : Colors.black,
+              ),
+            ),
+          ),
+          const Spacer(),
+          IconButton(
+            key: finishButtonKey,
+            tooltip: isFinally ? S.of(context).gotIt : S.of(context).skip,
+            onPressed: () => _finishTutorial(context),
+            icon: isFinally
+                ? const Icon(
+                    Icons.done_outline,
+                    color: Colors.black,
                   )
-                : Stack(
-                    key: const Key('stack_portrait'),
-                    children: <Widget>[
-                      SafeArea(
-                        key: const Key('portrait_safe_area'),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: AppTheme.boardPadding,
-                            right: AppTheme.boardPadding,
-                            top: kToolbarHeight + AppTheme.boardPadding,
-                          ),
-                          child: TutorialBoard(
-                            key: const Key('tutorial_board_portrait'),
-                            focusIndex: _focusIndex,
-                            blurIndex: _blurIndex,
-                            pieceList: _pieceList,
-                          ),
-                        ),
-                      ),
-                      CustomPaint(
-                        key: const Key('custom_paint_portrait'),
-                        painter: TutorialMaskPainter(
-                          maskOffset: _maskOffset,
-                          maskRadius: pieceWidth * 1.5,
-                        ),
-                      ),
-                      SafeArea(
-                        child: Column(
-                          key: const Key('column_portrait'),
-                          children: <Widget>[
-                            Container(
-                              height: kToolbarHeight,
-                              color: Colors.white,
-                              child: Row(
-                                children: <Widget>[
-                                  Semantics(
-                                    label: S.of(context).previous,
-                                    child: IconButton(
-                                      key:
-                                          const Key('portrait_previous_button'),
-                                      onPressed:
-                                          _curIndex <= 0 ? null : prevStep,
-                                      icon: Icon(
-                                        Icons.arrow_back,
-                                        color: isStart
-                                            ? Colors.grey
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  IconButton(
-                                    key: const Key('portrait_finish_button'),
-                                    tooltip: isFinally
-                                        ? S.of(context).gotIt
-                                        : S.of(context).skip,
-                                    onPressed: () {
-                                      _finishTutorial(context);
-                                    },
-                                    icon: isFinally
-                                        ? const Icon(
-                                            Icons.done_outline,
-                                            color: Colors.black,
-                                          )
-                                        : const Icon(
-                                            FluentIcons.arrow_exit_20_regular,
-                                            color: Colors.black,
-                                          ),
-                                  ),
-                                  const Spacer(),
-                                  Semantics(
-                                    label: S.of(context).next,
-                                    child: IconButton(
-                                      key: const Key('portrait_next_button'),
-                                      onPressed: _curIndex >= _maxIndex
-                                          ? null
-                                          : nextStep,
-                                      icon: Icon(
-                                        Icons.arrow_forward_rounded,
-                                        color: isFinally
-                                            ? Colors.grey
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                key: const Key('gesture_detector_portrait'),
-                                onTap: () {
-                                  if (_curIndex >= _maxIndex) {
-                                    _finishTutorial(context);
-                                  } else {
-                                    nextStep();
-                                  }
-                                },
-                                behavior: HitTestBehavior.opaque,
-                                child: AnimatedSwitcher(
-                                  key: const Key('animated_switcher_portrait'),
-                                  duration: const Duration(milliseconds: 400),
-                                  child: getTutorial(),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                : const Icon(
+                    FluentIcons.arrow_exit_20_regular,
+                    color: Colors.black,
                   ),
-          );
-        },
+          ),
+          const Spacer(),
+          Semantics(
+            label: S.of(context).next,
+            child: IconButton(
+              key: nextButtonKey,
+              onPressed: isFinally ? null : nextStep,
+              icon: Icon(
+                Icons.arrow_forward_rounded,
+                color: isFinally ? Colors.grey : Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInteractiveStepArea({
+    required Key gestureDetectorKey,
+    required Key switcherKey,
+  }) {
+    return GestureDetector(
+      key: gestureDetectorKey,
+      onTap: () {
+        if (isFinally) {
+          _finishTutorial(context);
+        } else {
+          nextStep();
+        }
+      },
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedSwitcher(
+        key: switcherKey,
+        duration: const Duration(milliseconds: 400),
+        child: _buildCurrentStep(),
       ),
     );
   }
@@ -311,149 +265,154 @@ class _TutorialDialogState extends State<TutorialDialog> {
     DB().generalSettings = DB().generalSettings.copyWith(showTutorial: false);
   }
 
-  void prevStep() {
-    if (_curIndex > 0) {
-      _curIndex--;
-      setPiece();
-      setState(() {});
+  void prevStep() => _changeStep(-1);
+
+  void nextStep() => _changeStep(1);
+
+  void _changeStep(int delta) {
+    final int newIndex = _curIndex + delta;
+    if (newIndex < 0 || newIndex > _maxIndex) {
+      return;
     }
+    setState(() {
+      _curIndex = newIndex;
+      _applyStepBoardState();
+    });
   }
 
-  void nextStep() {
-    if (_curIndex < _maxIndex) {
-      _curIndex++;
-      setPiece();
-      setState(() {});
-    }
-  }
-
-  Widget getTutorial() {
-    Widget? child;
+  Widget _buildCurrentStep() {
     switch (_curIndex) {
       case 0:
-        child = const _Step1(key: ValueKey<String>('Step1'));
-        break;
-      case 1:
-        child = const _Step2(key: ValueKey<String>('Step2'));
-        break;
-      case 2:
-        child = const _Step3(key: ValueKey<String>('Step3'));
-        break;
-      case 3:
-        child = _Step4(
-            key: const ValueKey<String>('Step4'),
-            begin: getPieceOffset(5, 3),
-            end: getPieceOffset(4, 3),
-            onEnd: onEnd);
-        break;
-      case 4:
-        child = const _Step5(key: ValueKey<String>('Step5'));
-        break;
-      case 5:
-        child = _Step6(
-            key: const ValueKey<String>('Step6'),
-            begin: getPieceOffset(3, 2),
-            end: getPieceOffset(4, 3),
-            onEnd: onEnd);
-        break;
-      case 6:
-        child = const _Step7(key: ValueKey<String>('Step7'));
-        break;
-    }
-    return child ?? const SizedBox.shrink();
-  }
-
-  void setPiece() {
-    pieceReset();
-    switch (_curIndex) {
-      case 1: // Placing phase
-        {
-          _maskOffset = getMaskOffset(3, 5);
-          _pieceList[getPieceIndex(3, 5)] = PieceColor.white;
-          break;
-        }
-      case 2: // Counter
-        {
-          _maskOffset = getMaskOffset(3, 3);
-          break;
-        }
-      case 3: // Moving phase
-        {
-          _maskOffset = getMaskOffset(5, 3);
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(2, 4)] = PieceColor.black;
-          _pieceList[getPieceIndex(2, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(3, 4)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.white;
-          break;
-        }
-      case 4: // Mill
-        {
-          _maskOffset = getMaskOffset(5, 3);
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(5, 1)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 5)] = PieceColor.black;
-          _focusIndex = getPieceIndex(5, 3);
-          break;
-        }
-      case 5: // Flying
-        {
-          _maskOffset = getMaskOffset(4, 2);
-          _pieceList[getPieceIndex(3, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(5, 1)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 5)] = PieceColor.black;
-          _pieceList[getPieceIndex(6, 3)] = PieceColor.black;
-          break;
-        }
+        return const _Step1(key: ValueKey<String>('Step1'));
+      case _placingPhaseStep:
+        return const _Step2(key: ValueKey<String>('Step2'));
+      case _counterStep:
+        return const _Step3(key: ValueKey<String>('Step3'));
+      case _movingPhaseStep:
+        return _Step4(
+          key: const ValueKey<String>('Step4'),
+          begin: _pieceAnimationOffset(5, 3),
+          end: _pieceAnimationOffset(4, 3),
+          onEnd: _handleAnimatedMoveEnd,
+        );
+      case _millStep:
+        return const _Step5(key: ValueKey<String>('Step5'));
+      case _flyingStep:
+        return _Step6(
+          key: const ValueKey<String>('Step6'),
+          begin: _pieceAnimationOffset(3, 2),
+          end: _pieceAnimationOffset(4, 3),
+          onEnd: _handleAnimatedMoveEnd,
+        );
+      case _maxIndex:
+        return const _Step7(key: ValueKey<String>('Step7'));
+      default:
+        return const SizedBox.shrink();
     }
   }
 
-  void onEnd() {
+  /// Updates board decorations and pieces for the current tutorial step.
+  void _applyStepBoardState() {
+    _resetBoardState();
     switch (_curIndex) {
-      case 2:
-        {
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
-          break;
-        }
-      case 3:
-        {
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
-          break;
-        }
-      case 5:
-        {
-          _pieceList[getPieceIndex(3, 2)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
-          break;
-        }
+      case _placingPhaseStep:
+        _configurePlacingPhase();
+        break;
+      case _counterStep:
+        _setMaskAt(3, 3);
+        break;
+      case _movingPhaseStep:
+        _configureMovingPhase();
+        break;
+      case _millStep:
+        _configureMillStep();
+        break;
+      case _flyingStep:
+        _configureFlyingStep();
+        break;
+    }
+  }
+
+  void _configurePlacingPhase() {
+    _setMaskAt(3, 5);
+    _placePiece(3, 5, PieceColor.white);
+  }
+
+  void _configureMovingPhase() {
+    _setMaskAt(5, 3);
+    _placePiece(4, 2, PieceColor.white);
+    _placePiece(4, 4, PieceColor.white);
+    _placePiece(2, 4, PieceColor.black);
+    _placePiece(2, 3, PieceColor.black);
+    _placePiece(3, 4, PieceColor.black);
+    _placePiece(5, 3, PieceColor.white);
+  }
+
+  void _configureMillStep() {
+    _setMaskAt(5, 3);
+    _placePiece(4, 2, PieceColor.white);
+    _placePiece(4, 3, PieceColor.white);
+    _placePiece(4, 4, PieceColor.white);
+    _placePiece(5, 1, PieceColor.black);
+    _placePiece(5, 3, PieceColor.black);
+    _placePiece(5, 5, PieceColor.black);
+    _focusIndex = _boardIndex(5, 3);
+  }
+
+  void _configureFlyingStep() {
+    _setMaskAt(4, 2);
+    _placePiece(3, 2, PieceColor.white);
+    _placePiece(4, 2, PieceColor.white);
+    _placePiece(4, 4, PieceColor.white);
+    _placePiece(5, 1, PieceColor.black);
+    _placePiece(5, 3, PieceColor.black);
+    _placePiece(5, 5, PieceColor.black);
+    _placePiece(6, 3, PieceColor.black);
+  }
+
+  void _setMaskAt(int row, int col) {
+    _maskOffset = _maskOffsetFor(row, col);
+  }
+
+  /// Applies piece movements after an animation completes.
+  void _handleAnimatedMoveEnd() {
+    switch (_curIndex) {
+      case _counterStep:
+      case _movingPhaseStep:
+        _clearPiece(5, 3);
+        _placePiece(4, 3, PieceColor.white);
+        break;
+      case _flyingStep:
+        _clearPiece(3, 2);
+        _placePiece(4, 3, PieceColor.white);
+        break;
+      default:
+        return;
     }
     setState(() {});
   }
 
-  void pieceReset() {
+  void _resetBoardState() {
     _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
     _maskOffset = null;
     _focusIndex = null;
     _blurIndex = null;
   }
 
-  int getPieceIndex(int row, int col) {
-    return row * 7 + col;
+  int _boardIndex(int row, int col) => row * 7 + col;
+
+  void _placePiece(int row, int col, PieceColor color) {
+    _pieceList[_boardIndex(row, col)] = color;
   }
 
-  Offset getMaskOffset(int row, int col) {
-    final int index = getPieceIndex(row, col);
+  void _clearPiece(int row, int col) {
+    _pieceList[_boardIndex(row, col)] = PieceColor.none;
+  }
+
+  Offset _maskOffsetFor(int row, int col) {
+    final int index = _boardIndex(row, col);
     return _isLandscape
-        ? pointFromIndex(index, _size) +
+        ? pointFromIndex(index, _boardSize) +
             Offset(
               (MediaQuery.of(context).size.width -
                       MediaQuery.of(context).padding.horizontal -
@@ -464,7 +423,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                       MediaQuery.of(context).padding.vertical) /
                   2,
             )
-        : pointFromIndex(index, _size) +
+        : pointFromIndex(index, _boardSize) +
             Offset(
               AppTheme.boardPadding,
               AppTheme.boardPadding +
@@ -473,10 +432,10 @@ class _TutorialDialogState extends State<TutorialDialog> {
             );
   }
 
-  Offset getPieceOffset(int row, int col) {
-    final int index = getPieceIndex(row, col);
+  Offset _pieceAnimationOffset(int row, int col) {
+    final int index = _boardIndex(row, col);
     return _isLandscape
-        ? pointFromIndex(index, _size) +
+        ? pointFromIndex(index, _boardSize) +
             Offset(
               (MediaQuery.of(context).size.width -
                       MediaQuery.of(context).padding.horizontal -
@@ -489,7 +448,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                   kToolbarHeight -
                   MediaQuery.of(context).padding.top,
             )
-        : pointFromIndex(index, _size) +
+        : pointFromIndex(index, _boardSize) +
             Offset(AppTheme.boardPadding, AppTheme.boardPadding);
   }
 }
