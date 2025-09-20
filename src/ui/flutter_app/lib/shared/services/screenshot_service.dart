@@ -17,9 +17,9 @@ import 'package:path_provider/path_provider.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../database/database.dart';
-import 'snackbar_service.dart';
 import 'environment_config.dart';
 import 'logger.dart';
+import 'snackbar_service.dart';
 
 class ScreenshotService {
   ScreenshotService._();

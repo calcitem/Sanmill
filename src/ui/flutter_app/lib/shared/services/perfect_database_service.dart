@@ -24,7 +24,8 @@ Future<bool> copyPerfectDatabaseFiles() async {
   }
 
   if (dir == null) {
-    logger.e('Failed to resolve a storage directory for perfect database files.');
+    logger
+        .e('Failed to resolve a storage directory for perfect database files.');
     return false;
   }
 

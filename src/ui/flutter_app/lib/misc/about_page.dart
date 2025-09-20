@@ -47,9 +47,10 @@ class AboutPage extends StatelessWidget {
           }
 
           final PackageInfo packageInfo = data.data!;
-          final String version = (kIsWeb || Platform.isWindows || Platform.isLinux)
-              ? packageInfo.version
-              : "${packageInfo.version} (${packageInfo.buildNumber})";
+          final String version =
+              (kIsWeb || Platform.isWindows || Platform.isLinux)
+                  ? packageInfo.version
+                  : "${packageInfo.version} (${packageInfo.buildNumber})";
           final String subtitle =
               "${Constants.projectName} $version ${mode ?? ''}".trim();
 
@@ -206,8 +207,8 @@ class _VersionDialog extends StatelessWidget {
                     child: Text(
                       'Revision: ${info.revision}',
                       style: TextStyle(
-                        fontSize: AppTheme.textScaler
-                            .scale(AppTheme.defaultFontSize),
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
                       ),
                     ),
                   ),

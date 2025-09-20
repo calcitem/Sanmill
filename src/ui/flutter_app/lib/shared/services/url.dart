@@ -15,11 +15,10 @@ Future<void> launchURL(BuildContext context, UrlHelper url) async {
     return;
   }
 
-  final String rawUrl = Localizations.localeOf(context)
-          .languageCode
-          .startsWith("zh")
-      ? url.baseChinese
-      : url.base;
+  final String rawUrl =
+      Localizations.localeOf(context).languageCode.startsWith("zh")
+          ? url.baseChinese
+          : url.base;
 
   final String trimmedUrl = rawUrl.trim();
   if (trimmedUrl.isEmpty) {

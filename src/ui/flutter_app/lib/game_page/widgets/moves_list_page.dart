@@ -933,8 +933,9 @@ class MovesListPageState extends State<MovesListPage> {
         return const Locale('en');
       }
 
-      final String primaryCode =
-          subtags.first.toLowerCase() == 'und' ? 'en' : subtags.first.toLowerCase();
+      final String primaryCode = subtags.first.toLowerCase() == 'und'
+          ? 'en'
+          : subtags.first.toLowerCase();
       String? scriptCode;
       String? regionCode;
 

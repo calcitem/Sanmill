@@ -19,10 +19,10 @@ import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/perfect_database_service.dart';
+import '../../shared/services/snackbar_service.dart';
 import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
-import '../../shared/services/snackbar_service.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
@@ -339,7 +339,8 @@ class GeneralSettingsPage extends StatelessWidget {
                 _setWhoMovesFirst(generalSettings, !val);
                 if (val == false &&
                     DB().ruleSettings.isLikelyNineMensMorris()) {
-                  SnackBarService.showRootSnackBar(S.of(context).firstMoveDetail);
+                  SnackBarService.showRootSnackBar(
+                      S.of(context).firstMoveDetail);
                 }
               },
               titleString: generalSettings.aiMovesFirst
@@ -551,7 +552,8 @@ class GeneralSettingsPage extends StatelessWidget {
                 value: generalSettings.screenReaderSupport,
                 onChanged: (bool val) {
                   _setScreenReaderSupport(generalSettings, val);
-                  SnackBarService.showRootSnackBar(S.of(context).reopenToTakeEffect);
+                  SnackBarService.showRootSnackBar(
+                      S.of(context).reopenToTakeEffect);
                 },
                 titleString: S.of(context).screenReaderSupport,
               ),
@@ -575,7 +577,8 @@ class GeneralSettingsPage extends StatelessWidget {
                 onChanged: (bool val) {
                   _setGameScreenRecorderSupport(generalSettings, val);
                   if (val == true) {
-                    SnackBarService.showRootSnackBar(S.of(context).experimental);
+                    SnackBarService.showRootSnackBar(
+                        S.of(context).experimental);
                   }
                 },
                 titleString: S.of(context).shareGIF,
