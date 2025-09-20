@@ -1,9 +1,12 @@
 #!/bin/bash
+set -euo pipefail
 
-cd ../src/ui/flutter_app
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/ensure_flutter.sh"
 
-flutter pub outdated
+ensure_flutter_on_path
 
-flutter pub upgrade --major-versions
+APP_DIR="${SCRIPT_DIR}/../src/ui/flutter_app"
 
-
+( cd "${APP_DIR}" && flutter pub outdated )
+( cd "${APP_DIR}" && flutter pub upgrade --major-versions )

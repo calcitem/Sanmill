@@ -143,6 +143,7 @@ make build ARCH=x86-64-modern
 ### Flutter App
 
 运行`./flutter-init.sh`，然后使用 Android Studio 或 Visual Studio Code 打开 `src/ui/flutter_app` 来构建 Flutter App。
+该脚本会在系统未安装所需版本时，自动在 `.tools/flutter` 中下载并配置 Flutter 3.29.3，确保仓库始终使用预期的 SDK。
 
 我们使用编译期环境配置来启用代码的特定部分：
 
