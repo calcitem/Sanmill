@@ -445,6 +445,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       // Setup position does not yet model pieces in hand, so we hide it when
       // the current rule removes stones from a player's reserve.
+      // TODO: Support removeOpponentsPieceFromHand
       if (DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase
                   .removeOpponentsPieceFromHandThenYourTurn &&
