@@ -169,10 +169,12 @@ class GameController {
             TextButton(
               // If rejected, send rejected message and do nothing
               onPressed: () {
+                // Cache the localized string before dismissing the dialog.
+                final String rejectedMessage =
+                    S.of(dialogContext).restartRequestRejected;
                 Navigator.of(dialogContext).pop(false);
                 networkService?.sendMove("restart:rejected");
-                headerTipNotifier
-                    .showTip("S.of(context).restartRequestRejected");
+                headerTipNotifier.showTip(rejectedMessage);
               },
               child: const Text("No"),
             ),
