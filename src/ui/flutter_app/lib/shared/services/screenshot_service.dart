@@ -66,7 +66,14 @@ class ScreenshotService {
     await saveImage(finalImage, filename);
   }
 
-  static bool isSupportedPlatform() => !kIsWeb && Platform.isAndroid;
+  static bool isSupportedPlatform() {
+    if (kIsWeb) {
+      return false;
+    }
+
+    // Native screenshots are available on both Android and iOS.
+    return Platform.isAndroid || Platform.isIOS;
+  }
 
   static String determineFilename(String? filename, String storageLocation) {
     if (filename != null && storageLocation != 'gallery') {
