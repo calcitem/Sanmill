@@ -40,6 +40,12 @@ class _PointPaintingStyleModal extends StatelessWidget {
         PointPaintingStyle.fill,
         key: const Key('radio_solid'),
       ),
+      _buildRadioListTile(
+        context,
+        S.of(context).hollow,
+        PointPaintingStyle.stroke,
+        key: const Key('radio_hollow'),
+      ),
     ];
   }
 
