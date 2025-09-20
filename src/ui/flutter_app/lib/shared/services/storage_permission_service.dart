@@ -25,7 +25,7 @@ class StoragePermissionService {
 
   /// Request storage permissions for Android
   Future<bool> requestStoragePermission() async {
-    if (!Platform.isAndroid || kIsWeb) {
+    if (kIsWeb || !Platform.isAndroid) {
       return true; // Only Android needs explicit permissions
     }
 
@@ -51,7 +51,7 @@ class StoragePermissionService {
 
   /// Get the best available directory for saving screenshots
   Future<String?> getScreenshotDirectory() async {
-    if (!Platform.isAndroid || kIsWeb) {
+    if (kIsWeb || !Platform.isAndroid) {
       return null;
     }
 

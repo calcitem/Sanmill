@@ -196,7 +196,7 @@ class ImportService {
     }
 
     try {
-      // TODO: Improve this logic
+      // Detect the known external formats before falling back to PGN parsing.
       if (isPlayOkMoveList(ml)) {
         _importPlayOk(ml);
         return;

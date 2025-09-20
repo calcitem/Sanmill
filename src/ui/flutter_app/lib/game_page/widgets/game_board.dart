@@ -115,7 +115,10 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   Future<void> _setReadyState() async {
     logger.i("$_logTag Check if need to set Ready state...");
-    // TODO: v1 has "&& mounted && Config.settingsLoaded"
+    if (!mounted) {
+      logger.w("$_logTag Widget disposed before ready state was set.");
+      return;
+    }
     if (GameController().isControllerReady == false) {
       logger.i("$_logTag Set Ready State...");
       GameController().isControllerReady = true;

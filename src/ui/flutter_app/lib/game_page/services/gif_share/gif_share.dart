@@ -57,8 +57,9 @@ class GifShare {
       return false;
     }
 
-    if (pngs.isNotEmpty) {
-      pngs.removeRange(0, 1); // TODO: WAR
+    if (pngs.length > 1) {
+      // Drop the setup frame captured before recording starts.
+      pngs.removeAt(0);
     }
 
     final img.GifEncoder encoder = img.GifEncoder(

@@ -116,7 +116,7 @@ class GeneralSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsMcts);
           break;
-        // TODO: Add whatIsRandom
+        // Random mode shows an explanatory toast like other algorithms.
         case SearchAlgorithm.random:
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsRandom);
@@ -221,7 +221,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
       logger.t("$_logTag soundTheme = $soundTheme");
 
-      // TODO: Take effect on iOS
+      // iOS cannot hot-reload sound assets, so prompt users to reopen.
       if (Platform.isIOS) {
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).reopenToTakeEffect);
@@ -288,7 +288,7 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
   ) {
     void callback(int? ratio) {
-      // TODO: Take effect when start new game
+      // Changes apply after the recorder is recreated, so prompt a restart.
       rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).reopenToTakeEffect);
 
@@ -566,7 +566,7 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        // TODO: Fix iOS bug
+        // The screen recorder UI stays Android-only until the iOS bug is resolved.
         if (!kIsWeb && (Platform.isAndroid))
           SettingsCard(
             key: const Key(

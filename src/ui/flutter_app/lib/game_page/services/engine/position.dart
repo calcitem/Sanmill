@@ -529,35 +529,31 @@ class Position {
 
   @visibleForTesting
   bool doMove(String move) {
-    // TODO: Resign is not implemented
-    if (move.length > "Player".length &&
-        move.substring(0, "Player".length - 1) == "Player") {
-      // TODO: What?
-      if (move["Player".length] == "1") {
-        return _resign(PieceColor.white);
-      } else {
-        return _resign(PieceColor.black);
-      }
+    final String trimmedMove = move.trim();
+    final RegExp resignPattern =
+        RegExp(r'^player\s*([12]).*resign', caseSensitive: false);
+    final Match? resignMatch = resignPattern.firstMatch(trimmedMove);
+    if (resignMatch != null) {
+      final String playerIndex = resignMatch.group(1)!;
+      final PieceColor loser =
+          playerIndex == '1' ? PieceColor.white : PieceColor.black;
+      return _resign(loser);
+    } else if (trimmedMove.toLowerCase().contains('resign')) {
+      logger.w('[position] Unrecognized resign string: $move');
+      return _resign(_sideToMove);
     }
 
-    // TODO: Right?
+    // The engine emits this string when it auto-detects threefold repetition.
     if (move == "Threefold Repetition. Draw!") {
       return true;
     }
 
-    // TODO: Duplicate with switch (m.type) and should throw exception.
-    if (move == "none") {
-      return false;
-    }
-
-    // TODO: Duplicate with switch (m.type)
     if (move == "draw") {
       phase = Phase.gameOver;
       winner = PieceColor.draw;
 
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
-      // TODO: WAR to judge rule50, and endgameNMoveRule is not right.
       if (DB().ruleSettings.nMoveRule > 0 &&
           posKeyHistory.length >= DB().ruleSettings.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawFiftyMove;
@@ -567,9 +563,9 @@ class Position {
           posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameFiftyMove;
       } else if (DB().ruleSettings.threefoldRepetitionRule) {
-        gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
+        gameOverReason = GameOverReason.drawThreefoldRepetition;
       } else {
-        gameOverReason = GameOverReason.drawFullBoard; // TODO: Sure?
+        gameOverReason = GameOverReason.drawFullBoard;
       }
 
       return true;
@@ -618,7 +614,8 @@ class Position {
         }
         break;
       case MoveType.draw:
-        return false; // TODO
+        logger.w('[position] Unexpected draw ExtMove processed late.');
+        return true;
       case MoveType.none:
         // ignore: only_throw_errors
         throw const EngineNoBestMove();
@@ -1837,7 +1834,7 @@ extension SetupPosition on Position {
   }
 
   bool putPieceForSetupPosition(int s) {
-    final PieceColor piece = GameController().isPositionSetupMarkedPiece
+    final PieceColor piece = GameController().isPieceMarkedInPositionSetup
         ? PieceColor.marked
         : sideToMove;
     //final us = _sideToMove;
@@ -1876,7 +1873,7 @@ extension SetupPosition on Position {
     _board[s] = piece;
 
     //GameController().gameInstance.focusIndex = squareToIndex[s];
-    SoundManager().playTone(GameController().isPositionSetupMarkedPiece
+    SoundManager().playTone(GameController().isPieceMarkedInPositionSetup
         ? Sound.remove
         : Sound.place);
 

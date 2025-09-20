@@ -901,34 +901,8 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Get the current app language name in English
   String _getCurrentLanguageName() {
-    // Get current locale from settings or system
-    Locale currentLocale;
-
-    // Try to get locale from app settings
-    final Locale? configuredLocale = DB().displaySettings.locale;
-
-    if (configuredLocale == null) {
-      // If null, it means "system default" - try to get platform locale
-      try {
-        final String platformLocale = Platform.localeName;
-        final List<String> parts = platformLocale.split('_');
-        // e.g. "en_US" -> language: "en", country: "US"
-        final String languageCode = parts[0];
-        final String? countryCode = parts.length > 1 ? parts[1] : null;
-
-        if (countryCode != null) {
-          currentLocale = Locale(languageCode, countryCode);
-        } else {
-          currentLocale = Locale(languageCode);
-        }
-      } catch (e) {
-        // Fallback to English if we can't get platform locale
-        currentLocale = const Locale('en');
-      }
-    } else {
-      // Use app's configured locale
-      currentLocale = configuredLocale;
-    }
+    final Locale currentLocale =
+        DB().displaySettings.locale ?? _resolveSystemLocale();
 
     // Use the localeToLanguageName map to get the language name in its native form
     // This map is defined in language_locale_mapping.dart
@@ -949,6 +923,78 @@ class MovesListPageState extends State<MovesListPage> {
     return languageName ?? currentLocale.languageCode;
   }
 
+  Locale _resolveSystemLocale() {
+    try {
+      final String rawLocale = Platform.localeName;
+      final String sanitized = rawLocale.split('.').first.split('@').first;
+      final List<String> subtags = sanitized.split(RegExp('[-_]'));
+
+      if (subtags.isEmpty || subtags.first.isEmpty) {
+        return const Locale('en');
+      }
+
+      final String primaryCode =
+          subtags.first.toLowerCase() == 'und' ? 'en' : subtags.first.toLowerCase();
+      String? scriptCode;
+      String? regionCode;
+
+      for (int i = 1; i < subtags.length; i++) {
+        final String candidate = subtags[i].split('.').first;
+        if (candidate.isEmpty) {
+          continue;
+        }
+
+        if (scriptCode == null && _looksLikeScriptSubtag(candidate)) {
+          scriptCode = _normalizeScriptCode(candidate);
+          continue;
+        }
+
+        if (regionCode == null) {
+          final String? normalizedRegion = _normalizeRegionCode(candidate);
+          if (normalizedRegion != null) {
+            regionCode = normalizedRegion;
+          }
+        }
+      }
+
+      if (scriptCode != null || regionCode != null) {
+        return Locale.fromSubtags(
+          languageCode: primaryCode,
+          scriptCode: scriptCode,
+          countryCode: regionCode,
+        );
+      }
+
+      return Locale(primaryCode);
+    } catch (e) {
+      return const Locale('en');
+    }
+  }
+
+  bool _looksLikeScriptSubtag(String value) {
+    return RegExp(r'^[A-Za-z]{4}$').hasMatch(value);
+  }
+
+  String _normalizeScriptCode(String value) {
+    final String lower = value.toLowerCase();
+    return lower[0].toUpperCase() + lower.substring(1);
+  }
+
+  String? _normalizeRegionCode(String value) {
+    final String cleaned = value.split('.').first;
+    if (RegExp(r'^[A-Za-z]{2}$').hasMatch(cleaned)) {
+      return cleaned.toUpperCase();
+    }
+    if (RegExp(r'^[0-9]{3}$').hasMatch(cleaned)) {
+      return cleaned;
+    }
+    return null;
+  }
+
+  String _systemLanguageCode() {
+    return _resolveSystemLocale().languageCode;
+  }
+
   /// Adds a language instruction to the prompt if needed
   String _getPromptWithLanguage(
       String originalPrompt, bool useCurrentLanguage) {
@@ -960,8 +1006,8 @@ class MovesListPageState extends State<MovesListPage> {
     final String languageNameOrCode = _getCurrentLanguageName();
 
     // Get the language code for LLM instruction
-    final String languageCode = DB().displaySettings.locale?.languageCode ??
-        Platform.localeName.split('_')[0];
+    final String languageCode =
+        DB().displaySettings.locale?.languageCode ?? _systemLanguageCode();
 
     // Create a language instruction for the LLM
     // We include both the language name (possibly in native form) and the language code

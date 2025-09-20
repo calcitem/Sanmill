@@ -32,10 +32,9 @@ class CustomDrawerItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: drawerHighlightTextColor
-    final Color color = isSelected
-        ? DB().colorSettings.drawerTextColor
-        : DB().colorSettings.drawerTextColor;
+    // The highlight overlay is translucent, so the standard drawer text color
+    // remains legible for both selected and unselected states.
+    final Color color = DB().colorSettings.drawerTextColor;
 
     final Icon listItemIcon = Icon(
       itemIcon.icon,

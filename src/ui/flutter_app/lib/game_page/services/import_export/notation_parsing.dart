@@ -7,7 +7,7 @@ part of '../mill.dart';
 
 const String _logTag = "[NotationParsing]";
 
-// TODO: Remove this function
+// We still rely on this helper to normalize WMD exports before PGN parsing.
 String _wmdNotationToMoveString(String wmd) {
   // Validate standard notation format
   if (wmd.startsWith('x') && wmd.length == 3) {

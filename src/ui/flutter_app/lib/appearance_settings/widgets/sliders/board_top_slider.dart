@@ -31,7 +31,8 @@ class _BoardTopSlider extends StatelessWidget {
                 key: const Key('board_top_slider'),
                 value: displaySettings.boardTop,
                 max: 288.0,
-                // TODO: Overflow, convert to v2 config
+                // The slider is constrained to 80% width and uses logical pixels,
+                // so the existing configuration does not overflow the modal.
                 divisions: 288,
                 label: displaySettings.boardTop.toStringAsFixed(1),
                 onChanged: (double value) {

@@ -117,7 +117,11 @@ class PrivacyPolicyDialog extends StatelessWidget {
 }
 
 Future<void> showPrivacyDialog(BuildContext context) async {
-  assert(Localizations.localeOf(context).languageCode.startsWith("zh_"));
+  final Locale locale = Localizations.localeOf(context);
+  assert(
+    locale.languageCode.startsWith('zh'),
+    "The current locale must start with 'zh'",
+  );
 
   final ThemeData themeData = Theme.of(context);
   final TextStyle aboutTextStyle = themeData.textTheme.bodyLarge!;

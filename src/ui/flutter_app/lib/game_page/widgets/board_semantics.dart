@@ -23,7 +23,10 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
   }
 
   void updateBoardSemantics() {
-    setState(() {}); // TODO
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
   }
 
   @override
@@ -41,7 +44,8 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
         (int index) => Center(
           child: Semantics(
             key: Key('board_square_$index'),
-            // TODO: [Calcitem] Add more descriptive information
+            // Labels include the occupant, coordinate, and current highlight
+            // state for assistive technologies.
             label: squareDesc[index],
           ),
         ),
@@ -193,14 +197,34 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     }
 
     squareDesc.clear();
+    final int? focusedIndex = GameController().gameInstance.focusIndex;
+    final int? removalIndex = GameController().gameInstance.removeIndex;
 
     for (int i = 0; i < 7 * 7; i++) {
-      final String desc = pieceDesc[map[i] - 1];
-      if (desc == S.of(context).emptyPoint) {
-        squareDesc.add("${coordinates[i]}: $desc");
-      } else {
-        squareDesc.add("$desc: ${coordinates[i]}");
+      final int gridIndex = map[i] - 1;
+      final String desc = pieceDesc[gridIndex];
+      final bool isPoint = checkPoints[gridIndex] == 1;
+      final String base =
+          (desc == S.of(context).emptyPoint || desc == S.of(context).noPoint)
+              ? "${coordinates[i]} ($desc)"
+              : "$desc (${coordinates[i]})";
+
+      if (!isPoint) {
+        squareDesc.add(base);
+        continue;
       }
+
+      final List<String> qualifiers = <String>[];
+      if (focusedIndex == gridIndex) {
+        qualifiers.add(S.of(context).selected);
+      }
+      if (removalIndex == gridIndex) {
+        qualifiers.add(S.of(context).tipRemove);
+      }
+
+      squareDesc.add(qualifiers.isEmpty
+          ? base
+          : "${qualifiers.join(' ')} $base");
     }
 
     return squareDesc;

@@ -50,7 +50,7 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
             .removeOpponentsPieceFromHandThenYourTurn,
       ),
       /*
-      // TODO: Implement
+      // Hidden until the engine supports opponents removing their own pieces.
       _buildRadioListTile(
         context,
         S.of(context).opponentRemovesOwnPiece,

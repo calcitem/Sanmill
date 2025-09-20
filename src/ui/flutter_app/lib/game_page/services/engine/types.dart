@@ -275,7 +275,7 @@ extension ActExtension on Act {
   }
 }
 
-// TODO: [Leptopoda] Throw this stuff to faster detect a game over
+/// Enumerates the reasons the engine reports when a game concludes.
 enum GameOverReason {
   loseFewerThanThree,
   loseNoLegalMoves,
@@ -311,7 +311,9 @@ extension GameOverReasonExtension on GameOverReason {
       case GameOverReason.drawFullBoard:
         return S.of(context).drawReasonBoardIsFull;
       case GameOverReason.drawStalemateCondition:
-        return S.of(context).endWithStalemateDraw; // TODO: Not drawReasonXXX
+        // We only expose a stalemate-specific label here; there is no
+        // drawReason translation entry for this branch yet.
+        return S.of(context).endWithStalemateDraw;
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
     }
@@ -364,7 +366,8 @@ const int fileExNumber = fileNumber + 2;
 const int rankNumber = 8;
 
 int makeSquare(int file, int rank) {
-  // TODO: -2
+  // Coordinates of -2 would indicate a malformed engine response; assert so we
+  // surface the problem during development instead of silently mapping it.
   assert(file != -2 && rank != -2);
 
   if (file == 0 && rank == 0) {
@@ -384,7 +387,7 @@ bool isOk(int sq) {
     logger.w("[types] $sq is not OK");
   }
 
-  return ret; // TODO: SQ_NONE?
+  return ret;
 }
 
 int fileOf(int sq) {

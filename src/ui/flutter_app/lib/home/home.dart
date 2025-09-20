@@ -284,14 +284,16 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
+  static const Set<_DrawerIndex> _gameEntries = <_DrawerIndex>{
+    _DrawerIndex.humanVsAi,
+    _DrawerIndex.humanVsHuman,
+    _DrawerIndex.aiVsAi,
+    _DrawerIndex.humanVsLAN,
+    _DrawerIndex.setupPosition,
+  };
+
   // Function to check if the current drawer state corresponds to a game
-  bool _isGame(_DrawerIndex index) {
-    // TODO: Magic Number. The first 4 indices correspond to game modes
-    // Adjusted magic number due to addition of statistics and group items.
-    // humanVsAi, humanVsHuman, aiVsAi, humanVsLAN, setupPosition are games.
-    // Their indices are 0, 1, 2, 3, 4. So index < 5 is correct.
-    return index.index < 5;
-  }
+  bool _isGame(_DrawerIndex index) => _gameEntries.contains(index);
 
   // Function to handle route changes
   void _pushRoute(_DrawerIndex index) {
@@ -429,7 +431,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),
-      // TODO: Support removeOpponentsPieceFromHand
+      // Setup position does not handle hand-removal variants yet.
       if (DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase
                   .removeOpponentsPieceFromHandThenYourTurn &&

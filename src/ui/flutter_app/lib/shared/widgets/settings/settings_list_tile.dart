@@ -7,7 +7,7 @@ part of 'settings.dart';
 
 enum _SettingsTileType { standard, color, switchTile }
 
-// TODO: [Leptopoda] Maybe add link list tile as it needs a separate icon
+// Link entries reuse the standard tile so callers can provide custom icons.
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
     super.key,

@@ -56,20 +56,14 @@ class InfoDialog extends StatelessWidget {
       );
 
       if (n1.startsWith("x")) {
-        String moveNotation = "";
-        if (controller.gameRecorder.mainlineMoves.length == 1) {
-          // TODO: Right? (Issue #686)
-          moveNotation = controller
-              .gameRecorder
-              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 1]
-              .notation;
-        } else if (controller.gameRecorder.mainlineMoves.length >= 2) {
-          moveNotation = controller
-              .gameRecorder
-              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 2]
-              .notation;
+        final List<ExtMove> moves = controller.gameRecorder.mainlineMoves;
+        String moveNotation = n1;
+        for (int i = moves.length - 2; i >= 0; i--) {
+          if (moves[i].type != MoveType.remove) {
+            moveNotation = moves[i].notation;
+            break;
+          }
         }
-        // Apply correct case based on screen reader setting
         moveNotation = DB().generalSettings.screenReaderSupport
             ? moveNotation.toUpperCase()
             : moveNotation.toLowerCase();

@@ -7,4 +7,15 @@ import 'package:logger/logger.dart';
 
 import 'environment_config.dart';
 
-final Logger logger = Logger(level: Level.values[EnvironmentConfig.logLevel]);
+int _clampLogLevel(int requested) {
+  if (requested < 0) {
+    return 0;
+  }
+  if (requested >= Level.values.length) {
+    return Level.values.length - 1;
+  }
+  return requested;
+}
+
+final Logger logger =
+    Logger(level: Level.values[_clampLogLevel(EnvironmentConfig.logLevel)]);

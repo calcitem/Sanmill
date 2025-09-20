@@ -18,7 +18,7 @@ class _RatioModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       key: const Key('ratio_modal_semantics'),
-      label: S.of(context).pixelRatio, // TODO: Ratio
+      label: '${S.of(context).pixelRatio}: $ratio%',
       child: Column(
         key: const Key('ratio_modal_column'),
         mainAxisSize: MainAxisSize.min,

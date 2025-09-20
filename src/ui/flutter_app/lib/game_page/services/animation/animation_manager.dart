@@ -150,7 +150,7 @@ class AnimationManager {
 
   // Handle Place Animation with proper disposal check
   void animatePlace() {
-    // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
+    // This mirrors the disposal guard introduced in f0c1f3d5df544e5910b194b8479d956dd10fe527.
     if (/* GameController().isDisposed == true || */ _isDisposed) {
       // Avoid animation when GameController or AnimationManager is disposed
       return;

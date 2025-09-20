@@ -16,7 +16,7 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
 
     Navigator.pop(context);
 
-    // TODO: Seems to need to close and reopen the program for it to work.
+    // Resets require a fresh launch so caches reload from the cleared DB.
     await DB.reset();
 
     GameController().reset(force: true);

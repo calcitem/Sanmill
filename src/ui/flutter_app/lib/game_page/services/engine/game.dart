@@ -140,7 +140,8 @@ class Game {
     // Possibly for debug or logging
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final Catcher2Options options = catcher.getCurrentConfig()!;
-      // TODO: moveHistoryText is not lightweight.
+      // Only capture the verbose move list for crash reports; this path runs
+      // rarely enough that the string allocation is acceptable.
       options.customParameters["MoveList"] =
           GameController().gameRecorder.moveHistoryText;
     }

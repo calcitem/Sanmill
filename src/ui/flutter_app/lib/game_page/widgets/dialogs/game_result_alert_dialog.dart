@@ -50,8 +50,12 @@ class GameResultAlertDialog extends StatelessWidget {
       return _buildAiVsAiDialog(context, position);
     }
 
-    // TODO: Why sometimes _gameResult is null?
-    position.result = _gameResult;
+    final GameResult resolvedResult =
+        _gameResult ?? position.result ?? GameResult.draw;
+    if (_gameResult == null && position.result == null) {
+      logger.w('$_logTag Missing game result; defaulting to draw.');
+    }
+    position.result = resolvedResult;
 
     switch (position.result) {
       case GameResult.win:
@@ -67,7 +71,7 @@ class GameResultAlertDialog extends StatelessWidget {
         break;
     }
 
-    final String dialogTitle = _gameResult!.winString(context);
+    final String dialogTitle = resolvedResult.winString(context);
 
     final bool isTopLevel =
         DB().generalSettings.skillLevel == Constants.highestSkillLevel;
@@ -80,7 +84,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
     logger.t("$_logTag Game over reason string: $content");
 
-    final bool canChallenge = canChallengeNextLevel(_gameResult!) == true &&
+    final bool canChallenge = canChallengeNextLevel(resolvedResult) == true &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi;

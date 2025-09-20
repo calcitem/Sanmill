@@ -117,22 +117,24 @@ class Engine {
     String? fen;
     final String normalizedFen;
 
-    if (await isThinking()) {
-      await stopSearching();
-    } else if (moveNow) {
-      // TODO: Check why go here.
-      await stopSearching();
-      final String? fen = _getPositionFen();
-      if (fen == null) {
-        // ignore: only_throw_errors
-        throw const EngineNoBestMove();
-      }
-      await _send(fen);
-      await _send("go");
+    final bool engineWasThinking = await isThinking();
+    if (engineWasThinking) {
       await stopSearching();
     }
 
-    if (!moveNow) {
+    if (moveNow) {
+      final String? forcedFen = _getPositionFen();
+      if (forcedFen == null) {
+        // ignore: only_throw_errors
+        throw const EngineNoBestMove();
+      }
+      await _send(forcedFen);
+      await _send("go");
+
+      if (engineWasThinking) {
+        await stopSearching();
+      }
+    } else {
       fen = GameController().position.fen;
       if (fen == null) {
         // ignore: only_throw_errors
@@ -216,7 +218,9 @@ class Engine {
         await _send(fen);
         await _send("go");
       }
-    } else {
+    }
+
+    if (moveNow) {
       logger.t("$_logTag Move now");
     }
 
@@ -295,8 +299,10 @@ class Engine {
     int timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
     if (settings.moveTime > 0) {
-      // TODO: Accurate timeLimit
-      timeLimit = settings.moveTime * 10 * 64 + 10;
+      final int clampedSleep = sleep <= 0 ? 100 : sleep;
+      // Each loop represents roughly [sleep] milliseconds of waiting.
+      final int loopsPerSecond = (1000 / clampedSleep).ceil();
+      timeLimit = settings.moveTime * loopsPerSecond + loopsPerSecond;
     }
 
     if (times > timeLimit) {
@@ -358,9 +364,10 @@ class Engine {
 
     // AI's play style
     await _sendOptions(
-        "Algorithm",
-        generalSettings.searchAlgorithm?.index ??
-            SearchAlgorithm.mtdf.index); // TODO: enum
+      "Algorithm",
+      generalSettings.searchAlgorithm?.index ??
+          SearchAlgorithm.mtdf.index,
+    ); // Engine expects the numeric enum identifier.
 
     bool usePerfectDatabase = false;
 
@@ -419,14 +426,16 @@ class Engine {
 
     // Placing
     await _sendOptions(
-        "BoardFullAction",
-        ruleSettings.boardFullAction?.index ??
-            BoardFullAction.firstPlayerLose.index); // TODO: enum
+      "BoardFullAction",
+      ruleSettings.boardFullAction?.index ??
+          BoardFullAction.firstPlayerLose.index,
+    ); // Engine option is keyed by the ordinal value.
     await _sendOptions(
-        "MillFormationActionInPlacingPhase",
-        ruleSettings.millFormationActionInPlacingPhase?.index ??
-            MillFormationActionInPlacingPhase
-                .removeOpponentsPieceFromBoard.index); // TODO: enum
+      "MillFormationActionInPlacingPhase",
+      ruleSettings.millFormationActionInPlacingPhase?.index ??
+          MillFormationActionInPlacingPhase
+              .removeOpponentsPieceFromBoard.index,
+    ); // Engine option is keyed by the ordinal value.
     await _sendOptions(
       "MayMoveInPlacingPhase",
       ruleSettings.mayMoveInPlacingPhase,
@@ -442,9 +451,10 @@ class Engine {
       ruleSettings.restrictRepeatedMillsFormation,
     );
     await _sendOptions(
-        "StalemateAction",
-        ruleSettings.stalemateAction?.index ??
-            StalemateAction.endWithStalemateLoss.index); // TODO: enum
+      "StalemateAction",
+      ruleSettings.stalemateAction?.index ??
+          StalemateAction.endWithStalemateLoss.index,
+    ); // Engine option is keyed by the ordinal value.
 
     // Flying
     await _sendOptions("MayFly", ruleSettings.mayFly);
@@ -497,15 +507,9 @@ class Engine {
 
     final String ret = posFenStr.toString();
 
-    // WAR
-    if (GameController().gameRecorder.lastPositionWithRemove ==
-        GameController().gameRecorder.setupPosition) {
-      if (GameController().position.action == Act.remove) {
-        // Remove this to Fix #818
-        // TODO: Why commit 8d2f084 did this?
-        //ret = ret.replaceFirst(" s ", " r ");
-      }
-    }
+    // The engine expects the verbatim command. Earlier builds rewrote " s "
+    // to " r " for setup positions, but that mutation caused #818, so we keep
+    // the unmodified string here.
 
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final Catcher2Options options = catcher.getCurrentConfig()!;

@@ -150,7 +150,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
   /// Returns a semantic label for the given annotation tool.
   /// This label helps screen readers describe the tool to visually impaired users.
   String _toolLabel(BuildContext context, AnnotationTool tool) {
-    // TODO: l10n: Provide localized tool names for screen readers.
+    // English fallbacks are used until tool names are localized.
     switch (tool) {
       case AnnotationTool.line:
         return "Line Tool";
@@ -174,7 +174,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
   /// Helper method to get a color name string from a Color.
   /// This is used for accessibility labels in the color picker.
   String _colorName(Color color) {
-    // TODO: l10n: Provide localized color names for screen readers.
+    // English color names act as fallbacks until translations exist.
     if (color == Colors.white) {
       return "white";
     }

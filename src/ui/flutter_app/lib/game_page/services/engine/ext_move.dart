@@ -16,14 +16,18 @@ class MoveParser {
     } else if (RegExp(r'^[a-g][1-8]$').hasMatch(move) && move.length == 2) {
       return MoveType.place;
     } else if (move == "draw") {
-      logger.i("[TODO] Computer request draw");
+      logger.i("[move] Computer requested a draw result from the engine.");
       return MoveType.draw;
     } else if (move == "(none)" || move == "none") {
       logger.i("MoveType is (none).");
       return MoveType.none;
     } else {
-      // TODO: If Setup Position is illegal
-      throw const FormatException();
+      logger.e(
+        '[move] Unsupported move "$move" from the engine; this typically '
+        'means the current setup position is illegal or produced '
+        'unexpected notation.',
+      );
+      throw FormatException('Unsupported move "$move".');
     }
   }
 }
@@ -191,6 +195,14 @@ class ExtMove extends PgnNodeData {
   static int _parseToSquare(String move) {
     MoveParser().parseMoveType(move);
 
+    if (move == "draw") {
+      return 0;
+    }
+
+    if (move == "(none)" || move == "none") {
+      return -1;
+    }
+
     // Check if it's standard notation
     if (move.startsWith("x") && move.length == 3) {
       // Remove notation like "xa1"
@@ -226,9 +238,10 @@ class ExtMove extends PgnNodeData {
     return standardToSquare[notation.toLowerCase()] ?? -1;
   }
 
+  /// WMD notation mapping that includes sentinels for "no square" and draw.
   static final Map<int, String> _squareToWmdNotation = <int, String>{
-    -1: "(none)", // TODO: Can parse it?
-    0: "draw", // TODO: Can parse it?
+    -1: "(none)",
+    0: "draw",
     8: "d5",
     9: "e5",
     10: "e4",
@@ -262,7 +275,7 @@ class ExtMove extends PgnNodeData {
 
   /// Validate the move string format.
   static void _checkLegal(String move) {
-    // TODO: Which one?
+    // Accept the sentinel strings the engine may emit before strict checks.
     if (move == "draw" || move == "(none)" || move == "none") {
       return; // no further checks
     }

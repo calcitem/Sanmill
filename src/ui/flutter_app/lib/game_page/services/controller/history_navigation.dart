@@ -68,6 +68,16 @@ class HistoryNavigator {
     // ---------------  Normal (non-LAN) logic  ---------------
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
+    if (navMode == HistoryNavMode.takeBackN && number == null) {
+      logger.e(
+        "$_logTag Missing step count for takeBackN navigation request.",
+      );
+      if (pop && context.mounted) {
+        Navigator.pop(context);
+      }
+      return const HistoryAbort();
+    }
+
     if (pop == true || toolbar == true) {
       GameController().loadedGameFilenamePrefix = null;
     }
@@ -86,8 +96,7 @@ class HistoryNavigator {
 
     final GameController controller = GameController();
 
-    // TODO: Move to the end of this function. Or change to S.of(context).waiting?
-    GameController().headerTipNotifier.showTip(S.of(context).atEnd);
+    GameController().headerTipNotifier.showTip(S.of(context).waiting);
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
@@ -123,16 +132,21 @@ class HistoryNavigator {
             controller.gameRecorder.activeNode?.data;
         if (lastEffectiveMove != null) {
           GameController().headerTipNotifier.showTip(
-                S.of(context).lastMove(lastEffectiveMove.notation),
-              );
-          GameController().headerIconsNotifier.showIcons();
-          GameController().boardSemanticsNotifier.updateSemantics();
+            S.of(context).lastMove(lastEffectiveMove.notation),
+          );
+        } else {
+          GameController().headerTipNotifier.showTip(S.of(context).atEnd);
         }
+        GameController().headerIconsNotifier.showIcons();
+        GameController().boardSemanticsNotifier.updateSemantics();
         break;
-      case HistoryRange(): // TODO: Impossible resp
+      case HistoryRange():
+        assert(false, 'HistoryRange should be unreachable.');
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).atEnd);
-        logger.i(HistoryRange);
+        logger.w(
+          "$_logTag Received unexpected HistoryRange for $navMode ($number).",
+        );
         break;
       case HistoryRule():
       default:

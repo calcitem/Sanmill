@@ -14,6 +14,7 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../../generated/intl/l10n.dart';
 import '../../game_page/services/mill.dart';
 import '../database/database.dart';
 import '../widgets/snackbars/scaffold_messenger.dart';
@@ -66,7 +67,14 @@ class ScreenshotService {
     await saveImage(finalImage, filename);
   }
 
-  static bool isSupportedPlatform() => !kIsWeb && Platform.isAndroid;
+  static bool isSupportedPlatform() {
+    if (kIsWeb) {
+      return false;
+    }
+
+    // Native screenshots are available on both Android and iOS.
+    return Platform.isAndroid || Platform.isIOS;
+  }
 
   static String determineFilename(String? filename, String storageLocation) {
     if (filename != null && storageLocation != 'gallery') {
@@ -140,9 +148,9 @@ class ScreenshotService {
         );
       } else {
         logger.e("$_logTag Failed to save image to Gallery");
-        // TODO: Use S.of(context).failedToSaveImageToGallery
+        final String message = S.current.failedToSaveImageToGallery;
         rootScaffoldMessengerKey.currentState!
-            .showSnackBar(CustomSnackBar("Failed to save image to Gallery"));
+            .showSnackBar(CustomSnackBar(message));
       }
     } else {
       logger.e("Unexpected result type");
@@ -153,19 +161,31 @@ class ScreenshotService {
 
   static Future<String?> getFilePath(String filename) async {
     Directory? directory;
-    // TODO: Change to correct path
     if (Platform.isAndroid) {
       directory = await getExternalStorageDirectory();
-    } else {
+    } else if (Platform.isIOS) {
       directory = await getApplicationDocumentsDirectory();
+    } else {
+      try {
+        directory = await getDownloadsDirectory();
+      } catch (_) {
+        directory = null;
+      }
+      directory ??= await getApplicationDocumentsDirectory();
     }
 
     // Ensure directory exists
-    if (directory != null) {
-      return path.join(directory.path, filename);
-    } else {
+    if (directory == null) {
       return null;
     }
+
+    final String fullPath = path.join(directory.path, filename);
+    final Directory parentDirectory = Directory(path.dirname(fullPath));
+    if (!await parentDirectory.exists()) {
+      await parentDirectory.create(recursive: true);
+    }
+
+    return fullPath;
   }
 
   /// Adds game info to the screenshot image.
