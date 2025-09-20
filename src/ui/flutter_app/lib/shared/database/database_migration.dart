@@ -201,6 +201,41 @@ class _DatabaseMigration {
       logger.t(
           "$_logTag Migrated from hasBannedLocations to millFormationActionInPlacingPhase.");
     }
+
+    final Box<dynamic> migrationBox = await Hive.openBox(_databaseBoxName);
+    final bool hasSeededSpecialRules =
+        migrationBox.get('specialRulesSeeded') as bool? ?? false;
+
+    if (!hasSeededSpecialRules) {
+      final RuleSettings ruleSettings = DB().ruleSettings;
+      final GangRuleSettings gang = ruleSettings.gangRuleSettings;
+      final DanRuleSettings dan = ruleSettings.danRuleSettings;
+      final JumpRuleSettings jump = ruleSettings.jumpRuleSettings;
+
+      final bool hasCustomSpecialRules = ruleSettings.specialRulesEnabled ||
+          gang.enabled ||
+          gang.lineMask != 0 ||
+          dan.enabled ||
+          dan.captureCount != 0 ||
+          jump.enabled ||
+          jump.allowDiagonal ||
+          !jump.allowOrthogonal;
+
+      if (DB()._ruleSettings != null && !hasCustomSpecialRules) {
+        DB().ruleSettings = ruleSettings.copyWith(
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
+        );
+        logger.t(
+            "$_logTag Seeded default values for special rules configuration.");
+      }
+
+      await migrationBox.put('specialRulesSeeded', true);
+    }
+
+    await migrationBox.close();
   }
 }
 

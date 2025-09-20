@@ -103,6 +103,22 @@ struct Rule
     // The threefold repetition rule (also known as repetition of position)
     // states that the game is drawn if the same position occurs three times.
     bool threefoldRepetitionRule;
+
+    // Global toggle for special rule extensions.
+    bool specialRulesEnabled;
+
+    // Gang rules configuration.
+    bool gangEnabled;
+    unsigned int gangLineMask;
+
+    // Dan rules configuration.
+    bool danEnabled;
+    int danCaptureCount;
+
+    // Jump rules configuration.
+    bool jumpEnabled;
+    bool jumpAllowDiagonal;
+    bool jumpAllowOrthogonal;
 };
 
 constexpr auto N_RULES = 11;

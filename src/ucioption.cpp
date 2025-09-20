@@ -196,6 +196,46 @@ static void on_threefoldRepetitionRule(const Option &o)
     rule.threefoldRepetitionRule = static_cast<bool>(o);
 }
 
+static void on_enableSpecialRules(const Option &o)
+{
+    rule.specialRulesEnabled = static_cast<bool>(o);
+}
+
+static void on_gangEnabled(const Option &o)
+{
+    rule.gangEnabled = static_cast<bool>(o);
+}
+
+static void on_gangLineMask(const Option &o)
+{
+    rule.gangLineMask = static_cast<unsigned int>(o);
+}
+
+static void on_danEnabled(const Option &o)
+{
+    rule.danEnabled = static_cast<bool>(o);
+}
+
+static void on_danCaptureCount(const Option &o)
+{
+    rule.danCaptureCount = static_cast<int>(o);
+}
+
+static void on_jumpEnabled(const Option &o)
+{
+    rule.jumpEnabled = static_cast<bool>(o);
+}
+
+static void on_jumpAllowDiagonal(const Option &o)
+{
+    rule.jumpAllowDiagonal = static_cast<bool>(o);
+}
+
+static void on_jumpAllowOrthogonal(const Option &o)
+{
+    rule.jumpAllowOrthogonal = static_cast<bool>(o);
+}
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator()(const string &s1, const string &s2) const
 {
@@ -273,6 +313,14 @@ void init(OptionsMap &o)
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
     o["ThreefoldRepetitionRule"] << Option(true, on_threefoldRepetitionRule);
+    o["EnableSpecialRules"] << Option(false, on_enableSpecialRules);
+    o["GangEnabled"] << Option(false, on_gangEnabled);
+    o["GangLineMask"] << Option(0, 0, 65535, on_gangLineMask);
+    o["DanEnabled"] << Option(false, on_danEnabled);
+    o["DanCaptureCount"] << Option(0, 0, 12, on_danCaptureCount);
+    o["JumpEnabled"] << Option(false, on_jumpEnabled);
+    o["JumpAllowDiagonal"] << Option(false, on_jumpAllowDiagonal);
+    o["JumpAllowOrthogonal"] << Option(true, on_jumpAllowOrthogonal);
 }
 
 /// operator<<() is used to print all the options default values in

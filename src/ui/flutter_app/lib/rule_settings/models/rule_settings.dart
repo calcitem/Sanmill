@@ -56,6 +56,73 @@ enum StalemateAction {
   endWithStalemateDraw,
 }
 
+@HiveType(typeId: 14)
+@JsonSerializable()
+@CopyWith()
+class GangRuleSettings {
+  const GangRuleSettings({
+    this.enabled = false,
+    this.lineMask = 0,
+  });
+
+  factory GangRuleSettings.fromJson(Map<String, dynamic> json) =>
+      _$GangRuleSettingsFromJson(json);
+
+  @HiveField(0, defaultValue: false)
+  final bool enabled;
+
+  @HiveField(1, defaultValue: 0)
+  final int lineMask;
+
+  Map<String, dynamic> toJson() => _$GangRuleSettingsToJson(this);
+}
+
+@HiveType(typeId: 15)
+@JsonSerializable()
+@CopyWith()
+class DanRuleSettings {
+  const DanRuleSettings({
+    this.enabled = false,
+    this.captureCount = 0,
+  });
+
+  factory DanRuleSettings.fromJson(Map<String, dynamic> json) =>
+      _$DanRuleSettingsFromJson(json);
+
+  @HiveField(0, defaultValue: false)
+  final bool enabled;
+
+  @HiveField(1, defaultValue: 0)
+  final int captureCount;
+
+  Map<String, dynamic> toJson() => _$DanRuleSettingsToJson(this);
+}
+
+@HiveType(typeId: 16)
+@JsonSerializable()
+@CopyWith()
+class JumpRuleSettings {
+  const JumpRuleSettings({
+    this.enabled = false,
+    this.allowDiagonal = false,
+    this.allowOrthogonal = true,
+  });
+
+  factory JumpRuleSettings.fromJson(Map<String, dynamic> json) =>
+      _$JumpRuleSettingsFromJson(json);
+
+  @HiveField(0, defaultValue: false)
+  final bool enabled;
+
+  @HiveField(1, defaultValue: false)
+  final bool allowDiagonal;
+
+  @HiveField(2, defaultValue: true)
+  final bool allowOrthogonal;
+
+  Map<String, dynamic> toJson() => _$JumpRuleSettingsToJson(this);
+}
+
 // Currently unused
 String enumName(Object enumEntry) {
   final Map<Object, String> nameMap = <Object, String>{
@@ -111,6 +178,10 @@ class RuleSettings {
         MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
     this.restrictRepeatedMillsFormation = false,
     this.oneTimeUseMill = false,
+    this.specialRulesEnabled = false,
+    this.gangRuleSettings = const GangRuleSettings(),
+    this.danRuleSettings = const DanRuleSettings(),
+    this.jumpRuleSettings = const JumpRuleSettings(),
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -183,6 +254,14 @@ class RuleSettings {
   final bool restrictRepeatedMillsFormation;
   @HiveField(20, defaultValue: false)
   final bool oneTimeUseMill;
+  @HiveField(21, defaultValue: false)
+  final bool specialRulesEnabled;
+  @HiveField(22, defaultValue: GangRuleSettings())
+  final GangRuleSettings gangRuleSettings;
+  @HiveField(23, defaultValue: DanRuleSettings())
+  final DanRuleSettings danRuleSettings;
+  @HiveField(24, defaultValue: JumpRuleSettings())
+  final JumpRuleSettings jumpRuleSettings;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
@@ -247,6 +326,10 @@ class NineMensMorrisRuleSettings extends RuleSettings {
       : super(
           piecesCount: 9,
           hasDiagonalLines: false,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -258,6 +341,10 @@ class TwelveMensMorrisRuleSettings extends RuleSettings {
       : super(
           piecesCount: 12,
           hasDiagonalLines: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -273,6 +360,10 @@ class MorabarabaRuleSettings extends RuleSettings {
           boardFullAction: BoardFullAction.agreeToDraw,
           endgameNMoveRule: 10,
           restrictRepeatedMillsFormation: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -291,6 +382,10 @@ class DoozRuleSettings extends RuleSettings {
               .removeOpponentsPieceFromHandThenOpponentsTurn,
           boardFullAction: BoardFullAction.sideToMoveRemovePiece,
           mayRemoveFromMillsAlways: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -302,6 +397,10 @@ class LaskerMorrisSettings extends RuleSettings {
       : super(
           piecesCount: 10,
           mayMoveInPlacingPhase: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -313,6 +412,10 @@ class OneTimeMillRuleSettings extends RuleSettings {
       : super(
           oneTimeUseMill: true,
           mayRemoveFromMillsAlways: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -328,6 +431,10 @@ class ChamGonuRuleSettings extends RuleSettings {
               MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
           mayFly: false,
           mayRemoveFromMillsAlways: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -344,6 +451,10 @@ class ZhiQiRuleSettings extends RuleSettings {
           boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
           mayFly: false,
           mayRemoveFromMillsAlways: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -357,6 +468,10 @@ class ChengSanQiRuleSettings extends RuleSettings {
           millFormationActionInPlacingPhase:
               MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
           mayFly: false,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -376,6 +491,10 @@ class DaSanQiRuleSettings extends RuleSettings {
           mayFly: false,
           mayRemoveFromMillsAlways: true,
           mayRemoveMultiple: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -391,6 +510,10 @@ class MulMulanRuleSettings extends RuleSettings {
           hasDiagonalLines: true,
           mayFly: false,
           mayRemoveFromMillsAlways: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -410,6 +533,10 @@ class NerenchiRuleSettings extends RuleSettings {
           hasDiagonalLines: true,
           isDefenderMoveFirst: true,
           mayRemoveFromMillsAlways: true, // TODO: Right?
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 
@@ -425,6 +552,10 @@ class ELFiljaRuleSettings extends RuleSettings {
           boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
           mayFly: false,
           mayRemoveFromMillsAlways: true,
+          specialRulesEnabled: false,
+          gangRuleSettings: const GangRuleSettings(),
+          danRuleSettings: const DanRuleSettings(),
+          jumpRuleSettings: const JumpRuleSettings(),
         );
 }
 

@@ -405,6 +405,24 @@ class Engine {
   Future<void> setRuleOptions() async {
     final RuleSettings ruleSettings = DB().ruleSettings;
 
+    await _sendOptions(
+      "EnableSpecialRules",
+      ruleSettings.specialRulesEnabled,
+    );
+
+    final GangRuleSettings gangSettings = ruleSettings.gangRuleSettings;
+    await _sendOptions("GangEnabled", gangSettings.enabled);
+    await _sendOptions("GangLineMask", gangSettings.lineMask);
+
+    final DanRuleSettings danSettings = ruleSettings.danRuleSettings;
+    await _sendOptions("DanEnabled", danSettings.enabled);
+    await _sendOptions("DanCaptureCount", danSettings.captureCount);
+
+    final JumpRuleSettings jumpSettings = ruleSettings.jumpRuleSettings;
+    await _sendOptions("JumpEnabled", jumpSettings.enabled);
+    await _sendOptions("JumpAllowDiagonal", jumpSettings.allowDiagonal);
+    await _sendOptions("JumpAllowOrthogonal", jumpSettings.allowOrthogonal);
+
     // General
     await _sendOptions("PiecesCount", ruleSettings.piecesCount);
     await _sendOptions("HasDiagonalLines", ruleSettings.hasDiagonalLines);

@@ -154,6 +154,9 @@ class Database {
         MillFormationActionInPlacingPhaseAdapter());
     Hive.registerAdapter<BoardFullAction>(BoardFullActionAdapter());
     Hive.registerAdapter<StalemateAction>(StalemateActionAdapter());
+    Hive.registerAdapter<GangRuleSettings>(GangRuleSettingsAdapter());
+    Hive.registerAdapter<DanRuleSettings>(DanRuleSettingsAdapter());
+    Hive.registerAdapter<JumpRuleSettings>(JumpRuleSettingsAdapter());
     Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
     _ruleSettingsBox = await Hive.openBox<RuleSettings>(_ruleSettingsBoxName);
   }
