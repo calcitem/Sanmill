@@ -17,7 +17,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../database/database.dart';
-import '../widgets/snackbars/scaffold_messenger.dart';
+import 'snackbar_service.dart';
 import 'environment_config.dart';
 import 'logger.dart';
 
@@ -106,8 +106,8 @@ class ScreenshotService {
         // For mobile platforms, save directly to the gallery
         if (kIsWeb) {
           logger.e("Saving images to the gallery is not supported on the web");
-          rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
-              "Saving images to the gallery is not supported on the web"));
+          SnackBarService.showRootSnackBar(
+              "Saving images to the gallery is not supported on the web");
           return;
         } else if (Platform.isAndroid || Platform.isIOS) {
           final FutureOr<dynamic> result =
@@ -120,9 +120,7 @@ class ScreenshotService {
             final File file = File(path);
             await file.writeAsBytes(image);
             logger.i("$_logTag Image saved to $path");
-            rootScaffoldMessengerKey.currentState!.showSnackBar(
-              CustomSnackBar(path),
-            );
+            SnackBarService.showRootSnackBar(path);
           }
         }
       } else {
@@ -133,8 +131,7 @@ class ScreenshotService {
       }
     } catch (e) {
       logger.e("Failed to save image: $e");
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar("Failed to save image: $e"));
+      SnackBarService.showRootSnackBar("Failed to save image: $e");
     }
   }
 
@@ -143,22 +140,18 @@ class ScreenshotService {
       final Map<String, dynamic> resultMap = Map<String, dynamic>.from(result);
       if (resultMap['isSuccess'] == true) {
         logger.i("Image saved to Gallery with path ${resultMap['filePath']}");
-        rootScaffoldMessengerKey.currentState!.showSnackBar(
-          CustomSnackBar(filename),
-        );
+        SnackBarService.showRootSnackBar(filename);
       } else {
         logger.e("$_logTag Failed to save image to Gallery");
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        final BuildContext? context = SnackBarService.currentContext;
         final String message = context != null
             ? S.of(context).failedToSaveImageToGallery
             : "Failed to save image to Gallery";
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBar(CustomSnackBar(message));
+        SnackBarService.showRootSnackBar(message);
       }
     } else {
       logger.e("Unexpected result type");
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar("Unexpected result type"));
+      SnackBarService.showRootSnackBar("Unexpected result type");
     }
   }
 

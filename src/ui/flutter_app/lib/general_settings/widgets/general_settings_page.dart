@@ -22,6 +22,7 @@ import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
+import '../../shared/services/snackbar_service.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
@@ -101,25 +102,20 @@ class GeneralSettingsPage extends StatelessWidget {
 
       switch (searchAlgorithm) {
         case SearchAlgorithm.alphaBeta:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).whatIsAlphaBeta);
+          SnackBarService.showRootSnackBar(S.of(context).whatIsAlphaBeta);
           break;
         case SearchAlgorithm.pvs:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).whatIsPvs);
+          SnackBarService.showRootSnackBar(S.of(context).whatIsPvs);
           break;
         case SearchAlgorithm.mtdf:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).whatIsMtdf);
+          SnackBarService.showRootSnackBar(S.of(context).whatIsMtdf);
           break;
         case SearchAlgorithm.mcts:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).whatIsMcts);
+          SnackBarService.showRootSnackBar(S.of(context).whatIsMcts);
           break;
         // Random already has a dedicated localization entry.
         case SearchAlgorithm.random:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).whatIsRandom);
+          SnackBarService.showRootSnackBar(S.of(context).whatIsRandom);
           break;
         case null:
           break;
@@ -223,8 +219,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
       // TODO: Take effect on iOS
       if (Platform.isIOS) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).reopenToTakeEffect);
+        SnackBarService.showRootSnackBar(S.of(context).reopenToTakeEffect);
       } else {
         SoundManager().loadSounds();
       }
@@ -288,8 +283,7 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
   ) {
     void callback(int? ratio) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).reopenToTakeEffect);
+      SnackBarService.showRootSnackBar(S.of(context).reopenToTakeEffect);
 
       Navigator.pop(context);
 
@@ -345,8 +339,7 @@ class GeneralSettingsPage extends StatelessWidget {
                 _setWhoMovesFirst(generalSettings, !val);
                 if (val == false &&
                     DB().ruleSettings.isLikelyNineMensMorris()) {
-                  rootScaffoldMessengerKey.currentState!
-                      .showSnackBarClear(S.of(context).firstMoveDetail);
+                  SnackBarService.showRootSnackBar(S.of(context).firstMoveDetail);
                 }
               },
               titleString: generalSettings.aiMovesFirst
@@ -558,8 +551,7 @@ class GeneralSettingsPage extends StatelessWidget {
                 value: generalSettings.screenReaderSupport,
                 onChanged: (bool val) {
                   _setScreenReaderSupport(generalSettings, val);
-                  rootScaffoldMessengerKey.currentState!
-                      .showSnackBarClear(S.of(context).reopenToTakeEffect);
+                  SnackBarService.showRootSnackBar(S.of(context).reopenToTakeEffect);
                 },
                 titleString: S.of(context).screenReaderSupport,
               ),
@@ -583,8 +575,7 @@ class GeneralSettingsPage extends StatelessWidget {
                 onChanged: (bool val) {
                   _setGameScreenRecorderSupport(generalSettings, val);
                   if (val == true) {
-                    rootScaffoldMessengerKey.currentState!
-                        .showSnackBarClear(S.of(context).experimental);
+                    SnackBarService.showRootSnackBar(S.of(context).experimental);
                   }
                 },
                 titleString: S.of(context).shareGIF,

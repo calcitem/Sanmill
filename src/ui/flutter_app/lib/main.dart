@@ -30,6 +30,7 @@ import 'shared/database/database.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
 import 'shared/services/screenshot_service.dart';
+import 'shared/services/snackbar_service.dart';
 import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
@@ -238,7 +239,7 @@ class SanmillAppState extends State<SanmillApp> {
       },
       onError: (dynamic error) {
         logger.e("Error receiving intent data stream: $error");
-        _showRootSnackBar(
+        SnackBarService.showRootSnackBar(
           "Error receiving intent data stream: $error",
         ); // Consider localization
       },
@@ -251,7 +252,7 @@ class SanmillAppState extends State<SanmillApp> {
       },
       onError: (dynamic error) {
         logger.e("Error getting initial sharing: $error");
-        _showRootSnackBar(
+        SnackBarService.showRootSnackBar(
           "Error getting initial sharing: $error",
         ); // Consider localization
       },
@@ -269,26 +270,11 @@ class SanmillAppState extends State<SanmillApp> {
         logger.i("Game loaded successfully from shared file.");
       }).catchError((dynamic error) {
         logger.e("Error loading game from shared file: $error");
-        _showRootSnackBar(
+        SnackBarService.showRootSnackBar(
           "Error loading game from shared file: $error",
         ); // Consider localization
       });
     }
-  }
-
-  void _showRootSnackBar(String message) {
-    final ScaffoldMessengerState? messenger =
-        rootScaffoldMessengerKey.currentState;
-    if (messenger == null) {
-      // During early startup the scaffold messenger might not be ready yet.
-      logger.w(
-        'Unable to show snack bar because the messenger is not ready: '
-        '$message',
-      );
-      return;
-    }
-
-    messenger.showSnackBarClear(message);
   }
 
   @override

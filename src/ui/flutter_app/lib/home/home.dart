@@ -39,6 +39,7 @@ import '../shared/services/logger.dart';
 import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
+import '../shared/services/snackbar_service.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../statistics/widgets/stats_page.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
@@ -226,8 +227,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     // Handle the LAN-setup dialog, feedback, etc. as before...
     if (index == _DrawerIndex.humanVsLAN) {
       // Show experimental feature notification
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).experimental);
+      SnackBarService.showRootSnackBar(S.of(context).experimental);
 
       // Show LAN config dialog and await result
       final bool? result = await showDialog<bool>(
