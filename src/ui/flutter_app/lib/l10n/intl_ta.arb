@@ -664,7 +664,7 @@
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "தற்போதைய வீரன் {count} துண்டுகளை வைத்துள்ளது.",
+  "hasPlacedPieceCount": "{count, plural, =0{தற்போதைய வீரர் எந்தத் துண்டுகளையும் வைக்கவில்லை.} =1{தற்போதைய வீரர் ஒரு துண்டை வைத்துள்ளார்.} other{தற்போதைய வீரர் {count} துண்டுகளை வைத்துள்ளார்.}}",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
