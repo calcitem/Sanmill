@@ -11,6 +11,7 @@ import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
@@ -1032,73 +1033,69 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        // Only show custodian capture in debug mode (experimental feature)
-        if (kDebugMode)
-          _buildCaptureRuleCard(
-            context: context,
-            keyPrefix: 'custodian_capture',
-            title: S.of(context).custodianCapture,
-            enableLabel: S.of(context).custodianCaptureEnable,
-            description: S.of(context).custodianCaptureDescription,
-            enabled: ruleSettings.enableCustodianCapture,
-            onEnabledChanged: (bool value) =>
-                _setCustodianCaptureEnabled(ruleSettings, value),
-            onSquareEdges: ruleSettings.custodianCaptureOnSquareEdges,
-            onSquareEdgesChanged: (bool value) =>
-                _setCustodianCaptureOnSquareEdges(ruleSettings, value),
-            onCrossLines: ruleSettings.custodianCaptureOnCrossLines,
-            onCrossLinesChanged: (bool value) =>
-                _setCustodianCaptureOnCrossLines(ruleSettings, value),
-            onDiagonalLines: ruleSettings.custodianCaptureOnDiagonalLines,
-            onDiagonalLinesChanged: (bool value) =>
-                _setCustodianCaptureOnDiagonalLines(ruleSettings, value),
-            inPlacingPhase: ruleSettings.custodianCaptureInPlacingPhase,
-            onInPlacingPhaseChanged: (bool value) =>
-                _setCustodianCaptureInPlacingPhase(ruleSettings, value),
-            inMovingPhase: ruleSettings.custodianCaptureInMovingPhase,
-            onInMovingPhaseChanged: (bool value) =>
-                _setCustodianCaptureInMovingPhase(ruleSettings, value),
-            onlyWhenOwnPiecesLeq3:
-                ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3,
-            onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
-                _setCustodianCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
+        _buildCaptureRuleCard(
+          context: context,
+          keyPrefix: 'custodian_capture',
+          title: S.of(context).custodianCapture,
+          enableLabel: S.of(context).custodianCaptureEnable,
+          description: S.of(context).custodianCaptureDescription,
+          enabled: ruleSettings.enableCustodianCapture,
+          onEnabledChanged: (bool value) =>
+              _setCustodianCaptureEnabled(ruleSettings, value),
+          onSquareEdges: ruleSettings.custodianCaptureOnSquareEdges,
+          onSquareEdgesChanged: (bool value) =>
+              _setCustodianCaptureOnSquareEdges(ruleSettings, value),
+          onCrossLines: ruleSettings.custodianCaptureOnCrossLines,
+          onCrossLinesChanged: (bool value) =>
+              _setCustodianCaptureOnCrossLines(ruleSettings, value),
+          onDiagonalLines: ruleSettings.custodianCaptureOnDiagonalLines,
+          onDiagonalLinesChanged: (bool value) =>
+              _setCustodianCaptureOnDiagonalLines(ruleSettings, value),
+          inPlacingPhase: ruleSettings.custodianCaptureInPlacingPhase,
+          onInPlacingPhaseChanged: (bool value) =>
+              _setCustodianCaptureInPlacingPhase(ruleSettings, value),
+          inMovingPhase: ruleSettings.custodianCaptureInMovingPhase,
+          onInMovingPhaseChanged: (bool value) =>
+              _setCustodianCaptureInMovingPhase(ruleSettings, value),
+          onlyWhenOwnPiecesLeq3:
+              ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3,
+          onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
+              _setCustodianCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
+        ),
+        _buildCaptureRuleCard(
+          context: context,
+          keyPrefix: 'intervention_capture',
+          title: S.of(context).interventionCapture,
+          enableLabel: S.of(context).interventionCaptureEnable,
+          description: S.of(context).interventionCaptureDescription,
+          enabled: ruleSettings.enableInterventionCapture,
+          onEnabledChanged: (bool value) =>
+              _setInterventionCaptureEnabled(ruleSettings, value),
+          onSquareEdges: ruleSettings.interventionCaptureOnSquareEdges,
+          onSquareEdgesChanged: (bool value) =>
+              _setInterventionCaptureOnSquareEdges(ruleSettings, value),
+          onCrossLines: ruleSettings.interventionCaptureOnCrossLines,
+          onCrossLinesChanged: (bool value) =>
+              _setInterventionCaptureOnCrossLines(ruleSettings, value),
+          onDiagonalLines: ruleSettings.interventionCaptureOnDiagonalLines,
+          onDiagonalLinesChanged: (bool value) =>
+              _setInterventionCaptureOnDiagonalLines(ruleSettings, value),
+          inPlacingPhase: ruleSettings.interventionCaptureInPlacingPhase,
+          onInPlacingPhaseChanged: (bool value) =>
+              _setInterventionCaptureInPlacingPhase(ruleSettings, value),
+          inMovingPhase: ruleSettings.interventionCaptureInMovingPhase,
+          onInMovingPhaseChanged: (bool value) =>
+              _setInterventionCaptureInMovingPhase(ruleSettings, value),
+          onlyWhenOwnPiecesLeq3:
+              ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
+          onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
+              _setInterventionCaptureOnlyWhenOwnPiecesLeq3(
+            ruleSettings,
+            value,
           ),
-        // Only show intervention capture in debug mode (experimental feature)
-        if (kDebugMode)
-          _buildCaptureRuleCard(
-            context: context,
-            keyPrefix: 'intervention_capture',
-            title: S.of(context).interventionCapture,
-            enableLabel: S.of(context).interventionCaptureEnable,
-            description: S.of(context).interventionCaptureDescription,
-            enabled: ruleSettings.enableInterventionCapture,
-            onEnabledChanged: (bool value) =>
-                _setInterventionCaptureEnabled(ruleSettings, value),
-            onSquareEdges: ruleSettings.interventionCaptureOnSquareEdges,
-            onSquareEdgesChanged: (bool value) =>
-                _setInterventionCaptureOnSquareEdges(ruleSettings, value),
-            onCrossLines: ruleSettings.interventionCaptureOnCrossLines,
-            onCrossLinesChanged: (bool value) =>
-                _setInterventionCaptureOnCrossLines(ruleSettings, value),
-            onDiagonalLines: ruleSettings.interventionCaptureOnDiagonalLines,
-            onDiagonalLinesChanged: (bool value) =>
-                _setInterventionCaptureOnDiagonalLines(ruleSettings, value),
-            inPlacingPhase: ruleSettings.interventionCaptureInPlacingPhase,
-            onInPlacingPhaseChanged: (bool value) =>
-                _setInterventionCaptureInPlacingPhase(ruleSettings, value),
-            inMovingPhase: ruleSettings.interventionCaptureInMovingPhase,
-            onInMovingPhaseChanged: (bool value) =>
-                _setInterventionCaptureInMovingPhase(ruleSettings, value),
-            onlyWhenOwnPiecesLeq3:
-                ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
-            onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
-                _setInterventionCaptureOnlyWhenOwnPiecesLeq3(
-              ruleSettings,
-              value,
-            ),
-          ),
+        ),
         // Only show leap capture in debug mode (experimental feature)
-        if (kDebugMode)
+        if (kDebugMode && EnvironmentConfig.devMode)
           _buildCaptureRuleCard(
             context: context,
             keyPrefix: 'leap_capture',
