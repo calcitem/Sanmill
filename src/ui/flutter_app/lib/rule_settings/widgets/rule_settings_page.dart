@@ -641,11 +641,84 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCaptureSectionLabel(String text) {
+  Widget _buildCaptureOptionGroup({
+    required String label,
+    required List<Widget> tiles,
+  }) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-      child: Text(
-        text,
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Text(
+              label,
+              style: AppTheme.listTileTitleStyle,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ListTileTheme(
+            data: const ListTileThemeData(
+              contentPadding: EdgeInsets.zero,
+            ),
+            child: Column(
+              children: <Widget>[
+                for (int i = 0; i < tiles.length; i++) ...<Widget>[
+                  tiles[i],
+                  if (i < tiles.length - 1) const SizedBox(height: 4),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCaptureCheckboxTile({
+    required String keyPrefix,
+    required String keySuffix,
+    required String label,
+    required bool enabled,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return CheckboxListTile(
+      key: Key('rule_settings_checkbox_${keyPrefix}_$keySuffix'),
+      value: value,
+      onChanged: enabled
+          ? (bool? newValue) => onChanged(newValue ?? false)
+          : null,
+      contentPadding: EdgeInsets.zero,
+      controlAffinity: ListTileControlAffinity.trailing,
+      title: Text(
+        label,
+        style: AppTheme.listTileTitleStyle,
+      ),
+    );
+  }
+
+  Widget _buildCaptureRadioTile({
+    required String keyPrefix,
+    required String keySuffix,
+    required String label,
+    required bool enabled,
+    required bool value,
+    required bool groupValue,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return RadioListTile<bool>(
+      key: Key('rule_settings_radio_${keyPrefix}_$keySuffix'),
+      value: value,
+      groupValue: groupValue,
+      onChanged: enabled
+          ? (bool? newValue) => onChanged(newValue ?? false)
+          : null,
+      contentPadding: EdgeInsets.zero,
+      controlAffinity: ListTileControlAffinity.trailing,
+      title: Text(
+        label,
         style: AppTheme.listTileTitleStyle,
       ),
     );
@@ -685,96 +758,78 @@ class RuleSettingsPage extends StatelessWidget {
           title: Text(enableLabel, style: AppTheme.listTileTitleStyle),
           subtitle: Text(description, style: subtitleStyle),
         ),
-        _buildCaptureSectionLabel(S.of(context).captureApplicableLines),
-        CheckboxListTile(
-          key: Key('rule_settings_checkbox_${keyPrefix}_square_edges'),
-          value: onSquareEdges,
-          onChanged: enabled
-              ? (bool? value) => onSquareEdgesChanged(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).captureSquareEdges,
-            style: AppTheme.listTileTitleStyle,
-          ),
+        _buildCaptureOptionGroup(
+          label: S.of(context).captureApplicableLines,
+          tiles: <Widget>[
+            _buildCaptureCheckboxTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'square_edges',
+              label: S.of(context).captureSquareEdges,
+              enabled: enabled,
+              value: onSquareEdges,
+              onChanged: onSquareEdgesChanged,
+            ),
+            _buildCaptureCheckboxTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'cross_lines',
+              label: S.of(context).captureCrossLines,
+              enabled: enabled,
+              value: onCrossLines,
+              onChanged: onCrossLinesChanged,
+            ),
+            _buildCaptureCheckboxTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'diagonal_lines',
+              label: S.of(context).captureDiagonalLines,
+              enabled: enabled,
+              value: onDiagonalLines,
+              onChanged: onDiagonalLinesChanged,
+            ),
+          ],
         ),
-        CheckboxListTile(
-          key: Key('rule_settings_checkbox_${keyPrefix}_cross_lines'),
-          value: onCrossLines,
-          onChanged: enabled
-              ? (bool? value) => onCrossLinesChanged(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).captureCrossLines,
-            style: AppTheme.listTileTitleStyle,
-          ),
+        _buildCaptureOptionGroup(
+          label: S.of(context).captureExecutionPhases,
+          tiles: <Widget>[
+            _buildCaptureCheckboxTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'placing_phase',
+              label: S.of(context).placingPhase,
+              enabled: enabled,
+              value: inPlacingPhase,
+              onChanged: onInPlacingPhaseChanged,
+            ),
+            _buildCaptureCheckboxTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'moving_phase',
+              label: S.of(context).movingPhase,
+              enabled: enabled,
+              value: inMovingPhase,
+              onChanged: onInMovingPhaseChanged,
+            ),
+          ],
         ),
-        CheckboxListTile(
-          key: Key('rule_settings_checkbox_${keyPrefix}_diagonal_lines'),
-          value: onDiagonalLines,
-          onChanged: enabled
-              ? (bool? value) => onDiagonalLinesChanged(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).captureDiagonalLines,
-            style: AppTheme.listTileTitleStyle,
-          ),
-        ),
-        _buildCaptureSectionLabel(S.of(context).captureExecutionPhases),
-        CheckboxListTile(
-          key: Key('rule_settings_checkbox_${keyPrefix}_placing_phase'),
-          value: inPlacingPhase,
-          onChanged: enabled
-              ? (bool? value) => onInPlacingPhaseChanged(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).placingPhase,
-            style: AppTheme.listTileTitleStyle,
-          ),
-        ),
-        CheckboxListTile(
-          key: Key('rule_settings_checkbox_${keyPrefix}_moving_phase'),
-          value: inMovingPhase,
-          onChanged: enabled
-              ? (bool? value) => onInMovingPhaseChanged(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).movingPhase,
-            style: AppTheme.listTileTitleStyle,
-          ),
-        ),
-        _buildCaptureSectionLabel(S.of(context).capturePiecesCondition),
-        RadioListTile<bool>(
-          key: Key('rule_settings_radio_${keyPrefix}_unlimited'),
-          value: false,
-          groupValue: onlyWhenOwnPiecesLeq3,
-          onChanged: enabled
-              ? (bool? value) =>
-                  onOnlyWhenOwnPiecesLeq3Changed(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).capturePiecesConditionUnlimited,
-            style: AppTheme.listTileTitleStyle,
-          ),
-        ),
-        RadioListTile<bool>(
-          key: Key('rule_settings_radio_${keyPrefix}_self_leq_three'),
-          value: true,
-          groupValue: onlyWhenOwnPiecesLeq3,
-          onChanged: enabled
-              ? (bool? value) =>
-                  onOnlyWhenOwnPiecesLeq3Changed(value ?? false)
-              : null,
-          controlAffinity: ListTileControlAffinity.trailing,
-          title: Text(
-            S.of(context).capturePiecesConditionSelfLeqThree,
-            style: AppTheme.listTileTitleStyle,
-          ),
+        _buildCaptureOptionGroup(
+          label: S.of(context).capturePiecesCondition,
+          tiles: <Widget>[
+            _buildCaptureRadioTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'unlimited',
+              label: S.of(context).capturePiecesConditionUnlimited,
+              enabled: enabled,
+              value: false,
+              groupValue: onlyWhenOwnPiecesLeq3,
+              onChanged: onOnlyWhenOwnPiecesLeq3Changed,
+            ),
+            _buildCaptureRadioTile(
+              keyPrefix: keyPrefix,
+              keySuffix: 'self_leq_three',
+              label: S.of(context).capturePiecesConditionSelfLeqThree,
+              enabled: enabled,
+              value: true,
+              groupValue: onlyWhenOwnPiecesLeq3,
+              onChanged: onOnlyWhenOwnPiecesLeq3Changed,
+            ),
+          ],
         ),
       ],
     );
