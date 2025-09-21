@@ -147,9 +147,26 @@ class TapHandler {
           PlayerTimer().stop();
 
           if (GameController().position.action == Act.remove) {
+            // Check if custodian capture is active
+            final bool hasCustodianCapture =
+                GameController().position._custodianRemovalCount[
+                        GameController().position.sideToMove]! >
+                    0;
+
             if (GameController()
                 .position
                 .isStalemateRemoval(GameController().position.sideToMove)) {
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                    controller.position.sideToMove.playerName(context);
+                showTip(
+                    "${S.of(context).tipToMove(side)} ${S.of(context).tipRemove}");
+              } else {
+                showTip(S.of(context).tipRemove);
+              }
+            } else if (hasCustodianCapture) {
+              // For custodian capture, always show tipRemove regardless of mill formation
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 final String side =
@@ -429,14 +446,33 @@ class TapHandler {
             if (GameController().position.pieceToRemoveCount[
                     GameController().position.sideToMove]! >=
                 1) {
+              // Check if custodian capture is still active
+              final bool hasCustodianCapture =
+                  GameController().position._custodianRemovalCount[
+                          GameController().position.sideToMove]! >
+                      0;
+
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 final String side =
                     controller.position.sideToMove.playerName(context);
-                showTip(
-                    "${S.of(context).tipToMove(side)} ${S.of(context).tipContinueMill}");
+                if (hasCustodianCapture) {
+                  // For custodian capture, show simple remove tip
+                  showTip(
+                      "${S.of(context).tipToMove(side)} ${S.of(context).tipRemove}");
+                } else {
+                  // For mill formation, show continue mill tip
+                  showTip(
+                      "${S.of(context).tipToMove(side)} ${S.of(context).tipContinueMill}");
+                }
               } else {
-                showTip(S.of(context).tipContinueMill);
+                if (hasCustodianCapture) {
+                  // For custodian capture, show simple remove tip
+                  showTip(S.of(context).tipRemove);
+                } else {
+                  // For mill formation, show continue mill tip
+                  showTip(S.of(context).tipContinueMill);
+                }
               }
             } else {
               if (GameController().gameInstance.gameMode ==

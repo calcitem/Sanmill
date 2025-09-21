@@ -2107,7 +2107,7 @@
   "@captureDiagonalLines": {},
   "captureExecutionPhases": "Execution phases",
   "@captureExecutionPhases": {},
-  "capturePiecesCondition": "Availability based on remaining pieces",
+  "capturePiecesCondition": "Piece-based availability during moving phase",
   "@capturePiecesCondition": {},
   "capturePiecesConditionUnlimited": "No restriction",
   "@capturePiecesConditionUnlimited": {},
