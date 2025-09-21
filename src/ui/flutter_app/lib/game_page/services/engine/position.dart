@@ -36,6 +36,13 @@ const List<List<int>> _custodianDiagonalLines = <List<int>>[
   <int>[11, 19, 27],
 ];
 
+enum ActiveCaptureMode {
+  none,
+  mill,
+  custodian,
+  intervention,
+}
+
 class SquareAttribute {
   SquareAttribute({
     required this.placedPieceNumber,
@@ -104,6 +111,39 @@ class Position {
   final Map<PieceColor, int> _interventionRemovalCount = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
+  };
+
+  final Map<PieceColor, int> _pendingMillRemovals = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  final Map<PieceColor, int> _removalQuota = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  final Map<PieceColor, int> _removalsPerformed = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  final Map<PieceColor, ActiveCaptureMode> _activeCaptureMode =
+      <PieceColor, ActiveCaptureMode>{
+    PieceColor.white: ActiveCaptureMode.none,
+    PieceColor.black: ActiveCaptureMode.none,
+  };
+
+  final Map<PieceColor, List<int>> _interventionPairMate =
+      <PieceColor, List<int>>{
+    PieceColor.white: List<int>.filled(sqNumber, -1),
+    PieceColor.black: List<int>.filled(sqNumber, -1),
+  };
+
+  final Map<PieceColor, int> _interventionForcedPartner =
+      <PieceColor, int>{
+    PieceColor.white: -1,
+    PieceColor.black: -1,
   };
 
   int pieceCountDiff() {
@@ -968,22 +1008,16 @@ class Position {
         int interventionRemoval = 0;
         if (hasInterventionCapture) {
           interventionRemoval =
-              _activateInterventionCapture(us, interventionCaptured);
+              _activateInterventionCapture(us, s, interventionCaptured);
         } else {
           _setInterventionCaptureState(us, 0, 0);
         }
 
-        final int totalCaptureRemoval = custodianRemoval + interventionRemoval;
-
-        if (totalCaptureRemoval > 0) {
-          pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
-          _updateKeyMisc();
-          action = Act.remove;
-          // Don't return here - need to check placing phase end logic
-        }
+        _initializeRemovalState(us, 0, custodianRemoval, interventionRemoval);
+        // Don't return here - need to check placing phase end logic
 
         // Only play sound and set focus if no capture was triggered
-        if (totalCaptureRemoval == 0) {
+        if (_removalQuota[sideToMove]! == 0) {
           GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.place);
         }
@@ -1005,7 +1039,8 @@ class Position {
         }
 
         // If we have custodian capture to handle, return early
-        if (totalCaptureRemoval > 0 && pieceToRemoveCount[sideToMove]! > 0) {
+        if (_removalQuota[sideToMove]! > 0 &&
+            pieceToRemoveCount[sideToMove]! > 0) {
           return true;
         }
 
@@ -1143,44 +1178,29 @@ class Position {
               changeSideToMove();
             }
           } else {
-            if (DB().ruleSettings.mayRemoveMultiple) {
-              int additionalRemoval = 0;
-
-              if (hasCustodianCapture) {
-                final int custodianRemoval =
-                    _activateCustodianCapture(us, custodianCaptured);
-                if (custodianRemoval > 0) {
-                  additionalRemoval += custodianRemoval;
-                } else {
-                  _setCustodianCaptureState(us, 0, 0);
-                }
-              } else {
+            int custodianRemoval = 0;
+            if (hasCustodianCapture) {
+              custodianRemoval =
+                  _activateCustodianCapture(us, custodianCaptured);
+              if (custodianRemoval <= 0) {
                 _setCustodianCaptureState(us, 0, 0);
-              }
-
-              if (hasInterventionCapture) {
-                final int interventionRemoval =
-                    _activateInterventionCapture(us, interventionCaptured);
-                if (interventionRemoval > 0) {
-                  additionalRemoval += interventionRemoval;
-                } else {
-                  _setInterventionCaptureState(us, 0, 0);
-                }
-              } else {
-                _setInterventionCaptureState(us, 0, 0);
-              }
-
-              if (additionalRemoval > 0) {
-                pieceToRemoveCount[sideToMove] =
-                    pieceToRemoveCount[sideToMove]! + additionalRemoval;
               }
             } else {
               _setCustodianCaptureState(us, 0, 0);
+            }
+
+            int interventionRemoval = 0;
+            if (hasInterventionCapture) {
+              interventionRemoval =
+                  _activateInterventionCapture(us, s, interventionCaptured);
+              if (interventionRemoval <= 0) {
+                _setInterventionCaptureState(us, 0, 0);
+              }
+            } else {
               _setInterventionCaptureState(us, 0, 0);
             }
 
-            _updateKeyMisc();
-            action = Act.remove;
+            _initializeRemovalState(us, rm, custodianRemoval, interventionRemoval);
           }
           return true;
         }
@@ -1282,18 +1302,24 @@ class Position {
 
       int interventionRemoval = 0;
       if (hasInterventionCapture) {
-        interventionRemoval =
-            _activateInterventionCapture(sideToMove, interventionCaptured);
+        interventionRemoval = _activateInterventionCapture(
+          sideToMove,
+          s,
+          interventionCaptured,
+        );
       } else {
         _setInterventionCaptureState(sideToMove, 0, 0);
       }
 
-      final int totalCaptureRemoval = custodianRemoval + interventionRemoval;
+      _initializeRemovalState(
+        sideToMove,
+        0,
+        custodianRemoval,
+        interventionRemoval,
+      );
 
-      if (totalCaptureRemoval > 0) {
-        pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
-        _updateKeyMisc();
-        action = Act.remove;
+      if (_removalQuota[sideToMove]! > 0 &&
+          pieceToRemoveCount[sideToMove]! > 0) {
         GameController().gameInstance.focusIndex = squareToIndex[s];
         return true;
       }
@@ -1331,45 +1357,41 @@ class Position {
 
       _currentSquare[sideToMove] = 0;
 
-      pieceToRemoveCount[sideToMove] =
+      final int baseRemoval =
           DB().ruleSettings.mayRemoveMultiple ? n : 1;
 
-      int additionalRemoval = 0;
-
-      // Handle custodian capture - respects mayRemoveMultiple setting
+      int custodianRemoval = 0;
       if (hasCustodianCapture) {
-        final int custodianRemoval =
+        custodianRemoval =
             _activateCustodianCapture(sideToMove, custodianCaptured);
-        if (custodianRemoval > 0) {
-          additionalRemoval += custodianRemoval;
-        } else {
+        if (custodianRemoval <= 0) {
           _setCustodianCaptureState(sideToMove, 0, 0);
         }
       } else {
         _setCustodianCaptureState(sideToMove, 0, 0);
       }
 
-      // Handle intervention capture - always captures all trapped pieces
-      // regardless of mayRemoveMultiple setting
+      int interventionRemoval = 0;
       if (hasInterventionCapture) {
-        final int interventionRemoval =
-            _activateInterventionCapture(sideToMove, interventionCaptured);
-        if (interventionRemoval > 0) {
-          additionalRemoval += interventionRemoval;
-        } else {
+        interventionRemoval = _activateInterventionCapture(
+          sideToMove,
+          s,
+          interventionCaptured,
+        );
+        if (interventionRemoval <= 0) {
           _setInterventionCaptureState(sideToMove, 0, 0);
         }
       } else {
         _setInterventionCaptureState(sideToMove, 0, 0);
       }
 
-      if (additionalRemoval > 0) {
-        pieceToRemoveCount[sideToMove] =
-            pieceToRemoveCount[sideToMove]! + additionalRemoval;
-      }
+      _initializeRemovalState(
+        sideToMove,
+        baseRemoval,
+        custodianRemoval,
+        interventionRemoval,
+      );
 
-      _updateKeyMisc();
-      action = Act.remove;
       GameController().gameInstance.focusIndex = squareToIndex[s];
       SoundManager().playTone(Sound.mill);
     }
@@ -1387,10 +1409,6 @@ class Position {
     }
 
     final int mask = squareBb(s);
-    final int custodianTargets = _custodianCaptureTargets[sideToMove]!;
-    final int custodianCount = _custodianRemovalCount[sideToMove]!;
-    final int interventionTargets = _interventionCaptureTargets[sideToMove]!;
-    final int interventionCount = _interventionRemovalCount[sideToMove]!;
     final int remainingRemovals = pieceToRemoveCount[sideToMove]!;
 
     if (remainingRemovals == 0) {
@@ -1400,18 +1418,126 @@ class Position {
         return const CanNotRemoveSelf();
       }
 
-      final bool isCustodianTarget = (custodianTargets & mask) != 0;
-      final bool isInterventionTarget = (interventionTargets & mask) != 0;
-      final bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
-      final int captureCount = custodianCount + interventionCount;
+      final bool isCustodianTarget =
+          (_custodianCaptureTargets[sideToMove]! & mask) != 0;
+      final bool isInterventionTarget =
+          (_interventionCaptureTargets[sideToMove]! & mask) != 0;
+      final bool isCaptureTarget =
+          isCustodianTarget || isInterventionTarget;
 
-      if (!isCaptureTarget && captureCount >= remainingRemovals) {
-        return const IllegalAction();
+      ActiveCaptureMode mode = _activeCaptureMode[sideToMove]!;
+      int performed = _removalsPerformed[sideToMove]!;
+      int quota = _removalQuota[sideToMove]!;
+      final int pendingMill = _pendingMillRemovals[sideToMove]!;
+      int forcedPartner = _interventionForcedPartner[sideToMove]!;
+
+      int custodianCount() => _custodianRemovalCount[sideToMove]!;
+      int interventionCount() => _interventionRemovalCount[sideToMove]!;
+
+      if (mode == ActiveCaptureMode.none) {
+        if (isInterventionTarget && interventionCount() > 0) {
+          mode = ActiveCaptureMode.intervention;
+          quota = interventionCount() > 2 ? interventionCount() : 2;
+          _pendingMillRemovals[sideToMove] = 0;
+          _setCustodianCaptureState(sideToMove, 0, 0);
+          forcedPartner = -1;
+        } else if (isCustodianTarget && custodianCount() > 0) {
+          mode = ActiveCaptureMode.custodian;
+          quota =
+              pendingMill > custodianCount() ? pendingMill : custodianCount();
+          _setInterventionCaptureState(sideToMove, 0, 0);
+          forcedPartner = -1;
+        } else {
+          if (pendingMill <= 0) {
+            return const IllegalAction();
+          }
+          mode = ActiveCaptureMode.mill;
+          quota = pendingMill;
+          _setCustodianCaptureState(sideToMove, 0, 0);
+          _setInterventionCaptureState(sideToMove, 0, 0);
+          forcedPartner = -1;
+        }
+
+        performed = 0;
+        _removalQuota[sideToMove] = quota;
+        _removalsPerformed[sideToMove] = performed;
+        _activeCaptureMode[sideToMove] = mode;
+        _interventionForcedPartner[sideToMove] = forcedPartner;
+        pieceToRemoveCount[sideToMove] = quota > 0 ? quota : 0;
+      } else {
+        switch (mode) {
+          case ActiveCaptureMode.custodian:
+            if (custodianCount() > 0) {
+              if (!isCustodianTarget) {
+                return const IllegalAction();
+              }
+            } else {
+              if (isCaptureTarget) {
+                return const IllegalAction();
+              }
+              if (pendingMill <= performed) {
+                return const IllegalAction();
+              }
+            }
+            break;
+          case ActiveCaptureMode.intervention:
+            if (!isInterventionTarget) {
+              return const IllegalAction();
+            }
+            break;
+          case ActiveCaptureMode.mill:
+            if (isCaptureTarget) {
+              return const IllegalAction();
+            }
+            if (pendingMill <= performed) {
+              return const IllegalAction();
+            }
+            break;
+          case ActiveCaptureMode.none:
+            break;
+        }
       }
 
-      if (isCustodianTarget && custodianCount > 0) {
-        int newTargets = custodianTargets & ~mask;
-        final int newCount = custodianCount - 1;
+      if (mode == ActiveCaptureMode.intervention) {
+        if (performed == 0) {
+          final int partner = _interventionPairMate[sideToMove]![s];
+          if (partner == -1) {
+            return const IllegalAction();
+          }
+          forcedPartner = partner;
+          _interventionForcedPartner[sideToMove] = partner;
+          _setInterventionCaptureState(
+            sideToMove,
+            squareBb(partner),
+            1,
+          );
+          if (quota < 2) {
+            quota = 2;
+          }
+          _removalQuota[sideToMove] = quota;
+          pieceToRemoveCount[sideToMove] =
+              quota - performed > 0 ? quota - performed : 0;
+        } else {
+          if (forcedPartner != s) {
+            return const IllegalAction();
+          }
+          _interventionForcedPartner[sideToMove] = -1;
+        }
+      } else if (mode == ActiveCaptureMode.custodian && performed == 0) {
+        final int updatedQuota =
+            pendingMill > custodianCount() ? pendingMill : custodianCount();
+        quota = updatedQuota;
+        _removalQuota[sideToMove] = quota;
+        pieceToRemoveCount[sideToMove] =
+            quota - performed > 0 ? quota - performed : 0;
+      }
+
+      _activeCaptureMode[sideToMove] = mode;
+
+      if (isCustodianTarget && custodianCount() > 0) {
+        int newTargets =
+            _custodianCaptureTargets[sideToMove]! & ~mask;
+        final int newCount = custodianCount() - 1;
 
         if (newCount <= 0) {
           newTargets = 0;
@@ -1420,9 +1546,12 @@ class Position {
         _setCustodianCaptureState(sideToMove, newTargets, newCount);
       }
 
-      if (isInterventionTarget && interventionCount > 0) {
-        int newTargets = interventionTargets & ~mask;
-        final int newCount = interventionCount - 1;
+      if (!(mode == ActiveCaptureMode.intervention && performed == 0) &&
+          isInterventionTarget &&
+          interventionCount() > 0) {
+        int newTargets =
+            _interventionCaptureTargets[sideToMove]! & ~mask;
+        final int newCount = interventionCount() - 1;
 
         if (newCount <= 0) {
           newTargets = 0;
@@ -1493,7 +1622,11 @@ class Position {
     _currentSquare[sideToMove] = 0;
 
     if (pieceToRemoveCount[sideToMove]! > 0) {
-      pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! - 1;
+      performed = _removalsPerformed[sideToMove]! + 1;
+      _removalsPerformed[sideToMove] = performed;
+      quota = _removalQuota[sideToMove]!;
+      final int remaining = quota - performed;
+      pieceToRemoveCount[sideToMove] = remaining > 0 ? remaining : 0;
     } else {
       pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! + 1;
     }
@@ -1508,6 +1641,11 @@ class Position {
 
     _setCustodianCaptureState(sideToMove, 0, 0);
     _setInterventionCaptureState(sideToMove, 0, 0);
+    _removalQuota[sideToMove] = 0;
+    _pendingMillRemovals[sideToMove] = 0;
+    _removalsPerformed[sideToMove] = 0;
+    _activeCaptureMode[sideToMove] = ActiveCaptureMode.none;
+    _interventionForcedPartner[sideToMove] = -1;
 
     if (handlePlacingPhaseEnd() == false) {
       if (isStalemateRemoving) {
@@ -1835,6 +1973,56 @@ class Position {
     st.key |= pieceToRemoveCount[sideToMove]! << (32 - _Zobrist.keyMiscBit);
   }
 
+  void _clearInterventionPairMap(PieceColor color) {
+    if (!_interventionPairMate.containsKey(color)) {
+      return;
+    }
+
+    final List<int> pairs = _interventionPairMate[color]!;
+    for (int i = 0; i < pairs.length; i++) {
+      pairs[i] = -1;
+    }
+  }
+
+  void _initializeRemovalState(
+    PieceColor color,
+    int millRemovals,
+    int custodianRemovals,
+    int interventionRemovals,
+  ) {
+    if (!_pendingMillRemovals.containsKey(color)) {
+      return;
+    }
+
+    final int millAllowed = millRemovals.clamp(0, 1 << 20);
+    final int custodianAllowed =
+        custodianRemovals.clamp(0, _kMaxCustodianRemoval);
+    final int interventionAllowed =
+        interventionRemovals.clamp(0, _kMaxInterventionRemoval);
+
+    int totalAllowed = millAllowed;
+    if (custodianAllowed > totalAllowed) {
+      totalAllowed = custodianAllowed;
+    }
+    if (interventionAllowed > totalAllowed) {
+      totalAllowed = interventionAllowed;
+    }
+
+    _pendingMillRemovals[color] = millAllowed;
+    _removalsPerformed[color] = 0;
+    _removalQuota[color] = totalAllowed;
+    _activeCaptureMode[color] = ActiveCaptureMode.none;
+    _interventionForcedPartner[color] = -1;
+
+    if (totalAllowed > 0) {
+      pieceToRemoveCount[color] = totalAllowed;
+      _updateKeyMisc();
+      action = Act.remove;
+    } else {
+      pieceToRemoveCount[color] = 0;
+    }
+  }
+
   void _setCustodianCaptureState(
     PieceColor color,
     int targets,
@@ -1909,6 +2097,11 @@ class Position {
 
     _interventionCaptureTargets[color] = targets;
     _interventionRemovalCount[color] = count;
+
+    if (targets == 0 || count <= 0) {
+      _clearInterventionPairMap(color);
+      _interventionForcedPartner[color] = -1;
+    }
   }
 
   int _activateCustodianCapture(
@@ -1935,6 +2128,7 @@ class Position {
 
   int _activateInterventionCapture(
     PieceColor color,
+    int center,
     List<int> capturedPieces,
   ) {
     if (capturedPieces.isEmpty) {
@@ -1942,15 +2136,60 @@ class Position {
       return 0;
     }
 
-    int targets = 0;
-    for (final int target in capturedPieces) {
-      targets |= squareBb(target);
+    final RuleSettings ruleSettings = DB().ruleSettings;
+    final List<List<int>> capturePairs = <List<int>>[];
+
+    void processLine(List<int> line) {
+      if (center != line[1]) {
+        return;
+      }
+
+      final int first = line[0];
+      final int second = line[2];
+
+      if (_board[first] == color.opponent &&
+          _board[second] == color.opponent) {
+        capturePairs.add(<int>[first, second]);
+      }
     }
 
-    // Intervention capture always captures all pieces that are trapped
-    // between the moving piece and another friendly piece, regardless
-    // of mayRemoveMultiple setting
-    final int allowedRemovals = capturedPieces.length;
+    _clearInterventionPairMap(color);
+    _interventionForcedPartner[color] = -1;
+
+    if (ruleSettings.interventionCaptureOnSquareEdges) {
+      for (final List<int> line in _custodianSquareEdgeLines) {
+        processLine(line);
+      }
+    }
+
+    if (ruleSettings.interventionCaptureOnCrossLines) {
+      for (final List<int> line in _custodianCrossLines) {
+        processLine(line);
+      }
+    }
+
+    if (ruleSettings.hasDiagonalLines &&
+        ruleSettings.interventionCaptureOnDiagonalLines) {
+      for (final List<int> line in _custodianDiagonalLines) {
+        processLine(line);
+      }
+    }
+
+    if (capturePairs.isEmpty) {
+      _setInterventionCaptureState(color, 0, 0);
+      return 0;
+    }
+
+    int targets = 0;
+    final List<int> pairMap = _interventionPairMate[color]!;
+    for (final List<int> pair in capturePairs) {
+      targets |= squareBb(pair[0]);
+      targets |= squareBb(pair[1]);
+      pairMap[pair[0]] = pair[1];
+      pairMap[pair[1]] = pair[0];
+    }
+
+    const int allowedRemovals = 2;
 
     _setInterventionCaptureState(color, targets, allowedRemovals);
 
