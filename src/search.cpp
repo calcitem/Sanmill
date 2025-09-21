@@ -102,6 +102,11 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
 
         // Make the move on the board
         pos->do_move(move);
+        // Skip illegal/failed moves: do_move() sets pos->move only on success
+        if (pos->move != move) {
+            pos->undo_move(ss);
+            continue;
+        }
         const Color after = pos->sideToMove;
 
         // Recursively call qsearch
@@ -329,6 +334,11 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
         // Make the move on the board
         pos->do_move(move);
+        // Skip illegal/failed moves: do_move() sets pos->move only on success
+        if (pos->move != move) {
+            pos->undo_move(ss);
+            continue;
+        }
         const Color after = pos->sideToMove;
 
         // Determine the depth extension

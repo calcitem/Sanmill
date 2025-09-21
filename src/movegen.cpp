@@ -147,7 +147,11 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         case ActiveCaptureMode::none:
             allowCustodian = custodianTargets != 0;
             allowIntervention = interventionTargets != 0;
-            allowGeneral = pendingMill > 0;
+            // Rule: Only allow general removal if mill was actually formed.
+            // Custodian/intervention presence doesn't affect general removal
+            // generation. Final mode selection (custodian/intervention/mill)
+            // happens in remove_piece().
+            allowGeneral = pendingMill > performed;
             break;
         case ActiveCaptureMode::custodian:
             if (custodianCount > 0) {
@@ -192,8 +196,8 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         }
     }
 
-    // Handle stalemate removal
-    if (pos.is_stalemate_removal()) {
+    // Handle stalemate removal (skip if special captures are available)
+    if (!allowIntervention && !allowCustodian && pos.is_stalemate_removal()) {
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
 
@@ -218,7 +222,10 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     }
 
     // 2) Handle removal when all opponent's pieces are in mills
-    if (pos.is_all_in_mills(removeColor)) {
+    // BUT: Skip this if we have active intervention/custodian captures
+    // Those should take priority over the all-in-mills rule
+    if (!allowIntervention && !allowCustodian &&
+        pos.is_all_in_mills(removeColor)) {
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
 
