@@ -7,76 +7,312 @@
 
 #include "rule.h"
 
-Rule rule = {"Nine Men's Morris",
-             "Nine Men's Morris",
-             9,
-             3,
-             3,
-             false,
-             MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
-             false,
-             false,
-             false,
-             false,
-             false,
-             false,
-             BoardFullAction::firstPlayerLose,
-             StalemateAction::endWithStalemateLoss,
-             true,
-             100,
-             100,
-             true};
+namespace {
+
+constexpr CaptureRuleConfig kDefaultCaptureRuleConfig {
+    false, // enabled
+    true,  // onSquareEdges
+    true,  // onCrossLines
+    true,  // onDiagonalLines
+    true,  // inPlacingPhase
+    true,  // inMovingPhase
+    false  // onlyAvailableWhenOwnPiecesLeq3
+};
+
+} // namespace
+
+Rule rule = {
+    "Nine Men's Morris", // name
+    "Nine Men's Morris", // description
+    9,                   // pieceCount
+    3,                   // flyPieceCount
+    3,                   // piecesAtLeastCount
+    false,               // hasDiagonalLines
+    MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+    // millFormationActionInPlacingPhase
+    false,                                 // mayMoveInPlacingPhase
+    false,                                 // isDefenderMoveFirst
+    false,                                 // mayRemoveMultiple
+    false,                                 // restrictRepeatedMillsFormation
+    false,                                 // mayRemoveFromMillsAlways
+    false,                                 // oneTimeUseMill
+    BoardFullAction::firstPlayerLose,      // boardFullAction
+    StalemateAction::endWithStalemateLoss, // stalemateAction
+    kDefaultCaptureRuleConfig,             // custodianCapture
+    kDefaultCaptureRuleConfig,             // interventionCapture
+    kDefaultCaptureRuleConfig,             // leapCapture
+    true,                                  // mayFly
+    100,                                   // nMoveRule
+    100,                                   // endgameNMoveRule
+    true                                   // threefoldRepetitionRule
+};
 
 const Rule RULES[N_RULES] = {
-    {"Nine Men's Morris", "Nine Men's Morris", 9, 3, 3, false,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     false, false, false, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Twelve Men's Morris", "Twelve Men's Morris", 12, 3, 3, true,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     false, false, false, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Dooz", "Dooz", 12, 3, 3, true,
+    {                     // Nine Men's Morris
+     "Nine Men's Morris", // name
+     "Nine Men's Morris", // description
+     9,                   // pieceCount
+     3,                   // flyPieceCount
+     3,                   // piecesAtLeastCount
+     false,               // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     true,                                  // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Twelve Men's Morris
+     "Twelve Men's Morris",                 // name
+     "Twelve Men's Morris",                 // description
+     12,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     true,                                  // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     true,                                  // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Dooz
+     "Dooz",                                // name
+     "Dooz",                                // description
+     12,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     true,                                  // hasDiagonalLines
      MillFormationActionInPlacingPhase::
          removeOpponentsPieceFromHandThenOpponentsTurn,
-     false, false, false, false, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Morabaraba", "Morabaraba", 12, 3, 3, true,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     false, false, true, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Russian Mill", "Russian Mill", 9, 3, 3, false,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     false, false, false, false, true, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Lasker Morris", "Lasker Morris", 10, 3, 3, false,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, true,
-     false, false, false, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Cheng San Qi", "Cheng San Qi", 9, 3, 3, false,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     false, false, false, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, false, 100, 100, true},
-    {"Da San Qi", "Da San Qi", 12, 3, 3, true,
-     MillFormationActionInPlacingPhase::markAndDelayRemovingPieces, false, true,
-     false, false, true, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, false, 100, 100, true},
-    {"Zhi Qi", "Zhi Qi", 12, 3, 3, true,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     false /* bmf */, false, false, false, false,
-     BoardFullAction::firstAndSecondPlayerRemovePiece,
-     StalemateAction::removeOpponentsPieceAndMakeNextMove, true, 100, 100,
-     true},
-    {"El Filja", "El Filja", 12, 3, 3, false,
-     MillFormationActionInPlacingPhase::removalBasedOnMillCounts, false, false,
-     false, false, true, false,
-     BoardFullAction::firstAndSecondPlayerRemovePiece,
-     StalemateAction::endWithStalemateLoss, false, 100, 100, true},
-    {"Experimental", "Experimental", 12, 3, 3, true,
-     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
-     true, false, false, true, false,
-     BoardFullAction::secondAndFirstPlayerRemovePiece,
-     StalemateAction::endWithStalemateLoss, false, 100, 100, true},
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     true,                                  // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Morabaraba
+     "Morabaraba",                          // name
+     "Morabaraba",                          // description
+     12,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     true,                                  // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     true,                                  // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     true,                                  // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Russian Mill
+     "Russian Mill",                        // name
+     "Russian Mill",                        // description
+     9,                                     // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     false,                                 // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     true,                                  // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     true,                                  // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Lasker Morris
+     "Lasker Morris",                       // name
+     "Lasker Morris",                       // description
+     10,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     false,                                 // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     true,                                  // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     true,                                  // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Cheng San Qi
+     "Cheng San Qi",                        // name
+     "Cheng San Qi",                        // description
+     9,                                     // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     false,                                 // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     false,                                 // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     false,                                 // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     false,                                 // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Da San Qi
+     "Da San Qi",                           // name
+     "Da San Qi",                           // description
+     12,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     true,                                  // hasDiagonalLines
+     MillFormationActionInPlacingPhase::markAndDelayRemovingPieces,
+     // millFormationActionInPlacingPhase
+     false,                                 // mayMoveInPlacingPhase
+     true,                                  // isDefenderMoveFirst
+     false,                                 // mayRemoveMultiple
+     false,                                 // restrictRepeatedMillsFormation
+     true,                                  // mayRemoveFromMillsAlways
+     false,                                 // oneTimeUseMill
+     BoardFullAction::firstPlayerLose,      // boardFullAction
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     false,                                 // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Zhi Qi
+     "Zhi Qi",                              // name
+     "Zhi Qi",                              // description
+     12,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     true,                                  // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false, // mayMoveInPlacingPhase
+     false, // isDefenderMoveFirst
+     false, // mayRemoveMultiple
+     false, // restrictRepeatedMillsFormation
+     false, // mayRemoveFromMillsAlways
+     false, // oneTimeUseMill
+     BoardFullAction::firstAndSecondPlayerRemovePiece,     // boardFullAction
+     StalemateAction::removeOpponentsPieceAndMakeNextMove, // stalemateAction
+     kDefaultCaptureRuleConfig,                            // custodianCapture
+     kDefaultCaptureRuleConfig, // interventionCapture
+     kDefaultCaptureRuleConfig, // leapCapture
+     true,                      // mayFly
+     100,                       // nMoveRule
+     100,                       // endgameNMoveRule
+     true},                     // threefoldRepetitionRule
+    {                           // El Filja
+     "El Filja",                // name
+     "El Filja",                // description
+     12,                        // pieceCount
+     3,                         // flyPieceCount
+     3,                         // piecesAtLeastCount
+     false,                     // hasDiagonalLines
+     MillFormationActionInPlacingPhase::
+         removalBasedOnMillCounts, // millFormationActionInPlacingPhase
+     false,                        // mayMoveInPlacingPhase
+     false,                        // isDefenderMoveFirst
+     false,                        // mayRemoveMultiple
+     false,                        // restrictRepeatedMillsFormation
+     true,                         // mayRemoveFromMillsAlways
+     false,                        // oneTimeUseMill
+     BoardFullAction::firstAndSecondPlayerRemovePiece, // boardFullAction
+     StalemateAction::endWithStalemateLoss,            // stalemateAction
+     kDefaultCaptureRuleConfig,                        // custodianCapture
+     kDefaultCaptureRuleConfig,                        // interventionCapture
+     kDefaultCaptureRuleConfig,                        // leapCapture
+     false,                                            // mayFly
+     100,                                              // nMoveRule
+     100,                                              // endgameNMoveRule
+     true},          // threefoldRepetitionRule
+    {                // Experimental
+     "Experimental", // name
+     "Experimental", // description
+     12,             // pieceCount
+     3,              // flyPieceCount
+     3,              // piecesAtLeastCount
+     true,           // hasDiagonalLines
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
+     // millFormationActionInPlacingPhase
+     false, // mayMoveInPlacingPhase
+     true,  // isDefenderMoveFirst
+     false, // mayRemoveMultiple
+     false, // restrictRepeatedMillsFormation
+     true,  // mayRemoveFromMillsAlways
+     false, // oneTimeUseMill
+     BoardFullAction::secondAndFirstPlayerRemovePiece, // boardFullAction
+     StalemateAction::endWithStalemateLoss,            // stalemateAction
+     kDefaultCaptureRuleConfig,                        // custodianCapture
+     kDefaultCaptureRuleConfig,                        // interventionCapture
+     kDefaultCaptureRuleConfig,                        // leapCapture
+     false,                                            // mayFly
+     100,                                              // nMoveRule
+     100,                                              // endgameNMoveRule
+     true}, // threefoldRepetitionRule
 };
 
 bool set_rule(int ruleIdx) noexcept

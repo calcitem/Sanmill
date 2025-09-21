@@ -111,6 +111,27 @@ class RuleSettings {
         MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
     this.restrictRepeatedMillsFormation = false,
     this.oneTimeUseMill = false,
+    this.enableCustodianCapture = false,
+    this.custodianCaptureOnSquareEdges = true,
+    this.custodianCaptureOnCrossLines = true,
+    this.custodianCaptureOnDiagonalLines = true,
+    this.custodianCaptureInPlacingPhase = true,
+    this.custodianCaptureInMovingPhase = true,
+    this.custodianCaptureOnlyWhenOwnPiecesLeq3 = false,
+    this.enableInterventionCapture = false,
+    this.interventionCaptureOnSquareEdges = true,
+    this.interventionCaptureOnCrossLines = true,
+    this.interventionCaptureOnDiagonalLines = true,
+    this.interventionCaptureInPlacingPhase = true,
+    this.interventionCaptureInMovingPhase = true,
+    this.interventionCaptureOnlyWhenOwnPiecesLeq3 = false,
+    this.enableLeapCapture = false,
+    this.leapCaptureOnSquareEdges = true,
+    this.leapCaptureOnCrossLines = true,
+    this.leapCaptureOnDiagonalLines = true,
+    this.leapCaptureInPlacingPhase = true,
+    this.leapCaptureInMovingPhase = true,
+    this.leapCaptureOnlyWhenOwnPiecesLeq3 = false,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -183,6 +204,48 @@ class RuleSettings {
   final bool restrictRepeatedMillsFormation;
   @HiveField(20, defaultValue: false)
   final bool oneTimeUseMill;
+  @HiveField(21, defaultValue: false)
+  final bool enableCustodianCapture;
+  @HiveField(22, defaultValue: true)
+  final bool custodianCaptureOnSquareEdges;
+  @HiveField(23, defaultValue: true)
+  final bool custodianCaptureOnCrossLines;
+  @HiveField(24, defaultValue: true)
+  final bool custodianCaptureOnDiagonalLines;
+  @HiveField(25, defaultValue: true)
+  final bool custodianCaptureInPlacingPhase;
+  @HiveField(26, defaultValue: true)
+  final bool custodianCaptureInMovingPhase;
+  @HiveField(27, defaultValue: false)
+  final bool custodianCaptureOnlyWhenOwnPiecesLeq3;
+  @HiveField(28, defaultValue: false)
+  final bool enableInterventionCapture;
+  @HiveField(29, defaultValue: true)
+  final bool interventionCaptureOnSquareEdges;
+  @HiveField(30, defaultValue: true)
+  final bool interventionCaptureOnCrossLines;
+  @HiveField(31, defaultValue: true)
+  final bool interventionCaptureOnDiagonalLines;
+  @HiveField(32, defaultValue: true)
+  final bool interventionCaptureInPlacingPhase;
+  @HiveField(33, defaultValue: true)
+  final bool interventionCaptureInMovingPhase;
+  @HiveField(34, defaultValue: false)
+  final bool interventionCaptureOnlyWhenOwnPiecesLeq3;
+  @HiveField(35, defaultValue: false)
+  final bool enableLeapCapture;
+  @HiveField(36, defaultValue: true)
+  final bool leapCaptureOnSquareEdges;
+  @HiveField(37, defaultValue: true)
+  final bool leapCaptureOnCrossLines;
+  @HiveField(38, defaultValue: true)
+  final bool leapCaptureOnDiagonalLines;
+  @HiveField(39, defaultValue: true)
+  final bool leapCaptureInPlacingPhase;
+  @HiveField(40, defaultValue: true)
+  final bool leapCaptureInMovingPhase;
+  @HiveField(41, defaultValue: false)
+  final bool leapCaptureOnlyWhenOwnPiecesLeq3;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);

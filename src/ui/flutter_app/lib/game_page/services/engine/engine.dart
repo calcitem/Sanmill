@@ -457,6 +457,90 @@ class Engine {
     );
     await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
     await _sendOptions("OneTimeUseMill", ruleSettings.oneTimeUseMill);
+    await _sendOptions(
+      "CustodianCaptureEnabled",
+      ruleSettings.enableCustodianCapture,
+    );
+    await _sendOptions(
+      "CustodianCaptureOnSquareEdges",
+      ruleSettings.custodianCaptureOnSquareEdges,
+    );
+    await _sendOptions(
+      "CustodianCaptureOnCrossLines",
+      ruleSettings.custodianCaptureOnCrossLines,
+    );
+    await _sendOptions(
+      "CustodianCaptureOnDiagonalLines",
+      ruleSettings.custodianCaptureOnDiagonalLines,
+    );
+    await _sendOptions(
+      "CustodianCaptureInPlacingPhase",
+      ruleSettings.custodianCaptureInPlacingPhase,
+    );
+    await _sendOptions(
+      "CustodianCaptureInMovingPhase",
+      ruleSettings.custodianCaptureInMovingPhase,
+    );
+    await _sendOptions(
+      "CustodianCaptureOnlyWhenOwnPiecesLeq3",
+      ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3,
+    );
+    await _sendOptions(
+      "InterventionCaptureEnabled",
+      ruleSettings.enableInterventionCapture,
+    );
+    await _sendOptions(
+      "InterventionCaptureOnSquareEdges",
+      ruleSettings.interventionCaptureOnSquareEdges,
+    );
+    await _sendOptions(
+      "InterventionCaptureOnCrossLines",
+      ruleSettings.interventionCaptureOnCrossLines,
+    );
+    await _sendOptions(
+      "InterventionCaptureOnDiagonalLines",
+      ruleSettings.interventionCaptureOnDiagonalLines,
+    );
+    await _sendOptions(
+      "InterventionCaptureInPlacingPhase",
+      ruleSettings.interventionCaptureInPlacingPhase,
+    );
+    await _sendOptions(
+      "InterventionCaptureInMovingPhase",
+      ruleSettings.interventionCaptureInMovingPhase,
+    );
+    await _sendOptions(
+      "InterventionCaptureOnlyWhenOwnPiecesLeq3",
+      ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
+    );
+    await _sendOptions(
+      "LeapCaptureEnabled",
+      ruleSettings.enableLeapCapture,
+    );
+    await _sendOptions(
+      "LeapCaptureOnSquareEdges",
+      ruleSettings.leapCaptureOnSquareEdges,
+    );
+    await _sendOptions(
+      "LeapCaptureOnCrossLines",
+      ruleSettings.leapCaptureOnCrossLines,
+    );
+    await _sendOptions(
+      "LeapCaptureOnDiagonalLines",
+      ruleSettings.leapCaptureOnDiagonalLines,
+    );
+    await _sendOptions(
+      "LeapCaptureInPlacingPhase",
+      ruleSettings.leapCaptureInPlacingPhase,
+    );
+    await _sendOptions(
+      "LeapCaptureInMovingPhase",
+      ruleSettings.leapCaptureInMovingPhase,
+    );
+    await _sendOptions(
+      "LeapCaptureOnlyWhenOwnPiecesLeq3",
+      ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3,
+    );
   }
 
   Future<void> setOptions() async {

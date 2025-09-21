@@ -367,6 +367,419 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] oneTimeUseMill: $value");
   }
 
+  void _updateRuleSettingsBool(
+    RuleSettings ruleSettings,
+    RuleSettings Function(RuleSettings) updater,
+    String fieldName,
+    bool value,
+  ) {
+    DB().ruleSettings = updater(ruleSettings);
+
+    logger.t("[config] $fieldName: $value");
+  }
+
+  void _setCustodianCaptureEnabled(RuleSettings ruleSettings, bool value) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(enableCustodianCapture: value),
+      'enableCustodianCapture',
+      value,
+    );
+  }
+
+  void _setCustodianCaptureOnSquareEdges(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(custodianCaptureOnSquareEdges: value),
+      'custodianCaptureOnSquareEdges',
+      value,
+    );
+  }
+
+  void _setCustodianCaptureOnCrossLines(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(custodianCaptureOnCrossLines: value),
+      'custodianCaptureOnCrossLines',
+      value,
+    );
+  }
+
+  void _setCustodianCaptureOnDiagonalLines(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(custodianCaptureOnDiagonalLines: value),
+      'custodianCaptureOnDiagonalLines',
+      value,
+    );
+  }
+
+  void _setCustodianCaptureInPlacingPhase(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(custodianCaptureInPlacingPhase: value),
+      'custodianCaptureInPlacingPhase',
+      value,
+    );
+  }
+
+  void _setCustodianCaptureInMovingPhase(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(custodianCaptureInMovingPhase: value),
+      'custodianCaptureInMovingPhase',
+      value,
+    );
+  }
+
+  void _setCustodianCaptureOnlyWhenOwnPiecesLeq3(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) => settings.copyWith(
+          custodianCaptureOnlyWhenOwnPiecesLeq3: value),
+      'custodianCaptureOnlyWhenOwnPiecesLeq3',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureEnabled(RuleSettings ruleSettings, bool value) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(enableInterventionCapture: value),
+      'enableInterventionCapture',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureOnSquareEdges(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(interventionCaptureOnSquareEdges: value),
+      'interventionCaptureOnSquareEdges',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureOnCrossLines(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(interventionCaptureOnCrossLines: value),
+      'interventionCaptureOnCrossLines',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureOnDiagonalLines(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(interventionCaptureOnDiagonalLines: value),
+      'interventionCaptureOnDiagonalLines',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureInPlacingPhase(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(interventionCaptureInPlacingPhase: value),
+      'interventionCaptureInPlacingPhase',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureInMovingPhase(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(interventionCaptureInMovingPhase: value),
+      'interventionCaptureInMovingPhase',
+      value,
+    );
+  }
+
+  void _setInterventionCaptureOnlyWhenOwnPiecesLeq3(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) => settings.copyWith(
+          interventionCaptureOnlyWhenOwnPiecesLeq3: value),
+      'interventionCaptureOnlyWhenOwnPiecesLeq3',
+      value,
+    );
+  }
+
+  void _setLeapCaptureEnabled(RuleSettings ruleSettings, bool value) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) => settings.copyWith(enableLeapCapture: value),
+      'enableLeapCapture',
+      value,
+    );
+  }
+
+  void _setLeapCaptureOnSquareEdges(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(leapCaptureOnSquareEdges: value),
+      'leapCaptureOnSquareEdges',
+      value,
+    );
+  }
+
+  void _setLeapCaptureOnCrossLines(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(leapCaptureOnCrossLines: value),
+      'leapCaptureOnCrossLines',
+      value,
+    );
+  }
+
+  void _setLeapCaptureOnDiagonalLines(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(leapCaptureOnDiagonalLines: value),
+      'leapCaptureOnDiagonalLines',
+      value,
+    );
+  }
+
+  void _setLeapCaptureInPlacingPhase(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(leapCaptureInPlacingPhase: value),
+      'leapCaptureInPlacingPhase',
+      value,
+    );
+  }
+
+  void _setLeapCaptureInMovingPhase(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(leapCaptureInMovingPhase: value),
+      'leapCaptureInMovingPhase',
+      value,
+    );
+  }
+
+  void _setLeapCaptureOnlyWhenOwnPiecesLeq3(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    _updateRuleSettingsBool(
+      ruleSettings,
+      (RuleSettings settings) =>
+          settings.copyWith(leapCaptureOnlyWhenOwnPiecesLeq3: value),
+      'leapCaptureOnlyWhenOwnPiecesLeq3',
+      value,
+    );
+  }
+
+  Widget _buildCaptureSectionLabel(String text) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+      child: Text(
+        text,
+        style: AppTheme.listTileTitleStyle,
+      ),
+    );
+  }
+
+  SettingsCard _buildCaptureRuleCard({
+    required BuildContext context,
+    required String keyPrefix,
+    required String title,
+    required String enableLabel,
+    required String description,
+    required bool enabled,
+    required ValueChanged<bool> onEnabledChanged,
+    required bool onSquareEdges,
+    required ValueChanged<bool> onSquareEdgesChanged,
+    required bool onCrossLines,
+    required ValueChanged<bool> onCrossLinesChanged,
+    required bool onDiagonalLines,
+    required ValueChanged<bool> onDiagonalLinesChanged,
+    required bool inPlacingPhase,
+    required ValueChanged<bool> onInPlacingPhaseChanged,
+    required bool inMovingPhase,
+    required ValueChanged<bool> onInMovingPhaseChanged,
+    required bool onlyWhenOwnPiecesLeq3,
+    required ValueChanged<bool> onOnlyWhenOwnPiecesLeq3Changed,
+  }) {
+    final TextStyle subtitleStyle = AppTheme.listTileSubtitleStyle;
+
+    return SettingsCard(
+      key: Key('rule_settings_card_$keyPrefix'),
+      title: Text(title),
+      children: <Widget>[
+        SwitchListTile(
+          key: Key('rule_settings_switch_${keyPrefix}_enabled'),
+          value: enabled,
+          onChanged: onEnabledChanged,
+          title: Text(enableLabel, style: AppTheme.listTileTitleStyle),
+          subtitle: Text(description, style: subtitleStyle),
+        ),
+        _buildCaptureSectionLabel(S.of(context).captureApplicableLines),
+        CheckboxListTile(
+          key: Key('rule_settings_checkbox_${keyPrefix}_square_edges'),
+          value: onSquareEdges,
+          onChanged: enabled
+              ? (bool? value) => onSquareEdgesChanged(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).captureSquareEdges,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+        CheckboxListTile(
+          key: Key('rule_settings_checkbox_${keyPrefix}_cross_lines'),
+          value: onCrossLines,
+          onChanged: enabled
+              ? (bool? value) => onCrossLinesChanged(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).captureCrossLines,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+        CheckboxListTile(
+          key: Key('rule_settings_checkbox_${keyPrefix}_diagonal_lines'),
+          value: onDiagonalLines,
+          onChanged: enabled
+              ? (bool? value) => onDiagonalLinesChanged(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).captureDiagonalLines,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+        _buildCaptureSectionLabel(S.of(context).captureExecutionPhases),
+        CheckboxListTile(
+          key: Key('rule_settings_checkbox_${keyPrefix}_placing_phase'),
+          value: inPlacingPhase,
+          onChanged: enabled
+              ? (bool? value) => onInPlacingPhaseChanged(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).placingPhase,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+        CheckboxListTile(
+          key: Key('rule_settings_checkbox_${keyPrefix}_moving_phase'),
+          value: inMovingPhase,
+          onChanged: enabled
+              ? (bool? value) => onInMovingPhaseChanged(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).movingPhase,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+        _buildCaptureSectionLabel(S.of(context).capturePiecesCondition),
+        RadioListTile<bool>(
+          key: Key('rule_settings_radio_${keyPrefix}_unlimited'),
+          value: false,
+          groupValue: onlyWhenOwnPiecesLeq3,
+          onChanged: enabled
+              ? (bool? value) =>
+                  onOnlyWhenOwnPiecesLeq3Changed(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).capturePiecesConditionUnlimited,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+        RadioListTile<bool>(
+          key: Key('rule_settings_radio_${keyPrefix}_self_leq_three'),
+          value: true,
+          groupValue: onlyWhenOwnPiecesLeq3,
+          onChanged: enabled
+              ? (bool? value) =>
+                  onOnlyWhenOwnPiecesLeq3Changed(value ?? false)
+              : null,
+          controlAffinity: ListTileControlAffinity.trailing,
+          title: Text(
+            S.of(context).capturePiecesConditionSelfLeqThree,
+            style: AppTheme.listTileTitleStyle,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
     final Locale? locale = DB().displaySettings.locale;
 
@@ -549,6 +962,95 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).oneTimeUseMill_Detail,
             ),
           ],
+        ),
+        _buildCaptureRuleCard(
+          context: context,
+          keyPrefix: 'custodian_capture',
+          title: S.of(context).custodianCapture,
+          enableLabel: S.of(context).custodianCaptureEnable,
+          description: S.of(context).custodianCaptureDescription,
+          enabled: ruleSettings.enableCustodianCapture,
+          onEnabledChanged: (bool value) =>
+              _setCustodianCaptureEnabled(ruleSettings, value),
+          onSquareEdges: ruleSettings.custodianCaptureOnSquareEdges,
+          onSquareEdgesChanged: (bool value) =>
+              _setCustodianCaptureOnSquareEdges(ruleSettings, value),
+          onCrossLines: ruleSettings.custodianCaptureOnCrossLines,
+          onCrossLinesChanged: (bool value) =>
+              _setCustodianCaptureOnCrossLines(ruleSettings, value),
+          onDiagonalLines: ruleSettings.custodianCaptureOnDiagonalLines,
+          onDiagonalLinesChanged: (bool value) =>
+              _setCustodianCaptureOnDiagonalLines(ruleSettings, value),
+          inPlacingPhase: ruleSettings.custodianCaptureInPlacingPhase,
+          onInPlacingPhaseChanged: (bool value) =>
+              _setCustodianCaptureInPlacingPhase(ruleSettings, value),
+          inMovingPhase: ruleSettings.custodianCaptureInMovingPhase,
+          onInMovingPhaseChanged: (bool value) =>
+              _setCustodianCaptureInMovingPhase(ruleSettings, value),
+          onlyWhenOwnPiecesLeq3:
+              ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3,
+          onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
+              _setCustodianCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
+        ),
+        _buildCaptureRuleCard(
+          context: context,
+          keyPrefix: 'intervention_capture',
+          title: S.of(context).interventionCapture,
+          enableLabel: S.of(context).interventionCaptureEnable,
+          description: S.of(context).interventionCaptureDescription,
+          enabled: ruleSettings.enableInterventionCapture,
+          onEnabledChanged: (bool value) =>
+              _setInterventionCaptureEnabled(ruleSettings, value),
+          onSquareEdges: ruleSettings.interventionCaptureOnSquareEdges,
+          onSquareEdgesChanged: (bool value) =>
+              _setInterventionCaptureOnSquareEdges(ruleSettings, value),
+          onCrossLines: ruleSettings.interventionCaptureOnCrossLines,
+          onCrossLinesChanged: (bool value) =>
+              _setInterventionCaptureOnCrossLines(ruleSettings, value),
+          onDiagonalLines: ruleSettings.interventionCaptureOnDiagonalLines,
+          onDiagonalLinesChanged: (bool value) =>
+              _setInterventionCaptureOnDiagonalLines(ruleSettings, value),
+          inPlacingPhase: ruleSettings.interventionCaptureInPlacingPhase,
+          onInPlacingPhaseChanged: (bool value) =>
+              _setInterventionCaptureInPlacingPhase(ruleSettings, value),
+          inMovingPhase: ruleSettings.interventionCaptureInMovingPhase,
+          onInMovingPhaseChanged: (bool value) =>
+              _setInterventionCaptureInMovingPhase(ruleSettings, value),
+          onlyWhenOwnPiecesLeq3:
+              ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
+          onOnlyWhenOwnPiecesLeq3Changed: (bool value) => _setInterventionCaptureOnlyWhenOwnPiecesLeq3(
+            ruleSettings,
+            value,
+          ),
+        ),
+        _buildCaptureRuleCard(
+          context: context,
+          keyPrefix: 'leap_capture',
+          title: S.of(context).leapCapture,
+          enableLabel: S.of(context).leapCaptureEnable,
+          description: S.of(context).leapCaptureDescription,
+          enabled: ruleSettings.enableLeapCapture,
+          onEnabledChanged: (bool value) =>
+              _setLeapCaptureEnabled(ruleSettings, value),
+          onSquareEdges: ruleSettings.leapCaptureOnSquareEdges,
+          onSquareEdgesChanged: (bool value) =>
+              _setLeapCaptureOnSquareEdges(ruleSettings, value),
+          onCrossLines: ruleSettings.leapCaptureOnCrossLines,
+          onCrossLinesChanged: (bool value) =>
+              _setLeapCaptureOnCrossLines(ruleSettings, value),
+          onDiagonalLines: ruleSettings.leapCaptureOnDiagonalLines,
+          onDiagonalLinesChanged: (bool value) =>
+              _setLeapCaptureOnDiagonalLines(ruleSettings, value),
+          inPlacingPhase: ruleSettings.leapCaptureInPlacingPhase,
+          onInPlacingPhaseChanged: (bool value) =>
+              _setLeapCaptureInPlacingPhase(ruleSettings, value),
+          inMovingPhase: ruleSettings.leapCaptureInMovingPhase,
+          onInMovingPhaseChanged: (bool value) =>
+              _setLeapCaptureInMovingPhase(ruleSettings, value),
+          onlyWhenOwnPiecesLeq3:
+              ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3,
+          onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
+              _setLeapCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
         ),
       ],
     );
