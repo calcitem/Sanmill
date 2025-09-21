@@ -107,6 +107,24 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
+    // 1) If custodian capture is active, ONLY generate custodian targets.
+    // This must take precedence over any other removal rule (stalemate,
+    // all-in-mills, general removal), otherwise the engine may propose
+    // illegal removes that Dart-side will reject (leading to "no move").
+    const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
+    const int custodianCount = pos.custodianRemovalCount[us];
+    if (custodianCount > 0 && custodianTargets != 0) {
+        for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+            const Bitboard mask = square_bb(s);
+            if ((custodianTargets & mask) &&
+                (pos.get_board()[s] & make_piece(them))) {
+                assert(cur < moveList + MAX_MOVES);
+                *cur++ = static_cast<Move>(-s);
+            }
+        }
+        return cur;
+    }
+
     // Handle stalemate removal
     if (pos.is_stalemate_removal()) {
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
@@ -132,7 +150,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    // Handle removal when all opponent's pieces are in mills
+    // 2) Handle removal when all opponent's pieces are in mills
     if (pos.is_all_in_mills(removeColor)) {
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
@@ -146,18 +164,29 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    // Handle general removal (not all in mills)
-    for (int i = SQUARE_NB - 1; i >= 0; i--) {
-        const Square s = MoveList<LEGAL>::movePriorityList[i];
+    // 3) If there are remaining removals beyond custodian capture,
+    // generate regular mill-based removal moves
+    const int totalRemovals = pos.pieceToRemoveCount[us];
+    if (totalRemovals > custodianCount) {
+        // Handle general removal (not all in mills) for remaining removals
+        for (int i = SQUARE_NB - 1; i >= 0; i--) {
+            const Square s = MoveList<LEGAL>::movePriorityList[i];
 
-        // Check if the square has a piece of the color to remove
-        if (pos.get_board()[s] & make_piece(removeColor)) {
-            // If the rule allows removing from mills always
-            // or the piece is not part of a potential mill, allow removal
-            if (rule.mayRemoveFromMillsAlways ||
-                !pos.potential_mills_count(s, NOBODY)) {
-                assert(cur < moveList + MAX_MOVES);
-                *cur++ = static_cast<Move>(-s);
+            // Skip if this is already a custodian capture target
+            const Bitboard mask = square_bb(s);
+            if (custodianTargets & mask) {
+                continue;
+            }
+
+            // Check if the square has a piece of the color to remove
+            if (pos.get_board()[s] & make_piece(removeColor)) {
+                // If the rule allows removing from mills always
+                // or the piece is not part of a potential mill, allow removal
+                if (rule.mayRemoveFromMillsAlways ||
+                    !pos.potential_mills_count(s, NOBODY)) {
+                    assert(cur < moveList + MAX_MOVES);
+                    *cur++ = static_cast<Move>(-s);
+                }
             }
         }
     }

@@ -2006,7 +2006,7 @@
   "@captureDiagonalLines": {},
   "captureExecutionPhases": "执行阶段",
   "@captureExecutionPhases": {},
-  "capturePiecesCondition": "剩余多少棋子时适用",
+  "capturePiecesCondition": "走子阶段按剩余棋子数量决定适用性",
   "@capturePiecesCondition": {},
   "capturePiecesConditionUnlimited": "无限制",
   "@capturePiecesConditionUnlimited": {},

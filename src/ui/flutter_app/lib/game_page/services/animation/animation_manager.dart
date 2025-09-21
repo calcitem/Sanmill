@@ -188,6 +188,9 @@ class AnimationManager {
       _removeAnimationController.addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
           GameController().gameInstance.removeIndex = null;
+          // Reset move animation indices after custodian capture removal
+          GameController().gameInstance.focusIndex = null;
+          GameController().gameInstance.blurIndex = null;
         }
       });
 

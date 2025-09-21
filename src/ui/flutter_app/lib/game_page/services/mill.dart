@@ -110,6 +110,7 @@ bool isRuleSupportingPerfectDatabase() {
       ruleSettings.mayFly == true &&
       ruleSettings.mayRemoveFromMillsAlways == false &&
       ruleSettings.mayRemoveMultiple == false &&
+      ruleSettings.enableCustodianCapture == false &&
       ruleSettings.oneTimeUseMill == false) {
     return true;
   } else {
