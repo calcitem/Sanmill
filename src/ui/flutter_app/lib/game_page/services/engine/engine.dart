@@ -562,6 +562,17 @@ class Engine {
   }
 
   String? _getPositionFen() {
+    // If current action is remove, use current position to preserve custodian capture state
+    if (GameController().position.action == Act.remove) {
+      final String? currentFen = GameController().position.fen;
+      if (currentFen == null ||
+          GameController().position.validateFen(currentFen) == false) {
+        logger.e("Invalid current FEN: $currentFen");
+        return null;
+      }
+      return "position fen $currentFen";
+    }
+
     final String? startPosition =
         GameController().gameRecorder.lastPositionWithRemove;
 
