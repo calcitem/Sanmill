@@ -187,6 +187,10 @@ public:
     bool put_piece(Square s, bool updateRecord = false);
     bool handle_moving_phase_for_put_piece(Square s, bool updateRecord);
 
+    bool checkCustodianCapture(Square sq, Color us,
+                               std::vector<Square> &capturedPieces) const;
+    int applyCustodianCapture(Square sq, Color us);
+
     bool remove_piece(File f, Rank r);
     bool remove_piece(Square s, bool updateRecord = false);
 
@@ -202,6 +206,10 @@ public:
     bool handle_placing_phase_end();
 
     bool can_move_during_placing_phase() const;
+
+    void setCustodianCaptureState(Color color, Bitboard targets, int count);
+    int activateCustodianCapture(Color color,
+                                 const std::vector<Square> &capturedPieces);
 
     // Data members
     Piece board[SQUARE_EXT_NB];
@@ -238,6 +246,8 @@ public:
     Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
 
     Bitboard formedMillsBB[COLOR_NB] {0};
+    Bitboard custodianCaptureTargets[COLOR_NB] {0};
+    int custodianRemovalCount[COLOR_NB] {0};
 
     int gamesPlayedCount {0};
 

@@ -7,6 +7,35 @@ part of '../mill.dart';
 
 List<int> posKeyHistory = <int>[];
 
+const List<List<int>> _custodianSquareEdgeLines = <List<int>>[
+  <int>[31, 24, 25],
+  <int>[23, 16, 17],
+  <int>[15, 8, 9],
+  <int>[13, 12, 11],
+  <int>[21, 20, 19],
+  <int>[29, 28, 27],
+  <int>[31, 30, 29],
+  <int>[23, 22, 21],
+  <int>[15, 14, 13],
+  <int>[9, 10, 11],
+  <int>[17, 18, 19],
+  <int>[25, 26, 27],
+];
+
+const List<List<int>> _custodianCrossLines = <List<int>>[
+  <int>[30, 22, 14],
+  <int>[10, 18, 26],
+  <int>[24, 16, 8],
+  <int>[12, 20, 28],
+];
+
+const List<List<int>> _custodianDiagonalLines = <List<int>>[
+  <int>[31, 23, 15],
+  <int>[9, 17, 25],
+  <int>[29, 21, 13],
+  <int>[11, 19, 27],
+];
+
 class SquareAttribute {
   SquareAttribute({
     required this.placedPieceNumber,
@@ -50,6 +79,18 @@ class Position {
     PieceColor.black: 0,
   };
   final Map<PieceColor, int> pieceToRemoveCount = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  static const int _kMaxCustodianRemoval = 4;
+
+  final Map<PieceColor, int> _custodianCaptureTargets = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  final Map<PieceColor, int> _custodianRemovalCount = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
   };
@@ -267,6 +308,38 @@ class Position {
 
     buffer.write("${st.rule50} ${1 + (_gamePly - sideIsBlack) ~/ 2}");
 
+    void appendCustodian(String prefix, PieceColor color) {
+      buffer.write(prefix);
+      buffer.write('-');
+      buffer.write(_custodianRemovalCount[color]);
+      buffer.write('-');
+
+      bool first = true;
+      final int targets = _custodianCaptureTargets[color]!;
+      for (int sq = sqBegin; sq < sqEnd; ++sq) {
+        if ((targets & squareBb(sq)) == 0) {
+          continue;
+        }
+
+        if (!first) {
+          buffer.write('.');
+        }
+
+        buffer.write(sq);
+        first = false;
+      }
+    }
+
+    if (_custodianRemovalCount[PieceColor.white]! > 0 ||
+        _custodianRemovalCount[PieceColor.black]! > 0 ||
+        _custodianCaptureTargets[PieceColor.white]! != 0 ||
+        _custodianCaptureTargets[PieceColor.black]! != 0) {
+      buffer.write(' c:');
+      appendCustodian('w', PieceColor.white);
+      buffer.write('|');
+      appendCustodian('b', PieceColor.black);
+    }
+
     logger.t("FEN is $buffer");
 
     final String fen = buffer.toString();
@@ -280,9 +353,24 @@ class Position {
 
   bool setFen(String fen) {
     const bool ret = true;
-    final List<String> l = fen.split(" ");
+    final String trimmedFen = fen.trim();
+    final int custodianIndex = trimmedFen.indexOf(' c:');
 
-    final String boardStr = l[0];
+    String custodianData = '';
+    String coreFen = trimmedFen;
+
+    if (custodianIndex >= 0) {
+      custodianData = trimmedFen.substring(custodianIndex + 3).trim();
+      coreFen = trimmedFen.substring(0, custodianIndex).trimRight();
+    }
+
+    final List<String> fields = coreFen.split(RegExp(r'\s+'));
+    if (fields.length < 17) {
+      logger.e('FEN does not contain enough parts.');
+      return false;
+    }
+
+    final String boardStr = fields[0];
     final List<String> ring = boardStr.split("/");
 
     final Map<String, PieceColor> pieceMap = <String, PieceColor>{
@@ -302,7 +390,7 @@ class Position {
       }
     }
 
-    final String sideToMoveStr = l[1];
+    final String sideToMoveStr = fields[1];
 
     final Map<String, PieceColor> sideToMoveMap = <String, PieceColor>{
       "w": PieceColor.white,
@@ -312,7 +400,7 @@ class Position {
     _sideToMove = sideToMoveMap[sideToMoveStr]!;
     _them = _sideToMove.opponent;
 
-    final String phaseStr = l[2];
+    final String phaseStr = fields[2];
 
     final Map<String, Phase> phaseMap = <String, Phase>{
       "r": Phase.ready,
@@ -323,7 +411,7 @@ class Position {
 
     phase = phaseMap[phaseStr]!;
 
-    final String actionStr = l[3];
+    final String actionStr = fields[3];
 
     final Map<String, Act> actionMap = <String, Act>{
       "p": Act.place,
@@ -333,47 +421,47 @@ class Position {
 
     action = actionMap[actionStr]!;
 
-    final String whitePieceOnBoardCountStr = l[4];
+    final String whitePieceOnBoardCountStr = fields[4];
     pieceOnBoardCount[PieceColor.white] = int.parse(whitePieceOnBoardCountStr);
 
-    final String whitePieceInHandCountStr = l[5];
+    final String whitePieceInHandCountStr = fields[5];
     pieceInHandCount[PieceColor.white] = int.parse(whitePieceInHandCountStr);
 
-    final String blackPieceOnBoardCountStr = l[6];
+    final String blackPieceOnBoardCountStr = fields[6];
     pieceOnBoardCount[PieceColor.black] = int.parse(blackPieceOnBoardCountStr);
 
-    final String blackPieceInHandCountStr = l[7];
+    final String blackPieceInHandCountStr = fields[7];
     pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
 
-    final String whitePieceToRemoveCountStr = l[8];
+    final String whitePieceToRemoveCountStr = fields[8];
     pieceToRemoveCount[PieceColor.white] =
         int.parse(whitePieceToRemoveCountStr);
 
-    final String blackPieceToRemoveCountStr = l[9];
+    final String blackPieceToRemoveCountStr = fields[9];
     pieceToRemoveCount[PieceColor.black] =
         int.parse(blackPieceToRemoveCountStr);
 
-    final String whiteLastMillFromSquareStr = l[10];
+    final String whiteLastMillFromSquareStr = fields[10];
     _lastMillFromSquare[PieceColor.white] =
         int.parse(whiteLastMillFromSquareStr);
 
-    final String whiteLastMillToSquareStr = l[11];
+    final String whiteLastMillToSquareStr = fields[11];
     _lastMillToSquare[PieceColor.white] = int.parse(whiteLastMillToSquareStr);
 
-    final String blackLastMillFromSquareStr = l[12];
+    final String blackLastMillFromSquareStr = fields[12];
     _lastMillFromSquare[PieceColor.black] =
         int.parse(blackLastMillFromSquareStr);
 
-    final String blackLastMillToSquareStr = l[13];
+    final String blackLastMillToSquareStr = fields[13];
     _lastMillToSquare[PieceColor.black] = int.parse(blackLastMillToSquareStr);
 
-    final String millsBitmaskStr = l[14];
+    final String millsBitmaskStr = fields[14];
     setFormedMillsBB(int.parse(millsBitmaskStr));
 
-    final String rule50Str = l[15];
+    final String rule50Str = fields[15];
     st.rule50 = int.parse(rule50Str);
 
-    final String gamePlyStr = l[16];
+    final String gamePlyStr = fields[16];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
@@ -382,12 +470,25 @@ class Position {
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
     _record = null;
 
+    _parseCustodianFen(custodianData);
+
     return ret;
   }
 
   // TODO: Implement with C++ in engine
   bool validateFen(String fen) {
-    final List<String> parts = fen.split(' ');
+    final String trimmedFen = fen.trim();
+    final int custodianIndex = trimmedFen.indexOf(' c:');
+
+    String custodianData = '';
+    String coreFen = trimmedFen;
+
+    if (custodianIndex >= 0) {
+      custodianData = trimmedFen.substring(custodianIndex + 3).trim();
+      coreFen = trimmedFen.substring(0, custodianIndex).trimRight();
+    }
+
+    final List<String> parts = coreFen.split(RegExp(r'\s+'));
     if (parts.length < 17) {
       logger.e('FEN does not contain enough parts.');
       return false;
@@ -521,6 +622,10 @@ class Position {
     final int fullMoveNumber = int.parse(parts[16]);
     if (fullMoveNumber < 1) {
       logger.e('Invalid full move number. Must start at 1.');
+      return false;
+    }
+
+    if (!_validateCustodianFen(custodianData)) {
       return false;
     }
 
@@ -751,6 +856,10 @@ class Position {
 
       _updateKey(s);
 
+      final List<int> custodianCaptured = <int>[];
+      final bool hasCustodianCapture =
+          _checkCustodianCapture(s, us, custodianCaptured);
+
       final int n = _millsCount(s);
 
       if (n == 0) {
@@ -764,6 +873,19 @@ class Position {
 
         _lastMillToSquare[sideToMove] = 0;
         _lastMillToSquare[sideToMove] = 0;
+
+        if (hasCustodianCapture) {
+          final int custodianRemoval =
+              _activateCustodianCapture(us, custodianCaptured);
+          if (custodianRemoval > 0) {
+            pieceToRemoveCount[sideToMove] = custodianRemoval;
+            _updateKeyMisc();
+            action = Act.remove;
+            return true;
+          }
+        }
+
+        _setCustodianCaptureState(us, 0, 0);
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
         SoundManager().playTone(Sound.place);
@@ -838,11 +960,11 @@ class Position {
 
         if (DB().ruleSettings.millFormationActionInPlacingPhase ==
             MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
-          rm = pieceToRemoveCount[sideToMove] = 0;
+          pieceToRemoveCount[sideToMove] = 0;
+          _setCustodianCaptureState(us, 0, 0);
         } else {
-          rm = pieceToRemoveCount[sideToMove] =
-              DB().ruleSettings.mayRemoveMultiple ? n : 1;
-          _updateKeyMisc();
+          rm = DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount[sideToMove] = rm;
         }
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
@@ -855,6 +977,7 @@ class Position {
                     MillFormationActionInPlacingPhase
                         .removeOpponentsPieceFromHandThenOpponentsTurn) &&
             pieceInHandCount[_them] != null) {
+          _setCustodianCaptureState(us, 0, 0);
           for (int i = 0; i < rm; i++) {
             if (pieceInHandCount[_them] == 0) {
               pieceToRemoveCount[sideToMove] = rm - i;
@@ -915,6 +1038,20 @@ class Position {
               changeSideToMove();
             }
           } else {
+            if (DB().ruleSettings.mayRemoveMultiple && hasCustodianCapture) {
+              final int custodianRemoval =
+                  _activateCustodianCapture(us, custodianCaptured);
+              if (custodianRemoval > 0) {
+                pieceToRemoveCount[sideToMove] =
+                    pieceToRemoveCount[sideToMove]! + custodianRemoval;
+              } else {
+                _setCustodianCaptureState(us, 0, 0);
+              }
+            } else {
+              _setCustodianCaptureState(us, 0, 0);
+            }
+
+            _updateKeyMisc();
             action = Act.remove;
           }
           return true;
@@ -995,11 +1132,27 @@ class Position {
     }
 
     final int n = _millsCount(s);
+    final List<int> custodianCaptured = <int>[];
+    final bool hasCustodianCapture =
+        _checkCustodianCapture(s, sideToMove, custodianCaptured);
 
     if (n == 0) {
       // If no mill during Moving phase
       _currentSquare[sideToMove] = 0;
       _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
+
+      if (hasCustodianCapture) {
+        final int custodianRemoval =
+            _activateCustodianCapture(sideToMove, custodianCaptured);
+        if (custodianRemoval > 0) {
+          pieceToRemoveCount[sideToMove] = custodianRemoval;
+          _updateKeyMisc();
+          action = Act.remove;
+          return true;
+        }
+      }
+
+      _setCustodianCaptureState(sideToMove, 0, 0);
       changeSideToMove();
 
       if (_checkIfGameIsOver()) {
@@ -1033,6 +1186,20 @@ class Position {
 
       pieceToRemoveCount[sideToMove] =
           DB().ruleSettings.mayRemoveMultiple ? n : 1;
+
+      if (DB().ruleSettings.mayRemoveMultiple && hasCustodianCapture) {
+        final int custodianRemoval =
+            _activateCustodianCapture(sideToMove, custodianCaptured);
+        if (custodianRemoval > 0) {
+          pieceToRemoveCount[sideToMove] =
+              pieceToRemoveCount[sideToMove]! + custodianRemoval;
+        } else {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+      } else {
+        _setCustodianCaptureState(sideToMove, 0, 0);
+      }
+
       _updateKeyMisc();
       action = Act.remove;
       GameController().gameInstance.focusIndex = squareToIndex[s];
@@ -1051,15 +1218,44 @@ class Position {
       return const IllegalAction();
     }
 
-    if (pieceToRemoveCount[sideToMove]! == 0) {
+    final int mask = squareBb(s);
+    final int targets = _custodianCaptureTargets[sideToMove]!;
+    final int custCount = _custodianRemovalCount[sideToMove]!;
+    final int remainingRemovals = pieceToRemoveCount[sideToMove]!;
+
+    if (remainingRemovals == 0) {
       return const NoPieceToRemove();
-    } else if (pieceToRemoveCount[sideToMove]! > 0) {
-      if (!(sideToMove.opponent == _board[s])) {
+    } else if (remainingRemovals > 0) {
+      if (_board[s] != sideToMove.opponent) {
         return const CanNotRemoveSelf();
       }
+
+      if (custCount > 0) {
+        final bool isCustodianTarget = (targets & mask) != 0;
+
+        if (!isCustodianTarget && custCount >= remainingRemovals) {
+          return const IllegalAction();
+        }
+
+        if (isCustodianTarget) {
+          int newTargets = targets & ~mask;
+          final int newCount = custCount - 1;
+
+          if (newCount <= 0) {
+            newTargets = 0;
+          }
+
+          _setCustodianCaptureState(sideToMove, newTargets, newCount);
+        }
+      }
     } else {
-      if (!(sideToMove == _board[s])) {
+      if (_board[s] != sideToMove) {
         return const ShouldRemoveSelf();
+      }
+
+      if (_custodianCaptureTargets[sideToMove]! != 0 ||
+          _custodianRemovalCount[sideToMove]! != 0) {
+        _setCustodianCaptureState(sideToMove, 0, 0);
       }
     }
 
@@ -1122,6 +1318,8 @@ class Position {
       SoundManager().playTone(Sound.remove);
       return const GameResponseOK();
     }
+
+    _setCustodianCaptureState(sideToMove, 0, 0);
 
     if (handlePlacingPhaseEnd() == false) {
       if (isStalemateRemoving) {
@@ -1449,6 +1647,338 @@ class Position {
     st.key |= pieceToRemoveCount[sideToMove]! << (32 - _Zobrist.keyMiscBit);
   }
 
+  void _setCustodianCaptureState(
+    PieceColor color,
+    int targets,
+    int count,
+  ) {
+    if (color != PieceColor.white && color != PieceColor.black) {
+      return;
+    }
+
+    final int previousTargets = _custodianCaptureTargets[color]!;
+    final int previousCount = _custodianRemovalCount[color]!;
+
+    final int clampedPrev =
+        previousCount.clamp(0, _kMaxCustodianRemoval) as int;
+    final int clampedNew = count.clamp(0, _kMaxCustodianRemoval) as int;
+
+    if (clampedPrev != clampedNew) {
+      st.key ^= _Zobrist.custodianCount[color.index][clampedPrev];
+      st.key ^= _Zobrist.custodianCount[color.index][clampedNew];
+    }
+
+    if (previousTargets != targets) {
+      for (int sq = sqBegin; sq < sqEnd; ++sq) {
+        final int mask = squareBb(sq);
+
+        if ((previousTargets & mask) != 0) {
+          st.key ^= _Zobrist.custodianTarget[color.index][sq];
+        }
+
+        if ((targets & mask) != 0) {
+          st.key ^= _Zobrist.custodianTarget[color.index][sq];
+        }
+      }
+    }
+
+    _custodianCaptureTargets[color] = targets;
+    _custodianRemovalCount[color] = count;
+  }
+
+  int _activateCustodianCapture(
+    PieceColor color,
+    List<int> capturedPieces,
+  ) {
+    if (capturedPieces.isEmpty) {
+      _setCustodianCaptureState(color, 0, 0);
+      return 0;
+    }
+
+    int targets = 0;
+    for (final int square in capturedPieces) {
+      targets |= squareBb(square);
+    }
+
+    final int allowedRemovals = DB().ruleSettings.mayRemoveMultiple
+        ? capturedPieces.length
+        : 1;
+
+    _setCustodianCaptureState(color, targets, allowedRemovals);
+
+    return allowedRemovals;
+  }
+
+  bool _checkCustodianCapture(
+    int sq,
+    PieceColor us,
+    List<int> capturedPieces,
+  ) {
+    capturedPieces.clear();
+
+    final RuleSettings ruleSettings = DB().ruleSettings;
+
+    if (!ruleSettings.enableCustodianCapture) {
+      return false;
+    }
+
+    final bool placingPhase = phase == Phase.placing;
+    final bool movingPhase = phase == Phase.moving;
+
+    if ((placingPhase && !ruleSettings.custodianCaptureInPlacingPhase) ||
+        (movingPhase && !ruleSettings.custodianCaptureInMovingPhase) ||
+        (!placingPhase && !movingPhase)) {
+      return false;
+    }
+
+    if (ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3 &&
+        pieceOnBoardCount[us]! > 3) {
+      return false;
+    }
+
+    int captured = 0;
+
+    void processLine(List<int> line) {
+      if (sq == line[0]) {
+        final int middle = line[1];
+        final int far = line[2];
+
+        if (_board[middle] == us.opponent && _board[far] == us) {
+          captured |= squareBb(middle);
+        }
+      } else if (sq == line[2]) {
+        final int middle = line[1];
+        final int far = line[0];
+
+        if (_board[middle] == us.opponent && _board[far] == us) {
+          captured |= squareBb(middle);
+        }
+      }
+    }
+
+    if (ruleSettings.custodianCaptureOnSquareEdges) {
+      for (final List<int> line in _custodianSquareEdgeLines) {
+        processLine(line);
+      }
+    }
+
+    if (ruleSettings.custodianCaptureOnCrossLines) {
+      for (final List<int> line in _custodianCrossLines) {
+        processLine(line);
+      }
+    }
+
+    if (ruleSettings.hasDiagonalLines &&
+        ruleSettings.custodianCaptureOnDiagonalLines) {
+      for (final List<int> line in _custodianDiagonalLines) {
+        processLine(line);
+      }
+    }
+
+    if (captured == 0) {
+      return false;
+    }
+
+    int validTargets = 0;
+
+    for (int target = sqBegin; target < sqEnd; ++target) {
+      final int mask = squareBb(target);
+
+      if ((captured & mask) == 0) {
+        continue;
+      }
+
+      if (_board[target] != us.opponent) {
+        continue;
+      }
+
+      if (!ruleSettings.mayRemoveFromMillsAlways &&
+          _potentialMillsCount(target, PieceColor.nobody) > 0 &&
+          !_isAllInMills(us.opponent)) {
+        continue;
+      }
+
+      validTargets |= mask;
+    }
+
+    if (validTargets == 0) {
+      return false;
+    }
+
+    for (int target = sqBegin; target < sqEnd; ++target) {
+      if ((validTargets & squareBb(target)) != 0) {
+        capturedPieces.add(target);
+      }
+    }
+
+    return capturedPieces.isNotEmpty;
+  }
+
+  int _applyCustodianCapture(int sq, PieceColor us) {
+    final List<int> captured = <int>[];
+
+    if (!_checkCustodianCapture(sq, us, captured)) {
+      _setCustodianCaptureState(us, 0, 0);
+      return 0;
+    }
+
+    return _activateCustodianCapture(us, captured);
+  }
+
+  bool _validateCustodianFen(String data) {
+    if (data.isEmpty) {
+      return true;
+    }
+
+    final List<String> segments = data.split('|');
+
+    for (final String rawSegment in segments) {
+      final String segment = rawSegment.trim();
+
+      if (segment.isEmpty) {
+        continue;
+      }
+
+      if (segment.length < 3 || segment[1] != '-') {
+        logger.e('Invalid custodian capture segment: $segment');
+        return false;
+      }
+
+      final String colorChar = segment[0];
+      if (colorChar != 'w' && colorChar != 'b') {
+        logger.e('Invalid custodian capture color: $colorChar');
+        return false;
+      }
+
+      final int secondDash = segment.indexOf('-', 2);
+      if (secondDash == -1) {
+        logger.e('Invalid custodian capture segment: $segment');
+        return false;
+      }
+
+      final String countStr = segment.substring(2, secondDash).trim();
+      if (int.tryParse(countStr) == null) {
+        logger.e('Invalid custodian capture count: $countStr');
+        return false;
+      }
+
+      final String listStr = segment.substring(secondDash + 1);
+      if (listStr.isEmpty) {
+        continue;
+      }
+
+      for (final String token in listStr.split('.')) {
+        final String squareText = token.trim();
+        if (squareText.isEmpty) {
+          continue;
+        }
+
+        final int? squareValue = int.tryParse(squareText);
+        if (squareValue == null || squareValue < sqBegin || squareValue >= sqEnd) {
+          logger.e('Invalid custodian capture target: $squareText');
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  void _parseCustodianFen(String data) {
+    final Map<PieceColor, int> targets = <PieceColor, int>{
+      PieceColor.white: 0,
+      PieceColor.black: 0,
+    };
+    final Map<PieceColor, int> counts = <PieceColor, int>{
+      PieceColor.white: 0,
+      PieceColor.black: 0,
+    };
+    final Map<PieceColor, bool> hasColor = <PieceColor, bool>{
+      PieceColor.white: false,
+      PieceColor.black: false,
+    };
+
+    if (data.isEmpty) {
+      for (final PieceColor color
+          in <PieceColor>[PieceColor.white, PieceColor.black]) {
+        _setCustodianCaptureState(color, 0, 0);
+      }
+      return;
+    }
+
+    final List<String> segments = data.split('|');
+
+    for (final String rawSegment in segments) {
+      final String segment = rawSegment.trim();
+
+      if (segment.isEmpty || segment.length < 3 || segment[1] != '-') {
+        continue;
+      }
+
+      PieceColor? color;
+      switch (segment[0]) {
+        case 'w':
+          color = PieceColor.white;
+          break;
+        case 'b':
+          color = PieceColor.black;
+          break;
+        default:
+          color = null;
+          break;
+      }
+
+      if (color == null) {
+        continue;
+      }
+
+      final int secondDash = segment.indexOf('-', 2);
+      if (secondDash == -1) {
+        continue;
+      }
+
+      final int? parsedCount =
+          int.tryParse(segment.substring(2, secondDash).trim());
+      if (parsedCount == null) {
+        continue;
+      }
+
+      int targetMask = 0;
+      final String listStr = segment.substring(secondDash + 1);
+
+      if (listStr.isNotEmpty) {
+        for (final String token in listStr.split('.')) {
+          final String sqText = token.trim();
+          if (sqText.isEmpty) {
+            continue;
+          }
+
+          final int? squareValue = int.tryParse(sqText);
+          if (squareValue == null ||
+              squareValue < sqBegin ||
+              squareValue >= sqEnd) {
+            continue;
+          }
+
+          targetMask |= squareBb(squareValue);
+        }
+      }
+
+      targets[color] = targetMask;
+      counts[color] = parsedCount;
+      hasColor[color] = true;
+    }
+
+    for (final PieceColor color
+        in <PieceColor>[PieceColor.white, PieceColor.black]) {
+      if (hasColor[color]!) {
+        _setCustodianCaptureState(color, targets[color]!, counts[color]!);
+      } else {
+        _setCustodianCaptureState(color, 0, 0);
+      }
+    }
+  }
+
   ///////////////////////////////////////////////////////////////////////////////
 
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
@@ -1735,6 +2265,11 @@ extension SetupPosition on Position {
     pieceToRemoveCount[PieceColor.white] = 0;
     pieceToRemoveCount[PieceColor.black] = 0;
 
+    _custodianCaptureTargets[PieceColor.white] = 0;
+    _custodianCaptureTargets[PieceColor.black] = 0;
+    _custodianRemovalCount[PieceColor.white] = 0;
+    _custodianRemovalCount[PieceColor.black] = 0;
+
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
 
@@ -1807,6 +2342,15 @@ extension SetupPosition on Position {
         pos.pieceToRemoveCount[PieceColor.white]!;
     pieceToRemoveCount[PieceColor.black] =
         pos.pieceToRemoveCount[PieceColor.black]!;
+
+    _custodianCaptureTargets[PieceColor.white] =
+        pos._custodianCaptureTargets[PieceColor.white]!;
+    _custodianCaptureTargets[PieceColor.black] =
+        pos._custodianCaptureTargets[PieceColor.black]!;
+    _custodianRemovalCount[PieceColor.white] =
+        pos._custodianRemovalCount[PieceColor.white]!;
+    _custodianRemovalCount[PieceColor.black] =
+        pos._custodianRemovalCount[PieceColor.black]!;
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
