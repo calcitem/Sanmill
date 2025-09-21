@@ -113,10 +113,16 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     // illegal removes that Dart-side will reject (leading to "no move").
     const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
     const int custodianCount = pos.custodianRemovalCount[us];
-    if (custodianCount > 0 && custodianTargets != 0) {
+    const Bitboard interventionTargets = pos.interventionCaptureTargets[us];
+    const int interventionCount = pos.interventionRemovalCount[us];
+
+    const Bitboard combinedTargets = custodianTargets | interventionTargets;
+    const int captureCount = custodianCount + interventionCount;
+
+    if (captureCount > 0 && combinedTargets != 0) {
         for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
             const Bitboard mask = square_bb(s);
-            if ((custodianTargets & mask) &&
+            if ((combinedTargets & mask) &&
                 (pos.get_board()[s] & make_piece(them))) {
                 assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
@@ -167,14 +173,14 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     // 3) If there are remaining removals beyond custodian capture,
     // generate regular mill-based removal moves
     const int totalRemovals = pos.pieceToRemoveCount[us];
-    if (totalRemovals > custodianCount) {
+    if (totalRemovals > captureCount) {
         // Handle general removal (not all in mills) for remaining removals
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             const Square s = MoveList<LEGAL>::movePriorityList[i];
 
             // Skip if this is already a custodian capture target
             const Bitboard mask = square_bb(s);
-            if (custodianTargets & mask) {
+            if (combinedTargets & mask) {
                 continue;
             }
 
