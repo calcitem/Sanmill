@@ -189,6 +189,8 @@ public:
 
     bool checkCustodianCapture(Square sq, Color us,
                                std::vector<Square> &capturedPieces) const;
+    bool checkInterventionCapture(Square sq, Color us,
+                                  std::vector<Square> &capturedPieces) const;
 
     bool remove_piece(File f, Rank r);
     bool remove_piece(Square s, bool updateRecord = false);
@@ -207,8 +209,11 @@ public:
     bool can_move_during_placing_phase() const;
 
     void setCustodianCaptureState(Color color, Bitboard targets, int count);
+    void setInterventionCaptureState(Color color, Bitboard targets, int count);
     int activateCustodianCapture(Color color,
                                  const std::vector<Square> &capturedPieces);
+    int activateInterventionCapture(Color color,
+                                    const std::vector<Square> &capturedPieces);
 
     // Data members
     Piece board[SQUARE_EXT_NB];
@@ -246,7 +251,9 @@ public:
 
     Bitboard formedMillsBB[COLOR_NB] {0};
     Bitboard custodianCaptureTargets[COLOR_NB] {0};
+    Bitboard interventionCaptureTargets[COLOR_NB] {0};
     int custodianRemovalCount[COLOR_NB] {0};
+    int interventionRemovalCount[COLOR_NB] {0};
 
     int gamesPlayedCount {0};
 

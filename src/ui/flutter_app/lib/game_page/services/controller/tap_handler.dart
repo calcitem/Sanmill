@@ -147,15 +147,17 @@ class TapHandler {
           PlayerTimer().stop();
 
           if (GameController().position.action == Act.remove) {
-            // Check if custodian capture is active
+            // Track capture obligations for the side to move
+            final Position position = GameController().position;
+            final PieceColor sideToMoveColor = position.sideToMove;
             final bool hasCustodianCapture =
-                GameController().position._custodianRemovalCount[
-                        GameController().position.sideToMove]! >
-                    0;
+                position._custodianRemovalCount[sideToMoveColor]! > 0;
+            final bool hasInterventionCapture =
+                position._interventionRemovalCount[sideToMoveColor]! > 0;
+            final bool hasCaptureObligation =
+                hasCustodianCapture || hasInterventionCapture;
 
-            if (GameController()
-                .position
-                .isStalemateRemoval(GameController().position.sideToMove)) {
+            if (position.isStalemateRemoval(sideToMoveColor)) {
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 final String side =
@@ -165,8 +167,8 @@ class TapHandler {
               } else {
                 showTip(S.of(context).tipRemove);
               }
-            } else if (hasCustodianCapture) {
-              // For custodian capture, always show tipRemove regardless of mill formation
+            } else if (hasCaptureObligation) {
+              // For capture obligations, always show tipRemove regardless of mill formation
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 final String side =
@@ -446,18 +448,22 @@ class TapHandler {
             if (GameController().position.pieceToRemoveCount[
                     GameController().position.sideToMove]! >=
                 1) {
-              // Check if custodian capture is still active
+              // Check if any capture obligation is still active
+              final Position position = GameController().position;
+              final PieceColor sideToMoveColor = position.sideToMove;
               final bool hasCustodianCapture =
-                  GameController().position._custodianRemovalCount[
-                          GameController().position.sideToMove]! >
-                      0;
+                  position._custodianRemovalCount[sideToMoveColor]! > 0;
+              final bool hasInterventionCapture =
+                  position._interventionRemovalCount[sideToMoveColor]! > 0;
+              final bool hasCaptureObligation =
+                  hasCustodianCapture || hasInterventionCapture;
 
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 final String side =
                     controller.position.sideToMove.playerName(context);
-                if (hasCustodianCapture) {
-                  // For custodian capture, show simple remove tip
+                if (hasCaptureObligation) {
+                  // For capture obligations, show simple remove tip
                   showTip(
                       "${S.of(context).tipToMove(side)} ${S.of(context).tipRemove}");
                 } else {
@@ -466,8 +472,8 @@ class TapHandler {
                       "${S.of(context).tipToMove(side)} ${S.of(context).tipContinueMill}");
                 }
               } else {
-                if (hasCustodianCapture) {
-                  // For custodian capture, show simple remove tip
+                if (hasCaptureObligation) {
+                  // For capture obligations, show simple remove tip
                   showTip(S.of(context).tipRemove);
                 } else {
                   // For mill formation, show continue mill tip
