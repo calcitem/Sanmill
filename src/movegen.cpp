@@ -6,6 +6,16 @@
 #include "movegen.h"
 #include "mills.h"
 #include "position.h"
+#ifdef FLUTTER_UI
+#include "base.h"
+#endif
+
+// Fallback LOGD definition if not available
+#ifndef LOGD
+#define LOGD(...) printf(__VA_ARGS__)
+#endif
+
+#include <cstdio>
 
 /// generate<MOVE> generates all moves.
 /// Returns a pointer to the end of the move moves.
@@ -107,28 +117,79 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
-    // 1) If custodian capture is active, ONLY generate custodian targets.
-    // This must take precedence over any other removal rule (stalemate,
-    // all-in-mills, general removal), otherwise the engine may propose
-    // illegal removes that Dart-side will reject (leading to "no move").
+    LOGD("generate<REMOVE>: us=%d, pieceToRemoveCount[us]=%d, "
+         "removeOwnPieces=%d, removeColor=%d\n",
+         us, pos.pieceToRemoveCount[us], removeOwnPieces, removeColor);
+
     const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
     const int custodianCount = pos.custodianRemovalCount[us];
     const Bitboard interventionTargets = pos.interventionCaptureTargets[us];
     const int interventionCount = pos.interventionRemovalCount[us];
 
-    const Bitboard combinedTargets = custodianTargets | interventionTargets;
-    const int captureCount = custodianCount + interventionCount;
+    const ActiveCaptureMode mode = pos.activeCaptureMode[us];
+    const int pendingMill = pos.pendingMillRemovals[us];
+    const int performed = pos.removalsPerformed[us];
 
-    if (captureCount > 0 && combinedTargets != 0) {
+    bool allowCustodian = false;
+    bool allowIntervention = false;
+    bool allowGeneral = false;
+
+    LOGD("generate<REMOVE>: mode=%d, pendingMill=%d, performed=%d, "
+         "custodianTargets=0x%llx, custodianCount=%d, "
+         "interventionTargets=0x%llx, interventionCount=%d\n",
+         static_cast<int>(mode), pendingMill, performed,
+         static_cast<unsigned long long>(custodianTargets), custodianCount,
+         static_cast<unsigned long long>(interventionTargets),
+         interventionCount);
+
+    if (!removeOwnPieces) {
+        switch (mode) {
+        case ActiveCaptureMode::none:
+            allowCustodian = custodianTargets != 0;
+            allowIntervention = interventionTargets != 0;
+            allowGeneral = pendingMill > 0;
+            break;
+        case ActiveCaptureMode::custodian:
+            if (custodianCount > 0) {
+                allowCustodian = custodianTargets != 0;
+            } else {
+                allowGeneral = pendingMill > performed;
+            }
+            break;
+        case ActiveCaptureMode::intervention:
+            if (interventionCount > 0) {
+                allowIntervention = interventionTargets != 0;
+            } else {
+                allowGeneral = pendingMill > performed;
+            }
+            break;
+        case ActiveCaptureMode::mill:
+            allowGeneral = pendingMill > performed;
+            break;
+        }
+    }
+
+    LOGD("generate<REMOVE>: allowCustodian=%d, allowIntervention=%d, "
+         "allowGeneral=%d\n",
+         allowCustodian, allowIntervention, allowGeneral);
+
+    Bitboard specialTargets = 0;
+    if (allowCustodian) {
+        specialTargets |= custodianTargets;
+    }
+    if (allowIntervention) {
+        specialTargets |= interventionTargets;
+    }
+
+    if (specialTargets) {
         for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
             const Bitboard mask = square_bb(s);
-            if ((combinedTargets & mask) &&
+            if ((specialTargets & mask) &&
                 (pos.get_board()[s] & make_piece(them))) {
                 assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
             }
         }
-        return cur;
     }
 
     // Handle stalemate removal
@@ -170,33 +231,31 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    // 3) If there are remaining removals beyond custodian capture,
-    // generate regular mill-based removal moves
-    const int totalRemovals = pos.pieceToRemoveCount[us];
-    if (totalRemovals > captureCount) {
-        // Handle general removal (not all in mills) for remaining removals
+    if (allowGeneral) {
+        int movesAdded = 0;
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             const Square s = MoveList<LEGAL>::movePriorityList[i];
-
-            // Skip if this is already a custodian capture target
             const Bitboard mask = square_bb(s);
-            if (combinedTargets & mask) {
+
+            if (specialTargets & mask) {
                 continue;
             }
 
-            // Check if the square has a piece of the color to remove
             if (pos.get_board()[s] & make_piece(removeColor)) {
-                // If the rule allows removing from mills always
-                // or the piece is not part of a potential mill, allow removal
                 if (rule.mayRemoveFromMillsAlways ||
                     !pos.potential_mills_count(s, NOBODY)) {
                     assert(cur < moveList + MAX_MOVES);
                     *cur++ = static_cast<Move>(-s);
+                    movesAdded++;
                 }
             }
         }
+        LOGD("generate<REMOVE>: allowGeneral=true, added %d general moves\n",
+             movesAdded);
     }
 
+    const int totalMoves = static_cast<int>(cur - moveList);
+    LOGD("generate<REMOVE>: returning %d total moves\n", totalMoves);
     return cur;
 }
 
