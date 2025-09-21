@@ -50,6 +50,13 @@ struct StateInfo
 /// traversing the search tree.
 class Thread;
 
+enum class ActiveCaptureMode {
+    none = 0,
+    mill,
+    custodian,
+    intervention,
+};
+
 class Position
 {
 public:
@@ -212,8 +219,12 @@ public:
     void setInterventionCaptureState(Color color, Bitboard targets, int count);
     int activateCustodianCapture(Color color,
                                  const std::vector<Square> &capturedPieces);
-    int activateInterventionCapture(Color color,
+    int activateInterventionCapture(Color color, Square center,
                                     const std::vector<Square> &capturedPieces);
+    void initializeRemovalState(Color color, int millRemovals,
+                                int custodianRemovals,
+                                int interventionRemovals);
+    void clearInterventionPairMap(Color color);
 
     // Data members
     Piece board[SQUARE_EXT_NB];
@@ -254,6 +265,14 @@ public:
     Bitboard interventionCaptureTargets[COLOR_NB] {0};
     int custodianRemovalCount[COLOR_NB] {0};
     int interventionRemovalCount[COLOR_NB] {0};
+    int pendingMillRemovals[COLOR_NB] {0};
+    int removalQuota[COLOR_NB] {0};
+    int removalsPerformed[COLOR_NB] {0};
+    ActiveCaptureMode activeCaptureMode[COLOR_NB] {ActiveCaptureMode::none,
+                                                   ActiveCaptureMode::none,
+                                                   ActiveCaptureMode::none};
+    Square interventionPairMate[COLOR_NB][SQUARE_EXT_NB] {};
+    Square interventionForcedPartner[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
 
     int gamesPlayedCount {0};
 
