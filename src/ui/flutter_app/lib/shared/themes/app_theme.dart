@@ -85,6 +85,8 @@ class AppTheme {
     // Adjust the text theme to fit the light background if necessary
     dividerTheme: _dividerTheme,
     switchTheme: _lightSwitchTheme,
+    checkboxTheme: _buildCheckboxTheme(_colorScheme),
+    radioTheme: _buildRadioTheme(_colorScheme),
     // Other theme settings...
   );
 
@@ -116,6 +118,8 @@ class AppTheme {
     // Adjust the text theme to fit the dark background if necessary
     dividerTheme: _dividerTheme,
     switchTheme: _darkSwitchTheme,
+    checkboxTheme: _buildCheckboxTheme(_darkColorScheme),
+    radioTheme: _buildRadioTheme(_darkColorScheme),
     // Other theme settings...
   );
 
@@ -233,6 +237,53 @@ class AppTheme {
           .transparent; // Usually there is no need to set the outer edge color
     }),
   );
+
+  static CheckboxThemeData _buildCheckboxTheme(ColorScheme colorScheme) {
+    return CheckboxThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+      side: WidgetStateBorderSide.resolveWith((
+        Set<WidgetState> states,
+      ) {
+        if (states.contains(WidgetState.disabled)) {
+          return BorderSide(
+            color: colorScheme.onSurface.withValues(alpha: 0.38),
+          );
+        }
+        return BorderSide(
+          color: colorScheme.primary,
+          width: 2,
+        );
+      }),
+      fillColor:
+          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme.onSurface.withValues(alpha: 0.12);
+          }
+          return Colors.transparent;
+        }
+        if (states.contains(WidgetState.selected)) {
+          return colorScheme.primary;
+        }
+        return Colors.transparent;
+      }),
+      checkColor: WidgetStateProperty.all<Color>(colorScheme.onPrimary),
+    );
+  }
+
+  static RadioThemeData _buildRadioTheme(ColorScheme colorScheme) {
+    return RadioThemeData(
+      fillColor:
+          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
+          return colorScheme.onSurface.withValues(alpha: 0.38);
+        }
+        return colorScheme.primary;
+      }),
+    );
+  }
 
   static final AppBarTheme appBarTheme = AppBarTheme(
     backgroundColor:

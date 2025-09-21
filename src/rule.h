@@ -33,6 +33,24 @@ enum class StalemateAction {
     endWithStalemateDraw = 4,
 };
 
+struct CaptureRuleConfig
+{
+    // Whether the capture rule is active.
+    bool enabled;
+
+    // Applicable line segments.
+    bool onSquareEdges;
+    bool onCrossLines;
+    bool onDiagonalLines;
+
+    // Applicable phases.
+    bool inPlacingPhase;
+    bool inMovingPhase;
+
+    // Restriction based on the remaining number of pieces.
+    bool onlyAvailableWhenOwnPiecesLeq3;
+};
+
 // The rule struct manages the various variants of the rules.
 struct Rule
 {
@@ -86,6 +104,11 @@ struct Rule
 
     // What action follows when no piece can be moved?
     StalemateAction stalemateAction;
+
+    // Capture rules that remove pieces without forming mills.
+    CaptureRuleConfig custodianCapture;
+    CaptureRuleConfig interventionCapture;
+    CaptureRuleConfig leapCapture;
 
     // Player may fly if he is down to three or four (configurable) pieces.
     // If a player has only three or four (configurable) pieces left,

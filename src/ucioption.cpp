@@ -176,6 +176,112 @@ static void on_stalemateAction(const Option &o)
     rule.stalemateAction = static_cast<StalemateAction>(static_cast<int>(o));
 }
 
+static void on_enableCustodianCapture(const Option &o)
+{
+    rule.custodianCapture.enabled = static_cast<bool>(o);
+}
+
+static void on_custodianCaptureOnSquareEdges(const Option &o)
+{
+    rule.custodianCapture.onSquareEdges = static_cast<bool>(o);
+}
+
+static void on_custodianCaptureOnCrossLines(const Option &o)
+{
+    rule.custodianCapture.onCrossLines = static_cast<bool>(o);
+}
+
+static void on_custodianCaptureOnDiagonalLines(const Option &o)
+{
+    rule.custodianCapture.onDiagonalLines = static_cast<bool>(o);
+}
+
+static void on_custodianCaptureInPlacingPhase(const Option &o)
+{
+    rule.custodianCapture.inPlacingPhase = static_cast<bool>(o);
+}
+
+static void on_custodianCaptureInMovingPhase(const Option &o)
+{
+    rule.custodianCapture.inMovingPhase = static_cast<bool>(o);
+}
+
+static void on_custodianCaptureOnlyWhenOwnPiecesLeq3(const Option &o)
+{
+    rule.custodianCapture.onlyAvailableWhenOwnPiecesLeq3 = static_cast<bool>(o);
+}
+
+static void on_enableInterventionCapture(const Option &o)
+{
+    rule.interventionCapture.enabled = static_cast<bool>(o);
+}
+
+static void on_interventionCaptureOnSquareEdges(const Option &o)
+{
+    rule.interventionCapture.onSquareEdges = static_cast<bool>(o);
+}
+
+static void on_interventionCaptureOnCrossLines(const Option &o)
+{
+    rule.interventionCapture.onCrossLines = static_cast<bool>(o);
+}
+
+static void on_interventionCaptureOnDiagonalLines(const Option &o)
+{
+    rule.interventionCapture.onDiagonalLines = static_cast<bool>(o);
+}
+
+static void on_interventionCaptureInPlacingPhase(const Option &o)
+{
+    rule.interventionCapture.inPlacingPhase = static_cast<bool>(o);
+}
+
+static void on_interventionCaptureInMovingPhase(const Option &o)
+{
+    rule.interventionCapture.inMovingPhase = static_cast<bool>(o);
+}
+
+static void on_interventionCaptureOnlyWhenOwnPiecesLeq3(const Option &o)
+{
+    rule.interventionCapture.onlyAvailableWhenOwnPiecesLeq3 = static_cast<bool>(
+        o);
+}
+
+static void on_enableLeapCapture(const Option &o)
+{
+    rule.leapCapture.enabled = static_cast<bool>(o);
+}
+
+static void on_leapCaptureOnSquareEdges(const Option &o)
+{
+    rule.leapCapture.onSquareEdges = static_cast<bool>(o);
+}
+
+static void on_leapCaptureOnCrossLines(const Option &o)
+{
+    rule.leapCapture.onCrossLines = static_cast<bool>(o);
+}
+
+static void on_leapCaptureOnDiagonalLines(const Option &o)
+{
+    rule.leapCapture.onDiagonalLines = static_cast<bool>(o);
+}
+
+static void on_leapCaptureInPlacingPhase(const Option &o)
+{
+    rule.leapCapture.inPlacingPhase = static_cast<bool>(o);
+}
+
+static void on_leapCaptureInMovingPhase(const Option &o)
+{
+    rule.leapCapture.inMovingPhase = static_cast<bool>(o);
+}
+
+static void on_leapCaptureOnlyWhenOwnPiecesLeq3(const Option &o)
+{
+    rule.leapCapture.onlyAvailableWhenOwnPiecesLeq3 = static_cast<bool>(o);
+}
+
 static void on_mayFly(const Option &o)
 {
     rule.mayFly = static_cast<bool>(o);
@@ -260,6 +366,43 @@ void init(OptionsMap &o)
     o["RestrictRepeatedMillsFormation"]
         << Option(false, on_restrictRepeatedMillsFormation);
     o["OneTimeUseMill"] << Option(false, on_oneTimeUseMill);
+    o["CustodianCaptureEnabled"] << Option(false, on_enableCustodianCapture);
+    o["CustodianCaptureOnSquareEdges"]
+        << Option(true, on_custodianCaptureOnSquareEdges);
+    o["CustodianCaptureOnCrossLines"]
+        << Option(true, on_custodianCaptureOnCrossLines);
+    o["CustodianCaptureOnDiagonalLines"]
+        << Option(true, on_custodianCaptureOnDiagonalLines);
+    o["CustodianCaptureInPlacingPhase"]
+        << Option(true, on_custodianCaptureInPlacingPhase);
+    o["CustodianCaptureInMovingPhase"]
+        << Option(true, on_custodianCaptureInMovingPhase);
+    o["CustodianCaptureOnlyWhenOwnPiecesLeq3"]
+        << Option(false, on_custodianCaptureOnlyWhenOwnPiecesLeq3);
+    o["InterventionCaptureEnabled"]
+        << Option(false, on_enableInterventionCapture);
+    o["InterventionCaptureOnSquareEdges"]
+        << Option(true, on_interventionCaptureOnSquareEdges);
+    o["InterventionCaptureOnCrossLines"]
+        << Option(true, on_interventionCaptureOnCrossLines);
+    o["InterventionCaptureOnDiagonalLines"]
+        << Option(true, on_interventionCaptureOnDiagonalLines);
+    o["InterventionCaptureInPlacingPhase"]
+        << Option(true, on_interventionCaptureInPlacingPhase);
+    o["InterventionCaptureInMovingPhase"]
+        << Option(true, on_interventionCaptureInMovingPhase);
+    o["InterventionCaptureOnlyWhenOwnPiecesLeq3"]
+        << Option(false, on_interventionCaptureOnlyWhenOwnPiecesLeq3);
+    o["LeapCaptureEnabled"] << Option(false, on_enableLeapCapture);
+    o["LeapCaptureOnSquareEdges"] << Option(true, on_leapCaptureOnSquareEdges);
+    o["LeapCaptureOnCrossLines"] << Option(true, on_leapCaptureOnCrossLines);
+    o["LeapCaptureOnDiagonalLines"]
+        << Option(true, on_leapCaptureOnDiagonalLines);
+    o["LeapCaptureInPlacingPhase"]
+        << Option(true, on_leapCaptureInPlacingPhase);
+    o["LeapCaptureInMovingPhase"] << Option(true, on_leapCaptureInMovingPhase);
+    o["LeapCaptureOnlyWhenOwnPiecesLeq3"]
+        << Option(false, on_leapCaptureOnlyWhenOwnPiecesLeq3);
     o["BoardFullAction"] << Option(
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::firstPlayerLose),
