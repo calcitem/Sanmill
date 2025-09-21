@@ -1595,13 +1595,18 @@ class Position {
       }
     }
 
-    if (isStalemateRemoval(sideToMove)) {
+    if (isStalemateRemoval(sideToMove) &&
+        _activeCaptureMode[sideToMove] != ActiveCaptureMode.intervention &&
+        _activeCaptureMode[sideToMove] != ActiveCaptureMode.custodian) {
       if (isAdjacentTo(s, sideToMove) == false) {
         return const CanNotRemoveNonadjacent();
       }
     } else if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
-        !_isAllInMills(sideToMove.opponent)) {
+        !_isAllInMills(sideToMove.opponent) &&
+        // Skip all-in-mills check if we have active intervention/custodian captures
+        _activeCaptureMode[sideToMove] != ActiveCaptureMode.intervention &&
+        _activeCaptureMode[sideToMove] != ActiveCaptureMode.custodian) {
       return const CanNotRemoveMill();
     }
 
