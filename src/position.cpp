@@ -1535,11 +1535,13 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 setInterventionCaptureState(sideToMove, 0, 0);
                 forcedPartner = SQ_NONE;
             } else {
-                if (pendingMill <= 0) {
-                    return false;
+                if (pendingMill > 0) {
+                    mode = ActiveCaptureMode::mill;
+                    quota = pendingMill;
+                } else {
+                    const int remaining = pieceToRemoveCount[sideToMove];
+                    quota = std::max(quota, remaining);
                 }
-                mode = ActiveCaptureMode::mill;
-                quota = pendingMill;
                 setCustodianCaptureState(sideToMove, 0, 0);
                 setInterventionCaptureState(sideToMove, 0, 0);
                 forcedPartner = SQ_NONE;
