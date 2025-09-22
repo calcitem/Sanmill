@@ -1456,23 +1456,30 @@ class Position {
       int custodianCount() => _custodianRemovalCount[sideToMove]!;
       int interventionCount() => _interventionRemovalCount[sideToMove]!;
 
+      final bool removingCustodianPiece =
+          isCustodianTarget && custodianCount() > 0;
+      final bool removingInterventionPiece =
+          isInterventionTarget && interventionCount() > 0;
+
       if (mode == ActiveCaptureMode.none) {
         if (isInterventionTarget && interventionCount() > 0) {
           mode = ActiveCaptureMode.intervention;
-          quota = interventionCount() > 2 ? interventionCount() : 2;
+          final int requiredIntervention =
+              interventionCount() > 2 ? interventionCount() : 2;
+          quota = quota > requiredIntervention ? quota : requiredIntervention;
           _pendingMillRemovals[sideToMove] = 0;
           _setCustodianCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else if (isCustodianTarget && custodianCount() > 0) {
           mode = ActiveCaptureMode.custodian;
-          quota =
-              pendingMill > custodianCount() ? pendingMill : custodianCount();
+          final int totalQuota = pendingMill + custodianCount();
+          quota = quota > totalQuota ? quota : totalQuota;
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else {
           if (pendingMill > 0) {
             mode = ActiveCaptureMode.mill;
-            quota = pendingMill;
+            quota = quota > pendingMill ? quota : pendingMill;
           } else {
             final int remaining = pieceToRemoveCount[sideToMove]!;
             quota = quota > remaining ? quota : remaining;
@@ -1499,10 +1506,6 @@ class Position {
               if (isCaptureTarget) {
                 return const IllegalAction();
               }
-              if (pendingMill <= performed &&
-                  pieceToRemoveCount[sideToMove]! <= 0) {
-                return const IllegalAction();
-              }
             }
             break;
           case ActiveCaptureMode.intervention:
@@ -1512,10 +1515,6 @@ class Position {
             break;
           case ActiveCaptureMode.mill:
             if (isCaptureTarget) {
-              return const IllegalAction();
-            }
-            if (pendingMill <= performed &&
-                pieceToRemoveCount[sideToMove]! <= 0) {
               return const IllegalAction();
             }
             break;
@@ -1550,10 +1549,11 @@ class Position {
           _interventionForcedPartner[sideToMove] = -1;
         }
       } else if (mode == ActiveCaptureMode.custodian && performed == 0) {
-        final int updatedQuota =
-            pendingMill > custodianCount() ? pendingMill : custodianCount();
-        quota = updatedQuota;
-        _removalQuota[sideToMove] = quota;
+        final int updatedQuota = pendingMill + custodianCount();
+        if (updatedQuota > quota) {
+          quota = updatedQuota;
+          _removalQuota[sideToMove] = quota;
+        }
         pieceToRemoveCount[sideToMove] =
             quota - performed > 0 ? quota - performed : 0;
       }
@@ -1649,6 +1649,14 @@ class Position {
     }
 
     _currentSquare[sideToMove] = 0;
+
+    if (!removingCustodianPiece &&
+        !removingInterventionPiece &&
+        _pendingMillRemovals[sideToMove]! > 0) {
+      final int updatedPending = _pendingMillRemovals[sideToMove]! - 1;
+      _pendingMillRemovals[sideToMove] =
+          updatedPending > 0 ? updatedPending : 0;
+    }
 
     if (pieceToRemoveCount[sideToMove]! > 0) {
       final int performed = _removalsPerformed[sideToMove]! + 1;
@@ -2034,13 +2042,8 @@ class Position {
     final int interventionAllowed =
         interventionRemovals.clamp(0, _kMaxInterventionRemoval);
 
-    int totalAllowed = millAllowed;
-    if (custodianAllowed > totalAllowed) {
-      totalAllowed = custodianAllowed;
-    }
-    if (interventionAllowed > totalAllowed) {
-      totalAllowed = interventionAllowed;
-    }
+    final int totalAllowed =
+        millAllowed + custodianAllowed + interventionAllowed;
 
     _pendingMillRemovals[color] = millAllowed;
     _removalsPerformed[color] = 0;
