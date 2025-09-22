@@ -407,6 +407,14 @@ class Position {
 
     appendCapture('c', _custodianRemovalCount, _custodianCaptureTargets);
     appendCapture('i', _interventionRemovalCount, _interventionCaptureTargets);
+    appendCapture(
+      'm',
+      _pendingMillRemovals,
+      <PieceColor, int>{
+        PieceColor.white: 0,
+        PieceColor.black: 0,
+      },
+    );
 
     logger.t("FEN is $buffer");
 
@@ -425,6 +433,7 @@ class Position {
     final List<int> extraIndices = <int>[
       trimmedFen.indexOf(' c:'),
       trimmedFen.indexOf(' i:'),
+      trimmedFen.indexOf(' m:'),
     ].where((int index) => index >= 0).toList();
 
     int firstExtra = trimmedFen.length;
@@ -443,6 +452,7 @@ class Position {
 
     String custodianData = '';
     String interventionData = '';
+    String millData = '';
     if (extras.isNotEmpty) {
       final List<String> tokens = extras.split(RegExp(r'\s+'));
       for (final String token in tokens) {
@@ -450,6 +460,8 @@ class Position {
           custodianData = token.substring(2);
         } else if (token.startsWith('i:')) {
           interventionData = token.substring(2);
+        } else if (token.startsWith('m:')) {
+          millData = token.substring(2);
         }
       }
     }
@@ -562,27 +574,38 @@ class Position {
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
     _record = null;
 
-    _parseCustodianFen(custodianData);
-    _parseInterventionFen(interventionData);
+    final Map<PieceColor, int> custodianCounts =
+        _parseCustodianFen(custodianData);
+    final Map<PieceColor, int> interventionCounts =
+        _parseInterventionFen(interventionData);
+    final Map<PieceColor, int> millCounts = _parseMillFen(millData);
+
+    final bool hasMillData = millData.isNotEmpty;
 
     // Initialize removal state based on actual capture data after parsing
     if (action == Act.remove) {
       for (final PieceColor color in [PieceColor.white, PieceColor.black]) {
         if (pieceToRemoveCount[color]! > 0) {
-          final int custodianCount = _custodianRemovalCount[color] ?? 0;
-          final int interventionCount = _interventionRemovalCount[color] ?? 0;
+          final int custodianCount = custodianCounts[color] ?? 0;
+          final int interventionCount = interventionCounts[color] ?? 0;
 
-          // Calculate mill removals as the remainder after subtracting capture removals
-          final int totalCaptureRemovals =
-              max(custodianCount, 0) + max(interventionCount, 0);
-          final int millRemovals =
-              max(0, pieceToRemoveCount[color]! - totalCaptureRemovals);
+          final int millRemovals = hasMillData
+              ? (millCounts[color] ?? 0)
+              : max(
+                  0,
+                  pieceToRemoveCount[color]! -
+                      (max(custodianCount, 0) + max(interventionCount, 0)),
+                );
 
           logger.d(
               'FEN loading: Initializing removal state for color $color: mill=$millRemovals, custodian=$custodianCount, intervention=$interventionCount (total pieceToRemoveCount=${pieceToRemoveCount[color]})');
 
           _initializeRemovalState(
-              color, millRemovals, custodianCount, interventionCount);
+            color,
+            millRemovals,
+            custodianCount,
+            interventionCount,
+          );
         }
       }
     }
@@ -596,6 +619,7 @@ class Position {
     final List<int> extraIndices = <int>[
       trimmedFen.indexOf(' c:'),
       trimmedFen.indexOf(' i:'),
+      trimmedFen.indexOf(' m:'),
     ].where((int index) => index >= 0).toList();
 
     int firstExtra = trimmedFen.length;
@@ -614,6 +638,7 @@ class Position {
 
     String custodianData = '';
     String interventionData = '';
+    String millData = '';
     if (extras.isNotEmpty) {
       final List<String> tokens = extras.split(RegExp(r'\s+'));
       for (final String token in tokens) {
@@ -621,6 +646,8 @@ class Position {
           custodianData = token.substring(2);
         } else if (token.startsWith('i:')) {
           interventionData = token.substring(2);
+        } else if (token.startsWith('m:')) {
+          millData = token.substring(2);
         }
       }
     }
@@ -770,6 +797,10 @@ class Position {
     }
 
     if (!_validateInterventionFen(interventionData)) {
+      return false;
+    }
+
+    if (!_validateMillFen(millData)) {
       return false;
     }
 
@@ -2552,7 +2583,65 @@ class Position {
     return true;
   }
 
-  void _parseCustodianFen(String data) {
+  bool _validateMillFen(String data) {
+    if (data.isEmpty) {
+      return true;
+    }
+
+    final List<String> segments = data.split('|');
+
+    for (final String rawSegment in segments) {
+      final String segment = rawSegment.trim();
+
+      if (segment.isEmpty) {
+        continue;
+      }
+
+      if (segment.length < 3 || segment[1] != '-') {
+        logger.e('Invalid mill capture segment: $segment');
+        return false;
+      }
+
+      final String colorChar = segment[0];
+      if (colorChar != 'w' && colorChar != 'b') {
+        logger.e('Invalid mill capture color: $colorChar');
+        return false;
+      }
+
+      final int secondDash = segment.indexOf('-', 2);
+      if (secondDash == -1) {
+        logger.e('Invalid mill capture segment: $segment');
+        return false;
+      }
+
+      final String countStr = segment.substring(2, secondDash).trim();
+      if (int.tryParse(countStr) == null) {
+        logger.e('Invalid mill capture count: $countStr');
+        return false;
+      }
+
+      final String listStr = segment.substring(secondDash + 1);
+      if (listStr.isEmpty) {
+        continue;
+      }
+
+      for (final String token in listStr.split('.')) {
+        final String squareText = token.trim();
+        if (squareText.isEmpty) {
+          continue;
+        }
+
+        if (int.tryParse(squareText) == null) {
+          logger.e('Invalid mill capture data: $squareText');
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  Map<PieceColor, int> _parseCustodianFen(String data) {
     final Map<PieceColor, int> targets = <PieceColor, int>{
       PieceColor.white: 0,
       PieceColor.black: 0,
@@ -2573,7 +2662,7 @@ class Position {
       ]) {
         _setCustodianCaptureState(color, 0, 0);
       }
-      return;
+      return counts;
     }
 
     final List<String> segments = data.split('|');
@@ -2649,9 +2738,11 @@ class Position {
         _setCustodianCaptureState(color, 0, 0);
       }
     }
+
+    return counts;
   }
 
-  void _parseInterventionFen(String data) {
+  Map<PieceColor, int> _parseInterventionFen(String data) {
     final Map<PieceColor, int> targets = <PieceColor, int>{
       PieceColor.white: 0,
       PieceColor.black: 0,
@@ -2672,7 +2763,7 @@ class Position {
       ]) {
         _setInterventionCaptureState(color, 0, 0);
       }
-      return;
+      return counts;
     }
 
     final List<String> segments = data.split('|');
@@ -2748,6 +2839,74 @@ class Position {
         _setInterventionCaptureState(color, 0, 0);
       }
     }
+
+    return counts;
+  }
+
+  Map<PieceColor, int> _parseMillFen(String data) {
+    final Map<PieceColor, int> counts = <PieceColor, int>{
+      PieceColor.white: 0,
+      PieceColor.black: 0,
+    };
+
+    if (data.isEmpty) {
+      for (final PieceColor color in <PieceColor>[
+        PieceColor.white,
+        PieceColor.black
+      ]) {
+        _pendingMillRemovals[color] = 0;
+      }
+      return counts;
+    }
+
+    final List<String> segments = data.split('|');
+
+    for (final String rawSegment in segments) {
+      final String segment = rawSegment.trim();
+
+      if (segment.isEmpty || segment.length < 3 || segment[1] != '-') {
+        continue;
+      }
+
+      PieceColor? color;
+      switch (segment[0]) {
+        case 'w':
+          color = PieceColor.white;
+          break;
+        case 'b':
+          color = PieceColor.black;
+          break;
+        default:
+          color = null;
+          break;
+      }
+
+      if (color == null) {
+        continue;
+      }
+
+      final int secondDash = segment.indexOf('-', 2);
+      if (secondDash == -1) {
+        continue;
+      }
+
+      final String countStr = segment.substring(2, secondDash).trim();
+      final int? parsedCount = int.tryParse(countStr);
+      if (parsedCount == null) {
+        continue;
+      }
+
+      counts[color] = parsedCount;
+    }
+
+    for (final PieceColor color in <PieceColor>[
+      PieceColor.white,
+      PieceColor.black
+    ]) {
+      _pendingMillRemovals[color] = counts[color] ?? 0;
+    }
+
+    return counts;
   }
 
   ///////////////////////////////////////////////////////////////////////////////

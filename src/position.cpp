@@ -479,6 +479,13 @@ Position &Position::set(const string &fenStr)
     std::array<bool, COLOR_NB> interventionHasColor {};
     interventionHasColor.fill(false);
 
+    std::array<Bitboard, COLOR_NB> millTargetsParsed {};
+    millTargetsParsed.fill(0);
+    std::array<int, COLOR_NB> millCountsParsed {};
+    millCountsParsed.fill(0);
+    std::array<bool, COLOR_NB> millHasColor {};
+    millHasColor.fill(false);
+
     const auto trim = [](const std::string &input) -> std::string {
         size_t first = 0;
         size_t last = input.size();
@@ -625,6 +632,9 @@ Position &Position::set(const string &fenStr)
                 parseCaptureField(value, interventionTargetsParsed,
                                   interventionCountsParsed,
                                   interventionHasColor);
+            } else if (extraToken[0] == 'm') {
+                parseCaptureField(value, millTargetsParsed, millCountsParsed,
+                                  millHasColor);
             }
         }
     }
@@ -657,12 +667,16 @@ Position &Position::set(const string &fenStr)
                                               interventionCountsParsed[idx] :
                                               0;
 
-            // Calculate mill removals as the remainder after subtracting
-            // capture removals
-            const int totalCaptureRemovals = std::max(custodianCount, 0) +
-                                             std::max(interventionCount, 0);
-            const int millRemovals = std::max(0, pieceToRemoveCount[color] -
-                                                     totalCaptureRemovals);
+            int millRemovals = 0;
+            if (millHasColor[idx]) {
+                millRemovals = millCountsParsed[idx];
+            } else {
+                // Fallback for FEN strings without explicit mill counts
+                const int totalCaptureRemovals = std::max(custodianCount, 0) +
+                                                 std::max(interventionCount, 0);
+                millRemovals = std::max(0, pieceToRemoveCount[color] -
+                                               totalCaptureRemovals);
+            }
 
             LOGD("FEN loading: Initializing removal state for color %d: "
                  "mill=%d, custodian=%d, intervention=%d (total "
@@ -805,6 +819,9 @@ string Position::fen() const
     appendCaptureField('c', custodianCaptureTargets, custodianRemovalCount);
     appendCaptureField('i', interventionCaptureTargets,
                        interventionRemovalCount);
+
+    const std::array<Bitboard, COLOR_NB> emptyTargets {};
+    appendCaptureField('m', emptyTargets.data(), pendingMillRemovals);
 
     return ss.str();
 }
