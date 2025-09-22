@@ -150,7 +150,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         case ActiveCaptureMode::none:
             allowCustodian = custodianTargets != 0;
             allowIntervention = interventionTargets != 0;
-            if (pendingMill > performed) {
+            if (pendingMill > 0) {
                 allowGeneral = true;
             } else if (!allowCustodian && !allowIntervention &&
                        removalCount > 0) {
@@ -160,19 +160,19 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         case ActiveCaptureMode::custodian:
             if (custodianCount > 0) {
                 allowCustodian = custodianTargets != 0;
-            } else if (pendingMill > performed || removalCount > 0) {
+            } else if (pendingMill > 0 || removalCount > 0) {
                 allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::intervention:
             if (interventionCount > 0) {
                 allowIntervention = interventionTargets != 0;
-            } else if (pendingMill > performed || removalCount > 0) {
+            } else if (pendingMill > 0 || removalCount > 0) {
                 allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::mill:
-            if (pendingMill > performed || removalCount > 0) {
+            if (pendingMill > 0 || removalCount > 0) {
                 allowGeneral = true;
             }
             break;

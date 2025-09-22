@@ -1445,12 +1445,12 @@ class Position {
           (_custodianCaptureTargets[sideToMove]! & mask) != 0;
       final bool isInterventionTarget =
           (_interventionCaptureTargets[sideToMove]! & mask) != 0;
-      final bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
+      bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
       ActiveCaptureMode mode = _activeCaptureMode[sideToMove]!;
       int performed = _removalsPerformed[sideToMove]!;
       int quota = _removalQuota[sideToMove]!;
-      final int pendingMill = _pendingMillRemovals[sideToMove]!;
+      int pendingMill = _pendingMillRemovals[sideToMove]!;
       int forcedPartner = _interventionForcedPartner[sideToMove]!;
 
       int custodianCount() => _custodianRemovalCount[sideToMove]!;
@@ -1459,14 +1459,13 @@ class Position {
       if (mode == ActiveCaptureMode.none) {
         if (isInterventionTarget && interventionCount() > 0) {
           mode = ActiveCaptureMode.intervention;
-          quota = interventionCount() > 2 ? interventionCount() : 2;
-          _pendingMillRemovals[sideToMove] = 0;
+          final int interventionAllowed = interventionCount();
+          quota = pendingMill + interventionAllowed;
           _setCustodianCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else if (isCustodianTarget && custodianCount() > 0) {
           mode = ActiveCaptureMode.custodian;
-          quota =
-              pendingMill > custodianCount() ? pendingMill : custodianCount();
+          quota = pendingMill + custodianCount();
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else {
@@ -1499,23 +1498,30 @@ class Position {
               if (isCaptureTarget) {
                 return const IllegalAction();
               }
-              if (pendingMill <= performed &&
-                  pieceToRemoveCount[sideToMove]! <= 0) {
+              if (pendingMill <= 0) {
                 return const IllegalAction();
               }
             }
             break;
           case ActiveCaptureMode.intervention:
-            if (!isInterventionTarget) {
-              return const IllegalAction();
+            if (interventionCount() > 0) {
+              if (!isInterventionTarget) {
+                return const IllegalAction();
+              }
+            } else {
+              if (isCaptureTarget) {
+                return const IllegalAction();
+              }
+              if (pendingMill <= 0) {
+                return const IllegalAction();
+              }
             }
             break;
           case ActiveCaptureMode.mill:
             if (isCaptureTarget) {
               return const IllegalAction();
             }
-            if (pendingMill <= performed &&
-                pieceToRemoveCount[sideToMove]! <= 0) {
+            if (pendingMill <= 0) {
               return const IllegalAction();
             }
             break;
@@ -1525,33 +1531,33 @@ class Position {
       }
 
       if (mode == ActiveCaptureMode.intervention) {
-        if (performed == 0) {
-          final int partner = _interventionPairMate[sideToMove]![s];
-          if (partner == -1) {
-            return const IllegalAction();
+        if (interventionCount() > 0) {
+          if (performed == 0) {
+            final int partner = _interventionPairMate[sideToMove]![s];
+            if (partner == -1) {
+              return const IllegalAction();
+            }
+            forcedPartner = partner;
+            _interventionForcedPartner[sideToMove] = partner;
+            _setInterventionCaptureState(
+              sideToMove,
+              squareBb(partner),
+              1,
+            );
+            _removalQuota[sideToMove] = quota;
+            pieceToRemoveCount[sideToMove] =
+                quota - performed > 0 ? quota - performed : 0;
+          } else {
+            if (forcedPartner != s) {
+              return const IllegalAction();
+            }
+            _interventionForcedPartner[sideToMove] = -1;
           }
-          forcedPartner = partner;
-          _interventionForcedPartner[sideToMove] = partner;
-          _setInterventionCaptureState(
-            sideToMove,
-            squareBb(partner),
-            1,
-          );
-          if (quota < 2) {
-            quota = 2;
-          }
-          _removalQuota[sideToMove] = quota;
-          pieceToRemoveCount[sideToMove] =
-              quota - performed > 0 ? quota - performed : 0;
         } else {
-          if (forcedPartner != s) {
-            return const IllegalAction();
-          }
           _interventionForcedPartner[sideToMove] = -1;
         }
       } else if (mode == ActiveCaptureMode.custodian && performed == 0) {
-        final int updatedQuota =
-            pendingMill > custodianCount() ? pendingMill : custodianCount();
+        final int updatedQuota = pendingMill + custodianCount();
         quota = updatedQuota;
         _removalQuota[sideToMove] = quota;
         pieceToRemoveCount[sideToMove] =
@@ -1582,6 +1588,11 @@ class Position {
         }
 
         _setInterventionCaptureState(sideToMove, newTargets, newCount);
+      }
+
+      if (!isCaptureTarget && pendingMill > 0) {
+        pendingMill -= 1;
+        _pendingMillRemovals[sideToMove] = pendingMill;
       }
     } else {
       if (_board[s] != sideToMove) {
@@ -2029,13 +2040,8 @@ class Position {
     final int interventionAllowed =
         interventionRemovals.clamp(0, _kMaxInterventionRemoval);
 
-    int totalAllowed = millAllowed;
-    if (custodianAllowed > totalAllowed) {
-      totalAllowed = custodianAllowed;
-    }
-    if (interventionAllowed > totalAllowed) {
-      totalAllowed = interventionAllowed;
-    }
+    final int totalAllowed =
+        millAllowed + custodianAllowed + interventionAllowed;
 
     _pendingMillRemovals[color] = millAllowed;
     _removalsPerformed[color] = 0;
