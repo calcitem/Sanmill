@@ -133,6 +133,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     bool allowCustodian = false;
     bool allowIntervention = false;
     bool allowGeneral = false;
+    const int removalCount = pos.pieceToRemoveCount[us];
 
     LOGD("generate<REMOVE>: mode=%d, pendingMill=%d, performed=%d, "
          "custodianTargets=0x%llx, custodianCount=%d, "
@@ -142,33 +143,38 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
          static_cast<unsigned long long>(interventionTargets),
          interventionCount);
 
-    if (!removeOwnPieces) {
+    if (removeOwnPieces) {
+        allowGeneral = true;
+    } else {
         switch (mode) {
         case ActiveCaptureMode::none:
             allowCustodian = custodianTargets != 0;
             allowIntervention = interventionTargets != 0;
-            // Rule: Only allow general removal if mill was actually formed.
-            // Custodian/intervention presence doesn't affect general removal
-            // generation. Final mode selection (custodian/intervention/mill)
-            // happens in remove_piece().
-            allowGeneral = pendingMill > performed;
+            if (pendingMill > performed) {
+                allowGeneral = true;
+            } else if (!allowCustodian && !allowIntervention &&
+                       removalCount > 0) {
+                allowGeneral = true;
+            }
             break;
         case ActiveCaptureMode::custodian:
             if (custodianCount > 0) {
                 allowCustodian = custodianTargets != 0;
-            } else {
-                allowGeneral = pendingMill > performed;
+            } else if (pendingMill > performed || removalCount > 0) {
+                allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::intervention:
             if (interventionCount > 0) {
                 allowIntervention = interventionTargets != 0;
-            } else {
-                allowGeneral = pendingMill > performed;
+            } else if (pendingMill > performed || removalCount > 0) {
+                allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::mill:
-            allowGeneral = pendingMill > performed;
+            if (pendingMill > performed || removalCount > 0) {
+                allowGeneral = true;
+            }
             break;
         }
     }
