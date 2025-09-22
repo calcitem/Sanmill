@@ -1963,6 +1963,11 @@ class Position {
         pieceToRemoveCount[sideToMove]! < 0) {
       action = Act.remove;
     }
+
+    // Check game over conditions immediately after phase transition,
+    // specifically stalemate This ensures stalemate conditions are properly
+    // handled before the engine attempts to generate moves
+    _checkIfGameIsOver();
   }
 
   void keepSideToMove() {

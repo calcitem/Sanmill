@@ -2069,6 +2069,11 @@ inline void Position::set_side_to_move(Color c)
         pieceToRemoveCount[sideToMove] < 0) {
         action = Action::remove;
     }
+
+    // Check game over conditions immediately after phase transition,
+    // specifically stalemate This ensures stalemate conditions are properly
+    // handled before the engine attempts to generate moves
+    check_if_game_is_over();
 }
 
 inline void Position::keep_side_to_move()
