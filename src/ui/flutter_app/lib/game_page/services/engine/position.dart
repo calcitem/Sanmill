@@ -1470,11 +1470,13 @@ class Position {
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else {
-          if (pendingMill <= 0) {
-            return const IllegalAction();
+          if (pendingMill > 0) {
+            mode = ActiveCaptureMode.mill;
+            quota = pendingMill;
+          } else {
+            final int remaining = pieceToRemoveCount[sideToMove]!;
+            quota = quota > remaining ? quota : remaining;
           }
-          mode = ActiveCaptureMode.mill;
-          quota = pendingMill;
           _setCustodianCaptureState(sideToMove, 0, 0);
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
@@ -1497,7 +1499,8 @@ class Position {
               if (isCaptureTarget) {
                 return const IllegalAction();
               }
-              if (pendingMill <= performed) {
+              if (pendingMill <= performed &&
+                  pieceToRemoveCount[sideToMove]! <= 0) {
                 return const IllegalAction();
               }
             }
@@ -1511,7 +1514,8 @@ class Position {
             if (isCaptureTarget) {
               return const IllegalAction();
             }
-            if (pendingMill <= performed) {
+            if (pendingMill <= performed &&
+                pieceToRemoveCount[sideToMove]! <= 0) {
               return const IllegalAction();
             }
             break;
