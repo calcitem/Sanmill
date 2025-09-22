@@ -1433,6 +1433,7 @@ class Position {
 
     final int mask = squareBb(s);
     final int remainingRemovals = pieceToRemoveCount[sideToMove]!;
+    bool isCaptureTarget = false;
 
     if (remainingRemovals == 0) {
       return const NoPieceToRemove();
@@ -1445,7 +1446,7 @@ class Position {
           (_custodianCaptureTargets[sideToMove]! & mask) != 0;
       final bool isInterventionTarget =
           (_interventionCaptureTargets[sideToMove]! & mask) != 0;
-      final bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
+      isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
       ActiveCaptureMode mode = _activeCaptureMode[sideToMove]!;
       int performed = _removalsPerformed[sideToMove]!;
@@ -1599,18 +1600,20 @@ class Position {
       }
     }
 
-    if (isStalemateRemoval(sideToMove) &&
-        _activeCaptureMode[sideToMove] != ActiveCaptureMode.intervention &&
-        _activeCaptureMode[sideToMove] != ActiveCaptureMode.custodian) {
+    final ActiveCaptureMode currentMode =
+        _activeCaptureMode[sideToMove] ?? ActiveCaptureMode.none;
+    final bool specialCaptureActive = isCaptureTarget &&
+        (currentMode == ActiveCaptureMode.intervention ||
+            currentMode == ActiveCaptureMode.custodian);
+
+    if (isStalemateRemoval(sideToMove) && !specialCaptureActive) {
       if (isAdjacentTo(s, sideToMove) == false) {
         return const CanNotRemoveNonadjacent();
       }
     } else if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent) &&
-        // Skip all-in-mills check if we have active intervention/custodian captures
-        _activeCaptureMode[sideToMove] != ActiveCaptureMode.intervention &&
-        _activeCaptureMode[sideToMove] != ActiveCaptureMode.custodian) {
+        !specialCaptureActive) {
       return const CanNotRemoveMill();
     }
 

@@ -1511,6 +1511,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
     const int pendingMill = pendingMillRemovals[sideToMove];
     Square &forcedPartner = interventionForcedPartner[sideToMove];
 
+    bool isCaptureTarget = false;
+
     if (pieceToRemoveCount[sideToMove] == 0) {
         return false;
     } else if (pieceToRemoveCount[sideToMove] > 0) {
@@ -1520,7 +1522,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
         const bool isCustodianTarget = (custodianTargets & mask) != 0;
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
-        const bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
+        isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
         if (mode == ActiveCaptureMode::none) {
             if (isInterventionTarget && interventionCount > 0) {
@@ -1644,11 +1646,15 @@ bool Position::remove_piece(Square s, bool updateRecord)
         }
     }
 
+    const bool specialCaptureActive = isCaptureTarget &&
+                                      (mode == ActiveCaptureMode::custodian ||
+                                       mode == ActiveCaptureMode::intervention);
+
     if (is_stalemate_removal()) {
-        if (is_adjacent_to(s, sideToMove) == false) {
+        if (!specialCaptureActive && is_adjacent_to(s, sideToMove) == false) {
             return false;
         }
-    } else if (!rule.mayRemoveFromMillsAlways &&
+    } else if (!specialCaptureActive && !rule.mayRemoveFromMillsAlways &&
                potential_mills_count(s, NOBODY) &&
                !is_all_in_mills(~sideToMove)) {
         return false;
