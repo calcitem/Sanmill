@@ -127,21 +127,25 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     const int interventionCount = pos.interventionRemovalCount[us];
 
     const ActiveCaptureMode mode = pos.activeCaptureMode[us];
-    const int pendingMill = pos.pendingMillRemovals[us];
     const int performed = pos.removalsPerformed[us];
+
+    const int specialRemaining = std::max(custodianCount, 0) +
+                                 std::max(interventionCount, 0);
+    const int generalRemaining = std::max(0, pos.pieceToRemoveCount[us] -
+                                                 specialRemaining);
 
     bool allowCustodian = false;
     bool allowIntervention = false;
     bool allowGeneral = false;
     const int removalCount = pos.pieceToRemoveCount[us];
 
-    LOGD("generate<REMOVE>: mode=%d, pendingMill=%d, performed=%d, "
-         "custodianTargets=0x%llx, custodianCount=%d, "
-         "interventionTargets=0x%llx, interventionCount=%d\n",
-         static_cast<int>(mode), pendingMill, performed,
+    LOGD("generate<REMOVE>: mode=%d, performed=%d, custodianTargets=0x%llx, "
+         "custodianCount=%d, interventionTargets=0x%llx, "
+         "interventionCount=%d, generalRemaining=%d\n",
+         static_cast<int>(mode), performed,
          static_cast<unsigned long long>(custodianTargets), custodianCount,
          static_cast<unsigned long long>(interventionTargets),
-         interventionCount);
+         interventionCount, generalRemaining);
 
     if (removeOwnPieces) {
         allowGeneral = true;
@@ -150,29 +154,26 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         case ActiveCaptureMode::none:
             allowCustodian = custodianTargets != 0;
             allowIntervention = interventionTargets != 0;
-            if (pendingMill > performed) {
-                allowGeneral = true;
-            } else if (!allowCustodian && !allowIntervention &&
-                       removalCount > 0) {
+            if (!allowCustodian && !allowIntervention && generalRemaining > 0) {
                 allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::custodian:
             if (custodianCount > 0) {
                 allowCustodian = custodianTargets != 0;
-            } else if (pendingMill > performed || removalCount > 0) {
+            } else if (generalRemaining > 0) {
                 allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::intervention:
             if (interventionCount > 0) {
                 allowIntervention = interventionTargets != 0;
-            } else if (pendingMill > performed || removalCount > 0) {
+            } else if (generalRemaining > 0) {
                 allowGeneral = true;
             }
             break;
         case ActiveCaptureMode::mill:
-            if (pendingMill > performed || removalCount > 0) {
+            if (generalRemaining > 0) {
                 allowGeneral = true;
             }
             break;

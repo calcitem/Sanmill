@@ -1508,12 +1508,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
     ActiveCaptureMode &mode = activeCaptureMode[sideToMove];
     int &performed = removalsPerformed[sideToMove];
     int &quota = removalQuota[sideToMove];
-    const int pendingMill = pendingMillRemovals[sideToMove];
     Square &forcedPartner = interventionForcedPartner[sideToMove];
 
-    if (pieceToRemoveCount[sideToMove] == 0) {
+    const int totalRemaining = pieceToRemoveCount[sideToMove];
+    const int specialRemaining = std::max(custodianCount, 0) +
+                                 std::max(interventionCount, 0);
+    const int generalRemaining = std::max(0, totalRemaining - specialRemaining);
+
+    if (totalRemaining <= 0) {
         return false;
-    } else if (pieceToRemoveCount[sideToMove] > 0) {
+    } else {
         if (!(make_piece(~side_to_move()) & board[s])) {
             return false;
         }
@@ -1522,34 +1526,38 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
         const bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
+        const int neededQuota = performed + totalRemaining;
+        if (quota < neededQuota) {
+            quota = neededQuota;
+        }
+
+        removalQuota[sideToMove] = quota;
+
         if (mode == ActiveCaptureMode::none) {
             if (isInterventionTarget && interventionCount > 0) {
                 mode = ActiveCaptureMode::intervention;
-                quota = std::max(interventionCount, 2);
-                pendingMillRemovals[sideToMove] = 0;
                 setCustodianCaptureState(sideToMove, 0, 0);
                 forcedPartner = SQ_NONE;
             } else if (isCustodianTarget && custodianCount > 0) {
                 mode = ActiveCaptureMode::custodian;
-                quota = std::max(pendingMill, custodianCount);
                 setInterventionCaptureState(sideToMove, 0, 0);
                 forcedPartner = SQ_NONE;
             } else {
-                if (pendingMill > 0) {
-                    mode = ActiveCaptureMode::mill;
-                    quota = pendingMill;
-                } else {
-                    const int remaining = pieceToRemoveCount[sideToMove];
-                    quota = std::max(quota, remaining);
+                if (specialRemaining > 0) {
+                    return false;
                 }
-                setCustodianCaptureState(sideToMove, 0, 0);
-                setInterventionCaptureState(sideToMove, 0, 0);
-                forcedPartner = SQ_NONE;
+
+                if (generalRemaining > 0) {
+                    mode = ActiveCaptureMode::mill;
+                    setCustodianCaptureState(sideToMove, 0, 0);
+                    setInterventionCaptureState(sideToMove, 0, 0);
+                    forcedPartner = SQ_NONE;
+                } else {
+                    return false;
+                }
             }
 
-            removalQuota[sideToMove] = quota;
             performed = 0;
-            pieceToRemoveCount[sideToMove] = std::max(0, quota - performed);
         } else {
             switch (mode) {
             case ActiveCaptureMode::custodian:
@@ -1558,24 +1566,30 @@ bool Position::remove_piece(Square s, bool updateRecord)
                         return false;
                     }
                 } else {
-                    if (isCaptureTarget) {
+                    if (specialRemaining > 0 || isCaptureTarget ||
+                        generalRemaining <= 0) {
                         return false;
                     }
-                    if (pendingMill <= performed) {
-                        return false;
-                    }
+                    mode = ActiveCaptureMode::mill;
+                    forcedPartner = SQ_NONE;
                 }
                 break;
             case ActiveCaptureMode::intervention:
-                if (!isInterventionTarget) {
-                    return false;
+                if (interventionCount > 0) {
+                    if (!isInterventionTarget) {
+                        return false;
+                    }
+                } else {
+                    if (specialRemaining > 0 || isCaptureTarget ||
+                        generalRemaining <= 0) {
+                        return false;
+                    }
+                    mode = ActiveCaptureMode::mill;
+                    forcedPartner = SQ_NONE;
                 }
                 break;
             case ActiveCaptureMode::mill:
-                if (isCaptureTarget) {
-                    return false;
-                }
-                if (pendingMill <= performed) {
+                if (isCaptureTarget || generalRemaining <= 0) {
                     return false;
                 }
                 break;
@@ -1583,6 +1597,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 break;
             }
         }
+
+        pieceToRemoveCount[sideToMove] = totalRemaining;
 
         if (mode == ActiveCaptureMode::intervention) {
             if (performed == 0) {
@@ -1592,18 +1608,14 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 }
                 forcedPartner = partner;
                 setInterventionCaptureState(sideToMove, square_bb(partner), 1);
-                quota = std::max(quota, 2);
-                pieceToRemoveCount[sideToMove] = std::max(0, quota - performed);
+                quota = std::max(quota, performed + 2);
+                removalQuota[sideToMove] = quota;
             } else {
                 if (forcedPartner != s) {
                     return false;
                 }
                 forcedPartner = SQ_NONE;
             }
-        } else if (mode == ActiveCaptureMode::custodian && performed == 0) {
-            quota = std::max(pendingMill, custodianCount);
-            removalQuota[sideToMove] = quota;
-            pieceToRemoveCount[sideToMove] = std::max(0, quota - performed);
         }
 
         if (isCustodianTarget && custodianCount > 0) {
@@ -1628,7 +1640,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
             setInterventionCaptureState(sideToMove, newTargets, newCount);
         }
-    } else {
+    }
+    else
+    {
         if (!(make_piece(side_to_move()) & board[s])) {
             return false;
         }
@@ -1700,6 +1714,18 @@ bool Position::remove_piece(Square s, bool updateRecord)
         pieceToRemoveCount[sideToMove] = std::max(0, quota - performed);
     } else {
         pieceToRemoveCount[sideToMove]++;
+    }
+
+    const int updatedSpecialRemaining = std::max(custodianCount, 0) +
+                                        std::max(interventionCount, 0);
+    const int updatedGeneralRemaining = std::max(
+        0, pieceToRemoveCount[sideToMove] - updatedSpecialRemaining);
+
+    pendingMillRemovals[sideToMove] = updatedGeneralRemaining;
+
+    if (pieceToRemoveCount[sideToMove] > 0 && updatedSpecialRemaining == 0) {
+        mode = ActiveCaptureMode::mill;
+        forcedPartner = SQ_NONE;
     }
 
     update_key_misc();
@@ -2178,9 +2204,10 @@ void Position::initializeRemovalState(Color color, int millRemovals,
     activeCaptureMode[color] = ActiveCaptureMode::none;
     interventionForcedPartner[color] = SQ_NONE;
 
-    const int totalAllowed = std::max({pendingMillRemovals[color],
-                                       std::max(custodianRemovals, 0),
-                                       std::max(interventionRemovals, 0)});
+    const int custodianAllowed = std::max(custodianRemovals, 0);
+    const int interventionAllowed = std::max(interventionRemovals, 0);
+    const int totalAllowed = pendingMillRemovals[color] + custodianAllowed +
+                             interventionAllowed;
 
     removalQuota[color] = totalAllowed;
 
