@@ -45,11 +45,13 @@ Key interventionCount[COLOR_NB][9];
 } // namespace Zobrist
 
 namespace {
-constexpr Key kZobristMask = ~((Key(1) << Zobrist::KEY_MISC_BIT) - 1);
 
 inline Key random_zobrist_key(PRNG &rng) noexcept
 {
-    return rng.rand<Key>() & kZobristMask;
+    const Key value = rng.rand<Key>();
+    // Mask away the top KEY_MISC_BIT bits so update_key_misc() retains control
+    // of the misc field stored in those slots.
+    return (value << Zobrist::KEY_MISC_BIT) >> Zobrist::KEY_MISC_BIT;
 }
 
 string PieceToChar(Piece p)
