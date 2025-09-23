@@ -21,11 +21,12 @@
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <charconv>
 #include <cstring>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <iostream>
 #include <cstdio>
 
 using std::string;
@@ -44,6 +45,15 @@ Key interventionCount[COLOR_NB][9];
 } // namespace Zobrist
 
 namespace {
+
+inline Key random_zobrist_key(PRNG &rng) noexcept
+{
+    const Key value = rng.rand<Key>();
+    // Mask away the top KEY_MISC_BIT bits so update_key_misc() retains control
+    // of the misc field stored in those slots.
+    return (value << Zobrist::KEY_MISC_BIT) >> Zobrist::KEY_MISC_BIT;
+}
+
 string PieceToChar(Piece p)
 {
     if (p == NO_PIECE) {
@@ -288,36 +298,32 @@ void Position::init()
 {
     PRNG rng(1070372);
 
-    for (const PieceType pt : PieceTypes)
-        for (Square s = SQ_BEGIN; s < SQ_END; ++s)
-            Zobrist::psq[pt][s] = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
-                                  Zobrist::KEY_MISC_BIT;
+    const auto fillSquares = [&](Key *row) {
+        Key *ptr = row + SQ_BEGIN;
+        for (int idx = 0; idx < SQUARE_NB; ++idx) {
+            ptr[idx] = random_zobrist_key(rng);
+        }
+    };
+
+    const auto fillCounts = [&](Key *row, int maxCount) {
+        for (int idx = 0; idx <= maxCount; ++idx) {
+            row[idx] = random_zobrist_key(rng);
+        }
+    };
+
+    for (const PieceType pt : PieceTypes) {
+        fillSquares(Zobrist::psq[pt]);
+    }
 
     for (int c = WHITE; c <= BLACK; ++c) {
         const Color color = static_cast<Color>(c);
-        for (Square s = SQ_BEGIN; s < SQ_END; ++s)
-            Zobrist::custodianTarget[color][s] = rng.rand<Key>()
-                                                     << Zobrist::KEY_MISC_BIT >>
-                                                 Zobrist::KEY_MISC_BIT;
-
-        for (int count = 0; count <= kMaxCustodianRemoval; ++count)
-            Zobrist::custodianCount[color][count] =
-                rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
-                Zobrist::KEY_MISC_BIT;
-
-        for (Square s = SQ_BEGIN; s < SQ_END; ++s)
-            Zobrist::interventionTarget[color][s] =
-                rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
-                Zobrist::KEY_MISC_BIT;
-
-        for (int count = 0; count <= kMaxInterventionRemoval; ++count)
-            Zobrist::interventionCount[color][count] =
-                rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
-                Zobrist::KEY_MISC_BIT;
+        fillSquares(Zobrist::custodianTarget[color]);
+        fillSquares(Zobrist::interventionTarget[color]);
+        fillCounts(Zobrist::custodianCount[color], kMaxCustodianRemoval);
+        fillCounts(Zobrist::interventionCount[color], kMaxInterventionRemoval);
     }
 
-    Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
-                    Zobrist::KEY_MISC_BIT;
+    Zobrist::side = random_zobrist_key(rng);
 }
 
 Position::Position()
@@ -612,7 +618,8 @@ Position &Position::set(const string &fenStr)
     };
 
     std::string trailing;
-    std::getline(ss >> std::ws, trailing);
+    ss >> std::ws;
+    std::getline(ss, trailing);
 
     if (!trailing.empty()) {
         std::stringstream extraStream(trailing);
@@ -1066,6 +1073,8 @@ bool Position::start()
 bool Position::put_piece(Square s, bool updateRecord)
 {
     const Color us = sideToMove;
+    const bool custodianEnabled = rule.custodianCapture.enabled;
+    const bool interventionEnabled = rule.interventionCapture.enabled;
 
     if (phase == Phase::gameOver || !(SQ_BEGIN <= s && s < SQ_END) ||
         board[s] & make_piece(~us) || board[s] == MARKED_PIECE) {
@@ -1134,11 +1143,13 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         const int n = mills_count(s);
         std::vector<Square> custodianCaptured;
-        const bool hasCustodianCapture = checkCustodianCapture(
-            s, us, custodianCaptured);
+        const bool hasCustodianCapture = custodianEnabled &&
+                                         checkCustodianCapture(
+                                             s, us, custodianCaptured);
         std::vector<Square> interventionCaptured;
-        const bool hasInterventionCapture = checkInterventionCapture(
-            s, us, interventionCaptured);
+        const bool hasInterventionCapture = interventionEnabled &&
+                                            checkInterventionCapture(
+                                                s, us, interventionCaptured);
 
         if (n == 0) {
             // If no Mill
@@ -1156,7 +1167,8 @@ bool Position::put_piece(Square s, bool updateRecord)
             if (hasCustodianCapture) {
                 custodianRemoval = activateCustodianCapture(us,
                                                             custodianCaptured);
-            } else {
+            } else if (custodianCaptureTargets[us] ||
+                       custodianRemovalCount[us] != 0) {
                 setCustodianCaptureState(us, 0, 0);
             }
 
@@ -1164,7 +1176,8 @@ bool Position::put_piece(Square s, bool updateRecord)
             if (hasInterventionCapture) {
                 interventionRemoval = activateInterventionCapture(
                     us, s, interventionCaptured);
-            } else {
+            } else if (interventionCaptureTargets[us] ||
+                       interventionRemovalCount[us] != 0) {
                 setInterventionCaptureState(us, 0, 0);
             }
 
@@ -1328,10 +1341,13 @@ bool Position::put_piece(Square s, bool updateRecord)
                     if (hasCustodianCapture) {
                         custodianRemoval = activateCustodianCapture(
                             us, custodianCaptured);
-                        if (custodianRemoval <= 0) {
+                        if (custodianRemoval <= 0 &&
+                            (custodianCaptureTargets[us] ||
+                             custodianRemovalCount[us] != 0)) {
                             setCustodianCaptureState(us, 0, 0);
                         }
-                    } else {
+                    } else if (custodianCaptureTargets[us] ||
+                               custodianRemovalCount[us] != 0) {
                         setCustodianCaptureState(us, 0, 0);
                     }
 
@@ -1339,10 +1355,13 @@ bool Position::put_piece(Square s, bool updateRecord)
                     if (hasInterventionCapture) {
                         interventionRemoval = activateInterventionCapture(
                             us, s, interventionCaptured);
-                        if (interventionRemoval <= 0) {
+                        if (interventionRemoval <= 0 &&
+                            (interventionCaptureTargets[us] ||
+                             interventionRemovalCount[us] != 0)) {
                             setInterventionCaptureState(us, 0, 0);
                         }
-                    } else {
+                    } else if (interventionCaptureTargets[us] ||
+                               interventionRemovalCount[us] != 0) {
                         setInterventionCaptureState(us, 0, 0);
                     }
 
@@ -1371,6 +1390,9 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     if (board[s] != NO_PIECE) {
         return false;
     }
+
+    const bool custodianEnabled = rule.custodianCapture.enabled;
+    const bool interventionEnabled = rule.interventionCapture.enabled;
 
     if (check_if_game_is_over()) {
         return true;
@@ -1415,11 +1437,14 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 
     const int n = mills_count(s);
     std::vector<Square> custodianCaptured;
-    const bool hasCustodianCapture = checkCustodianCapture(s, sideToMove,
+    const bool hasCustodianCapture = custodianEnabled &&
+                                     checkCustodianCapture(s, sideToMove,
                                                            custodianCaptured);
     std::vector<Square> interventionCaptured;
-    const bool hasInterventionCapture = checkInterventionCapture(
-        s, sideToMove, interventionCaptured);
+    const bool hasInterventionCapture = interventionEnabled &&
+                                        checkInterventionCapture(
+                                            s, sideToMove,
+                                            interventionCaptured);
 
     if (n == 0) {
         // If no mill during Moving phase
@@ -1430,7 +1455,8 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         if (hasCustodianCapture) {
             custodianRemoval = activateCustodianCapture(sideToMove,
                                                         custodianCaptured);
-        } else {
+        } else if (custodianCaptureTargets[sideToMove] ||
+                   custodianRemovalCount[sideToMove] != 0) {
             setCustodianCaptureState(sideToMove, 0, 0);
         }
 
@@ -1438,7 +1464,8 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         if (hasInterventionCapture) {
             interventionRemoval = activateInterventionCapture(
                 sideToMove, s, interventionCaptured);
-        } else {
+        } else if (interventionCaptureTargets[sideToMove] ||
+                   interventionRemovalCount[sideToMove] != 0) {
             setInterventionCaptureState(sideToMove, 0, 0);
         }
 
@@ -1449,8 +1476,14 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
             return true;
         }
 
-        setCustodianCaptureState(sideToMove, 0, 0);
-        setInterventionCaptureState(sideToMove, 0, 0);
+        if (custodianCaptureTargets[sideToMove] ||
+            custodianRemovalCount[sideToMove] != 0) {
+            setCustodianCaptureState(sideToMove, 0, 0);
+        }
+        if (interventionCaptureTargets[sideToMove] ||
+            interventionRemovalCount[sideToMove] != 0) {
+            setInterventionCaptureState(sideToMove, 0, 0);
+        }
         change_side_to_move();
 
         if (check_if_game_is_over()) {
@@ -1483,10 +1516,13 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         if (hasCustodianCapture) {
             custodianRemoval = activateCustodianCapture(sideToMove,
                                                         custodianCaptured);
-            if (custodianRemoval <= 0) {
+            if (custodianRemoval <= 0 &&
+                (custodianCaptureTargets[sideToMove] ||
+                 custodianRemovalCount[sideToMove] != 0)) {
                 setCustodianCaptureState(sideToMove, 0, 0);
             }
-        } else {
+        } else if (custodianCaptureTargets[sideToMove] ||
+                   custodianRemovalCount[sideToMove] != 0) {
             setCustodianCaptureState(sideToMove, 0, 0);
         }
 
@@ -1494,10 +1530,13 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         if (hasInterventionCapture) {
             interventionRemoval = activateInterventionCapture(
                 sideToMove, s, interventionCaptured);
-            if (interventionRemoval <= 0) {
+            if (interventionRemoval <= 0 &&
+                (interventionCaptureTargets[sideToMove] ||
+                 interventionRemovalCount[sideToMove] != 0)) {
                 setInterventionCaptureState(sideToMove, 0, 0);
             }
-        } else {
+        } else if (interventionCaptureTargets[sideToMove] ||
+                   interventionRemovalCount[sideToMove] != 0) {
             setInterventionCaptureState(sideToMove, 0, 0);
         }
 
@@ -1530,6 +1569,18 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     bool isCaptureTarget = false;
 
+    const auto clearCustodianStateIfNeeded = [&]() {
+        if (custodianTargets || custodianCount != 0) {
+            setCustodianCaptureState(sideToMove, 0, 0);
+        }
+    };
+
+    const auto clearInterventionStateIfNeeded = [&]() {
+        if (interventionTargets || interventionCount != 0) {
+            setInterventionCaptureState(sideToMove, 0, 0);
+        }
+    };
+
     if (pieceToRemoveCount[sideToMove] == 0) {
         return false;
     } else if (pieceToRemoveCount[sideToMove] > 0) {
@@ -1546,12 +1597,12 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 mode = ActiveCaptureMode::intervention;
                 quota = std::max(interventionCount, 2);
                 pendingMillRemovals[sideToMove] = 0;
-                setCustodianCaptureState(sideToMove, 0, 0);
+                clearCustodianStateIfNeeded();
                 forcedPartner = SQ_NONE;
             } else if (isCustodianTarget && custodianCount > 0) {
                 mode = ActiveCaptureMode::custodian;
                 quota = std::max(pendingMill, custodianCount);
-                setInterventionCaptureState(sideToMove, 0, 0);
+                clearInterventionStateIfNeeded();
                 forcedPartner = SQ_NONE;
             } else {
                 if (pendingMill > 0) {
@@ -1561,8 +1612,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
                     const int remaining = pieceToRemoveCount[sideToMove];
                     quota = std::max(quota, remaining);
                 }
-                setCustodianCaptureState(sideToMove, 0, 0);
-                setInterventionCaptureState(sideToMove, 0, 0);
+                clearCustodianStateIfNeeded();
+                clearInterventionStateIfNeeded();
                 forcedPartner = SQ_NONE;
             }
 
@@ -1652,15 +1703,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
             return false;
         }
 
-        if (custodianCaptureTargets[sideToMove] ||
-            custodianRemovalCount[sideToMove] != 0) {
-            setCustodianCaptureState(sideToMove, 0, 0);
-        }
-
-        if (interventionCaptureTargets[sideToMove] ||
-            interventionRemovalCount[sideToMove] != 0) {
-            setInterventionCaptureState(sideToMove, 0, 0);
-        }
+        clearCustodianStateIfNeeded();
+        clearInterventionStateIfNeeded();
     }
 
     const bool specialCaptureActive = isCaptureTarget &&
@@ -1732,8 +1776,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
-    setCustodianCaptureState(sideToMove, 0, 0);
-    setInterventionCaptureState(sideToMove, 0, 0);
+    clearCustodianStateIfNeeded();
+    clearInterventionStateIfNeeded();
     removalQuota[sideToMove] = 0;
     pendingMillRemovals[sideToMove] = 0;
     performed = 0;
