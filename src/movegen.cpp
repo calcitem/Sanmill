@@ -116,6 +116,10 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     const Color removeColor = removeOwnPieces ? us : them;
 
     ExtMove *cur = moveList;
+    Piece *board = pos.get_board();
+    const auto &priority = MoveList<LEGAL>::movePriorityList;
+    const Piece removeMask = make_piece(removeColor);
+    const Piece opponentMask = make_piece(them);
 
     LOGD("generate<REMOVE>: us=%d, pieceToRemoveCount[us]=%d, "
          "removeOwnPieces=%d, removeColor=%d\n",
@@ -194,8 +198,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     if (specialTargets) {
         for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
             const Bitboard mask = square_bb(s);
-            if ((specialTargets & mask) &&
-                (pos.get_board()[s] & make_piece(them))) {
+            if ((specialTargets & mask) && (board[s] & opponentMask)) {
                 assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
             }
@@ -203,58 +206,80 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     }
 
     // Handle stalemate removal (skip if special captures are available)
-    if (!allowIntervention && !allowCustodian && pos.is_stalemate_removal()) {
-        for (int i = SQUARE_NB - 1; i >= 0; i--) {
-            Square s = MoveList<LEGAL>::movePriorityList[i];
+    if (!allowIntervention && !allowCustodian) {
+        if (pos.is_stalemate_removal()) {
+            for (int i = SQUARE_NB - 1; i >= 0; --i) {
+                const Square s = priority[i];
 
-            // Check if the square has a piece of the color to remove
-            if (pos.get_board()[s] & make_piece(removeColor)) {
-                // If removing opponent's pieces, check adjacency to 'us'
-                // If removing own pieces, adjacency check may differ or be
-                // omitted
+                if (!(board[s] & removeMask)) {
+                    continue;
+                }
+
                 if (!removeOwnPieces && pos.is_adjacent_to(s, us)) {
                     assert(cur < moveList + MAX_MOVES);
                     *cur++ = static_cast<Move>(-s);
-                }
-                // If removing own pieces, allow removal without adjacency
-                else if (removeOwnPieces) {
+                } else if (removeOwnPieces) {
                     assert(cur < moveList + MAX_MOVES);
                     *cur++ = static_cast<Move>(-s);
                 }
             }
+
+            return cur;
         }
 
-        return cur;
-    }
+        // 2) Handle removal when all opponent's pieces are in mills
+        // BUT: Skip this if we have active intervention/custodian captures
+        // Those should take priority over the all-in-mills rule
+        if (pos.is_all_in_mills(removeColor)) {
+            for (int i = SQUARE_NB - 1; i >= 0; --i) {
+                const Square s = priority[i];
 
-    // 2) Handle removal when all opponent's pieces are in mills
-    // BUT: Skip this if we have active intervention/custodian captures
-    // Those should take priority over the all-in-mills rule
-    if (!allowIntervention && !allowCustodian &&
-        pos.is_all_in_mills(removeColor)) {
-        for (int i = SQUARE_NB - 1; i >= 0; i--) {
-            Square s = MoveList<LEGAL>::movePriorityList[i];
+                if (board[s] & removeMask) {
+                    assert(cur < moveList + MAX_MOVES);
+                    *cur++ = static_cast<Move>(-s);
+                }
+            }
+            return cur;
+        }
 
-            // Check if the square has a piece of the color to remove
-            if (pos.get_board()[s] & make_piece(removeColor)) {
+        if (allowGeneral && !removeOwnPieces) {
+            int movesAdded = 0;
+
+            for (int i = SQUARE_NB - 1; i >= 0; --i) {
+                const Square s = priority[i];
+
+                if (!(board[s] & removeMask)) {
+                    continue;
+                }
+
+                if (!rule.mayRemoveFromMillsAlways &&
+                    pos.potential_mills_count(s, NOBODY)) {
+                    continue;
+                }
+
                 assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
+                ++movesAdded;
             }
+
+            LOGD("generate<REMOVE>: allowGeneral=true, added %d general "
+                 "moves\n",
+                 movesAdded);
+            return cur;
         }
-        return cur;
     }
 
     if (allowGeneral) {
         int movesAdded = 0;
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
-            const Square s = MoveList<LEGAL>::movePriorityList[i];
+            const Square s = priority[i];
             const Bitboard mask = square_bb(s);
 
             if (specialTargets & mask) {
                 continue;
             }
 
-            if (pos.get_board()[s] & make_piece(removeColor)) {
+            if (board[s] & removeMask) {
                 if (rule.mayRemoveFromMillsAlways ||
                     !pos.potential_mills_count(s, NOBODY)) {
                     assert(cur < moveList + MAX_MOVES);
