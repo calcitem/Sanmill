@@ -712,96 +712,77 @@ Position &Position::set(const string &fenStr)
 
 string Position::fen() const
 {
-    std::string fen;
-    fen.reserve(160);
-
-    auto appendNumber = [&](auto value) {
-        char buffer[32];
-        const auto res = std::to_chars(buffer, buffer + sizeof(buffer), value);
-        fen.append(buffer, res.ptr);
-    };
+    std::ostringstream ss;
 
     // Piece placement data
     for (File f = FILE_A; f <= FILE_C; ++f) {
         for (Rank r = RANK_1; r <= RANK_8; ++r) {
-            fen += PieceToChar(piece_on(make_square(f, r)));
+            ss << PieceToChar(piece_on(make_square(f, r)));
         }
 
-        fen.push_back(f == FILE_C ? ' ' : '/');
+        if (f == FILE_C) {
+            ss << " ";
+        } else {
+            ss << "/";
+        }
     }
 
     // Active color
-    fen.push_back(sideToMove == WHITE ? 'w' : 'b');
-    fen.push_back(' ');
+    ss << (sideToMove == WHITE ? "w" : "b");
 
-    // Phase
-    const char phaseChar = [this]() {
-        switch (phase) {
-        case Phase::none:
-            return 'n';
-        case Phase::ready:
-            return 'r';
-        case Phase::placing:
-            return 'p';
-        case Phase::moving:
-            return 'm';
-        case Phase::gameOver:
-            return 'o';
-        }
+    ss << " ";
 
-        return '?';
-    }();
-    fen.push_back(phaseChar);
-    fen.push_back(' ');
+    // Phrase
+    switch (phase) {
+    case Phase::none:
+        ss << "n";
+        break;
+    case Phase::ready:
+        ss << "r";
+        break;
+    case Phase::placing:
+        ss << "p";
+        break;
+    case Phase::moving:
+        ss << "m";
+        break;
+    case Phase::gameOver:
+        ss << "o";
+        break;
+    }
+
+    ss << " ";
 
     // Action
-    const char actionChar = [this]() {
-        switch (action) {
-        case Action::place:
-            return 'p';
-        case Action::select:
-            return 's';
-        case Action::remove:
-            return 'r';
-        case Action::none:
-            return '?';
-        }
+    switch (action) {
+    case Action::place:
+        ss << "p";
+        break;
+    case Action::select:
+        ss << "s";
+        break;
+    case Action::remove:
+        ss << "r";
+        break;
+    case Action::none:
+        ss << "?";
+        break;
+    }
 
-        return '?';
-    }();
-    fen.push_back(actionChar);
-    fen.push_back(' ');
+    ss << " ";
 
-    appendNumber(pieceOnBoardCount[WHITE]);
-    fen.push_back(' ');
-    appendNumber(pieceInHandCount[WHITE]);
-    fen.push_back(' ');
-    appendNumber(pieceOnBoardCount[BLACK]);
-    fen.push_back(' ');
-    appendNumber(pieceInHandCount[BLACK]);
-    fen.push_back(' ');
-    appendNumber(pieceToRemoveCount[WHITE]);
-    fen.push_back(' ');
-    appendNumber(pieceToRemoveCount[BLACK]);
-    fen.push_back(' ');
+    ss << pieceOnBoardCount[WHITE] << " " << pieceInHandCount[WHITE] << " "
+       << pieceOnBoardCount[BLACK] << " " << pieceInHandCount[BLACK] << " "
+       << pieceToRemoveCount[WHITE] << " " << pieceToRemoveCount[BLACK] << " ";
 
-    appendNumber(lastMillFromSquare[WHITE]);
-    fen.push_back(' ');
-    appendNumber(lastMillToSquare[WHITE]);
-    fen.push_back(' ');
-    appendNumber(lastMillFromSquare[BLACK]);
-    fen.push_back(' ');
-    appendNumber(lastMillToSquare[BLACK]);
-    fen.push_back(' ');
+    ss << lastMillFromSquare[WHITE] << " " << lastMillToSquare[WHITE] << " "
+       << lastMillFromSquare[BLACK] << " " << lastMillToSquare[BLACK] << " ";
 
-    const uint64_t fm = (static_cast<uint64_t>(formedMillsBB[WHITE]) << 32) |
-                        formedMillsBB[BLACK];
-    appendNumber(fm);
-    fen.push_back(' ');
+    uint64_t fm = (static_cast<uint64_t>(formedMillsBB[WHITE]) << 32) |
+                  formedMillsBB[BLACK];
+    ss << fm << " ";
 
-    appendNumber(st.rule50);
-    fen.push_back(' ');
-    appendNumber(1 + (gamePly - (sideToMove == BLACK)) / 2);
+    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     const auto appendCaptureField = [&](char label, const Bitboard *targets,
                                         const int *counts) {
@@ -812,16 +793,11 @@ string Position::fen() const
             return;
         }
 
-        fen.push_back(' ');
-        fen.push_back(label);
-        fen.push_back(':');
+        ss << ' ' << label << ':';
 
         const auto appendColor = [&](Color color, char prefix) {
             const int idx = static_cast<int>(color);
-            fen.push_back(prefix);
-            fen.push_back('-');
-            appendNumber(counts[idx]);
-            fen.push_back('-');
+            ss << prefix << '-' << counts[idx] << '-';
 
             bool first = true;
             const Bitboard colorTargets = targets[idx];
@@ -832,16 +808,16 @@ string Position::fen() const
                 }
 
                 if (!first) {
-                    fen.push_back('.');
+                    ss << '.';
                 }
 
-                appendNumber(static_cast<int>(sq));
+                ss << static_cast<int>(sq);
                 first = false;
             }
         };
 
         appendColor(WHITE, 'w');
-        fen.push_back('|');
+        ss << '|';
         appendColor(BLACK, 'b');
     };
 
@@ -852,7 +828,7 @@ string Position::fen() const
     const std::array<Bitboard, COLOR_NB> emptyTargets {};
     appendCaptureField('m', emptyTargets.data(), pendingMillRemovals);
 
-    return fen;
+    return ss.str();
 }
 
 /// Position::legal() tests whether a pseudo-legal move is legal
