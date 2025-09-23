@@ -24,8 +24,9 @@
 #include <charconv>
 #include <cstring>
 #include <iomanip>
-#include <string>
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <cstdio>
 
 using std::string;
@@ -615,7 +616,8 @@ Position &Position::set(const string &fenStr)
     };
 
     std::string trailing;
-    std::getline(ss >> std::ws, trailing);
+    ss >> std::ws;
+    std::getline(ss, trailing);
 
     if (!trailing.empty()) {
         std::stringstream extraStream(trailing);
