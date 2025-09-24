@@ -2287,14 +2287,24 @@ class Position {
       return 0;
     }
 
-    // Only select the first valid pair to enforce "only one capture type" rule
-    // This prevents conflicts when multiple intervention lines exist
-    final List<int> selectedPair = capturePairs[0];
-    
-    final int targets = squareBb(selectedPair[0]) | squareBb(selectedPair[1]);
+    int targets = 0;
     final List<int> pairMap = _interventionPairMate[color]!;
-    pairMap[selectedPair[0]] = selectedPair[1];
-    pairMap[selectedPair[1]] = selectedPair[0];
+
+    // Set up all possible intervention targets and their pair relationships
+    // Player/AI will choose which pieces to remove, and pairing will be enforced
+    for (final List<int> pair in capturePairs) {
+      targets |= squareBb(pair[0]);
+      targets |= squareBb(pair[1]);
+      
+      // Handle potential conflicts: if a square is already paired,
+      // keep the first pairing to maintain consistency
+      if (pairMap[pair[0]] == -1) {
+        pairMap[pair[0]] = pair[1];
+      }
+      if (pairMap[pair[1]] == -1) {
+        pairMap[pair[1]] = pair[0];
+      }
+    }
 
     const int allowedRemovals = 2;
 
