@@ -1005,7 +1005,7 @@ bool Position::reset()
     pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.pieceCount;
     pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 0;
 
-    for (int c = NOBODY; c <= BLACK; ++c) {
+    for (int c = WHITE; c <= BLACK; ++c) {
         const Color color = static_cast<Color>(c);
         custodianCaptureTargets[color] = 0;
         custodianRemovalCount[color] = 0;

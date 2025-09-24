@@ -1995,6 +1995,7 @@
   "leapCaptureDescription": "跳过相邻的对方棋子并落到其后的空点以吃掉该棋子。",
   "@leapCaptureDescription": {},
   "leapCaptureEnable": "允许跳吃",
+  
   "@leapCaptureEnable": {},
   "captureApplicableLines": "适用线段",
   "@captureApplicableLines": {},
