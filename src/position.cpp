@@ -2434,13 +2434,23 @@ int Position::activateInterventionCapture(
         return 0;
     }
 
-    // Only select the first valid pair to enforce "only one capture type" rule
-    // This prevents conflicts when multiple intervention lines exist
-    const auto &selectedPair = capturePairs[0];
-    
-    Bitboard targets = square_bb(selectedPair[0]) | square_bb(selectedPair[1]);
-    interventionPairMate[color][selectedPair[0]] = selectedPair[1];
-    interventionPairMate[color][selectedPair[1]] = selectedPair[0];
+    Bitboard targets = 0;
+
+    // Set up all possible intervention targets and their pair relationships
+    // Player/AI will choose which pieces to remove, and pairing will be enforced
+    for (const auto &pair : capturePairs) {
+        targets |= square_bb(pair[0]);
+        targets |= square_bb(pair[1]);
+        
+        // Handle potential conflicts: if a square is already paired, 
+        // keep the first pairing to maintain consistency
+        if (interventionPairMate[color][pair[0]] == SQ_NONE) {
+            interventionPairMate[color][pair[0]] = pair[1];
+        }
+        if (interventionPairMate[color][pair[1]] == SQ_NONE) {
+            interventionPairMate[color][pair[1]] = pair[0];
+        }
+    }
 
     // Only one line of intervention capture can be selected per move.
     const int allowedRemovals = 2;
