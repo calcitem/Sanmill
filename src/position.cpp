@@ -1259,24 +1259,28 @@ bool Position::put_piece(Square s, bool updateRecord)
 
             if (rule.millFormationActionInPlacingPhase ==
                 MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
-                // Allow immediate special capture; mill removal count calculated at phase end
+                // Allow immediate special capture; mill removal count
+                // calculated at phase end
                 int custodianRemoval = 0;
                 if (hasCustodianCapture) {
-                    custodianRemoval = activateCustodianCapture(us, custodianCaptured);
+                    custodianRemoval = activateCustodianCapture(
+                        us, custodianCaptured);
                 }
-                
+
                 int interventionRemoval = 0;
                 if (hasInterventionCapture) {
-                    interventionRemoval = activateInterventionCapture(us, s, interventionCaptured);
+                    interventionRemoval = activateInterventionCapture(
+                        us, s, interventionCaptured);
                 }
-                
+
                 if (custodianRemoval > 0 || interventionRemoval > 0) {
-                    initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
+                    initializeRemovalState(us, /*mill=*/0, custodianRemoval,
+                                           interventionRemoval);
                     return true;
                 }
-                
-                // Otherwise follow original logic - preserve special capture states
-                // Mill removal count will be calculated at phase end
+
+                // Otherwise follow original logic - preserve special capture
+                // states Mill removal count will be calculated at phase end
                 initializeRemovalState(us, 0, 0, 0);
             } else if (rule.millFormationActionInPlacingPhase ==
                        MillFormationActionInPlacingPhase::
@@ -1284,17 +1288,21 @@ bool Position::put_piece(Square s, bool updateRecord)
                 // For markAndDelayRemovingPieces, try special captures first
                 int custodianRemoval = 0;
                 if (hasCustodianCapture) {
-                    custodianRemoval = activateCustodianCapture(us, custodianCaptured);
+                    custodianRemoval = activateCustodianCapture(
+                        us, custodianCaptured);
                 }
-                
+
                 int interventionRemoval = 0;
                 if (hasInterventionCapture) {
-                    interventionRemoval = activateInterventionCapture(us, s, interventionCaptured);
+                    interventionRemoval = activateInterventionCapture(
+                        us, s, interventionCaptured);
                 }
-                
+
                 if (custodianRemoval > 0 || interventionRemoval > 0) {
-                    initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
-                    return true;  // Execute special capture; mill marking handled at phase end
+                    initializeRemovalState(us, /*mill=*/0, custodianRemoval,
+                                           interventionRemoval);
+                    return true; // Execute special capture; mill marking
+                                 // handled at phase end
                 }
                 
                 // For markAndDelayRemovingPieces mode, mills allow immediate removal
@@ -1644,8 +1652,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 forcedPartner = SQ_NONE;
             } else if (isCustodianTarget && custodianCount > 0) {
                 mode = ActiveCaptureMode::custodian;
-                quota = custodianCount;                        // Only custodian quota
-                pendingMillRemovals[sideToMove] = 0;          // Clear mill when choosing custodian
+                quota = custodianCount;              // Only custodian quota
+                pendingMillRemovals[sideToMove] = 0; // Clear mill when choosing
+                                                     // custodian
                 clearInterventionStateIfNeeded();
                 forcedPartner = SQ_NONE;
             } else {
@@ -1672,7 +1681,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
                         return false;
                     }
                 } else {
-                    // Custodian exhausted, no switching to other capture modes allowed
+                    // Custodian exhausted, no switching to other capture modes
+                    // allowed
                     return false;
                 }
                 break;
@@ -1711,7 +1721,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 forcedPartner = SQ_NONE;
             }
         } else if (mode == ActiveCaptureMode::custodian && performed == 0) {
-            quota = custodianCount;  // Only custodian quota, no mill mixing
+            quota = custodianCount; // Only custodian quota, no mill mixing
             removalQuota[sideToMove] = quota;
             pieceToRemoveCount[sideToMove] = std::max(0, quota - performed);
         }

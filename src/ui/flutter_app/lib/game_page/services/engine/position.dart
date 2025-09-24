@@ -1169,7 +1169,7 @@ class Position {
                 us, /*mill=*/ 0, custodianRemoval, interventionRemoval);
             return true;
           }
-          
+
           // Otherwise follow original logic - preserve special capture states
           // Mill removal count will be calculated at phase end
           pieceToRemoveCount[sideToMove] = 0;
