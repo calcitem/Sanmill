@@ -2434,14 +2434,13 @@ int Position::activateInterventionCapture(
         return 0;
     }
 
-    Bitboard targets = 0;
-
-    for (const auto &pair : capturePairs) {
-        targets |= square_bb(pair[0]);
-        targets |= square_bb(pair[1]);
-        interventionPairMate[color][pair[0]] = pair[1];
-        interventionPairMate[color][pair[1]] = pair[0];
-    }
+    // Only select the first valid pair to enforce "only one capture type" rule
+    // This prevents conflicts when multiple intervention lines exist
+    const auto &selectedPair = capturePairs[0];
+    
+    Bitboard targets = square_bb(selectedPair[0]) | square_bb(selectedPair[1]);
+    interventionPairMate[color][selectedPair[0]] = selectedPair[1];
+    interventionPairMate[color][selectedPair[1]] = selectedPair[0];
 
     // Only one line of intervention capture can be selected per move.
     const int allowedRemovals = 2;
