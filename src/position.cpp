@@ -1275,10 +1275,9 @@ bool Position::put_piece(Square s, bool updateRecord)
                     return true;
                 }
                 
-                // Otherwise follow original logic (involving hand piece counts etc.)
+                // Otherwise follow original logic - preserve special capture states
+                // Mill removal count will be calculated at phase end
                 initializeRemovalState(us, 0, 0, 0);
-                setCustodianCaptureState(us, 0, 0);
-                setInterventionCaptureState(us, 0, 0);
             } else if (rule.millFormationActionInPlacingPhase ==
                        MillFormationActionInPlacingPhase::
                            markAndDelayRemovingPieces) {
