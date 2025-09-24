@@ -1601,7 +1601,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 forcedPartner = SQ_NONE;
             } else if (isCustodianTarget && custodianCount > 0) {
                 mode = ActiveCaptureMode::custodian;
-                quota = std::max(pendingMill, custodianCount);
+                quota = custodianCount;                        // Only custodian quota
+                pendingMillRemovals[sideToMove] = 0;          // Clear mill when choosing custodian
                 clearInterventionStateIfNeeded();
                 forcedPartner = SQ_NONE;
             } else {
@@ -1628,12 +1629,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
                         return false;
                     }
                 } else {
-                    if (isCaptureTarget) {
-                        return false;
-                    }
-                    if (pendingMill <= performed) {
-                        return false;
-                    }
+                    // Custodian exhausted, no switching to other capture modes allowed
+                    return false;
                 }
                 break;
             case ActiveCaptureMode::intervention:
@@ -1671,7 +1668,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 forcedPartner = SQ_NONE;
             }
         } else if (mode == ActiveCaptureMode::custodian && performed == 0) {
-            quota = std::max(pendingMill, custodianCount);
+            quota = custodianCount;  // Only custodian quota, no mill mixing
             removalQuota[sideToMove] = quota;
             pieceToRemoveCount[sideToMove] = std::max(0, quota - performed);
         }

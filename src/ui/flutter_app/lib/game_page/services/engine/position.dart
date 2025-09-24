@@ -1497,8 +1497,9 @@ class Position {
           forcedPartner = -1;
         } else if (isCustodianTarget && custodianCount() > 0) {
           mode = ActiveCaptureMode.custodian;
-          quota =
-              pendingMill > custodianCount() ? pendingMill : custodianCount();
+          quota = custodianCount(); // Only custodian quota
+          _pendingMillRemovals[sideToMove] =
+              0; // Clear mill when choosing custodian
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else {
@@ -1528,13 +1529,8 @@ class Position {
                 return const IllegalAction();
               }
             } else {
-              if (isCaptureTarget) {
-                return const IllegalAction();
-              }
-              if (pendingMill <= performed &&
-                  pieceToRemoveCount[sideToMove]! <= 0) {
-                return const IllegalAction();
-              }
+              // Custodian exhausted, no switching to other capture modes allowed
+              return const IllegalAction();
             }
             break;
           case ActiveCaptureMode.intervention:
@@ -1582,9 +1578,7 @@ class Position {
           _interventionForcedPartner[sideToMove] = -1;
         }
       } else if (mode == ActiveCaptureMode.custodian && performed == 0) {
-        final int updatedQuota =
-            pendingMill > custodianCount() ? pendingMill : custodianCount();
-        quota = updatedQuota;
+        quota = custodianCount(); // Only custodian quota, no mill mixing
         _removalQuota[sideToMove] = quota;
         pieceToRemoveCount[sideToMove] =
             quota - performed > 0 ? quota - performed : 0;
