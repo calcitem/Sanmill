@@ -1259,14 +1259,46 @@ bool Position::put_piece(Square s, bool updateRecord)
 
             if (rule.millFormationActionInPlacingPhase ==
                 MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                // Allow immediate special capture; mill removal count calculated at phase end
+                int custodianRemoval = 0;
+                if (hasCustodianCapture) {
+                    custodianRemoval = activateCustodianCapture(us, custodianCaptured);
+                }
+                
+                int interventionRemoval = 0;
+                if (hasInterventionCapture) {
+                    interventionRemoval = activateInterventionCapture(us, s, interventionCaptured);
+                }
+                
+                if (custodianRemoval > 0 || interventionRemoval > 0) {
+                    initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
+                    return true;
+                }
+                
+                // Otherwise follow original logic (involving hand piece counts etc.)
                 initializeRemovalState(us, 0, 0, 0);
                 setCustodianCaptureState(us, 0, 0);
                 setInterventionCaptureState(us, 0, 0);
             } else if (rule.millFormationActionInPlacingPhase ==
                        MillFormationActionInPlacingPhase::
                            markAndDelayRemovingPieces) {
-                // For markAndDelayRemovingPieces, don't set removal state now
-                // Pieces will be marked and removed at phase end
+                // For markAndDelayRemovingPieces, try special captures first
+                int custodianRemoval = 0;
+                if (hasCustodianCapture) {
+                    custodianRemoval = activateCustodianCapture(us, custodianCaptured);
+                }
+                
+                int interventionRemoval = 0;
+                if (hasInterventionCapture) {
+                    interventionRemoval = activateInterventionCapture(us, s, interventionCaptured);
+                }
+                
+                if (custodianRemoval > 0 || interventionRemoval > 0) {
+                    initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
+                    return true;  // Execute special capture; mill marking handled at phase end
+                }
+                
+                // Otherwise maintain original behavior: no immediate removal, just change side
                 LOGD("Mill formed with markAndDelayRemovingPieces - no "
                      "immediate removal\n");
                 change_side_to_move();

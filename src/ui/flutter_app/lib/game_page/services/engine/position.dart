@@ -1152,9 +1152,49 @@ class Position {
 
         if (DB().ruleSettings.millFormationActionInPlacingPhase ==
             MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+          // Allow immediate special capture; mill removal count calculated at phase end
+          int custodianRemoval = 0;
+          if (hasCustodianCapture) {
+            custodianRemoval = _activateCustodianCapture(us, custodianCaptured);
+          }
+          
+          int interventionRemoval = 0;
+          if (hasInterventionCapture) {
+            interventionRemoval = _activateInterventionCapture(us, s, interventionCaptured);
+          }
+          
+          if (custodianRemoval > 0 || interventionRemoval > 0) {
+            _initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
+            return true;
+          }
+          
+          // Otherwise follow original logic
           pieceToRemoveCount[sideToMove] = 0;
           _setCustodianCaptureState(us, 0, 0);
           _setInterventionCaptureState(us, 0, 0);
+        } else if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
+          // For markAndDelayRemovingPieces, try special captures first
+          int custodianRemoval = 0;
+          if (hasCustodianCapture) {
+            custodianRemoval = _activateCustodianCapture(us, custodianCaptured);
+          }
+          
+          int interventionRemoval = 0;
+          if (hasInterventionCapture) {
+            interventionRemoval = _activateInterventionCapture(us, s, interventionCaptured);
+          }
+          
+          if (custodianRemoval > 0 || interventionRemoval > 0) {
+            _initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
+            return true;  // Execute special capture; mill marking handled at phase end
+          }
+          
+          // Otherwise maintain original behavior: no immediate removal, just change side
+          rm = DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount[sideToMove] = rm;
+          changeSideToMove();
+          return true;
         } else {
           rm = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           pieceToRemoveCount[sideToMove] = rm;
