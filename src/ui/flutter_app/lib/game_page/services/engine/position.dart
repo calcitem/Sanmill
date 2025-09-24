@@ -2287,14 +2287,14 @@ class Position {
       return 0;
     }
 
-    int targets = 0;
+    // Only select the first valid pair to enforce "only one capture type" rule
+    // This prevents conflicts when multiple intervention lines exist
+    final List<int> selectedPair = capturePairs[0];
+    
+    final int targets = squareBb(selectedPair[0]) | squareBb(selectedPair[1]);
     final List<int> pairMap = _interventionPairMate[color]!;
-    for (final List<int> pair in capturePairs) {
-      targets |= squareBb(pair[0]);
-      targets |= squareBb(pair[1]);
-      pairMap[pair[0]] = pair[1];
-      pairMap[pair[1]] = pair[0];
-    }
+    pairMap[selectedPair[0]] = selectedPair[1];
+    pairMap[selectedPair[1]] = selectedPair[0];
 
     const int allowedRemovals = 2;
 
