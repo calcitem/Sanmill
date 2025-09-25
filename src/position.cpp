@@ -1298,11 +1298,13 @@ bool Position::put_piece(Square s, bool updateRecord)
                     return true;  // Execute special capture; mill marking handled at phase end
                 }
                 
-                // Otherwise maintain original behavior: no immediate removal, just change side
-                LOGD("Mill formed with markAndDelayRemovingPieces - no "
-                     "immediate removal\n");
-                change_side_to_move();
-                return true;
+                // For markAndDelayRemovingPieces mode, mills allow immediate removal
+                // but mill pieces are marked and processed at phase end
+                rm = rule.mayRemoveMultiple ? n : 1;
+                LOGD("Mill formed with markAndDelayRemovingPieces - allowing immediate removal of %d pieces\n", rm);
+                
+                // Store the mill removal count for phase end processing
+                pendingMillRemovals[us] += rm;
             } else {
                 rm = rule.mayRemoveMultiple ? n : 1;
                 LOGD("Mill removal count rm=%d\n", rm);
@@ -1369,40 +1371,50 @@ bool Position::put_piece(Square s, bool updateRecord)
                         change_side_to_move();
                     }
                 } else {
-                    int custodianRemoval = 0;
-                    if (hasCustodianCapture) {
-                        custodianRemoval = activateCustodianCapture(
-                            us, custodianCaptured);
-                        if (custodianRemoval <= 0 &&
-                            (custodianCaptureTargets[us] ||
-                             custodianRemovalCount[us] != 0)) {
+                    // For markAndDelayRemovingPieces, we still need to set up removal state
+                    // so AI understands that mill formation leads to piece removal
+                    if (rule.millFormationActionInPlacingPhase ==
+                        MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
+                        // Set up normal removal state for mill formation
+                        LOGD("Mill placing phase (markAndDelayRemovingPieces): calling "
+                             "initializeRemovalState(us=%d, rm=%d)\n", us, rm);
+                        initializeRemovalState(us, rm, 0, 0);
+                    } else {
+                        int custodianRemoval = 0;
+                        if (hasCustodianCapture) {
+                            custodianRemoval = activateCustodianCapture(
+                                us, custodianCaptured);
+                            if (custodianRemoval <= 0 &&
+                                (custodianCaptureTargets[us] ||
+                                 custodianRemovalCount[us] != 0)) {
+                                setCustodianCaptureState(us, 0, 0);
+                            }
+                        } else if (custodianCaptureTargets[us] ||
+                                   custodianRemovalCount[us] != 0) {
                             setCustodianCaptureState(us, 0, 0);
                         }
-                    } else if (custodianCaptureTargets[us] ||
-                               custodianRemovalCount[us] != 0) {
-                        setCustodianCaptureState(us, 0, 0);
-                    }
 
-                    int interventionRemoval = 0;
-                    if (hasInterventionCapture) {
-                        interventionRemoval = activateInterventionCapture(
-                            us, s, interventionCaptured);
-                        if (interventionRemoval <= 0 &&
-                            (interventionCaptureTargets[us] ||
-                             interventionRemovalCount[us] != 0)) {
+                        int interventionRemoval = 0;
+                        if (hasInterventionCapture) {
+                            interventionRemoval = activateInterventionCapture(
+                                us, s, interventionCaptured);
+                            if (interventionRemoval <= 0 &&
+                                (interventionCaptureTargets[us] ||
+                                 interventionRemovalCount[us] != 0)) {
+                                setInterventionCaptureState(us, 0, 0);
+                            }
+                        } else if (interventionCaptureTargets[us] ||
+                                   interventionRemovalCount[us] != 0) {
                             setInterventionCaptureState(us, 0, 0);
                         }
-                    } else if (interventionCaptureTargets[us] ||
-                               interventionRemovalCount[us] != 0) {
-                        setInterventionCaptureState(us, 0, 0);
-                    }
 
-                    LOGD("Mill placing phase: calling "
-                         "initializeRemovalState(us=%d, rm=%d, custodian=%d, "
-                         "intervention=%d)\n",
-                         us, rm, custodianRemoval, interventionRemoval);
-                    initializeRemovalState(us, rm, custodianRemoval,
-                                           interventionRemoval);
+                        LOGD("Mill placing phase: calling "
+                             "initializeRemovalState(us=%d, rm=%d, custodian=%d, "
+                             "intervention=%d)\n",
+                             us, rm, custodianRemoval, interventionRemoval);
+                        initializeRemovalState(us, rm, custodianRemoval,
+                                               interventionRemoval);
+                    }
                 }
                 return true;
             }

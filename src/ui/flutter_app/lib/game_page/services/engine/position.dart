@@ -1157,17 +1157,19 @@ class Position {
           if (hasCustodianCapture) {
             custodianRemoval = _activateCustodianCapture(us, custodianCaptured);
           }
-          
+
           int interventionRemoval = 0;
           if (hasInterventionCapture) {
-            interventionRemoval = _activateInterventionCapture(us, s, interventionCaptured);
+            interventionRemoval =
+                _activateInterventionCapture(us, s, interventionCaptured);
           }
-          
+
           if (custodianRemoval > 0 || interventionRemoval > 0) {
-            _initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
+            _initializeRemovalState(
+                us, /*mill=*/ 0, custodianRemoval, interventionRemoval);
             return true;
           }
-          
+
           // Otherwise follow original logic
           pieceToRemoveCount[sideToMove] = 0;
           _setCustodianCaptureState(us, 0, 0);
@@ -1179,22 +1181,25 @@ class Position {
           if (hasCustodianCapture) {
             custodianRemoval = _activateCustodianCapture(us, custodianCaptured);
           }
-          
+
           int interventionRemoval = 0;
           if (hasInterventionCapture) {
-            interventionRemoval = _activateInterventionCapture(us, s, interventionCaptured);
+            interventionRemoval =
+                _activateInterventionCapture(us, s, interventionCaptured);
           }
-          
+
           if (custodianRemoval > 0 || interventionRemoval > 0) {
-            _initializeRemovalState(us, /*mill=*/0, custodianRemoval, interventionRemoval);
-            return true;  // Execute special capture; mill marking handled at phase end
+            _initializeRemovalState(
+                us, /*mill=*/ 0, custodianRemoval, interventionRemoval);
+            return true; // Execute special capture; mill marking handled at phase end
           }
-          
-          // Otherwise maintain original behavior: no immediate removal, just change side
+
+          // For markAndDelayRemovingPieces mode, mills allow immediate removal
+          // but mill pieces are marked and processed at phase end
           rm = DB().ruleSettings.mayRemoveMultiple ? n : 1;
-          pieceToRemoveCount[sideToMove] = rm;
-          changeSideToMove();
-          return true;
+
+          // Store the mill removal count for phase end processing
+          _pendingMillRemovals[us] = (_pendingMillRemovals[us] ?? 0) + rm;
         } else {
           rm = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           pieceToRemoveCount[sideToMove] = rm;
@@ -1272,30 +1277,38 @@ class Position {
               changeSideToMove();
             }
           } else {
-            int custodianRemoval = 0;
-            if (hasCustodianCapture) {
-              custodianRemoval =
-                  _activateCustodianCapture(us, custodianCaptured);
-              if (custodianRemoval <= 0) {
+            // For markAndDelayRemovingPieces, we still need to set up removal state
+            // so AI understands that mill formation leads to piece removal
+            if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
+              // Set up normal removal state for mill formation
+              _initializeRemovalState(us, rm, 0, 0);
+            } else {
+              int custodianRemoval = 0;
+              if (hasCustodianCapture) {
+                custodianRemoval =
+                    _activateCustodianCapture(us, custodianCaptured);
+                if (custodianRemoval <= 0) {
+                  _setCustodianCaptureState(us, 0, 0);
+                }
+              } else {
                 _setCustodianCaptureState(us, 0, 0);
               }
-            } else {
-              _setCustodianCaptureState(us, 0, 0);
-            }
 
-            int interventionRemoval = 0;
-            if (hasInterventionCapture) {
-              interventionRemoval =
-                  _activateInterventionCapture(us, s, interventionCaptured);
-              if (interventionRemoval <= 0) {
+              int interventionRemoval = 0;
+              if (hasInterventionCapture) {
+                interventionRemoval =
+                    _activateInterventionCapture(us, s, interventionCaptured);
+                if (interventionRemoval <= 0) {
+                  _setInterventionCaptureState(us, 0, 0);
+                }
+              } else {
                 _setInterventionCaptureState(us, 0, 0);
               }
-            } else {
-              _setInterventionCaptureState(us, 0, 0);
-            }
 
-            _initializeRemovalState(
-                us, rm, custodianRemoval, interventionRemoval);
+              _initializeRemovalState(
+                  us, rm, custodianRemoval, interventionRemoval);
+            }
           }
           return true;
         }
