@@ -1643,7 +1643,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
         isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
+        const bool hasPendingCustodian =
+            custodianCount > 0 && custodianTargets != 0;
+        const bool hasPendingIntervention =
+            interventionCount > 0 && interventionTargets != 0;
+
         if (mode == ActiveCaptureMode::none) {
+            if (!isCaptureTarget &&
+                (hasPendingCustodian || hasPendingIntervention)) {
+                return false;
+            }
             if (isInterventionTarget && interventionCount > 0) {
                 mode = ActiveCaptureMode::intervention;
                 quota = std::max(interventionCount, 2);
