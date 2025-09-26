@@ -1304,12 +1304,14 @@ bool Position::put_piece(Square s, bool updateRecord)
                     return true; // Execute special capture; mill marking
                                  // handled at phase end
                 }
-                
-                // For markAndDelayRemovingPieces mode, mills allow immediate removal
-                // but mill pieces are marked and processed at phase end
+
+                // For markAndDelayRemovingPieces mode, mills allow immediate
+                // removal but mill pieces are marked and processed at phase end
                 rm = rule.mayRemoveMultiple ? n : 1;
-                LOGD("Mill formed with markAndDelayRemovingPieces - allowing immediate removal of %d pieces\n", rm);
-                
+                LOGD("Mill formed with markAndDelayRemovingPieces - allowing "
+                     "immediate removal of %d pieces\n",
+                     rm);
+
                 // Store the mill removal count for phase end processing
                 pendingMillRemovals[us] += rm;
             } else {
@@ -1378,13 +1380,17 @@ bool Position::put_piece(Square s, bool updateRecord)
                         change_side_to_move();
                     }
                 } else {
-                    // For markAndDelayRemovingPieces, we still need to set up removal state
-                    // so AI understands that mill formation leads to piece removal
+                    // For markAndDelayRemovingPieces, we still need to set up
+                    // removal state so AI understands that mill formation leads
+                    // to piece removal
                     if (rule.millFormationActionInPlacingPhase ==
-                        MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
+                        MillFormationActionInPlacingPhase::
+                            markAndDelayRemovingPieces) {
                         // Set up normal removal state for mill formation
-                        LOGD("Mill placing phase (markAndDelayRemovingPieces): calling "
-                             "initializeRemovalState(us=%d, rm=%d)\n", us, rm);
+                        LOGD("Mill placing phase (markAndDelayRemovingPieces): "
+                             "calling "
+                             "initializeRemovalState(us=%d, rm=%d)\n",
+                             us, rm);
                         initializeRemovalState(us, rm, 0, 0);
                     } else {
                         int custodianRemoval = 0;
@@ -1416,7 +1422,8 @@ bool Position::put_piece(Square s, bool updateRecord)
                         }
 
                         LOGD("Mill placing phase: calling "
-                             "initializeRemovalState(us=%d, rm=%d, custodian=%d, "
+                             "initializeRemovalState(us=%d, rm=%d, "
+                             "custodian=%d, "
                              "intervention=%d)\n",
                              us, rm, custodianRemoval, interventionRemoval);
                         initializeRemovalState(us, rm, custodianRemoval,
@@ -1643,7 +1650,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
         isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
+        const bool hasPendingCustodian = custodianCount > 0 &&
+                                         custodianTargets != 0;
+        const bool hasPendingIntervention = interventionCount > 0 &&
+                                            interventionTargets != 0;
+
         if (mode == ActiveCaptureMode::none) {
+            if (!isCaptureTarget &&
+                (hasPendingCustodian || hasPendingIntervention)) {
+                return false;
+            }
             if (isInterventionTarget && interventionCount > 0) {
                 mode = ActiveCaptureMode::intervention;
                 quota = std::max(interventionCount, 2);
@@ -2437,12 +2453,13 @@ int Position::activateInterventionCapture(
     Bitboard targets = 0;
 
     // Set up all possible intervention targets and their pair relationships
-    // Player/AI will choose which pieces to remove, and pairing will be enforced
+    // Player/AI will choose which pieces to remove, and pairing will be
+    // enforced
     for (const auto &pair : capturePairs) {
         targets |= square_bb(pair[0]);
         targets |= square_bb(pair[1]);
-        
-        // Handle potential conflicts: if a square is already paired, 
+
+        // Handle potential conflicts: if a square is already paired,
         // keep the first pairing to maintain consistency
         if (interventionPairMate[color][pair[0]] == SQ_NONE) {
             interventionPairMate[color][pair[0]] = pair[1];
