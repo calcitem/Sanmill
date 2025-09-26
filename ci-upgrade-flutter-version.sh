@@ -1,61 +1,85 @@
 #!/bin/bash
+set -e
 
-# Get the version of Flutter by executing the `flutter` command and using `awk` to parse the output
+# This script upgrades the Flutter version used in this project.
+# It automatically detects the current Flutter version, finds all
+# version references in the codebase, and updates them.
+
+# --- Version Detection ---
+
+# Get the new Flutter version from the local flutter command.
+echo "Fetching current Flutter version from your environment..."
 FLUTTER_VERSION=$(flutter --version | awk 'NR==1{print $2}')
+if [ -z "$FLUTTER_VERSION" ]; then
+    echo "Error: Could not determine Flutter version. Make sure 'flutter' is in your PATH."
+    exit 1
+fi
+echo "Detected Flutter version: ${FLUTTER_VERSION}"
 
-# Export the FLUTTER_VERSION variable so it can be used in the subshell spawned by find/exec
+# Get the old Flutter version from the project's bootstrap script.
+# This script is considered the source of truth for the project's required version.
+echo "Fetching old Flutter version from scripts/ensure_flutter.sh..."
+OLD_FLUTTER_VERSION=$(grep 'REQUIRED_FLUTTER_VERSION:=' scripts/ensure_flutter.sh | head -n1 | sed 's/.*:=//' | tr -d '}"')
+if [ -z "$OLD_FLUTTER_VERSION" ]; then
+    echo "Error: Could not determine the old Flutter version from scripts/ensure_flutter.sh."
+    exit 1
+fi
+echo "Old project Flutter version: ${OLD_FLUTTER_VERSION}"
+
+# Exit if the version is already up-to-date.
+if [ "$FLUTTER_VERSION" == "$OLD_FLUTTER_VERSION" ]; then
+    echo "Flutter version is already up to date. Nothing to do."
+    exit 0
+fi
+
+# --- File Updates ---
+
+# Export variables to be available in subshells created by find -exec.
 export FLUTTER_VERSION
+export OLD_FLUTTER_VERSION
 
-# Determine the operating system type using `uname`
+# Determine the operating system to use the correct sed syntax for in-place editing.
 OS="$(uname)"
+SED_CMD='sed -i'
+if [ "$OS" = "Darwin" ]; then
+    SED_CMD='sed -i ""'
+fi
 
-# Navigate to the .github/workflows directory to perform version replacement in YAML files
-cd .github/workflows
+# Update GitHub Actions workflow files.
+echo "Updating Flutter version in .github/workflows..."
+# The subshell is used to ensure the sed command gets the exported FLUTTER_VERSION.
+find .github/workflows -name '*.yml' -exec sh -c "${SED_CMD} \"s/flutter-version: .*/flutter-version: '${FLUTTER_VERSION}'/\" \"\$1\"" sh {} \;
 
-# Based on the OS type, find all .yml files and replace the flutter-version with the retrieved FLUTTER_VERSION
-case "$OS" in
-  Linux* | MINGW64_NT*)
-    # For Linux and Windows (MINGW), using sed without an empty argument for in-place editing
-    find . -name '*.yml' -exec sh -c '
-      sed -i "s/flutter-version: .*/flutter-version: '\''${FLUTTER_VERSION}'\''/" $1
-    ' sh {} \;
-    ;;
-  Darwin*)
-    # For macOS, using sed with an empty argument "" for in-place editing
-    find . -name '*.yml' -exec sh -c '
-      sed -i "" "s/flutter-version: .*/flutter-version: '\''${FLUTTER_VERSION}'\''/" $1
-    ' sh {} \;
-    ;;
-esac
+# Update snap package configuration.
+echo "Updating Flutter version in snap/snapcraft.yaml..."
+find snap -name '*.yaml' -exec sh -c "${SED_CMD} \"s/flutter_linux_${OLD_FLUTTER_VERSION}-stable/flutter_linux_${FLUTTER_VERSION}-stable/\" \"\$1\"" sh {} \;
 
-# Navigate back to the root directory
-cd ../..
+# Update the Flutter version in project scripts and documentation.
+echo "Updating version in scripts/ensure_flutter.sh and documentation..."
+FILES_TO_UPDATE=(
+  "scripts/ensure_flutter.sh"
+  "README.md"
+  "README-zh_CN.md"
+)
 
-# Navigate to the snap directory
-cd snap
+for file in "${FILES_TO_UPDATE[@]}"; do
+  if [ -f "$file" ]; then
+    echo " - Updating ${file}"
+    eval "$SED_CMD 's/${OLD_FLUTTER_VERSION}/${FLUTTER_VERSION}/g' '$file'"
+  else
+    echo " - Warning: ${file} not found, skipping."
+  fi
+done
 
-# Again, based on the OS type, find all .yml files and replace the flutter Linux version string
-case "$OS" in
-  Linux* | MINGW64_NT*)
-    find . -name '*.yaml' -exec sh -c '
-      sed -i "s/flutter_linux_[0-9]*\.[0-9]*\.[0-9]*/flutter_linux_'${FLUTTER_VERSION}'/" $1
-    ' sh {} \;
-    ;;
-  Darwin*)
-    find . -name '*.yaml' -exec sh -c '
-      sed -i "" "s/flutter_linux_[0-9]*\.[0-9]*\.[0-9]*/flutter_linux_'${FLUTTER_VERSION}'/" $1
-    ' sh {} \;
-    ;;
-esac
+# --- Git Operations ---
 
-# Navigate back to the root directory
-cd ..
-
-# Add all changed files to the staging area of git
+# Stage all changes and commit them.
+echo "Staging and committing changes..."
 git add .
-
-# Commit the changes with a message indicating the upgrade of Flutter version
 git commit -m "ci: Upgrade Flutter to v${FLUTTER_VERSION}"
 
-# Uncomment the line below if you want to push changes automatically. Be sure to check the changes before pushing.
-#git push
+echo ""
+echo "Successfully upgraded Flutter version from ${OLD_FLUTTER_VERSION} to ${FLUTTER_VERSION}."
+echo "Please review the changes and push to the remote repository when ready."
+# Uncomment the line below to automatically push the changes.
+# git push
