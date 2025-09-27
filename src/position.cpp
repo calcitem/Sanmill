@@ -2791,7 +2791,9 @@ int Position::potential_mills_count(Square to, Color c, Square from)
                     n++;
                 } else {
                     Bitboard line = square_bb(to) | potentialMill;
-                    if ((line & formedMillsBB[sideToMove]) != line) {
+                    // Use the actual piece color instead of sideToMove for consistency
+                    // with Dart implementation and logical correctness
+                    if ((line & formedMillsBB[color]) != line) {
                         n++;
                     }
                 }
