@@ -1610,7 +1610,7 @@ class Position {
           quota = max(interventionCount(), 2);
           _pendingMillRemovals[sideToMove] = 0;
           _setCustodianCaptureState(sideToMove, 0, 0);
-          forcedPartner = -1;
+          // Don't reset forcedPartner here, it will be set in the intervention handling below
         } else if (isCustodianTarget && custodianCount() > 0) {
           mode = ActiveCaptureMode.custodian;
           quota = custodianCount(); // Only custodian quota

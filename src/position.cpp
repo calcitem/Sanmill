@@ -1657,7 +1657,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 quota = std::max(interventionCount, 2);
                 pendingMillRemovals[sideToMove] = 0;
                 clearCustodianStateIfNeeded();
-                forcedPartner = SQ_NONE;
+                // Don't reset forcedPartner here, it will be set in the intervention handling below
             } else if (isCustodianTarget && custodianCount > 0) {
                 mode = ActiveCaptureMode::custodian;
                 quota = custodianCount;              // Only custodian quota
