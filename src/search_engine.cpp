@@ -13,6 +13,7 @@
 #include "perfect_api.h"
 #include "tt.h"
 #include "movegen.h"
+#include "movepick.h"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -771,7 +772,7 @@ void SearchEngine::runSearch()
                     debugPrintf("Root enforcement: removal bestmove '%s' not allowed; searching for a move.\n", bm.c_str());
                     // Try to pick the first legal move (non-removal)
                     MovePicker mp(*rootPos, MOVE_NONE);
-                    const Move mv = mp.next_move<LEGAL>();
+                    mp.next_move<LEGAL>();
                     const int cnt = mp.move_count();
                     Move selected = MOVE_NONE;
                     for (int i = 0; i < cnt; ++i) {
