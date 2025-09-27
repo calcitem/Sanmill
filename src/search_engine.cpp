@@ -19,6 +19,11 @@
 #include <string>
 #include <vector>
 
+// Fallback LOGD definition if not available
+#ifndef LOGD
+#define LOGD(...) printf(__VA_ARGS__)
+#endif
+
 #ifdef FLUTTER_UI
 #include "engine_main.h"
 #endif
@@ -379,6 +384,28 @@ int SearchEngine::executeSearch()
 {
     Sanmill::Stack<Position> ss;
 
+    // CRITICAL FIX: In moving phase, force clean state and prevent removal actions
+    // This ensures proper game flow where moves must be executed before removals
+    if (rootPos->phase == Phase::moving) {
+        printf("SEARCH FIX: Moving phase detected, phase=%d action=%d\n", 
+               static_cast<int>(rootPos->phase), static_cast<int>(rootPos->action));
+        
+        // Clear ALL removal-related states for ALL colors
+        for (int c = WHITE; c <= BLACK; ++c) {
+            const auto color = static_cast<Color>(c);
+            rootPos->pendingMillRemovals[color] = 0;
+            rootPos->removalQuota[color] = 0;
+            rootPos->removalsPerformed[color] = 0;
+            rootPos->activeCaptureMode[color] = ActiveCaptureMode::none;
+            rootPos->interventionForcedPartner[color] = SQ_NONE;
+            rootPos->pieceToRemoveCount[color] = 0;
+        }
+        
+        // Force action to select - no removal allowed at root level in moving phase
+        rootPos->action = Action::select;
+        printf("SEARCH FIX: Forced action to select, cleared all removal states\n");
+    }
+
 #if defined(GABOR_MALOM_PERFECT_AI)
     Move fallbackMove = MOVE_NONE;
     Value fallbackValue = VALUE_UNKNOWN;
@@ -736,6 +763,32 @@ void SearchEngine::runSearch()
             emitCommand();
         } else {
             setBestMoveString(next_move());
+            // Enforce non-removal move at root in moving phase with select action
+            if (rootPos && rootPos->get_phase() == Phase::moving && rootPos->get_action() == Action::select) {
+                const std::string bm = getBestMoveString();
+                // Removal moves are formatted like "x..." (e.g., "xa1")
+                if (!bm.empty() && bm[0] == 'x') {
+                    debugPrintf("Root enforcement: removal bestmove '%s' not allowed; searching for a move.\n", bm.c_str());
+                    // Try to pick the first legal move (non-removal)
+                    MovePicker mp(*rootPos, MOVE_NONE);
+                    const Move mv = mp.next_move<LEGAL>();
+                    const int cnt = mp.move_count();
+                    Move selected = MOVE_NONE;
+                    for (int i = 0; i < cnt; ++i) {
+                        if (type_of(mp.moves[i].move) != MOVETYPE_REMOVE) {
+                            selected = mp.moves[i].move;
+                            break;
+                        }
+                    }
+                    if (selected != MOVE_NONE) {
+                        bestMove = selected;
+                        setBestMoveString(UCI::move(selected));
+                        debugPrintf("Root enforcement: switched bestmove to '%s'\n", getBestMoveString().c_str());
+                    } else {
+                        debugPrintf("Root enforcement: no non-removal legal moves found. Keeping original bestmove.\n");
+                    }
+                }
+            }
             if (getBestMoveString().empty() ||
                 getBestMoveString() == "error!" ||
                 getBestMoveString() == "none") {

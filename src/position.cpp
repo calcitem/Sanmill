@@ -646,6 +646,17 @@ Position &Position::set(const string &fenStr)
         }
     }
 
+    // Reset all removal-related state for all colors first
+    for (int c = WHITE; c <= BLACK; ++c) {
+        const auto color = static_cast<Color>(c);
+        pendingMillRemovals[color] = 0;
+        removalQuota[color] = 0;
+        removalsPerformed[color] = 0;
+        activeCaptureMode[color] = ActiveCaptureMode::none;
+        interventionForcedPartner[color] = SQ_NONE;
+        LOGD("FEN loading: Reset removal state for color %d\n", color);
+    }
+
     for (int c = WHITE; c <= BLACK; ++c) {
         const auto color = static_cast<Color>(c);
         const size_t idx = static_cast<size_t>(color);
@@ -693,6 +704,10 @@ Position &Position::set(const string &fenStr)
 
             initializeRemovalState(color, millRemovals, custodianCount,
                                    interventionCount);
+            // Set action to remove only for FEN loading with removal state
+            if (color == sideToMove && (millRemovals > 0 || custodianCount > 0 || interventionCount > 0)) {
+                action = Action::remove;
+            }
         }
     }
 
@@ -1142,6 +1157,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
         const int n = mills_count(s);
+        LOGD("put_piece: mills_count(%d) = %d for color %d\n", s, n, us);
         std::vector<Square> custodianCaptured;
         const bool hasCustodianCapture = custodianEnabled &&
                                          checkCustodianCapture(
@@ -1203,6 +1219,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
             // If we have special capture to handle, return early
             if (removalQuota[us] > 0 && pieceToRemoveCount[sideToMove] > 0) {
+                action = Action::remove;
                 return true;
             }
 
@@ -1273,6 +1290,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                 if (custodianRemoval > 0 || interventionRemoval > 0) {
                     initializeRemovalState(us, /*mill=*/0, custodianRemoval,
                                            interventionRemoval);
+                    action = Action::remove;
                     return true;
                 }
 
@@ -1298,6 +1316,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                 if (custodianRemoval > 0 || interventionRemoval > 0) {
                     initializeRemovalState(us, /*mill=*/0, custodianRemoval,
                                            interventionRemoval);
+                    action = Action::remove;
                     return true; // Execute special capture; mill marking
                                  // handled at phase end
                 }
@@ -1334,6 +1353,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                         // consistently, ensuring that pendingMillRemovals,
                         // removalQuota, and action are consistent.
                         initializeRemovalState(us, remainingRemovals, 0, 0);
+                        action = Action::remove;
                         return true;
                     } else {
                         pieceInHandCount[them]--;
@@ -1389,6 +1409,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                              "initializeRemovalState(us=%d, rm=%d)\n",
                              us, rm);
                         initializeRemovalState(us, rm, 0, 0);
+                        action = Action::remove;
                     } else {
                         int custodianRemoval = 0;
                         if (hasCustodianCapture) {
@@ -1425,6 +1446,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                              us, rm, custodianRemoval, interventionRemoval);
                         initializeRemovalState(us, rm, custodianRemoval,
                                                interventionRemoval);
+                        action = Action::remove;
                     }
                 }
                 return true;
@@ -1491,6 +1513,7 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     board[currentSquare[sideToMove]] = NO_PIECE;
 
     const int n = mills_count(s);
+    LOGD("handle_moving_phase: mills_count(%d) = %d for color %d\n", s, n, sideToMove);
     std::vector<Square> custodianCaptured;
     const bool hasCustodianCapture = custodianEnabled &&
                                      checkCustodianCapture(s, sideToMove,
@@ -1528,6 +1551,7 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
                                interventionRemoval);
 
         if (removalQuota[sideToMove] > 0) {
+            action = Action::remove;
             return true;
         }
 
@@ -1565,6 +1589,23 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 
         currentSquare[sideToMove] = SQ_NONE;
 
+        // CRITICAL FIX: In moving phase with select action, don't set removal state
+        // This ensures moves are returned before removals
+        if (action == Action::select && phase == Phase::moving && n > 0) {
+            LOGD("HANDLE_MOVING_PHASE FIX: Mill detected but skipping removal setup for select action\n");
+            // Clear any existing capture states but don't set removal
+            if (custodianCaptureTargets[sideToMove] ||
+                custodianRemovalCount[sideToMove] != 0) {
+                setCustodianCaptureState(sideToMove, 0, 0);
+            }
+            if (interventionCaptureTargets[sideToMove] ||
+                interventionRemovalCount[sideToMove] != 0) {
+                setInterventionCaptureState(sideToMove, 0, 0);
+            }
+            // Don't change side - let the caller handle game flow
+            return true;
+        }
+
         const int baseRemoval = rule.mayRemoveMultiple ? n : 1;
 
         int custodianRemoval = 0;
@@ -1597,6 +1638,9 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 
         initializeRemovalState(sideToMove, baseRemoval, custodianRemoval,
                                interventionRemoval);
+        if (baseRemoval > 0 || custodianRemoval > 0 || interventionRemoval > 0) {
+            action = Action::remove;
+        }
     }
 
     return true;
@@ -2064,6 +2108,7 @@ bool Position::check_if_game_is_over()
     // Stalemate.
     if (phase == Phase::moving && action == Action::select &&
         is_all_surrounded(sideToMove)) {
+        LOGD("STALEMATE DETECTED: sideToMove=%d is all surrounded\n", sideToMove);
         switch (rule.stalemateAction) {
         case StalemateAction::endWithStalemateLoss:
             set_gameover(~sideToMove, GameOverReason::loseNoLegalMoves);
@@ -2199,6 +2244,8 @@ inline void Position::set_side_to_move(Color c)
 
     if (pieceToRemoveCount[sideToMove] > 0 ||
         pieceToRemoveCount[sideToMove] < 0) {
+        LOGD("set_side_to_move: Setting action to remove because pieceToRemoveCount[%d] = %d\n", 
+             sideToMove, pieceToRemoveCount[sideToMove]);
         action = Action::remove;
     }
 
@@ -2319,9 +2366,10 @@ void Position::initializeRemovalState(Color color, int millRemovals,
     if (totalAllowed > 0) {
         pieceToRemoveCount[color] = totalAllowed;
         update_key_misc();
-        action = Action::remove;
+        // Note: Don't modify global action here - let the caller decide
+        // when to transition to removal phase
         LOGD("initializeRemovalState: color=%d, totalAllowed=%d, "
-             "action=remove, pendingMill=%d (mill=%d,cust=%d,inter=%d)\n",
+             "pendingMill=%d (mill=%d,cust=%d,inter=%d)\n",
              color, totalAllowed, pendingMillRemovals[color], millRemovals,
              custodianRemovals, interventionRemovals);
     } else {
@@ -2841,7 +2889,12 @@ int Position::mills_count(Square s)
             if ((bc & potentialMill) == potentialMill) {
                 auto line = square_bb(s) | potentialMill;
                 if ((line & formedMillsBB[side]) != line) {
-                    formedMillsBB[side] |= line;
+                    // Only modify formedMillsBB in actual game moves, not during search
+                    // This prevents search simulation from affecting global state
+                    // Also prevent modification during move generation phase
+                    if (action != Action::select && action != Action::place) {
+                        formedMillsBB[side] |= line;
+                    }
                     n++;
                 }
             }
@@ -2905,11 +2958,16 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
 bool Position::is_all_surrounded(Color c) const
 {
     // Full
-    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB)
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB) {
+        LOGD("is_all_surrounded: board is full (%d+%d >= %d)\n", 
+             pieceOnBoardCount[WHITE], pieceOnBoardCount[BLACK], SQUARE_NB);
         return true;
+    }
 
     // Can fly
     if (pieceOnBoardCount[c] <= rule.flyPieceCount && rule.mayFly) {
+        LOGD("is_all_surrounded: color %d can fly (%d <= %d)\n", 
+             c, pieceOnBoardCount[c], rule.flyPieceCount);
         return false;
     }
 
@@ -2918,10 +2976,12 @@ bool Position::is_all_surrounded(Color c) const
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
         if ((c & color_on(s)) && (bb & MoveList<LEGAL>::adjacentSquaresBB[s]) !=
                                      MoveList<LEGAL>::adjacentSquaresBB[s]) {
+            LOGD("is_all_surrounded: color %d has free move at square %d\n", c, s);
             return false;
         }
     }
 
+    LOGD("is_all_surrounded: color %d is completely surrounded\n", c);
     return true;
 }
 

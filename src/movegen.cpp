@@ -306,6 +306,14 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
 
     switch (pos.get_action()) {
     case Action::select:
+        // Only generate moves, not removals, when action is select
+        printf("MOVEGEN: Action is select, phase=%d\n", static_cast<int>(pos.get_phase()));
+        if (pos.get_phase() == Phase::moving) {
+            printf("MOVEGEN FIX: Moving phase with select action - generating MOVE actions only\n");
+            return generate<MOVE>(pos, moveList);
+        }
+        return cur;
+        
     case Action::place:
         // Generate both PLACE and MOVE actions if the phase is placing
         if (pos.get_phase() == Phase::placing ||

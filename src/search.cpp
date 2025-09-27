@@ -84,6 +84,12 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
         return stand_pat;
     }
 
+    // In moving phase with select action, there are no immediate removals
+    // to consider for quiescence at this node.
+    if (pos->get_phase() == Phase::moving && pos->get_action() == Action::select) {
+        return alpha;
+    }
+
     // Generate remove moves
     MovePicker mp(*pos, MOVE_NONE);
     mp.next_move<REMOVE>();
@@ -267,6 +273,22 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     Value value;
     Depth epsilon;
+
+    // CRITICAL FIX: Force clean state at root level in moving phase
+    if (depth == originDepth && pos->get_phase() == Phase::moving && pos->get_action() == Action::select) {
+        // Clear all removal states that might have been set during search
+        for (int c = WHITE; c <= BLACK; ++c) {
+            const auto color = static_cast<Color>(c);
+            pos->pendingMillRemovals[color] = 0;
+            pos->removalQuota[color] = 0;
+            pos->removalsPerformed[color] = 0;
+            pos->activeCaptureMode[color] = ActiveCaptureMode::none;
+            pos->interventionForcedPartner[color] = SQ_NONE;
+            pos->pieceToRemoveCount[color] = 0;
+        }
+        pos->action = Action::select;
+        printf("ROOT SEARCH FIX: Forced clean state for root level move generation\n");
+    }
 
     // Initialize MovePicker to order and select moves
     MovePicker mp(*pos, ttMove);
