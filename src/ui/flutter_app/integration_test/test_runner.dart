@@ -46,7 +46,8 @@ Future<void> runScenarioSteps(
 
         if (expectedText == null) {
           throw Exception(
-              'Missing "expectedText" property for verifyTextEquals action.');
+            'Missing "expectedText" property for verifyTextEquals action.',
+          );
         }
         // Check if the widget is a Text widget
         final Text textWidget = tester.widget<Text>(widgetFinder);
@@ -63,7 +64,8 @@ Future<void> runScenarioSteps(
 
         if (expectedText == null) {
           throw Exception(
-              'Missing "expectedText" property for verifyTextContains action.');
+            'Missing "expectedText" property for verifyTextContains action.',
+          );
         }
         final Text textWidgetContains = tester.widget<Text>(widgetFinder);
         expect(
@@ -79,7 +81,8 @@ Future<void> runScenarioSteps(
 
         if (expectedText == null) {
           throw Exception(
-              'Missing "expectedText" property for enterText action.');
+            'Missing "expectedText" property for enterText action.',
+          );
         }
         await tester.enterText(widgetFinder, expectedText);
         await tester.pumpAndSettle();
@@ -93,7 +96,8 @@ Future<void> runScenarioSteps(
         // Verify that the scrollable container exists
         if (scrollableFinder.evaluate().isEmpty) {
           throw Exception(
-              'scrollUntilVisible action requires a valid "scrollable" finder.');
+            'scrollUntilVisible action requires a valid "scrollable" finder.',
+          );
         }
 
         // Get the scroll increment for each scroll, defaulting to 200.0
@@ -126,8 +130,10 @@ Future<void> runScenarioSteps(
           rootView.hitTest(boxHitTestResult, position: center);
 
           // Get the render object corresponding to the target widget
-          final RenderObject? targetRenderObject =
-              target.evaluate().first.renderObject;
+          final RenderObject? targetRenderObject = target
+              .evaluate()
+              .first
+              .renderObject;
           if (targetRenderObject == null) {
             return false;
           }
@@ -142,13 +148,18 @@ Future<void> runScenarioSteps(
         }
 
         // Perform scrolling and check if the target widget is tappable
-        Future<bool> performScroll(Finder scrollable, Finder target,
-            int maxScrolls, double offset) async {
+        Future<bool> performScroll(
+          Finder scrollable,
+          Finder target,
+          int maxScrolls,
+          double offset,
+        ) async {
           for (int i = 0; i < maxScrolls; i++) {
             // Before each scroll, check if the widget is tappable
             if (isWidgetTappable(tester, target)) {
               logger.i(
-                  'Target widget is within tappable range, stopping scroll.');
+                'Target widget is within tappable range, stopping scroll.',
+              );
               return true;
             }
 
@@ -170,28 +181,41 @@ Future<void> runScenarioSteps(
         if (resetScroll) {
           logger.i('Performing scroll back to top.');
           await tester.drag(
-              scrollableFinder, const Offset(0, resetScrollOffset));
+            scrollableFinder,
+            const Offset(0, resetScrollOffset),
+          );
           await tester.pumpAndSettle();
           logger.i('Scrolled back to top.');
         }
 
         // First attempt: scroll up to find the target widget
         found = await performScroll(
-            scrollableFinder, widgetFinder, maxScrolls, -scrollIncrement);
+          scrollableFinder,
+          widgetFinder,
+          maxScrolls,
+          -scrollIncrement,
+        );
 
         if (!found) {
           logger.i(
-              'Target widget not found on first scroll, scrolling back to top and retrying.');
+            'Target widget not found on first scroll, scrolling back to top and retrying.',
+          );
 
           // Scroll back to the top
           await tester.drag(
-              scrollableFinder, const Offset(0, resetScrollOffset));
+            scrollableFinder,
+            const Offset(0, resetScrollOffset),
+          );
           await tester.pumpAndSettle();
           logger.i('Scrolled back to top.');
 
           // Second attempt: scroll up again to find the target widget
           found = await performScroll(
-              scrollableFinder, widgetFinder, maxScrolls, -scrollIncrement);
+            scrollableFinder,
+            widgetFinder,
+            maxScrolls,
+            -scrollIncrement,
+          );
         }
 
         if (!found) {
@@ -211,15 +235,17 @@ Future<void> runScenarioSteps(
         final String? functionName = step['functionName'];
         if (functionName == null || functionName.isEmpty) {
           throw Exception(
-              'No function name was specified for the customFunction action.');
+            'No function name was specified for the customFunction action.',
+          );
         }
 
         // Retrieve the actual function reference from customFunctionMap
         final Future<void> Function(WidgetTester p1, Map<String, String> p2)?
-            customFunc = customFunctionMap[functionName];
+        customFunc = customFunctionMap[functionName];
         if (customFunc == null) {
           throw Exception(
-              'No custom function registered under the name "$functionName".');
+            'No custom function registered under the name "$functionName".',
+          );
         }
 
         // Execute the custom function, passing along the WidgetTester and the entire step data if needed
@@ -241,7 +267,8 @@ Future<void> runScenarioSteps(
         final int? durationMs = int.tryParse(durationStr);
         if (durationMs == null) {
           throw Exception(
-              'Invalid "duration" value for delay action. Must be an integer representing milliseconds.');
+            'Invalid "duration" value for delay action. Must be an integer representing milliseconds.',
+          );
         }
 
         // Log the delay

@@ -49,10 +49,7 @@ class TutorialPainter extends CustomPainter {
         );
 
         shadowPath.addOval(
-          Rect.fromCircle(
-            center: pos,
-            radius: pieceWidth / 2,
-          ),
+          Rect.fromCircle(center: pos, radius: pieceWidth / 2),
         );
       }
     }
@@ -75,18 +72,10 @@ class TutorialPainter extends CustomPainter {
 
       // Draw Border of Piece
       paint.color = piece.pieceColor.borderColor;
-      canvas.drawCircle(
-        piece.pos,
-        pieceRadius,
-        paint,
-      );
+      canvas.drawCircle(piece.pos, pieceRadius, paint);
       // Draw the piece
       paint.color = piece.pieceColor.mainColor;
-      canvas.drawCircle(
-        piece.pos,
-        pieceInnerRadius,
-        paint,
-      );
+      canvas.drawCircle(piece.pos, pieceInnerRadius, paint);
     }
 
     // Draw focus and blur position

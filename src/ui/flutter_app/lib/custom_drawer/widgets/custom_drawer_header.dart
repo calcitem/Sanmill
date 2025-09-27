@@ -9,10 +9,7 @@ part of '../../custom_drawer/custom_drawer.dart';
 ///
 /// Displays the animated header title in the drawer.
 class CustomDrawerHeader extends StatelessWidget {
-  const CustomDrawerHeader({
-    super.key,
-    required this.headerTitle,
-  });
+  const CustomDrawerHeader({super.key, required this.headerTitle});
 
   final String headerTitle;
 
@@ -34,9 +31,9 @@ class CustomDrawerHeader extends StatelessWidget {
       animatedTexts: <ColorizeAnimatedText>[
         ColorizeAnimatedText(
           headerTitle,
-          textStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+          textStyle: Theme.of(
+            context,
+          ).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w600),
           colors: drawerHeaderAnimationColors,
           speed: const Duration(seconds: 3),
           textDirection: Directionality.of(context),

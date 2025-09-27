@@ -177,17 +177,18 @@ class ToolbarItem extends ButtonStyleButton {
   }) {
     final WidgetStateProperty<Color?>? foregroundColor =
         (onSurface == null && primary == null)
-            ? null
-            : _ToolbarItemDefaultForeground(primary, onSurface);
-    final WidgetStateProperty<Color?>? overlayColor =
-        (primary == null) ? null : _ToolbarItemDefaultOverlay(primary);
+        ? null
+        : _ToolbarItemDefaultForeground(primary, onSurface);
+    final WidgetStateProperty<Color?>? overlayColor = (primary == null)
+        ? null
+        : _ToolbarItemDefaultOverlay(primary);
     final WidgetStateProperty<MouseCursor>? mouseCursor =
         (enabledMouseCursor == null && disabledMouseCursor == null)
-            ? null
-            : _ToolbarItemDefaultMouseCursor(
-                enabledMouseCursor!,
-                disabledMouseCursor!,
-              );
+        ? null
+        : _ToolbarItemDefaultMouseCursor(
+            enabledMouseCursor!,
+            disabledMouseCursor!,
+          );
 
     return ButtonStyle(
       textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
@@ -403,14 +404,14 @@ class _ToolbarItemWithIcon extends ToolbarItem {
     required Widget icon,
     required Widget label,
   }) : super(
-          autofocus: autofocus ?? false,
-          clipBehavior: clipBehavior ?? Clip.none,
-          child: _ToolbarItemChild(
-            icon: icon,
-            label: label,
-            key: const Key('toolbar_item_child'),
-          ),
-        );
+         autofocus: autofocus ?? false,
+         clipBehavior: clipBehavior ?? Clip.none,
+         child: _ToolbarItemChild(
+           icon: icon,
+           label: label,
+           key: const Key('toolbar_item_child'),
+         ),
+       );
 
   static const TextScaler scaler = TextScaler.noScaling;
 
@@ -425,18 +426,16 @@ class _ToolbarItemWithIcon extends ToolbarItem {
       const EdgeInsets.symmetric(horizontal: 4),
       scaleFactor,
     );
-    return super.defaultStyleOf(context).copyWith(
+    return super
+        .defaultStyleOf(context)
+        .copyWith(
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(scaledPadding),
         );
   }
 }
 
 class _ToolbarItemChild extends StatelessWidget {
-  const _ToolbarItemChild({
-    required this.label,
-    required this.icon,
-    super.key,
-  });
+  const _ToolbarItemChild({required this.label, required this.icon, super.key});
 
   final Widget label;
   final Widget icon;

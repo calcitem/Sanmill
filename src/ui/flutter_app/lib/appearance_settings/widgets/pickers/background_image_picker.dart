@@ -83,14 +83,15 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
                 // Last item: Custom Image Picker
                 return _CustomBackgroundImageItem(
                   key: const Key('custom_background_image_item'),
-                  isSelected: displaySettings.backgroundImagePath ==
+                  isSelected:
+                      displaySettings.backgroundImagePath ==
                       displaySettings.customBackgroundImagePath,
                   customImagePath: displaySettings.customBackgroundImagePath,
                   onSelect: () {
                     // Set backgroundImagePath to the custom image path
                     DB().displaySettings = displaySettings.copyWith(
-                      backgroundImagePath: displaySettings
-                              .customBackgroundImagePath ??
+                      backgroundImagePath:
+                          displaySettings.customBackgroundImagePath ??
                           '', // Fallback to empty string for solid color background
                     );
                   },
@@ -165,8 +166,8 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
             }
 
             // Generate a unique filename using the current timestamp
-            final String timestamp =
-                DateTime.now().millisecondsSinceEpoch.toString();
+            final String timestamp = DateTime.now().millisecondsSinceEpoch
+                .toString();
             final String filePath = '$imagesDirPath/$timestamp.png';
 
             // Save the cropped image to the designated directory
@@ -228,9 +229,9 @@ class _BackgroundImageItem extends StatelessWidget {
               image: asset.isEmpty
                   ? null
                   : DecorationImage(
-                      image: getBackgroundImageProvider(DisplaySettings(
-                        backgroundImagePath: asset,
-                      ))!,
+                      image: getBackgroundImageProvider(
+                        DisplaySettings(backgroundImagePath: asset),
+                      )!,
                       fit: BoxFit.cover,
                     ),
               borderRadius: BorderRadius.circular(8),
@@ -282,7 +283,8 @@ class _CustomBackgroundImageItem extends StatelessWidget {
             key: const Key('custom_background_container'),
             decoration: BoxDecoration(
               color: customImagePath == null
-                  ? Colors.grey // Grey color if no custom image is selected
+                  ? Colors
+                        .grey // Grey color if no custom image is selected
                   : null,
               image: customImagePath != null
                   ? DecorationImage(
@@ -309,11 +311,7 @@ class _CustomBackgroundImageItem extends StatelessWidget {
             Center(
               child: IconButton(
                 key: const Key('custom_background_edit_button'),
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                  size: 32,
-                ),
+                icon: const Icon(Icons.edit, color: Colors.white, size: 32),
                 onPressed: onPickImage,
                 tooltip: S.of(context).chooseYourPicture,
               ),

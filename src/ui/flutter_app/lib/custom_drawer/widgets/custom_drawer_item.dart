@@ -43,11 +43,11 @@ class CustomDrawerItem<T> extends StatelessWidget {
       key: const Key('custom_drawer_item_icon'),
     );
 
-    final TextStyle titleStyle =
-        Theme.of(context).textTheme.titleLarge!.copyWith(
-              fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-              color: color,
-            );
+    final TextStyle titleStyle = Theme.of(context).textTheme.titleLarge!
+        .copyWith(
+          fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+          color: color,
+        );
 
     final Size titleSize = getBoundingTextSize(
       context,

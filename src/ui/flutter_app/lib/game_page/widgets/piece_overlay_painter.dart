@@ -60,8 +60,9 @@ class PieceOverlayPainter extends CustomPainter {
       // Draw the top dashed line
       double startX = rect.left;
       while (startX < rect.right) {
-        final double endX =
-            startX + dashWidth < rect.right ? startX + dashWidth : rect.right;
+        final double endX = startX + dashWidth < rect.right
+            ? startX + dashWidth
+            : rect.right;
         dashedPath.moveTo(startX, rect.top);
         dashedPath.lineTo(endX, rect.top);
         startX = endX + dashSpace;
@@ -70,8 +71,9 @@ class PieceOverlayPainter extends CustomPainter {
       // Draw the right dashed line
       double startY = rect.top;
       while (startY < rect.bottom) {
-        final double endY =
-            startY + dashWidth < rect.bottom ? startY + dashWidth : rect.bottom;
+        final double endY = startY + dashWidth < rect.bottom
+            ? startY + dashWidth
+            : rect.bottom;
         dashedPath.moveTo(rect.right, startY);
         dashedPath.lineTo(rect.right, endY);
         startY = endY + dashSpace;
@@ -80,8 +82,9 @@ class PieceOverlayPainter extends CustomPainter {
       // Draw the bottom dashed line
       startX = rect.right;
       while (startX > rect.left) {
-        final double endX =
-            startX - dashWidth > rect.left ? startX - dashWidth : rect.left;
+        final double endX = startX - dashWidth > rect.left
+            ? startX - dashWidth
+            : rect.left;
         dashedPath.moveTo(startX, rect.bottom);
         dashedPath.lineTo(endX, rect.bottom);
         startX = endX - dashSpace;
@@ -90,8 +93,9 @@ class PieceOverlayPainter extends CustomPainter {
       // Draw the left dashed line
       startY = rect.bottom;
       while (startY > rect.top) {
-        final double endY =
-            startY - dashWidth > rect.top ? startY - dashWidth : rect.top;
+        final double endY = startY - dashWidth > rect.top
+            ? startY - dashWidth
+            : rect.top;
         dashedPath.moveTo(rect.left, startY);
         dashedPath.lineTo(rect.left, endY);
         startY = endY - dashSpace;
@@ -114,10 +118,7 @@ class PieceOverlayPainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       );
       textPainter.layout();
-      textPainter.paint(
-        canvas,
-        Offset(rect.left + 10, rect.top + 10),
-      );
+      textPainter.paint(canvas, Offset(rect.left + 10, rect.top + 10));
     }
 
     // If no points detected, don't try to render anything (Redundant check, but harmless)
@@ -128,10 +129,14 @@ class PieceOverlayPainter extends CustomPainter {
     // --- 1. Get the actual board points from detection ---
     // Extract points for each ring (assuming standard ordering from detection)
     final List<BoardPoint> outerRingPoints = boardPoints.take(8).toList();
-    final List<BoardPoint> middleRingPoints =
-        boardPoints.skip(8).take(8).toList();
-    final List<BoardPoint> innerRingPoints =
-        boardPoints.skip(16).take(8).toList();
+    final List<BoardPoint> middleRingPoints = boardPoints
+        .skip(8)
+        .take(8)
+        .toList();
+    final List<BoardPoint> innerRingPoints = boardPoints
+        .skip(16)
+        .take(8)
+        .toList();
 
     // --- 2. Calculate the board size and position based on actual detected points ---
     double minX = double.infinity, minY = double.infinity;
@@ -172,8 +177,10 @@ class PieceOverlayPainter extends CustomPainter {
 
     // --- 3. Helper function to map detected point to view coordinates ---
     Offset mapPointToView(BoardPoint point) {
-      return Offset(xOffset + (point.x - minX) * scaleFactor,
-          yOffset + (point.y - minY) * scaleFactor);
+      return Offset(
+        xOffset + (point.x - minX) * scaleFactor,
+        yOffset + (point.y - minY) * scaleFactor,
+      );
     }
 
     // --- 4. Prepare paint objects for visualization ---
@@ -185,12 +192,15 @@ class PieceOverlayPainter extends CustomPainter {
 
     // --- 5. Draw board grid using actual detected points ---
     // Draw board grid according to Nine Men's Morris rules
-    final List<Offset> outerOffsets =
-        outerRingPoints.map(mapPointToView).toList();
-    final List<Offset> middleOffsets =
-        middleRingPoints.map(mapPointToView).toList();
-    final List<Offset> innerOffsets =
-        innerRingPoints.map(mapPointToView).toList();
+    final List<Offset> outerOffsets = outerRingPoints
+        .map(mapPointToView)
+        .toList();
+    final List<Offset> middleOffsets = middleRingPoints
+        .map(mapPointToView)
+        .toList();
+    final List<Offset> innerOffsets = innerRingPoints
+        .map(mapPointToView)
+        .toList();
     // Draw outer ring connections
     for (int i = 0; i < outerOffsets.length; i++) {
       final int next = (i + 1) % outerOffsets.length;
@@ -248,7 +258,8 @@ class PieceOverlayPainter extends CustomPainter {
 
       final Paint borderPaint = Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 5.0 // Border is thicker
+        ..strokeWidth =
+            5.0 // Border is thicker
         ..color = pieceColor == PieceColor.black
             ? Colors.white
             : Colors.black; // Contrast color
@@ -288,7 +299,8 @@ class PieceOverlayPainter extends CustomPainter {
 
       // First, draw a point marker (small circle to easily see the raw point location)
       final Paint pointMarkerPaint = Paint()
-        ..color = Colors.blue.withValues(alpha: 0.6) // Use withOpacity
+        ..color = Colors.blue
+            .withValues(alpha: 0.6) // Use withOpacity
         ..style = PaintingStyle.fill; // Fill for visibility
       // ..strokeWidth = 1.0; // Not needed for fill
 
@@ -328,14 +340,11 @@ class PieceOverlayPainter extends CustomPainter {
           ..strokeWidth = 2.0;
 
         // Use the point's detected radius value for the circle size, scaled
-        final double radius = point.radius *
+        final double radius =
+            point.radius *
             scaleX; // Using scaleX for simplicity, adjust if needed
 
-        canvas.drawCircle(
-          rawViewPosition,
-          radius,
-          resultCirclePaint,
-        );
+        canvas.drawCircle(rawViewPosition, radius, resultCirclePaint);
       }
     }
   }

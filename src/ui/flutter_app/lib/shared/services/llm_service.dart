@@ -42,7 +42,8 @@ class LlmService {
 
     try {
       // System prompt to guide the LLM's role
-      final String systemPrompt = "You are a Nine Men's Morris game expert. "
+      final String systemPrompt =
+          "You are a Nine Men's Morris game expert. "
           '${S.of(context).analyzeTheMovesAndProvideInsights}';
 
       switch (settings.llmProvider) {
@@ -163,7 +164,8 @@ class LlmService {
       throw Exception('OpenAI API error: No choices found in response.');
     } else {
       throw Exception(
-          'OpenAI API error: ${response.statusCode} ${response.body}');
+        'OpenAI API error: ${response.statusCode} ${response.body}',
+      );
     }
   }
 
@@ -176,20 +178,19 @@ class LlmService {
     required double temperature,
   }) async {
     final Uri uri = Uri.parse(
-        'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey');
+      'https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$apiKey',
+    );
 
     final Map<String, dynamic> body = <String, dynamic>{
       'contents': <Map<String, Object>>[
         <String, Object>{
           'role': 'user',
           'parts': <Map<String, String>>[
-            <String, String>{'text': '$systemPrompt\n\n$userPrompt'}
-          ]
-        }
+            <String, String>{'text': '$systemPrompt\n\n$userPrompt'},
+          ],
+        },
       ],
-      'generationConfig': <String, double>{
-        'temperature': temperature,
-      }
+      'generationConfig': <String, double>{'temperature': temperature},
     };
 
     final http.Response response = await _httpClient.post(
@@ -233,7 +234,8 @@ class LlmService {
       return texts.join('\n');
     } else {
       throw Exception(
-          'Google AI API error: ${response.statusCode} ${response.body}');
+        'Google AI API error: ${response.statusCode} ${response.body}',
+      );
     }
   }
 
@@ -253,9 +255,7 @@ class LlmService {
         <String, String>{'role': 'system', 'content': systemPrompt},
         <String, String>{'role': 'user', 'content': userPrompt},
       ],
-      'options': <String, double>{
-        'temperature': temperature,
-      },
+      'options': <String, double>{'temperature': temperature},
       'stream': false,
     };
 
@@ -274,7 +274,8 @@ class LlmService {
       return content;
     } else {
       throw Exception(
-          'Ollama API error: ${response.statusCode} ${response.body}');
+        'Ollama API error: ${response.statusCode} ${response.body}',
+      );
     }
   }
 

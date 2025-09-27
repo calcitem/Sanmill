@@ -36,13 +36,14 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
     // Adjusting the overall background color of the dialog based on theme
     final Color? backgroundColor =
         MediaQuery.of(context).platformBrightness == Brightness.dark
-            ? Colors.grey[900] // Dark mode background color
-            : Colors.white; // Light mode background color
+        ? Colors.grey[900] // Dark mode background color
+        : Colors.white; // Light mode background color
 
     final Color textColor =
         MediaQuery.of(context).platformBrightness == Brightness.dark
-            ? Colors.white // Text color in dark mode
-            : Colors.black; // Text color in light mode
+        ? Colors
+              .white // Text color in dark mode
+        : Colors.black; // Text color in light mode
 
     return AlertDialog(
       key: const Key('skill_level_picker_alert_dialog'),
@@ -68,7 +69,8 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
               child: Text(
                 '${level + 1}',
                 key: Key(
-                    'skill_level_picker_cupertino_picker_item_${level + 1}'),
+                  'skill_level_picker_cupertino_picker_item_${level + 1}',
+                ),
                 style: TextStyle(color: textColor),
               ),
             ),
@@ -96,7 +98,8 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
                       Platform.isLinux ||
                       Platform.isMacOS)) {
                 rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                    S.of(context).youCanUseMouseWheelInPicker);
+                  S.of(context).youCanUseMouseWheelInPicker,
+                );
               }
             },
           ),
@@ -110,12 +113,14 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             ),
           ),
           onPressed: () {
-            DB().generalSettings =
-                DB().generalSettings.copyWith(skillLevel: _level);
+            DB().generalSettings = DB().generalSettings.copyWith(
+              skillLevel: _level,
+            );
             if (DB().generalSettings.skillLevel > 15 &&
                 DB().generalSettings.moveTime < 10) {
               rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                  S.of(context).noteActualDifficultyLevelMayBeLimited);
+                S.of(context).noteActualDifficultyLevelMayBeLimited,
+              );
             }
             Navigator.of(context).pop();
           },

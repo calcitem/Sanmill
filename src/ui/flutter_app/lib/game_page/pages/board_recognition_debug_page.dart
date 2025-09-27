@@ -96,11 +96,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                     Expanded(
                       child: Column(
                         children: <Widget>[
-                          const Icon(
-                            Icons.circle,
-                            color: Colors.red,
-                            size: 24,
-                          ),
+                          const Icon(Icons.circle, color: Colors.red, size: 24),
                           Text("${S.of(context).blackPiece}: $blackCount"),
                         ],
                       ),
@@ -133,16 +129,17 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                           ElevatedButton.icon(
                             onPressed: () async {
                               // Capture localized string before async gap
-                              final String copiedMsg =
-                                  S.of(context).fenCopiedToClipboard;
+                              final String copiedMsg = S
+                                  .of(context)
+                                  .fenCopiedToClipboard;
                               await Clipboard.setData(ClipboardData(text: fen));
                               rootScaffoldMessengerKey.currentState
                                   ?.showSnackBar(
-                                SnackBar(
-                                  content: Text(copiedMsg),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
+                                    SnackBar(
+                                      content: Text(copiedMsg),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
                             },
                             icon: const Icon(Icons.copy),
                             label: const Text('Copy'),
@@ -150,7 +147,9 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                               backgroundColor: Colors.blue,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               minimumSize: const Size(0, 36),
                             ),
                           ),
@@ -183,9 +182,11 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const Text(
-                            'Use the buttons above to select different processing stages, and swipe left or right to view all stages.'),
+                          'Use the buttons above to select different processing stages, and swipe left or right to view all stages.',
+                        ),
                         const Text(
-                            'If the recognition is not accurate, try taking a picture of the board in better lighting conditions.'),
+                          'If the recognition is not accurate, try taking a picture of the board in better lighting conditions.',
+                        ),
                       ],
                     ),
                   ),
@@ -227,7 +228,9 @@ class BoardRecognitionDebugPage extends StatefulWidget {
   /// Apply the recognition result to the game board using FEN
   /// This function generates a FEN string from the result and uses setFen to update the position.
   static Future<void> applyRecognitionResultToBoard(
-      Map<int, PieceColor> result, BuildContext context) async {
+    Map<int, PieceColor> result,
+    BuildContext context,
+  ) async {
     logger.i("---------------- BOARD RECOGNITION DEBUG ----------------");
     logger.i("Starting recognition result application process");
 
@@ -246,8 +249,9 @@ class BoardRecognitionDebugPage extends StatefulWidget {
     logger.i("White pieces: $whitePieces, Black pieces: $blackPieces");
 
     // Capture localized strings early to avoid using `context` after async gaps
-    final String msgFenApplied =
-        S.of(context).boardPositionAppliedFenCopiedToClipboard;
+    final String msgFenApplied = S
+        .of(context)
+        .boardPositionAppliedFenCopiedToClipboard;
     // Use a simple error string instead of S.of(context).error
     const String errorPrefix = "Error";
 
@@ -256,7 +260,8 @@ class BoardRecognitionDebugPage extends StatefulWidget {
     rootScaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
         content: Text(
-            "Applying board with $whitePieces white and $blackPieces black pieces"),
+          "Applying board with $whitePieces white and $blackPieces black pieces",
+        ),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -269,7 +274,8 @@ class BoardRecognitionDebugPage extends StatefulWidget {
       logger.e("Failed to generate FEN string from recognition result.");
       rootScaffoldMessengerKey.currentState?.showSnackBar(
         const SnackBar(
-            content: Text("$errorPrefix: Could not generate board state.")),
+          content: Text("$errorPrefix: Could not generate board state."),
+        ),
       );
       return;
     }
@@ -288,10 +294,13 @@ class BoardRecognitionDebugPage extends StatefulWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Text("FEN copied to clipboard automatically"),
-            Text("FEN: $fen",
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 10)),
+            Text(
+              "FEN: $fen",
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 10),
+            ),
             const Text(
-                "Try pasting this FEN in the game manually if the automatic application doesn't work"),
+              "Try pasting this FEN in the game manually if the automatic application doesn't work",
+            ),
           ],
         ),
         duration: const Duration(seconds: 5),
@@ -304,7 +313,8 @@ class BoardRecognitionDebugPage extends StatefulWidget {
       ),
     );
     await Future<void>.delayed(
-        const Duration(seconds: 1)); // Give time to see the snackbar
+      const Duration(seconds: 1),
+    ); // Give time to see the snackbar
 
     // 2. Validate the generated FEN
     logger.i("Validating FEN...");
@@ -313,8 +323,10 @@ class BoardRecognitionDebugPage extends StatefulWidget {
       logger.e("Invalid FEN generated: '$fen'");
       rootScaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-            content: Text(
-                "$errorPrefix: Invalid board state generated (FEN: $fen).")),
+          content: Text(
+            "$errorPrefix: Invalid board state generated (FEN: $fen).",
+          ),
+        ),
       );
       return;
     }
@@ -351,12 +363,15 @@ class BoardRecognitionDebugPage extends StatefulWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text(
-                  "$errorPrefix: Failed to apply board state automatically."),
+                "$errorPrefix: Failed to apply board state automatically.",
+              ),
               const Text(
-                  "Please try setting up the position manually using the copied FEN."),
-              Text("FEN: $fen",
-                  style:
-                      const TextStyle(fontFamily: 'monospace', fontSize: 10)),
+                "Please try setting up the position manually using the copied FEN.",
+              ),
+              Text(
+                "FEN: $fen",
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 10),
+              ),
             ],
           ),
           duration: const Duration(seconds: 10),
@@ -371,16 +386,20 @@ class BoardRecognitionDebugPage extends StatefulWidget {
 
     // Log the counts to verify
     logger.i(
-        "White pieces on board: ${GameController().position.pieceOnBoardCount[PieceColor.white]}");
+      "White pieces on board: ${GameController().position.pieceOnBoardCount[PieceColor.white]}",
+    );
     logger.i(
-        "Black pieces on board: ${GameController().position.pieceOnBoardCount[PieceColor.black]}");
+      "Black pieces on board: ${GameController().position.pieceOnBoardCount[PieceColor.black]}",
+    );
     logger.i("Side to move: ${GameController().position.sideToMove}");
     logger.i("Phase: ${GameController().position.phase}");
 
     // 5. Update the Game Recorder with the new setup FEN
     logger.i("Updating GameRecorder with setup FEN.");
-    GameController().gameRecorder =
-        GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
+    GameController().gameRecorder = GameRecorder(
+      lastPositionWithRemove: fen,
+      setupPosition: fen,
+    );
 
     // 6. Update UI elements
     logger.i("Updating UI elements...");
@@ -393,9 +412,11 @@ class BoardRecognitionDebugPage extends StatefulWidget {
     final Position position = GameController().position;
     logger.i("Board state check:");
     logger.i(
-        "- Total white pieces on board: ${position.countPieceOnBoard(PieceColor.white)}");
+      "- Total white pieces on board: ${position.countPieceOnBoard(PieceColor.white)}",
+    );
     logger.i(
-        "- Total black pieces on board: ${position.countPieceOnBoard(PieceColor.black)}");
+      "- Total black pieces on board: ${position.countPieceOnBoard(PieceColor.black)}",
+    );
 
     // Get another copy of FEN to verify the position state didn't change
     final String? currentFen = position.fen;
@@ -403,7 +424,8 @@ class BoardRecognitionDebugPage extends StatefulWidget {
 
     // Ensure we have the correct game mode
     logger.i(
-        "Game mode after FEN application: ${GameController().gameInstance.gameMode}");
+      "Game mode after FEN application: ${GameController().gameInstance.gameMode}",
+    );
 
     // Update UI notifiers with strong refresh attempts
     GameController().setupPositionNotifier.updateIcons();
@@ -417,13 +439,16 @@ class BoardRecognitionDebugPage extends StatefulWidget {
 
     // Try a different approach - rebuild the position from scratch with a new FEN application
     logger.i(
-        "Trying alternative approach with new GameRecorder and forced rebuild");
+      "Trying alternative approach with new GameRecorder and forced rebuild",
+    );
     Future<void>.delayed(const Duration(milliseconds: 200), () {
       logger.i("Running delayed rebuild of position...");
 
       // 1. First create a fresh game recorder with our FEN
-      GameController().gameRecorder =
-          GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
+      GameController().gameRecorder = GameRecorder(
+        lastPositionWithRemove: fen,
+        setupPosition: fen,
+      );
 
       // 2. Force the position to completely refresh from the FEN
       GameController().position.reset();
@@ -449,15 +474,20 @@ class BoardRecognitionDebugPage extends StatefulWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(msgFenApplied),
-            SelectableText("FEN: $fen",
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 10)),
+            SelectableText(
+              "FEN: $fen",
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 10),
+            ),
             const SizedBox(height: 8),
             Text("Pieces detected: White=$whitePieces, Black=$blackPieces"),
             Text(
-                "Pieces in Position: White=${position.countPieceOnBoard(PieceColor.white)}, Black=${position.countPieceOnBoard(PieceColor.black)}"),
+              "Pieces in Position: White=${position.countPieceOnBoard(PieceColor.white)}, Black=${position.countPieceOnBoard(PieceColor.black)}",
+            ),
             const SizedBox(height: 4),
-            const Text("Debug: Pieces by Location",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              "Debug: Pieces by Location",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             SelectableText(
               _formatRecognitionResults(result),
               style: const TextStyle(fontFamily: 'monospace', fontSize: 9),
@@ -601,10 +631,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
               icon: const Icon(Icons.close),
               onPressed: () => setState(() => _isAdjustingArea = false),
             ),
-            IconButton(
-              icon: const Icon(Icons.check),
-              onPressed: _confirmCrop,
-            ),
+            IconButton(icon: const Icon(Icons.check), onPressed: _confirmCrop),
           ],
         ),
         body: Crop(
@@ -612,27 +639,28 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
           controller: _cropController,
           aspectRatio: 1.0,
           // Provide initialRectBuilder compatible with new crop_your_image API
-          initialRectBuilder: InitialRectBuilder.withBuilder(
-            (ViewportBasedRect viewportRect, ImageBasedRect imageRect) {
-              // Build Rect from imageRect (original image coordinate)
-              final Rect imgRect = Rect.fromLTWH(
-                imageRect.left,
-                imageRect.top,
-                imageRect.width,
-                imageRect.height,
-              );
-              final Rect vpRect = Rect.fromLTWH(
-                viewportRect.left,
-                viewportRect.top,
-                viewportRect.width,
-                viewportRect.height,
-              );
+          initialRectBuilder: InitialRectBuilder.withBuilder((
+            ViewportBasedRect viewportRect,
+            ImageBasedRect imageRect,
+          ) {
+            // Build Rect from imageRect (original image coordinate)
+            final Rect imgRect = Rect.fromLTWH(
+              imageRect.left,
+              imageRect.top,
+              imageRect.width,
+              imageRect.height,
+            );
+            final Rect vpRect = Rect.fromLTWH(
+              viewportRect.left,
+              viewportRect.top,
+              viewportRect.width,
+              viewportRect.height,
+            );
 
-              // Let helper decide preferred initial rect
-              final Rect? prefer = _buildInitialCropRect(imgRect);
-              return prefer ?? vpRect;
-            },
-          ),
+            // Let helper decide preferred initial rect
+            final Rect? prefer = _buildInitialCropRect(imgRect);
+            return prefer ?? vpRect;
+          }),
           baseColor: Colors.blue.shade900,
           maskColor: Colors.white.withAlpha(100),
           cornerDotBuilder: (double size, EdgeAlignment edgeAlignment) =>
@@ -675,8 +703,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
           if (_lastImageBytes != null && !_isProcessing)
             IconButton(
               icon: Icon(_showParameterPanel ? Icons.settings : Icons.tune),
-              tooltip:
-                  _showParameterPanel ? 'Hide Parameters' : 'Show Parameters',
+              tooltip: _showParameterPanel
+                  ? 'Hide Parameters'
+                  : 'Show Parameters',
               onPressed: () {
                 setState(() {
                   _showParameterPanel = !_showParameterPanel;
@@ -736,15 +765,18 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
             // --- Add Adjust Area Button ---
             if (_lastImageBytes != null && !_isAdjustingArea && !_isProcessing)
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          final img.Image? decoded =
-                              img.decodeImage(_lastImageBytes!);
+                          final img.Image? decoded = img.decodeImage(
+                            _lastImageBytes!,
+                          );
                           if (decoded != null) {
                             _originalImageWidth = decoded.width;
                             _originalImageHeight = decoded.height;
@@ -756,15 +788,18 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                           } else {
                             rootScaffoldMessengerKey.currentState?.showSnackBar(
                               const SnackBar(
-                                  content:
-                                      Text("Failed to read image dimensions.")),
+                                content: Text(
+                                  "Failed to read image dimensions.",
+                                ),
+                              ),
                             );
                           }
                         },
                         icon: const Icon(Icons.crop),
                         label: Text(S.of(context).adjustBoardArea),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orangeAccent),
+                          backgroundColor: Colors.orangeAccent,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -772,18 +807,19 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                     ElevatedButton.icon(
                       onPressed:
                           _lastImageBytes != null && _lastBoardPoints.isNotEmpty
-                              ? _showRecognitionResultDialog
-                              : null,
+                          ? _showRecognitionResultDialog
+                          : null,
                       icon: const Icon(Icons.crop_free),
                       label: const Text('Advanced Crop'),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue),
+                        backgroundColor: Colors.blue,
+                      ),
                     ),
                   ],
                 ),
               ),
-            // --- End of Adjust Area Button ---
 
+            // --- End of Adjust Area Button ---
             const SizedBox(height: 16),
 
             // Action Buttons (Select/Capture) - Only show if not adjusting
@@ -795,8 +831,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                   children: <Widget>[
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed:
-                            _isProcessing ? null : _pickAndRecognizeImage,
+                        onPressed: _isProcessing
+                            ? null
+                            : _pickAndRecognizeImage,
                         icon: const Icon(Icons.photo_library),
                         label: Text(S.of(context).selectFromAlbum),
                       ),
@@ -804,8 +841,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                     const SizedBox(width: 16),
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed:
-                            _isProcessing ? null : _captureAndRecognizeImage,
+                        onPressed: _isProcessing
+                            ? null
+                            : _captureAndRecognizeImage,
                         icon: const Icon(Icons.camera_alt),
                         label: Text(S.of(context).photoShoot),
                       ),
@@ -821,8 +859,10 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     // Apply recognition result to board and wait for completion
-                    await BoardRecognitionDebugPage
-                        .applyRecognitionResultToBoard(_lastResult, context);
+                    await BoardRecognitionDebugPage.applyRecognitionResultToBoard(
+                      _lastResult,
+                      context,
+                    );
 
                     // Get the FEN string after applying to board
                     final String? fen = GameController().position.fen;
@@ -833,8 +873,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                       rootScaffoldMessengerKey.currentState?.clearSnackBars();
                       rootScaffoldMessengerKey.currentState?.showSnackBar(
                         SnackBar(
-                          content:
-                              Text('Recognition result applied with FEN: $fen'),
+                          content: Text(
+                            'Recognition result applied with FEN: $fen',
+                          ),
                           duration: const Duration(seconds: 5),
                         ),
                       );
@@ -867,21 +908,28 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                            'Possible reasons for inaccurate game board recognition:'),
+                          'Possible reasons for inaccurate game board recognition:',
+                        ),
                         Text(
-                            '• Lighting conditions: Too bright or too dark environment will affect color detection'),
+                          '• Lighting conditions: Too bright or too dark environment will affect color detection',
+                        ),
                         Text(
-                            '• Angle problem: Non-frontal shooting will cause game board deformation'),
+                          '• Angle problem: Non-frontal shooting will cause game board deformation',
+                        ),
                         Text(
-                            '• Game board contrast: The game board and background colors are similar and will affect area detection'),
+                          '• Game board contrast: The game board and background colors are similar and will affect area detection',
+                        ),
                         Text(
-                            '• Chess piece overlap: Chess pieces that are too close may be misidentified'),
+                          '• Chess piece overlap: Chess pieces that are too close may be misidentified',
+                        ),
                         Text(
-                            '• Image quality: Blurred or low-resolution images are difficult to recognize correctly'),
+                          '• Image quality: Blurred or low-resolution images are difficult to recognize correctly',
+                        ),
                         SizedBox(height: 8),
                         Text('Debug information for each processing stage:'),
                         Text(
-                            '• Use the buttons above to select different processing stages, and swipe left or right to view all stages.'),
+                          '• Use the buttons above to select different processing stages, and swipe left or right to view all stages.',
+                        ),
                         // ... (removed detailed stage descriptions for brevity, can be added back if needed)
                       ],
                     ),
@@ -910,10 +958,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
               children: <Widget>[
                 const Text(
                   'Recognition Parameters',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
                   onPressed: _reprocessWithCurrentParameters,
@@ -1098,8 +1143,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
     } else {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
         const SnackBar(
-          content:
-              Text("No board area detected yet. Please adjust area first."),
+          content: Text(
+            "No board area detected yet. Please adjust area first.",
+          ),
         ),
       );
     }
@@ -1158,7 +1204,8 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
       final Rect cropRect = _lastCropRect ?? const Rect.fromLTWH(0, 0, 10, 10);
 
       logger.i(
-          "Crop confirmed. Crop Rect (relative to original image): $cropRect");
+        "Crop confirmed. Crop Rect (relative to original image): $cropRect",
+      );
 
       // 2. Scale the crop rectangle down
       final int processedW = BoardImageRecognitionService.processedImageWidth;
@@ -1182,12 +1229,14 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
       final math.Rectangle<int> scaledManualRect = math.Rectangle<int>(
         scaledManualLeft.round().clamp(0, processedW),
         scaledManualTop.round().clamp(0, processedH),
-        scaledManualWidth
-            .round()
-            .clamp(1, processedW - scaledManualLeft.round()),
-        scaledManualHeight
-            .round()
-            .clamp(1, processedH - scaledManualTop.round()),
+        scaledManualWidth.round().clamp(
+          1,
+          processedW - scaledManualLeft.round(),
+        ),
+        scaledManualHeight.round().clamp(
+          1,
+          processedH - scaledManualTop.round(),
+        ),
       );
       logger.i("Scaled Manual Rect (for processing): $scaledManualRect");
 
@@ -1262,8 +1311,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
     logger.i("  blackColorVariance: $blackColorVarianceThreshold");
 
     // --- Call PUBLIC methods/access PUBLIC variables on BoardImageRecognitionService ---
-    img.Image processImage =
-        BoardImageRecognitionService.resizeForProcessing(decodedImage);
+    img.Image processImage = BoardImageRecognitionService.resizeForProcessing(
+      decodedImage,
+    );
     final img.Image unprocessedImage = img.Image.from(processImage);
 
     // Use custom contrast enhancement factor
@@ -1274,64 +1324,73 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
 
     final ImageCharacteristics characteristics =
         BoardImageRecognitionService.analyzeImageCharacteristics(
-      processImage,
-      whiteBrightnessThresholdBase: whiteBrightnessThreshold,
-      blackBrightnessThresholdBase: blackBrightnessThreshold,
-      pieceThreshold: pieceThreshold,
-    );
+          processImage,
+          whiteBrightnessThresholdBase: whiteBrightnessThreshold,
+          blackBrightnessThresholdBase: blackBrightnessThreshold,
+          pieceThreshold: pieceThreshold,
+        );
 
     // Assume lastDebugInfo is public static or has a public setter
-    BoardRecognitionDebugInfo newDebugInfo =
-        BoardImageRecognitionService.lastDebugInfo.copyWith(
-      originalImage: img.Image.from(decodedImage),
-      processedImage: img.Image.from(processImage),
-      boardRect: userRect,
-      characteristics: characteristics,
-      boardPoints: <BoardPoint>[],
-    );
+    BoardRecognitionDebugInfo newDebugInfo = BoardImageRecognitionService
+        .lastDebugInfo
+        .copyWith(
+          originalImage: img.Image.from(decodedImage),
+          processedImage: img.Image.from(processImage),
+          boardRect: userRect,
+          characteristics: characteristics,
+          boardPoints: <BoardPoint>[],
+        );
     BoardImageRecognitionService.lastDebugInfo = newDebugInfo;
 
     final List<BoardPoint> boardPoints =
         BoardImageRecognitionService.createRefinedBoardPoints(
-            processImage, userRect);
+          processImage,
+          userRect,
+        );
     // Assume lastDetectedPoints is public static or has a public setter
     BoardImageRecognitionService.lastDetectedPoints = boardPoints;
     newDebugInfo = newDebugInfo.copyWith(boardPoints: boardPoints);
 
     final Rgb boardColor = BoardImageRecognitionService.estimateBoardColor(
-        unprocessedImage, userRect);
+      unprocessedImage,
+      userRect,
+    );
     newDebugInfo = newDebugInfo.copyWith(boardColor: boardColor);
 
     final ColorProfile colorProfile =
         BoardImageRecognitionService.buildColorProfile(
-            unprocessedImage, boardPoints);
+          unprocessedImage,
+          boardPoints,
+        );
     newDebugInfo = newDebugInfo.copyWith(colorProfile: colorProfile);
 
     // Detect pieces with new parameters
     final Map<int, PieceColor> newResult = <int, PieceColor>{};
     final Color configuredWhiteColor = DB().colorSettings.whitePieceColor;
     final Color configuredBlackColor = DB().colorSettings.blackPieceColor;
-    final Rgb configuredWhiteRgb =
-        BoardImageRecognitionService.rgbFromColor(configuredWhiteColor);
-    final Rgb configuredBlackRgb =
-        BoardImageRecognitionService.rgbFromColor(configuredBlackColor);
+    final Rgb configuredWhiteRgb = BoardImageRecognitionService.rgbFromColor(
+      configuredWhiteColor,
+    );
+    final Rgb configuredBlackRgb = BoardImageRecognitionService.rgbFromColor(
+      configuredBlackColor,
+    );
 
     for (int i = 0; i < 24 && i < boardPoints.length; i++) {
       final BoardPoint point = boardPoints[i];
       final PieceColor detectedColor =
           BoardImageRecognitionService.detectPieceAtPoint(
-        unprocessedImage,
-        point,
-        characteristics,
-        colorProfile,
-        boardColor,
-        configuredWhiteRgb,
-        configuredBlackRgb,
-        pieceColorMatchThreshold: pieceColorMatchThreshold,
-        boardColorDistanceThreshold: boardColorDistanceThreshold,
-        blackSaturationThreshold: blackSaturationThreshold,
-        blackColorVarianceThreshold: blackColorVarianceThreshold,
-      );
+            unprocessedImage,
+            point,
+            characteristics,
+            colorProfile,
+            boardColor,
+            configuredWhiteRgb,
+            configuredBlackRgb,
+            pieceColorMatchThreshold: pieceColorMatchThreshold,
+            boardColorDistanceThreshold: boardColorDistanceThreshold,
+            blackSaturationThreshold: blackSaturationThreshold,
+            blackColorVarianceThreshold: blackColorVarianceThreshold,
+          );
       newResult[i] = detectedColor;
     }
 
@@ -1348,7 +1407,8 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
       }
     }
     logger.i(
-        "REPROCESSING COUNT white=$whiteCount, black=$blackCount (with custom parameters)");
+      "REPROCESSING COUNT white=$whiteCount, black=$blackCount (with custom parameters)",
+    );
 
     setState(() {
       _lastBoardPoints = boardPoints;
@@ -1376,7 +1436,8 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
       _originalImageWidth = decoded.width;
       _originalImageHeight = decoded.height;
       logger.i(
-          "Original image dimensions: ${_originalImageWidth}x$_originalImageHeight");
+        "Original image dimensions: ${_originalImageWidth}x$_originalImageHeight",
+      );
     } else {
       logger.w("Could not decode image to get original dimensions.");
       _originalImageWidth = 0; // Reset if decode fails
@@ -1428,16 +1489,17 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
           children: <Widget>[
             const Text(
               'Recognition Result Statistics',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('Number of White pieces: $whiteCount',
-                style: const TextStyle(fontSize: 16)),
-            Text('Number of Black pieces: $blackCount',
-                style: const TextStyle(fontSize: 16)),
+            Text(
+              'Number of White pieces: $whiteCount',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Number of Black pieces: $blackCount',
+              style: const TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 12),
             const Text(
               'Tip: Red circles represent black pieces, green circles represent white pieces',
@@ -1448,17 +1510,12 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
             const SizedBox(height: 20),
             const Text(
               'Debug Options',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () => _testDirectSetup(_lastResult),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber,
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
               child: const Text('Test Direct Setup (Manual Board)'),
             ),
             const SizedBox(height: 8),
@@ -1499,11 +1556,13 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
 
     // Log what we're about to do
     logger.i(
-        "Placing $whiteCount white pieces and $blackCount black pieces directly");
+      "Placing $whiteCount white pieces and $blackCount black pieces directly",
+    );
     rootScaffoldMessengerKey.currentState?.showSnackBar(
       SnackBar(
         content: Text(
-            "Manually placing $whiteCount white pieces and $blackCount black pieces"),
+          "Manually placing $whiteCount white pieces and $blackCount black pieces",
+        ),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -1566,8 +1625,10 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
     final String? fen = GameController().position.fen;
     if (fen != null) {
       logger.i("Generated FEN after direct setup: $fen");
-      GameController().gameRecorder =
-          GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
+      GameController().gameRecorder = GameRecorder(
+        lastPositionWithRemove: fen,
+        setupPosition: fen,
+      );
     } else {
       logger.e("Failed to generate FEN after direct setup");
     }
@@ -1588,9 +1649,10 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
           children: <Widget>[
             const Text("Direct board setup completed"),
             if (fen != null)
-              SelectableText("FEN: $fen",
-                  style:
-                      const TextStyle(fontFamily: 'monospace', fontSize: 10)),
+              SelectableText(
+                "FEN: $fen",
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 10),
+              ),
             Text("Pieces on board: White=$whiteCount, Black=$blackCount"),
           ],
         ),
@@ -1683,14 +1745,18 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
     }
 
     // Determine the board area from the detected points
-    final int minX =
-        _lastBoardPoints.map((BoardPoint p) => p.x).reduce(math.min);
-    final int minY =
-        _lastBoardPoints.map((BoardPoint p) => p.y).reduce(math.min);
-    final int maxX =
-        _lastBoardPoints.map((BoardPoint p) => p.x).reduce(math.max);
-    final int maxY =
-        _lastBoardPoints.map((BoardPoint p) => p.y).reduce(math.max);
+    final int minX = _lastBoardPoints
+        .map((BoardPoint p) => p.x)
+        .reduce(math.min);
+    final int minY = _lastBoardPoints
+        .map((BoardPoint p) => p.y)
+        .reduce(math.min);
+    final int maxX = _lastBoardPoints
+        .map((BoardPoint p) => p.x)
+        .reduce(math.max);
+    final int maxY = _lastBoardPoints
+        .map((BoardPoint p) => p.y)
+        .reduce(math.max);
 
     // Add padding to ensure we capture the entire board
     final int paddingX = ((maxX - minX) * 0.05).round();
@@ -1749,8 +1815,8 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
               // Fixed onMoved callback signature - takes ViewportBasedRect parameter
               onMoved:
                   (ViewportBasedRect viewportRect, ImageBasedRect imageRect) {
-                logger.d("Crop rect moved: $viewportRect");
-              },
+                    logger.d("Crop rect moved: $viewportRect");
+                  },
             ),
           ),
           actions: <Widget>[

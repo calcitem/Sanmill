@@ -6,10 +6,7 @@ part of '../mill.dart';
 /// GameRecorder holds the move history and maintains
 /// a PGN tree internally. It now provides PGN-based APIs.
 class GameRecorder {
-  GameRecorder({
-    this.lastPositionWithRemove,
-    this.setupPosition,
-  });
+  GameRecorder({this.lastPositionWithRemove, this.setupPosition});
 
   /// The user's last position with remove operation, if any.
   String? lastPositionWithRemove;
@@ -125,11 +122,13 @@ class GameRecorder {
       if (i < nodes.length) {
         // Retrieve current node and the next node's startingComments (if available).
         final PgnNode<ExtMove> currentNode = nodes[i];
-        final List<String>? nextStartingComments =
-            (i + 1 < nodes.length) ? nodes[i + 1].data!.startingComments : null;
+        final List<String>? nextStartingComments = (i + 1 < nodes.length)
+            ? nodes[i + 1].data!.startingComments
+            : null;
         sb.write(sep);
         sb.write(
-            _getRichMoveNotationForNode(currentNode, nextStartingComments));
+          _getRichMoveNotationForNode(currentNode, nextStartingComments),
+        );
         i++;
       }
       // Process subsequent removal moves (up to 3) if present.
@@ -140,7 +139,8 @@ class GameRecorder {
               ? nodes[i + 1].data!.startingComments
               : null;
           sb.write(
-              _getRichMoveNotationForNode(currentNode, nextStartingComments));
+            _getRichMoveNotationForNode(currentNode, nextStartingComments),
+          );
           i++;
         }
       }
@@ -216,7 +216,9 @@ class GameRecorder {
 
     // Helper: merges current node's `comments` with next node's `startingComments`.
     String mergeComments(
-        PgnNode<ExtMove> node, List<String>? nextStartComments) {
+      PgnNode<ExtMove> node,
+      List<String>? nextStartComments,
+    ) {
       final List<String> merged = <String>[];
       if (node.data?.comments != null && node.data!.comments!.isNotEmpty) {
         merged.addAll(node.data!.comments!);
@@ -229,8 +231,11 @@ class GameRecorder {
 
     // Format a single node (ExtMove) into a bracketed detail string,
     // suitable for an LLM-friendly prompt.
-    String extMoveDetails(PgnNode<ExtMove> node,
-        List<String>? nextStartComments, String? prevBoardLayout) {
+    String extMoveDetails(
+      PgnNode<ExtMove> node,
+      List<String>? nextStartComments,
+      String? prevBoardLayout,
+    ) {
       final ExtMove m = node.data!;
       final String sideStr = m.side.toString().replaceAll('PieceColor.', '');
       final String typeStr = m.type.toString().replaceAll('MoveType.', '');
@@ -250,7 +255,13 @@ class GameRecorder {
       // Note: The model will later remove these braces and insert human commentary.
       final String inlineCtx = boardStr.isNotEmpty
           ? _buildInlineContextFromBoardLayout(
-              boardStr, prevBoardLayout, m.side, m.type, m.from, m.to)
+              boardStr,
+              prevBoardLayout,
+              m.side,
+              m.type,
+              m.from,
+              m.to,
+            )
           : "";
 
       // Build a details string with all extra fields and inline context.
@@ -279,26 +290,38 @@ class GameRecorder {
       // Move #1 of the pair (e.g. White)
       final PgnNode<ExtMove> firstNode = nodes[i];
       // The next node's starting comments
-      final List<String>? firstNodeSuccessorComments =
-          (i + 1 < nodes.length) ? nodes[i + 1].data?.startingComments : null;
+      final List<String>? firstNodeSuccessorComments = (i + 1 < nodes.length)
+          ? nodes[i + 1].data?.startingComments
+          : null;
       // Notation + details in braces
       sb.write(firstNode.data!.notation);
       sb.write(' ');
-      sb.write(extMoveDetails(firstNode, firstNodeSuccessorComments,
-          firstNode.parent?.data?.boardLayout));
+      sb.write(
+        extMoveDetails(
+          firstNode,
+          firstNodeSuccessorComments,
+          firstNode.parent?.data?.boardLayout,
+        ),
+      );
       i++;
 
       // Handle subsequent remove moves (up to 3) if they exist
       // (since an in-game mill might remove multiple pieces).
       while (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
         final PgnNode<ExtMove> removeNode = nodes[i];
-        final List<String>? removeNodeSuccessorComments =
-            (i + 1 < nodes.length) ? nodes[i + 1].data?.startingComments : null;
+        final List<String>? removeNodeSuccessorComments = (i + 1 < nodes.length)
+            ? nodes[i + 1].data?.startingComments
+            : null;
         sb.write(' ');
         sb.write(removeNode.data!.notation);
         sb.write(' ');
-        sb.write(extMoveDetails(removeNode, removeNodeSuccessorComments,
-            removeNode.parent?.data?.boardLayout));
+        sb.write(
+          extMoveDetails(
+            removeNode,
+            removeNodeSuccessorComments,
+            removeNode.parent?.data?.boardLayout,
+          ),
+        );
         i++;
       }
 
@@ -306,12 +329,18 @@ class GameRecorder {
       if (i < nodes.length) {
         sb.write(' ');
         final PgnNode<ExtMove> secondNode = nodes[i];
-        final List<String>? secondNodeSuccessorComments =
-            (i + 1 < nodes.length) ? nodes[i + 1].data?.startingComments : null;
+        final List<String>? secondNodeSuccessorComments = (i + 1 < nodes.length)
+            ? nodes[i + 1].data?.startingComments
+            : null;
         sb.write(secondNode.data!.notation);
         sb.write(' ');
-        sb.write(extMoveDetails(secondNode, secondNodeSuccessorComments,
-            secondNode.parent?.data?.boardLayout));
+        sb.write(
+          extMoveDetails(
+            secondNode,
+            secondNodeSuccessorComments,
+            secondNode.parent?.data?.boardLayout,
+          ),
+        );
         i++;
 
         // Possibly more remove moves again
@@ -319,13 +348,18 @@ class GameRecorder {
           final PgnNode<ExtMove> removeNode = nodes[i];
           final List<String>? removeNodeSuccessorComments =
               (i + 1 < nodes.length)
-                  ? nodes[i + 1].data?.startingComments
-                  : null;
+              ? nodes[i + 1].data?.startingComments
+              : null;
           sb.write(' ');
           sb.write(removeNode.data!.notation);
           sb.write(' ');
-          sb.write(extMoveDetails(removeNode, removeNodeSuccessorComments,
-              removeNode.parent?.data?.boardLayout));
+          sb.write(
+            extMoveDetails(
+              removeNode,
+              removeNodeSuccessorComments,
+              removeNode.parent?.data?.boardLayout,
+            ),
+          );
           i++;
         }
       }
@@ -362,12 +396,13 @@ class GameRecorder {
   /// lightweight advantage) purely from the layout, DB rule settings and
   /// static connectivity tables.
   String _buildInlineContextFromBoardLayout(
-      String boardLayout,
-      String? prevBoardLayout,
-      PieceColor sideJustMoved,
-      MoveType lastMoveType,
-      int lastFromSquare,
-      int lastToSquare) {
+    String boardLayout,
+    String? prevBoardLayout,
+    PieceColor sideJustMoved,
+    MoveType lastMoveType,
+    int lastFromSquare,
+    int lastToSquare,
+  ) {
     // Parse layout: inner/middle/outer strings of length 8
     final List<String> parts = boardLayout.split('/');
     if (parts.length != 3) {
@@ -436,8 +471,9 @@ class GameRecorder {
     const List<String> crossNames = <String>['d6', 'f4', 'd2', 'b4'];
     final Map<String, String> crossCtl = <String, String>{};
     for (int i = 0; i < crossPoints.length; i++) {
-      crossCtl[crossNames[i]] =
-          colorName(occ[crossPoints[i]] ?? PieceColor.none);
+      crossCtl[crossNames[i]] = colorName(
+        occ[crossPoints[i]] ?? PieceColor.none,
+      );
     }
 
     // Corners occupancy
@@ -463,7 +499,7 @@ class GameRecorder {
       return <String>[
         for (int s = 8; s <= 31; s++)
           if ((occ[s] ?? PieceColor.none) == PieceColor.none)
-            ExtMove.sqToNotation(s)
+            ExtMove.sqToNotation(s),
       ];
     }
 
@@ -484,14 +520,16 @@ class GameRecorder {
           for (int to = 8; to <= 31; to++) {
             if ((occ[to] ?? PieceColor.none) == PieceColor.none) {
               res.add(
-                  '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}');
+                '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}',
+              );
             }
           }
         } else {
           for (final int to in Position._adjacentSquares[from]) {
             if (to != 0 && (occ[to] ?? PieceColor.none) == PieceColor.none) {
               res.add(
-                  '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}');
+                '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}',
+              );
             }
           }
         }
@@ -550,7 +588,8 @@ class GameRecorder {
               occ[from] = PieceColor.none;
               if (completesMillAt(to, c)) {
                 res.add(
-                    '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}');
+                  '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}',
+                );
               }
               occ[from] = bak;
             }
@@ -563,7 +602,8 @@ class GameRecorder {
               occ[from] = PieceColor.none;
               if (completesMillAt(to, c)) {
                 res.add(
-                    '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}');
+                  '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}',
+                );
               }
               occ[from] = bak;
             }
@@ -667,13 +707,15 @@ class GameRecorder {
     final int blockedW = blockedPieces(PieceColor.white);
     final int blockedB = blockedPieces(PieceColor.black);
     final double mobilityTerm = placingPhase ? 0.0 : 0.05 * (legalW - legalB);
-    final double blockedTerm =
-        placingPhase ? 0.0 : -0.05 * (blockedW - blockedB);
+    final double blockedTerm = placingPhase
+        ? 0.0
+        : -0.05 * (blockedW - blockedB);
     final double flyTerm = placingPhase
         ? 0.0
         : ((canFly(PieceColor.white) ? 0.2 : 0.0) -
-            (canFly(PieceColor.black) ? 0.2 : 0.0));
-    final double adv = 1.0 * onBoardDiff +
+              (canFly(PieceColor.black) ? 0.2 : 0.0));
+    final double adv =
+        1.0 * onBoardDiff +
         0.5 * millsDiff +
         0.3 * crossDiff +
         (-0.2) * cornersDiff +
@@ -681,8 +723,9 @@ class GameRecorder {
         blockedTerm +
         flyTerm;
     final String advSym = adv > 0.5 ? '±' : (adv < -0.5 ? '∓' : '=');
-    final String advSide =
-        adv > 0.5 ? 'White better' : (adv < -0.5 ? 'Black better' : 'Equal');
+    final String advSide = adv > 0.5
+        ? 'White better'
+        : (adv < -0.5 ? 'Black better' : 'Equal');
 
     // Truncate helper
     List<String> trunc(List<String> items, int limit) {
@@ -813,10 +856,10 @@ class GameRecorder {
           countPrev(c) <= DB().ruleSettings.flyPieceCount;
 
       List<String> altPlacements() => <String>[
-            for (int s = 8; s <= 31; s++)
-              if ((occPrev[s] ?? PieceColor.none) == PieceColor.none)
-                ExtMove.sqToNotation(s)
-          ];
+        for (int s = 8; s <= 31; s++)
+          if ((occPrev[s] ?? PieceColor.none) == PieceColor.none)
+            ExtMove.sqToNotation(s),
+      ];
 
       List<String> altMoves() {
         final bool canFlySide = canFlyPrev(sideJustMoved);
@@ -829,7 +872,8 @@ class GameRecorder {
             for (int to = 8; to <= 31; to++) {
               if ((occPrev[to] ?? PieceColor.none) == PieceColor.none) {
                 r.add(
-                    '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}');
+                  '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}',
+                );
               }
             }
           } else {
@@ -837,7 +881,8 @@ class GameRecorder {
               if (to != 0 &&
                   (occPrev[to] ?? PieceColor.none) == PieceColor.none) {
                 r.add(
-                    '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}');
+                  '${ExtMove.sqToNotation(from)}-${ExtMove.sqToNotation(to)}',
+                );
               }
             }
           }
@@ -906,10 +951,10 @@ class GameRecorder {
       final String chosen = (lastMoveType == MoveType.place)
           ? ExtMove.sqToNotation(lastToSquare)
           : (lastMoveType == MoveType.move)
-              ? '${ExtMove.sqToNotation(lastFromSquare)}-${ExtMove.sqToNotation(lastToSquare)}'
-              : (lastMoveType == MoveType.remove)
-                  ? 'x${ExtMove.sqToNotation(lastToSquare)}'
-                  : '';
+          ? '${ExtMove.sqToNotation(lastFromSquare)}-${ExtMove.sqToNotation(lastToSquare)}'
+          : (lastMoveType == MoveType.remove)
+          ? 'x${ExtMove.sqToNotation(lastToSquare)}'
+          : '';
       moverAltStr =
           'mover=$moverStr; moverAlternatives=[${trunc(alts, 40).join(', ')}]; chosen=$chosen; ';
     }
@@ -934,8 +979,10 @@ class GameRecorder {
   /// and, if available, merges them with the [nextStartingComments] (which come from
   /// the next node's startingComments). This implements the requirement to merge
   /// the node's comments with its successor's startingComments.
-  String _getRichMoveNotationForNode(PgnNode<ExtMove> node,
-      [List<String>? nextStartingComments]) {
+  String _getRichMoveNotationForNode(
+    PgnNode<ExtMove> node, [
+    List<String>? nextStartingComments,
+  ]) {
     // Force non-null for node.data since mainlineNodes should not include nodes with null data.
     final ExtMove move = node.data!;
     final StringBuffer sb = StringBuffer();
@@ -973,7 +1020,9 @@ class GameRecorder {
   /// Build a compact dynamic context block derived from current engine state.
   @visibleForTesting
   String buildGlobalDynamicContextForTesting(
-      Position pos, List<ExtMove> mainlineMoves) {
+    Position pos,
+    List<ExtMove> mainlineMoves,
+  ) {
     // --- Helpers -----------------------------------------------------------
     String colorName(PieceColor c) => c == PieceColor.white
         ? 'White'
@@ -1260,7 +1309,8 @@ class GameRecorder {
         return const <String>[];
       }
 
-      final bool canFlySide = DB().ruleSettings.mayFly &&
+      final bool canFlySide =
+          DB().ruleSettings.mayFly &&
           pos.pieceOnBoardCount[side]! <= DB().ruleSettings.flyPieceCount;
 
       final Set<String> res = <String>{};
@@ -1340,15 +1390,18 @@ class GameRecorder {
       legalLine =
           'legalRemovals(${colorName(stm)}): ${truncateList(removals, 60).join(', ')}';
     } else if (pos.phase == Phase.placing) {
-      final String pStr =
-          placements.isEmpty ? '[]' : truncateList(placements, 60).join(', ');
-      final String mStr =
-          stepMoves.isEmpty ? '[]' : truncateList(stepMoves, 60).join(', ');
+      final String pStr = placements.isEmpty
+          ? '[]'
+          : truncateList(placements, 60).join(', ');
+      final String mStr = stepMoves.isEmpty
+          ? '[]'
+          : truncateList(stepMoves, 60).join(', ');
       legalLine =
           'legalMovesForSideToMove(${colorName(stm)}): placements=[$pStr], moves=[$mStr]';
     } else if (pos.phase == Phase.moving) {
-      final String mStr =
-          stepMoves.isEmpty ? '[]' : truncateList(stepMoves, 60).join(', ');
+      final String mStr = stepMoves.isEmpty
+          ? '[]'
+          : truncateList(stepMoves, 60).join(', ');
       legalLine = 'legalMovesForSideToMove(${colorName(stm)}): moves=[$mStr]';
     }
 

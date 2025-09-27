@@ -177,7 +177,7 @@ class _Zobrist {
       0xD19437,
       0xA4F63C,
       0x7169E5,
-    ]
+    ],
   ];
 
   static const List<List<int>> custodianTarget = <List<int>>[

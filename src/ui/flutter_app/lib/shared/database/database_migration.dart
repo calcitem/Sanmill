@@ -38,10 +38,7 @@ class _DatabaseMigration {
 
   /// The list of migrations
   static const List<Future<void> Function()> _migrations =
-      <Future<void> Function()>[
-    _migrateToHive,
-    _migrateFromV1,
-  ];
+      <Future<void> Function()>[_migrateToHive, _migrateFromV1];
 
   /// Database Box reference
   static late Box<dynamic> _databaseBox;
@@ -142,7 +139,8 @@ class _DatabaseMigration {
     }
 
     DB().colorSettings = colorSettings.copyWith(
-      drawerColor: lerpedColor?.withAlpha(0xFF) ??
+      drawerColor:
+          lerpedColor?.withAlpha(0xFF) ??
           colorSettings.drawerColor.withAlpha(0xFF),
     );
 
@@ -157,49 +155,51 @@ class _DatabaseMigration {
     // Migrates isWhiteLoseButNotDrawWhenBoardFull to boardFullAction (v3.3.2+)
     if (DB().ruleSettings.isWhiteLoseButNotDrawWhenBoardFull == false) {
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            boardFullAction: BoardFullAction.agreeToDraw,
-          );
+        boardFullAction: BoardFullAction.agreeToDraw,
+      );
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            isWhiteLoseButNotDrawWhenBoardFull: true,
-          );
+        isWhiteLoseButNotDrawWhenBoardFull: true,
+      );
       logger.t(
-          "$_logTag Migrated from isWhiteLoseButNotDrawWhenBoardFull to boardFullAction.");
+        "$_logTag Migrated from isWhiteLoseButNotDrawWhenBoardFull to boardFullAction.",
+      );
     }
 
     // Migrates isLoseButNotChangeSideWhenNoWay to stalemateAction (v3.3.2+)
     if (DB().ruleSettings.isLoseButNotChangeSideWhenNoWay == false) {
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            stalemateAction: StalemateAction.changeSideToMove,
-          );
+        stalemateAction: StalemateAction.changeSideToMove,
+      );
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            isLoseButNotChangeSideWhenNoWay: true,
-          );
+        isLoseButNotChangeSideWhenNoWay: true,
+      );
       logger.t(
-          "$_logTag Migrated from isLoseButNotChangeSideWhenNoWay to stalemateAction.");
+        "$_logTag Migrated from isLoseButNotChangeSideWhenNoWay to stalemateAction.",
+      );
     }
 
     // Migrates to millFormationActionInPlacingPhase (v4.2.0+)
     if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase == true) {
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            millFormationActionInPlacingPhase: MillFormationActionInPlacingPhase
-                .removeOpponentsPieceFromHandThenYourTurn,
-          );
+        millFormationActionInPlacingPhase: MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenYourTurn,
+      );
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            mayOnlyRemoveUnplacedPieceInPlacingPhase: false,
-          );
+        mayOnlyRemoveUnplacedPieceInPlacingPhase: false,
+      );
       logger.t(
-          "$_logTag Migrated from mayOnlyRemoveUnplacedPieceInPlacingPhase to millFormationActionInPlacingPhase.");
+        "$_logTag Migrated from mayOnlyRemoveUnplacedPieceInPlacingPhase to millFormationActionInPlacingPhase.",
+      );
     }
     if (DB().ruleSettings.hasBannedLocations == true) {
       DB().ruleSettings = DB().ruleSettings.copyWith(
-            millFormationActionInPlacingPhase:
-                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-          );
-      DB().ruleSettings = DB().ruleSettings.copyWith(
-            hasBannedLocations: false,
-          );
+        millFormationActionInPlacingPhase:
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+      );
+      DB().ruleSettings = DB().ruleSettings.copyWith(hasBannedLocations: false);
       logger.t(
-          "$_logTag Migrated from hasBannedLocations to millFormationActionInPlacingPhase.");
+        "$_logTag Migrated from hasBannedLocations to millFormationActionInPlacingPhase.",
+      );
     }
   }
 }

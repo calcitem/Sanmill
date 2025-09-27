@@ -47,52 +47,52 @@ class RuleSettingsPage extends StatelessWidget {
           ruleSet == RuleSet.mulMulan ||
           ruleSet == RuleSet.nerenchi ||
           ruleSet == RuleSet.elfilja) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).experimental);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).experimental,
+        );
       }
 
       // Updates the rule settings with the new rule set.
       DB().ruleSettings = ruleSettings.copyWith(
-          // General
-          piecesCount: ruleSetProperties[ruleSet]!.piecesCount,
-          hasDiagonalLines: ruleSetProperties[ruleSet]!.hasDiagonalLines,
-          nMoveRule: ruleSetProperties[ruleSet]!.nMoveRule,
-          endgameNMoveRule: ruleSetProperties[ruleSet]!.endgameNMoveRule,
-          threefoldRepetitionRule:
-              ruleSetProperties[ruleSet]!.threefoldRepetitionRule,
+        // General
+        piecesCount: ruleSetProperties[ruleSet]!.piecesCount,
+        hasDiagonalLines: ruleSetProperties[ruleSet]!.hasDiagonalLines,
+        nMoveRule: ruleSetProperties[ruleSet]!.nMoveRule,
+        endgameNMoveRule: ruleSetProperties[ruleSet]!.endgameNMoveRule,
+        threefoldRepetitionRule:
+            ruleSetProperties[ruleSet]!.threefoldRepetitionRule,
 
-          // Placing phase
-          millFormationActionInPlacingPhase:
-              ruleSetProperties[ruleSet]!.millFormationActionInPlacingPhase,
-          boardFullAction: ruleSetProperties[ruleSet]!.boardFullAction,
-          mayMoveInPlacingPhase:
-              ruleSetProperties[ruleSet]!.mayMoveInPlacingPhase,
+        // Placing phase
+        millFormationActionInPlacingPhase:
+            ruleSetProperties[ruleSet]!.millFormationActionInPlacingPhase,
+        boardFullAction: ruleSetProperties[ruleSet]!.boardFullAction,
+        mayMoveInPlacingPhase:
+            ruleSetProperties[ruleSet]!.mayMoveInPlacingPhase,
 
-          // Moving phase
-          isDefenderMoveFirst: ruleSetProperties[ruleSet]!.isDefenderMoveFirst,
-          restrictRepeatedMillsFormation:
-              ruleSetProperties[ruleSet]!.restrictRepeatedMillsFormation,
-          stalemateAction: ruleSetProperties[ruleSet]!.stalemateAction,
-          piecesAtLeastCount: ruleSetProperties[ruleSet]!.piecesAtLeastCount,
+        // Moving phase
+        isDefenderMoveFirst: ruleSetProperties[ruleSet]!.isDefenderMoveFirst,
+        restrictRepeatedMillsFormation:
+            ruleSetProperties[ruleSet]!.restrictRepeatedMillsFormation,
+        stalemateAction: ruleSetProperties[ruleSet]!.stalemateAction,
+        piecesAtLeastCount: ruleSetProperties[ruleSet]!.piecesAtLeastCount,
 
-          //  Flying
-          mayFly: ruleSetProperties[ruleSet]!.mayFly,
-          flyPieceCount: ruleSetProperties[ruleSet]!.flyPieceCount,
+        //  Flying
+        mayFly: ruleSetProperties[ruleSet]!.mayFly,
+        flyPieceCount: ruleSetProperties[ruleSet]!.flyPieceCount,
 
-          // Removing
-          mayRemoveFromMillsAlways:
-              ruleSetProperties[ruleSet]!.mayRemoveFromMillsAlways,
-          mayRemoveMultiple: ruleSetProperties[ruleSet]!.mayRemoveMultiple,
-          oneTimeUseMill: ruleSetProperties[ruleSet]!.oneTimeUseMill);
+        // Removing
+        mayRemoveFromMillsAlways:
+            ruleSetProperties[ruleSet]!.mayRemoveFromMillsAlways,
+        mayRemoveMultiple: ruleSetProperties[ruleSet]!.mayRemoveMultiple,
+        oneTimeUseMill: ruleSetProperties[ruleSet]!.oneTimeUseMill,
+      );
     }
 
     // Display a modal bottom sheet with the available rule sets.
     showModalBottomSheet(
       context: context,
-      builder: (_) => _RuleSetModal(
-        ruleSet: RuleSet.current,
-        onChanged: callback,
-      ),
+      builder: (_) =>
+          _RuleSetModal(ruleSet: RuleSet.current, onChanged: callback),
     );
   }
 
@@ -109,8 +109,9 @@ class RuleSettingsPage extends StatelessWidget {
       logger.t("[config] piecesCount = ${piecesCount ?? 9}");
 
       if (DB().generalSettings.usePerfectDatabase) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).reopenToTakeEffect);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).reopenToTakeEffect,
+        );
       }
     }
 
@@ -146,14 +147,16 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(int? endgameNMoveRule) {
       if (endgameNMoveRule == null ||
           endgameNMoveRule < DB().ruleSettings.nMoveRule) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).experimental);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).experimental,
+        );
       }
 
       Navigator.pop(context);
 
-      DB().ruleSettings =
-          ruleSettings.copyWith(endgameNMoveRule: endgameNMoveRule ?? 100);
+      DB().ruleSettings = ruleSettings.copyWith(
+        endgameNMoveRule: endgameNMoveRule ?? 100,
+      );
 
       logger.t("[config] endgameNMoveRule = ${endgameNMoveRule ?? 100}");
     }
@@ -171,8 +174,9 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(int? flyPieceCount) {
       Navigator.pop(context);
 
-      DB().ruleSettings =
-          ruleSettings.copyWith(flyPieceCount: flyPieceCount ?? 3);
+      DB().ruleSettings = ruleSettings.copyWith(
+        flyPieceCount: flyPieceCount ?? 3,
+      );
 
       logger.t("[config] flyPieceCount = ${flyPieceCount ?? 3}");
     }
@@ -209,16 +213,18 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(BoardFullAction? boardFullAction) {
       Navigator.pop(context);
 
-      DB().ruleSettings =
-          ruleSettings.copyWith(boardFullAction: boardFullAction);
+      DB().ruleSettings = ruleSettings.copyWith(
+        boardFullAction: boardFullAction,
+      );
 
       logger.t("[config] boardFullAction = $boardFullAction");
 
       // TODO: BoardFullAction: experimental
       if (boardFullAction != BoardFullAction.firstPlayerLose &&
           boardFullAction != BoardFullAction.agreeToDraw) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).experimental);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).experimental,
+        );
       }
     }
 
@@ -232,48 +238,58 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   void _setMillFormationActionInPlacingPhase(
-      BuildContext context, RuleSettings ruleSettings) {
+    BuildContext context,
+    RuleSettings ruleSettings,
+  ) {
     void callback(
-        MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase) {
+      MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase,
+    ) {
       Navigator.pop(context);
 
       DB().ruleSettings = ruleSettings.copyWith(
-          millFormationActionInPlacingPhase: millFormationActionInPlacingPhase);
+        millFormationActionInPlacingPhase: millFormationActionInPlacingPhase,
+      );
 
       switch (millFormationActionInPlacingPhase) {
         case MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard:
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-              S.of(context).removeOpponentsPieceFromBoard_Detail);
+            S.of(context).removeOpponentsPieceFromBoard_Detail,
+          );
           break;
         case MillFormationActionInPlacingPhase
-              .removeOpponentsPieceFromHandThenOpponentsTurn:
-          rootScaffoldMessengerKey.currentState!.showSnackBarClear(S
-              .of(context)
-              .removeOpponentsPieceFromHandThenOpponentsTurn_Detail);
-          break;
-        case MillFormationActionInPlacingPhase
-              .removeOpponentsPieceFromHandThenYourTurn:
+            .removeOpponentsPieceFromHandThenOpponentsTurn:
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-              S.of(context).removeOpponentsPieceFromHandThenYourTurn_Detail);
+            S.of(context).removeOpponentsPieceFromHandThenOpponentsTurn_Detail,
+          );
+          break;
+        case MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenYourTurn:
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            S.of(context).removeOpponentsPieceFromHandThenYourTurn_Detail,
+          );
           break;
         case MillFormationActionInPlacingPhase.opponentRemovesOwnPiece:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).opponentRemovesOwnPiece_Detail);
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            S.of(context).opponentRemovesOwnPiece_Detail,
+          );
           break;
         case MillFormationActionInPlacingPhase.markAndDelayRemovingPieces:
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-              S.of(context).markAndDelayRemovingPieces_Detail);
+            S.of(context).markAndDelayRemovingPieces_Detail,
+          );
           break;
         case MillFormationActionInPlacingPhase.removalBasedOnMillCounts:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).removalBasedOnMillCounts_Detail);
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            S.of(context).removalBasedOnMillCounts_Detail,
+          );
           break;
         case null:
           break;
       }
 
       logger.t(
-          "[config] millFormationActionInPlacingPhase = $millFormationActionInPlacingPhase");
+        "[config] millFormationActionInPlacingPhase = $millFormationActionInPlacingPhase",
+      );
     }
 
     showModalBottomSheet(
@@ -297,8 +313,9 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] mayMoveInPlacingPhase: $value");
 
     if (DB().generalSettings.usePerfectDatabase) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).reopenToTakeEffect);
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).reopenToTakeEffect,
+      );
     }
   }
 
@@ -312,8 +329,9 @@ class RuleSettingsPage extends StatelessWidget {
     RuleSettings ruleSettings,
     bool value,
   ) {
-    DB().ruleSettings =
-        ruleSettings.copyWith(restrictRepeatedMillsFormation: value);
+    DB().ruleSettings = ruleSettings.copyWith(
+      restrictRepeatedMillsFormation: value,
+    );
 
     logger.t("[config] restrictRepeatedMillsFormation: $value");
   }
@@ -322,16 +340,18 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(StalemateAction? stalemateAction) {
       Navigator.pop(context);
 
-      DB().ruleSettings =
-          ruleSettings.copyWith(stalemateAction: stalemateAction);
+      DB().ruleSettings = ruleSettings.copyWith(
+        stalemateAction: stalemateAction,
+      );
 
       logger.t("[config] stalemateAction = $stalemateAction");
 
       // TODO: StalemateAction: experimental
       if (stalemateAction != StalemateAction.endWithStalemateLoss &&
           stalemateAction != StalemateAction.changeSideToMove) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).experimental);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).experimental,
+        );
       }
     }
 
@@ -360,10 +380,7 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] mayRemoveMultiple: $value");
   }
 
-  void _setOneTimeUseMill(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setOneTimeUseMill(RuleSettings ruleSettings, bool value) {
     DB().ruleSettings = ruleSettings.copyWith(oneTimeUseMill: value);
 
     logger.t("[config] oneTimeUseMill: $value");
@@ -403,10 +420,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setCustodianCaptureOnCrossLines(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setCustodianCaptureOnCrossLines(RuleSettings ruleSettings, bool value) {
     _updateRuleSettingsBool(
       ruleSettings,
       (RuleSettings settings) =>
@@ -565,10 +579,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setLeapCaptureOnSquareEdges(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setLeapCaptureOnSquareEdges(RuleSettings ruleSettings, bool value) {
     _updateRuleSettingsBool(
       ruleSettings,
       (RuleSettings settings) =>
@@ -578,10 +589,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setLeapCaptureOnCrossLines(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setLeapCaptureOnCrossLines(RuleSettings ruleSettings, bool value) {
     _updateRuleSettingsBool(
       ruleSettings,
       (RuleSettings settings) =>
@@ -591,10 +599,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setLeapCaptureOnDiagonalLines(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setLeapCaptureOnDiagonalLines(RuleSettings ruleSettings, bool value) {
     _updateRuleSettingsBool(
       ruleSettings,
       (RuleSettings settings) =>
@@ -604,10 +609,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setLeapCaptureInPlacingPhase(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setLeapCaptureInPlacingPhase(RuleSettings ruleSettings, bool value) {
     _updateRuleSettingsBool(
       ruleSettings,
       (RuleSettings settings) =>
@@ -617,10 +619,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setLeapCaptureInMovingPhase(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
+  void _setLeapCaptureInMovingPhase(RuleSettings ruleSettings, bool value) {
     _updateRuleSettingsBool(
       ruleSettings,
       (RuleSettings settings) =>
@@ -654,16 +653,11 @@ class RuleSettingsPage extends StatelessWidget {
         children: <Widget>[
           Align(
             alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              label,
-              style: AppTheme.listTileTitleStyle,
-            ),
+            child: Text(label, style: AppTheme.listTileTitleStyle),
           ),
           const SizedBox(height: 8),
           ListTileTheme(
-            data: const ListTileThemeData(
-              contentPadding: EdgeInsets.zero,
-            ),
+            data: const ListTileThemeData(contentPadding: EdgeInsets.zero),
             child: Column(
               children: <Widget>[
                 for (int i = 0; i < tiles.length; i++) ...<Widget>[
@@ -689,14 +683,12 @@ class RuleSettingsPage extends StatelessWidget {
     return CheckboxListTile(
       key: Key('rule_settings_checkbox_${keyPrefix}_$keySuffix'),
       value: value,
-      onChanged:
-          enabled ? (bool? newValue) => onChanged(newValue ?? false) : null,
+      onChanged: enabled
+          ? (bool? newValue) => onChanged(newValue ?? false)
+          : null,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.trailing,
-      title: Text(
-        label,
-        style: AppTheme.listTileTitleStyle,
-      ),
+      title: Text(label, style: AppTheme.listTileTitleStyle),
     );
   }
 
@@ -713,14 +705,12 @@ class RuleSettingsPage extends StatelessWidget {
       key: Key('rule_settings_radio_${keyPrefix}_$keySuffix'),
       value: value,
       groupValue: groupValue,
-      onChanged:
-          enabled ? (bool? newValue) => onChanged(newValue ?? false) : null,
+      onChanged: enabled
+          ? (bool? newValue) => onChanged(newValue ?? false)
+          : null,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.trailing,
-      title: Text(
-        label,
-        style: AppTheme.listTileTitleStyle,
-      ),
+      title: Text(label, style: AppTheme.listTileTitleStyle),
     );
   }
 
@@ -921,12 +911,14 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               key: const Key(
-                  'rule_settings_tile_mill_formation_action_in_placing_phase'),
+                'rule_settings_tile_mill_formation_action_in_placing_phase',
+              ),
               onTap: () =>
                   _setMillFormationActionInPlacingPhase(context, ruleSettings),
               titleString: S.of(context).whenFormingMillsDuringPlacingPhase,
-              subtitleString:
-                  S.of(context).whenFormingMillsDuringPlacingPhase_Detail,
+              subtitleString: S
+                  .of(context)
+                  .whenFormingMillsDuringPlacingPhase_Detail,
             ),
             if (DB().ruleSettings.millFormationActionInPlacingPhase !=
                 MillFormationActionInPlacingPhase.removalBasedOnMillCounts)
@@ -960,13 +952,15 @@ class RuleSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               key: const Key(
-                  'rule_settings_switch_restrict_repeated_mills_formation'),
+                'rule_settings_switch_restrict_repeated_mills_formation',
+              ),
               value: ruleSettings.restrictRepeatedMillsFormation,
               onChanged: (bool val) =>
                   _setRestrictRepeatedMillsFormation(ruleSettings, val),
               titleString: S.of(context).restrictRepeatedMillsFormation,
-              subtitleString:
-                  S.of(context).restrictRepeatedMillsFormation_Detail,
+              subtitleString: S
+                  .of(context)
+                  .restrictRepeatedMillsFormation_Detail,
             ),
             SettingsListTile(
               key: const Key('rule_settings_tile_stalemate_action'),
@@ -1003,7 +997,8 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               key: const Key(
-                  'rule_settings_switch_may_remove_from_mills_always'),
+                'rule_settings_switch_may_remove_from_mills_always',
+              ),
               value: ruleSettings.mayRemoveFromMillsAlways,
               onChanged: (bool val) =>
                   _setAllowRemovePieceInMill(ruleSettings, val),
@@ -1015,19 +1010,16 @@ class RuleSettingsPage extends StatelessWidget {
               value: ruleSettings.mayRemoveMultiple,
               onChanged: (bool val) =>
                   _setAllowRemoveMultiPiecesWhenCloseMultiMill(
-                ruleSettings,
-                val,
-              ),
+                    ruleSettings,
+                    val,
+                  ),
               titleString: S.of(context).mayRemoveMultiple,
               subtitleString: S.of(context).mayRemoveMultiple_Detail,
             ),
             SettingsListTile.switchTile(
               key: const Key('rule_settings_switch_one_time_use_mill'),
               value: ruleSettings.oneTimeUseMill,
-              onChanged: (bool val) => _setOneTimeUseMill(
-                ruleSettings,
-                val,
-              ),
+              onChanged: (bool val) => _setOneTimeUseMill(ruleSettings, val),
               titleString: S.of(context).oneTimeUseMill,
               subtitleString: S.of(context).oneTimeUseMill_Detail,
             ),
@@ -1089,10 +1081,7 @@ class RuleSettingsPage extends StatelessWidget {
           onlyWhenOwnPiecesLeq3:
               ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
           onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
-              _setInterventionCaptureOnlyWhenOwnPiecesLeq3(
-            ruleSettings,
-            value,
-          ),
+              _setInterventionCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
         ),
         // Only show leap capture in debug mode (experimental feature)
         if (kDebugMode && EnvironmentConfig.devMode)

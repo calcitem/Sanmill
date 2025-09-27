@@ -18,11 +18,7 @@ class ToolbarItemTheme extends InheritedTheme {
   /// Create a [ToolbarItemTheme].
   ///
   /// The [data] parameter must not be null.
-  const ToolbarItemTheme({
-    super.key,
-    required this.data,
-    required super.child,
-  });
+  const ToolbarItemTheme({super.key, required this.data, required super.child});
 
   /// The configuration of this theme.
   final ToolbarItemThemeData data;
@@ -38,17 +34,17 @@ class ToolbarItemTheme extends InheritedTheme {
   /// ToolbarItemThemeData theme = ToolbarItemTheme.of(context);
   /// ```
   static ToolbarItemThemeData of(BuildContext context) {
-    final ToolbarItemTheme? buttonTheme =
-        context.dependOnInheritedWidgetOfExactType<ToolbarItemTheme>();
+    final ToolbarItemTheme? buttonTheme = context
+        .dependOnInheritedWidgetOfExactType<ToolbarItemTheme>();
     return buttonTheme?.data ?? const ToolbarItemThemeData();
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) => ToolbarItemTheme(
-        key: const Key('toolbar_item_theme_wrap'),
-        data: data,
-        child: child,
-      );
+    key: const Key('toolbar_item_theme_wrap'),
+    data: data,
+    child: child,
+  );
 
   @override
   bool updateShouldNotify(ToolbarItemTheme oldWidget) => data != oldWidget.data;

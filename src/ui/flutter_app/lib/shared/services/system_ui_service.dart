@@ -9,8 +9,10 @@ part of 'package:sanmill/main.dart';
 Future<void> initializeUI(bool isFullScreen) async {
   // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
   if (isFullScreen) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: <SystemUiOverlay>[]);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: <SystemUiOverlay>[],
+    );
   } else {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -33,12 +35,10 @@ Future<void> _initUI() async {
 
 void _initializeScreenOrientation(BuildContext context) {
   if (!isTablet(context)) {
-    SystemChrome.setPreferredOrientations(
-      <DeviceOrientation>[
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown
-      ],
-    );
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 }
 
@@ -50,8 +50,9 @@ Future<void> setWindowTitle(String title) async {
     return;
   }
 
-  await uiMethodChannel
-      .invokeMethod('setWindowTitle', <String, String>{'title': title});
+  await uiMethodChannel.invokeMethod('setWindowTitle', <String, String>{
+    'title': title,
+  });
 }
 
 TextStyle getMonospaceTitleTextStyle(BuildContext context) {
@@ -77,10 +78,10 @@ TextStyle getMonospaceTitleTextStyle(BuildContext context) {
   }
 
   return Theme.of(context).textTheme.titleLarge!.copyWith(
-        color: AppTheme.gamePageActionSheetTextColor,
-        fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-        fontFamily: fontFamily,
-      );
+    color: AppTheme.gamePageActionSheetTextColor,
+    fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+    fontFamily: fontFamily,
+  );
 }
 
 double calculateNCharWidth(BuildContext context, int width) {

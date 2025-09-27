@@ -24,8 +24,9 @@ Future<bool> copyPerfectDatabaseFiles() async {
   }
 
   if (dir == null) {
-    logger
-        .e('Failed to resolve a storage directory for perfect database files.');
+    logger.e(
+      'Failed to resolve a storage directory for perfect database files.',
+    );
     return false;
   }
 
@@ -62,7 +63,7 @@ Future<bool> copyPerfectDatabaseFiles() async {
     'assets/databases/std_3_4_5_5.sec2',
     'assets/databases/std_3_4_6_5.sec2',
     'assets/databases/std_4_3_5_5.sec2',
-    'assets/databases/std_4_4_5_5.sec2'
+    'assets/databases/std_4_4_5_5.sec2',
   ];
 
   for (final String asset in assetFiles) {
@@ -72,7 +73,8 @@ Future<bool> copyPerfectDatabaseFiles() async {
         final ByteData byteData = await rootBundle.load(asset);
         final ByteBuffer buffer = byteData.buffer;
         await file.writeAsBytes(
-            buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+          buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+        );
         logger.i('Copied file to ${file.path}');
       } else {
         logger.i('File already exists and was not overwritten: ${file.path}');

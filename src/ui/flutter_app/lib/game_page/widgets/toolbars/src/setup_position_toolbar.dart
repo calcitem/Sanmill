@@ -97,9 +97,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   @override
   void initState() {
     super.initState();
-    GameController()
-        .setupPositionNotifier
-        .addListener(_updateSetupPositionIcons);
+    GameController().setupPositionNotifier.addListener(
+      _updateSetupPositionIcons,
+    );
     initContext();
   }
 
@@ -147,9 +147,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     _updateSetupPositionIcons();
 
-    GameController()
-        .headerTipNotifier
-        .showTip(newPieceColor.pieceName(context));
+    GameController().headerTipNotifier.showTip(
+      newPieceColor.pieceName(context),
+    );
     GameController().headerIconsNotifier.showIcons();
     setState(() {});
 
@@ -181,8 +181,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   Future<void> setSetupPositionNeedRemove(int count, bool next) async {
-    assert(GameController().position.sideToMove == PieceColor.white ||
-        GameController().position.sideToMove == PieceColor.black);
+    assert(
+      GameController().position.sideToMove == PieceColor.white ||
+          GameController().position.sideToMove == PieceColor.black,
+    );
 
     if (newPieceColor != PieceColor.white &&
         newPieceColor != PieceColor.black) {
@@ -191,12 +193,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final PieceColor sideToMove = GameController().position.sideToMove;
 
-    int limit = GameController()
-        .position
-        .totalMillsCount(GameController().position.sideToMove);
+    int limit = GameController().position.totalMillsCount(
+      GameController().position.sideToMove,
+    );
 
-    final int opponentCount =
-        GameController().position.countPieceOnBoard(sideToMove.opponent);
+    final int opponentCount = GameController().position.countPieceOnBoard(
+      sideToMove.opponent,
+    );
 
     if (newPhase == Phase.placing) {
       if (limit > opponentCount) {
@@ -242,13 +245,15 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     if (next == true) {
       if (limit == 0 || newPieceCountNeedRemove[newPieceColor] == 0) {
-        GameController()
-            .headerTipNotifier
-            .showTip(S.of(context).noPiecesCanBeRemoved);
+        GameController().headerTipNotifier.showTip(
+          S.of(context).noPiecesCanBeRemoved,
+        );
       } else {
-        GameController().headerTipNotifier.showTip(S
-            .of(context)
-            .pieceCountNeedToRemove(newPieceCountNeedRemove[newPieceColor]!));
+        GameController().headerTipNotifier.showTip(
+          S
+              .of(context)
+              .pieceCountNeedToRemove(newPieceCountNeedRemove[newPieceColor]!),
+        );
       }
     }
 
@@ -261,8 +266,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   Future<void> setSetupPositionCopy(BuildContext context) async {
     if (setSetupPositionDone() == false) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).invalidPosition);
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).invalidPosition,
+      );
       return;
     }
 
@@ -270,9 +276,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final String copyStr = S.of(context).copy;
 
     if (fen != null) {
-      await Clipboard.setData(
-        ClipboardData(text: fen),
-      );
+      await Clipboard.setData(ClipboardData(text: fen));
     } else {
       logger.e("FEN is null.");
     }
@@ -281,8 +285,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       setState(() {});
     }
 
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear("$copyStr FEN: $fen");
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      "$copyStr FEN: $fen",
+    );
   }
 
   Future<void> setSetupPositionPaste(BuildContext context) async {
@@ -314,7 +319,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   Future<void> setSetupPositionTransform(
-      BuildContext context, TransformationType transformationType) async {
+    BuildContext context,
+    TransformationType transformationType,
+  ) async {
     final String? fen = GameController().position.fen;
 
     if (fen == null) {
@@ -333,9 +340,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         initContext();
         _updateSetupPositionIcons();
       } else {
-        GameController()
-            .headerTipNotifier
-            .showTip(S.of(context).cannotTransform);
+        GameController().headerTipNotifier.showTip(
+          S.of(context).cannotTransform,
+        );
       }
     } catch (e) {
       GameController().headerTipNotifier.showTip(S.of(context).cannotTransform);
@@ -351,10 +358,12 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       return DB().ruleSettings.piecesCount;
     }
 
-    final int white =
-        GameController().position.countPieceOnBoard(PieceColor.white);
-    final int black =
-        GameController().position.countPieceOnBoard(PieceColor.black);
+    final int white = GameController().position.countPieceOnBoard(
+      PieceColor.white,
+    );
+    final int black = GameController().position.countPieceOnBoard(
+      PieceColor.black,
+    );
     late int begin;
 
     // TODO: Not accurate enough.
@@ -430,7 +439,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
       buffer.write(
-        S.of(context).lastMove(
+        S
+            .of(context)
+            .lastMove(
               DB().generalSettings.screenReaderSupport ? "$them, " : "",
             ),
       );
@@ -460,25 +471,33 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     buffer.writeln();
     buffer.writeln(S.of(context).pieceCount);
     buffer.writeComma(
-      S.of(context).inHand(
+      S
+          .of(context)
+          .inHand(
             S.of(context).player1,
             pos.pieceInHandCount[PieceColor.white]!,
           ),
     );
     buffer.writeComma(
-      S.of(context).inHand(
+      S
+          .of(context)
+          .inHand(
             S.of(context).player2,
             pos.pieceInHandCount[PieceColor.black]!,
           ),
     );
     buffer.writeComma(
-      S.of(context).onBoard(
+      S
+          .of(context)
+          .onBoard(
             S.of(context).player1,
             pos.pieceOnBoardCount[PieceColor.white]!,
           ),
     );
     buffer.writePeriod(
-      S.of(context).onBoard(
+      S
+          .of(context)
+          .onBoard(
             S.of(context).player2,
             pos.pieceOnBoardCount[PieceColor.black]!,
           ),
@@ -493,12 +512,16 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       updateSetupPositionPiecesCount();
       setState(() {});
       GameController().headerTipNotifier.showTip(
-          S.of(context).hasPlacedPieceCount(newPlaced),
-          snackBar: false); // TODO: How to show side to move?
+        S.of(context).hasPlacedPieceCount(newPlaced),
+        snackBar: false,
+      ); // TODO: How to show side to move?
 
-      rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        CustomSnackBar(
           _infoText(context),
-          duration: const Duration(seconds: 6)));
+          duration: const Duration(seconds: 6),
+        ),
+      );
 
       Navigator.pop(context);
     }
@@ -523,7 +546,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     if (newPieceColor == PieceColor.white ||
         newPieceColor == PieceColor.black) {
       setSetupPositionNeedRemove(
-          newPieceCountNeedRemove[newPieceColor]!, false);
+        newPieceCountNeedRemove[newPieceColor]!,
+        false,
+      );
     }
     updateSetupPositionPiecesCount();
     GameController().headerIconsNotifier.showIcons();
@@ -659,8 +684,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       return false;
     }
 
-    GameController().gameRecorder =
-        GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
+    GameController().gameRecorder = GameRecorder(
+      lastPositionWithRemove: fen,
+      setupPosition: fen,
+    );
 
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
@@ -676,10 +703,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       onPressed: () => setSetupPositionPiece(context, PieceColor.white),
       icon: Icon(
         FluentIcons.circle_24_filled,
-        color: (DB().colorSettings.mainToolbarBackgroundColor == Colors.white &&
+        color:
+            (DB().colorSettings.mainToolbarBackgroundColor == Colors.white &&
                 DB().colorSettings.whitePieceColor == Colors.white)
-            ? Colors.grey[
-                300] // Set to grey for better visibility if background is white
+            ? Colors
+                  .grey[300] // Set to grey for better visibility if background is white
             : DB().colorSettings.whitePieceColor,
       ),
       label: Text(
@@ -691,8 +719,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final ToolbarItem blackPieceButton = ToolbarItem.icon(
       key: const Key('black_piece_button'),
       onPressed: () => setSetupPositionPiece(context, PieceColor.black),
-      icon: Icon(FluentIcons.circle_24_filled,
-          color: DB().colorSettings.blackPieceColor),
+      icon: Icon(
+        FluentIcons.circle_24_filled,
+        color: DB().colorSettings.blackPieceColor,
+      ),
       label: Text(
         S.of(context).black,
         maxLines: 1,
@@ -724,7 +754,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final ToolbarItem rotateButton = ToolbarItem.icon(
       key: const Key('rotate_button'),
       onPressed: () => setSetupPositionTransform(
-          context, TransformationType.rotate90Degrees),
+        context,
+        TransformationType.rotate90Degrees,
+      ),
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: Text(
         S.of(context).rotate,
@@ -903,11 +935,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final Map<PieceColor, ToolbarItem> colorButtonMap =
         <PieceColor, ToolbarItem>{
-      PieceColor.white: whitePieceButton,
-      PieceColor.black: blackPieceButton,
-      PieceColor.marked: markedPointButton,
-      PieceColor.none: emptyPointButton,
-    };
+          PieceColor.white: whitePieceButton,
+          PieceColor.black: blackPieceButton,
+          PieceColor.marked: markedPointButton,
+          PieceColor.none: emptyPointButton,
+        };
 
     final Map<Phase, ToolbarItem> phaseButtonMap = <Phase, ToolbarItem>{
       Phase.ready: placingButton,
@@ -927,10 +959,12 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       Expanded(child: colorButtonMap[newPieceColor]!),
       Expanded(child: phaseButtonMap[newPhase]!),
       Expanded(
-          child: newPieceColor == PieceColor.white ||
-                  newPieceColor == PieceColor.black
-              ? removeButtonMap[newPieceCountNeedRemove[newPieceColor]]!
-              : removeZeroButton),
+        child:
+            newPieceColor == PieceColor.white ||
+                newPieceColor == PieceColor.black
+            ? removeButtonMap[newPieceCountNeedRemove[newPieceColor]]!
+            : removeZeroButton,
+      ),
       Expanded(child: placedButton),
     ];
 
@@ -981,9 +1015,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   @override
   void deactivate() {
-    GameController()
-        .setupPositionNotifier
-        .addListener(_updateSetupPositionIcons);
+    GameController().setupPositionNotifier.addListener(
+      _updateSetupPositionIcons,
+    );
     if (setSetupPositionDone() == false) {
       logger.e("Invalid Position.");
     }
@@ -1006,8 +1040,8 @@ class SetupPositionButtonsContainer extends StatelessWidget {
     required EdgeInsets padding,
     required this.itemColor,
     required this.child,
-  })  : _margin = margin,
-        _padding = padding;
+  }) : _margin = margin,
+       _padding = padding;
 
   final Color? backgroundColor;
   final EdgeInsets _margin;

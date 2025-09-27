@@ -59,7 +59,7 @@ class PlayerTimer {
     // Instead, we'll just update the UI to show "-" indicating unlimited time
     final bool isAiWithUnlimitedTime =
         gameController.gameInstance.isAiSideToMove &&
-            DB().generalSettings.moveTime <= 0;
+        DB().generalSettings.moveTime <= 0;
     if (isAiWithUnlimitedTime) {
       // Just update the UI to show "-" via the notifier, but don't start a real timer
       _remainingTime = 0;
@@ -112,7 +112,8 @@ class PlayerTimer {
     final Position position = gameController.position;
 
     // Check if AI is currently thinking
-    final bool isAIThinking = gameController.gameInstance.isAiSideToMove &&
+    final bool isAIThinking =
+        gameController.gameInstance.isAiSideToMove &&
         gameController.isEngineRunning;
 
     // Count down if time is remaining
@@ -134,11 +135,11 @@ class PlayerTimer {
       final bool isHumanPlayer = !gameController.gameInstance.isAiSideToMove;
       final bool isAIWithUnlimitedTime =
           gameController.gameInstance.isAiSideToMove &&
-              DB().generalSettings.moveTime <= 0;
+          DB().generalSettings.moveTime <= 0;
       // Check if human player has unlimited time setting
       final bool isHumanWithUnlimitedTime =
           !gameController.gameInstance.isAiSideToMove &&
-              DB().generalSettings.humanMoveTime <= 0;
+          DB().generalSettings.humanMoveTime <= 0;
 
       // For AI with unlimited time (moveTime=0), LAN mode, or when AI is playing,
       // or for human with unlimited time (humanMoveTime=0),
@@ -175,7 +176,8 @@ class PlayerTimer {
 
       // Update UI
       gameController.headerTipNotifier.showTip(
-          "Time is over, ${position.sideToMove == PieceColor.white ? 'Player 1' : 'Player 2'} lost.");
+        "Time is over, ${position.sideToMove == PieceColor.white ? 'Player 1' : 'Player 2'} lost.",
+      );
       gameController.gameResultNotifier.showResult(force: true);
 
       // Play sound

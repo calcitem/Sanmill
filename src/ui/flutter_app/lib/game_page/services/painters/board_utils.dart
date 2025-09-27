@@ -13,7 +13,7 @@ const List<String> verticalNotations = <String>[
   '4',
   '3',
   '2',
-  '1'
+  '1',
 ];
 
 /// The names of the columns
@@ -24,7 +24,7 @@ const List<String> horizontalNotations = <String>[
   'd',
   'e',
   'f',
-  'g'
+  'g',
 ];
 
 /// The padding applied to the actual mill field
@@ -111,7 +111,8 @@ Offset offsetFromPointWithInnerSize(Offset point, Size size) {
   final Offset vectorFromCenter = originalPos - center;
 
   // Determine the ring index in the original 7×7 grid.
-  final int ringOriginal = (point.dx - 3).abs().toInt().clamp(0, 3) >
+  final int ringOriginal =
+      (point.dx - 3).abs().toInt().clamp(0, 3) >
           (point.dy - 3).abs().toInt().clamp(0, 3)
       ? (point.dx - 3).abs().toInt()
       : (point.dy - 3).abs().toInt();

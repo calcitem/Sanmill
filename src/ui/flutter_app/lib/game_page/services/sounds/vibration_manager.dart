@@ -35,7 +35,8 @@ class VibrationManager {
         final int duration = _vibrationDurations[type] ?? 10;
         await Vibration.vibrate(duration: duration);
         logger.i(
-            "$_logTag Vibration triggered for $type with duration $duration ms.");
+          "$_logTag Vibration triggered for $type with duration $duration ms.",
+        );
       } else {
         logger.w("$_logTag Device does not support vibration.");
       }

@@ -49,8 +49,8 @@ class AboutPage extends StatelessWidget {
           final PackageInfo packageInfo = data.data!;
           final String version =
               (kIsWeb || Platform.isWindows || Platform.isLinux)
-                  ? packageInfo.version
-                  : "${packageInfo.version} (${packageInfo.buildNumber})";
+              ? packageInfo.version
+              : "${packageInfo.version} (${packageInfo.buildNumber})";
           final String subtitle =
               "${Constants.projectName} $version ${mode ?? ''}".trim();
 
@@ -60,9 +60,7 @@ class AboutPage extends StatelessWidget {
             subtitleString: subtitle,
             onTap: () => showDialog(
               context: context,
-              builder: (_) => _VersionDialog(
-                appVersion: version,
-              ),
+              builder: (_) => _VersionDialog(appVersion: version),
             ),
           );
         },
@@ -117,8 +115,9 @@ class AboutPage extends StatelessWidget {
         titleString: S.of(context).helpImproveTranslate,
         onTap: () {
           final String locale = Localizations.localeOf(context).languageCode;
-          final UrlHelper url =
-              Constants.helpImproveTranslateURL.fromSubPath(locale);
+          final UrlHelper url = Constants.helpImproveTranslateURL.fromSubPath(
+            locale,
+          );
           launchURL(context, url);
         },
       ),
@@ -154,9 +153,7 @@ class AboutPage extends StatelessWidget {
 }
 
 class _VersionDialog extends StatelessWidget {
-  const _VersionDialog({
-    required this.appVersion,
-  });
+  const _VersionDialog({required this.appVersion});
 
   final String appVersion;
 
@@ -164,10 +161,7 @@ class _VersionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       key: const Key('version_dialog'),
-      title: Text(
-        S.of(context).appName,
-        style: AppTheme.dialogTitleTextStyle,
-      ),
+      title: Text(S.of(context).appName, style: AppTheme.dialogTitleTextStyle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +169,8 @@ class _VersionDialog extends StatelessWidget {
           Text(
             S.of(context).version(appVersion),
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           const CustomSpacer(),
           FutureBuilder<GitInfo>(
@@ -192,8 +187,9 @@ class _VersionDialog extends StatelessWidget {
                   child: Text(
                     'Branch: ${info.branch}',
                     style: TextStyle(
-                      fontSize:
-                          AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                      fontSize: AppTheme.textScaler.scale(
+                        AppTheme.defaultFontSize,
+                      ),
                     ),
                   ),
                 ),
@@ -207,8 +203,9 @@ class _VersionDialog extends StatelessWidget {
                     child: Text(
                       'Revision: ${info.revision}',
                       style: TextStyle(
-                        fontSize:
-                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontSize: AppTheme.textScaler.scale(
+                          AppTheme.defaultFontSize,
+                        ),
                       ),
                     ),
                   ),
@@ -226,7 +223,8 @@ class _VersionDialog extends StatelessWidget {
           child: Text(
             S.of(context).more,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -242,7 +240,8 @@ class _VersionDialog extends StatelessWidget {
           child: Text(
             S.of(context).ok,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -272,17 +271,16 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
         .replaceAll("}", "")
         .replaceAll(", ", "\n");
     formattedFlutterVersion = formattedFlutterVersion.substring(
-        0, formattedFlutterVersion.indexOf("flutterRoot"));
+      0,
+      formattedFlutterVersion.indexOf("flutterRoot"),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       key: const Key('flutter_version_alert_dialog'),
-      title: Text(
-        S.of(context).more,
-        style: AppTheme.dialogTitleTextStyle,
-      ),
+      title: Text(S.of(context).more, style: AppTheme.dialogTitleTextStyle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,9 +297,7 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
                 }
               });
             },
-            child: Text(
-              formattedFlutterVersion,
-            ),
+            child: Text(formattedFlutterVersion),
           ),
         ],
       ),
@@ -311,7 +307,8 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
           child: Text(
             S.of(context).ok,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),

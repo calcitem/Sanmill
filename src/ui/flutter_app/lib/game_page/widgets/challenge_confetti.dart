@@ -12,13 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart'; // Import for TickerProvider
 
 // Define different confetti shape types
-enum ConfettiShape {
-  rectangle,
-  circle,
-  triangle,
-  star,
-  streamer,
-}
+enum ConfettiShape { rectangle, circle, triangle, star, streamer }
 
 /// A widget that displays a highly customizable and visually enhanced confetti animation.
 class ChallengeConfetti extends StatefulWidget {
@@ -204,8 +198,15 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
         widget.windStrength * (1 + 0.1 * math.sin(_elapsedTime * 1.5));
 
     for (final ConfettiParticle particle in _particles) {
-      particle.update(dt, screenSize, currentWind, widget.gravity,
-          widget.airResistance, widget.flutterIntensity, widget.spinDamping);
+      particle.update(
+        dt,
+        screenSize,
+        currentWind,
+        widget.gravity,
+        widget.airResistance,
+        widget.flutterIntensity,
+        widget.spinDamping,
+      );
       if (particle.isOffScreen(screenSize) ||
           particle.controller.status == AnimationStatus.completed) {
         particlesToRemove.add(particle);
@@ -232,7 +233,8 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
   void _startConfettiWaves() {
     for (int wave = 0; wave < widget.numberOfWaves; wave++) {
       // Add a small random factor to the wave delay to make the burst less uniform
-      final int randomWaveDelay = widget.waveDelayMs +
+      final int randomWaveDelay =
+          widget.waveDelayMs +
           _random.nextInt((widget.waveDelayMs / 2).floor());
       Future<void>.delayed(Duration(milliseconds: randomWaveDelay * wave), () {
         if (!mounted) {
@@ -261,13 +263,15 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
     final Size screenSize = MediaQuery.of(context).size;
 
     // Determine emission source properties
-    final Rect source = widget.emissionSource ??
+    final Rect source =
+        widget.emissionSource ??
         Rect.fromCenter(
-            center: Offset(screenSize.width / 2, -20),
-            // Default: top center edge
-            width: screenSize.width * 0.5,
-            // Default width
-            height: 40); // Default height (allows some vertical spread)
+          center: Offset(screenSize.width / 2, -20),
+          // Default: top center edge
+          width: screenSize.width * 0.5,
+          // Default width
+          height: 40,
+        ); // Default height (allows some vertical spread)
 
     // Start position within the source rectangle
     final double startX = source.left + _random.nextDouble() * source.width;
@@ -281,9 +285,10 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
         widget.initialBurstIntensity * (0.5 + _random.nextDouble() * 0.5);
     final double initialSpeedX = math.sin(burstAngle) * burstSpeed;
     final double initialSpeedY =
-        -math.cos(burstAngle) * burstSpeed // Upward component
+        -math.cos(burstAngle) *
+            burstSpeed // Upward component
             +
-            _random.nextDouble() * widget.initialFallSpeedRange;
+        _random.nextDouble() * widget.initialFallSpeedRange;
 
     final Offset initialVelocity = Offset(initialSpeedX, initialSpeedY);
 
@@ -291,8 +296,9 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
 
     // Determine if metallic and pick color palette
     final bool isMetallic = _random.nextDouble() < widget.metallicProbability;
-    final List<Color> colorPalette =
-        isMetallic ? ChallengeConfetti._metallicColors : widget.confettiColors;
+    final List<Color> colorPalette = isMetallic
+        ? ChallengeConfetti._metallicColors
+        : widget.confettiColors;
     Color color = colorPalette[_random.nextInt(colorPalette.length)];
 
     // Add slight random HSL variation to the base color for non-metallics
@@ -305,9 +311,11 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
       color = hslColor
           .withHue((hslColor.hue + hueVariation) % 360.0)
           .withSaturation(
-              (hslColor.saturation + saturationVariation).clamp(0.0, 1.0))
+            (hslColor.saturation + saturationVariation).clamp(0.0, 1.0),
+          )
           .withLightness(
-              (hslColor.lightness + lightnessVariation).clamp(0.0, 1.0))
+            (hslColor.lightness + lightnessVariation).clamp(0.0, 1.0),
+          )
           .toColor();
     }
 
@@ -316,10 +324,12 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
         widget.allowedShapes[_random.nextInt(widget.allowedShapes.length)];
 
     // Random size for the confetti
-    final double size = _random.nextDouble() *
+    final double size =
+        _random.nextDouble() *
             (widget.maxParticleSize - widget.minParticleSize) +
         widget.minParticleSize;
-    final double massFactor = (size / widget.maxParticleSize) * 0.5 +
+    final double massFactor =
+        (size / widget.maxParticleSize) * 0.5 +
         0.75; // Larger particles are slightly heavier (range 0.75 to 1.25)
 
     // Random initial rotation angle (3D orientation) and spin speed
@@ -329,7 +339,7 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
     // Random lifetime for the particle
     final int lifetimeMs =
         _random.nextInt(widget.maxLifetimeMs - widget.minLifetimeMs) +
-            widget.minLifetimeMs;
+        widget.minLifetimeMs;
 
     // Create animation controller for lifetime and fade effects
     final AnimationController controller = AnimationController(
@@ -403,9 +413,7 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
     // IgnorePointer allows user interactions to pass through the confetti layer
     return IgnorePointer(
       child: CustomPaint(
-        painter: ConfettiPainter(
-          particles: _particles,
-        ),
+        painter: ConfettiPainter(particles: _particles),
         child: const SizedBox.expand(),
       ),
     );
@@ -426,11 +434,11 @@ class ConfettiParticle {
     required this.initialSpin,
     required this.shape,
     required this.random,
-  })  : currentPosition = initialPosition,
-        velocity = initialVelocity,
-        currentAngle = initialAngle,
-        angularVelocity = initialSpin,
-        _anglePhase = random.nextDouble() * 2 * math.pi;
+  }) : currentPosition = initialPosition,
+       velocity = initialVelocity,
+       currentAngle = initialAngle,
+       angularVelocity = initialSpin,
+       _anglePhase = random.nextDouble() * 2 * math.pi;
 
   final AnimationController controller; // Controls lifetime and fade
   final Offset initialPosition;
@@ -466,8 +474,15 @@ class ConfettiParticle {
   double scaleY = 1.0;
 
   /// Updates the particle's state based on physics simulation for a time step 'dt'.
-  void update(double dt, Size screenSize, double windStrength, double gravity,
-      double airResistance, double flutterIntensity, double spinDamping) {
+  void update(
+    double dt,
+    Size screenSize,
+    double windStrength,
+    double gravity,
+    double airResistance,
+    double flutterIntensity,
+    double spinDamping,
+  ) {
     timeAlive += dt;
 
     // 1. Apply Gravity (affected by massFactor)
@@ -481,7 +496,8 @@ class ConfettiParticle {
 
     // 2. Apply Air Resistance (higher when face-on, lower when edge-on)
     final double resistanceFactor = 0.2 + 0.8 * scaleY;
-    final double dragMagnitude = velocity.distanceSquared *
+    final double dragMagnitude =
+        velocity.distanceSquared *
         airResistance *
         resistanceFactor /
         massFactor *
@@ -490,9 +506,12 @@ class ConfettiParticle {
     if (dragMagnitude > velocity.distance) {
       velocity = Offset.zero;
     } else if (velocity.distanceSquared > 0) {
-      velocity = velocity -
-          velocity.scale(dragMagnitude / velocity.distance,
-              dragMagnitude / velocity.distance);
+      velocity =
+          velocity -
+          velocity.scale(
+            dragMagnitude / velocity.distance,
+            dragMagnitude / velocity.distance,
+          );
     }
 
     // 3. Apply Wind (less effect on heavier particles)
@@ -533,8 +552,10 @@ class ConfettiParticle {
       final double normalized =
           (progress - fadeOutStart) / (1.0 - fadeOutStart);
       final double eased = Curves.easeInCubic.transform(normalized);
-      return (1.0 - eased)
-          .clamp(minEndOpacity, 1.0); // Clamp to minimum opacity
+      return (1.0 - eased).clamp(
+        minEndOpacity,
+        1.0,
+      ); // Clamp to minimum opacity
     } else {
       return 1.0;
     }
@@ -553,11 +574,11 @@ class ConfettiParticle {
 /// A custom painter that draws all confetti particles with enhanced visuals.
 class ConfettiPainter extends CustomPainter {
   ConfettiPainter({required this.particles})
-      : super(
-          repaint: Listenable.merge(
-            particles.map((ConfettiParticle p) => p.controller).toList(),
-          ),
-        );
+    : super(
+        repaint: Listenable.merge(
+          particles.map((ConfettiParticle p) => p.controller).toList(),
+        ),
+      );
 
   final List<ConfettiParticle> particles;
 
@@ -567,10 +588,12 @@ class ConfettiPainter extends CustomPainter {
 
   LinearGradient _createMetallicGradient(Color baseColor) {
     final HSLColor hsl = HSLColor.fromColor(baseColor);
-    final Color lightColor =
-        hsl.withLightness((hsl.lightness + 0.15).clamp(0.0, 1.0)).toColor();
-    final Color darkColor =
-        hsl.withLightness((hsl.lightness - 0.15).clamp(0.0, 1.0)).toColor();
+    final Color lightColor = hsl
+        .withLightness((hsl.lightness + 0.15).clamp(0.0, 1.0))
+        .toColor();
+    final Color darkColor = hsl
+        .withLightness((hsl.lightness - 0.15).clamp(0.0, 1.0))
+        .toColor();
     return LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -594,7 +617,9 @@ class ConfettiPainter extends CustomPainter {
 
       canvas.save();
       canvas.translate(
-          particle.currentPosition.dx, particle.currentPosition.dy);
+        particle.currentPosition.dx,
+        particle.currentPosition.dy,
+      );
       canvas.rotate(particle.currentAngle);
       canvas.scale(1.0, particle.scaleY);
 
@@ -620,10 +645,11 @@ class ConfettiPainter extends CustomPainter {
 
       // Subtle highlight
       final double highlightVisibility = particle.scaleY * 0.8;
-      final double highlightOpacity = (opacity *
-              highlightVisibility *
-              (1.0 - particle.controller.value * 0.6))
-          .clamp(0.0, 0.5);
+      final double highlightOpacity =
+          (opacity *
+                  highlightVisibility *
+                  (1.0 - particle.controller.value * 0.6))
+              .clamp(0.0, 0.5);
       highlightPaint.color = Colors.white.withValues(alpha: highlightOpacity);
 
       final double pSize = particle.size;
@@ -652,11 +678,18 @@ class ConfettiPainter extends CustomPainter {
   // --- Shape Drawing Methods ---
 
   void _drawRectangle(
-      Canvas canvas, double size, Paint paint, Paint highlightPaint) {
+    Canvas canvas,
+    double size,
+    Paint paint,
+    Paint highlightPaint,
+  ) {
     final double width = size * 0.8;
     final double height = size * 1.2;
-    final Rect rect =
-        Rect.fromCenter(center: Offset.zero, width: width, height: height);
+    final Rect rect = Rect.fromCenter(
+      center: Offset.zero,
+      width: width,
+      height: height,
+    );
     canvas.drawRect(rect, paint);
     if (highlightPaint.color.a > 0) {
       final Rect highlightRect = Rect.fromCenter(
@@ -669,7 +702,11 @@ class ConfettiPainter extends CustomPainter {
   }
 
   void _drawCircle(
-      Canvas canvas, double size, Paint paint, Paint highlightPaint) {
+    Canvas canvas,
+    double size,
+    Paint paint,
+    Paint highlightPaint,
+  ) {
     final double radius = size / 2;
     canvas.drawCircle(Offset.zero, radius, paint);
     if (highlightPaint.color.a > 0) {
@@ -682,7 +719,11 @@ class ConfettiPainter extends CustomPainter {
   }
 
   void _drawTriangle(
-      Canvas canvas, double size, Paint paint, Paint highlightPaint) {
+    Canvas canvas,
+    double size,
+    Paint paint,
+    Paint highlightPaint,
+  ) {
     final Path path = Path();
     final double halfSize = size / 2;
     final double height = size * math.sqrt(3) / 2;
@@ -701,7 +742,11 @@ class ConfettiPainter extends CustomPainter {
   }
 
   void _drawStar(
-      Canvas canvas, double size, Paint paint, Paint highlightPaint) {
+    Canvas canvas,
+    double size,
+    Paint paint,
+    Paint highlightPaint,
+  ) {
     final Path path = Path();
     final double outerRadius = size / 2;
     final double innerRadius = size / 4.5;
@@ -733,8 +778,11 @@ class ConfettiPainter extends CustomPainter {
   void _drawStreamer(Canvas canvas, double size, Paint paint) {
     final double width = size * 0.2;
     final double height = size * 3.0;
-    final Rect rect =
-        Rect.fromCenter(center: Offset.zero, width: width, height: height);
+    final Rect rect = Rect.fromCenter(
+      center: Offset.zero,
+      width: width,
+      height: height,
+    );
     canvas.drawRRect(
       RRect.fromRectAndRadius(rect, const Radius.circular(2.0)),
       paint,

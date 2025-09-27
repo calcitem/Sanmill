@@ -39,7 +39,8 @@ class _BoardInnerRingSizeSlider extends StatelessWidget {
                   final double roundedValue = (value * 20).round() / 20;
                   logger.t("[config] BoardInnerRingSize value: $roundedValue");
                   DB().displaySettings = displaySettings.copyWith(
-                      boardInnerRingSize: roundedValue);
+                    boardInnerRingSize: roundedValue,
+                  );
                 },
               ),
             ),

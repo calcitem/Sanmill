@@ -112,7 +112,8 @@ class GeneralSettings {
   const GeneralSettings({
     this.isPrivacyPolicyAccepted = false,
     @Deprecated(
-        "As this is not a user facing preference we migrated it into another box")
+      "As this is not a user facing preference we migrated it into another box",
+    )
     this.usesHiveDB = false,
     this.toneEnabled = true,
     this.keepMuteWhenTakingBack = true,
@@ -129,7 +130,8 @@ class GeneralSettings {
     this.learnEndgame = false,
     @Deprecated('Use [useOpeningBook] instead') this.openingBook = false,
     @Deprecated(
-        'This only represents the old algorithm type. Use [searchAlgorithm] instead')
+      'This only represents the old algorithm type. Use [searchAlgorithm] instead',
+    )
     this.algorithm = 2,
     this.searchAlgorithm = SearchAlgorithm.mtdf,
     this.usePerfectDatabase = false,
@@ -137,7 +139,8 @@ class GeneralSettings {
     this.considerMobility = true,
     this.focusOnBlockingPaths = false,
     @Deprecated(
-        "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
+      "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
+    )
     this.developerMode = false,
     @Deprecated("Use [EnvironmentConfig.devMode] instead")
     this.experimentsEnabled = false,
@@ -208,7 +211,8 @@ class GeneralSettings {
   final bool openingBook;
 
   @Deprecated(
-      'This only represents the old algorithm type. Use [searchAlgorithm] instead')
+    'This only represents the old algorithm type. Use [searchAlgorithm] instead',
+  )
   @HiveField(14, defaultValue: 2)
   final int algorithm;
 

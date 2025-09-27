@@ -9,17 +9,13 @@ import 'package:sanmill/shared/database/database.dart';
 
 /// A map of custom function names to their corresponding implementations.
 final Map<String, Future<void> Function(WidgetTester, Map<String, String>)>
-    customFunctionMap =
+customFunctionMap =
     <String, Future<void> Function(WidgetTester p1, Map<String, String> p2)>{
-  'setSkillLevelAndMovingTime':
-      (WidgetTester tester, Map<String, String> stepData) async {
-    DB().generalSettings = DB().generalSettings.copyWith(
-          skillLevel: 5,
-        );
-    DB().generalSettings = DB().generalSettings.copyWith(
-          moveTime: 0,
-        );
-    await tester.pumpAndSettle();
-  },
-  // Add more custom functions as needed
-};
+      'setSkillLevelAndMovingTime':
+          (WidgetTester tester, Map<String, String> stepData) async {
+            DB().generalSettings = DB().generalSettings.copyWith(skillLevel: 5);
+            DB().generalSettings = DB().generalSettings.copyWith(moveTime: 0);
+            await tester.pumpAndSettle();
+          },
+      // Add more custom functions as needed
+    };

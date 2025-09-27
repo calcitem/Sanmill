@@ -21,10 +21,7 @@ import '../models/color_settings.dart';
 /// A page that displays all available themes as mini boards,
 /// allowing users to visually preview and select a theme.
 class ThemeSelectionPage extends StatefulWidget {
-  const ThemeSelectionPage({
-    super.key,
-    required this.currentTheme,
-  });
+  const ThemeSelectionPage({super.key, required this.currentTheme});
 
   final ColorTheme currentTheme;
 
@@ -83,10 +80,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
 
     // Share the JSON string
     SharePlus.instance.share(
-      ShareParams(
-        text: json,
-        subject: 'Custom Theme Settings',
-      ),
+      ShareParams(text: json, subject: 'Custom Theme Settings'),
     );
   }
 
@@ -113,7 +107,8 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
           mainAxisSpacing: 16.0,
         ),
         // Update the item count to use builtInThemes instead of all themes
-        itemCount: builtInThemes.length +
+        itemCount:
+            builtInThemes.length +
             1 +
             _customThemes.length, // Add 1 for Current theme + custom themes
         itemBuilder: (BuildContext context, int index) {
@@ -295,11 +290,7 @@ class ThemePreviewItem extends StatelessWidget {
                 left: 4.0,
                 bottom: 4.0,
                 child: IconButton(
-                  icon: Icon(
-                    shareIcon,
-                    color: colors.messageColor,
-                    size: 20.0,
-                  ),
+                  icon: Icon(shareIcon, color: colors.messageColor, size: 20.0),
                   tooltip: shareTooltip,
                   onPressed: onSharePressed,
                 ),
@@ -393,10 +384,7 @@ class ThemePreviewItem extends StatelessWidget {
 
 /// A widget that displays a preview of the board with the theme colors.
 class ThemePreviewBoard extends StatelessWidget {
-  const ThemePreviewBoard({
-    super.key,
-    required this.colors,
-  });
+  const ThemePreviewBoard({super.key, required this.colors});
 
   final ColorSettings colors;
 
@@ -453,48 +441,65 @@ class ThemePreviewPainter extends CustomPainter {
 
     // Draw outer square
     final Rect outerRect = Rect.fromLTWH(
-        offsetX + outerMargin, offsetY + outerMargin, outerSize, outerSize);
+      offsetX + outerMargin,
+      offsetY + outerMargin,
+      outerSize,
+      outerSize,
+    );
     canvas.drawRect(outerRect, boardPaint);
 
     // Draw middle square
-    final Rect middleRect = Rect.fromLTWH(offsetX + outerMargin + ringSpacing,
-        offsetY + outerMargin + ringSpacing, middleSize, middleSize);
+    final Rect middleRect = Rect.fromLTWH(
+      offsetX + outerMargin + ringSpacing,
+      offsetY + outerMargin + ringSpacing,
+      middleSize,
+      middleSize,
+    );
     canvas.drawRect(middleRect, boardPaint);
 
     // Draw inner square
     final Rect innerRect = Rect.fromLTWH(
-        offsetX + outerMargin + 2 * ringSpacing,
-        offsetY + outerMargin + 2 * ringSpacing,
-        innerSize,
-        innerSize);
+      offsetX + outerMargin + 2 * ringSpacing,
+      offsetY + outerMargin + 2 * ringSpacing,
+      innerSize,
+      innerSize,
+    );
     canvas.drawRect(innerRect, boardPaint);
 
     // Draw connecting lines
     // Top middle
     canvas.drawLine(
-        Offset(offsetX + minSide / 2, offsetY + outerMargin),
-        Offset(offsetX + minSide / 2, offsetY + outerMargin + 2 * ringSpacing),
-        boardPaint);
+      Offset(offsetX + minSide / 2, offsetY + outerMargin),
+      Offset(offsetX + minSide / 2, offsetY + outerMargin + 2 * ringSpacing),
+      boardPaint,
+    );
 
     // Bottom middle
     canvas.drawLine(
-        Offset(offsetX + minSide / 2, offsetY + minSide - outerMargin),
-        Offset(offsetX + minSide / 2,
-            offsetY + minSide - outerMargin - 2 * ringSpacing),
-        boardPaint);
+      Offset(offsetX + minSide / 2, offsetY + minSide - outerMargin),
+      Offset(
+        offsetX + minSide / 2,
+        offsetY + minSide - outerMargin - 2 * ringSpacing,
+      ),
+      boardPaint,
+    );
 
     // Left middle
     canvas.drawLine(
-        Offset(offsetX + outerMargin, offsetY + minSide / 2),
-        Offset(offsetX + outerMargin + 2 * ringSpacing, offsetY + minSide / 2),
-        boardPaint);
+      Offset(offsetX + outerMargin, offsetY + minSide / 2),
+      Offset(offsetX + outerMargin + 2 * ringSpacing, offsetY + minSide / 2),
+      boardPaint,
+    );
 
     // Right middle
     canvas.drawLine(
-        Offset(offsetX + minSide - outerMargin, offsetY + minSide / 2),
-        Offset(offsetX + minSide - outerMargin - 2 * ringSpacing,
-            offsetY + minSide / 2),
-        boardPaint);
+      Offset(offsetX + minSide - outerMargin, offsetY + minSide / 2),
+      Offset(
+        offsetX + minSide - outerMargin - 2 * ringSpacing,
+        offsetY + minSide / 2,
+      ),
+      boardPaint,
+    );
 
     // Draw piece samples
     // White piece in top-left
@@ -502,8 +507,11 @@ class ThemePreviewPainter extends CustomPainter {
       ..color = colors.whitePieceColor
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(Offset(offsetX + outerMargin, offsetY + outerMargin),
-        pieceRadius, whitePaint);
+    canvas.drawCircle(
+      Offset(offsetX + outerMargin, offsetY + outerMargin),
+      pieceRadius,
+      whitePaint,
+    );
 
     // Black piece in bottom-right
     final Paint blackPaint = Paint()
@@ -511,10 +519,10 @@ class ThemePreviewPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
-        Offset(
-            offsetX + minSide - outerMargin, offsetY + minSide - outerMargin),
-        pieceRadius,
-        blackPaint);
+      Offset(offsetX + minSide - outerMargin, offsetY + minSide - outerMargin),
+      pieceRadius,
+      blackPaint,
+    );
 
     // Highlighted piece in top-right
     final Paint highlightPaint = Paint()
@@ -523,14 +531,16 @@ class ThemePreviewPainter extends CustomPainter {
       ..strokeWidth = 2.0;
 
     canvas.drawCircle(
-        Offset(offsetX + minSide - outerMargin, offsetY + outerMargin),
-        pieceRadius,
-        whitePaint);
+      Offset(offsetX + minSide - outerMargin, offsetY + outerMargin),
+      pieceRadius,
+      whitePaint,
+    );
 
     canvas.drawCircle(
-        Offset(offsetX + minSide - outerMargin, offsetY + outerMargin),
-        pieceRadius + 2,
-        highlightPaint);
+      Offset(offsetX + minSide - outerMargin, offsetY + outerMargin),
+      pieceRadius + 2,
+      highlightPaint,
+    );
   }
 
   @override

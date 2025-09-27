@@ -75,12 +75,14 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 // Last item: Custom Image Picker
                 return _CustomBoardImageItem(
                   key: const Key('custom_board_image_item'),
-                  isSelected: displaySettings.boardImagePath ==
+                  isSelected:
+                      displaySettings.boardImagePath ==
                       displaySettings.customBoardImagePath,
                   customImagePath: displaySettings.customBoardImagePath,
                   onSelect: () => _handleSelectImage(
-                      displaySettings.customBoardImagePath,
-                      displaySettings.boardImagePath),
+                    displaySettings.customBoardImagePath,
+                    displaySettings.boardImagePath,
+                  ),
                   onPickImage: () => _pickImage(
                     context,
                     boardImageText: boardImageText,
@@ -151,8 +153,8 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
             }
 
             // Generate a unique filename using the current timestamp
-            final String timestamp =
-                DateTime.now().millisecondsSinceEpoch.toString();
+            final String timestamp = DateTime.now().millisecondsSinceEpoch
+                .toString();
             final String filePath = '$imagesDirPath/$timestamp.png';
 
             // Save the cropped image to the designated directory
@@ -192,8 +194,10 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
 
     // Check if no image was previously set, and a new image is now being selected
     if (previousPath.isEmpty && isSettingNewImage) {
-      final bool shouldMakeTransparent =
-          await _promptMakeToolbarsTransparent(context, DB().displaySettings);
+      final bool shouldMakeTransparent = await _promptMakeToolbarsTransparent(
+        context,
+        DB().displaySettings,
+      );
       if (shouldMakeTransparent) {
         _makeToolbarsTransparent();
       }
@@ -201,13 +205,15 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
 
     // Update boardImagePath
     DB().displaySettings = DB().displaySettings.copyWith(
-          boardImagePath: asset ?? '',
-        );
+      boardImagePath: asset ?? '',
+    );
   }
 
   /// Displays a dialog prompting the user to set toolbars as transparent
   Future<bool> _promptMakeToolbarsTransparent(
-      BuildContext context, DisplaySettings displaySettings) async {
+    BuildContext context,
+    DisplaySettings displaySettings,
+  ) async {
     final bool isNavigationToolbarOpaque =
         DB().colorSettings.navigationToolbarBackgroundColor.a != 0x00;
     final bool isMainToolbarOpaque =
@@ -232,8 +238,10 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 child: Text(
                   S.of(context).no,
                   style: TextStyle(
-                      fontSize:
-                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                    fontSize: AppTheme.textScaler.scale(
+                      AppTheme.defaultFontSize,
+                    ),
+                  ),
                 ),
               ),
               TextButton(
@@ -242,8 +250,10 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 child: Text(
                   S.of(context).yes,
                   style: TextStyle(
-                      fontSize:
-                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                    fontSize: AppTheme.textScaler.scale(
+                      AppTheme.defaultFontSize,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -265,12 +275,14 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
   void _makeToolbarsTransparent() {
     final ColorSettings colorSettings = DB().colorSettings;
     DB().colorSettings = colorSettings.copyWith(
-      mainToolbarBackgroundColor:
-          colorSettings.mainToolbarBackgroundColor.withAlpha(0x00),
-      navigationToolbarBackgroundColor:
-          colorSettings.navigationToolbarBackgroundColor.withAlpha(0x00),
-      analysisToolbarBackgroundColor:
-          colorSettings.analysisToolbarBackgroundColor.withAlpha(0x00),
+      mainToolbarBackgroundColor: colorSettings.mainToolbarBackgroundColor
+          .withAlpha(0x00),
+      navigationToolbarBackgroundColor: colorSettings
+          .navigationToolbarBackgroundColor
+          .withAlpha(0x00),
+      analysisToolbarBackgroundColor: colorSettings
+          .analysisToolbarBackgroundColor
+          .withAlpha(0x00),
     );
   }
 }
@@ -304,9 +316,9 @@ class _BoardImageItem extends StatelessWidget {
               image: asset.isEmpty
                   ? null
                   : DecorationImage(
-                      image: getBoardImageProvider(DisplaySettings(
-                        boardImagePath: asset,
-                      ))!,
+                      image: getBoardImageProvider(
+                        DisplaySettings(boardImagePath: asset),
+                      )!,
                       fit: BoxFit.cover,
                     ),
               borderRadius: BorderRadius.circular(8),
@@ -364,7 +376,8 @@ class _CustomBoardImageItem extends StatelessWidget {
             key: const Key('custom_board_image_container'),
             decoration: BoxDecoration(
               color: customImagePath == null
-                  ? Colors.grey // Displays grey if no custom image is selected
+                  ? Colors
+                        .grey // Displays grey if no custom image is selected
                   : null,
               image: customImagePath != null
                   ? DecorationImage(
@@ -391,11 +404,7 @@ class _CustomBoardImageItem extends StatelessWidget {
             Center(
               child: IconButton(
                 key: const Key('custom_board_image_edit_button'),
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                  size: 32,
-                ),
+                icon: const Icon(Icons.edit, color: Colors.white, size: 32),
                 onPressed: onPickImage,
                 tooltip: S.of(context).chooseYourPicture,
               ),

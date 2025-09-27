@@ -145,8 +145,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
           // Calculate board dimensions and game board rectangle.
           final double maxWidth = constraints.maxWidth;
           final double maxHeight = constraints.maxHeight;
-          final double boardDimension =
-              (maxHeight > 0 && maxHeight < maxWidth) ? maxHeight : maxWidth;
+          final double boardDimension = (maxHeight > 0 && maxHeight < maxWidth)
+              ? maxHeight
+              : maxWidth;
           final Rect gameBoardRect = Rect.fromLTWH(
             (constraints.maxWidth - boardDimension) / 2,
             0, // Top alignment.
@@ -213,7 +214,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
                             if (EnvironmentConfig.devMode)
                               IconButton(
                                 key: const Key(
-                                    'game_page_recognition_params_button'),
+                                  'game_page_recognition_params_button',
+                                ),
                                 icon: const Icon(
                                   FluentIcons.settings_24_regular,
                                   color: Colors.white,
@@ -225,7 +227,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
                             // Camera button for board recognition
                             IconButton(
                               key: const Key(
-                                  'game_page_image_recognition_button'),
+                                'game_page_image_recognition_button',
+                              ),
                               icon: const Icon(
                                 FluentIcons.camera_24_regular,
                                 color: Colors.white,
@@ -281,21 +284,16 @@ class _GamePageInnerState extends State<_GamePageInner> {
     }
 
     // Return a Stack with base content, annotation overlay, and toolbar.
-    return Stack(
-      children: <Widget>[
-        baseContent,
-        annotationOverlay,
-        toolbar,
-      ],
-    );
+    return Stack(children: <Widget>[baseContent, annotationOverlay, toolbar]);
   }
 
   // Builds the background widget based on display settings.
   Widget _buildBackground() {
     final DisplaySettings displaySettings = DB().displaySettings;
     // Get background image provider if available.
-    final ImageProvider? backgroundImage =
-        getBackgroundImageProvider(displaySettings);
+    final ImageProvider? backgroundImage = getBackgroundImageProvider(
+      displaySettings,
+    );
 
     if (backgroundImage == null) {
       // No image selected, return a container with a solid color.
@@ -313,12 +311,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
         height: double.infinity,
         errorBuilder:
             (BuildContext context, Object error, StackTrace? stackTrace) {
-          // Fallback to a solid color if image fails to load.
-          return Container(
-            key: const Key('game_page_background_error_container'),
-            color: DB().colorSettings.darkBackgroundColor,
-          );
-        },
+              // Fallback to a solid color if image fails to load.
+              return Container(
+                key: const Key('game_page_background_error_container'),
+                color: DB().colorSettings.darkBackgroundColor,
+              );
+            },
       );
     }
   }
@@ -346,12 +344,14 @@ class _GamePageInnerState extends State<_GamePageInner> {
               return Padding(
                 key: const Key('game_page_padding'),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: AppTheme.boardMargin),
+                  horizontal: AppTheme.boardMargin,
+                ),
                 child: LayoutBuilder(
                   key: const Key('game_page_inner_layout_builder'),
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    final double toolbarHeight =
-                        _calculateToolbarHeight(context);
+                    final double toolbarHeight = _calculateToolbarHeight(
+                      context,
+                    );
                     final double maxWidth = constraints.maxWidth;
                     final double maxHeight =
                         constraints.maxHeight - toolbarHeight;
@@ -367,22 +367,29 @@ class _GamePageInnerState extends State<_GamePageInner> {
                       child: ValueListenableBuilder<Box<DisplaySettings>>(
                         key: const Key('game_page_value_listenable_builder'),
                         valueListenable: DB().listenDisplaySettings,
-                        builder: (BuildContext context,
-                            Box<DisplaySettings> box, Widget? child) {
-                          final DisplaySettings displaySettings = box.get(
-                            DB.displaySettingsKey,
-                            defaultValue: const DisplaySettings(),
-                          )!;
-                          return PlayArea(
-                            boardImage: getBoardImageProvider(displaySettings),
-                            // Pass the GlobalKey here to the GameBoard:
-                            child: GameBoard(
-                              key: _gameBoardKey,
-                              boardImage:
-                                  getBoardImageProvider(displaySettings),
-                            ),
-                          );
-                        },
+                        builder:
+                            (
+                              BuildContext context,
+                              Box<DisplaySettings> box,
+                              Widget? child,
+                            ) {
+                              final DisplaySettings displaySettings = box.get(
+                                DB.displaySettingsKey,
+                                defaultValue: const DisplaySettings(),
+                              )!;
+                              return PlayArea(
+                                boardImage: getBoardImageProvider(
+                                  displaySettings,
+                                ),
+                                // Pass the GlobalKey here to the GameBoard:
+                                child: GameBoard(
+                                  key: _gameBoardKey,
+                                  boardImage: getBoardImageProvider(
+                                    displaySettings,
+                                  ),
+                                ),
+                              );
+                            },
                       ),
                     );
                   },
@@ -422,8 +429,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final S l10n = S.of(context);
 
     // Run analysis and display results
-    final PositionAnalysisResult result =
-        await GameController().engine.analyzePosition();
+    final PositionAnalysisResult result = await GameController().engine
+        .analyzePosition();
 
     // Check if widget is still mounted after async operation
     if (!mounted) {
@@ -444,8 +451,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
         DB().generalSettings.trapAwareness) {
       final String trapMovesStr = result.trapMoves.join(', ');
       final String message = l10n.trapExists(trapMovesStr);
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar(message));
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        CustomSnackBar(message),
+      );
     }
 
     // setState is still called here to ensure board is repainted
@@ -461,7 +469,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
     } catch (e) {
       // Show error message if recognition fails
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-          S.of(context).unableToStartImageRecognition(e.toString()));
+        S.of(context).unableToStartImageRecognition(e.toString()),
+      );
       logger.e("Error initiating board recognition: $e");
     }
   }
@@ -700,8 +709,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
                     // Display a confirmation message
                     rootScaffoldMessengerKey.currentState?.showSnackBar(
                       SnackBar(
-                        content:
-                            Text(S.of(context).recognitionParametersUpdated),
+                        content: Text(
+                          S.of(context).recognitionParametersUpdated,
+                        ),
                         duration: const Duration(seconds: 2),
                       ),
                     );
@@ -736,8 +746,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
     // Capture context dependent members BEFORE the await/async gap.
     // We will re-check mounted *after* the async gap.
     final NavigatorState currentNavigator = Navigator.of(context);
-    final ScaffoldMessengerState currentMessenger =
-        ScaffoldMessenger.of(context);
+    final ScaffoldMessengerState currentMessenger = ScaffoldMessenger.of(
+      context,
+    );
     final BuildContext currentContext = context; // Keep for initial dialog
     final S strings = S.of(context);
 
@@ -748,9 +759,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
         children: <Widget>[
           const CircularProgressIndicator(),
           const SizedBox(width: 20),
-          Expanded(
-            child: Text(strings.analyzingGameBoardImage),
-          ),
+          Expanded(child: Text(strings.analyzingGameBoardImage)),
         ],
       ),
     );
@@ -827,7 +836,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   if (shouldApply) {
                     // Pass the captured messenger (captured before await)
                     _applyRecognizedBoardState(
-                        recognizedPieces, currentMessenger, context);
+                      recognizedPieces,
+                      currentMessenger,
+                      context,
+                    );
                   }
                 },
               ),
@@ -839,13 +851,18 @@ class _GamePageInnerState extends State<_GamePageInner> {
         if (recognizedPieces.isNotEmpty) {
           // Apply the recognized state directly
           _applyRecognizedBoardState(
-              recognizedPieces, currentMessenger, context);
+            recognizedPieces,
+            currentMessenger,
+            context,
+          );
         } else {
           // Show error if no pieces recognized
           currentMessenger.showSnackBar(
             SnackBar(
-                content: Text(
-                    strings.noPiecesWereRecognizedInTheImagePleaseTryAgain)),
+              content: Text(
+                strings.noPiecesWereRecognizedInTheImagePleaseTryAgain,
+              ),
+            ),
           );
         }
       }
@@ -864,25 +881,31 @@ class _GamePageInnerState extends State<_GamePageInner> {
       }
 
       // Use captured messenger for snackbar (captured before await)
-      currentMessenger.showSnackBar(SnackBar(
-          content: Text(strings.imageRecognitionFailed(e.toString()))));
+      currentMessenger.showSnackBar(
+        SnackBar(content: Text(strings.imageRecognitionFailed(e.toString()))),
+      );
       logger.e("Error during board recognition: $e");
     }
   }
 
   /// Apply the recognized board state to the game (uses captured context for S)
-  void _applyRecognizedBoardState(Map<int, PieceColor> recognizedPieces,
-      ScaffoldMessengerState? messenger, BuildContext context) {
+  void _applyRecognizedBoardState(
+    Map<int, PieceColor> recognizedPieces,
+    ScaffoldMessengerState? messenger,
+    BuildContext context,
+  ) {
     final S strings = S.of(context);
 
     try {
       // Generate FEN string from recognized pieces
-      final String? fen =
-          BoardRecognitionDebugView.generateTempFenString(recognizedPieces);
+      final String? fen = BoardRecognitionDebugView.generateTempFenString(
+        recognizedPieces,
+      );
 
       if (fen == null) {
-        messenger
-            ?.showSnackBarClear(strings.failedToGenerateFenFromRecognizedBoard);
+        messenger?.showSnackBarClear(
+          strings.failedToGenerateFenFromRecognizedBoard,
+        );
         return;
       }
 
@@ -900,10 +923,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
         GameController().boardSemanticsNotifier.updateSemantics();
 
         // Show success message with details
-        final int whiteCount =
-            GameController().position.countPieceOnBoard(PieceColor.white);
-        final int blackCount =
-            GameController().position.countPieceOnBoard(PieceColor.black);
+        final int whiteCount = GameController().position.countPieceOnBoard(
+          PieceColor.white,
+        );
+        final int blackCount = GameController().position.countPieceOnBoard(
+          PieceColor.black,
+        );
 
         // Construct localized message parts
         final String message = strings.appliedPositionDetails(
@@ -912,13 +937,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
         );
         final String next =
             GameController().position.sideToMove == PieceColor.white
-                ? strings.whiteSMove
-                : strings.blackSMove;
+            ? strings.whiteSMove
+            : strings.blackSMove;
         final String fenCopiedMsg = strings.fenCopiedToClipboard;
 
         // Update the game recorder with the setup position
-        GameController().gameRecorder =
-            GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
+        GameController().gameRecorder = GameRecorder(
+          lastPositionWithRemove: fen,
+          setupPosition: fen,
+        );
 
         // Copy FEN to clipboard for user convenience
         Clipboard.setData(ClipboardData(text: fen));
@@ -927,8 +954,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
         messenger?.showSnackBarClear('$message, $next $fenCopiedMsg');
       } else {
         // Failed to set FEN
-        messenger
-            ?.showSnackBarClear(strings.failedToApplyRecognizedBoardPosition);
+        messenger?.showSnackBarClear(
+          strings.failedToApplyRecognizedBoardPosition,
+        );
         logger.e("Failed to set FEN: $fen");
       }
     } catch (e) {

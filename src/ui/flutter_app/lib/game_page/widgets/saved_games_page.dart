@@ -155,11 +155,13 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     });
 
     final List<SavedGameEntry> initial = files
-        .map<SavedGameEntry>((File f) => SavedGameEntry(
-              path: f.path,
-              filename: p.basename(f.path),
-              modified: f.lastModifiedSync(),
-            ))
+        .map<SavedGameEntry>(
+          (File f) => SavedGameEntry(
+            path: f.path,
+            filename: p.basename(f.path),
+            modified: f.lastModifiedSync(),
+          ),
+        )
         .toList();
 
     setState(() {
@@ -390,8 +392,11 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       for (final File pgnFile in pgnFiles) {
         final Uint8List fileBytes = await pgnFile.readAsBytes();
         final String fileName = p.basename(pgnFile.path);
-        final ArchiveFile archiveFile =
-            ArchiveFile(fileName, fileBytes.length, fileBytes);
+        final ArchiveFile archiveFile = ArchiveFile(
+          fileName,
+          fileBytes.length,
+          fileBytes,
+        );
         archive.addFile(archiveFile);
       }
 
@@ -404,8 +409,9 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
       // Create temporary zip file
       final Directory tempDir = await getTemporaryDirectory();
-      final String timestamp =
-          DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+      final String timestamp = DateFormat(
+        'yyyyMMdd_HHmmss',
+      ).format(DateTime.now());
       final String zipFileName = 'sanmill-records_$timestamp.zip';
       final File zipFile = File(p.join(tempDir.path, zipFileName));
       await zipFile.writeAsBytes(zipBytes);
@@ -570,209 +576,217 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _entries.isEmpty
-              ? Center(
-                  child: Text(
-                    S.of(context).none,
-                    style: TextStyle(color: DB().colorSettings.messageColor),
+          ? Center(
+              child: Text(
+                S.of(context).none,
+                style: TextStyle(color: DB().colorSettings.messageColor),
+              ),
+            )
+          : ListView.builder(
+              itemCount: _entries.length,
+              itemBuilder: (BuildContext context, int index) {
+                final SavedGameEntry e = _entries[index];
+                final Color textColor = DB().colorSettings.messageColor;
+                final String title = e.filename;
+                // Format date according to user's locale without milliseconds
+                final String subtitle = DateFormat.yMd().add_Hms().format(
+                  e.modified.toLocal(),
+                );
+                final double contentOpacity = e.previewTimedOut ? 0.5 : 1.0;
+                return Dismissible(
+                  key: Key(e.path),
+                  // Background for swipe right to left (delete)
+                  background: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 20.0),
+                    color: Colors.blue,
+                    child: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
-                )
-              : ListView.builder(
-                  itemCount: _entries.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final SavedGameEntry e = _entries[index];
-                    final Color textColor = DB().colorSettings.messageColor;
-                    final String title = e.filename;
-                    // Format date according to user's locale without milliseconds
-                    final String subtitle =
-                        DateFormat.yMd().add_Hms().format(e.modified.toLocal());
-                    final double contentOpacity = e.previewTimedOut ? 0.5 : 1.0;
-                    return Dismissible(
-                      key: Key(e.path),
-                      // Background for swipe right to left (delete)
-                      background: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(left: 20.0),
-                        color: Colors.blue,
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                      // Secondary background for swipe left to right (edit)
-                      secondaryBackground: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 20.0),
-                        color: Colors.red,
-                        child: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                      confirmDismiss: (DismissDirection direction) async {
-                        if (direction == DismissDirection.endToStart) {
-                          // Swipe left to right shows delete - need confirmation
-                          return await showDialog<bool>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(S.of(context).confirm),
-                                    content: Text(
-                                        '${S.of(context).delete} ${e.filename}'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(false),
-                                        child: Text(S.of(context).cancel),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(true),
-                                        child: Text(S.of(context).delete),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ) ??
-                              false;
-                        } else {
-                          // Swipe right to left shows edit - no confirmation needed, just trigger rename
-                          _renameGame(e);
-                          return false; // Don't actually dismiss the item
-                        }
-                      },
-                      onDismissed: (DismissDirection direction) {
-                        if (direction == DismissDirection.endToStart) {
-                          _deleteGame(e);
-                        }
-                        // Note: edit action is handled in confirmDismiss, so no action needed here
-                      },
-                      child: InkWell(
-                        onTap: () => _openGame(e),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 6.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: DB().colorSettings.darkBackgroundColor,
-                              borderRadius: BorderRadius.circular(4),
-                              boxShadow: const <BoxShadow>[
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 2,
-                                  offset: Offset(2, 2),
+                  // Secondary background for swipe left to right (edit)
+                  secondaryBackground: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20.0),
+                    color: Colors.red,
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  confirmDismiss: (DismissDirection direction) async {
+                    if (direction == DismissDirection.endToStart) {
+                      // Swipe left to right shows delete - need confirmation
+                      return await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(S.of(context).confirm),
+                                content: Text(
+                                  '${S.of(context).delete} ${e.filename}',
                                 ),
-                              ],
-                            ),
-                            child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 250),
-                              opacity: contentOpacity,
-                              child: Row(
-                                children: <Widget>[
-                                  // Left: MiniBoard preview
-                                  SizedBox(
-                                    width: 100,
-                                    height: 100,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: e.boardLayout != null &&
-                                              e.boardLayout!.isNotEmpty
-                                          ? MiniBoard(
-                                              boardLayout: e.boardLayout!,
-                                            )
-                                          : Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                color: DB()
-                                                    .colorSettings
-                                                    .boardBackgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(DB()
-                                                        .displaySettings
-                                                        .boardCornerRadius),
-                                              ),
-                                              child: e.error == null
-                                                  ? e.isLoading
-                                                      ? const SizedBox(
-                                                          width: 18,
-                                                          height: 18,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                                  strokeWidth:
-                                                                      2),
-                                                        )
-                                                      : const SizedBox(
-                                                          width: 18,
-                                                          height: 18,
-                                                        )
-                                                  : Icon(
-                                                      Icons.error_outline,
-                                                      color: DB()
-                                                          .colorSettings
-                                                          .pieceHighlightColor,
-                                                    ),
-                                            ),
-                                    ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: Text(S.of(context).cancel),
                                   ),
-                                  // Right: file info
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 12.0, horizontal: 8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            title,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: textColor,
-                                              fontWeight: FontWeight.bold,
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text(S.of(context).delete),
+                                  ),
+                                ],
+                              );
+                            },
+                          ) ??
+                          false;
+                    } else {
+                      // Swipe right to left shows edit - no confirmation needed, just trigger rename
+                      _renameGame(e);
+                      return false; // Don't actually dismiss the item
+                    }
+                  },
+                  onDismissed: (DismissDirection direction) {
+                    if (direction == DismissDirection.endToStart) {
+                      _deleteGame(e);
+                    }
+                    // Note: edit action is handled in confirmDismiss, so no action needed here
+                  },
+                  child: InkWell(
+                    onTap: () => _openGame(e),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 6.0,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: DB().colorSettings.darkBackgroundColor,
+                          borderRadius: BorderRadius.circular(4),
+                          boxShadow: const <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 2,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 250),
+                          opacity: contentOpacity,
+                          child: Row(
+                            children: <Widget>[
+                              // Left: MiniBoard preview
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child:
+                                      e.boardLayout != null &&
+                                          e.boardLayout!.isNotEmpty
+                                      ? MiniBoard(boardLayout: e.boardLayout!)
+                                      : Container(
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: DB()
+                                                .colorSettings
+                                                .boardBackgroundColor,
+                                            borderRadius: BorderRadius.circular(
+                                              DB()
+                                                  .displaySettings
+                                                  .boardCornerRadius,
                                             ),
                                           ),
-                                          const SizedBox(height: 6),
-                                          Text(
-                                            subtitle,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: textColor.withAlpha(180),
-                                                fontSize: 12),
-                                          ),
-                                          if (e.error != null) ...<Widget>[
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              e.error!,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
+                                          child: e.error == null
+                                              ? e.isLoading
+                                                    ? const SizedBox(
+                                                        width: 18,
+                                                        height: 18,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                              strokeWidth: 2,
+                                                            ),
+                                                      )
+                                                    : const SizedBox(
+                                                        width: 18,
+                                                        height: 18,
+                                                      )
+                                              : Icon(
+                                                  Icons.error_outline,
                                                   color: DB()
                                                       .colorSettings
                                                       .pieceHighlightColor,
-                                                  fontSize: 12),
-                                            ),
-                                          ],
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.chevron_right),
-                                    color: textColor,
-                                    onPressed: () => _openGame(e),
-                                  ),
-                                ],
+                                                ),
+                                        ),
+                                ),
                               ),
-                            ),
+                              // Right: file info
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                    horizontal: 8.0,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        title,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: textColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        subtitle,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: textColor.withAlpha(180),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      if (e.error != null) ...<Widget>[
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          e.error!,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: DB()
+                                                .colorSettings
+                                                .pieceHighlightColor,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.chevron_right),
+                                color: textColor,
+                                onPressed: () => _openGame(e),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                );
+              },
+            ),
     );
   }
 }

@@ -24,14 +24,12 @@ class GamePageActionSheet extends StatelessWidget {
       bodyColor: textColor,
     );
 
-    final DialogThemeData dialogTheme = DialogTheme.of(context).copyWith(
-      backgroundColor: Colors.transparent,
-    );
+    final DialogThemeData dialogTheme = DialogTheme.of(
+      context,
+    ).copyWith(backgroundColor: Colors.transparent);
 
     final TextButtonThemeData buttonStyle = TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: textColor,
-      ),
+      style: TextButton.styleFrom(foregroundColor: textColor),
     );
 
     return Theme(
@@ -66,21 +64,22 @@ class GamePageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // The paddingScaleFactor is used to adjust the padding of Dialog
     // children.
-    final double paddingScaleFactor =
-        _paddingScaleFactor(TextScaler.noScaling.scale(1.0));
+    final double paddingScaleFactor = _paddingScaleFactor(
+      TextScaler.noScaling.scale(1.0),
+    );
 
     final Builder contentWidget = Builder(
       key: const Key('game_page_dialog_builder'),
       builder: (BuildContext context) => DefaultTextStyle(
         key: const Key('game_page_dialog_default_text_style'),
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge!
-            .copyWith(color: AppTheme.gamePageActionSheetTextColor),
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: AppTheme.gamePageActionSheetTextColor,
+        ),
         textAlign: TextAlign.center,
         child: SingleChildScrollView(
           key: const Key('game_page_dialog_single_child_scroll_view'),
-          padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0) *
+          padding:
+              const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0) *
               paddingScaleFactor,
           child: ListBody(
             key: const Key('game_page_dialog_list_body'),

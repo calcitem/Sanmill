@@ -129,9 +129,7 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
           ? const Key('player1_row_gesture_detector')
           : const Key('player2_row_gesture_detector'),
       onHorizontalDragUpdate: (DragUpdateDetails details) {
-        scrollController.jumpTo(
-          scrollController.offset - details.delta.dx,
-        );
+        scrollController.jumpTo(scrollController.offset - details.delta.dx);
       },
       child: Listener(
         key: isPlayerOne
@@ -144,8 +142,9 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
           }
         },
         child: Row(
-          key:
-              isPlayerOne ? const Key('player1_row') : const Key('player2_row'),
+          key: isPlayerOne
+              ? const Key('player1_row')
+              : const Key('player2_row'),
           children: <Widget>[
             Padding(
               key: isPlayerOne
@@ -184,11 +183,13 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                           index == 0 || asset != otherPlayerSelectedImagePath;
                       return Padding(
                         key: Key(
-                            'player${isPlayerOne ? '1' : '2'}_piece_padding_$index'),
+                          'player${isPlayerOne ? '1' : '2'}_piece_padding_$index',
+                        ),
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: GestureDetector(
                           key: Key(
-                              'player${isPlayerOne ? '1' : '2'}_piece_gesture_$index'),
+                            'player${isPlayerOne ? '1' : '2'}_piece_gesture_$index',
+                          ),
                           onTap: isSelectable
                               ? () => onImageSelected(asset)
                               : null,
@@ -202,7 +203,8 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                                 )
                               : _PieceImageItem(
                                   key: Key(
-                                      'player${isPlayerOne ? '1' : '2'}_piece_image_item_$index'),
+                                    'player${isPlayerOne ? '1' : '2'}_piece_image_item_$index',
+                                  ),
                                   asset: asset,
                                   isSelect: selectedImagePath == asset,
                                   isSelectable: isSelectable,
@@ -213,7 +215,8 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                       // Custom Image Item
                       return Padding(
                         key: Key(
-                            'player${isPlayerOne ? '1' : '2'}_custom_piece_padding'),
+                          'player${isPlayerOne ? '1' : '2'}_custom_piece_padding',
+                        ),
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: _CustomPieceImageItem(
                           key: isPlayerOne
@@ -274,10 +277,7 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
       child: isSelected
           ? const Align(
               key: Key('pure_color_piece_selected_icon'),
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
+              child: Icon(Icons.check_circle, color: Colors.green),
             )
           : null,
     );
@@ -340,8 +340,8 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
             }
 
             // Generate a unique filename using the current timestamp
-            final String timestamp =
-                DateTime.now().millisecondsSinceEpoch.toString();
+            final String timestamp = DateTime.now().millisecondsSinceEpoch
+                .toString();
             final String filePath = '$imagesDirPath/$timestamp.png';
 
             // Save the cropped image to the designated directory
@@ -407,18 +407,16 @@ class _PieceImageItem extends StatelessWidget {
                 image: AssetImage(asset),
                 fit: BoxFit.contain,
               ),
-              border:
-                  isSelect ? Border.all(color: Colors.green, width: 2) : null,
+              border: isSelect
+                  ? Border.all(color: Colors.green, width: 2)
+                  : null,
               borderRadius: BorderRadius.circular(8),
             ),
           ),
           if (isSelect)
             const Align(
               key: Key('piece_image_item_selected_icon'),
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
+              child: Icon(Icons.check_circle, color: Colors.green),
             ),
         ],
       ),
@@ -461,7 +459,8 @@ class _CustomPieceImageItem extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               color: customImagePath == null
-                  ? Colors.grey // Grey color if no custom image is selected
+                  ? Colors
+                        .grey // Grey color if no custom image is selected
                   : null,
               image: customImagePath != null
                   ? DecorationImage(
@@ -469,19 +468,16 @@ class _CustomPieceImageItem extends StatelessWidget {
                       fit: BoxFit.contain,
                     )
                   : null,
-              border:
-                  isSelected ? Border.all(color: Colors.green, width: 2) : null,
+              border: isSelected
+                  ? Border.all(color: Colors.green, width: 2)
+                  : null,
               borderRadius: BorderRadius.circular(8),
             ),
             // Centered add icon when no custom image is selected
             child: customImagePath == null
                 ? const Center(
                     key: Key('custom_piece_image_add_icon'),
-                    child: Icon(
-                      Icons.add,
-                      size: 32,
-                      color: Colors.white,
-                    ),
+                    child: Icon(Icons.add, size: 32, color: Colors.white),
                   )
                 : null,
           ),
@@ -491,11 +487,7 @@ class _CustomPieceImageItem extends StatelessWidget {
               key: const Key('custom_piece_image_edit_icon_center'),
               child: IconButton(
                 key: const Key('custom_piece_image_edit_button'),
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                  size: 32,
-                ),
+                icon: const Icon(Icons.edit, color: Colors.white, size: 32),
                 onPressed: onPickImage,
                 tooltip: S.of(context).chooseYourPicture,
               ),
@@ -504,10 +496,7 @@ class _CustomPieceImageItem extends StatelessWidget {
           if (isSelected)
             const Align(
               key: Key('custom_piece_image_selected_icon'),
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
+              child: Icon(Icons.check_circle, color: Colors.green),
             ),
         ],
       ),

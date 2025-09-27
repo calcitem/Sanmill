@@ -21,10 +21,12 @@ class GitInfo {
 
 /// Get the [GitInfo] for the local git repository
 Future<GitInfo> get gitInfo async {
-  final String branch =
-      (await rootBundle.loadString(Assets.files.gitBranch)).trim();
-  final String revisionRaw =
-      (await rootBundle.loadString(Assets.files.gitRevision)).trim();
+  final String branch = (await rootBundle.loadString(
+    Assets.files.gitBranch,
+  )).trim();
+  final String revisionRaw = (await rootBundle.loadString(
+    Assets.files.gitRevision,
+  )).trim();
 
   final String? revision = revisionRaw.isEmpty ? null : revisionRaw;
 

@@ -36,8 +36,9 @@ class _BoardTopSlider extends StatelessWidget {
                 label: displaySettings.boardTop.toStringAsFixed(1),
                 onChanged: (double value) {
                   logger.t("[config] boardTop value: $value");
-                  DB().displaySettings =
-                      displaySettings.copyWith(boardTop: value);
+                  DB().displaySettings = displaySettings.copyWith(
+                    boardTop: value,
+                  );
                 },
               ),
             ),

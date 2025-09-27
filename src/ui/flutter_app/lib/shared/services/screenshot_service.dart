@@ -38,8 +38,10 @@ class ScreenshotService {
   static final NativeScreenshotController screenshotController =
       NativeScreenshotController();
 
-  static Future<void> takeScreenshot(String storageLocation,
-      [String? filename]) async {
+  static Future<void> takeScreenshot(
+    String storageLocation, [
+    String? filename,
+  ]) async {
     if (!isSupportedPlatform()) {
       logger.i("Taking screenshots is not supported on this platform");
       return;
@@ -107,7 +109,8 @@ class ScreenshotService {
         if (kIsWeb) {
           logger.e("Saving images to the gallery is not supported on the web");
           SnackBarService.showRootSnackBar(
-              "Saving images to the gallery is not supported on the web");
+            "Saving images to the gallery is not supported on the web",
+          );
           return;
         } else if (Platform.isAndroid || Platform.isIOS) {
           final FutureOr<dynamic> result =
@@ -218,21 +221,26 @@ class ScreenshotService {
     final Position position = GameController().position;
 
     // 1) Phase symbols: [⬇️] ↔️ if Placing, ⬇️ [↔️] if Moving.
-    final String phaseSymbols =
-        position.phase == Phase.placing ? "[⬇️] ↔️ " : " ⬇️ [↔️]";
+    final String phaseSymbols = position.phase == Phase.placing
+        ? "[⬇️] ↔️ "
+        : " ⬇️ [↔️]";
 
     // 2) Turn indicator: add brackets if it is that side's turn.
-    final String whiteTurnEmoji =
-        (position.sideToMove == PieceColor.white) ? "[⚪]" : " ⚪ ";
-    final String blackTurnEmoji =
-        (position.sideToMove == PieceColor.black) ? "[⚫]" : " ⚫ ";
+    final String whiteTurnEmoji = (position.sideToMove == PieceColor.white)
+        ? "[⚪]"
+        : " ⚪ ";
+    final String blackTurnEmoji = (position.sideToMove == PieceColor.black)
+        ? "[⚫]"
+        : " ⚫ ";
 
     // 3) Calculate removed pieces.
     final int totalPieces = DB().ruleSettings.piecesCount;
-    final int whiteRemoved = totalPieces -
+    final int whiteRemoved =
+        totalPieces -
         (position.pieceInHandCount[PieceColor.white]! +
             position.pieceOnBoardCount[PieceColor.white]!);
-    final int blackRemoved = totalPieces -
+    final int blackRemoved =
+        totalPieces -
         (position.pieceInHandCount[PieceColor.black]! +
             position.pieceOnBoardCount[PieceColor.black]!);
 
@@ -266,13 +274,19 @@ class ScreenshotService {
 
     // Draw the combined line centered horizontally.
     _drawTextCentered(
-        canvas, singleLine, newWidth.toDouble(), textStartY, gameInfoStyle);
+      canvas,
+      singleLine,
+      newWidth.toDouble(),
+      textStartY,
+      gameInfoStyle,
+    );
 
     // End recording and convert the new image to PNG bytes.
     final ui.Picture picture = recorder.endRecording();
     final ui.Image newImage = await picture.toImage(newWidth, newHeight);
-    final ByteData? byteData =
-        await newImage.toByteData(format: ui.ImageByteFormat.png);
+    final ByteData? byteData = await newImage.toByteData(
+      format: ui.ImageByteFormat.png,
+    );
 
     return byteData!.buffer.asUint8List();
   }

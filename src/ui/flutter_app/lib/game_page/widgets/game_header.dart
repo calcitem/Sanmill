@@ -62,7 +62,8 @@ class _GameHeaderState extends State<GameHeader> {
   void _handleScrollNotification(ScrollNotification notification) {
     if (notification is ScrollUpdateNotification) {
       final bool oldScrolledUnder = _scrolledUnder;
-      _scrolledUnder = notification.depth == 0 &&
+      _scrolledUnder =
+          notification.depth == 0 &&
           notification.metrics.extentBefore > 0 &&
           notification.metrics.axis == Axis.vertical;
       if (_scrolledUnder != oldScrolledUnder) {
@@ -108,8 +109,9 @@ class _GameHeaderState extends State<GameHeader> {
   }
 
   Widget _buildPositionalAdvantageDivider() {
-    int value =
-        GameController().value == null ? 0 : int.parse(GameController().value!);
+    int value = GameController().value == null
+        ? 0
+        : int.parse(GameController().value!);
     const double opacity = 1;
     const int valueLimit = 100;
 
@@ -128,9 +130,7 @@ class _GameHeaderState extends State<GameHeader> {
       height: 2,
       width: valueLimit * 2,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(2)),
       child: Row(
         key: const Key('positional_advantage_row'),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -139,15 +139,17 @@ class _GameHeaderState extends State<GameHeader> {
             key: const Key('divider_white_container'),
             height: 2,
             width: dividerWhiteLength.toDouble(),
-            color:
-                DB().colorSettings.whitePieceColor.withValues(alpha: opacity),
+            color: DB().colorSettings.whitePieceColor.withValues(
+              alpha: opacity,
+            ),
           ),
           Container(
             key: const Key('divider_black_container'),
             height: 2,
             width: dividerBlackLength.toDouble(),
-            color:
-                DB().colorSettings.blackPieceColor.withValues(alpha: opacity),
+            color: DB().colorSettings.blackPieceColor.withValues(
+              alpha: opacity,
+            ),
           ),
         ],
       ),
@@ -162,14 +164,14 @@ class _GameHeaderState extends State<GameHeader> {
       width: 180,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
       decoration: BoxDecoration(
-        color: (DB().colorSettings.darkBackgroundColor == Colors.white ||
+        color:
+            (DB().colorSettings.darkBackgroundColor == Colors.white ||
                 DB().colorSettings.darkBackgroundColor ==
                     const Color.fromARGB(1, 255, 255, 255))
             ? DB().colorSettings.messageColor.withValues(alpha: opacity)
-            : DB()
-                .colorSettings
-                .boardBackgroundColor
-                .withValues(alpha: opacity),
+            : DB().colorSettings.boardBackgroundColor.withValues(
+                alpha: opacity,
+              ),
         borderRadius: BorderRadius.circular(2),
       ),
     );
@@ -213,8 +215,9 @@ class HeaderTipState extends State<HeaderTip> {
         GameController().headerTipNotifier;
 
     if (headerTipNotifier.showSnackBar) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(headerTipNotifier.message);
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        headerTipNotifier.message,
+      );
     }
 
     // Sync _messageNotifier with the new tip.
@@ -266,8 +269,8 @@ class HeaderTipState extends State<HeaderTip> {
         // Join all comments for display. (If you only need the first, adjust accordingly.)
         final String nodeComment =
             (activeNode?.data?.comments?.isNotEmpty ?? false)
-                ? activeNode!.data!.comments!.join(' ')
-                : "";
+            ? activeNode!.data!.comments!.join(' ')
+            : "";
 
         // If there's an existing comment in the PGN node, show it in yellow.
         // Otherwise, use _messageNotifier.value with original color.
@@ -277,8 +280,9 @@ class HeaderTipState extends State<HeaderTip> {
             : (currentDisplay.isEmpty ? S.of(context).welcome : currentDisplay);
 
         // Decide the color: yellow if PGN node has a comment, otherwise normal.
-        final Color displayColor =
-            hasNodeComment ? Colors.yellow : DB().colorSettings.messageColor;
+        final Color displayColor = hasNodeComment
+            ? Colors.yellow
+            : DB().colorSettings.messageColor;
 
         // Now build UI. If editing, show a TextField. If not, show static text.
         return Semantics(
@@ -316,10 +320,11 @@ class HeaderTipState extends State<HeaderTip> {
                       focusNode: _focusNode,
                       style: TextStyle(
                         color: displayColor,
-                        fontSize:
-                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontSize: AppTheme.textScaler.scale(
+                          AppTheme.defaultFontSize,
+                        ),
                         fontFeatures: const <FontFeature>[
-                          FontFeature.tabularFigures()
+                          FontFeature.tabularFigures(),
                         ],
                       ),
                       onEditingComplete: () {
@@ -339,10 +344,11 @@ class HeaderTipState extends State<HeaderTip> {
                       text: textToShow,
                       style: TextStyle(
                         color: displayColor,
-                        fontSize:
-                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontSize: AppTheme.textScaler.scale(
+                          AppTheme.defaultFontSize,
+                        ),
                         fontFeatures: const <FontFeature>[
-                          FontFeature.tabularFigures()
+                          FontFeature.tabularFigures(),
                         ],
                       ),
                     );
@@ -363,10 +369,11 @@ class HeaderTipState extends State<HeaderTip> {
                       textAlign: fits ? TextAlign.center : TextAlign.left,
                       style: TextStyle(
                         color: displayColor,
-                        fontSize:
-                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontSize: AppTheme.textScaler.scale(
+                          AppTheme.defaultFontSize,
+                        ),
                         fontFeatures: const <FontFeature>[
-                          FontFeature.tabularFigures()
+                          FontFeature.tabularFigures(),
                         ],
                       ),
                     );
@@ -398,12 +405,14 @@ class HeaderIcons extends StatefulWidget {
 }
 
 class HeaderStateIcons extends State<HeaderIcons> {
-  final ValueNotifier<IconData> _iconDataNotifier =
-      ValueNotifier<IconData>(GameController().position.sideToMove.icon);
+  final ValueNotifier<IconData> _iconDataNotifier = ValueNotifier<IconData>(
+    GameController().position.sideToMove.icon,
+  );
 
   // Add ValueNotifier for lanHostPlaysWhite
-  final ValueNotifier<bool?> _lanHostPlaysWhiteNotifier =
-      ValueNotifier<bool?>(GameController().lanHostPlaysWhite);
+  final ValueNotifier<bool?> _lanHostPlaysWhiteNotifier = ValueNotifier<bool?>(
+    GameController().lanHostPlaysWhite,
+  );
 
   // Add ValueNotifier for remaining time
   final ValueNotifier<int> _player1TimeNotifier = ValueNotifier<int>(0);
@@ -500,7 +509,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
     // Non-LAN mode fallback
     return (
       controller.gameInstance.gameMode.leftHeaderIcon,
-      controller.gameInstance.gameMode.rightHeaderIcon
+      controller.gameInstance.gameMode.rightHeaderIcon,
     );
   }
 
@@ -552,12 +561,12 @@ class HeaderStateIcons extends State<HeaderIcons> {
         final GameController controller = GameController();
         final bool isAILeft =
             controller.gameInstance.gameMode != GameMode.humanVsHuman &&
-                controller.gameInstance.gameMode != GameMode.humanVsLAN &&
-                controller.gameInstance.getPlayerByColor(PieceColor.white).isAi;
+            controller.gameInstance.gameMode != GameMode.humanVsLAN &&
+            controller.gameInstance.getPlayerByColor(PieceColor.white).isAi;
         final bool isAIRight =
             controller.gameInstance.gameMode != GameMode.humanVsHuman &&
-                controller.gameInstance.gameMode != GameMode.humanVsLAN &&
-                controller.gameInstance.getPlayerByColor(PieceColor.black).isAi;
+            controller.gameInstance.gameMode != GameMode.humanVsLAN &&
+            controller.gameInstance.getPlayerByColor(PieceColor.black).isAi;
 
         // Get text direction for RTL support
         final TextDirection textDirection = Directionality.of(context);
@@ -587,7 +596,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
                           fontSize: 14,
                           color: DB().colorSettings.messageColor,
                           fontFeatures: const <ui.FontFeature>[
-                            FontFeature.tabularFigures()
+                            FontFeature.tabularFigures(),
                           ],
                         ),
                       ),
@@ -620,7 +629,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
                           fontSize: 14,
                           color: DB().colorSettings.messageColor,
                           fontFeatures: const <ui.FontFeature>[
-                            FontFeature.tabularFigures()
+                            FontFeature.tabularFigures(),
                           ],
                         ),
                       ),

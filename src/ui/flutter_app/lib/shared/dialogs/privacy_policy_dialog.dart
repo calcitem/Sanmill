@@ -27,14 +27,18 @@ class PrivacyPolicyDialog extends StatelessWidget {
   }
 
   static Future<void> _setPrivacyPolicyAcceptance({required bool value}) async {
-    DB().generalSettings =
-        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
+    DB().generalSettings = DB().generalSettings.copyWith(
+      isPrivacyPolicyAccepted: value,
+    );
 
     logger.t("[config] isPrivacyPolicyAccepted: $value");
   }
 
   static RichText _buildPrivacyPolicyText(
-      BuildContext context, TextStyle bodyTextStyle, TextStyle linkTextStyle) {
+    BuildContext context,
+    TextStyle bodyTextStyle,
+    TextStyle linkTextStyle,
+  ) {
     final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
         ? Constants.appleStandardEulaUrl
         : Constants.endUserLicenseAgreementUrl.baseChinese;
@@ -52,10 +56,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
             text: S.of(context).eula,
             url: eulaURL,
           ),
-          TextSpan(
-            style: bodyTextStyle,
-            text: S.of(context).and,
-          ),
+          TextSpan(style: bodyTextStyle, text: S.of(context).and),
           LinkTextSpan(
             style: linkTextStyle,
             text: S.of(context).privacyPolicy,
@@ -79,8 +80,9 @@ class PrivacyPolicyDialog extends StatelessWidget {
 
     final ThemeData currentTheme = Theme.of(context);
     final TextStyle bodyLargeTextStyle = currentTheme.textTheme.bodyLarge!;
-    final TextStyle linkTextStyle =
-        bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
+    final TextStyle linkTextStyle = bodyLargeTextStyle.copyWith(
+      color: currentTheme.colorScheme.secondary,
+    );
 
     return AlertDialog(
       title: Text(
@@ -90,8 +92,11 @@ class PrivacyPolicyDialog extends StatelessWidget {
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
-        child:
-            _buildPrivacyPolicyText(context, bodyLargeTextStyle, linkTextStyle),
+        child: _buildPrivacyPolicyText(
+          context,
+          bodyLargeTextStyle,
+          linkTextStyle,
+        ),
       ),
       actions: <Widget>[
         TextButton(
@@ -125,8 +130,9 @@ Future<void> showPrivacyDialog(BuildContext context) async {
 
   final ThemeData themeData = Theme.of(context);
   final TextStyle aboutTextStyle = themeData.textTheme.bodyLarge!;
-  final TextStyle linkStyle =
-      aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
+  final TextStyle linkStyle = aboutTextStyle.copyWith(
+    color: themeData.colorScheme.secondary,
+  );
 
   showDialog(
     context: context,
@@ -140,7 +146,10 @@ Future<void> showPrivacyDialog(BuildContext context) async {
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
         child: PrivacyPolicyDialog._buildPrivacyPolicyText(
-            context, aboutTextStyle, linkStyle),
+          context,
+          aboutTextStyle,
+          linkStyle,
+        ),
       ),
       actions: <Widget>[
         TextButton(

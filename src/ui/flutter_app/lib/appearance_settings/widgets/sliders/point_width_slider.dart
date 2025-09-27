@@ -36,8 +36,9 @@ class _PointWidthSlider extends StatelessWidget {
                 label: displaySettings.pointWidth.toStringAsFixed(1),
                 onChanged: (double value) {
                   logger.t("[config] pointWidth value: $value");
-                  DB().displaySettings =
-                      displaySettings.copyWith(pointWidth: value);
+                  DB().displaySettings = displaySettings.copyWith(
+                    pointWidth: value,
+                  );
                 },
               ),
             ),

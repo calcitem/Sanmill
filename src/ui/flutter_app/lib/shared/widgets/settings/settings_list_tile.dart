@@ -16,12 +16,12 @@ class SettingsListTile extends StatelessWidget {
     required VoidCallback onTap,
     this.subtitleString,
     this.trailingString,
-  })  : _type = _SettingsTileType.standard,
-        _switchValue = null,
-        _switchCallback = null,
-        _colorCallback = null,
-        _standardCallback = onTap,
-        _colorValue = null;
+  }) : _type = _SettingsTileType.standard,
+       _switchValue = null,
+       _switchCallback = null,
+       _colorCallback = null,
+       _standardCallback = onTap,
+       _colorValue = null;
 
   const SettingsListTile.color({
     super.key,
@@ -29,13 +29,13 @@ class SettingsListTile extends StatelessWidget {
     required Color value,
     required ValueChanged<Color> onChanged,
     this.subtitleString,
-  })  : _type = _SettingsTileType.color,
-        _switchValue = null,
-        _colorValue = value,
-        _switchCallback = null,
-        _colorCallback = onChanged,
-        _standardCallback = null,
-        trailingString = null;
+  }) : _type = _SettingsTileType.color,
+       _switchValue = null,
+       _colorValue = value,
+       _switchCallback = null,
+       _colorCallback = onChanged,
+       _standardCallback = null,
+       trailingString = null;
 
   const SettingsListTile.switchTile({
     super.key,
@@ -43,13 +43,13 @@ class SettingsListTile extends StatelessWidget {
     required bool value,
     required ValueChanged<bool> onChanged,
     this.subtitleString,
-  })  : _type = _SettingsTileType.switchTile,
-        _switchValue = value,
-        _colorValue = null,
-        _switchCallback = onChanged,
-        _colorCallback = null,
-        _standardCallback = null,
-        trailingString = null;
+  }) : _type = _SettingsTileType.switchTile,
+       _switchValue = value,
+       _colorValue = null,
+       _switchCallback = onChanged,
+       _colorCallback = null,
+       _standardCallback = null,
+       trailingString = null;
 
   final String titleString;
   final String? subtitleString;
@@ -62,10 +62,7 @@ class SettingsListTile extends StatelessWidget {
   final ValueChanged<Color>? _colorCallback;
   final VoidCallback? _standardCallback;
 
-  Widget get title => Text(
-        titleString,
-        style: AppTheme.listTileTitleStyle,
-      );
+  Widget get title => Text(titleString, style: AppTheme.listTileTitleStyle);
 
   Widget? get subTitle => subtitleString != null
       ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
@@ -178,7 +175,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
                     ColorLabelType.hex,
                     ColorLabelType.rgb,
                     ColorLabelType.hsv,
-                    ColorLabelType.hsl
+                    ColorLabelType.hsl,
                   ]
                 : const <ColorLabelType>[],
             onColorChanged: _changeColor,
@@ -191,7 +188,8 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
           child: Text(
             S.of(context).confirm,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () {
             logger.t("[config] pickerColor.value: $pickedColor");
@@ -204,7 +202,8 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),

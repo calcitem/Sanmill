@@ -43,16 +43,19 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
           children: <Widget>[
             InkWell(
               key: const Key(
-                  'use_perfect_database_dialog_inkwell_use_perfect_database'),
+                'use_perfect_database_dialog_inkwell_use_perfect_database',
+              ),
               onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
               child: Padding(
                 key: const Key(
-                    'use_perfect_database_dialog_padding_use_perfect_database'),
+                  'use_perfect_database_dialog_padding_use_perfect_database',
+                ),
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   S.of(context).usePerfectDatabase,
                   key: const Key(
-                      'use_perfect_database_dialog_text_use_perfect_database'),
+                    'use_perfect_database_dialog_text_use_perfect_database',
+                  ),
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.blue,
@@ -65,8 +68,8 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
               description,
               key: const Key('use_perfect_database_dialog_description_text'),
               style: TextStyle(
-                  fontSize:
-                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              ),
             ),
             const SizedBox(height: 16),
             InkWell(
@@ -96,7 +99,8 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
             S.of(context).ok,
             key: const Key('use_perfect_database_dialog_ok_button_text'),
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
         ),
       ],

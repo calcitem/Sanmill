@@ -20,8 +20,10 @@ class EnvironmentConfig {
 
   /// Gets whether we want catcher to be enabled
   /// Defaults to true
-  static bool catcher =
-      const bool.fromEnvironment("catcher", defaultValue: true);
+  static bool catcher = const bool.fromEnvironment(
+    "catcher",
+    defaultValue: true,
+  );
 
   /// Gets log level
   /// Defaults to 4

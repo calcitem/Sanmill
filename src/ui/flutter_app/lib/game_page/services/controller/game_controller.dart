@@ -153,7 +153,8 @@ class GameController {
         return AlertDialog(
           title: const Text("Restart Request"),
           content: Text(
-              S.of(dialogContext).opponentRequestedToRestartTheGameDoYouAccept),
+            S.of(dialogContext).opponentRequestedToRestartTheGameDoYouAccept,
+          ),
           actions: <Widget>[
             TextButton(
               // If accepted, send accepted message and reset game (LAN socket remains open)
@@ -169,8 +170,9 @@ class GameController {
               // If rejected, send rejected message and do nothing
               onPressed: () {
                 // Cache the localized string before dismissing the dialog.
-                final String rejectedMessage =
-                    S.of(dialogContext).restartRequestRejected;
+                final String rejectedMessage = S
+                    .of(dialogContext)
+                    .restartRequestRejected;
                 Navigator.of(dialogContext).pop(false);
                 networkService?.sendMove("restart:rejected");
                 headerTipNotifier.showTip(rejectedMessage);
@@ -206,8 +208,9 @@ class GameController {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(S.of(context).confirmResignation),
-          content:
-              const Text("S.of(context).areYouSureYouWantToResignThisGame"),
+          content: const Text(
+            "S.of(context).areYouSureYouWantToResignThisGame",
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -235,8 +238,9 @@ class GameController {
                   );
 
                   // Show resignation message
-                  headerTipNotifier
-                      .showTip("S.of(context).youResignedGameOver");
+                  headerTipNotifier.showTip(
+                    "S.of(context).youResignedGameOver",
+                  );
                   gameResultNotifier.showResult(force: true);
 
                   // Play sound if enabled
@@ -446,33 +450,42 @@ class GameController {
     try {
       if (isHost) {
         position.sideToMove = PieceColor.white; // Host starts as White
-        DB().generalSettings =
-            DB().generalSettings.copyWith(aiMovesFirst: false);
+        DB().generalSettings = DB().generalSettings.copyWith(
+          aiMovesFirst: false,
+        );
         final PieceColor localColor = getLocalColor();
         isLanOpponentTurn =
             (position.sideToMove != localColor); // Should be false for Host
 
-        networkService!.startHost(port,
-            onClientConnected: (String clientIp, int clientPort) {
-          logger.i(
-              "$_logTag onClientConnected => IP:$clientIp, port:$clientPort");
-          headerTipNotifier.showTip("Client connected at $clientIp:$clientPort",
-              snackBar: false);
-          // Ensure turn state is correct after connection
-          isLanOpponentTurn = false; // Host moves first
-          headerIconsNotifier.showIcons(); // Update icons immediately
-          onClientConnected?.call(clientIp, clientPort);
-        });
+        networkService!.startHost(
+          port,
+          onClientConnected: (String clientIp, int clientPort) {
+            logger.i(
+              "$_logTag onClientConnected => IP:$clientIp, port:$clientPort",
+            );
+            headerTipNotifier.showTip(
+              "Client connected at $clientIp:$clientPort",
+              snackBar: false,
+            );
+            // Ensure turn state is correct after connection
+            isLanOpponentTurn = false; // Host moves first
+            headerIconsNotifier.showIcons(); // Update icons immediately
+            onClientConnected?.call(clientIp, clientPort);
+          },
+        );
       } else if (hostAddress != null) {
         position.sideToMove = PieceColor.white; // Game starts with White
-        DB().generalSettings =
-            DB().generalSettings.copyWith(aiMovesFirst: true);
+        DB().generalSettings = DB().generalSettings.copyWith(
+          aiMovesFirst: true,
+        );
         networkService!.connectToHost(hostAddress, port).then((_) {
           final PieceColor localColor = getLocalColor();
           isLanOpponentTurn = (position.sideToMove != localColor);
 
-          headerTipNotifier.showTip(connectedWaitingForOpponentSMove,
-              snackBar: false);
+          headerTipNotifier.showTip(
+            connectedWaitingForOpponentSMove,
+            snackBar: false,
+          );
           onClientConnected?.call(hostAddress, port);
         });
       } else {
@@ -531,14 +544,13 @@ class GameController {
         boardSemanticsNotifier.updateSemantics();
 
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        final String ot =
-            context != null ? S.of(context).opponentSTurn : "Opponent's turn";
-        final String yt =
-            context != null ? S.of(context).yourTurn : "Your turn";
-        headerTipNotifier.showTip(
-          isLanOpponentTurn ? ot : yt,
-          snackBar: false,
-        );
+        final String ot = context != null
+            ? S.of(context).opponentSTurn
+            : "Opponent's turn";
+        final String yt = context != null
+            ? S.of(context).yourTurn
+            : "Your turn";
+        headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
         logger.i("$_logTag Successfully processed LAN move: $moveNotation");
 
         gameRecorder.appendMoveIfDifferent(move);
@@ -569,13 +581,11 @@ class GameController {
       isLanOpponentTurn = (position.sideToMove != localColor);
       logger.i("$_logTag Sent move to LAN opponent: $moveNotation");
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String ot =
-          context != null ? S.of(context).opponentSTurn : "Opponent's turn";
+      final String ot = context != null
+          ? S.of(context).opponentSTurn
+          : "Opponent's turn";
       final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-      headerTipNotifier.showTip(
-        isLanOpponentTurn ? ot : yt,
-        snackBar: false,
-      );
+      headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
     } catch (e) {
       logger.e("$_logTag Failed to send move: $e");
       headerTipNotifier.showTip("Failed to send move: $e");
@@ -621,8 +631,10 @@ class GameController {
     final String takeBackRequestSentToTheOpponent = context != null
         ? S.of(context).takeBackRequestSentToTheOpponent
         : "Take back request sent to the opponent";
-    headerTipNotifier.showTip(takeBackRequestSentToTheOpponent,
-        snackBar: false);
+    headerTipNotifier.showTip(
+      takeBackRequestSentToTheOpponent,
+      snackBar: false,
+    );
 
     // We'll wait up to X seconds for the user to respond.
     // If the user never responds, we can consider it "rejected."
@@ -656,8 +668,9 @@ class GameController {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(S.of(dialogContext).takeBackRequest),
-          content:
-              Text("Opponent requests to take back $steps move(s). Accept?"),
+          content: Text(
+            "Opponent requests to take back $steps move(s). Accept?",
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -760,17 +773,19 @@ class GameController {
                 DB().ruleSettings.flyPieceCount &&
             position.pieceOnBoardCount[position.sideToMove]! >= 3)) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
-        CustomSnackBar(S.of(context).enteredFlyingPhase,
-            duration: const Duration(seconds: 8)),
+        CustomSnackBar(
+          S.of(context).enteredFlyingPhase,
+          duration: const Duration(seconds: 8),
+        ),
       );
       DB().generalSettings = DB().generalSettings.copyWith(
-            remindedOpponentMayFly: true,
-          );
+        remindedOpponentMayFly: true,
+      );
     }
 
-    while (
-        (gameInstance.isAiSideToMove && (isGameRunning || isAutoRestart())) &&
-            isControllerActive) {
+    while ((gameInstance.isAiSideToMove &&
+            (isGameRunning || isAutoRestart())) &&
+        isControllerActive) {
       if (gameMode == GameMode.aiVsAi) {
         headerTipNotifier.showTip(position.scoreString, snackBar: false);
       } else {
@@ -786,10 +801,12 @@ class GameController {
 
         if (position.pieceOnBoardCount[PieceColor.black]! > 0) {
           isEngineInDelay = true;
-          await Future<void>.delayed(Duration(
-            milliseconds:
-                (DB().displaySettings.animationDuration * 1000).toInt(),
-          ));
+          await Future<void>.delayed(
+            Duration(
+              milliseconds: (DB().displaySettings.animationDuration * 1000)
+                  .toInt(),
+            ),
+          );
           isEngineInDelay = false;
         }
 
@@ -815,7 +832,8 @@ class GameController {
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
           rootScaffoldMessengerKey.currentState!.showSnackBar(
-              CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"));
+            CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"),
+          );
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
@@ -871,20 +889,23 @@ class GameController {
     loadedGameFilenamePrefix = null;
 
     if (isEngineInDelay) {
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).aiIsDelaying);
+      return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).aiIsDelaying,
+      );
     }
 
     if (AnalysisMode.isEnabled || AnalysisMode.isAnalyzing) {
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).analyzing);
+      return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).analyzing,
+      );
     }
 
     // TODO: WAR
     if (position.sideToMove != PieceColor.white &&
         position.sideToMove != PieceColor.black) {
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).notAIsTurn);
+      return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).notAIsTurn,
+      );
     }
 
     if (gameInstance.isHumanToMove) {
@@ -935,8 +956,9 @@ class GameController {
     if (DB().generalSettings.screenReaderSupport &&
         position.action != Act.remove &&
         n != null) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar("$humanStr: $n"));
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        CustomSnackBar("$humanStr: $n"),
+      );
     }
   }
 
@@ -950,27 +972,39 @@ class GameController {
   }
 
   /// S.of(context).starts a game save.
-  static Future<String?> save(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<String?> save(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     return LoadService.saveGame(context, shouldPop: shouldPop);
   }
 
   /// S.of(context).starts a game load.
-  static Future<void> load(BuildContext context,
-      {bool shouldPop = true}) async {
-    return LoadService.loadGame(context, null,
-        isRunning: true, shouldPop: shouldPop);
+  static Future<void> load(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
+    return LoadService.loadGame(
+      context,
+      null,
+      isRunning: true,
+      shouldPop: shouldPop,
+    );
   }
 
   /// S.of(context).starts a game import.
-  static Future<void> import(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<void> import(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     return ImportService.importGame(context, shouldPop: shouldPop);
   }
 
   /// S.of(context).starts a game export.
-  static Future<void> export(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<void> export(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     return ExportService.exportGame(context, shouldPop: shouldPop);
   }
 
@@ -992,8 +1026,9 @@ class GameController {
       boardSemanticsNotifier.updateSemantics();
 
       // Show success message
-      headerTipNotifier
-          .showTip("Analysis complete. Green = win, Yellow = draw, Red = loss");
+      headerTipNotifier.showTip(
+        "Analysis complete. Green = win, Yellow = draw, Red = loss",
+      );
     } else {
       // Show error message if analysis failed
       final String errorMsg = result.errorMessage ?? "Analysis failed";

@@ -6,10 +6,7 @@
 part of '../game_page.dart';
 
 class GameResultAlertDialog extends StatelessWidget {
-  GameResultAlertDialog({
-    required this.winner,
-    super.key,
-  });
+  GameResultAlertDialog({required this.winner, super.key});
 
   final GameMode gameMode = GameController().gameInstance.gameMode;
   final PieceColor winner;
@@ -74,13 +71,14 @@ class GameResultAlertDialog extends StatelessWidget {
 
     final String reason =
         position.gameOverReason?.getName(context, position.winner) ??
-            S.of(context).gameOverUnknownReason;
+        S.of(context).gameOverUnknownReason;
 
     final StringBuffer content = StringBuffer(reason);
 
     logger.t("$_logTag Game over reason string: $content");
 
-    final bool canChallenge = canChallengeNextLevel(_gameResult!) == true &&
+    final bool canChallenge =
+        canChallengeNextLevel(_gameResult!) == true &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi;
@@ -90,9 +88,7 @@ class GameResultAlertDialog extends StatelessWidget {
       content.writeln();
       content.writeln();
       content.writeln(
-        S.of(context).challengeHarderLevel(
-              DB().generalSettings.skillLevel + 1,
-            ),
+        S.of(context).challengeHarderLevel(DB().generalSettings.skillLevel + 1),
       );
 
       actions = <Widget>[
@@ -101,18 +97,18 @@ class GameResultAlertDialog extends StatelessWidget {
           child: Text(
             S.of(context).yes,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () async {
             final GeneralSettings settings = DB().generalSettings;
-            DB().generalSettings =
-                settings.copyWith(skillLevel: settings.skillLevel + 1);
+            DB().generalSettings = settings.copyWith(
+              skillLevel: settings.skillLevel + 1,
+            );
 
             GameController().engine.setGeneralOptions();
 
-            logger.t(
-              "[config] skillLevel: ${DB().generalSettings.skillLevel}",
-            );
+            logger.t("[config] skillLevel: ${DB().generalSettings.skillLevel}");
 
             // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
             if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
@@ -121,9 +117,9 @@ class GameResultAlertDialog extends StatelessWidget {
               GameController().reset(force: true);
             }
 
-            GameController()
-                .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+            GameController().headerTipNotifier.showTip(
+              S.of(context).gameStarted,
+            );
             GameController().headerIconsNotifier.showIcons();
             Navigator.pop(context);
           },
@@ -133,7 +129,8 @@ class GameResultAlertDialog extends StatelessWidget {
           child: Text(
             S.of(context).no,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () {
             // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
@@ -142,9 +139,9 @@ class GameResultAlertDialog extends StatelessWidget {
             } else {
               GameController().reset(force: true);
             }
-            GameController()
-                .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+            GameController().headerTipNotifier.showTip(
+              S.of(context).gameStarted,
+            );
             GameController().headerIconsNotifier.showIcons();
             Navigator.pop(context);
           },
@@ -154,7 +151,8 @@ class GameResultAlertDialog extends StatelessWidget {
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -166,7 +164,8 @@ class GameResultAlertDialog extends StatelessWidget {
           child: Text(
             S.of(context).restart,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () {
             // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
@@ -175,9 +174,9 @@ class GameResultAlertDialog extends StatelessWidget {
             } else {
               GameController().reset(force: true);
             }
-            GameController()
-                .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+            GameController().headerTipNotifier.showTip(
+              S.of(context).gameStarted,
+            );
             GameController().headerIconsNotifier.showIcons();
             Navigator.pop(context);
           },
@@ -187,7 +186,8 @@ class GameResultAlertDialog extends StatelessWidget {
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -211,8 +211,8 @@ class GameResultAlertDialog extends StatelessWidget {
                 content.toString(),
                 key: const Key('game_result_alert_dialog_content'),
                 style: TextStyle(
-                    fontSize:
-                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
               ),
               if (canChallenge)
                 const SizedBox(
@@ -239,8 +239,8 @@ class GameResultAlertDialog extends StatelessWidget {
 
   Widget _buildAiVsAiDialog(BuildContext context, Position position) {
     // Get game duration in seconds
-    final int gameDurationSeconds =
-        GameController().calculateGameDurationSeconds();
+    final int gameDurationSeconds = GameController()
+        .calculateGameDurationSeconds();
 
     // Format duration as minutes and seconds
     final int minutes = gameDurationSeconds ~/ 60;
@@ -260,7 +260,7 @@ class GameResultAlertDialog extends StatelessWidget {
     // Get game over reason
     final String reason =
         position.gameOverReason?.getName(context, position.winner) ??
-            S.of(context).gameOverUnknownReason;
+        S.of(context).gameOverUnknownReason;
 
     // Build content with game duration
     final StringBuffer content = StringBuffer();
@@ -293,9 +293,9 @@ class GameResultAlertDialog extends StatelessWidget {
           ),
           onPressed: () {
             GameController().reset(force: true);
-            GameController()
-                .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+            GameController().headerTipNotifier.showTip(
+              S.of(context).gameStarted,
+            );
             GameController().headerIconsNotifier.showIcons();
             Navigator.pop(context);
           },

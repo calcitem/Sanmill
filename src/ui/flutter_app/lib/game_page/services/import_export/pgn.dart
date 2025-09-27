@@ -133,24 +133,25 @@ class PgnGame<T extends PgnNodeData> {
   final PgnNode<T> moves;
 
   static PgnHeaders defaultHeaders() => <String, String>{
-        'Event': '?',
-        'Site': '?',
-        'Date': '????.??.??',
-        'Round': '?',
-        'White': '?',
-        'Black': '?',
-        'Result': '*'
-      };
+    'Event': '?',
+    'Site': '?',
+    'Date': '????.??.??',
+    'Round': '?',
+    'White': '?',
+    'Black': '?',
+    'Result': '*',
+  };
 
   static PgnHeaders emptyHeaders() => <String, String>{};
 
-  static PgnGame<PgnNodeData> parsePgn(String pgn,
-      {PgnHeaders Function() initHeaders = defaultHeaders}) {
+  static PgnGame<PgnNodeData> parsePgn(
+    String pgn, {
+    PgnHeaders Function() initHeaders = defaultHeaders,
+  }) {
     final List<PgnGame<PgnNodeData>> games = <PgnGame<PgnNodeData>>[];
     _PgnParser((PgnGame<PgnNodeData> game) {
       games.add(game);
-    }, initHeaders)
-        .parse(pgn);
+    }, initHeaders).parse(pgn);
 
     if (games.isEmpty) {
       return PgnGame<PgnNodeData>(
@@ -162,8 +163,10 @@ class PgnGame<T extends PgnNodeData> {
     return games[0];
   }
 
-  static List<PgnGame<PgnNodeData>> parseMultiGamePgn(String pgn,
-      {PgnHeaders Function() initHeaders = defaultHeaders}) {
+  static List<PgnGame<PgnNodeData>> parseMultiGamePgn(
+    String pgn, {
+    PgnHeaders Function() initHeaders = defaultHeaders,
+  }) {
     final RegExp multiGamePgnSplit = RegExp(r'\n\s+(?=\[)');
     final List<PgnGame<PgnNodeData>> games = <PgnGame<PgnNodeData>>[];
     final List<String> pgnGames = pgn.split(multiGamePgnSplit);
@@ -171,8 +174,7 @@ class PgnGame<T extends PgnNodeData> {
       final List<PgnGame<PgnNodeData>> parsedGames = <PgnGame<PgnNodeData>>[];
       _PgnParser((PgnGame<PgnNodeData> game) {
         parsedGames.add(game);
-      }, initHeaders)
-          .parse(pgnGame);
+      }, initHeaders).parse(pgnGame);
       if (parsedGames.isNotEmpty) {
         games.add(parsedGames[0]);
       }
@@ -215,14 +217,16 @@ class PgnGame<T extends PgnNodeData> {
     if (moves.children.isNotEmpty) {
       final Iterator<PgnNode<T>> variations = moves.children.iterator;
       variations.moveNext();
-      stack.add(_PgnFrame(
-        state: _PgnState.pre,
-        ply: initialPly,
-        node: variations.current,
-        sidelines: variations,
-        startsVariation: false,
-        inVariation: false,
-      ));
+      stack.add(
+        _PgnFrame(
+          state: _PgnState.pre,
+          ply: initialPly,
+          node: variations.current,
+          sidelines: variations,
+          startsVariation: false,
+          inVariation: false,
+        ),
+      );
     }
 
     bool forceMoveNumber = true;
@@ -276,28 +280,32 @@ class PgnGame<T extends PgnNodeData> {
             if (child) {
               token.write('( ');
               forceMoveNumber = true;
-              stack.add(_PgnFrame(
-                state: _PgnState.pre,
-                ply: frame.ply,
-                node: frame.sidelines.current,
-                sidelines: <PgnNode<PgnNodeData>>[].iterator,
-                startsVariation: true,
-                inVariation: false,
-              ));
+              stack.add(
+                _PgnFrame(
+                  state: _PgnState.pre,
+                  ply: frame.ply,
+                  node: frame.sidelines.current,
+                  sidelines: <PgnNode<PgnNodeData>>[].iterator,
+                  startsVariation: true,
+                  inVariation: false,
+                ),
+              );
               frame.inVariation = true;
             } else {
               if (frame.node.children.isNotEmpty) {
                 final Iterator<PgnNode<PgnNodeData>> variations =
                     frame.node.children.iterator;
                 variations.moveNext();
-                stack.add(_PgnFrame(
-                  state: _PgnState.pre,
-                  ply: frame.ply + 1,
-                  node: variations.current,
-                  sidelines: variations,
-                  startsVariation: false,
-                  inVariation: false,
-                ));
+                stack.add(
+                  _PgnFrame(
+                    state: _PgnState.pre,
+                    ply: frame.ply + 1,
+                    node: variations.current,
+                    sidelines: variations,
+                    startsVariation: false,
+                    inVariation: false,
+                  ),
+                );
               }
               frame.state = _PgnState.end;
             }
@@ -372,12 +380,18 @@ class PgnNode<T extends PgnNodeData> {
   /// callback returns null, the node is not added to the result tree.
   /// The callback should return a tuple of the updated context and node data.
   PgnNode<U> transform<U extends PgnNodeData, C>(
-      C context, (C, U)? Function(C context, T data, int childIndex) f) {
+    C context,
+    (C, U)? Function(C context, T data, int childIndex) f,
+  ) {
     final PgnNode<U> root = PgnNode<U>();
     final List<_TransformStackFrame<U, T, C>> stack =
         <_TransformStackFrame<U, T, C>>[
-      _TransformStackFrame<U, T, C>(after: root, before: this, context: context)
-    ];
+          _TransformStackFrame<U, T, C>(
+            after: root,
+            before: this,
+            context: context,
+          ),
+        ];
 
     while (stack.isNotEmpty) {
       final _TransformStackFrame<U, T, C> frame = stack.removeLast();
@@ -399,16 +413,21 @@ class PgnNode<T extends PgnNodeData> {
       }
 
       // Now transform children
-      for (int childIdx = 0;
-          childIdx < frame.before.children.length;
-          childIdx++) {
+      for (
+        int childIdx = 0;
+        childIdx < frame.before.children.length;
+        childIdx++
+      ) {
         final PgnNode<T> childBefore = frame.before.children[childIdx];
         if (childBefore.data == null) {
           // If child has no data, it may be just a root-like subnode. Skip or handle differently.
           continue;
         }
-        final (C, U)? transformData =
-            f(frame.context, childBefore.data!, childIdx);
+        final (C, U)? transformData = f(
+          frame.context,
+          childBefore.data!,
+          childIdx,
+        );
         if (transformData != null) {
           final (C newCtx, U data) = transformData;
           final PgnNode<U> childAfter = PgnNode<U>(data);
@@ -589,55 +608,68 @@ class PgnComment {
     final List<PgnCommentShape> shapes = <PgnCommentShape>[];
     PgnEvaluation? eval;
 
-    final String text = comment.replaceAllMapped(
-        RegExp(
-            r'\s?\[%(emt|clk)\s(\d{1,5}):(\d{1,2}):(\d{1,2}(?:\.\d{0,3})?)\]\s?'),
-        (Match match) {
-      final String? annotation = match.group(1);
-      final String? hours = match.group(2);
-      final String? minutes = match.group(3);
-      final String? seconds = match.group(4);
-      final double secondsValue = double.parse(seconds!);
-      final Duration duration = Duration(
-        hours: int.parse(hours!),
-        minutes: int.parse(minutes!),
-        seconds: secondsValue.truncate(),
-        milliseconds: ((secondsValue - secondsValue.truncate()) * 1000).round(),
-      );
-      if (annotation == 'emt') {
-        emt = duration;
-      } else if (annotation == 'clk') {
-        clock = duration;
-      }
-      return '  ';
-    }).replaceAllMapped(
-        RegExp(
-            r'\s?\[%(?:csl|cal)\s([RGYB][a-g][1-7](?:[a-g][1-7])?(?:,[RGYB][a-g][1-7](?:[a-g][1-7])?)*)\]\s?'),
-        (Match match) {
-      final String? arrows = match.group(1);
-      if (arrows != null) {
-        for (final String arrow in arrows.split(',')) {
-          final PgnCommentShape? shape = PgnCommentShape.fromPgn(arrow);
-          if (shape != null) {
-            shapes.add(shape);
-          }
-        }
-      }
-      return '  ';
-    }).replaceAllMapped(
-        RegExp(
-            r'\s?\[%eval\s(?:#([+-]?\d{1,5})|([+-]?(?:\d{1,5}|\d{0,5}\.\d{1,2})))(?:,(\d{1,5}))?\]\s?'),
-        (Match match) {
-      final String? mate = match.group(1);
-      final String? pawns = match.group(2);
-      final String? d = match.group(3);
-      final int? depth = d != null ? int.parse(d) : null;
-      eval = mate != null
-          ? PgnEvaluation.mate(mate: int.parse(mate), depth: depth)
-          : PgnEvaluation.pawns(
-              pawns: pawns != null ? double.parse(pawns) : null, depth: depth);
-      return '  ';
-    }).trim();
+    final String text = comment
+        .replaceAllMapped(
+          RegExp(
+            r'\s?\[%(emt|clk)\s(\d{1,5}):(\d{1,2}):(\d{1,2}(?:\.\d{0,3})?)\]\s?',
+          ),
+          (Match match) {
+            final String? annotation = match.group(1);
+            final String? hours = match.group(2);
+            final String? minutes = match.group(3);
+            final String? seconds = match.group(4);
+            final double secondsValue = double.parse(seconds!);
+            final Duration duration = Duration(
+              hours: int.parse(hours!),
+              minutes: int.parse(minutes!),
+              seconds: secondsValue.truncate(),
+              milliseconds: ((secondsValue - secondsValue.truncate()) * 1000)
+                  .round(),
+            );
+            if (annotation == 'emt') {
+              emt = duration;
+            } else if (annotation == 'clk') {
+              clock = duration;
+            }
+            return '  ';
+          },
+        )
+        .replaceAllMapped(
+          RegExp(
+            r'\s?\[%(?:csl|cal)\s([RGYB][a-g][1-7](?:[a-g][1-7])?(?:,[RGYB][a-g][1-7](?:[a-g][1-7])?)*)\]\s?',
+          ),
+          (Match match) {
+            final String? arrows = match.group(1);
+            if (arrows != null) {
+              for (final String arrow in arrows.split(',')) {
+                final PgnCommentShape? shape = PgnCommentShape.fromPgn(arrow);
+                if (shape != null) {
+                  shapes.add(shape);
+                }
+              }
+            }
+            return '  ';
+          },
+        )
+        .replaceAllMapped(
+          RegExp(
+            r'\s?\[%eval\s(?:#([+-]?\d{1,5})|([+-]?(?:\d{1,5}|\d{0,5}\.\d{1,2})))(?:,(\d{1,5}))?\]\s?',
+          ),
+          (Match match) {
+            final String? mate = match.group(1);
+            final String? pawns = match.group(2);
+            final String? d = match.group(3);
+            final int? depth = d != null ? int.parse(d) : null;
+            eval = mate != null
+                ? PgnEvaluation.mate(mate: int.parse(mate), depth: depth)
+                : PgnEvaluation.pawns(
+                    pawns: pawns != null ? double.parse(pawns) : null,
+                    depth: depth,
+                  );
+            return '  ';
+          },
+        )
+        .trim();
 
     return PgnComment(
       text: text.isNotEmpty ? text : null,
@@ -801,7 +833,10 @@ class _PgnParser {
     if (_found) {
       emitGame(
         PgnGame<PgnNodeData>(
-            headers: _gameHeaders, moves: _gameMoves, comments: _gameComments),
+          headers: _gameHeaders,
+          moves: _gameMoves,
+          comments: _gameComments,
+        ),
       );
     }
     _resetGame();
@@ -815,8 +850,9 @@ class _PgnParser {
       if (nlIdx == -1) {
         break;
       }
-      final int crIdx =
-          nlIdx > idx && data[nlIdx - 1] == '\r' ? nlIdx - 1 : nlIdx;
+      final int crIdx = nlIdx > idx && data[nlIdx - 1] == '\r'
+          ? nlIdx - 1
+          : nlIdx;
       _lineBuf.add(data.substring(idx, crIdx));
       idx = nlIdx + 1;
       _handleLine();
@@ -860,13 +896,15 @@ class _PgnParser {
             }
             bool moreHeaders = true;
             final RegExp headerReg = RegExp(
-                r'^\s*\[([A-Za-z0-9][A-Za-z0-9_+#=:-]*)\s+"((?:[^"\\]|\\"|\\\\)*)"\]');
+              r'^\s*\[([A-Za-z0-9][A-Za-z0-9_+#=:-]*)\s+"((?:[^"\\]|\\"|\\\\)*)"\]',
+            );
             while (moreHeaders) {
               moreHeaders = false;
               line = line.replaceFirstMapped(headerReg, (Match match) {
                 if (match[1] != null && match[2] != null) {
-                  _gameHeaders[match[1]!] =
-                      match[2]!.replaceAll(r'\"', '"').replaceAll(r'\\', r'\');
+                  _gameHeaders[match[1]!] = match[2]!
+                      .replaceAll(r'\"', '"')
+                      .replaceAll(r'\\', r'\');
                   moreHeaders = true;
                   freshLine = false;
                 }
@@ -889,8 +927,9 @@ class _PgnParser {
             }
             // Adapted Nine Men's Morris token regex:
             final RegExp tokenRegex = RegExp(
-                r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
-                r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2');
+              r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
+              r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2',
+            );
             final Iterable<RegExpMatch> matches = tokenRegex.allMatches(line);
             for (final RegExpMatch match in matches) {
               final _ParserFrame frame = _stack[_stack.length - 1];
@@ -930,8 +969,9 @@ class _PgnParser {
                   final int openIndex = match.end;
                   _state = _ParserState.comment;
                   if (openIndex < line.length) {
-                    final int beginIndex =
-                        line[openIndex] == ' ' ? openIndex + 1 : openIndex;
+                    final int beginIndex = line[openIndex] == ' '
+                        ? openIndex + 1
+                        : openIndex;
                     line = line.substring(beginIndex);
                   } else if (openIndex == line.length) {
                     return;
@@ -943,8 +983,12 @@ class _PgnParser {
                     // Use ! to avoid assigning a nullable node to a non-null field
                     frame.parent = frame.node!;
                   }
-                  frame.node = PgnNode<PgnNodeData>(PgnNodeData(
-                      san: token, startingComments: frame.startingComments));
+                  frame.node = PgnNode<PgnNodeData>(
+                    PgnNodeData(
+                      san: token,
+                      startingComments: frame.startingComments,
+                    ),
+                  );
                   frame.startingComments = null;
                   frame.root = false;
                   frame.parent.children.add(frame.node!);

@@ -48,7 +48,8 @@ class StackList<T> {
       _list.addLast(element);
     } else {
       throw Exception(
-          'Error: Cannot add element. Stack already at maximum size of: $_maxStackSize elements');
+        'Error: Cannot add element. Stack already at maximum size of: $_maxStackSize elements',
+      );
     }
   }
 

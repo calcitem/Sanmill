@@ -35,8 +35,9 @@ class _BoardCornerRadiusSlider extends StatelessWidget {
                 label: displaySettings.boardCornerRadius.toStringAsFixed(1),
                 onChanged: (double value) {
                   logger.t("[config] BoardCornerRadius value: $value");
-                  DB().displaySettings =
-                      displaySettings.copyWith(boardCornerRadius: value);
+                  DB().displaySettings = displaySettings.copyWith(
+                    boardCornerRadius: value,
+                  );
                 },
               ),
             ),

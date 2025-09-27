@@ -381,5 +381,9 @@ int processGamesForHumanRating(
 
   // Otherwise standard ELO update.
   return _updateRating(
-      currentHumanRating, aiRatingsList, resultsList, totalGamesPlayed);
+    currentHumanRating,
+    aiRatingsList,
+    resultsList,
+    totalGamesPlayed,
+  );
 }

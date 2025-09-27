@@ -66,10 +66,7 @@ Future<void> main() async {
   initBitboards();
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    catcher = Catcher2(
-      rootWidget: const SanmillApp(),
-      ensureInitialized: true,
-    );
+    catcher = Catcher2(rootWidget: const SanmillApp(), ensureInitialized: true);
 
     await _initCatcher(catcher);
 
@@ -102,19 +99,17 @@ class SanmillAppState extends State<SanmillApp> {
 
   @override
   Widget build(BuildContext context) {
-    DB(View.of(context)
-        .platformDispatcher
-        .views
-        .first
-        .platformDispatcher
-        .locale);
+    DB(
+      View.of(context).platformDispatcher.views.first.platformDispatcher.locale,
+    );
 
     if (kIsWeb) {
       Locale? locale;
 
       if (PlatformDispatcher.instance.locale == const Locale('und') ||
           !S.supportedLocales.contains(
-              Locale(PlatformDispatcher.instance.locale.languageCode))) {
+            Locale(PlatformDispatcher.instance.locale.languageCode),
+          )) {
         locale = const Locale('en');
       } else {
         locale = PlatformDispatcher.instance.locale;
@@ -137,9 +132,7 @@ class SanmillAppState extends State<SanmillApp> {
             child: child!,
           );
         },
-        home: Builder(
-          builder: _buildHome,
-        ),
+        home: Builder(builder: _buildHome),
       );
     }
 
@@ -160,9 +153,11 @@ class SanmillAppState extends State<SanmillApp> {
     if (displaySettings.locale == null) {
       if (PlatformDispatcher.instance.locale == const Locale('und') ||
           !S.supportedLocales.contains(
-              Locale(PlatformDispatcher.instance.locale.languageCode))) {
-        DB().displaySettings =
-            displaySettings.copyWith(locale: const Locale('en'));
+            Locale(PlatformDispatcher.instance.locale.languageCode),
+          )) {
+        DB().displaySettings = displaySettings.copyWith(
+          locale: const Locale('en'),
+        );
         locale = const Locale('en');
       } else {
         locale = PlatformDispatcher.instance.locale;
@@ -189,15 +184,13 @@ class SanmillAppState extends State<SanmillApp> {
         _initializeScreenOrientation(context);
         setWindowTitle(S.of(context).appName);
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(displaySettings.fontScale),
-          ),
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(displaySettings.fontScale)),
           child: child!,
         );
       },
-      home: Builder(
-        builder: _buildHome,
-      ),
+      home: Builder(builder: _buildHome),
     );
 
     if (kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
@@ -232,18 +225,19 @@ class SanmillAppState extends State<SanmillApp> {
     }
 
     // Listen for shared files when the app is already running
-    _intentDataStreamSubscription =
-        FlutterSharingIntent.instance.getMediaStream().listen(
-      (List<SharedFile> files) {
-        _handleSharedFiles(files, isRunning: true);
-      },
-      onError: (dynamic error) {
-        logger.e("Error receiving intent data stream: $error");
-        SnackBarService.showRootSnackBar(
-          "Error receiving intent data stream: $error",
-        ); // Consider localization
-      },
-    );
+    _intentDataStreamSubscription = FlutterSharingIntent.instance
+        .getMediaStream()
+        .listen(
+          (List<SharedFile> files) {
+            _handleSharedFiles(files, isRunning: true);
+          },
+          onError: (dynamic error) {
+            logger.e("Error receiving intent data stream: $error");
+            SnackBarService.showRootSnackBar(
+              "Error receiving intent data stream: $error",
+            ); // Consider localization
+          },
+        );
 
     // Handle initial sharing when the app is launched from a closed state
     FlutterSharingIntent.instance.getInitialSharing().then(
@@ -266,14 +260,16 @@ class SanmillAppState extends State<SanmillApp> {
       // Show notification to user about the shared file path
       logger.i("Setup Sharing Intent: $filePath");
       // Load the game from the shared file
-      LoadService.loadGame(context, filePath, isRunning: isRunning).then((_) {
-        logger.i("Game loaded successfully from shared file.");
-      }).catchError((dynamic error) {
-        logger.e("Error loading game from shared file: $error");
-        SnackBarService.showRootSnackBar(
-          "Error loading game from shared file: $error",
-        ); // Consider localization
-      });
+      LoadService.loadGame(context, filePath, isRunning: isRunning)
+          .then((_) {
+            logger.i("Game loaded successfully from shared file.");
+          })
+          .catchError((dynamic error) {
+            logger.e("Error loading game from shared file: $error");
+            SnackBarService.showRootSnackBar(
+              "Error loading game from shared file: $error",
+            ); // Consider localization
+          });
     }
   }
 

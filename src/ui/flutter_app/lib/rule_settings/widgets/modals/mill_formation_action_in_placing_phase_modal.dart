@@ -75,8 +75,10 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
     String title,
     MillFormationActionInPlacingPhase value,
   ) {
-    final String keySuffix =
-        title.toLowerCase().replaceAll(' ', '_').replaceAll('then_', 'then_');
+    final String keySuffix = title
+        .toLowerCase()
+        .replaceAll(' ', '_')
+        .replaceAll('then_', 'then_');
     return Semantics(
       label: title,
       child: RadioListTile<MillFormationActionInPlacingPhase>(

@@ -6,10 +6,7 @@
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
 class _PieceCountModal extends StatelessWidget {
-  const _PieceCountModal({
-    required this.piecesCount,
-    required this.onChanged,
-  });
+  const _PieceCountModal({required this.piecesCount, required this.onChanged});
 
   final int piecesCount;
   final Function(int?)? onChanged;
@@ -36,11 +33,7 @@ class _PieceCountModal extends StatelessWidget {
     ];
   }
 
-  Widget _buildRadioListTile(
-    BuildContext context,
-    String title,
-    int value,
-  ) {
+  Widget _buildRadioListTile(BuildContext context, String title, int value) {
     return Semantics(
       key: Key('semantics_$value'),
       label: title,

@@ -84,6 +84,8 @@ class GameResultNotifier extends ChangeNotifier {
 
     // Update the ELO ratings using the service
     _eloService.updateStats(
-        _winner ?? PieceColor.none, GameController().gameInstance.gameMode);
+      _winner ?? PieceColor.none,
+      GameController().gameInstance.gameMode,
+    );
   }
 }

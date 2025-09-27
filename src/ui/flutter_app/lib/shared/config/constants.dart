@@ -14,10 +14,7 @@ import 'package:flutter/material.dart';
 import '../services/environment_config.dart';
 
 class UrlHelper {
-  const UrlHelper({
-    required this.base,
-    required this.baseChinese,
-  });
+  const UrlHelper({required this.base, required this.baseChinese});
 
   final String base;
   final String baseChinese;
@@ -38,7 +35,7 @@ class Constants {
   static const String projectName = "Sanmill";
   static String projectNameLower = projectName.toLowerCase();
   static const List<String> recipientEmails = <String>[
-    "$authorAccount@outlook.com"
+    "$authorAccount@outlook.com",
   ];
 
   static String settingsFile = "${projectNameLower}_settings.json";
@@ -64,25 +61,35 @@ class Constants {
     baseChinese: "https://hosted.weblate.org",
   );
 
-  static final UrlHelper repositoryUrl =
-      sourceControlUrl.fromSubPath(fullRepositoryName);
+  static final UrlHelper repositoryUrl = sourceControlUrl.fromSubPath(
+    fullRepositoryName,
+  );
   static final UrlHelper issuesURL = repositoryUrl.fromSubPath("issues");
   static final UrlHelper wikiURL = repositoryUrl.fromSubPath("wiki", "wikis");
-  static final UrlHelper legalURL =
-      staticWebpageUrl.fromSubPath("$projectNameLower-legal");
-  static final UrlHelper endUserLicenseAgreementUrl =
-      legalURL.fromSubPath("eula", "eula_zh");
+  static final UrlHelper legalURL = staticWebpageUrl.fromSubPath(
+    "$projectNameLower-legal",
+  );
+  static final UrlHelper endUserLicenseAgreementUrl = legalURL.fromSubPath(
+    "eula",
+    "eula_zh",
+  );
   static const String appleStandardEulaUrl =
       "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
-  static final UrlHelper thirdPartyNoticesURL =
-      wikiURL.fromSubPath("third-party_notices");
-  static final UrlHelper privacyPolicyUrl =
-      legalURL.fromSubPath("privacy-policy", "privacy-policy_zh");
-  static final UrlHelper helpImproveTranslateURL =
-      weblateUrl.fromSubPath("zen/$projectNameLower/flutter");
+  static final UrlHelper thirdPartyNoticesURL = wikiURL.fromSubPath(
+    "third-party_notices",
+  );
+  static final UrlHelper privacyPolicyUrl = legalURL.fromSubPath(
+    "privacy-policy",
+    "privacy-policy_zh",
+  );
+  static final UrlHelper helpImproveTranslateURL = weblateUrl.fromSubPath(
+    "zen/$projectNameLower/flutter",
+  );
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
-  static final UrlHelper perfectDatabaseUrl =
-      wikiURL.fromSubPath("Perfect-Database", "Perfect-Database-(Chinese)");
+  static final UrlHelper perfectDatabaseUrl = wikiURL.fromSubPath(
+    "Perfect-Database",
+    "Perfect-Database-(Chinese)",
+  );
 
   static double _getWindowHeight(BuildContext context) {
     final ui.FlutterView view = View.of(context);

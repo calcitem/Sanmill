@@ -26,7 +26,7 @@ enum FishType {
   jellyfish, // Erratic movement pattern
   shark, // Large and aggressive
   bubblefish, // Moves in bubble-like patterns
-  crab // Moves sideways more than forward
+  crab, // Moves sideways more than forward
 }
 
 // Enum for movement direction
@@ -130,7 +130,8 @@ class _CatFishingGameState extends State<CatFishingGame>
     } catch (e) {
       _messageColor = Colors.white;
       logger.w(
-          "Warning: Could not get color from DB().colorSettings.messageColor. Using fallback.");
+        "Warning: Could not get color from DB().colorSettings.messageColor. Using fallback.",
+      );
     }
 
     // Set up the animation controller for visual effects
@@ -163,8 +164,9 @@ class _CatFishingGameState extends State<CatFishingGame>
     _catSegments.clear();
     // Create initial cat segments with more spacing to avoid immediate self-collision
     for (int i = 0; i < _catLength; i++) {
-      _catSegments
-          .addFirst(Offset(centerX - i * _baseMoveDistance * 2, centerY));
+      _catSegments.addFirst(
+        Offset(centerX - i * _baseMoveDistance * 2, centerY),
+      );
     }
 
     // Initialize fish
@@ -200,8 +202,9 @@ class _CatFishingGameState extends State<CatFishingGame>
   void _startMovementTimer() {
     _moveTimer?.cancel();
     // Faster update interval (50ms) for smoother movement
-    _moveTimer =
-        Timer.periodic(const Duration(milliseconds: 50), (Timer timer) {
+    _moveTimer = Timer.periodic(const Duration(milliseconds: 50), (
+      Timer timer,
+    ) {
       if (!mounted || _isGameOver) {
         timer.cancel();
         return;
@@ -220,8 +223,10 @@ class _CatFishingGameState extends State<CatFishingGame>
   void _decaySpeed() {
     if (_currentMoveDistance > _baseMoveDistance) {
       setState(() {
-        _currentMoveDistance =
-            math.max(_baseMoveDistance, _currentMoveDistance * _speedDecayRate);
+        _currentMoveDistance = math.max(
+          _baseMoveDistance,
+          _currentMoveDistance * _speedDecayRate,
+        );
       });
     }
   }
@@ -259,17 +264,21 @@ class _CatFishingGameState extends State<CatFishingGame>
     math.min(1.0, _fishEatenCount / 30);
 
     // Update fish movement parameters based on difficulty
-    _fishRandomDirectionChance = _fishRandomDirectionChance +
+    _fishRandomDirectionChance =
+        _fishRandomDirectionChance +
         ((_maxFishRandomDirectionChance - _fishRandomDirectionChance) * 0.1);
 
-    _fishDirectionChangeAmount = _fishDirectionChangeAmount +
+    _fishDirectionChangeAmount =
+        _fishDirectionChangeAmount +
         ((_maxFishDirectionChangeAmount - _fishDirectionChangeAmount) * 0.1);
 
     // Apply speed boost to all remaining fish
     for (final _Fish fish in _fishes) {
       // Increase speed multiplier but cap at maximum
-      fish.speedMultiplier = math.min(_maxFishSpeedMultiplier,
-          fish.speedMultiplier + _fishSpeedBoostPerCatch);
+      fish.speedMultiplier = math.min(
+        _maxFishSpeedMultiplier,
+        fish.speedMultiplier + _fishSpeedBoostPerCatch,
+      );
 
       // Increase wiggle amount and speed with difficulty
       fish.wiggleAmount = math.min(0.8, fish.wiggleAmount + 0.02);
@@ -358,7 +367,8 @@ class _CatFishingGameState extends State<CatFishingGame>
             // Log collision info for debugging
             if (_isDebug) {
               logger.i(
-                  'Collision detected! Distance: $distance, Threshold: $collisionThreshold, Segment: $index');
+                'Collision detected! Distance: $distance, Threshold: $collisionThreshold, Segment: $index',
+              );
             }
 
             break;
@@ -467,7 +477,8 @@ class _CatFishingGameState extends State<CatFishingGame>
                 fish.heading + (_random.nextDouble() * 0.4 - 0.2);
           } else {
             // Normal direction change
-            fish.targetHeading = fish.heading +
+            fish.targetHeading =
+                fish.heading +
                 (_random.nextDouble() * math.pi / 2 - math.pi / 4);
           }
         } else {
@@ -522,7 +533,8 @@ class _CatFishingGameState extends State<CatFishingGame>
       final double effectiveSpeed = fish.baseSpeed * speedMultiplier;
 
       // Update velocity based on the current heading
-      fish.velocity = Offset(math.cos(fish.heading), math.sin(fish.heading)) *
+      fish.velocity =
+          Offset(math.cos(fish.heading), math.sin(fish.heading)) *
           effectiveSpeed;
 
       // Move fish according to its velocity
@@ -578,7 +590,8 @@ class _CatFishingGameState extends State<CatFishingGame>
         fish.baseSpeed *= 0.95;
 
         // Update velocity based on new heading after bounce
-        fish.velocity = Offset(math.cos(fish.heading), math.sin(fish.heading)) *
+        fish.velocity =
+            Offset(math.cos(fish.heading), math.sin(fish.heading)) *
             (fish.baseSpeed * fish.speedMultiplier);
       }
 
@@ -590,11 +603,13 @@ class _CatFishingGameState extends State<CatFishingGame>
           fish.heading + math.pi / 2; // Perpendicular to swim direction
       final double lateralAmount =
           (math.sin(fish.wigglePhase) * fish.wiggleAmount) *
-              fish.size *
-              wiggleFactor; // Ties lateral motion to visual wiggle
+          fish.size *
+          wiggleFactor; // Ties lateral motion to visual wiggle
 
-      newPos += Offset(math.cos(perpAngle) * lateralAmount,
-          math.sin(perpAngle) * lateralAmount);
+      newPos += Offset(
+        math.cos(perpAngle) * lateralAmount,
+        math.sin(perpAngle) * lateralAmount,
+      );
 
       fish.position = newPos;
 
@@ -612,8 +627,10 @@ class _CatFishingGameState extends State<CatFishingGame>
   /// Moves each catch-effect text upward and fades it out over time.
   void _updateCatchEffects(double dt) {
     for (final _CatchEffect effect in _catchEffects) {
-      effect.position =
-          Offset(effect.position.dx, effect.position.dy - 20 * dt);
+      effect.position = Offset(
+        effect.position.dx,
+        effect.position.dy - 20 * dt,
+      );
       effect.life -= dt;
     }
     _catchEffects.removeWhere((_CatchEffect e) => e.life <= 0);
@@ -634,11 +651,9 @@ class _CatFishingGameState extends State<CatFishingGame>
       text = '+${fish.points}';
     }
 
-    _catchEffects.add(_CatchEffect(
-      text: text,
-      position: fish.position,
-      life: 1.0,
-    ));
+    _catchEffects.add(
+      _CatchEffect(text: text, position: fish.position, life: 1.0),
+    );
   }
 
   /// Change direction based on key or gesture input
@@ -685,9 +700,9 @@ class _CatFishingGameState extends State<CatFishingGame>
     // Map the gesture speed to movement distance, with upper and lower bounds
     // Speed mapping: faster gesture = faster cat movement, but with limits
     final double newSpeed = math.min(
-        _maxMoveDistance,
-        _minMoveDistance +
-            (speed / 200) * (_maxMoveDistance - _minMoveDistance));
+      _maxMoveDistance,
+      _minMoveDistance + (speed / 200) * (_maxMoveDistance - _minMoveDistance),
+    );
 
     // Update current move distance
     setState(() {
@@ -747,8 +762,10 @@ class _CatFishingGameState extends State<CatFishingGame>
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           // Update game size if layout changes
-          final Size newSize =
-              Size(constraints.maxWidth, constraints.maxHeight);
+          final Size newSize = Size(
+            constraints.maxWidth,
+            constraints.maxHeight,
+          );
           if (_gameSize != newSize) {
             _gameSize = newSize;
             if (_catSegments.isEmpty) {
@@ -763,7 +780,8 @@ class _CatFishingGameState extends State<CatFishingGame>
           // For desktop (macOS, Windows, Linux) and web platforms, we use tap control
           final bool isMobilePlatform =
               !kIsWeb && (Platform.isAndroid || Platform.isIOS);
-          final bool isDesktopOrWebPlatform = kIsWeb ||
+          final bool isDesktopOrWebPlatform =
+              kIsWeb ||
               Platform.isMacOS ||
               Platform.isWindows ||
               Platform.isLinux;
@@ -780,9 +798,11 @@ class _CatFishingGameState extends State<CatFishingGame>
                     }
 
                     // Adjust speed based on gesture velocity
-                    _adjustSpeedFromGesture(details.primaryDelta != null
-                        ? Offset(0, details.primaryDelta! * 10)
-                        : Offset.zero);
+                    _adjustSpeedFromGesture(
+                      details.primaryDelta != null
+                          ? Offset(0, details.primaryDelta! * 10)
+                          : Offset.zero,
+                    );
                   }
                 : null,
             onHorizontalDragUpdate: isMobilePlatform
@@ -795,9 +815,11 @@ class _CatFishingGameState extends State<CatFishingGame>
                     }
 
                     // Adjust speed based on gesture velocity
-                    _adjustSpeedFromGesture(details.primaryDelta != null
-                        ? Offset(details.primaryDelta! * 10, 0)
-                        : Offset.zero);
+                    _adjustSpeedFromGesture(
+                      details.primaryDelta != null
+                          ? Offset(details.primaryDelta! * 10, 0)
+                          : Offset.zero,
+                    );
                   }
                 : null,
             // Enable tap control only on desktop and web platforms
@@ -839,9 +861,12 @@ class _CatFishingGameState extends State<CatFishingGame>
                     // Map the distance to a speed value between min and max speed
                     // The normalization factor (150.0) controls how quickly speed increases with distance
                     // Clamping ensures the speed stays within allowed limits
-                    final double speedFactor =
-                        (distance / 150.0).clamp(0.2, 1.0);
-                    final double newSpeed = _minMoveDistance +
+                    final double speedFactor = (distance / 150.0).clamp(
+                      0.2,
+                      1.0,
+                    );
+                    final double newSpeed =
+                        _minMoveDistance +
                         speedFactor * (_maxMoveDistance - _minMoveDistance);
 
                     setState(() {
@@ -857,33 +882,30 @@ class _CatFishingGameState extends State<CatFishingGame>
                 Container(color: Colors.lightBlue.shade100),
 
                 // Grid lines for visual reference (optional)
-                CustomPaint(
-                  size: Size.infinite,
-                  painter: _GridPainter(),
-                ),
+                CustomPaint(size: Size.infinite, painter: _GridPainter()),
 
                 // Render all fish
-                ..._fishes.map((_Fish fish) => Positioned(
-                      left: fish.position.dx - fish.size / 2,
-                      top: fish.position.dy - fish.size / 2,
-                      child: Transform.rotate(
-                        // Prevent fish from appearing upside-down by adjusting the angle
-                        // We want fish to always have their back/top side facing upward
-                        // First determine the base angle from heading (direction of movement)
-                        angle: _calculateFishDisplayAngle(fish),
-                        child: Text(
-                          fish.emoji,
-                          style: TextStyle(fontSize: fish.size),
-                        ),
+                ..._fishes.map(
+                  (_Fish fish) => Positioned(
+                    left: fish.position.dx - fish.size / 2,
+                    top: fish.position.dy - fish.size / 2,
+                    child: Transform.rotate(
+                      // Prevent fish from appearing upside-down by adjusting the angle
+                      // We want fish to always have their back/top side facing upward
+                      // First determine the base angle from heading (direction of movement)
+                      angle: _calculateFishDisplayAngle(fish),
+                      child: Text(
+                        fish.emoji,
+                        style: TextStyle(fontSize: fish.size),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
 
                 // Cat chain segments
-                ..._catSegments
-                    .toList()
-                    .asMap()
-                    .entries
-                    .map((MapEntry<int, Offset> entry) {
+                ..._catSegments.toList().asMap().entries.map((
+                  MapEntry<int, Offset> entry,
+                ) {
                   final int index = entry.key;
                   final Offset segment = entry.value;
                   final bool isHead = index == 0;
@@ -898,28 +920,20 @@ class _CatFishingGameState extends State<CatFishingGame>
                         color: isHead
                             ? Colors.orange
                             : Colors.orange.withValues(
-                                alpha: math.max(0.1, 0.8 - index * 0.01)),
+                                alpha: math.max(0.1, 0.8 - index * 0.01),
+                              ),
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.brown,
-                          width: 2,
-                        ),
+                        border: Border.all(color: Colors.brown, width: 2),
                       ),
                       child: isHead
                           ? const Center(
-                              child: Text(
-                                '🐱',
-                                style: TextStyle(fontSize: 14),
-                              ),
+                              child: Text('🐱', style: TextStyle(fontSize: 14)),
                             )
                           : index % 3 == 0
-                              ? const Center(
-                                  child: Text(
-                                    '🐾',
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                )
-                              : null,
+                          ? const Center(
+                              child: Text('🐾', style: TextStyle(fontSize: 12)),
+                            )
+                          : null,
                     ),
                   );
                 }),
@@ -995,7 +1009,7 @@ class _CatFishingGameState extends State<CatFishingGame>
                                   Shadow(
                                     blurRadius: 8.0,
                                     color: Colors.black.withValues(alpha: 0.5),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -1023,7 +1037,9 @@ class _CatFishingGameState extends State<CatFishingGame>
                                 backgroundColor: Colors.lightBlue,
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 15),
+                                  horizontal: 30,
+                                  vertical: 15,
+                                ),
                                 textStyle: const TextStyle(fontSize: 18),
                               ),
                               onPressed: _restartGame,

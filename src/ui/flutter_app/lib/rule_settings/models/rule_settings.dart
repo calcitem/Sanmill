@@ -196,9 +196,11 @@ class RuleSettings {
   final BoardFullAction? boardFullAction;
   @HiveField(17, defaultValue: StalemateAction.endWithStalemateLoss)
   final StalemateAction? stalemateAction;
-  @HiveField(18,
-      defaultValue:
-          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard)
+  @HiveField(
+    18,
+    defaultValue:
+        MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
+  )
   final MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase;
   @HiveField(19, defaultValue: false)
   final bool restrictRepeatedMillsFormation;
@@ -299,7 +301,7 @@ enum RuleSet {
   daSanQi,
   mulMulan,
   nerenchi,
-  elfilja
+  elfilja,
 }
 
 /// Nine Men's Morris Rules
@@ -307,10 +309,7 @@ enum RuleSet {
 /// Those rules are the standard Nine Men's Morris rules.
 class NineMensMorrisRuleSettings extends RuleSettings {
   const NineMensMorrisRuleSettings()
-      : super(
-          piecesCount: 9,
-          hasDiagonalLines: false,
-        );
+    : super(piecesCount: 9, hasDiagonalLines: false);
 }
 
 /// Twelve Men's Morris Rules
@@ -318,10 +317,7 @@ class NineMensMorrisRuleSettings extends RuleSettings {
 /// Those rules are the standard Twelve Men's Morris rules.
 class TwelveMensMorrisRuleSettings extends RuleSettings {
   const TwelveMensMorrisRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-        );
+    : super(piecesCount: 12, hasDiagonalLines: true);
 }
 
 /// Morabaraba Rules
@@ -330,13 +326,13 @@ class TwelveMensMorrisRuleSettings extends RuleSettings {
 /// https://mindsports.nl/index.php/the-pit/542-morabaraba
 class MorabarabaRuleSettings extends RuleSettings {
   const MorabarabaRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          boardFullAction: BoardFullAction.agreeToDraw,
-          endgameNMoveRule: 10,
-          restrictRepeatedMillsFormation: true,
-        );
+    : super(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+        boardFullAction: BoardFullAction.agreeToDraw,
+        endgameNMoveRule: 10,
+        restrictRepeatedMillsFormation: true,
+      );
 }
 
 /// Dooz Rules
@@ -347,14 +343,14 @@ class MorabarabaRuleSettings extends RuleSettings {
 /// https://www.aparat.com/v/o39z663 (mayFly & !mayRemoveFromMillsAlways)
 class DoozRuleSettings extends RuleSettings {
   const DoozRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          millFormationActionInPlacingPhase: MillFormationActionInPlacingPhase
-              .removeOpponentsPieceFromHandThenOpponentsTurn,
-          boardFullAction: BoardFullAction.sideToMoveRemovePiece,
-          mayRemoveFromMillsAlways: true,
-        );
+    : super(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+        millFormationActionInPlacingPhase: MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenOpponentsTurn,
+        boardFullAction: BoardFullAction.sideToMoveRemovePiece,
+        mayRemoveFromMillsAlways: true,
+      );
 }
 
 /// Lasker Morris
@@ -362,10 +358,7 @@ class DoozRuleSettings extends RuleSettings {
 /// Those rules are the Lasker Morris rules.
 class LaskerMorrisSettings extends RuleSettings {
   const LaskerMorrisSettings()
-      : super(
-          piecesCount: 10,
-          mayMoveInPlacingPhase: true,
-        );
+    : super(piecesCount: 10, mayMoveInPlacingPhase: true);
 }
 
 /// Russian One-Time Mill Rules
@@ -373,10 +366,7 @@ class LaskerMorrisSettings extends RuleSettings {
 /// Those rules are the One-Time Mill Rules rules.
 class OneTimeMillRuleSettings extends RuleSettings {
   const OneTimeMillRuleSettings()
-      : super(
-          oneTimeUseMill: true,
-          mayRemoveFromMillsAlways: true,
-        );
+    : super(oneTimeUseMill: true, mayRemoveFromMillsAlways: true);
 }
 
 /// Korean Cham Gonu Rules
@@ -384,14 +374,14 @@ class OneTimeMillRuleSettings extends RuleSettings {
 /// Those rules are the Cham Gonu rules.
 class ChamGonuRuleSettings extends RuleSettings {
   const ChamGonuRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          millFormationActionInPlacingPhase:
-              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-          mayFly: false,
-          mayRemoveFromMillsAlways: true,
-        );
+    : super(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+        millFormationActionInPlacingPhase:
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+        mayFly: false,
+        mayRemoveFromMillsAlways: true,
+      );
 }
 
 /// Chinese Zhi Qi Rules
@@ -399,15 +389,15 @@ class ChamGonuRuleSettings extends RuleSettings {
 /// https://zh.wikipedia.org/wiki/%E5%8D%81%E4%BA%8C%E5%AD%90%E7%9B%B4%E6%A3%8B
 class ZhiQiRuleSettings extends RuleSettings {
   const ZhiQiRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          millFormationActionInPlacingPhase:
-              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-          boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
-          mayFly: false,
-          mayRemoveFromMillsAlways: true,
-        );
+    : super(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+        millFormationActionInPlacingPhase:
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+        boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
+        mayFly: false,
+        mayRemoveFromMillsAlways: true,
+      );
 }
 
 /// Chinese Cheng San Qi Rules
@@ -416,11 +406,11 @@ class ZhiQiRuleSettings extends RuleSettings {
 /// https://blog.csdn.net/liuweilhy/article/details/83832180
 class ChengSanQiRuleSettings extends RuleSettings {
   const ChengSanQiRuleSettings()
-      : super(
-          millFormationActionInPlacingPhase:
-              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-          mayFly: false,
-        );
+    : super(
+        millFormationActionInPlacingPhase:
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+        mayFly: false,
+      );
 }
 
 /// Chinese Da San Qi Rules
@@ -429,17 +419,17 @@ class ChengSanQiRuleSettings extends RuleSettings {
 /// https://blog.csdn.net/liuweilhy/article/details/83832180
 class DaSanQiRuleSettings extends RuleSettings {
   const DaSanQiRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          millFormationActionInPlacingPhase:
-              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-          boardFullAction: BoardFullAction.firstPlayerLose,
-          isDefenderMoveFirst: true,
-          mayFly: false,
-          mayRemoveFromMillsAlways: true,
-          mayRemoveMultiple: true,
-        );
+    : super(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+        millFormationActionInPlacingPhase:
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+        boardFullAction: BoardFullAction.firstPlayerLose,
+        isDefenderMoveFirst: true,
+        mayFly: false,
+        mayRemoveFromMillsAlways: true,
+        mayRemoveMultiple: true,
+      );
 }
 
 /// Indonesian Javanese Mul-Mulan Rules
@@ -450,11 +440,11 @@ class DaSanQiRuleSettings extends RuleSettings {
 /// TODO: Implement the gotong rule.
 class MulMulanRuleSettings extends RuleSettings {
   const MulMulanRuleSettings()
-      : super(
-          hasDiagonalLines: true,
-          mayFly: false,
-          mayRemoveFromMillsAlways: true,
-        );
+    : super(
+        hasDiagonalLines: true,
+        mayFly: false,
+        mayRemoveFromMillsAlways: true,
+      );
 }
 
 /// Sri Lankan Nerenchi Rules
@@ -468,12 +458,12 @@ class MulMulanRuleSettings extends RuleSettings {
 /// TODO: A player making a Nerenchi during the placement phase, takes an extra turn.
 class NerenchiRuleSettings extends RuleSettings {
   const NerenchiRuleSettings()
-      : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          isDefenderMoveFirst: true,
-          mayRemoveFromMillsAlways: true, // TODO: Right?
-        );
+    : super(
+        piecesCount: 12,
+        hasDiagonalLines: true,
+        isDefenderMoveFirst: true,
+        mayRemoveFromMillsAlways: true, // TODO: Right?
+      );
 }
 
 /// El Filja rules in Algeria and parts of Morocco
@@ -481,14 +471,14 @@ class NerenchiRuleSettings extends RuleSettings {
 /// Those rules are the El Filja rules.
 class ELFiljaRuleSettings extends RuleSettings {
   const ELFiljaRuleSettings()
-      : super(
-          piecesCount: 12,
-          millFormationActionInPlacingPhase:
-              MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
-          boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
-          mayFly: false,
-          mayRemoveFromMillsAlways: true,
-        );
+    : super(
+        piecesCount: 12,
+        millFormationActionInPlacingPhase:
+            MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
+        boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
+        mayFly: false,
+        mayRemoveFromMillsAlways: true,
+      );
 }
 
 /// Rule Set Descriptions and Settings

@@ -97,14 +97,13 @@ void main() {
   // Read the target locale using String.fromEnvironment
   // Provide a default value (empty string) in case it's not defined,
   // which will then be caught by the null check later.
-  const String targetLocaleString = String.fromEnvironment(
-    'TEST_LOCALE',
-  );
+  const String targetLocaleString = String.fromEnvironment('TEST_LOCALE');
   final Locale? targetLocale = parseLocale(targetLocaleString);
 
   // Add extra debug logging here to see the raw value from fromEnvironment
   debugPrint(
-      "Raw value from String.fromEnvironment('TEST_LOCALE'): '$targetLocaleString'");
+    "Raw value from String.fromEnvironment('TEST_LOCALE'): '$targetLocaleString'",
+  );
 
   setUpAll(() async {
     debugPrint('=== GLOBAL SETUP STARTING ===');
@@ -112,10 +111,12 @@ void main() {
     if (targetLocale == null) {
       // Improve error message slightly
       throw Exception(
-          "ERROR: TEST_LOCALE from --dart-define was not set, empty, or invalid. Raw value: '$targetLocaleString'. Expected format e.g., 'en_US'.");
+        "ERROR: TEST_LOCALE from --dart-define was not set, empty, or invalid. Raw value: '$targetLocaleString'. Expected format e.g., 'en_US'.",
+      );
     }
     debugPrint(
-        'Target Locale for this run: $targetLocaleString ($targetLocale)');
+      'Target Locale for this run: $targetLocaleString ($targetLocale)',
+    );
 
     // Initialize necessary systems
     WidgetsFlutterBinding.ensureInitialized();
@@ -144,7 +145,8 @@ void main() {
 
       if (!hasPermission) {
         debugPrint(
-            'WARNING: Storage permissions not granted. Screenshots may fail.');
+          'WARNING: Storage permissions not granted. Screenshots may fail.',
+        );
       }
     }
 
@@ -165,9 +167,11 @@ void main() {
 
         debugPrint('Checking if standard picture directories exist:');
         debugPrint(
-            '$sdcardPictures exists: ${Directory(sdcardPictures).existsSync()}');
+          '$sdcardPictures exists: ${Directory(sdcardPictures).existsSync()}',
+        );
         debugPrint(
-            '$storagePictures exists: ${Directory(storagePictures).existsSync()}');
+          '$storagePictures exists: ${Directory(storagePictures).existsSync()}',
+        );
       } catch (e) {
         debugPrint('Error checking storage directories: $e');
       }
@@ -213,12 +217,14 @@ void main() {
   // Single testWidgets block that processes the targetLocale
   // Use targetLocaleString in the group title as targetLocale might be null initially
   group('Sanmill App Localization Screenshot Test for $targetLocaleString', () {
-    testWidgets('Take screenshots for locale: $targetLocaleString',
-        (WidgetTester tester) async {
+    testWidgets('Take screenshots for locale: $targetLocaleString', (
+      WidgetTester tester,
+    ) async {
       // Use the locale parsed earlier, re-checking it here
       if (targetLocale == null) {
         fail(
-            "Target locale is null, cannot proceed. Check --dart-define value. Raw: '$targetLocaleString'");
+          "Target locale is null, cannot proceed. Check --dart-define value. Raw: '$targetLocaleString'",
+        );
       }
 
       debugPrint('--- Starting processing for locale: $targetLocale ---');
@@ -227,14 +233,18 @@ void main() {
       await _processLocale(tester, binding, targetLocale);
 
       debugPrint(
-          '--- Finished processing for locale: $targetLocale successfully ---');
+        '--- Finished processing for locale: $targetLocale successfully ---',
+      );
     }); // End single testWidgets block
   }); // End group
 }
 
 // Helper function to process all steps for a single locale
-Future<void> _processLocale(WidgetTester tester,
-    IntegrationTestWidgetsFlutterBinding binding, Locale locale) async {
+Future<void> _processLocale(
+  WidgetTester tester,
+  IntegrationTestWidgetsFlutterBinding binding,
+  Locale locale,
+) async {
   int screenshotCounter = 0;
 
   debugPrint('Processing locale: $locale...');
@@ -258,28 +268,41 @@ Future<void> _processLocale(WidgetTester tester,
   debugPrint('App settled with $locale locale on Home Screen.');
 
   await _placePiecesOnBoard(
-      tester); // Using the original complex placement again
+    tester,
+  ); // Using the original complex placement again
 
   screenshotCounter++;
   final String homeBaseName =
       '${locale.languageCode}_${locale.countryCode}_${ScreenshotPage.home.fileNamePart}';
   debugPrint('Taking screenshot #$screenshotCounter for $homeBaseName');
   await _takeAndSaveScreenshot(
-      binding, tester, homeBaseName, screenshotCounter);
+    binding,
+    tester,
+    homeBaseName,
+    screenshotCounter,
+  );
   await Future<void>.delayed(const Duration(seconds: 1));
 
   // --- Step 2: Drawer Open (via Tap) ---
   debugPrint('Capturing Drawer Open state via tap...');
   await tester.pumpAndSettle(const Duration(seconds: 2));
-  screenshotCounter =
-      await _captureDrawerViaTap(tester, binding, locale, screenshotCounter);
+  screenshotCounter = await _captureDrawerViaTap(
+    tester,
+    binding,
+    locale,
+    screenshotCounter,
+  );
   debugPrint('Finished capturing Drawer Open page via tap.');
   await Future<void>.delayed(const Duration(seconds: 1));
 
   // --- Step 3: Settings Pages (Standalone) ---
   debugPrint('Capturing Settings Pages (Standalone)...');
-  screenshotCounter =
-      await _captureSettingsPages(tester, binding, locale, screenshotCounter);
+  screenshotCounter = await _captureSettingsPages(
+    tester,
+    binding,
+    locale,
+    screenshotCounter,
+  );
   debugPrint('Finished capturing Settings Pages for $locale.');
   await Future<void>.delayed(const Duration(seconds: 1));
 
@@ -292,7 +315,11 @@ Future<void> _processLocale(WidgetTester tester,
   await tester.pumpWidget(const app.SanmillApp());
   await tester.pumpAndSettle(const Duration(seconds: 5));
   screenshotCounter = await _captureSetupPositionViaNavigation(
-      tester, binding, locale, screenshotCounter);
+    tester,
+    binding,
+    locale,
+    screenshotCounter,
+  );
   debugPrint('Finished capturing Setup Position Page.');
 }
 
@@ -336,8 +363,9 @@ Future<void> _takeAndSaveScreenshot(
   // Assuming baseName is locale_pageIdentifier
   final List<String> parts = baseName.split('_');
   final String localePart = '${parts[0]}_${parts[1]}'; // e.g., "en_US"
-  final String pageIdentifier =
-      parts.sublist(2).join('_'); // e.g., "home_screen"
+  final String pageIdentifier = parts
+      .sublist(2)
+      .join('_'); // e.g., "home_screen"
 
   final String filename =
       '${localePart}_${counterStr}_${pageIdentifier}_$timestamp.png';
@@ -361,8 +389,9 @@ Future<void> _takeAndSaveScreenshot(
       if (renderObject is RenderRepaintBoundary) {
         await tester.pumpAndSettle(const Duration(milliseconds: 500));
         final ui.Image image = await renderObject.toImage(pixelRatio: 3.0);
-        final ByteData? byteData =
-            await image.toByteData(format: ui.ImageByteFormat.png);
+        final ByteData? byteData = await image.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
 
         if (byteData != null) {
           final Uint8List buffer = byteData.buffer.asUint8List();
@@ -375,7 +404,8 @@ Future<void> _takeAndSaveScreenshot(
         }
       } else {
         debugPrint(
-            'Failed to find RenderRepaintBoundary for $nameWithCounter. Type: ${renderObject?.runtimeType}');
+          'Failed to find RenderRepaintBoundary for $nameWithCounter. Type: ${renderObject?.runtimeType}',
+        );
       }
 
       // Verify file exists - Use synchronous method
@@ -388,15 +418,17 @@ Future<void> _takeAndSaveScreenshot(
     debugPrint('Skipping screenshot on unsupported platform');
   }
   debugPrint(
-      '====== SCREENSHOT PROCESS COMPLETED FOR: $nameWithCounter.png ======');
+    '====== SCREENSHOT PROCESS COMPLETED FOR: $nameWithCounter.png ======',
+  );
 }
 
 // Function to build and take screenshots of settings pages without game navigation
 Future<int> _captureSettingsPages(
-    WidgetTester tester,
-    IntegrationTestWidgetsFlutterBinding binding,
-    Locale locale,
-    int currentCounter) async {
+  WidgetTester tester,
+  IntegrationTestWidgetsFlutterBinding binding,
+  Locale locale,
+  int currentCounter,
+) async {
   int counter = currentCounter; // Use local copy
 
   // Define page information including widgets and specific finders/scroll targets
@@ -448,8 +480,9 @@ Future<int> _captureSettingsPages(
         home: const AppearanceSettingsPage(),
       ),
       // --- START: Appearance Settings Theme Info ---
-      'scroll_target_theme':
-          find.byKey(const Key('color_settings_card_theme_settings_list_tile')),
+      'scroll_target_theme': find.byKey(
+        const Key('color_settings_card_theme_settings_list_tile'),
+      ),
       'base_name_theme':
           '${locale.languageCode}_${locale.countryCode}_appearance_settings_theme',
       // --- END: Appearance Settings Theme Info ---
@@ -478,11 +511,15 @@ Future<int> _captureSettingsPages(
       // --- Handle Rule Settings Page 2 (Scroll) ---
       if (pageInfo.containsKey('scroll_target_page2')) {
         debugPrint(
-            'Scrolling down Rule Settings page for page 2 screenshot...');
+          'Scrolling down Rule Settings page for page 2 screenshot...',
+        );
         final Finder scrollableFinder =
             pageInfo['scroll_target_page2'] as Finder;
-        expect(scrollableFinder, findsOneWidget,
-            reason: 'Scrollable not found for Rule Settings');
+        expect(
+          scrollableFinder,
+          findsOneWidget,
+          reason: 'Scrollable not found for Rule Settings',
+        );
         final Size size = tester.getSize(scrollableFinder);
         final Offset scrollVector = Offset(0, -size.height * 0.7);
         await tester.drag(scrollableFinder, scrollVector);
@@ -498,25 +535,35 @@ Future<int> _captureSettingsPages(
       // --- Handle Appearance Settings Theme (Scroll) ---
       if (pageInfo.containsKey('scroll_target_theme')) {
         debugPrint(
-            'Scrolling down Appearance Settings page to Theme section...');
+          'Scrolling down Appearance Settings page to Theme section...',
+        );
         final Finder themeFinder = pageInfo['scroll_target_theme'] as Finder;
         final Finder scrollableFinder = find.byType(Scrollable).first;
-        expect(scrollableFinder, findsOneWidget,
-            reason: 'Scrollable not found for Appearance Settings');
-        await tester.scrollUntilVisible(themeFinder, 100.0,
-            scrollable: scrollableFinder, maxScrolls: 20);
+        expect(
+          scrollableFinder,
+          findsOneWidget,
+          reason: 'Scrollable not found for Appearance Settings',
+        );
+        await tester.scrollUntilVisible(
+          themeFinder,
+          100.0,
+          scrollable: scrollableFinder,
+          maxScrolls: 20,
+        );
         await tester.pumpAndSettle(const Duration(seconds: 2));
 
         final String baseNameTheme = pageInfo['base_name_theme'] as String;
         counter++; // Increment before screenshot
         debugPrint(
-            'Taking screenshot #$counter for $baseNameTheme (Theme Section)');
+          'Taking screenshot #$counter for $baseNameTheme (Theme Section)',
+        );
         await _takeAndSaveScreenshot(binding, tester, baseNameTheme, counter);
         await Future<void>.delayed(const Duration(seconds: 1));
       }
     } catch (e, stackTrace) {
       debugPrint(
-          'Error processing settings page ${page.fileNamePart} for $locale: $e');
+        'Error processing settings page ${page.fileNamePart} for $locale: $e',
+      );
       debugPrint('$stackTrace');
     }
   }
@@ -532,13 +579,15 @@ Future<void> _placePiecesOnBoard(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
   debugPrint(
-      'Placing pieces on the board at specific positions (f4, d2, b4, d6, f2)');
+    'Placing pieces on the board at specific positions (f4, d2, b4, d6, f2)',
+  );
 
   // Find the game board widget
   final Finder boardFinder = find.byType(GameBoard);
   if (boardFinder.evaluate().isEmpty) {
     debugPrint(
-        'WARNING: GameBoard widget not found on home screen. Skipping piece placement.');
+      'WARNING: GameBoard widget not found on home screen. Skipping piece placement.',
+    );
     return;
   }
 
@@ -549,23 +598,27 @@ Future<void> _placePiecesOnBoard(WidgetTester tester) async {
   // Map logical positions to tap offsets (approximate based on visual layout)
   final List<MapEntry<String, Offset>> positionsInOrder =
       <MapEntry<String, ui.Offset>>[
-    MapEntry<String, ui.Offset>(
-        'd6', // Top Middle
-        Offset(center.dx, center.dy - size.height * 0.35)),
-    MapEntry<String, ui.Offset>(
-        'f4', // Middle Right (Logical position, not exact coordinate name)
-        Offset(center.dx + size.width * 0.35,
-            center.dy)), // Adjust multiplier as needed
-    MapEntry<String, ui.Offset>(
-        'b4', // Middle Left
-        Offset(center.dx - size.width * 0.35, center.dy)),
-    MapEntry<String, ui.Offset>(
-        'd2', // Bottom Middle
-        Offset(center.dx, center.dy + size.height * 0.35)),
-    MapEntry<String, ui.Offset>(
-        'f2', // Inner Top Right (or adjust position for visual appeal)
-        Offset(center.dx + size.width * 0.35, center.dy + size.height * 0.35)),
-  ];
+        MapEntry<String, ui.Offset>(
+          'd6', // Top Middle
+          Offset(center.dx, center.dy - size.height * 0.35),
+        ),
+        MapEntry<String, ui.Offset>(
+          'f4', // Middle Right (Logical position, not exact coordinate name)
+          Offset(center.dx + size.width * 0.35, center.dy),
+        ), // Adjust multiplier as needed
+        MapEntry<String, ui.Offset>(
+          'b4', // Middle Left
+          Offset(center.dx - size.width * 0.35, center.dy),
+        ),
+        MapEntry<String, ui.Offset>(
+          'd2', // Bottom Middle
+          Offset(center.dx, center.dy + size.height * 0.35),
+        ),
+        MapEntry<String, ui.Offset>(
+          'f2', // Inner Top Right (or adjust position for visual appeal)
+          Offset(center.dx + size.width * 0.35, center.dy + size.height * 0.35),
+        ),
+      ];
 
   // Tap each position with a delay between taps
   for (final MapEntry<String, Offset> entry in positionsInOrder) {
@@ -581,15 +634,17 @@ Future<void> _placePiecesOnBoard(WidgetTester tester) async {
   // Allow time for any final animations or UI updates to complete
   await tester.pumpAndSettle(const Duration(seconds: 2));
   debugPrint(
-      'Finished placing pieces on the board for home screen screenshot.');
+    'Finished placing pieces on the board for home screen screenshot.',
+  );
 }
 
 // --- REVISED: Function to capture the drawer open state by tapping the icon ---
 Future<int> _captureDrawerViaTap(
-    WidgetTester tester,
-    IntegrationTestWidgetsFlutterBinding binding,
-    Locale locale,
-    int currentCounter) async {
+  WidgetTester tester,
+  IntegrationTestWidgetsFlutterBinding binding,
+  Locale locale,
+  int currentCounter,
+) async {
   int counter = currentCounter; // Use local copy
   final String baseName =
       '${locale.languageCode}_${locale.countryCode}_drawer_open';
@@ -601,8 +656,11 @@ Future<int> _captureDrawerViaTap(
       of: find.byType(CustomDrawerIcon),
       matching: find.byType(IconButton),
     );
-    expect(drawerIconFinder, findsOneWidget,
-        reason: 'Drawer icon button not found');
+    expect(
+      drawerIconFinder,
+      findsOneWidget,
+      reason: 'Drawer icon button not found',
+    );
     debugPrint('Drawer icon button found.');
 
     // Tap the drawer icon
@@ -614,15 +672,20 @@ Future<int> _captureDrawerViaTap(
     counter++;
     debugPrint('Taking screenshot #$counter for $baseName');
     await _takeAndSaveScreenshot(
-        binding, tester, baseName, counter); // Pass updated counter
+      binding,
+      tester,
+      baseName,
+      counter,
+    ); // Pass updated counter
 
     await Future<void>.delayed(const Duration(seconds: 1));
 
     // Close the drawer
     debugPrint('Closing drawer...');
     final Size screenSize = tester.getSize(find.byType(MaterialApp));
-    await tester
-        .tapAt(Offset(screenSize.width * 0.85, screenSize.height * 0.5));
+    await tester.tapAt(
+      Offset(screenSize.width * 0.85, screenSize.height * 0.5),
+    );
     await tester.pumpAndSettle(const Duration(seconds: 2));
     debugPrint('Drawer closed.');
   } catch (e, stackTrace) {
@@ -635,10 +698,11 @@ Future<int> _captureDrawerViaTap(
 
 // --- REVISED: Function to capture the Setup Position Page via navigation ---
 Future<int> _captureSetupPositionViaNavigation(
-    WidgetTester tester,
-    IntegrationTestWidgetsFlutterBinding binding,
-    Locale locale,
-    int currentCounter) async {
+  WidgetTester tester,
+  IntegrationTestWidgetsFlutterBinding binding,
+  Locale locale,
+  int currentCounter,
+) async {
   int counter = currentCounter; // Use local copy
   final String baseName =
       '${locale.languageCode}_${locale.countryCode}_setup_position';
@@ -651,8 +715,11 @@ Future<int> _captureSetupPositionViaNavigation(
       of: find.byType(CustomDrawerIcon),
       matching: find.byType(IconButton),
     );
-    expect(drawerIconFinder, findsOneWidget,
-        reason: 'Drawer icon button not found for navigation');
+    expect(
+      drawerIconFinder,
+      findsOneWidget,
+      reason: 'Drawer icon button not found for navigation',
+    );
     await tester.tap(drawerIconFinder);
     await tester.pumpAndSettle(const Duration(seconds: 3));
     debugPrint('Drawer opened for navigation.');
@@ -662,15 +729,21 @@ Future<int> _captureSetupPositionViaNavigation(
     final String setupPositionText = S.of(context).setupPosition;
     debugPrint('Looking for drawer item text: "$setupPositionText"');
     final Finder textFinder = find.text(setupPositionText);
-    expect(textFinder, findsOneWidget,
-        reason: 'Text "$setupPositionText" not found in drawer');
+    expect(
+      textFinder,
+      findsOneWidget,
+      reason: 'Text "$setupPositionText" not found in drawer',
+    );
     debugPrint('Text "$setupPositionText" found.');
     final Finder inkWellFinder = find.ancestor(
       of: textFinder,
       matching: find.byType(InkWell),
     );
-    expect(inkWellFinder, findsOneWidget,
-        reason: 'Tappable InkWell for Setup Position drawer item not found');
+    expect(
+      inkWellFinder,
+      findsOneWidget,
+      reason: 'Tappable InkWell for Setup Position drawer item not found',
+    );
     debugPrint('Setup Position drawer item (InkWell) found.');
     await tester.tap(inkWellFinder);
     await tester.pumpAndSettle(const Duration(seconds: 8));
@@ -678,20 +751,28 @@ Future<int> _captureSetupPositionViaNavigation(
 
     // 3. Verify the SetupPositionToolbar is present
     final Finder toolbarFinder = find.byType(SetupPositionToolbar);
-    expect(toolbarFinder, findsOneWidget,
-        reason: 'SetupPositionToolbar should be visible');
+    expect(
+      toolbarFinder,
+      findsOneWidget,
+      reason: 'SetupPositionToolbar should be visible',
+    );
     debugPrint('SetupPositionToolbar found.');
 
     // 4. Take the screenshot
     counter++; // Increment before screenshot
     debugPrint('Taking screenshot #$counter for $baseName');
     await _takeAndSaveScreenshot(
-        binding, tester, baseName, counter); // Pass updated counter
+      binding,
+      tester,
+      baseName,
+      counter,
+    ); // Pass updated counter
 
     await Future<void>.delayed(const Duration(seconds: 1));
   } catch (e, stackTrace) {
     debugPrint(
-        'Error capturing Setup Position page via navigation for $locale: $e');
+      'Error capturing Setup Position page via navigation for $locale: $e',
+    );
     debugPrint('$stackTrace');
   } finally {
     GameController().reset(force: true);

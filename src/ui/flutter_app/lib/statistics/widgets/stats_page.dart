@@ -65,15 +65,14 @@ class StatisticsPage extends StatelessWidget {
       ),
       children: <Widget>[
         SettingsListTile.switchTile(
-            key: const Key('statistics_page_enable_statistics_switch'),
-            value: settings.isStatsEnabled,
-            onChanged: (bool value) {
-              DB().statsSettings = settings.copyWith(
-                isStatsEnabled: value,
-              );
-            },
-            titleString: S.of(context).enableStatistics,
-            subtitleString: S.of(context).enableStatistics_Detail),
+          key: const Key('statistics_page_enable_statistics_switch'),
+          value: settings.isStatsEnabled,
+          onChanged: (bool value) {
+            DB().statsSettings = settings.copyWith(isStatsEnabled: value);
+          },
+          titleString: S.of(context).enableStatistics,
+          subtitleString: S.of(context).enableStatistics_Detail,
+        ),
 
         // Reset statistics button
         ListTile(
@@ -163,8 +162,8 @@ class StatisticsPage extends StatelessWidget {
             child: Text(
               '${humanStats.rating}',
               style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    color: _getRatingColor(context, humanStats.rating),
-                  ),
+                color: _getRatingColor(context, humanStats.rating),
+              ),
             ),
           ),
         ),
@@ -173,8 +172,9 @@ class StatisticsPage extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest
-                .withValues(alpha: 0.3),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.3,
+            ),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Table(
@@ -197,8 +197,9 @@ class StatisticsPage extends StatelessWidget {
                         child: Text(
                           l10n.wins,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                       ),
@@ -211,8 +212,9 @@ class StatisticsPage extends StatelessWidget {
                         child: Text(
                           l10n.draws,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                       ),
@@ -225,8 +227,9 @@ class StatisticsPage extends StatelessWidget {
                         child: Text(
                           l10n.losses,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                       ),
@@ -289,8 +292,9 @@ class StatisticsPage extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest
-                .withValues(alpha: 0.3),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.3,
+            ),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Table(
@@ -313,8 +317,9 @@ class StatisticsPage extends StatelessWidget {
                         child: Text(
                           S.of(context).winRate, // Win rate
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                       ),
@@ -327,8 +332,9 @@ class StatisticsPage extends StatelessWidget {
                         child: Text(
                           S.of(context).drawRate, // Draw rate
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                       ),
@@ -341,8 +347,9 @@ class StatisticsPage extends StatelessWidget {
                         child: Text(
                           S.of(context).lossRate, // Loss rate
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                       ),
@@ -437,7 +444,9 @@ class StatisticsPage extends StatelessWidget {
   }
 
   Widget _buildAiDifficultyStatsCard(
-      BuildContext context, StatsSettings settings) {
+    BuildContext context,
+    StatsSettings settings,
+  ) {
     final S l10n = S.of(context);
     final ThemeData theme = Theme.of(context);
 
@@ -470,17 +479,20 @@ class StatisticsPage extends StatelessWidget {
               ),
               DataColumn(label: Center(child: Text('🔢'))), // Total
               DataColumn(
-                  label: Center(child: Text('⚪'))), // White (Human perspective)
+                label: Center(child: Text('⚪')),
+              ), // White (Human perspective)
               DataColumn(
-                  label: Center(child: Text('⚫'))), // Black (Human perspective)
+                label: Center(child: Text('⚫')),
+              ), // Black (Human perspective)
             ],
             rows: List<DataRow>.generate(
               30, // Display levels 1-30
               (int index) {
                 final int level = index + 1; // Levels start from 1
                 // Get the Statistics object for statistics (games played, wins, losses, draws, etc.)
-                final PlayerStats aiLvlStats =
-                    settings.getAiDifficultyStats(level);
+                final PlayerStats aiLvlStats = settings.getAiDifficultyStats(
+                  level,
+                );
 
                 // Get the actual fixed ELO rating for this AI level for display
                 final int fixedAiEloRating =
@@ -503,34 +515,31 @@ class StatisticsPage extends StatelessWidget {
                 return DataRow(
                   cells: <DataCell>[
                     // Level
-                    DataCell(Text(
-                      '$level',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )),
-                    // ELO rating - Use the fixed ELO for display
-                    DataCell(Text(
-                      '$fixedAiEloRating', // Display the fixed ELO rating
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _getRatingColor(context,
-                            fixedAiEloRating), // Color based on fixed ELO
+                    DataCell(
+                      Text(
+                        '$level',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    )),
+                    ),
+                    // ELO rating - Use the fixed ELO for display
+                    DataCell(
+                      Text(
+                        '$fixedAiEloRating', // Display the fixed ELO rating
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _getRatingColor(
+                            context,
+                            fixedAiEloRating,
+                          ), // Color based on fixed ELO
+                        ),
+                      ),
+                    ),
                     // Total stats with monospace font - from human perspective
-                    DataCell(Text(
-                      totalStats,
-                      style: monoStyle,
-                    )),
+                    DataCell(Text(totalStats, style: monoStyle)),
                     // White stats with monospace font - from human perspective
-                    DataCell(Text(
-                      whiteStats,
-                      style: monoStyle,
-                    )),
+                    DataCell(Text(whiteStats, style: monoStyle)),
                     // Black stats with monospace font - from human perspective
-                    DataCell(Text(
-                      blackStats,
-                      style: monoStyle,
-                    )),
+                    DataCell(Text(blackStats, style: monoStyle)),
                   ],
                 );
               },

@@ -34,11 +34,7 @@ class _FlyPieceCountModal extends StatelessWidget {
     ];
   }
 
-  Widget _buildRadioListTile(
-    BuildContext context,
-    String title,
-    int value,
-  ) {
+  Widget _buildRadioListTile(BuildContext context, String title, int value) {
     return Semantics(
       label: title,
       child: RadioListTile<int>(

@@ -34,8 +34,9 @@ class MoveListDialog extends StatelessWidget {
     final int movesCount = (mergedMoves.length + 1) ~/ 2;
     final int fenHeight = fen == null ? 2 : 14;
     // Determine if any move contains a comment block.
-    final bool globalHasComment =
-        mergedMoves.any((String move) => move.contains('{'));
+    final bool globalHasComment = mergedMoves.any(
+      (String move) => move.contains('{'),
+    );
 
     if (DB().generalSettings.screenReaderSupport) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -60,8 +61,10 @@ class MoveListDialog extends StatelessWidget {
         content: SizedBox(
           key: const Key('move_list_dialog_content_sized_box'),
           width: calculateNCharWidth(context, 32),
-          height:
-              calculateNCharWidth(context, mergedMoves.length * 2 + fenHeight),
+          height: calculateNCharWidth(
+            context,
+            mergedMoves.length * 2 + fenHeight,
+          ),
           child: ListView(
             key: const Key('move_list_dialog_list_view'),
             physics: const AlwaysScrollableScrollPhysics(),
@@ -183,8 +186,9 @@ class MoveListDialog extends StatelessWidget {
 
     final String whiteMove = mergedMoves[whiteIndex];
     // blackMove might be missing when the total moves are odd
-    final String? blackMove =
-        (blackIndex < mergedMoves.length) ? mergedMoves[blackIndex] : null;
+    final String? blackMove = (blackIndex < mergedMoves.length)
+        ? mergedMoves[blackIndex]
+        : null;
 
     // If both whiteMove and blackMove are empty (unlikely unless input is weird), skip the row
     if (whiteMove.isEmpty && (blackMove?.isEmpty ?? true)) {
@@ -201,10 +205,7 @@ class MoveListDialog extends StatelessWidget {
     // 3) Black move (optional)
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: Text(
-        '${index + 1}.',
-        style: _getTitleTextStyle(context),
-      ),
+      leading: Text('${index + 1}.', style: _getTitleTextStyle(context)),
       title: Row(
         children: <Widget>[
           // White move
@@ -225,12 +226,13 @@ class MoveListDialog extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 24.0),
                     child: Text(
                       whiteMove,
-                      style:
-                          _getMoveTextStyle(context, globalHasComment).copyWith(
-                        color: AppTheme.gamePageActionSheetTextColor,
-                        fontStyle:
-                            isParenWhite ? FontStyle.italic : FontStyle.normal,
-                      ),
+                      style: _getMoveTextStyle(context, globalHasComment)
+                          .copyWith(
+                            color: AppTheme.gamePageActionSheetTextColor,
+                            fontStyle: isParenWhite
+                                ? FontStyle.italic
+                                : FontStyle.normal,
+                          ),
                       textDirection: TextDirection.ltr,
                     ),
                   ),
@@ -260,11 +262,11 @@ class MoveListDialog extends StatelessWidget {
                         blackMove,
                         style: _getMoveTextStyle(context, globalHasComment)
                             .copyWith(
-                          color: AppTheme.gamePageActionSheetTextColor,
-                          fontStyle: isParenBlack
-                              ? FontStyle.italic
-                              : FontStyle.normal,
-                        ),
+                              color: AppTheme.gamePageActionSheetTextColor,
+                              fontStyle: isParenBlack
+                                  ? FontStyle.italic
+                                  : FontStyle.normal,
+                            ),
                         textDirection: TextDirection.ltr,
                       ),
                     ),
@@ -277,8 +279,12 @@ class MoveListDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _importGame(BuildContext context, List<String> mergedMoves,
-      String? fen, int clickedIndex) async {
+  Future<void> _importGame(
+    BuildContext context,
+    List<String> mergedMoves,
+    String? fen,
+    int clickedIndex,
+  ) async {
     String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
     if (fen != null) {
       ml = '$fen $ml';
@@ -321,8 +327,9 @@ class MoveListDialog extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      final String tip =
-          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+      final String tip = S
+          .of(context)
+          .cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
@@ -330,17 +337,17 @@ class MoveListDialog extends StatelessWidget {
 
   TextStyle _getTitleTextStyle(BuildContext context) {
     return Theme.of(context).textTheme.titleLarge!.copyWith(
-          color: AppTheme.gamePageActionSheetTextColor,
-          fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-          fontFamily: getMonospaceTitleTextStyle(context).fontFamily,
-        );
+      color: AppTheme.gamePageActionSheetTextColor,
+      fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+      fontFamily: getMonospaceTitleTextStyle(context).fontFamily,
+    );
   }
 
   TextStyle _getButtonTextStyle(BuildContext context) {
     return Theme.of(context).textTheme.titleMedium!.copyWith(
-          color: AppTheme.gamePageActionSheetTextColor,
-          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-        );
+      color: AppTheme.gamePageActionSheetTextColor,
+      fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+    );
   }
 }
 
@@ -459,8 +466,9 @@ List<String> mergeMoves(List<String> tokens) {
 
       // If we have comments, add exactly one space before the {..} block.
       if (current!.comments.isNotEmpty) {
-        final String joinedComments =
-            current!.comments.map(stripBraces).join(' ');
+        final String joinedComments = current!.comments
+            .map(stripBraces)
+            .join(' ');
         sb.write(' {$joinedComments}');
       }
 

@@ -36,17 +36,10 @@ const List<List<int>> _custodianDiagonalLines = <List<int>>[
   <int>[11, 19, 27],
 ];
 
-enum ActiveCaptureMode {
-  none,
-  mill,
-  custodian,
-  intervention,
-}
+enum ActiveCaptureMode { none, mill, custodian, intervention }
 
 class SquareAttribute {
-  SquareAttribute({
-    required this.placedPieceNumber,
-  });
+  SquareAttribute({required this.placedPieceNumber});
 
   int placedPieceNumber;
 }
@@ -65,10 +58,14 @@ class Position {
 
   GameResult? result;
 
-  final List<PieceColor> _board =
-      List<PieceColor>.filled(sqNumber, PieceColor.none);
-  final List<PieceColor> _grid =
-      List<PieceColor>.filled(7 * 7, PieceColor.none);
+  final List<PieceColor> _board = List<PieceColor>.filled(
+    sqNumber,
+    PieceColor.none,
+  );
+  final List<PieceColor> _grid = List<PieceColor>.filled(
+    7 * 7,
+    PieceColor.none,
+  );
 
   int placedPieceNumber = 0;
   int selectedPieceNumber = 0;
@@ -130,15 +127,15 @@ class Position {
 
   final Map<PieceColor, ActiveCaptureMode> _activeCaptureMode =
       <PieceColor, ActiveCaptureMode>{
-    PieceColor.white: ActiveCaptureMode.none,
-    PieceColor.black: ActiveCaptureMode.none,
-  };
+        PieceColor.white: ActiveCaptureMode.none,
+        PieceColor.black: ActiveCaptureMode.none,
+      };
 
   final Map<PieceColor, List<int>> _interventionPairMate =
       <PieceColor, List<int>>{
-    PieceColor.white: List<int>.filled(sqNumber, -1),
-    PieceColor.black: List<int>.filled(sqNumber, -1),
-  };
+        PieceColor.white: List<int>.filled(sqNumber, -1),
+        PieceColor.black: List<int>.filled(sqNumber, -1),
+      };
 
   final Map<PieceColor, int> _interventionForcedPartner = <PieceColor, int>{
     PieceColor.white: -1,
@@ -309,8 +306,9 @@ class Position {
     // Piece placement data
     for (int file = 1; file <= fileNumber; file++) {
       for (int rank = 1; rank <= rankNumber; rank++) {
-        final PieceColor piece =
-            pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
+        final PieceColor piece = pieceOnGrid(
+          squareToIndex[makeSquare(file, rank)]!,
+        );
         buffer.write(piece.string);
       }
 
@@ -351,8 +349,10 @@ class Position {
     buffer.writeSpace(_lastMillFromSquare[PieceColor.black]);
     buffer.writeSpace(_lastMillToSquare[PieceColor.black]);
 
-    buffer.writeSpace((_formedMillsBB[PieceColor.white]! << 32) |
-        _formedMillsBB[PieceColor.black]!);
+    buffer.writeSpace(
+      (_formedMillsBB[PieceColor.white]! << 32) |
+          _formedMillsBB[PieceColor.black]!,
+    );
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -363,7 +363,8 @@ class Position {
       Map<PieceColor, int> removalCount,
       Map<PieceColor, int> captureTargets,
     ) {
-      final bool hasData = (removalCount[PieceColor.white] ?? 0) > 0 ||
+      final bool hasData =
+          (removalCount[PieceColor.white] ?? 0) > 0 ||
           (removalCount[PieceColor.black] ?? 0) > 0 ||
           (captureTargets[PieceColor.white] ?? 0) != 0 ||
           (captureTargets[PieceColor.black] ?? 0) != 0;
@@ -407,14 +408,10 @@ class Position {
 
     appendCapture('c', _custodianRemovalCount, _custodianCaptureTargets);
     appendCapture('i', _interventionRemovalCount, _interventionCaptureTargets);
-    appendCapture(
-      'm',
-      _pendingMillRemovals,
-      <PieceColor, int>{
-        PieceColor.white: 0,
-        PieceColor.black: 0,
-      },
-    );
+    appendCapture('m', _pendingMillRemovals, <PieceColor, int>{
+      PieceColor.white: 0,
+      PieceColor.black: 0,
+    });
 
     logger.t("FEN is $buffer");
 
@@ -536,23 +533,27 @@ class Position {
     pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
 
     final String whitePieceToRemoveCountStr = fields[8];
-    pieceToRemoveCount[PieceColor.white] =
-        int.parse(whitePieceToRemoveCountStr);
+    pieceToRemoveCount[PieceColor.white] = int.parse(
+      whitePieceToRemoveCountStr,
+    );
 
     final String blackPieceToRemoveCountStr = fields[9];
-    pieceToRemoveCount[PieceColor.black] =
-        int.parse(blackPieceToRemoveCountStr);
+    pieceToRemoveCount[PieceColor.black] = int.parse(
+      blackPieceToRemoveCountStr,
+    );
 
     final String whiteLastMillFromSquareStr = fields[10];
-    _lastMillFromSquare[PieceColor.white] =
-        int.parse(whiteLastMillFromSquareStr);
+    _lastMillFromSquare[PieceColor.white] = int.parse(
+      whiteLastMillFromSquareStr,
+    );
 
     final String whiteLastMillToSquareStr = fields[11];
     _lastMillToSquare[PieceColor.white] = int.parse(whiteLastMillToSquareStr);
 
     final String blackLastMillFromSquareStr = fields[12];
-    _lastMillFromSquare[PieceColor.black] =
-        int.parse(blackLastMillFromSquareStr);
+    _lastMillFromSquare[PieceColor.black] = int.parse(
+      blackLastMillFromSquareStr,
+    );
 
     final String blackLastMillToSquareStr = fields[13];
     _lastMillToSquare[PieceColor.black] = int.parse(blackLastMillToSquareStr);
@@ -574,10 +575,12 @@ class Position {
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
     _record = null;
 
-    final Map<PieceColor, int> custodianCounts =
-        _parseCustodianFen(custodianData);
-    final Map<PieceColor, int> interventionCounts =
-        _parseInterventionFen(interventionData);
+    final Map<PieceColor, int> custodianCounts = _parseCustodianFen(
+      custodianData,
+    );
+    final Map<PieceColor, int> interventionCounts = _parseInterventionFen(
+      interventionData,
+    );
     final Map<PieceColor, int> millCounts = _parseMillFen(millData);
 
     final bool hasMillData = millData.isNotEmpty;
@@ -598,7 +601,8 @@ class Position {
                 );
 
           logger.d(
-              'FEN loading: Initializing removal state for color $color: mill=$millRemovals, custodian=$custodianCount, intervention=$interventionCount (total pieceToRemoveCount=${pieceToRemoveCount[color]})');
+            'FEN loading: Initializing removal state for color $color: mill=$millRemovals, custodian=$custodianCount, intervention=$interventionCount (total pieceToRemoveCount=${pieceToRemoveCount[color]})',
+          );
 
           _initializeRemovalState(
             color,
@@ -694,7 +698,8 @@ class Position {
     if (phrase == 'm' &&
         whitePieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
       logger.e(
-          'Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
+        'Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
+      );
       return false;
     }
     if (whitePieceOnBoard < 0 ||
@@ -723,7 +728,8 @@ class Position {
     if (phrase == 'm' &&
         blackPieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
       logger.e(
-          'Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
+        'Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
+      );
       return false;
     }
     if (blackPieceOnBoard < 0 ||
@@ -742,8 +748,9 @@ class Position {
 
     // Parts 4-7: Counts on and off board
     List<int> counts = parts.getRange(4, 8).map(int.parse).toList();
-    if (counts.any((int count) =>
-            count < 0 || count > DB().ruleSettings.piecesCount) ||
+    if (counts.any(
+          (int count) => count < 0 || count > DB().ruleSettings.piecesCount,
+        ) ||
         counts.every((int count) => count == 0)) {
       logger.e('Invalid counts. Must be between 0 and 12 and not all zero.');
       return false;
@@ -939,7 +946,7 @@ class Position {
     return false;
   }
 
-///////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////
 
   bool _putPiece(int s) {
     final PieceColor us = _sideToMove;
@@ -999,8 +1006,9 @@ class Position {
       if (pieceInHandCount[us] != null) {
         if (pieceInHandCount[us] == 0) {
           // TODO: Maybe setup invalid position and tap the board.
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear("FEN: ${GameController().position.fen}");
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            "FEN: ${GameController().position.fen}",
+          );
           return false;
         }
         pieceInHandCount[us] = pieceInHandCount[us]! - 1;
@@ -1032,11 +1040,17 @@ class Position {
       _updateKey(s);
 
       final List<int> custodianCaptured = <int>[];
-      final bool hasCustodianCapture =
-          _checkCustodianCapture(s, us, custodianCaptured);
+      final bool hasCustodianCapture = _checkCustodianCapture(
+        s,
+        us,
+        custodianCaptured,
+      );
       final List<int> interventionCaptured = <int>[];
-      final bool hasInterventionCapture =
-          _checkInterventionCapture(s, us, interventionCaptured);
+      final bool hasInterventionCapture = _checkInterventionCapture(
+        s,
+        us,
+        interventionCaptured,
+      );
 
       final int n = _millsCount(s);
 
@@ -1061,8 +1075,11 @@ class Position {
 
         int interventionRemoval = 0;
         if (hasInterventionCapture) {
-          interventionRemoval =
-              _activateInterventionCapture(us, s, interventionCaptured);
+          interventionRemoval = _activateInterventionCapture(
+            us,
+            s,
+            interventionCaptured,
+          );
         } else {
           _setInterventionCaptureState(us, 0, 0);
         }
@@ -1160,13 +1177,20 @@ class Position {
 
           int interventionRemoval = 0;
           if (hasInterventionCapture) {
-            interventionRemoval =
-                _activateInterventionCapture(us, s, interventionCaptured);
+            interventionRemoval = _activateInterventionCapture(
+              us,
+              s,
+              interventionCaptured,
+            );
           }
 
           if (custodianRemoval > 0 || interventionRemoval > 0) {
             _initializeRemovalState(
-                us, /*mill=*/ 0, custodianRemoval, interventionRemoval);
+              us,
+              /*mill=*/ 0,
+              custodianRemoval,
+              interventionRemoval,
+            );
             return true;
           }
 
@@ -1183,13 +1207,20 @@ class Position {
 
           int interventionRemoval = 0;
           if (hasInterventionCapture) {
-            interventionRemoval =
-                _activateInterventionCapture(us, s, interventionCaptured);
+            interventionRemoval = _activateInterventionCapture(
+              us,
+              s,
+              interventionCaptured,
+            );
           }
 
           if (custodianRemoval > 0 || interventionRemoval > 0) {
             _initializeRemovalState(
-                us, /*mill=*/ 0, custodianRemoval, interventionRemoval);
+              us,
+              /*mill=*/ 0,
+              custodianRemoval,
+              interventionRemoval,
+            );
             return true; // Execute special capture; mill marking handled at phase end
           }
 
@@ -1224,9 +1255,7 @@ class Position {
               return true;
             } else {
               if (pieceInHandCount[_them] == 0) {
-                logger.e(
-                  "[position] putPiece: pieceInHandCount[_them] is 0.",
-                );
+                logger.e("[position] putPiece: pieceInHandCount[_them] is 0.");
               }
               pieceInHandCount[_them] = pieceInHandCount[_them]! - 1;
 
@@ -1285,8 +1314,10 @@ class Position {
             } else {
               int custodianRemoval = 0;
               if (hasCustodianCapture) {
-                custodianRemoval =
-                    _activateCustodianCapture(us, custodianCaptured);
+                custodianRemoval = _activateCustodianCapture(
+                  us,
+                  custodianCaptured,
+                );
                 if (custodianRemoval <= 0) {
                   _setCustodianCaptureState(us, 0, 0);
                 }
@@ -1296,8 +1327,11 @@ class Position {
 
               int interventionRemoval = 0;
               if (hasInterventionCapture) {
-                interventionRemoval =
-                    _activateInterventionCapture(us, s, interventionCaptured);
+                interventionRemoval = _activateInterventionCapture(
+                  us,
+                  s,
+                  interventionCaptured,
+                );
                 if (interventionRemoval <= 0) {
                   _setInterventionCaptureState(us, 0, 0);
                 }
@@ -1306,7 +1340,11 @@ class Position {
               }
 
               _initializeRemovalState(
-                  us, rm, custodianRemoval, interventionRemoval);
+                us,
+                rm,
+                custodianRemoval,
+                interventionRemoval,
+              );
             }
           }
           return true;
@@ -1368,9 +1406,7 @@ class Position {
 
     if (_currentSquare[sideToMove] == 0) {
       // TODO: Find the root cause and fix it
-      logger.e(
-        "[position] putPiece: _currentSquare[sideToMove] is 0.",
-      );
+      logger.e("[position] putPiece: _currentSquare[sideToMove] is 0.");
       return false;
     }
     _board[_currentSquare[sideToMove]!] =
@@ -1388,11 +1424,17 @@ class Position {
 
     final int n = _millsCount(s);
     final List<int> custodianCaptured = <int>[];
-    final bool hasCustodianCapture =
-        _checkCustodianCapture(s, sideToMove, custodianCaptured);
+    final bool hasCustodianCapture = _checkCustodianCapture(
+      s,
+      sideToMove,
+      custodianCaptured,
+    );
     final List<int> interventionCaptured = <int>[];
-    final bool hasInterventionCapture =
-        _checkInterventionCapture(s, sideToMove, interventionCaptured);
+    final bool hasInterventionCapture = _checkInterventionCapture(
+      s,
+      sideToMove,
+      interventionCaptured,
+    );
 
     if (n == 0) {
       // If no mill during Moving phase
@@ -1401,8 +1443,10 @@ class Position {
 
       int custodianRemoval = 0;
       if (hasCustodianCapture) {
-        custodianRemoval =
-            _activateCustodianCapture(sideToMove, custodianCaptured);
+        custodianRemoval = _activateCustodianCapture(
+          sideToMove,
+          custodianCaptured,
+        );
       } else {
         _setCustodianCaptureState(sideToMove, 0, 0);
       }
@@ -1445,8 +1489,10 @@ class Position {
     } else {
       // If forming mill during Moving phase
       if (DB().ruleSettings.restrictRepeatedMillsFormation) {
-        final int m =
-            _potentialMillsCount(_currentSquare[sideToMove]!, sideToMove);
+        final int m = _potentialMillsCount(
+          _currentSquare[sideToMove]!,
+          sideToMove,
+        );
         if (_currentSquare[sideToMove] == _lastMillToSquare[sideToMove] &&
             s == _lastMillFromSquare[sideToMove] &&
             m > 0) {
@@ -1468,8 +1514,10 @@ class Position {
 
       int custodianRemoval = 0;
       if (hasCustodianCapture) {
-        custodianRemoval =
-            _activateCustodianCapture(sideToMove, custodianCaptured);
+        custodianRemoval = _activateCustodianCapture(
+          sideToMove,
+          custodianCaptured,
+        );
         if (custodianRemoval <= 0) {
           _setCustodianCaptureState(sideToMove, 0, 0);
         }
@@ -1542,7 +1590,8 @@ class Position {
 
       final bool hasPendingCustodian =
           custodianCount() > 0 && _custodianCaptureTargets[sideToMove]! != 0;
-      final bool hasPendingIntervention = interventionCount() > 0 &&
+      final bool hasPendingIntervention =
+          interventionCount() > 0 &&
           _interventionCaptureTargets[sideToMove]! != 0;
 
       if (mode == ActiveCaptureMode.none) {
@@ -1620,17 +1669,14 @@ class Position {
           }
           forcedPartner = partner;
           _interventionForcedPartner[sideToMove] = partner;
-          _setInterventionCaptureState(
-            sideToMove,
-            squareBb(partner),
-            1,
-          );
+          _setInterventionCaptureState(sideToMove, squareBb(partner), 1);
           if (quota < 2) {
             quota = 2;
           }
           _removalQuota[sideToMove] = quota;
-          pieceToRemoveCount[sideToMove] =
-              quota - performed > 0 ? quota - performed : 0;
+          pieceToRemoveCount[sideToMove] = quota - performed > 0
+              ? quota - performed
+              : 0;
         } else {
           if (forcedPartner != s) {
             return const IllegalAction();
@@ -1640,8 +1686,9 @@ class Position {
       } else if (mode == ActiveCaptureMode.custodian && performed == 0) {
         quota = custodianCount(); // Only custodian quota, no mill mixing
         _removalQuota[sideToMove] = quota;
-        pieceToRemoveCount[sideToMove] =
-            quota - performed > 0 ? quota - performed : 0;
+        pieceToRemoveCount[sideToMove] = quota - performed > 0
+            ? quota - performed
+            : 0;
       }
 
       _activeCaptureMode[sideToMove] = mode;
@@ -1687,7 +1734,8 @@ class Position {
 
     final ActiveCaptureMode currentMode =
         _activeCaptureMode[sideToMove] ?? ActiveCaptureMode.none;
-    final bool specialCaptureActive = isCaptureTarget &&
+    final bool specialCaptureActive =
+        isCaptureTarget &&
         (currentMode == ActiveCaptureMode.intervention ||
             currentMode == ActiveCaptureMode.custodian);
 
@@ -1829,13 +1877,13 @@ class Position {
 
     final bool invariant =
         DB().ruleSettings.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase
+                .removeOpponentsPieceFromHandThenOpponentsTurn ||
+        (DB().ruleSettings.millFormationActionInPlacingPhase ==
                 MillFormationActionInPlacingPhase
-                    .removeOpponentsPieceFromHandThenOpponentsTurn ||
-            (DB().ruleSettings.millFormationActionInPlacingPhase ==
-                    MillFormationActionInPlacingPhase
-                        .removeOpponentsPieceFromHandThenYourTurn &&
-                DB().ruleSettings.mayRemoveMultiple == true) ||
-            DB().ruleSettings.mayMoveInPlacingPhase == true;
+                    .removeOpponentsPieceFromHandThenYourTurn &&
+            DB().ruleSettings.mayRemoveMultiple == true) ||
+        DB().ruleSettings.mayMoveInPlacingPhase == true;
 
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
@@ -1853,9 +1901,11 @@ class Position {
       }
     }
 
-    setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true
-        ? PieceColor.black
-        : PieceColor.white);
+    setSideToMove(
+      DB().ruleSettings.isDefenderMoveFirst == true
+          ? PieceColor.black
+          : PieceColor.white,
+    );
 
     return true;
   }
@@ -1963,8 +2013,10 @@ class Position {
   }
 
   void _removeMarkedStones() {
-    assert(DB().ruleSettings.millFormationActionInPlacingPhase ==
-        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces);
+    assert(
+      DB().ruleSettings.millFormationActionInPlacingPhase ==
+          MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+    );
 
     int s = 0;
 
@@ -2118,8 +2170,9 @@ class Position {
 
     final int millAllowed = millRemovals > 0 ? millRemovals : 0;
     final int custodianAllowed = custodianRemovals > 0 ? custodianRemovals : 0;
-    final int interventionAllowed =
-        interventionRemovals > 0 ? interventionRemovals : 0;
+    final int interventionAllowed = interventionRemovals > 0
+        ? interventionRemovals
+        : 0;
 
     final int totalAllowed = max(
       millAllowed,
@@ -2141,11 +2194,7 @@ class Position {
     }
   }
 
-  void _setCustodianCaptureState(
-    PieceColor color,
-    int targets,
-    int count,
-  ) {
+  void _setCustodianCaptureState(PieceColor color, int targets, int count) {
     if (color != PieceColor.white && color != PieceColor.black) {
       return;
     }
@@ -2179,11 +2228,7 @@ class Position {
     _custodianRemovalCount[color] = count;
   }
 
-  void _setInterventionCaptureState(
-    PieceColor color,
-    int targets,
-    int count,
-  ) {
+  void _setInterventionCaptureState(PieceColor color, int targets, int count) {
     if (color != PieceColor.white && color != PieceColor.black) {
       return;
     }
@@ -2222,10 +2267,7 @@ class Position {
     }
   }
 
-  int _activateCustodianCapture(
-    PieceColor color,
-    List<int> capturedPieces,
-  ) {
+  int _activateCustodianCapture(PieceColor color, List<int> capturedPieces) {
     if (capturedPieces.isEmpty) {
       _setCustodianCaptureState(color, 0, 0);
       return 0;
@@ -2236,8 +2278,9 @@ class Position {
       targets |= squareBb(square);
     }
 
-    final int allowedRemovals =
-        DB().ruleSettings.mayRemoveMultiple ? capturedPieces.length : 1;
+    final int allowedRemovals = DB().ruleSettings.mayRemoveMultiple
+        ? capturedPieces.length
+        : 1;
 
     _setCustodianCaptureState(color, targets, allowedRemovals);
 
@@ -2317,11 +2360,7 @@ class Position {
     return allowedRemovals;
   }
 
-  bool _checkCustodianCapture(
-    int sq,
-    PieceColor us,
-    List<int> capturedPieces,
-  ) {
+  bool _checkCustodianCapture(int sq, PieceColor us, List<int> capturedPieces) {
     capturedPieces.clear();
 
     final RuleSettings ruleSettings = DB().ruleSettings;
@@ -2721,7 +2760,7 @@ class Position {
     if (data.isEmpty) {
       for (final PieceColor color in <PieceColor>[
         PieceColor.white,
-        PieceColor.black
+        PieceColor.black,
       ]) {
         _setCustodianCaptureState(color, 0, 0);
       }
@@ -2759,8 +2798,9 @@ class Position {
         continue;
       }
 
-      final int? parsedCount =
-          int.tryParse(segment.substring(2, secondDash).trim());
+      final int? parsedCount = int.tryParse(
+        segment.substring(2, secondDash).trim(),
+      );
       if (parsedCount == null) {
         continue;
       }
@@ -2793,7 +2833,7 @@ class Position {
 
     for (final PieceColor color in <PieceColor>[
       PieceColor.white,
-      PieceColor.black
+      PieceColor.black,
     ]) {
       if (hasColor[color]!) {
         _setCustodianCaptureState(color, targets[color]!, counts[color]!);
@@ -2822,7 +2862,7 @@ class Position {
     if (data.isEmpty) {
       for (final PieceColor color in <PieceColor>[
         PieceColor.white,
-        PieceColor.black
+        PieceColor.black,
       ]) {
         _setInterventionCaptureState(color, 0, 0);
       }
@@ -2860,8 +2900,9 @@ class Position {
         continue;
       }
 
-      final int? parsedCount =
-          int.tryParse(segment.substring(2, secondDash).trim());
+      final int? parsedCount = int.tryParse(
+        segment.substring(2, secondDash).trim(),
+      );
       if (parsedCount == null) {
         continue;
       }
@@ -2894,7 +2935,7 @@ class Position {
 
     for (final PieceColor color in <PieceColor>[
       PieceColor.white,
-      PieceColor.black
+      PieceColor.black,
     ]) {
       if (hasColor[color]!) {
         _setInterventionCaptureState(color, targets[color]!, counts[color]!);
@@ -2915,7 +2956,7 @@ class Position {
     if (data.isEmpty) {
       for (final PieceColor color in <PieceColor>[
         PieceColor.white,
-        PieceColor.black
+        PieceColor.black,
       ]) {
         _pendingMillRemovals[color] = 0;
       }
@@ -2964,7 +3005,7 @@ class Position {
 
     for (final PieceColor color in <PieceColor>[
       PieceColor.white,
-      PieceColor.black
+      PieceColor.black,
     ]) {
       _pendingMillRemovals[color] = counts[color] ?? 0;
     }
@@ -2995,7 +3036,7 @@ class Position {
         final List<int> mill = <int>[
           _millTable[to][ld][0],
           _millTable[to][ld][1],
-          to
+          to,
         ];
 
         if (color == _board[mill[0]] && color == _board[mill[1]]) {
@@ -3241,8 +3282,8 @@ extension SetupPosition on Position {
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
     _lastMillFromSquare[PieceColor.white] =
         _lastMillFromSquare[PieceColor.black] = 0;
-    _lastMillToSquare[PieceColor.white] =
-        _lastMillToSquare[PieceColor.black] = 0;
+    _lastMillToSquare[PieceColor.white] = _lastMillToSquare[PieceColor.black] =
+        0;
     _formedMillsBB[PieceColor.white] = _formedMillsBB[PieceColor.black] = 0;
     _formedMills[PieceColor.white] = <List<int>>[];
     _formedMills[PieceColor.black] = <List<int>>[];
@@ -3318,9 +3359,7 @@ extension SetupPosition on Position {
 
     if (pieceOnBoardCount[PieceColor.white]! < 0 ||
         pieceOnBoardCount[PieceColor.black]! < 0) {
-      logger.e(
-        "[position] copyWith: pieceOnBoardCount is less than 0.",
-      );
+      logger.e("[position] copyWith: pieceOnBoardCount is less than 0.");
     }
 
     pieceInHandCount[PieceColor.white] =
@@ -3330,9 +3369,7 @@ extension SetupPosition on Position {
 
     if (pieceInHandCount[PieceColor.white]! < 0 ||
         pieceInHandCount[PieceColor.black]! < 0) {
-      logger.e(
-        "[position] copyWith: pieceInHandCount is less than 0.",
-      );
+      logger.e("[position] copyWith: pieceInHandCount is less than 0.");
     }
 
     pieceToRemoveCount[PieceColor.white] =
@@ -3425,9 +3462,11 @@ extension SetupPosition on Position {
     _board[s] = piece;
 
     //GameController().gameInstance.focusIndex = squareToIndex[s];
-    SoundManager().playTone(GameController().isPieceMarkedInPositionSetup
-        ? Sound.remove
-        : Sound.place);
+    SoundManager().playTone(
+      GameController().isPieceMarkedInPositionSetup
+          ? Sound.remove
+          : Sound.place,
+    );
 
     GameController().setupPositionNotifier.updateIcons();
 

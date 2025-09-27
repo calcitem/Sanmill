@@ -6,10 +6,7 @@
 part of 'package:sanmill/general_settings/widgets/general_settings_page.dart';
 
 class _DurationModal extends StatelessWidget {
-  const _DurationModal({
-    required this.duration,
-    required this.onChanged,
-  });
+  const _DurationModal({required this.duration, required this.onChanged});
 
   final int duration;
   final Function(int?)? onChanged;
@@ -37,11 +34,7 @@ class _DurationModal extends StatelessWidget {
     ];
   }
 
-  Widget _buildRadioListTile(
-    BuildContext context,
-    String title,
-    int value,
-  ) {
+  Widget _buildRadioListTile(BuildContext context, String title, int value) {
     return Semantics(
       key: Key('duration_modal_radio_list_tile_semantics_$value'),
       label: title,

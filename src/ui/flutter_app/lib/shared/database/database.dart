@@ -128,8 +128,9 @@ class Database {
     Hive.registerAdapter<SoundTheme>(SoundThemeAdapter());
     Hive.registerAdapter<LlmProvider>(LlmProviderAdapter());
     Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
-    _generalSettingsBox =
-        await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);
+    _generalSettingsBox = await Hive.openBox<GeneralSettings>(
+      _generalSettingsBoxName,
+    );
   }
 
   /// Listens to changes inside the settings Box
@@ -151,7 +152,8 @@ class Database {
   /// Initializes the [RuleSettings] reference
   static Future<void> _initRuleSettings() async {
     Hive.registerAdapter<MillFormationActionInPlacingPhase>(
-        MillFormationActionInPlacingPhaseAdapter());
+      MillFormationActionInPlacingPhaseAdapter(),
+    );
     Hive.registerAdapter<BoardFullAction>(BoardFullActionAdapter());
     Hive.registerAdapter<StalemateAction>(StalemateActionAdapter());
     Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
@@ -193,8 +195,9 @@ class Database {
     Hive.registerAdapter<PointPaintingStyle>(PointPaintingStyleAdapter());
     Hive.registerAdapter<MovesViewLayout>(MovesViewLayoutAdapter());
     Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
-    _displaySettingsBox =
-        await Hive.openBox<DisplaySettings>(_displaySettingsBoxName);
+    _displaySettingsBox = await Hive.openBox<DisplaySettings>(
+      _displaySettingsBoxName,
+    );
   }
 
   /// Listens to changes inside the settings Box
@@ -215,8 +218,9 @@ class Database {
     Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
 
     try {
-      _colorSettingsBox =
-          await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
+      _colorSettingsBox = await Hive.openBox<ColorSettings>(
+        _colorSettingsBoxName,
+      );
     } catch (e) {
       logger.e('Initialization failed: $e');
       // If the initialization fails, try to delete and recreate the box
@@ -228,8 +232,9 @@ class Database {
     try {
       // Close the box if it is open
       if (Hive.isBoxOpen(_colorSettingsBoxName)) {
-        final Box<ColorSettings> box =
-            Hive.box<ColorSettings>(_colorSettingsBoxName);
+        final Box<ColorSettings> box = Hive.box<ColorSettings>(
+          _colorSettingsBoxName,
+        );
         await box.close();
         logger.i('Box closed successfully.');
       }
@@ -244,8 +249,9 @@ class Database {
       await Future<void>.delayed(const Duration(seconds: 1));
 
       // Recreate the box
-      _colorSettingsBox =
-          await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
+      _colorSettingsBox = await Hive.openBox<ColorSettings>(
+        _colorSettingsBoxName,
+      );
       logger.i('Box has been recreated successfully.');
     } catch (e) {
       logger.e('Failed to delete or recreate box: $e');
@@ -302,8 +308,9 @@ class Database {
   static Future<void> _initStatsSettings() async {
     Hive.registerAdapter<PlayerStats>(PlayerStatsAdapter());
     Hive.registerAdapter<StatsSettings>(StatsSettingsAdapter());
-    _statsSettingsBox =
-        await Hive.openBox<StatsSettings>(_statsSettingsBoxName);
+    _statsSettingsBox = await Hive.openBox<StatsSettings>(
+      _statsSettingsBoxName,
+    );
   }
 
   /// Listens to changes inside the StatsSettings Box

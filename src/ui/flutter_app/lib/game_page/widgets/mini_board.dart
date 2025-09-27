@@ -58,10 +58,7 @@ class MiniBoardState extends State<MiniBoard>
 
     // Create a tween to scale between 0.9 and 1.1, applying a smooth curve.
     _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
-      CurvedAnimation(
-        parent: _pulseController,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
   }
 
@@ -178,8 +175,9 @@ class MiniBoardState extends State<MiniBoard>
           children: <Widget>[
             // The board background and drawing are rendered by CustomPaint.
             ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(DB().displaySettings.boardCornerRadius),
+              borderRadius: BorderRadius.circular(
+                DB().displaySettings.boardCornerRadius,
+              ),
               child: Container(
                 color: DB().colorSettings.boardBackgroundColor,
                 child: CustomPaint(
@@ -222,10 +220,7 @@ class MiniBoardState extends State<MiniBoard>
 /// - Highlight arrow from origin to destination if moving
 /// - Highlight X on removed piece if removing
 class MiniBoardPainter extends CustomPainter {
-  MiniBoardPainter({
-    required this.boardLayout,
-    this.extMove,
-  }) {
+  MiniBoardPainter({required this.boardLayout, this.extMove}) {
     boardState = _parseBoardLayout(boardLayout);
   }
 
@@ -410,10 +405,7 @@ class MiniBoardPainter extends CustomPainter {
       if (pieceImage != null) {
         paintImage(
           canvas: canvas,
-          rect: Rect.fromCircle(
-            center: pos,
-            radius: circleInnerRadius,
-          ),
+          rect: Rect.fromCircle(center: pos, radius: circleInnerRadius),
           image: pieceImage,
           fit: BoxFit.cover,
         );
@@ -421,9 +413,7 @@ class MiniBoardPainter extends CustomPainter {
         // Draw shadow similar to large board when no piece image is used.
         canvas.drawShadow(
           Path()
-            ..addOval(
-              Rect.fromCircle(center: pos, radius: circleOuterRadius),
-            ),
+            ..addOval(Rect.fromCircle(center: pos, radius: circleOuterRadius)),
           Colors.black,
           2,
           true,
@@ -522,11 +512,8 @@ class MiniBoardPainter extends CustomPainter {
           final Color c = (fromPc == PieceColor.white)
               ? DB().colorSettings.whitePieceColor.withValues(alpha: 0.3)
               : (fromPc == PieceColor.black)
-                  ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.3)
-                  : DB()
-                      .colorSettings
-                      .pieceHighlightColor
-                      .withValues(alpha: 0.3);
+              ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.3)
+              : DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3);
           blurPaint.color = c;
 
           // radius ~ pieceRadius * 0.8
@@ -571,7 +558,12 @@ class MiniBoardPainter extends CustomPainter {
 
           canvas.drawLine(newFromPos, newToPos, highlightPaint);
           _drawArrowHead(
-              canvas, newFromPos, newToPos, highlightPaint, arrowSize);
+            canvas,
+            newFromPos,
+            newToPos,
+            highlightPaint,
+            arrowSize,
+          );
         }
         break;
 
@@ -668,7 +660,12 @@ class MiniBoardPainter extends CustomPainter {
 
   /// Draw a small arrowhead at the "end" of the move line.
   void _drawArrowHead(
-      Canvas canvas, Offset from, Offset to, Paint paint, double arrowSize) {
+    Canvas canvas,
+    Offset from,
+    Offset to,
+    Paint paint,
+    double arrowSize,
+  ) {
     final double angle = math.atan2(to.dy - from.dy, to.dx - from.dx);
 
     final Offset arrowP1 = Offset(
@@ -692,7 +689,11 @@ class MiniBoardPainter extends CustomPainter {
   /// Draw a highlight X at the given position, with size given by [xSize].
   /// We create two diagonal lines crossing at [center].
   void _drawHighlightX(
-      Canvas canvas, Offset center, double xSize, Paint paint) {
+    Canvas canvas,
+    Offset center,
+    double xSize,
+    Paint paint,
+  ) {
     final double half = xSize / 2;
     final Offset topLeft = Offset(center.dx - half, center.dy - half);
     final Offset topRight = Offset(center.dx + half, center.dy - half);

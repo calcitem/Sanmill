@@ -20,8 +20,10 @@ class Game {
   static const String _logTag = "[game]";
 
   bool get isAiSideToMove {
-    assert(GameController().position.sideToMove == PieceColor.white ||
-        GameController().position.sideToMove == PieceColor.black);
+    assert(
+      GameController().position.sideToMove == PieceColor.white ||
+          GameController().position.sideToMove == PieceColor.black,
+    );
     return getPlayerByColor(GameController().position.sideToMove).isAi;
   }
 
@@ -130,8 +132,9 @@ class Game {
     } else if (gameMode == GameMode.humanVsLAN) {
       // Notify LAN opponent of game over
       if (GameController().networkService!.isConnected) {
-        GameController()
-            .sendLanMove("gameOver:${GameController().position.winner}");
+        GameController().sendLanMove(
+          "gameOver:${GameController().position.winner}",
+        );
       }
     }
 
@@ -151,7 +154,8 @@ class Game {
 
   void _logStat() {
     final Position position = GameController().position;
-    final int total = Position.score[PieceColor.white]! +
+    final int total =
+        Position.score[PieceColor.white]! +
         Position.score[PieceColor.black]! +
         Position.score[PieceColor.draw]!;
 
@@ -164,7 +168,8 @@ class Game {
       drawRate = Position.score[PieceColor.draw]! * 100 / total;
     }
 
-    final String scoreInfo = "Score: ${position.scoreString}\ttotal:"
+    final String scoreInfo =
+        "Score: ${position.scoreString}\ttotal:"
         " $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
     logger.i("$_logTag $scoreInfo");

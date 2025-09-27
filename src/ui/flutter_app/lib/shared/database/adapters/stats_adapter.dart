@@ -12,8 +12,7 @@ part of 'adapters.dart';
 /// automatically by the [toJson] / [fromJson] methods.
 class PlayerStatsAdapter extends TypeAdapter<PlayerStats> {
   @override
-  final int typeId =
-      kPlayerStatsTypeId; // Must match typeId used in PlayerStats
+  final int typeId = kPlayerStatsTypeId; // Must match typeId used in PlayerStats
 
   @override
   PlayerStats read(BinaryReader reader) {
@@ -33,8 +32,7 @@ class PlayerStatsAdapter extends TypeAdapter<PlayerStats> {
 /// to [PlayerStatsAdapter].
 class StatsSettingsAdapter extends TypeAdapter<StatsSettings> {
   @override
-  final int typeId =
-      kStatsSettingsTypeId; // Must match typeId used in StatsSettings
+  final int typeId = kStatsSettingsTypeId; // Must match typeId used in StatsSettings
 
   @override
   StatsSettings read(BinaryReader reader) {

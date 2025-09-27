@@ -116,9 +116,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
 
       logger.e("Error getting network interfaces: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error detecting network interfaces: $e"),
-        ),
+        SnackBar(content: Text("Error detecting network interfaces: $e")),
       );
     }
   }
@@ -218,14 +216,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
           _protocolMismatchMessage = message;
           _isConnecting = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              message,
-              softWrap: true,
-            ),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message, softWrap: true)));
       }
     };
 
@@ -238,10 +231,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              S.of(context).serverIsStopped,
-              softWrap: true,
-            ),
+            content: Text(S.of(context).serverIsStopped, softWrap: true),
           ),
         );
       }
@@ -321,8 +311,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
 
       // Show only the single selected IP in _hostInfo
       setState(() {
-        _hostInfo =
-            _selectedIP != null ? "${_selectedIP!}:$port" : "Unknown:$port";
+        _hostInfo = _selectedIP != null
+            ? "${_selectedIP!}:$port"
+            : "Unknown:$port";
       });
     } catch (e) {
       if (mounted) {
@@ -417,12 +408,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            translations.noHostDiscovered,
-            softWrap: true,
-          ),
-        ),
+        SnackBar(content: Text(translations.noHostDiscovered, softWrap: true)),
       );
     }
   }
@@ -445,7 +431,8 @@ class LanConfigDialogState extends State<LanConfigDialog>
     }
 
     final RegExp ipRegex = RegExp(
-        r'^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$');
+      r'^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$',
+    );
     final bool ipValid = ipRegex.hasMatch(_ipController.text);
     final int? port = int.tryParse(_portController.text);
     final bool portValid = port != null && port > 0 && port <= 65535;
@@ -515,7 +502,8 @@ class LanConfigDialogState extends State<LanConfigDialog>
   @override
   Widget build(BuildContext context) {
     final DialogThemeData dialogThemeObject = Theme.of(context).dialogTheme;
-    final Color baseColor = dialogThemeObject.backgroundColor ??
+    final Color baseColor =
+        dialogThemeObject.backgroundColor ??
         Theme.of(context).colorScheme.surface;
     final Size screenSize = MediaQuery.of(context).size;
 
@@ -562,8 +550,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
                               crossAxisAlignment: WrapCrossAlignment.center,
                               spacing: 4,
                               children: <Widget>[
-                                const Icon(FluentIcons.desktop_24_regular,
-                                    size: 20),
+                                const Icon(
+                                  FluentIcons.desktop_24_regular,
+                                  size: 20,
+                                ),
                                 Text(S.of(context).host),
                               ],
                             ),
@@ -587,8 +577,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
                               spacing: 4,
                               children: <Widget>[
                                 const Icon(
-                                    FluentIcons.plug_connected_24_regular,
-                                    size: 20),
+                                  FluentIcons.plug_connected_24_regular,
+                                  size: 20,
+                                ),
                                 Text(S.of(context).join),
                               ],
                             ),
@@ -612,8 +603,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
                                   turns: _iconController,
                                   child: Icon(
                                     FluentIcons.arrow_clockwise_24_regular,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.secondary,
                                     size: 20,
                                   ),
                                 )
@@ -662,18 +654,20 @@ class LanConfigDialogState extends State<LanConfigDialog>
                           Text(
                             _isDiscovering
                                 ? S
-                                    .of(context)
-                                    .discoveringSeconds(_discoverySeconds)
+                                      .of(context)
+                                      .discoveringSeconds(_discoverySeconds)
                                 : _isConnecting
-                                    ? S.of(context).connectingAttempt(
-                                        _currentAttempt, _maxAttempt)
-                                    : _discoverySuccess
-                                        ? S
-                                            .of(context)
-                                            .discoverySuccessfulAwaitingConnection
-                                        : S
-                                            .of(context)
-                                            .networkStatusDisconnected,
+                                ? S
+                                      .of(context)
+                                      .connectingAttempt(
+                                        _currentAttempt,
+                                        _maxAttempt,
+                                      )
+                                : _discoverySuccess
+                                ? S
+                                      .of(context)
+                                      .discoverySuccessfulAwaitingConnection
+                                : S.of(context).networkStatusDisconnected,
                             style: const TextStyle(fontSize: 14.0),
                             softWrap: true,
                             overflow: TextOverflow.visible,
@@ -686,8 +680,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
                       const SizedBox(height: 8),
                       Text(
                         _protocolMismatchMessage!,
-                        style:
-                            const TextStyle(fontSize: 14.0, color: Colors.red),
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.red,
+                        ),
                         softWrap: true,
                         overflow: TextOverflow.visible,
                       ),
@@ -703,7 +699,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
                           child: Text(
                             _hostInfo,
                             style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                             textAlign: TextAlign.center,
                             softWrap: true,
                             overflow: TextOverflow.visible,

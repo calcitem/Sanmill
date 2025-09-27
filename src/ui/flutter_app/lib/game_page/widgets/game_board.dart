@@ -21,10 +21,7 @@ class GameBoard extends StatefulWidget {
   /// Creates a [GameBoard] widget.
   ///
   /// The [boardImage] parameter is the ImageProvider for the selected board image.
-  const GameBoard({
-    super.key,
-    required this.boardImage,
-  });
+  const GameBoard({super.key, required this.boardImage});
 
   /// The ImageProvider for the selected board image.
   ///
@@ -48,43 +45,43 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   // Define a mapping of animation names to their corresponding constructors.
   final Map<String, PieceEffectAnimation Function()> animationMap =
       <String, PieceEffectAnimation Function()>{
-    'Aura': () => AuraPieceEffectAnimation(),
-    'Burst': () => BurstPieceEffectAnimation(),
-    'Echo': () => EchoPieceEffectAnimation(),
-    'Expand': () => ExpandPieceEffectAnimation(),
-    'Explode': () => ExplodePieceEffectAnimation(),
-    'Fireworks': () => FireworksPieceEffectAnimation(),
-    'Glow': () => GlowPieceEffectAnimation(),
-    'Orbit': () => OrbitPieceEffectAnimation(),
-    'Radial': () => RadialPieceEffectAnimation(),
-    'Ripple': () => RipplePieceEffectAnimation(),
-    'Rotate': () => RotatePieceEffectAnimation(),
-    'Sparkle': () => SparklePieceEffectAnimation(),
-    'Spiral': () => SpiralPieceEffectAnimation(),
-    'Fade': () => FadePieceEffectAnimation(),
-    'Shrink': () => ShrinkPieceEffectAnimation(),
-    'Shatter': () => ShatterPieceEffectAnimation(),
-    'Disperse': () => DispersePieceEffectAnimation(),
-    'Vanish': () => VanishPieceEffectAnimation(),
-    'Melt': () => MeltPieceEffectAnimation(),
-    'RippleGradient': () => RippleGradientPieceEffectAnimation(),
-    'RainbowWave': () => RainbowWavePieceEffectAnimation(),
-    'Starburst': () => StarburstPieceEffectAnimation(),
-    'Twist': () => TwistPieceEffectAnimation(),
-    'PulseRing': () => PulseRingPieceEffectAnimation(),
-    'PixelGlitch': () => PixelGlitchPieceEffectAnimation(),
-    'FireTrail': () => FireTrailPieceEffectAnimation(),
-    'WarpWave': () => WarpWavePieceEffectAnimation(),
-    'ShockWave': () => ShockWavePieceEffectAnimation(),
-    'ColorSwirl': () => ColorSwirlPieceEffectAnimation(),
-    'NeonFlash': () => NeonFlashPieceEffectAnimation(),
-    'InkSpread': () => InkSpreadPieceEffectAnimation(),
-    'ShadowPulse': () => ShadowPulsePieceEffectAnimation(),
-    'RainRipple': () => RainRipplePieceEffectAnimation(),
-    'BubblePop': () => BubblePopPieceEffectAnimation(),
+        'Aura': () => AuraPieceEffectAnimation(),
+        'Burst': () => BurstPieceEffectAnimation(),
+        'Echo': () => EchoPieceEffectAnimation(),
+        'Expand': () => ExpandPieceEffectAnimation(),
+        'Explode': () => ExplodePieceEffectAnimation(),
+        'Fireworks': () => FireworksPieceEffectAnimation(),
+        'Glow': () => GlowPieceEffectAnimation(),
+        'Orbit': () => OrbitPieceEffectAnimation(),
+        'Radial': () => RadialPieceEffectAnimation(),
+        'Ripple': () => RipplePieceEffectAnimation(),
+        'Rotate': () => RotatePieceEffectAnimation(),
+        'Sparkle': () => SparklePieceEffectAnimation(),
+        'Spiral': () => SpiralPieceEffectAnimation(),
+        'Fade': () => FadePieceEffectAnimation(),
+        'Shrink': () => ShrinkPieceEffectAnimation(),
+        'Shatter': () => ShatterPieceEffectAnimation(),
+        'Disperse': () => DispersePieceEffectAnimation(),
+        'Vanish': () => VanishPieceEffectAnimation(),
+        'Melt': () => MeltPieceEffectAnimation(),
+        'RippleGradient': () => RippleGradientPieceEffectAnimation(),
+        'RainbowWave': () => RainbowWavePieceEffectAnimation(),
+        'Starburst': () => StarburstPieceEffectAnimation(),
+        'Twist': () => TwistPieceEffectAnimation(),
+        'PulseRing': () => PulseRingPieceEffectAnimation(),
+        'PixelGlitch': () => PixelGlitchPieceEffectAnimation(),
+        'FireTrail': () => FireTrailPieceEffectAnimation(),
+        'WarpWave': () => WarpWavePieceEffectAnimation(),
+        'ShockWave': () => ShockWavePieceEffectAnimation(),
+        'ColorSwirl': () => ColorSwirlPieceEffectAnimation(),
+        'NeonFlash': () => NeonFlashPieceEffectAnimation(),
+        'InkSpread': () => InkSpreadPieceEffectAnimation(),
+        'ShadowPulse': () => ShadowPulsePieceEffectAnimation(),
+        'RainRipple': () => RainRipplePieceEffectAnimation(),
+        'BubblePop': () => BubblePopPieceEffectAnimation(),
 
-    // Add any additional animations here.
-  };
+        // Add any additional animations here.
+      };
 
   @override
   void initState() {
@@ -127,15 +124,15 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   }
 
   void _setupValueNotifierListener() {
-    GameController()
-        .initialSharingMoveListNotifier
-        .addListener(_processInitialSharingMoveListListener);
+    GameController().initialSharingMoveListNotifier.addListener(
+      _processInitialSharingMoveListListener,
+    );
   }
 
   void _removeValueNotifierListener() {
-    GameController()
-        .initialSharingMoveListNotifier
-        .removeListener(_processInitialSharingMoveListListener);
+    GameController().initialSharingMoveListNotifier.removeListener(
+      _processInitialSharingMoveListListener,
+    );
   }
 
   Future<GameImages> _loadImages() async {
@@ -159,8 +156,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     } catch (e) {
       logger.e("$_logTag Error importing initial sharing move list: $e");
       if (mounted) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear("Error importing initial sharing move list: $e");
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          "Error importing initial sharing move list: $e",
+        );
       }
     }
 
@@ -175,8 +173,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     }
 
     if (mounted) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(GameController().initialSharingMoveList!);
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        GameController().initialSharingMoveList!,
+      );
     }
 
     GameController().initialSharingMoveList = null;
@@ -184,8 +183,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   Future<ui.Image> loadImage(String assetPath) async {
     final ByteData data = await rootBundle.load(assetPath);
-    final ui.Codec codec =
-        await ui.instantiateImageCodec(data.buffer.asUint8List());
+    final ui.Codec codec = await ui.instantiateImageCodec(
+      data.buffer.asUint8List(),
+    );
     final ui.FrameInfo frame = await codec.getNextFrame();
     return frame.image;
   }
@@ -249,8 +249,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     if (whitePieceImagePath.isEmpty) {
       gameImages.whitePieceImage = null;
     } else {
-      gameImages.whitePieceImage =
-          await loadImageFromFilePath(whitePieceImagePath);
+      gameImages.whitePieceImage = await loadImageFromFilePath(
+        whitePieceImagePath,
+      );
     }
 
     // Load black piece image from settings, if specified
@@ -258,13 +259,15 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     if (blackPieceImagePath.isEmpty) {
       gameImages.blackPieceImage = null;
     } else {
-      gameImages.blackPieceImage =
-          await loadImageFromFilePath(blackPieceImagePath);
+      gameImages.blackPieceImage = await loadImageFromFilePath(
+        blackPieceImagePath,
+      );
     }
 
     // Load marked piece image (static asset)
-    gameImages.markedPieceImage =
-        await loadImage('assets/images/marked_piece_image.png');
+    gameImages.markedPieceImage = await loadImage(
+      'assets/images/marked_piece_image.png',
+    );
 
     // Load board image from ImageProvider
     gameImages.boardImage = await _loadImageProvider(widget.boardImage);
@@ -274,9 +277,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final TapHandler tapHandler = TapHandler(
-      context: context,
-    );
+    final TapHandler tapHandler = TapHandler(context: context);
 
     // This ValueListenableBuilder ensures the GameBoard and its painters
     // are rebuilt whenever display settings change.
@@ -296,11 +297,11 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         // Use the map to get the corresponding animation instances.
         final PieceEffectAnimation placeEffectAnimation =
             animationMap[placeEffectName]?.call() ??
-                RadialPieceEffectAnimation();
+            RadialPieceEffectAnimation();
 
         final PieceEffectAnimation removeEffectAnimation =
             animationMap[removeEffectName]?.call() ??
-                ExplodePieceEffectAnimation();
+            ExplodePieceEffectAnimation();
 
         final AnimatedBuilder customPaint = AnimatedBuilder(
           key: const Key('animated_builder_custom_paint'),
@@ -315,52 +316,56 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
               future: gameImagesFuture,
               builder:
                   (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    key: Key('center_loading'),
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  // Handle errors appropriately
-                  return const Center(
-                    key: Key('center_error'),
-                    child: Text('Error loading images'),
-                  );
-                } else {
-                  final GameImages? gameImages = snapshot.data;
-                  return SizedBox.expand(
-                    key: const Key('sized_box_expand_custom_paint'),
-                    child: CustomPaint(
-                      key: const Key('custom_paint_board_painter'),
-                      // Pass the resolved ui.Image? to BoardPainter
-                      painter: BoardPainter(context, gameImages?.boardImage),
-                      foregroundPainter: PiecePainter(
-                        placeAnimationValue:
-                            animationManager.placeAnimation.value,
-                        moveAnimationValue:
-                            animationManager.moveAnimation.value,
-                        removeAnimationValue:
-                            animationManager.removeAnimation.value,
-                        pieceImages: <PieceColor, ui.Image?>{
-                          PieceColor.white: gameImages?.whitePieceImage,
-                          PieceColor.black: gameImages?.blackPieceImage,
-                          PieceColor.marked: gameImages?.markedPieceImage,
-                        },
-                        placeEffectAnimation: placeEffectAnimation,
-                        removeEffectAnimation: removeEffectAnimation,
-                      ),
-                      child: DB().generalSettings.screenReaderSupport
-                          ? const _BoardSemantics()
-                          : Semantics(
-                              key: const Key('semantics_screen_reader'),
-                              label:
-                                  S.of(context).youCanEnableScreenReaderSupport,
-                              container: true,
-                            ),
-                    ),
-                  );
-                }
-              },
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        key: Key('center_loading'),
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      // Handle errors appropriately
+                      return const Center(
+                        key: Key('center_error'),
+                        child: Text('Error loading images'),
+                      );
+                    } else {
+                      final GameImages? gameImages = snapshot.data;
+                      return SizedBox.expand(
+                        key: const Key('sized_box_expand_custom_paint'),
+                        child: CustomPaint(
+                          key: const Key('custom_paint_board_painter'),
+                          // Pass the resolved ui.Image? to BoardPainter
+                          painter: BoardPainter(
+                            context,
+                            gameImages?.boardImage,
+                          ),
+                          foregroundPainter: PiecePainter(
+                            placeAnimationValue:
+                                animationManager.placeAnimation.value,
+                            moveAnimationValue:
+                                animationManager.moveAnimation.value,
+                            removeAnimationValue:
+                                animationManager.removeAnimation.value,
+                            pieceImages: <PieceColor, ui.Image?>{
+                              PieceColor.white: gameImages?.whitePieceImage,
+                              PieceColor.black: gameImages?.blackPieceImage,
+                              PieceColor.marked: gameImages?.markedPieceImage,
+                            },
+                            placeEffectAnimation: placeEffectAnimation,
+                            removeEffectAnimation: removeEffectAnimation,
+                          ),
+                          child: DB().generalSettings.screenReaderSupport
+                              ? const _BoardSemantics()
+                              : Semantics(
+                                  key: const Key('semantics_screen_reader'),
+                                  label: S
+                                      .of(context)
+                                      .youCanEnableScreenReaderSupport,
+                                  container: true,
+                                ),
+                        ),
+                      );
+                    }
+                  },
             );
           },
         );
@@ -368,10 +373,10 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
         AppTheme.boardPadding =
             ((deviceWidth(context) - AppTheme.boardMargin * 2) *
-                        DB().displaySettings.pieceWidth /
-                        7) /
-                    2 +
-                4;
+                    DB().displaySettings.pieceWidth /
+                    7) /
+                2 +
+            4;
 
         return LayoutBuilder(
           key: const Key('layout_builder_game_board'),
@@ -386,11 +391,13 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
                   final int? square = squareFromPoint(
-                      pointFromOffset(d.localPosition, dimension));
+                    pointFromOffset(d.localPosition, dimension),
+                  );
 
                   if (square == null) {
                     return logger.t(
-                        "${GameBoard._logTag} Tap not on a square, ignored.");
+                      "${GameBoard._logTag} Tap not on a square, ignored.",
+                    );
                   }
 
                   logger.t("${GameBoard._logTag} Tap on square <$square>");
@@ -398,32 +405,35 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                   if (GameController().gameInstance.gameMode ==
                       GameMode.humanVsLAN) {
                     if (GameController().isLanOpponentTurn) {
-                      rootScaffoldMessengerKey.currentState!
-                          .showSnackBarClear(S.of(context).notYourTurn);
+                      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                        S.of(context).notYourTurn,
+                      );
                       return;
                     }
                     if (GameController().networkService == null ||
                         !GameController().networkService!.isConnected) {
-                      GameController()
-                          .headerTipNotifier
-                          .showTip(S.of(context).noLanConnection);
+                      GameController().headerTipNotifier.showTip(
+                        S.of(context).noLanConnection,
+                      );
                       return;
                     }
                   }
 
                   final String strTimeout = S.of(context).timeout;
-                  final String strNoBestMoveErr =
-                      S.of(context).error(S.of(context).noMove);
+                  final String strNoBestMoveErr = S
+                      .of(context)
+                      .error(S.of(context).noMove);
 
-                  final EngineResponse response =
-                      await tapHandler.onBoardTap(square);
+                  final EngineResponse response = await tapHandler.onBoardTap(
+                    square,
+                  );
 
                   // Process engine response for displaying tips, etc.
                   switch (response) {
                     case EngineResponseOK():
-                      GameController()
-                          .gameResultNotifier
-                          .showResult(force: true);
+                      GameController().gameResultNotifier.showResult(
+                        force: true,
+                      );
                       break;
                     case EngineResponseHumanOK():
                       GameController().gameResultNotifier.showResult();
@@ -432,14 +442,14 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                       GameController().headerTipNotifier.showTip(strTimeout);
                       break;
                     case EngineNoBestMove():
-                      GameController()
-                          .headerTipNotifier
-                          .showTip(strNoBestMoveErr);
+                      GameController().headerTipNotifier.showTip(
+                        strNoBestMoveErr,
+                      );
                       break;
                     case EngineGameIsOver():
-                      GameController()
-                          .gameResultNotifier
-                          .showResult(force: true);
+                      GameController().gameResultNotifier.showResult(
+                        force: true,
+                      );
                       break;
                     default:
                       break;
@@ -484,12 +494,14 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     GameController().headerIconsNotifier.showIcons();
 
     // Check conditions for showing game result dialog
-    final bool shouldShowDialog = GameController().isAutoRestart() == false &&
+    final bool shouldShowDialog =
+        GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
         gameMode != GameMode.setupPosition;
 
     // For AI vs AI mode, additional conditions must be met
-    final bool aiVsAiConditions = gameMode != GameMode.aiVsAi ||
+    final bool aiVsAiConditions =
+        gameMode != GameMode.aiVsAi ||
         (DB().displaySettings.animationDuration == 0.0 &&
             DB().generalSettings.shufflingEnabled == false);
 
@@ -498,9 +510,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       _isDialogShowing = true;
       showDialog(
         context: context,
-        builder: (_) => GameResultAlertDialog(
-          winner: winner,
-        ),
+        builder: (_) => GameResultAlertDialog(winner: winner),
       ).then((_) {
         // Reset flag when dialog is dismissed
         _isDialogShowing = false;

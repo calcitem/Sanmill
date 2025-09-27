@@ -9,8 +9,10 @@ class ExportService {
   const ExportService._();
 
   /// Exports the game to the device's clipboard.
-  static Future<void> exportGame(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<void> exportGame(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     await Clipboard.setData(
       ClipboardData(text: GameController().gameRecorder.moveHistoryText),
     );
@@ -19,8 +21,9 @@ class ExportService {
       return;
     }
 
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(S.of(context).moveHistoryCopied);
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      S.of(context).moveHistoryCopied,
+    );
 
     if (shouldPop) {
       Navigator.pop(context);
@@ -28,8 +31,10 @@ class ExportService {
   }
 
   /// Export game with move quality symbols included
-  static Future<void> exportGameWithQuality(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<void> exportGameWithQuality(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     final String exportText = _generatePgnWithQuality();
 
     await Clipboard.setData(ClipboardData(text: exportText));
@@ -38,8 +43,9 @@ class ExportService {
       return;
     }
 
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(S.of(context).moveHistoryCopied);
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      S.of(context).moveHistoryCopied,
+    );
 
     if (shouldPop) {
       Navigator.pop(context);

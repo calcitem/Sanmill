@@ -17,8 +17,8 @@ Future<void> launchURL(BuildContext context, UrlHelper url) async {
 
   final String rawUrl =
       Localizations.localeOf(context).languageCode.startsWith("zh")
-          ? url.baseChinese
-          : url.base;
+      ? url.baseChinese
+      : url.base;
 
   final String trimmedUrl = rawUrl.trim();
   if (trimmedUrl.isEmpty) {
@@ -41,8 +41,10 @@ Future<void> launchURL(BuildContext context, UrlHelper url) async {
     return;
   }
 
-  final bool launched =
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+  final bool launched = await launchUrl(
+    uri,
+    mode: LaunchMode.externalApplication,
+  );
   if (!launched) {
     logger.e('Failed to launch URL: $uri');
   }

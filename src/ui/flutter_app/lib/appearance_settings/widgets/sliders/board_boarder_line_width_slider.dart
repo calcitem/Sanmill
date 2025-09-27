@@ -35,8 +35,9 @@ class _BoardBorderLineWidthSlider extends StatelessWidget {
                 label: displaySettings.boardBorderLineWidth.toStringAsFixed(1),
                 onChanged: (double value) {
                   logger.t("[config] BoardBorderLineWidth value: $value");
-                  DB().displaySettings =
-                      displaySettings.copyWith(boardBorderLineWidth: value);
+                  DB().displaySettings = displaySettings.copyWith(
+                    boardBorderLineWidth: value,
+                  );
                 },
               ),
             ),

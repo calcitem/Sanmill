@@ -8,7 +8,10 @@ import 'dart:ui';
 /// A helper function to compare two candidate colors against a reference color
 /// and pick the one with the larger RGB squared-distance difference.
 Color pickColorWithMaxDifference(
-    Color candidate1, Color candidate2, Color reference) {
+  Color candidate1,
+  Color candidate2,
+  Color reference,
+) {
   double colorDiff(Color c1, Color c2) {
     final double dr = c1.r - c2.r;
     final double dg = c1.g - c2.g;

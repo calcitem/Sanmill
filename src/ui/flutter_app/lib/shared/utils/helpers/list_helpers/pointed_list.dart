@@ -18,9 +18,9 @@ class PointedList<E> extends DelegatingList<E> {
   PointedList.from(List<E> elements) : this._(elements);
 
   PointedList._(List<E> list)
-      : _list = list,
-        globalIterator = PointedListIterator<E>(list),
-        super(list) {
+    : _list = list,
+      globalIterator = PointedListIterator<E>(list),
+      super(list) {
     if (list.isNotEmpty) {
       globalIterator.moveToLast();
     }
