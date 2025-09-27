@@ -1815,6 +1815,12 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (pieceOnBoardCount[them] + pieceInHandCount[them] <
         rule.piecesAtLeastCount) {
+        LOGD("GAMEOVER TRIGGERED: %s wins! %s has %d+%d=%d pieces (< %d)\n",
+             sideToMove == WHITE ? "WHITE" : "BLACK", 
+             them == WHITE ? "WHITE" : "BLACK",
+             pieceOnBoardCount[them], pieceInHandCount[them],
+             pieceOnBoardCount[them] + pieceInHandCount[them],
+             rule.piecesAtLeastCount);
         set_gameover(sideToMove, GameOverReason::loseFewerThanThree);
         return true;
     }

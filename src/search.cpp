@@ -344,11 +344,17 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
         // Determine the depth extension
         epsilon = (gameOptions.getDepthExtension() && moveCount == 1) ? 1 : 0;
 
+        // For consecutive removals by the same side (e.g., intervention capture),
+        // maintain the same depth since it's part of one complete action
+        const Depth nextDepth = (after == before && pos->get_action() == Action::remove) ?
+                                depth + epsilon :
+                                depth - 1 + epsilon;
+
         // Perform recursive search
         value = (after != before) ?
-                    -search(searchEngine, pos, ss, depth - 1 + epsilon,
+                    -search(searchEngine, pos, ss, nextDepth,
                             originDepth, -beta, -alpha, bestMove) :
-                    search(searchEngine, pos, ss, depth - 1 + epsilon,
+                    search(searchEngine, pos, ss, nextDepth,
                            originDepth, alpha, beta, bestMove);
 
         // Undo the move
@@ -361,6 +367,11 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
             if (value > alpha) {
                 if (depth == originDepth) {
                     bestMove = move;
+                    // Debug logging for root level move selection
+                    if (type_of(move) == MOVETYPE_REMOVE) {
+                        debugPrintf("ROOT BEST MOVE UPDATE: move=%s, value=%d, alpha=%d, beta=%d\n",
+                                   UCI::move(move).c_str(), value, alpha, beta);
+                    }
                 }
 
                 if (value < beta) {
@@ -368,6 +379,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
                     alpha = value;
                 } else {
                     assert(value >= beta); // Fail high
+                    debugPrintf("ROOT FAIL HIGH: move=%s, value=%d, beta=%d\n",
+                               UCI::move(move).c_str(), value, beta);
                     break;                 // Fail high
                 }
             }
