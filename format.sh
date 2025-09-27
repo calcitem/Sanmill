@@ -17,7 +17,8 @@ clang-format -i tests/*.cpp
 #clang-format -i tests/perfect/*.h
 #clang-format -i tests/perfect/*.cpp
 
-dart format .
+#dart format .
+cd src/ui/flutter_app && dart format . && cd ../../..
 
 if [ "$1" != "s" ]; then
     git add .
