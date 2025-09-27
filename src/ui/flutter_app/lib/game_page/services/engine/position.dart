@@ -1614,7 +1614,7 @@ class Position {
         }
         if (isInterventionTarget && interventionCount() > 0) {
           mode = ActiveCaptureMode.intervention;
-          quota = interventionCount() > 2 ? interventionCount() : 2;
+          quota = max(interventionCount(), 2);
           _pendingMillRemovals[sideToMove] = 0;
           _setCustodianCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
@@ -1631,19 +1631,19 @@ class Position {
             quota = pendingMill;
           } else {
             final int remaining = pieceToRemoveCount[sideToMove]!;
-            quota = quota > remaining ? quota : remaining;
+            quota = max(quota, remaining);
           }
           _setCustodianCaptureState(sideToMove, 0, 0);
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         }
 
-        performed = 0;
         _removalQuota[sideToMove] = quota;
+        performed = 0;
         _removalsPerformed[sideToMove] = performed;
         _activeCaptureMode[sideToMove] = mode;
         _interventionForcedPartner[sideToMove] = forcedPartner;
-        pieceToRemoveCount[sideToMove] = quota > 0 ? quota : 0;
+        pieceToRemoveCount[sideToMove] = max(0, quota - performed);
       } else {
         switch (mode) {
           case ActiveCaptureMode.custodian:
