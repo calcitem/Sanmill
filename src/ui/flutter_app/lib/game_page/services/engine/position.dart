@@ -1254,9 +1254,11 @@ class Position {
           _setInterventionCaptureState(us, 0, 0);
           for (int i = 0; i < rm; i++) {
             if (pieceInHandCount[_them] == 0) {
-              pieceToRemoveCount[sideToMove] = rm - i;
-              _updateKeyMisc();
-              action = Act.remove;
+              final int remainingRemovals = rm - i;
+              // Use _initializeRemovalState to set the removal state
+              // consistently, ensuring that _pendingMillRemovals,
+              // _removalQuota, and action are consistent.
+              _initializeRemovalState(us, remainingRemovals, 0, 0);
               return true;
             } else {
               if (pieceInHandCount[_them] == 0) {
