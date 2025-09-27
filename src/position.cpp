@@ -1181,9 +1181,6 @@ bool Position::put_piece(Square s, bool updateRecord)
                 setInterventionCaptureState(us, 0, 0);
             }
 
-            const int totalCaptureRemoval = std::max(custodianRemoval, 0) +
-                                            std::max(interventionRemoval, 0);
-
             initializeRemovalState(us, 0, custodianRemoval,
                                    interventionRemoval);
             // Don't return here - need to check placing phase end logic
@@ -1204,8 +1201,8 @@ bool Position::put_piece(Square s, bool updateRecord)
                 }
             }
 
-            // If we have custodian capture to handle, return early
-            if (totalCaptureRemoval > 0 && pieceToRemoveCount[sideToMove] > 0) {
+            // If we have special capture to handle, return early
+            if (removalQuota[us] > 0 && pieceToRemoveCount[sideToMove] > 0) {
                 return true;
             }
 
