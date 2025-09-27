@@ -654,8 +654,20 @@ next:
             // If even quick search fails, fall back to random
             debugPrintf("Quick search failed, falling back to random "
                         "search.\n");
+#ifdef _WIN32
+#ifdef _DEBUG
+            // In DEBUG mode, do not use random fallback
+            debugPrintf("DEBUG mode: Skipping random fallback, leaving bestMove as MOVE_NONE.\n");
+            bestMoveSoFar = MOVE_NONE;
+            bestValSoFar = VALUE_ZERO;
+#else
             Search::random_search(rootPos, bestMoveSoFar);
             bestValSoFar = VALUE_ZERO;
+#endif
+#else
+            Search::random_search(rootPos, bestMoveSoFar);
+            bestValSoFar = VALUE_ZERO;
+#endif
         }
     }
 
@@ -744,7 +756,17 @@ void SearchEngine::runSearch()
                     // If even quick search fails, fall back to random
                     debugPrintf("Quick search failed, falling back to random "
                                 "search.\n");
+#ifdef _WIN32
+#ifdef _DEBUG
+                    // In DEBUG mode, do not use random fallback
+                    debugPrintf("DEBUG mode: Skipping random fallback, leaving bestMove as MOVE_NONE.\n");
+                    bestMove = MOVE_NONE;
+#else
                     Search::random_search(rootPos, bestMove);
+#endif
+#else
+                    Search::random_search(rootPos, bestMove);
+#endif
                 }
                 setBestMoveString(UCI::move(bestMove));
             }
