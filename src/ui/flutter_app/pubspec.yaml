@@ -4,77 +4,77 @@ publish_to: none
 version: 6.8.0+4864
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
   animated_text_kit: 4.2.3
   archive: 4.0.7
-  audioplayers: 6.4.0
-  catcher_2: 2.1.3
+  audioplayers: 6.5.1
+  catcher_2: 2.1.5
   collection: 1.19.1
   confetti: 0.8.0
   crop_your_image: 2.0.0
-  copy_with_extension: 6.0.1
+  copy_with_extension: 10.0.1
   cupertino_icons: 1.0.8
-  device_info_plus: 11.4.0
+  device_info_plus: 12.1.0
   extended_sliver: 2.1.3
   fast_immutable_collections: 11.0.4
-  feedback: 3.1.0
+  feedback: 3.2.0
   filesystem_picker: 4.1.0
   fluentui_system_icons: 1.1.273
   flutter:
     sdk: flutter
   flutter_colorpicker: 1.1.0
-  flutter_email_sender: 7.0.0
+  flutter_email_sender: 8.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_platform_alert: 0.7.0
+  flutter_platform_alert: 0.8.0
   flutter_picker: 2.1.0
   flutter_sharing_intent: 1.1.1
-  hive: 2.2.3
-  hive_flutter: 1.1.0
-  http: 1.4.0
-  langchain: 0.7.7+2
-  langchain_google: 0.6.4+2
-  langchain_ollama: 0.3.2+2
-  langchain_openai: 0.7.3
+  hive_ce: 2.13.2
+  hive_ce_flutter: 2.3.2
+  http: 1.5.0
+  langchain: 0.7.9
+  langchain_google: 0.6.5+2
+  langchain_ollama: 0.3.3+3
+  langchain_openai: 0.7.6+2
   image: 4.5.4
   image_gallery_saver_plus: 4.0.1
-  image_picker: 1.1.2
-  intl: 0.19.0
+  image_picker: 1.2.0
+  intl: 0.20.2
   json_annotation: 4.9.0
-  logger: 2.5.0
+  logger: 2.6.1
   marquee: 2.3.0
   meta: 1.16.0
   native_screenshot_widget: 0.0.8
-  network_info_plus: 6.1.4
-  package_info_plus: 8.3.0
+  network_info_plus: 7.0.0
+  package_info_plus: 9.0.0
   path: 1.9.1
   path_provider: 2.1.5
-  permission_handler: 12.0.0+1
-  share_plus: 11.0.0
-  vibration: 3.1.3
-  url_launcher: 6.3.1
+  permission_handler: 12.0.1
+  share_plus: 12.0.0
+  vibration: 3.1.4
+  url_launcher: 6.3.2
   uuid: 4.5.1
 
 dev_dependencies:
-  analyzer: 6.11.0
-  build_runner: 2.4.15
-  copy_with_extension_gen: 6.0.0
+  analyzer: 8.2.0
+  build_runner: 2.8.0
+  copy_with_extension_gen: 10.0.1
   flutter_driver:
     sdk: flutter
-  flutter_gen_runner: 5.10.0
-  flutter_native_splash: 2.4.4
+  flutter_gen_runner: 5.12.0
+  flutter_native_splash: 2.4.6
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
-  hive_generator: 2.0.1
-  json_serializable: 6.9.0
-  flutter_lints: 5.0.0
-  mockito: 5.4.5
-  msix: 3.16.9
-  source_gen: 1.5.0
+  hive_ce_generator: any
+  json_serializable: 6.11.1
+  flutter_lints: 6.0.0
+  mockito: 5.5.1
+  msix: 3.16.12
+  source_gen: 4.0.1
 
 flutter_gen:
   output: lib/generated/assets/
