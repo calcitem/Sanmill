@@ -1476,14 +1476,20 @@ class Position {
         interventionRemoval,
       );
 
-      if (_removalQuota[sideToMove]! > 0 &&
-          pieceToRemoveCount[sideToMove]! > 0) {
+      if (_removalQuota[sideToMove]! > 0) {
         GameController().gameInstance.focusIndex = squareToIndex[s];
         return true;
       }
 
-      _setCustodianCaptureState(sideToMove, 0, 0);
-      _setInterventionCaptureState(sideToMove, 0, 0);
+      // Only clear state if not early exit and state is non-zero (match C++ behavior)
+      if (_custodianCaptureTargets[sideToMove]! != 0 ||
+          _custodianRemovalCount[sideToMove]! != 0) {
+        _setCustodianCaptureState(sideToMove, 0, 0);
+      }
+      if (_interventionCaptureTargets[sideToMove]! != 0 ||
+          _interventionRemovalCount[sideToMove]! != 0) {
+        _setInterventionCaptureState(sideToMove, 0, 0);
+      }
       changeSideToMove();
 
       if (_checkIfGameIsOver()) {
