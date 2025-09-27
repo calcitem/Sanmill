@@ -566,8 +566,13 @@ class Position {
     final String rule50Str = fields[15];
     st.rule50 = int.parse(rule50Str);
 
-    final String gamePlyStr = fields[16];
-    _gamePly = int.parse(gamePlyStr);
+    final String fullmoveStr = fields[16];
+    final int fullmove = int.parse(fullmoveStr);
+
+    // Convert from fullmove starting from 1 to gamePly starting from 0,
+    // handle also common incorrect FEN with fullmove = 0.
+    _gamePly =
+        max(2 * (fullmove - 1), 0) + (_sideToMove == PieceColor.black ? 1 : 0);
 
     // Misc
     winner = PieceColor.nobody;
