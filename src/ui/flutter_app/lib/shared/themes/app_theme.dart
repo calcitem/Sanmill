@@ -163,7 +163,7 @@ class AppTheme {
             0.12), //Adjust color transparency according to theme surface color
   );
 
-  static final CardTheme _cardTheme = CardTheme(
+  static final CardThemeData _cardTheme = CardThemeData(
     margin: const EdgeInsets.symmetric(vertical: 4.0),
     color: cardColor,
     shape: RoundedRectangleBorder(

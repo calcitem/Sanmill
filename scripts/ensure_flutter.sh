@@ -59,19 +59,29 @@ flutter__is_windows() {
     return 0
   fi
 
-  # Check for Windows-specific paths
-  if [[ -d "/c/Windows" || -d "/mnt/c/Windows" ]]; then
-    return 0
-  fi
-
-  # Check uname output for Windows-like environments
+  # Check uname output for Windows-like environments first
   local uname_s
   uname_s="$(uname -s 2>/dev/null || echo unknown)"
   case "${uname_s}" in
     MINGW*|MSYS*|CYGWIN*)
       return 0
       ;;
+    Linux*)
+      # Check if we're in WSL - if so, treat as Linux, not Windows
+      if [[ -f "/proc/version" ]] && grep -qi "microsoft\|wsl" "/proc/version" 2>/dev/null; then
+        return 1  # WSL should be treated as Linux
+      fi
+      # Check for Windows-specific paths only if not in WSL
+      if [[ -d "/c/Windows" || -d "/mnt/c/Windows" ]]; then
+        return 0
+      fi
+      return 1
+      ;;
     *)
+      # Check for Windows-specific paths for other systems
+      if [[ -d "/c/Windows" || -d "/mnt/c/Windows" ]]; then
+        return 0
+      fi
       # If uname is not available and we're likely on Windows
       if ! command -v uname >/dev/null 2>&1; then
         # Check for common Windows indicators

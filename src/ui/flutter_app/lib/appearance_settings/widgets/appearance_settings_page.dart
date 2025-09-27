@@ -12,8 +12,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:hive_flutter/hive_flutter.dart' show Box;
+import 'package:hive_ce_flutter/adapters.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 

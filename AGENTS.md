@@ -34,3 +34,10 @@
   as a way to extend existing code.
 - Prefer direct modification of original implementations to maintain code
   clarity and avoid unnecessary abstraction layers.
+
+## Project Structure
+
+- `src/ui/flutter_app/pubspec.yaml` is the main configuration file for the
+  Flutter application.
+- `src/ui/flutter_app/` is the root directory of the Flutter code for this
+  project.

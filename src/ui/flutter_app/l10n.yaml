@@ -16,5 +16,4 @@ output-localization-file: l10n.dart
 output-class: S
 untranslated-messages-file: untranslated-messages-file.txt
 # use-deferred-loading: true #enable for web support
-synthetic-package: false
 nullable-getter: false

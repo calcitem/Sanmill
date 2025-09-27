@@ -5,7 +5,7 @@
 
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart' show Colors, Color, immutable;
-import 'package:hive_flutter/adapters.dart'
+import 'package:hive_ce_flutter/adapters.dart'
     show HiveField, HiveType, BinaryReader, BinaryWriter, TypeAdapter;
 import 'package:json_annotation/json_annotation.dart';
 
