@@ -1199,9 +1199,9 @@ class Position {
             return true;
           }
 
-          // Otherwise follow original logic - preserve special capture states
+          // Otherwise follow original logic - clear all removal states
           // Mill removal count will be calculated at phase end
-          pieceToRemoveCount[sideToMove] = 0;
+          _initializeRemovalState(us, 0, 0, 0);
         } else if (DB().ruleSettings.millFormationActionInPlacingPhase ==
             MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
           // For markAndDelayRemovingPieces, try special captures first
