@@ -4,7 +4,7 @@
 // rule_settings_page.dart
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart' show Box;
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';

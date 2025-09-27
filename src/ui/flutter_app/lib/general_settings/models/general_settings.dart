@@ -5,7 +5,7 @@
 
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../generated/intl/l10n.dart';

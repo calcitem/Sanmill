@@ -16,7 +16,7 @@ import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
-import 'package:hive_flutter/hive_flutter.dart' show Box;
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';

@@ -3,7 +3,7 @@
 
 // init_test_environment.dart
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';

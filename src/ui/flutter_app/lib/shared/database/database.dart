@@ -9,7 +9,7 @@ import 'dart:io' show Directory, File;
 import 'package:flutter/foundation.dart'
     show ValueListenable, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart' show Color, Locale;
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';

@@ -7,7 +7,7 @@ import 'dart:ui';
 
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'rule_settings.g.dart';
