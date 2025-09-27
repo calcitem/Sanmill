@@ -98,12 +98,16 @@ Value Evaluation::value() const
             value += delta;
         } else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
             value -= VALUE_MATE;
-            debugPrintf("EVAL GAMEOVER: White has %d pieces (< %d), BLACK WINS, value=%d\n",
-                       pos.piece_on_board_count(WHITE), rule.piecesAtLeastCount, value);
+            debugPrintf("EVAL GAMEOVER: White has %d pieces (< %d), BLACK "
+                        "WINS, value=%d\n",
+                        pos.piece_on_board_count(WHITE),
+                        rule.piecesAtLeastCount, value);
         } else if (pos.piece_on_board_count(BLACK) < rule.piecesAtLeastCount) {
             value += VALUE_MATE;
-            debugPrintf("EVAL GAMEOVER: Black has %d pieces (< %d), WHITE WINS, value=%d\n",
-                       pos.piece_on_board_count(BLACK), rule.piecesAtLeastCount, value);
+            debugPrintf("EVAL GAMEOVER: Black has %d pieces (< %d), WHITE "
+                        "WINS, value=%d\n",
+                        pos.piece_on_board_count(BLACK),
+                        rule.piecesAtLeastCount, value);
         }
 
         break;

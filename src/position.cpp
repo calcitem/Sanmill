@@ -1647,7 +1647,6 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
         isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
-
         if (mode == ActiveCaptureMode::none) {
             // Allow player to choose capture mode by their first removal
             // If they remove a special capture target, activate that mode
@@ -1657,7 +1656,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 quota = std::max(interventionCount, 2);
                 pendingMillRemovals[sideToMove] = 0;
                 clearCustodianStateIfNeeded();
-                // Don't reset forcedPartner here, it will be set in the intervention handling below
+                // Don't reset forcedPartner here, it will be set in the
+                // intervention handling below
             } else if (isCustodianTarget && custodianCount > 0) {
                 mode = ActiveCaptureMode::custodian;
                 quota = custodianCount;              // Only custodian quota
@@ -1816,9 +1816,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
     if (pieceOnBoardCount[them] + pieceInHandCount[them] <
         rule.piecesAtLeastCount) {
         LOGD("GAMEOVER TRIGGERED: %s wins! %s has %d+%d=%d pieces (< %d)\n",
-             sideToMove == WHITE ? "WHITE" : "BLACK", 
-             them == WHITE ? "WHITE" : "BLACK",
-             pieceOnBoardCount[them], pieceInHandCount[them],
+             sideToMove == WHITE ? "WHITE" : "BLACK",
+             them == WHITE ? "WHITE" : "BLACK", pieceOnBoardCount[them],
+             pieceInHandCount[them],
              pieceOnBoardCount[them] + pieceInHandCount[them],
              rule.piecesAtLeastCount);
         set_gameover(sideToMove, GameOverReason::loseFewerThanThree);
@@ -2793,8 +2793,9 @@ int Position::potential_mills_count(Square to, Color c, Square from)
                     n++;
                 } else {
                     Bitboard line = square_bb(to) | potentialMill;
-                    // Use the actual piece color instead of sideToMove for consistency
-                    // with Dart implementation and logical correctness
+                    // Use the actual piece color instead of sideToMove for
+                    // consistency with Dart implementation and logical
+                    // correctness
                     if ((line & formedMillsBB[color]) != line) {
                         n++;
                     }

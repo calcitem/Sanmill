@@ -2165,6 +2165,60 @@ class Position {
     }
   }
 
+  void _rebuildInterventionPairMappings(PieceColor color, int targets) {
+    _clearInterventionPairMap(color);
+
+    if (targets == 0) {
+      return;
+    }
+
+    final RuleSettings ruleSettings = DB().ruleSettings;
+    final List<int> targetList = <int>[];
+
+    // Extract target squares from bitmask
+    for (int sq = sqBegin; sq < sqEnd; ++sq) {
+      if ((targets & squareBb(sq)) != 0) {
+        targetList.add(sq);
+      }
+    }
+
+    // Rebuild pairs by checking all possible intervention lines
+    void processLine(List<int> line) {
+      if (targetList.length < 2) return;
+
+      final int first = line[0];
+      final int second = line[2];
+
+      // Check if both endpoints are in our target list and are opponent pieces
+      if (targetList.contains(first) &&
+          targetList.contains(second) &&
+          _board[first] == color.opponent &&
+          _board[second] == color.opponent) {
+        // Set up pairing
+        final List<int> pairMap = _interventionPairMate[color]!;
+        if (pairMap[first] == -1) {
+          pairMap[first] = second;
+        }
+        if (pairMap[second] == -1) {
+          pairMap[second] = first;
+        }
+      }
+    }
+
+    if (ruleSettings.interventionCaptureOnSquareEdges) {
+      _custodianSquareEdgeLines.forEach(processLine);
+    }
+
+    if (ruleSettings.interventionCaptureOnCrossLines) {
+      _custodianCrossLines.forEach(processLine);
+    }
+
+    if (ruleSettings.hasDiagonalLines &&
+        ruleSettings.interventionCaptureOnDiagonalLines) {
+      _custodianDiagonalLines.forEach(processLine);
+    }
+  }
+
   void _initializeRemovalState(
     PieceColor color,
     int millRemovals,
@@ -2946,6 +3000,8 @@ class Position {
     ]) {
       if (hasColor[color]!) {
         _setInterventionCaptureState(color, targets[color]!, counts[color]!);
+        // Rebuild intervention pair mappings from targets
+        _rebuildInterventionPairMappings(color, targets[color]!);
       } else {
         _setInterventionCaptureState(color, 0, 0);
       }
