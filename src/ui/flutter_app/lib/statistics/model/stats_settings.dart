@@ -3,7 +3,6 @@
 
 // stat_settings.dart
 
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:meta/meta.dart';
 
 /// Unique Hive type-ids for statistics related objects.
@@ -24,7 +23,6 @@ const int kStatsSettingsTypeId = 51;
 /// This class is serializable to JSON and has a Hive [TypeAdapter]
 /// defined in `stat_adapter.dart`.
 @immutable
-@HiveType(typeId: kPlayerStatsTypeId)
 class PlayerStats {
   const PlayerStats({
     this.rating = 1400,
@@ -85,35 +83,21 @@ class PlayerStats {
     };
   }
 
-  @HiveField(0)
   final int rating;
-  @HiveField(1)
   final int gamesPlayed;
-  @HiveField(2)
   final int wins;
-  @HiveField(3)
   final int losses;
-  @HiveField(4)
   final int draws;
-  @HiveField(5)
   final DateTime? lastUpdated;
 
   // Colour specific
-  @HiveField(6)
   final int whiteGamesPlayed;
-  @HiveField(7)
   final int whiteWins;
-  @HiveField(8)
   final int whiteLosses;
-  @HiveField(9)
   final int whiteDraws;
-  @HiveField(10)
   final int blackGamesPlayed;
-  @HiveField(11)
   final int blackWins;
-  @HiveField(12)
   final int blackLosses;
-  @HiveField(13)
   final int blackDraws;
 
   PlayerStats copyWith({
@@ -153,21 +137,22 @@ class PlayerStats {
 
 /// Root object that contains all statistics related user data.
 @immutable
-@HiveType(typeId: kStatsSettingsTypeId)
 class StatsSettings {
   const StatsSettings({
     this.isStatsEnabled = true,
     this.humanStats = const PlayerStats(),
     Map<int, PlayerStats>? aiDifficultyStatsMap,
   }) : aiDifficultyStatsMap =
-            aiDifficultyStatsMap ?? const <int, PlayerStats>{};
+           aiDifficultyStatsMap ?? const <int, PlayerStats>{};
 
   factory StatsSettings.fromJson(Map<String, dynamic> json) {
     final Map<int, PlayerStats> levelStatsMap = <int, PlayerStats>{};
     // Using the canonical key name (no backward compatibility needed)
     if (json['aiDifficultyStatsMap'] is Map) {
-      (json['aiDifficultyStatsMap'] as Map<String, dynamic>)
-          .forEach((String key, dynamic value) {
+      (json['aiDifficultyStatsMap'] as Map<String, dynamic>).forEach((
+        String key,
+        dynamic value,
+      ) {
         final int lvl = int.tryParse(key) ?? 0;
         if (value is Map<String, dynamic>) {
           levelStatsMap[lvl] = PlayerStats.fromJson(value);
@@ -197,15 +182,12 @@ class StatsSettings {
   }
 
   /// Whether statistics collection is enabled.
-  @HiveField(0, defaultValue: true)
   final bool isStatsEnabled;
 
   /// The human player's rating & statistics.
-  @HiveField(1)
   final PlayerStats humanStats;
 
   /// Map from AI difficulty level (1-30) to its statistics.
-  @HiveField(2)
   final Map<int, PlayerStats> aiDifficultyStatsMap;
 
   /// Get statistics for a specific AI difficulty level.
@@ -221,8 +203,9 @@ class StatsSettings {
   /// [stats] is the new statistics to store for that level.
   /// Returns a new StatsSettings object with the updated statistics.
   StatsSettings updateAiDifficultyStats(int level, PlayerStats stats) {
-    final Map<int, PlayerStats> updated =
-        Map<int, PlayerStats>.from(aiDifficultyStatsMap)..[level] = stats;
+    final Map<int, PlayerStats> updated = Map<int, PlayerStats>.from(
+      aiDifficultyStatsMap,
+    )..[level] = stats;
     return copyWith(aiDifficultyStatsMap: updated);
   }
 
