@@ -1647,16 +1647,11 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
         isCaptureTarget = isCustodianTarget || isInterventionTarget;
 
-        const bool hasPendingCustodian = custodianCount > 0 &&
-                                         custodianTargets != 0;
-        const bool hasPendingIntervention = interventionCount > 0 &&
-                                            interventionTargets != 0;
 
         if (mode == ActiveCaptureMode::none) {
-            if (!isCaptureTarget &&
-                (hasPendingCustodian || hasPendingIntervention)) {
-                return false;
-            }
+            // Allow player to choose capture mode by their first removal
+            // If they remove a special capture target, activate that mode
+            // If they remove a non-special target, use mill mode (if available)
             if (isInterventionTarget && interventionCount > 0) {
                 mode = ActiveCaptureMode::intervention;
                 quota = std::max(interventionCount, 2);
@@ -1671,6 +1666,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
                 clearInterventionStateIfNeeded();
                 forcedPartner = SQ_NONE;
             } else {
+                // Player chose mill mode or general removal
                 if (pendingMill > 0) {
                     mode = ActiveCaptureMode::mill;
                     quota = pendingMill;

@@ -1601,17 +1601,10 @@ class Position {
       int custodianCount() => _custodianRemovalCount[sideToMove]!;
       int interventionCount() => _interventionRemovalCount[sideToMove]!;
 
-      final bool hasPendingCustodian =
-          custodianCount() > 0 && _custodianCaptureTargets[sideToMove]! != 0;
-      final bool hasPendingIntervention =
-          interventionCount() > 0 &&
-          _interventionCaptureTargets[sideToMove]! != 0;
-
       if (mode == ActiveCaptureMode.none) {
-        if (!isCaptureTarget &&
-            (hasPendingCustodian || hasPendingIntervention)) {
-          return const IllegalAction();
-        }
+        // Allow player to choose capture mode by their first removal
+        // If they remove a special capture target, activate that mode
+        // If they remove a non-special target, use mill mode (if available)
         if (isInterventionTarget && interventionCount() > 0) {
           mode = ActiveCaptureMode.intervention;
           quota = max(interventionCount(), 2);
@@ -1626,6 +1619,7 @@ class Position {
           _setInterventionCaptureState(sideToMove, 0, 0);
           forcedPartner = -1;
         } else {
+          // Player chose mill mode or general removal
           if (pendingMill > 0) {
             mode = ActiveCaptureMode.mill;
             quota = pendingMill;
