@@ -21,7 +21,7 @@ void main() {
   group('Automated Move Integration Tests', () {
     
     testWidgets('Test real AI move execution with imported move list', (WidgetTester tester) async {
-      // Launch the app
+      // Launch the app only once
       app.main();
       await tester.pumpAndSettle();
 
@@ -51,20 +51,8 @@ void main() {
         tester,
         AutomatedMoveTestData.sampleTestCase1,
       );
-    });
-
-    testWidgets('Test AI with shorter move sequence', (WidgetTester tester) async {
-      // Launch the app
-      app.main();
-      await tester.pumpAndSettle();
-
-      // Wait for app initialization
-      await Future<void>.delayed(const Duration(seconds: 2));
-
-      // Navigate to Human vs Human mode
-      await _navigateToHumanVsHuman(tester);
       
-      // Execute test with shorter move list
+      // Execute test with shorter move list (same app instance)
       await _executeTestCase(
         tester,
         AutomatedMoveTestData.sampleTestCase2,
@@ -118,19 +106,27 @@ Future<void> _executeTestCase(
     print('[IntegrationTest] Initial sequence: "$initialSequence"');
     print('[IntegrationTest] Initial move count: $initialMoveCount');
     
+    // Create a BuildContext for operations
+    final BuildContext context = tester.element(find.byType(MaterialApp));
+    
     // Import the move list
     print('[IntegrationTest] Importing move list...');
     ImportService.import(testCase.moveList);
     
-    // Record state after import
+    // Activate the imported game by taking back all moves
+    // This is necessary to properly load the imported game state
+    print('[IntegrationTest] Activating imported game...');
+    await HistoryNavigator.takeBackAll(context, pop: false);
+    
+    // Wait for the activation to complete
+    await tester.pumpAndSettle();
+    
+    // Record state after import and activation
     final String afterImportSequence = controller.gameRecorder.moveHistoryText;
     final int afterImportMoveCount = controller.gameRecorder.mainlineMoves.length;
     
     print('[IntegrationTest] After import sequence: "$afterImportSequence"');
     print('[IntegrationTest] After import move count: $afterImportMoveCount');
-    
-    // Create a BuildContext for moveNow
-    final BuildContext context = tester.element(find.byType(MaterialApp));
     
     // Execute "move now" to trigger AI
     print('[IntegrationTest] Executing move now to trigger AI...');
