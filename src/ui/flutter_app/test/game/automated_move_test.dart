@@ -46,10 +46,10 @@ void main() {
       print('Failed: ${result.failedCount}');
       print('Success rate: ${result.successRate.toStringAsFixed(1)}%');
 
-       // Note: The first time you run these tests, they will likely fail because
-       // the expected sequences are placeholders. Check the test output to see
-       // the actual AI-generated sequences, then update the test data with the
-       // correct expected sequences for future runs.
+      // Note: The first time you run these tests, they will likely fail because
+      // the expected sequences are placeholders. Check the test output to see
+      // the actual AI-generated sequences, then update the test data with the
+      // correct expected sequences for future runs.
     });
 
     test("Run quick validation tests", () async {
@@ -170,6 +170,30 @@ void main() {
       // Verify the test was executed
       expect(result.testResults, hasLength(1));
       expect(result.testResults.first.testCase.expectedSequences, hasLength(3));
+    });
+
+    test("Run new test cases configuration", () async {
+      // Execute the new test cases configuration
+      final TestBatchResult result = await AutomatedMoveTestRunner.runTestBatch(
+        AutomatedMoveTestData.newTestCasesConfig,
+      );
+
+      // Verify that new test cases were executed
+      expect(
+        result.testResults,
+        isNotEmpty,
+        reason: 'Should have executed new test cases',
+      );
+
+      // Verify that we have the expected number of new test cases
+      expect(
+        result.testResults.length,
+        equals(14), // 14 new test cases added
+        reason: 'Should execute all 14 new test cases',
+      );
+
+      print('New test cases executed: ${result.testResults.length}');
+      print('Configuration: ${result.config.configName}');
     });
   });
 

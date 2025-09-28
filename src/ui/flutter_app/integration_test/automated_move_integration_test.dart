@@ -19,8 +19,9 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Automated Move Integration Tests', () {
-    
-    testWidgets('Test real AI move execution with imported move list', (WidgetTester tester) async {
+    testWidgets('Test real AI move execution with imported move list', (
+      WidgetTester tester,
+    ) async {
       // Launch the app only once
       app.main();
       await tester.pumpAndSettle();
@@ -31,32 +32,44 @@ void main() {
       // Print current DB settings
       final generalSettings = DB().generalSettings;
       final ruleSettings = DB().ruleSettings;
-      
+
       print('[IntegrationTest] Current AI Settings:');
       print('[IntegrationTest] Skill Level: ${generalSettings.skillLevel}');
       print('[IntegrationTest] Move Time: ${generalSettings.moveTime}');
-      print('[IntegrationTest] Search Algorithm: ${generalSettings.searchAlgorithm}');
-      print('[IntegrationTest] Perfect Database: ${generalSettings.usePerfectDatabase}');
+      print(
+        '[IntegrationTest] Search Algorithm: ${generalSettings.searchAlgorithm}',
+      );
+      print(
+        '[IntegrationTest] Perfect Database: ${generalSettings.usePerfectDatabase}',
+      );
       print('[IntegrationTest] AI Is Lazy: ${generalSettings.aiIsLazy}');
       print('[IntegrationTest] Shuffling: ${generalSettings.shufflingEnabled}');
       print('[IntegrationTest] Pieces Count: ${ruleSettings.piecesCount}');
-      print('[IntegrationTest] Has Diagonal Lines: ${ruleSettings.hasDiagonalLines}');
+      print(
+        '[IntegrationTest] Has Diagonal Lines: ${ruleSettings.hasDiagonalLines}',
+      );
       print('[IntegrationTest] May Fly: ${ruleSettings.mayFly}');
 
       // Navigate to Human vs Human mode
       await _navigateToHumanVsHuman(tester);
-      
+
       // Execute test with sample move list
-      await _executeTestCase(
-        tester,
-        AutomatedMoveTestData.sampleTestCase1,
-      );
-      
+      await _executeTestCase(tester, AutomatedMoveTestData.sampleTestCase1);
+
       // Execute test with shorter move list (same app instance)
-      await _executeTestCase(
-        tester,
-        AutomatedMoveTestData.sampleTestCase2,
-      );
+      await _executeTestCase(tester, AutomatedMoveTestData.sampleTestCase2);
+
+      // Execute test with short capture sequence
+      await _executeTestCase(tester, AutomatedMoveTestData.shortCaptureTest);
+
+      // Execute test with short simple sequence
+      await _executeTestCase(tester, AutomatedMoveTestData.shortSimpleTest);
+
+      // Execute test with 5-move opening
+      await _executeTestCase(tester, AutomatedMoveTestData.fiveMoveTest);
+
+      // Execute test with complex movement game
+      await _executeTestCase(tester, AutomatedMoveTestData.complexMovementTest);
     });
   });
 }
@@ -64,7 +77,7 @@ void main() {
 /// Navigate to Human vs Human mode
 Future<void> _navigateToHumanVsHuman(WidgetTester tester) async {
   print('[IntegrationTest] Navigating to Human vs Human mode...');
-  
+
   // Look for the drawer button and tap it
   final Finder drawerButton = find.byTooltip('Open navigation menu');
   if (drawerButton.evaluate().isNotEmpty) {
@@ -90,63 +103,66 @@ Future<void> _executeTestCase(
 ) async {
   print('[IntegrationTest] Executing test case: ${testCase.id}');
   print('[IntegrationTest] Description: ${testCase.description}');
-  
+
   try {
     // Get the game controller
     final GameController controller = GameController();
-    
+
     // Reset to clean state
     controller.reset(force: true);
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
-    
+
     // Record initial state
     final String initialSequence = controller.gameRecorder.moveHistoryText;
     final int initialMoveCount = controller.gameRecorder.mainlineMoves.length;
-    
+
     print('[IntegrationTest] Initial sequence: "$initialSequence"');
     print('[IntegrationTest] Initial move count: $initialMoveCount');
-    
+
     // Create a BuildContext for operations
     final BuildContext context = tester.element(find.byType(MaterialApp));
-    
+
     // Import the move list
     print('[IntegrationTest] Importing move list...');
     ImportService.import(testCase.moveList);
-    
+
     // Activate the imported game by taking back all moves
     // This is necessary to properly load the imported game state
     print('[IntegrationTest] Activating imported game...');
     await HistoryNavigator.takeBackAll(context, pop: false);
-    
+
     // Wait for the activation to complete
     await tester.pumpAndSettle();
-    
+
     // Record state after import and activation
     final String afterImportSequence = controller.gameRecorder.moveHistoryText;
-    final int afterImportMoveCount = controller.gameRecorder.mainlineMoves.length;
-    
+    final int afterImportMoveCount =
+        controller.gameRecorder.mainlineMoves.length;
+
     print('[IntegrationTest] After import sequence: "$afterImportSequence"');
     print('[IntegrationTest] After import move count: $afterImportMoveCount');
-    
+
     // Execute "move now" to trigger AI
     print('[IntegrationTest] Executing move now to trigger AI...');
     await controller.moveNow(context);
-    
+
     // Wait for AI to complete moves
     await Future<void>.delayed(const Duration(seconds: 3));
-    
+
     // Record final state
     final String finalSequence = controller.gameRecorder.moveHistoryText;
     final int finalMoveCount = controller.gameRecorder.mainlineMoves.length;
-    
+
     print('[IntegrationTest] Final sequence: "$finalSequence"');
     print('[IntegrationTest] Final move count: $finalMoveCount');
-    print('[IntegrationTest] AI made ${finalMoveCount - afterImportMoveCount} moves');
-    
+    print(
+      '[IntegrationTest] AI made ${finalMoveCount - afterImportMoveCount} moves',
+    );
+
     // Check if result matches expected sequences
     bool testPassed = false;
     String? matchedExpected;
-    
+
     for (final String expected in testCase.expectedSequences) {
       if (_normalizeSequence(finalSequence) == _normalizeSequence(expected)) {
         testPassed = true;
@@ -154,11 +170,11 @@ Future<void> _executeTestCase(
         break;
       }
     }
-    
+
     // Print test result
     final String status = testPassed ? 'PASSED' : 'FAILED';
     print('[IntegrationTest] [$status] ${testCase.id}');
-    
+
     if (testPassed && matchedExpected != null) {
       print('[IntegrationTest] Matched expected sequence: $matchedExpected');
     } else {
@@ -168,14 +184,13 @@ Future<void> _executeTestCase(
       }
       print('[IntegrationTest] Actual: $finalSequence');
     }
-    
+
     // Note: In integration tests, we don't use expect() to fail the test
     // because we want to see the actual AI output to update expected sequences
-    
   } catch (e) {
     print('[IntegrationTest] Test case failed with error: $e');
   }
-  
+
   print('[IntegrationTest] Test case completed\n');
 }
 

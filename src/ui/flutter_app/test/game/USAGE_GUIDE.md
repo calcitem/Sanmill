@@ -165,11 +165,40 @@ static const MoveListTestCase myTestCase = MoveListTestCase(
 [IntegrationTest] Actual: 1. b2 f6 2. g7 e5 ... 17. d3
 ```
 
+## 新增测试用例
+
+已成功添加14个新的测试用例：
+
+1. **short_capture_game** - 短游戏吃子序列 (4步)
+2. **short_simple_game** - 短游戏简单序列 (4步)
+3. **five_move_opening** - 5步开局序列
+4. **six_move_development** - 6步发展序列
+5. **complex_movement_game** - 复杂移动游戏 (16步)
+6. **twelve_move_midgame** - 12步中局序列
+7. **complex_capture_game** - 复杂吃子游戏 (13步)
+8. **advanced_tactical_game** - 高级战术游戏 (14步)
+9. **long_tactical_game** - 长战术游戏 (15步)
+10. **alt_long_tactical_game** - 替代长战术游戏 (13步)
+11. **complex_endgame_positioning** - 复杂残局定位 (13步)
+12. **strategic_positioning_game** - 战略定位游戏 (12步)
+13. **very_long_tactical_game** - 非常长的战术游戏 (25步)
+14. **standard_twelve_move_opening** - 标准12步开局
+
+### 运行新测试用例
+
+```bash
+# 运行包含新测试用例的配置
+flutter test test/game/automated_move_test.dart -t "Run new test cases"
+
+# 运行集成测试（推荐）
+flutter test integration_test/automated_move_integration_test.dart
+```
+
 ## 下一步
 
 1. **运行测试**：使用集成测试查看AI实际行为
 2. **更新期望值**：根据AI输出更新测试数据
-3. **添加更多测试**：创建更多测试用例覆盖不同场景
+3. **修复记谱法问题**：某些复杂移动可能需要调整格式
 4. **配置CI/CD**：将测试集成到持续集成流程中
 
 ## 注意事项
