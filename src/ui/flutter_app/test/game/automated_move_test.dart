@@ -3,7 +3,8 @@
 
 // automated_move_test.dart
 
-import 'package:flutter/services.dart';
+// ignore_for_file: avoid_print, always_specify_types, prefer_const_declarations
+
 import 'package:flutter_test/flutter_test.dart';
 
 import 'automated_move_test_data.dart';

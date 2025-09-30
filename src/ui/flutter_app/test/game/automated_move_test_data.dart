@@ -3,6 +3,8 @@
 
 // automated_move_test_data.dart
 
+// ignore_for_file: avoid_classes_with_only_static_members, always_specify_types, avoid_redundant_argument_values
+
 import 'automated_move_test_models.dart';
 
 /// Sample test configurations for automated move testing

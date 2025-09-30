@@ -28,51 +28,54 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
   // Common model suggestions for each provider
   final Map<LlmProvider, List<String>> _modelSuggestions =
       <LlmProvider, List<String>>{
-    LlmProvider.openai: <String>[
-      'gpt-5',
-      'o4-mini',
-      'gpt-4.1',
-      'gpt-3.5-turbo'
-    ],
-    LlmProvider.google: <String>['gemini-pro', 'gemini-2.5-pro'],
-    LlmProvider.ollama: <String>['gemma3', 'qwq', 'llama3.3', 'phi4'],
-  };
+        LlmProvider.openai: <String>[
+          'gpt-5',
+          'o4-mini',
+          'gpt-4.1',
+          'gpt-3.5-turbo',
+        ],
+        LlmProvider.google: <String>['gemini-pro', 'gemini-2.5-pro'],
+        LlmProvider.ollama: <String>['gemma3', 'qwq', 'llama3.3', 'phi4'],
+      };
 
   // Suggested base URLs for each provider, ordered by popularity
   final Map<LlmProvider, List<String>> _baseUrlSuggestions =
       <LlmProvider, List<String>>{
-    LlmProvider.openai: <String>[
-      'https://api.openai.com/v1', // Official endpoint
-      'https://openrouter.ai/api/v1',
-      'https://api.mistral.ai/v1',
-      'https://api.together.xyz/v1',
-      'https://api.endpoints.anyscale.com/v1',
-      'https://api.groq.com/openai/v1',
-      'https://api.perplexity.ai',
-      'https://api.fireworks.ai/inference/v1',
-      'https://api.siliconflow.cn/v1',
-      'https://api.deepseek.com/v1',
-    ],
-    LlmProvider.google: <String>[
-      // Google models use API key directly – no custom base URL needed
-    ],
-    LlmProvider.ollama: <String>[
-      'http://localhost:11434',
-      'http://192.168.1.100:11434',
-    ],
-  };
+        LlmProvider.openai: <String>[
+          'https://api.openai.com/v1', // Official endpoint
+          'https://openrouter.ai/api/v1',
+          'https://api.mistral.ai/v1',
+          'https://api.together.xyz/v1',
+          'https://api.endpoints.anyscale.com/v1',
+          'https://api.groq.com/openai/v1',
+          'https://api.perplexity.ai',
+          'https://api.fireworks.ai/inference/v1',
+          'https://api.siliconflow.cn/v1',
+          'https://api.deepseek.com/v1',
+        ],
+        LlmProvider.google: <String>[
+          // Google models use API key directly – no custom base URL needed
+        ],
+        LlmProvider.ollama: <String>[
+          'http://localhost:11434',
+          'http://192.168.1.100:11434',
+        ],
+      };
 
   @override
   void initState() {
     super.initState();
     // Get current LLM settings from DB
     _selectedProvider = DB().generalSettings.llmProvider;
-    _modelController =
-        TextEditingController(text: DB().generalSettings.llmModel);
-    _apiKeyController =
-        TextEditingController(text: DB().generalSettings.llmApiKey);
-    _baseUrlController =
-        TextEditingController(text: DB().generalSettings.llmBaseUrl);
+    _modelController = TextEditingController(
+      text: DB().generalSettings.llmModel,
+    );
+    _apiKeyController = TextEditingController(
+      text: DB().generalSettings.llmApiKey,
+    );
+    _baseUrlController = TextEditingController(
+      text: DB().generalSettings.llmBaseUrl,
+    );
     _temperature = DB().generalSettings.llmTemperature;
   }
 
@@ -88,13 +91,13 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
   void _saveConfig() {
     // Update settings using copyWith method to modify only the necessary fields
     DB().generalSettings = DB().generalSettings.copyWith(
-          llmProvider: _selectedProvider,
-          llmModel: _modelController.text.trim(),
-          llmApiKey: _apiKeyController.text.trim(),
-          llmBaseUrl: _baseUrlController.text.trim(),
-          // ignore: undefined_named_parameter
-          llmTemperature: _temperature,
-        );
+      llmProvider: _selectedProvider,
+      llmModel: _modelController.text.trim(),
+      llmApiKey: _apiKeyController.text.trim(),
+      llmBaseUrl: _baseUrlController.text.trim(),
+      // ignore: undefined_named_parameter
+      llmTemperature: _temperature,
+    );
     Navigator.of(context).pop();
   }
 
@@ -252,10 +255,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
 
     // Suggestions for DeepSeek
     if (base.startsWith('https://api.deepseek.com')) {
-      return <String>[
-        'deepseek-chat',
-        'deepseek-reasoner',
-      ];
+      return <String>['deepseek-chat', 'deepseek-reasoner'];
     }
 
     // Default OpenAI hosted suggestions
@@ -280,15 +280,17 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: suggestions
-                  .map((String url) => ListTile(
-                        title: Text(url),
-                        onTap: () {
-                          setState(() {
-                            _baseUrlController.text = url;
-                          });
-                          Navigator.pop(context);
-                        },
-                      ))
+                  .map(
+                    (String url) => ListTile(
+                      title: Text(url),
+                      onTap: () {
+                        setState(() {
+                          _baseUrlController.text = url;
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
                   .toList(),
             ),
           ),
@@ -320,15 +322,17 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: suggestions
-                  .map((String model) => ListTile(
-                        title: Text(model),
-                        onTap: () {
-                          setState(() {
-                            _modelController.text = model;
-                          });
-                          Navigator.pop(context);
-                        },
-                      ))
+                  .map(
+                    (String model) => ListTile(
+                      title: Text(model),
+                      onTap: () {
+                        setState(() {
+                          _modelController.text = model;
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
                   .toList(),
             ),
           ),
@@ -420,9 +424,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         constraints: BoxConstraints(
@@ -455,11 +457,13 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                     ),
                     const SizedBox(height: 8.0),
                     DropdownButtonFormField<LlmProvider>(
-                      value: _selectedProvider,
+                      initialValue: _selectedProvider,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 8.0),
+                          horizontal: 12.0,
+                          vertical: 8.0,
+                        ),
                       ),
                       items: LlmProvider.values.map((LlmProvider provider) {
                         return DropdownMenuItem<LlmProvider>(
@@ -503,7 +507,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                           border: const OutlineInputBorder(),
                           hintText: _getBaseUrlHint(),
                           contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 8.0),
+                            horizontal: 12.0,
+                            vertical: 8.0,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16.0),
@@ -534,7 +540,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                         helperText: S.of(context).youCanEnterAnyModelName,
                         // "You can enter any model name"
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 8.0),
+                          horizontal: 12.0,
+                          vertical: 8.0,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16.0),
@@ -558,7 +566,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                               )
                             : null,
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 8.0),
+                          horizontal: 12.0,
+                          vertical: 8.0,
+                        ),
                       ),
                       obscureText: true,
                     ),

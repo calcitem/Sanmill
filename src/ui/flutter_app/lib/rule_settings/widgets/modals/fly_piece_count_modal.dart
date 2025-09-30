@@ -3,6 +3,8 @@
 
 // fly_piece_count_modal.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
 class _FlyPieceCountModal extends StatelessWidget {
@@ -34,11 +36,7 @@ class _FlyPieceCountModal extends StatelessWidget {
     ];
   }
 
-  Widget _buildRadioListTile(
-    BuildContext context,
-    String title,
-    int value,
-  ) {
+  Widget _buildRadioListTile(BuildContext context, String title, int value) {
     return Semantics(
       label: title,
       child: RadioListTile<int>(

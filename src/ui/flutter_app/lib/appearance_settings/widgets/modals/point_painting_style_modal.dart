@@ -3,6 +3,8 @@
 
 // point_painting_style_modal.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 
 class _PointPaintingStyleModal extends StatelessWidget {

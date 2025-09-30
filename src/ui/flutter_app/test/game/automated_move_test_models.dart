@@ -3,6 +3,8 @@
 
 // automated_move_test_models.dart
 
+// ignore_for_file: sort_constructors_first, always_specify_types
+
 /// Represents a single test case with move list and expected outcomes
 class MoveListTestCase {
   /// Unique identifier for this test case

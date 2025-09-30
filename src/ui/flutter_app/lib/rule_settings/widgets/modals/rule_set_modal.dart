@@ -3,14 +3,13 @@
 
 // rule_set_modal.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
 // A modal widget to select a rule set for the game.
 class _RuleSetModal extends StatelessWidget {
-  const _RuleSetModal({
-    required this.ruleSet,
-    required this.onChanged,
-  });
+  const _RuleSetModal({required this.ruleSet, required this.onChanged});
 
   final RuleSet ruleSet;
   final Function(RuleSet?)? onChanged;

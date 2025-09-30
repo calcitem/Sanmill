@@ -3,13 +3,12 @@
 
 // n_move_rule_modal.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
 class _NMoveRuleModal extends StatelessWidget {
-  const _NMoveRuleModal({
-    required this.nMoveRule,
-    required this.onChanged,
-  });
+  const _NMoveRuleModal({required this.nMoveRule, required this.onChanged});
 
   final int nMoveRule;
   final Function(int?)? onChanged;
@@ -37,11 +36,7 @@ class _NMoveRuleModal extends StatelessWidget {
     ];
   }
 
-  Widget _buildRadioListTile(
-    BuildContext context,
-    String title,
-    int value,
-  ) {
+  Widget _buildRadioListTile(BuildContext context, String title, int value) {
     return Semantics(
       key: Key('semantics_$value'),
       label: title,

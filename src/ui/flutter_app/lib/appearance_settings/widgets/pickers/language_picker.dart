@@ -3,12 +3,12 @@
 
 // language_picker.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 
 class _LanguagePicker extends StatefulWidget {
-  const _LanguagePicker({
-    required this.currentLanguageLocale,
-  });
+  const _LanguagePicker({required this.currentLanguageLocale});
 
   final Locale? currentLanguageLocale;
 
@@ -37,7 +37,8 @@ class _LanguagePickerState extends State<_LanguagePicker> {
             S.of(context).defaultLanguage,
             key: const Key('language_picker_radio_default_title'),
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           groupValue: _selectedLocale,
           value: null,
@@ -48,19 +49,18 @@ class _LanguagePickerState extends State<_LanguagePicker> {
             Navigator.pop(context, _selectedLocale);
           },
         ),
-        const Divider(
-          key: Key('language_picker_divider'),
-        ),
+        const Divider(key: Key('language_picker_divider')),
         for (final Locale locale in localeToLanguageName.keys)
           RadioListTile<Locale>(
             key: Key('language_picker_radio_$locale'),
             title: Text(
               localeToLanguageName[locale]!,
               key: Key(
-                  'language_picker_radio_${locale.languageCode}_${locale.countryCode}_title'),
+                'language_picker_radio_${locale.languageCode}_${locale.countryCode}_title',
+              ),
               style: TextStyle(
-                  fontSize:
-                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              ),
             ),
             groupValue: _selectedLocale,
             value: locale,

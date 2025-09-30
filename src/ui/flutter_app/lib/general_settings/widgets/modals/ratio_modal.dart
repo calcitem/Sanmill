@@ -3,13 +3,12 @@
 
 // ratio_modal.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/general_settings/widgets/general_settings_page.dart';
 
 class _RatioModal extends StatelessWidget {
-  const _RatioModal({
-    required this.ratio,
-    required this.onChanged,
-  });
+  const _RatioModal({required this.ratio, required this.onChanged});
 
   final int ratio;
   final Function(int?)? onChanged;
@@ -37,11 +36,7 @@ class _RatioModal extends StatelessWidget {
     ];
   }
 
-  Widget _buildRadioListTile(
-    BuildContext context,
-    String title,
-    int value,
-  ) {
+  Widget _buildRadioListTile(BuildContext context, String title, int value) {
     return Semantics(
       key: Key('ratio_modal_radio_list_tile_semantics_$value'),
       label: title,

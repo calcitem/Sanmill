@@ -3,6 +3,8 @@
 
 // automated_move_test_runner.dart
 
+// ignore_for_file: avoid_classes_with_only_static_members, avoid_print, always_specify_types
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

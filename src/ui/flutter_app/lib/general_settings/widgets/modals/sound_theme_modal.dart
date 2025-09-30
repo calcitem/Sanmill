@@ -3,13 +3,12 @@
 
 // sound_theme_modal.dart
 
+// ignore_for_file: deprecated_member_use
+
 part of 'package:sanmill/general_settings/widgets/general_settings_page.dart';
 
 class _SoundThemeModal extends StatelessWidget {
-  const _SoundThemeModal({
-    required this.soundTheme,
-    required this.onChanged,
-  });
+  const _SoundThemeModal({required this.soundTheme, required this.onChanged});
 
   final SoundTheme soundTheme;
   final Function(SoundTheme?)? onChanged;
