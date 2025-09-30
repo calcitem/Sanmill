@@ -26,6 +26,18 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wcast-qual -pedantic -Wex
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
+# Enable parallel compilation by configuring the build system.
+# For Android NDK builds, this is typically handled by Gradle's parallel flag,
+# but we can hint CMake to prepare for parallel builds.
+if(NOT DEFINED CMAKE_BUILD_PARALLEL_LEVEL)
+  include(ProcessorCount)
+  ProcessorCount(N)
+  if(NOT N EQUAL 0)
+    set(CMAKE_BUILD_PARALLEL_LEVEL ${N} CACHE STRING \"Number of parallel build jobs\")
+    message(STATUS \"Parallel build configured with ${N} jobs\")
+  endif()
+endif()
+
 # Enable LTO only for release builds
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT DEFINED USE_ASAN)
     include(CheckIPOSupported)

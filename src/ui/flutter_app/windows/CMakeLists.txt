@@ -36,6 +36,16 @@ function(APPLY_STANDARD_SETTINGS TARGET)
   target_compile_options(${TARGET} PRIVATE /EHsc)
   target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
   target_compile_definitions(${TARGET} PRIVATE "$<$<CONFIG:Debug>:_DEBUG>")
+  
+  # Enable fast linking for Debug builds to significantly reduce link time.
+  # /DEBUG:FASTLINK creates smaller PDB files by referencing object files.
+  target_link_options(${TARGET} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FASTLINK>")
+  
+  # Enable incremental linking for Debug builds to speed up recompilation.
+  target_link_options(${TARGET} PRIVATE "$<$<CONFIG:Debug>:/INCREMENTAL>")
+  
+  # Use function-level linking to allow the linker to remove unused functions.
+  target_compile_options(${TARGET} PRIVATE /Gy)
 endfunction()
 
 set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")

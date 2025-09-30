@@ -49,7 +49,6 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../thread_pool.cpp"
   "../../../../perfect/perfect_adaptor.cpp"
   "../../../../perfect/perfect_api.cpp"
-  "../../../../perfect/perfect_adaptor.cpp"
   "../../../../perfect/perfect_common.cpp"
   "../../../../perfect/perfect_debug.cpp"
   "../../../../perfect/perfect_errors.cpp"
@@ -90,6 +89,23 @@ target_link_options(${BINARY_NAME} PRIVATE "$<$<OR:$<CONFIG:Release>,$<CONFIG:Pr
 
 # Disable Windows macros that collide with C++ standard library functions.
 target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")
+
+# Enable multi-threaded compilation for MSVC to speed up build times.
+# The /MP option allows the compiler to create multiple processes to compile
+# source files in parallel.
+if(MSVC)
+  target_compile_options(${BINARY_NAME} PRIVATE /MP)
+  
+  # Enable fast linking for Debug builds to significantly reduce link time.
+  # /DEBUG:FASTLINK creates smaller PDB files by referencing object files.
+  target_link_options(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FASTLINK>")
+  
+  # Enable incremental linking for Debug builds to speed up recompilation.
+  target_link_options(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:/INCREMENTAL>")
+  
+  # Use function-level linking to allow the linker to remove unused functions.
+  target_compile_options(${BINARY_NAME} PRIVATE /Gy)
+endif()
 
 # Add dependency libraries and include directories. Add any application-specific
 # dependencies here.

@@ -69,6 +69,13 @@ file(GLOB RESOURCE_FILES *.rc *.qrc)
 # Compiler flags
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /W4")
+  
+  # Enable function-level linking for better optimization.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Gy")
+  
+  # Enable fast linking and incremental linking for Debug builds.
+  set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} /DEBUG:FASTLINK /INCREMENTAL")
+  
   if(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
     # Add ARM64-specific flags or settings
   endif()

@@ -71,6 +71,18 @@ function(APPLY_STANDARD_SETTINGS TARGET)
   target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
 endfunction()
 
+# Enable parallel compilation for GCC and Clang.
+# This is achieved by using build tools like Make or Ninja with -j flag.
+# CMake automatically detects the number of available processors.
+if(NOT DEFINED CMAKE_BUILD_PARALLEL_LEVEL)
+  include(ProcessorCount)
+  ProcessorCount(N)
+  if(NOT N EQUAL 0)
+    set(CMAKE_BUILD_PARALLEL_LEVEL ${N} CACHE STRING "Number of parallel build jobs")
+    message(STATUS "Parallel build enabled with ${N} jobs")
+  endif()
+endif()
+
 # Flutter library and tool build rules.
 set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
 add_subdirectory(${FLUTTER_MANAGED_DIR})
@@ -125,7 +137,6 @@ add_executable(${BINARY_NAME}
   "../../../thread_pool.cpp"
   "../../../perfect/perfect_adaptor.cpp"
   "../../../perfect/perfect_api.cpp"
-  "../../../perfect/perfect_adaptor.cpp"
   "../../../perfect/perfect_common.cpp"
   "../../../perfect/perfect_debug.cpp"
   "../../../perfect/perfect_errors.cpp"
