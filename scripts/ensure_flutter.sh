@@ -11,7 +11,7 @@ fi
 SANMILL_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SANMILL_REPO_ROOT="$(cd "${SANMILL_SCRIPT_DIR}/.." && pwd)"
 
-: "${REQUIRED_FLUTTER_VERSION:=3.35.4}"
+: "${REQUIRED_FLUTTER_VERSION:=3.35.5}"
 : "${FLUTTER_CHANNEL:=stable}"
 : "${FLUTTER_DOWNLOAD_BASE_URL:=https://storage.googleapis.com/flutter_infra_release/releases}"
 : "${FLUTTER_TOOL_DIR:=${SANMILL_REPO_ROOT}/.tools/flutter}"
@@ -39,7 +39,7 @@ flutter__detect_system_flutter() {
     return 1
   fi
 
-  # Expected format: "Flutter 3.35.4 • channel stable • ..."
+  # Expected format: "Flutter 3.35.5 • channel stable • ..."
   local version
   version="$(printf '%s' "${version_line}" | awk '{print $2}')"
   if [[ "${version}" != "${REQUIRED_FLUTTER_VERSION}" ]]; then
