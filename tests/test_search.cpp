@@ -180,8 +180,8 @@ TEST_F(SearchTest, PrincipalVariationSearch)
 
     // We'll just directly call pvs() with i=0, but in normal usage
     // search() calls pvs() on each move in a loop. We'll do a single call:
-    Value val = Search::pvs(searchEngine, &pos, stack, depth, originDepth, alpha,
-                            beta, bestMove, /*i=*/0, before, after);
+    Value val = Search::pvs(searchEngine, &pos, stack, depth, originDepth,
+                            alpha, beta, bestMove, /*i=*/0, before, after);
 
     EXPECT_GE(val, -VALUE_INFINITE);
     EXPECT_LE(val, VALUE_INFINITE);

@@ -192,7 +192,8 @@ TEST(MoveGenTest, DISABLED_RemoveGeneration_AllOpponentPiecesInMills)
     // If all of opponent's pieces are in mills, they can all be removed.
     // This is a simplified scenario. We'll set them up so each piece is in a
     // mill.
-    // NOTE: This test is currently disabled as it requires proper Position setup
+    // NOTE: This test is currently disabled as it requires proper Position
+    // setup
 
     Position pos;
     pos.reset();
@@ -234,7 +235,8 @@ TEST(MoveGenTest, DISABLED_RemoveGeneration_AllOpponentPiecesInMills)
                            "be removed.";
     EXPECT_LE(count, 3) << "At most 3 pieces can be removed.";
 
-    // Just verify that generated moves are valid remove moves for the black pieces
+    // Just verify that generated moves are valid remove moves for the black
+    // pieces
     auto movesSet = MovesToSet(moveList, end);
     for (const auto &move : movesSet) {
         // Remove moves should be negative square values

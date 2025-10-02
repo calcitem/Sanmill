@@ -155,7 +155,8 @@ TEST_F(SearchEngineTest, GetValueAfterSearch)
     // e.g. stoi should not throw if it's a valid integer representation
     int val = std::stoi(valStr);
     (void)val; // just to avoid an unused warning
-    // If stoi fails on invalid string, the program will terminate (no exceptions enabled)
+    // If stoi fails on invalid string, the program will terminate (no
+    // exceptions enabled)
 }
 
 #if 0

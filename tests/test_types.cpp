@@ -55,8 +55,8 @@ TEST_F(TypesTest, ColorToggle)
     // This is not typically used in normal logic but let's verify for
     // consistency.
     EXPECT_EQ(~NOBODY, static_cast<Color>(3)) << "Toggling NOBODY (0) with "
-                                                  "^3 yields 3, typically "
-                                                  "'DRAW'.";
+                                                 "^3 yields 3, typically "
+                                                 "'DRAW'.";
 }
 
 /**
@@ -89,7 +89,7 @@ TEST_F(TypesTest, MakePieceAndQueries)
     EXPECT_EQ(type_of(markedPc), MARKED) << "type_of(MARKED_PIECE) should be "
                                             "MARKED.";
     EXPECT_EQ(color_of(markedPc), NOBODY) << "A marked piece has NOBODY in "
-                                              "higher nibble.";
+                                             "higher nibble.";
 }
 
 /**

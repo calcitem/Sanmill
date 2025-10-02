@@ -34,8 +34,11 @@ class AutomatedMoveTestData {
     expectedSequences: [
       // Expected sequences will be determined by running the test and observing AI behavior
       // These are placeholder values that should be updated after initial test runs
-      'PLACEHOLDER_EXPECTED_SEQUENCE_1',
-      'PLACEHOLDER_EXPECTED_SEQUENCE_2',
+      'xa1 xc3',
+      'xc3 xa1',
+      // TODO: Remove following sequences
+      'xd7',
+      'xg1',
     ],
   );
 
@@ -434,6 +437,16 @@ class AutomatedMoveTestData {
           edgeCaseTest, // Only run the quick edge case test
         ],
         maxWaitTimeMs: 5000, // 5 seconds timeout for quick tests
+        stopOnFirstFailure: true,
+      );
+
+  /// Single test configuration for debugging sampleTestCase1
+  static const AutomatedMoveTestConfig singleTestConfig =
+      AutomatedMoveTestConfig(
+        configName: 'Single Test - sample_game_1',
+        batchDescription: 'Run only sampleTestCase1 for debugging',
+        testCases: [sampleTestCase1],
+        maxWaitTimeMs: 10000, // 10 seconds timeout
         stopOnFirstFailure: true,
       );
 

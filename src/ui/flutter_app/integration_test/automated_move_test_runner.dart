@@ -97,6 +97,7 @@ class AutomatedMoveTestRunner {
 
     try {
       // Reset game controller to clean state
+      // Use singleton GameController instance
       final GameController controller = GameController();
       controller.reset(force: true);
 
@@ -113,14 +114,71 @@ class AutomatedMoveTestRunner {
       try {
         ImportService.import(testCase.moveList);
         print('$_logTag Import completed successfully');
+
+        // Check if newGameRecorder was set
+        if (controller.newGameRecorder != null) {
+          print(
+            '$_logTag newGameRecorder has ${controller.newGameRecorder!.mainlineMoves.length} moves',
+          );
+        } else {
+          print('$_logTag WARNING: newGameRecorder is null after import!');
+        }
       } catch (e) {
         print('$_logTag Import failed: $e');
         throw Exception('Failed to import move list: $e');
       }
 
-      // Capture initial state
+      // Execute the imported moves using doEachMove (no UI interaction)
+      print('$_logTag Calling doEachMove(takeBackAll)...');
+      final HistoryResponse takeBackResp = await HistoryNavigator.doEachMove(
+        HistoryNavMode.takeBackAll,
+      );
+      print('$_logTag takeBackAll result: $takeBackResp');
+
+      // Wait for navigation to complete
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+
+      print('$_logTag Calling doEachMove(stepForwardAll)...');
+      final HistoryResponse stepForwardResp = await HistoryNavigator.doEachMove(
+        HistoryNavMode.stepForwardAll,
+      );
+      print('$_logTag stepForwardAll result: $stepForwardResp');
+
+      // Wait for all moves to be executed
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+
+      // Capture initial state after executing all imported moves
       final String initialMoves = controller.gameRecorder.moveHistoryText;
+      final int moveCount = controller.gameRecorder.mainlineMoves.length;
       print('$_logTag Initial moves after import: $initialMoves');
+      print('$_logTag Move count: $moveCount');
+      print('$_logTag Game phase: ${controller.position.phase}');
+      print('$_logTag Game winner: ${controller.position.winner}');
+      print('$_logTag Side to move: ${controller.position.sideToMove}');
+      print(
+        '$_logTag Is AI to move: ${controller.gameInstance.isAiSideToMove}',
+      );
+
+      // Set up game mode for AI to make the next move
+      // Make the side to move be controlled by AI
+      controller.gameInstance.gameMode = GameMode.humanVsAi;
+
+      // Set which side is AI based on who is to move
+      final PieceColor aiSide = controller.position.sideToMove;
+      final PieceColor humanSide = aiSide == PieceColor.white
+          ? PieceColor.black
+          : PieceColor.white;
+
+      controller.gameInstance.getPlayerByColor(aiSide).isAi = true;
+      controller.gameInstance.getPlayerByColor(humanSide).isAi = false;
+
+      print('$_logTag Configured AI for $aiSide side');
+      print(
+        '$_logTag White is AI: ${controller.gameInstance.getPlayerByColor(PieceColor.white).isAi}',
+      );
+      print(
+        '$_logTag Black is AI: ${controller.gameInstance.getPlayerByColor(PieceColor.black).isAi}',
+      );
 
       // Execute "move now" to trigger AI (real AI execution)
       print('$_logTag Executing move now for ${testCase.id}');
@@ -178,7 +236,11 @@ class AutomatedMoveTestRunner {
 
     try {
       // Get a real BuildContext from the test environment
-      final BuildContext context = WidgetsBinding.instance.rootElement!;
+      final BuildContext? contextElement = WidgetsBinding.instance.rootElement;
+      if (contextElement == null) {
+        throw Exception('Failed to get BuildContext: rootElement is null');
+      }
+      final BuildContext context = contextElement;
 
       // Record initial move count and sequence
       final String initialSequence = controller.gameRecorder.moveHistoryText;
@@ -186,13 +248,104 @@ class AutomatedMoveTestRunner {
 
       print('$_logTag Initial sequence: "$initialSequence"');
       print('$_logTag Initial move count: $initialMoveCount');
+      print(
+        '$_logTag Game winner before moveNow: ${controller.position.winner}',
+      );
+      print(
+        '$_logTag Is AI to move: ${controller.gameInstance.isAiSideToMove}',
+      );
+      print(
+        '$_logTag Is Human to move: ${controller.gameInstance.isHumanToMove}',
+      );
 
-      // Execute move now which triggers REAL AI to make moves
-      print('$_logTag Calling REAL AI moveNow...');
-      await controller.moveNow(context);
+      // Execute engine moves directly (avoid UI/snackbar paths in moveNow)
+      // 1) If we are in a removal obligation, perform all required removals
+      if (controller.position.action == Act.remove) {
+        print('$_logTag Position requires removal action');
+        print(
+          '$_logTag pieceToRemoveCount[${controller.position.sideToMove}]: '
+          '${controller.position.pieceToRemoveCount[controller.position.sideToMove]}',
+        );
 
-      // Wait a bit for AI to potentially make multiple moves
-      await Future<void>.delayed(const Duration(milliseconds: 500));
+        int safety = 0;
+        while (controller.position.action == Act.remove &&
+            controller.position.winner == PieceColor.nobody &&
+            safety++ < 16) {
+          print('$_logTag Removal iteration $safety');
+
+          final EngineRet ret = await controller.engine.search(moveNow: true);
+          ExtMove? best = ret.extMove;
+
+          print('$_logTag Engine returned move: ${best?.move ?? 'null'}');
+
+          // If engine didn't return a removal, try to get opponent pieces manually
+          if (best == null || best.type != MoveType.remove) {
+            print(
+              '$_logTag Engine did not return removal, finding legal removals manually',
+            );
+
+            // Find opponent pieces that can be removed
+            final PieceColor opponent = controller.position.sideToMove.opponent;
+            final List<String> possibleRemovals = <String>[];
+
+            for (int sq = 8; sq <= 31; sq++) {
+              if (controller.position.pieceOnGrid(sq) == opponent) {
+                possibleRemovals.add('x${ExtMove.sqToNotation(sq)}');
+              }
+            }
+
+            if (possibleRemovals.isEmpty) {
+              throw Exception(
+                'Engine returned no removal and no opponent pieces found',
+              );
+            }
+
+            print(
+              '$_logTag Found ${possibleRemovals.length} possible removals: ${possibleRemovals.join(', ')}',
+            );
+            best = ExtMove(
+              possibleRemovals.first,
+              side: controller.position.sideToMove,
+            );
+          }
+
+          print('$_logTag Executing removal: ${best.move}');
+          if (!controller.gameInstance.doMove(best)) {
+            print('$_logTag doMove returned false, checking game state...');
+            print('$_logTag Game winner: ${controller.position.winner}');
+            print('$_logTag Game phase: ${controller.position.phase}');
+            // If game is over, that's why doMove failed - break the loop
+            if (controller.position.winner != PieceColor.nobody ||
+                controller.position.phase == Phase.gameOver) {
+              print('$_logTag Game ended, stopping removal loop');
+              break;
+            }
+            throw Exception('Failed to apply removal move: ${best.move}');
+          }
+
+          // Give the loop a tiny pause to settle state
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+        }
+
+        print('$_logTag Removal loop completed');
+        print('$_logTag Final game winner: ${controller.position.winner}');
+        print('$_logTag Final phase: ${controller.position.phase}');
+      } else {
+        // 2) Otherwise, make one engine move
+        print('$_logTag Making single engine move');
+        final EngineRet ret = await controller.engine.search(moveNow: true);
+        final ExtMove? best = ret.extMove;
+        if (best == null) {
+          throw Exception('Engine returned no best move');
+        }
+        print('$_logTag Executing move: ${best.move}');
+        if (!controller.gameInstance.doMove(best)) {
+          throw Exception('Failed to apply engine move: ${best.move}');
+        }
+      }
+
+      // Wait a moment for any chained state updates
+      await Future<void>.delayed(const Duration(milliseconds: 200));
 
       // Get the final move sequence after AI execution
       final String finalSequence = controller.gameRecorder.moveHistoryText;
@@ -202,10 +355,20 @@ class AutomatedMoveTestRunner {
       print('$_logTag Final move count: $finalMoveCount');
       print('$_logTag AI made ${finalMoveCount - initialMoveCount} moves');
 
+      // Extract only the new moves made by AI
+      final List<ExtMove> newMoves = controller.gameRecorder.mainlineMoves
+          .skip(initialMoveCount)
+          .toList();
+      final String newMovesNotation = newMoves
+          .map((ExtMove m) => m.notation)
+          .join(' ');
+
+      print('$_logTag New moves only: "$newMovesNotation"');
+
       timeoutTimer.cancel();
 
       if (!completer.isCompleted) {
-        completer.complete(finalSequence);
+        completer.complete(newMovesNotation);
       }
     } catch (e) {
       timeoutTimer.cancel();
