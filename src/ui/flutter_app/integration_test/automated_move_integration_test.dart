@@ -23,6 +23,11 @@ import 'automated_move_test_runner.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  // Track overall statistics across all test batches
+  int totalTestsRun = 0;
+  int totalPassed = 0;
+  int totalFailed = 0;
+
   group('Automated Move Integration Tests', () {
     testWidgets('Run basic automated move tests with real AI', (
       WidgetTester tester,
@@ -42,9 +47,14 @@ void main() {
         AutomatedMoveTestData.basicTestConfig,
       );
 
+      // Update overall statistics
+      totalTestsRun += result.testResults.length;
+      totalPassed += result.passedCount;
+      totalFailed += result.failedCount;
+
       // Print summary
       print('[IntegrationTest] =====================================');
-      print('[IntegrationTest] Integration Test Completed');
+      print('[IntegrationTest] Batch 1: Basic Tests Completed');
       print('[IntegrationTest] Total Tests: ${result.testResults.length}');
       print('[IntegrationTest] Passed: ${result.passedCount}');
       print('[IntegrationTest] Failed: ${result.failedCount}');
@@ -67,7 +77,12 @@ void main() {
         AutomatedMoveTestData.quickTestConfig,
       );
 
-      print('[IntegrationTest] Quick test completed');
+      // Update overall statistics
+      totalTestsRun += result.testResults.length;
+      totalPassed += result.passedCount;
+      totalFailed += result.failedCount;
+
+      print('[IntegrationTest] Batch 2: Quick test completed');
       print(
         '[IntegrationTest] Passed: ${result.passedCount}/${result.testResults.length}',
       );
@@ -83,10 +98,32 @@ void main() {
         AutomatedMoveTestData.newTestCasesConfig,
       );
 
-      print('[IntegrationTest] New test cases completed');
+      // Update overall statistics
+      totalTestsRun += result.testResults.length;
+      totalPassed += result.passedCount;
+      totalFailed += result.failedCount;
+
+      print('[IntegrationTest] Batch 3: New test cases completed');
       print(
         '[IntegrationTest] Passed: ${result.passedCount}/${result.testResults.length}',
       );
+
+      // Print overall summary across all batches
+      print('');
+      print('[IntegrationTest] =====================================');
+      print('[IntegrationTest] OVERALL INTEGRATION TEST SUMMARY');
+      print('[IntegrationTest] =====================================');
+      print('[IntegrationTest] Total Batches: 3');
+      print('[IntegrationTest] Total Tests Run: $totalTestsRun');
+      print('[IntegrationTest] Total Passed: $totalPassed');
+      print('[IntegrationTest] Total Failed: $totalFailed');
+      final double overallSuccessRate = totalTestsRun > 0
+          ? (totalPassed * 100.0 / totalTestsRun)
+          : 0.0;
+      print(
+        '[IntegrationTest] Overall Success Rate: ${overallSuccessRate.toStringAsFixed(1)}%',
+      );
+      print('[IntegrationTest] =====================================');
     });
   });
 }

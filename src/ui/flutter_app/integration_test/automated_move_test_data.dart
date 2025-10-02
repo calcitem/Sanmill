@@ -59,8 +59,8 @@ class AutomatedMoveTestData {
 ''',
     expectedSequences: [
       // Expected sequences will be determined by running the test and observing AI behavior
-      'PLACEHOLDER_EXPECTED_SEQUENCE_A',
-      'PLACEHOLDER_EXPECTED_SEQUENCE_B',
+      'xc3 xe3',
+      'xe3 xc3',
     ],
   );
 
