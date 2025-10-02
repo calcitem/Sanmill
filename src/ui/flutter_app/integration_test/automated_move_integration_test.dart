@@ -5,198 +5,88 @@
 
 // ignore_for_file: avoid_print, always_specify_types
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/main.dart' as app;
-import 'package:sanmill/shared/database/database.dart';
 
-import '../test/game/automated_move_test_data.dart';
-import '../test/game/automated_move_test_models.dart';
+import 'automated_move_test_data.dart';
+import 'automated_move_test_runner.dart';
 
-/// Integration test for automated move testing with real AI engine
+/// Integration test for automated move testing with REAL AI engine
+///
+/// This test uses the actual C++ engine through MethodChannel,
+/// so it must be run with `flutter test integration_test/` on a real platform.
+///
+/// Usage:
+///   flutter test integration_test/automated_move_integration_test.dart -d linux
+///   flutter test integration_test/automated_move_integration_test.dart -d android
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Automated Move Integration Tests', () {
-    testWidgets('Test real AI move execution with imported move list', (
+    testWidgets('Run basic automated move tests with real AI', (
       WidgetTester tester,
     ) async {
-      // Launch the app only once
+      // Launch the app
+      print('[IntegrationTest] Launching Sanmill app...');
       app.main();
       await tester.pumpAndSettle();
 
       // Wait for app initialization
       await Future<void>.delayed(const Duration(seconds: 2));
 
-      // Print current DB settings
-      final generalSettings = DB().generalSettings;
-      final ruleSettings = DB().ruleSettings;
+      print('[IntegrationTest] App initialized, starting tests...');
 
-      print('[IntegrationTest] Current AI Settings:');
-      print('[IntegrationTest] Skill Level: ${generalSettings.skillLevel}');
-      print('[IntegrationTest] Move Time: ${generalSettings.moveTime}');
-      print(
-        '[IntegrationTest] Search Algorithm: ${generalSettings.searchAlgorithm}',
+      // Execute the basic test configuration with REAL AI engine
+      final result = await AutomatedMoveTestRunner.runTestBatch(
+        AutomatedMoveTestData.basicTestConfig,
       );
+
+      // Print summary
+      print('[IntegrationTest] =====================================');
+      print('[IntegrationTest] Integration Test Completed');
+      print('[IntegrationTest] Total Tests: ${result.testResults.length}');
+      print('[IntegrationTest] Passed: ${result.passedCount}');
+      print('[IntegrationTest] Failed: ${result.failedCount}');
       print(
-        '[IntegrationTest] Perfect Database: ${generalSettings.usePerfectDatabase}',
+        '[IntegrationTest] Success Rate: ${result.successRate.toStringAsFixed(1)}%',
       );
-      print('[IntegrationTest] AI Is Lazy: ${generalSettings.aiIsLazy}');
-      print('[IntegrationTest] Shuffling: ${generalSettings.shufflingEnabled}');
-      print('[IntegrationTest] Pieces Count: ${ruleSettings.piecesCount}');
+      print('[IntegrationTest] =====================================');
+
+      // Note: We don't use expect() to fail the test in integration tests
+      // because the first run will show actual AI output for updating expected sequences
+    });
+
+    testWidgets('Run quick validation tests with real AI', (
+      WidgetTester tester,
+    ) async {
+      print('[IntegrationTest] Running quick validation tests...');
+
+      // Execute the quick test configuration
+      final result = await AutomatedMoveTestRunner.runTestBatch(
+        AutomatedMoveTestData.quickTestConfig,
+      );
+
+      print('[IntegrationTest] Quick test completed');
       print(
-        '[IntegrationTest] Has Diagonal Lines: ${ruleSettings.hasDiagonalLines}',
+        '[IntegrationTest] Passed: ${result.passedCount}/${result.testResults.length}',
       );
-      print('[IntegrationTest] May Fly: ${ruleSettings.mayFly}');
+    });
 
-      // Navigate to Human vs Human mode
-      await _navigateToHumanVsHuman(tester);
+    testWidgets('Run new test cases configuration with real AI', (
+      WidgetTester tester,
+    ) async {
+      print('[IntegrationTest] Running new test cases...');
 
-      // Execute test with sample move list
-      await _executeTestCase(tester, AutomatedMoveTestData.sampleTestCase1);
+      // Execute the new test cases configuration
+      final result = await AutomatedMoveTestRunner.runTestBatch(
+        AutomatedMoveTestData.newTestCasesConfig,
+      );
 
-      // Execute test with shorter move list (same app instance)
-      await _executeTestCase(tester, AutomatedMoveTestData.sampleTestCase2);
-
-      // Execute test with short capture sequence
-      await _executeTestCase(tester, AutomatedMoveTestData.shortCaptureTest);
-
-      // Execute test with short simple sequence
-      await _executeTestCase(tester, AutomatedMoveTestData.shortSimpleTest);
-
-      // Execute test with 5-move opening
-      await _executeTestCase(tester, AutomatedMoveTestData.fiveMoveTest);
-
-      // Execute test with complex movement game
-      await _executeTestCase(tester, AutomatedMoveTestData.complexMovementTest);
+      print('[IntegrationTest] New test cases completed');
+      print(
+        '[IntegrationTest] Passed: ${result.passedCount}/${result.testResults.length}',
+      );
     });
   });
-}
-
-/// Navigate to Human vs Human mode
-Future<void> _navigateToHumanVsHuman(WidgetTester tester) async {
-  print('[IntegrationTest] Navigating to Human vs Human mode...');
-
-  // Look for the drawer button and tap it
-  final Finder drawerButton = find.byTooltip('Open navigation menu');
-  if (drawerButton.evaluate().isNotEmpty) {
-    await tester.tap(drawerButton);
-    await tester.pumpAndSettle();
-  }
-
-  // Look for Human vs Human option in the drawer
-  final Finder humanVsHumanOption = find.text('Human vs Human');
-  if (humanVsHumanOption.evaluate().isNotEmpty) {
-    await tester.tap(humanVsHumanOption);
-    await tester.pumpAndSettle();
-    print('[IntegrationTest] Successfully navigated to Human vs Human mode');
-  } else {
-    print('[IntegrationTest] Warning: Could not find Human vs Human option');
-  }
-}
-
-/// Execute a test case with move list import and AI execution
-Future<void> _executeTestCase(
-  WidgetTester tester,
-  MoveListTestCase testCase,
-) async {
-  print('[IntegrationTest] Executing test case: ${testCase.id}');
-  print('[IntegrationTest] Description: ${testCase.description}');
-
-  try {
-    // Get the game controller
-    final GameController controller = GameController();
-
-    // Reset to clean state
-    controller.reset(force: true);
-    controller.gameInstance.gameMode = GameMode.humanVsHuman;
-
-    // Record initial state
-    final String initialSequence = controller.gameRecorder.moveHistoryText;
-    final int initialMoveCount = controller.gameRecorder.mainlineMoves.length;
-
-    print('[IntegrationTest] Initial sequence: "$initialSequence"');
-    print('[IntegrationTest] Initial move count: $initialMoveCount');
-
-    // Create a BuildContext for operations
-    final BuildContext context = tester.element(find.byType(MaterialApp));
-
-    // Import the move list
-    print('[IntegrationTest] Importing move list...');
-    ImportService.import(testCase.moveList);
-
-    // Activate the imported game by taking back all moves
-    // This is necessary to properly load the imported game state
-    print('[IntegrationTest] Activating imported game...');
-    await HistoryNavigator.takeBackAll(context, pop: false);
-
-    // Wait for the activation to complete
-    await tester.pumpAndSettle();
-
-    // Record state after import and activation
-    final String afterImportSequence = controller.gameRecorder.moveHistoryText;
-    final int afterImportMoveCount =
-        controller.gameRecorder.mainlineMoves.length;
-
-    print('[IntegrationTest] After import sequence: "$afterImportSequence"');
-    print('[IntegrationTest] After import move count: $afterImportMoveCount');
-
-    // Execute "move now" to trigger AI
-    print('[IntegrationTest] Executing move now to trigger AI...');
-    // ignore: use_build_context_synchronously
-    await controller.moveNow(context);
-
-    // Wait for AI to complete moves
-    await Future<void>.delayed(const Duration(seconds: 3));
-
-    // Record final state
-    final String finalSequence = controller.gameRecorder.moveHistoryText;
-    final int finalMoveCount = controller.gameRecorder.mainlineMoves.length;
-
-    print('[IntegrationTest] Final sequence: "$finalSequence"');
-    print('[IntegrationTest] Final move count: $finalMoveCount');
-    print(
-      '[IntegrationTest] AI made ${finalMoveCount - afterImportMoveCount} moves',
-    );
-
-    // Check if result matches expected sequences
-    bool testPassed = false;
-    String? matchedExpected;
-
-    for (final String expected in testCase.expectedSequences) {
-      if (_normalizeSequence(finalSequence) == _normalizeSequence(expected)) {
-        testPassed = true;
-        matchedExpected = expected;
-        break;
-      }
-    }
-
-    // Print test result
-    final String status = testPassed ? 'PASSED' : 'FAILED';
-    print('[IntegrationTest] [$status] ${testCase.id}');
-
-    if (testPassed && matchedExpected != null) {
-      print('[IntegrationTest] Matched expected sequence: $matchedExpected');
-    } else {
-      print('[IntegrationTest] Expected one of:');
-      for (final String expected in testCase.expectedSequences) {
-        print('[IntegrationTest]   - $expected');
-      }
-      print('[IntegrationTest] Actual: $finalSequence');
-    }
-
-    // Note: In integration tests, we don't use expect() to fail the test
-    // because we want to see the actual AI output to update expected sequences
-  } catch (e) {
-    print('[IntegrationTest] Test case failed with error: $e');
-  }
-
-  print('[IntegrationTest] Test case completed\n');
-}
-
-/// Normalize a move sequence for comparison
-String _normalizeSequence(String sequence) {
-  return sequence.trim().replaceAll(RegExp(r'\s+'), ' ');
 }

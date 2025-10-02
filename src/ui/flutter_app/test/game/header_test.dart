@@ -60,7 +60,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(HeaderIcons), findsOneWidget);
-      expect(find.byKey(const Key("HeaderIconRow")), findsOneWidget);
+      expect(find.byKey(const Key("header_icon_row")), findsOneWidget);
     });
   });
 }

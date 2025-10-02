@@ -5,7 +5,6 @@
 
 import 'dart:io';
 
-import 'package:catcher_2/catcher_2.dart'; // Import Catcher
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +13,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/home/home.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/services/environment_config.dart';
 
 void main() {
   // Ensure the binding is initialized before tests run
@@ -30,11 +30,10 @@ void main() {
   );
 
   setUpAll(() async {
-    // Mock the `catcher` initialization for testing
-    catcher = Catcher2(
-      rootWidget: const Placeholder(), // Use a minimal widget for testing
-      ensureInitialized: true,
-    );
+    // Disable catcher in test environment to avoid initialization issues
+    // The catcher is only used in specific platforms (not iOS/Web) and
+    // when EnvironmentConfig.catcher is true
+    EnvironmentConfig.catcher = false;
 
     // Use the new API to set up mock handlers for MethodChannel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger

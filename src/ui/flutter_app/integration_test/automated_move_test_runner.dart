@@ -11,11 +11,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
-import '../helpers/mocks/mock_audios.dart';
-import '../helpers/mocks/mock_database.dart';
 import 'automated_move_test_models.dart';
 
 /// Main class responsible for executing automated move tests
+/// This version is designed for integration tests and uses the REAL AI engine
 class AutomatedMoveTestRunner {
   static const String _logTag = '[AutomatedMoveTestRunner]';
 
@@ -29,8 +28,8 @@ class AutomatedMoveTestRunner {
     final DateTime startTime = DateTime.now();
     final List<TestCaseResult> results = <TestCaseResult>[];
 
-    // Setup test environment
-    await _setupTestEnvironment();
+    // Print current DB settings (no need to initialize, already done by app)
+    _printCurrentSettings();
 
     for (final MoveListTestCase testCase in config.enabledTestCases) {
       print('$_logTag Executing test case: ${testCase.id}');
@@ -68,20 +67,13 @@ class AutomatedMoveTestRunner {
     return batchResult;
   }
 
-  /// Setup the test environment with real DB and mock audio
-  static Future<void> _setupTestEnvironment() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
-    // Use REAL database to get actual GUI configurations
-    // This ensures AI settings, rules, and other options are used
+  /// Print current database settings
+  static void _printCurrentSettings() {
     try {
-      await DB.init();
-      print('$_logTag Real database initialized successfully');
-
-      // Print current settings for debugging
       final generalSettings = DB().generalSettings;
       final ruleSettings = DB().ruleSettings;
 
+      print('$_logTag Current AI Settings:');
       print('$_logTag AI Skill Level: ${generalSettings.skillLevel}');
       print('$_logTag Move Time: ${generalSettings.moveTime}');
       print('$_logTag Search Algorithm: ${generalSettings.searchAlgorithm}');
@@ -92,24 +84,7 @@ class AutomatedMoveTestRunner {
       print('$_logTag Has Diagonal Lines: ${ruleSettings.hasDiagonalLines}');
       print('$_logTag May Fly: ${ruleSettings.mayFly}');
     } catch (e) {
-      print('$_logTag Warning: Failed to initialize real database: $e');
-      print('$_logTag Falling back to MockDB');
-      DB.instance = MockDB();
-    }
-
-    // Still use mock audio to avoid sound issues in tests
-    SoundManager.instance = MockAudios();
-
-    // Initialize animation manager to avoid LateInitializationError
-    try {
-      // Try to initialize the game controller to set up required components
-      final GameController controller = GameController();
-      controller.reset(force: true);
-    } catch (e) {
-      // If initialization fails, we'll handle it in individual test cases
-      print(
-        '[AutomatedMoveTestRunner] Warning: Could not fully initialize test environment: $e',
-      );
+      print('$_logTag Warning: Could not read DB settings: $e');
     }
   }
 
@@ -147,7 +122,7 @@ class AutomatedMoveTestRunner {
       final String initialMoves = controller.gameRecorder.moveHistoryText;
       print('$_logTag Initial moves after import: $initialMoves');
 
-      // Execute "move now" to trigger AI (simulated for testing)
+      // Execute "move now" to trigger AI (real AI execution)
       print('$_logTag Executing move now for ${testCase.id}');
 
       // Execute real AI "move now" functionality
@@ -202,8 +177,8 @@ class AutomatedMoveTestRunner {
     });
 
     try {
-      // Create a mock BuildContext for moveNow call
-      final BuildContext mockContext = _createMockContext();
+      // Get a real BuildContext from the test environment
+      final BuildContext context = WidgetsBinding.instance.rootElement!;
 
       // Record initial move count and sequence
       final String initialSequence = controller.gameRecorder.moveHistoryText;
@@ -212,9 +187,9 @@ class AutomatedMoveTestRunner {
       print('$_logTag Initial sequence: "$initialSequence"');
       print('$_logTag Initial move count: $initialMoveCount');
 
-      // Execute move now which should trigger real AI to make moves
-      print('$_logTag Calling real AI moveNow...');
-      await controller.moveNow(mockContext);
+      // Execute move now which triggers REAL AI to make moves
+      print('$_logTag Calling REAL AI moveNow...');
+      await controller.moveNow(context);
 
       // Wait a bit for AI to potentially make multiple moves
       await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -262,13 +237,6 @@ class AutomatedMoveTestRunner {
   /// Normalize a move sequence for comparison by removing extra whitespace
   static String _normalizeSequence(String sequence) {
     return sequence.trim().replaceAll(RegExp(r'\s+'), ' ');
-  }
-
-  /// Create a mock BuildContext for testing
-  static BuildContext _createMockContext() {
-    // This is a simplified mock context for testing purposes
-    // In a real scenario, you might want to use a more sophisticated mock
-    return TestWidgetsFlutterBinding.instance.rootElement!;
   }
 
   /// Print the result of a single test case
