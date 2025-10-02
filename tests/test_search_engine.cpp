@@ -21,7 +21,6 @@ protected:
 
         // For each test, we can reset or create a new Position
         pos.reset();
-        engine = &SearchEngine::getInstance();
 
         // Typically, you might want to start the position in a "moving" phase
         // to allow searching. But for certain tests, "placing" might also work.
@@ -35,7 +34,7 @@ protected:
     void runShortSearch(Position &p, int depth = 2)
     {
         // Set up the search engine
-        engine->beginNewSearch(&p);
+        engine.beginNewSearch(&p);
         // Optionally set the move time to something short if you wish to force
         // a quick return
         gameOptions.setMoveTime(1); // 1 second, for example
@@ -43,30 +42,30 @@ protected:
         // Simulate a small override of depth logic by altering search engine's
         // originDepth if needed (But in practice, 'executeSearch' handles logic
         // automatically.)
-        engine->originDepth = depth;
+        engine.originDepth = depth;
 
         // Run search
-        engine->runSearch();
+        engine.runSearch();
     }
 
     // The test position and engine
     Position pos;
-    SearchEngine *engine;
+    SearchEngine engine;
 };
 
-// Test basic initialization of the SearchEngine singleton
-TEST_F(SearchEngineTest, SingletonInitialization)
+// Test basic initialization of the SearchEngine
+TEST_F(SearchEngineTest, BasicInitialization)
 {
-    // Confirm we have a valid instance
-    EXPECT_NE(engine, nullptr) << "SearchEngine singleton instance should not "
-                                  "be null.";
+    // Confirm we have a valid instance (engine is a member object)
+    // Just a basic check that it doesn't crash on construction
+    SUCCEED() << "SearchEngine instance constructed successfully.";
 }
 
 // Test setting the root position and ensuring the search doesn't crash
 TEST_F(SearchEngineTest, SetRootPosition)
 {
     // Just call setRootPosition and see if it can store p
-    engine->setRootPosition(&pos);
+    engine.setRootPosition(&pos);
 
     // We can do minimal checks: e.g. the internal pointer should match
     // But as we don't store it publicly, no direct assertion is possible
@@ -86,7 +85,7 @@ TEST_F(SearchEngineTest, ShortSearchInPlacingPhase)
     runShortSearch(pos, /*depth*/ 2);
 
     // Retrieve the best move
-    std::string bestMove = engine->getBestMoveString();
+    std::string bestMove = engine.getBestMoveString();
 
     // We expect a move string is returned, e.g. "d5", "a1" or similar
     EXPECT_FALSE(bestMove.empty()) << "Short search should yield a non-empty "
@@ -116,7 +115,7 @@ TEST_F(SearchEngineTest, ShortSearchInMovingPhase)
     runShortSearch(pos, /*depth*/ 3);
 
     // Retrieve the best move
-    std::string bestMove = engine->getBestMoveString();
+    std::string bestMove = engine.getBestMoveString();
 
     EXPECT_FALSE(bestMove.empty()) << "In moving phase, short search should "
                                       "produce a valid move string.";
@@ -146,21 +145,17 @@ TEST_F(SearchEngineTest, SearchRespectsTimeLimit)
 // Test usage of get_value() after a normal search
 TEST_F(SearchEngineTest, GetValueAfterSearch)
 {
-    engine->beginNewSearch(&pos);
-    engine->executeSearch();
+    engine.beginNewSearch(&pos);
+    engine.executeSearch();
 
     // Typically, bestvalue is stored
-    std::string valStr = engine->get_value();
+    std::string valStr = engine.get_value();
 
     // Check it's a valid integer string
     // e.g. stoi should not throw if it's a valid integer representation
-    try {
-        int val = std::stoi(valStr);
-        (void)val; // just to avoid an unused warning
-    } catch (...) {
-        FAIL() << "The get_value() should return a string convertible to int, "
-                  "e.g. '0' or '25'.";
-    }
+    int val = std::stoi(valStr);
+    (void)val; // just to avoid an unused warning
+    // If stoi fails on invalid string, the program will terminate (no exceptions enabled)
 }
 
 #if 0
@@ -170,8 +165,8 @@ TEST_F(SearchEngineTest, PerfectDatabaseFallback) {
     // Force usage of the perfect DB
     gameOptions.setUsePerfectDatabase(true);    // TODO: Crash
     // We can do a small scenario or partial test
-    engine->beginNewSearch(&pos);
-    engine->executeSearch();
+    engine.beginNewSearch(&pos);
+    engine.executeSearch();
 
     // Just confirm the code path doesn't throw or crash
     SUCCEED() << "Successfully executed search with perfect DB enabled (if compiled).";

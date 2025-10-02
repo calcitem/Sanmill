@@ -11,6 +11,7 @@
 #include "engine_commands.h"
 #include "position.h"
 #include "rule.h"
+#include "search_engine.h"
 #include "uci.h"
 
 // We need a global 'rule' object to set 'rule.pieceCount' for tests,
@@ -191,7 +192,8 @@ TEST_F(EngineCommandsTest, GoFunction)
     // The search is asynchronous, so we won't do a deep verification
     // unless we mock or wait for a condition.
     // For now, just check if it doesn't crash:
-    EngineCommands::go(&pos);
+    SearchEngine searchEngine;
+    EngineCommands::go(searchEngine, &pos);
 
     // If pos->get_phase() == Phase::gameOver, 'go' might return immediately.
     // We'll just pass the test if it doesn't crash.

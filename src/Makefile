@@ -918,7 +918,7 @@ endif
 # Use pkg-config where available (common in Unix-like systems)
 ifeq ($(OS), Linux)
 	GTEST_CFLAGS = $(shell pkg-config --cflags gtest)
-	GTEST_LIBS = $(shell pkg-config --libs gtest)
+	GTEST_LIBS = $(shell pkg-config --libs gtest) -lgtest_main
 endif
 
 ifeq ($(OS), macOS)

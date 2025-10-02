@@ -4,6 +4,7 @@
 // test_evaluate.cpp
 
 #include <gtest/gtest.h>
+#include <cstring>
 #include "evaluate.h"
 #include "position.h"
 #include "rule.h"

@@ -12,6 +12,7 @@
 #include "engine_commands.h"
 #include "position.h"
 #include "search.h"
+#include "search_engine.h"
 #include "thread_pool.h"
 
 // We need to provide some global or mock objects if engine_controller.cpp
@@ -46,7 +47,8 @@ protected:
         // Cleanup or reset if necessary
     }
 
-    EngineController &controller = EngineController::getInstance();
+    SearchEngine searchEngine;
+    EngineController controller {searchEngine};
 };
 
 #if 0

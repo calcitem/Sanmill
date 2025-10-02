@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 #include "search.h"
+#include "search_engine.h"
 #include "position.h"
 #include "rule.h"
 #include "stack.h"
@@ -49,6 +50,8 @@ protected:
     Position pos;
     // We'll keep a stack for do/undo
     Sanmill::Stack<Position> stack;
+    // SearchEngine for functions that require it
+    SearchEngine searchEngine;
 };
 
 // Test that init/clear are callable and don't crash
@@ -94,8 +97,8 @@ TEST_F(SearchTest, QSearch)
     // We push the pos so we can do/undo within qsearch
     pushPos();
 
-    Value val = Search::qsearch(&pos, stack, depth, originDepth, alpha, beta,
-                                bestMove);
+    Value val = Search::qsearch(searchEngine, &pos, stack, depth, originDepth,
+                                alpha, beta, bestMove);
 
     // We only verify the function didn't crash or produce an absurd result
     EXPECT_GE(val, -VALUE_INFINITE) << "qsearch shouldn't return less than "
@@ -121,8 +124,8 @@ TEST_F(SearchTest, ShallowAlphaBetaSearch)
     // For Nine Men's Morris, if Phase=placing, we have moves as long as we have
     // pieces in hand We'll run a short search
     pushPos(); // so we can do/undo
-    Value val = Search::search(&pos, stack, depth, originDepth, alpha, beta,
-                               bestMove);
+    Value val = Search::search(searchEngine, &pos, stack, depth, originDepth,
+                               alpha, beta, bestMove);
 
     // We check if it is a plausible evaluation
     EXPECT_GE(val, -VALUE_INFINITE);
@@ -144,8 +147,8 @@ TEST_F(SearchTest, MTDfSearch)
 
     // We do a minimal MTD(f) call
     pushPos();
-    Value val = Search::MTDF(&pos, stack, firstGuess, depth, originDepth,
-                             bestMove);
+    Value val = Search::MTDF(searchEngine, &pos, stack, firstGuess, depth,
+                             originDepth, bestMove);
 
     // There's no guarantee about the numeric range, but it shouldn't exceed the
     // search boundaries
@@ -177,8 +180,8 @@ TEST_F(SearchTest, PrincipalVariationSearch)
 
     // We'll just directly call pvs() with i=0, but in normal usage
     // search() calls pvs() on each move in a loop. We'll do a single call:
-    Value val = Search::pvs(&pos, stack, depth, originDepth, alpha, beta,
-                            bestMove, /*i=*/0, before, after);
+    Value val = Search::pvs(searchEngine, &pos, stack, depth, originDepth, alpha,
+                            beta, bestMove, /*i=*/0, before, after);
 
     EXPECT_GE(val, -VALUE_INFINITE);
     EXPECT_LE(val, VALUE_INFINITE);

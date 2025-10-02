@@ -34,7 +34,7 @@ public:
         clear();
 
         for (int i = 0; i <= other.p; i++) {
-            push_back(other.arr[i]);
+            push(other.arr[i]);
         }
 
         return *this;

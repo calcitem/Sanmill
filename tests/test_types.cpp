@@ -42,19 +42,19 @@ protected:
 /**
  * @test ColorToggle
  * @brief Ensures that ~ operator on Color toggles WHITE <-> BLACK,
- *        and that toggling NOCOLOR yields a (somewhat) distinct value.
+ *        and that toggling NOBODY yields a (somewhat) distinct value.
  */
 TEST_F(TypesTest, ColorToggle)
 {
     EXPECT_EQ(~WHITE, BLACK) << "Toggling WHITE should yield BLACK.";
     EXPECT_EQ(~BLACK, WHITE) << "Toggling BLACK should yield WHITE.";
 
-    // The NOCOLOR toggling is an artifact of how the bitwise operation is
+    // The NOBODY toggling is an artifact of how the bitwise operation is
     // defined:
     //   c ^ 3 => 0 ^ 3 = 3, which is actually the numeric value for DRAW.
     // This is not typically used in normal logic but let's verify for
     // consistency.
-    EXPECT_EQ(~NOCOLOR, static_cast<Color>(3)) << "Toggling NOCOLOR (0) with "
+    EXPECT_EQ(~NOBODY, static_cast<Color>(3)) << "Toggling NOBODY (0) with "
                                                   "^3 yields 3, typically "
                                                   "'DRAW'.";
 }
@@ -82,13 +82,13 @@ TEST_F(TypesTest, MakePieceAndQueries)
                                                 "WHITE_PIECE.";
 
     // Construct a marked piece
-    Piece markedPc = make_piece(NOCOLOR, MARKED);
-    EXPECT_EQ(markedPc, MARKED_PIECE) << "When color is NOCOLOR and type is "
+    Piece markedPc = make_piece(NOBODY, MARKED);
+    EXPECT_EQ(markedPc, MARKED_PIECE) << "When color is NOBODY and type is "
                                          "MARKED, result should be "
                                          "MARKED_PIECE.";
     EXPECT_EQ(type_of(markedPc), MARKED) << "type_of(MARKED_PIECE) should be "
                                             "MARKED.";
-    EXPECT_EQ(color_of(markedPc), NOCOLOR) << "A marked piece has NOCOLOR in "
+    EXPECT_EQ(color_of(markedPc), NOBODY) << "A marked piece has NOBODY in "
                                               "higher nibble.";
 }
 

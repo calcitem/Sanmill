@@ -24,7 +24,7 @@ TEST(stackPushTest, stackTest)
     EXPECT_EQ(stack.end()[-1], 0);
     EXPECT_FALSE(stack.empty());
 
-    stack.push_back(1);
+    stack.push(1);
     EXPECT_EQ(stack.size(), 2);
     EXPECT_EQ(stack.length(), sizeof(int) * 2);
     EXPECT_EQ(stack[1], 1);
@@ -45,11 +45,11 @@ TEST(stackPushTest, stackTest)
     EXPECT_EQ(stack.size(), 0);
     EXPECT_TRUE(stack.empty());
 
-    stack.push_back(0);
-    stack.push_back(1);
-    stack.push_back(2);
-    stack.push_back(3);
-    stack.push_back(4);
+    stack.push(0);
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    stack.push(4);
     EXPECT_EQ(stack.size(), 5);
     stack.erase(2);
     EXPECT_EQ(stack.size(), 4);
@@ -72,17 +72,17 @@ TEST(stackPushTest, stackTest)
     //stack.erase(0);
     // EXPECT_EQ(stack.size(), -1); // TODO(calcitem)
 
-    stack.push_back(0);
-    stack.push_back(1);
-    stack.push_back(2);
-    stack.push_back(3);
-    stack.push_back(4);
+    stack.push(0);
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    stack.push(4);
     EXPECT_EQ(stack.size(), 5);
     stack.clear();
     EXPECT_EQ(stack.size(), 0);
 
-    stack.push_back(0);
-    stack.push_back(1);
+    stack.push(0);
+    stack.push(1);
     Stack<int>& stackRef = stack;
     EXPECT_EQ(stack.size(), 2);
 

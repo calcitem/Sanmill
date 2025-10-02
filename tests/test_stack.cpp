@@ -68,7 +68,7 @@ TEST_F(StackTest, PushPopInt)
     EXPECT_EQ(*st.top(), 20) << "Top element should be the new last value";
 }
 
-// Test push_back with objects
+// Test push with objects
 TEST_F(StackTest, PushBackObjects)
 {
     Stack<SimpleObject> st;
@@ -76,8 +76,8 @@ TEST_F(StackTest, PushBackObjects)
     SimpleObject a {1, 2.5f};
     SimpleObject b {2, 3.14f};
 
-    st.push_back(a);
-    st.push_back(b);
+    st.push(a);
+    st.push(b);
 
     EXPECT_EQ(st.size(), 2);
     EXPECT_EQ(st[0].x, 1) << "First object's x should match 'a'";
@@ -88,8 +88,8 @@ TEST_F(StackTest, PushBackObjects)
 TEST_F(StackTest, CopyConstructor)
 {
     Stack<int> st1;
-    st1.push_back(5);
-    st1.push_back(10);
+    st1.push(5);
+    st1.push(10);
 
     Stack<int> st2(st1); // Use copy constructor
     EXPECT_EQ(st2.size(), 2);
@@ -105,11 +105,11 @@ TEST_F(StackTest, CopyConstructor)
 TEST_F(StackTest, AssignmentOperator)
 {
     Stack<int> st1;
-    st1.push_back(100);
-    st1.push_back(200);
+    st1.push(100);
+    st1.push(200);
 
     Stack<int> st2;
-    st2.push_back(999);
+    st2.push(999);
 
     st2 = st1; // Use operator=
     EXPECT_EQ(st2.size(), 2);
@@ -126,7 +126,7 @@ TEST_F(StackTest, Erase)
 {
     Stack<int> st;
     for (int i = 1; i <= 5; i++) {
-        st.push_back(i); // stack: 1,2,3,4,5
+        st.push(i); // stack: 1,2,3,4,5
     }
 
     // Erase middle element (index 2 => value 3)
@@ -146,9 +146,9 @@ TEST_F(StackTest, Erase)
 TEST_F(StackTest, Remove)
 {
     Stack<int> st;
-    st.push_back(10);
-    st.push_back(20);
-    st.push_back(30);
+    st.push(10);
+    st.push(20);
+    st.push(30);
 
     st.remove(20); // remove the value 20
     EXPECT_EQ(st.size(), 2);
@@ -168,9 +168,9 @@ TEST_F(StackTest, IndexOf)
     SimpleObject a {10, 1.0f};
     SimpleObject b {20, 2.0f};
     SimpleObject c {30, 3.0f};
-    st.push_back(a);
-    st.push_back(b);
-    st.push_back(c);
+    st.push(a);
+    st.push(b);
+    st.push(c);
 
     // We rely on the memcmp logic to find matching struct
     int indexB = st.indexOf(b);
@@ -185,8 +185,8 @@ TEST_F(StackTest, IndexOf)
 TEST_F(StackTest, Clear)
 {
     Stack<int> st;
-    st.push_back(1);
-    st.push_back(2);
+    st.push(1);
+    st.push(2);
 
     st.clear();
     EXPECT_EQ(st.size(), 0);

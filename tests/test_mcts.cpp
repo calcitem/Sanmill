@@ -40,8 +40,8 @@ TEST_F(MCTSTest, EmptyBoardReturnsValidMove)
     pos.reset();
     pos.start(); // Typically sets sideToMove, phase = Phase::placing, etc.
 
-    // Check that side to move is indeed not NOCOLOR and is in placing phase
-    EXPECT_NE(pos.side_to_move(), NOCOLOR);
+    // Check that side to move is indeed not NOBODY and is in placing phase
+    EXPECT_NE(pos.side_to_move(), NOBODY);
     EXPECT_EQ(pos.get_phase(), Phase::placing);
 
     Move bestMove = MOVE_NONE;
