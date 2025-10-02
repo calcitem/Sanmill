@@ -4,9 +4,9 @@
 
 ### 1. 单元测试 (Unit Tests)
 
-**位置**: `test/`  
-**运行命令**: `flutter test`  
-**运行环境**: Dart VM  
+**位置**: `test/`
+**运行命令**: `flutter test`
+**运行环境**: Dart VM
 **特点**:
 - ✅ 快速执行
 - ✅ 不需要真实设备或模拟器
@@ -24,13 +24,13 @@
 
 ### 2. 集成测试 (Integration Tests)
 
-**位置**: `integration_test/`  
-**运行命令**: 
+**位置**: `integration_test/`
+**运行命令**:
 ```bash
 # Linux
 flutter test integration_test/ -d linux
 
-# Android  
+# Android
 flutter test integration_test/ -d android
 
 # macOS
@@ -40,7 +40,7 @@ flutter test integration_test/ -d macos
 flutter test integration_test/ -d windows
 ```
 
-**运行环境**: 真实平台 (Linux/Android/iOS/macOS/Windows)  
+**运行环境**: 真实平台 (Linux/Android/iOS/macOS/Windows)
 **特点**:
 - ✅ **可以访问 native code**（C++ AI 引擎）
 - ✅ 使用真实的 AI 引擎进行测试

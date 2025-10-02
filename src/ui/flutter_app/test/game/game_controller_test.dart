@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
+import '../helpers/mocks/mock_animation_manager.dart';
 import '../helpers/mocks/mock_audios.dart';
 import '../helpers/mocks/mock_database.dart';
 import '../helpers/test_mills.dart';
@@ -74,6 +75,12 @@ void main() {
       DB.instance = MockDB();
       SoundManager.instance = MockAudios();
       final GameController controller = GameController();
+
+      // Initialize mock AnimationManager to avoid LateInitializationError
+      controller.animationManager = MockAnimationManager();
+
+      // Reset to clean state before importing
+      controller.reset(force: true);
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game
