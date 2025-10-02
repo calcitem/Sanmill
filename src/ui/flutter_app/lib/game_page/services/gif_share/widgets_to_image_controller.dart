@@ -19,20 +19,20 @@ class WidgetsToImageController {
   Future<Uint8List?> capture() async {
     try {
       /// Boundary widget by GlobalKey
-      final RenderRepaintBoundary? boundary = containerKey.currentContext
-          ?.findRenderObject() as RenderRepaintBoundary?;
+      final RenderRepaintBoundary? boundary =
+          containerKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
 
       final double ratio =
           DB().generalSettings.gameScreenRecorderPixelRatio / 100;
 
       /// Convert boundary to image
-      final ui.Image image = await boundary!.toImage(
-        pixelRatio: ratio,
-      );
+      final ui.Image image = await boundary!.toImage(pixelRatio: ratio);
 
       /// Set ImageByteFormat
-      final ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
+      final ByteData? byteData = await image.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
       final Uint8List? pngBytes = byteData?.buffer.asUint8List();
       return pngBytes;
     } catch (e) {

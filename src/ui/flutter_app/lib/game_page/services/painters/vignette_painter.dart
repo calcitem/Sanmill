@@ -25,10 +25,7 @@ class VignettePainter extends CustomPainter {
     final Gradient gradient = RadialGradient(
       center: gradientCenter,
       radius: gradientRadius,
-      colors: <Color>[
-        Colors.transparent,
-        Colors.black.withValues(alpha: 0.5),
-      ],
+      colors: <Color>[Colors.transparent, Colors.black.withValues(alpha: 0.5)],
       stops: const <double>[0.5, 1.0],
     );
 

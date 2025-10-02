@@ -22,8 +22,9 @@ class HowToPlayScreen extends StatelessWidget {
         appBar: AppBar(
           key: const Key('how_to_play_screen_appbar'),
           elevation: 0.0,
-          backgroundColor:
-              DB().colorSettings.darkBackgroundColor.withValues(alpha: 1.0),
+          backgroundColor: DB().colorSettings.darkBackgroundColor.withValues(
+            alpha: 1.0,
+          ),
           // Ensure the background color is opaque
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
@@ -31,12 +32,11 @@ class HowToPlayScreen extends StatelessWidget {
             style: AppTheme.helpTextStyle,
             key: const Key('how_to_play_screen_appbar_title'),
           ),
-          iconTheme: const IconThemeData(
-            color: AppTheme.helpTextColor,
-          ),
+          iconTheme: const IconThemeData(color: AppTheme.helpTextColor),
         ),
-        backgroundColor:
-            DB().colorSettings.darkBackgroundColor.withValues(alpha: 1.0),
+        backgroundColor: DB().colorSettings.darkBackgroundColor.withValues(
+          alpha: 1.0,
+        ),
         // Ensure the background color is opaque
         body: SingleChildScrollView(
           key: const Key('how_to_play_screen_scrollview'),

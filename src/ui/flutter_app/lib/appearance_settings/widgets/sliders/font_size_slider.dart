@@ -40,16 +40,14 @@ class _FontSizeSlider extends StatelessWidget {
                     label: displaySettings.fontScale.toStringAsFixed(2),
                     onChanged: (double value) {
                       logger.t("[config] fontSize value: $value");
-                      DB().displaySettings =
-                          displaySettings.copyWith(fontScale: value);
+                      DB().displaySettings = displaySettings.copyWith(
+                        fontScale: value,
+                      );
                     },
                   ),
                 ),
               ),
-              const Text(
-                "ABCDEFG1234567",
-                key: Key('font_size_slider_text'),
-              ),
+              const Text("ABCDEFG1234567", key: Key('font_size_slider_text')),
             ],
           );
         },

@@ -32,37 +32,37 @@ Future<void> _initCatcher(Catcher2 catcher) async {
   logger.t("[env] ExternalStorageDirectory: $externalDirStr");
 
   final Catcher2Options debugOptions = Catcher2Options(
-      kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
-          ? SilentReportMode()
-          : PageReportMode(),
-      <ReportHandler>[
-        ConsoleHandler(),
-        FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipientEmails, printLogs: true)
-      ],
-      customParameters: customParameters);
+    kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
+        ? SilentReportMode()
+        : PageReportMode(),
+    <ReportHandler>[
+      ConsoleHandler(),
+      FileHandler(File(path), printLogs: true),
+      EmailManualHandler(Constants.recipientEmails, printLogs: true),
+    ],
+    customParameters: customParameters,
+  );
 
   /// Release configuration.
   /// Same as above, but once user accepts dialog,
   /// user will be prompted to send email with crash to support.
   final Catcher2Options releaseOptions = Catcher2Options(
-      kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
-          ? SilentReportMode()
-          : PageReportMode(),
-      <ReportHandler>[
-        FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipientEmails, printLogs: true)
-      ],
-      customParameters: customParameters);
+    kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
+        ? SilentReportMode()
+        : PageReportMode(),
+    <ReportHandler>[
+      FileHandler(File(path), printLogs: true),
+      EmailManualHandler(Constants.recipientEmails, printLogs: true),
+    ],
+    customParameters: customParameters,
+  );
 
-  final Catcher2Options profileOptions = Catcher2Options(
-      PageReportMode(),
-      <ReportHandler>[
+  final Catcher2Options profileOptions =
+      Catcher2Options(PageReportMode(), <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipientEmails, printLogs: true)
-      ],
-      customParameters: customParameters);
+        EmailManualHandler(Constants.recipientEmails, printLogs: true),
+      ], customParameters: customParameters);
 
   /// Pass root widget (MyApp) along with Catcher configuration:
   catcher.updateConfig(

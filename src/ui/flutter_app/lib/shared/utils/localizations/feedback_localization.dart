@@ -43,8 +43,8 @@ class CustomFeedbackLocalizationsDelegate
       CustomFeedbackLocalizationsDelegate();
 
   /// Translation data for all supported languages
-  static const Map<String, Map<String, String>> _translations =
-      <String, Map<String, String>>{
+  static const Map<String, Map<String, String>>
+  _translations = <String, Map<String, String>>{
     'af': <String, String>{
       // Afrikaans
       'submitButtonText': 'Indien',

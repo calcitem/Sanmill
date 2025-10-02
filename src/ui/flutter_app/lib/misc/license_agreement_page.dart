@@ -43,9 +43,9 @@ class LicenseAgreementPage extends StatelessWidget {
               child: Text(
                 str,
                 key: const Key('license_agreement_page_body_text'),
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontFamily: "Monospace",
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall!.copyWith(fontFamily: "Monospace"),
                 textAlign: TextAlign.left,
               ),
             ),

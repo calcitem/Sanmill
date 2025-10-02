@@ -89,7 +89,7 @@ class MovesListPageState extends State<MovesListPage> {
     int currentMoveIndex = 0; // Initialize move index for the first node
     int currentRound = 1; // Initialize round number starting at 1
     PieceColor?
-        lastNonRemoveSide; // To track the side of the last non-remove move
+    lastNonRemoveSide; // To track the side of the last non-remove move
 
     for (int i = 0; i < _allNodes.length; i++) {
       final PgnNode<ExtMove> node = _allNodes[i];
@@ -164,7 +164,8 @@ class MovesListPageState extends State<MovesListPage> {
   Future<void> _copyLLMPrompt(String promptText) async {
     if (promptText.isEmpty) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
-          SnackBar(content: Text(S.of(context).noLlmPromptAvailable)));
+        SnackBar(content: Text(S.of(context).noLlmPromptAvailable)),
+      );
       return;
     }
     await Clipboard.setData(ClipboardData(text: promptText));
@@ -172,8 +173,9 @@ class MovesListPageState extends State<MovesListPage> {
     if (!mounted) {
       return;
     }
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(S.of(context).llmPromptCopiedToClipboard);
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      S.of(context).llmPromptCopiedToClipboard,
+    );
   }
 
   /// Shows a dialog with LLM prompt content that can be edited and copied
@@ -183,13 +185,15 @@ class MovesListPageState extends State<MovesListPage> {
 
     if (initialPrompt.isEmpty) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
-          SnackBar(content: Text(S.of(context).noLlmPromptAvailable)));
+        SnackBar(content: Text(S.of(context).noLlmPromptAvailable)),
+      );
       return;
     }
 
     // Create a controller for the text editing
-    final TextEditingController controller =
-        TextEditingController(text: initialPrompt);
+    final TextEditingController controller = TextEditingController(
+      text: initialPrompt,
+    );
 
     // Flag to track if user wants the response in current app language
     const bool useCurrentLanguage = true;
@@ -210,11 +214,13 @@ class MovesListPageState extends State<MovesListPage> {
       builder: (BuildContext context) {
         // Use app theme colors
         final DialogThemeData dialogThemeObj = Theme.of(context).dialogTheme;
-        final Color bgColor = dialogThemeObj.backgroundColor ??
+        final Color bgColor =
+            dialogThemeObj.backgroundColor ??
             Theme.of(context).colorScheme.surface;
         final Color textColor = DB().colorSettings.messageColor;
-        final Color borderColor =
-            DB().colorSettings.messageColor.withValues(alpha: 0.3);
+        final Color borderColor = DB().colorSettings.messageColor.withValues(
+          alpha: 0.3,
+        );
 
         // Local state for checkbox
         bool localUseCurrentLanguage = useCurrentLanguage;
@@ -223,8 +229,8 @@ class MovesListPageState extends State<MovesListPage> {
         bool isLoading = false;
         String llmResponse = '';
         bool showLlmResponse = false;
-        final bool isLlmConfigured =
-            LlmService().isLlmConfigured(); // Check if LLM is configured
+        final bool isLlmConfigured = LlmService()
+            .isLlmConfigured(); // Check if LLM is configured
 
         // Add a flag to track if the dialog is still active
         bool isDialogActive = true;
@@ -237,8 +243,9 @@ class MovesListPageState extends State<MovesListPage> {
               if (!isLlmConfigured) {
                 setState(() {
                   showLlmResponse = true;
-                  llmResponse =
-                      S.of(context).llmNotConfiguredPleaseCheckYourSettings;
+                  llmResponse = S
+                      .of(context)
+                      .llmNotConfiguredPleaseCheckYourSettings;
                   isLoading = false;
                 });
                 return;
@@ -254,8 +261,9 @@ class MovesListPageState extends State<MovesListPage> {
                 elapsedSeconds = 0;
 
                 loadingTimer?.cancel();
-                loadingTimer =
-                    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+                loadingTimer = Timer.periodic(const Duration(seconds: 1), (
+                  Timer t,
+                ) {
                   // Update elapsed time every second while loading
                   if (!isDialogActive) {
                     // Cancel timer if dialog is closed
@@ -263,21 +271,26 @@ class MovesListPageState extends State<MovesListPage> {
                     return;
                   }
                   setState(() {
-                    elapsedSeconds =
-                        DateTime.now().difference(requestStartTime!).inSeconds;
+                    elapsedSeconds = DateTime.now()
+                        .difference(requestStartTime!)
+                        .inSeconds;
                   });
                 });
               });
 
               final String promptToUse = _getPromptWithLanguage(
-                  controller.text, localUseCurrentLanguage);
+                controller.text,
+                localUseCurrentLanguage,
+              );
 
               // Call LLM service for real response
               final LlmService llmService = LlmService();
               String fullResponse = '';
               try {
-                await for (final String chunk
-                    in llmService.generateResponse(promptToUse, context)) {
+                await for (final String chunk in llmService.generateResponse(
+                  promptToUse,
+                  context,
+                )) {
                   // Check if the dialog is still active
                   if (!isDialogActive) {
                     // Dialog closed, interrupt processing
@@ -311,8 +324,9 @@ class MovesListPageState extends State<MovesListPage> {
 
             // Function to import moves from LLM response
             void importMovesFromResponse() {
-              final String extractedMoves =
-                  LlmService().extractMoves(llmResponse);
+              final String extractedMoves = LlmService().extractMoves(
+                llmResponse,
+              );
 
               try {
                 // Import the moves directly without using the clipboard
@@ -330,15 +344,17 @@ class MovesListPageState extends State<MovesListPage> {
                 HistoryNavigator.takeBackAll(context, pop: false).then((_) {
                   if (context.mounted) {
                     // Show success message
-                    rootScaffoldMessengerKey.currentState
-                        ?.showSnackBarClear(S.of(context).gameImported);
-                    GameController()
-                        .headerTipNotifier
-                        .showTip(S.of(context).gameImported);
+                    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+                      S.of(context).gameImported,
+                    );
+                    GameController().headerTipNotifier.showTip(
+                      S.of(context).gameImported,
+                    );
 
                     // Wait briefly, then refresh the move list in the parent page
-                    Future<void>.delayed(const Duration(milliseconds: 500))
-                        .then((_) {
+                    Future<void>.delayed(
+                      const Duration(milliseconds: 500),
+                    ).then((_) {
                       if (mounted) {
                         // Call the parent setState to refresh nodes
                         this.setState(_refreshAllNodes);
@@ -436,7 +452,8 @@ class MovesListPageState extends State<MovesListPage> {
                                 IconButton(
                                   onPressed: showLlmPromptTemplateDialog,
                                   icon: const Icon(
-                                      FluentIcons.document_edit_24_regular),
+                                    FluentIcons.document_edit_24_regular,
+                                  ),
                                   tooltip: S.of(context).llmPromptTemplate,
                                   color: DB().colorSettings.pieceHighlightColor,
                                 ),
@@ -444,7 +461,8 @@ class MovesListPageState extends State<MovesListPage> {
                                 IconButton(
                                   onPressed: showLlmConfigDialog,
                                   icon: const Icon(
-                                      FluentIcons.settings_24_regular),
+                                    FluentIcons.settings_24_regular,
+                                  ),
                                   tooltip: S.of(context).llmConfig,
                                   color: DB().colorSettings.pieceHighlightColor,
                                 ),
@@ -543,20 +561,22 @@ class MovesListPageState extends State<MovesListPage> {
                                             width: 500,
                                             height: 500,
                                             decoration: BoxDecoration(
-                                              color: Theme.of(context)
+                                              color:
+                                                  Theme.of(context)
                                                       .dialogTheme
                                                       .backgroundColor ??
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
+                                                  Theme.of(
+                                                    context,
+                                                  ).colorScheme.surface,
                                               borderRadius:
                                                   BorderRadius.circular(16),
                                             ),
                                             child: Column(
                                               children: <Widget>[
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
+                                                  padding: const EdgeInsets.all(
+                                                    8.0,
+                                                  ),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -574,11 +594,12 @@ class MovesListPageState extends State<MovesListPage> {
                                                       ),
                                                       IconButton(
                                                         icon: const Icon(
-                                                            Icons.close),
+                                                          Icons.close,
+                                                        ),
                                                         onPressed: () =>
                                                             Navigator.of(
-                                                                    context)
-                                                                .pop(),
+                                                              context,
+                                                            ).pop(),
                                                       ),
                                                     ],
                                                   ),
@@ -587,10 +608,10 @@ class MovesListPageState extends State<MovesListPage> {
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(
-                                                            8.0),
+                                                          8.0,
+                                                        ),
                                                     child: CatFishingGame(
-                                                      onScoreUpdate:
-                                                          (int score) {
+                                                      onScoreUpdate: (int score) {
                                                         // Optional: do something with score
                                                       },
                                                     ),
@@ -631,8 +652,10 @@ class MovesListPageState extends State<MovesListPage> {
                               ElevatedButton(
                                 onPressed: () {
                                   final String promptWithLanguage =
-                                      _getPromptWithLanguage(controller.text,
-                                          localUseCurrentLanguage);
+                                      _getPromptWithLanguage(
+                                        controller.text,
+                                        localUseCurrentLanguage,
+                                      );
                                   _copyLLMPrompt(promptWithLanguage);
                                   // Set flag and cancel timer
                                   isDialogActive = false;
@@ -807,13 +830,11 @@ class MovesListPageState extends State<MovesListPage> {
                     children: <Widget>[
                       funLoadingDots(DB().colorSettings.pieceHighlightColor),
                       const SizedBox(
-                          height: 8), // Vertical spacing between dots and text
+                        height: 8,
+                      ), // Vertical spacing between dots and text
                       Text(
                         waitingMessage,
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: textColor, fontSize: 14),
                         textAlign:
                             TextAlign.center, // Center the text horizontally
                       ),
@@ -824,7 +845,9 @@ class MovesListPageState extends State<MovesListPage> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(4),
@@ -842,9 +865,7 @@ class MovesListPageState extends State<MovesListPage> {
                           foreground: Paint()
                             ..shader = LinearGradient(
                               colors: <Color>[
-                                DB()
-                                    .colorSettings
-                                    .pieceHighlightColor
+                                DB().colorSettings.pieceHighlightColor
                                     .withValues(alpha: 0.7),
                                 DB().colorSettings.pieceHighlightColor,
                               ],
@@ -853,9 +874,7 @@ class MovesListPageState extends State<MovesListPage> {
                             ).createShader(const Rect.fromLTWH(0, 0, 60, 24)),
                           shadows: <Shadow>[
                             Shadow(
-                              color: DB()
-                                  .colorSettings
-                                  .pieceHighlightColor
+                              color: DB().colorSettings.pieceHighlightColor
                                   .withValues(alpha: 0.8),
                               blurRadius: 5,
                             ),
@@ -998,7 +1017,9 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Adds a language instruction to the prompt if needed
   String _getPromptWithLanguage(
-      String originalPrompt, bool useCurrentLanguage) {
+    String originalPrompt,
+    bool useCurrentLanguage,
+  ) {
     if (!useCurrentLanguage) {
       return originalPrompt;
     }
@@ -1019,8 +1040,10 @@ class MovesListPageState extends State<MovesListPage> {
     // Find the prompt footer section if it exists, and insert before it
     // Otherwise, just append to the end
     if (originalPrompt.contains(PromptDefaults.llmPromptFooter)) {
-      return originalPrompt.replaceFirst(PromptDefaults.llmPromptFooter,
-          '$languageInstruction${PromptDefaults.llmPromptFooter}');
+      return originalPrompt.replaceFirst(
+        PromptDefaults.llmPromptFooter,
+        '$languageInstruction${PromptDefaults.llmPromptFooter}',
+      );
     } else {
       return '$originalPrompt$languageInstruction';
     }
@@ -1063,16 +1086,9 @@ class MovesListPageState extends State<MovesListPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(
-            icon,
-            size: 64,
-            color: DB().colorSettings.messageColor,
-          ),
+          Icon(icon, size: 64, color: DB().colorSettings.messageColor),
           const SizedBox(height: 8),
-          Text(
-            label,
-            style: TextStyle(color: DB().colorSettings.messageColor),
-          ),
+          Text(label, style: TextStyle(color: DB().colorSettings.messageColor)),
         ],
       ),
     );
@@ -1117,8 +1133,9 @@ class MovesListPageState extends State<MovesListPage> {
     // Get sorted round indexes in ascending order.
     final List<int> sortedRoundsAsc = roundMap.keys.toList()..sort();
     // Use reversed order if _isReversedOrder is true.
-    final List<int> sortedRounds =
-        _isReversedOrder ? sortedRoundsAsc.reversed.toList() : sortedRoundsAsc;
+    final List<int> sortedRounds = _isReversedOrder
+        ? sortedRoundsAsc.reversed.toList()
+        : sortedRoundsAsc;
 
     return SingleChildScrollView(
       controller: _scrollController,
@@ -1135,13 +1152,17 @@ class MovesListPageState extends State<MovesListPage> {
             final String notation = n.data?.notation ?? '';
             if (side == PieceColor.white) {
               // Remove the "X." prefix, e.g. "5. e4" -> "e4"
-              final String cleaned =
-                  notation.replaceAll(RegExp(r'^\d+\.\s*'), '');
+              final String cleaned = notation.replaceAll(
+                RegExp(r'^\d+\.\s*'),
+                '',
+              );
               whites.add(cleaned);
             } else if (side == PieceColor.black) {
               // Remove the "X..." prefix, e.g. "5... c5" -> "c5"
-              final String cleaned =
-                  notation.replaceAll(RegExp(r'^\d+\.\.\.\s*'), '');
+              final String cleaned = notation.replaceAll(
+                RegExp(r'^\d+\.\.\.\s*'),
+                '',
+              );
               blacks.add(cleaned);
             }
           }
@@ -1211,13 +1232,11 @@ class MovesListPageState extends State<MovesListPage> {
           controller: _scrollController,
           itemCount: _allNodes.length,
           itemBuilder: (BuildContext context, int index) {
-            final int idx =
-                _isReversedOrder ? (_allNodes.length - 1 - index) : index;
+            final int idx = _isReversedOrder
+                ? (_allNodes.length - 1 - index)
+                : index;
             final PgnNode<ExtMove> node = _allNodes[idx];
-            return MoveListItem(
-              node: node,
-              layout: _currentLayout,
-            );
+            return MoveListItem(node: node, layout: _currentLayout);
           },
         );
 
@@ -1235,12 +1254,10 @@ class MovesListPageState extends State<MovesListPage> {
           ),
           itemCount: _allNodes.length,
           itemBuilder: (BuildContext context, int index) {
-            final int idx =
-                _isReversedOrder ? (_allNodes.length - 1 - index) : index;
-            return MoveListItem(
-              node: _allNodes[idx],
-              layout: _currentLayout,
-            );
+            final int idx = _isReversedOrder
+                ? (_allNodes.length - 1 - index)
+                : index;
+            return MoveListItem(node: _allNodes[idx], layout: _currentLayout);
           },
         );
 
@@ -1277,8 +1294,9 @@ class MovesListPageState extends State<MovesListPage> {
     });
 
     // Save the setting to DB
-    DB().displaySettings =
-        DB().displaySettings.copyWith(movesViewLayout: newLayout);
+    DB().displaySettings = DB().displaySettings.copyWith(
+      movesViewLayout: newLayout,
+    );
   }
 
   @override
@@ -1325,8 +1343,9 @@ class MovesListPageState extends State<MovesListPage> {
                   enabled: false,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children:
-                        MovesViewLayout.values.map((MovesViewLayout layout) {
+                    children: MovesViewLayout.values.map((
+                      MovesViewLayout layout,
+                    ) {
                       final bool isSelected = layout == _currentLayout;
                       return IconButton(
                         icon: Icon(
@@ -1376,8 +1395,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'top',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.arrow_upload_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.arrow_upload_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).top),
                   ],
@@ -1387,8 +1408,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'bottom',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.arrow_download_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.arrow_download_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).bottom),
                   ],
@@ -1399,8 +1422,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'save_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.save_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.save_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).saveGame),
                   ],
@@ -1410,8 +1435,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'load_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.folder_open_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.folder_open_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).loadGame),
                   ],
@@ -1422,8 +1449,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'import_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.clipboard_paste_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.clipboard_paste_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).importGame),
                   ],
@@ -1433,8 +1462,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'export_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.copy_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.copy_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).exportGame),
                   ],
@@ -1445,8 +1476,10 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'copy_llm_prompt',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.text_grammar_wand_24_regular,
-                        color: Colors.black54),
+                    const Icon(
+                      FluentIcons.text_grammar_wand_24_regular,
+                      color: Colors.black54,
+                    ),
                     const SizedBox(width: 8),
                     Text(S.of(context).llm),
                   ],
@@ -1473,11 +1506,7 @@ class MovesListPageState extends State<MovesListPage> {
 /// A single item in the move list.
 /// It adapts its layout depending on [layout].
 class MoveListItem extends StatefulWidget {
-  const MoveListItem({
-    required this.node,
-    required this.layout,
-    super.key,
-  });
+  const MoveListItem({required this.node, required this.layout, super.key});
 
   final PgnNode<ExtMove> node;
   final MovesViewLayout layout;
@@ -1571,10 +1600,7 @@ class MoveListItemState extends State<MoveListItem> {
           _focusNode.requestFocus();
         },
         child: hasComment
-            ? Text(
-                _comment,
-                style: style,
-              )
+            ? Text(_comment, style: style)
             : Icon(
                 FluentIcons.edit_16_regular,
                 size: 16,
@@ -1608,13 +1634,25 @@ class MoveListItemState extends State<MoveListItem> {
     switch (widget.layout) {
       case MovesViewLayout.large:
         return _buildLargeLayout(
-            notation, boardLayout, roundNotation, combinedStyle);
+          notation,
+          boardLayout,
+          roundNotation,
+          combinedStyle,
+        );
       case MovesViewLayout.medium:
         return _buildMediumLayout(
-            notation, boardLayout, roundNotation, combinedStyle);
+          notation,
+          boardLayout,
+          roundNotation,
+          combinedStyle,
+        );
       case MovesViewLayout.small:
         return _buildSmallLayout(
-            notation, boardLayout, roundNotation, combinedStyle);
+          notation,
+          boardLayout,
+          roundNotation,
+          combinedStyle,
+        );
       case MovesViewLayout.list:
         // The "list" layout is now handled in MovesListPageState._buildThreeColumnListLayout()
         // so we can return an empty container here.
@@ -1650,10 +1688,7 @@ class MoveListItemState extends State<MoveListItem> {
             Text(roundNotation + notation, style: combinedStyle),
             const SizedBox(height: 6),
             _buildEditableComment(
-              TextStyle(
-                fontSize: 12,
-                color: DB().colorSettings.messageColor,
-              ),
+              TextStyle(fontSize: 12, color: DB().colorSettings.messageColor),
             ),
           ],
         ),
@@ -1791,10 +1826,7 @@ class MoveListItemState extends State<MoveListItem> {
             // Right side: editable comment.
             Expanded(
               child: _buildEditableComment(
-                TextStyle(
-                  fontSize: 12,
-                  color: DB().colorSettings.messageColor,
-                ),
+                TextStyle(fontSize: 12, color: DB().colorSettings.messageColor),
               ),
             ),
           ],

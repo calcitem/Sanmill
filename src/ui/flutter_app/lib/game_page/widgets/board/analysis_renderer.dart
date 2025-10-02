@@ -20,7 +20,7 @@ import '../../services/painters/painters.dart'; // Add this import for access to
 enum AnalysisResultType {
   place, // Place a piece on a point
   move, // Move a piece from one point to another
-  remove // Remove a piece from a point
+  remove, // Remove a piece from a point
 }
 
 /// Renderer for analysis marks on the board
@@ -35,17 +35,21 @@ class AnalysisRenderer {
 
     // Debug: Log analysis results in dev mode
     if (EnvironmentConfig.devMode) {
-      logger
-          .i("Analysis results count: ${AnalysisMode.analysisResults.length}");
+      logger.i(
+        "Analysis results count: ${AnalysisMode.analysisResults.length}",
+      );
       for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
-        logger.i("Move: ${result.move}, Outcome: ${result.outcome.name}, "
-            "Value: ${result.outcome.valueStr}, Steps: ${result.outcome.stepCount}");
+        logger.i(
+          "Move: ${result.move}, Outcome: ${result.outcome.name}, "
+          "Value: ${result.outcome.valueStr}, Steps: ${result.outcome.stepCount}",
+        );
       }
     }
 
     // Sort analysis results based on value for advantage/disadvantage outcomes
-    final List<MoveAnalysisResult> sortedResults =
-        _getSortedResults(AnalysisMode.analysisResults);
+    final List<MoveAnalysisResult> sortedResults = _getSortedResults(
+      AnalysisMode.analysisResults,
+    );
 
     // Determine the best value to find tied first place results
     final double? bestValue = _getBestValue(sortedResults);
@@ -94,12 +98,20 @@ class AnalysisRenderer {
           if (result.move.length == 2 &&
               RegExp(r'^[a-g][1-7]$').hasMatch(result.move)) {
             // Get position on board using standard notation
-            final Offset position =
-                _getPositionFromStandardNotation(result.move, size);
+            final Offset position = _getPositionFromStandardNotation(
+              result.move,
+              size,
+            );
 
             // Draw mark based on the outcome (win/draw/loss)
-            _drawOutcomeMark(canvas, position, result.outcome, squareSize * 0.4,
-                isTopResult, result.move);
+            _drawOutcomeMark(
+              canvas,
+              position,
+              result.outcome,
+              squareSize * 0.4,
+              isTopResult,
+              result.move,
+            );
           } else {
             logger.w("Failed to parse place move: ${result.move}");
           }
@@ -108,13 +120,24 @@ class AnalysisRenderer {
         case AnalysisResultType.move:
           // Draw an arrow for movement
           _drawMoveArrow(
-              canvas, result.move, result.outcome, size, isTopResult);
+            canvas,
+            result.move,
+            result.outcome,
+            size,
+            isTopResult,
+          );
           break;
 
         case AnalysisResultType.remove:
           // Draw a circle for removal candidate (changed from cross to circle)
-          _drawRemoveCircle(canvas, result.move, result.outcome, size,
-              squareSize * 0.5, isTopResult);
+          _drawRemoveCircle(
+            canvas,
+            result.move,
+            result.outcome,
+            size,
+            squareSize * 0.5,
+            isTopResult,
+          );
           break;
       }
     }
@@ -166,7 +189,8 @@ class AnalysisRenderer {
 
   /// Sort analysis results based on their values for advantage/disadvantage outcomes
   static List<MoveAnalysisResult> _getSortedResults(
-      List<MoveAnalysisResult> results) {
+    List<MoveAnalysisResult> results,
+  ) {
     // Clone the list to avoid modifying the original
     final List<MoveAnalysisResult> sortedResults =
         List<MoveAnalysisResult>.from(results);
@@ -205,8 +229,11 @@ class AnalysisRenderer {
   }
 
   /// Get stroke width based on outcome, whether it's a top result, and if it's a trap move
-  static double _getStrokeWidth(GameOutcome outcome, bool isTopResult,
-      {String? move}) {
+  static double _getStrokeWidth(
+    GameOutcome outcome,
+    bool isTopResult, {
+    String? move,
+  }) {
     // Base stroke width
     const double normalWidth = 2.5;
     const double reducedWidth = 1.5;
@@ -237,8 +264,11 @@ class AnalysisRenderer {
     String move,
   ) {
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth =
-        _getStrokeWidth(outcome, isTopResult, move: move);
+    final double strokeWidth = _getStrokeWidth(
+      outcome,
+      isTopResult,
+      move: move,
+    );
 
     final Paint paint = Paint()
       ..color = AnalysisMode.getColorForOutcome(outcome).withValues(alpha: 0.7)
@@ -321,8 +351,11 @@ class AnalysisRenderer {
     final bool useDashPattern = _shouldUseDashPattern(outcome);
 
     // Get stroke width based on importance and trap status
-    final double strokeWidth =
-        _getStrokeWidth(outcome, isTopResult, move: moveStr);
+    final double strokeWidth = _getStrokeWidth(
+      outcome,
+      isTopResult,
+      move: moveStr,
+    );
 
     // Draw arrow
     _drawArrow(
@@ -361,8 +394,8 @@ class AnalysisRenderer {
       // The direction of the offset depends on the arrow's angle to avoid overlap
       // A simple approach is to offset it consistently, e.g., upwards or to the side
       // For a more robust solution, one might consider the arrow's angle
-// Horizontal offset from midpoint
-// Center vertically by default, adjust as needed
+      // Horizontal offset from midpoint
+      // Center vertically by default, adjust as needed
 
       // Adjust offset based on arrow direction to prevent text from being drawn over the arrow line
       // This is a simplified logic, might need refinement for all arrow angles
@@ -374,7 +407,8 @@ class AnalysisRenderer {
       // If arrow is more vertical, place text to the left/right
       if (cos(angle).abs() > sin(angle).abs()) {
         // More horizontal
-        textY = midPoint.dy -
+        textY =
+            midPoint.dy -
             stepTextPainter.height -
             5; // Place above, 5 is padding
         textX = midPoint.dx - stepTextPainter.width / 2;
@@ -414,8 +448,10 @@ class AnalysisRenderer {
     final String squareNotation = moveStr.substring(1);
 
     // Get position on board using standard notation
-    final Offset position =
-        _getPositionFromStandardNotation(squareNotation, size);
+    final Offset position = _getPositionFromStandardNotation(
+      squareNotation,
+      size,
+    );
 
     // Get color based on outcome
     final Color circleColor = AnalysisMode.getColorForOutcome(outcome);
@@ -425,8 +461,11 @@ class AnalysisRenderer {
 
     // Determine if dashed pattern should be used and get stroke width
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth =
-        _getStrokeWidth(outcome, isTopResult, move: moveStr);
+    final double strokeWidth = _getStrokeWidth(
+      outcome,
+      isTopResult,
+      move: moveStr,
+    );
 
     // Draw a circle with appropriate line style to highlight removal candidate
     if (useDashPattern) {
@@ -540,11 +579,8 @@ class AnalysisRenderer {
     final double angle = (end - start).direction;
 
     // Adjust the endpoint so that the arrow head does not extend beyond the target point
-    final Offset adjustedEnd = end -
-        Offset(
-          arrowLength * cos(angle),
-          arrowLength * sin(angle),
-        );
+    final Offset adjustedEnd =
+        end - Offset(arrowLength * cos(angle), arrowLength * sin(angle));
 
     // Draw the main line - dashed if needed
     if (useDashPattern) {
@@ -586,7 +622,11 @@ class AnalysisRenderer {
 
   /// Draw a dashed line between two points
   static void _drawDashedLine(
-      Canvas canvas, Offset start, Offset end, Paint paint) {
+    Canvas canvas,
+    Offset start,
+    Offset end,
+    Paint paint,
+  ) {
     const double dashLength = 8.0;
     const double gapLength = 4.0;
 
@@ -700,8 +740,10 @@ class AnalysisRenderer {
   static String _getDisplaySymbolForOutcome(GameOutcome outcome) {
     // Debug logging in dev mode
     if (EnvironmentConfig.devMode) {
-      logger.i("Getting display symbol for outcome: ${outcome.name}, "
-          "valueStr: ${outcome.valueStr}, stepCount: ${outcome.stepCount}");
+      logger.i(
+        "Getting display symbol for outcome: ${outcome.name}, "
+        "valueStr: ${outcome.valueStr}, stepCount: ${outcome.stepCount}",
+      );
     }
 
     // Check if we have step count information from perfect database
@@ -709,7 +751,8 @@ class AnalysisRenderer {
       // Debug log in dev mode
       if (EnvironmentConfig.devMode) {
         logger.i(
-            "Displaying step count ${outcome.stepCount} for outcome ${outcome.name}");
+          "Displaying step count ${outcome.stepCount} for outcome ${outcome.name}",
+        );
       }
       // Return step count for perfect database results
       return outcome.stepCount!.toString();
@@ -720,7 +763,8 @@ class AnalysisRenderer {
       // Debug log in dev mode
       if (EnvironmentConfig.devMode) {
         logger.i(
-            "Displaying value string '${outcome.valueStr}' for outcome ${outcome.name}");
+          "Displaying value string '${outcome.valueStr}' for outcome ${outcome.name}",
+        );
       }
 
       // For advantage/disadvantage with numerical values, show the value in dev mode
@@ -734,7 +778,8 @@ class AnalysisRenderer {
     // Debug log in dev mode when using fallback
     if (EnvironmentConfig.devMode) {
       logger.i(
-          "Using fallback symbol for outcome ${outcome.name}, stepCount: ${outcome.stepCount}");
+        "Using fallback symbol for outcome ${outcome.name}, stepCount: ${outcome.stepCount}",
+      );
     }
 
     // Fall back to regular symbol logic
@@ -764,7 +809,9 @@ class AnalysisRenderer {
 
   /// Convert standard notation square (like "a1", "d5") to board position
   static Offset _getPositionFromStandardNotation(
-      String squareNotation, Size size) {
+    String squareNotation,
+    Size size,
+  ) {
     // Validate standard notation format
     if (squareNotation.length != 2 ||
         !RegExp(r'^[a-g][1-7]$').hasMatch(squareNotation)) {
@@ -784,9 +831,9 @@ class AnalysisRenderer {
     // Check if flying is enabled in rules and the current player has few enough pieces
     return DB().ruleSettings.mayFly &&
         GameController().position.phase == Phase.moving &&
-        GameController()
+        GameController().position.pieceOnBoardCount[GameController()
                 .position
-                .pieceOnBoardCount[GameController().position.sideToMove]! <=
+                .sideToMove]! <=
             DB().ruleSettings.flyPieceCount;
   }
 

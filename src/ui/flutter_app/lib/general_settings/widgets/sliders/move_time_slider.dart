@@ -34,15 +34,18 @@ class _MoveTimeSlider extends StatelessWidget {
                 divisions: 60,
                 label: DB().generalSettings.moveTime.toString(),
                 onChanged: (double value) {
-                  DB().generalSettings =
-                      generalSettings.copyWith(moveTime: value.toInt());
+                  DB().generalSettings = generalSettings.copyWith(
+                    moveTime: value.toInt(),
+                  );
 
                   if (DB().generalSettings.moveTime == 0) {
                     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        S.of(context).noTimeLimitForThinking);
+                      S.of(context).noTimeLimitForThinking,
+                    );
                   } else {
                     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        S.of(context).noteAiThinkingTimeMayNotBePrecise);
+                      S.of(context).noteAiThinkingTimeMayNotBePrecise,
+                    );
                   }
 
                   logger.t("Move time Slider value: $value");
@@ -85,15 +88,18 @@ class _HumanMoveTimeSlider extends StatelessWidget {
                 divisions: 60,
                 label: DB().generalSettings.humanMoveTime.toString(),
                 onChanged: (double value) {
-                  DB().generalSettings =
-                      generalSettings.copyWith(humanMoveTime: value.toInt());
+                  DB().generalSettings = generalSettings.copyWith(
+                    humanMoveTime: value.toInt(),
+                  );
 
                   if (DB().generalSettings.humanMoveTime == 0) {
                     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        S.of(context).noTimeLimitForHumanMoves);
+                      S.of(context).noTimeLimitForHumanMoves,
+                    );
                   } else {
                     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        S.of(context).timeoutLoseWillBeApplied);
+                      S.of(context).timeoutLoseWillBeApplied,
+                    );
                   }
 
                   logger.t("Human move time Slider value: $value");

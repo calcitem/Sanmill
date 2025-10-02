@@ -38,12 +38,18 @@ class BoardPainter extends CustomPainter {
     // Add analysis renderer to draw analysis results
     if (AnalysisMode.isEnabled) {
       AnalysisRenderer.render(
-          canvas, size, size.width / 7); // Divide by number of points per row
+        canvas,
+        size,
+        size.width / 7,
+      ); // Divide by number of points per row
     }
   }
 
   Paint _createPaint(
-      ColorSettings colorSettings, double boardBorderLineWidth, Size size) {
+    ColorSettings colorSettings,
+    double boardBorderLineWidth,
+    Size size,
+  ) {
     final Paint paint = Paint();
     paint.strokeWidth =
         boardBorderLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
@@ -92,8 +98,12 @@ class BoardPainter extends CustomPainter {
       );
       canvas.drawImageRect(
         backgroundImage!,
-        Rect.fromLTWH(0, 0, backgroundImage!.width.toDouble(),
-            backgroundImage!.height.toDouble()),
+        Rect.fromLTWH(
+          0,
+          0,
+          backgroundImage!.width.toDouble(),
+          backgroundImage!.height.toDouble(),
+        ),
         Rect.fromLTWH(0, 0, size.width, size.height),
         paint,
       );
@@ -165,7 +175,11 @@ class BoardPainter extends CustomPainter {
   }
 
   void _drawMillLines(
-      List<Offset> offset, Canvas canvas, Paint paint, Size size) {
+    List<Offset> offset,
+    Canvas canvas,
+    Paint paint,
+    Size size,
+  ) {
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth =
         boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1) + 1;
@@ -185,21 +199,31 @@ class BoardPainter extends CustomPainter {
 
     // Draw Mills with unique or mixed colors
     void drawMills(
-        PieceColor color, List<List<int>> mills, Color defaultColor) {
+      PieceColor color,
+      List<List<int>> mills,
+      Color defaultColor,
+    ) {
       for (final List<int> mill in mills) {
         final Path path = Path();
         path.addLine(
-            pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
+          pointFromSquare(mill[0], size),
+          pointFromSquare(mill[1], size),
+        );
         path.addLine(
-            pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
+          pointFromSquare(mill[1], size),
+          pointFromSquare(mill[2], size),
+        );
         path.addLine(
-            pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
+          pointFromSquare(mill[2], size),
+          pointFromSquare(mill[0], size),
+        );
 
         // Check if this mill exists in the opposite color mills
-        final bool isShared = formedMills[color == PieceColor.white
-                ? PieceColor.black
-                : PieceColor.white]!
-            .any((List<int> otherMill) => listEquals(mill, otherMill));
+        final bool isShared =
+            formedMills[color == PieceColor.white
+                    ? PieceColor.black
+                    : PieceColor.white]!
+                .any((List<int> otherMill) => listEquals(mill, otherMill));
 
         paint.color = isShared ? mixedColor : defaultColor;
 
@@ -217,10 +241,16 @@ class BoardPainter extends CustomPainter {
     }
 
     // Draw White and Black Mills, possibly with mixed color
-    drawMills(PieceColor.white, formedMills[PieceColor.white]!,
-        DB().colorSettings.whitePieceColor);
-    drawMills(PieceColor.black, formedMills[PieceColor.black]!,
-        DB().colorSettings.blackPieceColor);
+    drawMills(
+      PieceColor.white,
+      formedMills[PieceColor.white]!,
+      DB().colorSettings.whitePieceColor,
+    );
+    drawMills(
+      PieceColor.black,
+      formedMills[PieceColor.black]!,
+      DB().colorSettings.blackPieceColor,
+    );
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
@@ -273,8 +303,9 @@ class BoardPainter extends CustomPainter {
 
     final TextSpan textSpan = TextSpan(
       style: TextStyle(
-          fontSize: 48,
-          color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0)),
+        fontSize: 48,
+        color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
+      ),
       text: pieceInHandCount.toString(),
     );
 
@@ -285,8 +316,10 @@ class BoardPainter extends CustomPainter {
     );
 
     textPainter.layout();
-    textPainter.paint(canvas,
-        size.center(-Offset(textPainter.width, textPainter.height) / 2));
+    textPainter.paint(
+      canvas,
+      size.center(-Offset(textPainter.width, textPainter.height) / 2),
+    );
   }
 
   static int _calculatePieceInHandCount(Position position) {
@@ -325,9 +358,9 @@ class BoardPainter extends CustomPainter {
     notationPainter.layout();
     final double offset = (boardMargin - notationPainter.width) / 2;
     notationPainter.paint(
-        canvas,
-        Offset(
-            offset, offsetFromInt(index, size) - notationPainter.height / 2));
+      canvas,
+      Offset(offset, offsetFromInt(index, size) - notationPainter.height / 2),
+    );
   }
 
   static void _drawHorizontalNotation(Canvas canvas, Size size, int index) {
@@ -352,33 +385,69 @@ class BoardPainter extends CustomPainter {
     notationPainter.layout();
     final double offset =
         size.height - (boardMargin + notationPainter.height) / 2;
-    notationPainter.paint(canvas,
-        Offset(offsetFromInt(index, size) - notationPainter.width / 2, offset));
+    notationPainter.paint(
+      canvas,
+      Offset(offsetFromInt(index, size) - notationPainter.width / 2, offset),
+    );
   }
 
-  static void _drawDashedRect(Canvas canvas, Rect rect, List<Color> colors,
-      double strokeWidth, double dashLength, double spaceLength) {
+  static void _drawDashedRect(
+    Canvas canvas,
+    Rect rect,
+    List<Color> colors,
+    double strokeWidth,
+    double dashLength,
+    double spaceLength,
+  ) {
     final Paint paint = Paint()
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
-    _drawDashedLine(canvas, Offset(rect.left, rect.top),
-        Offset(rect.right, rect.top), colors, paint, dashLength, spaceLength);
     _drawDashedLine(
-        canvas,
-        Offset(rect.right, rect.top),
-        Offset(rect.right, rect.bottom),
-        colors,
-        paint,
-        dashLength,
-        spaceLength);
-    _drawDashedLine(canvas, Offset(rect.right, rect.bottom),
-        Offset(rect.left, rect.bottom), colors, paint, dashLength, spaceLength);
-    _drawDashedLine(canvas, Offset(rect.left, rect.bottom),
-        Offset(rect.left, rect.top), colors, paint, dashLength, spaceLength);
+      canvas,
+      Offset(rect.left, rect.top),
+      Offset(rect.right, rect.top),
+      colors,
+      paint,
+      dashLength,
+      spaceLength,
+    );
+    _drawDashedLine(
+      canvas,
+      Offset(rect.right, rect.top),
+      Offset(rect.right, rect.bottom),
+      colors,
+      paint,
+      dashLength,
+      spaceLength,
+    );
+    _drawDashedLine(
+      canvas,
+      Offset(rect.right, rect.bottom),
+      Offset(rect.left, rect.bottom),
+      colors,
+      paint,
+      dashLength,
+      spaceLength,
+    );
+    _drawDashedLine(
+      canvas,
+      Offset(rect.left, rect.bottom),
+      Offset(rect.left, rect.top),
+      colors,
+      paint,
+      dashLength,
+      spaceLength,
+    );
   }
 
-  static void _drawDashedPath(Canvas canvas, Path path, List<Color> colors,
-      double strokeWidth, double dashLength, double spaceLength) {
+  static void _drawDashedPath(
+    Canvas canvas,
+    Path path,
+    List<Color> colors,
+    double strokeWidth,
+    double dashLength,
+    double spaceLength,
+  ) {
     final Paint paint = Paint()
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
@@ -397,8 +466,15 @@ class BoardPainter extends CustomPainter {
     }
   }
 
-  static void _drawDashedLine(Canvas canvas, Offset start, Offset end,
-      List<Color> colors, Paint paint, double dashLength, double spaceLength) {
+  static void _drawDashedLine(
+    Canvas canvas,
+    Offset start,
+    Offset end,
+    List<Color> colors,
+    Paint paint,
+    double dashLength,
+    double spaceLength,
+  ) {
     final double totalLength = (end - start).distance;
     final double dx = (end.dx - start.dx) / totalLength;
     final double dy = (end.dy - start.dy) / totalLength;
@@ -410,15 +486,19 @@ class BoardPainter extends CustomPainter {
       paint.color = colors[colorIndex];
       colorIndex = (colorIndex + 1) % colors.length;
 
-      final Offset from =
-          Offset(start.dx + dx * distance, start.dy + dy * distance);
+      final Offset from = Offset(
+        start.dx + dx * distance,
+        start.dy + dy * distance,
+      );
       distance += dashLength;
 
       if (distance > totalLength) {
         distance = totalLength;
       }
-      final Offset to =
-          Offset(start.dx + dx * distance, start.dy + dy * distance);
+      final Offset to = Offset(
+        start.dx + dx * distance,
+        start.dy + dy * distance,
+      );
 
       canvas.drawLine(from, to, paint);
       distance += spaceLength;
@@ -431,7 +511,7 @@ class BoardPainter extends CustomPainter {
       Colors.white,
       Colors.yellow,
       Colors.blue,
-      Colors.red
+      Colors.red,
     ];
 
     const double strokeWidth = 2.0;
@@ -442,8 +522,14 @@ class BoardPainter extends CustomPainter {
         .map((Offset e) => offsetFromPointWithInnerSize(e, size))
         .toList();
 
-    _drawDashedRect(canvas, Rect.fromPoints(offset[0], offset[23]), colors,
-        strokeWidth, dashLength, spaceLength);
+    _drawDashedRect(
+      canvas,
+      Rect.fromPoints(offset[0], offset[23]),
+      colors,
+      strokeWidth,
+      dashLength,
+      spaceLength,
+    );
 
     final Path path = _createLinePath(offset);
 
@@ -485,8 +571,10 @@ class BoardPainter extends CustomPainter {
 
       // Calculate the start and end points of each dashed segment on the circle
       final double startAngle = distance / radius;
-      final double endAngle =
-          ((distance + dashLength) / radius).clamp(0, 2 * pi);
+      final double endAngle = ((distance + dashLength) / radius).clamp(
+        0,
+        2 * pi,
+      );
 
       final Path path = Path();
       path.arcTo(

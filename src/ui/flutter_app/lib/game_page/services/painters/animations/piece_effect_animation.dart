@@ -13,14 +13,22 @@ import '../../../../shared/database/database.dart';
 /// Abstract class for PlaceEffect animations.
 abstract class PieceEffectAnimation {
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue);
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  );
 }
 
 /// Default implementation of the RemoveEffect animation.
 class ExplodePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -57,7 +65,8 @@ class ExplodePieceEffectAnimation implements PieceEffectAnimation {
         ..color = particleColor
         ..style = PaintingStyle.fill;
 
-      final double particleSize = particleMinSize +
+      final double particleSize =
+          particleMinSize +
           (particleMaxSize - particleMinSize) *
               (1.0 - time) *
               (0.8 + random.nextDouble() * 0.4);
@@ -114,7 +123,11 @@ class BurstPieceEffectAnimation implements PieceEffectAnimation {
 
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -158,8 +171,10 @@ class EchoPieceEffectAnimation implements PieceEffectAnimation {
     final ui.Color boardLineColor = DB().colorSettings.boardLineColor;
 
     for (int i = 0; i < echoCount; i++) {
-      final double progress =
-          ((animationValue * echoCount) - i).clamp(0.0, 1.0);
+      final double progress = ((animationValue * echoCount) - i).clamp(
+        0.0,
+        1.0,
+      );
       final double easedProgress = Curves.easeOut.transform(progress);
       final double radius = diameter / 2 + diameter * easedProgress;
       final double opacity = (1.0 - easedProgress) * 0.4;
@@ -178,7 +193,11 @@ class EchoPieceEffectAnimation implements PieceEffectAnimation {
 class ExpandPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -207,34 +226,28 @@ class ExpandPieceEffectAnimation implements PieceEffectAnimation {
 /// leaving colorful trails that show both the upward and downward motion.
 class FireworksPieceEffectAnimation implements PieceEffectAnimation {
   FireworksPieceEffectAnimation()
-      : initialVelocities = List<Offset>.generate(
-          particleCount,
-          (int index) {
-            final Random random = Random();
-            // Initial speed
-            final double speed = random.nextDouble() * 200 + 500;
+    : initialVelocities = List<Offset>.generate(particleCount, (int index) {
+        final Random random = Random();
+        // Initial speed
+        final double speed = random.nextDouble() * 200 + 500;
 
-            // Angle spread from -π to π to cover all directions (360 degrees)
-            final double angle = -pi + (random.nextDouble() * 2 * pi);
+        // Angle spread from -π to π to cover all directions (360 degrees)
+        final double angle = -pi + (random.nextDouble() * 2 * pi);
 
-            final double vx = speed * cos(angle);
-            final double vy = speed * sin(angle);
-            return Offset(vx, vy);
-          },
-        ),
-        particleColors = List<ui.Color>.generate(
-          particleCount,
-          (int index) {
-            final Random random = Random();
-            // Generate random bright and varied colors for realism
-            return ui.Color.fromARGB(
-              255,
-              100 + random.nextInt(156), // 100-255 to ensure brightness
-              100 + random.nextInt(156),
-              100 + random.nextInt(156),
-            );
-          },
+        final double vx = speed * cos(angle);
+        final double vy = speed * sin(angle);
+        return Offset(vx, vy);
+      }),
+      particleColors = List<ui.Color>.generate(particleCount, (int index) {
+        final Random random = Random();
+        // Generate random bright and varied colors for realism
+        return ui.Color.fromARGB(
+          255,
+          100 + random.nextInt(156), // 100-255 to ensure brightness
+          100 + random.nextInt(156),
+          100 + random.nextInt(156),
         );
+      });
   static const int particleCount =
       100; // Increased for denser and more vibrant effect
   final List<Offset> initialVelocities;
@@ -243,7 +256,11 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
 
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     final double duration = DB().displaySettings.animationDuration;
 
     if (duration == 0.0) {
@@ -270,7 +287,8 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
         }
 
         // Position calculation: s = ut + 0.5 * a * t^2
-        final Offset position = center +
+        final Offset position =
+            center +
             initialVelocity * tj +
             Offset(0, 0.5 * g * tj * tj); // Gravity affects y-axis
 
@@ -285,8 +303,8 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
       final double opacity = (1.0 - animationValue).clamp(0.0, 1.0);
 
       final Paint paint = Paint()
-        ..color =
-            color.withValues(alpha: opacity * 0.7) // Reduced opacity for trails
+        ..color = color
+            .withValues(alpha: opacity * 0.7) // Reduced opacity for trails
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0;
 
@@ -303,7 +321,10 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
 
       // Increase particle size for better visibility
       canvas.drawCircle(
-          currentPosition, 4.0 * (1.0 - animationValue), particlePaint);
+        currentPosition,
+        4.0 * (1.0 - animationValue),
+        particlePaint,
+      );
     }
   }
 }
@@ -312,7 +333,11 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
 class GlowPieceEffectAnimation extends PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     // Draw a glowing effect by drawing multiple circles with increasing radius and decreasing opacity.
     const int numCircles = 5;
     final ui.Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
@@ -322,7 +347,8 @@ class GlowPieceEffectAnimation extends PieceEffectAnimation {
       final double radius = (diameter / 2) * (1 + animationValue * fraction);
       final Paint paint = Paint()
         ..color = pieceHighlightColor.withValues(
-            alpha: (1 - animationValue) * (1 - fraction))
+          alpha: (1 - animationValue) * (1 - fraction),
+        )
         ..style = PaintingStyle.fill;
       canvas.drawCircle(center, radius, paint);
     }
@@ -336,7 +362,11 @@ class OrbitPieceEffectAnimation implements PieceEffectAnimation {
 
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -367,7 +397,11 @@ class OrbitPieceEffectAnimation implements PieceEffectAnimation {
 class RadialPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -389,20 +423,11 @@ class RadialPieceEffectAnimation implements PieceEffectAnimation {
     // Define the configuration for each effect layer.
     final List<_EffectLayer> layers = <_EffectLayer>[
       // Main layer.
-      _EffectLayer(
-        radiusFactor: 1.0,
-        opacityFactor: 0.8,
-      ),
+      _EffectLayer(radiusFactor: 1.0, opacityFactor: 0.8),
       // Second layer.
-      _EffectLayer(
-        radiusFactor: 0.75,
-        opacityFactor: 0.5,
-      ),
+      _EffectLayer(radiusFactor: 0.75, opacityFactor: 0.5),
       // Third layer.
-      _EffectLayer(
-        radiusFactor: 0.5,
-        opacityFactor: 0.2,
-      ),
+      _EffectLayer(radiusFactor: 0.5, opacityFactor: 0.2),
     ];
 
     // Iterate over each layer configuration to draw the circles.
@@ -427,10 +452,7 @@ class RadialPieceEffectAnimation implements PieceEffectAnimation {
             boardLineColor.withValues(alpha: layerOpacity),
             boardLineColor.withValues(alpha: 0.0),
           ],
-          stops: const <double>[
-            0.0,
-            1.0,
-          ],
+          stops: const <double>[0.0, 1.0],
         ).createShader(Rect.fromCircle(center: center, radius: layerRadius))
         ..style = PaintingStyle.fill;
 
@@ -444,7 +466,11 @@ class RadialPieceEffectAnimation implements PieceEffectAnimation {
 class RipplePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -473,7 +499,11 @@ class RipplePieceEffectAnimation implements PieceEffectAnimation {
 class RotatePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -484,7 +514,9 @@ class RotatePieceEffectAnimation implements PieceEffectAnimation {
 
     final Path path = Path();
     path.moveTo(
-        center.dx + radius * cos(rotation), center.dy + radius * sin(rotation));
+      center.dx + radius * cos(rotation),
+      center.dy + radius * sin(rotation),
+    );
     for (int i = 1; i <= 6; i++) {
       final double angle = rotation + (2 * pi * i) / 6;
       path.lineTo(
@@ -509,7 +541,11 @@ class RotatePieceEffectAnimation implements PieceEffectAnimation {
 class SparklePieceEffectAnimation extends PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     // Draw multiple small circles (sparkles) around the piece.
     const int numSparkles = 10;
     final ui.Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
@@ -532,7 +568,11 @@ class SparklePieceEffectAnimation extends PieceEffectAnimation {
 class SpiralPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -572,7 +612,11 @@ class SpiralPieceEffectAnimation implements PieceEffectAnimation {
 class FadePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -594,7 +638,11 @@ class FadePieceEffectAnimation implements PieceEffectAnimation {
 class ShrinkPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -616,20 +664,21 @@ class ShrinkPieceEffectAnimation implements PieceEffectAnimation {
 /// Shatter effect for removing a piece.
 class ShatterPieceEffectAnimation implements PieceEffectAnimation {
   ShatterPieceEffectAnimation()
-      : shardDirections = List<Offset>.generate(
-          12,
-          (int index) {
-            final double angle =
-                (2 * pi / 12) * index + Random().nextDouble() * 0.2;
-            return Offset(cos(angle), sin(angle));
-          },
-        );
+    : shardDirections = List<Offset>.generate(12, (int index) {
+        final double angle =
+            (2 * pi / 12) * index + Random().nextDouble() * 0.2;
+        return Offset(cos(angle), sin(angle));
+      });
   final int shardCount = 12;
   final List<Offset> shardDirections;
 
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -658,20 +707,21 @@ class ShatterPieceEffectAnimation implements PieceEffectAnimation {
 /// Disperse effect for removing a piece.
 class DispersePieceEffectAnimation implements PieceEffectAnimation {
   DispersePieceEffectAnimation()
-      : particleOffsets = List<Offset>.generate(
-          20,
-          (int index) {
-            final double angle = Random().nextDouble() * 2 * pi;
-            final double radius = Random().nextDouble() * 0.5;
-            return Offset(radius * cos(angle), radius * sin(angle));
-          },
-        );
+    : particleOffsets = List<Offset>.generate(20, (int index) {
+        final double angle = Random().nextDouble() * 2 * pi;
+        final double radius = Random().nextDouble() * 0.5;
+        return Offset(radius * cos(angle), radius * sin(angle));
+      });
   final int particleCount = 20;
   final List<Offset> particleOffsets;
 
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -699,7 +749,11 @@ class DispersePieceEffectAnimation implements PieceEffectAnimation {
 class VanishPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     // Instantly removes the piece without animation.
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
@@ -712,7 +766,11 @@ class VanishPieceEffectAnimation implements PieceEffectAnimation {
 class MeltPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -741,7 +799,11 @@ class MeltPieceEffectAnimation implements PieceEffectAnimation {
 class RippleGradientPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -771,24 +833,31 @@ class RippleGradientPieceEffectAnimation implements PieceEffectAnimation {
       final HSLColor targetHSL = HSLColor.fromColor(secondaryColor);
 
       // Interpolate between colors for a smooth transition
-      final HSLColor innerColor = HSLColor.lerp(baseHSL, targetHSL,
-          (waveProgress + sin(easedAnimation * pi * 2) * 0.3) % 1.0)!;
+      final HSLColor innerColor = HSLColor.lerp(
+        baseHSL,
+        targetHSL,
+        (waveProgress + sin(easedAnimation * pi * 2) * 0.3) % 1.0,
+      )!;
 
-      final HSLColor outerColor = HSLColor.lerp(targetHSL, baseHSL,
-          (waveProgress + cos(easedAnimation * pi * 2) * 0.3) % 1.0)!;
+      final HSLColor outerColor = HSLColor.lerp(
+        targetHSL,
+        baseHSL,
+        (waveProgress + cos(easedAnimation * pi * 2) * 0.3) % 1.0,
+      )!;
 
       // Create a radial gradient shader
       final Gradient gradient = RadialGradient(
         colors: <ui.Color>[
           innerColor.toColor().withValues(alpha: opacity),
-          outerColor.toColor().withValues(alpha: 0.0)
+          outerColor.toColor().withValues(alpha: 0.0),
         ],
         stops: const <double>[0.2, 1.0],
       );
 
       final Paint paint = Paint()
-        ..shader = gradient
-            .createShader(Rect.fromCircle(center: center, radius: radius))
+        ..shader = gradient.createShader(
+          Rect.fromCircle(center: center, radius: radius),
+        )
         ..style = PaintingStyle.fill;
 
       canvas.drawCircle(center, radius, paint);
@@ -801,7 +870,11 @@ class RippleGradientPieceEffectAnimation implements PieceEffectAnimation {
 class RainbowWavePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -868,7 +941,11 @@ class RainbowWavePieceEffectAnimation implements PieceEffectAnimation {
 class StarburstPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -919,10 +996,7 @@ class StarburstPieceEffectAnimation implements PieceEffectAnimation {
           highlightColor.withValues(alpha: 0.0),
         ],
         stops: const <double>[0.0, 0.5, 1.0],
-      ).createShader(Rect.fromCircle(
-        center: center,
-        radius: outerRadius,
-      ))
+      ).createShader(Rect.fromCircle(center: center, radius: outerRadius))
       ..style = PaintingStyle.fill;
 
     // Draw the star
@@ -938,18 +1012,24 @@ class StarburstPieceEffectAnimation implements PieceEffectAnimation {
 
     // Add a center glow
     final Paint centerGlowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: <ui.Color>[
-          Colors.white.withValues(alpha: opacity),
-          Colors.white.withValues(alpha: 0.0),
-        ],
-      ).createShader(Rect.fromCircle(
-        center: center,
-        radius: diameter * 0.5 * (1.0 - easedAnimation * 0.5),
-      ));
+      ..shader =
+          RadialGradient(
+            colors: <ui.Color>[
+              Colors.white.withValues(alpha: opacity),
+              Colors.white.withValues(alpha: 0.0),
+            ],
+          ).createShader(
+            Rect.fromCircle(
+              center: center,
+              radius: diameter * 0.5 * (1.0 - easedAnimation * 0.5),
+            ),
+          );
 
     canvas.drawCircle(
-        center, diameter * 0.5 * (1.0 - easedAnimation * 0.5), centerGlowPaint);
+      center,
+      diameter * 0.5 * (1.0 - easedAnimation * 0.5),
+      centerGlowPaint,
+    );
   }
 }
 
@@ -958,7 +1038,11 @@ class StarburstPieceEffectAnimation implements PieceEffectAnimation {
 class TwistPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1017,9 +1101,11 @@ class TwistPieceEffectAnimation implements PieceEffectAnimation {
       // Create a gradient along the spiral path
       final Paint spiralPaint = Paint()
         ..color = primaryColor.withValues(
-            alpha: opacity * (1.0 - arm / numArms * 0.5))
+          alpha: opacity * (1.0 - arm / numArms * 0.5),
+        )
         ..style = PaintingStyle.stroke
-        ..strokeWidth = diameter *
+        ..strokeWidth =
+            diameter *
             0.05 *
             (1.0 - easedAnimation * 0.7) // Fix: Use easedAnimation instead of t
         ..strokeCap = StrokeCap.round;
@@ -1029,15 +1115,15 @@ class TwistPieceEffectAnimation implements PieceEffectAnimation {
 
     // Add a subtle glow at the center
     final Paint centerGlowPaint = Paint()
-      ..shader = RadialGradient(
-        colors: <ui.Color>[
-          primaryColor.withValues(alpha: opacity),
-          primaryColor.withValues(alpha: 0.0),
-        ],
-      ).createShader(Rect.fromCircle(
-        center: Offset.zero,
-        radius: diameter * 0.3,
-      ));
+      ..shader =
+          RadialGradient(
+            colors: <ui.Color>[
+              primaryColor.withValues(alpha: opacity),
+              primaryColor.withValues(alpha: 0.0),
+            ],
+          ).createShader(
+            Rect.fromCircle(center: Offset.zero, radius: diameter * 0.3),
+          );
 
     canvas.drawCircle(Offset.zero, diameter * 0.3, centerGlowPaint);
 
@@ -1050,7 +1136,11 @@ class TwistPieceEffectAnimation implements PieceEffectAnimation {
 class PulseRingPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1072,7 +1162,11 @@ class PulseRingPieceEffectAnimation implements PieceEffectAnimation {
 class PixelGlitchPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1090,7 +1184,9 @@ class PixelGlitchPieceEffectAnimation implements PieceEffectAnimation {
         ..style = PaintingStyle.fill
         ..color = glitchColor.withValues(alpha: opacity);
       canvas.drawRect(
-          Rect.fromCenter(center: pos, width: size, height: size), paint);
+        Rect.fromCenter(center: pos, width: size, height: size),
+        paint,
+      );
     }
   }
 }
@@ -1100,7 +1196,11 @@ class PixelGlitchPieceEffectAnimation implements PieceEffectAnimation {
 class FireTrailPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1126,7 +1226,11 @@ class FireTrailPieceEffectAnimation implements PieceEffectAnimation {
 class WarpWavePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1165,7 +1269,11 @@ class WarpWavePieceEffectAnimation implements PieceEffectAnimation {
 class ShockWavePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1175,8 +1283,9 @@ class ShockWavePieceEffectAnimation implements PieceEffectAnimation {
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = diameter * 0.1 * (1.0 - progress);
-    paint.color =
-        DB().colorSettings.boardLineColor.withValues(alpha: 1.0 - progress);
+    paint.color = DB().colorSettings.boardLineColor.withValues(
+      alpha: 1.0 - progress,
+    );
     canvas.drawCircle(center, radius, paint);
   }
 }
@@ -1186,7 +1295,11 @@ class ShockWavePieceEffectAnimation implements PieceEffectAnimation {
 class ColorSwirlPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1217,7 +1330,11 @@ class ColorSwirlPieceEffectAnimation implements PieceEffectAnimation {
 class NeonFlashPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1236,7 +1353,11 @@ class NeonFlashPieceEffectAnimation implements PieceEffectAnimation {
 class InkSpreadPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1244,8 +1365,10 @@ class InkSpreadPieceEffectAnimation implements PieceEffectAnimation {
     const ui.Color inkColor = Colors.black;
     for (int i = 1; i <= 3; i++) {
       final double radius = diameter * progress * (i / 3);
-      final double alpha =
-          ((1.0 - progress) * (1.0 - (i - 1) / 3)).clamp(0.0, 1.0);
+      final double alpha = ((1.0 - progress) * (1.0 - (i - 1) / 3)).clamp(
+        0.0,
+        1.0,
+      );
       final Paint paint = Paint()
         ..color = inkColor.withValues(alpha: alpha * 0.6)
         ..style = PaintingStyle.fill;
@@ -1259,7 +1382,11 @@ class InkSpreadPieceEffectAnimation implements PieceEffectAnimation {
 class ShadowPulsePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1277,7 +1404,11 @@ class ShadowPulsePieceEffectAnimation implements PieceEffectAnimation {
 class RainRipplePieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1301,7 +1432,11 @@ class RainRipplePieceEffectAnimation implements PieceEffectAnimation {
 class BubblePopPieceEffectAnimation implements PieceEffectAnimation {
   @override
   void draw(
-      Canvas canvas, Offset center, double diameter, double animationValue) {
+    Canvas canvas,
+    Offset center,
+    double diameter,
+    double animationValue,
+  ) {
     if (DB().displaySettings.animationDuration == 0.0) {
       return;
     }
@@ -1314,10 +1449,9 @@ class BubblePopPieceEffectAnimation implements PieceEffectAnimation {
       final double alpha = (1.0 - t).clamp(0.0, 1.0);
       final Paint paint = Paint()
         ..style = PaintingStyle.fill
-        ..color = DB()
-            .colorSettings
-            .pieceHighlightColor
-            .withValues(alpha: alpha * 0.5);
+        ..color = DB().colorSettings.pieceHighlightColor.withValues(
+          alpha: alpha * 0.5,
+        );
       canvas.drawCircle(center, radius, paint);
     }
   }
@@ -1325,10 +1459,7 @@ class BubblePopPieceEffectAnimation implements PieceEffectAnimation {
 
 /// A helper class to define the properties of each effect layer.
 class _EffectLayer {
-  _EffectLayer({
-    required this.radiusFactor,
-    required this.opacityFactor,
-  });
+  _EffectLayer({required this.radiusFactor, required this.opacityFactor});
 
   /// The factor by which to multiply the current radius.
   final double radiusFactor;

@@ -194,7 +194,8 @@ class EloRatingService {
 
       if (!EnvironmentConfig.devMode && GameController().disableStats == true) {
         logger.i(
-            "$_logTag Stats disabled because of taking-back etc., not updating");
+          "$_logTag Stats disabled because of taking-back etc., not updating",
+        );
         return;
       }
 
@@ -385,29 +386,30 @@ class EloRatingService {
     );
 
     // Update AI statistics (rating remains fixed)
-    final PlayerStats newAiDifficultyStatsObject =
-        settings.getAiDifficultyStats(aiDifficulty).copyWith(
-              // Keep the original rating from the settings, as we don't update AI ratings
-              gamesPlayed: aiDifficultyStats.gamesPlayed + 1,
-              wins: outcome == HumanOutcome.opponentWin
-                  ? aiDifficultyStats.wins + 1
-                  : aiDifficultyStats.wins,
-              losses: outcome == HumanOutcome.playerWin
-                  ? aiDifficultyStats.losses + 1
-                  : aiDifficultyStats.losses,
-              draws: outcome == HumanOutcome.draw
-                  ? aiDifficultyStats.draws + 1
-                  : aiDifficultyStats.draws,
-              lastUpdated: DateTime.now(),
-              whiteGamesPlayed: aiWhiteGamesPlayed,
-              whiteWins: aiWhiteWins,
-              whiteLosses: aiWhiteLosses,
-              whiteDraws: aiWhiteDraws,
-              blackGamesPlayed: aiBlackGamesPlayed,
-              blackWins: aiBlackWins,
-              blackLosses: aiBlackLosses,
-              blackDraws: aiBlackDraws,
-            );
+    final PlayerStats newAiDifficultyStatsObject = settings
+        .getAiDifficultyStats(aiDifficulty)
+        .copyWith(
+          // Keep the original rating from the settings, as we don't update AI ratings
+          gamesPlayed: aiDifficultyStats.gamesPlayed + 1,
+          wins: outcome == HumanOutcome.opponentWin
+              ? aiDifficultyStats.wins + 1
+              : aiDifficultyStats.wins,
+          losses: outcome == HumanOutcome.playerWin
+              ? aiDifficultyStats.losses + 1
+              : aiDifficultyStats.losses,
+          draws: outcome == HumanOutcome.draw
+              ? aiDifficultyStats.draws + 1
+              : aiDifficultyStats.draws,
+          lastUpdated: DateTime.now(),
+          whiteGamesPlayed: aiWhiteGamesPlayed,
+          whiteWins: aiWhiteWins,
+          whiteLosses: aiWhiteLosses,
+          whiteDraws: aiWhiteDraws,
+          blackGamesPlayed: aiBlackGamesPlayed,
+          blackWins: aiBlackWins,
+          blackLosses: aiBlackLosses,
+          blackDraws: aiBlackDraws,
+        );
 
     // Save updated ratings
     final StatsSettings newSettings = settings.copyWith(
@@ -416,11 +418,15 @@ class EloRatingService {
 
     // Update AI stats in the settings
     DB().statsSettings = newSettings.updateAiDifficultyStats(
-        aiDifficulty, newAiDifficultyStatsObject);
+      aiDifficulty,
+      newAiDifficultyStatsObject,
+    );
 
     logger.i(
-        "$_logTag Updated Human rating: ${humanStats.rating} -> $newHumanRating");
+      "$_logTag Updated Human rating: ${humanStats.rating} -> $newHumanRating",
+    );
     logger.i(
-        "$_logTag AI Level $aiDifficulty rating: ${aiDifficultyStats.rating} (fixed)");
+      "$_logTag AI Level $aiDifficulty rating: ${aiDifficultyStats.rating} (fixed)",
+    );
   }
 }

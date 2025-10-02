@@ -92,9 +92,7 @@ class GifShare {
     final File imgGif = File('${docDir.path}/$gifFileName');
     await imgGif.writeAsBytes(gif);
     SharePlus.instance.share(
-      ShareParams(
-        files: <XFile>[XFile('${docDir.path}/$gifFileName')],
-      ),
+      ShareParams(files: <XFile>[XFile('${docDir.path}/$gifFileName')]),
     );
     return true;
   }

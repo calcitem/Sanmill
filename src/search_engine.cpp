@@ -657,7 +657,8 @@ next:
 #ifdef _WIN32
 #ifdef _DEBUG
             // In DEBUG mode, do not use random fallback
-            debugPrintf("DEBUG mode: Skipping random fallback, leaving bestMove as MOVE_NONE.\n");
+            debugPrintf("DEBUG mode: Skipping random fallback, leaving "
+                        "bestMove as MOVE_NONE.\n");
             bestMoveSoFar = MOVE_NONE;
             bestValSoFar = VALUE_ZERO;
 #else
@@ -759,13 +760,14 @@ void SearchEngine::runSearch()
 #ifdef _WIN32
 #ifdef _DEBUG
                     // In DEBUG mode, do not use random fallback
-                    debugPrintf("DEBUG mode: Skipping random fallback, leaving bestMove as MOVE_NONE.\n");
+                    debugPrintf("DEBUG mode: Skipping random fallback, leaving "
+                                "bestMove as MOVE_NONE.\n");
                     bestMove = MOVE_NONE;
 #else
                     Search::random_search(rootPos, bestMove);
 #endif
 #else
-                    Search::random_search(rootPos, bestMove);
+                Search::random_search(rootPos, bestMove);
 #endif
                 }
                 setBestMoveString(UCI::move(bestMove));

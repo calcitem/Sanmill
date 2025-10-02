@@ -111,7 +111,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       28,
       35,
       42,
-      49
+      49,
     ];
 
     const List<int> checkPoints = <int>[
@@ -170,7 +170,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       1,
       0,
       0,
-      1
+      1,
     ];
 
     final bool ltr = Directionality.of(context) == TextDirection.ltr;
@@ -208,9 +208,9 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
 
   @override
   void dispose() {
-    GameController()
-        .boardSemanticsNotifier
-        .removeListener(updateBoardSemantics);
+    GameController().boardSemanticsNotifier.removeListener(
+      updateBoardSemantics,
+    );
     super.dispose();
   }
 }

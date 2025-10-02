@@ -30,9 +30,11 @@ class NumberPickerDialog extends StatelessWidget {
 
     final List<Widget> numberItems = List<Widget>.generate(
       endNumber,
-      (int index) => Text(displayMoveText
-          ? S.of(context).moveNumber(startNumber + index)
-          : (startNumber + index).toString()),
+      (int index) => Text(
+        displayMoveText
+            ? S.of(context).moveNumber(startNumber + index)
+            : (startNumber + index).toString(),
+      ),
     );
 
     return AlertDialog(
@@ -56,7 +58,8 @@ class NumberPickerDialog extends StatelessWidget {
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -65,7 +68,8 @@ class NumberPickerDialog extends StatelessWidget {
           child: Text(
             S.of(context).confirm,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           onPressed: () => Navigator.pop(context, selectedValue),
         ),

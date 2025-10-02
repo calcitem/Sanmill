@@ -20,37 +20,37 @@ class SoundManager {
 
   final Map<String, Map<Sound, String>> _soundFiles =
       <String, Map<Sound, String>>{
-    'ball': <Sound, String>{
-      Sound.draw: Assets.audios.draw,
-      Sound.illegal: Assets.audios.ball.illegal,
-      Sound.lose: Assets.audios.lose,
-      Sound.mill: Assets.audios.ball.mill,
-      Sound.place: Assets.audios.ball.place,
-      Sound.remove: Assets.audios.ball.remove,
-      Sound.select: Assets.audios.ball.select,
-      Sound.win: Assets.audios.win,
-    },
-    'liquid': <Sound, String>{
-      Sound.draw: Assets.audios.draw,
-      Sound.illegal: Assets.audios.liquid.illegal,
-      Sound.lose: Assets.audios.lose,
-      Sound.mill: Assets.audios.liquid.mill,
-      Sound.place: Assets.audios.liquid.place,
-      Sound.remove: Assets.audios.liquid.remove,
-      Sound.select: Assets.audios.liquid.select,
-      Sound.win: Assets.audios.win,
-    },
-    'wood': <Sound, String>{
-      Sound.draw: Assets.audios.draw,
-      Sound.illegal: Assets.audios.wood.illegal,
-      Sound.lose: Assets.audios.lose,
-      Sound.mill: Assets.audios.wood.mill,
-      Sound.place: Assets.audios.wood.place,
-      Sound.remove: Assets.audios.wood.remove,
-      Sound.select: Assets.audios.wood.select,
-      Sound.win: Assets.audios.win,
-    },
-  };
+        'ball': <Sound, String>{
+          Sound.draw: Assets.audios.draw,
+          Sound.illegal: Assets.audios.ball.illegal,
+          Sound.lose: Assets.audios.lose,
+          Sound.mill: Assets.audios.ball.mill,
+          Sound.place: Assets.audios.ball.place,
+          Sound.remove: Assets.audios.ball.remove,
+          Sound.select: Assets.audios.ball.select,
+          Sound.win: Assets.audios.win,
+        },
+        'liquid': <Sound, String>{
+          Sound.draw: Assets.audios.draw,
+          Sound.illegal: Assets.audios.liquid.illegal,
+          Sound.lose: Assets.audios.lose,
+          Sound.mill: Assets.audios.liquid.mill,
+          Sound.place: Assets.audios.liquid.place,
+          Sound.remove: Assets.audios.liquid.remove,
+          Sound.select: Assets.audios.liquid.select,
+          Sound.win: Assets.audios.win,
+        },
+        'wood': <Sound, String>{
+          Sound.draw: Assets.audios.draw,
+          Sound.illegal: Assets.audios.wood.illegal,
+          Sound.lose: Assets.audios.lose,
+          Sound.mill: Assets.audios.wood.mill,
+          Sound.place: Assets.audios.wood.place,
+          Sound.remove: Assets.audios.wood.remove,
+          Sound.select: Assets.audios.wood.select,
+          Sound.win: Assets.audios.win,
+        },
+      };
 
   // Map of Sound to SoundPlayer instances, which include the player and fileName.
   final Map<Sound, SoundPlayer> _players = <Sound, SoundPlayer>{};

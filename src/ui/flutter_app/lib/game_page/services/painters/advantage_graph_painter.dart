@@ -35,9 +35,11 @@ class AdvantageGraphPainter extends CustomPainter {
     final Color lineColor = DB().colorSettings.boardLineColor;
     final Color darkBgColor = DB().colorSettings.darkBackgroundColor;
 
-    final Color chosenColor =
-        pickColorWithMaxDifference(bgColor, lineColor, darkBgColor)
-            .withValues(alpha: 0.5);
+    final Color chosenColor = pickColorWithMaxDifference(
+      bgColor,
+      lineColor,
+      darkBgColor,
+    ).withValues(alpha: 0.5);
 
     // Use chosenColor for zeroLinePaint.
     final Paint zeroLinePaint = Paint()
@@ -96,8 +98,7 @@ class AdvantageGraphPainter extends CustomPainter {
         DB().colorSettings.whitePieceColor,
         DB().colorSettings.blackPieceColor,
         0.5,
-      )!
-          .withValues(alpha: 0.6)
+      )!.withValues(alpha: 0.6)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 

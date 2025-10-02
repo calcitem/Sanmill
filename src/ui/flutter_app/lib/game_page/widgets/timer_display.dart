@@ -47,11 +47,7 @@ class TimerDisplay extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(
-                Icons.timer,
-                size: 16,
-                color: textColor,
-              ),
+              Icon(Icons.timer, size: 16, color: textColor),
               const SizedBox(width: 4),
               Text(
                 timeText,

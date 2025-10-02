@@ -128,7 +128,8 @@ class AnnotationLine extends AnnotationShape {
     if (lineLen < 0.5) {
       return (start - tapPosition).distance < threshold;
     }
-    final double t = ((tapPosition.dx - start.dx) * (end.dx - start.dx) +
+    final double t =
+        ((tapPosition.dx - start.dx) * (end.dx - start.dx) +
             (tapPosition.dy - start.dy) * (end.dy - start.dy)) /
         (lineLen * lineLen);
     if (t < 0) {
@@ -182,11 +183,8 @@ class AnnotationArrow extends AnnotationShape {
     final double angle = (end - start).direction;
 
     // Adjust the endpoint so that the arrow head does not extend beyond the target point
-    final Offset adjustedEnd = end -
-        Offset(
-          arrowLength * cos(angle),
-          arrowLength * sin(angle),
-        );
+    final Offset adjustedEnd =
+        end - Offset(arrowLength * cos(angle), arrowLength * sin(angle));
 
     // Draw the main line from the start to the adjusted endpoint
     canvas.drawLine(start, adjustedEnd, paint);
@@ -273,11 +271,7 @@ class AnnotationRect extends AnnotationShape {
 }
 
 class AnnotationDot extends AnnotationShape {
-  AnnotationDot({
-    required this.point,
-    required super.color,
-    this.radius = 4.0,
-  });
+  AnnotationDot({required this.point, required super.color, this.radius = 4.0});
 
   Offset point;
   double radius;
@@ -334,11 +328,15 @@ class AnnotationCross extends AnnotationShape {
 
     // Calculate the endpoints for the two diagonals to form an 'X'.
     final Offset topLeft = Offset(point.dx - crossSize, point.dy - crossSize);
-    final Offset bottomRight =
-        Offset(point.dx + crossSize, point.dy + crossSize);
+    final Offset bottomRight = Offset(
+      point.dx + crossSize,
+      point.dy + crossSize,
+    );
     final Offset topRight = Offset(point.dx + crossSize, point.dy - crossSize);
-    final Offset bottomLeft =
-        Offset(point.dx - crossSize, point.dy + crossSize);
+    final Offset bottomLeft = Offset(
+      point.dx - crossSize,
+      point.dy + crossSize,
+    );
 
     // Draw the two diagonal lines to form an "X".
     canvas.drawLine(topLeft, bottomRight, paint);
@@ -381,10 +379,7 @@ class AnnotationText extends AnnotationShape {
     // Create a TextSpan with the desired style.
     final TextSpan span = TextSpan(
       text: text,
-      style: TextStyle(
-        color: color,
-        fontSize: fontSize,
-      ),
+      style: TextStyle(color: color, fontSize: fontSize),
     );
     // Layout the text to measure its dimensions.
     final TextPainter tp = TextPainter(
@@ -764,8 +759,10 @@ class AnnotationPainter extends CustomPainter {
         text: shape.text,
         style: TextStyle(color: shape.color, fontSize: shape.fontSize),
       );
-      final TextPainter tp =
-          TextPainter(text: span, textDirection: TextDirection.ltr);
+      final TextPainter tp = TextPainter(
+        text: span,
+        textDirection: TextDirection.ltr,
+      );
       tp.layout();
       final Rect r = Rect.fromLTWH(
         shape.point.dx,
@@ -904,8 +901,8 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
   /// Snaps [overlayLocalTap] to the nearest board intersection.
   Offset _snapToBoardIntersection(Offset overlayLocalTap) {
     // Attempt to get the board's RenderBox.
-    final RenderObject? ro =
-        widget.gameBoardKey.currentContext?.findRenderObject();
+    final RenderObject? ro = widget.gameBoardKey.currentContext
+        ?.findRenderObject();
     if (ro is! RenderBox) {
       logger.w('GameBoard RenderBox is not available. Using original tap.');
       return overlayLocalTap;
@@ -922,8 +919,10 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     Offset bestBoardLocal = boardLocalTap;
     double minDistance = double.infinity;
     for (final Offset boardLogicalPoint in points) {
-      final Offset candidate =
-          offsetFromPointWithInnerSize(boardLogicalPoint, boardSize);
+      final Offset candidate = offsetFromPointWithInnerSize(
+        boardLogicalPoint,
+        boardSize,
+      );
       final double dist = (candidate - boardLocalTap).distance;
       if (dist < minDistance) {
         minDistance = dist;
@@ -997,8 +996,11 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
   /// Creates a dot at the snapped position with a fixed radius.
   void _createDot(Offset point, Color color) {
     final double radius = _pieceWidth / 6; // For a small dot.
-    final AnnotationDot shape =
-        AnnotationDot(point: point, color: color, radius: radius);
+    final AnnotationDot shape = AnnotationDot(
+      point: point,
+      color: color,
+      radius: radius,
+    );
     widget.annotationManager.addShape(shape);
   }
 
@@ -1035,9 +1037,7 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: InputDecoration(
-            hintText: S.of(ctx).typeYourAnnotation,
-          ),
+          decoration: InputDecoration(hintText: S.of(ctx).typeYourAnnotation),
           onSubmitted: (String val) => Navigator.pop(ctx, val),
         ),
         actions: <Widget>[

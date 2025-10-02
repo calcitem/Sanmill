@@ -11,8 +11,10 @@ class ImportService {
   static const String _logTag = "[Importer]";
 
   /// Tries to import the game saved in the device's clipboard.
-  static Future<void> importGame(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<void> importGame(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     // Clear snack bars before clipboard read
     rootScaffoldMessengerKey.currentState?.clearSnackBars();
 
@@ -30,8 +32,9 @@ class ImportService {
 
     // Check if data is null - show error message
     if (data == null) {
-      rootScaffoldMessengerKey.currentState
-          ?.showSnackBarClear(s.cannotImport("null"));
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        s.cannotImport("null"),
+      );
       GameController().headerTipNotifier.showTip(s.cannotImport("null"));
 
       if (shouldPop) {
@@ -44,8 +47,9 @@ class ImportService {
 
     // If clipboard is empty or missing text, pop and return
     if (text == null) {
-      rootScaffoldMessengerKey.currentState
-          ?.showSnackBarClear(s.cannotImport("null"));
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        s.cannotImport("null"),
+      );
       GameController().headerTipNotifier.showTip(s.cannotImport("null"));
 
       if (shouldPop) {
@@ -111,7 +115,8 @@ class ImportService {
     final DateTime dateTime = DateTime.now();
     final String date = "${dateTime.year}.${dateTime.month}.${dateTime.day}";
 
-    final int total = Position.score[PieceColor.white]! +
+    final int total =
+        Position.score[PieceColor.white]! +
         Position.score[PieceColor.black]! +
         Position.score[PieceColor.draw]!;
 
@@ -166,7 +171,8 @@ class ImportService {
     final String plyCountTag =
         '[PlyCount "${GameController().gameRecorder.mainlineMoves.length}"]\r\n';
 
-    String tagPairs = '[Event "Sanmill-Game"]\r\n'
+    String tagPairs =
+        '[Event "Sanmill-Game"]\r\n'
         '[Site "Sanmill"]\r\n'
         '[Date "$date"]\r\n'
         '[Round "$total"]\r\n'
@@ -248,7 +254,7 @@ class ImportService {
         "\t": " ",
         "Place to ": "",
         ", take ": "x",
-        " -> ": "-"
+        " -> ": "-",
       };
 
       ml = processOutsideBrackets(ml, replacements);
@@ -281,8 +287,9 @@ class ImportService {
     final Position localPos = Position();
     localPos.reset();
 
-    final GameRecorder newHistory =
-        GameRecorder(lastPositionWithRemove: GameController().position.fen);
+    final GameRecorder newHistory = GameRecorder(
+      lastPositionWithRemove: GameController().position.fen,
+    );
 
     final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
 
@@ -345,13 +352,16 @@ class ImportService {
     // Throw exception if no valid moves found
     if (!hasValidMoves) {
       throw const ImportFormatException(
-          "Cannot import: No valid moves found in the notation");
+        "Cannot import: No valid moves found in the notation",
+      );
     }
   }
 
   /// Replays all nodes to assign a boardLayout to each node's node.data.
-  static void fillAllNodesBoardLayout(PgnNode<ExtMove> root,
-      {String? setupFen}) {
+  static void fillAllNodesBoardLayout(
+    PgnNode<ExtMove> root, {
+    String? setupFen,
+  }) {
     final Position pos = Position();
 
     // If there is a specific initial FEN, set it first.
@@ -402,13 +412,15 @@ class ImportService {
 
     // Check if parsed game is empty or invalid
     final bool hasValidMoves = game.moves.mainline().isNotEmpty;
-    final bool hasValidFen = game.headers.containsKey('FEN') &&
+    final bool hasValidFen =
+        game.headers.containsKey('FEN') &&
         game.headers['FEN'] != null &&
         game.headers['FEN']!.isNotEmpty;
 
     if (!hasValidMoves && !hasValidFen) {
       logger.e(
-          "$_logTag Failed to parse PGN: Empty game with no moves and no FEN");
+        "$_logTag Failed to parse PGN: Empty game with no moves and no FEN",
+      );
       throw const ImportFormatException("");
     }
 
@@ -455,10 +467,12 @@ class ImportService {
             // Remaining part: extract all 'x' followed by two characters
             final RegExp regex = RegExp(r'(x[a-g][1-7])');
             final String remainingSan = san.substring(firstX);
-            segments.addAll(regex
-                .allMatches(remainingSan)
-                .map((RegExpMatch m) => m.group(0)!)
-                .toList());
+            segments.addAll(
+              regex
+                  .allMatches(remainingSan)
+                  .map((RegExpMatch m) => m.group(0)!)
+                  .toList(),
+            );
           } else {
             // 'x' exists but at position 0
             final RegExp regex = RegExp(r'(x[a-g][1-7])');
@@ -501,18 +515,22 @@ class ImportService {
           final String uciMove = _wmdNotationToMoveString(segment);
           // Only attach comments, nags, and startingComments to the last segment.
           final List<int>? nags = (i == segments.length - 1) ? node.nags : null;
-          final List<String>? startingComments =
-              (i == segments.length - 1) ? node.startingComments : null;
-          final List<String>? comments =
-              (i == segments.length - 1) ? node.comments : null;
+          final List<String>? startingComments = (i == segments.length - 1)
+              ? node.startingComments
+              : null;
+          final List<String>? comments = (i == segments.length - 1)
+              ? node.comments
+              : null;
 
-          newHistory.appendMove(ExtMove(
-            uciMove,
-            side: localPos.sideToMove,
-            nags: nags,
-            startingComments: startingComments,
-            comments: comments,
-          ));
+          newHistory.appendMove(
+            ExtMove(
+              uciMove,
+              side: localPos.sideToMove,
+              nags: nags,
+              startingComments: startingComments,
+              comments: comments,
+            ),
+          );
 
           final bool ok = localPos.doMove(uciMove);
           if (!ok) {

@@ -25,20 +25,14 @@ class BoardRectOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size.infinite,
-      painter: _BoardRectPainter(
-        boardRect: boardRect,
-        imageSize: imageSize,
-      ),
+      painter: _BoardRectPainter(boardRect: boardRect, imageSize: imageSize),
     );
   }
 }
 
 /// Custom painter for drawing the board detection rectangle area.
 class _BoardRectPainter extends CustomPainter {
-  _BoardRectPainter({
-    required this.boardRect,
-    required this.imageSize,
-  });
+  _BoardRectPainter({required this.boardRect, required this.imageSize});
 
   final math.Rectangle<int> boardRect;
   final Size imageSize;
@@ -73,8 +67,9 @@ class _BoardRectPainter extends CustomPainter {
     // Draw the top dashed line.
     double startX = rect.left;
     while (startX < rect.right) {
-      final double endX =
-          startX + dashWidth < rect.right ? startX + dashWidth : rect.right;
+      final double endX = startX + dashWidth < rect.right
+          ? startX + dashWidth
+          : rect.right;
       dashedPath.moveTo(startX, rect.top);
       dashedPath.lineTo(endX, rect.top);
       startX = endX + dashSpace;
@@ -83,8 +78,9 @@ class _BoardRectPainter extends CustomPainter {
     // Draw the right dashed line.
     double startY = rect.top;
     while (startY < rect.bottom) {
-      final double endY =
-          startY + dashWidth < rect.bottom ? startY + dashWidth : rect.bottom;
+      final double endY = startY + dashWidth < rect.bottom
+          ? startY + dashWidth
+          : rect.bottom;
       dashedPath.moveTo(rect.right, startY);
       dashedPath.lineTo(rect.right, endY);
       startY = endY + dashSpace;
@@ -93,8 +89,9 @@ class _BoardRectPainter extends CustomPainter {
     // Draw the bottom dashed line.
     startX = rect.right;
     while (startX > rect.left) {
-      final double endX =
-          startX - dashWidth > rect.left ? startX - dashWidth : rect.left;
+      final double endX = startX - dashWidth > rect.left
+          ? startX - dashWidth
+          : rect.left;
       dashedPath.moveTo(startX, rect.bottom);
       dashedPath.lineTo(endX, rect.bottom);
       startX = endX - dashSpace;
@@ -103,8 +100,9 @@ class _BoardRectPainter extends CustomPainter {
     // Draw the left dashed line.
     startY = rect.bottom;
     while (startY > rect.top) {
-      final double endY =
-          startY - dashWidth > rect.top ? startY - dashWidth : rect.top;
+      final double endY = startY - dashWidth > rect.top
+          ? startY - dashWidth
+          : rect.top;
       dashedPath.moveTo(rect.left, startY);
       dashedPath.lineTo(rect.left, endY);
       startY = endY - dashSpace;
@@ -131,10 +129,7 @@ class _BoardRectPainter extends CustomPainter {
     );
 
     textPainter.layout();
-    textPainter.paint(
-      canvas,
-      Offset(rect.left + 10, rect.top + 10),
-    );
+    textPainter.paint(canvas, Offset(rect.left + 10, rect.top + 10));
   }
 
   @override

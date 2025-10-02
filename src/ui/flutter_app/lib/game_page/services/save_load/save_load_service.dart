@@ -40,8 +40,9 @@ class LoadService {
       resultLabel = "$resultLabel.pgn";
     }
 
-    final String filePath =
-        resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
+    final String filePath = resultLabel.startsWith(path)
+        ? resultLabel
+        : "$path/$resultLabel";
 
     return filePath;
   }
@@ -67,8 +68,9 @@ class LoadService {
     if (!kIsWeb && Platform.isAndroid) {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final String appDocPath = appDocDir.path;
-      final List<FileSystemEntity> entities =
-          appDocDir.listSync(recursive: true);
+      final List<FileSystemEntity> entities = appDocDir.listSync(
+        recursive: true,
+      );
 
       for (final FileSystemEntity entity in entities) {
         if (entity is File && entity.path.endsWith('.pgn')) {
@@ -98,9 +100,7 @@ class LoadService {
       allowedExtensions: <String>[".pgn"],
       fileTileSelectMode: FileTileSelectMode.checkButton,
       // TODO: whole tile is better.
-      theme: const FilesystemPickerTheme(
-        backgroundColor: Colors.greenAccent,
-      ),
+      theme: const FilesystemPickerTheme(backgroundColor: Colors.greenAccent),
     );
 
     if (result == null) {
@@ -111,8 +111,10 @@ class LoadService {
   }
 
   /// Saves the game to the file.
-  static Future<String?> saveGame(BuildContext context,
-      {bool shouldPop = true}) async {
+  static Future<String?> saveGame(
+    BuildContext context, {
+    bool shouldPop = true,
+  }) async {
     if (EnvironmentConfig.test == true) {
       return null;
     }
@@ -135,11 +137,13 @@ class LoadService {
     }
 
     final File file = File(filename);
-    file.writeAsString(ImportService.addTagPairs(
-        GameController().gameRecorder.moveHistoryText));
+    file.writeAsString(
+      ImportService.addTagPairs(GameController().gameRecorder.moveHistoryText),
+    );
 
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear("$strGameSavedTo $filename");
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      "$strGameSavedTo $filename",
+    );
 
     if (shouldPop) {
       safePop();
@@ -150,9 +154,9 @@ class LoadService {
       ScreenshotService.takeScreenshot("records", "$filename.jpg");
 
       if (GameController().loadedGameFilenamePrefix != null) {
-        GameController()
-            .headerTipNotifier
-            .showTip(GameController().loadedGameFilenamePrefix!);
+        GameController().headerTipNotifier.showTip(
+          GameController().loadedGameFilenamePrefix!,
+        );
       }
     });
 
@@ -160,8 +164,12 @@ class LoadService {
   }
 
   /// Main function to load game from a file.
-  static Future<void> loadGame(BuildContext context, String? filePath,
-      {required bool isRunning, bool shouldPop = true}) async {
+  static Future<void> loadGame(
+    BuildContext context,
+    String? filePath, {
+    required bool isRunning,
+    bool shouldPop = true,
+  }) async {
     filePath ??= await pickFileIfNeeded(context);
 
     if (filePath == null) {
@@ -172,12 +180,14 @@ class LoadService {
     try {
       // Check for 'content' and 'file' prefix in the filePath
       if (filePath.startsWith('content') || filePath.startsWith('file://')) {
-        final String? fileContent =
-            await readFileContentFromUri(Uri.parse(filePath));
+        final String? fileContent = await readFileContentFromUri(
+          Uri.parse(filePath),
+        );
         if (fileContent == null) {
           final Directory? dir = await getExternalStorageDirectory();
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-              "You should put files in the right place: $dir");
+            "You should put files in the right place: $dir",
+          );
           return;
         }
         GameController().initialSharingMoveList = fileContent;
@@ -222,8 +232,9 @@ class LoadService {
       }
       return;
     }
-    GameController().loadedGameFilenamePrefix =
-        extractPgnFilenamePrefix(filePath);
+    GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
+      filePath,
+    );
 
     // Delay to show the tip after the navigation tip is shown
     if (GameController().loadedGameFilenamePrefix != null) {
@@ -283,15 +294,18 @@ class LoadService {
 
   /// Import game data from file content.
   static Future<bool> importGameData(
-      BuildContext context, String fileContent) async {
+    BuildContext context,
+    String fileContent,
+  ) async {
     try {
       ImportService.import(fileContent);
       logger.t('$_logTag File Content: $fileContent');
       final String tagPairs = getTagPairs(fileContent);
 
       if (tagPairs.isNotEmpty) {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBar(CustomSnackBar(tagPairs));
+        rootScaffoldMessengerKey.currentState!.showSnackBar(
+          CustomSnackBar(tagPairs),
+        );
       }
 
       return true;
@@ -320,11 +334,12 @@ class LoadService {
         return;
       }
 
-      rootScaffoldMessengerKey.currentState
-          ?.showSnackBarClear(S.of(context).done);
-      GameController()
-          .headerTipNotifier
-          .showTip(S.of(context).done); // "Game loaded."
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        S.of(context).done,
+      );
+      GameController().headerTipNotifier.showTip(
+        S.of(context).done,
+      ); // "Game loaded."
     } else {
       if (!context.mounted) {
         return;
@@ -369,39 +384,39 @@ class LoadService {
           title: Text(
             S.of(context).filename,
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
           content: TextField(
             controller: textFieldController,
-            decoration: const InputDecoration(
-              suffixText: ".pgn",
-            ),
+            decoration: const InputDecoration(suffixText: ".pgn"),
           ),
           actions: <Widget>[
             ElevatedButton(
-                child: Text(
-                  S.of(context).browse,
-                  style: TextStyle(
-                      fontSize:
-                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              child: Text(
+                S.of(context).browse,
+                style: TextStyle(
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
                 ),
-                onPressed: () async {
-                  final String? result = await pickFile(context);
-                  if (result == null) {
-                    return;
-                  }
-                  textFieldController.text = result;
-                  if (!context.mounted) {
-                    return;
-                  }
-                  Navigator.pop(context, textFieldController.text);
-                }),
+              ),
+              onPressed: () async {
+                final String? result = await pickFile(context);
+                if (result == null) {
+                  return;
+                }
+                textFieldController.text = result;
+                if (!context.mounted) {
+                  return;
+                }
+                Navigator.pop(context, textFieldController.text);
+              },
+            ),
             ElevatedButton(
               child: Text(
                 S.of(context).cancel,
                 style: TextStyle(
-                    fontSize:
-                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -409,8 +424,8 @@ class LoadService {
               child: Text(
                 S.of(context).ok,
                 style: TextStyle(
-                    fontSize:
-                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
               ),
               onPressed: () => Navigator.pop(context, textFieldController.text),
             ),

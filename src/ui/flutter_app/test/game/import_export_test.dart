@@ -24,23 +24,24 @@ void main() {
     });
 
     test(
-        "Import standard notation should populate the recorder with the imported moves",
-        () async {
-      const WinLessThanThreeGame testMill = WinLessThanThreeGame();
+      "Import standard notation should populate the recorder with the imported moves",
+      () async {
+        const WinLessThanThreeGame testMill = WinLessThanThreeGame();
 
-      // Access the singleton GameController instance
-      final GameController controller = GameController.instance;
+        // Access the singleton GameController instance
+        final GameController controller = GameController.instance;
 
-      // Import a game using ImportService
-      ImportService.import(testMill.moveList);
+        // Import a game using ImportService
+        ImportService.import(testMill.moveList);
 
-      // Verify that the recorder contains the expected moves
-      expect(
-        controller.gameRecorder.toString(),
-        testMill.recorderToString,
-        reason: 'GameRecorder should contain the imported moves',
-      );
-    });
+        // Verify that the recorder contains the expected moves
+        expect(
+          controller.gameRecorder.toString(),
+          testMill.recorderToString,
+          reason: 'GameRecorder should contain the imported moves',
+        );
+      },
+    );
 
     test("Export standard notation", () async {
       const WinLessThanThreeGame testMill = WinLessThanThreeGame();

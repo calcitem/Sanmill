@@ -49,15 +49,10 @@ void main() {
 
       final CustomDrawerIcon screen = CustomDrawerIcon(
         drawerIcon: IconButton(
-          icon: const Icon(
-            Icons.menu,
-            key: iconKey,
-          ),
+          icon: const Icon(Icons.menu, key: iconKey),
           onPressed: () {},
         ),
-        child: Scaffold(
-          appBar: GameHeader(),
-        ),
+        child: Scaffold(appBar: GameHeader()),
       );
 
       await tester.pumpWidget(makeTestableWidget(screen));

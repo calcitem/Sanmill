@@ -21,10 +21,7 @@ class SnackBarService {
   ///
   /// [message] The text message to display in the SnackBar
   /// [duration] Optional duration for the SnackBar (uses default if not specified)
-  static void showRootSnackBar(
-    String message, {
-    Duration? duration,
-  }) {
+  static void showRootSnackBar(String message, {Duration? duration}) {
     final ScaffoldMessengerState? messenger =
         rootScaffoldMessengerKey.currentState;
 

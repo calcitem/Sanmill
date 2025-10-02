@@ -57,26 +57,37 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
       EffectItem(name: 'Fireworks', animation: FireworksPieceEffectAnimation()),
       EffectItem(name: 'Explode', animation: ExplodePieceEffectAnimation()),
       EffectItem(
-          name: 'RippleGradient',
-          animation: RippleGradientPieceEffectAnimation()),
+        name: 'RippleGradient',
+        animation: RippleGradientPieceEffectAnimation(),
+      ),
       EffectItem(name: 'WarpWave', animation: WarpWavePieceEffectAnimation()),
       EffectItem(name: 'ShockWave', animation: ShockWavePieceEffectAnimation()),
       EffectItem(name: 'PulseRing', animation: PulseRingPieceEffectAnimation()),
       EffectItem(
-          name: 'RainbowWave', animation: RainbowWavePieceEffectAnimation()),
+        name: 'RainbowWave',
+        animation: RainbowWavePieceEffectAnimation(),
+      ),
       EffectItem(name: 'Twist', animation: TwistPieceEffectAnimation()),
       EffectItem(
-          name: 'ShadowPulse', animation: ShadowPulsePieceEffectAnimation()),
+        name: 'ShadowPulse',
+        animation: ShadowPulsePieceEffectAnimation(),
+      ),
       EffectItem(
-          name: 'RainRipple', animation: RainRipplePieceEffectAnimation()),
+        name: 'RainRipple',
+        animation: RainRipplePieceEffectAnimation(),
+      ),
       EffectItem(name: 'NeonFlash', animation: NeonFlashPieceEffectAnimation()),
       EffectItem(name: 'InkSpread', animation: InkSpreadPieceEffectAnimation()),
       EffectItem(name: 'BubblePop', animation: BubblePopPieceEffectAnimation()),
       EffectItem(
-          name: 'ColorSwirl', animation: ColorSwirlPieceEffectAnimation()),
+        name: 'ColorSwirl',
+        animation: ColorSwirlPieceEffectAnimation(),
+      ),
       EffectItem(name: 'Starburst', animation: StarburstPieceEffectAnimation()),
       EffectItem(
-          name: 'PixelGlitch', animation: PixelGlitchPieceEffectAnimation()),
+        name: 'PixelGlitch',
+        animation: PixelGlitchPieceEffectAnimation(),
+      ),
       EffectItem(name: 'FireTrail', animation: FireTrailPieceEffectAnimation()),
     ];
 
@@ -127,8 +138,10 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
                 print('Selected effect: ${effectItem.name}');
               }
 
-              Navigator.pop(context,
-                  effectItem); // Return the selected effect to the previous page.
+              Navigator.pop(
+                context,
+                effectItem,
+              ); // Return the selected effect to the previous page.
             },
           );
         },
@@ -212,19 +225,15 @@ class EffectGridItemState extends State<EffectGridItem>
                 ),
               ),
             ),
-            const SizedBox(
-              key: Key('effect_grid_item_sized_box'),
-              height: 4.0,
-            ),
+            const SizedBox(key: Key('effect_grid_item_sized_box'), height: 4.0),
             // Customize text color here.
             Text(
               widget.effectItem.name,
               key: const Key('effect_grid_item_text'),
               style: TextStyle(
-                color: DB()
-                    .colorSettings
-                    .boardLineColor
-                    .withAlpha(100), // Set the effect name text color.
+                color: DB().colorSettings.boardLineColor.withAlpha(
+                  100,
+                ), // Set the effect name text color.
               ),
             ),
           ],

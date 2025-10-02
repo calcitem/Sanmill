@@ -99,8 +99,9 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
       return true;
     }
 
-    final ScaffoldMessengerState scaffoldMessenger =
-        ScaffoldMessenger.of(context);
+    final ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(
+      context,
+    );
     scaffoldMessenger.hideCurrentSnackBar();
     _closedCompleter = scaffoldMessenger
         .showSnackBar(widget.snackBar)

@@ -68,8 +68,7 @@ class ImageCropPageState extends State<ImageCropPage> {
               }
             },
             maskColor: Colors.black.withValues(alpha: 0.5),
-            onMoved:
-                (ViewportBasedRect viewportRect, ImageBasedRect imageRect) {
+            onMoved: (ViewportBasedRect viewportRect, ImageBasedRect imageRect) {
               try {
                 setState(() {
                   _currentCropRect = Rect.fromLTWH(
@@ -82,7 +81,8 @@ class ImageCropPageState extends State<ImageCropPage> {
               } catch (e) {
                 logger.e("Error in onMoved: $e");
                 logger.e(
-                    "CropRect values - left: ${viewportRect.left}, top: ${viewportRect.top}, width: ${viewportRect.width}, height: ${viewportRect.height}");
+                  "CropRect values - left: ${viewportRect.left}, top: ${viewportRect.top}, width: ${viewportRect.width}, height: ${viewportRect.height}",
+                );
               }
             },
           ),
@@ -113,10 +113,7 @@ class ImageCropPageState extends State<ImageCropPage> {
       ),
       floatingActionButton: FloatingActionButton(
         key: const Key('image_crop_page_floating_action_button'),
-        child: const Icon(
-          Icons.check,
-          key: Key('image_crop_page_fab_icon'),
-        ),
+        child: const Icon(Icons.check, key: Key('image_crop_page_fab_icon')),
         onPressed: () {
           if (mounted) {
             setState(() {
@@ -138,11 +135,7 @@ class ImageCropPageState extends State<ImageCropPage> {
 }
 
 /// Enum to represent different types of reference lines
-enum ReferenceLineType {
-  boardLines,
-  circle,
-  none,
-}
+enum ReferenceLineType { boardLines, circle, none }
 
 /// CustomPainter to draw reference lines within the cropping area
 class ReferenceLinesPainter extends CustomPainter {

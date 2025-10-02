@@ -50,8 +50,10 @@ String processOutsideBrackets(String input, Map<String, String> replacements) {
       return;
     }
     // Apply transformations
-    final String transformed =
-        transformOutside(outsideBuffer.toString(), replacements);
+    final String transformed = transformOutside(
+      outsideBuffer.toString(),
+      replacements,
+    );
     finalOutput.write(transformed);
     outsideBuffer.clear();
   }

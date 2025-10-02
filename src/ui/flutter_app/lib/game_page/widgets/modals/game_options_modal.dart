@@ -53,9 +53,9 @@ class GameOptionsModal extends StatelessWidget {
               if (GameController().isEngineRunning == false) {
                 GameController().reset(force: true);
 
-                GameController()
-                    .headerTipNotifier
-                    .showTip(S.of(context).gameStarted);
+                GameController().headerTipNotifier.showTip(
+                  S.of(context).gameStarted,
+                );
                 GameController().headerIconsNotifier.showIcons();
 
                 if (GameController().gameInstance.isAiSideToMove) {
@@ -63,17 +63,19 @@ class GameOptionsModal extends StatelessWidget {
 
                   GameController().engineToGo(context, isMoveNow: false);
 
-                  final String side =
-                      GameController().position.sideToMove.playerName(context);
+                  final String side = GameController().position.sideToMove
+                      .playerName(context);
 
                   if (DB().ruleSettings.mayMoveInPlacingPhase) {
                     GameController().headerTipNotifier.showTip(
-                        S.of(context).tipToMove(side),
-                        snackBar: false);
+                      S.of(context).tipToMove(side),
+                      snackBar: false,
+                    );
                   } else {
-                    GameController()
-                        .headerTipNotifier
-                        .showTip(S.of(context).tipPlace, snackBar: false);
+                    GameController().headerTipNotifier.showTip(
+                      S.of(context).tipPlace,
+                      snackBar: false,
+                    );
                   }
                 }
 
@@ -199,54 +201,58 @@ class GameOptionsModal extends StatelessWidget {
 
   Future<Widget?> showRestartGameAlertDialog(BuildContext context) async {
     final Widget yesButton = TextButton(
-        key: const Key('restart_game_yes_button'),
-        child: Text(
-          S.of(context).yes,
-          style: TextStyle(
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+      key: const Key('restart_game_yes_button'),
+      child: Text(
+        S.of(context).yes,
+        style: TextStyle(
+          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
         ),
-        onPressed: () {
-          // TODO: Called stopSearching(); so isEngineGoing is always false?
-          if (GameController().isEngineRunning == false) {
-            GameController().reset(force: true);
+      ),
+      onPressed: () {
+        // TODO: Called stopSearching(); so isEngineGoing is always false?
+        if (GameController().isEngineRunning == false) {
+          GameController().reset(force: true);
 
-            GameController()
-                .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
-            GameController().headerIconsNotifier.showIcons();
+          GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
+          GameController().headerIconsNotifier.showIcons();
 
-            if (GameController().gameInstance.isAiSideToMove) {
-              logger.i("$_logTag New game, AI to move.");
+          if (GameController().gameInstance.isAiSideToMove) {
+            logger.i("$_logTag New game, AI to move.");
 
-              GameController().engineToGo(context, isMoveNow: false);
+            GameController().engineToGo(context, isMoveNow: false);
 
-              final String side =
-                  GameController().position.sideToMove.playerName(context);
+            final String side = GameController().position.sideToMove.playerName(
+              context,
+            );
 
-              if (DB().ruleSettings.mayMoveInPlacingPhase) {
-                GameController()
-                    .headerTipNotifier
-                    .showTip(S.of(context).tipToMove(side), snackBar: false);
-              } else {
-                GameController()
-                    .headerTipNotifier
-                    .showTip(S.of(context).tipPlace, snackBar: false);
-              }
+            if (DB().ruleSettings.mayMoveInPlacingPhase) {
+              GameController().headerTipNotifier.showTip(
+                S.of(context).tipToMove(side),
+                snackBar: false,
+              );
+            } else {
+              GameController().headerTipNotifier.showTip(
+                S.of(context).tipPlace,
+                snackBar: false,
+              );
             }
-
-            GameController().headerIconsNotifier.showIcons();
           }
 
-          Navigator.of(context, rootNavigator: true).pop(true);
-          Navigator.of(context).pop();
-        });
+          GameController().headerIconsNotifier.showIcons();
+        }
+
+        Navigator.of(context, rootNavigator: true).pop(true);
+        Navigator.of(context).pop();
+      },
+    );
 
     final Widget noButton = TextButton(
       key: const Key('restart_game_no_button'),
       child: Text(
         S.of(context).no,
         style: TextStyle(
-            fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+        ),
       ),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop(false);
@@ -258,17 +264,16 @@ class GameOptionsModal extends StatelessWidget {
       title: Text(
         S.of(context).restart,
         style: TextStyle(
-            fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+        ),
       ),
       content: Text(
         S.of(context).restartGame,
         style: TextStyle(
-            fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+        ),
       ),
-      actions: <Widget>[
-        yesButton,
-        noButton,
-      ],
+      actions: <Widget>[yesButton, noButton],
     );
 
     await showDialog(

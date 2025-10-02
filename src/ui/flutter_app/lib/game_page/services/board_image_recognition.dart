@@ -219,8 +219,8 @@ class BoardImageRecognitionService {
   // (No specific parameters used in the current stubbed version)
 
   // Board geometry constants
-// Board typically occupies 85% of the image (Used in legacy?)
-// Space between rings (Used in legacy?)
+  // Board typically occupies 85% of the image (Used in legacy?)
+  // Space between rings (Used in legacy?)
 
   // Parameters related to black piece color detection
   static const double _blackSaturationThreshold =
@@ -229,14 +229,15 @@ class BoardImageRecognitionService {
       40; // Maximum difference threshold for RGB channels
 
   // Position tolerance parameters
-// Position tolerance radius for finding optimal points
+  // Position tolerance radius for finding optimal points
 
   /// Analyze the provided image and return the detected board state.
   ///
   /// The returned board state will be a map from point indices (0-23) to piece colors
   /// (white, black, or none).
   static Future<Map<int, PieceColor>> recognizeBoardFromImage(
-      Uint8List imageBytes) async {
+    Uint8List imageBytes,
+  ) async {
     // Default to all points being empty
     final Map<int, PieceColor> result = <int, PieceColor>{};
     for (int i = 0; i < 24; i++) {
@@ -253,8 +254,11 @@ class BoardImageRecognitionService {
 
       // Create a new debug info object, save the original image
       // Create a copy to ensure the image is saved correctly
-      final img.Image originalImageCopy = img.copyResize(decodedImage,
-          width: decodedImage.width, height: decodedImage.height);
+      final img.Image originalImageCopy = img.copyResize(
+        decodedImage,
+        width: decodedImage.width,
+        height: decodedImage.height,
+      );
 
       _lastDebugInfo = BoardRecognitionDebugInfo(
         originalImage: originalImageCopy,
@@ -264,16 +268,22 @@ class BoardImageRecognitionService {
       img.Image processImage = _resizeForProcessing(decodedImage);
 
       // Keep a copy of the unprocessed resized image for color analysis
-      final img.Image unprocessedImage = img.copyResize(processImage,
-          width: processImage.width, height: processImage.height);
+      final img.Image unprocessedImage = img.copyResize(
+        processImage,
+        width: processImage.width,
+        height: processImage.height,
+      );
 
       // Save processed image dimensions
       _processedImageWidth = processImage.width;
       _processedImageHeight = processImage.height;
 
       // Update debug info - Create a copy to ensure the image is saved
-      final img.Image resizedImageCopy = img.copyResize(processImage,
-          width: processImage.width, height: processImage.height);
+      final img.Image resizedImageCopy = img.copyResize(
+        processImage,
+        width: processImage.width,
+        height: processImage.height,
+      );
 
       _lastDebugInfo = _lastDebugInfo.copyWith(
         processedImage: resizedImageCopy,
@@ -286,8 +296,11 @@ class BoardImageRecognitionService {
       );
 
       // Update debug info with the processed image - Create a copy
-      final img.Image enhancedImageCopy = img.copyResize(processImage,
-          width: processImage.width, height: processImage.height);
+      final img.Image enhancedImageCopy = img.copyResize(
+        processImage,
+        width: processImage.width,
+        height: processImage.height,
+      );
 
       _lastDebugInfo = _lastDebugInfo.copyWith(
         processedImage: enhancedImageCopy,
@@ -301,8 +314,9 @@ class BoardImageRecognitionService {
         pieceThreshold: pieceThreshold,
       );
       logger.i(
-          "Image analysis: brightness=${characteristics.averageBrightness.toStringAsFixed(1)}, "
-          "isDark=${characteristics.isDarkBackground}, contrast=${characteristics.isHighContrast}");
+        "Image analysis: brightness=${characteristics.averageBrightness.toStringAsFixed(1)}, "
+        "isDark=${characteristics.isDarkBackground}, contrast=${characteristics.isHighContrast}",
+      );
 
       // Update debug info
       _lastDebugInfo = _lastDebugInfo.copyWith(
@@ -312,14 +326,18 @@ class BoardImageRecognitionService {
       // For very low contrast images, apply additional contrast enhancement
       if (!characteristics.isHighContrast &&
           characteristics.contrastRatio < 1.5) {
-        logger
-            .i("Low contrast image detected, applying additional enhancement");
+        logger.i(
+          "Low contrast image detected, applying additional enhancement",
+        );
         // *** METHOD NEEDS IMPLEMENTATION ***
         processImage = _enhanceLowContrastImage(processImage);
 
         // Update debug info with the processed image - Create a copy
-        final img.Image enhancedContrastImageCopy = img.copyResize(processImage,
-            width: processImage.width, height: processImage.height);
+        final img.Image enhancedContrastImageCopy = img.copyResize(
+          processImage,
+          width: processImage.width,
+          height: processImage.height,
+        );
 
         _lastDebugInfo = _lastDebugInfo.copyWith(
           processedImage: enhancedContrastImageCopy,
@@ -327,15 +345,17 @@ class BoardImageRecognitionService {
       }
 
       // Automatically find the board bounding box
-      final math.Rectangle<int>? boardRect =
-          _findBoardBoundingBox(processImage);
+      final math.Rectangle<int>? boardRect = _findBoardBoundingBox(
+        processImage,
+      );
 
       // --- Check if detected board is too small ---
       math.Rectangle<int>? finalBoardRect = boardRect;
       if (finalBoardRect != null &&
           (finalBoardRect.width < 200 || finalBoardRect.height < 200)) {
         logger.w(
-            "Detected board area (${finalBoardRect.width}x${finalBoardRect.height}) is smaller than 200x200. Discarding and using full image.");
+          "Detected board area (${finalBoardRect.width}x${finalBoardRect.height}) is smaller than 200x200. Discarding and using full image.",
+        );
         finalBoardRect = null; // Discard the small rectangle
       }
 
@@ -346,19 +366,26 @@ class BoardImageRecognitionService {
           // boardRect was not null initially, but discarded due to size
         } else {
           logger.w(
-              "Board detection failed using all methods. Falling back to using the entire image as the board area.");
+            "Board detection failed using all methods. Falling back to using the entire image as the board area.",
+          );
         }
 
         // Determine the largest square that fits within the processed image
-        final int squareSize =
-            math.min(_processedImageWidth, _processedImageHeight);
+        final int squareSize = math.min(
+          _processedImageWidth,
+          _processedImageHeight,
+        );
 
         // Center the square within the processed image dimensions
         final int leftOffset = (_processedImageWidth - squareSize) ~/ 2;
         final int topOffset = (_processedImageHeight - squareSize) ~/ 2;
 
-        finalBoardRect =
-            math.Rectangle<int>(leftOffset, topOffset, squareSize, squareSize);
+        finalBoardRect = math.Rectangle<int>(
+          leftOffset,
+          topOffset,
+          squareSize,
+          squareSize,
+        );
 
         // Update debug info to reflect fallback
         _lastDebugInfo = _lastDebugInfo.copyWith(boardRect: finalBoardRect);
@@ -372,37 +399,38 @@ class BoardImageRecognitionService {
 
       // Generate standard board points based on the final detected rectangle
       final List<BoardPoint> boardPoints = createRefinedBoardPoints(
-          processImage, finalBoardRect); // Use finalBoardRect here
+        processImage,
+        finalBoardRect,
+      ); // Use finalBoardRect here
 
       // Save detected board points
       _lastDetectedPoints = boardPoints;
 
       // Update debug info with board points
-      _lastDebugInfo = _lastDebugInfo.copyWith(
-        boardPoints: boardPoints,
-      );
+      _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: boardPoints);
 
       // Estimate the board color for piece detection using the final rectangle
       final Rgb boardColor = _estimateBoardColor(
-          unprocessedImage, finalBoardRect); // Use finalBoardRect
+        unprocessedImage,
+        finalBoardRect,
+      ); // Use finalBoardRect
 
       // Update debug info with board color
-      _lastDebugInfo = _lastDebugInfo.copyWith(
-        boardColor: boardColor,
-      );
+      _lastDebugInfo = _lastDebugInfo.copyWith(boardColor: boardColor);
 
       // First pass: scan points to determine dominant colors and thresholds
       // Use unprocessed image for more accurate color profile
-      final ColorProfile colorProfile =
-          _buildColorProfile(unprocessedImage, boardPoints);
+      final ColorProfile colorProfile = _buildColorProfile(
+        unprocessedImage,
+        boardPoints,
+      );
       logger.i(
-          "Color profile: white=${colorProfile.whiteMean.toStringAsFixed(1)}, "
-          "black=${colorProfile.blackMean.toStringAsFixed(1)}, empty=${colorProfile.emptyMean.toStringAsFixed(1)}");
+        "Color profile: white=${colorProfile.whiteMean.toStringAsFixed(1)}, "
+        "black=${colorProfile.blackMean.toStringAsFixed(1)}, empty=${colorProfile.emptyMean.toStringAsFixed(1)}",
+      );
 
       // Update debug info with color profile
-      _lastDebugInfo = _lastDebugInfo.copyWith(
-        colorProfile: colorProfile,
-      );
+      _lastDebugInfo = _lastDebugInfo.copyWith(colorProfile: colorProfile);
 
       // Second pass: use refined thresholds to accurately classify each point
       // Use unprocessed image for actual piece detection
@@ -416,23 +444,25 @@ class BoardImageRecognitionService {
       for (int i = 0; i < 24 && i < boardPoints.length; i++) {
         final BoardPoint point = boardPoints[i];
         final PieceColor detectedColor = _detectPieceAtPoint(
-            unprocessedImage,
-            point,
-            characteristics,
-            colorProfile,
-            boardColor,
-            configuredWhiteRgb,
-            configuredBlackRgb,
-            pieceColorMatchThreshold: pieceColorMatchThreshold,
-            boardColorDistanceThreshold: boardColorDistanceThreshold,
-            blackSaturationThreshold: blackSaturationThreshold,
-            blackColorVarianceThreshold: blackColorVarianceThreshold);
+          unprocessedImage,
+          point,
+          characteristics,
+          colorProfile,
+          boardColor,
+          configuredWhiteRgb,
+          configuredBlackRgb,
+          pieceColorMatchThreshold: pieceColorMatchThreshold,
+          boardColorDistanceThreshold: boardColorDistanceThreshold,
+          blackSaturationThreshold: blackSaturationThreshold,
+          blackColorVarianceThreshold: blackColorVarianceThreshold,
+        );
         result[i] = detectedColor;
       }
 
       // Post-process to enforce game rules and improve consistency
-      final Map<int, PieceColor> enhancedResult =
-          _applyConsistencyRules(result);
+      final Map<int, PieceColor> enhancedResult = _applyConsistencyRules(
+        result,
+      );
 
       // Log recognition results
       int whiteCount = 0, blackCount = 0;
@@ -444,8 +474,10 @@ class BoardImageRecognitionService {
           blackCount++;
         }
       }
-      logger.i("FINAL COUNT   white=$whiteCount, black=$blackCount   "
-          "(detected from ${boardPoints.length} lattice points)");
+      logger.i(
+        "FINAL COUNT   white=$whiteCount, black=$blackCount   "
+        "(detected from ${boardPoints.length} lattice points)",
+      );
 
       return enhancedResult;
     } catch (e, stacktrace) {
@@ -459,14 +491,17 @@ class BoardImageRecognitionService {
   /// Placeholder: Enhance contrast for low-contrast images.
   static img.Image _enhanceLowContrastImage(img.Image image) {
     logger.w(
-        "_enhanceLowContrastImage is not implemented. Returning original image.");
+      "_enhanceLowContrastImage is not implemented. Returning original image.",
+    );
     // Basic contrast adjustment as a placeholder
     return img.adjustColor(image, contrast: 1.5); // Apply some contrast
   }
 
   /// Placeholder: Estimate the dominant background color of the board.
   static Rgb _estimateBoardColor(
-      img.Image image, math.Rectangle<int>? boardRect) {
+    img.Image image,
+    math.Rectangle<int>? boardRect,
+  ) {
     logger.w("_estimateBoardColor is not implemented. Returning default grey.");
     if (boardRect == null) {
       return const Rgb(128, 128, 128);
@@ -517,19 +552,25 @@ class BoardImageRecognitionService {
     int? blackColorVarianceThreshold,
   }) {
     // Use provided values or fall back to static variables
-    final double pColorMatchThreshold = pieceColorMatchThreshold ??
+    final double pColorMatchThreshold =
+        pieceColorMatchThreshold ??
         BoardImageRecognitionService.pieceColorMatchThreshold;
-    final double bColorDistanceThreshold = boardColorDistanceThreshold ??
+    final double bColorDistanceThreshold =
+        boardColorDistanceThreshold ??
         BoardImageRecognitionService.boardColorDistanceThreshold;
-    final double bSaturationThreshold = blackSaturationThreshold ??
+    final double bSaturationThreshold =
+        blackSaturationThreshold ??
         BoardImageRecognitionService.blackSaturationThreshold;
-    final int bColorVarianceThreshold = blackColorVarianceThreshold ??
+    final int bColorVarianceThreshold =
+        blackColorVarianceThreshold ??
         BoardImageRecognitionService.blackColorVarianceThreshold;
 
     int brightnessSum = 0;
     int sampleCount = 0;
-    final int sampleRadius =
-        (point.radius * 0.6).round().clamp(1, 10); // Sample smaller area
+    final int sampleRadius = (point.radius * 0.6).round().clamp(
+      1,
+      10,
+    ); // Sample smaller area
 
     // Additional color statistics for improved detection
     int rSum = 0, gSum = 0, bSum = 0;
@@ -564,8 +605,11 @@ class BoardImageRecognitionService {
     }
 
     final double avgBrightness = brightnessSum / sampleCount.toDouble();
-    final Rgb avgRgb =
-        Rgb(rSum ~/ sampleCount, gSum ~/ sampleCount, bSum ~/ sampleCount);
+    final Rgb avgRgb = Rgb(
+      rSum ~/ sampleCount,
+      gSum ~/ sampleCount,
+      bSum ~/ sampleCount,
+    );
     final double avgSaturation = saturationSum / sampleCount.toDouble();
     final double avgColorVariance = colorVarianceSum / sampleCount.toDouble();
 
@@ -590,7 +634,8 @@ class BoardImageRecognitionService {
         distToWhitePiece > pieceDistanceThreshold &&
         distToBlackPiece > pieceDistanceThreshold) {
       logger.d(
-          "Point at (${point.x}, ${point.y}): OVERRIDE to EMPTY. Color $avgRgb is very close to board bg $configuredBoardRgb (dist: ${distToBoard.toStringAsFixed(1)}) and far from pieces (W: ${distToWhitePiece.toStringAsFixed(1)}, B: ${distToBlackPiece.toStringAsFixed(1)}).");
+        "Point at (${point.x}, ${point.y}): OVERRIDE to EMPTY. Color $avgRgb is very close to board bg $configuredBoardRgb (dist: ${distToBoard.toStringAsFixed(1)}) and far from pieces (W: ${distToWhitePiece.toStringAsFixed(1)}, B: ${distToBlackPiece.toStringAsFixed(1)}).",
+      );
       return PieceColor.none;
     }
     // --- End of board color override check ---
@@ -632,19 +677,22 @@ class BoardImageRecognitionService {
       // Check variance (allow some margin)
       blackScore *= 2.0; // Moderate boost for properties match
       logger.d(
-          "  Point (${point.x}, ${point.y}): Moderate evidence for BLACK based on color properties (sat: ${avgSaturation.toStringAsFixed(1)}, var: ${avgColorVariance.toStringAsFixed(1)})");
+        "  Point (${point.x}, ${point.y}): Moderate evidence for BLACK based on color properties (sat: ${avgSaturation.toStringAsFixed(1)}, var: ${avgColorVariance.toStringAsFixed(1)})",
+      );
       // If it also matches configured color, boost even more
       if (configBlackMatch) {
         blackScore *= 2.0; // Additional strong boost for configured color match
         logger.d(
-            "  Point (${point.x}, ${point.y}): Strong boost for BLACK due to configured color match (dist: ${distToConfigBlack.toStringAsFixed(1)})");
+          "  Point (${point.x}, ${point.y}): Strong boost for BLACK due to configured color match (dist: ${distToConfigBlack.toStringAsFixed(1)})",
+        );
       }
     }
     // If properties don't match black, but it matches configured color strongly, still give a boost
     else if (configBlackMatch) {
       blackScore *= 2.0; // Strong boost just for configured match
       logger.d(
-          "  Point (${point.x}, ${point.y}): Strong boost for BLACK due to configured color match (dist: ${distToConfigBlack.toStringAsFixed(1)})");
+        "  Point (${point.x}, ${point.y}): Strong boost for BLACK due to configured color match (dist: ${distToConfigBlack.toStringAsFixed(1)})",
+      );
     }
 
     // 2. White Piece Check:
@@ -660,7 +708,8 @@ class BoardImageRecognitionService {
     if (configWhiteMatch) {
       whiteScore *= 2.5; // Strong boost for configured match
       logger.d(
-          "  Point (${point.x}, ${point.y}): Strong boost for WHITE due to configured color match (dist: ${distToConfigWhite.toStringAsFixed(1)})");
+        "  Point (${point.x}, ${point.y}): Strong boost for WHITE due to configured color match (dist: ${distToConfigWhite.toStringAsFixed(1)})",
+      );
     }
 
     // 3. Empty Point Check (Board Color):
@@ -670,7 +719,8 @@ class BoardImageRecognitionService {
       // Use a stricter threshold here
       emptyScore *= 2.0;
       logger.d(
-          "  Point (${point.x}, ${point.y}): Strong evidence for EMPTY based on board color proximity (dist: ${distToBoardColor.toStringAsFixed(1)})");
+        "  Point (${point.x}, ${point.y}): Strong evidence for EMPTY based on board color proximity (dist: ${distToBoardColor.toStringAsFixed(1)})",
+      );
     }
     // Also boost empty score slightly if it's close in brightness
     else if (normDistEmpty < 0.8) {
@@ -692,7 +742,8 @@ class BoardImageRecognitionService {
         result = PieceColor
             .none; // Prefer empty if black score is marginal and brightness not low enough
         logger.d(
-            "  Point (${point.x}, ${point.y}): Classified as EMPTY despite high black score due to marginal difference/brightness.");
+          "  Point (${point.x}, ${point.y}): Classified as EMPTY despite high black score due to marginal difference/brightness.",
+        );
       }
     } else {
       result = PieceColor.none;
@@ -700,21 +751,24 @@ class BoardImageRecognitionService {
 
     // Log detailed detection information for debugging
     logger.d(
-        "Point at (${point.x}, ${point.y}): brightness=${avgBrightness.toStringAsFixed(1)}, "
-        "rgb=$avgRgb, sat=${avgSaturation.toStringAsFixed(1)}, var=${avgColorVariance.toStringAsFixed(1)}, "
-        "distBoard=${distToBoardColor.toStringAsFixed(1)} | "
-        "distConf(W/B): ${distToConfigWhite.toStringAsFixed(1)}/${distToConfigBlack.toStringAsFixed(1)} | " // Added config distances
-        "normDists(W/B/E): ${normDistWhite.toStringAsFixed(2)}/${normDistBlack.toStringAsFixed(2)}/${normDistEmpty.toStringAsFixed(2)} | "
-        "scores(W/B/E): ${whiteScore.toStringAsFixed(2)}/${blackScore.toStringAsFixed(2)}/${emptyScore.toStringAsFixed(2)} => $result");
+      "Point at (${point.x}, ${point.y}): brightness=${avgBrightness.toStringAsFixed(1)}, "
+      "rgb=$avgRgb, sat=${avgSaturation.toStringAsFixed(1)}, var=${avgColorVariance.toStringAsFixed(1)}, "
+      "distBoard=${distToBoardColor.toStringAsFixed(1)} | "
+      "distConf(W/B): ${distToConfigWhite.toStringAsFixed(1)}/${distToConfigBlack.toStringAsFixed(1)} | " // Added config distances
+      "normDists(W/B/E): ${normDistWhite.toStringAsFixed(2)}/${normDistBlack.toStringAsFixed(2)}/${normDistEmpty.toStringAsFixed(2)} | "
+      "scores(W/B/E): ${whiteScore.toStringAsFixed(2)}/${blackScore.toStringAsFixed(2)}/${emptyScore.toStringAsFixed(2)} => $result",
+    );
 
     return result;
   }
 
   /// Placeholder: Apply game rules or consistency checks to the detected state.
   static Map<int, PieceColor> _applyConsistencyRules(
-      Map<int, PieceColor> detectedState) {
+    Map<int, PieceColor> detectedState,
+  ) {
     logger.w(
-        "_applyConsistencyRules is not implemented. Returning original state.");
+      "_applyConsistencyRules is not implemented. Returning original state.",
+    );
     // Example: Could check piece counts (<= 9), enforce adjacency rules, etc.
     return detectedState;
   }
@@ -761,10 +815,12 @@ class BoardImageRecognitionService {
     }
 
     // Resize the image using average interpolation for potentially better quality
-    return img.copyResize(original,
-        width: newWidth,
-        height: newHeight,
-        interpolation: img.Interpolation.average);
+    return img.copyResize(
+      original,
+      width: newWidth,
+      height: newHeight,
+      interpolation: img.Interpolation.average,
+    );
   }
 
   /// Enhance image for better feature detection by improving contrast and reducing noise
@@ -777,7 +833,8 @@ class BoardImageRecognitionService {
     double? contrastEnhancementFactor,
   }) {
     // Use the passed parameter or fall back to static variable
-    final double usedFactor = contrastEnhancementFactor ??
+    final double usedFactor =
+        contrastEnhancementFactor ??
         BoardImageRecognitionService.contrastEnhancementFactor;
 
     // Create a copy to work with
@@ -788,10 +845,7 @@ class BoardImageRecognitionService {
     final img.Image denoised = img.gaussianBlur(enhancedImage, radius: 1);
 
     // Apply contrast enhancement to make pieces stand out more
-    return img.adjustColor(
-      denoised,
-      contrast: usedFactor,
-    );
+    return img.adjustColor(denoised, contrast: usedFactor);
   }
 
   /// Analyze image characteristics to determine appropriate thresholds for piece detection
@@ -808,9 +862,11 @@ class BoardImageRecognitionService {
     double? pieceThreshold,
   }) {
     // Use provided values or fall back to static variables
-    final int whiteThresholdBase = whiteBrightnessThresholdBase ??
+    final int whiteThresholdBase =
+        whiteBrightnessThresholdBase ??
         BoardImageRecognitionService.whiteBrightnessThreshold;
-    final int blackThresholdBase = blackBrightnessThresholdBase ??
+    final int blackThresholdBase =
+        blackBrightnessThresholdBase ??
         BoardImageRecognitionService.blackBrightnessThreshold;
     final double pThreshold =
         pieceThreshold ?? BoardImageRecognitionService.pieceThreshold;
@@ -836,13 +892,15 @@ class BoardImageRecognitionService {
     }
 
     // Calculate average brightness
-    final double avgBrightness =
-        pixelCount > 0 ? totalBrightness / pixelCount : 128;
+    final double avgBrightness = pixelCount > 0
+        ? totalBrightness / pixelCount
+        : 128;
 
     // Calculate statistics to determine lighting conditions
 
     // Contrast Ratio (simplified: max/min, avoiding division by zero)
-    final double contrastRatio = (maxBrightness - minBrightness) /
+    final double contrastRatio =
+        (maxBrightness - minBrightness) /
         (avgBrightness + 1); // Another way to estimate contrast
 
     // Determine dominant colors and image properties
@@ -853,32 +911,37 @@ class BoardImageRecognitionService {
 
     // Adaptively adjust threshold baseline based on image characteristics
     final int whiteThreshold = isDarkBackground
-        ? whiteThresholdBase - 15 // Less reduction for dark
+        ? whiteThresholdBase -
+              15 // Less reduction for dark
         : whiteThresholdBase +
-            (avgBrightness > 160 ? 20 : 0); // Increase more if very bright
+              (avgBrightness > 160 ? 20 : 0); // Increase more if very bright
 
     final int blackThreshold = isDarkBackground
-        ? blackThresholdBase - 15 // Less reduction for dark
+        ? blackThresholdBase -
+              15 // Less reduction for dark
         : blackThresholdBase +
-            (avgBrightness < 130 ? -15 : 0); // Decrease more if quite dim
+              (avgBrightness < 130 ? -15 : 0); // Decrease more if quite dim
 
     // Ensure sufficient gap between black and white thresholds to avoid overlap
-    final int adjustedBlackThreshold =
-        math.min(blackThreshold, whiteThreshold - 40); // Increased gap
+    final int adjustedBlackThreshold = math.min(
+      blackThreshold,
+      whiteThreshold - 40,
+    ); // Increased gap
 
     // Adjust piece detection threshold slightly based on contrast
-    final double adjustedPieceThreshold =
-        isHighContrast ? pThreshold - 0.05 : pThreshold;
+    final double adjustedPieceThreshold = isHighContrast
+        ? pThreshold - 0.05
+        : pThreshold;
 
     return ImageCharacteristics(
-        averageBrightness: avgBrightness,
-        isDarkBackground: isDarkBackground,
-        isHighContrast: isHighContrast,
-        whiteBrightnessThreshold: whiteThreshold,
-        blackBrightnessThreshold: adjustedBlackThreshold,
-        pieceDetectionThreshold: adjustedPieceThreshold,
-        contrastRatio: contrastRatio // Use the calculated ratio
-        );
+      averageBrightness: avgBrightness,
+      isDarkBackground: isDarkBackground,
+      isHighContrast: isHighContrast,
+      whiteBrightnessThreshold: whiteThreshold,
+      blackBrightnessThreshold: adjustedBlackThreshold,
+      pieceDetectionThreshold: adjustedPieceThreshold,
+      contrastRatio: contrastRatio, // Use the calculated ratio
+    );
   }
 
   /// Calculate brightness of a pixel using a weighted method (Luma-like)
@@ -955,7 +1018,9 @@ class BoardImageRecognitionService {
 
   /// Build a color profile from the board to improve piece detection
   static ColorProfile _buildColorProfile(
-      img.Image image, List<BoardPoint> points) {
+    img.Image image,
+    List<BoardPoint> points,
+  ) {
     final List<int> whiteBrightness = <int>[];
     final List<int> blackBrightness = <int>[];
     final List<int> emptyBrightness = <int>[];
@@ -1005,14 +1070,16 @@ class BoardImageRecognitionService {
 
     if (allAvgBrightness.isEmpty) {
       logger.w(
-          "No brightness samples collected for color profile. Returning default.");
+        "No brightness samples collected for color profile. Returning default.",
+      );
       return ColorProfile(
-          whiteMean: 200,
-          blackMean: 50,
-          emptyMean: 128,
-          whiteStd: 30,
-          blackStd: 30,
-          emptyStd: 30);
+        whiteMean: 200,
+        blackMean: 50,
+        emptyMean: 128,
+        whiteStd: 30,
+        blackStd: 30,
+        emptyStd: 30,
+      );
     }
 
     // Sort brightness values to use quantiles for initial classification
@@ -1020,17 +1087,20 @@ class BoardImageRecognitionService {
 
     // Estimate quantile thresholds (e.g., darkest 30%, brightest 30%)
     // Adjust these percentages based on expected board state if needed
-    final int q30Index = (allAvgBrightness.length * 0.30)
-        .round()
-        .clamp(0, allAvgBrightness.length - 1);
-    final int q70Index = (allAvgBrightness.length * 0.70)
-        .round()
-        .clamp(0, allAvgBrightness.length - 1);
+    final int q30Index = (allAvgBrightness.length * 0.30).round().clamp(
+      0,
+      allAvgBrightness.length - 1,
+    );
+    final int q70Index = (allAvgBrightness.length * 0.70).round().clamp(
+      0,
+      allAvgBrightness.length - 1,
+    );
     final int blackThreshold = allAvgBrightness[q30Index];
     final int whiteThreshold = allAvgBrightness[q70Index];
 
     logger.i(
-        "Initial classification thresholds based on distribution: Black <= $blackThreshold, White >= $whiteThreshold");
+      "Initial classification thresholds based on distribution: Black <= $blackThreshold, White >= $whiteThreshold",
+    );
 
     // Initial classification based on distribution
     for (final int pointIndex in pointIndexToBrightness.keys) {
@@ -1040,15 +1110,18 @@ class BoardImageRecognitionService {
       if (avgBrightness >= whiteThreshold) {
         whiteBrightness.add(avgBrightness);
         logger.d(
-            "  Point $pointIndex (brightness $avgBrightness) -> Initial WHITE");
+          "  Point $pointIndex (brightness $avgBrightness) -> Initial WHITE",
+        );
       } else if (avgBrightness <= blackThreshold) {
         blackBrightness.add(avgBrightness);
         logger.d(
-            "  Point $pointIndex (brightness $avgBrightness) -> Initial BLACK");
+          "  Point $pointIndex (brightness $avgBrightness) -> Initial BLACK",
+        );
       } else {
         emptyBrightness.add(avgBrightness);
         logger.d(
-            "  Point $pointIndex (brightness $avgBrightness) -> Initial EMPTY");
+          "  Point $pointIndex (brightness $avgBrightness) -> Initial EMPTY",
+        );
       }
     }
 
@@ -1065,7 +1138,8 @@ class BoardImageRecognitionService {
       final double q1 = allBrightness[allBrightness.length ~/ 4].toDouble();
       final double q3 = allBrightness[3 * allBrightness.length ~/ 4].toDouble();
       logger.i(
-          "Brightness distribution: min=$min, Q1=$q1, median=$median, Q3=$q3, max=$max");
+        "Brightness distribution: min=$min, Q1=$q1, median=$median, Q3=$q3, max=$max",
+      );
     }
 
     // If black or white samples are empty, take the darkest/brightest 15%
@@ -1073,23 +1147,28 @@ class BoardImageRecognitionService {
     if (blackBrightness.isEmpty && allBrightness.length > 5) {
       // Add minimum size check
       logger.w(
-          "No black samples found for profile, using darkest 15% as fallback.");
-      blackBrightness
-          .addAll(_takePercentile(allBrightness, 0.0, 0.15)); // darkest 15 %
+        "No black samples found for profile, using darkest 15% as fallback.",
+      );
+      blackBrightness.addAll(
+        _takePercentile(allBrightness, 0.0, 0.15),
+      ); // darkest 15 %
     }
     if (whiteBrightness.isEmpty && allBrightness.length > 5) {
       // Add minimum size check
       logger.w(
-          "No white samples found for profile, using brightest 15% as fallback.");
-      whiteBrightness
-          .addAll(_takePercentile(allBrightness, 0.85, 1.0)); // brightest 15 %
+        "No white samples found for profile, using brightest 15% as fallback.",
+      );
+      whiteBrightness.addAll(
+        _takePercentile(allBrightness, 0.85, 1.0),
+      ); // brightest 15 %
     }
 
     // If empty samples are empty (rare, e.g., full board), use the middle 20% as fallback.
     if (emptyBrightness.isEmpty && allBrightness.length > 5) {
       // Add minimum size check
       logger.w(
-          "No empty samples found for profile, using middle 20% as fallback.");
+        "No empty samples found for profile, using middle 20% as fallback.",
+      );
       emptyBrightness.addAll(_takePercentile(allBrightness, 0.4, 0.6));
     }
 
@@ -1100,36 +1179,47 @@ class BoardImageRecognitionService {
 
     // Calculate standard deviations
     // Ensure std dev is not zero, provide a minimum value
-    final double whiteStd =
-        math.max(15.0, _calculateStdDev(whiteBrightness, whiteMean));
-    final double blackStd =
-        math.max(15.0, _calculateStdDev(blackBrightness, blackMean));
-    final double emptyStd =
-        math.max(15.0, _calculateStdDev(emptyBrightness, emptyMean));
+    final double whiteStd = math.max(
+      15.0,
+      _calculateStdDev(whiteBrightness, whiteMean),
+    );
+    final double blackStd = math.max(
+      15.0,
+      _calculateStdDev(blackBrightness, blackMean),
+    );
+    final double emptyStd = math.max(
+      15.0,
+      _calculateStdDev(emptyBrightness, emptyMean),
+    );
 
     // Log detailed statistics
     logger.i("Color profile statistics:");
     logger.i(
-        "  WHITE: mean=$whiteMean, std=$whiteStd, samples=${whiteBrightness.length}");
+      "  WHITE: mean=$whiteMean, std=$whiteStd, samples=${whiteBrightness.length}",
+    );
     logger.i(
-        "  BLACK: mean=$blackMean, std=$blackStd, samples=${blackBrightness.length}");
+      "  BLACK: mean=$blackMean, std=$blackStd, samples=${blackBrightness.length}",
+    );
     logger.i(
-        "  EMPTY: mean=$emptyMean, std=$emptyStd, samples=${emptyBrightness.length}");
+      "  EMPTY: mean=$emptyMean, std=$emptyStd, samples=${emptyBrightness.length}",
+    );
 
     // Log classification thresholds
     logger.i("Classification thresholds:");
     logger.i("  WHITE threshold: >${whiteMean - whiteStd}");
     logger.i("  BLACK threshold: <${blackMean + blackStd}");
-    logger
-        .i("  EMPTY range: ${emptyMean - emptyStd} to ${emptyMean + emptyStd}");
+    logger.i(
+      "  EMPTY range: ${emptyMean - emptyStd} to ${emptyMean + emptyStd}",
+    );
 
     return ColorProfile(
-        whiteMean: whiteMean,
-        blackMean: blackMean,
-        emptyMean: emptyMean,
-        whiteStd: whiteStd,
-        blackStd: blackStd,
-        emptyStd: emptyStd);
+      whiteMean: whiteMean,
+      blackMean: blackMean,
+      emptyMean: emptyMean,
+      whiteStd: whiteStd,
+      blackStd: blackStd,
+      emptyStd: emptyStd,
+    );
   }
 
   /// Calculate mean of a list of values
@@ -1225,11 +1315,7 @@ class BoardImageRecognitionService {
   static Rgb _rgbFromColor(Color color) {
     // Convert the new double-based channel values (0.0 – 1.0) to 0–255 ints.
     int toInt8(double channel) => (channel * 255).round().clamp(0, 255);
-    return Rgb(
-      toInt8(color.r),
-      toInt8(color.g),
-      toInt8(color.b),
-    );
+    return Rgb(toInt8(color.r), toInt8(color.g), toInt8(color.b));
   }
 
   /// Calculate Euclidean distance between two RGB colors
@@ -1242,7 +1328,8 @@ class BoardImageRecognitionService {
 
   /// Board border detection method using color settings
   static math.Rectangle<int>? _findBoardBoundingBoxUsingColorSettings(
-      img.Image imgSrc) {
+    img.Image imgSrc,
+  ) {
     logger.i("Using color settings to find board boundary...");
 
     // Get board background and line colors from settings
@@ -1258,7 +1345,9 @@ class BoardImageRecognitionService {
 
     // Step 1: Create board mask using background color
     final List<List<bool>> boardMask = List<List<bool>>.generate(
-        imgHeight, (_) => List<bool>.filled(imgWidth, false));
+      imgHeight,
+      (_) => List<bool>.filled(imgWidth, false),
+    );
 
     // Background color distance threshold
     const double bgColorThreshold = 30.0;
@@ -1278,7 +1367,9 @@ class BoardImageRecognitionService {
 
     // Step 2: Find largest connected component as board area
     final List<List<int>> labels = List<List<int>>.generate(
-        imgHeight, (_) => List<int>.filled(imgWidth, 0));
+      imgHeight,
+      (_) => List<int>.filled(imgWidth, 0),
+    );
     int nextLabel = 1;
     int largestLabel = 0;
     int maxComponentSize = 0;
@@ -1332,7 +1423,8 @@ class BoardImageRecognitionService {
     // Get largest component's bounding box
     if (largestLabel == 0) {
       logger.w(
-          "No valid board background area found, trying line color detection");
+        "No valid board background area found, trying line color detection",
+      );
       return null;
     }
 
@@ -1405,8 +1497,9 @@ class BoardImageRecognitionService {
     // Check if enough lines were found
     if (horizontalLinePositions.length < 2 ||
         verticalLinePositions.length < 2) {
-      logger
-          .w("Not enough lines detected, using connected component boundaries");
+      logger.w(
+        "Not enough lines detected, using connected component boundaries",
+      );
       leftBorder = minX;
       topBorder = minY;
       rightBorder = maxX;
@@ -1461,19 +1554,26 @@ class BoardImageRecognitionService {
     finalSize = math.min(finalSize, imgHeight - topBorder);
 
     logger.i(
-        "Board boundary detected using color settings: ($leftBorder, $topBorder, $finalSize, $finalSize) [strict square]");
+      "Board boundary detected using color settings: ($leftBorder, $topBorder, $finalSize, $finalSize) [strict square]",
+    );
 
     // Update debug info
-    final math.Rectangle<int> boardRect =
-        math.Rectangle<int>(leftBorder, topBorder, finalSize, finalSize);
+    final math.Rectangle<int> boardRect = math.Rectangle<int>(
+      leftBorder,
+      topBorder,
+      finalSize,
+      finalSize,
+    );
     _lastDebugInfo = _lastDebugInfo.copyWith(boardRect: boardRect);
 
     // Generate standard board grid based on detected rectangle
     _generateStandardBoardGrid(boardRect, imgSrc);
 
     // Calculate board points with refined positions
-    final List<BoardPoint> refinedPoints =
-        createRefinedBoardPoints(imgSrc, boardRect);
+    final List<BoardPoint> refinedPoints = createRefinedBoardPoints(
+      imgSrc,
+      boardRect,
+    );
     _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: refinedPoints);
     _lastDetectedPoints = refinedPoints;
 
@@ -1492,8 +1592,10 @@ class BoardImageRecognitionService {
       _generateStandardBoardGrid(colorSettingsResult, imgSrc);
 
       // Calculate refined board points
-      final List<BoardPoint> refinedPoints =
-          createRefinedBoardPoints(imgSrc, colorSettingsResult);
+      final List<BoardPoint> refinedPoints = createRefinedBoardPoints(
+        imgSrc,
+        colorSettingsResult,
+      );
       _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: refinedPoints);
       _lastDetectedPoints = refinedPoints;
 
@@ -1502,14 +1604,16 @@ class BoardImageRecognitionService {
 
     // If color settings detection failed, fall back to original method
     logger.i(
-        "Color settings detection failed, falling back to original method...");
+      "Color settings detection failed, falling back to original method...",
+    );
 
     // Original detection method code...
     // 1. Define scan area (slightly inset from borders)
     final int imgHeight = imgSrc.height;
     final int imgWidth = imgSrc.width;
     final int scanStartY = (imgHeight * 0.02).toInt(); // Start slightly lower
-    final int scanHeight = imgHeight -
+    final int scanHeight =
+        imgHeight -
         2 * scanStartY; // Reduce height slightly from top and bottom
     final int scanStartX = (imgWidth * 0.02).toInt(); // Start slightly inwards
     final int scanWidth =
@@ -1518,22 +1622,26 @@ class BoardImageRecognitionService {
     if (scanHeight <= 20 || scanWidth <= 20) {
       // Need a minimum size
       logger.w(
-          "Image too small or scan area invalid for bounding box detection.");
+        "Image too small or scan area invalid for bounding box detection.",
+      );
       return null;
     }
 
     // 2. Create binary mask based on likely board color
     List<List<bool>> mask = List<List<bool>>.generate(
-        imgHeight,
-        (_) => List<bool>.filled(
-            imgWidth, false)); // Use full image size for mask indices
+      imgHeight,
+      (_) => List<bool>.filled(imgWidth, false),
+    ); // Use full image size for mask indices
     for (int y = scanStartY; y < scanStartY + scanHeight; y++) {
       for (int x = scanStartX; x < scanStartX + scanWidth; x++) {
         // Check bounds before getPixel (should be redundant but safe)
         if (x >= 0 && x < imgWidth && y >= 0 && y < imgHeight) {
           final img.Pixel pixel = imgSrc.getPixel(x, y);
-          final Rgb rgb =
-              Rgb(pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt());
+          final Rgb rgb = Rgb(
+            pixel.r.toInt(),
+            pixel.g.toInt(),
+            pixel.b.toInt(),
+          );
           if (_isLikelyBoardColor(rgb)) {
             mask[y][x] = true;
           }
@@ -1553,7 +1661,9 @@ class BoardImageRecognitionService {
 
     // 4. Find the largest connected component using Breadth-First Search (BFS)
     final List<List<int>> labels = List<List<int>>.generate(
-        imgHeight, (_) => List<int>.filled(imgWidth, 0));
+      imgHeight,
+      (_) => List<int>.filled(imgWidth, 0),
+    );
     int nextLabel = 1;
     int largestLabel = 0;
     int maxComponentSize = 0;
@@ -1681,19 +1791,26 @@ class BoardImageRecognitionService {
     finalSize = math.min(finalSize, imgHeight - adjustedMinY);
 
     logger.i(
-        "Detected board bounding box via CCA: ($adjustedMinX, $adjustedMinY, $finalSize, $finalSize), [strict square]");
+      "Detected board bounding box via CCA: ($adjustedMinX, $adjustedMinY, $finalSize, $finalSize), [strict square]",
+    );
 
     // Update debug info with the final calculated rectangle
-    final math.Rectangle<int> boardRect =
-        math.Rectangle<int>(adjustedMinX, adjustedMinY, finalSize, finalSize);
+    final math.Rectangle<int> boardRect = math.Rectangle<int>(
+      adjustedMinX,
+      adjustedMinY,
+      finalSize,
+      finalSize,
+    );
     _lastDebugInfo = _lastDebugInfo.copyWith(boardRect: boardRect);
 
     // Generate the standard grid mask based on this rectangle
     _generateStandardBoardGrid(boardRect, imgSrc);
 
     // Calculate refined board points
-    final List<BoardPoint> refinedPoints =
-        createRefinedBoardPoints(imgSrc, boardRect);
+    final List<BoardPoint> refinedPoints = createRefinedBoardPoints(
+      imgSrc,
+      boardRect,
+    );
     _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: refinedPoints);
     _lastDetectedPoints = refinedPoints;
 
@@ -1703,7 +1820,9 @@ class BoardImageRecognitionService {
   /// Creates 24 board points from the detected board rectangle and refines their positions
   /// based on the detected lines.
   static List<BoardPoint> createRefinedBoardPoints(
-      img.Image image, math.Rectangle<int> rect) {
+    img.Image image,
+    math.Rectangle<int> rect,
+  ) {
     // First, get the initial board points
     final List<BoardPoint> initialPoints = createBoardPointsFromRect(rect);
 
@@ -1745,8 +1864,10 @@ class BoardImageRecognitionService {
 
         for (int j = 0; j < gridPositions.length; j++) {
           final Offset gridPos = gridPositions[j];
-          final double distance = math.sqrt(math.pow(point.x - gridPos.dx, 2) +
-              math.pow(point.y - gridPos.dy, 2));
+          final double distance = math.sqrt(
+            math.pow(point.x - gridPos.dx, 2) +
+                math.pow(point.y - gridPos.dy, 2),
+          );
 
           if (distance < minDistance) {
             minDistance = distance;
@@ -1756,13 +1877,19 @@ class BoardImageRecognitionService {
 
         if (bestIndex >= 0) {
           final Offset bestPos = gridPositions[bestIndex];
-          adjustedPoints[i] = BoardPoint(bestPos.dx.round(), bestPos.dy.round(),
-              point.radius, point.originalX, point.originalY);
+          adjustedPoints[i] = BoardPoint(
+            bestPos.dx.round(),
+            bestPos.dy.round(),
+            point.radius,
+            point.originalX,
+            point.originalY,
+          );
         }
       }
 
       logger.i(
-          "Refined ${adjustedPoints.length} board points to match grid intersections with ${boardMarginRatio * 100}% margin");
+        "Refined ${adjustedPoints.length} board points to match grid intersections with ${boardMarginRatio * 100}% margin",
+      );
       return adjustedPoints;
     } catch (e) {
       logger.e("Error refining board points: $e");
@@ -1773,7 +1900,9 @@ class BoardImageRecognitionService {
   /// Generates a standard Nine Men's Morris grid mask within the detected board rectangle.
   /// Updates the debug info with this grid mask.
   static void _generateStandardBoardGrid(
-      math.Rectangle<int>? boardRect, img.Image processedImage) {
+    math.Rectangle<int>? boardRect,
+    img.Image processedImage,
+  ) {
     if (boardRect == null) {
       logger.w("Cannot generate standard grid mask without a board rectangle.");
       return;
@@ -1782,8 +1911,9 @@ class BoardImageRecognitionService {
 
     // Create a new mask initialized to false
     final List<List<bool>> gridMask = List<List<bool>>.generate(
-        processedImage.height,
-        (_) => List<bool>.filled(processedImage.width, false));
+      processedImage.height,
+      (_) => List<bool>.filled(processedImage.width, false),
+    );
 
     final int left = boardRect.left;
     final int top = boardRect.top;
@@ -1798,8 +1928,10 @@ class BoardImageRecognitionService {
 
     final double segmentSize =
         size / 6.0; // Divide into six equal parts to get space for seven lines
-    final int lineWidth =
-        math.max(1, (size * 0.01).round()); // Line width ~1% of size
+    final int lineWidth = math.max(
+      1,
+      (size * 0.01).round(),
+    ); // Line width ~1% of size
 
     // Generate horizontal lines
     for (int i = 0; i < 7; i++) {
@@ -1885,9 +2017,7 @@ class BoardImageRecognitionService {
     }
 
     // Update debug info with the generated grid mask
-    _lastDebugInfo = _lastDebugInfo.copyWith(
-      boardMask: gridMask,
-    );
+    _lastDebugInfo = _lastDebugInfo.copyWith(boardMask: gridMask);
   }
 
   // === Public wrapper methods & setters added for external access ===
@@ -1899,9 +2029,10 @@ class BoardImageRecognitionService {
   static img.Image enhanceImageForProcessing(
     img.Image inputImage, {
     double? contrastEnhancementFactor,
-  }) =>
-      _enhanceImageForProcessing(inputImage,
-          contrastEnhancementFactor: contrastEnhancementFactor);
+  }) => _enhanceImageForProcessing(
+    inputImage,
+    contrastEnhancementFactor: contrastEnhancementFactor,
+  );
 
   /// Expose `_analyzeImageCharacteristics` as a public method with optional custom thresholds.
   static ImageCharacteristics analyzeImageCharacteristics(
@@ -1909,23 +2040,24 @@ class BoardImageRecognitionService {
     int? whiteBrightnessThresholdBase,
     int? blackBrightnessThresholdBase,
     double? pieceThreshold,
-  }) =>
-      _analyzeImageCharacteristics(
-        image,
-        whiteBrightnessThresholdBase: whiteBrightnessThresholdBase,
-        blackBrightnessThresholdBase: blackBrightnessThresholdBase,
-        pieceThreshold: pieceThreshold,
-      );
+  }) => _analyzeImageCharacteristics(
+    image,
+    whiteBrightnessThresholdBase: whiteBrightnessThresholdBase,
+    blackBrightnessThresholdBase: blackBrightnessThresholdBase,
+    pieceThreshold: pieceThreshold,
+  );
 
   /// Expose `_estimateBoardColor` as a public method.
   static Rgb estimateBoardColor(
-          img.Image image, math.Rectangle<int>? boardRect) =>
-      _estimateBoardColor(image, boardRect);
+    img.Image image,
+    math.Rectangle<int>? boardRect,
+  ) => _estimateBoardColor(image, boardRect);
 
   /// Expose `_buildColorProfile` as a public method.
   static ColorProfile buildColorProfile(
-          img.Image image, List<BoardPoint> points) =>
-      _buildColorProfile(image, points);
+    img.Image image,
+    List<BoardPoint> points,
+  ) => _buildColorProfile(image, points);
 
   /// Expose `_detectPieceAtPoint` as a public method with optional custom thresholds.
   static PieceColor detectPieceAtPoint(
@@ -1940,25 +2072,24 @@ class BoardImageRecognitionService {
     double? boardColorDistanceThreshold,
     double? blackSaturationThreshold,
     int? blackColorVarianceThreshold,
-  }) =>
-      _detectPieceAtPoint(
-        image,
-        point,
-        characteristics,
-        colorProfile,
-        boardColor,
-        configuredWhiteRgb,
-        configuredBlackRgb,
-        pieceColorMatchThreshold: pieceColorMatchThreshold,
-        boardColorDistanceThreshold: boardColorDistanceThreshold,
-        blackSaturationThreshold: blackSaturationThreshold,
-        blackColorVarianceThreshold: blackColorVarianceThreshold,
-      );
+  }) => _detectPieceAtPoint(
+    image,
+    point,
+    characteristics,
+    colorProfile,
+    boardColor,
+    configuredWhiteRgb,
+    configuredBlackRgb,
+    pieceColorMatchThreshold: pieceColorMatchThreshold,
+    boardColorDistanceThreshold: boardColorDistanceThreshold,
+    blackSaturationThreshold: blackSaturationThreshold,
+    blackColorVarianceThreshold: blackColorVarianceThreshold,
+  );
 
   /// Expose `_applyConsistencyRules` as a public method.
   static Map<int, PieceColor> applyConsistencyRules(
-          Map<int, PieceColor> detectedState) =>
-      _applyConsistencyRules(detectedState);
+    Map<int, PieceColor> detectedState,
+  ) => _applyConsistencyRules(detectedState);
 
   /// Expose `_rgbFromColor` as a public helper.
   static Rgb rgbFromColor(Color color) => _rgbFromColor(color);
@@ -1970,7 +2101,7 @@ class BoardImageRecognitionService {
   /// Setter to allow external overwriting of last detected points (used by debug screens).
   static set lastDetectedPoints(List<BoardPoint> points) =>
       _lastDetectedPoints = points;
-// === End of public wrappers ===
+  // === End of public wrappers ===
 }
 
 /// Creates the 24 standard Nine Men's Morris board points based on a bounding rectangle.
@@ -2029,17 +2160,26 @@ List<BoardPoint> createBoardPointsFromRect(math.Rectangle<int> rect) {
     final double py = offsetY + gridPos.dy * segmentSize;
 
     // Store original grid coordinates for debugging
-    points.add(BoardPoint(px.round(), py.round(), pointRadius,
-        gridPos.dx.toInt(), gridPos.dy.toInt()));
+    points.add(
+      BoardPoint(
+        px.round(),
+        py.round(),
+        pointRadius,
+        gridPos.dx.toInt(),
+        gridPos.dy.toInt(),
+      ),
+    );
   }
 
   // Log if the number of points is unexpected
   if (points.length != 24) {
     logger.w(
-        "Created ${points.length} points from rect, expected 24. Rect: $rect");
+      "Created ${points.length} points from rect, expected 24. Rect: $rect",
+    );
   } else {
     logger.i(
-        "Successfully created 24 board points with adjusted margin. Using margin: $effectiveBoardMargin px (${boardMarginRatio * 100}% of board size)");
+      "Successfully created 24 board points with adjusted margin. Using margin: $effectiveBoardMargin px (${boardMarginRatio * 100}% of board size)",
+    );
   }
 
   return points;
@@ -2048,14 +2188,18 @@ List<BoardPoint> createBoardPointsFromRect(math.Rectangle<int> rect) {
 /// Adjust board points to match line intersections using the board line color.
 /// This method should be called with the detected points and the source image.
 List<BoardPoint> adjustPointsToLineIntersections(
-    List<BoardPoint> initialPoints, img.Image image, Color boardLineColor) {
+  List<BoardPoint> initialPoints,
+  img.Image image,
+  Color boardLineColor,
+) {
   if (initialPoints.isEmpty || image == null) {
     return initialPoints;
   }
 
   // Convert Flutter's Color to internal Rgb representation
-  final Rgb lineRgb =
-      BoardImageRecognitionService._rgbFromColor(boardLineColor);
+  final Rgb lineRgb = BoardImageRecognitionService._rgbFromColor(
+    boardLineColor,
+  );
   const double lineColorThreshold =
       35.0; // Threshold for considering a pixel as part of a line
   const int searchRadius =
@@ -2101,8 +2245,11 @@ List<BoardPoint> adjustPointsToLineIntersections(
             continue;
           }
           final img.Pixel pixel = image.getPixel(hx, y);
-          final Rgb rgb =
-              Rgb(pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt());
+          final Rgb rgb = Rgb(
+            pixel.r.toInt(),
+            pixel.g.toInt(),
+            pixel.b.toInt(),
+          );
 
           // Calculate Euclidean distance between colors
           final double dr = (rgb.r - lineRgb.r).toDouble();
@@ -2121,8 +2268,11 @@ List<BoardPoint> adjustPointsToLineIntersections(
             continue;
           }
           final img.Pixel pixel = image.getPixel(x, vy);
-          final Rgb rgb =
-              Rgb(pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt());
+          final Rgb rgb = Rgb(
+            pixel.r.toInt(),
+            pixel.g.toInt(),
+            pixel.b.toInt(),
+          );
 
           // Calculate Euclidean distance between colors
           final double dr = (rgb.r - lineRgb.r).toDouble();
@@ -2146,26 +2296,32 @@ List<BoardPoint> adjustPointsToLineIntersections(
     }
 
     // Create an adjusted point with the best coordinates found
-    adjustedPoints.add(BoardPoint(
-        bestX, bestY, point.radius, point.originalX, point.originalY));
+    adjustedPoints.add(
+      BoardPoint(bestX, bestY, point.radius, point.originalX, point.originalY),
+    );
   }
 
   logger.i(
-      "Adjusted ${adjustedPoints.length} board points to match line intersections");
+    "Adjusted ${adjustedPoints.length} board points to match line intersections",
+  );
   return adjustedPoints;
 }
 
 /// Advanced method to detect precise board layout from an image after finding the board rectangle.
 /// This method uses the board's line color and geometry to detect the exact grid.
 math.Rectangle<int>? detectBoardGridFromImage(
-    img.Image image, math.Rectangle<int> boardRect, Color boardLineColor) {
+  img.Image image,
+  math.Rectangle<int> boardRect,
+  Color boardLineColor,
+) {
   if (image == null || boardRect == null) {
     return boardRect;
   }
 
   // Convert Flutter's Color to internal Rgb representation
-  final Rgb lineRgb =
-      BoardImageRecognitionService._rgbFromColor(boardLineColor);
+  final Rgb lineRgb = BoardImageRecognitionService._rgbFromColor(
+    boardLineColor,
+  );
   const double lineColorThreshold = 35.0;
 
   // List to store detected horizontal and vertical line positions
@@ -2229,7 +2385,8 @@ math.Rectangle<int>? detectBoardGridFromImage(
   // Need at least 7 lines in each direction for a standard 7x7 grid
   if (horizontalLinesList.length < 7 || verticalLinesList.length < 7) {
     logger.w(
-        "Could not detect complete grid. H-lines: ${horizontalLinesList.length}, V-lines: ${verticalLinesList.length}");
+      "Could not detect complete grid. H-lines: ${horizontalLinesList.length}, V-lines: ${verticalLinesList.length}",
+    );
     return boardRect; // Return the original rect if we can't detect the full grid
   }
 
@@ -2266,7 +2423,8 @@ math.Rectangle<int>? detectBoardGridFromImage(
   final int size = math.max(width, height);
 
   logger.i(
-      "Detected grid lines: H=${horizontalLines.length}, V=${verticalLines.length}");
+    "Detected grid lines: H=${horizontalLines.length}, V=${verticalLines.length}",
+  );
   logger.i("Refined board rectangle: ($left, $top, $size, $size)");
 
   return math.Rectangle<int>(left, top, size, size);
@@ -2305,14 +2463,15 @@ class BoardPoint {
 
 /// Holds characteristics of the image that affect recognition parameters
 class ImageCharacteristics {
-  ImageCharacteristics(
-      {required this.averageBrightness,
-      required this.isDarkBackground,
-      required this.isHighContrast,
-      required this.whiteBrightnessThreshold,
-      required this.blackBrightnessThreshold,
-      required this.pieceDetectionThreshold,
-      required this.contrastRatio});
+  ImageCharacteristics({
+    required this.averageBrightness,
+    required this.isDarkBackground,
+    required this.isHighContrast,
+    required this.whiteBrightnessThreshold,
+    required this.blackBrightnessThreshold,
+    required this.pieceDetectionThreshold,
+    required this.contrastRatio,
+  });
 
   final double averageBrightness;
   final bool isDarkBackground;
@@ -2325,13 +2484,14 @@ class ImageCharacteristics {
 
 /// Stores color statistics of white, black, and empty points for adaptive thresholding
 class ColorProfile {
-  ColorProfile(
-      {required this.whiteMean,
-      required this.blackMean,
-      required this.emptyMean,
-      required this.whiteStd,
-      required this.blackStd,
-      required this.emptyStd});
+  ColorProfile({
+    required this.whiteMean,
+    required this.blackMean,
+    required this.emptyMean,
+    required this.whiteStd,
+    required this.blackStd,
+    required this.emptyStd,
+  });
 
   final double whiteMean; // Average brightness of detected white samples
   final double blackMean; // Average brightness of detected black samples
@@ -2366,7 +2526,13 @@ extension RgbToPixelExtension on Rgb {
     final img.Image dummyImage = img.Image(width: 1, height: 1);
     // Set RGBA, ensuring values are clamped to valid 0-255 range. Alpha is full.
     dummyImage.setPixelRgba(
-        0, 0, r.clamp(0, 255), g.clamp(0, 255), b.clamp(0, 255), 255);
+      0,
+      0,
+      r.clamp(0, 255),
+      g.clamp(0, 255),
+      b.clamp(0, 255),
+      255,
+    );
     return dummyImage.getPixel(0, 0);
   }
 }

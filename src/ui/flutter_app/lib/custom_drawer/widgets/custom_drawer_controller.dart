@@ -11,7 +11,7 @@ part of '../../custom_drawer/custom_drawer.dart';
 class CustomDrawerController extends ValueNotifier<CustomDrawerValue> {
   /// Creates a controller with the initial drawer state (Hidden by default)
   CustomDrawerController([CustomDrawerValue? value])
-      : super(value ?? CustomDrawerValue.hidden());
+    : super(value ?? CustomDrawerValue.hidden());
 
   /// Shows the drawer
   void showDrawer() => value = CustomDrawerValue.visible();

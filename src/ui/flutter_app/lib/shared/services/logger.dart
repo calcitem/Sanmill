@@ -17,5 +17,6 @@ int _clampLogLevel(int requested) {
   return requested;
 }
 
-final Logger logger =
-    Logger(level: Level.values[_clampLogLevel(EnvironmentConfig.logLevel)]);
+final Logger logger = Logger(
+  level: Level.values[_clampLogLevel(EnvironmentConfig.logLevel)],
+);

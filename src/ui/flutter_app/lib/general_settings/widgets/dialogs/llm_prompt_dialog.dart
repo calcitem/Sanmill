@@ -31,13 +31,15 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
 
     // Initialize controllers with current values, or default values if empty
     _headerController = TextEditingController(
-        text: currentHeader.isEmpty
-            ? PromptDefaults.llmPromptHeader
-            : currentHeader);
+      text: currentHeader.isEmpty
+          ? PromptDefaults.llmPromptHeader
+          : currentHeader,
+    );
     _footerController = TextEditingController(
-        text: currentFooter.isEmpty
-            ? PromptDefaults.llmPromptFooter
-            : currentFooter);
+      text: currentFooter.isEmpty
+          ? PromptDefaults.llmPromptFooter
+          : currentFooter,
+    );
   }
 
   @override
@@ -54,16 +56,18 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
     final String footerText = _footerController.text;
 
     // Use default values if fields are empty
-    final String finalHeader =
-        headerText.isEmpty ? PromptDefaults.llmPromptHeader : headerText;
-    final String finalFooter =
-        footerText.isEmpty ? PromptDefaults.llmPromptFooter : footerText;
+    final String finalHeader = headerText.isEmpty
+        ? PromptDefaults.llmPromptHeader
+        : headerText;
+    final String finalFooter = footerText.isEmpty
+        ? PromptDefaults.llmPromptFooter
+        : footerText;
 
     // Update settings using copyWith method to modify only the necessary fields
     DB().generalSettings = DB().generalSettings.copyWith(
-          llmPromptHeader: finalHeader,
-          llmPromptFooter: finalFooter,
-        );
+      llmPromptHeader: finalHeader,
+      llmPromptFooter: finalFooter,
+    );
     Navigator.of(context).pop();
   }
 
@@ -82,9 +86,11 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(S.of(context).restoreDefaultSettings),
-          content: Text(S
-              .of(context)
-              .areYouSureYouWantToResetThePromptTemplatesToDefaultValues),
+          content: Text(
+            S
+                .of(context)
+                .areYouSureYouWantToResetThePromptTemplatesToDefaultValues,
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
@@ -106,9 +112,7 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         // Make dialog scrollable to fit on all screen sizes
@@ -205,7 +209,8 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
               child: TextButton(
                 onPressed: _confirmResetToDefaults,
                 child: Text(
-                    S.of(context).restoreDefaultSettings), // "Reset to Default"
+                  S.of(context).restoreDefaultSettings,
+                ), // "Reset to Default"
               ),
             ),
 

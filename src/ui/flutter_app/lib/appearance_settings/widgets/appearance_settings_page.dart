@@ -55,34 +55,38 @@ class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});
 
   void setBoardCornerRadius(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BoardCornerRadiusSlider(),
-      );
+    context: context,
+    builder: (_) => const _BoardCornerRadiusSlider(),
+  );
 
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BoardBorderLineWidthSlider(),
-      );
+    context: context,
+    builder: (_) => const _BoardBorderLineWidthSlider(),
+  );
 
   void setBoardInnerLineWidth(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BoardInnerLineWidthSlider(),
-      );
+    context: context,
+    builder: (_) => const _BoardInnerLineWidthSlider(),
+  );
 
   void setBoardInnerRingSize(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BoardInnerRingSizeSlider(),
-      );
+    context: context,
+    builder: (_) => const _BoardInnerRingSizeSlider(),
+  );
 
   void setPointPaintingStyle(
-      BuildContext context, DisplaySettings displaySettings) {
+    BuildContext context,
+    DisplaySettings displaySettings,
+  ) {
     dynamic callback(PointPaintingStyle? pointPaintingStyle) {
       Navigator.pop(context);
       DB().displaySettings = displaySettings.copyWith(
-          pointPaintingStyle: pointPaintingStyle ?? PointPaintingStyle.none);
+        pointPaintingStyle: pointPaintingStyle ?? PointPaintingStyle.none,
+      );
 
       logger.t(
-          "[config] pointPaintingStyle: ${pointPaintingStyle ?? PointPaintingStyle.none}");
+        "[config] pointPaintingStyle: ${pointPaintingStyle ?? PointPaintingStyle.none}",
+      );
     }
 
     showModalBottomSheet(
@@ -95,29 +99,29 @@ class AppearanceSettingsPage extends StatelessWidget {
   }
 
   void setPointWidth(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _PointWidthSlider(),
-      );
+    context: context,
+    builder: (_) => const _PointWidthSlider(),
+  );
 
   void setPieceWidth(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _PieceWidthSlider(),
-      );
+    context: context,
+    builder: (_) => const _PieceWidthSlider(),
+  );
 
   void setFontSize(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _FontSizeSlider(),
-      );
+    context: context,
+    builder: (_) => const _FontSizeSlider(),
+  );
 
   void setBoardTop(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BoardTopSlider(),
-      );
+    context: context,
+    builder: (_) => const _BoardTopSlider(),
+  );
 
   void setAnimationDuration(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _AnimationDurationSlider(),
-      );
+    context: context,
+    builder: (_) => const _AnimationDurationSlider(),
+  );
 
   Future<void> setPlaceEffectAnimation(BuildContext context) async {
     final EffectItem? selectedEffect = await Navigator.push<EffectItem>(
@@ -130,11 +134,12 @@ class AppearanceSettingsPage extends StatelessWidget {
 
     if (selectedEffect != null) {
       DB().displaySettings = DB().displaySettings.copyWith(
-            placeEffectAnimation: selectedEffect.name,
-          );
+        placeEffectAnimation: selectedEffect.name,
+      );
 
-      logger
-          .t("[config] Selected PlaceEffectAnimation: ${selectedEffect.name}");
+      logger.t(
+        "[config] Selected PlaceEffectAnimation: ${selectedEffect.name}",
+      );
     }
   }
 
@@ -149,28 +154,29 @@ class AppearanceSettingsPage extends StatelessWidget {
 
     if (selectedEffect != null) {
       DB().displaySettings = DB().displaySettings.copyWith(
-            removeEffectAnimation: selectedEffect.name,
-          );
+        removeEffectAnimation: selectedEffect.name,
+      );
 
-      logger
-          .t("[config] Selected RemoveEffectAnimation: ${selectedEffect.name}");
+      logger.t(
+        "[config] Selected RemoveEffectAnimation: ${selectedEffect.name}",
+      );
     }
   }
 
   void setBackgroundImage(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BackgroundImagePicker(),
-      );
+    context: context,
+    builder: (_) => const _BackgroundImagePicker(),
+  );
 
   void setBoardImage(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _BoardImagePicker(),
-      );
+    context: context,
+    builder: (_) => const _BoardImagePicker(),
+  );
 
   void setPieceImage(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _PieceImagePicker(),
-      );
+    context: context,
+    builder: (_) => const _PieceImagePicker(),
+  );
 
   Future<void> importColorSettings(BuildContext context) async {
     final String strImport = S.of(context).import;
@@ -197,7 +203,8 @@ class AppearanceSettingsPage extends StatelessWidget {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
         SnackBar(
           key: const Key(
-              'import_color_settings_invalid_format_snackbar_non_ascii'),
+            'import_color_settings_invalid_format_snackbar_non_ascii',
+          ),
           content: Text(strInvalidFormat),
         ),
       );
@@ -274,7 +281,8 @@ class AppearanceSettingsPage extends StatelessWidget {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
         SnackBar(
           key: const Key(
-              'import_color_settings_invalid_format_snackbar_parse_error'),
+            'import_color_settings_invalid_format_snackbar_parse_error',
+          ),
           content: Text(strInvalidFormat),
         ),
       );
@@ -299,8 +307,9 @@ class AppearanceSettingsPage extends StatelessWidget {
       ),
       onPressed: () {
         Clipboard.setData(ClipboardData(text: content));
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).copiedToClipboard);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).copiedToClipboard,
+        );
         Navigator.pop(context);
       },
     );
@@ -353,14 +362,15 @@ class AppearanceSettingsPage extends StatelessWidget {
   }
 
   Future<void> _setTheme(
-      BuildContext context, ColorSettings colorSettings) async {
+    BuildContext context,
+    ColorSettings colorSettings,
+  ) async {
     // Navigate to the theme selection page instead of showing modal
     final ColorTheme? selectedTheme = await Navigator.push<ColorTheme>(
       context,
       MaterialPageRoute<ColorTheme>(
-        builder: (BuildContext context) => const ThemeSelectionPage(
-          currentTheme: ColorTheme.current,
-        ),
+        builder: (BuildContext context) =>
+            const ThemeSelectionPage(currentTheme: ColorTheme.current),
       ),
     );
 
@@ -425,16 +435,19 @@ class AppearanceSettingsPage extends StatelessWidget {
           key: const Key('color_settings_card_board_color_settings_list_tile'),
           titleString: S.of(context).boardColor,
           value: DB().colorSettings.boardBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings =
-              colorSettings.copyWith(boardBackgroundColor: val),
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            boardBackgroundColor: val,
+          ),
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_background_color_settings_list_tile'),
+            'color_settings_card_background_color_settings_list_tile',
+          ),
           titleString: S.of(context).backgroundColor,
           value: DB().colorSettings.darkBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings =
-              colorSettings.copyWith(darkBackgroundColor: val),
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            darkBackgroundColor: val,
+          ),
         ),
         SettingsListTile.color(
           key: const Key('color_settings_card_line_color_settings_list_tile'),
@@ -445,7 +458,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_white_piece_color_settings_list_tile'),
+            'color_settings_card_white_piece_color_settings_list_tile',
+          ),
           titleString: S.of(context).whitePieceColor,
           value: DB().colorSettings.whitePieceColor,
           onChanged: (Color val) =>
@@ -453,7 +467,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_black_piece_color_settings_list_tile'),
+            'color_settings_card_black_piece_color_settings_list_tile',
+          ),
           titleString: S.of(context).blackPieceColor,
           value: DB().colorSettings.blackPieceColor,
           onChanged: (Color val) =>
@@ -461,15 +476,18 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_piece_highlight_color_settings_list_tile'),
+            'color_settings_card_piece_highlight_color_settings_list_tile',
+          ),
           titleString: S.of(context).pieceHighlightColor,
           value: DB().colorSettings.pieceHighlightColor,
-          onChanged: (Color val) => DB().colorSettings =
-              colorSettings.copyWith(pieceHighlightColor: val),
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            pieceHighlightColor: val,
+          ),
         ),
         SettingsListTile.color(
-          key:
-              const Key('color_settings_card_message_color_settings_list_tile'),
+          key: const Key(
+            'color_settings_card_message_color_settings_list_tile',
+          ),
           titleString: S.of(context).messageColor,
           value: DB().colorSettings.messageColor,
           onChanged: (Color val) =>
@@ -484,7 +502,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_drawer_text_color_settings_list_tile'),
+            'color_settings_card_drawer_text_color_settings_list_tile',
+          ),
           titleString: S.of(context).drawerTextColor,
           value: DB().colorSettings.drawerTextColor,
           onChanged: (Color val) =>
@@ -492,7 +511,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_drawer_highlight_item_color_settings_list_tile'),
+            'color_settings_card_drawer_highlight_item_color_settings_list_tile',
+          ),
           titleString: S.of(context).drawerHighlightItemColor,
           value: DB().colorSettings.drawerHighlightItemColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
@@ -501,7 +521,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_main_toolbar_background_color_settings_list_tile'),
+            'color_settings_card_main_toolbar_background_color_settings_list_tile',
+          ),
           titleString: S.of(context).mainToolbarBackgroundColor,
           value: DB().colorSettings.mainToolbarBackgroundColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
@@ -510,15 +531,18 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_main_toolbar_icon_color_settings_list_tile'),
+            'color_settings_card_main_toolbar_icon_color_settings_list_tile',
+          ),
           titleString: S.of(context).mainToolbarIconColor,
           value: DB().colorSettings.mainToolbarIconColor,
-          onChanged: (Color val) => DB().colorSettings =
-              colorSettings.copyWith(mainToolbarIconColor: val),
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            mainToolbarIconColor: val,
+          ),
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_navigation_toolbar_background_color_settings_list_tile'),
+            'color_settings_card_navigation_toolbar_background_color_settings_list_tile',
+          ),
           titleString: S.of(context).navigationToolbarBackgroundColor,
           value: DB().colorSettings.navigationToolbarBackgroundColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
@@ -527,7 +551,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_navigation_toolbar_icon_color_settings_list_tile'),
+            'color_settings_card_navigation_toolbar_icon_color_settings_list_tile',
+          ),
           titleString: S.of(context).navigationToolbarIconColor,
           value: DB().colorSettings.navigationToolbarIconColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
@@ -537,28 +562,27 @@ class AppearanceSettingsPage extends StatelessWidget {
         if (EnvironmentConfig.devMode)
           SettingsListTile.color(
             key: const Key(
-                'color_settings_card_analysis_toolbar_background_color_settings_list_tile'),
+              'color_settings_card_analysis_toolbar_background_color_settings_list_tile',
+            ),
             titleString: S.of(context).analysisToolbarBackgroundColor,
             value: DB().colorSettings.analysisToolbarBackgroundColor,
-            onChanged: (Color val) =>
-                DB().colorSettings = colorSettings.copyWith(
-              analysisToolbarBackgroundColor: val,
-            ),
+            onChanged: (Color val) => DB().colorSettings = colorSettings
+                .copyWith(analysisToolbarBackgroundColor: val),
           ),
         if (EnvironmentConfig.devMode)
           SettingsListTile.color(
             key: const Key(
-                'color_settings_card_analysis_toolbar_icon_color_settings_list_tile'),
+              'color_settings_card_analysis_toolbar_icon_color_settings_list_tile',
+            ),
             titleString: S.of(context).analysisToolbarIconColor,
             value: DB().colorSettings.analysisToolbarIconColor,
-            onChanged: (Color val) =>
-                DB().colorSettings = colorSettings.copyWith(
-              analysisToolbarIconColor: val,
-            ),
+            onChanged: (Color val) => DB().colorSettings = colorSettings
+                .copyWith(analysisToolbarIconColor: val),
           ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_annotation_toolbar_background_color_settings_list_tile'),
+            'color_settings_card_annotation_toolbar_background_color_settings_list_tile',
+          ),
           titleString: S.of(context).annotationToolbarBackgroundColor,
           value: DB().colorSettings.annotationToolbarBackgroundColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
@@ -567,7 +591,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.color(
           key: const Key(
-              'color_settings_card_annotation_toolbar_icon_color_settings_list_tile'),
+            'color_settings_card_annotation_toolbar_icon_color_settings_list_tile',
+          ),
           titleString: S.of(context).annotationToolbarIconColor,
           value: DB().colorSettings.annotationToolbarIconColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
@@ -591,9 +616,8 @@ class AppearanceSettingsPage extends StatelessWidget {
   void _selectLanguage(BuildContext context, DisplaySettings displaySettings) {
     showDialog<Locale?>(
       context: context,
-      builder: (BuildContext context) => _LanguagePicker(
-        currentLanguageLocale: displaySettings.locale,
-      ),
+      builder: (BuildContext context) =>
+          _LanguagePicker(currentLanguageLocale: displaySettings.locale),
     ).then((Locale? newLocale) {
       if (!context.mounted) {
         return;
@@ -633,73 +657,81 @@ class AppearanceSettingsPage extends StatelessWidget {
             key: const Key('display_settings_card_full_screen_switch_tile'),
             value: displaySettings.isFullScreen,
             onChanged: (bool val) {
-              DB().displaySettings =
-                  displaySettings.copyWith(isFullScreen: val);
-              rootScaffoldMessengerKey.currentState!
-                  .showSnackBarClear(S.of(context).reopenToTakeEffect);
+              DB().displaySettings = displaySettings.copyWith(
+                isFullScreen: val,
+              );
+              rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                S.of(context).reopenToTakeEffect,
+              );
             },
             titleString: S.of(context).fullScreen,
           ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_piece_count_in_hand_shown_switch_tile'),
+            'display_settings_card_piece_count_in_hand_shown_switch_tile',
+          ),
           value: displaySettings.isPieceCountInHandShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isPieceCountInHandShown: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
         if (!(Constants.isSmallScreen(context) == true &&
             DB().ruleSettings.piecesCount > 9))
           SettingsListTile.switchTile(
             key: const Key(
-                'display_settings_card_unplaced_removed_pieces_shown_switch_tile'),
+              'display_settings_card_unplaced_removed_pieces_shown_switch_tile',
+            ),
             value: displaySettings.isUnplacedAndRemovedPiecesShown,
-            onChanged: (bool val) => DB().displaySettings =
-                displaySettings.copyWith(isUnplacedAndRemovedPiecesShown: val),
+            onChanged: (bool val) => DB().displaySettings = displaySettings
+                .copyWith(isUnplacedAndRemovedPiecesShown: val),
             titleString: S.of(context).isUnplacedAndRemovedPiecesShown,
           ),
         SettingsListTile.switchTile(
           key: const Key('display_settings_card_notations_shown_switch_tile'),
           value: displaySettings.isNotationsShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isNotationsShown: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isNotationsShown: val),
           titleString: S.of(context).isNotationsShown,
         ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_history_navigation_toolbar_shown_switch_tile'),
+            'display_settings_card_history_navigation_toolbar_shown_switch_tile',
+          ),
           value: displaySettings.isHistoryNavigationToolbarShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
         if (EnvironmentConfig.devMode)
           SettingsListTile.switchTile(
             key: const Key(
-                'display_settings_card_analysis_toolbar_shown_switch_tile'),
+              'display_settings_card_analysis_toolbar_shown_switch_tile',
+            ),
             value: displaySettings.isAnalysisToolbarShown,
-            onChanged: (bool val) => DB().displaySettings =
-                displaySettings.copyWith(isAnalysisToolbarShown: val),
+            onChanged: (bool val) => DB().displaySettings = displaySettings
+                .copyWith(isAnalysisToolbarShown: val),
             titleString: S.of(context).isAnalysisToolbarShown,
           ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_annotation_toolbar_shown_switch_tile'),
+            'display_settings_card_annotation_toolbar_shown_switch_tile',
+          ),
           value: displaySettings.isAnnotationToolbarShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isAnnotationToolbarShown: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isAnnotationToolbarShown: val),
           titleString: S.of(context).isAnnotationToolbarShown,
         ),
         SettingsListTile.switchTile(
           key: const Key('display_settings_card_toolbar_at_bottom_switch_tile'),
           value: displaySettings.isToolbarAtBottom,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isToolbarAtBottom: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isToolbarAtBottom: val),
           titleString: S.of(context).isToolbarAtBottom,
         ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_positional_advantage_indicator_shown_switch_tile'),
+            'display_settings_card_positional_advantage_indicator_shown_switch_tile',
+          ),
           value: displaySettings.isPositionalAdvantageIndicatorShown,
           onChanged: (bool val) => DB().displaySettings = displaySettings
               .copyWith(isPositionalAdvantageIndicatorShown: val),
@@ -707,14 +739,17 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_advantage_graph_shown_switch_tile'),
+            'display_settings_card_advantage_graph_shown_switch_tile',
+          ),
           value: displaySettings.isAdvantageGraphShown,
           onChanged: (bool val) {
-            DB().displaySettings =
-                displaySettings.copyWith(isAdvantageGraphShown: val);
+            DB().displaySettings = displaySettings.copyWith(
+              isAdvantageGraphShown: val,
+            );
             if (val) {
-              rootScaffoldMessengerKey.currentState!
-                  .showSnackBarClear(S.of(context).advantageGraphHint);
+              rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                S.of(context).advantageGraphHint,
+              );
             }
           },
           titleString: S.of(context).showAdvantageGraph,
@@ -722,52 +757,59 @@ class AppearanceSettingsPage extends StatelessWidget {
         if (Platform.isAndroid || Platform.isIOS)
           SettingsListTile.switchTile(
             key: const Key(
-                'display_settings_card_swipe_to_reveal_the_drawer_switch_tile'),
+              'display_settings_card_swipe_to_reveal_the_drawer_switch_tile',
+            ),
             value: displaySettings.swipeToRevealTheDrawer,
-            onChanged: (bool val) => DB().displaySettings =
-                displaySettings.copyWith(swipeToRevealTheDrawer: val),
+            onChanged: (bool val) => DB().displaySettings = displaySettings
+                .copyWith(swipeToRevealTheDrawer: val),
             titleString: S.of(context).swipeToRevealTheDrawer,
           ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_board_corner_radius_settings_list_tile'),
+            'display_settings_card_board_corner_radius_settings_list_tile',
+          ),
           titleString: S.of(context).boardCornerRadius,
           onTap: () => setBoardCornerRadius(context),
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_board_border_line_width_settings_list_tile'),
+            'display_settings_card_board_border_line_width_settings_list_tile',
+          ),
           titleString: S.of(context).boardBorderLineWidth,
           onTap: () => setBoardBorderLineWidth(context),
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_board_inner_line_width_settings_list_tile'),
+            'display_settings_card_board_inner_line_width_settings_list_tile',
+          ),
           titleString: S.of(context).boardInnerLineWidth,
           onTap: () => setBoardInnerLineWidth(context),
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_board_inner_ring_size_settings_list_tile'),
+            'display_settings_card_board_inner_ring_size_settings_list_tile',
+          ),
           titleString: S.of(context).boardInnerRingSize,
           onTap: () => setBoardInnerRingSize(context),
         ),
         SettingsListTile.switchTile(
           key: const Key('display_settings_card_board_shadow_switch_tile'),
           value: displaySettings.boardShadowEnabled,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(boardShadowEnabled: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(boardShadowEnabled: val),
           titleString: S.of(context).boardShadowEnabled,
         ),
         SettingsListTile(
-          key:
-              const Key('display_settings_card_point_style_settings_list_tile'),
+          key: const Key(
+            'display_settings_card_point_style_settings_list_tile',
+          ),
           titleString: S.of(context).pointStyle,
           onTap: () => setPointPaintingStyle(context, displaySettings),
         ),
         SettingsListTile(
-          key:
-              const Key('display_settings_card_point_width_settings_list_tile'),
+          key: const Key(
+            'display_settings_card_point_width_settings_list_tile',
+          ),
           titleString: S.of(context).pointWidth,
           onTap: () => setPointWidth(context),
         ),
@@ -778,15 +820,17 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_numbers_on_pieces_shown_switch_tile'),
+            'display_settings_card_numbers_on_pieces_shown_switch_tile',
+          ),
           value: displaySettings.isNumbersOnPiecesShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isNumbersOnPiecesShown: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isNumbersOnPiecesShown: val),
           titleString: S.of(context).showNumbersOnPieces,
         ),
         SettingsListTile(
-          key:
-              const Key('display_settings_card_piece_width_settings_list_tile'),
+          key: const Key(
+            'display_settings_card_piece_width_settings_list_tile',
+          ),
           titleString: S.of(context).pieceWidth,
           onTap: () => setPieceWidth(context),
         ),
@@ -797,52 +841,59 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_animation_duration_settings_list_tile'),
+            'display_settings_card_animation_duration_settings_list_tile',
+          ),
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_place_effect_animation_settings_list_tile'),
+            'display_settings_card_place_effect_animation_settings_list_tile',
+          ),
           titleString: S.of(context).placeEffectAnimation,
           onTap: () => setPlaceEffectAnimation(context),
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_remove_effect_animation_settings_list_tile'),
+            'display_settings_card_remove_effect_animation_settings_list_tile',
+          ),
           titleString: S.of(context).removeEffectAnimation,
           onTap: () => setRemoveEffectAnimation(context),
         ),
         SettingsListTile.switchTile(
           key: const Key('display_settings_card_vignette_effect_switch_tile'),
           value: displaySettings.vignetteEffectEnabled,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(vignetteEffectEnabled: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(vignetteEffectEnabled: val),
           titleString: S.of(context).vignetteEffect,
         ),
         SettingsListTile.switchTile(
           key: const Key(
-              'display_settings_card_screenshot_game_info_shown_switch_tile'),
+            'display_settings_card_screenshot_game_info_shown_switch_tile',
+          ),
           value: displaySettings.isScreenshotGameInfoShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isScreenshotGameInfoShown: val),
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isScreenshotGameInfoShown: val),
           titleString: S.of(context).showGameInfoOnScreenshots,
         ),
         SettingsListTile(
           key: const Key(
-              'display_settings_card_background_image_settings_list_tile'),
+            'display_settings_card_background_image_settings_list_tile',
+          ),
           titleString: S.of(context).backgroundImage,
           onTap: () => setBackgroundImage(context),
         ),
         SettingsListTile(
-          key:
-              const Key('display_settings_card_board_image_settings_list_tile'),
+          key: const Key(
+            'display_settings_card_board_image_settings_list_tile',
+          ),
           titleString: S.of(context).boardImage,
           onTap: () => setBoardImage(context),
         ),
         SettingsListTile(
-          key:
-              const Key('display_settings_card_piece_image_settings_list_tile'),
+          key: const Key(
+            'display_settings_card_piece_image_settings_list_tile',
+          ),
           titleString: S.of(context).pieceImage,
           onTap: () => setPieceImage(context),
         ),
@@ -872,14 +923,16 @@ class AppearanceSettingsPage extends StatelessWidget {
           children: <Widget>[
             ValueListenableBuilder<Box<DisplaySettings>>(
               key: const Key(
-                  'appearance_settings_page_display_settings_value_listenable_builder'),
+                'appearance_settings_page_display_settings_value_listenable_builder',
+              ),
               valueListenable: DB().listenDisplaySettings,
               builder: _buildDisplaySettings,
             ),
             if (Constants.isSmallScreen(context) == false)
               ValueListenableBuilder<Box<ColorSettings>>(
                 key: const Key(
-                    'appearance_settings_page_color_settings_value_listenable_builder'),
+                  'appearance_settings_page_color_settings_value_listenable_builder',
+                ),
                 valueListenable: DB().listenColorSettings,
                 builder: _buildColorSettings,
               ),

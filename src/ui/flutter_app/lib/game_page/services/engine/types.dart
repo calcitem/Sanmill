@@ -173,9 +173,12 @@ extension PieceColorExtension on PieceColor {
         return colorSettings.blackPieceColor;
       case PieceColor.marked:
         return getTranslucentColor(
-            getAverageColor(
-                colorSettings.whitePieceColor, colorSettings.blackPieceColor),
-            0); // Fully transparent
+          getAverageColor(
+            colorSettings.whitePieceColor,
+            colorSettings.blackPieceColor,
+          ),
+          0,
+        ); // Fully transparent
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:
@@ -191,9 +194,12 @@ extension PieceColorExtension on PieceColor {
         return AppTheme.blackPieceBorderColor;
       case PieceColor.marked:
         return getTranslucentColor(
-            getAverageColor(
-                AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor),
-            0); // Fully transparent
+          getAverageColor(
+            AppTheme.whitePieceBorderColor,
+            AppTheme.blackPieceBorderColor,
+          ),
+          0,
+        ); // Fully transparent
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:
@@ -226,16 +232,17 @@ extension PhaseExtension on Phase {
     switch (this) {
       case Phase.placing:
         if (DB().ruleSettings.mayMoveInPlacingPhase) {
-          final String side =
-              GameController().position.sideToMove.playerName(context);
+          final String side = GameController().position.sideToMove.playerName(
+            context,
+          );
           return S.of(context).tipToMove(side);
         } else {
           return S.of(context).tipPlace;
         }
       case Phase.moving:
-        if (GameController()
+        if (GameController().position.pieceToRemoveCount[GameController()
                 .position
-                .pieceToRemoveCount[GameController().position.sideToMove]! !=
+                .sideToMove]! !=
             0) {
           return S.of(context).tipRemove;
         }
@@ -431,7 +438,7 @@ Map<int, int> squareToIndex = <int, int>{
   28: 45,
   29: 42,
   30: 21,
-  31: 0
+  31: 0,
 };
 
 int notationToSquare(String notation) {
@@ -505,8 +512,9 @@ String squareToNotation(int square) {
   return squareToNotation[square] ?? '';
 }
 
-Map<int, int> indexToSquare =
-    squareToIndex.map((int k, int v) => MapEntry<int, int>(v, k));
+Map<int, int> indexToSquare = squareToIndex.map(
+  (int k, int v) => MapEntry<int, int>(v, k),
+);
 
 /*
           a b c d e f g

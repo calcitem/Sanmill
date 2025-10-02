@@ -121,11 +121,13 @@ class NetworkService with WidgetsBindingObserver {
       final timeInBackground = DateTime.now().difference(_backgroundStartTime!);
       if (timeInBackground > _maxBackgroundTime) {
         logger.w(
-            "$_logTag App was in background for ${timeInBackground.inSeconds}s, checking connection");
+          "$_logTag App was in background for ${timeInBackground.inSeconds}s, checking connection",
+        );
         _checkConnectionAfterResume();
       } else {
         logger.i(
-            "$_logTag App was in background for ${timeInBackground.inSeconds}s, still OK");
+          "$_logTag App was in background for ${timeInBackground.inSeconds}s, still OK",
+        );
         if (isHost && _serverSocket != null) {
           Future.delayed(const Duration(milliseconds: 500), () {
             _checkConnectionAfterResume();
@@ -240,8 +242,9 @@ class NetworkService with WidgetsBindingObserver {
 
           if (lastConnAttempt != null &&
               now.difference(lastConnAttempt!).inSeconds < 2) {
-            logger
-                .w("$_logTag Connection from $remoteAddr too frequent, reject");
+            logger.w(
+              "$_logTag Connection from $remoteAddr too frequent, reject",
+            );
             socket.destroy();
             return;
           }
@@ -286,7 +289,8 @@ class NetworkService with WidgetsBindingObserver {
     _opponentPort = socket.remotePort;
     _lastConnectionTime = DateTime.now();
     logger.i(
-        "$_logTag Accepted client at $_opponentAddress:${socket.remotePort}");
+      "$_logTag Accepted client at $_opponentAddress:${socket.remotePort}",
+    );
 
     _messagesSent = 0;
     _messagesReceived = 0;
@@ -303,8 +307,11 @@ class NetworkService with WidgetsBindingObserver {
   }
 
   /// Connect as a client.
-  Future<void> connectToHost(String host, int port,
-      {int retryCount = _maxReconnectAttempts}) async {
+  Future<void> connectToHost(
+    String host,
+    int port, {
+    int retryCount = _maxReconnectAttempts,
+  }) async {
     if (_disposed) {
       throw Exception("NetworkService disposed; cannot connect.");
     }
@@ -320,11 +327,14 @@ class NetworkService with WidgetsBindingObserver {
       try {
         logger.i("$_logTag Connecting to $host:$port (attempt ${attempt + 1})");
 
-        final socket = await Socket.connect(host, port)
-            .timeout(_connectionTimeout, onTimeout: () {
-          throw TimeoutException(
-              "Connection timed out after ${_connectionTimeout.inSeconds}s");
-        });
+        final socket = await Socket.connect(host, port).timeout(
+          _connectionTimeout,
+          onTimeout: () {
+            throw TimeoutException(
+              "Connection timed out after ${_connectionTimeout.inSeconds}s",
+            );
+          },
+        );
 
         if (_disposed) {
           socket.destroy();
@@ -386,8 +396,9 @@ class NetworkService with WidgetsBindingObserver {
     }
 
     _isReconnecting = true;
-    logger
-        .i("$_logTag Attempting reconnect to $_opponentAddress:$_opponentPort");
+    logger.i(
+      "$_logTag Attempting reconnect to $_opponentAddress:$_opponentPort",
+    );
 
     final BuildContext? currentContext =
         rootScaffoldMessengerKey.currentContext;
@@ -439,8 +450,10 @@ class NetworkService with WidgetsBindingObserver {
 
   /// Listens for discovery requests on the selected IP or anyIPv4,
   /// depending on platform capabilities.
-  Future<void> _startDiscoveryListener(int serverPort,
-      {String? localIpAddress}) async {
+  Future<void> _startDiscoveryListener(
+    int serverPort, {
+    String? localIpAddress,
+  }) async {
     if (_disposed) {
       return;
     }
@@ -480,23 +493,26 @@ class NetworkService with WidgetsBindingObserver {
 
       logger.i("$_logTag Discovery listener on ${bindAddress.address}:33334");
 
-      _discoverySocket!.listen((RawSocketEvent event) {
-        if (_disposed) {
-          return;
-        }
-        if (event == RawSocketEvent.read) {
-          final dg = _discoverySocket!.receive();
-          if (dg != null) {
-            final message = utf8.decode(dg.data).trim();
-            if (message == 'Discovery?') {
-              _respondToDiscovery(dg, serverPort);
+      _discoverySocket!.listen(
+        (RawSocketEvent event) {
+          if (_disposed) {
+            return;
+          }
+          if (event == RawSocketEvent.read) {
+            final dg = _discoverySocket!.receive();
+            if (dg != null) {
+              final message = utf8.decode(dg.data).trim();
+              if (message == 'Discovery?') {
+                _respondToDiscovery(dg, serverPort);
+              }
             }
           }
-        }
-      }, onError: (error, st) {
-        logger.e("$_logTag Discovery socket error: $error");
-        logger.d("$_logTag Stack trace: $st");
-      });
+        },
+        onError: (error, st) {
+          logger.e("$_logTag Discovery socket error: $error");
+          logger.d("$_logTag Stack trace: $st");
+        },
+      );
     } catch (e, st) {
       logger.e("$_logTag Could not bind discovery socket on port 33334: $e");
       logger.d("$_logTag Stack trace: $st");
@@ -529,57 +545,58 @@ class NetworkService with WidgetsBindingObserver {
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .listen(
-      (String line) {
-        if (_disposed) {
-          return;
-        }
-        final remotePort = socket.remotePort;
-        final trimmed = line.trim();
-        if (trimmed.isEmpty) {
-          return;
-        }
+          (String line) {
+            if (_disposed) {
+              return;
+            }
+            final remotePort = socket.remotePort;
+            final trimmed = line.trim();
+            if (trimmed.isEmpty) {
+              return;
+            }
 
-        _messagesReceived++;
-        logger.t(
-            "$_logTag Received from $_opponentAddress:$remotePort => $trimmed");
+            _messagesReceived++;
+            logger.t(
+              "$_logTag Received from $_opponentAddress:$remotePort => $trimmed",
+            );
 
-        if (trimmed.startsWith("protocol:")) {
-          _handleProtocol(trimmed);
-          return;
-        }
-        if (trimmed == "heartbeat") {
-          if (!isHost) {
-            _lastHeartbeatReceived = DateTime.now();
-            _sendMessageInternal("heartbeatAck");
-            logger.t("$_logTag [Client] got heartbeat -> ack");
-          }
-          return;
-        }
-        if (trimmed == "heartbeatAck") {
-          if (isHost) {
-            _lastHeartbeatReceived = DateTime.now();
-            logger.t("$_logTag [Host] got heartbeatAck");
-          }
-          return;
-        }
+            if (trimmed.startsWith("protocol:")) {
+              _handleProtocol(trimmed);
+              return;
+            }
+            if (trimmed == "heartbeat") {
+              if (!isHost) {
+                _lastHeartbeatReceived = DateTime.now();
+                _sendMessageInternal("heartbeatAck");
+                logger.t("$_logTag [Client] got heartbeat -> ack");
+              }
+              return;
+            }
+            if (trimmed == "heartbeatAck") {
+              if (isHost) {
+                _lastHeartbeatReceived = DateTime.now();
+                logger.t("$_logTag [Host] got heartbeatAck");
+              }
+              return;
+            }
 
-        _messageQueue.add(trimmed);
-        _processMessageQueue();
-      },
-      onError: (error, st) {
-        if (!_disposed) {
-          logger.e("$_logTag Socket error: $error");
-          logger.d("$_logTag Stack trace: $st");
-          _handleDisconnection(error: error.toString());
-        }
-      },
-      onDone: () {
-        if (!_disposed) {
-          logger.i("$_logTag Remote socket closed by $_opponentAddress");
-          _handleDisconnection(reason: "Remote socket closed");
-        }
-      },
-    );
+            _messageQueue.add(trimmed);
+            _processMessageQueue();
+          },
+          onError: (error, st) {
+            if (!_disposed) {
+              logger.e("$_logTag Socket error: $error");
+              logger.d("$_logTag Stack trace: $st");
+              _handleDisconnection(error: error.toString());
+            }
+          },
+          onDone: () {
+            if (!_disposed) {
+              logger.i("$_logTag Remote socket closed by $_opponentAddress");
+              _handleDisconnection(reason: "Remote socket closed");
+            }
+          },
+        );
 
     socket.done.catchError((error, st) {
       if (!_disposed) {
@@ -598,8 +615,9 @@ class NetworkService with WidgetsBindingObserver {
     try {
       final timer = Timer(_messageProcessingTimeout * 2, () {
         if (_isProcessingMessages) {
-          logger
-              .w("$_logTag Message processing timed out, continuing next loop");
+          logger.w(
+            "$_logTag Message processing timed out, continuing next loop",
+          );
           _isProcessingMessages = false;
           if (_messageQueue.isNotEmpty && !_disposed) {
             Future.delayed(Duration.zero, _processMessageQueue);
@@ -737,8 +755,9 @@ class NetworkService with WidgetsBindingObserver {
       }
     });
 
-    _heartbeatCheckTimer =
-        Timer.periodic(const Duration(milliseconds: 500), (_) {
+    _heartbeatCheckTimer = Timer.periodic(const Duration(milliseconds: 500), (
+      _,
+    ) {
       if (_disposed) {
         return;
       }
@@ -864,10 +883,12 @@ class NetworkService with WidgetsBindingObserver {
   void _handleAiMovesFirstResponse(bool hostAiMovesFirst) {
     try {
       final bool clientAiMovesFirst = !hostAiMovesFirst;
-      DB().generalSettings =
-          DB().generalSettings.copyWith(aiMovesFirst: clientAiMovesFirst);
+      DB().generalSettings = DB().generalSettings.copyWith(
+        aiMovesFirst: clientAiMovesFirst,
+      );
       logger.i(
-          "$_logTag Updated client aiMovesFirst=$clientAiMovesFirst (host=$hostAiMovesFirst)");
+        "$_logTag Updated client aiMovesFirst=$clientAiMovesFirst (host=$hostAiMovesFirst)",
+      );
 
       GameController().headerIconsNotifier.showIcons();
       GameController().boardSemanticsNotifier.updateSemantics();
@@ -908,19 +929,19 @@ class NetworkService with WidgetsBindingObserver {
 
     logger.i("$_logTag Opponent disconnected: $disconnectReason");
 
-    GameController()
-        .headerTipNotifier
-        .showTip("$userFriendlyMessage, $gameOverText");
+    GameController().headerTipNotifier.showTip(
+      "$userFriendlyMessage, $gameOverText",
+    );
 
     GameController().isLanOpponentTurn = false;
     if (GameController().position.phase != Phase.gameOver) {
       GameController().position.setGameOver(
-            PieceColor.draw,
-            GameOverReason.drawStalemateCondition,
-          );
-      GameController()
-          .headerTipNotifier
-          .showTip("$userFriendlyMessage, $gameOverText");
+        PieceColor.draw,
+        GameOverReason.drawStalemateCondition,
+      );
+      GameController().headerTipNotifier.showTip(
+        "$userFriendlyMessage, $gameOverText",
+      );
     }
 
     _notifyConnectionStatusChanged(false, info: userFriendlyMessage);
@@ -1003,8 +1024,9 @@ class NetworkService with WidgetsBindingObserver {
         logger.w("$_logTag No Wi-Fi IP found, fallback to interface scan");
       }
 
-      final interfaces =
-          await NetworkInterface.list(type: InternetAddressType.IPv4);
+      final interfaces = await NetworkInterface.list(
+        type: InternetAddressType.IPv4,
+      );
 
       // Attempt wifi-like names first
       for (final iface in interfaces) {
@@ -1059,8 +1081,9 @@ class NetworkService with WidgetsBindingObserver {
         logger.w("$_logTag No Wi-Fi IP found, scanning interfaces");
       }
 
-      final interfaces =
-          await NetworkInterface.list(type: InternetAddressType.IPv4);
+      final interfaces = await NetworkInterface.list(
+        type: InternetAddressType.IPv4,
+      );
 
       // Gather WiFi-like interfaces first
       for (final iface in interfaces) {
@@ -1073,7 +1096,8 @@ class NetworkService with WidgetsBindingObserver {
             if (!addr.isLoopback) {
               result.add(addr.address);
               logger.i(
-                  "$_logTag Found WiFi interface ${iface.name}: ${addr.address}");
+                "$_logTag Found WiFi interface ${iface.name}: ${addr.address}",
+              );
             }
           }
         }
@@ -1090,8 +1114,9 @@ class NetworkService with WidgetsBindingObserver {
           for (final addr in iface.addresses) {
             if (!addr.isLoopback && !result.contains(addr.address)) {
               result.add(addr.address);
-              logger
-                  .i("$_logTag Found interface ${iface.name}: ${addr.address}");
+              logger.i(
+                "$_logTag Found interface ${iface.name}: ${addr.address}",
+              );
             }
           }
         }
@@ -1130,46 +1155,51 @@ class NetworkService with WidgetsBindingObserver {
       timeoutTimer = Timer(timeout, () {
         if (!completer.isCompleted) {
           logger.i(
-              "[Network] Host discovery timed out after ${timeout.inSeconds}s");
+            "[Network] Host discovery timed out after ${timeout.inSeconds}s",
+          );
           completer.complete(null);
         }
       });
 
-      subscription = socket.listen((RawSocketEvent event) {
-        if (event == RawSocketEvent.read) {
-          final dg = socket!.receive();
-          if (dg != null) {
-            try {
-              final msg = utf8.decode(dg.data).trim();
-              if (msg.startsWith('Sanmill:')) {
-                final parts = msg.split(':');
-                if (parts.length == 3) {
-                  if (!completer.isCompleted) {
-                    final result = '${parts[1]}:${parts[2]}';
-                    logger.i("[Network] Found host: $result");
-                    completer.complete(result);
+      subscription = socket.listen(
+        (RawSocketEvent event) {
+          if (event == RawSocketEvent.read) {
+            final dg = socket!.receive();
+            if (dg != null) {
+              try {
+                final msg = utf8.decode(dg.data).trim();
+                if (msg.startsWith('Sanmill:')) {
+                  final parts = msg.split(':');
+                  if (parts.length == 3) {
+                    if (!completer.isCompleted) {
+                      final result = '${parts[1]}:${parts[2]}';
+                      logger.i("[Network] Found host: $result");
+                      completer.complete(result);
+                    }
+                  } else {
+                    logger.w("[Network] Malformed discovery response: $msg");
                   }
-                } else {
-                  logger.w("[Network] Malformed discovery response: $msg");
                 }
+              } catch (e) {
+                logger.e("[Network] Error decoding discovery response: $e");
               }
-            } catch (e) {
-              logger.e("[Network] Error decoding discovery response: $e");
             }
           }
-        }
-      }, onError: (error, st) {
-        logger.e("[Network] Discovery socket error: $error");
-        if (!completer.isCompleted) {
-          completer.complete(null);
-        }
-      });
+        },
+        onError: (error, st) {
+          logger.e("[Network] Discovery socket error: $error");
+          if (!completer.isCompleted) {
+            completer.complete(null);
+          }
+        },
+      );
 
       // Compute broadcast address from the chosen IP
       final broadcastAddrString = _computeBroadcastAddress(localIp);
       final broadcastAddr = InternetAddress(broadcastAddrString);
       logger.i(
-          "[Network] Using broadcast address for discovery: $broadcastAddrString");
+        "[Network] Using broadcast address for discovery: $broadcastAddrString",
+      );
 
       // Send the "Discovery?" message a few times
       for (int i = 0; i < 3; i++) {
@@ -1178,13 +1208,10 @@ class NetworkService with WidgetsBindingObserver {
         }
 
         try {
-          socket.send(
-            utf8.encode('Discovery?'),
-            broadcastAddr,
-            33334,
-          );
+          socket.send(utf8.encode('Discovery?'), broadcastAddr, 33334);
           logger.d(
-              "[Network] Sent discovery broadcast to $broadcastAddrString (attempt ${i + 1})");
+            "[Network] Sent discovery broadcast to $broadcastAddrString (attempt ${i + 1})",
+          );
           await Future.delayed(const Duration(seconds: 1));
         } catch (e) {
           logger.e("[Network] Error sending discovery broadcast: $e");

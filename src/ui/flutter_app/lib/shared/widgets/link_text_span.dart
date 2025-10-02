@@ -12,28 +12,27 @@ import '../services/logger.dart';
 
 class LinkTextSpan extends TextSpan {
   LinkTextSpan({super.style, required String url, String? text})
-      : super(
-          text: text ?? url,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              if (EnvironmentConfig.test == true) {
-                return;
+    : super(
+        text: text ?? url,
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            if (EnvironmentConfig.test == true) {
+              return;
+            }
+            final Uri? uri = _normalize(url);
+            if (uri == null) {
+              logger.e('Cannot launch invalid link: $url');
+              return;
+            }
+            launchUrl(uri, mode: LaunchMode.externalApplication).then((
+              bool launched,
+            ) {
+              if (!launched) {
+                logger.e('Failed to launch URL: $uri');
               }
-              final Uri? uri = _normalize(url);
-              if (uri == null) {
-                logger.e('Cannot launch invalid link: $url');
-                return;
-              }
-              launchUrl(
-                uri,
-                mode: LaunchMode.externalApplication,
-              ).then((bool launched) {
-                if (!launched) {
-                  logger.e('Failed to launch URL: $uri');
-                }
-              });
-            },
-        );
+            });
+          },
+      );
 }
 
 Uri? _normalize(String rawUrl) {

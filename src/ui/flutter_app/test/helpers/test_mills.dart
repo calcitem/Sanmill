@@ -19,7 +19,8 @@ class WinLessThanThreeGame extends TestGame {
   const WinLessThanThreeGame();
 
   @override
-  String get moveList => ' 1.    g1    b4\n'
+  String get moveList =>
+      ' 1.    g1    b4\n'
       ' 2.    f2    f4\n'
       ' 3.    d1    d6\n'
       ' 4.    a1xf4    f4\n'
@@ -53,7 +54,8 @@ class WinLessThanThreeGame extends TestGame {
       '[ g4, g7, f4, d3, c4, b2, a4, xd3, d3, c3, b4, d7, xd3, d3, a7, a1, d1, a4, a5, a4, a7-g7, b4-b6, c4-b4, a4-a3, b4-c4, xb6, a1-a1, f4-b4, xb2, g7-c7, g7-g7, d3-f4, d7-d1, a3-d3, a5-a4, a1-b2, a4-a3, b2-b2, xg7, b4-b6, f4-b4, d1-d7, xd3, a4-d1, c3-d3, c7-g7, d3-c3, xb2, b4-a1, c4-b4, g7-b2, xb4, c3-d3, a1-c3, b6-b4, c3-a1, xb4, g4-c3, xb2, ]';
 
   @override
-  String get nonstandardMoveList => ' 1. g4  2. g7\n'
+  String get nonstandardMoveList =>
+      ' 1. g4  2. g7\n'
       ' 3. f4  4. d3\n'
       ' 5. c4  6. b2\n'
       ' 7. a4  8. xd3\n'

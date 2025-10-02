@@ -210,10 +210,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
             tooltip: isFinally ? S.of(context).gotIt : S.of(context).skip,
             onPressed: () => _finishTutorial(context),
             icon: isFinally
-                ? const Icon(
-                    Icons.done_outline,
-                    color: Colors.black,
-                  )
+                ? const Icon(Icons.done_outline, color: Colors.black)
                 : const Icon(
                     FluentIcons.arrow_exit_20_regular,
                     color: Colors.black,
@@ -411,43 +408,43 @@ class _TutorialDialogState extends State<TutorialDialog> {
     final int index = _boardIndex(row, col);
     return _isLandscape
         ? pointFromIndex(index, _boardSize) +
-            Offset(
-              (MediaQuery.of(context).size.width -
-                      MediaQuery.of(context).padding.horizontal -
-                      landscapeBoardWidth) /
-                  2,
-              (MediaQuery.of(context).size.height -
-                      landscapeBoardWidth -
-                      MediaQuery.of(context).padding.vertical) /
-                  2,
-            )
+              Offset(
+                (MediaQuery.of(context).size.width -
+                        MediaQuery.of(context).padding.horizontal -
+                        landscapeBoardWidth) /
+                    2,
+                (MediaQuery.of(context).size.height -
+                        landscapeBoardWidth -
+                        MediaQuery.of(context).padding.vertical) /
+                    2,
+              )
         : pointFromIndex(index, _boardSize) +
-            Offset(
-              AppTheme.boardPadding,
-              AppTheme.boardPadding +
-                  kToolbarHeight +
-                  MediaQuery.of(context).padding.top,
-            );
+              Offset(
+                AppTheme.boardPadding,
+                AppTheme.boardPadding +
+                    kToolbarHeight +
+                    MediaQuery.of(context).padding.top,
+              );
   }
 
   Offset _pieceAnimationOffset(int row, int col) {
     final int index = _boardIndex(row, col);
     return _isLandscape
         ? pointFromIndex(index, _boardSize) +
-            Offset(
-              (MediaQuery.of(context).size.width -
-                      MediaQuery.of(context).padding.horizontal -
-                      landscapeBoardWidth) /
-                  2,
-              (MediaQuery.of(context).size.height -
-                          landscapeBoardWidth -
-                          MediaQuery.of(context).padding.vertical) /
-                      2 -
-                  kToolbarHeight -
-                  MediaQuery.of(context).padding.top,
-            )
+              Offset(
+                (MediaQuery.of(context).size.width -
+                        MediaQuery.of(context).padding.horizontal -
+                        landscapeBoardWidth) /
+                    2,
+                (MediaQuery.of(context).size.height -
+                            landscapeBoardWidth -
+                            MediaQuery.of(context).padding.vertical) /
+                        2 -
+                    kToolbarHeight -
+                    MediaQuery.of(context).padding.top,
+              )
         : pointFromIndex(index, _boardSize) +
-            Offset(AppTheme.boardPadding, AppTheme.boardPadding);
+              Offset(AppTheme.boardPadding, AppTheme.boardPadding);
   }
 }
 
@@ -470,7 +467,7 @@ class _Step1 extends StatelessWidget {
               fontSize: AppTheme.textScaler.scale(32.0),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -519,7 +516,7 @@ class _Step3 extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -549,9 +546,13 @@ class _Step4State extends State<_Step4> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
-    _animation = Tween<Offset>(begin: widget.begin, end: widget.end)
-        .animate(_controller);
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _animation = Tween<Offset>(
+      begin: widget.begin,
+      end: widget.end,
+    ).animate(_controller);
     _controller.forward();
     _animation.addStatusListener(_statusListener);
   }
@@ -580,8 +581,10 @@ class _Step4State extends State<_Step4> with SingleTickerProviderStateMixin {
             builder: (BuildContext context, Widget? child) {
               return Visibility(
                 visible: !_animation.isCompleted,
-                child:
-                    Transform.translate(offset: _animation.value, child: child),
+                child: Transform.translate(
+                  offset: _animation.value,
+                  child: child,
+                ),
               );
             },
             child: IconButton(
@@ -606,7 +609,7 @@ class _Step4State extends State<_Step4> with SingleTickerProviderStateMixin {
               color: Colors.white,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -637,7 +640,7 @@ class _Step5 extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -667,9 +670,13 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
-    _animation = Tween<Offset>(begin: widget.begin, end: widget.end)
-        .animate(_controller);
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _animation = Tween<Offset>(
+      begin: widget.begin,
+      end: widget.end,
+    ).animate(_controller);
     _controller.forward();
     _animation.addStatusListener(_statusListener);
   }
@@ -698,8 +705,10 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
             builder: (BuildContext context, Widget? child) {
               return Visibility(
                 visible: !_animation.isCompleted,
-                child:
-                    Transform.translate(offset: _animation.value, child: child),
+                child: Transform.translate(
+                  offset: _animation.value,
+                  child: child,
+                ),
               );
             },
             child: IconButton(
@@ -724,7 +733,7 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
               color: Colors.white,
             ),
           ),
-        )
+        ),
       ],
     );
   }

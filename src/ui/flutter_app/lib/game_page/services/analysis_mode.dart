@@ -37,8 +37,10 @@ class AnalysisMode {
   static bool isTrapMove(String move) => _trapMoves.contains(move);
 
   /// Enable analysis mode with the given results
-  static void enable(List<MoveAnalysisResult> results,
-      {List<String> trapMoves = const <String>[]}) {
+  static void enable(
+    List<MoveAnalysisResult> results, {
+    List<String> trapMoves = const <String>[],
+  }) {
     _analysisResults = results;
     _trapMoves = trapMoves;
     _isEnabled = true;

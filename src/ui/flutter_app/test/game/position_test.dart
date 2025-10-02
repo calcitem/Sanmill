@@ -13,23 +13,25 @@ import '../helpers/test_mills.dart';
 
 void main() {
   group("Position", () {
-    test("_movesSinceLastRemove should output the moves since last remove",
-        () async {
-      const WinLessThanThreeGame testMill = WinLessThanThreeGame();
+    test(
+      "_movesSinceLastRemove should output the moves since last remove",
+      () async {
+        const WinLessThanThreeGame testMill = WinLessThanThreeGame();
 
-      // Initialize the test
-      DB.instance = MockDB();
-      SoundManager.instance = MockAudios();
-      final GameController controller = GameController();
-      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+        // Initialize the test
+        DB.instance = MockDB();
+        SoundManager.instance = MockAudios();
+        final GameController controller = GameController();
+        controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      // Import a game
-      ImportService.import(testMill.moveList);
+        // Import a game
+        ImportService.import(testMill.moveList);
 
-      expect(
-        controller.position.movesSinceLastRemove,
-        testMill.movesSinceRemove,
-      );
-    });
+        expect(
+          controller.position.movesSinceLastRemove,
+          testMill.movesSinceRemove,
+        );
+      },
+    );
   });
 }

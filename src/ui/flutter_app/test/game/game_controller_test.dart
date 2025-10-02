@@ -16,34 +16,35 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   // Define the MethodChannel to be mocked
-  const MethodChannel engineChannel =
-      MethodChannel("com.calcitem.sanmill/engine");
+  const MethodChannel engineChannel = MethodChannel(
+    "com.calcitem.sanmill/engine",
+  );
 
   setUp(() {
     // Use the new API to set up mock handlers for MethodChannel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'send':
-          // Handle the 'send' method
-          return null; // Return a success response
-        case 'shutdown':
-          // Handle the 'shutdown' method
-          return null; // Return a success response
-        case 'startup':
-          // Handle the 'startup' method
-          return null; // Return a success response
-        case 'read':
-          // Simulate a response for the 'read' method
-          return 'bestmove d2';
-        case 'isThinking':
-          // Simulate the 'isThinking' method response
-          return false;
-        default:
-          // For unhandled methods, return null
-          return null;
-      }
-    });
+          switch (methodCall.method) {
+            case 'send':
+              // Handle the 'send' method
+              return null; // Return a success response
+            case 'shutdown':
+              // Handle the 'shutdown' method
+              return null; // Return a success response
+            case 'startup':
+              // Handle the 'startup' method
+              return null; // Return a success response
+            case 'read':
+              // Simulate a response for the 'read' method
+              return 'bestmove d2';
+            case 'isThinking':
+              // Simulate the 'isThinking' method response
+              return false;
+            default:
+              // For unhandled methods, return null
+              return null;
+          }
+        });
   });
 
   tearDown(() {

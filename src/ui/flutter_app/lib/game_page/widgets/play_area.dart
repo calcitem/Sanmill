@@ -71,8 +71,9 @@ class PlayAreaState extends State<PlayArea> {
   /// value > 0 means white advantage, value < 0 means black advantage.
   /// The range is [-100, 100].
   int _getCurrentAdvantageValue() {
-    final int value =
-        GameController().value == null ? 0 : int.parse(GameController().value!);
+    final int value = GameController().value == null
+        ? 0
+        : int.parse(GameController().value!);
     return value;
   }
 
@@ -105,8 +106,10 @@ class PlayAreaState extends State<PlayArea> {
 
   /// Takes a screenshot and saves it to the specified [storageLocation]
   /// with an optional [filename].
-  Future<void> _takeScreenshot(String storageLocation,
-      [String? filename]) async {
+  Future<void> _takeScreenshot(
+    String storageLocation, [
+    String? filename,
+  ]) async {
     await ScreenshotService.takeScreenshot(storageLocation, filename);
   }
 
@@ -131,15 +134,14 @@ class PlayAreaState extends State<PlayArea> {
 
   /// Opens a dialog with the provided [dialog] widget.
   void _openDialog(BuildContext context, Widget dialog) {
-    showDialog(
-      context: context,
-      builder: (_) => dialog,
-    );
+    showDialog(context: context, builder: (_) => dialog);
   }
 
   /// Builds a list of toolbar items by expanding each [ToolbarItem].
   List<Widget> _buildToolbarItems(
-      BuildContext context, List<ToolbarItem> items) {
+    BuildContext context,
+    List<ToolbarItem> items,
+  ) {
     return items.map((ToolbarItem item) => Expanded(child: item)).toList();
   }
 
@@ -151,7 +153,8 @@ class PlayAreaState extends State<PlayArea> {
         onPressed: () => _openModal(
           context,
           GameOptionsModal(
-              onTriggerScreenshot: () => _takeScreenshot("gallery")),
+            onTriggerScreenshot: () => _takeScreenshot("gallery"),
+          ),
         ),
         icon: const Icon(FluentIcons.table_simple_24_regular),
         label: Text(
@@ -248,22 +251,17 @@ class PlayAreaState extends State<PlayArea> {
         onPressed: () async {
           // If the game is humanVsLAN, request a LAN take-back instead.
           if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-            final ScaffoldMessengerState messenger =
-                ScaffoldMessenger.of(context);
+            final ScaffoldMessengerState messenger = ScaffoldMessenger.of(
+              context,
+            );
             final bool accepted = await GameController().requestLanTakeBack(1);
             if (!mounted) {
               return;
             }
             if (accepted) {
-              messenger.showSnackBar(
-                SnackBar(content: Text(takeBackAccepted)),
-              );
+              messenger.showSnackBar(SnackBar(content: Text(takeBackAccepted)));
             } else {
-              messenger.showSnackBar(
-                SnackBar(
-                  content: Text(takeBackRejected),
-                ),
-              );
+              messenger.showSnackBar(SnackBar(content: Text(takeBackRejected)));
             }
           } else {
             HistoryNavigator.takeBack(context, pop: false, toolbar: true);
@@ -307,8 +305,8 @@ class PlayAreaState extends State<PlayArea> {
         key: const Key('play_area_analysis_toolbar_engine'),
         onPressed:
             (GameController().isEngineRunning || AnalysisMode.isAnalyzing)
-                ? null
-                : () => _analyzePosition(),
+            ? null
+            : () => _analyzePosition(),
         child: Icon(
           AnalysisMode.isEnabled
               ? FluentIcons.brain_circuit_24_filled
@@ -329,9 +327,13 @@ class PlayAreaState extends State<PlayArea> {
 
     // Check if rules support perfect database
     if (!isRuleSupportingPerfectDatabase()) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Current rules do not support perfect database analysis"),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Current rules do not support perfect database analysis",
+          ),
+        ),
+      );
       return;
     }
 
@@ -347,8 +349,8 @@ class PlayAreaState extends State<PlayArea> {
     AnalysisMode.setAnalyzing(true);
 
     // Run analysis and display results
-    final PositionAnalysisResult result =
-        await GameController().engine.analyzePosition();
+    final PositionAnalysisResult result = await GameController().engine
+        .analyzePosition();
 
     // Reset analyzing flag
     AnalysisMode.setAnalyzing(false);
@@ -377,21 +379,25 @@ class PlayAreaState extends State<PlayArea> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Semantics(
-          label: S.of(context).inHand(
+          label: S
+              .of(context)
+              .inHand(
                 !DB().generalSettings.aiMovesFirst
                     ? S.of(context).player2
                     : S.of(context).player1,
-                GameController().position.pieceInHandCount[
-                    !DB().generalSettings.aiMovesFirst
-                        ? PieceColor.black
-                        : PieceColor.white]!,
+                GameController().position.pieceInHandCount[!DB()
+                        .generalSettings
+                        .aiMovesFirst
+                    ? PieceColor.black
+                    : PieceColor.white]!,
               ),
           child: Text(
             _getPiecesText(
-              GameController().position.pieceInHandCount[
-                  !DB().generalSettings.aiMovesFirst
-                      ? PieceColor.black
-                      : PieceColor.white]!,
+              GameController().position.pieceInHandCount[!DB()
+                      .generalSettings
+                      .aiMovesFirst
+                  ? PieceColor.black
+                  : PieceColor.white]!,
             ),
             key: const Key('play_area_piece_count_text_hand'),
             style: TextStyle(
@@ -413,14 +419,16 @@ class PlayAreaState extends State<PlayArea> {
           child: Text(
             _getPiecesText(
               DB().ruleSettings.piecesCount -
-                  GameController().position.pieceInHandCount[
-                      !DB().generalSettings.aiMovesFirst
-                          ? PieceColor.white
-                          : PieceColor.black]! -
-                  GameController().position.pieceOnBoardCount[
-                      !DB().generalSettings.aiMovesFirst
-                          ? PieceColor.white
-                          : PieceColor.black]!,
+                  GameController().position.pieceInHandCount[!DB()
+                          .generalSettings
+                          .aiMovesFirst
+                      ? PieceColor.white
+                      : PieceColor.black]! -
+                  GameController().position.pieceOnBoardCount[!DB()
+                          .generalSettings
+                          .aiMovesFirst
+                      ? PieceColor.white
+                      : PieceColor.black]!,
             ),
             key: const Key('play_area_piece_count_text_remaining'),
             style: TextStyle(
@@ -452,14 +460,16 @@ class PlayAreaState extends State<PlayArea> {
           child: Text(
             _getPiecesText(
               DB().ruleSettings.piecesCount -
-                  GameController().position.pieceInHandCount[
-                      !DB().generalSettings.aiMovesFirst
-                          ? PieceColor.black
-                          : PieceColor.white]! -
-                  GameController().position.pieceOnBoardCount[
-                      !DB().generalSettings.aiMovesFirst
-                          ? PieceColor.black
-                          : PieceColor.white]!,
+                  GameController().position.pieceInHandCount[!DB()
+                          .generalSettings
+                          .aiMovesFirst
+                      ? PieceColor.black
+                      : PieceColor.white]! -
+                  GameController().position.pieceOnBoardCount[!DB()
+                          .generalSettings
+                          .aiMovesFirst
+                      ? PieceColor.black
+                      : PieceColor.white]!,
             ),
             key: const Key('play_area_removed_piece_count_text_remaining'),
             style: TextStyle(
@@ -477,21 +487,25 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
         Semantics(
-          label: S.of(context).inHand(
+          label: S
+              .of(context)
+              .inHand(
                 !DB().generalSettings.aiMovesFirst
                     ? S.of(context).player1
                     : S.of(context).player2,
-                GameController().position.pieceInHandCount[
-                    !DB().generalSettings.aiMovesFirst
-                        ? PieceColor.white
-                        : PieceColor.black]!,
+                GameController().position.pieceInHandCount[!DB()
+                        .generalSettings
+                        .aiMovesFirst
+                    ? PieceColor.white
+                    : PieceColor.black]!,
               ),
           child: Text(
             _getPiecesText(
-              GameController().position.pieceInHandCount[
-                  !DB().generalSettings.aiMovesFirst
-                      ? PieceColor.white
-                      : PieceColor.black]!,
+              GameController().position.pieceInHandCount[!DB()
+                      .generalSettings
+                      .aiMovesFirst
+                  ? PieceColor.white
+                  : PieceColor.black]!,
             ),
             key: const Key('play_area_removed_piece_count_text_hand'),
             style: TextStyle(
@@ -517,7 +531,8 @@ class PlayAreaState extends State<PlayArea> {
     return LayoutBuilder(
       key: const Key('play_area_layout_builder'),
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double dimension = (constraints.maxWidth) *
+        final double dimension =
+            (constraints.maxWidth) *
             (MediaQuery.of(context).orientation == Orientation.portrait
                 ? 1.0
                 : 0.65);
@@ -585,8 +600,9 @@ class PlayAreaState extends State<PlayArea> {
                       height: 150,
                       width: double.infinity,
                       child: CustomPaint(
-                        key:
-                            const Key('play_area_custom_paint_advantage_graph'),
+                        key: const Key(
+                          'play_area_custom_paint_advantage_graph',
+                        ),
                         painter: AdvantageGraphPainter(advantageData),
                       ),
                     ),
@@ -596,7 +612,8 @@ class PlayAreaState extends State<PlayArea> {
                           GameMode.setupPosition &&
                       !isToolbarAtBottom)
                     const SetupPositionToolbar(
-                        key: Key('play_area_setup_position_toolbar')),
+                      key: Key('play_area_setup_position_toolbar'),
+                    ),
 
                   // History navigation toolbar if enabled and not in setup mode, not at bottom
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&

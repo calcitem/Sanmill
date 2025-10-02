@@ -88,18 +88,14 @@ class CustomDrawerState extends State<CustomDrawer>
     _drawerOverlaySlideAnimation = Tween<Offset>(
       begin: const Offset(-1, 0),
       end: Offset.zero,
-    ).animate(
-      _drawerAnimationController,
-    );
+    ).animate(_drawerAnimationController);
 
     _drawerOpenRatio = widget.orientation == Orientation.portrait ? 0.75 : 0.45;
 
     _mainScreenSlideAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: Offset(_drawerOpenRatio, 0),
-    ).animate(
-      _drawerAnimationController,
-    );
+    ).animate(_drawerAnimationController);
   }
 
   Widget buildListMenus() {
@@ -145,15 +141,14 @@ class CustomDrawerState extends State<CustomDrawer>
   void didUpdateWidget(covariant CustomDrawer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.orientation != widget.orientation) {
-      _drawerOpenRatio =
-          widget.orientation == Orientation.portrait ? 0.75 : 0.45;
+      _drawerOpenRatio = widget.orientation == Orientation.portrait
+          ? 0.75
+          : 0.45;
 
       _mainScreenSlideAnimation = Tween<Offset>(
         begin: Offset.zero,
         end: Offset(_drawerOpenRatio, 0),
-      ).animate(
-        _drawerAnimationController,
-      );
+      ).animate(_drawerAnimationController);
       setState(() {});
     }
   }
@@ -175,12 +170,14 @@ class CustomDrawerState extends State<CustomDrawer>
               SliverPinnedToBoxAdapter(
                 key: const Key('custom_drawer_sliver_pinned_to_box_adapter'),
                 child: Container(
-                    key: const Key('custom_drawer_header_container'),
-                    decoration:
-                        BoxDecoration(color: DB().colorSettings.drawerColor),
-                    child: widget.drawerHeader),
+                  key: const Key('custom_drawer_header_container'),
+                  decoration: BoxDecoration(
+                    color: DB().colorSettings.drawerColor,
+                  ),
+                  child: widget.drawerHeader,
+                ),
               ),
-              buildListMenus()
+              buildListMenus(),
             ],
           ),
         ),
@@ -212,19 +209,13 @@ class CustomDrawerState extends State<CustomDrawer>
           focusColor: Colors.transparent,
           child: DB().generalSettings.screenReaderSupport
               ? (value.isDrawerVisible ? Container() : child)
-              : IgnorePointer(
-                  ignoring: value.isDrawerVisible,
-                  child: child,
-                ),
+              : IgnorePointer(ignoring: value.isDrawerVisible, child: child),
         ),
         child: DecoratedBox(
           key: const Key('custom_drawer_main_screen_decorated_box'),
           decoration: const BoxDecoration(
             boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: AppTheme.drawerBoxerShadowColor,
-                blurRadius: 24,
-              ),
+              BoxShadow(color: AppTheme.drawerBoxerShadowColor, blurRadius: 24),
             ],
           ),
           child: widget.mainScreenWidget,
@@ -235,11 +226,13 @@ class CustomDrawerState extends State<CustomDrawer>
     return GestureDetector(
       key: const Key('custom_drawer_gesture_detector'),
       onHorizontalDragStart: widget.disabledGestures ? null : _handleDragStart,
-      onHorizontalDragUpdate:
-          widget.disabledGestures ? null : _handleDragUpdate,
+      onHorizontalDragUpdate: widget.disabledGestures
+          ? null
+          : _handleDragUpdate,
       onHorizontalDragEnd: widget.disabledGestures ? null : _handleDragEnd,
-      onHorizontalDragCancel:
-          widget.disabledGestures ? null : _handleDragCancel,
+      onHorizontalDragCancel: widget.disabledGestures
+          ? null
+          : _handleDragCancel,
       child: Stack(
         key: const Key('custom_drawer_stack'),
         children: <Widget>[
@@ -284,7 +277,8 @@ class CustomDrawerState extends State<CustomDrawer>
         },
         // Only show the trailing arrow if it's not Settings or Help
         // This assumes that parent items with these titles are used for Settings and Help
-        trailingContent: (item.itemTitle == S.of(context).settings ||
+        trailingContent:
+            (item.itemTitle == S.of(context).settings ||
                 item.itemTitle == S.of(context).help)
             ? null
             : AnimatedRotation(
@@ -311,7 +305,8 @@ class CustomDrawerState extends State<CustomDrawer>
         child: Container(
           key: Key('custom_drawer_selected_item_container_$index'),
           width: MediaQuery.of(context).size.width * _drawerOpenRatio * 0.9,
-          height: AppTheme.drawerItemHeight +
+          height:
+              AppTheme.drawerItemHeight +
               (DB().displaySettings.fontScale - 1) * 12,
           decoration: BoxDecoration(
             color: DB().colorSettings.drawerHighlightItemColor,
@@ -324,10 +319,7 @@ class CustomDrawerState extends State<CustomDrawer>
 
       drawerItemWidget = Stack(
         key: Key('custom_drawer_selected_item_stack_$index'),
-        children: <Widget>[
-          selectedItemOverlay,
-          configuredItem,
-        ],
+        children: <Widget>[selectedItemOverlay, configuredItem],
       );
     } else {
       drawerItemWidget = configuredItem;
@@ -335,8 +327,11 @@ class CustomDrawerState extends State<CustomDrawer>
 
     return Padding(
       key: Key('custom_drawer_item_padding_$index'),
-      padding:
-          EdgeInsets.only(left: indent, top: itemPadding, bottom: itemPadding),
+      padding: EdgeInsets.only(
+        left: indent,
+        top: itemPadding,
+        bottom: itemPadding,
+      ),
       child: entry.level == 1
           // Animate child category appearance/disappearance for better UX
           ? TweenAnimationBuilder<double>(
@@ -384,7 +379,8 @@ class CustomDrawerState extends State<CustomDrawer>
 
     final double diff = (_gestureCurrentPosition - _gestureStartPosition).dx;
 
-    _drawerAnimationController.value = _gestureOffsetValue +
+    _drawerAnimationController.value =
+        _gestureOffsetValue +
         (diff / (screenSize.width * _drawerOpenRatio)) * (rtl ? -1 : 1);
   }
 

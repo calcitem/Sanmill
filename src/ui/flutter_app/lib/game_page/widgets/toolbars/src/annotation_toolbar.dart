@@ -37,8 +37,10 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
     Colors.indigo,
   ];
 
-  Future<void> _takeScreenshot(String storageLocation,
-      [String? filename]) async {
+  Future<void> _takeScreenshot(
+    String storageLocation, [
+    String? filename,
+  ]) async {
     await ScreenshotService.takeScreenshot(storageLocation, filename);
   }
 
@@ -131,8 +133,9 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
                     : Colors.transparent,
                 // Always reserve border space by setting a fixed border.
                 border: Border.all(
-                    color: isSelected ? Colors.yellow : Colors.transparent,
-                    width: 2),
+                  color: isSelected ? Colors.yellow : Colors.transparent,
+                  width: 2,
+                ),
                 borderRadius: BorderRadius.circular(8.0),
               ),
               padding: const EdgeInsets.all(8),
@@ -338,11 +341,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
     required IconData icon,
     required VoidCallback onTap,
   }) {
-    return _ControlButton(
-      tooltip: tooltip,
-      icon: icon,
-      onTap: onTap,
-    );
+    return _ControlButton(tooltip: tooltip, icon: icon, onTap: onTap);
   }
 }
 
@@ -391,17 +390,14 @@ class _ControlButtonState extends State<_ControlButton> {
               color: _isPressed
                   ? Colors.yellow.withValues(alpha: 0.2)
                   : _isHovered
-                      ? Colors.white.withValues(alpha: 0.1)
-                      : Colors.transparent,
+                  ? Colors.white.withValues(alpha: 0.1)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(8.0),
             ),
             padding: const EdgeInsets.all(8.0),
             child: Tooltip(
               message: widget.tooltip,
-              child: Icon(
-                widget.icon,
-                color: Colors.white,
-              ),
+              child: Icon(widget.icon, color: Colors.white),
             ),
           ),
         ),

@@ -47,9 +47,7 @@ class ToolbarItemThemeData with Diagnosticable {
     if (a == null && b == null) {
       return null;
     }
-    return ToolbarItemThemeData(
-      style: ButtonStyle.lerp(a?.style, b?.style, t),
-    );
+    return ToolbarItemThemeData(style: ButtonStyle.lerp(a?.style, b?.style, t));
   }
 
   @override

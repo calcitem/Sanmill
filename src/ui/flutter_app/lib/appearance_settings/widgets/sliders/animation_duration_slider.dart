@@ -35,8 +35,9 @@ class _AnimationDurationSlider extends StatelessWidget {
                 label: displaySettings.animationDuration.toStringAsFixed(1),
                 onChanged: (double value) {
                   logger.t("[config] AnimationDuration value: $value");
-                  DB().displaySettings =
-                      displaySettings.copyWith(animationDuration: value);
+                  DB().displaySettings = displaySettings.copyWith(
+                    animationDuration: value,
+                  );
                 },
               ),
             ),

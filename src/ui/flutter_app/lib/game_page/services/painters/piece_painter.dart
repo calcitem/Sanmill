@@ -43,7 +43,8 @@ class PiecePainter extends CustomPainter {
     final List<Piece> normalPiecesToDraw = <Piece>[];
     final List<Piece> movingPiecesToDraw = <Piece>[];
 
-    final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
+    final double pieceWidth =
+        (size.width - AppTheme.boardPadding * 2) *
             DB().displaySettings.pieceWidth /
             6 -
         1;
@@ -56,26 +57,30 @@ class PiecePainter extends CustomPainter {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
 
-        final PieceColor pieceColor =
-            GameController().position.pieceOnGrid(index);
+        final PieceColor pieceColor = GameController().position.pieceOnGrid(
+          index,
+        );
 
         Offset pos;
 
         // Check if this piece is currently placing.
-        final bool isPlacingPiece = (placeAnimationValue < 1.0) &&
+        final bool isPlacingPiece =
+            (placeAnimationValue < 1.0) &&
             (focusIndex != null) &&
             (blurIndex == null) &&
             (index == focusIndex);
 
         // Check if this piece is currently moving.
-        final bool isMovingPiece = (moveAnimationValue < 1.0) &&
+        final bool isMovingPiece =
+            (moveAnimationValue < 1.0) &&
             (focusIndex != null) &&
             (blurIndex != null) &&
             (index == focusIndex) &&
             !GameController().animationManager.isRemoveAnimationAnimating();
 
         // Check if this piece is currently being removed.
-        final bool isRemovingPiece = (removeAnimationValue < 1.0) &&
+        final bool isRemovingPiece =
+            (removeAnimationValue < 1.0) &&
             (removeIndex != null) &&
             (index == removeIndex);
 
@@ -123,8 +128,9 @@ class PiecePainter extends CustomPainter {
         final SquareAttribute squareAttribute =
             GameController().position.sqAttrList[sq];
 
-        final ui.Image? image =
-            pieceImages == null ? null : pieceImages?[pieceColor];
+        final ui.Image? image = pieceImages == null
+            ? null
+            : pieceImages?[pieceColor];
 
         final double adjustedPieceWidth = pieceWidth;
 
@@ -145,10 +151,7 @@ class PiecePainter extends CustomPainter {
         }
 
         shadowPath.addOval(
-          Rect.fromCircle(
-            center: pos,
-            radius: adjustedPieceWidth / 2,
-          ),
+          Rect.fromCircle(center: pos, radius: adjustedPieceWidth / 2),
         );
       }
     }
@@ -157,13 +160,9 @@ class PiecePainter extends CustomPainter {
     for (final Piece piece in normalPiecesToDraw) {
       if (piece.image == null) {
         canvas.drawShadow(
-          Path()
-            ..addOval(
-              Rect.fromCircle(
-                center: piece.pos,
-                radius: piece.diameter / 2,
-              ),
-            ),
+          Path()..addOval(
+            Rect.fromCircle(center: piece.pos, radius: piece.diameter / 2),
+          ),
           Colors.black,
           2,
           true,
@@ -175,13 +174,9 @@ class PiecePainter extends CustomPainter {
     for (final Piece piece in movingPiecesToDraw) {
       if (piece.image == null) {
         canvas.drawShadow(
-          Path()
-            ..addOval(
-              Rect.fromCircle(
-                center: piece.pos,
-                radius: piece.diameter / 2,
-              ),
-            ),
+          Path()..addOval(
+            Rect.fromCircle(center: piece.pos, radius: piece.diameter / 2),
+          ),
           Colors.black,
           2,
           true,
@@ -205,10 +200,7 @@ class PiecePainter extends CustomPainter {
       if (piece.image != null) {
         paintImage(
           canvas: canvas,
-          rect: Rect.fromCircle(
-            center: piece.pos,
-            radius: pieceInnerRadius,
-          ),
+          rect: Rect.fromCircle(center: piece.pos, radius: pieceInnerRadius),
           image: piece.image!,
           fit: BoxFit.cover,
         );
@@ -223,20 +215,12 @@ class PiecePainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
         }
 
-        canvas.drawCircle(
-          piece.pos,
-          pieceRadius,
-          paint,
-        );
+        canvas.drawCircle(piece.pos, pieceRadius, paint);
 
         // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
         paint.color = piece.pieceColor.mainColor.withValues(alpha: opacity);
-        canvas.drawCircle(
-          piece.pos,
-          pieceInnerRadius,
-          paint,
-        );
+        canvas.drawCircle(piece.pos, pieceInnerRadius, paint);
       }
 
       // Draw numbers on pieces if enabled.
@@ -281,10 +265,7 @@ class PiecePainter extends CustomPainter {
       if (piece.image != null) {
         paintImage(
           canvas: canvas,
-          rect: Rect.fromCircle(
-            center: piece.pos,
-            radius: pieceInnerRadius,
-          ),
+          rect: Rect.fromCircle(center: piece.pos, radius: pieceInnerRadius),
           image: piece.image!,
           fit: BoxFit.cover,
         );
@@ -299,20 +280,12 @@ class PiecePainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
         }
 
-        canvas.drawCircle(
-          piece.pos,
-          pieceRadius,
-          paint,
-        );
+        canvas.drawCircle(piece.pos, pieceRadius, paint);
 
         // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
         paint.color = piece.pieceColor.mainColor.withValues(alpha: opacity);
-        canvas.drawCircle(
-          piece.pos,
-          pieceInnerRadius,
-          paint,
-        );
+        canvas.drawCircle(piece.pos, pieceInnerRadius, paint);
       }
 
       // Draw numbers on pieces if enabled.
@@ -355,11 +328,7 @@ class PiecePainter extends CustomPainter {
       // If the piece is moving, use the interpolated position for highlight.
       final Offset focusPos = movingPos ?? pointFromIndex(focusIndex, size);
 
-      canvas.drawCircle(
-        focusPos,
-        pieceWidth / 2,
-        paint,
-      );
+      canvas.drawCircle(focusPos, pieceWidth / 2, paint);
     }
 
     if (blurIndex != null &&

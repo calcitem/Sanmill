@@ -52,11 +52,9 @@ class HistoryNavigator {
         if (context.mounted) {
           // In LAN mode, only single-step take back is allowed.
           final String takeBackRejected = S.of(context).takeBackRejected;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(takeBackRejected),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(takeBackRejected)));
         }
         if (pop && context.mounted) {
           Navigator.pop(context);
@@ -73,8 +71,9 @@ class HistoryNavigator {
     }
 
     if (GameController().isEngineInDelay) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).aiIsDelaying);
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).aiIsDelaying,
+      );
       if (pop) {
         Navigator.pop(context);
       }
@@ -123,21 +122,23 @@ class HistoryNavigator {
             controller.gameRecorder.activeNode?.data;
         if (lastEffectiveMove != null) {
           GameController().headerTipNotifier.showTip(
-                S.of(context).lastMove(lastEffectiveMove.notation),
-              );
+            S.of(context).lastMove(lastEffectiveMove.notation),
+          );
           GameController().headerIconsNotifier.showIcons();
           GameController().boardSemanticsNotifier.updateSemantics();
         }
         break;
       case HistoryRange(): // TODO: Impossible resp
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).atEnd);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).atEnd,
+        );
         logger.i(HistoryRange);
         break;
       case HistoryRule():
       default:
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).movesAndRulesNotMatch,
+        );
         logger.i(HistoryRule);
         break;
     }
@@ -159,7 +160,9 @@ class HistoryNavigator {
 
   /// Requests a 1-step LAN take back, returns true if accepted, false if rejected or error.
   static Future<bool> _requestLanTakeBack(
-      BuildContext context, int steps) async {
+    BuildContext context,
+    int steps,
+  ) async {
     if (steps != 1) {
       return false;
     }
@@ -181,8 +184,12 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(context, HistoryNavMode.takeBack,
-        pop: pop, toolbar: toolbar);
+    return _gotoHistory(
+      context,
+      HistoryNavMode.takeBack,
+      pop: pop,
+      toolbar: toolbar,
+    );
   }
 
   static Future<HistoryResponse?> stepForward(
@@ -190,8 +197,12 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(context, HistoryNavMode.stepForward,
-        pop: pop, toolbar: toolbar);
+    return _gotoHistory(
+      context,
+      HistoryNavMode.stepForward,
+      pop: pop,
+      toolbar: toolbar,
+    );
   }
 
   static Future<HistoryResponse?> takeBackAll(
@@ -199,8 +210,12 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(context, HistoryNavMode.takeBackAll,
-        pop: pop, toolbar: toolbar);
+    return _gotoHistory(
+      context,
+      HistoryNavMode.takeBackAll,
+      pop: pop,
+      toolbar: toolbar,
+    );
   }
 
   static Future<HistoryResponse?> stepForwardAll(
@@ -208,8 +223,12 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(context, HistoryNavMode.stepForwardAll,
-        pop: pop, toolbar: toolbar);
+    return _gotoHistory(
+      context,
+      HistoryNavMode.stepForwardAll,
+      pop: pop,
+      toolbar: toolbar,
+    );
   }
 
   static Future<HistoryResponse?> takeBackN(

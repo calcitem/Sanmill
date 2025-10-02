@@ -6,11 +6,7 @@
 part of 'settings.dart';
 
 class SettingsCard extends StatelessWidget {
-  const SettingsCard({
-    super.key,
-    required this.children,
-    required this.title,
-  });
+  const SettingsCard({super.key, required this.children, required this.title});
 
   final Widget title;
   final List<Widget> children;
@@ -43,9 +39,7 @@ class SettingsCard extends StatelessWidget {
                       : Column(
                           children: <Widget>[
                             children[i],
-                            const Divider(
-                              color: AppTheme.listItemDividerColor,
-                            )
+                            const Divider(color: AppTheme.listItemDividerColor),
                           ],
                         ),
               ],

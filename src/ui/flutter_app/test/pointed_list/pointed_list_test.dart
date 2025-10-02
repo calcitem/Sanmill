@@ -18,49 +18,52 @@ void main() {
     });
 
     test(
-        "PointedList.from should have all elements of the sublist and the global iterator should be at the end of it",
-        () {
-      // Initialize
-      final List<int> subList = List.generate(10, (int index) => index);
-      final PointedList<int> list = PointedList.from(subList);
+      "PointedList.from should have all elements of the sublist and the global iterator should be at the end of it",
+      () {
+        // Initialize
+        final List<int> subList = List.generate(10, (int index) => index);
+        final PointedList<int> list = PointedList.from(subList);
 
-      expect(list.toList(), subList);
-      expect(list.index, list.length - 1);
-    });
+        expect(list.toList(), subList);
+        expect(list.index, list.length - 1);
+      },
+    );
   });
 
   group("PointedList.prune", () {
     test(
-        "prune should remove all elements next to the current pointer position",
-        () {
-      const int index = 2;
+      "prune should remove all elements next to the current pointer position",
+      () {
+        const int index = 2;
 
-      // Initialize
-      final List<int> subList = List.generate(10, (int index) => index);
-      final PointedList<int> list = PointedList.from(subList);
+        // Initialize
+        final List<int> subList = List.generate(10, (int index) => index);
+        final PointedList<int> list = PointedList.from(subList);
 
-      // Move forward to
-      list.globalIterator.moveTo(index);
+        // Move forward to
+        list.globalIterator.moveTo(index);
 
-      // Prune list
-      list.prune();
+        // Prune list
+        list.prune();
 
-      final List<int> result = List.generate(index + 1, (int index) => index);
-      expect(list.toList(), result);
-    });
+        final List<int> result = List.generate(index + 1, (int index) => index);
+        expect(list.toList(), result);
+      },
+    );
 
     test(
-        "prune should not alter the list if the current pointer position is at the end",
-        () {
-      // Initialize
-      final List<int> subList = List.generate(10, (int index) => index);
-      final PointedList<int> list = PointedList.from(subList);
+      "prune should not alter the list if the current pointer position is at the end",
+      () {
+        // Initialize
+        final List<int> subList = List.generate(10, (int index) => index);
+        final PointedList<int> list = PointedList.from(subList);
 
-      // Prune list
-      list.prune();
+        // Prune list
+        list.prune();
 
-      expect(list.toList(), subList);
-    });
+        expect(list.toList(), subList);
+      },
+    );
 
     test("prune should not alter the list if the list is empty", () {
       // Initialize
@@ -73,22 +76,23 @@ void main() {
     });
 
     test(
-        "Prune should reset the current pointer position to the new last index.",
-        () {
-      const int index = 2;
+      "Prune should reset the current pointer position to the new last index.",
+      () {
+        const int index = 2;
 
-      // Initialize
-      final List<int> subList = List.generate(10, (int index) => index);
-      final PointedList<int> list = PointedList.from(subList);
+        // Initialize
+        final List<int> subList = List.generate(10, (int index) => index);
+        final PointedList<int> list = PointedList.from(subList);
 
-      // Move forward to
-      list.globalIterator.moveTo(index);
+        // Move forward to
+        list.globalIterator.moveTo(index);
 
-      // Prune list
-      list.prune();
+        // Prune list
+        list.prune();
 
-      expect(list.globalIterator.index, index);
-    });
+        expect(list.globalIterator.index, index);
+      },
+    );
   });
   group("PointedList.add", () {
     test("add should add the value next to the current position", () {
@@ -124,25 +128,28 @@ void main() {
     });
   });
   test(
-      "PointedList.forEachVisible should iterate over every entry up to (including) the pointer",
-      () {
-    const int index = 3;
+    "PointedList.forEachVisible should iterate over every entry up to (including) the pointer",
+    () {
+      const int index = 3;
 
-    // Initialize
-    final List<int> subList = List.generate(10, (int index) => index);
-    final PointedList<int> list = PointedList.from(subList);
+      // Initialize
+      final List<int> subList = List.generate(10, (int index) => index);
+      final PointedList<int> list = PointedList.from(subList);
 
-    final List<int> result = <int>[];
+      final List<int> result = <int>[];
 
-    // Move to index
-    list.globalIterator.moveTo(index);
+      // Move to index
+      list.globalIterator.moveTo(index);
 
-    // Iterate
-    list.forEachVisible((int value) => result.add(value));
+      // Iterate
+      list.forEachVisible((int value) => result.add(value));
 
-    final List<int> resultExpect =
-        List.generate(index + 1, (int index) => index);
+      final List<int> resultExpect = List.generate(
+        index + 1,
+        (int index) => index,
+      );
 
-    expect(result, resultExpect);
-  });
+      expect(result, resultExpect);
+    },
+  );
 }

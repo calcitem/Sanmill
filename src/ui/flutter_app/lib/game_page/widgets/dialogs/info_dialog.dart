@@ -50,7 +50,9 @@ class InfoDialog extends StatelessWidget {
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
       buffer.write(
-        S.of(context).lastMove(
+        S
+            .of(context)
+            .lastMove(
               DB().generalSettings.screenReaderSupport ? "$them, " : "",
             ),
       );
@@ -94,25 +96,33 @@ class InfoDialog extends StatelessWidget {
     buffer.writeln();
     buffer.writeln(S.of(context).pieceCount);
     buffer.writeComma(
-      S.of(context).inHand(
+      S
+          .of(context)
+          .inHand(
             S.of(context).player1,
             pos.pieceInHandCount[PieceColor.white]!,
           ),
     );
     buffer.writeComma(
-      S.of(context).inHand(
+      S
+          .of(context)
+          .inHand(
             S.of(context).player2,
             pos.pieceInHandCount[PieceColor.black]!,
           ),
     );
     buffer.writeComma(
-      S.of(context).onBoard(
+      S
+          .of(context)
+          .onBoard(
             S.of(context).player1,
             pos.pieceOnBoardCount[PieceColor.white]!,
           ),
     );
     buffer.writePeriod(
-      S.of(context).onBoard(
+      S
+          .of(context)
+          .onBoard(
             S.of(context).player2,
             pos.pieceOnBoardCount[PieceColor.black]!,
           ),
@@ -145,10 +155,10 @@ class InfoDialog extends StatelessWidget {
             key: const Key('info_dialog_content_text'),
             _infoText(context),
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: AppTheme.gamePageActionSheetTextColor,
-                  fontWeight: FontWeight.normal,
-                  fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-                ),
+              color: AppTheme.gamePageActionSheetTextColor,
+              fontWeight: FontWeight.normal,
+              fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+            ),
           ),
         ),
         actions: <Widget>[
@@ -158,10 +168,9 @@ class InfoDialog extends StatelessWidget {
               child: Text(
                 S.of(context).more,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: AppTheme.gamePageActionSheetTextColor,
-                      fontSize:
-                          AppTheme.textScaler.scale(AppTheme.largeFontSize),
-                    ),
+                  color: AppTheme.gamePageActionSheetTextColor,
+                  fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+                ),
               ),
               onPressed: () async {
                 final String copy = S.of(context).copy;
@@ -174,16 +183,17 @@ class InfoDialog extends StatelessWidget {
                   child: Text(
                     copy,
                     style: TextStyle(
-                        fontSize:
-                            AppTheme.textScaler.scale(AppTheme.largeFontSize)),
+                      fontSize: AppTheme.textScaler.scale(
+                        AppTheme.largeFontSize,
+                      ),
+                    ),
                   ),
                   onPressed: () {
-                    Clipboard.setData(
-                      ClipboardData(text: content),
-                    );
+                    Clipboard.setData(ClipboardData(text: content));
 
-                    rootScaffoldMessengerKey.currentState!
-                        .showSnackBarClear(S.of(context).done);
+                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                      S.of(context).done,
+                    );
 
                     Navigator.pop(context);
                     Navigator.pop(context);
@@ -191,16 +201,19 @@ class InfoDialog extends StatelessWidget {
                 );
 
                 final Widget okButton = TextButton(
-                    key: const Key('info_dialog_ok_button_more'),
-                    child: Text(
-                      ok,
-                      style: TextStyle(
-                          fontSize: AppTheme.textScaler
-                              .scale(AppTheme.largeFontSize)),
+                  key: const Key('info_dialog_ok_button_more'),
+                  child: Text(
+                    ok,
+                    style: TextStyle(
+                      fontSize: AppTheme.textScaler.scale(
+                        AppTheme.largeFontSize,
+                      ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    });
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                );
 
                 final AlertDialog alert = AlertDialog(
                   key: const Key('info_dialog_more_alert_dialog'),
@@ -208,8 +221,10 @@ class InfoDialog extends StatelessWidget {
                     S.of(context).more,
                     key: const Key('info_dialog_more_alert_dialog_title'),
                     style: TextStyle(
-                        fontSize:
-                            AppTheme.textScaler.scale(AppTheme.largeFontSize)),
+                      fontSize: AppTheme.textScaler.scale(
+                        AppTheme.largeFontSize,
+                      ),
+                    ),
                   ),
                   content: Text(
                     content,
@@ -233,9 +248,9 @@ class InfoDialog extends StatelessWidget {
             child: Text(
               S.of(context).ok,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: AppTheme.gamePageActionSheetTextColor,
-                    fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-                  ),
+                color: AppTheme.gamePageActionSheetTextColor,
+                fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+              ),
             ),
             onPressed: () => Navigator.pop(context),
           ),

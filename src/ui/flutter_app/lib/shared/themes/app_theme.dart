@@ -159,8 +159,8 @@ class AppTheme {
     space: 1.0,
     thickness: 1.0,
     color: _colorScheme.onSurface.withValues(
-        alpha:
-            0.12), //Adjust color transparency according to theme surface color
+      alpha: 0.12,
+    ), //Adjust color transparency according to theme surface color
   );
 
   static final CardThemeData _cardTheme = CardThemeData(
@@ -173,65 +173,81 @@ class AppTheme {
   );
 
   static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
-    thumbColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+    thumbColor: WidgetStateProperty.resolveWith<Color>((
+      Set<WidgetState> states,
+    ) {
       if (states.contains(WidgetState.selected)) {
         return _colorScheme.primary; // Use primary color when enabled
       }
-      return _colorScheme.onSurface
-          .withValues(alpha: 0.5); // Use softer colors in off state
+      return _colorScheme.onSurface.withValues(
+        alpha: 0.5,
+      ); // Use softer colors in off state
     }),
-    trackColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+    trackColor: WidgetStateProperty.resolveWith<Color>((
+      Set<WidgetState> states,
+    ) {
       if (states.contains(WidgetState.selected)) {
         return _colorScheme.primary.withValues(
-            alpha: 0.5); // Use translucent primary color in on state
+          alpha: 0.5,
+        ); // Use translucent primary color in on state
       }
       return _colorScheme.onSurface.withValues(
-          alpha: 0.3); // Use a more transparent color in the closed state
+        alpha: 0.3,
+      ); // Use a more transparent color in the closed state
     }),
-    trackOutlineColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+    trackOutlineColor: WidgetStateProperty.resolveWith<Color>((
+      Set<WidgetState> states,
+    ) {
       if (states.contains(WidgetState.disabled)) {
-        return _colorScheme.onSurface
-            .withValues(alpha: 0.5); // Use soft colors in disabled state
+        return _colorScheme.onSurface.withValues(
+          alpha: 0.5,
+        ); // Use soft colors in disabled state
       }
       return Colors.transparent; // No outer edges in other states
     }),
   );
 
   static final SwitchThemeData _darkSwitchTheme = SwitchThemeData(
-    thumbColor:
-        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+    thumbColor: WidgetStateProperty.resolveWith<Color?>((
+      Set<WidgetState> states,
+    ) {
       if (states.contains(WidgetState.disabled)) {
-        return _darkColorScheme.onSurface
-            .withValues(alpha: 0.5); // Color in disabled state
+        return _darkColorScheme.onSurface.withValues(
+          alpha: 0.5,
+        ); // Color in disabled state
       }
       if (states.contains(WidgetState.selected)) {
         return _darkColorScheme
             .primary; // Use the primary color in the on state
       }
-      return _darkColorScheme.onSurface
-          .withValues(alpha: 0.5); // Closed state color
+      return _darkColorScheme.onSurface.withValues(
+        alpha: 0.5,
+      ); // Closed state color
     }),
-    trackColor:
-        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+    trackColor: WidgetStateProperty.resolveWith<Color?>((
+      Set<WidgetState> states,
+    ) {
       if (states.contains(WidgetState.disabled)) {
-        return _darkColorScheme.onSurface
-            .withValues(alpha: 0.3); // Track color in disabled state
+        return _darkColorScheme.onSurface.withValues(
+          alpha: 0.3,
+        ); // Track color in disabled state
       }
       if (states.contains(WidgetState.selected)) {
-        return _darkColorScheme.primary
-            .withValues(alpha: 0.5); // On track color
+        return _darkColorScheme.primary.withValues(
+          alpha: 0.5,
+        ); // On track color
       }
-      return _darkColorScheme.onSurface
-          .withValues(alpha: 0.1); // Track color in off state
+      return _darkColorScheme.onSurface.withValues(
+        alpha: 0.1,
+      ); // Track color in off state
     }),
-    trackOutlineColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+    trackOutlineColor: WidgetStateProperty.resolveWith<Color>((
+      Set<WidgetState> states,
+    ) {
       if (states.contains(WidgetState.disabled)) {
-        return _darkColorScheme.onSurface
-            .withValues(alpha: 0.5); // Outer line color in disabled state
+        return _darkColorScheme.onSurface.withValues(
+          alpha: 0.5,
+        ); // Outer line color in disabled state
       }
       return Colors
           .transparent; // Usually there is no need to set the outer edge color
@@ -240,24 +256,18 @@ class AppTheme {
 
   static CheckboxThemeData _buildCheckboxTheme(ColorScheme colorScheme) {
     return CheckboxThemeData(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
-      ),
-      side: WidgetStateBorderSide.resolveWith((
-        Set<WidgetState> states,
-      ) {
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      side: WidgetStateBorderSide.resolveWith((Set<WidgetState> states) {
         if (states.contains(WidgetState.disabled)) {
           return BorderSide(
             color: colorScheme.onSurface.withValues(alpha: 0.38),
           );
         }
-        return BorderSide(
-          color: colorScheme.primary,
-          width: 2,
-        );
+        return BorderSide(color: colorScheme.primary, width: 2);
       }),
-      fillColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      fillColor: WidgetStateProperty.resolveWith<Color?>((
+        Set<WidgetState> states,
+      ) {
         if (states.contains(WidgetState.disabled)) {
           if (states.contains(WidgetState.selected)) {
             return colorScheme.onSurface.withValues(alpha: 0.12);
@@ -275,8 +285,9 @@ class AppTheme {
 
   static RadioThemeData _buildRadioTheme(ColorScheme colorScheme) {
     return RadioThemeData(
-      fillColor:
-          WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      fillColor: WidgetStateProperty.resolveWith<Color?>((
+        Set<WidgetState> states,
+      ) {
         if (states.contains(WidgetState.disabled)) {
           return colorScheme.onSurface.withValues(alpha: 0.38);
         }
@@ -359,8 +370,9 @@ class AppTheme {
   static const double hugeFontSize = 28.0;
   static const double giantFontSize = 32.0;
 
-  static TextScaler textScaler =
-      TextScaler.linear(DB().displaySettings.fontScale);
+  static TextScaler textScaler = TextScaler.linear(
+    DB().displaySettings.fontScale,
+  );
 
   static const double boardMargin = 10.0;
   static double boardCornerRadius = DB().displaySettings.boardCornerRadius;
@@ -378,8 +390,8 @@ class AppTheme {
   static const Color infoDialogBackgroundColor = Colors.transparent;
   static const Color modalBottomSheetBackgroundColor = Colors.transparent;
   static const Color gamePageActionSheetTextColor = Colors.yellow;
-  static Color gamePageActionSheetTextBackgroundColor =
-      Colors.deepPurple.withValues(alpha: 0.8);
+  static Color gamePageActionSheetTextBackgroundColor = Colors.deepPurple
+      .withValues(alpha: 0.8);
 
   /// Settings page
   static const Color listItemDividerColor = UIColors.rosewood20;
@@ -404,8 +416,8 @@ class AppTheme {
 
   /// Color themes
   // ignore_for_file: avoid_redundant_argument_values
-  static final Map<ColorTheme, ColorSettings> colorThemes =
-      <ColorTheme, ColorSettings>{
+  static final Map<ColorTheme, ColorSettings>
+  colorThemes = <ColorTheme, ColorSettings>{
     ColorTheme.light: const ColorSettings(),
     ColorTheme.dark: const ColorSettings(
       boardLineColor: UIColors.osloGrey,
@@ -890,8 +902,8 @@ class AppTheme {
       analysisToolbarBackgroundColor: Color(0xFF0B3D0B),
       // dark green
       analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
 
+      // warm gray
       annotationToolbarBackgroundColor: Color(0xFF0B3D0B),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),

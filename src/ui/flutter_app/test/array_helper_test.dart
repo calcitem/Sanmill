@@ -8,14 +8,15 @@ import 'package:sanmill/shared/utils/helpers/array_helpers/array_helper.dart';
 
 void main() {
   test(
-      "List.lastF should return the last value of the list only if the list is not empty",
-      () {
-    // Initialize
-    final List<int> list = List<int>.generate(5, (int index) => index);
+    "List.lastF should return the last value of the list only if the list is not empty",
+    () {
+      // Initialize
+      final List<int> list = List<int>.generate(5, (int index) => index);
 
-    expect(list.lastF, 4);
+      expect(list.lastF, 4);
 
-    list.clear();
-    expect(list.lastF, isNull);
-  });
+      list.clear();
+      expect(list.lastF, isNull);
+    },
+  );
 }

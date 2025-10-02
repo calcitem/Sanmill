@@ -20,12 +20,14 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   // Define the MethodChannel to be mocked
-  const MethodChannel engineChannel =
-      MethodChannel("com.calcitem.sanmill/engine");
+  const MethodChannel engineChannel = MethodChannel(
+    "com.calcitem.sanmill/engine",
+  );
 
   // Set up a mock method channel handler for 'path_provider'
-  const MethodChannel pathProviderChannel =
-      MethodChannel('plugins.flutter.io/path_provider');
+  const MethodChannel pathProviderChannel = MethodChannel(
+    'plugins.flutter.io/path_provider',
+  );
 
   setUpAll(() async {
     // Mock the `catcher` initialization for testing
@@ -37,33 +39,34 @@ void main() {
     // Use the new API to set up mock handlers for MethodChannel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'send':
-          return null; // Return a success response
-        case 'shutdown':
-          return null; // Return a success response
-        case 'startup':
-          return null; // Return a success response
-        case 'read':
-          return 'bestmove d2'; // Simulate a response for the 'read' method
-        case 'isThinking':
-          return false; // Simulate the 'isThinking' method response
-        default:
-          return null; // For unhandled methods, return null
-      }
-    });
+          switch (methodCall.method) {
+            case 'send':
+              return null; // Return a success response
+            case 'shutdown':
+              return null; // Return a success response
+            case 'startup':
+              return null; // Return a success response
+            case 'read':
+              return 'bestmove d2'; // Simulate a response for the 'read' method
+            case 'isThinking':
+              return false; // Simulate the 'isThinking' method response
+            default:
+              return null; // For unhandled methods, return null
+          }
+        });
 
     // Mock the 'getApplicationDocumentsDirectory' method
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(pathProviderChannel,
-            (MethodCall methodCall) async {
-      if (methodCall.method == 'getApplicationDocumentsDirectory') {
-        // Return a temporary directory path
-        final Directory directory = Directory.systemTemp.createTempSync();
-        return directory.path;
-      }
-      return null;
-    });
+        .setMockMethodCallHandler(pathProviderChannel, (
+          MethodCall methodCall,
+        ) async {
+          if (methodCall.method == 'getApplicationDocumentsDirectory') {
+            // Return a temporary directory path
+            final Directory directory = Directory.systemTemp.createTempSync();
+            return directory.path;
+          }
+          return null;
+        });
 
     // Initialize the database and other services
     await DB.init();
@@ -80,8 +83,9 @@ void main() {
     expect(find.byType(Scaffold), findsWidgets);
   });
 
-  testWidgets('Verify app navigation and localization',
-      (WidgetTester tester) async {
+  testWidgets('Verify app navigation and localization', (
+    WidgetTester tester,
+  ) async {
     // Build the app and trigger a frame
     await tester.pumpWidget(const SanmillApp());
 

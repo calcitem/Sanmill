@@ -129,7 +129,8 @@ class BoardRecognitionDebugView extends StatefulWidget {
 
       // Add piece counts
       fenBuffer.write(
-          ' $whiteCount ${piecesCount - whiteCount} $blackCount ${piecesCount - blackCount}');
+        ' $whiteCount ${piecesCount - whiteCount} $blackCount ${piecesCount - blackCount}',
+      );
 
       // Add remaining standard values for a valid FEN
       fenBuffer.write(' 0 0 0 0 0 0 0 0 0 0 0');
@@ -180,8 +181,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
   void _prepareImages() {
     // Prepare original image
     if (widget.debugInfo?.originalImage != null) {
-      _cachedOriginalImage =
-          _convertImageToBytes(widget.debugInfo!.originalImage!);
+      _cachedOriginalImage = _convertImageToBytes(
+        widget.debugInfo!.originalImage!,
+      );
     }
 
     // Prepare resized image (can be obtained from processed image, this is just an example)
@@ -202,8 +204,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
 
     // Prepare contrast-enhanced image
     if (widget.debugInfo?.processedImage != null) {
-      _cachedEnhancedImage =
-          _convertImageToBytes(widget.debugInfo!.processedImage!);
+      _cachedEnhancedImage = _convertImageToBytes(
+        widget.debugInfo!.processedImage!,
+      );
     }
 
     // Process mask
@@ -270,17 +273,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           ),
 
         // Visualization
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: visualizationWidget,
-        ),
+        Padding(padding: const EdgeInsets.all(8.0), child: visualizationWidget),
 
         // Stage information text
         if (widget.debugInfo != null)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _buildStageInfo(),
-          ),
+          Padding(padding: const EdgeInsets.all(8.0), child: _buildStageInfo()),
       ],
     );
   }
@@ -347,12 +344,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
 
     // Do not display overlay if image and board are not fully loaded
     if (widget.imageBytes.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
-    final bool boardDetected = widget.boardPoints.isNotEmpty ||
+    final bool boardDetected =
+        widget.boardPoints.isNotEmpty ||
         (widget.debugInfo!.boardRect != null &&
             !(widget.debugInfo!.boardRect!.width <= 0 ||
                 widget.debugInfo!.boardRect!.height <= 0));
@@ -380,16 +376,16 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                   Text(
                     S.of(context).noValidBoardDetected,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Please try adjusting the camera angle or lighting conditions',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: Colors.white),
                   ),
                 ],
               ),
@@ -543,7 +539,8 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 const SizedBox(height: 4),
                 Text(S.of(context).entireRecognitionProcessFailedToComplete),
                 Text(
-                    S.of(context).suggestionTryTakingAClearerPictureOfTheBoard),
+                  S.of(context).suggestionTryTakingAClearerPictureOfTheBoard,
+                ),
               ],
             ),
           );
@@ -574,7 +571,8 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
               Text('White Pieces: $whiteCount'),
               Text('Black Pieces: $blackCount'),
               const Text(
-                  'Red Circle Indicates Black Pieces, Green Circle Indicates White Pieces'),
+                'Red Circle Indicates Black Pieces, Green Circle Indicates White Pieces',
+              ),
               const SizedBox(height: 10),
               // Add FEN string display
               if (fenString != null)
@@ -799,9 +797,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 const Text('1. Insufficient Board Area Contrast'),
                 const Text('2. Board is Obstructed or Out of Image Range'),
                 const Text(
-                    '3. Poor Lighting Conditions Causing Board Boundary Blur'),
+                  '3. Poor Lighting Conditions Causing Board Boundary Blur',
+                ),
                 const Text(
-                    'Suggestion: Try Taking a Picture in a Well-lit Environment to Ensure Complete and Clear Visibility of the Board'),
+                  'Suggestion: Try Taking a Picture in a Well-lit Environment to Ensure Complete and Clear Visibility of the Board',
+                ),
               ],
             ),
           );
@@ -817,7 +817,8 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
               Text('Top-left: (${rect.left}, ${rect.top})'),
               Text('Size: Width=${rect.width}, Height=${rect.height}'),
               Text(
-                  'Aspect Ratio: ${(rect.width / rect.height).toStringAsFixed(2)}'),
+                'Aspect Ratio: ${(rect.width / rect.height).toStringAsFixed(2)}',
+              ),
               const Text('Yellow Rectangle Indicates Detected Board Area'),
             ],
           ),
@@ -841,9 +842,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 Text('Possible Reasons:'),
                 Text('1. Board Area Detection Failed'),
                 Text(
-                    '2. Board Pattern Does Not Match Standard Nine-piece Chess Layout'),
+                  '2. Board Pattern Does Not Match Standard Nine-piece Chess Layout',
+                ),
                 Text(
-                    'Suggestion: Ensure Using Standard Nine-piece Chess Board'),
+                  'Suggestion: Ensure Using Standard Nine-piece Chess Board',
+                ),
               ],
             ),
           );
@@ -858,12 +861,16 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
               ),
               Text('Detected $pointCount Points (Should Be 24)'),
               const Text(
-                  'Blue Circle Indicates Detected Points, Number Indicates Point Index'),
+                'Blue Circle Indicates Detected Points, Number Indicates Point Index',
+              ),
               if (pointCount < 24)
                 const Text(
-                    'Warning: Point Count Less Than 24, Detection May Be Inaccurate',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold)),
+                  'Warning: Point Count Less Than 24, Detection May Be Inaccurate',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
             ],
           ),
         );
@@ -886,9 +893,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 Text('Possible Reasons:'),
                 Text('1. Board Area or Point Detection Failed'),
                 Text(
-                    '2. Insufficient Image Contrast, Difficult to Distinguish Colors'),
+                  '2. Insufficient Image Contrast, Difficult to Distinguish Colors',
+                ),
                 Text(
-                    'Suggestion: Take a Picture in a Uniformly Lit Environment'),
+                  'Suggestion: Take a Picture in a Uniformly Lit Environment',
+                ),
               ],
             ),
           );
@@ -902,13 +911,17 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                  'White Mean: ${profile.whiteMean.toStringAsFixed(1)}, Standard Deviation: ${profile.whiteStd.toStringAsFixed(1)}'),
+                'White Mean: ${profile.whiteMean.toStringAsFixed(1)}, Standard Deviation: ${profile.whiteStd.toStringAsFixed(1)}',
+              ),
               Text(
-                  'Black Mean: ${profile.blackMean.toStringAsFixed(1)}, Standard Deviation: ${profile.blackStd.toStringAsFixed(1)}'),
+                'Black Mean: ${profile.blackMean.toStringAsFixed(1)}, Standard Deviation: ${profile.blackStd.toStringAsFixed(1)}',
+              ),
               Text(
-                  'Empty Mean: ${profile.emptyMean.toStringAsFixed(1)}, Standard Deviation: ${profile.emptyStd.toStringAsFixed(1)}'),
+                'Empty Mean: ${profile.emptyMean.toStringAsFixed(1)}, Standard Deviation: ${profile.emptyStd.toStringAsFixed(1)}',
+              ),
               const Text(
-                  'Orange Indicates White Sample, Blue Indicates Black Sample, Green Indicates Empty Sample'),
+                'Orange Indicates White Sample, Blue Indicates Black Sample, Green Indicates Empty Sample',
+              ),
             ],
           ),
         );
@@ -931,7 +944,8 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 Text('1. Board Point Detection Failed'),
                 Text('2. Unable to Determine Sampling Point Location'),
                 Text(
-                    'Suggestion: Ensure Clear Visibility of the Board and Pieces'),
+                  'Suggestion: Ensure Clear Visibility of the Board and Pieces',
+                ),
               ],
             ),
           );
@@ -954,15 +968,20 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const Text(
-                  'Analyze Color Characteristics of Each Point to Determine If There Is a Piece'),
+                'Analyze Color Characteristics of Each Point to Determine If There Is a Piece',
+              ),
               Text(
-                  'White Threshold: ${widget.debugInfo?.characteristics?.whiteBrightnessThreshold ?? 0}'),
+                'White Threshold: ${widget.debugInfo?.characteristics?.whiteBrightnessThreshold ?? 0}',
+              ),
               Text(
-                  'Black Threshold: ${widget.debugInfo?.characteristics?.blackBrightnessThreshold ?? 0}'),
+                'Black Threshold: ${widget.debugInfo?.characteristics?.blackBrightnessThreshold ?? 0}',
+              ),
               Text(
-                  'Currently Identified: White Pieces=$whiteCount, Black Pieces=$blackCount'),
+                'Currently Identified: White Pieces=$whiteCount, Black Pieces=$blackCount',
+              ),
               const Text(
-                  'Yellow Outline Sampling Area, Red Indicates Identified as Black, Green Indicates Identified as White'),
+                'Yellow Outline Sampling Area, Red Indicates Identified as Black, Green Indicates Identified as White',
+              ),
             ],
           ),
         );
@@ -983,7 +1002,8 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 const SizedBox(height: 4),
                 Text(S.of(context).entireRecognitionProcessFailedToComplete),
                 Text(
-                    S.of(context).suggestionTryTakingAClearerPictureOfTheBoard),
+                  S.of(context).suggestionTryTakingAClearerPictureOfTheBoard,
+                ),
               ],
             ),
           );
@@ -1014,7 +1034,8 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
               Text('White Pieces: $whiteCount'),
               Text('Black Pieces: $blackCount'),
               const Text(
-                  'Red Circle Indicates Black Pieces, Green Circle Indicates White Pieces'),
+                'Red Circle Indicates Black Pieces, Green Circle Indicates White Pieces',
+              ),
               const SizedBox(height: 10),
               // Add FEN string display
               if (fenString != null)
@@ -1097,12 +1118,7 @@ class MaskPainter extends CustomPainter {
       for (int x = 0; x < mask[y].length; x += 2) {
         if (y < mask.length && x < mask[y].length && mask[y][x]) {
           canvas.drawRect(
-            Rect.fromLTWH(
-              x * scaleX,
-              y * scaleY,
-              2 * scaleX,
-              2 * scaleY,
-            ),
+            Rect.fromLTWH(x * scaleX, y * scaleY, 2 * scaleX, 2 * scaleY),
             maskPaint,
           );
         }
@@ -1124,10 +1140,7 @@ class MaskPainter extends CustomPainter {
         textDirection: TextDirection.ltr,
       );
       textPainter.layout();
-      textPainter.paint(
-        canvas,
-        const Offset(10, 10),
-      );
+      textPainter.paint(canvas, const Offset(10, 10));
     }
   }
 
@@ -1139,10 +1152,7 @@ class MaskPainter extends CustomPainter {
 
 /// Custom canvas for drawing board points
 class BoardPointsDebugPainter extends CustomPainter {
-  BoardPointsDebugPainter({
-    required this.boardPoints,
-    required this.imageSize,
-  });
+  BoardPointsDebugPainter({required this.boardPoints, required this.imageSize});
 
   final List<BoardPoint> boardPoints;
   final Size imageSize;
@@ -1257,19 +1267,20 @@ class ColorAnalysisPainter extends CustomPainter {
       // Determine color category based on point average brightness
       final double brightness = (i % 3 == 0)
           ? colorProfile!
-              .whiteMean // Example: Take every 3rd point as white sample
+                .whiteMean // Example: Take every 3rd point as white sample
           : (i % 3 == 1)
-              ? colorProfile!
-                  .blackMean // Example: Take every 3rd point as black sample
-              : colorProfile!
-                  .emptyMean; // Example: Other points as empty sample
+          ? colorProfile!
+                .blackMean // Example: Take every 3rd point as black sample
+          : colorProfile!.emptyMean; // Example: Other points as empty sample
 
       // Determine point color based on brightness
       final Color pointColor = (i % 3 == 0)
-          ? Colors.orange // White sample
+          ? Colors
+                .orange // White sample
           : (i % 3 == 1)
-              ? Colors.blue // Black sample
-              : Colors.green; // Empty sample
+          ? Colors
+                .blue // Black sample
+          : Colors.green; // Empty sample
 
       // Draw point circle
       final Paint pointPaint = Paint()
@@ -1320,39 +1331,25 @@ class ColorAnalysisPainter extends CustomPainter {
           TextSpan(
             text:
                 'White=${colorProfile!.whiteMean.toStringAsFixed(1)}±${colorProfile!.whiteStd.toStringAsFixed(1)} ',
-            style: const TextStyle(
-              color: Colors.orange,
-              fontSize: 12,
-            ),
+            style: const TextStyle(color: Colors.orange, fontSize: 12),
           ),
           TextSpan(
             text:
                 'Black=${colorProfile!.blackMean.toStringAsFixed(1)}±${colorProfile!.blackStd.toStringAsFixed(1)} ',
-            style: const TextStyle(
-              color: Colors.blue,
-              fontSize: 12,
-            ),
+            style: const TextStyle(color: Colors.blue, fontSize: 12),
           ),
           TextSpan(
             text:
                 'Empty=${colorProfile!.emptyMean.toStringAsFixed(1)}±${colorProfile!.emptyStd.toStringAsFixed(1)}',
-            style: const TextStyle(
-              color: Colors.green,
-              fontSize: 12,
-            ),
+            style: const TextStyle(color: Colors.green, fontSize: 12),
           ),
         ],
-        style: const TextStyle(
-          backgroundColor: Colors.black54,
-        ),
+        style: const TextStyle(backgroundColor: Colors.black54),
       ),
       textDirection: TextDirection.ltr,
     );
     statsPainter.layout();
-    statsPainter.paint(
-      canvas,
-      const Offset(10, 10),
-    );
+    statsPainter.paint(canvas, const Offset(10, 10));
   }
 
   @override
@@ -1419,8 +1416,9 @@ class PieceDetectionPainter extends CustomPainter {
             text: TextSpan(
               text: pieceColor == PieceColor.white ? 'W' : 'B',
               style: TextStyle(
-                color:
-                    pieceColor == PieceColor.white ? Colors.green : Colors.red,
+                color: pieceColor == PieceColor.white
+                    ? Colors.green
+                    : Colors.red,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 backgroundColor: Colors.black54,
@@ -1476,10 +1474,7 @@ class PieceDetectionPainter extends CustomPainter {
       indexPainter.layout();
       indexPainter.paint(
         canvas,
-        Offset(
-          point.x * scaleX - 12,
-          point.y * scaleY - 12,
-        ),
+        Offset(point.x * scaleX - 12, point.y * scaleY - 12),
       );
     }
   }
@@ -1505,20 +1500,14 @@ class BoardRectOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size.infinite,
-      painter: BoardRectPainter(
-        boardRect: boardRect,
-        imageSize: imageSize,
-      ),
+      painter: BoardRectPainter(boardRect: boardRect, imageSize: imageSize),
     );
   }
 }
 
 /// Custom canvas for drawing board area rectangle
 class BoardRectPainter extends CustomPainter {
-  BoardRectPainter({
-    required this.boardRect,
-    required this.imageSize,
-  });
+  BoardRectPainter({required this.boardRect, required this.imageSize});
 
   final math.Rectangle<int> boardRect;
   final Size imageSize;
@@ -1700,10 +1689,7 @@ class BoardRectPainter extends CustomPainter {
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(
-        scaledRect.left + 5,
-        scaledRect.top - textPainter.height - 5,
-      ),
+      Offset(scaledRect.left + 5, scaledRect.top - textPainter.height - 5),
     );
 
     // Draw rectangle size information
@@ -1725,10 +1711,7 @@ class BoardRectPainter extends CustomPainter {
     sizePainter.layout();
     sizePainter.paint(
       canvas,
-      Offset(
-        scaledRect.right - sizePainter.width - 5,
-        scaledRect.bottom + 5,
-      ),
+      Offset(scaledRect.right - sizePainter.width - 5, scaledRect.bottom + 5),
     );
   }
 

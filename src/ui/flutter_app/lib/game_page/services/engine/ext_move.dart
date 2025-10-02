@@ -48,13 +48,13 @@ class ExtMove extends PgnNodeData {
     super.nags,
     super.startingComments,
     super.comments,
-  })  : type = MoveParser().parseMoveType(move),
-        to = _parseToSquare(move),
-        // Put all your own field initializations first ...
-        super(
-          // ...then call super(...) last
-          san: move,
-        ) {
+  }) : type = MoveParser().parseMoveType(move),
+       to = _parseToSquare(move),
+       // Put all your own field initializations first ...
+       super(
+         // ...then call super(...) last
+         san: move,
+       ) {
     _checkLegal(move);
   }
 
@@ -140,8 +140,9 @@ class ExtMove extends PgnNodeData {
     final int? qualityNag = moveQualityToNag(quality);
     if (qualityNag != null && !allNags.contains(qualityNag)) {
       // Check if there are any existing quality-related NAGs (1, 2, 3, 4)
-      final bool hasQualityNags =
-          allNags.any((int nag) => nag >= 1 && nag <= 4);
+      final bool hasQualityNags = allNags.any(
+        (int nag) => nag >= 1 && nag <= 4,
+      );
       if (!hasQualityNags) {
         allNags.add(qualityNag);
       }
@@ -220,7 +221,7 @@ class ExtMove extends PgnNodeData {
       "d2": 20, "b2": 21, "b4": 22, "b6": 23,
       // Outer ring
       "d7": 24, "g7": 25, "g4": 26, "g1": 27,
-      "d1": 28, "a1": 29, "a4": 30, "a7": 31
+      "d1": 28, "a1": 29, "a4": 30, "a7": 31,
     };
 
     return standardToSquare[notation.toLowerCase()] ?? -1;
@@ -252,7 +253,7 @@ class ExtMove extends PgnNodeData {
     28: "d1",
     29: "a1",
     30: "a4",
-    31: "a7"
+    31: "a7",
   };
 
   static String sqToNotation(int sq) {
@@ -283,7 +284,8 @@ class ExtMove extends PgnNodeData {
       final List<String> parts = move.split("-");
       if (parts[0] == parts[1]) {
         throw Exception(
-            "$_logTag Invalid Move: cannot move to the same place.");
+          "$_logTag Invalid Move: cannot move to the same place.",
+        );
       }
       return;
     }

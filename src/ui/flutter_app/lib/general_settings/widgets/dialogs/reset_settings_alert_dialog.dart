@@ -11,8 +11,9 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
   void _cancel(BuildContext context) => Navigator.pop(context);
 
   Future<void> _restore(BuildContext context) async {
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(S.of(context).reopenToTakeEffect);
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+      S.of(context).reopenToTakeEffect,
+    );
 
     Navigator.pop(context);
 
@@ -37,7 +38,8 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
           "${S.of(context).restoreDefaultSettings}?",
           key: const Key('reset_settings_alert_dialog_content_text'),
           style: TextStyle(
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+          ),
         ),
       ),
       actions: <Widget>[
@@ -48,7 +50,8 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
             S.of(context).ok,
             key: const Key('reset_settings_alert_dialog_ok_button_text'),
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
         ),
         TextButton(
@@ -58,7 +61,8 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
             S.of(context).cancel,
             key: const Key('reset_settings_alert_dialog_cancel_button_text'),
             style: TextStyle(
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
           ),
         ),
       ],

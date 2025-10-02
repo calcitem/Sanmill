@@ -68,27 +68,15 @@ extension _DrawerScreen on _DrawerIndex {
   Widget? get screen {
     switch (this) {
       case _DrawerIndex.humanVsAi:
-        return GamePage(
-          GameMode.humanVsAi,
-          key: const Key("human_ai"),
-        );
+        return GamePage(GameMode.humanVsAi, key: const Key("human_ai"));
       case _DrawerIndex.humanVsHuman:
         GameController().disableStats = true;
-        return GamePage(
-          GameMode.humanVsHuman,
-          key: const Key("human_human"),
-        );
+        return GamePage(GameMode.humanVsHuman, key: const Key("human_human"));
       case _DrawerIndex.aiVsAi:
         GameController().disableStats = true;
-        return GamePage(
-          GameMode.aiVsAi,
-          key: const Key("ai_ai"),
-        );
+        return GamePage(GameMode.aiVsAi, key: const Key("ai_ai"));
       case _DrawerIndex.humanVsLAN:
-        return GamePage(
-          GameMode.humanVsLAN,
-          key: const Key("human_lan"),
-        );
+        return GamePage(GameMode.humanVsLAN, key: const Key("human_lan"));
       case _DrawerIndex.setupPosition:
         return GamePage(
           GameMode.setupPosition,
@@ -142,8 +130,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   Widget _screenView = kIsWeb
       ? _DrawerIndex.humanVsHuman.screen!
       : _DrawerIndex.humanVsAi.screen!;
-  _DrawerIndex _drawerIndex =
-      kIsWeb ? _DrawerIndex.humanVsHuman : _DrawerIndex.humanVsAi;
+  _DrawerIndex _drawerIndex = kIsWeb
+      ? _DrawerIndex.humanVsHuman
+      : _DrawerIndex.humanVsAi;
   final StackList<_DrawerIndex> _routes = StackList<_DrawerIndex>();
 
   /// Callback from drawer for replace screen
@@ -351,33 +340,35 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         case "af": // South Africa
         case "zu": // South Africa
           DB().ruleSettings = DB().ruleSettings.copyWith(
-                piecesCount: 12,
-                hasDiagonalLines: true,
-                boardFullAction: BoardFullAction.agreeToDraw,
-                endgameNMoveRule: 10,
-                restrictRepeatedMillsFormation: true,
-              );
+            piecesCount: 12,
+            hasDiagonalLines: true,
+            boardFullAction: BoardFullAction.agreeToDraw,
+            endgameNMoveRule: 10,
+            restrictRepeatedMillsFormation: true,
+          );
           break;
         case "fa": // Iran
         case "si": // Sri Lanka
-          DB().ruleSettings = DB()
-              .ruleSettings
-              .copyWith(piecesCount: 12, hasDiagonalLines: true);
+          DB().ruleSettings = DB().ruleSettings.copyWith(
+            piecesCount: 12,
+            hasDiagonalLines: true,
+          );
           break;
         case "ru": // Russia
           DB().ruleSettings = DB().ruleSettings.copyWith(
-                oneTimeUseMill: true,
-                mayRemoveFromMillsAlways: true,
-              );
+            oneTimeUseMill: true,
+            mayRemoveFromMillsAlways: true,
+          );
           break;
         case "ko": // Korea
           DB().ruleSettings = DB().ruleSettings.copyWith(
-              piecesCount: 12,
-              hasDiagonalLines: true,
-              mayFly: false,
-              millFormationActionInPlacingPhase:
-                  MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-              mayRemoveFromMillsAlways: true);
+            piecesCount: 12,
+            hasDiagonalLines: true,
+            mayFly: false,
+            millFormationActionInPlacingPhase:
+                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+            mayRemoveFromMillsAlways: true,
+          );
           break;
         default:
           break;
@@ -401,14 +392,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme.boardPadding = ((deviceWidth(context) - AppTheme.boardMargin * 2) *
+    AppTheme.boardPadding =
+        ((deviceWidth(context) - AppTheme.boardMargin * 2) *
                 DB().displaySettings.pieceWidth /
                 7) /
             2 +
         4;
 
-    final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
-        <CustomDrawerItem<_DrawerIndex>>[
+    final List<CustomDrawerItem<_DrawerIndex>>
+    drawerItems = <CustomDrawerItem<_DrawerIndex>>[
       if (!kIsWeb)
         CustomDrawerItem<_DrawerIndex>(
           key: const Key('drawer_item_human_vs_ai'),
@@ -481,11 +473,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         children: <CustomDrawerItem<_DrawerIndex>>[
           CustomDrawerItem<_DrawerIndex>(
             key: const Key(
-                'drawer_item_general_settings_child'), // Key for child
+              'drawer_item_general_settings_child',
+            ), // Key for child
             itemValue: _DrawerIndex.generalSettings,
             itemTitle: S.of(context).generalSettings,
-            itemIcon:
-                const Icon(FluentIcons.options_24_regular), // Original icon
+            itemIcon: const Icon(
+              FluentIcons.options_24_regular,
+            ), // Original icon
             currentSelectedValue: _drawerIndex,
             onSelectionChanged: _changeIndex,
             // No manual indentation needed
@@ -495,7 +489,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             itemValue: _DrawerIndex.ruleSettings,
             itemTitle: S.of(context).ruleSettings,
             itemIcon: const Icon(
-                FluentIcons.task_list_ltr_24_regular), // Original icon
+              FluentIcons.task_list_ltr_24_regular,
+            ), // Original icon
             currentSelectedValue: _drawerIndex,
             onSelectionChanged: _changeIndex,
             // No manual indentation needed
@@ -505,7 +500,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             itemValue: _DrawerIndex.appearance,
             itemTitle: S.of(context).appearance,
             itemIcon: const Icon(
-                FluentIcons.design_ideas_24_regular), // Original icon
+              FluentIcons.design_ideas_24_regular,
+            ), // Original icon
             currentSelectedValue: _drawerIndex,
             onSelectionChanged: _changeIndex,
             // No manual indentation needed
@@ -565,30 +561,31 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         return !_canPopRoute();
       },
       child: WidgetsToImage(
-          controller: GifShare().controller,
-          child: ValueListenableBuilder<CustomDrawerValue>(
-            valueListenable: _controller,
-            builder: (_, CustomDrawerValue value, Widget? child) =>
-                CustomDrawer(
-              key: CustomDrawer.drawerMainKey,
-              controller: _controller,
-              drawerHeader: CustomDrawerHeader(
-                headerTitle: S.of(context).appName,
-                key: const Key("custom_drawer_header"),
-              ),
-              drawerItems: drawerItems,
-              disabledGestures: (!DB().displaySettings.swipeToRevealTheDrawer &&
-                      !value.isDrawerVisible) ||
-                  ((kIsWeb ||
-                          Platform.isWindows ||
-                          Platform.isLinux ||
-                          Platform.isMacOS) &&
-                      _isGame(_drawerIndex) &&
-                      !value.isDrawerVisible),
-              orientation: MediaQuery.of(context).orientation,
-              mainScreenWidget: _screenView,
+        controller: GifShare().controller,
+        child: ValueListenableBuilder<CustomDrawerValue>(
+          valueListenable: _controller,
+          builder: (_, CustomDrawerValue value, Widget? child) => CustomDrawer(
+            key: CustomDrawer.drawerMainKey,
+            controller: _controller,
+            drawerHeader: CustomDrawerHeader(
+              headerTitle: S.of(context).appName,
+              key: const Key("custom_drawer_header"),
             ),
-          )),
+            drawerItems: drawerItems,
+            disabledGestures:
+                (!DB().displaySettings.swipeToRevealTheDrawer &&
+                    !value.isDrawerVisible) ||
+                ((kIsWeb ||
+                        Platform.isWindows ||
+                        Platform.isLinux ||
+                        Platform.isMacOS) &&
+                    _isGame(_drawerIndex) &&
+                    !value.isDrawerVisible),
+            orientation: MediaQuery.of(context).orientation,
+            mainScreenWidget: _screenView,
+          ),
+        ),
+      ),
     );
   }
 
@@ -626,12 +623,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final String screenshotFilePath =
-        await _saveFeedbackImage(feedback.screenshot);
+    final String screenshotFilePath = await _saveFeedbackImage(
+      feedback.screenshot,
+    );
 
     final String optionsContent = generateOptionsContent();
-    final String optionsFilePath =
-        await _saveOptionsContentToFile(optionsContent);
+    final String optionsFilePath = await _saveOptionsContentToFile(
+      optionsContent,
+    );
 
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
@@ -639,7 +638,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     final Email email = Email(
       body: feedback.text,
-      subject: Constants.feedbackSubjectPrefix +
+      subject:
+          Constants.feedbackSubjectPrefix +
           version +
           Constants.feedbackSubjectSuffix,
       recipients: Constants.recipientEmails,

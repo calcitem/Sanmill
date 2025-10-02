@@ -18,9 +18,6 @@ class WidgetsToImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      key: controller.containerKey,
-      child: child,
-    );
+    return RepaintBoundary(key: controller.containerKey, child: child);
   }
 }
