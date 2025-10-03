@@ -2175,12 +2175,10 @@ class Position {
       return false;
     }
 
-    // Return all possible capture targets from all lines
-    // This allows the player to choose which line to capture from
-    final Set<int> captured = <int>{};
-    for (final Set<int> line in captureLines) {
-      captured.addAll(line);
-    }
+    // If multiple lines are available, only use the first one
+    // This ensures that when placing a piece at a cross center,
+    // only 2 pieces from one line are captured, not all 4 pieces
+    final Set<int> captured = captureLines[0];
 
     for (final int target in captured) {
       if (_board[target] != us.opponent) {
