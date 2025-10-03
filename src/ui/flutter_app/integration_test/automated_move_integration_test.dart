@@ -42,10 +42,16 @@ void main() {
 
       print('[IntegrationTest] App initialized, starting tests...');
 
-      // Execute the comprehensive capture test configuration with REAL AI engine
-      final result = await AutomatedMoveTestRunner.runTestBatch(
-        AutomatedMoveTestData.custodianCaptureAndInterventionCaptureTestConfig,
+      // Execute a single test case for debugging
+      final debugConfig = AutomatedMoveTestData.createCustomConfig(
+        configName: 'Debug Single Test',
+        batchDescription: 'Debugging first failed test case',
+        testCases: [AutomatedMoveTestData.placingWhiteCrossMillCapture],
+        maxWaitTimeMs: 30000,
+        stopOnFirstFailure: false,
       );
+
+      final result = await AutomatedMoveTestRunner.runTestBatch(debugConfig);
 
       // Update overall statistics
       totalTestsRun += result.testResults.length;
