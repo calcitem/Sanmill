@@ -2152,14 +2152,17 @@ class Position {
       }
     }
 
-    if (DB().ruleSettings.interventionCaptureOnSquareEdges) {
-      for (final List<int> line in _custodianSquareEdgeLines) {
+    // Process cross lines first, then square edges, then diagonals
+    // This ensures that when placing at a cross center, the cross line
+    // (more intuitive) is prioritized over the square edge line
+    if (DB().ruleSettings.interventionCaptureOnCrossLines) {
+      for (final List<int> line in _custodianCrossLines) {
         processLine(line);
       }
     }
 
-    if (DB().ruleSettings.interventionCaptureOnCrossLines) {
-      for (final List<int> line in _custodianCrossLines) {
+    if (DB().ruleSettings.interventionCaptureOnSquareEdges) {
+      for (final List<int> line in _custodianSquareEdgeLines) {
         processLine(line);
       }
     }

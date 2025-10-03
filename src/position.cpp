@@ -2274,14 +2274,17 @@ bool Position::checkInterventionCapture(
         }
     };
 
-    if (rule.interventionCapture.onSquareEdges) {
-        for (const auto &line : kCustodianSquareEdgeLines) {
+    // Process cross lines first, then square edges, then diagonals
+    // This ensures that when placing at a cross center, the cross line
+    // (more intuitive) is prioritized over the square edge line
+    if (rule.interventionCapture.onCrossLines) {
+        for (const auto &line : kCustodianCrossLines) {
             processLine(line);
         }
     }
 
-    if (rule.interventionCapture.onCrossLines) {
-        for (const auto &line : kCustodianCrossLines) {
+    if (rule.interventionCapture.onSquareEdges) {
+        for (const auto &line : kCustodianSquareEdgeLines) {
             processLine(line);
         }
     }
