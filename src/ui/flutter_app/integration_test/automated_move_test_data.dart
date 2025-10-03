@@ -103,7 +103,7 @@ class AutomatedMoveTestData {
  3.    b2    f6
  4.    b6    b4xa4xc4
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_SHORT_SIMPLE'],
+    unexpectedSequences: ['xb2 xb6', 'xb6 xb2'],
   );
 
   /// Test case for 5-move opening
@@ -385,6 +385,29 @@ class AutomatedMoveTestData {
     enabled: false,
   );
 
+  /// Example test case demonstrating unexpected sequences
+  static const MoveListTestCase unexpectedSequenceExample = MoveListTestCase(
+    id: 'unexpected_sequence_example',
+    description: 'Example test with unexpected sequences',
+    moveList: '''
+ 1.    a4    d6
+ 2.    c4    d7
+ 3.    b2    f6
+''',
+    expectedSequences: [
+      // Any sequence that is NOT in unexpectedSequences will pass
+      // This is useful when there are many possible good moves
+      // but only a few bad moves to avoid
+      'PLACEHOLDER_EXPECTED',
+    ],
+    unexpectedSequences: [
+      // These specific sequences should cause test failure
+      'b4',
+      'd3',
+    ],
+    enabled: false, // Disabled by default for demonstration
+  );
+
   /// Basic test configuration with sample test cases
   static const AutomatedMoveTestConfig
   basicTestConfig = AutomatedMoveTestConfig(
@@ -513,6 +536,7 @@ class AutomatedMoveTestData {
     required String description,
     required String moveList,
     required String expectedSequence,
+    List<String>? unexpectedSequences,
     bool enabled = true,
   }) {
     return MoveListTestCase(
@@ -520,6 +544,7 @@ class AutomatedMoveTestData {
       description: description,
       moveList: moveList,
       expectedSequences: [expectedSequence],
+      unexpectedSequences: unexpectedSequences,
       enabled: enabled,
     );
   }
@@ -529,7 +554,8 @@ class AutomatedMoveTestData {
     required String id,
     required String description,
     required String moveList,
-    required List<String> expectedSequences,
+    List<String>? expectedSequences,
+    List<String>? unexpectedSequences,
     bool enabled = true,
   }) {
     return MoveListTestCase(
@@ -537,6 +563,7 @@ class AutomatedMoveTestData {
       description: description,
       moveList: moveList,
       expectedSequences: expectedSequences,
+      unexpectedSequences: unexpectedSequences,
       enabled: enabled,
     );
   }

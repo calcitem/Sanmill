@@ -6,8 +6,6 @@
 // ignore_for_file: avoid_classes_with_only_static_members, avoid_print, always_specify_types
 
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -191,19 +189,54 @@ class AutomatedMoveTestRunner {
 
       final Duration executionTime = DateTime.now().difference(startTime);
 
-      // Check if actual sequence matches any expected sequence
-      final String? matchedExpected = _findMatchingExpectedSequence(
-        actualSequence,
-        testCase.expectedSequences,
-      );
+      // Check if we should validate unexpected sequences
+      // Skip validation if list is empty or contains only empty strings
+      if (_shouldValidateSequences(testCase.unexpectedSequences)) {
+        // Check if actual sequence matches any unexpected sequence
+        final String? matchedUnexpected = _findMatchingSequence(
+          actualSequence,
+          testCase.unexpectedSequences,
+        );
 
-      final bool passed = matchedExpected != null;
+        // If matched an unexpected sequence, test fails
+        if (matchedUnexpected != null) {
+          return TestCaseResult(
+            testCase: testCase,
+            passed: false,
+            actualSequence: actualSequence,
+            matchedUnexpectedSequence: matchedUnexpected,
+            errorMessage: 'Matched unexpected sequence: $matchedUnexpected',
+            executionTime: executionTime,
+          );
+        }
+      }
 
+      // Check if we should validate expected sequences
+      // Skip validation if list is empty or contains only empty strings
+      if (_shouldValidateSequences(testCase.expectedSequences)) {
+        // Check if actual sequence matches any expected sequence
+        final String? matchedExpected = _findMatchingSequence(
+          actualSequence,
+          testCase.expectedSequences,
+        );
+
+        final bool passed = matchedExpected != null;
+
+        return TestCaseResult(
+          testCase: testCase,
+          passed: passed,
+          actualSequence: actualSequence,
+          matchedExpectedSequence: matchedExpected,
+          errorMessage: passed ? null : 'Did not match any expected sequence',
+          executionTime: executionTime,
+        );
+      }
+
+      // If both validations are skipped, test passes
       return TestCaseResult(
         testCase: testCase,
-        passed: passed,
+        passed: true,
         actualSequence: actualSequence,
-        matchedExpectedSequence: matchedExpected,
         executionTime: executionTime,
       );
     } catch (e) {
@@ -235,13 +268,6 @@ class AutomatedMoveTestRunner {
     });
 
     try {
-      // Get a real BuildContext from the test environment
-      final BuildContext? contextElement = WidgetsBinding.instance.rootElement;
-      if (contextElement == null) {
-        throw Exception('Failed to get BuildContext: rootElement is null');
-      }
-      final BuildContext context = contextElement;
-
       // Record initial move count and sequence
       final String initialSequence = controller.gameRecorder.moveHistoryText;
       final int initialMoveCount = controller.gameRecorder.mainlineMoves.length;
@@ -380,17 +406,45 @@ class AutomatedMoveTestRunner {
     return completer.future;
   }
 
-  /// Find if the actual sequence matches any of the expected sequences
-  static String? _findMatchingExpectedSequence(
+  /// Determine if a sequence list should be validated
+  /// Returns false if:
+  /// - The list is null
+  /// - The list is empty
+  /// - The list contains only empty strings (after normalization)
+  static bool _shouldValidateSequences(List<String>? sequences) {
+    if (sequences == null || sequences.isEmpty) {
+      return false;
+    }
+
+    // Check if all sequences are empty (whitespace-only or empty strings)
+    final bool allEmpty = sequences.every(
+      (String seq) => _normalizeSequence(seq).isEmpty,
+    );
+
+    return !allEmpty;
+  }
+
+  /// Find if the actual sequence matches any of the given sequences
+  /// Only checks non-empty sequences
+  /// Returns null if sequences list is null or no match is found
+  static String? _findMatchingSequence(
     String actualSequence,
-    List<String> expectedSequences,
+    List<String>? sequences,
   ) {
+    if (sequences == null) {
+      return null;
+    }
+
     final String normalizedActual = _normalizeSequence(actualSequence);
 
-    for (final String expected in expectedSequences) {
-      final String normalizedExpected = _normalizeSequence(expected);
-      if (normalizedActual == normalizedExpected) {
-        return expected;
+    for (final String sequence in sequences) {
+      final String normalizedSequence = _normalizeSequence(sequence);
+      // Skip empty sequences during matching
+      if (normalizedSequence.isEmpty) {
+        continue;
+      }
+      if (normalizedActual == normalizedSequence) {
+        return sequence;
       }
     }
 
@@ -414,17 +468,41 @@ class AutomatedMoveTestRunner {
     }
 
     if (!result.passed) {
-      print('$_logTag   Expected one of:');
-      for (final String expected in result.testCase.expectedSequences) {
-        print('$_logTag     - $expected');
+      // Check if failed due to matching unexpected sequence
+      if (result.matchedUnexpectedSequence != null) {
+        print('$_logTag   FAILURE REASON: Matched unexpected sequence');
+        print(
+          '$_logTag   Matched unexpected: ${result.matchedUnexpectedSequence}',
+        );
+        print('$_logTag   Actual: ${result.actualSequence}');
+
+        final List<String>? unexpectedSeqs =
+            result.testCase.unexpectedSequences;
+        if (unexpectedSeqs != null && unexpectedSeqs.isNotEmpty) {
+          print('$_logTag   All unexpected sequences:');
+          for (final String unexpected in unexpectedSeqs) {
+            print('$_logTag     - $unexpected');
+          }
+        }
+      } else {
+        // Failed due to not matching expected sequence
+        print('$_logTag   FAILURE REASON: Did not match any expected sequence');
+
+        final List<String>? expectedSeqs = result.testCase.expectedSequences;
+        if (expectedSeqs != null && expectedSeqs.isNotEmpty) {
+          print('$_logTag   Expected one of:');
+          for (final String expected in expectedSeqs) {
+            print('$_logTag     - $expected');
+          }
+        }
+        print('$_logTag   Actual: ${result.actualSequence}');
       }
-      print('$_logTag   Actual: ${result.actualSequence}');
 
       if (result.errorMessage != null) {
         print('$_logTag   Error: ${result.errorMessage}');
       }
     } else if (result.matchedExpectedSequence != null) {
-      print('$_logTag   Matched: ${result.matchedExpectedSequence}');
+      print('$_logTag   Matched expected: ${result.matchedExpectedSequence}');
     }
 
     print(''); // Empty line for readability

@@ -18,7 +18,14 @@ class MoveListTestCase {
 
   /// List of possible expected move sequences after AI execution
   /// Test passes if the actual result matches any of these expected sequences
-  final List<String> expectedSequences;
+  /// If null, empty, or contains only empty strings, this check is skipped
+  final List<String>? expectedSequences;
+
+  /// List of unexpected move sequences that should cause test failure
+  /// Test fails if the actual result matches any of these unexpected sequences
+  /// If null, empty, or contains only empty strings, this check is skipped
+  /// Defaults to empty list
+  final List<String>? unexpectedSequences;
 
   /// Whether this test case is currently enabled
   final bool enabled;
@@ -27,7 +34,8 @@ class MoveListTestCase {
     required this.id,
     required this.description,
     required this.moveList,
-    required this.expectedSequences,
+    this.expectedSequences,
+    this.unexpectedSequences,
     this.enabled = true,
   });
 
@@ -87,6 +95,10 @@ class TestCaseResult {
   /// The expected sequence that was matched (if any)
   final String? matchedExpectedSequence;
 
+  /// The unexpected sequence that was matched (if any)
+  /// If not null, this indicates the test failed due to matching an unexpected sequence
+  final String? matchedUnexpectedSequence;
+
   /// Error message if the test failed
   final String? errorMessage;
 
@@ -98,6 +110,7 @@ class TestCaseResult {
     required this.passed,
     required this.actualSequence,
     this.matchedExpectedSequence,
+    this.matchedUnexpectedSequence,
     this.errorMessage,
     required this.executionTime,
   });
