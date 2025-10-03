@@ -12,15 +12,17 @@ import 'package:sanmill/main.dart' as app;
 import 'automated_move_test_data.dart';
 import 'automated_move_test_runner.dart';
 
-/// Integration test for running ONLY sampleTestCase1
+/// Integration test for running a SINGLE test case for debugging
 ///
 /// Usage:
 ///   flutter test integration_test/automated_move_single_test.dart -d linux
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Single Test - sample_game_1', () {
-    testWidgets('Run sampleTestCase1 only', (WidgetTester tester) async {
+  group('Single Test - placingWhiteCrossMillCapture', () {
+    testWidgets('Run placingWhiteCrossMillCapture only', (
+      WidgetTester tester,
+    ) async {
       // Launch the app
       print('[IntegrationTest] Launching Sanmill app...');
       app.main();
@@ -31,12 +33,11 @@ void main() {
 
       print('[IntegrationTest] App initialized, starting single test...');
 
-      // Execute ONLY sampleTestCase1
+      // Execute ONLY placingWhiteCrossMillCapture (first failed test case)
       final singleTestConfig = AutomatedMoveTestData.createCustomConfig(
-        configName: 'Single Test - sample_game_1',
-        batchDescription: 'Run only sampleTestCase1 for debugging',
-        testCases: [AutomatedMoveTestData.sampleTestCase1],
-        maxWaitTimeMs: 10000,
+        configName: 'Single Test - placingWhiteCrossMillCapture',
+        batchDescription: 'Run only placingWhiteCrossMillCapture for debugging',
+        testCases: [AutomatedMoveTestData.placingWhiteCrossMillCapture],
         stopOnFirstFailure: true,
       );
 
@@ -47,7 +48,8 @@ void main() {
       // Print summary
       print('[IntegrationTest] =====================================');
       print('[IntegrationTest] Single Test Completed');
-      print('[IntegrationTest] Test: sample_game_1');
+      print('[IntegrationTest] Test: placingWhiteCrossMillCapture');
+      print('[IntegrationTest] ID: short_capture_game');
       print('[IntegrationTest] Passed: ${result.passedCount}');
       print('[IntegrationTest] Failed: ${result.failedCount}');
       print('[IntegrationTest] =====================================');
