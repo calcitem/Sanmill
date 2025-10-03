@@ -12,7 +12,8 @@ class AutomatedMoveTestData {
   /// Sample test case based on the first example move list provided
   static const MoveListTestCase sampleTestCase1 = MoveListTestCase(
     id: 'sample_game_1',
-    description: 'Test AI behavior after importing a complete game sequence',
+    description:
+        'Moving phase / White / interventionCapture + Mill / interventionCapture will win',
     moveList: '''
  1.    b2    f6
  2.    g7    e5
@@ -45,7 +46,8 @@ class AutomatedMoveTestData {
   /// Sample test case based on the second example move list provided
   static const MoveListTestCase sampleTestCase2 = MoveListTestCase(
     id: 'sample_game_2',
-    description: 'Test AI response to a shorter game sequence',
+    description:
+        'Moving phase / Black / interventionCapture / interventionCapture will capture piece in mill',
     moveList: '''
  1.    f6    f2
  2.    b2    b6
@@ -67,37 +69,39 @@ class AutomatedMoveTestData {
   /// Test case for edge case handling
   static const MoveListTestCase edgeCaseTest = MoveListTestCase(
     id: 'edge_case_1',
-    description: 'Test AI behavior with unusual move patterns',
+    description: 'Placing phase / White / interventionCapture',
     moveList: '''
  1.    d2    d6
  2.    a1    g7
  3.    g1    a7
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_EDGE'],
+    expectedSequences: ['d7'],
   );
 
   /// Test case for short game with captures
   static const MoveListTestCase shortCaptureTest = MoveListTestCase(
     id: 'short_capture_game',
-    description: 'Test AI response to short game with capture sequence',
-    moveList: '''
- 1.    a4    d6
- 2.    c4    d7
- 3.    b2    f6
- 4.    b6    b4xb2xb6
-''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_SHORT_CAPTURE'],
-  );
-
-  /// Test case for short game without captures
-  static const MoveListTestCase shortSimpleTest = MoveListTestCase(
-    id: 'short_simple_game',
-    description: 'Test AI response to short simple game sequence',
+    description:
+        'Placing phase / White / interventionCapture / cross (2 choices intervention) / interventionCapture will capture piece in mill',
     moveList: '''
  1.    a4    d6
  2.    c4    d7
  3.    b2    f6
  4.    b6    b4
+''',
+    expectedSequences: ['xb2 xb6', 'xb6 xb2', 'xa4 xc4', 'xc4 xa4'],
+  );
+
+  /// Test case for short game without captures
+  static const MoveListTestCase shortSimpleTest = MoveListTestCase(
+    id: 'short_simple_game',
+    description:
+        'Placing phase / White / interventionCapture / cross (2 choices intervention) / interventionCapture will capture piece in mill / Already capture 2 pieces',
+    moveList: '''
+ 1.    a4    d6
+ 2.    c4    d7
+ 3.    b2    f6
+ 4.    b6    b4xa4xc4
 ''',
     expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_SHORT_SIMPLE'],
   );
