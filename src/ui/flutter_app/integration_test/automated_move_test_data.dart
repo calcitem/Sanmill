@@ -96,12 +96,55 @@ class AutomatedMoveTestData {
   static const MoveListTestCase placingWhiteTwoCaptured = MoveListTestCase(
     id: 'short_simple_game',
     description:
-        'Placing phase / White / interventionCapture / vertical line (2 choices intervention) / interventionCapture will capture piece in mill / Already capture 2 pieces',
+        'Placing phase / White / interventionCapture / cross (2 choices intervention) / interventionCapture will capture piece in mill / Already capture 2 pieces',
     moveList: '''
  1.    a4    d6
  2.    c4    d7
  3.    b2    f6
- 4.    b6    b4xb6xb2
+ 4.    b6    b4xa4xc4
+''',
+    unexpectedSequences: ['xb2 xb6', 'xb6 xb2'],
+  );
+
+  /// Test case for intervention capture - single piece from cross line
+  static const MoveListTestCase placingWhiteSingleCaptureA4 = MoveListTestCase(
+    id: 'intervention_single_a4',
+    description:
+        'Placing phase / White / interventionCapture / cross center / Capture only one piece (a4) from cross line',
+    moveList: '''
+ 1.    a4    d6
+ 2.    c4    d7
+ 3.    b2    f6
+ 4.    b6    b4xa4
+''',
+    expectedSequences: ['xc4'],
+  );
+
+  /// Test case for intervention capture - single piece from square edge line
+  static const MoveListTestCase placingWhiteSingleCaptureB2 = MoveListTestCase(
+    id: 'intervention_single_b2',
+    description:
+        'Placing phase / White / interventionCapture / cross center / Capture only one piece (b2) from square edge line',
+    moveList: '''
+ 1.    a4    d6
+ 2.    c4    d7
+ 3.    b2    f6
+ 4.    b6    b4xb2
+''',
+    expectedSequences: ['xb6'],
+  );
+
+  /// Test case for intervention capture - both pieces from square edge line
+  static const MoveListTestCase
+  placingWhiteVerticalLineCaptured = MoveListTestCase(
+    id: 'intervention_vertical_line',
+    description:
+        'Placing phase / White / interventionCapture / cross center / Capture both pieces from square edge line (vertical)',
+    moveList: '''
+ 1.    a4    d6
+ 2.    c4    d7
+ 3.    b2    f6
+ 4.    b6    b4xb2xb6
 ''',
     unexpectedSequences: ['xa4 xc4', 'xc4 xa4'],
   );
@@ -378,6 +421,9 @@ class AutomatedMoveTestData {
       placingWhiteIntervention,
       placingWhiteCrossMillCapture,
       placingWhiteTwoCaptured,
+      placingWhiteSingleCaptureA4,
+      placingWhiteSingleCaptureB2,
+      placingWhiteVerticalLineCaptured,
       placingBlackInterventionMill,
       placingBlackSixMoveMill,
       movingWhiteCustodianMill,
