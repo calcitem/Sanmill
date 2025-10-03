@@ -380,7 +380,7 @@ class ImportService {
         // If this move recorded a preferredRemoveTarget (from a preceding place+remove notation),
         // set it into the position before executing, so the engine will choose the intended line.
         if (move.preferredRemoveTarget != null) {
-          currentPos.setPreferredRemoveTarget(move.preferredRemoveTarget);
+          currentPos.preferredRemoveTarget = move.preferredRemoveTarget;
         }
 
         // Execute this move in the current position.
@@ -530,7 +530,7 @@ class ImportService {
             );
             final int targetSquare = ExtMove._parseToSquare(nextRemoveMove);
             if (targetSquare != -1) {
-              localPos.setPreferredRemoveTarget(targetSquare);
+              localPos.preferredRemoveTarget = targetSquare;
             }
           }
 

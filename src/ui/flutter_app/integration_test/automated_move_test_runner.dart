@@ -6,9 +6,10 @@
 // ignore_for_file: avoid_classes_with_only_static_members, avoid_print, always_specify_types
 
 import 'dart:async';
+
+import 'package:sanmill/game_page/services/animation/headless_animation_manager.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
-import 'package:sanmill/game_page/services/animation/headless_animation_manager.dart';
 
 import 'automated_move_test_models.dart';
 

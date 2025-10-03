@@ -21,9 +21,9 @@ class MockAnimationManager extends Mock implements AnimationManager {
     _removeAnimationController = _MockAnimationController();
 
     // Initialize mock animations
-    _placeAnimation = AlwaysStoppedAnimation<double>(0.0);
-    _moveAnimation = AlwaysStoppedAnimation<double>(0.0);
-    _removeAnimation = AlwaysStoppedAnimation<double>(0.0);
+    _placeAnimation = const AlwaysStoppedAnimation<double>(0.0);
+    _moveAnimation = const AlwaysStoppedAnimation<double>(0.0);
+    _removeAnimation = const AlwaysStoppedAnimation<double>(0.0);
   }
 
   late final AnimationController _placeAnimationController;
@@ -99,11 +99,6 @@ class _MockAnimationController extends AnimationController {
         vsync: _MockTickerProvider(),
         duration: const Duration(milliseconds: 300),
       );
-
-  @override
-  void dispose() {
-    // No-op for mock
-  }
 }
 
 /// Mock TickerProvider for testing
@@ -117,9 +112,4 @@ class _MockTickerProvider implements TickerProvider {
 /// Mock Ticker that doesn't actually tick
 class _MockTicker extends Ticker {
   _MockTicker(super.onTick);
-
-  @override
-  void dispose() {
-    // No-op for mock
-  }
 }

@@ -297,9 +297,8 @@ class HistoryNavigator {
     for (final ExtMove move in pathMoves) {
       // Preserve preferredRemoveTarget during replay execution
       if (move.preferredRemoveTarget != null) {
-        GameController().position.setPreferredRemoveTarget(
-          move.preferredRemoveTarget,
-        );
+        GameController().position.preferredRemoveTarget =
+            move.preferredRemoveTarget;
       }
 
       if (!GameController().gameInstance.doMove(move)) {
@@ -353,9 +352,8 @@ class HistoryNavigator {
         // Preserve preferredRemoveTarget during replay execution
         final ExtMove m = node.data!;
         if (m.preferredRemoveTarget != null) {
-          GameController().position.setPreferredRemoveTarget(
-            m.preferredRemoveTarget,
-          );
+          GameController().position.preferredRemoveTarget =
+              m.preferredRemoveTarget;
         }
 
         final bool ok = GameController().gameInstance.doMove(m);

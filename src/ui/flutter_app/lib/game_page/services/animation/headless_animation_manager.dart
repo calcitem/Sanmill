@@ -10,11 +10,6 @@ import 'animation_manager.dart';
 /// A minimal ticker that does nothing. Suitable for headless environments.
 class _HeadlessTicker extends Ticker {
   _HeadlessTicker() : super((_) {});
-
-  @override
-  void dispose() {
-    // No-op
-  }
 }
 
 /// A headless ticker provider that returns a no-op ticker.

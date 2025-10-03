@@ -107,9 +107,8 @@ class Game {
     // inject it into the position before executing the move so the engine
     // picks the intended intervention capture line.
     if (extMove.preferredRemoveTarget != null) {
-      GameController().position.setPreferredRemoveTarget(
-        extMove.preferredRemoveTarget,
-      );
+      GameController().position.preferredRemoveTarget =
+          extMove.preferredRemoveTarget;
     }
 
     if (!GameController().position.doMove(extMove.move)) {

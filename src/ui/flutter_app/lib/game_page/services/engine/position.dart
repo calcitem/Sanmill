@@ -138,7 +138,7 @@ class Position {
   }
 
   /// Set the preferred target for intervention capture line selection
-  void setPreferredRemoveTarget(int? target) {
+  set preferredRemoveTarget(int? target) {
     _preferredRemoveTarget = target;
   }
 
@@ -563,7 +563,7 @@ class Position {
 
     // Set preferredRemoveTarget if present in FEN
     if (preferredTarget != null) {
-      setPreferredRemoveTarget(preferredTarget);
+      preferredRemoveTarget = preferredTarget;
     }
 
     return ret;
@@ -2150,7 +2150,9 @@ class Position {
 
     for (final List<List<int>> lineSet in allLines) {
       for (final List<int> line in lineSet) {
-        if (line.length != 3) continue;
+        if (line.length != 3) {
+          continue;
+        }
 
         final int first = line[0];
         final int second = line[2];
@@ -2232,22 +2234,16 @@ class Position {
     // This ensures that when placing at a cross center, the cross line
     // (more intuitive) is prioritized over the square edge line
     if (DB().ruleSettings.interventionCaptureOnCrossLines) {
-      for (final List<int> line in _custodianCrossLines) {
-        processLine(line);
-      }
+      _custodianCrossLines.forEach(processLine);
     }
 
     if (DB().ruleSettings.interventionCaptureOnSquareEdges) {
-      for (final List<int> line in _custodianSquareEdgeLines) {
-        processLine(line);
-      }
+      _custodianSquareEdgeLines.forEach(processLine);
     }
 
     if (DB().ruleSettings.hasDiagonalLines == true &&
         DB().ruleSettings.interventionCaptureOnDiagonalLines == true) {
-      for (final List<int> line in _custodianDiagonalLines) {
-        processLine(line);
-      }
+      _custodianDiagonalLines.forEach(processLine);
     }
 
     if (captureLines.isEmpty) {
