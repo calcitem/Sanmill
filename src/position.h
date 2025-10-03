@@ -191,6 +191,8 @@ public:
                                std::vector<Square> &capturedPieces) const;
     bool checkInterventionCapture(Square sq, Color us,
                                   std::vector<Square> &capturedPieces) const;
+    Bitboard findPairedInterventionTarget(Square removedSquare,
+                                          Bitboard allTargets) const;
 
     bool remove_piece(File f, Rank r);
     bool remove_piece(Square s, bool updateRecord = false);

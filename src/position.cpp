@@ -1503,6 +1503,13 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
             if (newCount <= 0) {
                 newTargets = 0;
+            } else if (newCount == 1 && interventionCount == 2) {
+                // When removing the first of two intervention targets,
+                // ensure the second target is from the same line
+                // This enforces the rule that intervention capture must remove
+                // pieces from one line
+                newTargets = findPairedInterventionTarget(s,
+                                                          interventionTargets);
             }
 
             setInterventionCaptureState(sideToMove, newTargets, newCount);
@@ -2222,6 +2229,65 @@ bool Position::checkCustodianCapture(Square sq, Color us,
     }
 
     return !capturedPieces.empty();
+}
+
+/// Find the paired target in the same intervention capture line
+/// This is used after removing the first piece to determine which piece must be
+/// removed next
+Bitboard Position::findPairedInterventionTarget(Square removedSquare,
+                                                Bitboard allTargets) const
+{
+    // Get all remaining target squares from the bitboard
+    std::vector<Square> targetSquares;
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+        if ((allTargets & square_bb(sq)) && sq != removedSquare) {
+            targetSquares.push_back(sq);
+        }
+    }
+
+    auto checkLineSet = [&](const auto &lineSet) {
+        for (const auto &line : lineSet) {
+            const Square first = line[0];
+            const Square second = line[2];
+
+            // Check if removedSquare and any remaining target are on the same
+            // line
+            for (Square target : targetSquares) {
+                if ((removedSquare == first && target == second) ||
+                    (removedSquare == second && target == first)) {
+                    return square_bb(target);
+                }
+            }
+        }
+        return static_cast<Bitboard>(0);
+    };
+
+    // Check all intervention capture lines
+    Bitboard result = 0;
+
+    if (rule.interventionCapture.onCrossLines) {
+        result = checkLineSet(kCustodianCrossLines);
+        if (result)
+            return result;
+    }
+
+    if (rule.interventionCapture.onSquareEdges) {
+        result = checkLineSet(kCustodianSquareEdgeLines);
+        if (result)
+            return result;
+    }
+
+    if (rule.hasDiagonalLines && rule.interventionCapture.onDiagonalLines) {
+        result = checkLineSet(kCustodianDiagonalLines);
+        if (result)
+            return result;
+    }
+
+    // Fallback: return all remaining targets (shouldn't happen in valid game)
+    for (Square sq : targetSquares) {
+        result |= square_bb(sq);
+    }
+    return result;
 }
 
 bool Position::checkInterventionCapture(

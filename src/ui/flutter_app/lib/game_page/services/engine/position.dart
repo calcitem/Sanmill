@@ -126,11 +126,25 @@ class Position {
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 
+  // Used during move import to specify which capture line should be selected
+  // when there are multiple intervention capture lines available
+  int? _preferredRemoveTarget;
+
   bool isNoDraw() {
     if (score[PieceColor.white]! > 0 || score[PieceColor.black]! > 0) {
       return true;
     }
     return false;
+  }
+
+  /// Set the preferred target for intervention capture line selection
+  void setPreferredRemoveTarget(int? target) {
+    _preferredRemoveTarget = target;
+  }
+
+  /// Clear the preferred remove target
+  void clearPreferredRemoveTarget() {
+    _preferredRemoveTarget = null;
   }
 
   int _gamePly = 0;
@@ -1465,6 +1479,11 @@ class Position {
 
         if (newCount <= 0) {
           newTargets = 0;
+        } else if (newCount == 1 && interventionCount == 2) {
+          // When removing the first of two intervention targets,
+          // ensure the second target is from the same line
+          // This enforces the rule that intervention capture must remove pieces from one line
+          newTargets = _findPairedInterventionTarget(s, interventionTargets);
         }
 
         _setInterventionCaptureState(sideToMove, newTargets, newCount);
@@ -1547,6 +1566,9 @@ class Position {
 
     _setCustodianCaptureState(sideToMove, 0, 0);
     _setInterventionCaptureState(sideToMove, 0, 0);
+
+    // Clear preferred remove target after all removals are complete
+    clearPreferredRemoveTarget();
 
     if (handlePlacingPhaseEnd() == false) {
       if (isStalemateRemoving) {
@@ -2099,6 +2121,53 @@ class Position {
     return capturedPieces.isNotEmpty;
   }
 
+  /// Find the paired target in the same intervention capture line
+  /// This is used after removing the first piece to determine which piece must be removed next
+  int _findPairedInterventionTarget(int removedSquare, int allTargets) {
+    // Get all remaining target squares from the bitboard
+    final List<int> targetSquares = <int>[];
+    for (int sq = sqBegin; sq < sqEnd; ++sq) {
+      if ((allTargets & squareBb(sq)) != 0 && sq != removedSquare) {
+        targetSquares.add(sq);
+      }
+    }
+
+    // Check all intervention capture lines to find which two pieces are on the same line
+    final List<List<List<int>>> allLines = <List<List<int>>>[
+      if (DB().ruleSettings.interventionCaptureOnCrossLines)
+        _custodianCrossLines,
+      if (DB().ruleSettings.interventionCaptureOnSquareEdges)
+        _custodianSquareEdgeLines,
+      if (DB().ruleSettings.hasDiagonalLines &&
+          DB().ruleSettings.interventionCaptureOnDiagonalLines)
+        _custodianDiagonalLines,
+    ];
+
+    for (final List<List<int>> lineSet in allLines) {
+      for (final List<int> line in lineSet) {
+        if (line.length != 3) continue;
+
+        final int first = line[0];
+        final int second = line[2];
+
+        // Check if removedSquare and any remaining target are on the same line
+        for (final int target in targetSquares) {
+          if ((removedSquare == first && target == second) ||
+              (removedSquare == second && target == first)) {
+            return squareBb(target);
+          }
+        }
+      }
+    }
+
+    // Fallback: return all remaining targets (shouldn't happen in valid game)
+    int result = 0;
+    for (final int sq in targetSquares) {
+      result |= squareBb(sq);
+    }
+    return result;
+  }
+
   bool _checkInterventionCapture(
     int sq,
     PieceColor us,
@@ -2109,6 +2178,8 @@ class Position {
     if (!DB().ruleSettings.enableInterventionCapture) {
       return false;
     }
+
+    final int? preferredTarget = _preferredRemoveTarget;
 
     final bool placingPhase = phase == Phase.placing;
     final bool movingPhase = phase == Phase.moving;
@@ -2178,10 +2249,21 @@ class Position {
       return false;
     }
 
-    // If multiple lines are available, only use the first one
-    // This ensures that when placing a piece at a cross center,
-    // only 2 pieces from one line are captured, not all 4 pieces
-    final Set<int> captured = captureLines[0];
+    // Select the capture line to use
+    Set<int> captured;
+    if (preferredTarget != null) {
+      // If a preferred target is specified, find the line containing it
+      // This is used during move import to select the correct capture line
+      captured = captureLines.firstWhere(
+        (Set<int> line) => line.contains(preferredTarget),
+        orElse: () => captureLines[0],
+      );
+    } else {
+      // If multiple lines are available, only use the first one
+      // This ensures that when placing a piece at a cross center,
+      // only 2 pieces from one line are captured, not all 4 pieces
+      captured = captureLines[0];
+    }
 
     for (final int target in captured) {
       if (_board[target] != us.opponent) {

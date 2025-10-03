@@ -513,6 +513,21 @@ class ImportService {
         }
         try {
           final String uciMove = _wmdNotationToMoveString(segment);
+
+          // If this is a place move followed by a remove move (like "b4xb2"),
+          // set preferred target so intervention capture selects the correct line
+          if (!segment.startsWith('x') &&
+              i + 1 < segments.length &&
+              segments[i + 1].startsWith('x')) {
+            final String nextRemoveMove = _wmdNotationToMoveString(
+              segments[i + 1],
+            );
+            final int targetSquare = ExtMove._parseToSquare(nextRemoveMove);
+            if (targetSquare != -1) {
+              localPos.setPreferredRemoveTarget(targetSquare);
+            }
+          }
+
           // Only attach comments, nags, and startingComments to the last segment.
           final List<int>? nags = (i == segments.length - 1) ? node.nags : null;
           final List<String>? startingComments = (i == segments.length - 1)
