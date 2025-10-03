@@ -2133,7 +2133,11 @@ class Position {
       }
     }
 
-    void processLine(List<int> line, int Function(int) accumulator) {
+    // Store all possible capture lines separately
+    // Each line can capture 2 pieces, but only pieces from ONE line should be captured
+    final List<Set<int>> captureLines = <Set<int>>[];
+
+    void processLine(List<int> line) {
       if (sq != line[1]) {
         return;
       }
@@ -2142,41 +2146,39 @@ class Position {
       final int second = line[2];
 
       if (_board[first] == us.opponent && _board[second] == us.opponent) {
-        accumulator(first);
-        accumulator(second);
+        // Store this line's captures separately instead of accumulating them
+        final Set<int> lineCaptured = <int>{first, second};
+        captureLines.add(lineCaptured);
       }
-    }
-
-    final Set<int> captured = <int>{};
-
-    // Wrapper function to convert Set.add's bool return value to int
-    int addToCaptured(int sq) {
-      captured.add(sq);
-      return sq;
     }
 
     if (DB().ruleSettings.interventionCaptureOnSquareEdges) {
       for (final List<int> line in _custodianSquareEdgeLines) {
-        processLine(line, addToCaptured);
+        processLine(line);
       }
     }
 
     if (DB().ruleSettings.interventionCaptureOnCrossLines) {
       for (final List<int> line in _custodianCrossLines) {
-        processLine(line, addToCaptured);
+        processLine(line);
       }
     }
 
     if (DB().ruleSettings.hasDiagonalLines == true &&
         DB().ruleSettings.interventionCaptureOnDiagonalLines == true) {
       for (final List<int> line in _custodianDiagonalLines) {
-        processLine(line, addToCaptured);
+        processLine(line);
       }
     }
 
-    if (captured.isEmpty) {
+    if (captureLines.isEmpty) {
       return false;
     }
+
+    // If multiple lines are available, only use the first one
+    // This ensures that when placing a piece at a cross center,
+    // only 2 pieces from one line are captured, not all 4 pieces
+    final Set<int> captured = captureLines[0];
 
     for (final int target in captured) {
       if (_board[target] != us.opponent) {

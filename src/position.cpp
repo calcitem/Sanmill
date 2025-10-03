@@ -2252,8 +2252,12 @@ bool Position::checkInterventionCapture(
         }
     }
 
-    const auto processLine = [&](const std::array<Square, 3> &line,
-                                 Bitboard &accumulated) {
+    // Store all possible capture lines separately
+    // Each line can capture 2 pieces, but only pieces from ONE line should be
+    // captured
+    std::vector<Bitboard> captureLines;
+
+    const auto processLine = [&](const std::array<Square, 3> &line) {
         if (sq != line[1]) {
             return;
         }
@@ -2263,34 +2267,39 @@ bool Position::checkInterventionCapture(
 
         if (board[first] != NO_PIECE && color_of(board[first]) == ~us &&
             board[second] != NO_PIECE && color_of(board[second]) == ~us) {
-            accumulated |= square_bb(first);
-            accumulated |= square_bb(second);
+            // Store this line's captures separately instead of accumulating
+            // them
+            const Bitboard lineCaptured = square_bb(first) | square_bb(second);
+            captureLines.push_back(lineCaptured);
         }
     };
 
-    Bitboard captured = 0;
-
     if (rule.interventionCapture.onSquareEdges) {
         for (const auto &line : kCustodianSquareEdgeLines) {
-            processLine(line, captured);
+            processLine(line);
         }
     }
 
     if (rule.interventionCapture.onCrossLines) {
         for (const auto &line : kCustodianCrossLines) {
-            processLine(line, captured);
+            processLine(line);
         }
     }
 
     if (rule.hasDiagonalLines && rule.interventionCapture.onDiagonalLines) {
         for (const auto &line : kCustodianDiagonalLines) {
-            processLine(line, captured);
+            processLine(line);
         }
     }
 
-    if (!captured) {
+    if (captureLines.empty()) {
         return false;
     }
+
+    // If multiple lines are available, only use the first one
+    // This ensures that when placing a piece at a cross center,
+    // only 2 pieces from one line are captured, not all 4 pieces
+    Bitboard captured = captureLines[0];
 
     Bitboard validTargets = 0;
 
