@@ -109,7 +109,7 @@ class AutomatedMoveTestData {
   /// Test case for 5-move opening
   static const MoveListTestCase fiveMoveTest = MoveListTestCase(
     id: 'five_move_opening',
-    description: 'Test AI response to 5-move opening sequence',
+    description: 'Placing phase / Black / interventionCapture + Mill',
     moveList: '''
  1.    a4    d6
  2.    c4    d7
@@ -117,13 +117,13 @@ class AutomatedMoveTestData {
  4.    c5    e5
  5.    a7    b6
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_FIVE_MOVE'],
+    expectedSequences: ['xa7 xc5', 'xc5 xa7', 'xa4', 'xb2', 'xc4'],
   );
 
   /// Test case for 6-move development
   static const MoveListTestCase sixMoveTest = MoveListTestCase(
     id: 'six_move_development',
-    description: 'Test AI response to 6-move development sequence',
+    description: 'Placing phase / Black / InterventionCapture + Mill',
     moveList: '''
  1.    a4    d6
  2.    c4    d7
@@ -132,13 +132,14 @@ class AutomatedMoveTestData {
  5.    e3    g7
  6.    b6    a7
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_SIX_MOVE'],
+    expectedSequences: ['xb6', 'xa4', 'xb2', 'xc4', 'xd3', 'xe3'],
   );
 
   /// Test case for complex endgame with movements
   static const MoveListTestCase complexMovementTest = MoveListTestCase(
     id: 'complex_movement_game',
-    description: 'Test AI response to complex game with piece movements',
+    description:
+        'Moving phase / White / custodianCapture + Mill / Select Mill capture / Do not continue to custodianCapture',
     moveList: '''
 1.    b2    f2
  2.    g1    e3
@@ -153,17 +154,15 @@ class AutomatedMoveTestData {
 11.    a4    c4
 12.    d2    d3
 13.    f6-d6xg7    f4-f6xd6
-14.    d7-g7xc4    f6-f4
-15.    g7-f6    b6-d6
-16.    a7-b6
+14.    d7-g7xc4
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_COMPLEX_MOVEMENT'],
+    unexpectedSequences: ['xf6'],
   );
 
   /// Test case for 12-move midgame
   static const MoveListTestCase twelveMoveTest = MoveListTestCase(
     id: 'twelve_move_midgame',
-    description: 'Test AI response to 12-move midgame sequence',
+    description: 'Placing phase / White / Board full',
     moveList: '''
 1.    b6    b2
  2.    f2    f6
@@ -178,13 +177,13 @@ class AutomatedMoveTestData {
 11.    c4    a4
 12.    d3    d1
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_TWELVE_MOVE'],
+    expectedSequences: ['d5'],
   );
 
   /// Test case for complex capture sequences
   static const MoveListTestCase complexCaptureTest = MoveListTestCase(
     id: 'complex_capture_game',
-    description: 'Test AI response to complex capture and movement sequences',
+    description: 'Moving phase / Black / interventionCapture',
     moveList: '''
  1.    b2    b6
  2.    f6    f2
@@ -200,7 +199,7 @@ class AutomatedMoveTestData {
 12.    d7xd6    d1
 13.    d2-b2xc3xa1    f2-f4
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_COMPLEX_CAPTURE'],
+    expectedSequences: ['xe4 xg4', 'xg4 xe4'],
   );
 
   /// Test case for advanced tactical sequences
@@ -231,54 +230,36 @@ class AutomatedMoveTestData {
   static const MoveListTestCase longTacticalTest = MoveListTestCase(
     id: 'long_tactical_game',
     description:
-        'Test AI response to long tactical game with complex movements',
+        'Placing phase / White / interventionCapture / Already Capture one',
     moveList: '''
 1.    b2    f6
  2.    e5    c3
  3.    a1    c5
- 4.    c4    b6
- 5.    g7xf6    a7xc4
- 6.    g1    d3
- 7.    e3    f2
- 8.    g4xf2    e4
- 9.    d6    d1
-10.    f4    d2xe5
-11.    d5    d7
-12.    b4    a4
-13.    d5-e5xe4    c5-d5xd6
-14.    e3-e4xa4    d5-c5xe5
-15.    f4-f2
+ 4.    c4xc5
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_LONG_TACTICAL'],
+    expectedSequences: ['xc3'],
   );
 
   /// Test case for alternative long tactical sequence
   static const MoveListTestCase altLongTacticalTest = MoveListTestCase(
     id: 'alt_long_tactical_game',
-    description: 'Test AI response to alternative long tactical sequence',
+    description:
+        'Placing phase / White / interventionCapture / cross (2 choices intervention) / Already capture 1 pieces',
     moveList: '''
-1.    b2    f6
- 2.    e5    c3
- 3.    a1    c5
- 4.    c4    b6
- 5.    g7xf6    a7xc4
- 6.    g1    d3
- 7.    e3    f2
- 8.    g4xf2    e4
- 9.    d6    d1
-10.    f4    d2xe5
-11.    d5    d7
-12.    b4    a4
-13.    d5-e5xe4    c3-c4
+ 1.    d6    b6
+ 2.    d3    b2
+ 3.    d5    c4
+ 4.    e4    a4
+ 5.    b4xb6
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_ALT_LONG_TACTICAL'],
+    expectedSequences: ['xb2'],
   );
 
   /// Test case for complex endgame positioning
   static const MoveListTestCase complexEndgameTest = MoveListTestCase(
     id: 'complex_endgame_positioning',
     description:
-        'Test AI response to complex endgame with multiple captures and movements',
+        'Placing phase / White / interventionCapture / Capture one of two pieces / two pieces are all in mill',
     moveList: '''
 1.    b2    f6
  2.    e5    c3
@@ -292,86 +273,62 @@ class AutomatedMoveTestData {
 10.    f4    a4xf4
 11.    d6    d5
 12.    d2    e4
-13.    d6-b6    c3-b2xd2
+13.    d6-b6
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_COMPLEX_ENDGAME'],
+    expectedSequences: ['a7 c5', 'c5 a7'],
   );
 
   /// Test case for strategic positioning
   static const MoveListTestCase strategicPositioningTest = MoveListTestCase(
     id: 'strategic_positioning_game',
-    description: 'Test AI response to strategic positioning with movements',
+    description: 'Placing phase / White / custodianCapture',
     moveList: '''
  1.    d2    b4
  2.    f4    d6
  3.    c4    d5
  4.    d7    b6
  5.    b2    f6xd7
- 6.    d7    e5
- 7.    e4    c3
- 8.    f2xc3    c5xd7
- 9.    d7    d1
-10.    d2-d3    d1-d2
-11.    d3-e3    d2-d1
-12.    e3-d3    d1-a1
+ 6.    a4
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_STRATEGIC_POSITIONING'],
+    expectedSequences: ['xb4'],
   );
 
   /// Test case for very long tactical game
   static const MoveListTestCase veryLongTacticalTest = MoveListTestCase(
     id: 'very_long_tactical_game',
     description:
-        'Test AI response to very long tactical game with extensive movements',
+        'Placing phase / White / 2 custodianCapture / Already capture 1 pieces',
     moveList: '''
-1.    d2    c4
+ 1.    d2    c4
  2.    f4    d6
  3.    b4    b6
  4.    d1    d3
  5.    c5    f6xb4
- 6.    b4    d7
- 7.    d5    g7
- 8.    e5xc4    a7xb4
- 9.    b2    f2
-10.    c5-c4    d3-e3
-11.    c4-c5xe3    b6-b4
-12.    d2-d3    b4-b6xf4
-13.    b2-d2xf2    g7-g4
-14.    d2-f2    g4-g7xd3
-15.    e5-e4    f6-f4
-16.    e4-e5xf4    a7-a4
-17.    d1-d2    d7-a7
-18.    d2-b2    a4-a1
-19.    f2-f4    d6-d7xf4
-20.    d5-d6    a7-a4
-21.    d6-d5xd7    b6-b4
-22.    d5-d6    g7-g4
-23.    d6-d5xa4    a1-d6
-24.    c5-c4    g4-g1
-25.    b2-d2    g1-d7
+ 6.    e3    a1
+ 7.    c3xc4
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_VERY_LONG_TACTICAL'],
+    unexpectedSequences: ['xd3'],
   );
 
   /// Test case for standard 12-move opening
   static const MoveListTestCase standardTwelveMoveTest = MoveListTestCase(
     id: 'standard_twelve_move_opening',
-    description: 'Test AI response to standard 12-move opening sequence',
+    description: 'Placing phase / Black / custodianCapture / Board is full',
     moveList: '''
- 1.    f6    f2
+  1.    f6    f2
  2.    b2    b6
  3.    g1    e3
  4.    a7    c5
  5.    d6    a1
  6.    c3    g7
- 7.    e5    f4
- 8.    d2    b4
- 9.    g4    e4
-10.    a4    c4
-11.    d7    d5
-12.    d1    d3
+ 7.    e5    g4
+ 8.    f4    d1
+ 9.    d2    d5
+10.    a4    b4
+11.    c4xb4    e4xf4
+12.    d3    d7
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_STANDARD_TWELVE'],
+    expectedSequences: ['xd6'],
   );
 
   /// Test case that should be disabled by default
@@ -408,30 +365,13 @@ class AutomatedMoveTestData {
     enabled: false, // Disabled by default for demonstration
   );
 
-  /// Basic test configuration with sample test cases
+  /// Custodian capture and intervention capture test configuration
+  /// Comprehensive tests for both capture mechanisms across all game phases
   static const AutomatedMoveTestConfig
-  basicTestConfig = AutomatedMoveTestConfig(
-    configName: 'Basic AI Move Tests',
+  custodianCaptureAndInterventionCaptureTestConfig = AutomatedMoveTestConfig(
+    configName: 'Custodian & Intervention Capture Tests',
     batchDescription:
-        'Basic automated tests to validate AI move generation after importing move lists',
-    testCases: [
-      sampleTestCase1,
-      sampleTestCase2,
-      edgeCaseTest,
-      shortCaptureTest,
-      shortSimpleTest,
-      disabledTest,
-    ],
-    maxWaitTimeMs: 15000, // 15 seconds timeout
-    stopOnFirstFailure: false,
-  );
-
-  /// Comprehensive test configuration
-  static const AutomatedMoveTestConfig
-  comprehensiveTestConfig = AutomatedMoveTestConfig(
-    configName: 'Comprehensive AI Tests',
-    batchDescription:
-        'Comprehensive suite of AI behavior tests covering various game scenarios',
+        'Comprehensive tests for custodian capture and intervention capture mechanisms across all game phases',
     testCases: [
       sampleTestCase1,
       sampleTestCase2,
@@ -450,67 +390,15 @@ class AutomatedMoveTestData {
       strategicPositioningTest,
       veryLongTacticalTest,
       standardTwelveMoveTest,
+      disabledTest,
     ],
-    maxWaitTimeMs: 30000, // 30 seconds timeout for comprehensive tests
+    maxWaitTimeMs: 30000, // 30 seconds timeout for comprehensive capture tests
     stopOnFirstFailure: false,
   );
 
-  /// Quick test configuration for rapid validation
-  static const AutomatedMoveTestConfig quickTestConfig =
-      AutomatedMoveTestConfig(
-        configName: 'Quick Validation Tests',
-        batchDescription: 'Quick tests for basic AI functionality validation',
-        testCases: [
-          edgeCaseTest, // Only run the quick edge case test
-        ],
-        maxWaitTimeMs: 5000, // 5 seconds timeout for quick tests
-        stopOnFirstFailure: true,
-      );
-
-  /// Single test configuration for debugging sampleTestCase1
-  static const AutomatedMoveTestConfig singleTestConfig =
-      AutomatedMoveTestConfig(
-        configName: 'Single Test - sample_game_1',
-        batchDescription: 'Run only sampleTestCase1 for debugging',
-        testCases: [sampleTestCase1],
-        maxWaitTimeMs: 10000, // 10 seconds timeout
-        stopOnFirstFailure: true,
-      );
-
-  /// New test cases configuration for recently added test cases
-  static const AutomatedMoveTestConfig newTestCasesConfig =
-      AutomatedMoveTestConfig(
-        configName: 'New Test Cases',
-        batchDescription:
-            'Recently added test cases for various game scenarios',
-        testCases: [
-          shortCaptureTest,
-          shortSimpleTest,
-          fiveMoveTest,
-          sixMoveTest,
-          complexMovementTest,
-          twelveMoveTest,
-          complexCaptureTest,
-          advancedTacticalTest,
-          longTacticalTest,
-          altLongTacticalTest,
-          complexEndgameTest,
-          strategicPositioningTest,
-          veryLongTacticalTest,
-          standardTwelveMoveTest,
-        ],
-        maxWaitTimeMs: 25000, // 25 seconds timeout for new test cases
-        stopOnFirstFailure: false,
-      );
-
   /// Get all available test configurations
   static List<AutomatedMoveTestConfig> getAllConfigurations() {
-    return [
-      basicTestConfig,
-      comprehensiveTestConfig,
-      quickTestConfig,
-      newTestCasesConfig,
-    ];
+    return [custodianCaptureAndInterventionCaptureTestConfig];
   }
 
   /// Create a custom test configuration

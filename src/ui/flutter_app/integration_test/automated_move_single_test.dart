@@ -32,8 +32,16 @@ void main() {
       print('[IntegrationTest] App initialized, starting single test...');
 
       // Execute ONLY sampleTestCase1
+      final singleTestConfig = AutomatedMoveTestData.createCustomConfig(
+        configName: 'Single Test - sample_game_1',
+        batchDescription: 'Run only sampleTestCase1 for debugging',
+        testCases: [AutomatedMoveTestData.sampleTestCase1],
+        maxWaitTimeMs: 10000,
+        stopOnFirstFailure: true,
+      );
+
       final result = await AutomatedMoveTestRunner.runTestBatch(
-        AutomatedMoveTestData.singleTestConfig,
+        singleTestConfig,
       );
 
       // Print summary

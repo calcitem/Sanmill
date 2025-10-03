@@ -29,7 +29,7 @@ void main() {
   int totalFailed = 0;
 
   group('Automated Move Integration Tests', () {
-    testWidgets('Run basic automated move tests with real AI', (
+    testWidgets('Run custodian and intervention capture tests with real AI', (
       WidgetTester tester,
     ) async {
       // Launch the app
@@ -42,9 +42,9 @@ void main() {
 
       print('[IntegrationTest] App initialized, starting tests...');
 
-      // Execute the basic test configuration with REAL AI engine
+      // Execute the comprehensive capture test configuration with REAL AI engine
       final result = await AutomatedMoveTestRunner.runTestBatch(
-        AutomatedMoveTestData.basicTestConfig,
+        AutomatedMoveTestData.custodianCaptureAndInterventionCaptureTestConfig,
       );
 
       // Update overall statistics
@@ -54,7 +54,9 @@ void main() {
 
       // Print summary
       print('[IntegrationTest] =====================================');
-      print('[IntegrationTest] Batch 1: Basic Tests Completed');
+      print(
+        '[IntegrationTest] Custodian & Intervention Capture Tests Completed',
+      );
       print('[IntegrationTest] Total Tests: ${result.testResults.length}');
       print('[IntegrationTest] Passed: ${result.passedCount}');
       print('[IntegrationTest] Failed: ${result.failedCount}');
@@ -63,57 +65,11 @@ void main() {
       );
       print('[IntegrationTest] =====================================');
 
-      // Note: We don't use expect() to fail the test in integration tests
-      // because the first run will show actual AI output for updating expected sequences
-    });
-
-    testWidgets('Run quick validation tests with real AI', (
-      WidgetTester tester,
-    ) async {
-      print('[IntegrationTest] Running quick validation tests...');
-
-      // Execute the quick test configuration
-      final result = await AutomatedMoveTestRunner.runTestBatch(
-        AutomatedMoveTestData.quickTestConfig,
-      );
-
-      // Update overall statistics
-      totalTestsRun += result.testResults.length;
-      totalPassed += result.passedCount;
-      totalFailed += result.failedCount;
-
-      print('[IntegrationTest] Batch 2: Quick test completed');
-      print(
-        '[IntegrationTest] Passed: ${result.passedCount}/${result.testResults.length}',
-      );
-    });
-
-    testWidgets('Run new test cases configuration with real AI', (
-      WidgetTester tester,
-    ) async {
-      print('[IntegrationTest] Running new test cases...');
-
-      // Execute the new test cases configuration
-      final result = await AutomatedMoveTestRunner.runTestBatch(
-        AutomatedMoveTestData.newTestCasesConfig,
-      );
-
-      // Update overall statistics
-      totalTestsRun += result.testResults.length;
-      totalPassed += result.passedCount;
-      totalFailed += result.failedCount;
-
-      print('[IntegrationTest] Batch 3: New test cases completed');
-      print(
-        '[IntegrationTest] Passed: ${result.passedCount}/${result.testResults.length}',
-      );
-
-      // Print overall summary across all batches
+      // Print overall summary
       print('');
       print('[IntegrationTest] =====================================');
       print('[IntegrationTest] OVERALL INTEGRATION TEST SUMMARY');
       print('[IntegrationTest] =====================================');
-      print('[IntegrationTest] Total Batches: 3');
       print('[IntegrationTest] Total Tests Run: $totalTestsRun');
       print('[IntegrationTest] Total Passed: $totalPassed');
       print('[IntegrationTest] Total Failed: $totalFailed');
@@ -124,6 +80,9 @@ void main() {
         '[IntegrationTest] Overall Success Rate: ${overallSuccessRate.toStringAsFixed(1)}%',
       );
       print('[IntegrationTest] =====================================');
+
+      // Note: We don't use expect() to fail the test in integration tests
+      // because the first run will show actual AI output for updating expected sequences
     });
   });
 }
