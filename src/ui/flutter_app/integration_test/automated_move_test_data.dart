@@ -10,7 +10,7 @@ import 'automated_move_test_models.dart';
 /// Sample test configurations for automated move testing
 class AutomatedMoveTestData {
   /// Sample test case based on the first example move list provided
-  static const MoveListTestCase sampleTestCase1 = MoveListTestCase(
+  static const MoveListTestCase movingWhiteInterventionWin = MoveListTestCase(
     id: 'sample_game_1',
     description:
         'Moving phase / White / interventionCapture + Mill / interventionCapture will win',
@@ -44,7 +44,7 @@ class AutomatedMoveTestData {
   );
 
   /// Sample test case based on the second example move list provided
-  static const MoveListTestCase sampleTestCase2 = MoveListTestCase(
+  static const MoveListTestCase movingBlackMillCapture = MoveListTestCase(
     id: 'sample_game_2',
     description:
         'Moving phase / Black / interventionCapture / interventionCapture will capture piece in mill',
@@ -67,7 +67,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for edge case handling
-  static const MoveListTestCase edgeCaseTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteIntervention = MoveListTestCase(
     id: 'edge_case_1',
     description: 'Placing phase / White / interventionCapture',
     moveList: '''
@@ -79,7 +79,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for short game with captures
-  static const MoveListTestCase shortCaptureTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteCrossMillCapture = MoveListTestCase(
     id: 'short_capture_game',
     description:
         'Placing phase / White / interventionCapture / cross (2 choices intervention) / interventionCapture will capture piece in mill',
@@ -93,7 +93,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for short game without captures
-  static const MoveListTestCase shortSimpleTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteTwoCaptured = MoveListTestCase(
     id: 'short_simple_game',
     description:
         'Placing phase / White / interventionCapture / cross (2 choices intervention) / interventionCapture will capture piece in mill / Already capture 2 pieces',
@@ -107,7 +107,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for 5-move opening
-  static const MoveListTestCase fiveMoveTest = MoveListTestCase(
+  static const MoveListTestCase placingBlackInterventionMill = MoveListTestCase(
     id: 'five_move_opening',
     description: 'Placing phase / Black / interventionCapture + Mill',
     moveList: '''
@@ -121,7 +121,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for 6-move development
-  static const MoveListTestCase sixMoveTest = MoveListTestCase(
+  static const MoveListTestCase placingBlackSixMoveMill = MoveListTestCase(
     id: 'six_move_development',
     description: 'Placing phase / Black / InterventionCapture + Mill',
     moveList: '''
@@ -136,7 +136,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for complex endgame with movements
-  static const MoveListTestCase complexMovementTest = MoveListTestCase(
+  static const MoveListTestCase movingWhiteCustodianMill = MoveListTestCase(
     id: 'complex_movement_game',
     description:
         'Moving phase / White / custodianCapture + Mill / Select Mill capture / Do not continue to custodianCapture',
@@ -160,7 +160,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for 12-move midgame
-  static const MoveListTestCase twelveMoveTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteBoardFull = MoveListTestCase(
     id: 'twelve_move_midgame',
     description: 'Placing phase / White / Board full',
     moveList: '''
@@ -181,7 +181,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for complex capture sequences
-  static const MoveListTestCase complexCaptureTest = MoveListTestCase(
+  static const MoveListTestCase movingBlackIntervention = MoveListTestCase(
     id: 'complex_capture_game',
     description: 'Moving phase / Black / interventionCapture',
     moveList: '''
@@ -203,7 +203,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for advanced tactical sequences
-  static const MoveListTestCase advancedTacticalTest = MoveListTestCase(
+  static const MoveListTestCase advancedMultipleCaptures = MoveListTestCase(
     id: 'advanced_tactical_game',
     description:
         'Test AI response to advanced tactical sequences with multiple captures',
@@ -227,7 +227,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for long tactical game
-  static const MoveListTestCase longTacticalTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteOneCaptured = MoveListTestCase(
     id: 'long_tactical_game',
     description:
         'Placing phase / White / interventionCapture / Already Capture one',
@@ -241,7 +241,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for alternative long tactical sequence
-  static const MoveListTestCase altLongTacticalTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteCrossOneCaptured = MoveListTestCase(
     id: 'alt_long_tactical_game',
     description:
         'Placing phase / White / interventionCapture / cross (2 choices intervention) / Already capture 1 pieces',
@@ -256,7 +256,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for complex endgame positioning
-  static const MoveListTestCase complexEndgameTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteBothInMill = MoveListTestCase(
     id: 'complex_endgame_positioning',
     description:
         'Placing phase / White / interventionCapture / Capture one of two pieces / two pieces are all in mill',
@@ -279,7 +279,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for strategic positioning
-  static const MoveListTestCase strategicPositioningTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteCustodian = MoveListTestCase(
     id: 'strategic_positioning_game',
     description: 'Placing phase / White / custodianCapture',
     moveList: '''
@@ -294,7 +294,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for very long tactical game
-  static const MoveListTestCase veryLongTacticalTest = MoveListTestCase(
+  static const MoveListTestCase placingWhiteDoubleCustodian = MoveListTestCase(
     id: 'very_long_tactical_game',
     description:
         'Placing phase / White / 2 custodianCapture / Already capture 1 pieces',
@@ -311,7 +311,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case for standard 12-move opening
-  static const MoveListTestCase standardTwelveMoveTest = MoveListTestCase(
+  static const MoveListTestCase placingBlackFullBoard = MoveListTestCase(
     id: 'standard_twelve_move_opening',
     description: 'Placing phase / Black / custodianCapture / Board is full',
     moveList: '''
@@ -332,7 +332,7 @@ class AutomatedMoveTestData {
   );
 
   /// Test case that should be disabled by default
-  static const MoveListTestCase disabledTest = MoveListTestCase(
+  static const MoveListTestCase disabledDemo = MoveListTestCase(
     id: 'disabled_test',
     description: 'This test is disabled for demonstration',
     moveList: '''
@@ -373,24 +373,24 @@ class AutomatedMoveTestData {
     batchDescription:
         'Comprehensive tests for custodian capture and intervention capture mechanisms across all game phases',
     testCases: [
-      sampleTestCase1,
-      sampleTestCase2,
-      edgeCaseTest,
-      shortCaptureTest,
-      shortSimpleTest,
-      fiveMoveTest,
-      sixMoveTest,
-      complexMovementTest,
-      twelveMoveTest,
-      complexCaptureTest,
-      advancedTacticalTest,
-      longTacticalTest,
-      altLongTacticalTest,
-      complexEndgameTest,
-      strategicPositioningTest,
-      veryLongTacticalTest,
-      standardTwelveMoveTest,
-      disabledTest,
+      movingWhiteInterventionWin,
+      movingBlackMillCapture,
+      placingWhiteIntervention,
+      placingWhiteCrossMillCapture,
+      placingWhiteTwoCaptured,
+      placingBlackInterventionMill,
+      placingBlackSixMoveMill,
+      movingWhiteCustodianMill,
+      placingWhiteBoardFull,
+      movingBlackIntervention,
+      advancedMultipleCaptures,
+      placingWhiteOneCaptured,
+      placingWhiteCrossOneCaptured,
+      placingWhiteBothInMill,
+      placingWhiteCustodian,
+      placingWhiteDoubleCustodian,
+      placingBlackFullBoard,
+      disabledDemo,
     ],
     maxWaitTimeMs: 30000, // 30 seconds timeout for comprehensive capture tests
     stopOnFirstFailure: false,
