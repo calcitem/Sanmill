@@ -613,6 +613,13 @@ Position &Position::set(const string &fenStr)
                 parseCaptureField(value, interventionTargetsParsed,
                                   interventionCountsParsed,
                                   interventionHasColor);
+            } else if (extraToken[0] == 'p') {
+                // Parse preferredRemoveTarget
+                // Format: "p:21" where 21 is the square number
+                const int targetSquare = std::stoi(value);
+                if (targetSquare >= SQ_BEGIN && targetSquare < SQ_END) {
+                    preferredRemoveTarget = static_cast<Square>(targetSquare);
+                }
             }
         }
     }
@@ -766,6 +773,13 @@ string Position::fen() const
     appendCaptureField('c', custodianCaptureTargets, custodianRemovalCount);
     appendCaptureField('i', interventionCaptureTargets,
                        interventionRemovalCount);
+
+    // Append preferredRemoveTarget if set
+    // Format: " p:21" where 21 is the square number
+    // This is appended at the end for backward compatibility
+    if (preferredRemoveTarget != SQ_NONE) {
+        ss << " p:" << static_cast<int>(preferredRemoveTarget);
+    }
 
     return ss.str();
 }
@@ -1597,6 +1611,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
     setCustodianCaptureState(sideToMove, 0, 0);
     setInterventionCaptureState(sideToMove, 0, 0);
 
+    // Clear preferred remove target after all removals are complete
+    preferredRemoveTarget = SQ_NONE;
+
     if (handle_placing_phase_end() == false) {
         if (isStalemateRemoving) {
             isStalemateRemoving = false;
@@ -2299,6 +2316,8 @@ bool Position::checkInterventionCapture(
         return false;
     }
 
+    const Square preferredTarget = preferredRemoveTarget;
+
     if ((phase == Phase::placing && !rule.interventionCapture.inPlacingPhase) ||
         (phase == Phase::moving && !rule.interventionCapture.inMovingPhase) ||
         (phase != Phase::placing && phase != Phase::moving)) {
@@ -2365,10 +2384,23 @@ bool Position::checkInterventionCapture(
         return false;
     }
 
-    // If multiple lines are available, only use the first one
-    // This ensures that when placing a piece at a cross center,
-    // only 2 pieces from one line are captured, not all 4 pieces
-    Bitboard captured = captureLines[0];
+    // Select the capture line to use
+    Bitboard captured;
+    if (preferredTarget != SQ_NONE) {
+        // If a preferred target is specified, find the line containing it
+        // This is used during move import to select the correct capture line
+        const Bitboard preferredMask = square_bb(preferredTarget);
+        auto it = std::find_if(captureLines.begin(), captureLines.end(),
+                               [preferredMask](Bitboard line) {
+                                   return (line & preferredMask) != 0;
+                               });
+        captured = (it != captureLines.end()) ? *it : captureLines[0];
+    } else {
+        // If multiple lines are available, only use the first one
+        // This ensures that when placing a piece at a cross center,
+        // only 2 pieces from one line are captured, not all 4 pieces
+        captured = captureLines[0];
+    }
 
     Bitboard validTargets = 0;
 

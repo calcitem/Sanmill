@@ -226,6 +226,11 @@ public:
     int pieceToRemoveCount[COLOR_NB] {0, 0, 0};
     bool isNeedStalemateRemoval {false};
     bool isStalemateRemoving {false};
+
+    // Used during move import to specify which capture line should be selected
+    // when there are multiple intervention capture lines available
+    Square preferredRemoveTarget {SQ_NONE};
+
     int mobilityDiff {0};
     int gamePly {0};
     Color sideToMove {NOBODY};

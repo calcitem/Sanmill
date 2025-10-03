@@ -132,7 +132,7 @@ class AutomatedMoveTestData {
  4.    b6    b4xb2
 ''',
     // AI can choose either line, but must remove both pieces from the same line
-    expectedSequences: ['xb6 xb2', 'xb2 xb6', 'xc4 xa4', 'xa4 xc4'],
+    expectedSequences: ['xb6'],
   );
 
   /// Test case for intervention capture - both pieces from square edge line

@@ -389,6 +389,13 @@ class Position {
     appendCapture('c', _custodianRemovalCount, _custodianCaptureTargets);
     appendCapture('i', _interventionRemovalCount, _interventionCaptureTargets);
 
+    // Append preferredRemoveTarget if set
+    // Format: " p:21" where 21 is the square number
+    // This is appended at the end for backward compatibility
+    if (_preferredRemoveTarget != null) {
+      buffer.write(' p:$_preferredRemoveTarget');
+    }
+
     logger.t("FEN is $buffer");
 
     final String fen = buffer.toString();
@@ -406,6 +413,7 @@ class Position {
     final List<int> extraIndices = <int>[
       trimmedFen.indexOf(' c:'),
       trimmedFen.indexOf(' i:'),
+      trimmedFen.indexOf(' p:'),
     ].where((int index) => index >= 0).toList();
 
     int firstExtra = trimmedFen.length;
@@ -424,6 +432,7 @@ class Position {
 
     String custodianData = '';
     String interventionData = '';
+    int? preferredTarget;
     if (extras.isNotEmpty) {
       final List<String> tokens = extras.split(RegExp(r'\s+'));
       for (final String token in tokens) {
@@ -431,6 +440,10 @@ class Position {
           custodianData = token.substring(2);
         } else if (token.startsWith('i:')) {
           interventionData = token.substring(2);
+        } else if (token.startsWith('p:')) {
+          // Parse preferredRemoveTarget
+          final String targetStr = token.substring(2);
+          preferredTarget = int.tryParse(targetStr);
         }
       }
     }
@@ -548,6 +561,11 @@ class Position {
     _parseCustodianFen(custodianData);
     _parseInterventionFen(interventionData);
 
+    // Set preferredRemoveTarget if present in FEN
+    if (preferredTarget != null) {
+      setPreferredRemoveTarget(preferredTarget);
+    }
+
     return ret;
   }
 
@@ -557,6 +575,7 @@ class Position {
     final List<int> extraIndices = <int>[
       trimmedFen.indexOf(' c:'),
       trimmedFen.indexOf(' i:'),
+      trimmedFen.indexOf(' p:'),
     ].where((int index) => index >= 0).toList();
 
     int firstExtra = trimmedFen.length;
@@ -2979,6 +2998,9 @@ extension SetupPosition on Position {
         pos._interventionRemovalCount[PieceColor.white]!;
     _interventionRemovalCount[PieceColor.black] =
         pos._interventionRemovalCount[PieceColor.black]!;
+
+    // Copy preferredRemoveTarget to maintain it across position cloning
+    _preferredRemoveTarget = pos._preferredRemoveTarget;
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
