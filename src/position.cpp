@@ -2296,10 +2296,12 @@ bool Position::checkInterventionCapture(
         return false;
     }
 
-    // If multiple lines are available, only use the first one
-    // This ensures that when placing a piece at a cross center,
-    // only 2 pieces from one line are captured, not all 4 pieces
-    Bitboard captured = captureLines[0];
+    // Return all possible capture targets from all lines
+    // This allows the player to choose which line to capture from
+    Bitboard captured = 0;
+    for (const Bitboard line : captureLines) {
+        captured |= line;
+    }
 
     Bitboard validTargets = 0;
 
