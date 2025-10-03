@@ -1429,37 +1429,21 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 
         pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
 
-        int additionalRemoval = 0;
-
-        // Handle custodian capture - respects mayRemoveMultiple setting
+        // When both mill and custodian/intervention capture are triggered,
+        // only one capture mode can be selected. Store the capture targets
+        // but don't add them to pieceToRemoveCount yet.
+        // The player's first removal action will determine which mode is
+        // chosen.
         if (hasCustodianCapture) {
-            const int custodianRemoval = activateCustodianCapture(
-                sideToMove, custodianCaptured);
-            if (custodianRemoval > 0) {
-                additionalRemoval += custodianRemoval;
-            } else {
-                setCustodianCaptureState(sideToMove, 0, 0);
-            }
+            activateCustodianCapture(sideToMove, custodianCaptured);
         } else {
             setCustodianCaptureState(sideToMove, 0, 0);
         }
 
-        // Handle intervention capture - always captures all trapped pieces
-        // regardless of mayRemoveMultiple setting
         if (hasInterventionCapture) {
-            const int interventionRemoval = activateInterventionCapture(
-                sideToMove, interventionCaptured);
-            if (interventionRemoval > 0) {
-                additionalRemoval += interventionRemoval;
-            } else {
-                setInterventionCaptureState(sideToMove, 0, 0);
-            }
+            activateInterventionCapture(sideToMove, interventionCaptured);
         } else {
             setInterventionCaptureState(sideToMove, 0, 0);
-        }
-
-        if (additionalRemoval > 0) {
-            pieceToRemoveCount[sideToMove] += additionalRemoval;
         }
 
         update_key_misc();
@@ -1496,7 +1480,17 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
         const int totalCaptureCount = custodianCount + interventionCount;
 
-        if (!isCaptureTarget && totalCaptureCount >= remainingRemovals) {
+        // Allow player to choose between mill capture and
+        // custodian/intervention capture When multiple capture modes are
+        // available, player's first removal determines the mode
+        if (!isCaptureTarget && totalCaptureCount > 0) {
+            // Player chooses mill capture over custodian/intervention
+            // Clear custodian/intervention state to enforce single capture mode
+            // selection
+            setCustodianCaptureState(sideToMove, 0, 0);
+            setInterventionCaptureState(sideToMove, 0, 0);
+        } else if (!isCaptureTarget && totalCaptureCount >= remainingRemovals) {
+            // This should not happen after the above fix, but keep for safety
             return false;
         }
 
