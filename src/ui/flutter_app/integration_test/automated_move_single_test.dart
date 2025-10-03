@@ -35,7 +35,7 @@ void main() {
       final singleTestConfig = AutomatedMoveTestData.createCustomConfig(
         configName: 'Single Test - First Failed Case',
         batchDescription: 'Run only first failed test case for debugging',
-        testCases: [AutomatedMoveTestData.placingWhiteBoardFull],
+        testCases: [AutomatedMoveTestData.placingWhiteBothInMill],
         stopOnFirstFailure: true,
       );
 
