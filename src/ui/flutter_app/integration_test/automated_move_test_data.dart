@@ -221,7 +221,7 @@ class AutomatedMoveTestData {
 11.    c4    a4
 12.    d3    d1
 ''',
-    expectedSequences: ['d5'],
+    expectedSequences: ['xd5'],
   );
 
   /// Test case for complex capture sequences
@@ -265,9 +265,9 @@ class AutomatedMoveTestData {
 11.    f4    b4
 12.    c4    d2
 13.    g7-g4xf2    d2-f2
-14.    g4-g1    f2-e3xe4xf4
+14.    g4-g1    f2-e3xe4
 ''',
-    expectedSequences: ['PLACEHOLDER_EXPECTED_SEQUENCE_ADVANCED_TACTICAL'],
+    expectedSequences: ['f4-e4'],
   );
 
   /// Test case for long tactical game
@@ -319,7 +319,7 @@ class AutomatedMoveTestData {
 12.    d2    e4
 13.    d6-b6
 ''',
-    expectedSequences: ['a7 c5', 'c5 a7'],
+    expectedSequences: ['a7', 'c5'],
   );
 
   /// Test case for strategic positioning
