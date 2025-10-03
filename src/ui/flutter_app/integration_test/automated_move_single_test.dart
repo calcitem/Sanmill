@@ -19,8 +19,8 @@ import 'automated_move_test_runner.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Single Test - placingWhiteSingleCaptureB2', () {
-    testWidgets('Run placingWhiteSingleCaptureB2 only', (
+  group('Single Test - placingBlackInterventionMill', () {
+    testWidgets('Run placingBlackInterventionMill only', (
       WidgetTester tester,
     ) async {
       // Launch the app
@@ -33,11 +33,11 @@ void main() {
 
       print('[IntegrationTest] App initialized, starting single test...');
 
-      // Execute ONLY placingWhiteSingleCaptureB2 (first failed test case)
+      // Execute ONLY placingBlackInterventionMill (first failed test case)
       final singleTestConfig = AutomatedMoveTestData.createCustomConfig(
-        configName: 'Single Test - placingWhiteSingleCaptureB2',
-        batchDescription: 'Run only placingWhiteSingleCaptureB2 for debugging',
-        testCases: [AutomatedMoveTestData.placingWhiteSingleCaptureB2],
+        configName: 'Single Test - placingBlackInterventionMill',
+        batchDescription: 'Run only placingBlackInterventionMill for debugging',
+        testCases: [AutomatedMoveTestData.placingBlackInterventionMill],
         stopOnFirstFailure: true,
       );
 
@@ -48,8 +48,8 @@ void main() {
       // Print summary
       print('[IntegrationTest] =====================================');
       print('[IntegrationTest] Single Test Completed');
-      print('[IntegrationTest] Test: placingWhiteSingleCaptureB2');
-      print('[IntegrationTest] ID: intervention_single_b2');
+      print('[IntegrationTest] Test: placingBlackInterventionMill');
+      print('[IntegrationTest] ID: five_move_opening');
       print('[IntegrationTest] Passed: ${result.passedCount}');
       print('[IntegrationTest] Failed: ${result.failedCount}');
       print('[IntegrationTest] =====================================');
