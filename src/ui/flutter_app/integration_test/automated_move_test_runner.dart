@@ -8,6 +8,7 @@
 import 'dart:async';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/game_page/services/animation/headless_animation_manager.dart';
 
 import 'automated_move_test_models.dart';
 
@@ -94,6 +95,15 @@ class AutomatedMoveTestRunner {
     final DateTime startTime = DateTime.now();
 
     try {
+      // Initialize a mock AnimationManager to avoid LateInitializationError in headless tests
+      // Inject a mock AnimationManager to avoid LateInitializationError in headless tests
+      try {
+        final GameController controller = GameController();
+        controller.animationManager = HeadlessAnimationManager();
+      } catch (_) {
+        // ignore
+      }
+
       // Reset game controller to clean state
       // Use singleton GameController instance
       final GameController controller = GameController();
