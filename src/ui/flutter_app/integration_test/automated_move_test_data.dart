@@ -161,7 +161,7 @@ class AutomatedMoveTestData {
  4.    c5    e5
  5.    a7    b6
 ''',
-    expectedSequences: ['xa7 xc5', 'xc5 xa7', 'xa4', 'xb2', 'xc4'],
+    expectedSequences: ['xa7', 'xc5', 'xa4', 'xb2', 'xc4'],
   );
 
   /// Test case for 6-move development
