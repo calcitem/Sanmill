@@ -128,26 +128,13 @@ class Position {
 
   // Used during move import to specify which capture line should be selected
   // when there are multiple intervention capture lines available
-  int? _preferredRemoveTarget;
+  int? preferredRemoveTarget;
 
   bool isNoDraw() {
     if (score[PieceColor.white]! > 0 || score[PieceColor.black]! > 0) {
       return true;
     }
     return false;
-  }
-
-  /// Get the preferred target for intervention capture line selection
-  int? get preferredRemoveTarget => _preferredRemoveTarget;
-
-  /// Set the preferred target for intervention capture line selection
-  set preferredRemoveTarget(int? target) {
-    _preferredRemoveTarget = target;
-  }
-
-  /// Clear the preferred remove target
-  void clearPreferredRemoveTarget() {
-    _preferredRemoveTarget = null;
   }
 
   int _gamePly = 0;
@@ -395,8 +382,8 @@ class Position {
     // Append preferredRemoveTarget if set
     // Format: " p:21" where 21 is the square number
     // This is appended at the end for backward compatibility
-    if (_preferredRemoveTarget != null) {
-      buffer.write(' p:$_preferredRemoveTarget');
+    if (preferredRemoveTarget != null) {
+      buffer.write(' p:$preferredRemoveTarget');
     }
 
     logger.t("FEN is $buffer");
@@ -1576,7 +1563,7 @@ class Position {
     _setInterventionCaptureState(sideToMove, 0, 0);
 
     // Clear preferred remove target after all removals are complete
-    clearPreferredRemoveTarget();
+    preferredRemoveTarget = null;
 
     if (handlePlacingPhaseEnd() == false) {
       if (isStalemateRemoving) {
@@ -2189,7 +2176,7 @@ class Position {
       return false;
     }
 
-    final int? preferredTarget = _preferredRemoveTarget;
+    final int? preferredTarget = preferredRemoveTarget;
 
     final bool placingPhase = phase == Phase.placing;
     final bool movingPhase = phase == Phase.moving;
@@ -2985,7 +2972,7 @@ extension SetupPosition on Position {
         pos._interventionRemovalCount[PieceColor.black]!;
 
     // Copy preferredRemoveTarget to maintain it across position cloning
-    _preferredRemoveTarget = pos._preferredRemoveTarget;
+    preferredRemoveTarget = pos.preferredRemoveTarget;
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
