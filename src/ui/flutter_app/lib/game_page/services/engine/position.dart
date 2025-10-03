@@ -137,6 +137,9 @@ class Position {
     return false;
   }
 
+  /// Get the preferred target for intervention capture line selection
+  int? get preferredRemoveTarget => _preferredRemoveTarget;
+
   /// Set the preferred target for intervention capture line selection
   set preferredRemoveTarget(int? target) {
     _preferredRemoveTarget = target;
