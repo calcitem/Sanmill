@@ -377,6 +377,12 @@ class ImportService {
       // If node.data is not null, it represents a move.
       if (node.data != null) {
         final ExtMove move = node.data!;
+        // If this move recorded a preferredRemoveTarget (from a preceding place+remove notation),
+        // set it into the position before executing, so the engine will choose the intended line.
+        if (move.preferredRemoveTarget != null) {
+          currentPos.setPreferredRemoveTarget(move.preferredRemoveTarget);
+        }
+
         // Execute this move in the current position.
         final bool ok = currentPos.doMove(move.move);
         if (!ok) {
@@ -541,6 +547,15 @@ class ImportService {
             ExtMove(
               uciMove,
               side: localPos.sideToMove,
+              // Carry preferredRemoveTarget only for the place segment when followed by remove
+              preferredRemoveTarget:
+                  (!segment.startsWith('x') &&
+                      i + 1 < segments.length &&
+                      segments[i + 1].startsWith('x'))
+                  ? ExtMove._parseToSquare(
+                      _wmdNotationToMoveString(segments[i + 1]),
+                    )
+                  : null,
               nags: nags,
               startingComments: startingComments,
               comments: comments,

@@ -103,6 +103,15 @@ class Game {
     logger.i("$_logTag doMove: $extMove");
 
     // 1) Attempt to physically do the move on the board
+    // If this ExtMove carries a preferredRemoveTarget (from place+remove import),
+    // inject it into the position before executing the move so the engine
+    // picks the intended intervention capture line.
+    if (extMove.preferredRemoveTarget != null) {
+      GameController().position.setPreferredRemoveTarget(
+        extMove.preferredRemoveTarget,
+      );
+    }
+
     if (!GameController().position.doMove(extMove.move)) {
       return false;
     }

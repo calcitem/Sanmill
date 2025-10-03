@@ -45,6 +45,7 @@ class ExtMove extends PgnNodeData {
     this.boardLayout,
     this.moveIndex,
     this.roundIndex,
+    this.preferredRemoveTarget,
     super.nags,
     super.startingComments,
     super.comments,
@@ -84,6 +85,14 @@ class ExtMove extends PgnNodeData {
   /// this round index. Thus, each cycle (White half + Black half)
   /// forms one complete round.
   int? roundIndex;
+
+  /// Preferred target for intervention capture pairing.
+  ///
+  /// When a placing move is immediately followed by a remove move (e.g. b4xb2),
+  /// this records the first removed square (b2). During replay, this helps the
+  /// engine select the correct intervention capture line and ensures the second
+  /// capture stays on the same line.
+  int? preferredRemoveTarget;
 
   /// Move quality evaluation
   MoveQuality? quality;

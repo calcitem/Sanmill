@@ -295,6 +295,13 @@ class HistoryNavigator {
 
     bool success = true;
     for (final ExtMove move in pathMoves) {
+      // Preserve preferredRemoveTarget during replay execution
+      if (move.preferredRemoveTarget != null) {
+        GameController().position.setPreferredRemoveTarget(
+          move.preferredRemoveTarget,
+        );
+      }
+
       if (!GameController().gameInstance.doMove(move)) {
         importFailedStr = move.notation;
         success = false;
@@ -343,7 +350,15 @@ class HistoryNavigator {
     bool success = true;
     for (final PgnNode<ExtMove> node in path) {
       if (node.data != null) {
-        final bool ok = GameController().gameInstance.doMove(node.data!);
+        // Preserve preferredRemoveTarget during replay execution
+        final ExtMove m = node.data!;
+        if (m.preferredRemoveTarget != null) {
+          GameController().position.setPreferredRemoveTarget(
+            m.preferredRemoveTarget,
+          );
+        }
+
+        final bool ok = GameController().gameInstance.doMove(m);
         if (!ok) {
           importFailedStr = node.data!.notation;
           success = false;
