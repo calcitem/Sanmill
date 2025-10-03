@@ -96,14 +96,14 @@ class AutomatedMoveTestData {
   static const MoveListTestCase placingWhiteTwoCaptured = MoveListTestCase(
     id: 'short_simple_game',
     description:
-        'Placing phase / White / interventionCapture / cross (2 choices intervention) / interventionCapture will capture piece in mill / Already capture 2 pieces',
+        'Placing phase / White / interventionCapture / vertical line (2 choices intervention) / interventionCapture will capture piece in mill / Already capture 2 pieces',
     moveList: '''
  1.    a4    d6
  2.    c4    d7
  3.    b2    f6
- 4.    b6    b4xa4xc4
+ 4.    b6    b4xb6xb2
 ''',
-    unexpectedSequences: ['xb2 xb6', 'xb6 xb2'],
+    unexpectedSequences: ['xa4 xc4', 'xc4 xa4'],
   );
 
   /// Test case for 5-move opening

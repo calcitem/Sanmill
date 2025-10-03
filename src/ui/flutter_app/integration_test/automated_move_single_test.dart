@@ -19,8 +19,8 @@ import 'automated_move_test_runner.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Single Test - placingWhiteCrossMillCapture', () {
-    testWidgets('Run placingWhiteCrossMillCapture only', (
+  group('Single Test - placingWhiteTwoCaptured', () {
+    testWidgets('Run placingWhiteTwoCaptured only', (
       WidgetTester tester,
     ) async {
       // Launch the app
@@ -33,11 +33,11 @@ void main() {
 
       print('[IntegrationTest] App initialized, starting single test...');
 
-      // Execute ONLY placingWhiteCrossMillCapture (first failed test case)
+      // Execute ONLY placingWhiteTwoCaptured (first failed test case)
       final singleTestConfig = AutomatedMoveTestData.createCustomConfig(
-        configName: 'Single Test - placingWhiteCrossMillCapture',
-        batchDescription: 'Run only placingWhiteCrossMillCapture for debugging',
-        testCases: [AutomatedMoveTestData.placingWhiteCrossMillCapture],
+        configName: 'Single Test - placingWhiteTwoCaptured',
+        batchDescription: 'Run only placingWhiteTwoCaptured for debugging',
+        testCases: [AutomatedMoveTestData.placingWhiteTwoCaptured],
         stopOnFirstFailure: true,
       );
 
@@ -48,8 +48,8 @@ void main() {
       // Print summary
       print('[IntegrationTest] =====================================');
       print('[IntegrationTest] Single Test Completed');
-      print('[IntegrationTest] Test: placingWhiteCrossMillCapture');
-      print('[IntegrationTest] ID: short_capture_game');
+      print('[IntegrationTest] Test: placingWhiteTwoCaptured');
+      print('[IntegrationTest] ID: short_simple_game');
       print('[IntegrationTest] Passed: ${result.passedCount}');
       print('[IntegrationTest] Failed: ${result.failedCount}');
       print('[IntegrationTest] =====================================');
