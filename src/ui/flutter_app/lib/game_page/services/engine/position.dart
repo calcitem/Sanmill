@@ -1406,15 +1406,11 @@ class Position {
         _setInterventionCaptureState(sideToMove, 0, 0);
       }
 
-      // If we have capture obligations, start with 1 removal to let the first
-      // removal determine the mode. Otherwise, use mill removal count.
-      if (custodianRemovalCount > 0 || interventionRemovalCount > 0) {
-        pieceToRemoveCount[sideToMove] = 1;
-      } else {
-        pieceToRemoveCount[sideToMove] = DB().ruleSettings.mayRemoveMultiple
-            ? n
-            : 1;
-      }
+      // Always start with mill removal count. The first removal action will
+      // determine if we switch to custodian/intervention capture mode.
+      pieceToRemoveCount[sideToMove] = DB().ruleSettings.mayRemoveMultiple
+          ? n
+          : 1;
 
       _updateKeyMisc();
       action = Act.remove;
