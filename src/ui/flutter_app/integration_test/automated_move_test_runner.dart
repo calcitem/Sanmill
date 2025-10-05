@@ -120,6 +120,41 @@ class AutomatedMoveTestRunner {
 
       // Import the move list using real import service
       print('$_logTag Importing move list for ${testCase.id}');
+
+      // Handle negative tests (expected import failure)
+      if (testCase.shouldFailToImport) {
+        print('$_logTag This is a negative test - expecting import to fail');
+        try {
+          ImportService.import(testCase.moveList);
+          print('$_logTag Import unexpectedly succeeded');
+
+          // Import succeeded but was expected to fail - test fails
+          return TestCaseResult(
+            testCase: testCase,
+            passed: false,
+            actualSequence: '',
+            importFailed: false,
+            errorMessage:
+                'Expected import to fail, but it succeeded. '
+                'Expected error: ${testCase.expectedImportError ?? "Not specified"}',
+            executionTime: DateTime.now().difference(startTime),
+          );
+        } catch (e) {
+          print('$_logTag Import failed as expected: $e');
+
+          // Import failed as expected - test passes
+          return TestCaseResult(
+            testCase: testCase,
+            passed: true,
+            actualSequence: '',
+            importFailed: true,
+            importErrorMessage: e.toString(),
+            executionTime: DateTime.now().difference(startTime),
+          );
+        }
+      }
+
+      // Handle positive tests (expected import success)
       try {
         ImportService.import(testCase.moveList);
         print('$_logTag Import completed successfully');
@@ -570,6 +605,50 @@ class AutomatedMoveTestRunner {
     }
     print('');
 
+    // Handle negative tests (expected import failure)
+    if (result.testCase.shouldFailToImport) {
+      print('$_logTag Test Type: Negative Test (Expected Import Failure)');
+      print('');
+
+      if (result.testCase.expectedImportError != null) {
+        print('$_logTag Expected Import Error:');
+        print('$_logTag   ${result.testCase.expectedImportError}');
+        print('');
+      }
+
+      if (result.importFailed == false) {
+        // Import succeeded when it should have failed
+        print('$_logTag ❌ FAILURE REASON: Import succeeded unexpectedly');
+        print('$_logTag Expected: Import should fail');
+        print('$_logTag Actual: Import succeeded');
+      } else {
+        // This shouldn't happen (test passed but in failed list)
+        print(
+          '$_logTag ⚠️ WARNING: Test marked as failed but import failed as expected',
+        );
+        if (result.importErrorMessage != null) {
+          print('$_logTag Import Error: ${result.importErrorMessage}');
+        }
+      }
+
+      if (result.errorMessage != null) {
+        print('');
+        print('$_logTag Error Message:');
+        print('$_logTag   ${result.errorMessage}');
+      }
+
+      print('');
+      print(
+        '$_logTag Execution Time: ${result.executionTime.inMilliseconds}ms',
+      );
+      print(
+        '$_logTag ---------------------------------------------------------',
+      );
+      print('');
+      return;
+    }
+
+    // Handle positive tests (expected import success)
     // Print expected/unexpected sequences
     if (result.matchedUnexpectedSequence != null) {
       // Test failed because it matched an unexpected sequence

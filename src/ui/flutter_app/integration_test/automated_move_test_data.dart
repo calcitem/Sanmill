@@ -412,6 +412,48 @@ class AutomatedMoveTestData {
     enabled: false, // Disabled by default for demonstration
   );
 
+  /// Test case for invalid capture - expected import failure
+  static const MoveListTestCase invalidCaptureImport = MoveListTestCase(
+    id: 'invalid_capture_import',
+    description: 'Negative test: Invalid capture should fail to import',
+    moveList: '''
+ 1.    d6    c5
+ 2.    b4    c3
+ 3.    f6    e3
+ 4.    b2    a7
+ 5.    b6xc3
+''',
+    shouldFailToImport: true,
+    expectedImportError:
+        'Cannot capture c3 - invalid move or piece not capturable',
+  );
+
+  /// Test case for capturing own piece - expected import failure
+  static const MoveListTestCase capturingOwnPieceImport = MoveListTestCase(
+    id: 'capturing_own_piece_import',
+    description:
+        'Negative test: Attempting to capture own piece should fail to import',
+    moveList: '''
+ 1.    d6    c5
+ 2.    b4    c3
+ 3.    f6xb4
+''',
+    shouldFailToImport: true,
+    expectedImportError: 'Cannot capture own piece',
+  );
+
+  /// Test case for invalid move notation - expected import failure
+  static const MoveListTestCase invalidMoveNotationImport = MoveListTestCase(
+    id: 'invalid_move_notation_import',
+    description: 'Negative test: Invalid move notation should fail to import',
+    moveList: '''
+ 1.    d6    c5
+ 2.    z9    invalid
+''',
+    shouldFailToImport: true,
+    expectedImportError: 'Invalid move notation',
+  );
+
   /// Test case for custodian capture with mill - piece in mill already removed
   static const MoveListTestCase
   placingBlackCustodianMillRemoved = MoveListTestCase(
@@ -495,9 +537,28 @@ class AutomatedMoveTestData {
     stopOnFirstFailure: false,
   );
 
+  /// Negative test configuration for import failure validation
+  /// Tests that verify invalid move lists properly fail to import
+  static const AutomatedMoveTestConfig
+  negativeImportTestConfig = AutomatedMoveTestConfig(
+    configName: 'Negative Import Tests',
+    batchDescription:
+        'Validation tests for invalid move lists that should fail to import',
+    testCases: [
+      invalidCaptureImport,
+      capturingOwnPieceImport,
+      invalidMoveNotationImport,
+    ],
+    maxWaitTimeMs: 5000, // Shorter timeout for negative tests
+    stopOnFirstFailure: false,
+  );
+
   /// Get all available test configurations
   static List<AutomatedMoveTestConfig> getAllConfigurations() {
-    return [custodianCaptureAndInterventionCaptureTestConfig];
+    return [
+      custodianCaptureAndInterventionCaptureTestConfig,
+      negativeImportTestConfig,
+    ];
   }
 
   /// Create a custom test configuration

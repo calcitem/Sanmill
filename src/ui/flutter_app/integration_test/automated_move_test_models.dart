@@ -27,6 +27,15 @@ class MoveListTestCase {
   /// Defaults to empty list
   final List<String>? unexpectedSequences;
 
+  /// Whether the move list import is expected to fail (negative test)
+  /// If true, the test passes when import fails and fails when import succeeds
+  /// This is useful for testing invalid move sequences
+  final bool shouldFailToImport;
+
+  /// Optional description of the expected import failure
+  /// Used for better error messages in negative tests
+  final String? expectedImportError;
+
   /// Whether this test case is currently enabled
   final bool enabled;
 
@@ -36,6 +45,8 @@ class MoveListTestCase {
     required this.moveList,
     this.expectedSequences,
     this.unexpectedSequences,
+    this.shouldFailToImport = false,
+    this.expectedImportError,
     this.enabled = true,
   });
 
@@ -102,6 +113,12 @@ class TestCaseResult {
   /// Error message if the test failed
   final String? errorMessage;
 
+  /// Whether the import failed (used for negative tests)
+  final bool? importFailed;
+
+  /// The import error message (if import failed)
+  final String? importErrorMessage;
+
   /// Duration of the test execution
   final Duration executionTime;
 
@@ -112,6 +129,8 @@ class TestCaseResult {
     this.matchedExpectedSequence,
     this.matchedUnexpectedSequence,
     this.errorMessage,
+    this.importFailed,
+    this.importErrorMessage,
     required this.executionTime,
   });
 
