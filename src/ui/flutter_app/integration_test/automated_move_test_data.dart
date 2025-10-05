@@ -223,7 +223,7 @@ class AutomatedMoveTestData {
 11.    c4    a4
 12.    d3    d1
 ''',
-    expectedSequences: ['xd5 xe5', 'xb4 xe5', 'xb2 xe5'],
+    expectedSequences: ['xd5 xe5', 'xb4 xe5', 'xb2 xe5', 'xd1 xd3'],
   );
 
   /// Test case for complex capture sequences
@@ -527,6 +527,10 @@ class AutomatedMoveTestData {
       placingBlackCustodianMillRemoved,
       placingBlackInterventionMillOtherRemoved,
       placingWhiteInterventionMillOneRemoved,
+      // Negative tests - invalid move lists that should fail to import
+      invalidCaptureImport,
+      capturingOwnPieceImport,
+      invalidMoveNotationImport,
       disabledDemo,
     ],
     maxWaitTimeMs: 30000, // 30 seconds timeout for comprehensive capture tests
