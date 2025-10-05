@@ -35,8 +35,8 @@ class AutomatedMoveTestData {
     expectedSequences: [
       // Expected sequences will be determined by running the test and observing AI behavior
       // These are placeholder values that should be updated after initial test runs
-      'xa1',
-      'xc3',
+      'xa1 xc3',
+      'xc3 xa1',
       // TODO: Remove following sequences
       'xd7',
       'xg1',
@@ -163,7 +163,7 @@ class AutomatedMoveTestData {
  4.    c5    e5
  5.    a7    b6
 ''',
-    expectedSequences: ['xa7', 'xc5', 'xa4', 'xb2', 'xc4'],
+    expectedSequences: ['xa7 xc5', 'xc5 xa7', 'xa4', 'xb2', 'xc4'],
   );
 
   /// Test case for 6-move development
@@ -223,7 +223,7 @@ class AutomatedMoveTestData {
 11.    c4    a4
 12.    d3    d1
 ''',
-    expectedSequences: ['xd5 xe5'],
+    expectedSequences: ['xd5 xe5', 'xb4 xe5'],
   );
 
   /// Test case for complex capture sequences

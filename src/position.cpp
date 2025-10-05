@@ -1489,22 +1489,32 @@ bool Position::remove_piece(Square s, bool updateRecord)
         // If the player selects a custodian/intervention target as the first
         // removal when both capture and mill are available, we must lock the
         // capture mode and disallow continuing with mill. This means:
-        // - pieceToRemoveCount is set to the capture obligation count of the
-        //   chosen mode (not the mill-based count), so intervention continues
-        //   to the paired piece and custodian ends after its obligations.
+        // - For intervention: always enforce removal count equals the
+        // intervention
+        //   obligation so the next removal must take the paired piece,
+        //   regardless of mayRemoveMultiple setting.
+        // - For custodian: respect mayRemoveMultiple setting for its
+        // obligations.
         // - The non-chosen capture mode is cleared to prevent mixing modes.
         if (isInterventionTarget && interventionCount > 0) {
             // Lock to intervention capture only
             if (custodianTargets || custodianCount > 0) {
                 setCustodianCaptureState(sideToMove, 0, 0);
             }
+            // Intervention capture always requires removing both pieces from
+            // the line
             pieceToRemoveCount[sideToMove] = interventionCount;
         } else if (isCustodianTarget && custodianCount > 0) {
             // Lock to custodian capture only
             if (interventionTargets || interventionCount > 0) {
                 setInterventionCaptureState(sideToMove, 0, 0);
             }
-            pieceToRemoveCount[sideToMove] = custodianCount;
+            // Custodian capture respects mayRemoveMultiple setting
+            if (rule.mayRemoveMultiple) {
+                pieceToRemoveCount[sideToMove] = custodianCount;
+            }
+            // If mayRemoveMultiple is false, keep current count (1) for single
+            // removal
         }
 
         // Allow player to choose between mill capture and

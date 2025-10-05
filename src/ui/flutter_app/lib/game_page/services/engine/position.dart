@@ -1186,41 +1186,55 @@ class Position {
               changeSideToMove();
             }
           } else {
-            // Always activate custodian/intervention capture when available,
-            // regardless of mayRemoveMultiple setting
-            int additionalRemoval = 0;
+            if (DB().ruleSettings.mayRemoveMultiple) {
+              int additionalRemoval = 0;
 
-            if (hasCustodianCapture) {
-              final int custodianRemoval = _activateCustodianCapture(
-                us,
-                custodianCaptured,
-              );
-              if (custodianRemoval > 0) {
-                additionalRemoval += custodianRemoval;
+              if (hasCustodianCapture) {
+                final int custodianRemoval = _activateCustodianCapture(
+                  us,
+                  custodianCaptured,
+                );
+                if (custodianRemoval > 0) {
+                  additionalRemoval += custodianRemoval;
+                } else {
+                  _setCustodianCaptureState(us, 0, 0);
+                }
               } else {
                 _setCustodianCaptureState(us, 0, 0);
               }
-            } else {
-              _setCustodianCaptureState(us, 0, 0);
-            }
 
-            if (hasInterventionCapture) {
-              final int interventionRemoval = _activateInterventionCapture(
-                us,
-                interventionCaptured,
-              );
-              if (interventionRemoval > 0) {
-                additionalRemoval += interventionRemoval;
+              if (hasInterventionCapture) {
+                final int interventionRemoval = _activateInterventionCapture(
+                  us,
+                  interventionCaptured,
+                );
+                if (interventionRemoval > 0) {
+                  additionalRemoval += interventionRemoval;
+                } else {
+                  _setInterventionCaptureState(us, 0, 0);
+                }
               } else {
                 _setInterventionCaptureState(us, 0, 0);
               }
-            } else {
-              _setInterventionCaptureState(us, 0, 0);
-            }
 
-            if (additionalRemoval > 0) {
-              pieceToRemoveCount[sideToMove] =
-                  pieceToRemoveCount[sideToMove]! + additionalRemoval;
+              if (additionalRemoval > 0) {
+                pieceToRemoveCount[sideToMove] =
+                    pieceToRemoveCount[sideToMove]! + additionalRemoval;
+              }
+            } else {
+              // When mayRemoveMultiple is false, we still need to store capture
+              // targets to allow player choice, but don't add to pieceToRemoveCount
+              if (hasCustodianCapture) {
+                _activateCustodianCapture(us, custodianCaptured);
+              } else {
+                _setCustodianCaptureState(us, 0, 0);
+              }
+
+              if (hasInterventionCapture) {
+                _activateInterventionCapture(us, interventionCaptured);
+              } else {
+                _setInterventionCaptureState(us, 0, 0);
+              }
             }
 
             _updateKeyMisc();
@@ -1448,20 +1462,25 @@ class Position {
 
       // If the first removal chooses a custodian/intervention target when
       // mill is also available, lock the capture mode and disallow mill.
-      // For intervention: enforce removal count equals the intervention
-      // obligation so the next removal must take the paired piece.
-      // For custodian: respect its removal obligations and stop after done
-      // even if multiple mills are available and multiple remove is enabled.
+      // For intervention: always enforce removal count equals the intervention
+      // obligation so the next removal must take the paired piece, regardless
+      // of mayRemoveMultiple setting.
+      // For custodian: respect mayRemoveMultiple setting for its obligations.
       if (isInterventionTarget && interventionCount > 0) {
         if (custodianTargets != 0 || custodianCount > 0) {
           _setCustodianCaptureState(sideToMove, 0, 0);
         }
+        // Intervention capture always requires removing both pieces from the line
         pieceToRemoveCount[sideToMove] = interventionCount;
       } else if (isCustodianTarget && custodianCount > 0) {
         if (interventionTargets != 0 || interventionCount > 0) {
           _setInterventionCaptureState(sideToMove, 0, 0);
         }
-        pieceToRemoveCount[sideToMove] = custodianCount;
+        // Custodian capture respects mayRemoveMultiple setting
+        if (DB().ruleSettings.mayRemoveMultiple) {
+          pieceToRemoveCount[sideToMove] = custodianCount;
+        }
+        // If mayRemoveMultiple is false, keep current count (1) for single removal
       }
 
       // Allow player to choose between mill capture and custodian/intervention capture
