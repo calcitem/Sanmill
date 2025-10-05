@@ -1431,15 +1431,12 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         // we initially set pieceToRemoveCount to 1 to allow the player's
         // first removal to determine which capture mode to use.
         // The first removal will then adjust the count appropriately.
-        const int localCustodianRemovalCount = hasCustodianCapture ?
-                                                   activateCustodianCapture(
-                                                       sideToMove,
-                                                       custodianCaptured) :
-                                                   0;
-        const int localInterventionRemovalCount =
-            hasInterventionCapture ?
-                activateInterventionCapture(sideToMove, interventionCaptured) :
-                0;
+        if (hasCustodianCapture) {
+            activateCustodianCapture(sideToMove, custodianCaptured);
+        }
+        if (hasInterventionCapture) {
+            activateInterventionCapture(sideToMove, interventionCaptured);
+        }
 
         if (!hasCustodianCapture) {
             setCustodianCaptureState(sideToMove, 0, 0);
