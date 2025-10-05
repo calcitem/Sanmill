@@ -18,3 +18,9 @@ targets:
         generate_for:
           - "**/models/**.dart"
           - "**/model/**.dart"
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - prefer_relative_imports
+            - document_ignores
+            - public_member_api_docs
