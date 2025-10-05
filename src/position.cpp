@@ -1263,39 +1263,36 @@ bool Position::put_piece(Square s, bool updateRecord)
                         change_side_to_move();
                     }
                 } else {
-                    int additionalRemoval = 0;
-
-                    // Handle custodian capture - respects mayRemoveMultiple
-                    // setting
+                    // Handle custodian and intervention captures when mill is
+                    // formed Only add capture counts to pieceToRemoveCount when
+                    // mayRemoveMultiple is true to align with Dart behavior and
+                    // prevent inconsistencies
                     if (hasCustodianCapture) {
-                        const int custodianRemoval = activateCustodianCapture(
-                            us, custodianCaptured);
-                        if (custodianRemoval > 0) {
-                            additionalRemoval += custodianRemoval;
-                        } else {
-                            setCustodianCaptureState(us, 0, 0);
-                        }
+                        activateCustodianCapture(us, custodianCaptured);
                     } else {
                         setCustodianCaptureState(us, 0, 0);
                     }
 
-                    // Handle intervention capture - always captures all trapped
-                    // pieces regardless of mayRemoveMultiple setting
                     if (hasInterventionCapture) {
-                        const int interventionRemoval =
-                            activateInterventionCapture(us,
-                                                        interventionCaptured);
-                        if (interventionRemoval > 0) {
-                            additionalRemoval += interventionRemoval;
-                        } else {
-                            setInterventionCaptureState(us, 0, 0);
-                        }
+                        activateInterventionCapture(us, interventionCaptured);
                     } else {
                         setInterventionCaptureState(us, 0, 0);
                     }
 
-                    if (additionalRemoval > 0) {
-                        pieceToRemoveCount[sideToMove] += additionalRemoval;
+                    // Only add capture counts when mayRemoveMultiple is true
+                    // This ensures consistency with Dart and allows proper mode
+                    // selection
+                    if (rule.mayRemoveMultiple) {
+                        int additionalRemoval = 0;
+                        if (hasCustodianCapture) {
+                            additionalRemoval += custodianRemovalCount[us];
+                        }
+                        if (hasInterventionCapture) {
+                            additionalRemoval += interventionRemovalCount[us];
+                        }
+                        if (additionalRemoval > 0) {
+                            pieceToRemoveCount[sideToMove] += additionalRemoval;
+                        }
                     }
 
                     update_key_misc();
@@ -1516,12 +1513,22 @@ bool Position::remove_piece(Square s, bool updateRecord)
         // available, player's first removal determines the mode
         if (!isCaptureTarget && totalCaptureCount > 0) {
             // Player chooses mill capture over custodian/intervention
+            // When switching to mill mode, subtract the pre-added capture
+            // counts that were added during placing phase (if mayRemoveMultiple
+            // was true)
+            if (remainingRemovals > totalCaptureCount) {
+                // Subtract the pre-added capture counts to prevent over-removal
+                pieceToRemoveCount[sideToMove] -= totalCaptureCount;
+            } else {
+                // No mill available, must remove capture targets only
+                return false;
+            }
             // Clear custodian/intervention state to enforce single capture mode
             // selection
             setCustodianCaptureState(sideToMove, 0, 0);
             setInterventionCaptureState(sideToMove, 0, 0);
         } else if (!isCaptureTarget && totalCaptureCount >= remainingRemovals) {
-            // This should not happen after the above fix, but keep for safety
+            // No mill available: must remove only from capture targets
             return false;
         }
 

@@ -1507,6 +1507,13 @@ class Position {
       // When multiple capture modes are available, player's first removal determines the mode
       if (millAvailable && !isCaptureTarget && captureCount > 0) {
         // Player chooses mill capture over custodian/intervention
+        // When switching to mill mode, subtract the pre-added capture counts
+        // that were added during placing phase (if mayRemoveMultiple was true)
+        if (pieceToRemoveCount[sideToMove]! > captureCount) {
+          pieceToRemoveCount[sideToMove] =
+              pieceToRemoveCount[sideToMove]! - captureCount;
+          _updateKeyMisc();
+        }
         // Clear custodian/intervention state to enforce single capture mode selection
         _setCustodianCaptureState(sideToMove, 0, 0);
         _setInterventionCaptureState(sideToMove, 0, 0);
@@ -1514,7 +1521,7 @@ class Position {
         // No mill available: must remove only from custodian/intervention targets
         return const IllegalAction();
       } else if (!isCaptureTarget && captureCount >= remainingRemovals) {
-        // This should not happen after the above fix, but keep for safety
+        // No mill available: must remove only from capture targets
         return const IllegalAction();
       }
 

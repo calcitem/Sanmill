@@ -107,10 +107,8 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
-    // 1) If custodian capture is active, ONLY generate custodian targets.
-    // This must take precedence over any other removal rule (stalemate,
-    // all-in-mills, general removal), otherwise the engine may propose
-    // illegal removes that Dart-side will reject (leading to "no move").
+    // 1) If custodian/intervention capture is active, generate those targets
+    // first. If there are no mill removals beyond these captures, return early.
     const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
     const int custodianCount = pos.custodianRemovalCount[us];
     const Bitboard interventionTargets = pos.interventionCaptureTargets[us];
@@ -128,7 +126,14 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
                 *cur++ = static_cast<Move>(-s);
             }
         }
-        return cur;
+        // If total removals are not greater than captureCount,
+        // only capture targets are allowed this turn.
+        const int totalRemovals = pos.pieceToRemoveCount[us];
+        if (totalRemovals <= captureCount) {
+            return cur;
+        }
+        // Otherwise, continue to generate regular removes below,
+        // excluding the already-added capture targets.
     }
 
     // Handle stalemate removal
