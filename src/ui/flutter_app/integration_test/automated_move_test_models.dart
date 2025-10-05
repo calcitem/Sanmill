@@ -32,10 +32,6 @@ class MoveListTestCase {
   /// This is useful for testing invalid move sequences
   final bool shouldFailToImport;
 
-  /// Optional description of the expected import failure
-  /// Used for better error messages in negative tests
-  final String? expectedImportError;
-
   /// Whether this test case is currently enabled
   final bool enabled;
 
@@ -46,7 +42,6 @@ class MoveListTestCase {
     this.expectedSequences,
     this.unexpectedSequences,
     this.shouldFailToImport = false,
-    this.expectedImportError,
     this.enabled = true,
   });
 

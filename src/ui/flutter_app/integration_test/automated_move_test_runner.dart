@@ -134,9 +134,7 @@ class AutomatedMoveTestRunner {
             passed: false,
             actualSequence: '',
             importFailed: false,
-            errorMessage:
-                'Expected import to fail, but it succeeded. '
-                'Expected error: ${testCase.expectedImportError ?? "Not specified"}',
+            errorMessage: 'Expected import to fail, but it succeeded',
             executionTime: DateTime.now().difference(startTime),
           );
         } catch (e) {
@@ -609,12 +607,6 @@ class AutomatedMoveTestRunner {
     if (result.testCase.shouldFailToImport) {
       print('$_logTag Test Type: Negative Test (Expected Import Failure)');
       print('');
-
-      if (result.testCase.expectedImportError != null) {
-        print('$_logTag Expected Import Error:');
-        print('$_logTag   ${result.testCase.expectedImportError}');
-        print('');
-      }
 
       if (result.importFailed == false) {
         // Import succeeded when it should have failed

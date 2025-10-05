@@ -424,8 +424,6 @@ class AutomatedMoveTestData {
  5.    b6xc3
 ''',
     shouldFailToImport: true,
-    expectedImportError:
-        'Cannot capture c3 - invalid move or piece not capturable',
   );
 
   /// Test case for capturing own piece - expected import failure
@@ -439,7 +437,6 @@ class AutomatedMoveTestData {
  3.    f6xb4
 ''',
     shouldFailToImport: true,
-    expectedImportError: 'Cannot capture own piece',
   );
 
   /// Test case for invalid move notation - expected import failure
@@ -451,7 +448,6 @@ class AutomatedMoveTestData {
  2.    z9    invalid
 ''',
     shouldFailToImport: true,
-    expectedImportError: 'Invalid move notation',
   );
 
   /// Test case for custodian capture with mill - piece in mill already removed
