@@ -208,9 +208,9 @@ class AutomatedMoveTestData {
   /// Test case for 12-move midgame
   static const MoveListTestCase placingWhiteBoardFull = MoveListTestCase(
     id: 'twelve_move_midgame',
-    description: 'Placing phase / White / Board full',
+    description: 'Placing phase / White / Board full and remove each piece',
     moveList: '''
-1.    b6    b2
+ 1.    b6    b2
  2.    f2    f6
  3.    e5    g7
  4.    c3    a1
@@ -221,17 +221,9 @@ class AutomatedMoveTestData {
  9.    d6    d5
 10.    g4    e4
 11.    c4    a4
-12.    d3    d1
+12.    d3    d1xa4xe5
 ''',
-    expectedSequences: [
-      'xd5 xe5',
-      'xb4 xe5',
-      'xb2 xe5',
-      'xd1 xd3',
-      'xd5 xf2',
-      'xd1 xd2',
-      'xd1 xd2',
-    ],
+    expectedSequences: ['a7-a4'],
   );
 
   /// Test case for complex capture sequences
@@ -429,7 +421,7 @@ class AutomatedMoveTestData {
  2.    b4    c3
  3.    f6    e3
  4.    b2    a7
- 5.    b6xc3
+ 5.    b6xc3xc5
 ''',
     shouldFailToImport: true,
   );
@@ -443,7 +435,7 @@ class AutomatedMoveTestData {
  2.    b4    c3
  3.    f6    e3
  4.    b2    a7
- 5.    b6xe3
+ 5.    b6xe3xc5
 ''',
     shouldFailToImport: true,
   );

@@ -108,6 +108,14 @@ class Position {
     PieceColor.black: 0,
   };
 
+  // Indicates whether a mill capture is available at the start of the current
+  // removal phase for each side. This is used to prevent choosing generic
+  // mill removals when only custodian/intervention capture is available.
+  final Map<PieceColor, bool> _millAvailableAtRemoval = <PieceColor, bool>{
+    PieceColor.white: false,
+    PieceColor.black: false,
+  };
+
   int pieceCountDiff() {
     return pieceOnBoardCount[PieceColor.white]! +
         pieceInHandCount[PieceColor.white]! -
@@ -1021,6 +1029,8 @@ class Position {
         final int totalCaptureRemoval = custodianRemoval + interventionRemoval;
 
         if (totalCaptureRemoval > 0) {
+          // No mill, only custodian/intervention capture is available
+          _millAvailableAtRemoval[sideToMove] = false;
           pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
           _updateKeyMisc();
           action = Act.remove;
@@ -1130,6 +1140,8 @@ class Position {
           _setInterventionCaptureState(us, 0, 0);
           for (int i = 0; i < rm; i++) {
             if (pieceInHandCount[_them] == 0) {
+              // Mill-based removal will follow
+              _millAvailableAtRemoval[sideToMove] = true;
               pieceToRemoveCount[sideToMove] = rm - i;
               _updateKeyMisc();
               action = Act.remove;
@@ -1237,6 +1249,8 @@ class Position {
               }
             }
 
+            // We are in mill-formed branch; entering removal due to mill
+            _millAvailableAtRemoval[sideToMove] = true;
             _updateKeyMisc();
             action = Act.remove;
           }
@@ -1357,6 +1371,8 @@ class Position {
       final int totalCaptureRemoval = custodianRemoval + interventionRemoval;
 
       if (totalCaptureRemoval > 0) {
+        // No mill, only custodian/intervention capture is available
+        _millAvailableAtRemoval[sideToMove] = false;
         pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
         _updateKeyMisc();
         action = Act.remove;
@@ -1423,6 +1439,8 @@ class Position {
           ? n
           : 1;
 
+      // Mill is available at removal start
+      _millAvailableAtRemoval[sideToMove] = true;
       _updateKeyMisc();
       action = Act.remove;
       GameController().gameInstance.focusIndex = squareToIndex[s];
@@ -1459,6 +1477,7 @@ class Position {
       final bool isInterventionTarget = (interventionTargets & mask) != 0;
       final bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
       final int captureCount = custodianCount + interventionCount;
+      final bool millAvailable = _millAvailableAtRemoval[sideToMove] ?? false;
 
       // If the first removal chooses a custodian/intervention target when
       // mill is also available, lock the capture mode and disallow mill.
@@ -1467,12 +1486,16 @@ class Position {
       // of mayRemoveMultiple setting.
       // For custodian: always only removes one piece, regardless of mayRemoveMultiple.
       if (isInterventionTarget && interventionCount > 0) {
+        // Choosing intervention capture locks out mill
+        _millAvailableAtRemoval[sideToMove] = false;
         if (custodianTargets != 0 || custodianCount > 0) {
           _setCustodianCaptureState(sideToMove, 0, 0);
         }
         // Intervention capture always requires removing both pieces from the line
         pieceToRemoveCount[sideToMove] = interventionCount;
       } else if (isCustodianTarget && custodianCount > 0) {
+        // Choosing custodian capture locks out mill
+        _millAvailableAtRemoval[sideToMove] = false;
         if (interventionTargets != 0 || interventionCount > 0) {
           _setInterventionCaptureState(sideToMove, 0, 0);
         }
@@ -1482,11 +1505,14 @@ class Position {
 
       // Allow player to choose between mill capture and custodian/intervention capture
       // When multiple capture modes are available, player's first removal determines the mode
-      if (!isCaptureTarget && captureCount > 0) {
+      if (millAvailable && !isCaptureTarget && captureCount > 0) {
         // Player chooses mill capture over custodian/intervention
         // Clear custodian/intervention state to enforce single capture mode selection
         _setCustodianCaptureState(sideToMove, 0, 0);
         _setInterventionCaptureState(sideToMove, 0, 0);
+      } else if (!millAvailable && !isCaptureTarget && captureCount > 0) {
+        // No mill available: must remove only from custodian/intervention targets
+        return const IllegalAction();
       } else if (!isCaptureTarget && captureCount >= remainingRemovals) {
         // This should not happen after the above fix, but keep for safety
         return const IllegalAction();
@@ -1594,6 +1620,8 @@ class Position {
       return const GameResponseOK();
     }
 
+    // Clear mill availability at end of removal phase
+    _millAvailableAtRemoval[sideToMove] = false;
     _setCustodianCaptureState(sideToMove, 0, 0);
     _setInterventionCaptureState(sideToMove, 0, 0);
 
