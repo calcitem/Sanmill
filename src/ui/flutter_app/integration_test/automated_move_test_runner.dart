@@ -521,6 +521,22 @@ class AutomatedMoveTestRunner {
 
   /// Print summary of the entire test batch
   static void _printBatchSummary(TestBatchResult batchResult) {
+    // Print detailed information for failed test cases first
+    if (batchResult.failedResults.isNotEmpty) {
+      print('');
+      print(
+        '$_logTag =========================================================',
+      );
+      print('$_logTag ===================== FAILED TESTS ====================');
+      print(
+        '$_logTag =========================================================',
+      );
+      print('');
+
+      batchResult.failedResults.forEach(_printFailedTestDetail);
+    }
+
+    // Then print the summary statistics
     print('$_logTag =====================================');
     print('$_logTag TEST BATCH SUMMARY');
     print('$_logTag =====================================');
@@ -533,15 +549,75 @@ class AutomatedMoveTestRunner {
     );
     print('$_logTag Total Time: ${batchResult.totalTime.inMilliseconds}ms');
     print('$_logTag =====================================');
+  }
 
-    if (batchResult.failedResults.isNotEmpty) {
-      print('$_logTag FAILED TESTS:');
-      for (final TestCaseResult failedResult in batchResult.failedResults) {
-        print(
-          '$_logTag - ${failedResult.testCase.id}: ${failedResult.testCase.description}',
-        );
-      }
-      print('$_logTag =====================================');
+  /// Print detailed information for a failed test case
+  static void _printFailedTestDetail(TestCaseResult result) {
+    print('$_logTag ---------------------------------------------------------');
+    print('$_logTag FAILED TEST: ${result.testCase.id}');
+    print('$_logTag ---------------------------------------------------------');
+    print('$_logTag Description: ${result.testCase.description}');
+    print('');
+
+    // Print move list
+    print('$_logTag Move List:');
+    final List<String> moveLines = result.testCase.moveList
+        .split('\n')
+        .where((line) => line.trim().isNotEmpty)
+        .toList();
+    for (final String line in moveLines) {
+      print('$_logTag   $line');
     }
+    print('');
+
+    // Print expected/unexpected sequences
+    if (result.matchedUnexpectedSequence != null) {
+      // Test failed because it matched an unexpected sequence
+      print('$_logTag Unexpected Sequences (should NOT match):');
+      final List<String>? unexpectedSeqs = result.testCase.unexpectedSequences;
+      if (unexpectedSeqs != null && unexpectedSeqs.isNotEmpty) {
+        for (final String unexpected in unexpectedSeqs) {
+          if (unexpected == result.matchedUnexpectedSequence) {
+            print('$_logTag   ❌ $unexpected (MATCHED - BAD)');
+          } else {
+            print('$_logTag   - $unexpected');
+          }
+        }
+      }
+    } else {
+      // Test failed because it didn't match any expected sequence
+      print('$_logTag Expected Sequences (should match one of):');
+      final List<String>? expectedSeqs = result.testCase.expectedSequences;
+      if (expectedSeqs != null && expectedSeqs.isNotEmpty) {
+        for (final String expected in expectedSeqs) {
+          print('$_logTag   - $expected');
+        }
+      }
+
+      // Also print unexpected sequences if they exist
+      final List<String>? unexpectedSeqs = result.testCase.unexpectedSequences;
+      if (unexpectedSeqs != null && unexpectedSeqs.isNotEmpty) {
+        print('');
+        print('$_logTag Unexpected Sequences (should NOT match):');
+        for (final String unexpected in unexpectedSeqs) {
+          print('$_logTag   - $unexpected');
+        }
+      }
+    }
+
+    print('');
+    print('$_logTag Actual Result:');
+    print('$_logTag   ${result.actualSequence}');
+
+    if (result.errorMessage != null) {
+      print('');
+      print('$_logTag Error Message:');
+      print('$_logTag   ${result.errorMessage}');
+    }
+
+    print('');
+    print('$_logTag Execution Time: ${result.executionTime.inMilliseconds}ms');
+    print('$_logTag ---------------------------------------------------------');
+    print('');
   }
 }
