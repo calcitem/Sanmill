@@ -1445,6 +1445,24 @@ class Position {
       final bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
       final int captureCount = custodianCount + interventionCount;
 
+      // If the first removal chooses a custodian/intervention target when
+      // mill is also available, lock the capture mode and disallow mill.
+      // For intervention: enforce removal count equals the intervention
+      // obligation so the next removal must take the paired piece.
+      // For custodian: respect its removal obligations and stop after done
+      // even if multiple mills are available and multiple remove is enabled.
+      if (isInterventionTarget && interventionCount > 0) {
+        if (custodianTargets != 0 || custodianCount > 0) {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+        pieceToRemoveCount[sideToMove] = interventionCount;
+      } else if (isCustodianTarget && custodianCount > 0) {
+        if (interventionTargets != 0 || interventionCount > 0) {
+          _setInterventionCaptureState(sideToMove, 0, 0);
+        }
+        pieceToRemoveCount[sideToMove] = custodianCount;
+      }
+
       // Allow player to choose between mill capture and custodian/intervention capture
       // When multiple capture modes are available, player's first removal determines the mode
       if (!isCaptureTarget && captureCount > 0) {
