@@ -1186,44 +1186,41 @@ class Position {
               changeSideToMove();
             }
           } else {
-            if (DB().ruleSettings.mayRemoveMultiple) {
-              int additionalRemoval = 0;
+            // Always activate custodian/intervention capture when available,
+            // regardless of mayRemoveMultiple setting
+            int additionalRemoval = 0;
 
-              if (hasCustodianCapture) {
-                final int custodianRemoval = _activateCustodianCapture(
-                  us,
-                  custodianCaptured,
-                );
-                if (custodianRemoval > 0) {
-                  additionalRemoval += custodianRemoval;
-                } else {
-                  _setCustodianCaptureState(us, 0, 0);
-                }
+            if (hasCustodianCapture) {
+              final int custodianRemoval = _activateCustodianCapture(
+                us,
+                custodianCaptured,
+              );
+              if (custodianRemoval > 0) {
+                additionalRemoval += custodianRemoval;
               } else {
                 _setCustodianCaptureState(us, 0, 0);
               }
+            } else {
+              _setCustodianCaptureState(us, 0, 0);
+            }
 
-              if (hasInterventionCapture) {
-                final int interventionRemoval = _activateInterventionCapture(
-                  us,
-                  interventionCaptured,
-                );
-                if (interventionRemoval > 0) {
-                  additionalRemoval += interventionRemoval;
-                } else {
-                  _setInterventionCaptureState(us, 0, 0);
-                }
+            if (hasInterventionCapture) {
+              final int interventionRemoval = _activateInterventionCapture(
+                us,
+                interventionCaptured,
+              );
+              if (interventionRemoval > 0) {
+                additionalRemoval += interventionRemoval;
               } else {
                 _setInterventionCaptureState(us, 0, 0);
               }
-
-              if (additionalRemoval > 0) {
-                pieceToRemoveCount[sideToMove] =
-                    pieceToRemoveCount[sideToMove]! + additionalRemoval;
-              }
             } else {
-              _setCustodianCaptureState(us, 0, 0);
               _setInterventionCaptureState(us, 0, 0);
+            }
+
+            if (additionalRemoval > 0) {
+              pieceToRemoveCount[sideToMove] =
+                  pieceToRemoveCount[sideToMove]! + additionalRemoval;
             }
 
             _updateKeyMisc();
