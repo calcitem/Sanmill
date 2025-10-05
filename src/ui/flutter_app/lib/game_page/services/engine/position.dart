@@ -1403,12 +1403,12 @@ class Position {
       // we initially set pieceToRemoveCount to 1 to allow the player's
       // first removal to determine which capture mode to use.
       // The first removal will then adjust the count appropriately.
-      final int custodianRemovalCount = hasCustodianCapture
-          ? _activateCustodianCapture(sideToMove, custodianCaptured)
-          : 0;
-      final int interventionRemovalCount = hasInterventionCapture
-          ? _activateInterventionCapture(sideToMove, interventionCaptured)
-          : 0;
+      if (hasCustodianCapture) {
+        _activateCustodianCapture(sideToMove, custodianCaptured);
+      }
+      if (hasInterventionCapture) {
+        _activateInterventionCapture(sideToMove, interventionCaptured);
+      }
 
       if (!hasCustodianCapture) {
         _setCustodianCaptureState(sideToMove, 0, 0);
