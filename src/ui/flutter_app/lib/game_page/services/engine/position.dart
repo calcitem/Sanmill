@@ -1465,7 +1465,7 @@ class Position {
       // For intervention: always enforce removal count equals the intervention
       // obligation so the next removal must take the paired piece, regardless
       // of mayRemoveMultiple setting.
-      // For custodian: respect mayRemoveMultiple setting for its obligations.
+      // For custodian: always only removes one piece, regardless of mayRemoveMultiple.
       if (isInterventionTarget && interventionCount > 0) {
         if (custodianTargets != 0 || custodianCount > 0) {
           _setCustodianCaptureState(sideToMove, 0, 0);
@@ -1476,11 +1476,8 @@ class Position {
         if (interventionTargets != 0 || interventionCount > 0) {
           _setInterventionCaptureState(sideToMove, 0, 0);
         }
-        // Custodian capture respects mayRemoveMultiple setting
-        if (DB().ruleSettings.mayRemoveMultiple) {
-          pieceToRemoveCount[sideToMove] = custodianCount;
-        }
-        // If mayRemoveMultiple is false, keep current count (1) for single removal
+        // Custodian capture always only removes one piece (the trapped piece)
+        pieceToRemoveCount[sideToMove] = 1;
       }
 
       // Allow player to choose between mill capture and custodian/intervention capture

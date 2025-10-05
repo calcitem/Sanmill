@@ -1493,8 +1493,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
         // intervention
         //   obligation so the next removal must take the paired piece,
         //   regardless of mayRemoveMultiple setting.
-        // - For custodian: respect mayRemoveMultiple setting for its
-        // obligations.
+        // - For custodian: always only removes one piece, regardless of
+        // mayRemoveMultiple.
         // - The non-chosen capture mode is cleared to prevent mixing modes.
         if (isInterventionTarget && interventionCount > 0) {
             // Lock to intervention capture only
@@ -1509,12 +1509,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
             if (interventionTargets || interventionCount > 0) {
                 setInterventionCaptureState(sideToMove, 0, 0);
             }
-            // Custodian capture respects mayRemoveMultiple setting
-            if (rule.mayRemoveMultiple) {
-                pieceToRemoveCount[sideToMove] = custodianCount;
-            }
-            // If mayRemoveMultiple is false, keep current count (1) for single
-            // removal
+            // Custodian capture always only removes one piece (the trapped
+            // piece)
+            pieceToRemoveCount[sideToMove] = 1;
         }
 
         // Allow player to choose between mill capture and

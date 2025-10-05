@@ -223,7 +223,7 @@ class AutomatedMoveTestData {
 11.    c4    a4
 12.    d3    d1
 ''',
-    expectedSequences: ['xd5 xe5', 'xb4 xe5'],
+    expectedSequences: ['xd5 xe5', 'xb4 xe5', 'xb2 xe5'],
   );
 
   /// Test case for complex capture sequences
