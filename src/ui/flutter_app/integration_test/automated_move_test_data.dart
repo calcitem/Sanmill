@@ -69,13 +69,15 @@ class AutomatedMoveTestData {
   /// Test case for edge case handling
   static const MoveListTestCase placingWhiteIntervention = MoveListTestCase(
     id: 'edge_case_1',
-    description: 'Placing phase / White / interventionCapture',
+    description:
+        'Placing phase / White / interventionCapture / Already capture 1 piece',
     moveList: '''
  1.    d2    d6
  2.    a1    g7
  3.    g1    a7
+ 4.    d7
 ''',
-    expectedSequences: ['d7'],
+    expectedSequences: ['xa7 xg7', 'xg7 xa7'],
   );
 
   /// Test case for short game with captures
@@ -410,6 +412,52 @@ class AutomatedMoveTestData {
     enabled: false, // Disabled by default for demonstration
   );
 
+  /// Test case for custodian capture with mill - piece in mill already removed
+  static const MoveListTestCase
+  placingBlackCustodianMillRemoved = MoveListTestCase(
+    id: 'placing_black_custodian_mill_removed',
+    description:
+        'Placing phase / Black / custodianCapture + Mill / Already remove piece in mill',
+    moveList: '''
+ 1.    a1    b6
+ 2.    d5    d3
+ 3.    a7    d2
+ 4.    e5    d1xa1
+ 5.    c5xd2
+''',
+    unexpectedSequences: ['xb6'],
+  );
+
+  /// Test case for intervention capture with mill - other piece already removed
+  static const MoveListTestCase
+  placingBlackInterventionMillOtherRemoved = MoveListTestCase(
+    id: 'placing_black_intervention_mill_other_removed',
+    description:
+        'Placing phase / Black / interventionCapture + Mill / Already remove other piece',
+    moveList: '''
+ 1.    a1    c5
+ 2.    d6    a7
+ 3.    f6    b4
+ 4.    b6xb4
+''',
+    unexpectedSequences: ['xa7', 'xc5'],
+  );
+
+  /// Test case for intervention capture with mill - one intervention piece already removed
+  static const MoveListTestCase
+  placingWhiteInterventionMillOneRemoved = MoveListTestCase(
+    id: 'placing_white_intervention_mill_one_removed',
+    description:
+        'Placing phase / White / interventionCapture + Mill / Already remove one of interventionCapture pieces',
+    moveList: '''
+ 1.    a1    c5
+ 2.    d6    a7
+ 3.    f6    b4
+ 4.    b6xa7
+''',
+    expectedSequences: ['xc5'],
+  );
+
   /// Custodian capture and intervention capture test configuration
   /// Comprehensive tests for both capture mechanisms across all game phases
   static const AutomatedMoveTestConfig
@@ -438,6 +486,9 @@ class AutomatedMoveTestData {
       placingWhiteCustodian,
       placingWhiteDoubleCustodian,
       placingBlackFullBoard,
+      placingBlackCustodianMillRemoved,
+      placingBlackInterventionMillOtherRemoved,
+      placingWhiteInterventionMillOneRemoved,
       disabledDemo,
     ],
     maxWaitTimeMs: 30000, // 30 seconds timeout for comprehensive capture tests
