@@ -1388,24 +1388,32 @@ class Position {
 
       _currentSquare[sideToMove] = 0;
 
-      pieceToRemoveCount[sideToMove] = DB().ruleSettings.mayRemoveMultiple
-          ? n
-          : 1;
-
       // When both mill and custodian/intervention capture are triggered,
-      // only one capture mode can be selected. Store the capture targets
-      // but don't add them to pieceToRemoveCount yet.
-      // The player's first removal action will determine which mode is chosen.
-      if (hasCustodianCapture) {
-        _activateCustodianCapture(sideToMove, custodianCaptured);
-      } else {
+      // we initially set pieceToRemoveCount to 1 to allow the player's
+      // first removal to determine which capture mode to use.
+      // The first removal will then adjust the count appropriately.
+      final int custodianRemovalCount = hasCustodianCapture
+          ? _activateCustodianCapture(sideToMove, custodianCaptured)
+          : 0;
+      final int interventionRemovalCount = hasInterventionCapture
+          ? _activateInterventionCapture(sideToMove, interventionCaptured)
+          : 0;
+
+      if (!hasCustodianCapture) {
         _setCustodianCaptureState(sideToMove, 0, 0);
       }
-
-      if (hasInterventionCapture) {
-        _activateInterventionCapture(sideToMove, interventionCaptured);
-      } else {
+      if (!hasInterventionCapture) {
         _setInterventionCaptureState(sideToMove, 0, 0);
+      }
+
+      // If we have capture obligations, start with 1 removal to let the first
+      // removal determine the mode. Otherwise, use mill removal count.
+      if (custodianRemovalCount > 0 || interventionRemovalCount > 0) {
+        pieceToRemoveCount[sideToMove] = 1;
+      } else {
+        pieceToRemoveCount[sideToMove] = DB().ruleSettings.mayRemoveMultiple
+            ? n
+            : 1;
       }
 
       _updateKeyMisc();
