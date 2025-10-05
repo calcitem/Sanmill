@@ -18,6 +18,13 @@ targets:
         generate_for:
           - "**/models/**.dart"
           - "**/model/**.dart"
+      hive_ce_generator|hive_registrar_generator:
+        enabled: true
+        options:
+          ignore_for_file:
+            - prefer_relative_imports
+            - document_ignores
+            - public_member_api_docs
       source_gen|combining_builder:
         options:
           ignore_for_file:
