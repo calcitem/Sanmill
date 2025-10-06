@@ -1,0 +1,86 @@
+# Custodian Rule Test Scenarios (Standalone - No Mill)
+# Coverage: FR-001 to FR-004
+# FEN Format: [board] [side] [phase] [action] [w_onboard] [w_inhand] [b_onboard] [b_inhand] [w_remove] [b_remove] [mill_data] [bitmask] [halfmove] [fullmove] [c:w-cnt-sq|b-cnt-sq] [i:...] [p:sq]
+
+scenarios:
+  - id: FR-001-detect-custodian-horizontal
+    description: "Identify custodian capture when piece placed at horizontal line endpoint"
+    fr: FR-001
+    fen: "O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1"
+    # Setup: White O at sq 0, Black @ at sq 1, White O at sq 2 (horizontal line)
+    # Black piece at sq 1 is sandwiched (custodian target)
+    # c:w-0-|b-1-1 means white has 0 targets, black has 1 target at square 1
+    expected:
+      hasCustodian: true
+      custodianTarget: 1  # Square number
+    tags: [custodian, detection, horizontal]
+
+  - id: FR-001-detect-custodian-vertical
+    description: "Identify custodian capture when piece placed at vertical line endpoint"
+    fr: FR-001
+    fen: "O*******/@@O******/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-8"
+    # Setup: Vertical line with White sandwiching Black
+    # Black @ at square 8 (middle of vertical line) is target
+    expected:
+      hasCustodian: true
+      custodianTarget: 8
+    tags: [custodian, detection, vertical]
+
+  - id: FR-001-no-custodian-same-color
+    description: "Do not trigger custodian if middle piece is same color"
+    fr: FR-001
+    fen: "OOO*****/********/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1"
+    # Setup: White at 0,1,2 - all same color, no custodian
+    expected:
+      hasCustodian: false
+      custodianTarget: null
+    tags: [custodian, negative]
+
+  - id: FR-002-only-custodian-target-legal
+    description: "Mark only sandwiched piece as legal capture target"
+    fr: FR-002
+    fen: "O@O*****/@@******/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1"
+    # Custodian target is square 1, other black pieces at 8,9 should be illegal
+    expected:
+      legalTargets: [1]
+      illegalTargets: [8, 9]  # Other black pieces illegal
+    tags: [custodian, targeting]
+
+  - id: FR-003-non-target-illegal
+    description: "Mark all non-sandwiched pieces as illegal when custodian active"
+    fr: FR-003
+    fen: "O@O*****/@@******/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1"
+    actions:
+      - selectCapture: 8  # Try to capture black piece at square 8 (not the target)
+    expected:
+      moveRejected: true
+      errorType: "IllegalCapture"
+    tags: [custodian, legality, negative]
+
+  - id: FR-004-custodian-from-mill
+    description: "Allow capturing from opponent's mill when custodian applies"
+    fr: FR-004
+    fen: "O@O*****/@@******/@*******/******** w p r 3 6 4 5 0 1 0 0 0 0 7 0 1 c:w-0-|b-1-1"
+    # Setup: Custodian target at square 1 is part of Black's mill (vertical @ at 1,8,16)
+    # Mills bitmask 7 = 0b111 indicates mills present
+    expected:
+      canCaptureMillPiece: true
+      legalTargets: [1]  # Can capture from mill
+    tags: [custodian, mill-protection, override]
+
+  - id: FR-004-custodian-ignores-mill-protection
+    description: "Custodian rule bypasses mayRemoveFromMillDuringPlacing config"
+    fr: FR-004
+    fen: "O@O*****/@@******/@*******/******** w p r 3 6 4 5 0 1 0 0 0 0 7 0 1 c:w-0-|b-1-1"
+    ruleConfig:
+      mayRemoveFromMillDuringPlacing: false
+      hasCustodianRule: true
+    boardState:
+      blackMills: [1, 8, 16]  # Vertical mill
+      gamePhase: "Placing"
+    expected:
+      canCaptureFromMill: true  # Mill protection does not apply to custodian
+    tags: [custodian, configuration, mill-protection]
+
+# Total scenarios: 6 (covering FR-001 to FR-004)
+# Square numbering: 0-7 (rank 1), 8-15 (rank 2), 16-23 (rank 3) for a 3x8 board
