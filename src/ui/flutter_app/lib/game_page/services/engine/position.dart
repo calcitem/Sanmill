@@ -556,8 +556,14 @@ class Position {
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
     _record = null;
 
-    _parseCustodianFen(custodianData);
-    _parseInterventionFen(interventionData);
+    if (!_parseCustodianFen(custodianData)) {
+      logger.e('Failed to parse custodian FEN data: $custodianData');
+      return false;
+    }
+    if (!_parseInterventionFen(interventionData)) {
+      logger.e('Failed to parse intervention FEN data: $interventionData');
+      return false;
+    }
 
     // Set preferredRemoveTarget if present in FEN
     if (preferredTarget != null) {
@@ -2460,7 +2466,7 @@ class Position {
     return true;
   }
 
-  void _parseCustodianFen(String data) {
+  bool _parseCustodianFen(String data) {
     final Map<PieceColor, int> targets = <PieceColor, int>{
       PieceColor.white: 0,
       PieceColor.black: 0,
@@ -2481,7 +2487,7 @@ class Position {
       ]) {
         _setCustodianCaptureState(color, 0, 0);
       }
-      return;
+      return true;
     }
 
     final List<String> segments = data.split('|');
@@ -2536,11 +2542,27 @@ class Position {
           if (squareValue == null ||
               squareValue < sqBegin ||
               squareValue >= sqEnd) {
-            continue;
+            logger.e('Invalid custodian capture target square: $sqText');
+            return false; // Reject entire FEN as per FR-035
+          }
+
+          // Verify that the target square actually contains an opponent piece
+          if (_board[squareValue] == PieceColor.none) {
+            logger.e('Custodian target square $squareValue is empty');
+            return false; // Reject entire FEN as per FR-035
           }
 
           targetMask |= squareBb(squareValue);
         }
+      }
+
+      // Validate count matches number of targets (only when there are targets)
+      final int actualTargetCount = _countBits(targetMask);
+      if (parsedCount > 0 && targetMask > 0 && actualTargetCount != parsedCount) {
+        logger.e(
+          'Custodian count mismatch: expected $parsedCount, found $actualTargetCount',
+        );
+        return false; // Reject entire FEN as per FR-035
       }
 
       targets[color] = targetMask;
@@ -2558,9 +2580,11 @@ class Position {
         _setCustodianCaptureState(color, 0, 0);
       }
     }
+
+    return true;
   }
 
-  void _parseInterventionFen(String data) {
+  bool _parseInterventionFen(String data) {
     final Map<PieceColor, int> targets = <PieceColor, int>{
       PieceColor.white: 0,
       PieceColor.black: 0,
@@ -2581,7 +2605,7 @@ class Position {
       ]) {
         _setInterventionCaptureState(color, 0, 0);
       }
-      return;
+      return true;
     }
 
     final List<String> segments = data.split('|');
@@ -2636,11 +2660,27 @@ class Position {
           if (squareValue == null ||
               squareValue < sqBegin ||
               squareValue >= sqEnd) {
-            continue;
+            logger.e('Invalid intervention capture target square: $sqText');
+            return false; // Reject entire FEN as per FR-035
+          }
+
+          // Verify that the target square actually contains an opponent piece
+          if (_board[squareValue] == PieceColor.none) {
+            logger.e('Intervention target square $squareValue is empty');
+            return false; // Reject entire FEN as per FR-035
           }
 
           targetMask |= squareBb(squareValue);
         }
+      }
+
+      // Validate count matches number of targets (only when there are targets)
+      final int actualTargetCount = _countBits(targetMask);
+      if (parsedCount > 0 && targetMask > 0 && actualTargetCount != parsedCount) {
+        logger.e(
+          'Intervention count mismatch: expected $parsedCount, found $actualTargetCount',
+        );
+        return false; // Reject entire FEN as per FR-035
       }
 
       targets[color] = targetMask;
@@ -2658,9 +2698,21 @@ class Position {
         _setInterventionCaptureState(color, 0, 0);
       }
     }
+
+    return true;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
+
+  /// Count the number of set bits in a bitmask
+  int _countBits(int mask) {
+    int count = 0;
+    while (mask != 0) {
+      count++;
+      mask &= mask - 1; // Clear the lowest set bit
+    }
+    return count;
+  }
 
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;

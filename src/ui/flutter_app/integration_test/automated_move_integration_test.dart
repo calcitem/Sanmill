@@ -7,7 +7,10 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/main.dart' as app;
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/database.dart';
 
 import 'automated_move_test_data.dart';
 import 'automated_move_test_runner.dart';
@@ -40,7 +43,25 @@ void main() {
       // Wait for app initialization
       await Future<void>.delayed(const Duration(seconds: 2));
 
-      print('[IntegrationTest] App initialized, starting tests...');
+      print('[IntegrationTest] Configuring zhiqi rules with custodian/intervention...');
+      
+      // Configure zhiqi (直棋) rules with custodian and intervention enabled
+      final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
+        enableCustodianCapture: true,
+        enableInterventionCapture: true,
+        custodianCaptureInPlacingPhase: true,
+        custodianCaptureInMovingPhase: true,
+        interventionCaptureInPlacingPhase: true,
+        interventionCaptureInMovingPhase: true,
+      );
+
+      // Apply the rule settings through the database
+      await DB().setRuleSettings(zhiqiRules);
+      
+      // Reset game controller to apply new rules
+      GameController.instance.reset(force: true);
+      
+      print('[IntegrationTest] Rules configured, starting tests...');
 
       // Execute the comprehensive capture test configuration with REAL AI engine
       final result = await AutomatedMoveTestRunner.runTestBatch(
