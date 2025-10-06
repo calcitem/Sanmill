@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package com.calcitem.sanmill;
+package com.calcitem.sanmill68;
 
 import android.os.Bundle;
 
@@ -40,8 +40,8 @@ import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends FlutterActivity {
 
-    private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
-    private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
+    private static final String ENGINE_CHANNEL = "com.calcitem.sanmill68/engine";
+    private static final String NATIVE_CHANNEL = "com.calcitem.sanmill68/native";
 
     // You do not need to override onCreate() in order to invoke
     // GeneratedPluginRegistrant. Flutter now does that on your behalf.

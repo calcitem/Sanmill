@@ -6,7 +6,7 @@
 import 'package:flutter/services.dart';
 import 'logger.dart';
 
-const MethodChannel _platform = MethodChannel('com.calcitem.sanmill/native');
+const MethodChannel _platform = MethodChannel('com.calcitem.sanmill68/native');
 
 Future<String?> readContentUri(Uri uri) async {
   try {

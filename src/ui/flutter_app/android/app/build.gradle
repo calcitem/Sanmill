@@ -26,14 +26,14 @@ android {
     ndkVersion "28.1.13356709"
 
     compileSdkVersion 36
-    namespace "com.calcitem.sanmill"
+    namespace "com.calcitem.sanmill68"
 
     lintOptions {
         disable 'InvalidPackage'
     }
 
     defaultConfig {
-        applicationId "com.calcitem.sanmill"
+        applicationId "com.calcitem.sanmill68"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
