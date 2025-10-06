@@ -121,7 +121,8 @@ class Engine {
     if (await isThinking()) {
       await stopSearching();
     } else if (moveNow) {
-      // TODO: Check why go here.
+      // When user clicks "Move Now", stop any existing search first,
+      // then start a new search with configured moveTime
       await stopSearching();
       final String? fen = _getPositionFen();
       if (fen == null) {
@@ -130,7 +131,8 @@ class Engine {
       }
       await _send(fen);
       await _send("go");
-      await stopSearching();
+      // Let the engine search according to configured moveTime
+      // instead of stopping immediately
     }
 
     if (!moveNow) {
