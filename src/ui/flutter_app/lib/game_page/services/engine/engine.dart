@@ -8,8 +8,9 @@ part of '../mill.dart';
 class Engine {
   Engine();
 
-  static const MethodChannel _platform =
-      MethodChannel("com.calcitem.sanmill68/engine");
+  static const MethodChannel _platform = MethodChannel(
+    "com.calcitem.sanmill68/engine",
+  );
 
   bool get _isPlatformChannelAvailable => !kIsWeb;
 
@@ -189,10 +190,7 @@ class Engine {
           return EngineRet(
             "0", // Default score
             AiMoveType.openingBook,
-            ExtMove(
-              selectedMove,
-              side: GameController().position.sideToMove,
-            ),
+            ExtMove(selectedMove, side: GameController().position.sideToMove),
           );
         } else {
           await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -200,10 +198,7 @@ class Engine {
           return EngineRet(
             "0", // Default score
             AiMoveType.openingBook,
-            ExtMove(
-              selectedMove,
-              side: GameController().position.sideToMove,
-            ),
+            ExtMove(selectedMove, side: GameController().position.sideToMove),
           );
         }
       } else {
@@ -220,8 +215,10 @@ class Engine {
       logger.t("$_logTag Move now");
     }
 
-    final String? response =
-        await _waitResponse(<String>["bestmove", "nobestmove"]);
+    final String? response = await _waitResponse(<String>[
+      "bestmove",
+      "nobestmove",
+    ]);
 
     if (response == null) {
       // ignore: only_throw_errors
@@ -231,8 +228,9 @@ class Engine {
     logger.t("$_logTag response: $response");
 
     if (response.contains("bestmove")) {
-      final RegExp regex =
-          RegExp(r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)");
+      final RegExp regex = RegExp(
+        r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)",
+      );
       final Match? match = regex.firstMatch(response);
       String value = "";
       String aiMoveTypeStr = "";
@@ -268,12 +266,10 @@ class Engine {
       }
 
       return EngineRet(
-          value,
-          aiMoveType,
-          ExtMove(
-            best,
-            side: GameController().position.sideToMove.opponent,
-          ));
+        value,
+        aiMoveType,
+        ExtMove(best, side: GameController().position.sideToMove.opponent),
+      );
     }
 
     if (response.contains("nobestmove")) {
@@ -358,9 +354,9 @@ class Engine {
 
     // AI's play style
     await _sendOptions(
-        "Algorithm",
-        generalSettings.searchAlgorithm?.index ??
-            SearchAlgorithm.mtdf.index); // TODO: enum
+      "Algorithm",
+      generalSettings.searchAlgorithm?.index ?? SearchAlgorithm.mtdf.index,
+    ); // TODO: enum
 
     bool usePerfectDatabase = false;
 
@@ -369,31 +365,28 @@ class Engine {
     } else {
       usePerfectDatabase = false;
       if (generalSettings.usePerfectDatabase) {
-        DB().generalSettings =
-            generalSettings.copyWith(usePerfectDatabase: false);
+        DB().generalSettings = generalSettings.copyWith(
+          usePerfectDatabase: false,
+        );
       }
     }
 
-    await _sendOptions(
-      "UsePerfectDatabase",
-      usePerfectDatabase,
-    );
+    await _sendOptions("UsePerfectDatabase", usePerfectDatabase);
 
     final Directory? dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
-    await _sendOptions(
-      "PerfectDatabasePath",
-      perfectDatabasePath,
-    );
+    await _sendOptions("PerfectDatabasePath", perfectDatabasePath);
     await _sendOptions(
       "DrawOnHumanExperience",
       generalSettings.drawOnHumanExperience,
     );
     await _sendOptions("ConsiderMobility", generalSettings.considerMobility);
     await _sendOptions(
-        "FocusOnBlockingPaths", generalSettings.focusOnBlockingPaths);
+      "FocusOnBlockingPaths",
+      generalSettings.focusOnBlockingPaths,
+    );
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
     await _sendOptions("TrapAwareness", generalSettings.trapAwareness);
@@ -419,32 +412,31 @@ class Engine {
 
     // Placing
     await _sendOptions(
-        "BoardFullAction",
-        ruleSettings.boardFullAction?.index ??
-            BoardFullAction.firstPlayerLose.index); // TODO: enum
+      "BoardFullAction",
+      ruleSettings.boardFullAction?.index ??
+          BoardFullAction.firstPlayerLose.index,
+    ); // TODO: enum
     await _sendOptions(
-        "MillFormationActionInPlacingPhase",
-        ruleSettings.millFormationActionInPlacingPhase?.index ??
-            MillFormationActionInPlacingPhase
-                .removeOpponentsPieceFromBoard.index); // TODO: enum
+      "MillFormationActionInPlacingPhase",
+      ruleSettings.millFormationActionInPlacingPhase?.index ??
+          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard.index,
+    ); // TODO: enum
     await _sendOptions(
       "MayMoveInPlacingPhase",
       ruleSettings.mayMoveInPlacingPhase,
     ); // Not yet implemented
 
     // Moving
-    await _sendOptions(
-      "IsDefenderMoveFirst",
-      ruleSettings.isDefenderMoveFirst,
-    );
+    await _sendOptions("IsDefenderMoveFirst", ruleSettings.isDefenderMoveFirst);
     await _sendOptions(
       "RestrictRepeatedMillsFormation",
       ruleSettings.restrictRepeatedMillsFormation,
     );
     await _sendOptions(
-        "StalemateAction",
-        ruleSettings.stalemateAction?.index ??
-            StalemateAction.endWithStalemateLoss.index); // TODO: enum
+      "StalemateAction",
+      ruleSettings.stalemateAction?.index ??
+          StalemateAction.endWithStalemateLoss.index,
+    ); // TODO: enum
 
     // Flying
     await _sendOptions("MayFly", ruleSettings.mayFly);
@@ -553,8 +545,9 @@ class Engine {
       final int trapIndex = analysisData.indexOf(" trap ");
       if (trapIndex != -1) {
         // Extract trap moves
-        final String trapData =
-            analysisData.substring(trapIndex + 6); // Skip " trap "
+        final String trapData = analysisData.substring(
+          trapIndex + 6,
+        ); // Skip " trap "
         trapMoves.addAll(trapData.split(" ").where((String s) => s.isNotEmpty));
 
         // Remove trap data from analysis data
@@ -595,21 +588,25 @@ class Engine {
             // Debug: Log parsed outcome in dev mode
             if (EnvironmentConfig.devMode) {
               logger.i(
-                  "$_logTag Parsed move: $moveStr, outcome: ${outcome.name}, "
-                  "value: ${outcome.valueStr}, steps: ${outcome.stepCount}");
+                "$_logTag Parsed move: $moveStr, outcome: ${outcome.name}, "
+                "value: ${outcome.valueStr}, steps: ${outcome.stepCount}",
+              );
             }
 
             // Handle standard notation formats
             if (moveStr.startsWith('x') && moveStr.length == 3) {
               // Remove format: "xa1", "xd5"
-              final String squareName =
-                  moveStr.substring(1); // Remove 'x' prefix
+              final String squareName = moveStr.substring(
+                1,
+              ); // Remove 'x' prefix
 
-              results.add(MoveAnalysisResult(
-                move: moveStr,
-                outcome: outcome,
-                toSquare: pgn.Square(squareName),
-              ));
+              results.add(
+                MoveAnalysisResult(
+                  move: moveStr,
+                  outcome: outcome,
+                  toSquare: pgn.Square(squareName),
+                ),
+              );
             } else if (moveStr.contains('-') && moveStr.length == 5) {
               // Move format: "a1-a4", "d5-e5"
               final List<String> squares = moveStr.split('-');
@@ -617,21 +614,25 @@ class Engine {
                 final String fromSquare = squares[0];
                 final String toSquare = squares[1];
 
-                results.add(MoveAnalysisResult(
-                  move: moveStr,
-                  outcome: outcome,
-                  fromSquare: pgn.Square(fromSquare),
-                  toSquare: pgn.Square(toSquare),
-                ));
+                results.add(
+                  MoveAnalysisResult(
+                    move: moveStr,
+                    outcome: outcome,
+                    fromSquare: pgn.Square(fromSquare),
+                    toSquare: pgn.Square(toSquare),
+                  ),
+                );
               }
             } else if (moveStr.length == 2 &&
                 RegExp(r'^[a-g][1-8]$').hasMatch(moveStr)) {
               // Place format: "d5", "a1"
-              results.add(MoveAnalysisResult(
-                move: moveStr,
-                outcome: outcome,
-                toSquare: pgn.Square(moveStr),
-              ));
+              results.add(
+                MoveAnalysisResult(
+                  move: moveStr,
+                  outcome: outcome,
+                  toSquare: pgn.Square(moveStr),
+                ),
+              );
             } else {
               logger.w("$_logTag Unrecognized move format: $moveStr");
             }
@@ -706,7 +707,8 @@ class Engine {
       // Debug: Log parsing failure in dev mode
       if (EnvironmentConfig.devMode) {
         logger.i(
-            "Failed to match value pattern in outcome string: '$outcomeStr'");
+          "Failed to match value pattern in outcome string: '$outcomeStr'",
+        );
       }
     }
 
@@ -740,13 +742,15 @@ class Engine {
       result = GameOutcome.withValueAndSteps(baseOutcome, value, stepCount);
       if (EnvironmentConfig.devMode) {
         logger.i(
-            "Created outcome with steps: ${result.name}, value: ${result.valueStr}, steps: ${result.stepCount}");
+          "Created outcome with steps: ${result.name}, value: ${result.valueStr}, steps: ${result.stepCount}",
+        );
       }
     } else if (value.isNotEmpty) {
       result = GameOutcome.withValue(baseOutcome, value);
       if (EnvironmentConfig.devMode) {
         logger.i(
-            "Created outcome without steps: ${result.name}, value: ${result.valueStr}");
+          "Created outcome without steps: ${result.name}, value: ${result.valueStr}",
+        );
       }
     } else {
       result = baseOutcome;
@@ -779,7 +783,8 @@ Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{
 
 extension GameModeExtension on GameMode {
   IconData get leftHeaderIcon {
-    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ??
+    final IconData botIcon =
+        aiMoveTypeIcons[GameController().aiMoveType] ??
         FluentIcons.bot_24_filled;
 
     switch (this) {
@@ -809,7 +814,8 @@ extension GameModeExtension on GameMode {
   }
 
   IconData get rightHeaderIcon {
-    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ??
+    final IconData botIcon =
+        aiMoveTypeIcons[GameController().aiMoveType] ??
         FluentIcons.bot_24_filled;
 
     switch (this) {
@@ -929,7 +935,10 @@ class GameOutcome {
 
   // Factory method to create outcome with value and step count
   static GameOutcome withValueAndSteps(
-      GameOutcome baseOutcome, String value, int? steps) {
+    GameOutcome baseOutcome,
+    String value,
+    int? steps,
+  ) {
     return GameOutcome(baseOutcome.name, valueStr: value, stepCount: steps);
   }
 
