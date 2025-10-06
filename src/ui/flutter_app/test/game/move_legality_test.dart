@@ -74,7 +74,7 @@ void main() {
       'FR-028: Reject capture of non-designated piece when custodian active',
       () {
         // Set up position with custodian active at square 1
-        const fenWithCustodian =
+        const String fenWithCustodian =
             'O@O***@*/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
         // Custodian target is square 1, but black also has piece at square 6
 
@@ -110,7 +110,7 @@ void main() {
     );
 
     test('FR-028: Only custodian target is legal when custodian triggers', () {
-      const fenCustodian =
+      const String fenCustodian =
           'O@O***@*@/********/******** w p r 3 6 4 5 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
       // Custodian at square 1, but black also has pieces at 6, 8
 
@@ -136,7 +136,7 @@ void main() {
     // FR-029: Reject capture of non-intervention piece when intervention active
     test('FR-029: Reject non-endpoint piece when intervention active', () {
       // Set up intervention with targets at squares 2 and 6
-      const fenIntervention =
+      const String fenIntervention =
           '**@*O*@*@/********/******** w p r 3 6 4 5 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
       // Intervention targets are squares 2 and 6, but black also has piece at 8
 
@@ -155,7 +155,7 @@ void main() {
     test('FR-030: Reject second capture if not the required endpoint', () {
       // After first intervention capture, only the other endpoint on same line is legal
       // Set up intervention: squares 2 and 6 are endpoints of one line
-      const fenIntervention =
+      const String fenIntervention =
           '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
 
       position.setFen(fenIntervention);
@@ -176,7 +176,7 @@ void main() {
       // More specific test: verify that after first intervention capture,
       // attempting to capture a piece that is NOT the same-line endpoint fails
 
-      const fenIntervention =
+      const String fenIntervention =
           '**@*O*@*@/********/******** w p r 3 6 4 5 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
       // Endpoints are 2 and 6, but square 8 also has a black piece
 
@@ -201,7 +201,7 @@ void main() {
     test('FR-031: Reject mill capture after custodian mode selected', () {
       // Set up position with both mill and custodian triggered
       // FEN would have mill data and c: marker
-      const fenBothModes =
+      const String fenBothModes =
           'OOO***@*/@@O*****/******** w p r 3 6 4 5 0 2 0 0 0 8 0 7 0 1 c:w-0-|b-1-7';
       // Mill formed (OOO at 0,1,2), custodian at square 7
 
@@ -221,7 +221,7 @@ void main() {
 
     test('FR-031: Reject custodian capture after mill mode selected', () {
       // Same setup: both mill and custodian available
-      const fenBothModes =
+      const String fenBothModes =
           'OOO***@*/@@O*****/******** w p r 3 6 4 5 0 2 0 0 0 8 0 7 0 1 c:w-0-|b-1-7';
 
       position.setFen(fenBothModes);
@@ -235,7 +235,7 @@ void main() {
 
     test('FR-031: Reject intervention second capture to wrong square', () {
       // Intervention active with endpoints at 2 and 6
-      const fenIntervention =
+      const String fenIntervention =
           '**@*O*@*@/********/******** w p r 3 6 4 5 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
 
       position.setFen(fenIntervention);
@@ -257,7 +257,7 @@ void main() {
     });
 
     test('Legal move with custodian: target is correct', () {
-      const fenCustodian =
+      const String fenCustodian =
           'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
 
       position.setFen(fenCustodian);
@@ -268,7 +268,7 @@ void main() {
     });
 
     test('Legal move with intervention: both endpoints are correct', () {
-      const fenIntervention =
+      const String fenIntervention =
           '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
 
       position.setFen(fenIntervention);
@@ -280,7 +280,7 @@ void main() {
     // FR-003: Mark non-sandwiched pieces as illegal when custodian is active
     test('FR-003: Mark non-sandwiched pieces as illegal when custodian active', () {
       // Set up position with custodian at square 1, but multiple black pieces on board
-      const fenCustodian =
+      const String fenCustodian =
           'O@O***@*@/********/******** w p r 3 6 4 5 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
       // Custodian target at square 1, other black pieces at squares 6 and 8
 

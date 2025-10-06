@@ -97,7 +97,7 @@ void main() {
       // - If intervention chosen: 2 captures (intervention always requires 2)
 
       // Test custodian mode
-      const fenCustodian =
+      const String fenCustodian =
           'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
 
       position.setFen(fenCustodian);
@@ -108,7 +108,7 @@ void main() {
       );
 
       // Test intervention mode
-      const fenIntervention =
+      const String fenIntervention =
           '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
 
       position.setFen(fenIntervention);
@@ -159,7 +159,7 @@ void main() {
         // Set up: Form mill AND trigger custodian
         // With mayRemoveMultiple=false, player can still choose custodian over mill
 
-        const fenBothModes =
+        const String fenBothModes =
             'OOO***@*/@@******/******** w p r 3 6 3 6 0 1 0 0 0 8 0 7 0 1 c:w-0-|b-1-7';
         // Mill at 0,1,2 and custodian at square 7
 
@@ -183,7 +183,7 @@ void main() {
         // Set up: Form mill AND trigger intervention
         // Player can choose intervention which gives 2 captures instead of mill's 1
 
-        const fenBothModes =
+        const String fenBothModes =
             'OOO@O@***/********/******** w p r 3 6 4 5 0 2 0 0 0 8 0 7 0 1 i:w-0-|b-2-3.5';
         // Mill at 0,1,2 and intervention at squares 3,5
 
@@ -201,7 +201,7 @@ void main() {
         // When intervention is chosen with mayRemoveMultiple=false,
         // it still requires both endpoint captures (exception to the 1-capture rule)
 
-        const fenIntervention =
+        const String fenIntervention =
             '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
 
         position.setFen(fenIntervention);
@@ -233,7 +233,7 @@ void main() {
         // Form 2 mills + custodian with mayRemoveMultiple=false
         // Either choice results in 1 capture (not 2 from mills)
 
-        const fenMultiMillCustodian =
+        const String fenMultiMillCustodian =
             'OOO***@*/@@O*****/OOO***** w p r 6 3 3 6 0 1 0 0 0 8 0 7 0 1 c:w-0-|b-1-7';
         // Two mills (0,1,2 and 16,17,18), custodian at square 7
 
@@ -259,7 +259,7 @@ void main() {
         // Choosing intervention gives 2 captures (exception)
         // Choosing mill gives 1 capture
 
-        const fenMultiMillIntervention =
+        const String fenMultiMillIntervention =
             'OOO@O@***/********/OOO***** w p r 6 3 4 5 0 2 0 0 0 8 0 7 0 1 i:w-0-|b-2-3.5';
         // Two mills, intervention at 3,5
 

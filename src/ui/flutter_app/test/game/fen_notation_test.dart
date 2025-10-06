@@ -313,7 +313,7 @@ void main() {
       'FR-035: Reject FEN with intervention marker but no pieces at endpoints',
       () {
         // i: marker references squares 10,12 but board is empty there
-        const invalidFEN =
+        const String invalidFEN =
             '********String /********/******** w p r 0 9 0 9 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.12';
 
         try {
@@ -365,7 +365,7 @@ void main() {
     });
 
     test('FEN with multiple spaces between markers', () {
-      const fenWithSpaces =
+      const String fenWithSpaces =
           'O@O****String */********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1  c:w-0-|b-1-1  i:w-0-|b-0-';
 
       expect(
@@ -376,9 +376,9 @@ void main() {
     });
 
     test('FEN with markers in different order', () {
-      const fenMarkerOrder1 =
+      const String fenMarkerOrder1 =
           'O@O**String ***/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1 i:w-0-|b-0- p:1';
-      const fenMarkerOrder2 =
+      const String fenMarkerOrder2 =
           'O@O**String ***/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 i:w-0-|b-0- c:w-0-|b-1-1 p:1';
 
       // Both should parse successfully (order shouldn't matter)
@@ -387,7 +387,7 @@ void main() {
     });
 
     test('FEN with empty marker values', () {
-      const fenEmptyMarkers =
+      const String fenEmptyMarkers =
           'O*O**String ***/********/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 1 c:w-0-|b-0- i:w-0-|b-0-';
 
       // Empty markers (zero counts) should be accepted
