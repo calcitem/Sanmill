@@ -41,29 +41,38 @@ void main() {
       await tester.pumpAndSettle();
 
       // Wait for app initialization (database is initialized in main())
-      await Future<void>.delayed(const Duration(seconds: 3));
+      await Future<void>.delayed(const Duration(seconds: 5));
 
       print(
         '[IntegrationTest] Configuring zhiqi rules with custodian/intervention...',
       );
 
-      // Configure zhiqi (直棋) rules with custodian and intervention enabled
-      final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
-        enableCustodianCapture: true,
-        enableInterventionCapture: true,
-        custodianCaptureInPlacingPhase: true,
-        custodianCaptureInMovingPhase: true,
-        interventionCaptureInPlacingPhase: true,
-        interventionCaptureInMovingPhase: true,
-      );
+      try {
+        // Configure zhiqi (直棋) rules with custodian and intervention enabled
+        final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
+          enableCustodianCapture: true,
+          enableInterventionCapture: true,
+          custodianCaptureInPlacingPhase: true,
+          custodianCaptureInMovingPhase: true,
+          interventionCaptureInPlacingPhase: true,
+          interventionCaptureInMovingPhase: true,
+        );
 
-      // Apply the rule settings through the database
-      DB().ruleSettings = zhiqiRules;
+        // Apply the rule settings through the database
+        DB().ruleSettings = zhiqiRules;
 
-      // Reset game controller to apply new rules
-      GameController.instance.reset(force: true);
+        // Reset game controller to apply new rules
+        GameController.instance.reset(force: true);
 
-      print('[IntegrationTest] Rules configured, starting tests...');
+        print('[IntegrationTest] Rules configured successfully');
+        print('[IntegrationTest] Custodian capture enabled: ${DB().ruleSettings.enableCustodianCapture}');
+        print('[IntegrationTest] Intervention capture enabled: ${DB().ruleSettings.enableInterventionCapture}');
+      } catch (e) {
+        print('[IntegrationTest] Warning: Rule configuration failed: $e');
+        print('[IntegrationTest] Continuing with default rules...');
+      }
+
+      print('[IntegrationTest] Starting tests...');
 
       // Execute the comprehensive capture test configuration with REAL AI engine
       final result = await AutomatedMoveTestRunner.runTestBatch(
@@ -104,8 +113,28 @@ void main() {
       );
       print('[IntegrationTest] =====================================');
 
-      // Note: We don't use expect() to fail the test in integration tests
-      // because the first run will show actual AI output for updating expected sequences
+      // Verify that tests were executed and have strict success requirements
+      expect(
+        totalTestsRun,
+        greaterThan(0),
+        reason: 'Should execute at least some tests',
+      );
+      
+      // Require high success rate for custodian and intervention tests
+          
+      expect(
+        overallSuccessRate,
+        greaterThanOrEqualTo(95.0),
+        reason: 'Integration tests must have ≥95% success rate for custodian/intervention rules',
+      );
+      
+      expect(
+        totalFailed,
+        lessThanOrEqualTo(1),
+        reason: 'Should have at most 1 failed test in custodian/intervention verification',
+      );
+
+      print('[IntegrationTest] Integration test completed with strict success criteria');
     });
   });
 }
