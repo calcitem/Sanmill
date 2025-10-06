@@ -32,6 +32,11 @@ void main() {
   int totalFailed = 0;
 
   group('Automated Move Integration Tests', () {
+    setUpAll(() async {
+      // Initialize the database for integration tests
+      await Database.init();
+    });
+
     testWidgets('Run custodian and intervention capture tests with real AI', (
       WidgetTester tester,
     ) async {
@@ -43,8 +48,10 @@ void main() {
       // Wait for app initialization
       await Future<void>.delayed(const Duration(seconds: 2));
 
-      print('[IntegrationTest] Configuring zhiqi rules with custodian/intervention...');
-      
+      print(
+        '[IntegrationTest] Configuring zhiqi rules with custodian/intervention...',
+      );
+
       // Configure zhiqi (直棋) rules with custodian and intervention enabled
       final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
         enableCustodianCapture: true,
@@ -56,11 +63,11 @@ void main() {
       );
 
       // Apply the rule settings through the database
-      await DB().setRuleSettings(zhiqiRules);
-      
+      DB().ruleSettings = zhiqiRules;
+
       // Reset game controller to apply new rules
       GameController.instance.reset(force: true);
-      
+
       print('[IntegrationTest] Rules configured, starting tests...');
 
       // Execute the comprehensive capture test configuration with REAL AI engine

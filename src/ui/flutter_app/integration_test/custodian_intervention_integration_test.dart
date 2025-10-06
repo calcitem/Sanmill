@@ -14,6 +14,11 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Custodian and Intervention Integration Tests', () {
+    setUpAll(() async {
+      // Initialize the database for integration tests
+      await Database.init();
+    });
+
     setUp(() async {
       // Configure zhiqi (直棋) rules with custodian and intervention enabled
       final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
@@ -26,7 +31,7 @@ void main() {
       );
 
       // Apply the rule settings
-      await DB().setRuleSettings(zhiqiRules);
+      DB().ruleSettings = zhiqiRules;
 
       // Reset game controller with new rules
       final GameController controller = GameController.instance;
@@ -151,7 +156,7 @@ void main() {
         enableInterventionCapture: true,
         mayRemoveMultiple: false,
       );
-      await DB().setRuleSettings(modifiedRules);
+      DB().ruleSettings = modifiedRules;
 
       final GameController controller = GameController.instance;
       controller.reset(force: true);

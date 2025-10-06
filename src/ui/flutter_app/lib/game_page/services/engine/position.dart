@@ -2558,7 +2558,9 @@ class Position {
 
       // Validate count matches number of targets (only when there are targets)
       final int actualTargetCount = _countBits(targetMask);
-      if (parsedCount > 0 && targetMask > 0 && actualTargetCount != parsedCount) {
+      if (parsedCount > 0 &&
+          targetMask > 0 &&
+          actualTargetCount != parsedCount) {
         logger.e(
           'Custodian count mismatch: expected $parsedCount, found $actualTargetCount',
         );
@@ -2676,7 +2678,9 @@ class Position {
 
       // Validate count matches number of targets (only when there are targets)
       final int actualTargetCount = _countBits(targetMask);
-      if (parsedCount > 0 && targetMask > 0 && actualTargetCount != parsedCount) {
+      if (parsedCount > 0 &&
+          targetMask > 0 &&
+          actualTargetCount != parsedCount) {
         logger.e(
           'Intervention count mismatch: expected $parsedCount, found $actualTargetCount',
         );

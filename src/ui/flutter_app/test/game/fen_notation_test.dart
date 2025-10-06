@@ -75,7 +75,7 @@ void main() {
 
     // FR-021: Export custodian state with c: marker
     test('FR-021: Export custodian state to FEN with c: marker', () {
-      // Create position with custodian capture state  
+      // Create position with custodian capture state
       // Square 9 (e5) has a black piece for custodian target to be valid
       const String fenWithCustodian =
           '*@******/********/******** w p r 1 6 1 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
@@ -335,16 +335,16 @@ void main() {
       () {
         // Set up position where black has only 1 piece, but remove count is 2
         // (Edge case: more captures requested than pieces available)
-        const fenWithExcessCount =
-            'String O*@*****/********/******** w p r 3 6 1 8 0 2 0 0 0 0 0 0 1';
+        const String fenWithExcessCount =
+            'O*@*****/********/******** w p r 3 6 1 8 0 2 0 0 0 0 0 0 1';
         // Black has 1 piece on board but pieceToRemoveCount[black] = 2
 
         position.setFen(fenWithExcessCount);
-        final exportedFEN = position.fen;
+        final String? exportedFEN = position.fen;
 
-     String?    // Field 9 (0-indexed 8) is white toremove, field 10 is black toremove
-        final fields = exportedFEN!.split(' ');
-List<String>
+        // Field 9 (0-indexed 8) is white toremove, field 10 is black toremove
+        final List<String> fields = exportedFEN!.split(' ');
+
         // Even though only 1 black piece exists, count should export as 2
         expect(
           int.parse(fields[9]),
