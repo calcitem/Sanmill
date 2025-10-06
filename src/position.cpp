@@ -1085,12 +1085,29 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
         const int n = mills_count(s);
+
+        // Early exit: check if any capture rules are enabled
+        const bool anyCaptureEnabled = rule.custodianCapture.enabled ||
+                                       rule.interventionCapture.enabled;
+
+        int custodianRemoval = 0;
+        int interventionRemoval = 0;
+        bool hasCustodianCapture = false;
+        bool hasInterventionCapture = false;
         std::vector<Square> custodianCaptured;
-        const bool hasCustodianCapture = checkCustodianCapture(
-            s, us, custodianCaptured);
         std::vector<Square> interventionCaptured;
-        const bool hasInterventionCapture = checkInterventionCapture(
-            s, us, interventionCaptured);
+
+        // Only check captures if rules are enabled
+        if (anyCaptureEnabled) {
+            if (rule.custodianCapture.enabled) {
+                hasCustodianCapture = checkCustodianCapture(s, us,
+                                                            custodianCaptured);
+            }
+            if (rule.interventionCapture.enabled) {
+                hasInterventionCapture = checkInterventionCapture(
+                    s, us, interventionCaptured);
+            }
+        }
 
         if (n == 0) {
             // If no Mill
@@ -1104,19 +1121,18 @@ bool Position::put_piece(Square s, bool updateRecord)
             lastMillFromSquare[sideToMove] = SQ_NONE;
             lastMillToSquare[sideToMove] = SQ_NONE;
 
-            int custodianRemoval = 0;
+            // Only activate captures if any were detected
             if (hasCustodianCapture) {
                 custodianRemoval = activateCustodianCapture(us,
                                                             custodianCaptured);
-            } else {
+            } else if (anyCaptureEnabled) {
                 setCustodianCaptureState(us, 0, 0);
             }
 
-            int interventionRemoval = 0;
             if (hasInterventionCapture) {
                 interventionRemoval = activateInterventionCapture(
                     us, interventionCaptured);
-            } else {
+            } else if (anyCaptureEnabled) {
                 setInterventionCaptureState(us, 0, 0);
             }
 
@@ -1267,31 +1283,36 @@ bool Position::put_piece(Square s, bool updateRecord)
                     // formed Only add capture counts to pieceToRemoveCount when
                     // mayRemoveMultiple is true to align with Dart behavior and
                     // prevent inconsistencies
-                    if (hasCustodianCapture) {
-                        activateCustodianCapture(us, custodianCaptured);
-                    } else {
-                        setCustodianCaptureState(us, 0, 0);
-                    }
-
-                    if (hasInterventionCapture) {
-                        activateInterventionCapture(us, interventionCaptured);
-                    } else {
-                        setInterventionCaptureState(us, 0, 0);
-                    }
-
-                    // Only add capture counts when mayRemoveMultiple is true
-                    // This ensures consistency with Dart and allows proper mode
-                    // selection
-                    if (rule.mayRemoveMultiple) {
-                        int additionalRemoval = 0;
+                    if (anyCaptureEnabled) {
                         if (hasCustodianCapture) {
-                            additionalRemoval += custodianRemovalCount[us];
+                            activateCustodianCapture(us, custodianCaptured);
+                        } else {
+                            setCustodianCaptureState(us, 0, 0);
                         }
+
                         if (hasInterventionCapture) {
-                            additionalRemoval += interventionRemovalCount[us];
+                            activateInterventionCapture(us,
+                                                        interventionCaptured);
+                        } else {
+                            setInterventionCaptureState(us, 0, 0);
                         }
-                        if (additionalRemoval > 0) {
-                            pieceToRemoveCount[sideToMove] += additionalRemoval;
+
+                        // Only add capture counts when mayRemoveMultiple is
+                        // true This ensures consistency with Dart and allows
+                        // proper mode selection
+                        if (rule.mayRemoveMultiple) {
+                            int additionalRemoval = 0;
+                            if (hasCustodianCapture) {
+                                additionalRemoval += custodianRemovalCount[us];
+                            }
+                            if (hasInterventionCapture) {
+                                additionalRemoval +=
+                                    interventionRemovalCount[us];
+                            }
+                            if (additionalRemoval > 0) {
+                                pieceToRemoveCount[sideToMove] +=
+                                    additionalRemoval;
+                            }
                         }
                     }
 
@@ -1359,31 +1380,47 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     board[currentSquare[sideToMove]] = NO_PIECE;
 
     const int n = mills_count(s);
+
+    // Early exit: check if any capture rules are enabled
+    const bool anyCaptureEnabled = rule.custodianCapture.enabled ||
+                                   rule.interventionCapture.enabled;
+
+    int custodianRemoval = 0;
+    int interventionRemoval = 0;
+    bool hasCustodianCapture = false;
+    bool hasInterventionCapture = false;
     std::vector<Square> custodianCaptured;
-    const bool hasCustodianCapture = checkCustodianCapture(s, sideToMove,
-                                                           custodianCaptured);
     std::vector<Square> interventionCaptured;
-    const bool hasInterventionCapture = checkInterventionCapture(
-        s, sideToMove, interventionCaptured);
+
+    // Only check captures if rules are enabled
+    if (anyCaptureEnabled) {
+        if (rule.custodianCapture.enabled) {
+            hasCustodianCapture = checkCustodianCapture(s, sideToMove,
+                                                        custodianCaptured);
+        }
+        if (rule.interventionCapture.enabled) {
+            hasInterventionCapture = checkInterventionCapture(
+                s, sideToMove, interventionCaptured);
+        }
+    }
 
     if (n == 0) {
         // If no mill during Moving phase
         currentSquare[sideToMove] = SQ_NONE;
         lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
 
-        int custodianRemoval = 0;
+        // Only activate captures if any were detected
         if (hasCustodianCapture) {
             custodianRemoval = activateCustodianCapture(sideToMove,
                                                         custodianCaptured);
-        } else {
+        } else if (anyCaptureEnabled) {
             setCustodianCaptureState(sideToMove, 0, 0);
         }
 
-        int interventionRemoval = 0;
         if (hasInterventionCapture) {
             interventionRemoval = activateInterventionCapture(
                 sideToMove, interventionCaptured);
-        } else {
+        } else if (anyCaptureEnabled) {
             setInterventionCaptureState(sideToMove, 0, 0);
         }
 
@@ -1396,8 +1433,10 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
             return true;
         }
 
-        setCustodianCaptureState(sideToMove, 0, 0);
-        setInterventionCaptureState(sideToMove, 0, 0);
+        if (anyCaptureEnabled) {
+            setCustodianCaptureState(sideToMove, 0, 0);
+            setInterventionCaptureState(sideToMove, 0, 0);
+        }
         change_side_to_move();
 
         if (check_if_game_is_over()) {
@@ -1428,18 +1467,18 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         // we initially set pieceToRemoveCount to 1 to allow the player's
         // first removal to determine which capture mode to use.
         // The first removal will then adjust the count appropriately.
-        if (hasCustodianCapture) {
-            activateCustodianCapture(sideToMove, custodianCaptured);
-        }
-        if (hasInterventionCapture) {
-            activateInterventionCapture(sideToMove, interventionCaptured);
-        }
+        if (anyCaptureEnabled) {
+            if (hasCustodianCapture) {
+                activateCustodianCapture(sideToMove, custodianCaptured);
+            } else {
+                setCustodianCaptureState(sideToMove, 0, 0);
+            }
 
-        if (!hasCustodianCapture) {
-            setCustodianCaptureState(sideToMove, 0, 0);
-        }
-        if (!hasInterventionCapture) {
-            setInterventionCaptureState(sideToMove, 0, 0);
+            if (hasInterventionCapture) {
+                activateInterventionCapture(sideToMove, interventionCaptured);
+            } else {
+                setInterventionCaptureState(sideToMove, 0, 0);
+            }
         }
 
         // Always start with mill removal count. The first removal action will

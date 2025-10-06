@@ -118,10 +118,10 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     const int captureCount = custodianCount + interventionCount;
 
     if (captureCount > 0 && combinedTargets != 0) {
+        const Piece themPiece = make_piece(them);
         for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-            const Bitboard mask = square_bb(s);
-            if ((combinedTargets & mask) &&
-                (pos.get_board()[s] & make_piece(them))) {
+            if ((combinedTargets & square_bb(s)) &&
+                (pos.get_board()[s] & themPiece)) {
                 assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
             }
@@ -180,21 +180,22 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     const int totalRemovals = pos.pieceToRemoveCount[us];
     if (totalRemovals > captureCount) {
         // Handle general removal (not all in mills) for remaining removals
+        const Piece removeColorPiece = make_piece(removeColor);
+        const bool checkMills = !rule.mayRemoveFromMillsAlways;
+
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             const Square s = MoveList<LEGAL>::movePriorityList[i];
 
             // Skip if this is already a custodian capture target
-            const Bitboard mask = square_bb(s);
-            if (combinedTargets & mask) {
+            if (combinedTargets & square_bb(s)) {
                 continue;
             }
 
             // Check if the square has a piece of the color to remove
-            if (pos.get_board()[s] & make_piece(removeColor)) {
+            if (pos.get_board()[s] & removeColorPiece) {
                 // If the rule allows removing from mills always
                 // or the piece is not part of a potential mill, allow removal
-                if (rule.mayRemoveFromMillsAlways ||
-                    !pos.potential_mills_count(s, NOBODY)) {
+                if (!checkMills || !pos.potential_mills_count(s, NOBODY)) {
                     assert(cur < moveList + MAX_MOVES);
                     *cur++ = static_cast<Move>(-s);
                 }

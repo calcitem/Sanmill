@@ -988,20 +988,37 @@ class Position {
 
       _updateKey(s);
 
-      final List<int> custodianCaptured = <int>[];
-      final bool hasCustodianCapture = _checkCustodianCapture(
-        s,
-        us,
-        custodianCaptured,
-      );
-      final List<int> interventionCaptured = <int>[];
-      final bool hasInterventionCapture = _checkInterventionCapture(
-        s,
-        us,
-        interventionCaptured,
-      );
-
       final int n = _millsCount(s);
+
+      // Early exit: check if any capture rules are enabled
+      final bool anyCaptureEnabled =
+          DB().ruleSettings.enableCustodianCapture ||
+          DB().ruleSettings.enableInterventionCapture;
+
+      int custodianRemoval = 0;
+      int interventionRemoval = 0;
+      bool hasCustodianCapture = false;
+      bool hasInterventionCapture = false;
+      final List<int> custodianCaptured = <int>[];
+      final List<int> interventionCaptured = <int>[];
+
+      // Only check captures if rules are enabled
+      if (anyCaptureEnabled) {
+        if (DB().ruleSettings.enableCustodianCapture) {
+          hasCustodianCapture = _checkCustodianCapture(
+            s,
+            us,
+            custodianCaptured,
+          );
+        }
+        if (DB().ruleSettings.enableInterventionCapture) {
+          hasInterventionCapture = _checkInterventionCapture(
+            s,
+            us,
+            interventionCaptured,
+          );
+        }
+      }
 
       if (n == 0) {
         // If no Mill
@@ -1015,20 +1032,19 @@ class Position {
         _lastMillToSquare[sideToMove] = 0;
         _lastMillToSquare[sideToMove] = 0;
 
-        int custodianRemoval = 0;
+        // Only activate captures if any were detected
         if (hasCustodianCapture) {
           custodianRemoval = _activateCustodianCapture(us, custodianCaptured);
-        } else {
+        } else if (anyCaptureEnabled) {
           _setCustodianCaptureState(us, 0, 0);
         }
 
-        int interventionRemoval = 0;
         if (hasInterventionCapture) {
           interventionRemoval = _activateInterventionCapture(
             us,
             interventionCaptured,
           );
-        } else {
+        } else if (anyCaptureEnabled) {
           _setInterventionCaptureState(us, 0, 0);
         }
 
@@ -1204,7 +1220,7 @@ class Position {
               changeSideToMove();
             }
           } else {
-            if (DB().ruleSettings.mayRemoveMultiple) {
+            if (anyCaptureEnabled && DB().ruleSettings.mayRemoveMultiple) {
               int additionalRemoval = 0;
 
               if (hasCustodianCapture) {
@@ -1336,41 +1352,58 @@ class Position {
     }
 
     final int n = _millsCount(s);
+
+    // Early exit: check if any capture rules are enabled
+    final bool anyCaptureEnabled =
+        DB().ruleSettings.enableCustodianCapture ||
+        DB().ruleSettings.enableInterventionCapture;
+
+    int custodianRemoval = 0;
+    int interventionRemoval = 0;
+    bool hasCustodianCapture = false;
+    bool hasInterventionCapture = false;
     final List<int> custodianCaptured = <int>[];
-    final bool hasCustodianCapture = _checkCustodianCapture(
-      s,
-      sideToMove,
-      custodianCaptured,
-    );
     final List<int> interventionCaptured = <int>[];
-    final bool hasInterventionCapture = _checkInterventionCapture(
-      s,
-      sideToMove,
-      interventionCaptured,
-    );
+
+    // Only check captures if rules are enabled
+    if (anyCaptureEnabled) {
+      if (DB().ruleSettings.enableCustodianCapture) {
+        hasCustodianCapture = _checkCustodianCapture(
+          s,
+          sideToMove,
+          custodianCaptured,
+        );
+      }
+      if (DB().ruleSettings.enableInterventionCapture) {
+        hasInterventionCapture = _checkInterventionCapture(
+          s,
+          sideToMove,
+          interventionCaptured,
+        );
+      }
+    }
 
     if (n == 0) {
       // If no mill during Moving phase
       _currentSquare[sideToMove] = 0;
       _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
 
-      int custodianRemoval = 0;
+      // Only activate captures if any were detected
       if (hasCustodianCapture) {
         custodianRemoval = _activateCustodianCapture(
           sideToMove,
           custodianCaptured,
         );
-      } else {
+      } else if (anyCaptureEnabled) {
         _setCustodianCaptureState(sideToMove, 0, 0);
       }
 
-      int interventionRemoval = 0;
       if (hasInterventionCapture) {
         interventionRemoval = _activateInterventionCapture(
           sideToMove,
           interventionCaptured,
         );
-      } else {
+      } else if (anyCaptureEnabled) {
         _setInterventionCaptureState(sideToMove, 0, 0);
       }
 
@@ -1386,8 +1419,10 @@ class Position {
         return true;
       }
 
-      _setCustodianCaptureState(sideToMove, 0, 0);
-      _setInterventionCaptureState(sideToMove, 0, 0);
+      if (anyCaptureEnabled) {
+        _setCustodianCaptureState(sideToMove, 0, 0);
+        _setInterventionCaptureState(sideToMove, 0, 0);
+      }
       changeSideToMove();
 
       if (_checkIfGameIsOver()) {
@@ -1425,18 +1460,18 @@ class Position {
       // we initially set pieceToRemoveCount to 1 to allow the player's
       // first removal to determine which capture mode to use.
       // The first removal will then adjust the count appropriately.
-      if (hasCustodianCapture) {
-        _activateCustodianCapture(sideToMove, custodianCaptured);
-      }
-      if (hasInterventionCapture) {
-        _activateInterventionCapture(sideToMove, interventionCaptured);
-      }
+      if (anyCaptureEnabled) {
+        if (hasCustodianCapture) {
+          _activateCustodianCapture(sideToMove, custodianCaptured);
+        } else {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
 
-      if (!hasCustodianCapture) {
-        _setCustodianCaptureState(sideToMove, 0, 0);
-      }
-      if (!hasInterventionCapture) {
-        _setInterventionCaptureState(sideToMove, 0, 0);
+        if (hasInterventionCapture) {
+          _activateInterventionCapture(sideToMove, interventionCaptured);
+        } else {
+          _setInterventionCaptureState(sideToMove, 0, 0);
+        }
       }
 
       // Always start with mill removal count. The first removal action will
