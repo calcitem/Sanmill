@@ -441,9 +441,17 @@ class DaSanQiRuleSettings extends RuleSettings {
 class MulMulanRuleSettings extends RuleSettings {
   const MulMulanRuleSettings()
     : super(
+        piecesCount: 9,
         hasDiagonalLines: true,
         mayFly: false,
         mayRemoveFromMillsAlways: true,
+        enableInterventionCapture: true,
+        interventionCaptureOnSquareEdges: true,
+        interventionCaptureOnCrossLines: true,
+        interventionCaptureOnDiagonalLines: true,
+        interventionCaptureInPlacingPhase: true,
+        interventionCaptureInMovingPhase: true,
+        interventionCaptureOnlyWhenOwnPiecesLeq3: false,
       );
 }
 
