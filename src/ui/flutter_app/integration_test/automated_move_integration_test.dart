@@ -32,11 +32,6 @@ void main() {
   int totalFailed = 0;
 
   group('Automated Move Integration Tests', () {
-    setUpAll(() async {
-      // Initialize the database for integration tests
-      await Database.init();
-    });
-
     testWidgets('Run custodian and intervention capture tests with real AI', (
       WidgetTester tester,
     ) async {
@@ -45,8 +40,8 @@ void main() {
       app.main();
       await tester.pumpAndSettle();
 
-      // Wait for app initialization
-      await Future<void>.delayed(const Duration(seconds: 2));
+      // Wait for app initialization (database is initialized in main())
+      await Future<void>.delayed(const Duration(seconds: 3));
 
       print(
         '[IntegrationTest] Configuring zhiqi rules with custodian/intervention...',

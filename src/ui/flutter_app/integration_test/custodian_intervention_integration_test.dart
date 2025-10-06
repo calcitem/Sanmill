@@ -14,11 +14,6 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('Custodian and Intervention Integration Tests', () {
-    setUpAll(() async {
-      // Initialize the database for integration tests
-      await Database.init();
-    });
-
     setUp(() async {
       // Configure zhiqi (直棋) rules with custodian and intervention enabled
       final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
