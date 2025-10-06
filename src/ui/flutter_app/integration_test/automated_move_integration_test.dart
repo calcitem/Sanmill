@@ -8,6 +8,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/main.dart' as app;
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -61,12 +62,26 @@ void main() {
         // Apply the rule settings through the database
         DB().ruleSettings = zhiqiRules;
 
-        // Reset game controller to apply new rules
+        // Set skill level to 2 for consistent AI behavior
+        final GeneralSettings currentSettings = DB().generalSettings;
+        final GeneralSettings updatedSettings = currentSettings.copyWith(
+          skillLevel: 2,
+        );
+        DB().generalSettings = updatedSettings;
+
+        // Reset game controller to apply new rules and settings
         GameController.instance.reset(force: true);
 
         print('[IntegrationTest] Rules configured successfully');
-        print('[IntegrationTest] Custodian capture enabled: ${DB().ruleSettings.enableCustodianCapture}');
-        print('[IntegrationTest] Intervention capture enabled: ${DB().ruleSettings.enableInterventionCapture}');
+        print(
+          '[IntegrationTest] Custodian capture enabled: ${DB().ruleSettings.enableCustodianCapture}',
+        );
+        print(
+          '[IntegrationTest] Intervention capture enabled: ${DB().ruleSettings.enableInterventionCapture}',
+        );
+        print(
+          '[IntegrationTest] Skill level set to: ${DB().generalSettings.skillLevel}',
+        );
       } catch (e) {
         print('[IntegrationTest] Warning: Rule configuration failed: $e');
         print('[IntegrationTest] Continuing with default rules...');
@@ -119,22 +134,26 @@ void main() {
         greaterThan(0),
         reason: 'Should execute at least some tests',
       );
-      
+
       // Require high success rate for custodian and intervention tests
-          
+
       expect(
         overallSuccessRate,
         greaterThanOrEqualTo(95.0),
-        reason: 'Integration tests must have ≥95% success rate for custodian/intervention rules',
+        reason:
+            'Integration tests must have ≥95% success rate for custodian/intervention rules',
       );
-      
+
       expect(
         totalFailed,
         lessThanOrEqualTo(1),
-        reason: 'Should have at most 1 failed test in custodian/intervention verification',
+        reason:
+            'Should have at most 1 failed test in custodian/intervention verification',
       );
 
-      print('[IntegrationTest] Integration test completed with strict success criteria');
+      print(
+        '[IntegrationTest] Integration test completed with strict success criteria',
+      );
     });
   });
 }
