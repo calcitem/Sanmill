@@ -214,7 +214,7 @@ class Database {
 
   /// ColorSettings
   static Future<void> _initColorSettings() async {
-    Hive.registerAdapter<Color>(ColorAdapter());
+    // Note: ColorAdapter is built-in to hive_ce_flutter (typeId 200)
     Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
 
     try {

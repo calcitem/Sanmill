@@ -7,29 +7,11 @@ part of 'adapters.dart';
 
 /// Color Adapter
 ///
-/// This adapter provides helper functions to be used with [JsonSerializable]
-/// and is a general [TypeAdapter] to be used with Hive [Box]es
-class ColorAdapter extends TypeAdapter<Color> {
-  @override
-  final int typeId = 6;
-
-  @override
-  Color read(BinaryReader reader) {
-    final int value = reader.readInt();
-    return Color(value);
-  }
-
-  @override
-  void write(BinaryWriter writer, Color obj) {
-    final int alpha = Color.getAlphaFromOpacity(obj.a) & 0xFF;
-    final int red = (obj.r * 255).round() & 0xFF;
-    final int green = (obj.g * 255).round() & 0xFF;
-    final int blue = (obj.b * 255).round() & 0xFF;
-
-    final int combinedValue = (alpha << 24) | (red << 16) | (green << 8) | blue;
-
-    writer.writeInt(combinedValue);
-  }
+/// Provides helper functions for Color serialization to be used with
+/// [JsonSerializable]. Note: Hive serialization is handled by the built-in
+/// ColorAdapter from hive_ce_flutter package (typeId 200).
+class ColorAdapter {
+  const ColorAdapter._();
 
   static int colorToJson(Color color) {
     final int alpha = Color.getAlphaFromOpacity(color.a) & 0xFF;
