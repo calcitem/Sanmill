@@ -107,33 +107,38 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
-    // 1) If custodian/intervention capture is active, generate those targets
-    // first. If there are no mill removals beyond these captures, return early.
-    const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
+    // Fast path: Check if custodian/intervention capture is active
+    // Only read related fields if at least one removal count is non-zero
     const int custodianCount = pos.custodianRemovalCount[us];
-    const Bitboard interventionTargets = pos.interventionCaptureTargets[us];
     const int interventionCount = pos.interventionRemovalCount[us];
-
-    const Bitboard combinedTargets = custodianTargets | interventionTargets;
     const int captureCount = custodianCount + interventionCount;
 
-    if (captureCount > 0 && combinedTargets != 0) {
-        const Piece themPiece = make_piece(them);
-        for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-            if ((combinedTargets & square_bb(s)) &&
-                (pos.get_board()[s] & themPiece)) {
-                assert(cur < moveList + MAX_MOVES);
-                *cur++ = static_cast<Move>(-s);
+    Bitboard combinedTargets = 0;
+
+    // Only process custodian/intervention if capture count is positive
+    if (captureCount > 0) {
+        const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
+        const Bitboard interventionTargets = pos.interventionCaptureTargets[us];
+        combinedTargets = custodianTargets | interventionTargets;
+
+        if (combinedTargets != 0) {
+            const Piece themPiece = make_piece(them);
+            for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+                if ((combinedTargets & square_bb(s)) &&
+                    (pos.get_board()[s] & themPiece)) {
+                    assert(cur < moveList + MAX_MOVES);
+                    *cur++ = static_cast<Move>(-s);
+                }
             }
+            // If total removals are not greater than captureCount,
+            // only capture targets are allowed this turn.
+            const int totalRemovals = pos.pieceToRemoveCount[us];
+            if (totalRemovals <= captureCount) {
+                return cur;
+            }
+            // Otherwise, continue to generate regular removes below,
+            // excluding the already-added capture targets.
         }
-        // If total removals are not greater than captureCount,
-        // only capture targets are allowed this turn.
-        const int totalRemovals = pos.pieceToRemoveCount[us];
-        if (totalRemovals <= captureCount) {
-            return cur;
-        }
-        // Otherwise, continue to generate regular removes below,
-        // excluding the already-added capture targets.
     }
 
     // Handle stalemate removal
@@ -175,14 +180,13 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    // 3) If there are remaining removals beyond custodian capture,
-    // generate regular mill-based removal moves
-    const int totalRemovals = pos.pieceToRemoveCount[us];
-    if (totalRemovals > captureCount) {
-        // Handle general removal (not all in mills) for remaining removals
-        const Piece removeColorPiece = make_piece(removeColor);
-        const bool checkMills = !rule.mayRemoveFromMillsAlways;
+    // Handle general removal (not all in mills)
+    const Piece removeColorPiece = make_piece(removeColor);
+    const bool checkMills = !rule.mayRemoveFromMillsAlways;
 
+    // Optimize: Only check combinedTargets if custodian/intervention is active
+    if (combinedTargets != 0) {
+        // Path with custodian/intervention: skip already-captured targets
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             const Square s = MoveList<LEGAL>::movePriorityList[i];
 
@@ -190,6 +194,21 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
             if (combinedTargets & square_bb(s)) {
                 continue;
             }
+
+            // Check if the square has a piece of the color to remove
+            if (pos.get_board()[s] & removeColorPiece) {
+                // If the rule allows removing from mills always
+                // or the piece is not part of a potential mill, allow removal
+                if (!checkMills || !pos.potential_mills_count(s, NOBODY)) {
+                    assert(cur < moveList + MAX_MOVES);
+                    *cur++ = static_cast<Move>(-s);
+                }
+            }
+        }
+    } else {
+        // Fast path: No custodian/intervention, avoid bitboard checks
+        for (int i = SQUARE_NB - 1; i >= 0; i--) {
+            const Square s = MoveList<LEGAL>::movePriorityList[i];
 
             // Check if the square has a piece of the color to remove
             if (pos.get_board()[s] & removeColorPiece) {
