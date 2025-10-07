@@ -962,6 +962,7 @@ bool Position::reset()
         custodianRemovalCount[color] = 0;
         interventionCaptureTargets[color] = 0;
         interventionRemovalCount[color] = 0;
+        millAvailableAtRemoval[color] = false;
     }
 
     isNeedStalemateRemoval = false;
@@ -1140,6 +1141,8 @@ bool Position::put_piece(Square s, bool updateRecord)
                                             interventionRemoval;
 
             if (totalCaptureRemoval > 0) {
+                // No mill, only custodian/intervention capture is available
+                millAvailableAtRemoval[sideToMove] = false;
                 pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
                 update_key_misc();
                 action = Action::remove;
@@ -1233,6 +1236,8 @@ bool Position::put_piece(Square s, bool updateRecord)
 
                 for (int i = 0; i < rm; i++) {
                     if (pieceInHandCount[them] == 0) {
+                        // Mill-based removal will follow
+                        millAvailableAtRemoval[sideToMove] = true;
                         pieceToRemoveCount[sideToMove] = rm - i;
                         update_key_misc();
                         action = Action::remove;
@@ -1316,6 +1321,9 @@ bool Position::put_piece(Square s, bool updateRecord)
                         }
                     }
 
+                    // We are in mill-formed branch; entering removal due to
+                    // mill
+                    millAvailableAtRemoval[sideToMove] = true;
                     update_key_misc();
                     action = Action::remove;
                 }
@@ -1427,6 +1435,8 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         const int totalCaptureRemoval = custodianRemoval + interventionRemoval;
 
         if (totalCaptureRemoval > 0) {
+            // No mill, only custodian/intervention capture is available
+            millAvailableAtRemoval[sideToMove] = false;
             pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
             update_key_misc();
             action = Action::remove;
@@ -1485,6 +1495,8 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         // determine if we switch to custodian/intervention capture mode.
         pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
 
+        // Mill is available at removal start
+        millAvailableAtRemoval[sideToMove] = true;
         update_key_misc();
         action = Action::remove;
     }
@@ -1517,20 +1529,18 @@ bool Position::remove_piece(Square s, bool updateRecord)
         const bool isCustodianTarget = (custodianTargets & mask) != 0;
         const bool isInterventionTarget = (interventionTargets & mask) != 0;
         const bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
-        const int totalCaptureCount = custodianCount + interventionCount;
+        const int captureCount = custodianCount + interventionCount;
+        const bool millAvailable = millAvailableAtRemoval[sideToMove];
 
-        // If the player selects a custodian/intervention target as the first
-        // removal when both capture and mill are available, we must lock the
-        // capture mode and disallow continuing with mill. This means:
-        // - For intervention: always enforce removal count equals the
-        // intervention
-        //   obligation so the next removal must take the paired piece,
-        //   regardless of mayRemoveMultiple setting.
-        // - For custodian: always only removes one piece, regardless of
-        // mayRemoveMultiple.
-        // - The non-chosen capture mode is cleared to prevent mixing modes.
+        // If the first removal chooses a custodian/intervention target when
+        // mill is also available, lock the capture mode and disallow mill.
+        // For intervention: always enforce removal count equals the
+        // intervention obligation so the next removal must take the paired
+        // piece, regardless of mayRemoveMultiple setting. For custodian: always
+        // only removes one piece, regardless of mayRemoveMultiple.
         if (isInterventionTarget && interventionCount > 0) {
-            // Lock to intervention capture only
+            // Choosing intervention capture locks out mill
+            millAvailableAtRemoval[sideToMove] = false;
             if (custodianTargets || custodianCount > 0) {
                 setCustodianCaptureState(sideToMove, 0, 0);
             }
@@ -1538,7 +1548,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
             // the line
             pieceToRemoveCount[sideToMove] = interventionCount;
         } else if (isCustodianTarget && custodianCount > 0) {
-            // Lock to custodian capture only
+            // Choosing custodian capture locks out mill
+            millAvailableAtRemoval[sideToMove] = false;
             if (interventionTargets || interventionCount > 0) {
                 setInterventionCaptureState(sideToMove, 0, 0);
             }
@@ -1550,23 +1561,23 @@ bool Position::remove_piece(Square s, bool updateRecord)
         // Allow player to choose between mill capture and
         // custodian/intervention capture When multiple capture modes are
         // available, player's first removal determines the mode
-        if (!isCaptureTarget && totalCaptureCount > 0) {
+        if (millAvailable && !isCaptureTarget && captureCount > 0) {
             // Player chooses mill capture over custodian/intervention
             // When switching to mill mode, subtract the pre-added capture
             // counts that were added during placing phase (if mayRemoveMultiple
             // was true)
-            if (remainingRemovals > totalCaptureCount) {
-                // Subtract the pre-added capture counts to prevent over-removal
-                pieceToRemoveCount[sideToMove] -= totalCaptureCount;
-            } else {
-                // No mill available, must remove capture targets only
-                return false;
+            if (rule.mayRemoveMultiple && remainingRemovals > captureCount) {
+                pieceToRemoveCount[sideToMove] -= captureCount;
             }
             // Clear custodian/intervention state to enforce single capture mode
             // selection
             setCustodianCaptureState(sideToMove, 0, 0);
             setInterventionCaptureState(sideToMove, 0, 0);
-        } else if (!isCaptureTarget && totalCaptureCount >= remainingRemovals) {
+        } else if (!millAvailable && !isCaptureTarget && captureCount > 0) {
+            // No mill available: must remove only from custodian/intervention
+            // targets
+            return false;
+        } else if (!isCaptureTarget && captureCount >= remainingRemovals) {
             // No mill available: must remove only from capture targets
             return false;
         }
@@ -1679,6 +1690,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
+    // Clear mill availability at end of removal phase
+    millAvailableAtRemoval[sideToMove] = false;
     setCustodianCaptureState(sideToMove, 0, 0);
     setInterventionCaptureState(sideToMove, 0, 0);
 

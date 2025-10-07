@@ -262,6 +262,11 @@ public:
     int custodianRemovalCount[COLOR_NB] {0};
     int interventionRemovalCount[COLOR_NB] {0};
 
+    // Indicates whether a mill capture is available at the start of the current
+    // removal phase for each side. This is used to prevent choosing generic
+    // mill removals when only custodian/intervention capture is available.
+    bool millAvailableAtRemoval[COLOR_NB] {false};
+
     int gamesPlayedCount {0};
 
     static constexpr int RECORD_LEN_MAX = 64;
