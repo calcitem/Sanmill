@@ -616,8 +616,9 @@ Position &Position::set(const string &fenStr)
             } else if (extraToken[0] == 'p') {
                 // Parse preferredRemoveTarget
                 // Format: "p:21" where 21 is the square number
-                const int targetSquare = std::stoi(value);
-                if (targetSquare >= SQ_BEGIN && targetSquare < SQ_END) {
+                int targetSquare = 0;
+                if (parseInt(value, targetSquare) && targetSquare >= SQ_BEGIN &&
+                    targetSquare < SQ_END) {
                     preferredRemoveTarget = static_cast<Square>(targetSquare);
                 }
             }
