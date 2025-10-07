@@ -103,6 +103,15 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       _updateSetupPositionIcons,
     );
     initContext();
+
+    if (DB().ruleSettings.enableCustodianCapture ||
+        DB().ruleSettings.enableInterventionCapture) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          S.of(context).experimental,
+        );
+      });
+    }
   }
 
   static const EdgeInsets _padding = EdgeInsets.symmetric(vertical: 2);
