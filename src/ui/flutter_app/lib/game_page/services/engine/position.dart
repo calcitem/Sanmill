@@ -2085,9 +2085,10 @@ class Position {
       targets |= squareBb(square);
     }
 
-    final int allowedRemovals = DB().ruleSettings.mayRemoveMultiple
-        ? capturedPieces.length
-        : 1;
+    // Custodian capture always captures all pieces that are sandwiched
+    // between the moving piece and another friendly piece, regardless
+    // of mayRemoveMultiple setting
+    final int allowedRemovals = capturedPieces.length;
 
     _setCustodianCaptureState(color, targets, allowedRemovals);
 

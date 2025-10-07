@@ -2167,9 +2167,10 @@ int Position::activateCustodianCapture(
         targets |= square_bb(target);
     }
 
-    const int allowedRemovals = rule.mayRemoveMultiple ?
-                                    static_cast<int>(capturedPieces.size()) :
-                                    1;
+    // Custodian capture always captures all pieces that are sandwiched
+    // between the moving piece and another friendly piece, regardless
+    // of mayRemoveMultiple setting
+    const int allowedRemovals = static_cast<int>(capturedPieces.size());
 
     setCustodianCaptureState(color, targets, allowedRemovals);
 
