@@ -117,9 +117,9 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     // Only process custodian/intervention if capture count is positive
     if (captureCount > 0) {
-        const Bitboard custodianTargets = pos.custodianCaptureTargets[us];
-        const Bitboard interventionTargets = pos.interventionCaptureTargets[us];
-        combinedTargets = custodianTargets | interventionTargets;
+        // Compute combined targets directly, avoiding intermediate variables
+        combinedTargets = pos.custodianCaptureTargets[us] |
+                          pos.interventionCaptureTargets[us];
 
         if (combinedTargets != 0) {
             const Piece themPiece = make_piece(them);
