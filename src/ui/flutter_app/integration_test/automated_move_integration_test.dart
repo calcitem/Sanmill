@@ -15,6 +15,7 @@ import 'package:sanmill/shared/database/database.dart';
 
 import 'automated_move_test_data.dart';
 import 'automated_move_test_runner.dart';
+import 'backup_service.dart';
 
 /// Integration test for automated move testing with REAL AI engine
 ///
@@ -43,6 +44,10 @@ void main() {
 
       // Wait for app initialization (database is initialized in main())
       await Future<void>.delayed(const Duration(seconds: 5));
+
+      // Backup the database AFTER app initialization
+      final Map<String, dynamic> dbBackup = await backupDatabase();
+      addTearDown(() async => restoreDatabase(dbBackup));
 
       print(
         '[IntegrationTest] Configuring zhiqi rules with custodian/intervention...',

@@ -10,6 +10,7 @@ import 'package:sanmill/main.dart' as app;
 import 'package:sanmill/shared/services/logger.dart';
 
 // Local imports
+import 'backup_service.dart';
 import 'init_test_environment.dart';
 import 'test_runner.dart';
 import 'test_scenarios.dart';
@@ -21,13 +22,21 @@ void main() {
   // Make sure integration test binding is initialized
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  late Map<String, dynamic> dbBackup;
+
   setUpAll(() async {
     logger.i('Initializing test environment...');
     await initTestEnvironment();
 
+    dbBackup = await backupDatabase();
+
     // Additional setup if needed
     initBitboards();
     _initUI();
+  });
+
+  tearDownAll(() async {
+    await restoreDatabase(dbBackup);
   });
 
   group('App Integration Tests (Data Driven)', () {

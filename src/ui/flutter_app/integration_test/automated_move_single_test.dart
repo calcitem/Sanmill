@@ -11,6 +11,7 @@ import 'package:sanmill/main.dart' as app;
 
 import 'automated_move_test_data.dart';
 import 'automated_move_test_runner.dart';
+import 'backup_service.dart';
 
 /// Integration test for running a SINGLE test case for debugging
 ///
@@ -28,6 +29,10 @@ void main() {
 
       // Wait for app initialization
       await Future<void>.delayed(const Duration(seconds: 2));
+
+      // Backup the database AFTER app initialization
+      final Map<String, dynamic> dbBackup = await backupDatabase();
+      addTearDown(() async => restoreDatabase(dbBackup));
 
       print('[IntegrationTest] App initialized, starting single test...');
 
