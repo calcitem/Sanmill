@@ -2085,10 +2085,10 @@ class Position {
       targets |= squareBb(square);
     }
 
-    // Custodian capture always captures all pieces that are sandwiched
-    // between the moving piece and another friendly piece, regardless
-    // of mayRemoveMultiple setting
-    final int allowedRemovals = capturedPieces.length;
+    // Custodian capture allows capturing one piece from multiple candidates.
+    // Although multiple pieces may be sandwiched, the player can only
+    // choose to capture one of them, regardless of mayRemoveMultiple setting.
+    const int allowedRemovals = 1;
 
     _setCustodianCaptureState(color, targets, allowedRemovals);
 
