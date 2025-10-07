@@ -237,9 +237,11 @@ void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
 
     // Iterate through all moves and print their statistics
     std::cout << "\n";
-    std::cout << std::setw(5) << "Move" << "    " << std::setw(9) << std::fixed
-              << std::setprecision(6) << "Win Rate" << "    " << std::setw(6)
-              << "Wins" << "    " << std::setw(6) << "Visits" << '\n';
+    std::cout << std::setw(5) << "Move"
+              << "    " << std::setw(9) << std::fixed << std::setprecision(6)
+              << "Win Rate"
+              << "    " << std::setw(6) << "Wins"
+              << "    " << std::setw(6) << "Visits" << '\n';
     std::cout << "----------------------------------------\n";
     for (int i = 0; i < mp.move_count(); ++i) {
         uint32_t visits = shared_visits.visits(i);

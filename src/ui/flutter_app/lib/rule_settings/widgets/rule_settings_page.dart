@@ -55,39 +55,10 @@ class RuleSettingsPage extends StatelessWidget {
       }
 
       // Updates the rule settings with the new rule set.
-      DB().ruleSettings = ruleSettings.copyWith(
-        // General
-        piecesCount: ruleSetProperties[ruleSet]!.piecesCount,
-        hasDiagonalLines: ruleSetProperties[ruleSet]!.hasDiagonalLines,
-        nMoveRule: ruleSetProperties[ruleSet]!.nMoveRule,
-        endgameNMoveRule: ruleSetProperties[ruleSet]!.endgameNMoveRule,
-        threefoldRepetitionRule:
-            ruleSetProperties[ruleSet]!.threefoldRepetitionRule,
-
-        // Placing phase
-        millFormationActionInPlacingPhase:
-            ruleSetProperties[ruleSet]!.millFormationActionInPlacingPhase,
-        boardFullAction: ruleSetProperties[ruleSet]!.boardFullAction,
-        mayMoveInPlacingPhase:
-            ruleSetProperties[ruleSet]!.mayMoveInPlacingPhase,
-
-        // Moving phase
-        isDefenderMoveFirst: ruleSetProperties[ruleSet]!.isDefenderMoveFirst,
-        restrictRepeatedMillsFormation:
-            ruleSetProperties[ruleSet]!.restrictRepeatedMillsFormation,
-        stalemateAction: ruleSetProperties[ruleSet]!.stalemateAction,
-        piecesAtLeastCount: ruleSetProperties[ruleSet]!.piecesAtLeastCount,
-
-        //  Flying
-        mayFly: ruleSetProperties[ruleSet]!.mayFly,
-        flyPieceCount: ruleSetProperties[ruleSet]!.flyPieceCount,
-
-        // Removing
-        mayRemoveFromMillsAlways:
-            ruleSetProperties[ruleSet]!.mayRemoveFromMillsAlways,
-        mayRemoveMultiple: ruleSetProperties[ruleSet]!.mayRemoveMultiple,
-        oneTimeUseMill: ruleSetProperties[ruleSet]!.oneTimeUseMill,
-      );
+      final RuleSettings? newRuleSettings = ruleSetProperties[ruleSet];
+      if (newRuleSettings != null) {
+        DB().ruleSettings = newRuleSettings;
+      }
     }
 
     // Display a modal bottom sheet with the available rule sets.
