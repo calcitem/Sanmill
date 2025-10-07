@@ -27,3 +27,11 @@ plugins {
 }
 
 include ":app"
+
+buildCache {
+    local {
+        enabled = true
+        directory = new File(rootDir, 'build-cache')
+        removeUnusedEntriesAfterDays = 30
+    }
+}
