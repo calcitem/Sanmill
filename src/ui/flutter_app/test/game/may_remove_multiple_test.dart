@@ -97,8 +97,9 @@ void main() {
       // - If intervention chosen: 2 captures (intervention always requires 2)
 
       // Test custodian mode
+      // Square mapping: position 1 (@) -> square 9
       const String fenCustodian =
-          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
 
       position.setFen(fenCustodian);
       expect(
@@ -108,8 +109,9 @@ void main() {
       );
 
       // Test intervention mode
+      // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
       const String fenIntervention =
-          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
       position.setFen(fenIntervention);
       expect(
@@ -158,10 +160,10 @@ void main() {
       () {
         // Set up: Form mill AND trigger custodian
         // With mayRemoveMultiple=false, player can still choose custodian over mill
-
+        // Square mapping: ring1 pos 6 (@) -> square 14
         const String fenBothModes =
-            'OOO***@*/@@******/******** w p r 3 6 3 6 0 1 0 0 0 8 0 7 0 1 c:w-0-|b-1-7';
-        // Mill at 0,1,2 and custodian at square 7
+            'OOO***@*/@@******/******** w p r 3 6 3 6 0 1 0 0 0 8 0 7 0 1 c:w-0-|b-1-14';
+        // Mill at squares 8,9,10 and custodian at square 14
 
         position.setFen(fenBothModes);
 
@@ -200,9 +202,9 @@ void main() {
       () {
         // When intervention is chosen with mayRemoveMultiple=false,
         // it still requires both endpoint captures (exception to the 1-capture rule)
-
+        // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
         const String fenIntervention =
-            '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+            '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
         position.setFen(fenIntervention);
 
@@ -232,10 +234,10 @@ void main() {
       () {
         // Form 2 mills + custodian with mayRemoveMultiple=false
         // Either choice results in 1 capture (not 2 from mills)
-
+        // Square mapping: ring1 pos 6 (@) -> square 14
         const String fenMultiMillCustodian =
-            'OOO***@*/@@O*****/OOO***** w p r 6 3 3 6 0 1 0 0 0 8 0 7 0 1 c:w-0-|b-1-7';
-        // Two mills (0,1,2 and 16,17,18), custodian at square 7
+            'OOO***@*/@@O*****/OOO***** w p r 6 3 3 6 0 1 0 0 0 8 0 7 0 1 c:w-0-|b-1-14';
+        // Two mills (squares 8,9,10 and 16,17,18), custodian at square 14
 
         position.setFen(fenMultiMillCustodian);
 

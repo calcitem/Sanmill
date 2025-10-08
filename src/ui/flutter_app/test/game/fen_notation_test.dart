@@ -98,8 +98,9 @@ void main() {
     // FR-022: Export intervention state with i: marker
     test('FR-022: Export intervention state to FEN with i: marker', () {
       // Create position with intervention capture state
+      // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
       const String fenWithIntervention =
-          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
       position.setFen(fenWithIntervention);
       final String? exportedFEN = position.fen;
@@ -118,8 +119,9 @@ void main() {
     test('FR-023: Export pieceToRemoveCount to FEN with p: marker', () {
       // Note: p: marker in Sanmill represents preferredRemoveTarget (square), not count
       // The piece count is in the main FEN fields (w_toremove, b_toremove)
+      // Square mapping: position 1 (@) -> square 9
       const String fenWithRemoveCount =
-          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1 p:1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9 p:9';
 
       position.setFen(fenWithRemoveCount);
       final String? exportedFEN = position.fen;
@@ -162,8 +164,9 @@ void main() {
     });
 
     test('FR-024: Import FEN with i: marker and restore intervention state', () {
+      // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
       const String fenWithIntervention =
-          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
       position.setFen(fenWithIntervention);
 
@@ -178,8 +181,9 @@ void main() {
     // FR-025: Update markers after each remove action
     test('FR-025: Update FEN markers after each remove action in sequence', () {
       // Start with intervention requiring 2 captures
+      // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
       const String initialFEN =
-          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
       position.setFen(initialFEN);
 
@@ -200,8 +204,9 @@ void main() {
     // FR-026: Clear markers when sequence complete
     test('FR-026: Clear FEN markers when capture sequence complete', () {
       // Set up position with capture markers
+      // Square mapping: position 1 (@) -> square 9
       const String fenWithMarkers =
-          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
 
       position.setFen(fenWithMarkers);
 
@@ -229,8 +234,9 @@ void main() {
 
     // FR-027: Round-trip consistency (export → import → export == original)
     test('FR-027: FEN round-trip consistency for custodian', () {
+      // Square mapping: position 1 (@) -> square 9
       const String originalFEN =
-          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
 
       position.setFen(originalFEN);
       final String? exportedFEN1 = position.fen;
@@ -250,8 +256,9 @@ void main() {
     });
 
     test('FR-027: FEN round-trip consistency for intervention', () {
+      // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
       const String originalFEN =
-          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
       position.setFen(originalFEN);
       final String? exportedFEN1 = position.fen;
@@ -271,8 +278,9 @@ void main() {
     // FR-034: Accept FEN with both c: and i: markers simultaneously
     test('FR-034: Accept FEN with both c: and i: markers', () {
       // Both custodian and intervention can be present (player chooses which to apply)
+      // Square mapping: pos 1 (@) -> sq 9, pos 2 (O) -> sq 10, pos 6 (@) -> sq 14
       const String fenWithBoth =
-          'O@O*O*@**/********/******** w p r 4 5 4 5 0 3 0 0 0 0 0 0 1 c:w-0-|b-1-1 i:w-0-|b-2-5.7';
+          'O@O*O*@**/********/******** w p r 4 5 4 5 0 3 0 0 0 0 0 0 1 c:w-0-|b-1-9 i:w-0-|b-2-10.14';
 
       // Should not throw, should accept both markers
       expect(() => position.setFen(fenWithBoth), returnsNormally);
@@ -365,8 +373,9 @@ void main() {
     });
 
     test('FEN with multiple spaces between markers', () {
+      // Square mapping: position 1 (@) -> square 9
       const String fenWithSpaces =
-          'O@O****String */********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1  c:w-0-|b-1-1  i:w-0-|b-0-';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1  c:w-0-|b-1-9  i:w-0-|b-0-';
 
       expect(
         () => position.setFen(fenWithSpaces),
@@ -376,10 +385,11 @@ void main() {
     });
 
     test('FEN with markers in different order', () {
+      // Square mapping: position 1 (@) -> square 9
       const String fenMarkerOrder1 =
-          'O@O**String ***/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1 i:w-0-|b-0- p:1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9 i:w-0-|b-0- p:9';
       const String fenMarkerOrder2 =
-          'O@O**String ***/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 i:w-0-|b-0- c:w-0-|b-1-1 p:1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 i:w-0-|b-0- c:w-0-|b-1-9 p:9';
 
       // Both should parse successfully (order shouldn't matter)
       expect(() => position.setFen(fenMarkerOrder1), returnsNormally);
@@ -388,7 +398,7 @@ void main() {
 
     test('FEN with empty marker values', () {
       const String fenEmptyMarkers =
-          'O*O**String ***/********/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 1 c:w-0-|b-0- i:w-0-|b-0-';
+          'O*O*****/********/******** w p p 2 7 2 7 0 0 0 0 0 0 0 0 1 c:w-0-|b-0- i:w-0-|b-0-';
 
       // Empty markers (zero counts) should be accepted
       expect(() => position.setFen(fenEmptyMarkers), returnsNormally);

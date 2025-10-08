@@ -70,54 +70,53 @@ void main() {
     });
 
     // FR-028: Reject capture of non-custodian piece when custodian active
-    test(
-      'FR-028: Reject capture of non-designated piece when custodian active',
-      () {
-        // Set up position with custodian active at square 1
-        const String fenWithCustodian =
-            'O@O***@*/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
-        // Custodian target is square 1, but black also has piece at square 6
+    test('FR-028: Reject capture of non-designated piece when custodian active', () {
+      // Set up position with custodian active
+      // Square mapping: position 1 (@) -> square 9, position 6 (@) -> square 14
+      const String fenWithCustodian =
+          'O@O***@*/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
+      // Custodian target is square 9, but black also has piece at square 14
 
-        position.setFen(fenWithCustodian);
+      position.setFen(fenWithCustodian);
 
-        expect(
-          position.pieceToRemoveCount[PieceColor.black],
-          equals(1),
-          reason: 'One piece to remove',
-        );
+      expect(
+        position.pieceToRemoveCount[PieceColor.black],
+        equals(1),
+        reason: 'One piece to remove',
+      );
 
-        // For now, we'll test the behavior indirectly by checking the FEN export
-        // which should contain the custodian marker
-        final String? exportedFen = position.fen;
-        expect(
-          exportedFen,
-          contains('c:'),
-          reason: 'FEN should contain custodian marker',
-        );
-        expect(
-          exportedFen,
-          contains('b-1-1'),
-          reason: 'FEN should contain custodian target at square 1',
-        );
+      // For now, we'll test the behavior indirectly by checking the FEN export
+      // which should contain the custodian marker
+      final String? exportedFen = position.fen;
+      expect(
+        exportedFen,
+        contains('c:'),
+        reason: 'FEN should contain custodian marker',
+      );
+      expect(
+        exportedFen,
+        contains('b-1-9'),
+        reason: 'FEN should contain custodian target at square 9',
+      );
 
-        // Test that the position has the correct removal count
-        expect(
-          position.pieceToRemoveCount[PieceColor.black],
-          equals(1),
-          reason: 'Should have 1 piece to remove for custodian capture',
-        );
-      },
-    );
+      // Test that the position has the correct removal count
+      expect(
+        position.pieceToRemoveCount[PieceColor.black],
+        equals(1),
+        reason: 'Should have 1 piece to remove for custodian capture',
+      );
+    });
 
     test('FR-028: Only custodian target is legal when custodian triggers', () {
+      // Square mapping: pos 1 (@) -> sq 9, pos 6 (@) -> sq 14, pos 8 (@) -> sq 16
       const String fenCustodian =
-          'O@O***@*@/********/******** w p r 3 6 4 5 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
-      // Custodian at square 1, but black also has pieces at 6, 8
+          'O@O***@*@/********/******** w p r 3 6 4 5 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
+      // Custodian at square 9, but black also has pieces at 14, 16
 
       position.setFen(fenCustodian);
 
-      // Only square 1 should be legal for capture
-      // Squares 6 and 8 should be illegal
+      // Only square 9 should be legal for capture
+      // Squares 14 and 16 should be illegal
 
       // Verify custodian state is active
       // (The actual legality check would be done by game controller/mill logic)
@@ -257,32 +256,35 @@ void main() {
     });
 
     test('Legal move with custodian: target is correct', () {
+      // Square mapping: position 1 (@) -> square 9
       const String fenCustodian =
-          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
+          'O@O*****/********/******** w p r 3 6 3 6 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
 
       position.setFen(fenCustodian);
 
-      // Capturing the custodian target (square 1) should be legal
+      // Capturing the custodian target (square 9) should be legal
       // (This is the positive test case)
       expect(position.pieceToRemoveCount[PieceColor.black], equals(1));
     });
 
     test('Legal move with intervention: both endpoints are correct', () {
+      // Square mapping: position 2 (@) -> square 10, position 6 (@) -> square 14
       const String fenIntervention =
-          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-2.6';
+          '**@*O*@**/********/******** w p r 3 6 3 6 0 2 0 0 0 0 0 0 1 i:w-0-|b-2-10.14';
 
       position.setFen(fenIntervention);
 
-      // Capturing either endpoint (square 2 or 6) should be legal for first move
+      // Capturing either endpoint (square 10 or 14) should be legal for first move
       expect(position.pieceToRemoveCount[PieceColor.black], equals(2));
     });
 
     // FR-003: Mark non-sandwiched pieces as illegal when custodian is active
     test('FR-003: Mark non-sandwiched pieces as illegal when custodian active', () {
-      // Set up position with custodian at square 1, but multiple black pieces on board
+      // Set up position with custodian, but multiple black pieces on board
+      // Square mapping: pos 1 (@) -> sq 9, pos 6 (@) -> sq 14, pos 8 (@) -> sq 16
       const String fenCustodian =
-          'O@O***@*@/********/******** w p r 3 6 4 5 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-1';
-      // Custodian target at square 1, other black pieces at squares 6 and 8
+          'O@O***@*@/********/******** w p r 3 6 4 5 0 1 0 0 0 0 0 0 1 c:w-0-|b-1-9';
+      // Custodian target at square 9, other black pieces at squares 14 and 16
 
       position.setFen(fenCustodian);
 
@@ -295,8 +297,8 @@ void main() {
       );
       expect(
         exportedFen,
-        contains('b-1-1'),
-        reason: 'Should target square 1 only',
+        contains('b-1-9'),
+        reason: 'Should target square 9 only',
       );
 
       // The key test: only square 1 should be a valid target
