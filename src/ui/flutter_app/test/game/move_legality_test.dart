@@ -7,6 +7,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/services/engine/bitboard.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -18,6 +19,8 @@ import '../helpers/mocks/mock_database.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  // Initialize bitboards for square bit masks used by FEN parser/export
+  initBitboards();
 
   const MethodChannel engineChannel = MethodChannel(
     "com.calcitem.sanmill/engine",
