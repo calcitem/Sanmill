@@ -19,7 +19,7 @@ This is a N Men's Morris game implemented in Flutter. The following is the direc
 │   ├── generated
 │   ├── home
 │   ├── l10n
-│   ├── misc∏
+│   ├── misc
 │   ├── rule_settings
 │   └── shared
 └── ...

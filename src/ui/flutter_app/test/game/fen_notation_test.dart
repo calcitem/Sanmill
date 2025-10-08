@@ -42,7 +42,7 @@ void main() {
           }
         });
 
-    // Mock DB and SoundManager with zhiqi (直棋) rules
+    // Mock DB and SoundManager with Zhi Qi rules
     final MockDB mockDB = MockDB();
     // Configure zhiqi rules with custodian and intervention enabled
     mockDB.ruleSettings = const ZhiQiRuleSettings().copyWith(

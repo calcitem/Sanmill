@@ -54,7 +54,7 @@ void main() {
       );
 
       try {
-        // Configure zhiqi (直棋) rules with custodian and intervention enabled
+        // Configure Zhi Qi rules with custodian and intervention enabled
         final RuleSettings zhiqiRules = const ZhiQiRuleSettings().copyWith(
           enableCustodianCapture: true,
           enableInterventionCapture: true,
