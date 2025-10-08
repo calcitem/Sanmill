@@ -18,3 +18,4 @@ import '../../../statistics/model/stats_settings.dart';
 part 'color_adapter.dart';
 part 'locale_adapter.dart';
 part 'stats_adapter.dart';
+part 'legacy_color_adapter.dart';

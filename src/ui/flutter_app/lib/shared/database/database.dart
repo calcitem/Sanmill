@@ -215,12 +215,24 @@ class Database {
   /// ColorSettings
   static Future<void> _initColorSettings() async {
     // Note: ColorAdapter is built-in to hive_ce_flutter (typeId 200)
+    // Register legacy adapter (typeId=6) to read colors written by v6.8.0 installers
+    if (!Hive.isAdapterRegistered(6)) {
+      // Register as dynamic to avoid overriding Color's default adapter.
+      Hive.registerAdapter<dynamic>(LegacyColorAdapter());
+    }
     Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
 
     try {
       _colorSettingsBox = await Hive.openBox<ColorSettings>(
         _colorSettingsBoxName,
       );
+      // Read-after-open to trigger legacy values deserialization, then
+      // immediately re-save to persist using the new adapter (typeId=200).
+      // This effectively migrates color payloads in-place.
+      final ColorSettings? legacy = _colorSettingsBox.get(colorSettingsKey);
+      if (legacy != null) {
+        _colorSettingsBox.put(colorSettingsKey, legacy);
+      }
     } catch (e) {
       logger.e('Initialization failed: $e');
       // If the initialization fails, try to delete and recreate the box
