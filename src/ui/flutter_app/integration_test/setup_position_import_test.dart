@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
@@ -23,14 +24,14 @@ void main() {
 
     // 2. Simulate pasting the FEN by calling setFen()
     final bool success = controller.position.setFen(fenWithIntervention);
-    print('FEN import success: $success');
+    debugPrint('FEN import success: $success');
 
     // 3. Verify the state was imported correctly
     expect(success, isTrue);
     expect(controller.position.pieceToRemoveCount[PieceColor.black], 2);
 
     final String? exportedFen = controller.position.fen;
-    print('FEN after import: $exportedFen');
+    debugPrint('FEN after import: $exportedFen');
     expect(exportedFen, contains('i:w-0-|b-2-10.14'));
   });
 }
