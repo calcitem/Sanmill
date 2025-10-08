@@ -2973,16 +2973,20 @@ class Position {
   /// generateBoardLayoutAfterThisMove returns a 3-rings layout string,
   /// each ring has 8 positions, representing the outer/middle/inner ring.
   /// For example: "OO***@**/@@**O@*@/O@O*@*O*"
-  /// 'O' means White, '@' means Black, '*' means None or empty.
+  /// 'O' means White, '@' means Black, 'X' means Marked, '*' means None or empty.
   String generateBoardLayoutAfterThisMove() {
     // <-- ADDED
     // Helper to map PieceColor to a single char
     String pieceChar(PieceColor c) {
+      // Keep mapping consistent with MiniBoardPainter._charToPieceColor
       if (c == PieceColor.white) {
         return 'O';
       }
       if (c == PieceColor.black) {
         return '@';
+      }
+      if (c == PieceColor.marked) {
+        return 'X';
       }
       return '*';
     }

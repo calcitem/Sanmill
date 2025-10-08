@@ -383,6 +383,16 @@ class MiniBoardPainter extends CustomPainter {
         pos = outerPoints[((i - 16) + 1) % 8];
       }
 
+      // Draw all marked cells as an "X" like the large board does during placing phase.
+      if (pc == PieceColor.marked) {
+        final Paint xPaint = Paint()
+          ..color = DB().colorSettings.pieceHighlightColor
+          ..strokeWidth = 2
+          ..style = PaintingStyle.stroke;
+        _drawHighlightX(canvas, pos, pieceRadius * 2.0, xPaint);
+        continue;
+      }
+
       // Example: We define the piece diameter by 2 * pieceRadius.
       final double pieceDiameter = pieceRadius * 2;
 
@@ -420,14 +430,11 @@ class MiniBoardPainter extends CustomPainter {
         );
 
         // Example color usage:
-        // Added an 'else if' to handle 'marked' to align with big board approach.
         Color borderColor;
         if (pc == PieceColor.white) {
           borderColor = DB().colorSettings.whitePieceColor;
         } else if (pc == PieceColor.black) {
           borderColor = DB().colorSettings.blackPieceColor;
-        } else if (pc == PieceColor.marked) {
-          borderColor = DB().colorSettings.pieceHighlightColor;
         } else {
           borderColor = DB().colorSettings.boardLineColor;
         }
