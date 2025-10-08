@@ -258,7 +258,9 @@ class RuleSettings {
         !isDefenderMoveFirst &&
         !mayMoveInPlacingPhase &&
         !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
-        !oneTimeUseMill;
+        !oneTimeUseMill &&
+        !enableCustodianCapture &&
+        !enableInterventionCapture;
   }
 
   bool isLikelyTwelveMensMorris() {
@@ -267,7 +269,9 @@ class RuleSettings {
         !isDefenderMoveFirst &&
         !mayMoveInPlacingPhase &&
         !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
-        !oneTimeUseMill;
+        !oneTimeUseMill &&
+        !enableCustodianCapture &&
+        !enableInterventionCapture;
   }
 
   bool isLikelyElFilja() {
@@ -282,7 +286,9 @@ class RuleSettings {
         millFormationActionInPlacingPhase ==
             MillFormationActionInPlacingPhase.removalBasedOnMillCounts &&
         !restrictRepeatedMillsFormation &&
-        !oneTimeUseMill;
+        !oneTimeUseMill &&
+        !enableCustodianCapture &&
+        !enableInterventionCapture;
   }
 }
 
