@@ -15,7 +15,19 @@ GIT_REVISION_FILE="${GIT_INFO_PATH}/git-revision.txt"
 
 mkdir -p "${GIT_INFO_PATH}" "${GEN_FILE_PATH}" || true
 
-git -C "${SCRIPT_DIR}" symbolic-ref --short HEAD > "${GIT_BRANCH_FILE}"
+# Handle both branch and tag/detached HEAD scenarios
+if git -C "${SCRIPT_DIR}" symbolic-ref --short HEAD > "${GIT_BRANCH_FILE}" 2>/dev/null; then
+    # Successfully got branch name
+    :
+else
+    # In detached HEAD state (tag checkout), try to get tag name or commit hash
+    if TAG_NAME=$(git -C "${SCRIPT_DIR}" describe --exact-match --tags HEAD 2>/dev/null); then
+        echo "${TAG_NAME}" > "${GIT_BRANCH_FILE}"
+    else
+        # Fallback to commit hash
+        git -C "${SCRIPT_DIR}" rev-parse --short HEAD > "${GIT_BRANCH_FILE}"
+    fi
+fi
 git -C "${SCRIPT_DIR}" rev-parse HEAD > "${GIT_REVISION_FILE}"
 
 flutter config --no-analytics
