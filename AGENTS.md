@@ -161,6 +161,34 @@ Refs #789
 
 ## 6) Code Quality and Style Guidelines
 
+### Naming Conventions
+
+**C++ Engine** (`src/`):
+- **Classes/Structs**: PascalCase (Position, SearchEngine, Rule)
+- **Functions/Methods**: snake_case (do_move, side_to_move, is_ok)
+- **Constants**: UPPER_SNAKE_CASE (MAX_MOVES, VALUE_INFINITE, SQ_NB)
+- **Variables**: camelCase (rootPos, bestMove, pieceCount)
+- **Namespaces**: PascalCase (Search, Evaluate)
+- **Enums**: PascalCase (Color, Phase, Action)
+- **Enum Values**: UPPER_SNAKE_CASE or camelCase (MOVE_NONE, WHITE)
+
+**Dart/Flutter** (`src/ui/flutter_app/lib/`):
+- **Classes**: PascalCase (GameController, Position)
+- **Methods**: camelCase (doMove, sideToMove)
+- **Constants**: lowerCamelCase (maxMoves) or UPPER_SNAKE_CASE (MAX_DEPTH)
+- **Variables**: camelCase (rootPosition, bestMove)
+- **Files**: snake_case (game_controller.dart, rule_settings.dart)
+
+**Cross-Language Mapping**:
+
+| C++ | Dart | Note |
+|-----|------|------|
+| `do_move()` | `doMove()` | snake_case → camelCase |
+| `side_to_move()` | `sideToMove` | getter in Dart (no parens) |
+| `Position` | `Position` | Same name, different implementations |
+| `SearchEngine` | `Engine` | Different abstraction levels |
+| `MAX_MOVES` | `maxMoves` | Different conventions |
+
 ### C++ Specific Rules
 
 **Error Handling:**
@@ -181,6 +209,10 @@ Refs #789
 
 **Style:**
 * Follow existing code style (enforced by clang-format)
+
+**Comments:**
+* Use Doxygen-style comments for public APIs (`///` or `//!`)
+* Use regular comments for implementation details (`//`)
 
 ### Dart/Flutter Specific Rules
 
@@ -272,7 +304,195 @@ Before submitting changes:
 
 ---
 
-## 9) Documentation
+## 9) C++ Engine Documentation
+
+### Essential Reading for C++ Development
+
+The C++ engine has comprehensive documentation in `src/docs/`.
+**AI Agents must read these documents before making changes to C++ code.**
+
+### Core Architecture Documents
+
+**1. CPP_ARCHITECTURE.md** (`src/docs/CPP_ARCHITECTURE.md`)
+* Complete engine architecture overview
+* Design philosophy and core principles
+* Layer-by-layer component breakdown
+* Data flow and performance characteristics
+* Thread model and integration points
+* **Read this first** to understand the engine
+
+**2. CPP_COMPONENTS.md** (`src/docs/CPP_COMPONENTS.md`)
+* Comprehensive catalog of 40+ components
+* Component purposes and responsibilities
+* Public API summaries for each component
+* Dependency graphs and usage patterns
+* **Check here before modifying components**
+
+**3. UCI_PROTOCOL.md** (`src/docs/UCI_PROTOCOL.md`)
+* Complete UCI protocol specification
+* All commands with syntax and examples
+* Mill-specific FEN format
+* Move notation and score formats
+* Engine options reference
+* **Essential for engine-GUI communication**
+
+### Development Guidelines
+
+**4. CPP_WORKFLOWS.md** (`src/docs/CPP_WORKFLOWS.md`)
+* Step-by-step workflows for common tasks
+* 8 detailed workflows including:
+  - Adding new search algorithm
+  - Modifying evaluation function
+  - Adding UCI command
+  - Optimizing performance bottleneck
+  - Adding engine option
+  - Fixing search bugs
+  - Adding opening book moves
+  - Implementing new rule variant
+* **Follow these workflows for consistency**
+
+**5. RULE_SYSTEM_GUIDE.md** (`src/docs/RULE_SYSTEM_GUIDE.md`)
+* Complete Rule structure reference (30+ fields)
+* Field-by-field documentation
+* Predefined rule variants
+* Step-by-step guide to adding new variants
+* C++ ↔ Flutter parameter mapping
+* **Essential for rule-related changes**
+
+### API Documentation
+
+**6. API Reference** (`src/docs/api/`)
+* **Position.md**: Position class API (100+ methods)
+* **SearchEngine.md**: Search coordinator API
+* **Search.md**: Search algorithms API
+* Additional component APIs (planned)
+* **Consult before modifying public APIs**
+
+### Troubleshooting and Examples
+
+**7. TROUBLESHOOTING.md** (`src/docs/TROUBLESHOOTING.md`)
+* Common compilation errors
+* Runtime error diagnosis
+* Search problems and solutions
+* Performance issue debugging
+* **Check here when encountering issues**
+
+**8. examples/** (`src/docs/examples/`)
+* `basic_search.cpp` - Basic search usage
+* `position_manipulation.cpp` - Position operations
+* **Reference for correct API usage**
+
+### AI Agent Workflow for C++ Changes
+
+When making C++ changes:
+
+1. **Read** relevant architecture docs first
+2. **Check** CPP_COMPONENTS.md for component overview
+3. **Follow** appropriate workflow from CPP_WORKFLOWS.md
+4. **Consult** API documentation for method usage
+5. **Run** tests after changes
+6. **Update** documentation if API changes
+
+---
+
+## 10) Flutter Application Documentation
+
+### Essential Reading for Flutter Development
+
+The Flutter application has comprehensive documentation in
+`src/ui/flutter_app/docs/`. **AI Agents must read these documents
+before making changes to Flutter code.**
+
+### Core Architecture Documents
+
+**1. ARCHITECTURE.md** (`src/ui/flutter_app/docs/ARCHITECTURE.md`)
+* System architecture overview
+* Technology stack details
+* Directory structure explained
+* Architectural layers and patterns
+* **Read this first** to understand the system
+
+**2. COMPONENTS.md** (`src/ui/flutter_app/docs/COMPONENTS.md`)
+* Comprehensive catalog of all reusable components
+* Component location, purpose, and dependencies
+* Public API reference for each component
+* **Check here before creating new components** to avoid duplication
+
+**3. STATE_MANAGEMENT.md** (`src/ui/flutter_app/docs/STATE_MANAGEMENT.md`)
+* Complete guide to state management patterns
+* Database usage (Hive)
+* ValueNotifier patterns
+* GameController state
+* **Essential for understanding data flow**
+
+### Development Guidelines
+
+**4. WORKFLOWS.md** (`src/ui/flutter_app/docs/WORKFLOWS.md`)
+* "Golden Paths" for common development tasks
+* 10 detailed workflows including:
+  - Adding new UI features
+  - Fixing bugs
+  - Adding settings
+  - Creating custom painters
+  - Performance optimization
+* **Follow these workflows for consistency**
+
+**5. BEST_PRACTICES.md** (`src/ui/flutter_app/docs/BEST_PRACTICES.md`)
+* Code quality standards
+* Widget design patterns
+* Performance optimization
+* Accessibility requirements
+* Testing guidelines
+* **Code must adhere to these standards**
+
+### API Documentation
+
+**6. API Reference** (`src/ui/flutter_app/docs/api/`)
+* **GameController.md**: Core game controller API
+* **Engine.md**: AI engine interface
+* **Position.md**: Board state management
+* Additional component APIs
+* **Consult before modifying public APIs**
+
+### Getting Started
+
+**7. GETTING_STARTED.md** (`src/ui/flutter_app/docs/GETTING_STARTED.md`)
+* Developer onboarding guide
+* Environment setup instructions
+* First contribution walkthrough
+* **Recommended for new contributors**
+
+**8. DOCUMENTATION_GUIDE.md**
+(`src/ui/flutter_app/docs/DOCUMENTATION_GUIDE.md`)
+* How to maintain documentation
+* When to update docs
+* Documentation standards
+* **Update docs alongside code changes**
+
+### AI Agent Workflow for Flutter Changes
+
+When making Flutter changes:
+
+1. **Read** relevant architecture docs first
+2. **Check** COMPONENTS.md for existing components
+3. **Follow** appropriate workflow from WORKFLOWS.md
+4. **Apply** standards from BEST_PRACTICES.md
+5. **Update** documentation if API changes
+6. **Test** as specified in documentation
+
+### Documentation as SDK
+
+**Critical Concept:** For AI agents, documentation is the SDK. Poor
+documentation leads to incorrect code generation. Always:
+
+* Verify documentation matches current code
+* Update documentation when changing public APIs
+* Add examples for complex functionality
+* Cross-reference related components
+
+---
+
+## 11) General Documentation Guidelines
 
 ### What NOT to Create
 
@@ -281,9 +501,16 @@ Before submitting changes:
 * Do not create redundant documentation
 * Do not document obvious code
 
+### What TO Update
+
+* API documentation when changing public interfaces
+* COMPONENTS.md when adding new components
+* WORKFLOWS.md when establishing new processes
+* Inline code documentation (docstrings) for all public APIs
+
 ---
 
-## 10) Internationalization (i18n)
+## 12) Internationalization (i18n)
 
 ### Adding/Modifying Strings
 
@@ -302,7 +529,7 @@ Before submitting changes:
 
 ---
 
-## 11) Quick Reference
+## 13) Quick Reference
 
 ### Essential Commands
 
@@ -332,10 +559,44 @@ flutter test
 
 ### Key Files
 
+**C++ Engine:**
 * `src/Makefile` - C++ build configuration
+* `src/*.cpp, src/*.h` - Core engine source files
+* `tests/test_*.cpp` - C++ unit tests
+* `src/docs/` - **C++ engine documentation (NEW!)**
+  - `CPP_ARCHITECTURE.md` - Engine architecture overview
+  - `CPP_COMPONENTS.md` - Component catalog (40+ components)
+  - `UCI_PROTOCOL.md` - UCI protocol specification
+  - `RULE_SYSTEM_GUIDE.md` - Complete rule system guide
+  - `CPP_WORKFLOWS.md` - Development workflows (8 workflows)
+  - `TROUBLESHOOTING.md` - Common issues and solutions
+  - `api/Position.md` - Position class API reference
+  - `api/SearchEngine.md` - SearchEngine class API reference
+  - `api/Search.md` - Search algorithms API reference
+  - `examples/` - Code examples
+
+**Flutter Application:**
 * `src/ui/flutter_app/pubspec.yaml` - Flutter dependencies
 * `src/ui/flutter_app/lib/` - Flutter source code
 * `src/ui/flutter_app/l10n.yaml` - Localization configuration
+* `src/ui/flutter_app/docs/` - **Flutter app documentation**
+  - `ARCHITECTURE.md` - System architecture
+  - `COMPONENTS.md` - Component catalog
+  - `WORKFLOWS.md` - Development workflows
+  - `BEST_PRACTICES.md` - Code standards
+  - `STATE_MANAGEMENT.md` - State management guide
+  - `api/` - Widget API documentation
+
+**Build & Deployment:**
 * `format.sh` - Code formatting script
-* `AGENTS.md` - This file
+* `flutter-init.sh` - Flutter setup script
+* `.github/workflows/` - CI/CD pipelines
+
+**Project Documentation:**
+* `AGENTS.md` - This file (AI agent guidelines)
 * `README.md` - User-facing documentation
+* `CONTRIBUTING.md` - Contribution guidelines
+* `docs/` - **Project documentation**
+  - `MAINTENANCE_GUIDE.md` - Maintenance phase development guide
+  - `AI_CONTEXT_GUIDE.md` - AI assistant context guide
+  - `guides/ADDING_NEW_GAME_RULES.md` - Rule addition guide

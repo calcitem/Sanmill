@@ -144,6 +144,22 @@ Users can review the crash report contents before sending. No personally identif
 
 This data is used solely for improving the quality and stability of Sanmill and is not shared with any third parties.
 
+## Documentation
+
+### For Developers and Maintainers
+
+- **[docs/](docs/)** - Project-wide documentation
+  - [MAINTENANCE_GUIDE.md](docs/MAINTENANCE_GUIDE.md) - Maintenance phase development guide
+  - [AI_CONTEXT_GUIDE.md](docs/AI_CONTEXT_GUIDE.md) - AI assistant context guide
+  - [guides/](docs/guides/) - Specialized guides (e.g., adding game rules)
+
+### For Contributors
+
+- **[AGENTS.md](AGENTS.md)** - AI agent development guidelines and project constraints
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[src/docs/](src/docs/)** - C++ engine documentation
+- **[src/ui/flutter_app/docs/](src/ui/flutter_app/docs/)** - Flutter application documentation
+
 ## Free Software Philosophy
 
 Sanmill is free software, and we emphasize the importance of free software as a matter of freedom. We encourage the use of GPL v3 or later as a license for contributions and discourage the use of non-free licenses.

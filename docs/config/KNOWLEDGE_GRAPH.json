@@ -1,0 +1,562 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-01-11",
+    "description": "Sanmill Project Knowledge Graph for AI Agent Context Engineering",
+    "license": "GPL v3"
+  },
+  "nodes": {
+    "cpp_engine": {
+      "id": "cpp_engine",
+      "type": "module",
+      "name": "C++ Game Engine",
+      "description": "High-performance Mill game engine with UCI protocol",
+      "path": "src/",
+      "documentation": "src/docs/CPP_ARCHITECTURE.md",
+      "importance": "critical",
+      "components": [
+        "position",
+        "search_engine",
+        "uci_interface",
+        "movegen",
+        "rule_system",
+        "bitboard",
+        "transposition_table"
+      ]
+    },
+    "flutter_app": {
+      "id": "flutter_app",
+      "type": "module",
+      "name": "Flutter Application",
+      "description": "Cross-platform UI with game logic coordination",
+      "path": "src/ui/flutter_app/",
+      "documentation": "src/ui/flutter_app/docs/ARCHITECTURE.md",
+      "importance": "critical",
+      "components": [
+        "game_controller",
+        "game_board",
+        "engine_interface",
+        "settings_system",
+        "database"
+      ]
+    },
+    "position": {
+      "id": "position",
+      "type": "component",
+      "name": "Position",
+      "description": "Core board state representation and move execution",
+      "language": "cpp",
+      "files": ["src/position.h", "src/position.cpp"],
+      "documentation": "src/docs/api/Position.md",
+      "importance": "critical",
+      "responsibilities": [
+        "Board state management",
+        "Move execution/undo",
+        "Mill detection",
+        "Game phase management",
+        "FEN parsing"
+      ],
+      "api_methods": [
+        "set(fen)",
+        "fen()",
+        "do_move(move)",
+        "undo_move(stack)",
+        "legal(move)",
+        "side_to_move()",
+        "get_phase()",
+        "mills_count(square)"
+      ]
+    },
+    "search_engine": {
+      "id": "search_engine",
+      "type": "component",
+      "name": "SearchEngine",
+      "description": "Coordinate search algorithms and time management",
+      "language": "cpp",
+      "files": ["src/search_engine.h", "src/search_engine.cpp"],
+      "documentation": "src/docs/api/SearchEngine.md",
+      "importance": "critical",
+      "responsibilities": [
+        "Search coordination",
+        "Time management",
+        "Algorithm selection",
+        "Perfect database integration"
+      ],
+      "algorithms": ["alpha_beta", "mtdf", "mcts", "random"]
+    },
+    "search": {
+      "id": "search",
+      "type": "component",
+      "name": "Search",
+      "description": "Core search algorithms implementation",
+      "language": "cpp",
+      "files": ["src/search.h", "src/search.cpp"],
+      "documentation": "src/docs/api/Search.md",
+      "importance": "critical",
+      "algorithms": [
+        {
+          "name": "Alpha-Beta",
+          "description": "Classic minimax with alpha-beta pruning",
+          "best_for": "tactical positions"
+        },
+        {
+          "name": "MTD(f)",
+          "description": "Memory-enhanced Test Driver with zero-window searches",
+          "best_for": "positions with good transposition table"
+        },
+        {
+          "name": "PVS",
+          "description": "Principal Variation Search",
+          "best_for": "good move ordering scenarios"
+        }
+      ]
+    },
+    "uci_interface": {
+      "id": "uci_interface",
+      "type": "component",
+      "name": "UCI Interface",
+      "description": "Universal Chess Interface protocol for GUI communication",
+      "language": "cpp",
+      "files": ["src/uci.h", "src/uci.cpp", "src/engine_commands.h", "src/engine_commands.cpp"],
+      "documentation": "src/docs/UCI_PROTOCOL.md",
+      "importance": "high",
+      "responsibilities": [
+        "Command parsing",
+        "Response formatting",
+        "Engine options management",
+        "Protocol compliance"
+      ]
+    },
+    "rule_system": {
+      "id": "rule_system",
+      "type": "component",
+      "name": "Rule System",
+      "description": "Game rule variants and configuration management",
+      "language": "cpp",
+      "files": ["src/rule.h", "src/rule.cpp"],
+      "documentation": "src/docs/RULE_SYSTEM_GUIDE.md",
+      "importance": "high",
+      "variants": [
+        "Nine Men's Morris",
+        "Twelve Men's Morris",
+        "Lasker Morris",
+        "Windmill"
+      ]
+    },
+    "game_controller": {
+      "id": "game_controller",
+      "type": "component",
+      "name": "GameController",
+      "description": "Central Flutter game state coordinator",
+      "language": "dart",
+      "files": ["src/ui/flutter_app/lib/game_page/services/controller/game_controller.dart"],
+      "documentation": "src/ui/flutter_app/docs/api/GameController.md",
+      "importance": "critical",
+      "pattern": "singleton",
+      "responsibilities": [
+        "Game lifecycle management",
+        "Move coordination",
+        "AI engine communication",
+        "State notifications"
+      ]
+    },
+    "game_board": {
+      "id": "game_board",
+      "type": "component",
+      "name": "GameBoard",
+      "description": "Interactive game board widget with custom painting",
+      "language": "dart",
+      "files": ["src/ui/flutter_app/lib/game_page/widgets/game_board.dart"],
+      "documentation": "src/ui/flutter_app/docs/COMPONENTS.md#game-board",
+      "importance": "high",
+      "responsibilities": [
+        "Board rendering",
+        "Touch interaction",
+        "Animation coordination",
+        "Accessibility support"
+      ]
+    },
+    "engine_interface": {
+      "id": "engine_interface",
+      "type": "component",
+      "name": "Engine Interface",
+      "description": "Flutter to C++ engine communication bridge",
+      "language": "dart",
+      "files": ["src/ui/flutter_app/lib/game_page/services/engine/engine.dart"],
+      "documentation": "src/ui/flutter_app/docs/api/Engine.md",
+      "importance": "critical",
+      "responsibilities": [
+        "UCI command sending",
+        "Response parsing",
+        "Engine lifecycle",
+        "Platform channel management"
+      ]
+    },
+    "database": {
+      "id": "database",
+      "type": "component",
+      "name": "Database",
+      "description": "Hive-based persistent storage manager",
+      "language": "dart",
+      "files": ["src/ui/flutter_app/lib/shared/database/database.dart"],
+      "documentation": "src/ui/flutter_app/docs/STATE_MANAGEMENT.md",
+      "importance": "high",
+      "pattern": "singleton",
+      "storage_boxes": [
+        "generalSettings",
+        "ruleSettings",
+        "displaySettings",
+        "colorSettings",
+        "statsSettings"
+      ]
+    },
+    "settings_system": {
+      "id": "settings_system",
+      "type": "component",
+      "name": "Settings System",
+      "description": "Comprehensive settings management across modules",
+      "language": "dart",
+      "files": [
+        "src/ui/flutter_app/lib/general_settings/",
+        "src/ui/flutter_app/lib/rule_settings/",
+        "src/ui/flutter_app/lib/appearance_settings/"
+      ],
+      "importance": "medium",
+      "categories": [
+        "general",
+        "rules",
+        "appearance",
+        "display",
+        "colors"
+      ]
+    }
+  },
+  "relationships": {
+    "dependencies": [
+      {
+        "from": "flutter_app",
+        "to": "cpp_engine",
+        "type": "uses",
+        "method": "platform_channel",
+        "description": "Flutter communicates with C++ engine via UCI protocol"
+      },
+      {
+        "from": "search_engine",
+        "to": "position",
+        "type": "depends_on",
+        "strength": "critical",
+        "description": "SearchEngine requires Position for board state"
+      },
+      {
+        "from": "search_engine",
+        "to": "search",
+        "type": "uses",
+        "strength": "critical",
+        "description": "SearchEngine delegates to Search algorithms"
+      },
+      {
+        "from": "search",
+        "to": "position",
+        "type": "depends_on",
+        "strength": "critical",
+        "description": "Search algorithms operate on Position objects"
+      },
+      {
+        "from": "position",
+        "to": "rule_system",
+        "type": "depends_on",
+        "strength": "high",
+        "description": "Position behavior varies by rule configuration"
+      },
+      {
+        "from": "position",
+        "to": "bitboard",
+        "type": "depends_on",
+        "strength": "critical",
+        "description": "Position uses bitboards for efficient representation"
+      },
+      {
+        "from": "uci_interface",
+        "to": "search_engine",
+        "type": "controls",
+        "strength": "high",
+        "description": "UCI commands control search execution"
+      },
+      {
+        "from": "game_controller",
+        "to": "engine_interface",
+        "type": "uses",
+        "strength": "critical",
+        "description": "GameController uses Engine for AI moves"
+      },
+      {
+        "from": "game_controller",
+        "to": "database",
+        "type": "uses",
+        "strength": "high",
+        "description": "GameController persists game state"
+      },
+      {
+        "from": "game_board",
+        "to": "game_controller",
+        "type": "observes",
+        "strength": "critical",
+        "description": "GameBoard reacts to controller state changes"
+      },
+      {
+        "from": "engine_interface",
+        "to": "uci_interface",
+        "type": "communicates_with",
+        "strength": "critical",
+        "description": "Dart Engine sends UCI commands to C++ UCI"
+      },
+      {
+        "from": "settings_system",
+        "to": "database",
+        "type": "uses",
+        "strength": "high",
+        "description": "Settings are persisted via Database"
+      }
+    ],
+    "data_flow": [
+      {
+        "path": "user_move",
+        "steps": [
+          "game_board",
+          "game_controller",
+          "position",
+          "game_board"
+        ],
+        "description": "User move execution flow"
+      },
+      {
+        "path": "ai_move",
+        "steps": [
+          "game_controller",
+          "engine_interface",
+          "uci_interface",
+          "search_engine",
+          "search",
+          "position",
+          "engine_interface",
+          "game_controller",
+          "game_board"
+        ],
+        "description": "AI move generation and execution flow"
+      },
+      {
+        "path": "settings_update",
+        "steps": [
+          "settings_system",
+          "database",
+          "game_controller",
+          "engine_interface"
+        ],
+        "description": "Settings change propagation"
+      }
+    ]
+  },
+  "task_contexts": {
+    "add_widget": {
+      "description": "Add new Flutter UI widget",
+      "required_components": [
+        "flutter_app",
+        "game_controller",
+        "database"
+      ],
+      "documentation": [
+        "src/ui/flutter_app/docs/WORKFLOWS.md#workflow-1",
+        "src/ui/flutter_app/docs/templates/widget_template.dart",
+        "src/ui/flutter_app/docs/BEST_PRACTICES.md#widget-design"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/shared/widgets/",
+        "src/ui/flutter_app/docs/COMPONENTS.md"
+      ]
+    },
+    "engine_modification": {
+      "description": "Modify C++ engine behavior",
+      "required_components": [
+        "cpp_engine",
+        "position",
+        "search_engine"
+      ],
+      "documentation": [
+        "src/docs/CPP_WORKFLOWS.md",
+        "src/docs/CPP_COMPONENTS.md",
+        "src/docs/api/"
+      ],
+      "related_files": [
+        "tests/test_*.cpp"
+      ]
+    },
+    "add_rule_variant": {
+      "description": "Add new game rule variant",
+      "required_components": [
+        "rule_system",
+        "position",
+        "settings_system"
+      ],
+      "documentation": [
+        "src/docs/RULE_SYSTEM_GUIDE.md",
+        ".sanmill/docs/guides/ADDING_NEW_GAME_RULES.md"
+      ],
+      "cross_language_mapping": {
+        "cpp": "src/rule.cpp",
+        "dart": "src/ui/flutter_app/lib/rule_settings/models/"
+      }
+    },
+    "fix_bug": {
+      "description": "Fix application or engine bug",
+      "analysis_components": [
+        "related_component",
+        "test_files",
+        "documentation"
+      ],
+      "documentation": [
+        "src/docs/TROUBLESHOOTING.md",
+        "src/ui/flutter_app/docs/WORKFLOWS.md#workflow-4"
+      ]
+    },
+    "performance_optimization": {
+      "description": "Optimize performance bottlenecks",
+      "critical_components": [
+        "position",
+        "search",
+        "game_board"
+      ],
+      "documentation": [
+        "src/docs/PERFORMANCE_GUIDE.md",
+        "src/ui/flutter_app/docs/BEST_PRACTICES.md#performance"
+      ],
+      "tools": [
+        "make bench",
+        "flutter run --profile"
+      ]
+    }
+  },
+  "file_importance_weights": {
+    "critical": {
+      "weight": 1.0,
+      "files": [
+        "AGENTS.md",
+        "src/position.cpp",
+        "src/search_engine.cpp",
+        "src/ui/flutter_app/lib/main.dart",
+        "src/ui/flutter_app/lib/game_page/services/controller/game_controller.dart"
+      ]
+    },
+    "high": {
+      "weight": 0.9,
+      "files": [
+        "src/docs/CPP_ARCHITECTURE.md",
+        "src/ui/flutter_app/docs/ARCHITECTURE.md",
+        "src/docs/CPP_COMPONENTS.md",
+        "src/ui/flutter_app/docs/COMPONENTS.md"
+      ]
+    },
+    "medium": {
+      "weight": 0.8,
+      "files": [
+        "src/docs/CPP_WORKFLOWS.md",
+        "src/ui/flutter_app/docs/WORKFLOWS.md",
+        "src/docs/api/",
+        "src/ui/flutter_app/docs/api/"
+      ]
+    },
+    "low": {
+      "weight": 0.7,
+      "files": [
+        "src/docs/examples/",
+        "src/ui/flutter_app/docs/templates/",
+        "tests/"
+      ]
+    }
+  },
+  "semantic_tags": {
+    "game_logic": [
+      "position",
+      "movegen",
+      "rule_system",
+      "mills",
+      "game_controller"
+    ],
+    "ai_engine": [
+      "search_engine",
+      "search",
+      "mcts",
+      "evaluate",
+      "opening_book"
+    ],
+    "ui_components": [
+      "game_board",
+      "custom_drawer",
+      "settings_widgets",
+      "painters"
+    ],
+    "state_management": [
+      "database",
+      "notifiers",
+      "game_controller",
+      "settings_system"
+    ],
+    "communication": [
+      "uci_interface",
+      "engine_interface",
+      "platform_channel"
+    ],
+    "data_structures": [
+      "bitboard",
+      "transposition_table",
+      "hashmap",
+      "stack"
+    ],
+    "testing": [
+      "unit_tests",
+      "integration_tests",
+      "benchmark",
+      "perft"
+    ]
+  },
+  "anti_patterns": {
+    "cpp": {
+      "try_catch": {
+        "trigger_keywords": ["try", "catch", "exception"],
+        "alternative": "Use assert() for preconditions",
+        "documentation": "AGENTS.md#c-specific-rules"
+      },
+      "wrapper_functions": {
+        "trigger_keywords": ["Enhanced", "Extended", "Wrapper"],
+        "alternative": "Modify original functions directly",
+        "documentation": "AGENTS.md#code-extension"
+      }
+    },
+    "dart": {
+      "hardcoded_strings": {
+        "trigger_keywords": ["Text(\"", "hardcoded"],
+        "alternative": "Use S.of(context).stringKey",
+        "documentation": "AGENTS.md#internationalization-i18n"
+      },
+      "missing_disposal": {
+        "trigger_keywords": ["StatefulWidget", "Controller", "Animation"],
+        "alternative": "Implement proper dispose() method",
+        "documentation": "src/ui/flutter_app/docs/BEST_PRACTICES.md#dispose-pattern"
+      }
+    }
+  },
+  "quick_references": {
+    "build_commands": {
+      "cpp_build": "cd src && make all",
+      "cpp_test": "cd src && make test",
+      "flutter_run": "cd src/ui/flutter_app && flutter run",
+      "flutter_test": "cd src/ui/flutter_app && flutter test",
+      "format_code": "./format.sh s"
+    },
+    "common_files": {
+      "cpp_makefile": "src/Makefile",
+      "flutter_pubspec": "src/ui/flutter_app/pubspec.yaml",
+      "localization_config": "src/ui/flutter_app/l10n.yaml",
+      "git_ignore": ".gitignore"
+    }
+  }
+}

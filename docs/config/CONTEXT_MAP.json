@@ -1,0 +1,576 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-01-11",
+    "description": "Context mapping for AI agent task execution in Sanmill project",
+    "license": "GPL v3"
+  },
+  "task_workflows": {
+    "add_flutter_widget": {
+      "id": "add_flutter_widget",
+      "description": "Add a new reusable Flutter widget",
+      "priority": "high",
+      "estimated_complexity": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "analyze_requirements",
+          "description": "Understand widget requirements and existing components",
+          "required_context": [
+            "src/ui/flutter_app/docs/WORKFLOWS.md#workflow-1",
+            "src/ui/flutter_app/docs/COMPONENTS.md",
+            "src/ui/flutter_app/docs/templates/widget_template.dart"
+          ],
+          "tools": ["codebase_search", "read_file"]
+        },
+        {
+          "step": 2,
+          "action": "check_existing_components",
+          "description": "Verify no duplicate functionality exists",
+          "required_context": [
+            "src/ui/flutter_app/lib/shared/widgets/",
+            "src/ui/flutter_app/docs/COMPONENTS.md"
+          ],
+          "tools": ["grep", "codebase_search"]
+        },
+        {
+          "step": 3,
+          "action": "implement_widget",
+          "description": "Create widget following established patterns",
+          "required_context": [
+            "src/ui/flutter_app/docs/BEST_PRACTICES.md#widget-design",
+            "AGENTS.md#flutter-specific-rules"
+          ],
+          "tools": ["write", "search_replace"]
+        },
+        {
+          "step": 4,
+          "action": "add_tests",
+          "description": "Create widget tests",
+          "required_context": [
+            "src/ui/flutter_app/docs/BEST_PRACTICES.md#testing"
+          ],
+          "tools": ["write"]
+        },
+        {
+          "step": 5,
+          "action": "update_documentation",
+          "description": "Update component catalog if public widget",
+          "required_context": [
+            "src/ui/flutter_app/docs/COMPONENTS.md"
+          ],
+          "tools": ["search_replace"]
+        }
+      ],
+      "validation_steps": [
+        "flutter test",
+        "./format.sh s",
+        "Check accessibility labels",
+        "Verify localization if needed"
+      ]
+    },
+    "modify_cpp_engine": {
+      "id": "modify_cpp_engine",
+      "description": "Modify C++ engine behavior or add features",
+      "priority": "critical",
+      "estimated_complexity": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "understand_architecture",
+          "description": "Read engine architecture and identify affected components",
+          "required_context": [
+            "src/docs/CPP_ARCHITECTURE.md",
+            "src/docs/CPP_COMPONENTS.md"
+          ],
+          "tools": ["read_file", "codebase_search"]
+        },
+        {
+          "step": 2,
+          "action": "identify_workflow",
+          "description": "Find appropriate development workflow",
+          "required_context": [
+            "src/docs/CPP_WORKFLOWS.md"
+          ],
+          "tools": ["read_file"]
+        },
+        {
+          "step": 3,
+          "action": "read_api_documentation",
+          "description": "Study relevant API documentation",
+          "required_context": [
+            "src/docs/api/Position.md",
+            "src/docs/api/SearchEngine.md",
+            "src/docs/api/Search.md"
+          ],
+          "tools": ["read_file"]
+        },
+        {
+          "step": 4,
+          "action": "implement_changes",
+          "description": "Modify code following C++ patterns",
+          "required_context": [
+            "AGENTS.md#c-specific-rules",
+            "src/docs/examples/"
+          ],
+          "tools": ["search_replace", "MultiEdit"]
+        },
+        {
+          "step": 5,
+          "action": "add_tests",
+          "description": "Add or update unit tests",
+          "required_context": [
+            "tests/test_*.cpp"
+          ],
+          "tools": ["search_replace", "write"]
+        },
+        {
+          "step": 6,
+          "action": "update_documentation",
+          "description": "Update API docs if public interface changed",
+          "required_context": [
+            "src/docs/api/"
+          ],
+          "tools": ["search_replace"]
+        }
+      ],
+      "validation_steps": [
+        "cd src && make test",
+        "./format.sh s",
+        "Performance regression check",
+        "Verify no memory leaks"
+      ]
+    },
+    "add_rule_variant": {
+      "id": "add_rule_variant",
+      "description": "Add new game rule variant (cross-language)",
+      "priority": "high",
+      "estimated_complexity": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "study_rule_system",
+          "description": "Understand rule system architecture",
+          "required_context": [
+            "src/docs/RULE_SYSTEM_GUIDE.md",
+            ".sanmill/docs/guides/ADDING_NEW_GAME_RULES.md"
+          ],
+          "tools": ["read_file"]
+        },
+        {
+          "step": 2,
+          "action": "analyze_existing_rules",
+          "description": "Study existing rule implementations",
+          "required_context": [
+            "src/rule.cpp",
+            "src/ui/flutter_app/lib/rule_settings/models/"
+          ],
+          "tools": ["read_file", "codebase_search"]
+        },
+        {
+          "step": 3,
+          "action": "implement_cpp_rule",
+          "description": "Add rule to C++ engine",
+          "required_context": [
+            "src/rule.h",
+            "src/rule.cpp"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 4,
+          "action": "implement_dart_rule",
+          "description": "Add rule settings in Flutter",
+          "required_context": [
+            "src/ui/flutter_app/lib/rule_settings/models/rule_settings.dart"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 5,
+          "action": "add_ui_support",
+          "description": "Add UI for rule configuration",
+          "required_context": [
+            "src/ui/flutter_app/lib/rule_settings/widgets/"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 6,
+          "action": "add_localization",
+          "description": "Add localized strings for rule",
+          "required_context": [
+            "src/ui/flutter_app/lib/l10n/intl_en.arb"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 7,
+          "action": "add_tests",
+          "description": "Test both C++ and Flutter implementations",
+          "required_context": [
+            "tests/test_rule.cpp"
+          ],
+          "tools": ["search_replace", "write"]
+        }
+      ],
+      "validation_steps": [
+        "cd src && make test",
+        "cd src/ui/flutter_app && flutter test",
+        "./format.sh s",
+        "Test rule parameter mapping"
+      ]
+    },
+    "fix_bug": {
+      "id": "fix_bug",
+      "description": "Fix application or engine bug",
+      "priority": "critical",
+      "estimated_complexity": "variable",
+      "steps": [
+        {
+          "step": 1,
+          "action": "reproduce_bug",
+          "description": "Understand and reproduce the bug",
+          "required_context": [
+            "Bug report or description"
+          ],
+          "tools": ["codebase_search", "grep"]
+        },
+        {
+          "step": 2,
+          "action": "identify_components",
+          "description": "Find affected components using knowledge graph",
+          "required_context": [
+            ".sanmill/KNOWLEDGE_GRAPH.json",
+            "Component documentation"
+          ],
+          "tools": ["codebase_search", "read_file"]
+        },
+        {
+          "step": 3,
+          "action": "analyze_root_cause",
+          "description": "Identify root cause using debugging techniques",
+          "required_context": [
+            "src/docs/TROUBLESHOOTING.md",
+            "Related component source code"
+          ],
+          "tools": ["read_file", "grep"]
+        },
+        {
+          "step": 4,
+          "action": "implement_fix",
+          "description": "Apply minimal fix following project patterns",
+          "required_context": [
+            "AGENTS.md#error-handling",
+            "Component-specific best practices"
+          ],
+          "tools": ["search_replace", "MultiEdit"]
+        },
+        {
+          "step": 5,
+          "action": "add_regression_test",
+          "description": "Add test to prevent regression",
+          "required_context": [
+            "Existing test patterns"
+          ],
+          "tools": ["write", "search_replace"]
+        }
+      ],
+      "validation_steps": [
+        "Verify fix resolves original issue",
+        "Run full test suite",
+        "./format.sh s",
+        "Manual testing if UI-related"
+      ]
+    },
+    "optimize_performance": {
+      "id": "optimize_performance",
+      "description": "Optimize performance bottlenecks",
+      "priority": "medium",
+      "estimated_complexity": "high",
+      "steps": [
+        {
+          "step": 1,
+          "action": "profile_application",
+          "description": "Identify performance bottlenecks",
+          "required_context": [
+            "src/docs/PERFORMANCE_GUIDE.md",
+            "src/ui/flutter_app/docs/BEST_PRACTICES.md#performance"
+          ],
+          "tools": ["run_terminal_cmd"]
+        },
+        {
+          "step": 2,
+          "action": "analyze_hotspots",
+          "description": "Focus on most impactful optimizations",
+          "required_context": [
+            "Profiling results",
+            "Critical path components"
+          ],
+          "tools": ["codebase_search"]
+        },
+        {
+          "step": 3,
+          "action": "implement_optimizations",
+          "description": "Apply performance improvements",
+          "required_context": [
+            "Performance best practices",
+            "Component-specific optimization guides"
+          ],
+          "tools": ["search_replace", "MultiEdit"]
+        },
+        {
+          "step": 4,
+          "action": "measure_improvement",
+          "description": "Verify performance gains",
+          "required_context": [
+            "Benchmarking tools"
+          ],
+          "tools": ["run_terminal_cmd"]
+        }
+      ],
+      "validation_steps": [
+        "cd src && make bench",
+        "flutter run --profile",
+        "Performance regression tests",
+        "./format.sh s"
+      ]
+    },
+    "add_setting": {
+      "id": "add_setting",
+      "description": "Add new application setting",
+      "priority": "medium",
+      "estimated_complexity": "medium",
+      "steps": [
+        {
+          "step": 1,
+          "action": "analyze_setting_type",
+          "description": "Determine which settings category the new setting belongs to",
+          "required_context": [
+            "src/ui/flutter_app/docs/WORKFLOWS.md#workflow-7",
+            "src/ui/flutter_app/lib/shared/database/database.dart"
+          ],
+          "tools": ["read_file"]
+        },
+        {
+          "step": 2,
+          "action": "update_data_model",
+          "description": "Add setting to appropriate model class",
+          "required_context": [
+            "src/ui/flutter_app/lib/general_settings/models/",
+            "src/ui/flutter_app/lib/rule_settings/models/",
+            "src/ui/flutter_app/docs/STATE_MANAGEMENT.md"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 3,
+          "action": "update_hive_adapter",
+          "description": "Update type adapter for serialization",
+          "required_context": [
+            "Hive adapter files"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 4,
+          "action": "add_ui_controls",
+          "description": "Add UI elements for setting configuration",
+          "required_context": [
+            "Settings widget files",
+            "src/ui/flutter_app/docs/COMPONENTS.md"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 5,
+          "action": "add_localization",
+          "description": "Add localized strings for setting",
+          "required_context": [
+            "src/ui/flutter_app/lib/l10n/intl_en.arb"
+          ],
+          "tools": ["search_replace"]
+        },
+        {
+          "step": 6,
+          "action": "update_engine_if_needed",
+          "description": "Pass setting to C++ engine if relevant",
+          "required_context": [
+            "src/ui/flutter_app/lib/game_page/services/engine/engine.dart",
+            "src/docs/UCI_PROTOCOL.md"
+          ],
+          "tools": ["search_replace"]
+        }
+      ],
+      "validation_steps": [
+        "cd src/ui/flutter_app && flutter test",
+        "Test setting persistence",
+        "./format.sh s",
+        "Test default values"
+      ]
+    }
+  },
+  "context_prioritization": {
+    "P0_critical": {
+      "weight": 0.4,
+      "description": "Essential context for task completion",
+      "always_include": [
+        "AGENTS.md",
+        "Task-specific workflow documentation"
+      ]
+    },
+    "P1_related": {
+      "weight": 0.3,
+      "description": "Directly related components and APIs",
+      "include_when": "Working with specific components"
+    },
+    "P2_supporting": {
+      "weight": 0.2,
+      "description": "Supporting documentation and examples",
+      "include_when": "Complex tasks or unfamiliar areas"
+    },
+    "P3_reference": {
+      "weight": 0.1,
+      "description": "Reference materials and examples",
+      "include_when": "Token budget allows"
+    }
+  },
+  "error_prevention_rules": {
+    "cpp_rules": [
+      {
+        "rule": "no_try_catch",
+        "trigger_keywords": ["try", "catch", "exception"],
+        "inject_context": "AGENTS.md#c-specific-rules",
+        "message": "Use assert() for error handling, not try-catch"
+      },
+      {
+        "rule": "no_wrapper_classes",
+        "trigger_keywords": ["Enhanced", "Extended", "Wrapper"],
+        "inject_context": "AGENTS.md#code-extension",
+        "message": "Modify original functions directly, avoid wrapper classes"
+      },
+      {
+        "rule": "performance_critical",
+        "trigger_keywords": ["Position", "Search", "do_move"],
+        "inject_context": "src/docs/PERFORMANCE_GUIDE.md",
+        "message": "Performance-critical code - measure impact"
+      }
+    ],
+    "dart_rules": [
+      {
+        "rule": "no_hardcoded_strings",
+        "trigger_keywords": ["Text(\"", "hardcoded"],
+        "inject_context": "AGENTS.md#internationalization-i18n",
+        "message": "Use S.of(context).stringKey for localization"
+      },
+      {
+        "rule": "proper_disposal",
+        "trigger_keywords": ["StatefulWidget", "Controller", "Animation"],
+        "inject_context": "src/ui/flutter_app/docs/BEST_PRACTICES.md#dispose-pattern",
+        "message": "Implement proper dispose() method"
+      },
+      {
+        "rule": "accessibility_support",
+        "trigger_keywords": ["Widget", "CustomPainter"],
+        "inject_context": "src/ui/flutter_app/docs/BEST_PRACTICES.md#accessibility",
+        "message": "Add semantic labels for accessibility"
+      }
+    ]
+  },
+  "tool_usage_patterns": {
+    "exploration_phase": {
+      "description": "Understanding unfamiliar code areas",
+      "recommended_tools": ["codebase_search", "read_file"],
+      "parallel_execution": true,
+      "strategy": "Start broad, then narrow down to specific components"
+    },
+    "implementation_phase": {
+      "description": "Making code changes",
+      "recommended_tools": ["search_replace", "MultiEdit", "write"],
+      "parallel_execution": false,
+      "strategy": "Make atomic changes, test frequently"
+    },
+    "validation_phase": {
+      "description": "Testing and verification",
+      "recommended_tools": ["run_terminal_cmd", "read_lints"],
+      "parallel_execution": true,
+      "strategy": "Run all relevant tests and checks"
+    }
+  },
+  "quality_gates": {
+    "before_commit": [
+      {
+        "action": "run_formatter",
+        "command": "./format.sh s",
+        "required": true,
+        "description": "Format C++ and Dart code"
+      },
+      {
+        "action": "run_tests",
+        "command": "make test (C++) or flutter test (Dart)",
+        "required": true,
+        "description": "Ensure tests pass"
+      },
+      {
+        "action": "check_lints",
+        "tool": "read_lints",
+        "required": true,
+        "description": "Fix any linter errors"
+      },
+      {
+        "action": "verify_documentation",
+        "required": false,
+        "description": "Update docs if public API changed"
+      }
+    ],
+    "commit_message": {
+      "format": "imperative mood, max 72 chars",
+      "body_required": true,
+      "reference": "AGENTS.md#commit-message-rules"
+    }
+  },
+  "knowledge_graph_integration": {
+    "component_lookup": {
+      "description": "Use knowledge graph to find related components",
+      "file": ".sanmill/KNOWLEDGE_GRAPH.json",
+      "query_patterns": [
+        "nodes.{component_id}.dependencies",
+        "relationships.dependencies[from={component}]",
+        "task_contexts.{task_type}.required_components"
+      ]
+    },
+    "context_optimization": {
+      "description": "Use semantic tags to find relevant context",
+      "file": ".sanmill/KNOWLEDGE_GRAPH.json",
+      "query_patterns": [
+        "semantic_tags.{tag}",
+        "file_importance_weights",
+        "anti_patterns.{language}"
+      ]
+    }
+  },
+  "cursor_ide_integration": {
+    "essential_context_files": [
+      "@AGENTS.md",
+      "@.sanmill/AI_CONTEXT_GUIDE.md"
+    ],
+    "task_specific_context": {
+      "flutter_widget": [
+        "@src/ui/flutter_app/docs/WORKFLOWS.md#workflow-1",
+        "@src/ui/flutter_app/docs/COMPONENTS.md"
+      ],
+      "cpp_engine": [
+        "@src/docs/CPP_WORKFLOWS.md",
+        "@src/docs/CPP_COMPONENTS.md"
+      ],
+      "rule_variant": [
+        "@src/docs/RULE_SYSTEM_GUIDE.md",
+        "@.sanmill/docs/guides/ADDING_NEW_GAME_RULES.md"
+      ]
+    },
+    "quick_references": [
+      "@src/docs/api/Position.md",
+      "@src/ui/flutter_app/docs/api/GameController.md"
+    ]
+  }
+}

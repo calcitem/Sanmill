@@ -1,0 +1,412 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-01-11",
+    "description": "Semantic index for fast code location and context retrieval",
+    "license": "GPL v3"
+  },
+  "semantic_clusters": {
+    "game_state_management": {
+      "description": "Components managing game board state and moves",
+      "keywords": ["position", "board", "move", "state", "game"],
+      "primary_files": [
+        "src/position.cpp",
+        "src/position.h",
+        "src/ui/flutter_app/lib/game_page/services/engine/position.dart",
+        "src/ui/flutter_app/lib/game_page/services/controller/game_controller.dart"
+      ],
+      "related_files": [
+        "src/movegen.cpp",
+        "src/mills.cpp",
+        "tests/test_position.cpp"
+      ],
+      "documentation": [
+        "src/docs/api/Position.md",
+        "src/ui/flutter_app/docs/api/GameController.md"
+      ]
+    },
+    "ai_search_algorithms": {
+      "description": "AI search algorithms and engine coordination",
+      "keywords": ["search", "algorithm", "ai", "engine", "minimax", "alpha", "beta", "mcts"],
+      "primary_files": [
+        "src/search.cpp",
+        "src/search_engine.cpp",
+        "src/mcts.cpp",
+        "src/evaluate.cpp"
+      ],
+      "related_files": [
+        "src/opening_book.cpp",
+        "src/tt.cpp",
+        "tests/test_search.cpp"
+      ],
+      "documentation": [
+        "src/docs/api/Search.md",
+        "src/docs/api/SearchEngine.md",
+        "src/docs/CPP_ARCHITECTURE.md#search-layer"
+      ]
+    },
+    "uci_communication": {
+      "description": "UCI protocol implementation and engine communication",
+      "keywords": ["uci", "protocol", "command", "engine", "communication"],
+      "primary_files": [
+        "src/uci.cpp",
+        "src/engine_commands.cpp",
+        "src/engine_controller.cpp"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/game_page/services/engine/engine.dart",
+        "tests/test_uci.cpp"
+      ],
+      "documentation": [
+        "src/docs/UCI_PROTOCOL.md"
+      ]
+    },
+    "rule_system": {
+      "description": "Game rule variants and configuration",
+      "keywords": ["rule", "variant", "morris", "mill", "configuration"],
+      "primary_files": [
+        "src/rule.cpp",
+        "src/rule.h",
+        "src/ui/flutter_app/lib/rule_settings/models/rule_settings.dart"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/rule_settings/widgets/",
+        "tests/test_rule.cpp"
+      ],
+      "documentation": [
+        "src/docs/RULE_SYSTEM_GUIDE.md",
+        ".sanmill/docs/guides/ADDING_NEW_GAME_RULES.md"
+      ]
+    },
+    "ui_components": {
+      "description": "Flutter UI widgets and components",
+      "keywords": ["widget", "ui", "flutter", "component", "page", "dialog"],
+      "primary_files": [
+        "src/ui/flutter_app/lib/game_page/widgets/game_board.dart",
+        "src/ui/flutter_app/lib/shared/widgets/",
+        "src/ui/flutter_app/lib/custom_drawer/"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/game_page/pages/",
+        "src/ui/flutter_app/lib/misc/"
+      ],
+      "documentation": [
+        "src/ui/flutter_app/docs/COMPONENTS.md",
+        "src/ui/flutter_app/docs/templates/widget_template.dart"
+      ]
+    },
+    "state_management": {
+      "description": "Application state management and persistence",
+      "keywords": ["state", "database", "hive", "notifier", "settings", "persistence"],
+      "primary_files": [
+        "src/ui/flutter_app/lib/shared/database/database.dart",
+        "src/ui/flutter_app/lib/game_page/services/notifiers/"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/general_settings/models/",
+        "src/ui/flutter_app/lib/rule_settings/models/",
+        "src/ui/flutter_app/lib/appearance_settings/models/"
+      ],
+      "documentation": [
+        "src/ui/flutter_app/docs/STATE_MANAGEMENT.md"
+      ]
+    },
+    "visual_rendering": {
+      "description": "Custom painting and visual rendering",
+      "keywords": ["painter", "canvas", "draw", "render", "visual", "animation"],
+      "primary_files": [
+        "src/ui/flutter_app/lib/game_page/services/painters/",
+        "src/ui/flutter_app/lib/tutorial/painters/"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/game_page/services/sounds/",
+        "src/ui/flutter_app/lib/shared/themes/"
+      ],
+      "documentation": [
+        "src/ui/flutter_app/docs/BEST_PRACTICES.md#custom-painters"
+      ]
+    },
+    "data_structures": {
+      "description": "Low-level data structures and algorithms",
+      "keywords": ["bitboard", "hash", "table", "stack", "data", "structure"],
+      "primary_files": [
+        "src/bitboard.cpp",
+        "src/tt.cpp",
+        "src/hashmap.h",
+        "src/stack.h"
+      ],
+      "related_files": [
+        "tests/test_bitboard.cpp",
+        "tests/test_tt.cpp"
+      ],
+      "documentation": [
+        "src/docs/CPP_ARCHITECTURE.md#data-layer"
+      ]
+    },
+    "testing_infrastructure": {
+      "description": "Testing frameworks and test utilities",
+      "keywords": ["test", "unit", "integration", "mock", "fixture"],
+      "primary_files": [
+        "tests/test_*.cpp",
+        "src/ui/flutter_app/test/"
+      ],
+      "related_files": [
+        "tests/appium/",
+        "tests/monkey/"
+      ],
+      "documentation": [
+        "AGENTS.md#testing--validation",
+        "src/ui/flutter_app/docs/BEST_PRACTICES.md#testing"
+      ]
+    },
+    "internationalization": {
+      "description": "Localization and internationalization support",
+      "keywords": ["i18n", "localization", "arb", "translation", "language"],
+      "primary_files": [
+        "src/ui/flutter_app/lib/l10n/",
+        "src/ui/flutter_app/l10n.yaml"
+      ],
+      "related_files": [
+        "src/ui/flutter_app/lib/generated/intl/",
+        "scripts/generate-arb.py"
+      ],
+      "documentation": [
+        "AGENTS.md#internationalization-i18n"
+      ]
+    },
+    "build_deployment": {
+      "description": "Build scripts and deployment configuration",
+      "keywords": ["build", "deploy", "makefile", "script", "ci", "cd"],
+      "primary_files": [
+        "src/Makefile",
+        "format.sh",
+        "flutter-init.sh"
+      ],
+      "related_files": [
+        "scripts/",
+        ".github/workflows/",
+        "snap/snapcraft.yaml"
+      ],
+      "documentation": [
+        "AGENTS.md#tool-usage-guidelines"
+      ]
+    }
+  },
+  "intent_patterns": {
+    "add_feature": {
+      "patterns": ["add", "create", "implement", "new"],
+      "context_priority": [
+        "component_templates",
+        "existing_similar_components",
+        "architecture_patterns",
+        "testing_requirements"
+      ]
+    },
+    "fix_bug": {
+      "patterns": ["fix", "bug", "error", "issue", "problem"],
+      "context_priority": [
+        "error_logs",
+        "related_components",
+        "troubleshooting_guides",
+        "test_cases"
+      ]
+    },
+    "optimize_performance": {
+      "patterns": ["optimize", "performance", "slow", "fast", "speed"],
+      "context_priority": [
+        "performance_guides",
+        "profiling_tools",
+        "critical_path_components",
+        "benchmarks"
+      ]
+    },
+    "refactor_code": {
+      "patterns": ["refactor", "cleanup", "reorganize", "improve"],
+      "context_priority": [
+        "architecture_documentation",
+        "best_practices",
+        "existing_patterns",
+        "test_coverage"
+      ]
+    },
+    "understand_code": {
+      "patterns": ["how", "what", "why", "explain", "understand"],
+      "context_priority": [
+        "architecture_documentation",
+        "component_documentation",
+        "code_examples",
+        "related_components"
+      ]
+    }
+  },
+  "file_type_semantics": {
+    "cpp_headers": {
+      "extensions": [".h", ".hpp"],
+      "semantic_weight": 0.9,
+      "description": "C++ header files containing public APIs and declarations",
+      "typical_content": ["class definitions", "function declarations", "constants"]
+    },
+    "cpp_sources": {
+      "extensions": [".cpp", ".cc"],
+      "semantic_weight": 1.0,
+      "description": "C++ implementation files with core logic",
+      "typical_content": ["function implementations", "algorithms", "business logic"]
+    },
+    "dart_files": {
+      "extensions": [".dart"],
+      "semantic_weight": 0.8,
+      "description": "Dart source files for Flutter application",
+      "typical_content": ["widgets", "models", "services", "controllers"]
+    },
+    "documentation": {
+      "extensions": [".md"],
+      "semantic_weight": 0.7,
+      "description": "Documentation files with explanations and guides",
+      "typical_content": ["architecture", "workflows", "api documentation"]
+    },
+    "configuration": {
+      "extensions": [".yaml", ".yml", ".json", ".toml"],
+      "semantic_weight": 0.6,
+      "description": "Configuration files for build and deployment",
+      "typical_content": ["dependencies", "build settings", "metadata"]
+    },
+    "test_files": {
+      "extensions": [".cpp", ".dart"],
+      "path_patterns": ["test_", "/test/", "/tests/"],
+      "semantic_weight": 0.5,
+      "description": "Test files for validation and verification",
+      "typical_content": ["test cases", "mocks", "fixtures"]
+    }
+  },
+  "contextual_relationships": {
+    "position_ecosystem": {
+      "core": "src/position.cpp",
+      "related": [
+        "src/movegen.cpp",
+        "src/mills.cpp",
+        "src/bitboard.cpp",
+        "src/rule.cpp"
+      ],
+      "tests": [
+        "tests/test_position.cpp",
+        "tests/test_movegen.cpp"
+      ],
+      "flutter_counterpart": "src/ui/flutter_app/lib/game_page/services/engine/position.dart"
+    },
+    "search_ecosystem": {
+      "core": "src/search.cpp",
+      "related": [
+        "src/search_engine.cpp",
+        "src/evaluate.cpp",
+        "src/tt.cpp",
+        "src/mcts.cpp"
+      ],
+      "tests": [
+        "tests/test_search.cpp",
+        "tests/test_search_engine.cpp"
+      ],
+      "flutter_interface": "src/ui/flutter_app/lib/game_page/services/engine/engine.dart"
+    },
+    "ui_ecosystem": {
+      "core": "src/ui/flutter_app/lib/game_page/widgets/game_board.dart",
+      "related": [
+        "src/ui/flutter_app/lib/game_page/services/controller/game_controller.dart",
+        "src/ui/flutter_app/lib/game_page/services/painters/",
+        "src/ui/flutter_app/lib/shared/widgets/"
+      ],
+      "tests": [
+        "src/ui/flutter_app/test/"
+      ],
+      "cpp_backend": "src/position.cpp"
+    },
+    "settings_ecosystem": {
+      "core": "src/ui/flutter_app/lib/shared/database/database.dart",
+      "related": [
+        "src/ui/flutter_app/lib/general_settings/",
+        "src/ui/flutter_app/lib/rule_settings/",
+        "src/ui/flutter_app/lib/appearance_settings/"
+      ],
+      "cpp_interface": "src/engine_commands.cpp"
+    }
+  },
+  "query_optimization": {
+    "common_queries": {
+      "find_component": {
+        "query": "Where is {component_name} implemented?",
+        "strategy": "Search semantic_clusters for keywords, then check primary_files"
+      },
+      "understand_flow": {
+        "query": "How does {feature} work?",
+        "strategy": "Find core component, then trace contextual_relationships"
+      },
+      "find_similar": {
+        "query": "What components are similar to {component}?",
+        "strategy": "Check same semantic cluster, then related_files"
+      },
+      "find_tests": {
+        "query": "Where are tests for {component}?",
+        "strategy": "Look for test_ prefix, /test/ paths, and related test files"
+      }
+    },
+    "search_strategies": {
+      "breadth_first": {
+        "description": "Start with semantic clusters, expand to related files",
+        "best_for": ["exploration", "understanding architecture"]
+      },
+      "depth_first": {
+        "description": "Focus on specific component and its direct dependencies",
+        "best_for": ["debugging", "specific modifications"]
+      },
+      "hybrid": {
+        "description": "Combine cluster search with relationship traversal",
+        "best_for": ["complex features spanning multiple components"]
+      }
+    }
+  },
+  "ai_agent_hints": {
+    "performance_critical": [
+      "src/position.cpp",
+      "src/search.cpp",
+      "src/bitboard.cpp",
+      "src/ui/flutter_app/lib/game_page/services/painters/"
+    ],
+    "frequently_modified": [
+      "src/rule.cpp",
+      "src/ui/flutter_app/lib/game_page/services/controller/game_controller.dart",
+      "src/ui/flutter_app/lib/shared/database/database.dart"
+    ],
+    "architecture_critical": [
+      "src/position.cpp",
+      "src/search_engine.cpp",
+      "src/uci.cpp",
+      "src/ui/flutter_app/lib/main.dart"
+    ],
+    "documentation_entry_points": [
+      "AGENTS.md",
+      "src/docs/CPP_ARCHITECTURE.md",
+      "src/ui/flutter_app/docs/ARCHITECTURE.md"
+    ]
+  },
+  "cross_language_mappings": {
+    "position_concept": {
+      "cpp": "src/position.cpp",
+      "dart": "src/ui/flutter_app/lib/game_page/services/engine/position.dart",
+      "relationship": "Dart version is simplified interface to C++ implementation"
+    },
+    "engine_concept": {
+      "cpp": "src/search_engine.cpp",
+      "dart": "src/ui/flutter_app/lib/game_page/services/engine/engine.dart",
+      "relationship": "Dart engine communicates with C++ engine via UCI"
+    },
+    "rule_concept": {
+      "cpp": "src/rule.cpp",
+      "dart": "src/ui/flutter_app/lib/rule_settings/models/rule_settings.dart",
+      "relationship": "Dart settings map to C++ rule parameters"
+    },
+    "game_controller_concept": {
+      "cpp": "src/engine_controller.cpp",
+      "dart": "src/ui/flutter_app/lib/game_page/services/controller/game_controller.dart",
+      "relationship": "Dart controller orchestrates UI and C++ engine"
+    }
+  }
+}

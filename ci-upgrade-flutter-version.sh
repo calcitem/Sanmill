@@ -60,6 +60,7 @@ FILES_TO_UPDATE=(
   "scripts/ensure_flutter.sh"
   "README.md"
   "README-zh_CN.md"
+  ".sanmill/context/PROJECT_METADATA.json"
 )
 
 for file in "${FILES_TO_UPDATE[@]}"; do
@@ -70,6 +71,19 @@ for file in "${FILES_TO_UPDATE[@]}"; do
     echo " - Warning: ${file} not found, skipping."
   fi
 done
+
+# Update project version in PROJECT_METADATA.json from pubspec.yaml
+echo "Syncing project version from pubspec.yaml to PROJECT_METADATA.json..."
+PROJECT_VERSION=$(grep '^version:' src/ui/flutter_app/pubspec.yaml | awk '{print $2}' | cut -d'+' -f1)
+if [ -n "$PROJECT_VERSION" ]; then
+  echo " - Detected project version: ${PROJECT_VERSION}"
+  if [ -f ".sanmill/context/PROJECT_METADATA.json" ]; then
+    eval "$SED_CMD 's/\"version\": \"[0-9]\+\.[0-9]\+\.[0-9]\+\"/\"version\": \"${PROJECT_VERSION}\"/g' '.sanmill/context/PROJECT_METADATA.json'"
+    echo " - Updated PROJECT_METADATA.json with version ${PROJECT_VERSION}"
+  fi
+else
+  echo " - Warning: Could not detect project version from pubspec.yaml"
+fi
 
 # --- Git Operations ---
 
