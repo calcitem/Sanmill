@@ -108,7 +108,7 @@ class CustomDrawerState extends State<CustomDrawer>
       child: ListView.builder(
         key: const Key('custom_drawer_list_view_builder'),
         controller: ScrollController(),
-        padding: const EdgeInsets.only(top: 4.0),
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 16.0, 32.0),
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount: _visibleEntries.length,
@@ -155,45 +155,115 @@ class CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
+    final Color baseDrawerColor = DB().colorSettings.drawerColor;
+    final LinearGradient drawerGradient = LinearGradient(
+      colors: <Color>[
+        Color.alphaBlend(
+          DB().colorSettings.drawerHighlightItemColor.withOpacity(0.12),
+          baseDrawerColor,
+        ),
+        Color.alphaBlend(
+          DB().colorSettings.boardBackgroundColor.withOpacity(0.08),
+          baseDrawerColor,
+        ),
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+    const BorderRadius drawerRadius = BorderRadius.only(
+      topRight: Radius.circular(28.0),
+      bottomRight: Radius.circular(28.0),
+    );
+    final List<BoxShadow> drawerShadows = <BoxShadow>[
+      BoxShadow(
+        color: baseDrawerColor.withOpacity(0.35),
+        blurRadius: 32,
+        offset: const Offset(4, 12),
+      ),
+    ];
+
     final Align drawerWidget = Align(
       key: const Key('custom_drawer_align'),
       alignment: AlignmentDirectional.topStart,
       child: FractionallySizedBox(
         key: const Key('custom_drawer_fractionally_sized_box'),
         widthFactor: _drawerOpenRatio,
-        child: Material(
-          key: const Key('custom_drawer_material'),
-          color: DB().colorSettings.drawerColor,
-          child: CustomScrollView(
-            key: const Key('custom_drawer_custom_scroll_view'),
-            slivers: <Widget>[
-              SliverPinnedToBoxAdapter(
-                key: const Key('custom_drawer_sliver_pinned_to_box_adapter'),
-                child: Container(
-                  key: const Key('custom_drawer_header_container'),
-                  decoration: BoxDecoration(
-                    color: DB().colorSettings.drawerColor,
+        child: Container(
+          margin: const EdgeInsets.only(top: 16.0, bottom: 16.0, right: 16.0),
+          decoration: BoxDecoration(
+            gradient: drawerGradient,
+            borderRadius: drawerRadius,
+            boxShadow: drawerShadows,
+          ),
+          child: ClipRRect(
+            borderRadius: drawerRadius,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+              child: Material(
+                key: const Key('custom_drawer_material'),
+                color: Colors.transparent,
+                child: SafeArea(
+                  left: false,
+                  right: false,
+                  bottom: false,
+                  child: CustomScrollView(
+                    key: const Key('custom_drawer_custom_scroll_view'),
+                    slivers: <Widget>[
+                      SliverPinnedToBoxAdapter(
+                        key:
+                            const Key('custom_drawer_sliver_pinned_to_box_adapter'),
+                        child: Container(
+                          key: const Key('custom_drawer_header_container'),
+                          decoration: const BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: widget.drawerHeader,
+                        ),
+                      ),
+                      buildListMenus(),
+                    ],
                   ),
-                  child: widget.drawerHeader,
                 ),
               ),
-              buildListMenus(),
-            ],
+            ),
           ),
         ),
       ),
     );
 
     /// Menu and arrow icon animation overlay
-    final IconButton drawerOverlayButton = IconButton(
-      key: const Key('custom_drawer_drawer_overlay_button'),
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.arrow_menu,
-        progress: ReverseAnimation(_drawerAnimationController),
-        semanticLabel: S.of(context).menu,
-        color: Colors.white,
+    final Widget drawerOverlayButton = Container(
+      key: const Key('custom_drawer_drawer_overlay_button_container'),
+      margin: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            DB().colorSettings.drawerHighlightItemColor.withOpacity(0.85),
+            DB().colorSettings.drawerHighlightItemColor.withOpacity(0.55),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        shape: BoxShape.circle,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: DB().colorSettings.drawerHighlightItemColor.withOpacity(0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      onPressed: () => _drawerController.toggleDrawer(),
+      child: IconButton(
+        key: const Key('custom_drawer_drawer_overlay_button'),
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.arrow_menu,
+          progress: ReverseAnimation(_drawerAnimationController),
+          semanticLabel: S.of(context).menu,
+          color: DB().colorSettings.drawerTextColor,
+        ),
+        splashRadius: 28.0,
+        onPressed: () => _drawerController.toggleDrawer(),
+      ),
     );
 
     final SlideTransition mainScreenView = SlideTransition(
@@ -298,21 +368,47 @@ class CustomDrawerState extends State<CustomDrawer>
     final Widget drawerItemWidget;
 
     if (item.isSelected) {
+      final double drawerWidth =
+          MediaQuery.of(context).size.width * _drawerOpenRatio;
+      final double highlightWidth = drawerWidth - 24.0;
       final SlideTransition selectedItemOverlay = SlideTransition(
         key: Key('custom_drawer_selected_item_overlay_$index'),
         position: _drawerOverlaySlideAnimation,
         textDirection: Directionality.of(context),
         child: Container(
           key: Key('custom_drawer_selected_item_container_$index'),
-          width: MediaQuery.of(context).size.width * _drawerOpenRatio * 0.9,
+          width: highlightWidth > 0 ? highlightWidth : drawerWidth,
           height:
               AppTheme.drawerItemHeight +
               (DB().displaySettings.fontScale - 1) * 12,
           decoration: BoxDecoration(
-            color: DB().colorSettings.drawerHighlightItemColor,
+            gradient: LinearGradient(
+              colors: <Color>[
+                DB()
+                    .colorSettings
+                    .drawerHighlightItemColor
+                    .withOpacity(0.9),
+                DB()
+                    .colorSettings
+                    .drawerHighlightItemColor
+                    .withOpacity(0.55),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
             borderRadius: const BorderRadiusDirectional.horizontal(
               end: Radius.circular(_overlayRadius),
             ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: DB()
+                    .colorSettings
+                    .drawerHighlightItemColor
+                    .withOpacity(0.35),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
         ),
       );
@@ -328,7 +424,8 @@ class CustomDrawerState extends State<CustomDrawer>
     return Padding(
       key: Key('custom_drawer_item_padding_$index'),
       padding: EdgeInsets.only(
-        left: indent,
+        left: indent + 12.0,
+        right: 12.0,
         top: itemPadding,
         bottom: itemPadding,
       ),

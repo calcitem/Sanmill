@@ -40,14 +40,20 @@ class CustomDrawerItem<T> extends StatelessWidget {
     final Icon listItemIcon = Icon(
       itemIcon.icon,
       color: color,
+      size: 24.0,
       key: const Key('custom_drawer_item_icon'),
     );
 
-    final TextStyle titleStyle = Theme.of(context).textTheme.titleLarge!
-        .copyWith(
-          fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-          color: color,
-        );
+    final TextStyle baseTitleStyle =
+        Theme.of(context).textTheme.titleMedium ??
+        Theme.of(context).textTheme.titleLarge ??
+        const TextStyle();
+
+    final TextStyle titleStyle = baseTitleStyle.copyWith(
+      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+      color: color,
+      letterSpacing: 0.2,
+    );
 
     final Size titleSize = getBoundingTextSize(
       context,
@@ -58,50 +64,67 @@ class CustomDrawerItem<T> extends StatelessWidget {
     final bool isExpand =
         (MediaQuery.of(context).size.width * 0.75 * 0.9 - 46) > titleSize.width;
 
-    final Row drawerItem = Row(
+    final Widget titleWidget = isExpand || !isSelected
+        ? Text(
+            itemTitle,
+            key: const Key('custom_drawer_item_text'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: titleStyle,
+          )
+        : SizedBox(
+            height: AppTheme.drawerItemHeight,
+            child: Marquee(
+              key: const Key('custom_drawer_item_marquee'),
+              text: itemTitle,
+              style: titleStyle,
+            ),
+          );
+
+    final Widget drawerItem = Row(
       key: const Key('custom_drawer_item_row'),
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        const SizedBox(height: 46.0, width: 6.0),
-        const Padding(
-          key: Key('custom_drawer_item_padding_left'),
-          padding: EdgeInsets.all(4.0),
-        ),
         listItemIcon,
-        const Padding(
-          key: Key('custom_drawer_item_padding_right'),
-          padding: EdgeInsets.all(4.0),
-        ),
+        const SizedBox(width: 14.0),
         Expanded(
           key: const Key('custom_drawer_item_expanded'),
-          child: isExpand || !isSelected
-              ? Text(
-                  itemTitle,
-                  key: const Key('custom_drawer_item_text'),
-                  maxLines: 1,
-                  style: titleStyle,
-                )
-              : SizedBox(
-                  height: AppTheme.drawerItemHeight,
-                  child: Marquee(
-                    key: const Key('custom_drawer_item_marquee'),
-                    text: itemTitle,
-                    style: titleStyle,
-                  ),
-                ),
+          child: titleWidget,
         ),
         if (trailingContent != null) ...<Widget>[
-          const SizedBox(width: 4.0),
+          const SizedBox(width: 12.0),
           trailingContent!,
         ],
       ],
     );
 
+    final Color accentColor =
+        DB().colorSettings.drawerHighlightItemColor.withOpacity(0.2);
+
     return InkWell(
       key: const Key('custom_drawer_item_inkwell'),
-      splashColor: AppTheme.drawerSplashColor,
+      borderRadius: BorderRadius.circular(18.0),
+      splashColor: accentColor,
+      focusColor: accentColor,
+      hoverColor: accentColor.withOpacity(0.6),
       highlightColor: Colors.transparent,
       onTap: onTapOverride ?? () => onSelectionChanged(itemValue),
-      child: drawerItem,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        constraints: const BoxConstraints(minHeight: AppTheme.drawerItemHeight),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18.0),
+          color: isSelected
+              ? DB()
+                  .colorSettings
+                  .drawerHighlightItemColor
+                  .withOpacity(0.08)
+              : Colors.transparent,
+        ),
+        child: drawerItem,
+      ),
     );
   }
 }
