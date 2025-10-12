@@ -945,7 +945,7 @@ class NetworkService with WidgetsBindingObserver {
     }
 
     _notifyConnectionStatusChanged(false, info: userFriendlyMessage);
-    _disposeInternals();
+    _disposeInternals(markDisposed: false);
     onDisconnected?.call();
   }
 
@@ -958,11 +958,13 @@ class NetworkService with WidgetsBindingObserver {
     _disposeInternals();
   }
 
-  void _disposeInternals() {
-    if (_disposed) {
-      return;
+  void _disposeInternals({bool markDisposed = true}) {
+    if (markDisposed) {
+      if (_disposed) {
+        return;
+      }
+      _disposed = true;
     }
-    _disposed = true;
 
     try {
       _clientSocket?.destroy();
@@ -1000,11 +1002,26 @@ class NetworkService with WidgetsBindingObserver {
 
     _messageQueue.clear();
     _isProcessingMessages = false;
+    if (_protocolHandshakeCompleter != null &&
+        !_protocolHandshakeCompleter!.isCompleted) {
+      _protocolHandshakeCompleter!.complete(false);
+    }
     _protocolHandshakeCompleter = null;
     _heartbeatStarted = false;
     _isReconnecting = false;
+    _messagesSent = 0;
+    _messagesReceived = 0;
+    _reconnectAttempts = 0;
+    _opponentAddress = null;
+    _opponentPort = null;
+    _lastConnectionTime = null;
 
-    logger.i("$_logTag Network disposed");
+    if (!markDisposed) {
+      _disposed = false;
+      logger.i("$_logTag Network connection reset");
+    } else {
+      logger.i("$_logTag Network disposed");
+    }
   }
 
   /// Returns the first non-loopback IPv4 address, or null if not found.
