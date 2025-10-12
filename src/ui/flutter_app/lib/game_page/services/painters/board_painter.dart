@@ -82,6 +82,9 @@ class BoardPainter extends CustomPainter {
     final Paint paint = Paint();
     final double cornerRadius = DB().displaySettings.boardCornerRadius;
     final bool shadowEnabled = DB().displaySettings.boardShadowEnabled;
+    final Rect boardRect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final RRect boardRRect =
+        RRect.fromRectAndRadius(boardRect, Radius.circular(cornerRadius));
 
     // If enabled, draw a drop shadow beneath the board to give it a 3D effect.
     if (shadowEnabled) {
@@ -90,12 +93,7 @@ class BoardPainter extends CustomPainter {
 
     // Draw the main board surface (color or image) on top of the shadow.
     if (backgroundImage != null) {
-      canvas.clipRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-          Radius.circular(cornerRadius),
-        ),
-      );
+      canvas.clipRRect(boardRRect);
       canvas.drawImageRect(
         backgroundImage!,
         Rect.fromLTWH(
@@ -104,18 +102,11 @@ class BoardPainter extends CustomPainter {
           backgroundImage!.width.toDouble(),
           backgroundImage!.height.toDouble(),
         ),
-        Rect.fromLTWH(0, 0, size.width, size.height),
+        boardRect,
         paint,
       );
     } else {
-      paint.color = colorSettings.boardBackgroundColor;
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-          Radius.circular(cornerRadius),
-        ),
-        paint,
-      );
+      _drawTexturedBoard(canvas, boardRRect, colorSettings.boardBackgroundColor);
     }
   }
 
@@ -132,6 +123,129 @@ class BoardPainter extends CustomPainter {
       Radius.circular(cornerRadius),
     );
     canvas.drawRRect(shadowRect, shadowPaint);
+  }
+
+  void _drawTexturedBoard(
+    Canvas canvas,
+    RRect boardRRect,
+    Color baseColor,
+  ) {
+    final Rect rect = boardRRect.outerRect;
+
+    final Paint gradientPaint = Paint()
+      ..shader = ui.Gradient.linear(
+        rect.topLeft,
+        rect.bottomRight,
+        <Color>[
+          _adjustColorBrightness(baseColor, 0.12),
+          baseColor,
+          _adjustColorBrightness(baseColor, -0.2),
+        ],
+        <double>[0.0, 0.55, 1.0],
+      );
+
+    canvas.drawRRect(boardRRect, gradientPaint);
+
+    _drawCenterGlow(canvas, boardRRect);
+    _drawWoodGrain(canvas, boardRRect);
+    _drawEdgeHighlights(canvas, boardRRect);
+  }
+
+  void _drawCenterGlow(Canvas canvas, RRect boardRRect) {
+    final Rect rect = boardRRect.outerRect;
+    final Paint glowPaint = Paint()
+      ..shader = ui.Gradient.radial(
+        rect.center,
+        rect.shortestSide * 0.55,
+        <Color>[
+          Colors.white.withOpacity(0.12),
+          Colors.transparent,
+        ],
+      );
+
+    canvas.save();
+    canvas.clipRRect(boardRRect);
+    canvas.drawRect(rect, glowPaint);
+    canvas.restore();
+  }
+
+  void _drawWoodGrain(Canvas canvas, RRect boardRRect) {
+    final Rect rect = boardRRect.outerRect;
+    final double horizontalStep = rect.height / 24;
+    final double amplitude = rect.width * 0.02;
+
+    final Paint grainPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = max(1.0, rect.height * 0.0015);
+
+    canvas.save();
+    canvas.clipRRect(boardRRect);
+    for (double y = rect.top + horizontalStep;
+        y < rect.bottom;
+        y += horizontalStep) {
+      final double progress = (y - rect.top) / rect.height;
+      final double oscillation = sin(progress * pi);
+      grainPaint.color = Colors.black.withOpacity(0.01 + 0.02 * oscillation.abs());
+
+      final double offset = amplitude * sin(progress * pi * 2);
+      canvas.drawLine(
+        Offset(rect.left, y + offset),
+        Offset(rect.right, y - offset),
+        grainPaint,
+      );
+    }
+    canvas.restore();
+
+    final double verticalStep = rect.width / 12;
+    final Paint highlightPaint = Paint()
+      ..color = Colors.white.withOpacity(0.015)
+      ..strokeWidth = max(1.0, rect.width * 0.001);
+
+    canvas.save();
+    canvas.clipRRect(boardRRect);
+    for (double x = rect.left + verticalStep;
+        x < rect.right;
+        x += verticalStep) {
+      canvas.drawLine(
+        Offset(x, rect.top),
+        Offset(x, rect.bottom),
+        highlightPaint,
+      );
+    }
+    canvas.restore();
+  }
+
+  void _drawEdgeHighlights(Canvas canvas, RRect boardRRect) {
+    final Rect rect = boardRRect.outerRect;
+    final double outerStroke = max(2.0, rect.shortestSide * 0.015);
+
+    final Paint rimPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = outerStroke
+      ..shader = ui.Gradient.linear(
+        rect.topLeft,
+        rect.bottomRight,
+        <Color>[
+          Colors.white.withOpacity(0.35),
+          Colors.transparent,
+          Colors.black.withOpacity(0.35),
+        ],
+      );
+
+    canvas.drawRRect(boardRRect.deflate(outerStroke / 2), rimPaint);
+
+    final Paint innerStrokePaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = max(1.0, rect.shortestSide * 0.006)
+      ..color = Colors.black.withOpacity(0.18);
+
+    canvas.drawRRect(boardRRect.deflate(outerStroke * 1.1), innerStrokePaint);
+  }
+
+  Color _adjustColorBrightness(Color color, double amount) {
+    final HSLColor hsl = HSLColor.fromColor(color);
+    final double lightness = (hsl.lightness + amount).clamp(0.0, 1.0);
+    return hsl.withLightness(lightness).toColor();
   }
 
   void _drawLines(List<Offset> offset, Canvas canvas, Paint paint, Size size) {
