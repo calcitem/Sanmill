@@ -945,7 +945,7 @@ class NetworkService with WidgetsBindingObserver {
     }
 
     _notifyConnectionStatusChanged(false, info: userFriendlyMessage);
-    _disposeInternals();
+    _resetConnectionState();
     onDisconnected?.call();
   }
 
@@ -955,20 +955,20 @@ class NetworkService with WidgetsBindingObserver {
     }
     WidgetsBinding.instance.removeObserver(this);
     logger.i("$_logTag dispose() called");
-    _disposeInternals();
+    _resetConnectionState(markDisposed: true);
   }
 
-  void _disposeInternals() {
-    if (_disposed) {
+  void _resetConnectionState({bool markDisposed = false}) {
+    if (markDisposed && _disposed) {
       return;
     }
-    _disposed = true;
 
     try {
       _clientSocket?.destroy();
     } catch (e) {
       logger.e("$_logTag Error destroying client socket: $e");
     }
+
     try {
       if (_serverSocket != null) {
         if (_serverSocket!.port > 0) {
@@ -998,13 +998,31 @@ class NetworkService with WidgetsBindingObserver {
     _heartbeatCheckTimer = null;
     _reconnectTimer = null;
 
+    if (_protocolHandshakeCompleter != null &&
+        !_protocolHandshakeCompleter!.isCompleted) {
+      _protocolHandshakeCompleter!.complete(false);
+    }
+    _protocolHandshakeCompleter = null;
+
     _messageQueue.clear();
     _isProcessingMessages = false;
-    _protocolHandshakeCompleter = null;
     _heartbeatStarted = false;
     _isReconnecting = false;
+    _messagesSent = 0;
+    _messagesReceived = 0;
+    _reconnectAttempts = 0;
+    _lastConnectionTime = null;
+    _opponentAddress = null;
+    _opponentPort = null;
+    isHost = false;
 
-    logger.i("$_logTag Network disposed");
+    if (markDisposed) {
+      _disposed = true;
+      logger.i("$_logTag Network disposed");
+    } else {
+      _disposed = false;
+      logger.i("$_logTag Network connection reset");
+    }
   }
 
   /// Returns the first non-loopback IPv4 address, or null if not found.
