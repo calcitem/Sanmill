@@ -45,7 +45,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                 }
             }
         } else {
-            // Generate standard moves based on direction vectors
+            // Generate standard adjacent moves
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
                 const Square to =
                     MoveList<LEGAL>::adjacentSquares[from][direction];
@@ -61,6 +61,57 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 
                     assert(cur < moveList + MAX_MOVES);
                     *cur++ = make_move(from, to);
+                }
+            }
+
+            // Optionally generate leap moves when leap capture is enabled.
+            // Leap works in moving phase, or in placing phase when
+            // mayMoveInPlacingPhase is enabled. We scan candidate lines
+            // that include 'from' and an empty 'to'. This is a limited scan
+            // to avoid a full-board O(N^2) sweep.
+            const bool leapAllowed = rule.leapCapture.enabled &&
+                                     ((pos.phase == Phase::moving &&
+                                       rule.leapCapture.inMovingPhase) ||
+                                      (pos.phase == Phase::placing &&
+                                       rule.mayMoveInPlacingPhase &&
+                                       rule.leapCapture.inPlacingPhase)) &&
+                                     pos.piece_in_hand_count(
+                                         pos.side_to_move()) == 0;
+
+            if (leapAllowed) {
+                auto tryAddLeap = [&](Square a, Square mid, Square b) {
+                    if (!a || !mid || !b)
+                        return;
+                    if (a == from && !board[b] &&
+                        board[mid] & make_piece(~pos.side_to_move())) {
+                        std::vector<Square> captured;
+                        if (pos.checkLeapCapture(b, pos.side_to_move(),
+                                                 captured, from)) {
+                            assert(cur < moveList + MAX_MOVES);
+                            *cur++ = make_move(from, b);
+                        }
+                    } else if (b == from && !board[a] &&
+                               board[mid] & make_piece(~pos.side_to_move())) {
+                        std::vector<Square> captured;
+                        if (pos.checkLeapCapture(a, pos.side_to_move(),
+                                                 captured, from)) {
+                            assert(cur < moveList + MAX_MOVES);
+                            *cur++ = make_move(from, a);
+                        }
+                    }
+                };
+
+                // Check three-point lines (they model 3-in-line geometry)
+                for (const auto &line : kThreePointSquareEdgeLines) {
+                    tryAddLeap(line[0], line[1], line[2]);
+                }
+                for (const auto &line : kThreePointCrossLines) {
+                    tryAddLeap(line[0], line[1], line[2]);
+                }
+                if (rule.hasDiagonalLines && rule.leapCapture.onDiagonalLines) {
+                    for (const auto &line : kThreePointDiagonalLines) {
+                        tryAddLeap(line[0], line[1], line[2]);
+                    }
                 }
             }
         }
@@ -107,19 +158,21 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
-    // Fast path: Check if custodian/intervention capture is active
+    // Fast path: Check if any capture (custodian/intervention/leap) is active
     // Only read related fields if at least one removal count is non-zero
     const int custodianCount = pos.custodianRemovalCount[us];
     const int interventionCount = pos.interventionRemovalCount[us];
-    const int captureCount = custodianCount + interventionCount;
+    const int leapCount = pos.leapRemovalCount[us];
+    const int captureCount = custodianCount + interventionCount + leapCount;
 
     Bitboard combinedTargets = 0;
 
-    // Only process custodian/intervention if capture count is positive
+    // Only process captures if capture count is positive
     if (captureCount > 0) {
-        // Compute combined targets directly, avoiding intermediate variables
+        // Compute combined targets for all non-mill captures
         combinedTargets = pos.custodianCaptureTargets[us] |
-                          pos.interventionCaptureTargets[us];
+                          pos.interventionCaptureTargets[us] |
+                          pos.leapCaptureTargets[us];
 
         if (combinedTargets != 0) {
             const Piece themPiece = make_piece(them);
@@ -184,7 +237,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     const Piece removeColorPiece = make_piece(removeColor);
     const bool checkMills = !rule.mayRemoveFromMillsAlways;
 
-    // Optimize: Only check combinedTargets if custodian/intervention is active
+    // Optimize: Only check combinedTargets if any non-mill capture is active
     if (combinedTargets != 0) {
         // Path with custodian/intervention: skip already-captured targets
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
@@ -206,7 +259,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
             }
         }
     } else {
-        // Fast path: No custodian/intervention, avoid bitboard checks
+        // Fast path: No non-mill capture, avoid bitboard checks
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             const Square s = MoveList<LEGAL>::movePriorityList[i];
 

@@ -191,6 +191,13 @@ public:
                                std::vector<Square> &capturedPieces) const;
     bool checkInterventionCapture(Square sq, Color us,
                                   std::vector<Square> &capturedPieces) const;
+    // Checks if a leap capture is possible after a piece is placed or moved to
+    // a square. It verifies against the leap capture rules configured in the
+    // 'rule' object. The method identifies opponent pieces that can be captured
+    // by the leap and returns them in the 'capturedPieces' vector.
+    bool checkLeapCapture(Square sq, Color us,
+                          std::vector<Square> &capturedPieces,
+                          Square from = SQ_NONE) const;
     Bitboard findPairedInterventionTarget(Square removedSquare,
                                           Bitboard allTargets) const;
 
@@ -210,12 +217,23 @@ public:
 
     bool can_move_during_placing_phase() const;
 
+    // Sets the state for a custodian capture, updating the Zobrist key.
+    // This includes the target pieces and the number of pieces to be removed.
     void setCustodianCaptureState(Color color, Bitboard targets, int count);
+    // Sets the state for an intervention capture, updating the Zobrist key.
     void setInterventionCaptureState(Color color, Bitboard targets, int count);
+    // Sets the state for a leap capture, updating the Zobrist key.
+    void setLeapCaptureState(Color color, Bitboard targets, int count);
+    // Activates a custodian capture, setting the state for which pieces can be
+    // removed. Returns the number of pieces that are allowed to be removed.
     int activateCustodianCapture(Color color,
                                  const std::vector<Square> &capturedPieces);
+    // Activates an intervention capture.
     int activateInterventionCapture(Color color,
                                     const std::vector<Square> &capturedPieces);
+    // Activates a leap capture.
+    int activateLeapCapture(Color color,
+                            const std::vector<Square> &capturedPieces);
 
     // Data members
     Piece board[SQUARE_EXT_NB];
@@ -259,8 +277,10 @@ public:
     Bitboard formedMillsBB[COLOR_NB] {0};
     Bitboard custodianCaptureTargets[COLOR_NB] {0};
     Bitboard interventionCaptureTargets[COLOR_NB] {0};
+    Bitboard leapCaptureTargets[COLOR_NB] {0};
     int custodianRemovalCount[COLOR_NB] {0};
     int interventionRemovalCount[COLOR_NB] {0};
+    int leapRemovalCount[COLOR_NB] {0};
 
     // Indicates whether a mill capture is available at the start of the current
     // removal phase for each side. This is used to prevent choosing generic
@@ -276,6 +296,37 @@ public:
 };
 
 extern std::ostream &operator<<(std::ostream &os, const Position &pos);
+
+// Three-point line definitions on the board (used by custodian, intervention,
+// and leap capture rules, as well as move generation)
+constexpr std::array<std::array<Square, 3>, 12> kThreePointSquareEdgeLines = {{
+    {{SQ_31, SQ_24, SQ_25}},
+    {{SQ_23, SQ_16, SQ_17}},
+    {{SQ_15, SQ_8, SQ_9}},
+    {{SQ_13, SQ_12, SQ_11}},
+    {{SQ_21, SQ_20, SQ_19}},
+    {{SQ_29, SQ_28, SQ_27}},
+    {{SQ_31, SQ_30, SQ_29}},
+    {{SQ_23, SQ_22, SQ_21}},
+    {{SQ_15, SQ_14, SQ_13}},
+    {{SQ_9, SQ_10, SQ_11}},
+    {{SQ_17, SQ_18, SQ_19}},
+    {{SQ_25, SQ_26, SQ_27}},
+}};
+
+constexpr std::array<std::array<Square, 3>, 4> kThreePointCrossLines = {{
+    {{SQ_30, SQ_22, SQ_14}},
+    {{SQ_10, SQ_18, SQ_26}},
+    {{SQ_24, SQ_16, SQ_8}},
+    {{SQ_12, SQ_20, SQ_28}},
+}};
+
+constexpr std::array<std::array<Square, 3>, 4> kThreePointDiagonalLines = {{
+    {{SQ_31, SQ_23, SQ_15}},
+    {{SQ_9, SQ_17, SQ_25}},
+    {{SQ_29, SQ_21, SQ_13}},
+    {{SQ_11, SQ_19, SQ_27}},
+}};
 
 inline Color Position::side_to_move() const
 {

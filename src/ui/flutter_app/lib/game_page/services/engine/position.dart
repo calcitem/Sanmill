@@ -7,7 +7,9 @@ part of '../mill.dart';
 
 List<int> posKeyHistory = <int>[];
 
-const List<List<int>> _custodianSquareEdgeLines = <List<int>>[
+// Three-point line definitions on the board (used by custodian, intervention,
+// and leap capture rules)
+const List<List<int>> _threePointSquareEdgeLines = <List<int>>[
   <int>[31, 24, 25],
   <int>[23, 16, 17],
   <int>[15, 8, 9],
@@ -22,14 +24,14 @@ const List<List<int>> _custodianSquareEdgeLines = <List<int>>[
   <int>[25, 26, 27],
 ];
 
-const List<List<int>> _custodianCrossLines = <List<int>>[
+const List<List<int>> _threePointCrossLines = <List<int>>[
   <int>[30, 22, 14],
   <int>[10, 18, 26],
   <int>[24, 16, 8],
   <int>[12, 20, 28],
 ];
 
-const List<List<int>> _custodianDiagonalLines = <List<int>>[
+const List<List<int>> _threePointDiagonalLines = <List<int>>[
   <int>[31, 23, 15],
   <int>[9, 17, 25],
   <int>[29, 21, 13],
@@ -107,6 +109,22 @@ class Position {
     PieceColor.white: 0,
     PieceColor.black: 0,
   };
+
+  final Map<PieceColor, int> _leapCaptureTargets = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  final Map<PieceColor, int> _leapRemovalCount = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  @visibleForTesting
+  Map<PieceColor, int> get leapCaptureTargets => _leapCaptureTargets;
+
+  @visibleForTesting
+  Map<PieceColor, int> get leapRemovalCount => _leapRemovalCount;
 
   // Indicates whether a mill capture is available at the start of the current
   // removal phase for each side. This is used to prevent choosing generic
@@ -232,6 +250,12 @@ class Position {
     _sideToMove = color;
     _them = _sideToMove.opponent;
   }
+
+  @visibleForTesting
+  List<PieceColor> get board => _board;
+
+  @visibleForTesting
+  int get key => st.key;
 
   bool _movePiece(int from, int to) {
     // Ensure selecting the piece succeeds before placing it.
@@ -386,6 +410,7 @@ class Position {
 
     appendCapture('c', _custodianRemovalCount, _custodianCaptureTargets);
     appendCapture('i', _interventionRemovalCount, _interventionCaptureTargets);
+    appendCapture('l', _leapRemovalCount, _leapCaptureTargets);
 
     // Append preferredRemoveTarget if set
     // Format: " p:21" where 21 is the square number
@@ -411,6 +436,7 @@ class Position {
     final List<int> extraIndices = <int>[
       trimmedFen.indexOf(' c:'),
       trimmedFen.indexOf(' i:'),
+      trimmedFen.indexOf(' l:'),
       trimmedFen.indexOf(' p:'),
     ].where((int index) => index >= 0).toList();
 
@@ -430,6 +456,7 @@ class Position {
 
     String custodianData = '';
     String interventionData = '';
+    String leapData = '';
     int? preferredTarget;
     if (extras.isNotEmpty) {
       final List<String> tokens = extras.split(RegExp(r'\s+'));
@@ -438,6 +465,8 @@ class Position {
           custodianData = token.substring(2);
         } else if (token.startsWith('i:')) {
           interventionData = token.substring(2);
+        } else if (token.startsWith('l:')) {
+          leapData = token.substring(2);
         } else if (token.startsWith('p:')) {
           // Parse preferredRemoveTarget
           final String targetStr = token.substring(2);
@@ -570,6 +599,10 @@ class Position {
       logger.e('Failed to parse intervention FEN data: $interventionData');
       return false;
     }
+    if (!_parseLeapFen(leapData)) {
+      logger.e('Failed to parse leap FEN data: $leapData');
+      return false;
+    }
 
     // Set preferredRemoveTarget if present in FEN
     if (preferredTarget != null) {
@@ -585,6 +618,7 @@ class Position {
     final List<int> extraIndices = <int>[
       trimmedFen.indexOf(' c:'),
       trimmedFen.indexOf(' i:'),
+      trimmedFen.indexOf(' l:'),
       trimmedFen.indexOf(' p:'),
     ].where((int index) => index >= 0).toList();
 
@@ -903,6 +937,11 @@ class Position {
 
   ///////////////////////////////////////////////////////////////////////////////
 
+  @visibleForTesting
+  bool putPieceForTest(int s) {
+    return _putPiece(s);
+  }
+
   bool _putPiece(int s) {
     final PieceColor us = _sideToMove;
 
@@ -999,7 +1038,8 @@ class Position {
       // Early exit: check if any capture rules are enabled
       final bool anyCaptureEnabled =
           DB().ruleSettings.enableCustodianCapture ||
-          DB().ruleSettings.enableInterventionCapture;
+          DB().ruleSettings.enableInterventionCapture ||
+          DB().ruleSettings.enableLeapCapture;
 
       int custodianRemoval = 0;
       int interventionRemoval = 0;
@@ -1009,6 +1049,10 @@ class Position {
       final List<int> interventionCaptured = <int>[];
 
       // Only check captures if rules are enabled
+      // Note: Leap capture is NOT checked here in placing phase because:
+      // - When placing a new piece (no movement), leap doesn't apply
+      // - When mayMoveInPlacingPhase is enabled and moving a piece,
+      //   the code path goes through handleMovingPhaseForPutPiece instead
       if (anyCaptureEnabled) {
         if (DB().ruleSettings.enableCustodianCapture) {
           hasCustodianCapture = _checkCustodianCapture(
@@ -1024,6 +1068,8 @@ class Position {
             interventionCaptured,
           );
         }
+        // Leap capture is handled in handleMovingPhaseForPutPiece
+        // when mayMoveInPlacingPhase is enabled
       }
 
       if (n == 0) {
@@ -1054,6 +1100,7 @@ class Position {
           _setInterventionCaptureState(us, 0, 0);
         }
 
+        // Leap capture is not applicable in placing phase
         final int totalCaptureRemoval = custodianRemoval + interventionRemoval;
 
         if (totalCaptureRemoval > 0) {
@@ -1303,24 +1350,42 @@ class Position {
       return true;
     }
 
-    // If illegal
+    // If illegal: normally restrict to adjacent moves unless we can legally
+    // perform a leap capture in the moving phase.
     if (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount ||
         !DB().ruleSettings.mayFly ||
         pieceInHandCount[sideToMove]! > 0) {
       int md;
+      bool isAdjacent = false;
 
       for (md = 0; md < moveDirectionNumber; md++) {
         if (s == _adjacentSquares[_currentSquare[sideToMove]!][md]) {
+          isAdjacent = true;
           break;
         }
       }
 
-      // Not in moveTable
-      if (md == moveDirectionNumber) {
-        logger.i(
-          "[position] putPiece: [$s] is not in [${_currentSquare[sideToMove]}]'s move table.",
-        );
-        return false;
+      // Not in moveTable - check if leap is allowed
+      if (!isAdjacent) {
+        bool leapAllowed = false;
+        if (DB().ruleSettings.enableLeapCapture &&
+            DB().ruleSettings.leapCaptureInMovingPhase &&
+            _currentSquare[sideToMove] != 0) {
+          final List<int> tmp = <int>[];
+          leapAllowed = _checkLeapCapture(
+            s,
+            sideToMove,
+            tmp,
+            _currentSquare[sideToMove],
+          );
+        }
+
+        if (!leapAllowed) {
+          logger.i(
+            "[position] putPiece: [$s] is not in [${_currentSquare[sideToMove]}]'s move table.",
+          );
+          return false;
+        }
       }
     }
 
@@ -1362,14 +1427,18 @@ class Position {
     // Early exit: check if any capture rules are enabled
     final bool anyCaptureEnabled =
         DB().ruleSettings.enableCustodianCapture ||
-        DB().ruleSettings.enableInterventionCapture;
+        DB().ruleSettings.enableInterventionCapture ||
+        DB().ruleSettings.enableLeapCapture;
 
     int custodianRemoval = 0;
     int interventionRemoval = 0;
+    int leapRemoval = 0;
     bool hasCustodianCapture = false;
     bool hasInterventionCapture = false;
+    bool hasLeapCapture = false;
     final List<int> custodianCaptured = <int>[];
     final List<int> interventionCaptured = <int>[];
+    final List<int> leapCaptured = <int>[];
 
     // Only check captures if rules are enabled
     if (anyCaptureEnabled) {
@@ -1387,6 +1456,14 @@ class Position {
           interventionCaptured,
         );
       }
+      if (DB().ruleSettings.enableLeapCapture) {
+        hasLeapCapture = _checkLeapCapture(
+          s,
+          sideToMove,
+          leapCaptured,
+          _currentSquare[sideToMove],
+        );
+      }
     }
 
     if (n == 0) {
@@ -1394,29 +1471,56 @@ class Position {
       _currentSquare[sideToMove] = 0;
       _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
 
-      // Only activate captures if any were detected
-      if (hasCustodianCapture) {
-        custodianRemoval = _activateCustodianCapture(
-          sideToMove,
-          custodianCaptured,
-        );
-      } else if (anyCaptureEnabled) {
-        _setCustodianCaptureState(sideToMove, 0, 0);
+      // Only activate captures if any were detected. If leap capture is
+      // available, it takes precedence over custodian/intervention. The
+      // player must remove exactly the jumped piece and mill/custodian/
+      // intervention removals are disallowed for this move.
+      if (hasLeapCapture) {
+        leapRemoval = _activateLeapCapture(sideToMove, leapCaptured);
+        // Clear other capture modes to enforce single capture mode
+        if (hasCustodianCapture || _custodianRemovalCount[sideToMove]! > 0) {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+        if (hasInterventionCapture ||
+            _interventionRemovalCount[sideToMove]! > 0) {
+          _setInterventionCaptureState(sideToMove, 0, 0);
+        }
+        // No mill available in a leap capture turn
+        _millAvailableAtRemoval[sideToMove] = false;
+        // Exactly one removal for leap capture
+        pieceToRemoveCount[sideToMove] = 1;
+        _updateKeyMisc();
+        action = Act.remove;
+        return true;
+      } else {
+        if (hasCustodianCapture) {
+          custodianRemoval = _activateCustodianCapture(
+            sideToMove,
+            custodianCaptured,
+          );
+        } else if (anyCaptureEnabled) {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+
+        if (hasInterventionCapture) {
+          interventionRemoval = _activateInterventionCapture(
+            sideToMove,
+            interventionCaptured,
+          );
+        } else if (anyCaptureEnabled) {
+          _setInterventionCaptureState(sideToMove, 0, 0);
+        }
+
+        if (anyCaptureEnabled) {
+          _setLeapCaptureState(sideToMove, 0, 0);
+        }
       }
 
-      if (hasInterventionCapture) {
-        interventionRemoval = _activateInterventionCapture(
-          sideToMove,
-          interventionCaptured,
-        );
-      } else if (anyCaptureEnabled) {
-        _setInterventionCaptureState(sideToMove, 0, 0);
-      }
-
-      final int totalCaptureRemoval = custodianRemoval + interventionRemoval;
+      final int totalCaptureRemoval =
+          custodianRemoval + interventionRemoval + leapRemoval;
 
       if (totalCaptureRemoval > 0) {
-        // No mill, only custodian/intervention capture is available
+        // No mill, only custodian/intervention/leap capture is available
         _millAvailableAtRemoval[sideToMove] = false;
         pieceToRemoveCount[sideToMove] = totalCaptureRemoval;
         _updateKeyMisc();
@@ -1428,6 +1532,7 @@ class Position {
       if (anyCaptureEnabled) {
         _setCustodianCaptureState(sideToMove, 0, 0);
         _setInterventionCaptureState(sideToMove, 0, 0);
+        _setLeapCaptureState(sideToMove, 0, 0);
       }
       changeSideToMove();
 
@@ -1462,10 +1567,34 @@ class Position {
 
       _currentSquare[sideToMove] = 0;
 
-      // When both mill and custodian/intervention capture are triggered,
-      // we initially set pieceToRemoveCount to 1 to allow the player's
-      // first removal to determine which capture mode to use.
-      // The first removal will then adjust the count appropriately.
+      // Force leap capture precedence over mill when a leap capture is
+      // available on the same move that also forms a mill. According to the
+      // rule, the player must resolve the leap capture (remove exactly the
+      // jumped piece), mill removal is not allowed in this case, and the turn
+      // passes immediately to the opponent after the single removal.
+      if (hasLeapCapture) {
+        // Activate only leap capture and clear the other capture states
+        _activateLeapCapture(sideToMove, leapCaptured);
+        if (hasCustodianCapture || _custodianRemovalCount[sideToMove]! > 0) {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+        if (hasInterventionCapture ||
+            _interventionRemovalCount[sideToMove]! > 0) {
+          _setInterventionCaptureState(sideToMove, 0, 0);
+        }
+
+        // Disallow mill removal and restrict to exactly one removal
+        _millAvailableAtRemoval[sideToMove] = false;
+        pieceToRemoveCount[sideToMove] = 1;
+        _updateKeyMisc();
+        action = Act.remove;
+        GameController().gameInstance.focusIndex = squareToIndex[s];
+        return true;
+      }
+
+      // When leap is not available, allow mill vs custodian/intervention
+      // choice. Initially publish capture targets; the first removal will
+      // determine the mode.
       if (anyCaptureEnabled) {
         if (hasCustodianCapture) {
           _activateCustodianCapture(sideToMove, custodianCaptured);
@@ -1480,8 +1609,7 @@ class Position {
         }
       }
 
-      // Always start with mill removal count. The first removal action will
-      // determine if we switch to custodian/intervention capture mode.
+      // Start with mill removal count; first removal may switch to capture
       pieceToRemoveCount[sideToMove] = DB().ruleSettings.mayRemoveMultiple
           ? n
           : 1;
@@ -1495,6 +1623,11 @@ class Position {
     }
 
     return true;
+  }
+
+  @visibleForTesting
+  GameResponse removePieceForTest(int s) {
+    return _removePiece(s);
   }
 
   GameResponse _removePiece(int s) {
@@ -1511,6 +1644,8 @@ class Position {
     final int custodianCount = _custodianRemovalCount[sideToMove]!;
     final int interventionTargets = _interventionCaptureTargets[sideToMove]!;
     final int interventionCount = _interventionRemovalCount[sideToMove]!;
+    final int leapTargets = _leapCaptureTargets[sideToMove]!;
+    final int leapCount = _leapRemovalCount[sideToMove]!;
     final int remainingRemovals = pieceToRemoveCount[sideToMove]!;
 
     if (remainingRemovals == 0) {
@@ -1522,21 +1657,27 @@ class Position {
 
       final bool isCustodianTarget = (custodianTargets & mask) != 0;
       final bool isInterventionTarget = (interventionTargets & mask) != 0;
-      final bool isCaptureTarget = isCustodianTarget || isInterventionTarget;
-      final int captureCount = custodianCount + interventionCount;
+      final bool isLeapTarget = (leapTargets & mask) != 0;
+      final bool isCaptureTarget =
+          isCustodianTarget || isInterventionTarget || isLeapTarget;
+      final int captureCount = custodianCount + interventionCount + leapCount;
       final bool millAvailable = _millAvailableAtRemoval[sideToMove] ?? false;
 
-      // If the first removal chooses a custodian/intervention target when
+      // If the first removal chooses a custodian/intervention/leap target when
       // mill is also available, lock the capture mode and disallow mill.
       // For intervention: always enforce removal count equals the intervention
       // obligation so the next removal must take the paired piece, regardless
       // of mayRemoveMultiple setting.
       // For custodian: always only removes one piece, regardless of mayRemoveMultiple.
+      // For leap: always only removes one piece, regardless of mayRemoveMultiple.
       if (isInterventionTarget && interventionCount > 0) {
         // Choosing intervention capture locks out mill
         _millAvailableAtRemoval[sideToMove] = false;
         if (custodianTargets != 0 || custodianCount > 0) {
           _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+        if (leapTargets != 0 || leapCount > 0) {
+          _setLeapCaptureState(sideToMove, 0, 0);
         }
         // Intervention capture always requires removing both pieces from the line
         pieceToRemoveCount[sideToMove] = interventionCount;
@@ -1546,14 +1687,28 @@ class Position {
         if (interventionTargets != 0 || interventionCount > 0) {
           _setInterventionCaptureState(sideToMove, 0, 0);
         }
+        if (leapTargets != 0 || leapCount > 0) {
+          _setLeapCaptureState(sideToMove, 0, 0);
+        }
         // Custodian capture always only removes one piece (the trapped piece)
+        pieceToRemoveCount[sideToMove] = 1;
+      } else if (isLeapTarget && leapCount > 0) {
+        // Choosing leap capture locks out mill
+        _millAvailableAtRemoval[sideToMove] = false;
+        if (interventionTargets != 0 || interventionCount > 0) {
+          _setInterventionCaptureState(sideToMove, 0, 0);
+        }
+        if (custodianTargets != 0 || custodianCount > 0) {
+          _setCustodianCaptureState(sideToMove, 0, 0);
+        }
+        // Leap capture always removes exactly one piece
         pieceToRemoveCount[sideToMove] = 1;
       }
 
-      // Allow player to choose between mill capture and custodian/intervention capture
+      // Allow player to choose between mill capture and custodian/intervention/leap capture
       // When multiple capture modes are available, player's first removal determines the mode
       if (millAvailable && !isCaptureTarget && captureCount > 0) {
-        // Player chooses mill capture over custodian/intervention
+        // Player chooses mill capture over custodian/intervention/leap
         // When switching to mill mode, subtract the pre-added capture counts
         // that were added during placing phase (if mayRemoveMultiple was true)
         if (pieceToRemoveCount[sideToMove]! > captureCount) {
@@ -1561,11 +1716,12 @@ class Position {
               pieceToRemoveCount[sideToMove]! - captureCount;
           _updateKeyMisc();
         }
-        // Clear custodian/intervention state to enforce single capture mode selection
+        // Clear custodian/intervention/leap state to enforce single capture mode selection
         _setCustodianCaptureState(sideToMove, 0, 0);
         _setInterventionCaptureState(sideToMove, 0, 0);
+        _setLeapCaptureState(sideToMove, 0, 0);
       } else if (!millAvailable && !isCaptureTarget && captureCount > 0) {
-        // No mill available: must remove only from custodian/intervention targets
+        // No mill available: must remove only from custodian/intervention/leap targets
         return const IllegalAction();
       } else if (!isCaptureTarget && captureCount >= remainingRemovals) {
         // No mill available: must remove only from capture targets
@@ -1598,6 +1754,17 @@ class Position {
 
         _setInterventionCaptureState(sideToMove, newTargets, newCount);
       }
+
+      if (isLeapTarget && leapCount > 0) {
+        int newTargets = leapTargets & ~mask;
+        final int newCount = leapCount - 1;
+
+        if (newCount <= 0) {
+          newTargets = 0;
+        }
+
+        _setLeapCaptureState(sideToMove, newTargets, newCount);
+      }
     } else {
       if (_board[s] != sideToMove) {
         return const ShouldRemoveSelf();
@@ -1611,6 +1778,11 @@ class Position {
       if (_interventionCaptureTargets[sideToMove]! != 0 ||
           _interventionRemovalCount[sideToMove]! != 0) {
         _setInterventionCaptureState(sideToMove, 0, 0);
+      }
+
+      if (_leapCaptureTargets[sideToMove]! != 0 ||
+          _leapRemovalCount[sideToMove]! != 0) {
+        _setLeapCaptureState(sideToMove, 0, 0);
       }
     }
 
@@ -2080,6 +2252,47 @@ class Position {
     _interventionRemovalCount[color] = count;
   }
 
+  // Sets the state for a leap capture, including target pieces and removal count.
+  // This function updates the Zobrist key to reflect the new capture state.
+  @visibleForTesting
+  void setLeapCaptureStateForTest(PieceColor color, int targets, int count) {
+    _setLeapCaptureState(color, targets, count);
+  }
+
+  void _setLeapCaptureState(PieceColor color, int targets, int count) {
+    if (color != PieceColor.white && color != PieceColor.black) {
+      return;
+    }
+
+    final int previousTargets = _leapCaptureTargets[color]!;
+    final int previousCount = _leapRemovalCount[color]!;
+
+    final int clampedPrev = previousCount.clamp(0, 1);
+    final int clampedNew = count.clamp(0, 1);
+
+    if (clampedPrev != clampedNew) {
+      st.key ^= _Zobrist.leapCount[color.index][clampedPrev];
+      st.key ^= _Zobrist.leapCount[color.index][clampedNew];
+    }
+
+    if (previousTargets != targets) {
+      for (int sq = sqBegin; sq < sqEnd; ++sq) {
+        final int mask = squareBb(sq);
+
+        if ((previousTargets & mask) != 0) {
+          st.key ^= _Zobrist.leapTarget[color.index][sq];
+        }
+
+        if ((targets & mask) != 0) {
+          st.key ^= _Zobrist.leapTarget[color.index][sq];
+        }
+      }
+    }
+
+    _leapCaptureTargets[color] = targets;
+    _leapRemovalCount[color] = count;
+  }
+
   int _activateCustodianCapture(PieceColor color, List<int> capturedPieces) {
     if (capturedPieces.isEmpty) {
       _setCustodianCaptureState(color, 0, 0);
@@ -2118,6 +2331,30 @@ class Position {
     final int allowedRemovals = capturedPieces.length;
 
     _setInterventionCaptureState(color, targets, allowedRemovals);
+
+    return allowedRemovals;
+  }
+
+  // Activates the leap capture rule after a move.
+  // Sets the leap capture targets and the number of pieces to be removed.
+  // Only one piece can be captured per leap.
+  int _activateLeapCapture(PieceColor color, List<int> capturedPieces) {
+    if (capturedPieces.isEmpty) {
+      _setLeapCaptureState(color, 0, 0);
+      return 0;
+    }
+
+    int targets = 0;
+    for (final int target in capturedPieces) {
+      targets |= squareBb(target);
+    }
+
+    // Leap capture allows jumping over one opponent piece and capturing it.
+    // The player can only capture one piece at a time, regardless of
+    // mayRemoveMultiple setting.
+    const int allowedRemovals = 1;
+
+    _setLeapCaptureState(color, targets, allowedRemovals);
 
     return allowedRemovals;
   }
@@ -2183,16 +2420,16 @@ class Position {
     }
 
     if (ruleSettings.custodianCaptureOnSquareEdges) {
-      _custodianSquareEdgeLines.forEach(processLine);
+      _threePointSquareEdgeLines.forEach(processLine);
     }
 
     if (ruleSettings.custodianCaptureOnCrossLines) {
-      _custodianCrossLines.forEach(processLine);
+      _threePointCrossLines.forEach(processLine);
     }
 
     if (ruleSettings.hasDiagonalLines &&
         ruleSettings.custodianCaptureOnDiagonalLines) {
-      _custodianDiagonalLines.forEach(processLine);
+      _threePointDiagonalLines.forEach(processLine);
     }
 
     if (captured == 0) {
@@ -2248,12 +2485,12 @@ class Position {
     // Check all intervention capture lines to find which two pieces are on the same line
     final List<List<List<int>>> allLines = <List<List<int>>>[
       if (DB().ruleSettings.interventionCaptureOnCrossLines)
-        _custodianCrossLines,
+        _threePointCrossLines,
       if (DB().ruleSettings.interventionCaptureOnSquareEdges)
-        _custodianSquareEdgeLines,
+        _threePointSquareEdgeLines,
       if (DB().ruleSettings.hasDiagonalLines &&
           DB().ruleSettings.interventionCaptureOnDiagonalLines)
-        _custodianDiagonalLines,
+        _threePointDiagonalLines,
     ];
 
     for (final List<List<int>> lineSet in allLines) {
@@ -2342,16 +2579,16 @@ class Position {
     // This ensures that when placing at a cross center, the cross line
     // (more intuitive) is prioritized over the square edge line
     if (DB().ruleSettings.interventionCaptureOnCrossLines) {
-      _custodianCrossLines.forEach(processLine);
+      _threePointCrossLines.forEach(processLine);
     }
 
     if (DB().ruleSettings.interventionCaptureOnSquareEdges) {
-      _custodianSquareEdgeLines.forEach(processLine);
+      _threePointSquareEdgeLines.forEach(processLine);
     }
 
     if (DB().ruleSettings.hasDiagonalLines == true &&
         DB().ruleSettings.interventionCaptureOnDiagonalLines == true) {
-      _custodianDiagonalLines.forEach(processLine);
+      _threePointDiagonalLines.forEach(processLine);
     }
 
     if (captureLines.isEmpty) {
@@ -2386,6 +2623,141 @@ class Position {
       }
 
       capturedPieces.add(target);
+    }
+
+    return capturedPieces.isNotEmpty;
+  }
+
+  @visibleForTesting
+  bool checkLeapCaptureForTest(
+    int sq,
+    PieceColor us,
+    List<int> capturedPieces, [
+    int? from,
+  ]) {
+    return _checkLeapCapture(sq, us, capturedPieces, from);
+  }
+
+  bool _checkLeapCapture(
+    int sq,
+    PieceColor us,
+    List<int> capturedPieces, [
+    int? from,
+  ]) {
+    capturedPieces.clear();
+
+    final RuleSettings ruleSettings = DB().ruleSettings;
+
+    if (!ruleSettings.enableLeapCapture) {
+      return false;
+    }
+
+    // Leap capture requires a movement action with a valid 'from' square
+    // Without it, we cannot distinguish leap from custodian capture
+    if (from == null) {
+      return false;
+    }
+
+    // Check phase-specific conditions
+    if (phase == Phase.placing) {
+      // In placing phase, leap is only valid when mayMoveInPlacingPhase is enabled
+      if (!ruleSettings.mayMoveInPlacingPhase ||
+          !ruleSettings.leapCaptureInPlacingPhase) {
+        return false;
+      }
+    } else if (phase == Phase.moving) {
+      if (!ruleSettings.leapCaptureInMovingPhase) {
+        return false;
+      }
+    } else {
+      // Not in a valid phase for leap capture
+      return false;
+    }
+
+    // Check piece count condition: only in moving phase and based on remaining pieces
+    if (ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3) {
+      final int usPieces = pieceOnBoardCount[us]!;
+      final int themPieces = pieceOnBoardCount[us.opponent]!;
+
+      if (usPieces > 3 && themPieces > 3) {
+        return false;
+      } else if (usPieces > 3 && themPieces <= 3) {
+        return false;
+      }
+    }
+
+    // Process leap capture: check pattern [from] - [opponent] - [sq]
+    // where 'from' is the jump origin and 'sq' is the destination
+    int captured = 0;
+
+    void processLine(List<int> line) {
+      // Check if sq is at position 2 (end of line) and from is at position 0
+      if (sq == line[2] && from == line[0]) {
+        final int middle = line[1];
+        // Check pattern: [from] - [middle(opponent)] - [sq]
+        if (_board[middle] == us.opponent) {
+          captured |= squareBb(middle);
+        }
+      }
+      // Check if sq is at position 0 (start of line) and from is at position 2
+      else if (sq == line[0] && from == line[2]) {
+        final int middle = line[1];
+        // Check pattern: [sq] - [middle(opponent)] - [from]
+        if (_board[middle] == us.opponent) {
+          captured |= squareBb(middle);
+        }
+      }
+    }
+
+    if (ruleSettings.leapCaptureOnSquareEdges) {
+      _threePointSquareEdgeLines.forEach(processLine);
+    }
+
+    if (ruleSettings.leapCaptureOnCrossLines) {
+      _threePointCrossLines.forEach(processLine);
+    }
+
+    if (ruleSettings.hasDiagonalLines &&
+        ruleSettings.leapCaptureOnDiagonalLines) {
+      _threePointDiagonalLines.forEach(processLine);
+    }
+
+    if (captured == 0) {
+      return false;
+    }
+
+    // Validate captured pieces are removable
+    int validTargets = 0;
+
+    for (int target = sqBegin; target < sqEnd; ++target) {
+      final int mask = squareBb(target);
+
+      if ((captured & mask) == 0) {
+        continue;
+      }
+
+      if (_board[target] != us.opponent) {
+        continue;
+      }
+
+      // Check if piece can be removed according to mill rules
+      if (!ruleSettings.mayRemoveFromMillsAlways &&
+          _potentialMillsCount(target, PieceColor.nobody) > 0 &&
+          !_isAllInMills(us.opponent)) {
+        continue;
+      }
+
+      validTargets |= mask;
+    }
+
+    if (validTargets == 0) {
+      return false;
+    }
+
+    for (int target = sqBegin; target < sqEnd; ++target) {
+      if ((validTargets & squareBb(target)) != 0) {
+        capturedPieces.add(target);
+      }
     }
 
     return capturedPieces.isNotEmpty;
@@ -2748,6 +3120,126 @@ class Position {
     return true;
   }
 
+  bool _parseLeapFen(String data) {
+    final Map<PieceColor, int> targets = <PieceColor, int>{
+      PieceColor.white: 0,
+      PieceColor.black: 0,
+    };
+    final Map<PieceColor, int> counts = <PieceColor, int>{
+      PieceColor.white: 0,
+      PieceColor.black: 0,
+    };
+    final Map<PieceColor, bool> hasColor = <PieceColor, bool>{
+      PieceColor.white: false,
+      PieceColor.black: false,
+    };
+
+    if (data.isEmpty) {
+      for (final PieceColor color in <PieceColor>[
+        PieceColor.white,
+        PieceColor.black,
+      ]) {
+        _setLeapCaptureState(color, 0, 0);
+      }
+      return true;
+    }
+
+    final List<String> segments = data.split('|');
+
+    for (final String rawSegment in segments) {
+      final String segment = rawSegment.trim();
+
+      if (segment.isEmpty || segment.length < 3 || segment[1] != '-') {
+        continue;
+      }
+
+      PieceColor? color;
+      switch (segment[0]) {
+        case 'w':
+          color = PieceColor.white;
+          break;
+        case 'b':
+          color = PieceColor.black;
+          break;
+        default:
+          color = null;
+          break;
+      }
+
+      if (color == null) {
+        continue;
+      }
+
+      final int secondDash = segment.indexOf('-', 2);
+      if (secondDash == -1) {
+        continue;
+      }
+
+      final int? parsedCount = int.tryParse(
+        segment.substring(2, secondDash).trim(),
+      );
+      if (parsedCount == null) {
+        continue;
+      }
+
+      int targetMask = 0;
+      final String listStr = segment.substring(secondDash + 1);
+
+      if (listStr.isNotEmpty) {
+        for (final String token in listStr.split('.')) {
+          final String sqText = token.trim();
+          if (sqText.isEmpty) {
+            continue;
+          }
+
+          final int? squareValue = int.tryParse(sqText);
+          if (squareValue == null ||
+              squareValue < sqBegin ||
+              squareValue >= sqEnd) {
+            logger.e('Invalid leap capture target square: $sqText');
+            return false;
+          }
+
+          // Verify that the target square actually contains an opponent piece
+          if (_board[squareValue] == PieceColor.none) {
+            logger.e('Leap target square $squareValue is empty');
+            return false;
+          }
+
+          targetMask |= squareBb(squareValue);
+        }
+      }
+
+      // Validate count matches number of targets (only when there are targets)
+      final int actualTargetCount = _countBits(targetMask);
+      if (parsedCount > 0 &&
+          targetMask > 0 &&
+          actualTargetCount != parsedCount) {
+        logger.e(
+          'Leap count mismatch: expected $parsedCount, found $actualTargetCount',
+        );
+        return false;
+      }
+
+      targets[color] = targetMask;
+      counts[color] = parsedCount;
+      hasColor[color] = true;
+    }
+
+    for (final PieceColor color in <PieceColor>[
+      PieceColor.white,
+      PieceColor.black,
+    ]) {
+      if (hasColor[color]!) {
+        _setLeapCaptureState(color, targets[color]!, counts[color]!);
+      } else {
+        _setLeapCaptureState(color, 0, 0);
+      }
+    }
+
+    return true;
+  }
+
   ///////////////////////////////////////////////////////////////////////////////
 
   /// Count the number of set bits in a bitmask
@@ -3056,6 +3548,10 @@ extension SetupPosition on Position {
     _interventionCaptureTargets[PieceColor.black] = 0;
     _interventionRemovalCount[PieceColor.white] = 0;
     _interventionRemovalCount[PieceColor.black] = 0;
+    _leapCaptureTargets[PieceColor.white] = 0;
+    _leapCaptureTargets[PieceColor.black] = 0;
+    _leapRemovalCount[PieceColor.white] = 0;
+    _leapRemovalCount[PieceColor.black] = 0;
 
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
@@ -3142,6 +3638,14 @@ extension SetupPosition on Position {
         pos._interventionRemovalCount[PieceColor.white]!;
     _interventionRemovalCount[PieceColor.black] =
         pos._interventionRemovalCount[PieceColor.black]!;
+    _leapCaptureTargets[PieceColor.white] =
+        pos._leapCaptureTargets[PieceColor.white]!;
+    _leapCaptureTargets[PieceColor.black] =
+        pos._leapCaptureTargets[PieceColor.black]!;
+    _leapRemovalCount[PieceColor.white] =
+        pos._leapRemovalCount[PieceColor.white]!;
+    _leapRemovalCount[PieceColor.black] =
+        pos._leapRemovalCount[PieceColor.black]!;
 
     // Copy preferredRemoveTarget to maintain it across position cloning
     preferredRemoveTarget = pos.preferredRemoveTarget;

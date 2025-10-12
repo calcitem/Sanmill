@@ -156,8 +156,10 @@ class TapHandler {
                 position._custodianRemovalCount[sideToMoveColor]! > 0;
             final bool hasInterventionCapture =
                 position._interventionRemovalCount[sideToMoveColor]! > 0;
+            final bool hasLeapCapture =
+                position._leapRemovalCount[sideToMoveColor]! > 0;
             final bool hasCaptureObligation =
-                hasCustodianCapture || hasInterventionCapture;
+                hasCustodianCapture || hasInterventionCapture || hasLeapCapture;
 
             if (position.isStalemateRemoval(sideToMoveColor)) {
               if (GameController().gameInstance.gameMode ==
@@ -489,8 +491,12 @@ class TapHandler {
                   position._custodianRemovalCount[sideToMoveColor]! > 0;
               final bool hasInterventionCapture =
                   position._interventionRemovalCount[sideToMoveColor]! > 0;
+              final bool hasLeapCapture =
+                  position._leapRemovalCount[sideToMoveColor]! > 0;
               final bool hasCaptureObligation =
-                  hasCustodianCapture || hasInterventionCapture;
+                  hasCustodianCapture ||
+                  hasInterventionCapture ||
+                  hasLeapCapture;
 
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {

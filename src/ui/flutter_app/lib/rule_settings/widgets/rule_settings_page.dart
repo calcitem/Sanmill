@@ -5,7 +5,6 @@
 
 // ignore_for_file: deprecated_member_use
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
@@ -13,7 +12,6 @@ import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
-import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
@@ -1056,37 +1054,34 @@ class RuleSettingsPage extends StatelessWidget {
           onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
               _setInterventionCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
         ),
-        // Only show leap capture in debug mode (experimental feature)
-        if (kDebugMode && EnvironmentConfig.devMode)
-          _buildCaptureRuleCard(
-            context: context,
-            keyPrefix: 'leap_capture',
-            title: S.of(context).leapCapture,
-            enableLabel: S.of(context).leapCaptureEnable,
-            description: S.of(context).leapCaptureDescription,
-            enabled: ruleSettings.enableLeapCapture,
-            onEnabledChanged: (bool value) =>
-                _setLeapCaptureEnabled(ruleSettings, value),
-            onSquareEdges: ruleSettings.leapCaptureOnSquareEdges,
-            onSquareEdgesChanged: (bool value) =>
-                _setLeapCaptureOnSquareEdges(ruleSettings, value),
-            onCrossLines: ruleSettings.leapCaptureOnCrossLines,
-            onCrossLinesChanged: (bool value) =>
-                _setLeapCaptureOnCrossLines(ruleSettings, value),
-            onDiagonalLines: ruleSettings.leapCaptureOnDiagonalLines,
-            onDiagonalLinesChanged: (bool value) =>
-                _setLeapCaptureOnDiagonalLines(ruleSettings, value),
-            inPlacingPhase: ruleSettings.leapCaptureInPlacingPhase,
-            onInPlacingPhaseChanged: (bool value) =>
-                _setLeapCaptureInPlacingPhase(ruleSettings, value),
-            inMovingPhase: ruleSettings.leapCaptureInMovingPhase,
-            onInMovingPhaseChanged: (bool value) =>
-                _setLeapCaptureInMovingPhase(ruleSettings, value),
-            onlyWhenOwnPiecesLeq3:
-                ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3,
-            onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
-                _setLeapCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
-          ),
+        _buildCaptureRuleCard(
+          context: context,
+          keyPrefix: 'leap_capture',
+          title: S.of(context).leapCapture,
+          enableLabel: S.of(context).leapCaptureEnable,
+          description: S.of(context).leapCaptureDescription,
+          enabled: ruleSettings.enableLeapCapture,
+          onEnabledChanged: (bool value) =>
+              _setLeapCaptureEnabled(ruleSettings, value),
+          onSquareEdges: ruleSettings.leapCaptureOnSquareEdges,
+          onSquareEdgesChanged: (bool value) =>
+              _setLeapCaptureOnSquareEdges(ruleSettings, value),
+          onCrossLines: ruleSettings.leapCaptureOnCrossLines,
+          onCrossLinesChanged: (bool value) =>
+              _setLeapCaptureOnCrossLines(ruleSettings, value),
+          onDiagonalLines: ruleSettings.leapCaptureOnDiagonalLines,
+          onDiagonalLinesChanged: (bool value) =>
+              _setLeapCaptureOnDiagonalLines(ruleSettings, value),
+          inPlacingPhase: ruleSettings.leapCaptureInPlacingPhase,
+          onInPlacingPhaseChanged: (bool value) =>
+              _setLeapCaptureInPlacingPhase(ruleSettings, value),
+          inMovingPhase: ruleSettings.leapCaptureInMovingPhase,
+          onInMovingPhaseChanged: (bool value) =>
+              _setLeapCaptureInMovingPhase(ruleSettings, value),
+          onlyWhenOwnPiecesLeq3: ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3,
+          onOnlyWhenOwnPiecesLeq3Changed: (bool value) =>
+              _setLeapCaptureOnlyWhenOwnPiecesLeq3(ruleSettings, value),
+        ),
       ],
     );
   }
