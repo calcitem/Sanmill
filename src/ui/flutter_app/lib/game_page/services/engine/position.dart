@@ -865,6 +865,8 @@ class Position {
           st.rule50 = 0;
 
           GameController().gameInstance.removeIndex = squareToIndex[m.to];
+          GameController().gameInstance.blurIndex = null;
+          GameController().gameInstance.focusIndex = null;
           GameController().animationManager.animateRemove();
         } else {
           return false;
@@ -879,6 +881,8 @@ class Position {
         if (ret) {
           ++st.rule50;
           GameController().gameInstance.removeIndex = null;
+          GameController().gameInstance.blurIndex = squareToIndex[m.from];
+          GameController().gameInstance.focusIndex = squareToIndex[m.to];
           GameController().animationManager.animateMove();
         }
         break;
