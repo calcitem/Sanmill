@@ -19,7 +19,7 @@ class WidgetsToImageController {
   Future<Uint8List?> capture() async {
     try {
       /// Boundary widget by GlobalKey
-      final RenderRepaintBoundary? boundary =
+      RenderRepaintBoundary? boundary =
           containerKey.currentContext?.findRenderObject()
               as RenderRepaintBoundary?;
 
@@ -28,14 +28,25 @@ class WidgetsToImageController {
         return null;
       }
 
-      // Check if the widget needs to be painted before capturing
+      // Wait for the widget to finish painting if needed
       if (boundary.debugNeedsPaint) {
-        logger.w("Widget needs paint, skipping capture to avoid assertion");
-        return null;
+        logger.w("Widget needs paint, waiting for next frame");
+        await WidgetsBinding.instance.endOfFrame;
+        
+        // Re-acquire boundary after waiting
+        boundary = containerKey.currentContext?.findRenderObject()
+            as RenderRepaintBoundary?;
+        
+        if (boundary == null || boundary.debugNeedsPaint) {
+          logger.w("Boundary still not ready after waiting");
+          return null;
+        }
       }
 
+      // Clamp pixel ratio to prevent excessive memory usage on low-end devices
       final double ratio =
-          DB().generalSettings.gameScreenRecorderPixelRatio / 100;
+          (DB().generalSettings.gameScreenRecorderPixelRatio / 100)
+              .clamp(0.5, 2.0);
 
       /// Convert boundary to image
       final ui.Image image = await boundary.toImage(pixelRatio: ratio);
@@ -46,7 +57,7 @@ class WidgetsToImageController {
       );
       final Uint8List? pngBytes = byteData?.buffer.asUint8List();
       
-      // Dispose image to free memory
+      // Dispose image to free memory immediately
       image.dispose();
       
       return pngBytes;

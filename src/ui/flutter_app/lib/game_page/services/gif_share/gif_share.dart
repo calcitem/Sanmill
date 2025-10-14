@@ -24,13 +24,13 @@ class GifShare {
 
   final WidgetsToImageController controller = WidgetsToImageController();
   final List<Uint8List> pngs = <Uint8List>[];
-  final List<img.Image> images = <img.Image>[];
   Uint8List? bytes;
 
   final int frameRate = 1;
   
-  // Maximum number of frames to prevent memory overflow
-  static const int maxFrames = 300;
+  // Maximum number of frames to prevent memory overflow.
+  // Uses circular buffer: when limit is reached, oldest frames are discarded.
+  static const int maxFrames = 120;
 
   Future<void> captureView({bool first = false}) async {
     if (DB().generalSettings.gameScreenRecorderSupport == false) {
@@ -41,17 +41,14 @@ class GifShare {
       releaseData();
     }
     
-    // Prevent memory overflow by limiting the number of frames
-    if (pngs.length >= maxFrames) {
-      return;
-    }
-    
     final Uint8List? bytes = await controller.capture();
     if (bytes != null) {
       for (int i = 0; i < frameRate; i++) {
-        if (pngs.length < maxFrames) {
-          pngs.add(bytes);
+        // Use circular buffer: when limit is reached, discard oldest frame
+        if (pngs.length >= maxFrames) {
+          pngs.removeAt(0);
         }
+        pngs.add(bytes);
       }
     }
   }
@@ -59,12 +56,15 @@ class GifShare {
   void releaseData() {
     bytes = null;
     pngs.clear();
-    images.clear();
   }
 
   /// Call when "Share GIF" is tapped.
   Future<bool> shareGif() async {
     if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return false;
+    }
+
+    if (pngs.isEmpty) {
       return false;
     }
 
@@ -85,11 +85,19 @@ class GifShare {
     }
 
     final Uint8List? gifData = encoder.finish();
+    
+    // Release memory immediately after encoding
+    final bool result;
     if (gifData != null) {
-      return _writeGifToFile(gifData);
+      result = await _writeGifToFile(gifData);
     } else {
-      return false;
+      result = false;
     }
+    
+    // Clear captured frames to free memory
+    releaseData();
+    
+    return result;
   }
 
   Future<bool> _writeGifToFile(List<int> gif) async {
