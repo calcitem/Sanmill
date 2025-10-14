@@ -23,17 +23,32 @@ class WidgetsToImageController {
           containerKey.currentContext?.findRenderObject()
               as RenderRepaintBoundary?;
 
+      if (boundary == null) {
+        logger.w("Boundary is null, cannot capture image");
+        return null;
+      }
+
+      // Check if the widget needs to be painted before capturing
+      if (boundary.debugNeedsPaint) {
+        logger.w("Widget needs paint, skipping capture to avoid assertion");
+        return null;
+      }
+
       final double ratio =
           DB().generalSettings.gameScreenRecorderPixelRatio / 100;
 
       /// Convert boundary to image
-      final ui.Image image = await boundary!.toImage(pixelRatio: ratio);
+      final ui.Image image = await boundary.toImage(pixelRatio: ratio);
 
       /// Set ImageByteFormat
       final ByteData? byteData = await image.toByteData(
         format: ui.ImageByteFormat.png,
       );
       final Uint8List? pngBytes = byteData?.buffer.asUint8List();
+      
+      // Dispose image to free memory
+      image.dispose();
+      
       return pngBytes;
     } catch (e) {
       logger.e(e);

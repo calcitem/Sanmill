@@ -28,6 +28,9 @@ class GifShare {
   Uint8List? bytes;
 
   final int frameRate = 1;
+  
+  // Maximum number of frames to prevent memory overflow
+  static const int maxFrames = 300;
 
   Future<void> captureView({bool first = false}) async {
     if (DB().generalSettings.gameScreenRecorderSupport == false) {
@@ -37,10 +40,18 @@ class GifShare {
     if (first) {
       releaseData();
     }
+    
+    // Prevent memory overflow by limiting the number of frames
+    if (pngs.length >= maxFrames) {
+      return;
+    }
+    
     final Uint8List? bytes = await controller.capture();
     if (bytes != null) {
       for (int i = 0; i < frameRate; i++) {
-        pngs.add(bytes);
+        if (pngs.length < maxFrames) {
+          pngs.add(bytes);
+        }
       }
     }
   }
