@@ -30,7 +30,8 @@ class GifShare {
   
   // Maximum number of frames to prevent memory overflow.
   // Uses circular buffer: when limit is reached, oldest frames are discarded.
-  static const int maxFrames = 120;
+  // 300 frames can record approximately 300 moves, sufficient for most games.
+  static const int maxFrames = 300;
 
   Future<void> captureView({bool first = false}) async {
     if (DB().generalSettings.gameScreenRecorderSupport == false) {
@@ -40,7 +41,7 @@ class GifShare {
     if (first) {
       releaseData();
     }
-    
+
     final Uint8List? bytes = await controller.capture();
     if (bytes != null) {
       for (int i = 0; i < frameRate; i++) {
@@ -85,7 +86,7 @@ class GifShare {
     }
 
     final Uint8List? gifData = encoder.finish();
-    
+
     // Release memory immediately after encoding
     final bool result;
     if (gifData != null) {
@@ -93,10 +94,10 @@ class GifShare {
     } else {
       result = false;
     }
-    
+
     // Clear captured frames to free memory
     releaseData();
-    
+
     return result;
   }
 

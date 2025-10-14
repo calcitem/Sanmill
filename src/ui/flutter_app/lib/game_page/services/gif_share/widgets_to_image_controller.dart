@@ -43,10 +43,9 @@ class WidgetsToImageController {
         }
       }
 
-      // Clamp pixel ratio to prevent excessive memory usage on low-end devices
+      // Respect user's pixel ratio setting (25%, 50%, 75%, or 100%)
       final double ratio =
-          (DB().generalSettings.gameScreenRecorderPixelRatio / 100)
-              .clamp(0.5, 2.0);
+          DB().generalSettings.gameScreenRecorderPixelRatio / 100;
 
       /// Convert boundary to image
       final ui.Image image = await boundary.toImage(pixelRatio: ratio);
