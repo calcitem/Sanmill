@@ -34,10 +34,12 @@ flutter__detect_system_flutter() {
   flutter_cmd="$(command -v flutter)"
 
   local version_line
-  if ! version_line="$("${flutter_cmd}" --version 2>/dev/null | head -n 1)"; then
+  local version_output
+  if ! version_output="$("${flutter_cmd}" --version 2>&1)"; then
     echo "Failed to get Flutter version information." >&2
     return 1
   fi
+  version_line="$(printf '%s' "${version_output}" | head -n 1)"
 
   # Expected format: "Flutter 3.35.5 • channel stable • ..."
   local version
