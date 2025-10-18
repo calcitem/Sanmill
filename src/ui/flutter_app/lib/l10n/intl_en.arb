@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "No restriction",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Available when you have 3 or fewer pieces",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Stop placing when only two empty squares remain",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "When enabled, the placing phase ends and moving phase begins when the board has only 2 empty spaces left, regardless of pieces in hand. This rule only applies to 12-piece games.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

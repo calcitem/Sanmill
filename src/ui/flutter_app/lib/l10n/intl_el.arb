@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Δεν υπάρχει περιορισμός",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Διατίθεται όταν έχετε τρία ή λιγότερα κομμάτια",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Διακοπή τοποθέτησης όταν απομένουν μόνο δύο κενά τετράγωνα",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Όταν είναι ενεργοποιημένο, η φάση τοποθέτησης τελειώνει και η φάση κίνησης ξεκινά όταν ο πίνακας έχει μόνο 2 κενές θέσεις, ανεξάρτητα από τα κομμάτια στο χέρι. Αυτός ο κανόνας ισχύει μόνο για παιχνίδια 12 κομματιών.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

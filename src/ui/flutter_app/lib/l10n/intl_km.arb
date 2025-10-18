@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "គ្មានការដាក់កម្រិត",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "មាននៅពេលអ្នកមានបំណែកបីឬតិចជាងនេះ",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "បញ្ឈប់ការដាក់នៅពេលដែលមានតែការ៉េទទេពីរប៉ុណ្ណោះនៅសល់",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "នៅពេលបើក ដំណាក់កាលដាក់បញ្ចប់ ហើយដំណាក់កាលផ្លាស់ទីចាប់ផ្តើមនៅពេលដែលក្តារមានតែកន្លែងទទេ ២ នៅសល់ ដោយមិនគិតពីបំណែកនៅក្នុងដៃ។ ច្បាប់នេះអនុវត្តតែសម្រាប់ហ្គេមបំណែក ១២ ប៉ុណ្ណោះ។",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

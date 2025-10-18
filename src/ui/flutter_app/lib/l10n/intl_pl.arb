@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Bez ograniczeń",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Dostępne, gdy masz trzy lub mniej elementów",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Zatrzymaj umieszczanie, gdy pozostaną tylko dwa puste pola",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Po włączeniu faza umieszczania kończy się, a faza ruchu zaczyna się, gdy na planszy pozostały tylko 2 wolne miejsca, niezależnie od pionków w ręce. Ta zasada dotyczy tylko gier z 12 pionkami.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

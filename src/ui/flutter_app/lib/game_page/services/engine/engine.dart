@@ -419,6 +419,10 @@ class Engine {
           BoardFullAction.firstPlayerLose.index,
     ); // TODO: enum
     await _sendOptions(
+      "StopPlacingWhenTwoEmptySquares",
+      ruleSettings.stopPlacingWhenTwoEmptySquares,
+    );
+    await _sendOptions(
       "MillFormationActionInPlacingPhase",
       ruleSettings.millFormationActionInPlacingPhase?.index ??
           MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard.index,

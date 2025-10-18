@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "אין הגבלה",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "זמין כשיש לך שלוש חתיכות או פחות",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "הפסק להציב כאשר נותרים רק שני ריבועים ריקים",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "כאשר מופעל, שלב ההצבה מסתיים ושלב התנועה מתחיל כאשר הלוח כולל רק 2 משבצות ריקות, ללא תלות בכלים שביד. כלל זה חל רק על משחקים של 12 כלים.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

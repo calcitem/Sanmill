@@ -32,11 +32,12 @@ class WidgetsToImageController {
       if (boundary.debugNeedsPaint) {
         logger.w("Widget needs paint, waiting for next frame");
         await WidgetsBinding.instance.endOfFrame;
-        
+
         // Re-acquire boundary after waiting
-        boundary = containerKey.currentContext?.findRenderObject()
-            as RenderRepaintBoundary?;
-        
+        boundary =
+            containerKey.currentContext?.findRenderObject()
+                as RenderRepaintBoundary?;
+
         if (boundary == null || boundary.debugNeedsPaint) {
           logger.w("Boundary still not ready after waiting");
           return null;
@@ -55,10 +56,10 @@ class WidgetsToImageController {
         format: ui.ImageByteFormat.png,
       );
       final Uint8List? pngBytes = byteData?.buffer.asUint8List();
-      
+
       // Dispose image to free memory immediately
       image.dispose();
-      
+
       return pngBytes;
     } catch (e) {
       logger.e(e);

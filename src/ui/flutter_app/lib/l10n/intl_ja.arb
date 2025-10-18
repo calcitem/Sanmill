@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "制限なし",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "3つ以下のピースがある場合に利用できます",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "空のマスが2つだけ残ったときに配置を停止",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "有効にすると、ボード上に空きスペースが2つだけ残ったときに配置フェーズが終了し、移動フェーズが始まります。手持ちの駒に関係なく適用されます。このルールは12駒ゲームにのみ適用されます。",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

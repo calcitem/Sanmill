@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "Geen beperking nie",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Beskikbaar as u drie of minder stukke het",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Stop plaas wanneer slegs twee leë vierkante oorbly",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Wanneer geaktiveer, eindig die plaasfase en begin die skuiffase wanneer die bord slegs 2 leë spasies oorhet, ongeag stukke in die hand. Hierdie reël geld slegs vir 12-stuk speletjies.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

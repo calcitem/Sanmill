@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Nav ierobežojuma",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Pieejams, kad jums ir trīs vai mazāk",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Pārtraukt novietošanu, kad paliek tikai divi tukši kvadrāti",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Kad iespējots, novietošanas fāze beidzas un gājienu fāze sākas, kad uz galda ir palikušas tikai 2 tukšas vietas, neatkarīgi no figūrām rokā. Šis noteikums attiecas tikai uz spēlēm ar 12 figūrām.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

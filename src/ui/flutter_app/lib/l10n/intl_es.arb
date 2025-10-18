@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Sin restricción",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Disponible cuando tienes tres o menos piezas",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Detener la colocación cuando solo queden dos cuadrados vacíos",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Cuando está habilitado, la fase de colocación termina y la fase de movimiento comienza cuando el tablero tiene solo 2 espacios vacíos, independientemente de las piezas en la mano. Esta regla solo se aplica a juegos de 12 piezas.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

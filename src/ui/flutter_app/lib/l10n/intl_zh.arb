@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "无限制",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "己方剩余棋子≤3枚时可用",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "棋盘只剩两个空位时停止放子",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "启用后，当棋盘只剩2个空位时，无论手中是否还有棋子，放子阶段都会结束并进入走子阶段。此规则仅适用于12子棋。",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

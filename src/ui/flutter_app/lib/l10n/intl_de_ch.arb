@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Keine Einschränkung",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Erhältlich, wenn Sie drei oder weniger Stücke haben",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Setzen beenden, wenn nur noch zwei leere Felder übrig sind",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Wenn aktiviert, endet die Setzphase und die Zugphase beginnt, wenn das Brett nur noch 2 freie Felder hat, unabhängig von den Steinen in der Hand. Diese Regel gilt nur für 12-Stein-Spiele.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

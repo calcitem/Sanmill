@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "Ոչ մի սահմանափակություն",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Մատչելի է, երբ ունեք երեք կամ ավելի քիչ կտոր",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Դադարեցրեք տեղադրումը, երբ մնում են միայն երկու դատարկ քառակուսիներ",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Երբ միացված է, տեղադրման փուլը ավարտվում է, և քայլի փուլը սկսվում է, երբ տախտակին մնում է միայն 2 դատարկ տեղ, անկախ ձեռքում եղած խաղաքարերից: Այս կանոնը կիրառվում է միայն 12 խաղաքարերով խաղերի համար:",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

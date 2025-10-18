@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "ไม่มีข้อ จำกัด",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "มีให้เมื่อคุณมีสามชิ้นหรือน้อยกว่า",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "หยุดการวางเมื่อเหลือเพียงสองช่องว่าง",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "เมื่อเปิดใช้งาน ขั้นตอนการวางจะสิ้นสุดและขั้นตอนการเคลื่อนย้ายจะเริ่มต้นเมื่อกระดานมีพื้นที่ว่างเพียง 2 ช่อง โดยไม่คำนึงถึงหมากที่อยู่ในมือ กฎนี้ใช้กับเกมหมาก 12 ตัวเท่านั้น",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

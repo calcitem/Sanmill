@@ -232,7 +232,8 @@ void Position::nnueWriteTrainingData()
 
     file.open(filename, std::ios::out);
 
-    for each (string var in nnueTrainingDataStringStream) {
+    for
+        each (string var in nnueTrainingDataStringStream) {
         file << var + " " + nnueGetCurSideGameResult(lastSide, var) + "\n";
     }
 
@@ -1185,6 +1186,27 @@ bool Position::put_piece(Square s, bool updateRecord)
             }
 
             // Begin of set side to move
+
+            // Check if only two empty squares remain - force transition to
+            // moving phase (only for 12-piece games when rule is enabled)
+            if (rule.pieceCount == 12 && rule.stopPlacingWhenTwoEmptySquares &&
+                count_empty_squares() == 2) {
+                // Clear all remaining pieces in hand
+                pieceInHandCount[WHITE] = 0;
+                pieceInHandCount[BLACK] = 0;
+
+                // Transition to moving phase
+                if (!handle_placing_phase_end()) {
+                    change_side_to_move();
+                }
+
+                // Check if game is over
+                if (check_if_game_is_over()) {
+                    return true;
+                }
+
+                return true;
+            }
 
             // Board is full at the end of Placing phase
             if (rule.pieceCount == 12 &&
@@ -3224,6 +3246,13 @@ void Position::setFormedMillsBB(uint64_t millsBitmask)
 
     formedMillsBB[WHITE] = whiteMills;
     formedMillsBB[BLACK] = blackMills;
+}
+
+// Count the number of empty squares on the board
+// Uses the precomputed piece counts for efficiency
+int Position::count_empty_squares() const
+{
+    return SQUARE_NB - pieceOnBoardCount[WHITE] - pieceOnBoardCount[BLACK];
 }
 
 bool Position::is_board_full_removal_at_placing_phase_end()

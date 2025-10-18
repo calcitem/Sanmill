@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Ingen begrænsning",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Tilgængelig, når du har tre eller færre stykker",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Stop placering når kun to tomme felter er tilbage",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Når aktiveret slutter placeringsfasen, og bevægelsesfasen begynder, når brættet kun har 2 tomme pladser tilbage, uanset brikker i hånden. Denne regel gælder kun for 12-brik spil.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

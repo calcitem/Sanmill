@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Nema ograničenja",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Dostupno kada imate tri ili manje komada",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Zaustavite postavljanje kada preostanu samo dva prazna kvadrata",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Kada je omogućeno, faza postavljanja se završava i faza pokreta počinje kada na tabli ostanu samo 2 prazna mjesta, bez obzira na figure u ruci. Ovo pravilo se odnosi samo na igre sa 12 figura.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

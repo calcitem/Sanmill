@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Nincs korlátozás",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Elérhető, ha három vagy kevesebb darabja van",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Lehelyezés leállítása, ha csak két üres négyzet marad",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Ha engedélyezve van, a lehelyezési fázis véget ér, és a mozgatási fázis kezdődik, amikor a táblán csak 2 üres hely marad, függetlenül a kézben lévő bábúktól. Ez a szabály csak a 12 bábús játékokra vonatkozik.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

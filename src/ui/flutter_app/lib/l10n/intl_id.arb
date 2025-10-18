@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Tidak ada batasan",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Tersedia saat Anda memiliki tiga atau lebih sedikit keping",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Hentikan penempatan ketika hanya tersisa dua kotak kosong",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Jika diaktifkan, fase penempatan berakhir dan fase pergerakan dimulai ketika papan hanya memiliki 2 ruang kosong tersisa, terlepas dari bidak di tangan. Aturan ini hanya berlaku untuk permainan 12 bidak.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

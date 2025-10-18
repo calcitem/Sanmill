@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "Heç bir məhdudiyyət yoxdur",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Üç və ya daha az hissədən olanda mövcuddur",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Yalnız iki boş kvadrat qaldıqda yerləşdirməyi dayandırın",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Aktivləşdirildikdə, lövhədə yalnız 2 boş yer qaldıqda, əldə olan fiqurlardan asılı olmayaraq yerləşdirmə mərhələsi bitir və hərəkət mərhələsi başlayır. Bu qayda yalnız 12 fiqurlu oyunlara şamil edilir.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

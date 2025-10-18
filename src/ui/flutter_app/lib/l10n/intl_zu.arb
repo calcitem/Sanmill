@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "Akukho mkhawulo",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Kuyatholakala lapho unezingcezu ezintathu noma ezimbalwa",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Misa ukubeka uma kusele amaskwele amabili kuphela angenalutho",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Uma kunikwe amandla, isigaba sokubeka siyaphela futhi isigaba sokuhambisa siyaqala uma ibhodi linazo kuphela izindawo ezingenalutho ezingu-2 ezisele, kungakhathaliseki izingcezu esandleni. Lo mthetho usebenza kuphela emidlalweni yezingcezu eziyi-12.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

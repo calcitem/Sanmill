@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Без ограничување",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Достапно кога имате три или помалку парчиња",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Запри со поставување кога преостануваат само два празни квадрати",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Кога е овозможено, фазата на поставување завршува и фазата на движење почнува кога таблата има само 2 празни места, без оглед на фигурите во рака. Ова правило важи само за игри со 12 фигури.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

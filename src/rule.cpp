@@ -37,6 +37,7 @@ Rule rule = {
     false,                                 // mayRemoveFromMillsAlways
     false,                                 // oneTimeUseMill
     BoardFullAction::firstPlayerLose,      // boardFullAction
+    false,                                 // stopPlacingWhenTwoEmptySquares
     StalemateAction::endWithStalemateLoss, // stalemateAction
     kDefaultCaptureRuleConfig,             // custodianCapture
     kDefaultCaptureRuleConfig,             // interventionCapture
@@ -64,6 +65,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -88,6 +90,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -113,6 +116,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -137,6 +141,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -161,6 +166,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      true,                                  // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -185,6 +191,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -209,6 +216,7 @@ const Rule RULES[N_RULES] = {
      false,                                 // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -233,6 +241,7 @@ const Rule RULES[N_RULES] = {
      true,                                  // mayRemoveFromMillsAlways
      false,                                 // oneTimeUseMill
      BoardFullAction::firstPlayerLose,      // boardFullAction
+     false,                                 // stopPlacingWhenTwoEmptySquares
      StalemateAction::endWithStalemateLoss, // stalemateAction
      kDefaultCaptureRuleConfig,             // custodianCapture
      kDefaultCaptureRuleConfig,             // interventionCapture
@@ -256,7 +265,8 @@ const Rule RULES[N_RULES] = {
      false, // restrictRepeatedMillsFormation
      false, // mayRemoveFromMillsAlways
      false, // oneTimeUseMill
-     BoardFullAction::firstAndSecondPlayerRemovePiece,     // boardFullAction
+     BoardFullAction::firstAndSecondPlayerRemovePiece, // boardFullAction
+     false, // stopPlacingWhenTwoEmptySquares
      StalemateAction::removeOpponentsPieceAndMakeNextMove, // stalemateAction
      kDefaultCaptureRuleConfig,                            // custodianCapture
      kDefaultCaptureRuleConfig, // interventionCapture
@@ -281,21 +291,22 @@ const Rule RULES[N_RULES] = {
      true,                         // mayRemoveFromMillsAlways
      false,                        // oneTimeUseMill
      BoardFullAction::firstAndSecondPlayerRemovePiece, // boardFullAction
-     StalemateAction::endWithStalemateLoss,            // stalemateAction
-     kDefaultCaptureRuleConfig,                        // custodianCapture
-     kDefaultCaptureRuleConfig,                        // interventionCapture
-     kDefaultCaptureRuleConfig,                        // leapCapture
-     false,                                            // mayFly
-     100,                                              // nMoveRule
-     100,                                              // endgameNMoveRule
-     true},          // threefoldRepetitionRule
-    {                // Experimental
-     "Experimental", // name
-     "Experimental", // description
-     12,             // pieceCount
-     3,              // flyPieceCount
-     3,              // piecesAtLeastCount
-     true,           // hasDiagonalLines
+     false,                                 // stopPlacingWhenTwoEmptySquares
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     false,                                 // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
+    {                                       // Experimental
+     "Experimental",                        // name
+     "Experimental",                        // description
+     12,                                    // pieceCount
+     3,                                     // flyPieceCount
+     3,                                     // piecesAtLeastCount
+     true,                                  // hasDiagonalLines
      MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard,
      // millFormationActionInPlacingPhase
      false, // mayMoveInPlacingPhase
@@ -305,14 +316,15 @@ const Rule RULES[N_RULES] = {
      true,  // mayRemoveFromMillsAlways
      false, // oneTimeUseMill
      BoardFullAction::secondAndFirstPlayerRemovePiece, // boardFullAction
-     StalemateAction::endWithStalemateLoss,            // stalemateAction
-     kDefaultCaptureRuleConfig,                        // custodianCapture
-     kDefaultCaptureRuleConfig,                        // interventionCapture
-     kDefaultCaptureRuleConfig,                        // leapCapture
-     false,                                            // mayFly
-     100,                                              // nMoveRule
-     100,                                              // endgameNMoveRule
-     true}, // threefoldRepetitionRule
+     false,                                 // stopPlacingWhenTwoEmptySquares
+     StalemateAction::endWithStalemateLoss, // stalemateAction
+     kDefaultCaptureRuleConfig,             // custodianCapture
+     kDefaultCaptureRuleConfig,             // interventionCapture
+     kDefaultCaptureRuleConfig,             // leapCapture
+     false,                                 // mayFly
+     100,                                   // nMoveRule
+     100,                                   // endgameNMoveRule
+     true},                                 // threefoldRepetitionRule
 };
 
 bool set_rule(int ruleIdx) noexcept

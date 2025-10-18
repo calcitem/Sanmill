@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Tiada sekatan",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Tersedia semasa anda mempunyai tiga atau lebih sedikit",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Hentikan peletakan apabila hanya tinggal dua petak kosong",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Apabila didayakan, fasa peletakan berakhir dan fasa pergerakan bermula apabila papan hanya mempunyai 2 ruang kosong yang tinggal, tanpa mengira buah di tangan. Peraturan ini hanya terpakai untuk permainan 12 buah.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

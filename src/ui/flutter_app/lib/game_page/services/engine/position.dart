@@ -1145,6 +1145,28 @@ class Position {
 
         // Begin of set side to move
 
+        // Check if only two empty squares remain - force transition to
+        // moving phase (only for 12-piece games when rule is enabled)
+        if (DB().ruleSettings.piecesCount == 12 &&
+            DB().ruleSettings.stopPlacingWhenTwoEmptySquares &&
+            _countEmptySquares() == 2) {
+          // Clear all remaining pieces in hand
+          pieceInHandCount[PieceColor.white] = 0;
+          pieceInHandCount[PieceColor.black] = 0;
+
+          // Transition to moving phase
+          if (!handlePlacingPhaseEnd()) {
+            changeSideToMove();
+          }
+
+          // Check if game is over
+          if (_checkIfGameIsOver()) {
+            return true;
+          }
+
+          return true;
+        }
+
         // Board is full at the end of Placing phase
         if (DB().ruleSettings.piecesCount == 12 &&
             (pieceOnBoardCount[PieceColor.white]! +
@@ -3254,6 +3276,14 @@ class Position {
       mask &= mask - 1; // Clear the lowest set bit
     }
     return count;
+  }
+
+  // Count the number of empty squares on the board
+  // Uses the precomputed piece counts for efficiency
+  int _countEmptySquares() {
+    return rankNumber * fileNumber -
+        pieceOnBoardCount[PieceColor.white]! -
+        pieceOnBoardCount[PieceColor.black]!;
   }
 
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {

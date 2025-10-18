@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Jokio apribojimo",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Galima, kai turite tris ar mažiau gabalų",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Sustabdyti dėjimą, kai lieka tik du tušti kvadratai",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Kai įjungta, dėjimo fazė baigiasi ir prasideda judėjimo fazė, kai lentoje lieka tik 2 tušti laukai, nepaisant rankoje esančių figūrų. Ši taisyklė taikoma tik 12 figūrų žaidimams.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

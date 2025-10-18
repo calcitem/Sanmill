@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "کوئی پابندی نہیں",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "جب آپ کے پاس تین یا کم ٹکڑے ہوں تو دستیاب ہے",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "جب صرف دو خالی چوکور رہ جائیں تو رکھنا بند کریں",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "فعال ہونے پر، جب بورڈ پر صرف 2 خالی جگہیں باقی رہ جائیں تو رکھنے کا مرحلہ ختم ہو جاتا ہے اور حرکت کا مرحلہ شروع ہو جاتا ہے، ہاتھ میں موجود مہروں سے قطع نظر۔ یہ قاعدہ صرف 12 مہروں والے کھیلوں پر لاگو ہوتا ہے۔",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

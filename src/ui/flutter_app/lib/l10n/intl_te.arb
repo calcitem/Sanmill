@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "పరిమితి లేదు",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "మీకు మూడు లేదా అంతకంటే తక్కువ ముక్కలు ఉన్నప్పుడు లభిస్తుంది",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "రెండు ఖాళీ చతురస్రాలు మాత్రమే మిగిలినప్పుడు ఉంచడం ఆపండి",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "ప్రారంభించినప్పుడు, బోర్డ్‌లో కేవలం 2 ఖాళీ స్థలాలు మిగిలినప్పుడు ఉంచే దశ ముగుస్తుంది మరియు కదిలించే దశ ప్రారంభమవుతుంది, చేతిలో ముక్కలు ఉన్నా లేకపోయినా. ఈ నియమం 12-ముక్కల ఆటలకు మాత్రమే వర్తిస్తుంది.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

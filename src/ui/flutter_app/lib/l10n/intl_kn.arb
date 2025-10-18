@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "ಯಾವುದೇ ನಿರ್ಬಂಧವಿಲ್ಲ",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "ನೀವು ಮೂರು ಅಥವಾ ಕಡಿಮೆ ತುಣುಕುಗಳನ್ನು ಹೊಂದಿರುವಾಗ ಲಭ್ಯವಿದೆ",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "ಕೇವಲ ಎರಡು ಖಾಲಿ ಚೌಕಗಳು ಉಳಿದಾಗ ಇಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ಬೋರ್ಡ್‌ನಲ್ಲಿ ಕೇವಲ 2 ಖಾಲಿ ಸ್ಥಳಗಳು ಉಳಿದಾಗ ಇಡುವ ಹಂತ ಮುಗಿಯುತ್ತದೆ ಮತ್ತು ಚಲನೆಯ ಹಂತ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಕೈಯಲ್ಲಿರುವ ತುಂಡುಗಳ ಲೆಕ್ಕವಿಲ್ಲದೆ. ಈ ನಿಯಮವು ಕೇವಲ 12-ತುಂಡು ಆಟಗಳಿಗೆ ಮಾತ್ರ ಅನ್ವಯಿಸುತ್ತದೆ.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

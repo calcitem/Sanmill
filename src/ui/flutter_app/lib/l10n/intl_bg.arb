@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Без ограничение",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Предлага се, когато имате три или по -малко парчета",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Спрете поставянето, когато останат само два празни квадрата",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Когато е активирано, фазата на поставяне приключва и фазата на движение започва, когато на дъската останат само 2 празни места, независимо от фигурите в ръка. Това правило се прилага само за игри с 12 фигури.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

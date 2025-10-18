@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "བཀག་སྡོམ་མེད་པ།",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "ཁྱེད་ལ་ཆ་ཤས་གསུམ་ཡང་ན་ཉུང་བའི་སྐབས་སུ་ཐོབ་ཐུབ།",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "སྟོང་པའི་གྲུ་བཞི་གཉིས་ལས་མེད་པའི་སྐབས་གཞག་པ་མཚམས་འཇོག",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "སྤྱོད་པའི་སྐབས། གཞོང་པང་ལ་སྟོང་གནས་༢་ལས་མེད་པའི་སྐབས་གཞག་པའི་རིམ་པ་མཇུག་སྒྲིལ་ཞིང་སྐྱོད་པའི་རིམ་པ་འགོ་འཛུགས་པ་རེད། ལག་ཏུ་ཡོད་པའི་སྐྱེད་ཆ་ཁག་ལ་མ་ལྟོས་པར། འདི་ནི་སྐྱེད་ཆ་༡༢་པའི་རྩེད་མོ་ལ་མ་གཏོགས་འཇོག་མི་ཐུབ།",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

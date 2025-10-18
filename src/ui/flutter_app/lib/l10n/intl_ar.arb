@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "لا تقييد",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "متاح عندما يكون لديك ثلاث قطع أو أقل",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "توقف عن الوضع عندما يتبقى مربعان فارغان فقط",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "عند التمكين، تنتهي مرحلة الوضع وتبدأ مرحلة التحريك عندما يتبقى في اللوحة مساحتان فارغتان فقط، بغض النظر عن القطع في اليد. تنطبق هذه القاعدة فقط على ألعاب 12 قطعة.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

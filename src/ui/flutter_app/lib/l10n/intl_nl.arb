@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Geen beperking",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Beschikbaar als je drie of minder stukken hebt",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Stop met plaatsen wanneer er nog maar twee lege vakjes over zijn",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Wanneer ingeschakeld, eindigt de plaatsingsfase en begint de verplaatsingsfase wanneer het bord nog maar 2 lege plaatsen heeft, ongeacht de stukken in de hand. Deze regel geldt alleen voor spellen met 12 stukken.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

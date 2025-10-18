@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "ကန့်သတ်ချက်မရှိပါ",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "သင့်တွင်သုံးခုသို့မဟုတ်နည်းပါးလာအပိုင်းပိုင်းရှိသည့်အခါရရှိနိုင်ပါသည်",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "ဗလာနေရာ နှစ်ခုသာ ကျန်တော့လျှင် ထည့်ခြင်း ရပ်ရန်",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "ဖွင့်ထားလျှင် ဘုတ်ပေါ်တွင် ဗလာနေရာ 2 ခုသာ ကျန်ရှိတော့သောအခါ ထားသည့်အဆင့် ပြီးဆုံးပြီး ရွှေ့သည့်အဆင့် စတင်သည်။ လက်၌ရှိသော အကွက်များ မည်မျှပင်ရှိစေကာမူ။ ဤစည်းမျဉ်းသည် 12-အကွက် ဂိမ်းများအတွက်သာ သက်ရောက်ပါသည်။",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

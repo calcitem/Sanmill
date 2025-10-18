@@ -171,6 +171,11 @@ static void on_boardFullAction(const Option &o)
     rule.boardFullAction = static_cast<BoardFullAction>(static_cast<int>(o));
 }
 
+static void on_stopPlacingWhenTwoEmptySquares(const Option &o)
+{
+    rule.stopPlacingWhenTwoEmptySquares = static_cast<bool>(o);
+}
+
 static void on_stalemateAction(const Option &o)
 {
     rule.stalemateAction = static_cast<StalemateAction>(static_cast<int>(o));
@@ -407,6 +412,8 @@ void init(OptionsMap &o)
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::agreeToDraw), on_boardFullAction);
+    o["StopPlacingWhenTwoEmptySquares"]
+        << Option(false, on_stopPlacingWhenTwoEmptySquares);
     o["StalemateAction"] << Option(
         static_cast<int>(StalemateAction::endWithStalemateLoss),
         static_cast<int>(StalemateAction::endWithStalemateLoss),

@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Fără restricție",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Disponibil când aveți trei sau mai puține piese",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Opriți plasarea când rămân doar două pătrate goale",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Când este activată, faza de plasare se termină și faza de mișcare începe când tabla are doar 2 spații goale rămase, indiferent de piesele din mână. Această regulă se aplică doar jocurilor cu 12 piese.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

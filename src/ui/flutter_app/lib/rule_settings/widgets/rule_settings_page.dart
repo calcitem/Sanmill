@@ -357,6 +357,17 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] oneTimeUseMill: $value");
   }
 
+  void _setStopPlacingWhenTwoEmptySquares(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    DB().ruleSettings = ruleSettings.copyWith(
+      stopPlacingWhenTwoEmptySquares: value,
+    );
+
+    logger.t("[config] stopPlacingWhenTwoEmptySquares: $value");
+  }
+
   void _updateRuleSettingsBool(
     RuleSettings ruleSettings,
     RuleSettings Function(RuleSettings) updater,
@@ -906,6 +917,18 @@ class RuleSettingsPage extends StatelessWidget {
                   _setMayMoveInPlacingPhase(context, ruleSettings, val),
               titleString: S.of(context).mayMoveInPlacingPhase,
               subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'rule_settings_switch_stop_placing_when_two_empty_squares',
+              ),
+              value: ruleSettings.stopPlacingWhenTwoEmptySquares,
+              onChanged: (bool val) =>
+                  _setStopPlacingWhenTwoEmptySquares(ruleSettings, val),
+              titleString: S.of(context).stopPlacingWhenTwoEmptySquares,
+              subtitleString: S
+                  .of(context)
+                  .stopPlacingWhenTwoEmptySquares_Detail,
             ),
           ],
         ),

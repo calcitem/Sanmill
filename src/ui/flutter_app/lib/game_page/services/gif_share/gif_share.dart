@@ -27,7 +27,7 @@ class GifShare {
   Uint8List? bytes;
 
   final int frameRate = 1;
-  
+
   // Maximum number of frames to prevent memory overflow.
   // Uses circular buffer: when limit is reached, oldest frames are discarded.
   // 300 frames can record approximately 300 moves, sufficient for most games.

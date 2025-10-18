@@ -132,6 +132,7 @@ class RuleSettings {
     this.leapCaptureInPlacingPhase = true,
     this.leapCaptureInMovingPhase = true,
     this.leapCaptureOnlyWhenOwnPiecesLeq3 = false,
+    this.stopPlacingWhenTwoEmptySquares = false,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -248,6 +249,8 @@ class RuleSettings {
   final bool leapCaptureInMovingPhase;
   @HiveField(41, defaultValue: false)
   final bool leapCaptureOnlyWhenOwnPiecesLeq3;
+  @HiveField(42, defaultValue: false)
+  final bool stopPlacingWhenTwoEmptySquares;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);

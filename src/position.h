@@ -161,6 +161,7 @@ public:
     int piece_in_hand_count(Color c) const;
 
     bool is_board_empty() const;
+    int count_empty_squares() const;
 
     int piece_to_remove_count(Color c) const;
 

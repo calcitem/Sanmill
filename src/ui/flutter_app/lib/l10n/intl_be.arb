@@ -2112,5 +2112,9 @@
   "capturePiecesConditionUnlimited": "Без абмежавання",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Даступна, калі ў вас ёсць тры ці менш штук",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Спыніць размяшчэнне, калі застаецца толькі два пустыя квадраты",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Пры ўключэнні фаза размяшчэння заканчваецца і пачынаецца фаза руху, калі на дошцы застаецца толькі 2 пустыя месцы, незалежна ад фігур у руцэ. Гэтае правіла прымяняецца толькі да гульняў з 12 фігурамі.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

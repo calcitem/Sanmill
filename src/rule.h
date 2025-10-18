@@ -102,6 +102,10 @@ struct Rule
     // the action follows if the board is full of pieces.
     BoardFullAction boardFullAction;
 
+    // When enabled, the placing phase ends and moving phase begins when only
+    // two empty squares remain on the board, regardless of pieces in hand.
+    bool stopPlacingWhenTwoEmptySquares;
+
     // What action follows when no piece can be moved?
     StalemateAction stalemateAction;
 

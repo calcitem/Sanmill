@@ -2011,5 +2011,9 @@
   "capturePiecesConditionUnlimited": "Ei rajoitusta",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Saatavana, kun sinulla on kolme tai vähemmän kappaletta",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Lopeta asettaminen, kun vain kaksi tyhjää ruutua jää jäljelle",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Kun tämä on käytössä, asettamisvaihe päättyy ja siirtovaihe alkaa, kun laudalla on vain 2 tyhjää paikkaa jäljellä, riippumatta kädessä olevista nappuloista. Tämä sääntö koskee vain 12-nappulaisia pelejä.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }
