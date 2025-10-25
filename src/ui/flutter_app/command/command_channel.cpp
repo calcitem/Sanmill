@@ -65,3 +65,14 @@ bool CommandChannel::popupResponse(char *buffer)
 {
     return responseQueue->read(buffer);
 }
+
+void CommandChannel::clearQueues()
+{
+    if (commandQueue != nullptr) {
+        commandQueue->clear();
+    }
+
+    if (responseQueue != nullptr) {
+        responseQueue->clear();
+    }
+}

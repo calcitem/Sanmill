@@ -25,6 +25,7 @@ public:
 
     bool write(const char *command);
     bool read(char *dest);
+    void clear();
 };
 
 #endif /* COMMAND_QUEUE_H */

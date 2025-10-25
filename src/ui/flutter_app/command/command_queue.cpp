@@ -72,3 +72,17 @@ bool CommandQueue::read(char *dest)
 
     return true;
 }
+
+void CommandQueue::clear()
+{
+    std::unique_lock<std::mutex> lk(mutex);
+
+    // Clear all command buffers
+    for (int i = 0; i < MAX_COMMAND_COUNT; i++) {
+        commands[i][0] = '\0';
+    }
+
+    // Reset queue pointers to initial state
+    writeIndex = 0;
+    readIndex = -1;
+}

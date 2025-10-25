@@ -16,6 +16,12 @@ class Engine {
 
   static const String _logTag = "[engine]";
 
+  // Track search session version to invalidate old responses
+  int _searchEpoch = 0;
+
+  // Flag to indicate if current search has been cancelled
+  bool _isSearchCancelled = false;
+
   Future<void> startup() async {
     await setOptions();
 
@@ -115,15 +121,23 @@ class Engine {
     // Clear any existing analysis markers when AI makes a move
     AnalysisMode.disable();
 
+    // Reset cancellation flag at the start of a new search
+    _isSearchCancelled = false;
+
     String? fen;
     final String normalizedFen;
 
     if (await isThinking()) {
       await stopSearching();
+      // After stopping, reset cancellation flag for new search
+      _isSearchCancelled = false;
+      // Note: stopSearching() already incremented _searchEpoch
     } else if (moveNow) {
       // When user clicks "Move Now", stop any existing search first,
       // then start a new search with configured moveTime
       await stopSearching();
+      // After stopping, reset cancellation flag for new search
+      _isSearchCancelled = false;
       final String? fen = _getPositionFen();
       if (fen == null) {
         // ignore: only_throw_errors
@@ -134,6 +148,9 @@ class Engine {
       // Let the engine search according to configured moveTime
       // instead of stopping immediately
     }
+
+    // Capture current epoch for this search session after any stopSearching() calls
+    final int currentEpoch = _searchEpoch;
 
     if (!moveNow) {
       fen = GameController().position.fen;
@@ -217,10 +234,13 @@ class Engine {
       logger.t("$_logTag Move now");
     }
 
-    final String? response = await _waitResponse(<String>[
-      "bestmove",
-      "nobestmove",
-    ]);
+    final String? response = await _waitResponse(
+      <String>[
+        "bestmove",
+        "nobestmove",
+      ],
+      expectedEpoch: currentEpoch,
+    );
 
     if (response == null) {
       // ignore: only_throw_errors
@@ -287,7 +307,27 @@ class Engine {
     List<String> prefixes, {
     int sleep = 100,
     int times = 0,
+    int? expectedEpoch,
   }) async {
+    // Check if search has been cancelled or widget disposed
+    if (_isSearchCancelled) {
+      logger.i("$_logTag Search cancelled, stopping wait for response");
+      return null;
+    }
+
+    if (GameController().isDisposed) {
+      logger.i("$_logTag GameController disposed, stopping wait for response");
+      return null;
+    }
+
+    // Check if this response is from an outdated search session
+    if (expectedEpoch != null && expectedEpoch != _searchEpoch) {
+      logger.i(
+        "$_logTag Search epoch mismatch (expected: $expectedEpoch, current: $_searchEpoch), discarding response",
+      );
+      return null;
+    }
+
     final GeneralSettings settings = DB().generalSettings;
 
     int timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
@@ -331,12 +371,23 @@ class Engine {
 
     return Future<String?>.delayed(
       Duration(milliseconds: sleep),
-      () => _waitResponse(prefixes, times: times + 1),
+      () => _waitResponse(
+        prefixes,
+        times: times + 1,
+        expectedEpoch: expectedEpoch,
+      ),
     );
   }
 
   Future<void> stopSearching() async {
     logger.w("$_logTag Stop current thinking...");
+
+    // Increment epoch to invalidate any pending responses
+    _searchEpoch++;
+
+    // Set cancellation flag to stop waiting for responses
+    _isSearchCancelled = true;
+
     await _send("stop");
   }
 
@@ -612,6 +663,9 @@ class Engine {
       return PositionAnalysisResult.error("Invalid board position");
     }
 
+    // Capture current epoch for this analysis session
+    final int currentEpoch = _searchEpoch;
+
     // Prepare the command to send to the engine
     final String command = "analyze fen $fen";
 
@@ -620,7 +674,10 @@ class Engine {
       await _send(command);
 
       // Wait for and parse response
-      final String? response = await _waitResponse(<String>["info analysis"]);
+      final String? response = await _waitResponse(
+        <String>["info analysis"],
+        expectedEpoch: currentEpoch,
+      );
       if (response == null) {
         return PositionAnalysisResult.error("Engine did not respond");
       }

@@ -22,6 +22,7 @@ public:
     bool popupCommand(char *buffer);
     bool pushResponse(const char *resp);
     bool popupResponse(char *buffer);
+    void clearQueues();
 
 private:
     static CommandChannel *instance;

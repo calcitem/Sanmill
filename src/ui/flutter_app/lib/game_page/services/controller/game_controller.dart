@@ -374,6 +374,10 @@ class GameController {
     // Reinitialize game objects
     _init(gameModeBak);
 
+    // After reinitialization, mark controller as active (not disposed)
+    // to allow engine to wait for responses normally.
+    isDisposed = false;
+
     lanHostPlaysWhite = savedHostPlaysWhite;
 
     // For LAN games, always start with White and set turn based on local color.

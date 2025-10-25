@@ -89,6 +89,10 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     gameImagesFuture = _loadImages();
     animationManager = AnimationManager(this);
 
+    // Ensure controller is marked as active when a new board is mounted
+    // so engine waits for responses instead of early-returning as disposed.
+    GameController().isDisposed = false;
+
     GameController().gameResultNotifier.addListener(_showResult);
 
     if (visitedRuleSettingsPage == true) {
@@ -520,8 +524,13 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    // Mark controller as disposed to cancel any pending engine responses
     GameController().isDisposed = true;
+
+    // Stop any ongoing search to prevent race conditions and timeout issues
+    // This will increment the search epoch and set cancellation flag
     GameController().engine.stopSearching();
+
     //GameController().engine.shutdown();
     animationManager.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
