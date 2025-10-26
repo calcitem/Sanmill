@@ -109,6 +109,14 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     Future<void>.delayed(const Duration(microseconds: 100), () {
       _setReadyState();
       processInitialSharingMoveList();
+      // AI vs AI 模式：如果进入页面时轮到 AI 且处于运行状态，则自动触发一次搜索，避免长时间空转
+      final GameController c = GameController();
+      if (c.gameInstance.gameMode == GameMode.aiVsAi &&
+          c.gameInstance.isAiSideToMove) {
+        // 不 await，避免阻塞初始化
+        // ignore: discarded_futures
+        c.engineToGo(context, isMoveNow: false);
+      }
     });
 
     GameController().animationManager = animationManager;

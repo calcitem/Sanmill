@@ -841,10 +841,22 @@ class GameController {
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
+        // In AI vs AI mode, auto-recover from timeout and retry
+        if (gameMode == GameMode.aiVsAi) {
+          await engine.stopSearching();
+          // Brief delay to avoid hitting stale session immediately
+          await Future<void>.delayed(const Duration(milliseconds: 10));
+          continue;
+        }
         isEngineRunning = false;
         return const EngineTimeOut();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
+        if (gameMode == GameMode.aiVsAi) {
+          await engine.stopSearching();
+          await Future<void>.delayed(const Duration(milliseconds: 10));
+          continue;
+        }
         isEngineRunning = false;
         return const EngineNoBestMove();
       }

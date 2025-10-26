@@ -30,7 +30,10 @@ class Engine {
     }
 
     await _platform.invokeMethod("startup");
-    await _waitResponse(<String>["uciok"]);
+    // Reset cancellation flag to prevent early-null from stale cancellation
+    _isSearchCancelled = false;
+    final int currentEpoch = _searchEpoch;
+    await _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch);
   }
 
   Future<void> _send(String command) async {
@@ -234,13 +237,10 @@ class Engine {
       logger.t("$_logTag Move now");
     }
 
-    final String? response = await _waitResponse(
-      <String>[
-        "bestmove",
-        "nobestmove",
-      ],
-      expectedEpoch: currentEpoch,
-    );
+    final String? response = await _waitResponse(<String>[
+      "bestmove",
+      "nobestmove",
+    ], expectedEpoch: currentEpoch);
 
     if (response == null) {
       // ignore: only_throw_errors
@@ -674,10 +674,9 @@ class Engine {
       await _send(command);
 
       // Wait for and parse response
-      final String? response = await _waitResponse(
-        <String>["info analysis"],
-        expectedEpoch: currentEpoch,
-      );
+      final String? response = await _waitResponse(<String>[
+        "info analysis",
+      ], expectedEpoch: currentEpoch);
       if (response == null) {
         return PositionAnalysisResult.error("Engine did not respond");
       }
