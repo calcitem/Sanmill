@@ -265,6 +265,13 @@ class Engine {
         best = match.group(3)!.trim();
       }
 
+      // Guard: engine may reply with "bestmove none" when a search is aborted
+      // or during debug fallbacks. Treat it as no-best-move and recover.
+      if (best.toLowerCase() == 'none') {
+        // ignore: only_throw_errors
+        throw const EngineNoBestMove();
+      }
+
       if (aiMoveTypeStr == "" || aiMoveTypeStr == "traditional") {
         aiMoveType = AiMoveType.traditional;
       } else if (aiMoveTypeStr == "perfect") {
