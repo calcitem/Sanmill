@@ -237,10 +237,26 @@ class Engine {
       logger.t("$_logTag Move now");
     }
 
-    final String? response = await _waitResponse(<String>[
-      "bestmove",
-      "nobestmove",
-    ], expectedEpoch: currentEpoch);
+    String? response;
+    for (int attempt = 0; attempt < 2; attempt++) {
+      response = await _waitResponse(<String>[
+        "bestmove",
+        "nobestmove",
+      ], expectedEpoch: currentEpoch);
+
+      // If the engine restarted mid-wait (uciok seen), re-send position and go once
+      if (_sawUciokDuringWait) {
+        _sawUciokDuringWait = false;
+        _isSearchCancelled = false; // clear cancellation before re-waiting
+        final String? fenToResend = _getPositionFen();
+        if (fenToResend != null) {
+          await _send(fenToResend);
+          await _send("go");
+          continue; // wait again
+        }
+      }
+      break;
+    }
 
     if (response == null) {
       // ignore: only_throw_errors
@@ -361,6 +377,10 @@ class Engine {
     final String? response = await _read();
 
     if (response != null) {
+      // If we encounter 'uciok' while waiting for other prefixes, record it
+      if (response.contains("uciok")) {
+        _sawUciokDuringWait = true;
+      }
       for (final String prefix in prefixes) {
         if (response.contains(prefix)) {
           return response;
@@ -397,6 +417,9 @@ class Engine {
 
     await _send("stop");
   }
+
+  // Internal flag: observed a stray 'uciok' during a wait for other responses
+  bool _sawUciokDuringWait = false;
 
   Future<void> setGeneralOptions() async {
     if (kIsWeb) {
