@@ -22,18 +22,31 @@ class Engine {
   // Flag to indicate if current search has been cancelled
   bool _isSearchCancelled = false;
 
-  Future<void> startup() async {
-    await setOptions();
+  // Track whether native engine thread has been started to avoid redundant restarts
+  bool _started = false;
 
+  Future<void> startup() async {
     if (!_isPlatformChannelAvailable) {
       return;
     }
 
+    // If engine already started, only refresh options and ensure readiness
+    if (_started) {
+      await setOptions();
+      _isSearchCancelled = false;
+      await _send("isready");
+      await _waitResponse(<String>["readyok"], expectedEpoch: _searchEpoch);
+      return;
+    }
+
+    // First startup: bring up native engine, wait for uciok, then send options
     await _platform.invokeMethod("startup");
-    // Reset cancellation flag to prevent early-null from stale cancellation
     _isSearchCancelled = false;
     final int currentEpoch = _searchEpoch;
     await _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch);
+
+    await setOptions();
+    _started = true;
   }
 
   Future<void> _send(String command) async {
@@ -1154,3 +1167,4 @@ class GameOutcome {
     return buffer.toString();
   }
 }
+
