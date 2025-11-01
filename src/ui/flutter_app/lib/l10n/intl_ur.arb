@@ -1214,6 +1214,1761 @@
     "sideToMove": "منتقل کرنے کے لیے سائیڈ: {player}",
     "@sideToMove": {
         "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "پلیئر 1 جیت گیا!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "پلیئر 2 جیت گیا!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "جیت گیا۔",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "کھو دیا",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "سوچنا…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "نیا کھیل",
+  "@newGame": {
+    "description": "New game"
+  },
+  "pleaseWait": "برائے مہربانی انتظار کریں.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "موجودہ گیم کو دوبارہ شروع کریں؟",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "دوبارہ شروع کریں",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "کھیل شروع ہو گیا، پلیز لگائیں۔",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "تجزیہ کیا جا رہا ہے…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "خرابی: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "جیت کی شرح",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "سکور:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "کھلاڑی 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "کھلاڑی 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} ٹکڑوں کی تعداد تین سے کم ہے۔",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player} نے استعفیٰ دے دیا۔",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} جانے کا کوئی راستہ نہیں ہے۔",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "بورڈ بھرا ہوا ہے، اور {player} جانے کا کوئی راستہ نہیں ہے۔",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "وقت ختم ہو گیا، {player} کھو گیا۔",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "متحرک مرحلے میں، آخری مخصوص تعداد میں چالوں میں کوئی ٹکڑا نہیں ہٹایا گیا ہے۔",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "یہ ڈرا ہے کیونکہ بورڈ بھرا ہوا ہے۔",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "یہ تین گنا تکرار کی وجہ سے ڈرا ہے۔",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "کھیل ختم! نامعلوم وجہ۔",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "کھیل ختم",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "analyze": "تجزیہ کریں۔",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "youWin": "تم جیت گئے! مبارک ہو!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "about": "کے بارے میں",
+  "@about": {
+    "description": "About"
+  },
+  "version": "ورژن: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "challengeHarderLevel": "کیا مشکل سطح کا مقابلہ کریں؟ نیا سطح {level} ہو گا!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "آپ ہار گئے!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "playSoundsInTheGame": "کھیل میں آوازیں چلائیں۔",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "واپس لیتے وقت خاموش رہیں",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "لہجہ",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "پہلا اقدام",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "انسان",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "اے آئی",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "متبادل",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "گیم ختم ہونے پر گیم کو آٹو ری اسٹارٹ کریں۔",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "آٹو تبدیلی پہلی حرکت",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "بے ترتیب حرکت کریں۔",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "متفرق",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "قواعد",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "ہر کھلاڑی کے پاس ٹکڑوں کی تعداد",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "ہر کھلاڑی کے پاس کتنے ٹکڑے ہوتے ہیں؟",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "اڑنے والے ٹکڑے کی تعداد",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "اگر فلائنگ کو فعال کیا جاتا ہے، جب کسی کھلاڑی کو مخصوص ٹکڑوں کی گنتی تک کم کر دیا جاتا ہے، تو اس کے ٹکڑے باقی کھیل کی طرح ملحقہ پوائنٹس تک محدود رہنے کے بجائے کسی بھی غیر مقبوضہ مقام پر جانے کے لیے آزاد ہوتے ہیں۔",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "کم از کم ٹکڑے",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "ترچھی لکیریں۔",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "بورڈ میں چار ترچھی لائنیں شامل کریں۔",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst_Detail": "پلیسنگ فیز میں دوسرے نمبر پر آنے والا کھلاڑی موونگ فیز میں پہلے آتا ہے۔",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "isDefenderMoveFirst": "دوسرا کھلاڑی پہلے چلتا ہے۔",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "mayRemoveMultiple_Detail": "اگر کوئی کھلاڑی ایک ساتھ ایک سے زیادہ ملوں کو بند کرتا ہے، تو وہ اپنی بند ہونے والی ملوں کی تعداد کو ہٹا دے گی۔",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "ملوں کو تباہ کرنا",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "پہلے سے طے شدہ طور پر، کھلاڑیوں کو بنی چکی سے کسی ٹکڑے کو ہٹانے سے پہلے پہلے کسی دوسرے ٹکڑے کو ہٹانا چاہیے۔ حد کو غیر فعال کرنے کے لیے اس اختیار کو فعال کریں۔",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "دوسرا کھلاڑی ہار جاتا ہے جب بورڈ بھر جاتا ہے۔",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "جب پلیٹنگ کے مرحلے کے اختتام پر بورڈ بھر جاتا ہے، تو وہ طرف جو پہلے رکھتا ہے گیم ہار جاتا ہے۔ دوسری صورت میں، کھیل ایک ڈرا ہے.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "mayFly_Detail": "اگر کسی کھلاڑی کے پاس صرف تین یا چار (کنفیگر کرنے کے قابل) ٹکڑے باقی ہیں، تو وہ اس ٹکڑے کو کسی بھی فری پوائنٹ پر لے جا سکتی ہے۔",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "کھلاڑی ہار جائے گا اگر اس کا مخالف انہیں روکتا ہے تاکہ وہ منتقل نہ ہوسکیں۔ اگر یہ اختیار غیر فعال ہے تو منتقل کرنے کے لیے سائیڈ کو تبدیل کریں۔",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "nMoveRule": "N- اقدام کا قاعدہ",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "کھیل کو ڈرا کیا جاتا ہے اگر کسی مخصوص تعداد میں چالوں کو ہٹانا نہیں ہے۔",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "رول بیک",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "براہ مہربانی منتخب کریں",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "کاپی",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "نقل کی گئی تاریخ کو کلپ بورڈ پر منتقل کریں۔",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "مدد",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "تاثرات",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "باہر نکلیں",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "اصول کی ترتیبات",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "رنگ",
+  "@color": {
+    "description": "Color"
+  },
+  "blackPieceColor": "پلیئر 2 ٹکڑا رنگ",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "پیغام کا رنگ",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "boardColor": "بورڈ کا رنگ",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "ٹکڑا رنگ",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "پس منظر کا رنگ",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "بورڈ لائن کا رنگ",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "پلیئر 1 ٹکڑا رنگ",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "isPieceCountInHandShown": "بغیر جگہ کے ٹکڑوں کی گنتی دکھائیں۔",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "بورڈ پر اشارے دکھائیں۔",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "ہسٹری نیویگیشن ٹول بار دکھائیں۔",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "ڈسپلے",
+  "@display": {
+    "description": "Display"
+  },
+  "fontSize": "حرف کا سائز",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "ڈبلیو ایم ڈی نوٹیشن",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restoreDefaultSettings": "پرانی ترتیب بحال کریں",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "چنیں {element}",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "hint": "اشارہ",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "کھلاڑی",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "کھلاڑی 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "کھلاڑی 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "کیسے کھیلنا ہے",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "ٹکڑا رکھنے کے لیے کسی بھی دستیاب پوائنٹ پر ٹیپ کریں۔",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "کسی ٹکڑے کو منتقل کرنے کے لیے اسے تھپتھپائیں۔",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "اسے منتقل کرنے کے لیے کسی ٹکڑے سے جڑے ہوئے پوائنٹ پر ٹیپ کریں۔",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "ہٹانے کے لیے مخالف کے ایک ٹکڑے پر ٹیپ کریں۔",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "کسی ٹکڑے کو ہٹانے سے پہلے آپ کو پہلے مل بنانے کی ضرورت ہے۔",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "آپ کو اپنے ٹکڑوں کے ساتھ کھیلنے کی ضرورت ہے۔",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "شماریات",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "کل گیمز",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "نتائج",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "بائیں",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "رازداری کی پالیسی",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "براہ کرم غور سے پڑھیں اور یقینی بنائیں کہ آپ اس کو پوری طرح سمجھتے اور اس سے متفق ہیں۔ ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". اگر آپ اس پالیسی سے اتفاق نہیں کرتے ہیں تو براہ کرم اس ایپ کو استعمال نہ کریں۔ ایپ کو استعمال کرنے کا مطلب ہے کہ آپ ان شرائط کو قبول کرتے ہیں۔",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "takingBack": "واپس لے جا رہا ہے…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "انتظار کر رہا ہے…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "آگے بڑھیں۔",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "سب واپس لے لو",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "سب آگے بڑھیں۔",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "done": "ہو گیا",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "کریک مل",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "اگر کسی کھلاڑی کے پاس ملوں میں صرف ٹکڑے ہیں، تو ملوں میں موجود ٹکڑے ہٹانے کے لیے تالا نہیں لگائیں گے۔",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "حرکت پذیری کا دورانیہ",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "کوئی نہیں۔",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "خیالیہ",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "گیم کا مقصد حریف کو تین سے کم ٹکڑوں کے ساتھ چھوڑنا ہے یا کوئی قانونی چال نہیں ہے۔\n\nاگر تیسری بار کوئی پوزیشن آتی ہے یا آخری 100 (کنفیگر ایبل) چالوں میں کوئی ہٹانے نہیں دیتا ہے تو گیم خود بخود ڈرا ہوجاتا ہے۔\n\nکھیل تین مراحل میں آگے بڑھتا ہے:\n\n1. خالی جگہوں پر ٹکڑے رکھنا\n2. ٹکڑوں کو ملحقہ مقامات پر منتقل کرنا\n3. (اختیاری مرحلہ) کسی بھی خالی جگہ پر ٹکڑوں کو منتقل کرنا جب کھلاڑی کو تین ٹکڑوں تک کم کرنا\n\nرکھنا\n\nکھیل ایک خالی بورڈ سے شروع ہوتا ہے، جو چوبیس پوائنٹس کے ساتھ ایک گرڈ پر مشتمل ہوتا ہے۔ کھلاڑی باری باری اپنے ٹکڑوں کو خالی پوائنٹس پر رکھتے ہیں یہاں تک کہ ہر کھلاڑی بورڈ پر تمام ٹکڑوں کو رکھ دیتا ہے۔ اگر کوئی کھلاڑی اپنے تین ٹکڑوں کو سیدھا رکھ سکتا ہے، تو اس کے پاس ایک \"مل\" ہے اور وہ اپنے مخالف کے ایک ٹکڑے کو بورڈ سے ہٹا سکتا ہے۔\n\nکچھ اصولوں میں، کھلاڑیوں کو بنی چکی سے کسی ٹکڑے کو ہٹانے سے پہلے پہلے کسی دوسرے ٹکڑے کو ہٹانا چاہیے۔\n\nآپ ٹکڑوں کو ہٹائے گئے ٹکڑوں کے پوائنٹس پر دوبارہ رکھنے کے مرحلے میں کچھ اصولوں میں نہیں رکھ سکتے ہیں۔\n\nایک بار تمام ٹکڑوں کو استعمال کرنے کے بعد، کھلاڑی باری باری حرکت کرتے ہیں۔\n\nحرکت پذیر\n\nمنتقل کرنے کے لیے، ایک کھلاڑی بورڈ لائن کے ساتھ اپنے ایک ٹکڑے کو خالی ملحقہ پوائنٹ پر لے جاتا ہے۔ اگر وہ ایسا نہیں کر سکتا تو وہ گیم ہار چکا ہے۔ ایک کھلاڑی جو بورڈ لائن پر اپنے تین ٹکڑوں کو سیدھ میں کرتا ہے اس کے پاس ایک چکی ہوتی ہے اور وہ اپنے حریف کے ٹکڑوں میں سے ایک کو ہٹا سکتا ہے جیسا کہ رکھنے کے مرحلے میں ہے۔ کوئی بھی کھلاڑی دو ٹکڑے کر دیتا ہے، اس کے پاس نئی ملز بنانے کا کوئی آپشن نہیں ہوتا، اور اس طرح کھیل ہار جاتا ہے۔ ایک کھلاڑی اس وقت بھی ہار سکتا ہے جب تین سے زیادہ ٹکڑے ہو جائیں اگر اس کا حریف اسے چلنے سے روکتا ہے۔\n\nپرواز\n\nقواعد کی کچھ مختلف حالتوں میں، ایک بار جب کسی کھلاڑی کے پاس صرف تین ٹکڑے رہ جاتے ہیں، تو اس کے ٹکڑے اڑ سکتے ہیں، چھلانگ لگا سکتے ہیں یا کسی بھی خالی جگہ پر چھلانگ لگا سکتے ہیں، نہ صرف ملحقہ۔\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "ورژن کی معلومات",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "لائسنس",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "سورس کوڈ",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "ایپ ورژن",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "جنرل",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "اعلی درجے کی",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "رکھنا",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "حرکت پذیر",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "ہٹانا",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "گیم اوور کنڈیشن",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI کا پلے اسٹائل",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "غیر فعال",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "وقت ختم",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "ظہور",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "انسانی تجربے کو کھینچیں۔",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "pieceCount": "ٹکڑوں کی تعداد:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} ہاتھ میں: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "بورڈ پر {player}: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "بورڈ اوپر سے آفسیٹ",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "یہ AI کی باری نہیں ہے۔",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI نہیں سوچ رہا ہے۔",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "آپ منتقلی کی فہرست کے آخر میں ہیں۔",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "چھوڑنے کے لیے دوبارہ تھپتھپائیں۔",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "مزید",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "یہ ایک تجرباتی خصوصیت ہے۔",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "تجربات",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "اوپن سورس لائسنس",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "زبان",
+  "@language": {
+    "description": "Languages"
+  },
+  "mayMoveInPlacingPhase_Detail": "کوئی الگ الگ جگہ اور منتقلی کے مراحل نہیں ہیں، یعنی کھلاڑی ہر حرکت پر یہ فیصلہ کر سکتے ہیں کہ آیا وہ بورڈ پر کوئی ٹکڑا رکھنا چاہتے ہیں یا اپنے کسی ٹکڑے کو منتقل کرنا چاہتے ہیں (جب تک کہ ان کے پاس باقی ٹکڑے ہیں)۔",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerTextColor": "مینو متن کا رنگ",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "مینو آئٹم کا رنگ نمایاں کریں۔",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "مین ٹول بار کے پس منظر کا رنگ",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "مین ٹول بار آئیکن کا رنگ",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "نیویگیشن ٹول بار کے پس منظر کا رنگ",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "نیویگیشن ٹول بار کے آئیکن کا رنگ",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "ٹول بار کو خود بخود چھپائیں۔",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "اسکرین پر ٹول بار کا مقام",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "اوپر",
+  "@top": {
+    "description": "Top"
+  },
+  "center": "مرکز",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "ٹھوس رنگ",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "تصویر",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "اپنی تصویر کا انتخاب کریں۔",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "روشنی",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "اندھیرا",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "تھیمز",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "موجودہ تھیم",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "bottom": "نیچے",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "saveTheme": "تھیم محفوظ کریں۔",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "تجزیہ گراف دکھائیں۔",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "تجزیہ",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "کھیل کو محفوظ کریں۔",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "لوڈ گیم",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "showLegalMoves": "قانونی چالیں دکھائیں۔",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "آخری حرکت دکھائیں۔",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "تیر دکھائیں۔",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "ٹکڑے",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "setupPosition": "سیٹ اپ پوزیشن",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showAnalysis": "تجزیہ دکھائیں۔",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "دھاگے",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "شامل ہونا",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "ترجمہ کو بہتر بنانے میں مدد کریں۔",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "ٹیوٹوریل",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "کلاسیکی مل",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "مخلوط مل",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "سیلون مل",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "مل کو بار بار ٹوٹا اور دوبارہ بنایا جا سکتا ہے۔",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "اگر کوئی کھلاڑی فوری طور پر ایک نئی مل بنانے کے لیے مل کو توڑتا ہے، تو ایسا کھلاڑی اپنی اگلی چال میں اس ٹکڑے کو واپس اصل جنکشن پر منتقل کر سکتا ہے اگر وہ نئی مل بناتا ہے۔",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "کھیل ڈرا ہوتا ہے اگر کسی کھلاڑی کے پاس تین ٹکڑے ہوں اور دس چالوں کے بعد کوئی بھی کھلاڑی حریف کے ٹکڑوں کو نہیں ہٹاتا ہے۔",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "جب کوئی کھلاڑی تین ٹکڑوں تک نیچے ہوتا ہے، اور کوئی بھی کھلاڑی دس چالوں کے اندر حریف کے ٹکڑے کو نہیں ہٹا سکتا، تو کھیل ڈرا ہوتا ہے۔",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "بند کریں",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "سفید ٹکڑا",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "کالا ٹکڑا",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "placingPhase": "لگانے کا مرحلہ",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "متحرک مرحلہ",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "پرواز کا مرحلہ",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "منتقل کرنے کے لیے سائیڈ: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "آخری اقدام: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "منتخب شدہ",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "رسائی",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "اسکرین ریڈر سپورٹ",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "draw": "ڈرا",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "ٹکڑا نمایاں رنگ",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "الگورتھم",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "اینڈگیم N-Move کا اصول",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "drawReasonEndgameRule50": "کسی بھی کھلاڑی کے پاس صرف تین ٹکڑے ہوتے ہیں، اور کوئی بھی کھلاڑی مخصوص چالوں کے اندر کسی ٹکڑے کو نہیں ہٹاتا ہے۔",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule_Detail": "تیسری بار پوزیشن ہونے پر گیم ڈرا ہو جاتا ہے۔",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "چکی! ایک حرکت کرنا جاری رکھیں۔",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move} other{{count} Moves}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "لوڈ ناکام ہو گیا۔",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "فائل کا نام",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "براؤز کریں…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "empty": "خالی",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "کوئی حرکت نہیں۔",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "ابتدائی پوزیشن بحال کر دی گئی۔",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "صاف",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "صاف ہو چکا.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "دور",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "کوئی ٹکڑا ہٹایا نہیں جا سکتا.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece} other{{count} pieces}} ہٹانے کی ضرورت ہے۔",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "رکھا گیا ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "رکھنے کے مرحلے میں رکھ دیا گیا ٹکڑا شمار۔",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "موجودہ کھلاڑی نے {count} ٹکڑے رکھے ہیں۔",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "مرحلہ نہیں رکھ رہا، اسے تبدیل نہیں کر سکتا۔",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "پیسٹ ہو گیا ہے۔",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "پیسٹ نہیں کیا جا سکتا۔",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "fullScreen": "مکمل اسکرین یا بڑی اسکرین",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "ترتیبات کے اثر میں آنے کے لیے ایپ سے باہر نکلیں اور دوبارہ کھولیں۔",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "desktopImage": "ڈیسک ٹاپ امیج",
+  "@desktopImage": {},
+  "invalidPosition": "غلط پوزیشن۔",
+  "@invalidPosition": {},
+  "shareGIF": "GIF شیئر کریں۔",
+  "@shareGIF": {},
+  "pixelRatio": "پکسل کا تناسب",
+  "@pixelRatio": {},
+  "duration": "دورانیہ",
+  "@duration": {},
+  "gameScreenRecorder": "گیم اسکرین ریکارڈر",
+  "@gameScreenRecorder": {},
+  "youCanUseMouseWheelInPicker": "آپ ماؤس وہیل کو چننے والے میں قدر تبدیل کرنے کے لیے استعمال کر سکتے ہیں۔",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI سوچنے کا وقت 0 پر سیٹ ہونے کا مطلب ہے کہ سوچنے کے لیے کوئی وقت کی حد نہیں ہے۔",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f) الفا-بیٹا سرچ الگورتھم کی ایک ترمیم شدہ شکل ہے جس کا مقصد انٹرمیڈیٹ تلاش کے نتائج کو دوبارہ استعمال کرکے اور تلاش کی جگہ کو کم کرنے کے لیے ایک اچھا ابتدائی اندازہ استعمال کرکے کارکردگی کو بہتر بنانا ہے۔",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "براہ کرم آگاہ رہیں کہ AI سوچ کے وقت کی ایڈجسٹمنٹ پوری طرح سے درست نہیں ہوسکتی ہے۔ اصل سوچ کا وقت اس وقت کم ہو سکتا ہے جب مشکل کی سطح کو کم قیمت پر سیٹ کیا جاتا ہے اور جب وقت ختم ہو جاتا ہے تو AI درمیانی سوچ کے وقت زیادہ ہو سکتا ہے۔",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "اگر آپ مشکل کی سطح کو بلند کرتے ہیں لیکن AI سوچنے کے وقت میں اضافہ نہیں کرتے ہیں، تو سوچنے کے وقت کی پابندی کی وجہ سے مشکل کی اصل سطح کم قیمت تک محدود ہو سکتی ہے۔ مشین کی کارکردگی کی بنیاد پر اصل قیمت مختلف ہو سکتی ہے۔",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "drawOnTheHumanExperienceDetail": "انسانی تجربے کے مطابق اگر آپ جیتنے کی کوشش کریں گے تو آپ ہار جائیں گے۔ اس کے بجائے، اپنے مقصد کے طور پر ڈرا کا مقصد بنائیں اور گیم ہارنے سے بچیں۔ اپنے حریف کا مشاہدہ کریں اور انہیں نرمی سے ایسی پوزیشن میں راغب کریں جہاں وہ غلطیاں کر سکیں۔ جب وہ کمزوری دکھاتے ہیں، موقع سے فائدہ اٹھائیں اور جیت کے لیے نرمی سے زور دیں۔ اس طرح آپ گیم جیت سکتے ہیں۔",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "اس کھیل میں، دوسرے کھلاڑی کے لیے پہلے کھلاڑی کے مقابلے جیتنا آسان ہے۔",
+  "@firstMoveDetail": {},
+  "passiveDetail": "Passive آپشن کو فعال کرنے سے AI کو اس وقت آرام ملے گا جب اسے پوزیشن میں فائدہ ہو، بجائے اس کے کہ جارحانہ انداز میں جلد سے جلد جیتنے کی کوشش کرے۔",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "اس اختیار کو فعال کرنے سے گیم کی بے ترتیب پن اور تفریح میں اضافہ ہوتا ہے جبکہ اسے غیر فعال کرنے سے AI کو شکست دینے کے طریقوں کا مطالعہ کرنے میں مدد مل سکتی ہے۔",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "اگر AI اپنے ٹکڑوں کی نقل و حرکت پر غور کرتا ہے، تو اس کا مقصد نہ صرف مخالف کے ٹکڑوں کو جلد از جلد پکڑنا ہوگا، بلکہ مخالف کی نقل و حرکت کو روکنے اور انہیں ایسا کرنے سے روکنے پر بھی غور ہوگا۔",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull": "جب بورڈ بھر جاتا ہے۔",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "رکھنے کے مرحلے کے اختتام پر، حرکت کا مرحلہ شروع ہونے سے پہلے، اگر بورڈ ٹکڑوں سے بھرا ہوا ہو تو کارروائی کی جائے گی۔",
+  "@whenBoardIsFull_Detail": {},
+  "takeOpponentsPiece": "اپنے مخالف کا ایک ٹکڑا لے لو۔",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "پہلا کھلاڑی کھیل ہار جاتا ہے۔",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "پہلے اور دوسرے کھلاڑی مخالف کے ٹکڑوں میں سے ایک کو ہٹاتے ہیں۔",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "دوسرے اور پہلے کھلاڑی حریف کے ٹکڑوں میں سے ایک کو ہٹاتے ہیں۔",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "اب پرواز کے مرحلے میں داخل ہو چکے ہیں، مخالف کے ٹکڑے بورڈ پر کسی بھی خالی جگہ پر جا سکتے ہیں۔ آپ فلائنگ رول کو \"قواعد کی ترتیبات\" میں بند کر سکتے ہیں۔",
+  "@enteredFlyingPhase": {},
+  "whenStalemate_Detail": "جب کوئی ٹکڑا منتقل نہیں کیا جا سکتا تو کیا عمل ہوتا ہے؟",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "جس طرف مسدود ہے اس کے لیے تعطل کے نقصان کے ساتھ اختتام کریں۔",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "حرکت کرنے کے لیے سائیڈ کو تبدیل کریں۔",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "مخالف کے ٹکڑوں میں سے ایک کو ہٹا دیں اور اگلی حرکت کریں۔",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "ایک تعطل ڈرا کے ساتھ ختم کریں۔",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "مخالف کے ٹکڑوں میں سے ایک کو ہٹا دیں اور حرکت کرنے کے لیے سائیڈ کو تبدیل کریں۔",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI جواب میں تاخیر کا وقت",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI فی الحال تاخیر سے ردعمل کے مرحلے میں ہے۔ براہ کرم آگے بڑھنے سے پہلے تھوڑی دیر انتظار کریں۔",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "آپ غیر ملحقہ ٹکڑے کو نہیں ہٹا سکتے ہیں۔",
+  "@tipCanNotRemoveNonadjacent": {},
+  "darkMystery": "گہرا اسرار",
+  "@darkMystery": {},
+  "midnightBlue": "آدھی رات نیلے",
+  "@midnightBlue": {},
+  "stalemateRemovalRegardlessOfMillFormation": "اگر تعطل پیدا ہوتا ہے تو، آپ سے ملحق مخالف کے ٹکڑے ہٹائے جا سکتے ہیں، قطع نظر مل کی تشکیل کے۔",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS ایک ابتدائی دوستانہ الگورتھم ہے جو مختلف حرکات کو دریافت کرنے اور ان کا اندازہ لگا کر سمیلیشنز کے ذریعے فیصلے کرتا ہے۔",
+  "@whatIsMcts": {},
+  "goldenJade": "گولڈن جیڈ",
+  "@goldenJade": {},
+  "forestWood": "جنگل کی لکڑی",
+  "@forestWood": {},
+  "greenForest": "سبز جنگل",
+  "@greenForest": {},
+  "greenMeadow": "سبز گھاس کا میدان",
+  "@greenMeadow": {},
+  "violetDream": "وایلیٹ ڈریم",
+  "@violetDream": {},
+  "mintChocolate": "پودینہ چاکلیٹ",
+  "@mintChocolate": {},
+  "skyBlue": "آسمانی رنگ",
+  "@skyBlue": {},
+  "playfulGarden": "زندہ دل باغ",
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "Retrograde Analysis الگورتھم مختلف ابتدائی پوزیشنوں سے اینڈگیم ڈیٹا بیس بنانے کے لیے کثیر قدر والے ریٹروگریڈ تجزیہ کا استعمال کرتا ہے، پھر گیم پلے کو بہتر بنانے کے لیے اس ڈیٹا بیس کو لاگو کرتا ہے۔ یہ نقطہ نظر انتہائی مضبوط حل کے زمرے میں آتا ہے۔",
+  "@whatIsRetrogradeAnalysis": {},
+  "usePerfectDatabase": "کامل ڈیٹا بیس کا استعمال کریں۔",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "جدید الگورتھم کے ذریعے تیار کردہ بے عیب گیم ڈیٹا بیس کو استعمال کرنے کے لیے اس اختیار کو فعال کریں۔ یہ خصوصیت زیادہ سے زیادہ چالوں کی تجویز کرنے کے لیے ابتدائی اور اختتامی گیم دونوں حکمت عملیوں کو مربوط کرتی ہے۔ یہ ان کھلاڑیوں کے لیے ترجیحی انتخاب ہے جو گیم پلے میں اعلیٰ سطح کی درستگی کے خواہاں ہیں۔ پیچیدہ کمپیوٹیشنل تکنیکوں کے ذریعے تخلیق کیا گیا، ڈیٹا بیس کو قریب ترین گیم حل پیش کرنے کے لیے ڈیزائن کیا گیا ہے۔\n\nنوٹ: اگر AI ڈیٹا بیس تک رسائی حاصل کرنے میں ناکام رہتا ہے، تو یہ گیم پلے کے فیصلوں کے لیے روایتی الگورتھم کی طرف رجوع کرے گا۔ جب ڈیٹا بیس دستیاب ہوتا ہے، 'مشکلیت کی سطح' عملی طور پر ناقابل شکست ہو جاتی ہے، اور 'AI تھنکنگ ٹائم' میں زبردست کمی واقع ہوتی ہے۔ 'AI کے پلے اسٹائل' کے اختیارات میں بہت سی ترتیبات کو اوور رائیڈ کر دیا جائے گا، کیونکہ ڈیٹا بیس کے نتائج سب سے زیادہ ترجیح رکھتے ہیں۔\n\nاس بے عیب ڈیٹا بیس سے زیادہ سے زیادہ فائدہ اٹھانے کے بارے میں رہنمائی کے لیے، یہاں کلک کریں۔",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "پس منظر کی تصویر",
+  "@backgroundImage": {},
+  "whatIsRandom": "جب 'پرفیکٹ ڈیٹا بیس کا استعمال کریں' کا آپشن فعال نہیں ہوتا ہے، تو 'رینڈم' سیٹنگ AI کو ٹکڑوں کو تصادفی طور پر منتقل کرنے کا سبب بنتی ہے، منتقلی کے انتخاب کے لیے کوئی الگورتھم استعمال کیے بغیر۔ یہ عام طور پر نمایاں طور پر کمزور گیم پلے کے نتیجے میں ہوتا ہے۔ اس کے برعکس، جب 'پرفیکٹ ڈیٹا بیس استعمال کریں' کو فعال کیا جاتا ہے، تو AI روایتی AI الگورتھم کے ساتھ ملاوٹ کرنے کے بجائے، فیصلے کرنے کے لیے 'پرفیکٹ ڈیٹا بیس' پر انحصار کرتا ہے۔ اس موڈ میں، AI کی چالیں مکمل طور پر ڈیٹا بیس کے مواد پر مبنی ہوتی ہیں، ریئل ٹائم کیلکولیشنز یا سرچ الگورتھم پر انحصار کو چھوڑ کر۔",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "مخالف کے مہرے (مہروں) کو ان کے ہاتھ سے ہٹا دیں؛ پھر مخالف کی باری ہے کہ وہ مہرہ رکھے۔",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "جب پلانگ کے مرحلے کے دوران ملیں بناتے ہیں۔",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "مخالف کے مہرے (مہرے) بورڈ سے ہٹا دیں۔",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "مخالف کے مہرے (مہرے) بورڈ سے ہٹا دیں؛ پھر مخالف کی باری ہے کہ وہ مہرہ رکھے۔",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "مخالف خود اپنے مہرے کو بورڈ سے ہٹاتا ہے۔",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "آپ کے بجائے مخالف اپنا مہرہ (مہرے) بورڈ سے منتخب کرتا ہے اور ہٹاتا ہے ، اس طرح ایک ایسا عمل کرتا ہے جو خود اس کے لیے نقصان دہ ہے۔",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "مخالف کے مہرے کو ان کے ہاتھ سے ہٹا دیں؛ پھر آپ کی باری ہے۔",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "مخالف کے ہاتھ سے حصہ (حصے) ہٹا دیں۔ اگر ملٹی ریمو سیٹنگ کے مطابق ، متعدد ٹکڑوں کو ہٹانا ہے اور مخالف کے ہاتھ میں کوئی ٹکڑا باقی نہیں ہے تو ، مخالف کے ٹکڑوں کو بورڈ سے ہٹانا جاری رکھیں۔ پھر ، یہ حرکت کرنے کی آپ کی باری ہے۔ اگر آپ ملیں بنانا جاری رکھتے ہیں تو ، آپ مخالف کے ٹکڑے ہٹا سکتے ہیں۔",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "مخالف کے ہاتھ سے حصہ (حصے) ہٹا دیں۔ اگر ملٹی ریمو سیٹنگ کے مطابق ، متعدد ٹکڑوں کو ہٹانا ہے اور مخالف کے ہاتھ میں کوئی ٹکڑا باقی نہیں ہے تو ، مخالف کے ٹکڑوں کو بورڈ سے ہٹانا جاری رکھیں۔ پھر ، مخالف کی باری ہے۔",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "ٹکڑوں کو ہٹانے کو نشان زد کریں اور تاخیر کریں۔",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "پلانگ کے مرحلے کے دوران ، ہٹائے جانے والے ٹکڑوں کو نشان زد کیا جاتا ہے ، اور دونوں کھلاڑیوں کے لیے ، ان نکات پر کوئی نیا ٹکڑا نہیں رکھا جا سکتا۔ حرکت کے مرحلے میں داخل ہونے پر ، ان نشان زدہ ٹکڑوں کو بالکل ہٹا دیا جاتا ہے ، اور کھلاڑی اب اپنے ٹکڑوں کو ان اب خالی مقامات پر منتقل کر سکتے ہیں۔",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "جب پلیسنگ مرحلے کے دوران چکیاں بنائی جاتی ہیں تو کی جانے والی کارروائیاں۔",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "نشان زدہ",
+  "@marked": {},
+  "menu": "مینو",
+  "@menu": {},
+  "showNumbersOnPieces": "مہروں پر نمبر دکھائیں",
+  "@showNumbersOnPieces": {},
+  "monochrome": "مونوکروم",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "آپ عمومی ترتیبات میں معذوری کی سہولت ترتیبات میں اسکرین ریڈر سپورٹ کو آن کر سکتے ہیں۔",
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "تصویر محفوظ کریں",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "تجزیہ ٹولبار دکھائیں",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "تجزیہ ٹولبار کا پس منظر رنگ",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "تجزیہ ٹولبار آئکن کا رنگ",
+  "@analysisToolbarIconColor": {},
+  "transformed": "تبدیل شدہ۔",
+  "@transformed": {},
+  "cannotTransform": "تبدیل نہیں کر سکتا۔",
+  "@cannotTransform": {},
+  "rotate": "گھومیں",
+  "@rotate": {},
+  "horizontalFlip": "H فلپ",
+  "@horizontalFlip": {},
+  "verticalFlip": "V فلپ",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO فلپ",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "شفاف کینوس",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "بار بار مل تشکیل دینے پر پابندی",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ایک پیس جو ایک مل سے دوسرے میں منتقل ہوا ہے وہ اگلی باری میں فوری طور پر اصلی نقطہ پر واپس نہیں جا سکتا تاکہ دوبارہ مل بنا سکے۔ پہلے مختلف حرکت کی ضرورت ہے۔",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "ایک وقتی استعمال مل",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "ہر مل صرف ایک بار مخالف کا حصہ ہٹا سکتا ہے۔ آپ اسے دوبارہ تشکیل دے سکتے ہیں، لیکن اسے اضافی ہٹانے کے لئے استعمال نہیں کیا جا سکتا ہے۔",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "آپ کے طے کردہ موجودہ قواعد کے مطابق کوئی کامل ڈیٹا بیس نہیں ہے۔ کامل ڈیٹا بیس کے بارے میں مزید معلومات کے لیے، براہ کرم یہاں کلک کریں۔",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "رکاوٹیں پیدا کرنے والے راستوں پر توجہ دیں",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "ملز بنانے کے بجائے مخالف کی حرکات کو روکنے کو ترجیح دیں۔ ملز مکمل کرنے سے ٹکڑوں کو ہٹانے پر توجہ دینے کے بجائے، AI کا مقصد مخالف کو پھنسانا ہے، انہیں حرکت کرنے سے قاصر بنانا اور جارحانہ کھیل کے بجائے گراوٹ کے ذریعے فتح کو یقینی بنانا ہے۔ یہ حکمت عملی مخالف کی ملز کو فعال طور پر نہیں روکتی ہے۔",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "شطرنج کا تصویر",
+  "@pieceImage": {},
+  "importColorSettings": "رنگ کی ترتیبات درآمد کریں",
+  "@importColorSettings": {},
+  "exportColorSettings": "رنگ کی ترتیبات برآمد کریں",
+  "@exportColorSettings": {},
+  "import": "درآمد کریں",
+  "@import": {},
+  "export": "برآمد کریں",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "براہ کرم پہلے JSON فارمیٹ کی ترتیبات کو کلپ بورڈ پر کاپی کریں۔",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "کلپ بورڈ پر کاپی کر دیا گیا۔",
+  "@copiedToClipboard": {},
+  "imported": "درآمد کیا گیا۔",
+  "@imported": {},
+  "boardImage": "بورڈ کی تصویر",
+  "@boardImage": {},
+  "autumnLeaves": "خزاں کے پتے",
+  "@autumnLeaves": {},
+  "legendaryLand": "افسانوی زمین",
+  "@legendaryLand": {},
+  "vignetteEffect": "وینیٹ اثر",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "کیا آپ بورڈ کے پس منظر کی تصویر سیٹ کرنے پر ٹول بار کو مکمل طور پر شفاف بنانا چاہیں گے؟",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "گیم میں وائبریشن کو فعال کریں",
+  "@vibration": {},
+  "soundTheme": "آواز تھیم",
+  "@soundTheme": {},
+  "ball": "گیند",
+  "@ball": {},
+  "liquid": "سیال",
+  "@liquid": {},
+  "wood": "لکڑی",
+  "@wood": {},
+  "placeEffectAnimation": "مہرا رکھنے کا متحرک اثر",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "مہرا ہٹانے کا متحرک اثر",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ٹول بار کو نیچے دکھائیں",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "تختہ کے کونے کا رداس",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "افتتاحی کتاب استعمال کریں",
+  "@useOpeningBook": {},
+  "currentRule": "موجودہ",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "مورابارابا",
+  "@morabaraba": {},
+  "dooz": "دوز",
+  "@dooz": {},
+  "chamGonu": "چمگونو",
+  "@chamGonu": {},
+  "zhiQi": "زھیچی",
+  "@zhiQi": {},
+  "chengSanQi": "چنگسانچی",
+  "@chengSanQi": {},
+  "mulMulan": "مل-ملان",
+  "@mulMulan": {},
+  "nerenchi": "نیرنچی",
+  "@nerenchi": {},
+  "ruleSet": "قاعدہ مجموعہ",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "ایک بار کا مل",
+  "@oneTimeMill": {},
+  "daSanQi": "دا سانچی",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "کھیل کے ابتدائی مرحلے میں پیشہ ورانہ انسانی کھلاڑیوں کی طرف سے عام طور پر استعمال ہونے والی افتتاحی چالوں کا استعمال کرنے دیں۔ نوٹ: یہ خصوصیت فی الحال صرف مخصوص قواعد کے سیٹوں کے لئے دستیاب ہے۔",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "فائدے کا گراف دکھائیں",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "ایڈوانٹیج گراف صرف اس وقت بنایا جائے گا جب اے آئی حرکت کرے گی۔ جب انسانی کھلاڑی حرکت کرے گا تو یہ نہیں بنایا جائے گا۔",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "اس وقت تک ہٹانے کو غیر فعال کریں جب تک کہ تمام مہروں کو رکھ نہ دیا جائے۔ کھلاڑی اپنی ملوں کی تعداد کی بنیاد پر مہروں کو ہٹاتے ہیں۔",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "اس وقت تک ہٹانے کو غیر فعال رکھیں جب تک کہ تمام مہروں کو رکھ نہ دیا جائے۔ کھلاڑی اپنی ملوں کی تعداد کی بنیاد پر مہروں کو ہٹاتے ہیں: اگر تعداد برابر ہو تو دونوں کھلاڑی ایک ہی تعداد میں مہرے ہٹاتے ہیں؛ اگر ایک کے پاس زیادہ ہوں تو وہ ایک اضافی مہرہ ہٹاتے ہوئے فرق کو ایک مہرے تک محدود رکھتا ہے۔ اگر صرف ایک کھلاڑی مل تشکیل دیتا ہے تو وہ دو مہرے ہٹا دے گا جبکہ دوسرا ایک مہرہ ہٹائے گا۔ اگر کوئی بھی مل تشکیل نہ دے سکے تو دونوں ایک ایک مہرہ ہٹا دیتے ہیں۔",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "الفلجة",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "اپنے مہرے میں سے ایک کا انتخاب کریں۔",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "آپ کی باری نہیں ہے۔",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "تشریح ٹول بار کا پس منظر کا رنگ",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "تشریح ٹول بار کے آئیکن کا رنگ",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "تشریح ٹول بار دکھائیں",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "تشریح موڈ میں داخل ہوں",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "کیا آپ واقعی تمام تشریحات صاف کرنا چاہتے ہیں؟",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM پرامپٹ کلپ بورڈ پر کاپی کر دیا گیا۔",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "کنکشن رد کر دیا گیا، سرور بند ہو سکتا ہے۔",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "دریافت کامیاب، کنکشن کا انتظار ہے...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "کوئی LAN کنکشن نہیں",
+  "@noLanConnection": {},
+  "takeScreenshot": "اسکرین شاٹ لیں",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "مخالف سے رابطہ منقطع ہو گیا۔",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "واپسی کی درخواست",
+  "@takeBackRequest": {},
+  "nothingToShow": "دکھانے کے لیے کچھ نہیں ہے۔",
+  "@nothingToShow": {},
+  "stopHosting": "ہوسٹنگ بند کریں",
+  "@stopHosting": {},
+  "connectionResetByPeer": "کنکشن کو ساتھی نے ری سیٹ کر دیا۔",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "کنکشن ہارٹ بیٹ ٹائم آؤٹ کی وجہ سے منقطع ہو گیا ہے۔ براہ کرم دوبارہ کنیکٹ کریں۔",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "ہوسٹنگ شروع کریں",
+  "@startHosting": {},
+  "restartRequestRejected": "ری اسٹارٹ کی درخواست مسترد کر دی گئی۔",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "LAN مخالف سے کنکشن قائم نہیں ہے۔",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM پرامپٹ",
+  "@llmPrompt": {},
+  "gameRestarted": "کھیل دوبارہ شروع ہو گیا۔",
+  "@gameRestarted": {},
+  "takeBackRejected": "واپسی کی درخواست مسترد کر دی گئی۔",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "کیا آپ واقعی اس کھیل سے دستبردار ہونا چاہتے ہیں؟",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "مخالف نے دستبرداری اختیار کر لی۔ آپ جیت گئے!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "تمام تشریحات صاف کریں",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "متصل، مخالف کی باری کا انتظار ہے...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "نیٹ ورک کی حالت: منقطع",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "واپسی کی درخواست مخالف کو بھیج دی گئی۔",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "ممکن ہے کہ مخالف کھیل چھوڑ چکا ہو۔",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "میزبان سے کامیابی کے ساتھ کنیکٹ ہو گیا۔",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "کنکشن منقطع ہو گیا: ہارٹ بیٹ ٹائم آؤٹ",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "کوئی میزبان دریافت نہیں ہوا۔",
+  "@noHostDiscovered": {},
+  "confirmResignation": "دستبرداری کی تصدیق کریں",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "کھیل کی میزبانی شروع ہو گئی، کھلاڑیوں کے شامل ہونے کا انتظار ہے...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "کنکشن ٹائم آؤٹ ہو گیا، نیٹ ورک کنکشن غیر مستحکم ہے۔",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "کوئی LLM پرامپٹ دستیاب نہیں ہے۔",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "آپ نے دستبرداری اختیار کر لی۔ کھیل ختم۔",
+  "@youResignedGameOver": {},
+  "serverIp": "سرور IP",
+  "@serverIp": {},
+  "confirmClear": "صاف کرنے کی تصدیق کریں",
+  "@confirmClear": {},
+  "opponentSTurn": "مخالف کی باری۔",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "کلائنٹ کنکشن کا انتظار ہے...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "واپسی کی درخواست مسترد کر دی گئی یا ناکام ہو گئی۔",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "متن شامل کریں",
+  "@addText": {},
+  "exitAnnotationMode": "تشریح موڈ سے باہر نکلیں",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "اپنی تشریح ٹائپ کریں",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "دوبارہ کنیکٹ کرنے کی کوشش کر رہے ہیں...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "ری اسٹارٹ کی درخواست بھیج دی گئی۔ مخالف کے جواب کا انتظار ہے...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "سرور بند ہے۔",
+  "@serverIsStopped": {},
+  "restartRequest": "ری اسٹارٹ کی درخواست",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "جب آپ کی باری نہ ہو تو واپسی کی درخواست نہیں کی جا سکتی۔",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "واپسی قبول کر لی گئی۔",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "مقامی نیٹ ورک کی ترتیبات",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "کامیابی کے ساتھ دوبارہ کنیکٹ ہو گیا!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "گیلری میں تصویر محفوظ کرنے میں ناکام۔",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "مخالف نے کھیل کو دوبارہ شروع کرنے کی درخواست کی ہے۔ کیا آپ قبول کرتے ہیں؟",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "آپ کی باری۔",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "دوبارہ کنیکٹ کرنے میں ناکام، براہ کرم کھیل دوبارہ شروع کریں۔",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "میزبان",
+  "@host": {},
+  "join": "شامل ہوں",
+  "@join": {},
+  "port": "پورٹ",
+  "@port": {},
+  "invalidIpAddress": "غلط IP ایڈریس۔",
+  "@invalidIpAddress": {},
+  "invalidPort": "غلط پورٹ۔",
+  "@invalidPort": {},
+  "connectingAttempt": "کنیکٹ ہو رہا ہے: کوشش {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "کنیکٹ کرنے میں ناکام: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "ہوسٹنگ شروع کرنے میں ناکام: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "میزبان دریافت ہوا: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "بند کریں",
+  "@stop": {},
+  "discover": "دریافت کریں",
+  "@discover": {},
+  "connect": "کنیکٹ کریں",
+  "@connect": {},
+  "clientConnected": "کلائنٹ کنیکٹ ہو گیا: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "دریافت کر رہا ہے: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "دوبارہ کنیکٹ ہو رہا ہے ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "کنیکٹ ہو گیا",
+  "@connected": {},
+  "delete": "حذف کریں",
+  "@delete": {},
+  "ancientEgypt": "قدیم مصر",
+  "@ancientEgypt": {},
+  "gothicIce": "گوتھک برف",
+  "@gothicIce": {},
+  "riceField": "چاول کا کھیت",
+  "@riceField": {},
+  "chinesePorcelain": "چینی چینی مٹی کا برتن",
+  "@chinesePorcelain": {},
+  "desertDusk": "صحرا کی شام",
+  "@desertDusk": {},
+  "precisionCraft": "درست دستکاری",
+  "@precisionCraft": {},
+  "folkEmbroidery": "لوک کڑھائی",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "کارپیتھین ورثہ",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "شاہی عظمت",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "بوہیمین کرسٹل",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "سوانا طلوع آفتاب",
+  "@savannaSunrise": {},
+  "harmonyBalance": "ہم آہنگی اور توازن",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "دارچینی مصالحہ",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "اناطولیائی موزیک",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "کارنیوال روح",
+  "@carnivalSpirit": {},
+  "custom": "رواج",
+  "@custom": {},
+  "spiceMarket": "مصالحہ بازار",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "درج کو ظاہر کرنے کے لیے سوائپ کریں",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "اسکرین شاٹس پر گیم کی معلومات دکھائیں",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "انسانی وقت کی حد",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "انسانی چالوں کے لیے وقت کی کوئی حد نہیں",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "انسانی کھلاڑی کے لیے ٹائم آؤٹ ہار کا اطلاق ہوگا",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "گیم بورڈ کی شناخت ہو رہی ہے...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "آپ کسی بھی ماڈل کا نام درج کر سکتے ہیں۔",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "گیم بورڈ کی پوزیشن لاگو کر دی گئی۔ FEN کلپ بورڈ پر کاپی ہو گیا۔",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "تجویز: گیم بورڈ کی ایک صاف تصویر لینے کی کوشش کریں۔",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM پرامپٹ ٹیمپلیٹ",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "کوئی درست گیم بورڈ نہیں ملا۔",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "البم سے تصویر منتخب کی جا رہی ہے...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "پرامپٹ ٹیمپلیٹ ترتیب دیں",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "LLM تجزیہ کے لیے پرامپٹ ٹیمپلیٹ ترمیم کریں",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "پہچانے گئے بورڈ سے FEN بنانے میں ناکامی۔",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "موجودہ زبان میں آؤٹ پٹ",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "عام Base URLs",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "عام ماڈلز دیکھیں",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "پہچان کے پیرامیٹرز اپ ڈیٹ ہو گئے۔",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "سفید کا قدم",
+  "@whiteSMove": {},
+  "resetToDefaults": "ڈیفالٹ ترتیبات پر ری سیٹ کریں",
+  "@resetToDefaults": {},
+  "photoShoot": "تصویر کھینچنا",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "پہچانے گئے بورڈ کی پوزیشن لاگو کرنے میں ناکامی۔",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM پرامپٹ مواد",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM تشکیل نہیں ہے۔ براہ کرم اپنی ترتیبات چیک کریں۔",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "فراہم کنندہ، ماڈل، API Key، اور Base URL سیٹ کریں",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM کنفیگریشن",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "LLM فراہم کنندہ کو ترتیب دیں",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM پرامپٹ ٹیمپلیٹ ہیڈر",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "تصویر میں کوئی مہرے پہچانے نہیں گئے۔ براہ کرم دوبارہ کوشش کریں۔",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "تصویر سے گیم بورڈ پہچانیں",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "مشورے دیکھیں",
+  "@viewTips": {},
+  "applyToBoard": "بورڈ پر لاگو کریں",
+  "@applyToBoard": {},
+  "adjustBoardArea": "بورڈ کے علاقے کو ایڈجسٹ کریں",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "عام URLs دیکھیں",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "رنگ کا تجزیہ ناکام ہو گیا!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "گیم بورڈ کی تصویر کا تجزیہ کیا جا رہا ہے...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "البم سے منتخب کریں",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "کوئی بورڈ پوائنٹ نہیں ملا!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "اگر خالی چھوڑا گیا تو ڈیفالٹ ٹیمپلیٹ استعمال کیا جائے گا۔",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM کنفیگریشن",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "کیا آپ واقعی پرامپٹ ٹیمپلیٹس کو ڈیفالٹ اقدار پر ری سیٹ کرنا چاہتے ہیں؟",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM پرامپٹ ٹیمپلیٹ فوٹر",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "جواب لوڈ ہو رہا ہے...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "اس نتیجے کو بورڈ پر لاگو کریں",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "تصویر لی جا رہی ہے...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "براہ کرم شناخت کے لیے گیم بورڈ کی تصویر منتخب کریں",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "شناخت کے نتائج",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "حرکات کا تجزیہ کریں اور بصیرت فراہم کریں۔",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "API Key حاصل کریں",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "پوری پہچان کا عمل مکمل کرنے میں ناکامی۔",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "بورڈ پہچان کا نتیجہ",
+  "@boardRecognitionResult": {},
+  "askLlm": "LLM سے پوچھیں",
+  "@askLlm": {},
+  "boardDetectionFailed": "بورڈ کی تلاش ناکام ہو گئی!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "کوئی بورڈ پوائنٹ نہیں ملا، مہرے کی شناخت نہیں ہو سکتی!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "FEN کاپی کریں",
+  "@copyFen": {},
+  "commonlyUsedModels": "عام طور پر استعمال ہونے والے ماڈلز",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (اختیاری)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "کوئی تصویر منتخب نہیں کی گئی",
+  "@noImageSelected": {},
+  "blackSMove": "کالے کا قدم",
+  "@blackSMove": {},
+  "llm": "بڑا لسانی ماڈل",
+  "@llm": {},
+  "llmProvider": "فراہم کنندہ",
+  "@llmProvider": {},
+  "baseUrl": "بنیادی URL",
+  "@baseUrl": {},
+  "model": "ماڈل",
+  "@model": {},
+  "temperature": "درجہ حرارت",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "حکم موصول! اے آئی پروسیسنگ کر رہی ہے...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "گہری سوچ جاری ہے، براہ کرم انتظار کریں...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "جلد پیش کیا جائے گا...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "پہچان کے پیرامیٹرز",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "پہچان کی درستگی بہتر بنانے کے لیے پیرامیٹرز کو ایڈجسٹ کریں",
+  "@adjustParamsDesc": {},
+  "saveParameters": "پیرامیٹرز محفوظ کریں",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "امیج ریکگنیشن شروع نہیں ہو سکی: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "امیج ریکگنیشن ناکام ہوئی: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} سفید اور {blackCount} سیاہ مہروں کے ساتھ پوزیشن لاگو کی گئی",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN کلپ بورڈ میں کاپی ہو گیا ہے)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "پہچان ناکام ہوئی: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "میری درجہ بندی",
+  "@myRating": {},
+  "gamesPlayed": "کھیلے گئے گیمز",
+  "@gamesPlayed": {},
+  "wins": "جیت",
+  "@wins": {},
+  "losses": "ہار",
+  "@losses": {},
+  "draws": "برابر",
+  "@draws": {},
+  "lastUpdated": "آخری بار اپ ڈیٹ کیا گیا",
+  "@lastUpdated": {},
+  "format": "فارمیٹ:",
+  "@format": {},
+  "resetStatistics": "شماریات کو ری سیٹ کریں",
+  "@resetStatistics": {},
+  "drawRate": "برابری کی شرح",
+  "@drawRate": {},
+  "lossRate": "ہار کی شرح",
+  "@lossRate": {},
+  "aiStatistics": "AI شماریات",
+  "@aiStatistics": {},
+  "enableStatistics": "شماریات کو فعال کریں",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "فعال ہونے پر، گیم کے نتائج شماریات میں ریکارڈ کیے جائیں گے۔ تاہم، ٹیک بیکس پر مشتمل گیمز ریکارڈ نہیں کیے جائیں گے۔ غیر فعال ہونے پر، شماریات جمع کرنا روک دیا جاتا ہے۔",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "یہ گیم کے تمام شماریات کو ری سیٹ کر دے گا۔ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "بورڈ کی اندرونی انگوٹھی کا سائز",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "بورڈ کا سایہ",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "جال کی شناخت",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "تجزیے کے دوران موٹے دائروں اور تیروں کے ساتھ جال کی چالوں کو نمایاں کریں.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "جال موجود ہے۔ جال کی چالیں: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "فلانکنگ کیپچر",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "اپنے حریف کے ایک ٹکڑوں کو اپنے دو کے درمیان سیدھے لکیر میں منسلک کریں۔",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "فلانکنگ کی گرفتاری کی اجازت دیں",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "مداخلت کی گرفتاری",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "اپنے حریف کے دو ٹکڑوں کے درمیان خالی نقطہ میں جائیں تاکہ ان دونوں کو پکڑ سکے۔",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "مداخلت کی گرفتاری کی اجازت دیں",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "جمپ کیپچر",
+  "@leapCapture": {},
+  "leapCaptureDescription": "ملحقہ حریف کے ٹکڑے کو چھلانگ لگا کر اس سے باہر خالی نقطہ پر گرفت کریں۔",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "چھلانگ کی گرفتاری کی اجازت دیں",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "قابل اطلاق لائنیں",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "مربع کے کناروں کے ساتھ",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "مربع کو عبور کرنے والے آرتھوگونل لائنوں کے ساتھ",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "مربع عبور کرنے والے اخترن لائنوں کے ساتھ",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "پھانسی کے مراحل",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "باقی ٹکڑوں کی بنیاد پر چلنے والے مرحلے کے دوران دستیابی",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "کوئی پابندی نہیں",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "جب آپ کے پاس تین یا کم ٹکڑے ہوں تو دستیاب ہے",
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "جب صرف دو خالی چوکور رہ جائیں تو رکھنا بند کریں",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "فعال ہونے پر، جب بورڈ پر صرف 2 خالی جگہیں باقی رہ جائیں تو رکھنے کا مرحلہ ختم ہو جاتا ہے اور حرکت کا مرحلہ شروع ہو جاتا ہے، ہاتھ میں موجود مہروں سے قطع نظر۔ یہ قاعدہ صرف 12 مہروں والے کھیلوں پر لاگو ہوتا ہے۔",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
         "placeholders": {
             "player": {
                 "description": "The player to move",
@@ -2117,4 +3872,5 @@
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "فعال ہونے پر، جب بورڈ پر صرف 2 خالی جگہیں باقی رہ جائیں تو رکھنے کا مرحلہ ختم ہو جاتا ہے اور حرکت کا مرحلہ شروع ہو جاتا ہے، ہاتھ میں موجود مہروں سے قطع نظر۔ یہ قاعدہ صرف 12 مہروں والے کھیلوں پر لاگو ہوتا ہے۔",
     "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@capturePiecesConditionSelfLeqThree": {}
 }

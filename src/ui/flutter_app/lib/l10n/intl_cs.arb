@@ -1,4 +1,2021 @@
 {
+  "@@locale": "cs",
+  "appName": "Mlýn",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Vítejte",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ano",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Ne",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Hra",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Člověk vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Člověk Vs Člověk",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI vs. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Člověk vs. Cloud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Člověk vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test přes LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Tah",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Seznam tahů",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Seznam tahů",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Žádný záznam",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Potvrdit",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Zrušit",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Vybrali jste špatný kámen.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Umístěte své kameny.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Nelze jej sem umístit.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Umístěno.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Odstraňte kámen.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Nelze odebrat.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Odstraněno.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Přesuňte kus.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Sem nemůžete umístit svůj kousek.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Sem nemůžete přesunout svůj kousek.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mlýn! Vezměte soupeřovu figuru.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Pokračujte v získávání soupeřovy figurky.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Vyberte si jednu ze soupeřových figurek.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Kus nelze z mlýna odebrat.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Kus se může pohybovat o 1 bod.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Nemůžete přesouvat kusy svého soupeře.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Vyberte kousek, který chcete přesunout.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Zbývají vám 3 kameny.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Můžete přesunout kámen na libovolné volné pole.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} přesunout.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Hráč 1 vyhrává!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Hráč 2 vyhrává!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Vyhrál",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Prohrál",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Přemýšlím...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nová hra",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importovat hru",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Exportovat hru",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Hra byla importována.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Nelze importovat {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Tahy a pravidla se neshodují.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Prosím, čekejte...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Restartovat aktuální hru?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Restartujte",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Hra začala, prosím, umístěte.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Probíhá analýza…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Chyba: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Míra výhry",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Skóre:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Hráč 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Hráč 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} počet kusů je menší než tři.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} rezignoval.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} nemá kam jít.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Deska je plná a {player} nemá kam jít.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Čas vypršel, {player} prohrál.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Ve fázi pohybu nebyl v posledním konkrétním počtu tahů odstraněn žádný kus.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Jedná se o Draw, protože hrací deska je plná.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Jedná se o Draw kvůli trojnásobnému opakování.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Konec hry! Neznámý důvod.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Konec hry",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Vyhráváte! Gratulujeme!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Vyzvat těžší úroveň? Nová úroveň bude úroveň {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Prohrál jsi!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analyzovat",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "O",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Verze: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "dík",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Nastavení",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Možnosti",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Obecná nastavení",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Stupeň obtížnosti",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Doba přemýšlení AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Obtížnost",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Zvukové efekty",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Přehrávat zvuky během hry",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Zachovat ticho při vracení tahu",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Tón",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "První tah",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Člověk",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Střídat",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automaticky restartovat hru po skončení hry",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automatická změna prvního tahu",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Náhodné tahy",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Různé",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Pravidla",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Počet figurek, které má každý hráč",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Kolik figurek má každý hráč?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Číslo létajícího kusu",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Pokud je povoleno létání, když je hráč snížen na konkrétní počet figurek, její figurky se mohou volně pohybovat do jakéhokoli neobsazeného bodu, místo aby byly omezeny na sousední body jako ve zbytku hry.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Kusy nejméně",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonální čáry",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Přidejte na desku čtyři diagonální čáry.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "Druhý hráč se pohybuje jako první",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Hráč, který se ve fázi umístění pohybuje na druhém místě, se ve fázi pohybu pohybuje jako první.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Vícenásobné odebrání",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Pokud hráč zavře více než jeden mlýn najednou, bude moci odebrat počet mlýnů, které uzavřela.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Zničte mlýny",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Ve výchozím nastavení musí hráči nejprve odebrat všechny další figurky, než odeberou figurku z formovaného mlýna. Povolením této možnosti zakážete omezení.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Druhý hráč prohraje, když je hrací plocha plná",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Na konci fáze umístění, když je hrací deska plná, strana, která umístí první, prohrává hru, jinak je hra remízou.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Ztratit, když žádné legální pohyby",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Hráč ztratí, pokud je jeho protivník zablokuje, takže jimi nelze hýbat. Pokud je tato možnost zakázána, změňte stranu na pohyb.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Létající",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Pokud hráči zbývají pouze tři nebo čtyři (konfigurovatelné) figurky, může figurku přesunout na libovolný volný bod.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Pravidlo N-move",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Hra je losována, pokud nedošlo k odstranění v určitém počtu tahů každého hráče.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Vrátit zpět",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Prosím vyberte",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "kopírovat",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Přesunout historii zkopírovanou do schránky.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Pomoc",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Zpětná vazba",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Výstup",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Nastavení pravidel",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Barva",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Barva desky",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Barva kusu",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Barva pozadí",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Barva čáry desky",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Barva kamenů hráče 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Barva kamenů hráče 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Barva zprávy",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Zobrazit počet kusů v ruce",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Zobrazit notace na palubě",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Zobrazit panel nástrojů pro navigaci v historii",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Zobrazit",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Šířka hranice desky",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Šířka vnitřní čáry desky",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Šířka kusu",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Velikost písma",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Zápis WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Obnovit",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Obnovit výchozí nastavení",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Vyberte {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Náznak",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "hráč",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Hráč 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Hráč 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Jak hrát",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Klepnutím na libovolný dostupný bod umístíte díl.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Klepnutím na kus jej přesuňte.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Klepnutím na bod připojený k dílu jej přesuňte.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Klepnutím na soupeřovu jednu figuru odeberete.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Před odstraněním kusu musíte nejprve vytvořit mlýn.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Musíte si hrát se svými figurkami.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Celkem her",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Výsledek",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "vlevo, odjet",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Zásady ochrany osobních údajů",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Přečtěte si pozorně a ujistěte se, že tomu plně rozumíte a souhlasíte s tím ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Pokud s těmito zásadami nesouhlasíte, nepoužívejte tuto aplikaci. Používání aplikace znamená, že přijímáte tyto podmínky.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " a ",
+  "@and": {},
+  "accept": "Akceptovat",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Vzít zpět",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Vzít zpět…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Čekání…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Krok vpřed",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Vezměte zpět všechny",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Krok vpřed všichni",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Přesun hned",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Hotovo.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-mlýn",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Pokud má hráč pouze kousky v mlýnech, kousky v mlýnech se nezamknou a nebudou odstraněny.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Délka animace",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Žádný",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Téma",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Cílem hry je nechat soupeře s méně než třemi kusy nebo bez legálních tahů.\n\nHra se automaticky losuje, pokud dojde k pozici již potřetí, nebo pokud během posledních 100 (konfigurovatelných) tahů nedošlo k odebrání.\n\nHra probíhá ve třech fázích:\n\n1. Ukládání dílků na volná místa\n2. Přesunutí kusů do sousedních bodů\n3. (volitelná fáze) Přesouvání figurek na libovolné volné místo, když byl hráč snížen na tři figurky\n\nUmístění\n\nHra začíná prázdnou deskou, kterou tvoří mřížka s dvaceti čtyřmi body. Hráči se střídají při umisťování svých figurek na volné body, dokud každý hráč neumístí všechny figurky na hrací plochu. Pokud hráč může umístit tři své figurky do přímky, má „mlýn“ a může odstranit jednu ze svých soupeřových figurek z hrací plochy.\n\nV některých variantách pravidel musí hráči nejprve odebrat všechny další figurky, než odeberou figurku z formovaného mlýna.\n\nV některých variantách pravidel nemusí být všechny body odstraněných figurek znovu umístěny do umisťovací fráze.\n\nJakmile jsou použity všechny figurky, hráči se střídají v pohybu.\n\nPohyb\n\nHráč se pohybuje jedním ze svých kamenů po palubní linii na volné sousední místo. Pokud tak nemůže učinit, prohrál hru. Stejně jako ve fázi umístění má hráč, který zarovná tři své figurky na hrací čáru, mlýn a může odstranit jednu ze svých soupeřových figurek. Každý hráč se sníží na dva kusy a nemá možnost vytvářet nové mlýny, a tak prohrává. Hráč může také prohrát s více než třemi kameny, pokud je jeho protivník zablokuje, takže jimi nelze hýbat.\n\nLétající\n\nV některých variantách pravidel, jakmile hráči zbývají pouze tři kameny, mohou jeho kameny „létat“, „skákat“ nebo „skákat“ na libovolná volná místa, nejen na sousední.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informace o verzi",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licence",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Zdrojový kód",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Verze aplikace",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Všeobecné",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Pokročilý",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Umístění",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Pohyb",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Odstraňování",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Stav hry přes",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI je herní styl",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Pasivní",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Časový limit",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Vzhled",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Čerpejte z lidské zkušenosti",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Zvažte mobilitu kusů",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Počet kusů:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} v ruce: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} na palubě: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Odsazení desky shora",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Na řadě není AI.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI nemyslí.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Na konci seznamu přesunutí.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Opětovným klepnutím zpět odejdete.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Více",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Toto je experimentální funkce.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Experimenty",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Licence open source",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Jazyk",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Základní jazyk",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Figurky se mohou pohybovat ve fázi umísťování",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Fáze umisťování a fáze pohybu nejsou odděleny, tj. hráči se mohou v každém tahu rozhodnout, zda chtějí umístit figurku na hrací plochu, nebo zda chtějí některou ze svých figurek přemístit (pokud jim zbývají figurky k umístění).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Barva nabídky",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Barva textu nabídky",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Barva zvýraznění položky nabídky",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Barva pozadí hlavního panelu nástrojů",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Barva ikony hlavního panelu nástrojů",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Barva pozadí navigačního panelu nástrojů",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Barva ikony navigačního panelu nástrojů",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Automatické skrytí panelu nástrojů",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Umístění panelu nástrojů na obrazovce",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Nahoru",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Spodní část",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Středisko",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Plná barva",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Obrázek",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Vyberte si obrázek",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Světlo",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Temný",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Témata",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Aktuální téma",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Uložit téma",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Zobrazit graf analýzy",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analýza",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Uložit hru",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Načtení hry",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Pozice nastavení",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Zobrazit legální pohyby",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Zobrazit poslední tah",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Zobrazit šipky",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Kusy",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Zobrazit analýzu",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Vlákna",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Zapojte se",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Pomozte zlepšit překlad",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Výukový program",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klasický mlýn",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Smíšený mlýn",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Cejlonský mlýn",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mlýn může být opakovaně rozbit a znovu vyroben",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Pokud hráč rozbije mlýn, aby okamžitě vytvořil nový mlýn, může takovou figurku v dalším tahu přesunout zpět na původní křižovatku, pokud vytvoří nový mlýn.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Hra je nerozhodná, pokud má hráč tři figurky a po deseti tazích žádný z hráčů neodstraní soupeřovy figurky",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Když hráčům zbývají tři figury a žádný z nich nedokáže odstranit soupeřovu figuru do deseti tahů, hraje se nerozhodně.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Zavřít",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Bílý kousek",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Černý kousek",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Prázdný bod",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Nemá smysl",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Fáze umístění",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Pohybující se fáze",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Létající fáze",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Strana k pohybu: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Poslední tah: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Vybraný",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Přístupnost",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Podpora čtečky obrazovky",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Je to remíza!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Remíza",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Barva zvýraznění kusu",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritmus",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Pravidlo Endgame N-Move",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Pokud má některý z hráčů pouze tři figurky a žádný z hráčů neodstraní figurku v rámci konkrétních tahů, hra se losuje.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Každý hráč má pouze tři figurky a žádný z hráčů neodstraní figurku v rámci konkrétních tahů.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Pravidlo trojnásobného opakování",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Hra se losuje, pokud se pozice objeví potřetí.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mlýn! Pokračujte v pohybu.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Bodový styl",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Šířka bodu",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Pevný",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Dutý",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Čeština",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Tah}=1{{count} Tah}other{{count} Pohyby}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "filename": "Název souboru",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "Načtení se nezdařilo.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Hra je uložena do",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "Procházet…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Herní soubory",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "cannotPaste": "Nelze vložit.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "restoredPosition": "Obnovena výchozí pozice.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "noPiecesCanBeRemoved": "Žádné kusy nelze odstranit.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "Počet umístěných kusů ve fázi umístění.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "Prázdný",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "remove": "Odstranit",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noMove": "Žádný pohyb.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Čistý",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Uklizený.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "placedCount": "Umístě. ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} kus}other{{count} kusy}} je třeba odstranit.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "{count, plural, =0{Aktuální hráč neumístil žádné figurky.} =1{Aktuální hráč umístil jednu figurku.} few{Aktuální hráč umístil {count} figurky.} many{Aktuální hráč umístil {count} figurek.} other{Aktuální hráč umístil {count} figurek.}}",
+  "@hasPlacedPieceCount": {
+    "description": "Message describing how many pieces the current player has placed, with support for Czech pluralization.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of pieces placed by the player.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Fáze umístění, nelze ji změnit.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Vložit",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta je hotová.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Zobrazit neumístěné a odstraněné kusy",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Celá obrazovka",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Ukončete a znovu otevřete aplikaci, aby se nastavení projevila.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Les",
+  "@forest": {},
+  "desktopImage": "Obrázek pozadí",
+  "@desktopImage": {},
+  "invalidPosition": "Neplatná pozice.",
+  "@invalidPosition": {},
+  "shareGIF": "Sdílet GIF",
+  "@shareGIF": {},
+  "duration": "Doba trvání",
+  "@duration": {},
+  "pixelRatio": "Poměr pixelů",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Záznamník herní obrazovky",
+  "@gameScreenRecorder": {},
+  "previous": "Předchozí",
+  "@previous": {},
+  "next": "další",
+  "@next": {},
+  "skip": "Přeskočit",
+  "@skip": {},
+  "gotIt": "Mám to",
+  "@gotIt": {},
+  "youCanModifyRules": "Pravidla hry můžete upravit v nastavení pravidel.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Pomocí kolečka myši můžete změnit hodnotu ve výběru.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Doba myšlení nastavená na 0 znamená, že na přemýšlení není žádný časový limit.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Uvědomte si prosím, že úprava doby myšlení AI nemusí být zcela přesná. Skutečná doba přemýšlení může být kratší, když je úroveň obtížnosti nastavena na nižší hodnotu, a může být delší, když je AI uprostřed myšlenky, když čas vyprší.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Pokud nastavíte vysokou úroveň obtížnosti, ale nezvýšíte dobu přemýšlení AI, může být skutečná úroveň obtížnosti omezena na nižší hodnotu kvůli časovému omezení. Skutečná hodnota se může lišit v závislosti na výkonu stroje.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) je upravená forma vyhledávacího algoritmu alfa-beta, jehož cílem je zlepšit efektivitu opakovaným použitím mezivýsledků vyhledávání a použitím dobrého počátečního odhadu k zúžení prostoru pro vyhledávání.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) je vyhledávací algoritmus pro nalezení nejlepšího pohybu v dané pozici. Jedná se o vylepšení algoritmu alfa-beta a používá vyhledávání nulového nebo nulového okna k potvrzení, že tah je horší nebo ne horší než již bezpečné skóre z hlavní variace. PVS se zaměřuje na nejslibnější tahy a vyhýbá se zbytečnému prohledávání suboptimálních větví, což pomáhá zlepšit efektivitu vyhledávání.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Algoritmus alfa-beta je vyhledávací algoritmus k nalezení nejlepšího tahu. Využívá princip minimaxu a dvou hodnot, alfa a beta, k ořezávání vyhledávacího stromu a zvýšení efektivity. Alfa představuje minimální skóre, o kterém si je počítač jistý, že může získat, zatímco beta představuje maximální skóre, které může získat jeho soupeř. Algoritmus pomáhá počítači činit chytrá a efektivní rozhodnutí ve hře.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "V této hře je pro druhého hráče snazší vyhrát ve srovnání s prvním hráčem.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Podle lidských zkušeností, když se pokusíte vyhrát, prohrajete. Místo toho si dejte za cíl remízu a vyhněte se prohře. Pozorujte svého soupeře a jemně ho nalákejte do pozice, kde může dělat chyby. Když ukážou slabost, chopte se příležitosti a jemně zatlačte na vítězství. Tímto způsobem můžete hru vyhrát.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Aktivace pasivní možnosti způsobí, že se AI uvolní, když má v pozici výhodu, než aby se agresivně snažila vyhrát co nejrychleji.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Pokud AI zváží pohyblivost svých figurek, nebude se snažit pouze co nejrychleji zachytit soupeřovy figurky, ale také zvážit zablokování soupeřových pohybů a zabránění jim v tom, aby udělali totéž.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Povolením této možnosti zvýšíte náhodnost a zábavu hry, zatímco její vypnutí může pomoci studovat způsoby, jak porazit AI.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "Když je deska plná",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Na konci fáze umisťování, před začátkem fáze pohybu, následuje akce, pokud je deska plná figurek.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Hráč, který se ve fázi pohybu pohne jako první, odstraní jednu ze soupeřových figurek.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Obě strany se dohodly na remíze.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Vezměte si jednu ze soupeřových figurek.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "První hráč prohrává hru.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "První a druhý hráč odstraní jednu ze soupeřových figurek.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Druhý a první hráč odstraní jednu ze soupeřových figurek.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Nyní vstoupila fáze létání, soupeřovy figurky mohou skákat na jakýkoli prázdný bod na desce. Pravidlo létání můžete vypnout v \"Nastavení pravidel\".",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Při patové situaci",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Jaká akce následuje, když nelze pohnout žádnou figurkou?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Konec patovou prohrou.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Změňte stranu pro pohyb.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Odstraňte jednu ze soupeřových figurek a proveďte další tah.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Končí patovou remízou.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Odstraňte jednu ze soupeřových figurek a změňte stranu pro pohyb.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Doba zpoždění odezvy AI",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Umělá inteligence je momentálně ve fázi zpožděné odezvy. Než budete pokračovat, chvíli počkejte.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nesousedící kus nelze odstranit.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "V případě patové situace mohou být soupeřovy figurky sousedící s vašimi odstraněny, bez ohledu na formaci mlýna.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS je pro začátečníky přívětivý algoritmus, který se rozhoduje na základě zkoumání a vyhodnocování různých pohybů prostřednictvím simulací.",
+  "@whatIsMcts": {},
+  "goldenJade": "Zlatý nefrit",
+  "@goldenJade": {},
+  "forestWood": "Lesní dřevo",
+  "@forestWood": {},
+  "greenMeadow": "Zelená louka",
+  "@greenMeadow": {},
+  "stonyPath": "Kamenitá cesta",
+  "@stonyPath": {},
+  "midnightBlue": "Půlnoční modrá",
+  "@midnightBlue": {},
+  "greenForest": "Zelený les",
+  "@greenForest": {},
+  "pastelPink": "Pastelově růžová",
+  "@pastelPink": {},
+  "turquoiseSea": "Tyrkysové moře",
+  "@turquoiseSea": {},
+  "violetDream": "Fialový sen",
+  "@violetDream": {},
+  "mintChocolate": "Mátová čokoláda",
+  "@mintChocolate": {},
+  "skyBlue": "Modrá obloha",
+  "@skyBlue": {},
+  "playfulGarden": "Hravá zahrada",
+  "@playfulGarden": {},
+  "darkMystery": "Temná záhada",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algoritmus retrográdní analýzy využívá retrográdní analýzu s více hodnotami k vytvoření databáze konce hry z různých počátečních pozic a poté tuto databázi použije k optimalizaci hry. Tento přístup spadá do kategorie Ultra-Strong řešení.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Chcete zobrazit uživatelskou příručku pro tento algoritmus?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Zobrazit indikátor poziční výhody",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Použijte perfektní databázi",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Povolte tuto možnost, chcete-li používat bezchybnou herní databázi generovanou pomocí nejmodernějších algoritmů. Tato funkce integruje strategie otevření i konce hry, aby navrhla optimální pohyby. Toto je preferovaná volba pro hráče, kteří hledají nejvyšší úroveň přesnosti při hraní. Databáze vytvořená pomocí pečlivých výpočetních technik je navržena tak, aby nabízela téměř dokonalá herní řešení.\n\nPoznámka: Pokud se AI nepodaří získat přístup k databázi, obrátí se při rozhodování o hře na konvenční algoritmy. Když je databáze dostupná, 'Úroveň obtížnosti' se stává prakticky nepřekonatelnou a 'Doba myšlení AI' zažívá drastické snížení. Mnoho nastavení v rámci možností „AI's play style“ bude přepsáno, protože výsledky databáze mají nejvyšší prioritu.\n\nPro návod, jak co nejlépe využít tuto bezchybnou databázi, klikněte sem.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Pozadí obrazu",
+  "@backgroundImage": {},
+  "whatIsRandom": "Když není povolena možnKdyž není povolena možnost 'Použít perfektní databázi', nastavení 'Náhodný' způsobí, že AI bude pohybovat figurkami náhodně bez použití jakýchkoliv algoritmů pro výběr pohybu. To obvykle vede k výrazně slabšímu hraní. Naopak, když je povoleno „Použít dokonalou databázi“, AI se při rozhodování spoléhá výhradně na „Dokonalou databázi“, místo aby ji mísila s tradičními algoritmy AI. V tomto režimu jsou pohyby umělé inteligence zcela založeny na obsahu databáze a vyhýbá se spoléhání na výpočty v reálném čase nebo vyhledávací algoritmy.ost 'Použít perfektní databázi', nastavení 'Náhodný' způsobí, že AI bude pohybovat figurkami náhodně bez použití jakýchkoliv algoritmů pro výběr pohybu. To obvykle vede k výrazně slabšímu hraní. Naopak, když je povoleno „Použít dokonalou databázi“, AI se při rozhodování spoléhá výhradně na „Dokonalou databázi“, místo aby ji mísila s tradičními algoritmy AI. V tomto režimu jsou pohyby umělé inteligence zcela založeny na obsahu databáze a vyhýbá se spoléhání na výpočty v reálném čase nebo vyhledávací algoritmy.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Odstraňte soupeřovy kameny z ruky; poté je na tahu soupeř, aby umístil.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Při vytváření mlýnů během fáze umisťování",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Odstraňte soupeřovy kameny z hrací plochy.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Odstraňte soupeřovy kameny z hrací plochy; poté je na tahu soupeř, aby umístil.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Soupeř odstraní své vlastní kameny z hrací plochy.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Místo toho, abyste podnikli akci, si soupeř vybere a odstraní své vlastní kameny z hrací plochy, čímž efektivně provede akci, která je pro něj samotného škodlivá.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Odstraňte soupeřovy kameny z ruky; poté jste na tahu vy.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Odstraňte kameny z ruky soupeře. Pokud má být podle nastavení Vícenásobného odebrání odstraněno více kamenů a soupeři nezbyly v ruce žádné kameny, pokračujte v odstraňování soupeřových kamenů z hrací plochy. Poté jste na tahu vy. Pokud budete pokračovat ve vytváření mlýnů, můžete pokračovat v odstraňování soupeřových kamenů.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Odstraňte kameny z ruky soupeře. Pokud má být podle nastavení Vícenásobného odebrání odstraněno více kamenů a soupeři nezbyly v ruce žádné kameny, pokračujte v odstraňování soupeřových kamenů z hrací plochy. Poté je na tahu soupeř.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Označit a odložit odstranění kamenů.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Během fáze umisťování se kameny, které mají být odstraněny, označí a žádný z hráčů nemůže na tato místa umístit nové kameny. Po vstupu do pohybové fáze jsou tyto označené kameny zcela odstraněny a hráči pak mohou své kameny přesunout na tato nyní prázdná místa.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Akce, které lze podniknout při tvorbě mlýnů ve fázi umisťování.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Označeno",
+  "@marked": {},
+  "menu": "Nabídka",
+  "@menu": {},
+  "monochrome": "Monochromatický",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Ve Všeobecných nastaveních v nastavení Přístupnosti můžete zapnout podporu čtečky obrazovky.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Zobrazit čísla na figurkách",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Uložit obrázek",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Zobrazit panel nástrojů pro analýzu",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Barva pozadí panelu nástrojů pro analýzu",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Barva ikony panelu nástrojů pro analýzu",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transform.",
+  "@transformed": {},
+  "cannotTransform": "Nelze transformovat.",
+  "@cannotTransform": {},
+  "rotate": "Rotace",
+  "@rotate": {},
+  "horizontalFlip": "Hor. Obrácení",
+  "@horizontalFlip": {},
+  "verticalFlip": "Vert. Obrácení",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Obrácení",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Průhledné Plátno",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Zakázat opakované formování mlýnů",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Kus přesunutý z jednoho mlýna do druhého nemůže okamžitě vrátit na původní bod v dalším tahu, aby znovu vytvořil mlýn. Nejprve je vyžadován jiný tah.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Jednorázová mlýn",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Každý mlýn může odstranit pouze jeden kus soupeře. Můžete jej znovu sestavit, ale nelze jej použít pro další odstranění.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Aktuální pravidla, která jste nastavili, nemají odpovídající dokonalou databázi. Pro více informací o dokonalé databázi klikněte zde.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Zaměřte se na blokování cest",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "V určitých fázích hry prioritizujte bránění pohybu soupeře před tvořením mlýnů. Místo zaměření se na odstraňování figurek dokončováním mlýnů, AI se v těchto fázích snaží chytit soupeře do pasti, znemožnit mu pohyb a zajistit vítězství opotřebováním místo agresivní hry. Tato strategie specifická pro dané fáze aktivně neblokuje soupeřovy mlýny.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Obraz figurky",
+  "@pieceImage": {},
+  "importColorSettings": "Importovat nastavení barev",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exportovat nastavení barev",
+  "@exportColorSettings": {},
+  "import": "Import",
+  "@import": {},
+  "export": "Export",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Nejprve prosím zkopírujte nastavení formátu JSON do schránky.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Zkopírováno do schránky.",
+  "@copiedToClipboard": {},
+  "imported": "Importováno.",
+  "@imported": {},
+  "boardImage": "Obrázek desky",
+  "@boardImage": {},
+  "autumnLeaves": "Podzimní listí",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendární Země",
+  "@legendaryLand": {},
+  "vignetteEffect": "Efekt vinětace",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Chcete, aby byla panel nástrojů plně průhledná, když je nastaven obrázek pozadí desky?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Povolit vibrace ve hře",
+  "@vibration": {},
+  "soundTheme": "Zvukové téma",
+  "@soundTheme": {},
+  "ball": "Míč",
+  "@ball": {},
+  "liquid": "Tekutina",
+  "@liquid": {},
+  "wood": "Dřevo",
+  "@wood": {},
+  "placeEffectAnimation": "Animace efektu umístění figurky",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animace efektu odstranění figurky",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Zobrazit nástrojovou lištu dole",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Poloměr rohu desky",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Použijte úvodní knihu",
+  "@useOpeningBook": {},
+  "currentRule": "Aktuální",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Sada pravidel",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Nechte AI používat otevírací tahy, které jsou běžně používány profesionálními hráči v rané fázi hry. Poznámka: Tato funkce je v současné době dostupná pouze pro konkrétní sady pravidel.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Zobrazit graf výhody",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graf výhody bude vykreslen pouze poté, co udělá tah AI. Nebude vykreslen, když tah provede lidský hráč.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Zakázat odstranění, dokud nejsou umístěny všechny kameny. Hráči odstraňují kameny na základě počtu mlýnů.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Zakázat odstranění, dokud nejsou umístěny všechny kameny. Hráči odstraňují kameny na základě počtu mlýnů: pokud je počet stejný, oba odstraní stejný počet; pokud má jeden více, odstraní o jeden navíc, aby zůstal rozdíl jednoho kamene. Pokud mlýn vytvoří pouze jeden hráč, odstraní dvě kameny, zatímco druhý odstraní jeden. Pokud žádný hráč nevytvoří mlýn, oba odstraní jeden kámen.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Vyberte jednu ze svých figurek.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Není to váš tah.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Barva pozadí nástrojového panelu pro anotace",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Barva ikon nástrojového panelu pro anotace",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Zobrazit nástrojový panel pro anotace",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Přejít do režimu anotací",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Opravdu chcete vymazat všechny anotace?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM prompt zkopírován do schránky.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Připojení odmítnuto, server může být nedostupný.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Vyhledávání úspěšné, čeká se na připojení...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Žádné připojení v místní síti",
+  "@noLanConnection": {},
+  "takeScreenshot": "Pořídit snímek obrazovky",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Odpojeno od soupeře.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Žádost o vrácení tahu",
+  "@takeBackRequest": {},
+  "nothingToShow": "Nic k zobrazení.",
+  "@nothingToShow": {},
+  "stopHosting": "Ukončit hostování",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Připojení bylo resetováno protistranou.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Spojení ztraceno kvůli vypršení doby heartbeat. Prosím, znovu se připojte.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Spustit hostování",
+  "@startHosting": {},
+  "restartRequestRejected": "Žádost o restart zamítnuta.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Nejste připojeni k soupeři v místní síti.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM prompt",
+  "@llmPrompt": {},
+  "gameRestarted": "Hra byla restartována.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Žádost o vrácení tahu zamítnuta.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Opravdu chcete vzdát tuto hru?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Soupeř se vzdal. Vyhráváte!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Vymazat všechny anotace",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Připojeno, čeká se na soupeřův tah...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Stav sítě: Odpojeno",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Žádost o vrácení tahu byla odeslána soupeři.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Soupeř možná opustil hru",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Úspěšně připojeno k hostiteli.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Spojení ztraceno: vypršel čas heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Nebyl nalezen žádný hostitel.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Potvrdit vzdání",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Spuštěno hostování hry, čeká se na připojení hráčů...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Čas spojení vypršel, síťové připojení je nestabilní.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Žádný LLM prompt není k dispozici.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Vzdali jste se. Hra skončila.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP adresa serveru",
+  "@serverIp": {},
+  "confirmClear": "Potvrdit vymazání",
+  "@confirmClear": {},
+  "opponentSTurn": "Tah soupeře.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Čeká se na připojení klienta...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Žádost o vrácení tahu byla zamítnuta nebo selhala.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Přidat text",
+  "@addText": {},
+  "exitAnnotationMode": "Ukončit režim anotací",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Zadejte svoji anotaci",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Probíhá pokus o znovupřipojení...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Žádost o restart odeslána. Čeká se na reakci soupeře...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server je zastaven.",
+  "@serverIsStopped": {},
+  "restartRequest": "Žádost o restart",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Nelze žádat o vrácení tahu, když není váš tah.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Žádost o vrácení tahu přijata.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Nastavení místní sítě",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Opětovné připojení bylo úspěšné!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Nepodařilo se uložit obrázek do galerie.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Soupeř požádal o restart hry. Přijímáte?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Jste na tahu.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Nelze se znovu připojit, prosím restartujte hru.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Hostitel",
+  "@host": {},
+  "join": "Připojit se",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Neplatná IP adresa.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Neplatný port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Připojování: Pokus {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Nepodařilo se připojit: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Nepodařilo se spustit hostování: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Hostitel nalezen: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Zastavit",
+  "@stop": {},
+  "discover": "Vyhledat",
+  "@discover": {},
+  "connect": "Připojit",
+  "@connect": {},
+  "clientConnected": "Klient připojen: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Vyhledávám: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Znovupřipojování ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Připojeno",
+  "@connected": {},
+  "delete": "Smazat",
+  "@delete": {},
+  "ancientEgypt": "Starověký Egypt",
+  "@ancientEgypt": {},
+  "gothicIce": "Gotický Led",
+  "@gothicIce": {},
+  "riceField": "Rýžové Pole",
+  "@riceField": {},
+  "chinesePorcelain": "Čínský Porcelán",
+  "@chinesePorcelain": {},
+  "desertDusk": "Pouštní Soumrak",
+  "@desertDusk": {},
+  "precisionCraft": "Precizní Řemeslo",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Lidová Výšivka",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpatské Dědictví",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Císařská Velebnost",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Český Křišťál",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanský Východ Slunce",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonie a Rovnováha",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Skořicové Koření",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatolská Mozaika",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnevalový Duch",
+  "@carnivalSpirit": {},
+  "custom": "Zvyk",
+  "@custom": {},
+  "spiceMarket": "Trh s kořením",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Přejetím odhalte zásuvku",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Zobrazit informace o hře na snímcích obrazovky",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Časový limit pro lidský tah",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Žádný časový limit pro lidské tahy",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Pro lidského hráče bude uplatněna prohra z časového limitu",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Identifikuji herní desku…",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Můžete zadat libovolný název modelu",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Pozice herní desky použita. FEN zkopírováno do schránky.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Tip: Zkuste pořídit ostřejší snímek herní desky",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "Šablona výzvy pro LLM",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Nebyla detekována žádná platná herní deska",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Výběr obrázku z alba…",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Nastavit šablonu výzvy",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Upravit šablonu výzvy pro analýzu LLM",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Nepodařilo se vygenerovat FEN z rozpoznané desky",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Výstup v aktuálním jazyce",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Běžné základní adresy URL",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Zobrazit běžné modely",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Parametry rozpoznávání aktualizovány",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Tah bílého",
+  "@whiteSMove": {},
+  "resetToDefaults": "Obnovit výchozí nastavení",
+  "@resetToDefaults": {},
+  "photoShoot": "Fotografování",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Nepodařilo se použít rozpoznanou pozici desky",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "Obsah výzvy LLM",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM není nakonfigurován. Zkontrolujte, prosím, svá nastavení.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Nastavit poskytovatele, model, API Key a Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "Konfigurace LLM",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Nastavit poskytovatele LLM",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "Záhlaví šablony výzvy LLM",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Na snímku nebyly rozpoznány žádné kameny. Zkuste to prosím znovu.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Rozpoznat desku ze snímku",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Zobrazit tipy",
+  "@viewTips": {},
+  "applyToBoard": "Použít na desku",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Upravit oblast desky",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Zobrazit běžné URL",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Analýza barev selhala!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Analyzuji snímek herní desky…",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Vybrat z alba",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Nebyl detekován žádný bod na desce!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Pokud bude prázdné, použije se výchozí šablona",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "Konfigurace LLM",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Opravdu chcete obnovit šablony výzev na výchozí hodnoty?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "Zápatí šablony výzvy LLM",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Načítám odpověď…",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Použít tento výsledek na desku",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Pořizuji snímek…",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Vyberte prosím snímek herní desky k identifikaci",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Výsledky identifikace",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Analyzujte tahy a poskytněte postřehy.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Získat API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Celý proces rozpoznávání se nepodařilo dokončit",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Výsledek rozpoznání desky",
+  "@boardRecognitionResult": {},
+  "askLlm": "Zeptat se LLM",
+  "@askLlm": {},
+  "boardDetectionFailed": "Detekce desky selhala!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Nebyl detekován žádný bod na desce, nelze identifikovat kámen!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Kopírovat FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Často používané modely",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (volitelné)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Žádný obrázek nebyl vybrán",
+  "@noImageSelected": {},
+  "blackSMove": "Tah černého",
+  "@blackSMove": {},
+  "llm": "Velký jazykový model",
+  "@llm": {},
+  "llmProvider": "Poskytovatel",
+  "@llmProvider": {},
+  "baseUrl": "Základní URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Teplota",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Příkaz přijat! AI zpracovává...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Probíhá hluboké přemýšlení, prosím čekejte...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Brzy bude představeno...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parametry rozpoznávání",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Upravte parametry pro zlepšení přesnosti rozpoznávání",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Uložit parametry",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nelze spustit rozpoznávání obrazu: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Rozpoznávání obrazu selhalo: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Použitá pozice s {whiteCount} bílými a {blackCount} černými kameny",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN zkopírováno do schránky)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Rozpoznávání selhalo: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Moje hodnocení",
+  "@myRating": {},
+  "gamesPlayed": "Odehrané hry",
+  "@gamesPlayed": {},
+  "wins": "Výhry",
+  "@wins": {},
+  "losses": "Prohry",
+  "@losses": {},
+  "draws": "Remízy",
+  "@draws": {},
+  "lastUpdated": "Poslední aktualizace",
+  "@lastUpdated": {},
+  "format": "Formát:",
+  "@format": {},
+  "resetStatistics": "Resetovat statistiky",
+  "@resetStatistics": {},
+  "drawRate": "Míra remíz",
+  "@drawRate": {},
+  "lossRate": "Míra proher",
+  "@lossRate": {},
+  "aiStatistics": "Statistiky UI",
+  "@aiStatistics": {},
+  "enableStatistics": "Povolit statistiky",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Pokud je povoleno, výsledky her se budou zaznamenávat do statistik. Hry zahrnující vrácení tahu se však zaznamenávat nebudou. Pokud je zakázáno, sběr statistik je pozastaven.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Tímto resetujete všechny herní statistiky. Tuto akci nelze vrátit zpět.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Velikost vnitřního kroužku hrací desky",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Stín desky",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Detekce pastí",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Zvýrazňuj tahy do pasti tučnými kruhy a šipkami během analýzy.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Existuje past. Tahy do pasti: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Lemování zachycení",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Přiložte jeden z vašich soupeřových kusů mezi dvěma z vašich v přímé linii, abyste jej zachytili.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Povolte zachycení lemu",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Zachycení intervence",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Přesuňte se do prázdného bodu mezi dvěma kousky soupeře, abyste je zachytili oba.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Umožněte zachycení zásahu",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Skok zachycení",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Zachyťte skokem přes sousední soupeřovu kus do prázdného bodu za nimi.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Umožněte zachycení skoku",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Použitelné řádky",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Podél okrajů čtverce",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Podél ortogonálních linií překračujících náměstí",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Podél diagonálních linií přecházejících na náměstí",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Fáze provádění",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Dostupnost během pohyblivé fáze na základě zbývajících kusů",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Žádné omezení",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "K dispozici, když máte tři nebo méně kusů",
+  "@capturePiecesConditionSelfLeqThree": {},
+  "stopPlacingWhenTwoEmptySquares": "Zastavit umísťování, když zbývají pouze dva prázdné čtverce",
+  "@stopPlacingWhenTwoEmptySquares": {},
+  "stopPlacingWhenTwoEmptySquares_Detail": "Když je povoleno, fáze umísťování končí a fáze pohybu začíná, když na desce zbývají pouze 2 prázdná místa, bez ohledu na kameny v ruce. Toto pravidlo platí pouze pro hry s 12 kameny.",
+  "@stopPlacingWhenTwoEmptySquares_Detail": {}
     "@@locale": "cs",
     "appName": "Mlýn",
     "@appName": {
@@ -2016,4 +4033,5 @@
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Když je povoleno, fáze umísťování končí a fáze pohybu začíná, když na desce zbývají pouze 2 prázdná místa, bez ohledu na kameny v ruce. Toto pravidlo platí pouze pro hry s 12 kameny.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@capturePiecesConditionSelfLeqThree": {}
 }
