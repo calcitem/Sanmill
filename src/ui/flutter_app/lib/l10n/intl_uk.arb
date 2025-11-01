@@ -2107,7 +2107,7 @@
     "@captureDiagonalLines": {},
     "captureExecutionPhases": "Фази виконання",
     "@captureExecutionPhases": {},
-    "capturePiecesCondition": "Наявність під час рухомого фази на основі решти шматочків",
+    "capturePiecesCondition": "Доступність за штуками під час переїзду",
     "@capturePiecesCondition": {},
     "capturePiecesConditionUnlimited": "Немає обмежень",
     "@capturePiecesConditionUnlimited": {},
