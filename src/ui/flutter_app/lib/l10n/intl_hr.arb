@@ -2006,7 +2006,7 @@
     "@captureDiagonalLines": {},
     "captureExecutionPhases": "Faze izvršenja",
     "@captureExecutionPhases": {},
-    "capturePiecesCondition": "Dostupnost tijekom faze pokreta na temelju preostalih komada",
+    "capturePiecesCondition": "Raspoloživost tijekom faze pomicanja na temelju komada",
     "@capturePiecesCondition": {},
     "capturePiecesConditionUnlimited": "Nema ograničenja",
     "@capturePiecesConditionUnlimited": {},
