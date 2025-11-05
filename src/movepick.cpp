@@ -99,8 +99,9 @@ void MovePicker::score()
             // cur->value += markedCount;  // placing phrase, place nearby
             // marked point
 
-            // If has Diagonal Lines, black 2nd move place star point is as
-            // important as close mill (TODO)
+            // For boards with diagonal lines, placing on star point during
+            // black's second move is prioritized with high strategic value,
+            // similar to closing a mill
             if ((rule.hasDiagonalLines || gameOptions.getAlgorithm() == 3) &&
                 pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd
                 // move
