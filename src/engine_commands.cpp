@@ -94,7 +94,7 @@ begin:
 
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
-        // TODO(calcitem)
+        // Automatically restart the search when game is over
         Threads.stop_all();
 
         Threads.set(1);
@@ -156,8 +156,6 @@ void position(Position *pos, std::istringstream &is)
             posKeyHistory.clear();
         }
     }
-
-    // TODO: Old：Threads.main()->us = pos->sideToMove;
 }
 
 } // namespace EngineCommands
