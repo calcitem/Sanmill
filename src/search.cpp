@@ -45,7 +45,7 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
     // Evaluate the current position
     Value stand_pat = Eval::evaluate(*pos);
 
-    static uint64_t nodeCounter = 0; // TODO: thread_local
+    thread_local static uint64_t nodeCounter = 0;
     const unsigned checkMask = (depth >= -1) ? 255 : 1023;
 
     if ((++nodeCounter & checkMask) == 0 &&
@@ -308,7 +308,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     // Iterate through all possible moves
     for (int i = 0; i < moveCount; i++) {
-        static uint64_t nodeCounter = 0; // TODO: thread_local
+        thread_local static uint64_t nodeCounter = 0;
 
         const unsigned checkMask = (depth <= 3) ? 31 :
                                                   ((depth <= 6) ? 127 : 511);
