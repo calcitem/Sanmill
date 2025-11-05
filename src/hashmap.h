@@ -170,7 +170,11 @@ public:
 
     void resize(size_t size)
     {
-        // TODO(calcitem): Resize
+        // WARNING: This is a simplified resize that only updates the size variable.
+        // It does not reallocate the underlying hash table or rehash existing entries.
+        // This should only be called when the hash table is empty (e.g., after clear()).
+        // A full implementation would require allocating new memory, rehashing all
+        // entries, and deallocating old memory.
         if (size < 0x1000000) {
             // New size is too small, do not resize
             return;
