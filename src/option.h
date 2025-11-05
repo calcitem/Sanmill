@@ -290,7 +290,9 @@ private:
     bool developerMode {false};
     bool trapAwareness {false};
 
-    // TODO: Set this to the correct path
+    // Perfect database path configuration:
+    // Debug: Uses specific development path for testing
+    // Release: Uses current directory (can be overridden at runtime)
 #ifdef _DEBUG
     std::string perfectDatabasePath {"E:\\Malom\\Malom_Standard_Ultra-strong_1."
                                      "1.0\\Std_DD_89adjusted"};
