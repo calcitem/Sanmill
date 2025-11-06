@@ -52,7 +52,9 @@ int perfect_init()
     } else if (rule.pieceCount == 10) {
         ruleVariant = (int)Wrappers::Constants::Variants::lask;
     } else {
-        // TODO: Throw exception
+        // Unsupported piece count - falling back to standard variant
+        debugPrintf("Warning: Unsupported piece count %d, defaulting to standard variant\n",
+                    rule.pieceCount);
         ruleVariant = (int)Wrappers::Constants::Variants::std;
     }
 
