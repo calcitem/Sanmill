@@ -63,8 +63,11 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
         stand_pat -= depth;
     }
 
-    // If depth limit reached, return stand_pat
-    const int MAX_QUIESCENCE_DEPTH = 0; // TODO: Set to 1 or more
+    // Quiescence search depth limit
+    // Setting to 0 disables quiescence search extension
+    // Increasing to 1+ would search capture sequences deeper, potentially
+    // improving tactical play at the cost of search time
+    const int MAX_QUIESCENCE_DEPTH = 0;
     if (depth <= -MAX_QUIESCENCE_DEPTH) {
         return stand_pat;
     }
