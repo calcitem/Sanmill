@@ -458,7 +458,9 @@ int SearchEngine::executeSearch()
     MoveList<LEGAL>::shuffle();
 
 #if 0
-    // TODO: Only NMM
+    // This code is disabled as it's specific to Nine Men's Morris (NMM) variant.
+    // It shuffles move priorities when board has ≤1 piece and no diagonal lines.
+    // Currently handled by MoveList<LEGAL>::shuffle() for all variants.
     if (rootPos->piece_on_board_count(WHITE)
                 + rootPos->piece_on_board_count(BLACK)
             <= 1
