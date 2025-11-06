@@ -15,15 +15,15 @@
 #include <cstring>
 #include <map>
 
-// TODO: ENABLE_BENCHMARK is not required
+// Initialization flag to avoid double init/deinit in the same process
+// Note: Consider always using atomic flag for thread safety, not just in benchmark mode
 #if defined(ENABLE_BENCHMARK)
 #include <atomic>
 
-// We keep a tiny init flag to avoid double init/deinit in the same process
-// THREAD SAFETY: Use atomic flag to prevent race conditions
+// THREAD SAFETY: Use atomic flag to prevent race conditions in benchmark mode
 static std::atomic<bool> g_pd_inited(false);
 #else
-// We keep a tiny init flag to avoid double init/deinit in the same process
+// Non-benchmark mode uses simple boolean (not thread-safe)
 static bool g_pd_inited = false;
 #endif // ENABLE_BENCHMARK
 

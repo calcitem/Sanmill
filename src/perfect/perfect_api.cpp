@@ -139,14 +139,12 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
 
     // deinitialize_if_needed(); // REMOVED for thread safety and performance
 #else
-    // TODO: Considering the performance-critical aspect of our applications,
-    // it is advised to reconsider the frequent invocation of
-    // deinitialize_if_needed() within each get_best_move call. Such a practice
-    // necessitates the re-initialization by initialize_if_needed() at every
-    // function start, leading to significant performance overheads. An
-    // optimized approach for initialization and deinitialization processes
-    // should be explored to mitigate these costs.
-    // https://github.com/ggevay/malom/pull/3#discussion_r1349745071
+    // WARNING: Performance overhead in non-benchmark mode
+    // Calling deinitialize_if_needed() after each move requires re-initialization
+    // on the next call, causing significant overhead. This is kept for compatibility
+    // but applications should consider using ENABLE_BENCHMARK mode for better
+    // performance by managing initialization lifecycle externally.
+    // Reference: https://github.com/ggevay/malom/pull/3#discussion_r1349745071
     deinitialize_if_needed();
 #endif // ENABLE_BENCHMARK
 
