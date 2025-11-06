@@ -647,8 +647,9 @@ Depth get_search_depth(const Position *pos)
         d = depthLimit;
     }
 
-    // Do not too weak
-    if (depthLimit == 30 && d <= 4) {   // TODO(calcitem)
+    // Ensure minimum depth for highest skill level (30)
+    // to maintain reasonable AI strength
+    if (depthLimit == 30 && d <= 4) {
         d = 4;
     }
 #endif
