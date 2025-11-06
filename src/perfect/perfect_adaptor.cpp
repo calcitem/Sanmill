@@ -231,12 +231,12 @@ Value perfect_search(const Position *pos, Move &move)
 
     Value value = VALUE_UNKNOWN;
 
-    // TODO: Now always return only the first move
-    // from the engine, whether it's two moves or one. This means the action
-    // for 'removing' is recalculated, which might reduce performance but
-    // ensures accuracy. Additionally, when two moves are returned, the result
-    // of 'removing' from the second move might differ from that obtained
-    // through a new search.
+    // Current implementation always returns only the first move from the engine.
+    // When a move sequence includes both placement and removal (e.g., forming a mill),
+    // the removal move is recalculated on the next call. This approach:
+    // - Trades some performance for improved accuracy
+    // - Ensures consistent evaluation since the removal context may change
+    // - Avoids potential inconsistencies when caching multi-move sequences
     if (malomRemoveMove != MOVE_NONE) {
         // Move ret = malomRemoveMove;
         value = malomRemoveValue;
