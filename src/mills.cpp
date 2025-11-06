@@ -361,8 +361,8 @@ void mill_table_init()
 void move_priority_list_shuffle()
 {
     if (gameOptions.getSkillLevel() == 1) {
-        // TODO(calcitem): 8 is SQ_BEGIN & 32 is SQ_END
-        for (auto i = 8; i < 32; i++) {
+        // Initialize priority list with all valid board positions
+        for (auto i = static_cast<int>(SQ_BEGIN); i < static_cast<int>(SQ_END); i++) {
             MoveList<LEGAL>::movePriorityList[i - static_cast<int>(SQ_BEGIN)] =
                 static_cast<Square>(i);
         }
