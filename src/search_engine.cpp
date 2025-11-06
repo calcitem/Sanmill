@@ -218,17 +218,17 @@ void SearchEngine::analyze(Color c) const
         if (p->get_winner() == DRAW) {
             std::cout << "Draw" << std::endl;
 #ifndef QT_GUI_LIB
-            nDraw += 0.5f; // TODO: Implement properly
+            nDraw += 1.0f;
 #endif
         } else if (p->get_winner() == WHITE) {
             std::cout << "White wins" << std::endl;
 #ifndef QT_GUI_LIB
-            nBlackWin += 0.5f; // TODO: Implement properly
+            nWhiteWin += 1.0f;
 #endif
         } else if (p->get_winner() == BLACK) {
             std::cout << "Black wins" << std::endl;
 #ifndef QT_GUI_LIB
-            nWhiteWin += 0.5f; // TODO: Implement properly
+            nBlackWin += 1.0f;
 #endif
         }
         std::cout << std::endl << std::endl;
