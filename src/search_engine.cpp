@@ -142,8 +142,9 @@ std::string SearchEngine::next_move() const
             endgame.type = rootPos->side_to_move() == WHITE ?
                                EndGameType::blackWin :
                                EndGameType::whiteWin;
-            Key endgameHash = rootPos->key(); // TODO: Avoid repeated
-                                              // hash generation
+            // Note: Position key is computed on-demand; consider caching if
+            // this becomes a performance bottleneck
+            Key endgameHash = rootPos->key();
             saveEndgameHash(endgameHash, endgame);
         }
     }
