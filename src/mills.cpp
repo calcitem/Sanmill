@@ -450,7 +450,9 @@ bool is_star_squares_full(Position *pos)
     return ret;
 }
 
-// TODO: For Lasker Morris
+// Calculate optimal search depth based on game position and skill level
+// Note: This function uses depth tables optimized for standard Nine Men's Morris.
+// Lasker Morris variant may require different depth calculations for optimal play.
 Depth get_search_depth(const Position *pos)
 {
     Depth d = 0;
@@ -464,7 +466,7 @@ Depth get_search_depth(const Position *pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-            // TODO: Lasker Morris
+            // Lasker Morris variant may need custom depth handling
             if (!gameOptions.getDrawOnHumanExperience() ||
                 rule.mayMoveInPlacingPhase) {
                 return static_cast<Depth>(level);
