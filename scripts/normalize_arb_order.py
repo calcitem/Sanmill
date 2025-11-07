@@ -169,6 +169,9 @@ def normalize_arb_file(
     file_data = load_arb_file(arb_file_path)
     original_json = json.dumps(file_data, ensure_ascii=False, indent=4)
 
+    # Extract locale from filename: intl_<locale>.arb
+    locale = arb_file_path.stem.replace('intl_', '')
+
     # Create a new ordered dictionary with template structure
     normalized_data = OrderedDict()
 
@@ -179,8 +182,8 @@ def normalize_arb_file(
             continue
 
         if key == "@@locale":
-            # Keep original locale value from file
-            normalized_data[key] = file_data.get(key, "en")
+            # Keep original locale value from file, or use filename-derived locale
+            normalized_data[key] = file_data.get(key, locale)
         elif key in file_data:
             # Entry exists in file, keep translated value
             normalized_data[key] = file_data[key]
