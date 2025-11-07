@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-Script to normalize the entry order of ARB files to match intl_en.arb
+Script to normalize ARB files to match the template structure exactly.
 
-This script reorders all keys in ARB files to match the order in the
-reference file (intl_en.arb), while preserving all values and metadata.
-Files are saved with 4-space indentation.
+This script:
+1. Reorders all keys to match intl_en.arb
+2. Syncs metadata (@key) structure with template
+3. Copies missing metadata fields from template
+4. Preserves correct field order in metadata
+5. Handles nested objects (like placeholders) recursively
+6. Keeps translated strings intact
 """
 
 import json
@@ -12,11 +16,12 @@ import os
 from pathlib import Path
 from typing import Dict, Any, List
 from collections import OrderedDict
+import copy
 
 
 def load_arb_file(file_path: Path) -> Dict[str, Any]:
     """
-    Load ARB file and preserve key order
+    Load ARB file and preserve key order.
 
     Args:
         file_path: Path to the ARB file
@@ -25,13 +30,12 @@ def load_arb_file(file_path: Path) -> Dict[str, Any]:
         Dictionary with preserved key order
     """
     with open(file_path, 'r', encoding='utf-8') as f:
-        # Use object_pairs_hook to preserve order
         return json.load(f, object_pairs_hook=OrderedDict)
 
 
 def save_arb_file(file_path: Path, data: Dict[str, Any]) -> None:
     """
-    Save ARB file with proper formatting (4-space indentation)
+    Save ARB file with proper formatting (4-space indentation).
 
     Args:
         file_path: Path to save the ARB file
@@ -43,43 +47,168 @@ def save_arb_file(file_path: Path, data: Dict[str, Any]) -> None:
         f.write('\n')
 
 
+def merge_metadata_structure(
+    template_value: Any,
+    file_value: Any,
+    is_translatable: bool = False
+) -> Any:
+    """
+    Recursively merge file value with template structure.
+
+    This function ensures the result has:
+    - Same structure and keys as template
+    - Same order of keys as template
+    - Values from file where they exist and are translatable
+    - Values from template for structural/non-translatable fields
+
+    Args:
+        template_value: Value from template
+        file_value: Value from file being normalized
+        is_translatable: Whether this field contains translatable content
+
+    Returns:
+        Merged value with template structure and file translations
+    """
+    # If template is a dict, merge structures
+    if isinstance(template_value, dict):
+        result = OrderedDict()
+
+        # Iterate through template keys in order
+        for key in template_value.keys():
+            template_sub = template_value[key]
+
+            # Check if this field is translatable
+            # Description fields in target language should be kept from file
+            is_desc_field = (key == "description")
+
+            if key in file_value:
+                # Key exists in file, merge recursively
+                result[key] = merge_metadata_structure(
+                    template_sub,
+                    file_value[key],
+                    is_translatable=is_desc_field
+                )
+            else:
+                # Key missing in file, copy from template
+                result[key] = copy.deepcopy(template_sub)
+
+        return result
+
+    # If template is a list, prefer file value if exists, else use template
+    elif isinstance(template_value, list):
+        if isinstance(file_value, list):
+            return file_value
+        return copy.deepcopy(template_value)
+
+    # For primitive values
+    else:
+        # If this is a translatable field and file has a value, use it
+        # Otherwise, use template value (for type, example, etc.)
+        if is_translatable and file_value is not None:
+            return file_value
+        return template_value
+
+
+def normalize_entry_metadata(
+    key: str,
+    template_data: Dict[str, Any],
+    file_data: Dict[str, Any]
+) -> Any:
+    """
+    Normalize metadata for a single entry to match template structure.
+
+    Args:
+        key: The key (without @ prefix)
+        template_data: Template ARB data
+        file_data: File ARB data
+
+    Returns:
+        Normalized metadata value
+    """
+    metadata_key = f"@{key}"
+
+    # Skip @@locale as it's different for each file
+    if key.startswith("@@"):
+        return file_data.get(metadata_key)
+
+    # If no metadata in template, keep file's metadata
+    if metadata_key not in template_data:
+        return file_data.get(metadata_key)
+
+    template_metadata = template_data[metadata_key]
+
+    # If no metadata in file, copy from template
+    if metadata_key not in file_data:
+        return copy.deepcopy(template_metadata)
+
+    file_metadata = file_data[metadata_key]
+
+    # Merge structures
+    return merge_metadata_structure(template_metadata, file_metadata)
+
+
 def normalize_arb_file(
     arb_file_path: Path,
-    reference_keys: List[str],
+    template_data: Dict[str, Any],
+    template_keys: List[str],
     dry_run: bool = False
 ) -> bool:
     """
-    Normalize the key order of an ARB file to match reference order
+    Normalize an ARB file to match template structure exactly.
 
     Args:
         arb_file_path: Path to the ARB file to normalize
-        reference_keys: List of keys in the desired order
+        template_data: Template ARB data
+        template_keys: List of keys in template order
         dry_run: If True, don't write changes to disk
 
     Returns:
         True if file was modified, False otherwise
     """
     # Load the ARB file
-    arb_data = load_arb_file(arb_file_path)
-    original_keys = list(arb_data.keys())
+    file_data = load_arb_file(arb_file_path)
+    original_json = json.dumps(file_data, ensure_ascii=False, indent=4)
 
-    # Create a new ordered dictionary with keys in reference order
+    # Create a new ordered dictionary with template structure
     normalized_data = OrderedDict()
 
-    # First, add all keys that exist in both reference and current file
-    # in the order they appear in reference
-    for key in reference_keys:
-        if key in arb_data:
-            normalized_data[key] = arb_data[key]
+    # First, add all keys from template in correct order
+    for key in template_keys:
+        if key.startswith("@") and not key.startswith("@@"):
+            # This is metadata for an entry, skip (will be added with its entry)
+            continue
 
-    # Then, add any keys that exist in current file but not in reference
+        if key == "@@locale":
+            # Keep original locale value from file
+            normalized_data[key] = file_data.get(key, "en")
+        elif key in file_data:
+            # Entry exists in file, keep translated value
+            normalized_data[key] = file_data[key]
+
+            # Add normalized metadata
+            metadata_key = f"@{key}"
+            if metadata_key in template_data or metadata_key in file_data:
+                normalized_data[metadata_key] = normalize_entry_metadata(
+                    key, template_data, file_data
+                )
+        else:
+            # Entry missing in file, copy from template (as placeholder)
+            normalized_data[key] = template_data.get(key)
+
+            # Add metadata from template
+            metadata_key = f"@{key}"
+            if metadata_key in template_data:
+                normalized_data[metadata_key] = copy.deepcopy(template_data[metadata_key])
+
+    # Then add any keys that exist in file but not in template
     # (append them at the end to avoid losing data)
-    for key in original_keys:
+    for key in file_data.keys():
         if key not in normalized_data:
-            normalized_data[key] = arb_data[key]
+            normalized_data[key] = file_data[key]
 
-    # Check if order changed
-    changed = (list(normalized_data.keys()) != original_keys)
+    # Check if anything changed
+    normalized_json = json.dumps(normalized_data, ensure_ascii=False, indent=4)
+    changed = (original_json != normalized_json)
 
     if changed and not dry_run:
         # Save the normalized file
@@ -99,7 +228,7 @@ def normalize_all_arb_files(
     dry_run: bool = False
 ) -> None:
     """
-    Normalize all ARB files in the directory to match reference order
+    Normalize all ARB files to match template structure exactly.
 
     Args:
         l10n_dir: Directory containing ARB files
@@ -112,11 +241,11 @@ def normalize_all_arb_files(
         print(f"❌ Error: Reference file {reference_file} not found!")
         return
 
-    reference_data = load_arb_file(reference_path)
-    reference_keys = list(reference_data.keys())
+    template_data = load_arb_file(reference_path)
+    template_keys = list(template_data.keys())
 
-    print(f"📋 Reference file: {reference_file}")
-    print(f"📊 Total keys in reference: {len(reference_keys)}")
+    print(f"📋 Template file: {reference_file}")
+    print(f"📊 Total keys in template: {len(template_keys)}")
     if dry_run:
         print(f"🔍 DRY RUN MODE - No files will be modified\n")
     else:
@@ -131,11 +260,11 @@ def normalize_all_arb_files(
 
     for arb_file in arb_files:
         if arb_file.name == reference_file:
-            print(f"⏭️  Skipping reference file: {arb_file.name}")
-            continue  # Skip reference file
+            print(f"⏭️  Skipping template file: {arb_file.name}")
+            continue  # Skip template file
 
         files_processed += 1
-        changed = normalize_arb_file(arb_file, reference_keys, dry_run)
+        changed = normalize_arb_file(arb_file, template_data, template_keys, dry_run)
 
         if changed:
             files_modified += 1
@@ -154,7 +283,7 @@ def normalize_all_arb_files(
     elif files_modified > 0:
         print(f"\n✨ Successfully normalized {files_modified} file(s)!")
     else:
-        print(f"\n🎉 All files already have the correct order!")
+        print(f"\n🎉 All files already match the template perfectly!")
 
 
 def main():
@@ -162,7 +291,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Normalize ARB file entry order to match intl_en.arb'
+        description='Normalize ARB files to match intl_en.arb structure exactly'
     )
     parser.add_argument(
         '--dry-run',

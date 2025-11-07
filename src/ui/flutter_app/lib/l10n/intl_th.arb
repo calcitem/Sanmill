@@ -150,7 +150,13 @@
     },
     "tipToMove": "{player} เพื่อย้าย",
     "@tipToMove": {
-        "description": " to move."
+        "description": " to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "ผู้เล่น 1 ชนะ!",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "ไม่สามารถนำเข้า {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "การเคลื่อนไหวและกฎไม่ตรงกัน",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "ผิดพลาด: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "อัตราการชนะ",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "{player} จำนวนชิ้นน้อยกว่าสาม",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": " piece count is less than three.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player}ลาออก",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": " resign.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} ไม่มีทางไป",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": " is no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "กระดานเต็มและ {player} ไม่มีทางไป",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "The board is full, no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "เวลาหมดลง {player} หายไป",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "ในระยะเคลื่อนที่ ไม่มีชิ้นส่วนใดถูกลบออกในจำนวนการเคลื่อนไหวเฉพาะครั้งล่าสุด",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "ท้าทายระดับที่ยากขึ้น? ระดับใหม่จะเป็นระดับ {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "คุณแพ้!",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "รุ่น: {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "ขอบคุณ",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "เลือก {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "ข้อมูล",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "{player} ในมือ: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "{player} บนเรือ: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "คณะกรรมการชดเชยจากด้านบน",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "ด้านที่จะย้าย: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "ย้ายล่าสุด: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "เลือกแล้ว",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }

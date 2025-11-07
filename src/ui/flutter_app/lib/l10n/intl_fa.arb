@@ -150,7 +150,13 @@
     },
     "tipToMove": "نوبت حرکت {player}",
     "@tipToMove": {
-        "description": " to move."
+        "description": " to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "بازیکن ۱ برنده است!",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "نمی‌تواند {invalidMove} را وارد کند.",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "حرکات و قوانین با هم مطابقت ندارند.",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "خطا: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "درصد برد",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "تعداد مهره‌های {player} کمتر از سه است",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": " piece count is less than three.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} استعفا داد.",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": " resign.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} راهی برای رفتن ندارد.",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": " is no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "تخته پر است و {player} راهی برای رفتن ندارد.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "The board is full, no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "زمان تمام شد، {player} باخت.",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "در مرحله حرکت کردن ، هیچ مهره‌ای در آخرین تعداد حرکت خاص حذف نشده است.",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "سطح سخت تر را به چالش بکشید؟ سطح جدید سطح {level} خواهد بود!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "شما باختید!",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "نسخه: {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "با تشکر",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "انتخاب {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "اطلاعات",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "{player} در دست: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "{player} روی تخته: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "فاصله تخته بازی از بالا",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "نوبت حرکت: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "آخرین حرکت: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "انتخاب شد",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }

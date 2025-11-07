@@ -150,7 +150,13 @@
     },
     "tipToMove": "{player} bergerak.",
     "@tipToMove": {
-        "description": " to move."
+        "description": " to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "Player 1 menang!",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "Tidak dapat mengimpor {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "Gerakan dan aturan tidak cocok.",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "Error: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "Tingkat Kemenangan",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "{player} jumlah potongan kurang dari tiga.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": " piece count is less than three.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} menyerah.",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": " resign.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} tidak ada jalan lain.",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": " is no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "Papan sudah penuh, dan {player} tidak ada jalan lagi.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "The board is full, no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "Waktu telah berakhir, {player} kalah.",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "Dalam fase bergerak, tidak ada bidak yang dikeluarkan dalam jumlah gerakan spesifik terakhir.",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "Tantang level yang lebih sulit? Level baru akan menjadi level {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "Kamu kalah!",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "Versi: {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "Terima kasih",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "Pilih {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "Info",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "{player} di tangan: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "{player} di pesawat: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "Papan offset dari atas",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "Sisi untuk bergerak: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "Langkah terakhir: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "Terpilih",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }

@@ -150,7 +150,13 @@
     },
     "tipToMove": "{player} সরাতে।",
     "@tipToMove": {
-        "description": " to move."
+        "description": " to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "প্লেয়ারের 1 জয়!",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "আমদানি করা যাবে না {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "চল এবং নিয়ম মেলে না।",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "ত্রুটি: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "উইন রেট",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "{player} টুকরা সংখ্যা তিনের কম।",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": " piece count is less than three.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} পদত্যাগ.",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": " resign.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} যাওয়ার কোন উপায় নেই।",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": " is no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "বোর্ড পূর্ণ, এবং {player} যাওয়ার কোন উপায় নেই।",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "The board is full, no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "সময় শেষ, {player} হারিয়ে গেছে।",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "চলমান পর্যায়ে, শেষের নির্দিষ্ট সংখ্যাটিতে কোনও টুকরো সরানো হয়নি।",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "কঠিন স্তর চ্যালেঞ্জ? নতুন লেভেল হবে লেভেল {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "তুমি হেরেছ!",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "সংস্করণ: {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "ধন্যবাদ",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "বাছাই করুন {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "তথ্য",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "{player} হাতে: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "বোর্ডে {player}: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "উপরে থেকে বোর্ড অফসেট",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "পাশ সরানোর জন্য: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "শেষ পদক্ষেপ: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "নির্বাচিত",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }

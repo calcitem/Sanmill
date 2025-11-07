@@ -150,7 +150,13 @@
     },
     "tipToMove": "C’est au tour de {player} de jouer.",
     "@tipToMove": {
-        "description": "The tip that the given player is to move."
+        "description": "The tip that the given player is to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "Joueur 1 gagne !",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "Impossible d'importer {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "Les déplacements et les règles ne correspondent pas.",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "Erreur : {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "Taux de victoire",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "Le nombre de pièces de {player} est inférieur à trois.",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left."
+        "description": "Indicate that the player lost because they had less than three pieces left.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} abandonne.",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned."
+        "description": "Indicate that the player resigned.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} n'a nulle part où aller.",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go."
+        "description": "Indicate that the player has no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "Le tableau est plein et {player} n'a nulle part où aller.",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full."
+        "description": "Indicate that the player has no way to go because the board is full.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "Le temps est écoulé, {player} a perdu.",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "Dans la phase de déplacement, aucune pièce n'a été retirée au cours du dernier nombre spécifique de coups.",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "Défier un niveau plus difficile ? Le nouveau niveau sera le niveau {level} !",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "Vous avez perdu !",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "Version : {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "Remerciements",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "Choisissez {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "Infos",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "Main de {player} : {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "Plateau de {player} : {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "Décalage du plateau par rapport au haut",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "Au tour de : {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "Dernier coup : {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "Sélectionné",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }

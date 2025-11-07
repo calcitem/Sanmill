@@ -1,20 +1,24 @@
 #!/usr/bin/env python3
 """
-Script to check if ARB files have the same entry order as intl_en.arb
+Script to check if ARB files match the template structure exactly.
 
-This script compares the key order in all ARB files against the reference
-file (intl_en.arb) and reports any differences.
+This script validates:
+1. Key order matches intl_en.arb
+2. Metadata (@key) structure matches exactly
+3. All fields in metadata are present and in correct order
+4. Nested objects (like placeholders) match template structure
 """
 
 import json
 import os
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
+from collections import OrderedDict
 
 
 def load_arb_file(file_path: Path) -> Dict[str, Any]:
     """
-    Load ARB file and preserve key order
+    Load ARB file and preserve key order.
 
     Args:
         file_path: Path to the ARB file
@@ -23,25 +27,159 @@ def load_arb_file(file_path: Path) -> Dict[str, Any]:
         Dictionary with preserved key order
     """
     with open(file_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+        return json.load(f, object_pairs_hook=OrderedDict)
 
 
-def get_arb_keys(arb_data: Dict[str, Any]) -> List[str]:
+def compare_structure(
+    template_value: Any,
+    file_value: Any,
+    path: str = ""
+) -> List[str]:
     """
-    Extract all keys from ARB data
+    Recursively compare two values and return list of differences.
 
     Args:
-        arb_data: ARB file content as dictionary
+        template_value: Value from template
+        file_value: Value from file being checked
+        path: Current path for error reporting
 
     Returns:
-        List of keys in their original order
+        List of difference messages
     """
-    return list(arb_data.keys())
+    differences = []
+
+    # Check if both are dictionaries
+    if isinstance(template_value, dict) and isinstance(file_value, dict):
+        template_keys = list(template_value.keys())
+        file_keys = list(file_value.keys())
+
+        # Check for missing keys
+        missing_keys = set(template_keys) - set(file_keys)
+        if missing_keys:
+            differences.append(
+                f"{path}: Missing keys: {', '.join(sorted(missing_keys))}"
+            )
+
+        # Check for extra keys
+        extra_keys = set(file_keys) - set(template_keys)
+        if extra_keys:
+            differences.append(
+                f"{path}: Extra keys: {', '.join(sorted(extra_keys))}"
+            )
+
+        # Check key order for common keys
+        common_keys = [k for k in template_keys if k in file_keys]
+        file_common_order = [k for k in file_keys if k in common_keys]
+
+        if common_keys != file_common_order:
+            differences.append(
+                f"{path}: Key order mismatch. "
+                f"Expected: {common_keys}, Got: {file_common_order}"
+            )
+
+        # Recursively check values for common keys
+        for key in common_keys:
+            new_path = f"{path}.{key}" if path else key
+            differences.extend(
+                compare_structure(template_value[key], file_value[key], new_path)
+            )
+
+    elif isinstance(template_value, list) and isinstance(file_value, list):
+        # For lists, just check if they're equal
+        # (ARB files don't typically have complex list structures to validate)
+        if template_value != file_value:
+            differences.append(f"{path}: List content mismatch")
+
+    # For primitive values, we don't check them as they're language-specific
+    # (translation strings, descriptions in target language, etc.)
+
+    return differences
+
+
+def check_entry_metadata(
+    key: str,
+    template_data: Dict[str, Any],
+    file_data: Dict[str, Any],
+    file_name: str
+) -> List[str]:
+    """
+    Check if metadata for a key matches template structure.
+
+    Args:
+        key: The key to check (without @ prefix)
+        template_data: Template ARB data
+        file_data: File ARB data
+        file_name: Name of file being checked
+
+    Returns:
+        List of issue messages
+    """
+    issues = []
+    metadata_key = f"@{key}"
+
+    # Skip @@locale as it's different for each file
+    if key.startswith("@@"):
+        return issues
+
+    # Check if metadata exists in template
+    if metadata_key not in template_data:
+        return issues
+
+    # Check if metadata exists in file
+    if metadata_key not in file_data:
+        issues.append(f"  ❌ {key}: Missing metadata entry '{metadata_key}'")
+        return issues
+
+    # Compare metadata structure
+    template_metadata = template_data[metadata_key]
+    file_metadata = file_data[metadata_key]
+
+    differences = compare_structure(template_metadata, file_metadata, metadata_key)
+    for diff in differences:
+        issues.append(f"  ❌ {key}: {diff}")
+
+    return issues
+
+
+def check_arb_file(
+    arb_file_path: Path,
+    template_data: Dict[str, Any],
+    template_keys: List[str]
+) -> Tuple[bool, List[str]]:
+    """
+    Check if ARB file matches template structure.
+
+    Args:
+        arb_file_path: Path to ARB file to check
+        template_data: Template ARB data
+        template_keys: List of keys in template order
+
+    Returns:
+        Tuple of (is_valid, list of issues)
+    """
+    file_data = load_arb_file(arb_file_path)
+    file_keys = list(file_data.keys())
+    issues = []
+
+    # Check top-level key order
+    common_keys = [key for key in template_keys if key in file_keys]
+    file_common_order = [key for key in file_keys if key in common_keys]
+
+    if common_keys != file_common_order:
+        issues.append("  ❌ Top-level key order doesn't match template")
+
+    # Check metadata for each key
+    for key in file_keys:
+        if not key.startswith("@"):
+            key_issues = check_entry_metadata(key, template_data, file_data, arb_file_path.name)
+            issues.extend(key_issues)
+
+    return (len(issues) == 0, issues)
 
 
 def check_arb_order(l10n_dir: Path, reference_file: str = 'intl_en.arb') -> None:
     """
-    Check if all ARB files have the same key order as the reference file
+    Check if all ARB files match the template structure exactly.
 
     Args:
         l10n_dir: Directory containing ARB files
@@ -53,16 +191,16 @@ def check_arb_order(l10n_dir: Path, reference_file: str = 'intl_en.arb') -> None
         print(f"❌ Error: Reference file {reference_file} not found!")
         return
 
-    reference_data = load_arb_file(reference_path)
-    reference_keys = get_arb_keys(reference_data)
+    template_data = load_arb_file(reference_path)
+    template_keys = list(template_data.keys())
 
-    print(f"📋 Reference file: {reference_file}")
-    print(f"📊 Total keys in reference: {len(reference_keys)}\n")
+    print(f"📋 Template file: {reference_file}")
+    print(f"📊 Total keys in template: {len(template_keys)}\n")
 
     # Find all ARB files
     arb_files = sorted(l10n_dir.glob('intl_*.arb'))
 
-    files_with_different_order = []
+    files_with_issues = []
     files_checked = 0
 
     for arb_file in arb_files:
@@ -70,38 +208,30 @@ def check_arb_order(l10n_dir: Path, reference_file: str = 'intl_en.arb') -> None
             continue  # Skip reference file
 
         files_checked += 1
-        arb_data = load_arb_file(arb_file)
-        arb_keys = get_arb_keys(arb_data)
+        is_valid, issues = check_arb_file(arb_file, template_data, template_keys)
 
-        # Get common keys (keys that exist in both files)
-        common_keys = [key for key in reference_keys if key in arb_keys]
-
-        # Check if the order of common keys matches
-        reference_common_order = [key for key in reference_keys if key in common_keys]
-        arb_common_order = [key for key in arb_keys if key in common_keys]
-
-        if reference_common_order != arb_common_order:
-            files_with_different_order.append(arb_file.name)
-            print(f"❌ {arb_file.name}: Keys are in different order")
-            print(f"   - Keys in file: {len(arb_keys)}")
-            print(f"   - Keys in reference: {len(reference_keys)}")
-            print(f"   - Common keys: {len(common_keys)}")
+        if is_valid:
+            print(f"✅ {arb_file.name}: Perfect match with template")
         else:
-            print(f"✅ {arb_file.name}: Keys are in correct order")
+            files_with_issues.append(arb_file.name)
+            print(f"❌ {arb_file.name}: Issues found")
+            for issue in issues:
+                print(issue)
+            print()
 
     # Summary
-    print(f"\n{'='*60}")
+    print(f"{'='*60}")
     print(f"Summary:")
     print(f"  Total files checked: {files_checked}")
-    print(f"  Files with correct order: {files_checked - len(files_with_different_order)}")
-    print(f"  Files with different order: {len(files_with_different_order)}")
+    print(f"  Files matching template: {files_checked - len(files_with_issues)}")
+    print(f"  Files with issues: {len(files_with_issues)}")
 
-    if files_with_different_order:
-        print(f"\n📝 Files that need reordering:")
-        for filename in files_with_different_order:
+    if files_with_issues:
+        print(f"\n📝 Files that need fixing:")
+        for filename in files_with_issues:
             print(f"  - {filename}")
     else:
-        print(f"\n🎉 All files have the correct key order!")
+        print(f"\n🎉 All files match the template perfectly!")
 
 
 def main():

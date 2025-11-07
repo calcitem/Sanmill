@@ -150,7 +150,13 @@
     },
     "tipToMove": "{player}, kad judėtumėte.",
     "@tipToMove": {
-        "description": " to move."
+        "description": " to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "Laimi 1 žaidėjas!",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "Negalima importuoti {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "Judesiai ir taisyklės nesutampa.",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "Klaida: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "Laimėjimo rodiklis",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "{player} vienetų skaičius yra mažesnis nei trys.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": " piece count is less than three.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} atsistatydino.",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": " resign.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} nebėra kelio.",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": " is no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "Lenta pilna, o {player} nebėra kelio.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "The board is full, no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "Laikas baigėsi, {player} prarastas.",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "Judėjimo fazėje per paskutinį tam tikrą ėjimų skaičių nebuvo pašalinta nė viena figūra.",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "Iššūkis sunkesnis lygis? Naujas lygis bus {level} lygis!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "Jūs pralaimėjote!",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "Versija: {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "Ačiū",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "Pasirinkite {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "Informacija",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "{player} rankoje: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "{player} laive: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "lentos poslinkis nuo viršaus",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "Perkeliama pusė: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "Paskutinis žingsnis: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "Pasirinkta",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }
