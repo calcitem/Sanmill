@@ -1153,17 +1153,6 @@
     "@gameSavedTo": {
         "description": "The game is saved to"
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{sztuka}=1{{count} sztuka}other{{count} sztuki}} należy usunąć.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
     "empty": "Pusty",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
@@ -1191,6 +1180,17 @@
     "noPiecesCanBeRemoved": "Nie można usunąć żadnych kawałków.",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{sztuka}=1{{count} sztuka}other{{count} sztuki}} należy usunąć.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Umiesz. ({count})",
     "@placedCount": {
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Wyjdź i ponownie otwórz aplikację, aby ustawienia zaczęły obowiązywać.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Pełny ekran",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Wyjdź i ponownie otwórz aplikację, aby ustawienia zaczęły obowiązywać.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Las",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Udostępnij GIF",
     "@shareGIF": {},
-    "duration": "Czas trwania",
-    "@duration": {},
     "pixelRatio": "Stosunek pikseli",
     "@pixelRatio": {},
+    "duration": "Czas trwania",
+    "@duration": {},
     "gameScreenRecorder": "Rejestrator ekranu gry",
     "@gameScreenRecorder": {},
     "previous": "Poprzedni",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Czas myślenia AI ustawiony na 0 oznacza, że nie ma limitu czasu na myślenie.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) to zmodyfikowana forma algorytmu wyszukiwania alfa-beta, której celem jest poprawa wydajności poprzez ponowne wykorzystanie pośrednich wyników wyszukiwania i użycie dobrego wstępnego przypuszczenia w celu zawężenia przestrzeni wyszukiwania.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Należy pamiętać, że dostosowanie czasu myślenia AI może nie być całkowicie precyzyjne. Rzeczywisty czas myślenia może być krótszy, gdy poziom trudności jest ustawiony na niższą wartość, i może być dłuższy, gdy sztuczna inteligencja jest w połowie myślenia, gdy skończy się czas.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Jeśli ustawisz wysoki poziom trudności, ale nie zwiększysz czasu myślenia AI, rzeczywisty poziom trudności może zostać ograniczony do niższej wartości ze względu na ograniczenie czasu myślenia. Rzeczywista wartość może się różnić w zależności od wydajności urządzenia.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) to zmodyfikowana forma algorytmu wyszukiwania alfa-beta, której celem jest poprawa wydajności poprzez ponowne wykorzystanie pośrednich wyników wyszukiwania i użycie dobrego wstępnego przypuszczenia w celu zawężenia przestrzeni wyszukiwania.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) to algorytm wyszukiwania w celu znalezienia najlepszego ruchu na danej pozycji. Jest to ulepszenie algorytmu alfa-beta i wykorzystuje przeszukiwanie okna zerowego lub zerowego, aby potwierdzić, że ruch jest gorszy lub nie gorszy niż już bezpieczny wynik z głównej zmiany. PVS koncentruje się na najbardziej obiecujących ruchach i unika niepotrzebnych poszukiwań nieoptymalnych gałęzi, co pomaga poprawić efektywność wyszukiwania.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algorytm alfa-beta to algorytm wyszukiwania w celu znalezienia najlepszego ruchu. Wykorzystuje zasadę minimax i dwie wartości, alfa i beta, aby przyciąć drzewo wyszukiwania i zwiększyć wydajność. Alfa reprezentuje minimalny wynik, jaki komputer jest pewien, że może uzyskać, podczas gdy beta reprezentuje maksymalny wynik, jaki może uzyskać jego przeciwnik. Algorytm pomaga komputerowi podejmować mądre i efektywne decyzje w grze.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "W tej grze drugiemu graczowi łatwiej jest wygrać niż pierwszemu graczowi.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Zgodnie z ludzkim doświadczeniem, jeśli spróbujesz wygrać, przegrasz. Zamiast tego celuj w remis i unikaj przegranej. Obserwuj swojego przeciwnika i delikatnie zwab go w miejsce, w którym może popełnić błąd. Kiedy okazują słabość, wykorzystaj okazję i delikatnie naciskaj, by wygrać. W ten sposób możesz wygrać grę.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "W tej grze drugiemu graczowi łatwiej jest wygrać niż pierwszemu graczowi.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Włączenie opcji pasywnej spowoduje, że sztuczna inteligencja rozluźni się, gdy będzie miała przewagę na pozycji, zamiast agresywnie próbować wygrać tak szybko, jak to możliwe.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Jeśli sztuczna inteligencja bierze pod uwagę mobilność swoich pionków, będzie dążyć nie tylko do jak najszybszego zbicia pionków przeciwnika, ale także rozważy blokowanie ruchów przeciwnika i uniemożliwienie mu zrobienia tego samego.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Włączenie tej opcji zwiększa losowość i frajdę z gry, a jej wyłączenie może pomóc w badaniu sposobów na pokonanie sztucznej inteligencji.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Jeśli sztuczna inteligencja bierze pod uwagę mobilność swoich pionków, będzie dążyć nie tylko do jak najszybszego zbicia pionków przeciwnika, ale także rozważy blokowanie ruchów przeciwnika i uniemożliwienie mu zrobienia tego samego.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Gdy tablica jest pełna",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Pod koniec fazy umieszczania, przed rozpoczęciem fazy ruchu, akcja następuje, jeśli plansza jest pełna pionków.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Drewno leśne",
     "@forestWood": {},
-    "greenMeadow": "Zielona Łąka",
-    "@greenMeadow": {},
-    "stonyPath": "Kamienista Ścieżka",
-    "@stonyPath": {},
+    "darkMystery": "Mroczna tajemnica",
+    "@darkMystery": {},
     "midnightBlue": "Niebieska północ",
     "@midnightBlue": {},
     "greenForest": "Zielony las",
     "@greenForest": {},
+    "greenMeadow": "Zielona Łąka",
+    "@greenMeadow": {},
+    "stonyPath": "Kamienista Ścieżka",
+    "@stonyPath": {},
     "pastelPink": "pastelowy róż",
     "@pastelPink": {},
     "turquoiseSea": "Turkusowe morze",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "figlarny ogród",
     "@playfulGarden": {},
-    "darkMystery": "Mroczna tajemnica",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algorytm analizy wstecznej wykorzystuje wielowartościową analizę wsteczną do zbudowania bazy danych gier końcowych z różnych pozycji początkowych, a następnie stosuje tę bazę danych w celu optymalizacji rozgrywki. Takie podejście należy do kategorii rozwiązań Ultra-Strong.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Czy chcesz zobaczyć instrukcję obsługi tego algorytmu?",

@@ -1133,6 +1133,10 @@
             }
         }
     },
+    "loadFailed": "Încărcarea nu a reușit.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
     "filename": "Nume de fișier",
     "@filename": {
         "description": "File name"
@@ -1141,21 +1145,21 @@
     "@browse": {
         "description": "Browse…"
     },
-    "loadFailed": "Încărcarea nu a reușit.",
-    "@loadFailed": {
-        "description": "Load failed."
+    "gameFiles": "Fișiere de joc",
+    "@gameFiles": {
+        "description": "Game files"
     },
     "gameSavedTo": "Jocul este salvat în",
     "@gameSavedTo": {
         "description": "The game is saved to"
     },
-    "gameFiles": "Fișiere de joc",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "empty": "Gol",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
+    },
+    "noMove": "Nicio mișcare.",
+    "@noMove": {
+        "description": "No move."
     },
     "restoredPosition": "Poziția inițială restabilită.",
     "@restoredPosition": {
@@ -1230,10 +1234,6 @@
     "@cannotPaste": {
         "description": "Cannot paste."
     },
-    "noMove": "Nicio mișcare.",
-    "@noMove": {
-        "description": "No move."
-    },
     "isUnplacedAndRemovedPiecesShown": "Afișați piesele neașezate și îndepărtate",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Distribuie GIF",
     "@shareGIF": {},
-    "duration": "Durată",
-    "@duration": {},
     "pixelRatio": "Raportul pixelilor",
     "@pixelRatio": {},
+    "duration": "Durată",
+    "@duration": {},
     "gameScreenRecorder": "Recorder ecran joc",
     "@gameScreenRecorder": {},
     "previous": "Anterior",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Timpul de gândire AI setat la 0 înseamnă că nu există limită de timp pentru gândire.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) este o formă modificată a algoritmului de căutare alfa-beta care urmărește să îmbunătățească eficiența prin reutilizarea rezultatelor de căutare intermediare și folosind o estimare inițială bună pentru a restrânge spațiul de căutare.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Vă rugăm să rețineți că ajustarea timpului de gândire AI poate să nu fie complet precisă. Timpul real de gândire poate fi mai scurt atunci când nivelul de dificultate este setat la o valoare mai mică și poate fi mai lung atunci când IA este la mijlocul gândirii când timpul expiră.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Dacă setați nivelul de dificultate ridicat, dar nu creșteți timpul de gândire AI, nivelul de dificultate real poate fi limitat la o valoare mai mică din cauza constrângerii timpului de gândire. Valoarea reală poate varia în funcție de performanța mașinii.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) este o formă modificată a algoritmului de căutare alfa-beta care urmărește să îmbunătățească eficiența prin reutilizarea rezultatelor de căutare intermediare și folosind o estimare inițială bună pentru a restrânge spațiul de căutare.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) este un algoritm de căutare pentru a găsi cea mai bună mișcare într-o anumită poziție. Este o îmbunătățire a algoritmului alfa-beta și utilizează căutări în fereastră nulă sau zero pentru a confirma că o mișcare este mai proastă sau nu mai proastă decât un scor deja sigur din variația principală. PVS se concentrează pe cele mai promițătoare mișcări și evită căutările inutile ale filialelor suboptime, ceea ce ajută la îmbunătățirea eficienței căutării.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritmul alfa-beta este un algoritm de căutare pentru a găsi cea mai bună mișcare. Utilizează principiul minimax și două valori, alfa și beta, pentru a tăia arborele de căutare și a crește eficiența. Alpha reprezintă scorul minim pe care computerul este sigur că îl poate obține, în timp ce beta reprezintă scorul maxim pe care îl poate obține adversarul său. Algoritmul ajută computerul să ia decizii inteligente și eficiente într-un joc.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "În acest joc, este mai ușor pentru al doilea jucător să câștige în comparație cu primul jucător.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Conform experienței umane, dacă încerci să câștigi, vei pierde. În schimb, ținește ca obiectiv o egalitate și evită pierderea jocului. Observați-vă adversarul și atrageți-l ușor într-o poziție în care ar putea face greșeli. Când arată slăbiciune, profită de ocazie și împinge ușor pentru victorie. În acest fel, poți câștiga jocul.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "În acest joc, este mai ușor pentru al doilea jucător să câștige în comparație cu primul jucător.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Activarea opțiunii pasive va determina AI să se relaxeze atunci când are un avantaj în poziție, mai degrabă decât să încerce agresiv să câștige cât mai repede posibil.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Dacă AI ia în considerare mobilitatea pieselor sale, nu va urmări doar să captureze piesele adversarului cât mai repede posibil, ci va lua în considerare și blocarea mișcărilor adversarului și împiedicarea acestuia să facă același lucru.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Activarea acestei opțiuni crește aleatorietatea și distracția jocului, în timp ce dezactivarea acestuia poate ajuta la studiul modalităților de a învinge AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Dacă AI ia în considerare mobilitatea pieselor sale, nu va urmări doar să captureze piesele adversarului cât mai repede posibil, ci va lua în considerare și blocarea mișcărilor adversarului și împiedicarea acestuia să facă același lucru.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Când tabla este plină",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "La sfârșitul fazei de plasare, înainte de începerea fazei de mișcare, urmează acțiunea dacă tabla este plină de piese.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Wood Wood",
     "@forestWood": {},
-    "greenMeadow": "Lunca Verde",
-    "@greenMeadow": {},
-    "stonyPath": "Calea pietroasă",
-    "@stonyPath": {},
+    "darkMystery": "Mister întunecat",
+    "@darkMystery": {},
     "midnightBlue": "Albastru miez de noapte",
     "@midnightBlue": {},
     "greenForest": "Pădure verde",
     "@greenForest": {},
+    "greenMeadow": "Lunca Verde",
+    "@greenMeadow": {},
+    "stonyPath": "Calea pietroasă",
+    "@stonyPath": {},
     "pastelPink": "Roz pastel",
     "@pastelPink": {},
     "turquoiseSea": "Marea Turcoaz",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Grădina jucăușă",
     "@playfulGarden": {},
-    "darkMystery": "Mister întunecat",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritmul de analiză retrogradă utilizează analiza retrogradă cu mai multe valori pentru a construi o bază de date finală din diferite poziții de început, apoi aplică această bază de date pentru a optimiza jocul. Această abordare se încadrează în categoria soluțiilor Ultra-Strong.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Doriți să vedeți ghidul utilizatorului pentru acest algoritm?",

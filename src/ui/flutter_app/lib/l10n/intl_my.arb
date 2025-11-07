@@ -12,6 +12,10 @@
     "@yes": {
         "description": "Yes"
     },
+    "no": "မရှိ",
+    "@no": {
+        "description": "No"
+    },
     "game": "ဂိမ်း",
     "@game": {
         "description": "Game"
@@ -140,18 +144,6 @@
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
-    "blackWin": "ကစားသမား ၂ အောင်မြင်သည်!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "lost": "ပျောက်တယ်။",
-    "@lost": {
-        "description": "Lost"
-    },
-    "thinking": "စဉ်းစားနေသည်…",
-    "@thinking": {
-        "description": "Thinking..."
-    },
     "tipCanMoveToAnyPoint": "ကြိုက်တဲ့နေရာကို ရွှေ့လို့ရပါတယ်။",
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
@@ -170,6 +162,22 @@
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
+    "blackWin": "ကစားသမား ၂ အောင်မြင်သည်!",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
+    "won": "ဝမ်",
+    "@won": {
+        "description": "Won"
+    },
+    "lost": "ပျောက်တယ်။",
+    "@lost": {
+        "description": "Lost"
+    },
+    "thinking": "စဉ်းစားနေသည်…",
+    "@thinking": {
+        "description": "Thinking..."
+    },
     "newGame": "ဂိမ်းအသစ်",
     "@newGame": {
         "description": "New game"
@@ -177,6 +185,10 @@
     "importGame": "သွင်းဂိမ်း",
     "@importGame": {
         "description": "Import game"
+    },
+    "exportGame": "Export ဂိမ်း",
+    "@exportGame": {
+        "description": "Export game"
     },
     "gameImported": "ဂိမ်းကို တင်သွင်းခဲ့သည်။",
     "@gameImported": {
@@ -204,6 +216,10 @@
     "@restartGame": {
         "description": "Restart current game?"
     },
+    "restart": "ပြန်စတင်သည်",
+    "@restart": {
+        "description": "Restart"
+    },
     "gameStarted": "ဂိမ်းစတင်ခဲ့သည်၊ ကျေးဇူးပြု၍ နေရာယူပါ။",
     "@gameStarted": {
         "description": "Game started, please place"
@@ -221,6 +237,10 @@
                 "example": "Unknown error"
             }
         }
+    },
+    "winRate": "အနိုင်ရရှိမှုရာခိုင်နှုန်း",
+    "@winRate": {
+        "description": "Win Rate"
     },
     "score": "နိုင်ပြီ:",
     "@score": {
@@ -267,6 +287,16 @@
     "loseReasonBoardIsFull": "ဘုတ်အပြည့်ရှိပြီး {player} သွားစရာလမ်းမရှိ။",
     "@loseReasonBoardIsFull": {
         "description": "Indicate that the player has no way to go because the board is full.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
+    },
+    "loseReasonTimeOver": "အချိန်ကုန်သွားပါပြီ၊ {player} ဆုံးရှုံးသွားပါပြီ။",
+    "@loseReasonTimeOver": {
+        "description": "Time Over",
         "placeholders": {
             "player": {
                 "description": "The player who lost",
@@ -321,6 +351,20 @@
     "@about": {
         "description": "About"
     },
+    "version": "ဗားရှင်း- {versionNumber}",
+    "@version": {
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
+    },
+    "thanks": "ကျေးဇူးပါ",
+    "@thanks": {
+        "description": "Thanks"
+    },
     "settings": "ဆက်တင်များ",
     "@settings": {
         "description": "Settings"
@@ -341,6 +385,10 @@
     "@moveTime": {
         "description": "AI thinking time"
     },
+    "difficulty": "အခက်အခဲ",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
     "playSounds": "အသံသက်ရောက်မှု",
     "@playSounds": {
         "description": "Sound effects"
@@ -348,6 +396,18 @@
     "playSoundsInTheGame": "ဂိမ်းတွင် အသံများကို ကစားပါ",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
+    },
+    "keepMuteWhenTakingBack": "ပြန်ယူသည့်အခါ အသံတိတ်ထားပါ",
+    "@keepMuteWhenTakingBack": {
+        "description": "Keep mute when taking back"
+    },
+    "tone": "လေသံ",
+    "@tone": {
+        "description": "Tone"
+    },
+    "whoMovesFirst": "ပထမဆုံး ရွှေ့ပါ",
+    "@whoMovesFirst": {
+        "description": "First move"
     },
     "human": "လူသား",
     "@human": {
@@ -389,13 +449,29 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
+    "flyPieceCount": "ပျံသွားသည့် အရေအတွက်",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
     "flyPieceCount_Detail": "Flying ကို ဖွင့်ထားလျှင် ကစားသမားတစ်ဦးမှ သတ်မှတ်ထားသော အပိုင်းအရေအတွက်သို့ လျှော့ချလိုက်သောအခါ၊ သူမ၏ အပိုင်းများသည် ကျန်ဂိမ်းတွင်ကဲ့သို့ ကပ်လျက်အမှတ်များကို ကန့်သတ်ထားမည့်အစား ၎င်း၏အပိုင်းများကို သိမ်းပိုက်ခြင်းမရှိသော မည်သည့်နေရာသို့မဆို လွတ်လပ်စွာ ရွှေ့ပြောင်းနိုင်သည်။",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
+    "piecesAtLeastCount": "အနည်းဆုံးအပိုင်းများ",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "ထောင့်ဖြတ်မျဉ်းများ",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
     "hasDiagonalLines_Detail": "ဘုတ်သို့ ထောင့်ဖြတ်မျဉ်းလေးကြောင်းထည့်ပါ။",
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
+    },
+    "isDefenderMoveFirst": "ဒုတိယကစားသမားက အရင်ရွှေ့တယ်",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
     },
     "isDefenderMoveFirst_Detail": "နေရာယူသည့်အဆင့်တွင် ဒုတိယရွေ့သောကစားသမားသည် ရွေ့လျားသည့်အဆင့်တွင် ပထမရွေ့သည်။",
     "@isDefenderMoveFirst_Detail": {
@@ -408,6 +484,10 @@
     "mayRemoveMultiple_Detail": "ကစားသမားတစ်ဦးသည် စက်ရုံတစ်ရုံထက်ပို၍ တစ်ပြိုင်နက်ပိတ်ပါက၊ ပိတ်ထားသောစက်အရေအတွက်ကို ဖယ်ရှားမည်ဖြစ်သည်။",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
+    "mayRemoveFromMillsAlways": "ဆန်စက်များကို ဖျက်ဆီးပါ",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
     },
     "mayRemoveFromMillsAlways_Detail": "ပုံမှန်အားဖြင့်၊ ကစားသမားများသည် ဖွဲ့စည်းထားသော ကြိတ်စက်မှ အပိုင်းအစကို မဖယ်ရှားမီ အခြားအပိုင်းများကို ဦးစွာ ဖယ်ရှားရပါမည်။ ကန့်သတ်ချက်ကို ပိတ်ရန် ဤရွေးချယ်မှုကို ဖွင့်ပါ။",
     "@mayRemoveFromMillsAlways_Detail": {
@@ -429,9 +509,17 @@
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
     },
+    "mayFly": "ပျံ",
+    "@mayFly": {
+        "description": "Flying"
+    },
     "mayFly_Detail": "ကစားသမားတစ်ဦးတွင် အပိုင်းသုံးပိုင်း သို့မဟုတ် လေးခုသာ ကျန်ရှိတော့မည်ဆိုလျှင် အပိုင်းအစကို အခမဲ့အမှတ်သို့ ရွှေ့နိုင်သည်။",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "N-ရွှေ့စည်းမျဉ်း",
+    "@nMoveRule": {
+        "description": "N-move rule"
     },
     "nMoveRule_Detail": "သတ်မှတ်ထားသော ရွေ့လျားမှုအရေအတွက်တွင် ဖယ်ရှားခြင်းမရှိပါက ဂိမ်းကို ရေးဆွဲထားသည်။",
     "@nMoveRule_Detail": {
@@ -441,10 +529,6 @@
     "@rollback": {
         "description": "Rollback"
     },
-    "moveHistoryCopied": "ကူးယူထားသောမှတ်တမ်းကို ကလစ်ဘုတ်သို့ ရွှေ့ပါ။",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
     "pleaseSelect": "ကျေးဇူးပြု၍ ရွေးချယ်ပါ",
     "@pleaseSelect": {
         "description": "Please select"
@@ -453,9 +537,29 @@
     "@copy": {
         "description": "Copy"
     },
+    "moveHistoryCopied": "ကူးယူထားသောမှတ်တမ်းကို ကလစ်ဘုတ်သို့ ရွှေ့ပါ။",
+    "@moveHistoryCopied": {
+        "description": "Move history copied to clipboard"
+    },
     "help": "ကူညီကြပါ",
     "@help": {
         "description": "Help"
+    },
+    "feedback": "တုံ့ပြန်ချက်",
+    "@feedback": {
+        "description": "Feedback"
+    },
+    "exit": "ထွက်ပေါက်",
+    "@exit": {
+        "description": "Exit"
+    },
+    "ruleSettings": "စည်းကမ်းများ",
+    "@ruleSettings": {
+        "description": "Rule Settings"
+    },
+    "color": "အရောင်",
+    "@color": {
+        "description": "Color"
     },
     "boardColor": "ဘုတ်ရောင်",
     "@boardColor": {
@@ -492,6 +596,10 @@
     "isNotationsShown": "ဘုတ်ပေါ်တွင် အမှတ်အသားများကို ပြပါ",
     "@isNotationsShown": {
         "description": "Show notations on board"
+    },
+    "isHistoryNavigationToolbarShown": "မှတ်တမ်း လမ်းညွှန်ကိရိယာဘားကို ပြပါ",
+    "@isHistoryNavigationToolbarShown": {
+        "description": "Show history navigation toolbar"
     },
     "display": "ပြသခြင်း",
     "@display": {
@@ -534,6 +642,18 @@
                 "example": "Background color"
             }
         }
+    },
+    "info": "အခ. အလ.",
+    "@info": {
+        "description": "Info"
+    },
+    "hint": "သဲလွန်စ",
+    "@hint": {
+        "description": "Hint"
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "player1": "ကစားသမား ၁",
     "@player1": {
@@ -795,10 +915,6 @@
     "@experiments": {
         "description": "Experiments"
     },
-    "mainToolbarIconColor": "ပင်မ ကိရိယာဘား သင်္ကေတ အရောင်",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
     "ossLicenses": "Open-source လိုင်စင်များ",
     "@ossLicenses": {
         "description": "Open source licenses"
@@ -834,6 +950,10 @@
     "mainToolbarBackgroundColor": "ပင်မကိရိယာဘားနောက်ခံအရောင်",
     "@mainToolbarBackgroundColor": {
         "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "ပင်မ ကိရိယာဘား သင်္ကေတ အရောင်",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
     },
     "navigationToolbarBackgroundColor": "လမ်းညွှန်ကိရိယာဘား နောက်ခံအရောင်",
     "@navigationToolbarBackgroundColor": {
@@ -979,10 +1099,6 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "emptyPoint": "ဗလာပွိုင့်",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
     "close": "ပိတ်လိုက်",
     "@close": {
         "description": "Close"
@@ -994,6 +1110,10 @@
     "blackPiece": "အနက်ရောင်အပိုင်းအစ",
     "@blackPiece": {
         "description": "Black piece"
+    },
+    "emptyPoint": "ဗလာပွိုင့်",
+    "@emptyPoint": {
+        "description": "Empty point"
     },
     "noPoint": "အမှတ်မရှိ",
     "@noPoint": {
@@ -1087,6 +1207,14 @@
     "@pointStyle": {
         "description": "Point style"
     },
+    "pointWidth": "ပွိုင့်အကျယ်",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "solid": "အစိုင်အခဲ",
+    "@solid": {
+        "description": "Solid"
+    },
     "hollow": "အခေါင်းပေါက်",
     "@hollow": {
         "description": "Hollow"
@@ -1122,6 +1250,10 @@
     "@gameFiles": {
         "description": "Game files"
     },
+    "gameSavedTo": "ဂိမ်းကို သိမ်းထားသည်",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
     "empty": "ဗလာ",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
@@ -1133,6 +1265,10 @@
     "restoredPosition": "မူလအနေအထားကို ပြန်လည်ရရှိခဲ့သည်။",
     "@restoredPosition": {
         "description": "Restored initial position."
+    },
+    "clean": "သန့်ရှင်း",
+    "@clean": {
+        "description": "Clean"
     },
     "cleanedUp": "သန့်စင်ခဲ့သည်။",
     "@cleanedUp": {
@@ -1211,8 +1347,6 @@
     "@reopenToTakeEffect": {
         "description": "Exit and reopen app for settings to take effect."
     },
-    "noTimeLimitForThinking": "AI Thinking time ကို 0 ဟု သတ်မှတ်သည် ဆိုသည်မှာ တွေးတောရန် အချိန် ကန့်သတ်ချက် မရှိပါ။",
-    "@noTimeLimitForThinking": {},
     "forest": "သစ်တော",
     "@forest": {},
     "desktopImage": "ဒက်စတော့ပုံ",
@@ -1227,6 +1361,8 @@
     "@duration": {},
     "gameScreenRecorder": "ဂိမ်းစခရင်အသံဖမ်းစက်",
     "@gameScreenRecorder": {},
+    "previous": "အရင်",
+    "@previous": {},
     "next": "နောက်တစ်ခု",
     "@next": {},
     "skip": "ကျော်သွားပါ။",
@@ -1237,6 +1373,8 @@
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "ရွေးသည့်ကိရိယာရှိတန်ဖိုးကို ပြောင်းလဲရန် မောက်စ်ဘီးကို သင်သုံးနိုင်သည်။",
     "@youCanUseMouseWheelInPicker": {},
+    "noTimeLimitForThinking": "AI Thinking time ကို 0 ဟု သတ်မှတ်သည် ဆိုသည်မှာ တွေးတောရန် အချိန် ကန့်သတ်ချက် မရှိပါ။",
+    "@noTimeLimitForThinking": {},
     "whatIsMtdf": "MTD(f) သည် အလယ်အလတ်ရှာဖွေမှုရလဒ်များကို ပြန်လည်အသုံးပြုကာ ရှာဖွေမှုနေရာကို ကျဉ်းစေရန် ကောင်းမွန်သော ကနဦးမှန်းဆချက်အား အသုံးပြုခြင်းဖြင့် ထိရောက်မှုတိုးတက်စေရန် ရည်ရွယ်သည့် အယ်လ်ဖာဘီတာရှာဖွေမှု အယ်လဂိုရီသမ်၏ မွမ်းမံထားသောပုံစံတစ်ခုဖြစ်သည်။",
     "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "AI တွေးခေါ်ချိန်ချိန်ညှိမှုသည် လုံးဝတိကျမည်မဟုတ်ကြောင်း ကျေးဇူးပြု၍ သတိပြုပါ။ အခက်အခဲအဆင့်ကို နိမ့်သောတန်ဖိုးအဖြစ် သတ်မှတ်သောအခါတွင် အမှန်တကယ် တွေးခေါ်ချိန်သည် တိုတောင်းနိုင်ပြီး အချိန်ကုန်သွားသောအခါတွင် AI သည် အတွေးအလယ်တွင် ပိုရှည်နိုင်သည်။",
@@ -1261,6 +1399,8 @@
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "နေရာချခြင်းအဆင့်၏အဆုံးတွင်၊ ရွေ့လျားသည့်အဆင့်မစတင်မီ၊ ဘုတ်ပြားသည် အပိုင်းအစများပြည့်နေပါက လုပ်ဆောင်မှုနောက်ဆက်တွဲဖြစ်သည်။",
     "@whenBoardIsFull_Detail": {},
+    "sideToMoveRemovePiece": "ရွေ့လျားသည့်အဆင့်တွင် ပထမရွေ့လျားသောကစားသမားသည် ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ရှားသည်။",
+    "@sideToMoveRemovePiece": {},
     "agreeToDraw": "သရေကျဖို့ နှစ်ဖက်သဘောတူတယ်။",
     "@agreeToDraw": {},
     "takeOpponentsPiece": "သင်၏ပြိုင်ဘက်၏အပိုင်းအစများကိုယူပါ။",
@@ -1273,14 +1413,6 @@
     "@secondAndFirstPlayerRemovePiece": {},
     "enteredFlyingPhase": "ယခု ပျံသန်းခြင်းအဆင့်သို့ ရောက်ရှိလာပြီး ပြိုင်ဘက်၏ အစိတ်အပိုင်းများသည် ဘုတ်ပေါ်ရှိ မည်သည့်နေရာမဆို လွတ်သွားနိုင်သည်။ \"စည်းကမ်းဆက်တင်များ\" တွင် ပျံသန်းမှုစည်းမျဉ်းကို သင်ပိတ်နိုင်သည်။",
     "@enteredFlyingPhase": {},
-    "aiResponseDelayTime": "AI တုံ့ပြန်မှုနှောင့်နှေးချိန်",
-    "@aiResponseDelayTime": {},
-    "aiIsDelaying": "AI သည် လက်ရှိတွင် နှောင့်နှေးသော တုံ့ပြန်မှုအဆင့်တွင် ရှိနေသည်။ ဆက်လက်မလုပ်ဆောင်မီ ခဏစောင့်ပါ။",
-    "@aiIsDelaying": {},
-    "tipCanNotRemoveNonadjacent": "မကပ်နေသောအပိုင်းကို ဖယ်ရှား၍မရပါ။",
-    "@tipCanNotRemoveNonadjacent": {},
-    "stalemateRemovalRegardlessOfMillFormation": "ရှေ့မတိုးသာမယာဖြစ်လျှင် ကြိတ်ဖွဲ့စည်းပုံမခွဲခြားဘဲ သင့်အနီးရှိ ပြိုင်ဘက်၏အပိုင်းများကို ဖယ်ရှားနိုင်သည်။",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
     "whenStalemate": "ရှေ့မတိုးနောက်မဆုတ်ဖြစ်တဲ့အခါ",
     "@whenStalemate": {},
     "whenStalemate_Detail": "မည်သည့်အရာမျှ မရွေ့နိုင်သောအခါတွင် မည်သို့လုပ်ဆောင်ရမည်နည်း။",
@@ -1295,6 +1427,14 @@
     "@endWithStalemateDraw": {},
     "removeOpponentsPieceAndChangeSideToMove": "ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ရှားပြီး ရွှေ့ရန် ဘေးဘက်သို့ ပြောင်းပါ။",
     "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "AI တုံ့ပြန်မှုနှောင့်နှေးချိန်",
+    "@aiResponseDelayTime": {},
+    "aiIsDelaying": "AI သည် လက်ရှိတွင် နှောင့်နှေးသော တုံ့ပြန်မှုအဆင့်တွင် ရှိနေသည်။ ဆက်လက်မလုပ်ဆောင်မီ ခဏစောင့်ပါ။",
+    "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "မကပ်နေသောအပိုင်းကို ဖယ်ရှား၍မရပါ။",
+    "@tipCanNotRemoveNonadjacent": {},
+    "stalemateRemovalRegardlessOfMillFormation": "ရှေ့မတိုးသာမယာဖြစ်လျှင် ကြိတ်ဖွဲ့စည်းပုံမခွဲခြားဘဲ သင့်အနီးရှိ ပြိုင်ဘက်၏အပိုင်းများကို ဖယ်ရှားနိုင်သည်။",
+    "@stalemateRemovalRegardlessOfMillFormation": {},
     "whatIsMcts": "MCTS သည် မတူညီသောရွေ့လျားမှုများကို သရုပ်ဖော်မှုများမှတစ်ဆင့် စူးစမ်းအကဲဖြတ်ခြင်းဖြင့် ဆုံးဖြတ်ချက်များချပေးသည့် အစပြုသူများအတွက် အဆင်ပြေသော အယ်လဂိုရီသမ်တစ်ခုဖြစ်သည်။",
     "@whatIsMcts": {},
     "goldenJade": "ရွှေကျောက်စိမ်း",
@@ -1329,146 +1469,6 @@
     "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "အနေအထားအရ အားသာချက်ညွှန်ပြချက်ကို ပြပါ",
     "@showPositionalAdvantageIndicator": {},
-    "no": "မရှိ",
-    "@no": {
-        "description": "No"
-    },
-    "won": "ဝမ်",
-    "@won": {
-        "description": "Won"
-    },
-    "exportGame": "Export ဂိမ်း",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "restart": "ပြန်စတင်သည်",
-    "@restart": {
-        "description": "Restart"
-    },
-    "winRate": "အနိုင်ရရှိမှုရာခိုင်နှုန်း",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "loseReasonTimeOver": "အချိန်ကုန်သွားပါပြီ၊ {player} ဆုံးရှုံးသွားပါပြီ။",
-    "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
-    },
-    "version": "ဗားရှင်း- {versionNumber}",
-    "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
-    },
-    "thanks": "ကျေးဇူးပါ",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "difficulty": "အခက်အခဲ",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "keepMuteWhenTakingBack": "ပြန်ယူသည့်အခါ အသံတိတ်ထားပါ",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "လေသံ",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "ပထမဆုံး ရွှေ့ပါ",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "flyPieceCount": "ပျံသွားသည့် အရေအတွက်",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "piecesAtLeastCount": "အနည်းဆုံးအပိုင်းများ",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "ထောင့်ဖြတ်မျဉ်းများ",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "isDefenderMoveFirst": "ဒုတိယကစားသမားက အရင်ရွှေ့တယ်",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "mayRemoveFromMillsAlways": "ဆန်စက်များကို ဖျက်ဆီးပါ",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayFly": "ပျံ",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "nMoveRule": "N-ရွှေ့စည်းမျဉ်း",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "feedback": "တုံ့ပြန်ချက်",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "ထွက်ပေါက်",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "စည်းကမ်းများ",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "အရောင်",
-    "@color": {
-        "description": "Color"
-    },
-    "isHistoryNavigationToolbarShown": "မှတ်တမ်း လမ်းညွှန်ကိရိယာဘားကို ပြပါ",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "info": "အခ. အလ.",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "သဲလွန်စ",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "ကစားသမား",
-    "@player": {
-        "description": "player"
-    },
-    "pointWidth": "ပွိုင့်အကျယ်",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "အစိုင်အခဲ",
-    "@solid": {
-        "description": "Solid"
-    },
-    "gameSavedTo": "ဂိမ်းကို သိမ်းထားသည်",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
-    "clean": "သန့်ရှင်း",
-    "@clean": {
-        "description": "Clean"
-    },
-    "previous": "အရင်",
-    "@previous": {},
-    "sideToMoveRemovePiece": "ရွေ့လျားသည့်အဆင့်တွင် ပထမရွေ့လျားသောကစားသမားသည် ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ရှားသည်။",
-    "@sideToMoveRemovePiece": {},
     "usePerfectDatabase": "ပြီးပြည့်စုံသောဒေတာဘေ့စ်ကိုသုံးပါ။",
     "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "နောက်ဆုံးပေါ် အယ်လဂိုရီသမ်များမှတစ်ဆင့် ထုတ်လုပ်ထားသော ချို့ယွင်းချက်မရှိသော ဂိမ်းဒေတာဘေ့စ်ကို အသုံးပြုရန် ဤရွေးချယ်မှုကို ဖွင့်ပါ။ ဤအင်္ဂါရပ်သည် အကောင်းဆုံးလှုပ်ရှားမှုများကို အကြံပြုရန်အတွက် အဖွင့်နှင့် ဂိမ်းဗျူဟာများ နှစ်ခုလုံးကို ပေါင်းစပ်ထားသည်။ ဤသည်မှာ ဂိမ်းကစားရာတွင် တိကျမှုအမြင့်ဆုံးအဆင့်ကို ရှာဖွေသော ကစားသမားများအတွက် ဦးစားပေးရွေးချယ်မှုဖြစ်သည်။ စေ့စပ်သေချာသော တွက်ချက်နည်းစနစ်များဖြင့် ဖန်တီးထားသည့် ဒေတာဘေ့စ်သည် ပြီးပြည့်စုံလုနီးပါးရှိသော ဂိမ်းဖြေရှင်းချက်များကို ပေးဆောင်ရန် ဒီဇိုင်းထုတ်ထားသည်။\n\nမှတ်ချက်- AI သည် ဒေတာဘေ့စ်သို့ ဝင်ရောက်ရန် ပျက်ကွက်ပါက၊ ၎င်းသည် ဂိမ်းကစားခြင်းဆိုင်ရာ ဆုံးဖြတ်ချက်များအတွက် သမားရိုးကျ algorithms အဖြစ် ပြောင်းလဲသွားမည်ဖြစ်သည်။ ဒေတာဘေ့စ်ကို ရရှိနိုင်သောအခါ 'ခက်ခဲမှုအဆင့်' သည် အနိုင်ယူ၍မရနိုင်လောက်အောင် ဖြစ်လာပြီး 'AI Thinking Time' သည် သိသိသာသာ လျော့ပါးသွားပါသည်။ ဒေတာဘေ့စ်ရလဒ်များသည် အမြင့်ဆုံးဦးစားပေးဖြစ်သောကြောင့် 'AI's play style' ရွေးစရာများအတွင်းရှိ ဆက်တင်အများအပြားကို လွှမ်းမိုးသွားပါမည်။\n\nဤအပြစ်အနာအဆာကင်းသောဒေတာဘေ့စ်ကို မည်ကဲ့သို့အသုံးပြုနည်းလမ်းညွှန်ချက်အတွက် ဤနေရာကိုနှိပ်ပါ။",

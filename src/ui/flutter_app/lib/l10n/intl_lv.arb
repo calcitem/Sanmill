@@ -1133,6 +1133,10 @@
             }
         }
     },
+    "loadFailed": "Ielāde neizdevās.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
     "filename": "Faila nosaukums",
     "@filename": {
         "description": "File name"
@@ -1141,28 +1145,17 @@
     "@browse": {
         "description": "Browse…"
     },
-    "gameSavedTo": "Spēle ir saglabāta",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "gameFiles": "Spēļu faili",
     "@gameFiles": {
         "description": "Game files"
     },
-    "loadFailed": "Ielāde neizdevās.",
-    "@loadFailed": {
-        "description": "Load failed."
+    "gameSavedTo": "Spēle ir saglabāta",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
-    "hasPlacedPieceCount": "Pašreizējais spēlētājs ir ievietojis {count} figūras.",
-    "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "empty": "Tukšs",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
     },
     "noMove": "Nekādas kustības.",
     "@noMove": {
@@ -1188,9 +1181,16 @@
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
     },
-    "empty": "Tukšs",
-    "@empty": {
-        "description": "Empty point, used in setup position toolbar."
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} ir jānoņem.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Izvietots ({count})",
     "@placedCount": {
@@ -1203,20 +1203,20 @@
             }
         }
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} ir jānoņem.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
+    "placedPieceCount": "Nolikto gabalu skaits izvietošanas fāzē.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
+    },
+    "hasPlacedPieceCount": "Pašreizējais spēlētājs ir ievietojis {count} figūras.",
+    "@hasPlacedPieceCount": {
+        "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces.",
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
         }
-    },
-    "placedPieceCount": "Nolikto gabalu skaits izvietošanas fāzē.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "notPlacingPhase": "Nenovieto fāzi, nevar to mainīt.",
     "@notPlacingPhase": {
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Izejiet un atkārtoti atveriet lietotni, lai iestatījumi stātos spēkā.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Pilnekrāna režīms",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Izejiet un atkārtoti atveriet lietotni, lai iestatījumi stātos spēkā.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Mežs",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Kopīgojiet GIF",
     "@shareGIF": {},
-    "duration": "Ilgums",
-    "@duration": {},
     "pixelRatio": "Pikseļu attiecība",
     "@pixelRatio": {},
+    "duration": "Ilgums",
+    "@duration": {},
     "gameScreenRecorder": "Spēles ekrāna ierakstītājs",
     "@gameScreenRecorder": {},
     "previous": "Iepriekšējais",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Domāšanas laiks, kas iestatīts uz 0, nozīmē, ka domāšanai nav laika ierobežojumu.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) ir alfa-beta meklēšanas algoritma modificēts veids, kura mērķis ir uzlabot efektivitāti, atkārtoti izmantojot starpposma meklēšanas rezultātus un izmantojot labu sākotnējo minējumu, lai sašaurinātu meklēšanas vietu.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Lūdzu, ņemiet vērā, ka AI domāšanas laika pielāgošana var nebūt pilnīgi precīza. Faktiskais domāšanas laiks var būt īsāks, ja grūtības līmenis ir iestatīts uz zemāku vērtību, un var būt garāks, ja AI ir vidējas domāšanas laiks, kad laiks beidzas.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Ja iestatāt augstu grūtības pakāpi, bet nepalielināt AI domāšanas laiku, domāšanas laika ierobežojuma dēļ faktiskais grūtības līmenis var būt ierobežots līdz zemākam. Faktiskā vērtība var atšķirties atkarībā no iekārtas veiktspējas.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) ir alfa-beta meklēšanas algoritma modificēts veids, kura mērķis ir uzlabot efektivitāti, atkārtoti izmantojot starpposma meklēšanas rezultātus un izmantojot labu sākotnējo minējumu, lai sašaurinātu meklēšanas vietu.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) ir meklēšanas algoritms, lai atrastu labāko kustību noteiktā pozīcijā. Tas ir alfa-beta algoritma uzlabojums un izmanto nulles vai nulles logu meklēšanu, lai apstiprinātu, ka kustība ir sliktāka vai nav sliktāka par jau drošu rezultātu no galvenās variācijas. PVS koncentrējas uz daudzsološākajiem gājieniem un izvairās no nevajadzīgas suboptimālo zaru meklēšanas, kas palīdz uzlabot meklēšanas efektivitāti.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta algoritms ir meklēšanas algoritms, lai atrastu labāko kustību. Tas izmanto minimax principu un divas vērtības — alfa un beta, lai apgrieztu meklēšanas koku un palielinātu efektivitāti. Alfa ir minimālais rezultāts, par kuru dators ir pārliecināts, ka tas var iegūt, bet beta ir maksimālais rezultāts, ko var iegūt pretinieks. Algoritms palīdz datoram pieņemt gudrus un efektīvus lēmumus spēlē.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Šajā spēlē otrajam spēlētājam ir vieglāk uzvarēt, salīdzinot ar pirmo spēlētāju.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Saskaņā ar cilvēku pieredzi, ja jūs mēģināt uzvarēt, jūs zaudējat. Tā vietā tiecieties uz neizšķirtu kā savu mērķi un izvairieties zaudēt spēli. Vērojiet pretinieku un viegli ieviliniet viņu tādā stāvoklī, kurā viņi var kļūdīties. Kad viņi izrāda vājumu, izmantojiet iespēju un maigi spiediet uz uzvaru. Tādā veidā jūs varat uzvarēt spēli.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Šajā spēlē otrajam spēlētājam ir vieglāk uzvarēt, salīdzinot ar pirmo spēlētāju.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Pasīvās opcijas iespējošana liks AI atslābt, kad tam ir priekšrocības attiecīgajā pozīcijā, nevis agresīvi mēģināt uzvarēt pēc iespējas ātrāk.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Ja mākslīgais intelekts ņem vērā savu figūru mobilitāti, tā mērķis būs ne tikai pēc iespējas ātrāk notvert pretinieka figūras, bet arī apsvērt iespēju bloķēt pretinieka kustības un neļaut viņiem darīt to pašu.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Šīs opcijas iespējošana palielina spēles nejaušību un jautrību, savukārt tās atspējošana var palīdzēt izpētīt veidus, kā pārspēt AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Ja mākslīgais intelekts ņem vērā savu figūru mobilitāti, tā mērķis būs ne tikai pēc iespējas ātrāk notvert pretinieka figūras, bet arī apsvērt iespēju bloķēt pretinieka kustības un neļaut viņiem darīt to pašu.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Kad dēlis ir pilns",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Izvietošanas fāzes beigās, pirms pārvietošanās fāzes sākuma, darbība seko, ja dēlis ir pilns ar figūrām.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Meža koksne",
     "@forestWood": {},
-    "greenMeadow": "Zaļā pļava",
-    "@greenMeadow": {},
-    "stonyPath": "Akmeņains ceļš",
-    "@stonyPath": {},
+    "darkMystery": "Tumšais noslēpums",
+    "@darkMystery": {},
     "midnightBlue": "Pusnakts zila",
     "@midnightBlue": {},
     "greenForest": "Zaļais mežs",
     "@greenForest": {},
+    "greenMeadow": "Zaļā pļava",
+    "@greenMeadow": {},
+    "stonyPath": "Akmeņains ceļš",
+    "@stonyPath": {},
     "pastelPink": "Pastels rozā",
     "@pastelPink": {},
     "turquoiseSea": "Tirkīza jūra",
@@ -1360,18 +1362,16 @@
     "@skyBlue": {},
     "playfulGarden": "Rotaļīgs dārzs",
     "@playfulGarden": {},
-    "darkMystery": "Tumšais noslēpums",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Retrogrādās analīzes algoritms izmanto daudzvērtīgu retrogrādo analīzi, lai izveidotu beigu datu bāzi no dažādām sākuma pozīcijām, un pēc tam izmanto šo datu bāzi, lai optimizētu spēli. Šī pieeja ietilpst īpaši spēcīgu risinājumu kategorijā.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Vai vēlaties skatīt šī algoritma lietotāja rokasgrāmatu?",
     "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "Rādīt pozīcijas priekšrocības indikatoru",
     "@showPositionalAdvantageIndicator": {},
-    "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's play style' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
-    "@perfectDatabaseDescription": {},
     "usePerfectDatabase": "Izmantojiet perfektu datu bāzi",
     "@usePerfectDatabase": {},
+    "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's play style' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
+    "@perfectDatabaseDescription": {},
     "backgroundImage": "Fona attēls",
     "@backgroundImage": {},
     "whatIsRandom": "Ja opcija “Izmantot perfektu datu bāzi” nav iespējota, iestatījums “Nejaušs” liek AI nejauši pārvietot gabalus, neizmantojot pārvietošanas atlases algoritmus. Tas parasti rada ievērojami vājāku spēli. Un otrādi, ja ir iespējota opcija “Izmantot perfektu datu bāzi”, AI lēmumu pieņemšanā paļaujas tikai uz ideālo datu bāzi, nevis sajauc to ar tradicionālajiem AI algoritmiem. Šajā režīmā AI darbības ir pilnībā balstītas uz datu bāzes saturu, izvairoties no paļaušanās uz reāllaika aprēķiniem vai meklēšanas algoritmiem.",

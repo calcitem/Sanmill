@@ -1,89 +1,13 @@
 {
     "@@locale": "az",
-    "aiResponseDelayTime": "AI cavab gecikmə vaxtı",
-    "@aiResponseDelayTime": {},
-    "stonyPath": "Daşlı yol",
-    "@stonyPath": {},
-    "drawOnTheHumanExperienceDetail": "İnsan təcrübəsinə görə, qalib gəlməyə çalışsan, uduzacaqsan. Bunun əvəzinə, hədəfiniz kimi heç-heçəni hədəfləyin və oyunu uduzmaqdan çəkinin. Rəqibinizi müşahidə edin və yumşaq bir şəkildə səhv edə biləcəkləri bir vəziyyətə gətirin. Zəiflik göstərdikdə, fürsətdən istifadə edin və qələbə üçün yumşaq bir şəkildə itələyin. Bu şəkildə oyunda qalib gələ bilərsiniz.",
-    "@drawOnTheHumanExperienceDetail": {},
-    "firstMoveDetail": "Bu oyunda birinci oyunçu ilə müqayisədə ikinci oyunçunun qalib gəlməsi daha asandır.",
-    "@firstMoveDetail": {},
-    "passiveDetail": "Passiv seçimini aktivləşdirmək, aqressiv şəkildə mümkün qədər tez qalib gəlməyə çalışmaq əvəzinə, mövqedə üstünlüyə malik olduqda AI-nin rahatlamasına səbəb olacaq.",
-    "@passiveDetail": {},
-    "moveRandomlyDetail": "Bu seçimi aktivləşdirmək oyunun təsadüfiliyini və əyləncəsini artırır, onu söndürmək isə süni intellektə qalib gəlməyin yollarını öyrənməyə kömək edə bilər.",
-    "@moveRandomlyDetail": {},
-    "considerMobilityOfPiecesDetail": "Süni intellekt öz fiqurlarının hərəkətliliyini nəzərə alırsa, o, nəinki rəqibin fiqurlarını mümkün qədər tez tutmağı hədəfləyəcək, həm də rəqibin hərəkətlərinin qarşısını almağı və eyni şeyi etməsinə mane olmağı da düşünəcək.",
-    "@considerMobilityOfPiecesDetail": {},
-    "whenBoardIsFull": "Lövhə dolu olduqda",
-    "@whenBoardIsFull": {},
-    "whenBoardIsFull_Detail": "Yerləşdirmə mərhələsinin sonunda, hərəkət mərhələsi başlamazdan əvvəl, lövhə parçalarla doludursa, hərəkət davam edir.",
-    "@whenBoardIsFull_Detail": {},
-    "sideToMoveRemovePiece": "Hərəkət mərhələsində ilk hərəkət edən oyunçu rəqibin fiqurlarından birini çıxarır.",
-    "@sideToMoveRemovePiece": {},
-    "agreeToDraw": "Hər iki tərəf heç-heçəyə razıdır.",
-    "@agreeToDraw": {},
-    "takeOpponentsPiece": "Rəqibinizin parçalarından birini götürün.",
-    "@takeOpponentsPiece": {},
-    "firstPlayerLose": "İlk oyunçu oyunu itirir.",
-    "@firstPlayerLose": {},
-    "firstAndSecondPlayerRemovePiece": "Birinci və ikinci oyunçular rəqibin fiqurlarından birini çıxarırlar.",
-    "@firstAndSecondPlayerRemovePiece": {},
-    "secondAndFirstPlayerRemovePiece": "İkinci və birinci oyunçular rəqibin fiqurlarından birini çıxarırlar.",
-    "@secondAndFirstPlayerRemovePiece": {},
-    "enteredFlyingPhase": "İndi uçma mərhələsinə girdi, rəqibin fiqurları lövhədə istənilən boş nöqtəyə atlaya bilər. Uçuş qaydasını \"Qayda Parametrləri\"ndə söndürə bilərsiniz.",
-    "@enteredFlyingPhase": {},
-    "whenStalemate": "Durğunlaşanda",
-    "@whenStalemate": {},
-    "whenStalemate_Detail": "Heç bir parça köçürülə bilməyəndə hansı hərəkəti izləyir?",
-    "@whenStalemate_Detail": {},
-    "endWithStalemateLoss": "Tıxanmış tərəf üçün çıxılmaz itki ilə başa çatın.",
-    "@endWithStalemateLoss": {},
-    "changeSideToMove": "Hərəkət etmək üçün tərəfi dəyişdirin.",
-    "@changeSideToMove": {},
-    "removeOpponentsPieceAndMakeNextMove": "Rəqibin fiqurlarından birini çıxarın və növbəti hərəkəti edin.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
-    "endWithStalemateDraw": "Durğun heç-heçə ilə bitir.",
-    "@endWithStalemateDraw": {},
-    "removeOpponentsPieceAndChangeSideToMove": "Rəqibin fiqurlarından birini çıxarın və hərəkət etmək üçün tərəfi dəyişdirin.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
-    "aiIsDelaying": "AI hazırda gecikmiş cavab mərhələsindədir. Davam etməzdən əvvəl bir az gözləyin.",
-    "@aiIsDelaying": {},
-    "tipCanNotRemoveNonadjacent": "Siz bitişik olmayan parçanı silə bilməzsiniz.",
-    "@tipCanNotRemoveNonadjacent": {},
-    "stalemateRemovalRegardlessOfMillFormation": "Durğun olarsa, dəyirmanın formalaşmasından asılı olmayaraq, rəqibin sizə bitişik fiqurları çıxarıla bilər.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
-    "whatIsMcts": "MCTS simulyasiyalar vasitəsilə müxtəlif hərəkətləri araşdıraraq və qiymətləndirərək qərarlar qəbul edən yeni başlayanlar üçün əlverişli alqoritmdir.",
-    "@whatIsMcts": {},
-    "goldenJade": "Qızıl Jade",
-    "@goldenJade": {},
-    "forestWood": "Meşə ağacı",
-    "@forestWood": {},
-    "darkMystery": "Qaranlıq sirr",
-    "@darkMystery": {},
-    "midnightBlue": "Gecə yarısı Mavi",
-    "@midnightBlue": {},
-    "greenForest": "Yaşıl Meşə",
-    "@greenForest": {},
-    "greenMeadow": "Yaşıl çəmən",
-    "@greenMeadow": {},
-    "pastelPink": "Pastel Çəhrayı",
-    "@pastelPink": {},
-    "turquoiseSea": "Firuzəyi dəniz",
-    "@turquoiseSea": {},
-    "violetDream": "Bənövşəyi yuxu",
-    "@violetDream": {},
-    "mintChocolate": "Nanəli şokolad",
-    "@mintChocolate": {},
-    "skyBlue": "Göy Mavi",
-    "@skyBlue": {},
-    "playfulGarden": "Oynaq bağçası",
-    "@playfulGarden": {},
-    "whatIsRetrogradeAnalysis": "Retrograd Analiz alqoritmi müxtəlif başlanğıc mövqelərindən oyun sonu verilənlər bazası yaratmaq üçün çox dəyərli retrograd analizdən istifadə edir, sonra oyunu optimallaşdırmaq üçün bu verilənlər bazasını tətbiq edir. Bu yanaşma Ultra Güclü həllər kateqoriyasına aiddir.",
-    "@whatIsRetrogradeAnalysis": {},
-    "viewAlgorithmGuide": "Bu alqoritm üçün istifadəçi təlimatına baxmaq istərdinizmi?",
-    "@viewAlgorithmGuide": {},
-    "showPositionalAdvantageIndicator": "Mövqe üstünlüyü göstəricisini göstərin",
-    "@showPositionalAdvantageIndicator": {},
+    "appName": "Dəyirman",
+    "@appName": {
+        "description": "The app name"
+    },
+    "welcome": "Xoş gəldiniz",
+    "@welcome": {
+        "description": "Welcome"
+    },
     "yes": "Bəli",
     "@yes": {
         "description": "Yes"
@@ -314,6 +238,10 @@
             }
         }
     },
+    "winRate": "Qazanma dərəcəsi",
+    "@winRate": {
+        "description": "Win Rate"
+    },
     "score": "Xal:",
     "@score": {
         "description": "Score"
@@ -540,6 +468,10 @@
     "hasDiagonalLines_Detail": "Lövhəyə dörd diaqonal xətt əlavə edin.",
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
+    },
+    "isDefenderMoveFirst": "İkinci oyunçu əvvəlcə hərəkət edir",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
     },
     "isDefenderMoveFirst_Detail": "Yerləşdirmə mərhələsində ikinci hərəkət edən oyunçu hərəkət mərhələsində birinci olur.",
     "@isDefenderMoveFirst_Detail": {
@@ -837,6 +769,14 @@
     "@animationDuration": {
         "description": "Animation duration"
     },
+    "none": "Heç biri",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Mövzu",
+    "@theme": {
+        "description": "Theme"
+    },
     "helpContent": "Oyun üçdən az fiqurla və ya qanuni hərəkətsiz rəqibi tərk etmək məqsədi daşıyır.\n\nBir mövqe üçüncü dəfə baş verərsə və ya son 100 (konfiqurasiya edilə bilən) hərəkətdə heç bir silmə etməzsə, oyun avtomatik olaraq heç-heçə edir.\n\nOyun üç mərhələdə davam edir:\n\n1. Boş yerlərə parçaların yerləşdirilməsi\n2. Parçaların bitişik nöqtələrə köçürülməsi\n3. (isteğe bağlı mərhələ) Oyunçunu üç ədədə endirərkən parçaları istənilən boş yerə köçürmək\n\nYerləşdirmə\n\nOyun iyirmi dörd xal olan bir şəbəkədən ibarət boş bir lövhə ilə başlayır. Oyunçular növbə ilə öz hissələrini boş nöqtələrə yerləşdirirlər, ta ki hər bir oyunçu bütün parçaları lövhəyə yerləşdirənə qədər. Əgər oyunçu üç fiqurunu düz qoya bilirsə, onun \"dəyirmanı\" var və rəqibinin fiqurlarından birini lövhədən çıxara bilər.\n\nBəzi qaydalarda oyunçular formalaşmış dəyirmandan bir parça çıxarmazdan əvvəl hər hansı digər parçaları çıxarmalıdırlar.\n\nBəzi qaydalarda yerləşdirmə mərhələsində parçaları çıxarılan parçaların nöqtələrinə yenidən yerləşdirə bilməzsiniz.\n\nBütün parçaları istifadə etdikdən sonra oyunçular növbə ilə hərəkət edirlər.\n\nHərəkət edir\n\nHərəkət etmək üçün oyunçu öz parçalarından birini taxta xətti boyunca boş bitişik nöqtəyə aparır. Əgər bunu edə bilmirsə, oyunu uduzmuşdur. Üç fiqurunu taxta xəttinə düzən oyunçunun dəyirmanı var və yerləşdirmə mərhələsində olduğu kimi rəqibinin fiqurlarından birini çıxara bilər. İstənilən oyunçu iki hissəyə enir, yeni dəyirmanlar yaratmaq imkanı yoxdur və beləliklə oyunu itirir. Rəqibi onların hərəkətinə mane olarsa, oyunçu üçdən çox fiqur qazandıqda da itirə bilər.\n\nUçan\n\nQaydaların bəzi variantlarında, oyunçuda yalnız üç fiqur qaldıqdan sonra, onun fiqurları yalnız bitişik olanlara deyil, istənilən boş nöqtələrə uça, atlaya və ya atlaya bilər.\n",
     "@helpContent": {
         "description": "Help Content"
@@ -979,9 +919,17 @@
     "@ossLicenses": {
         "description": "Open source licenses"
     },
+    "language": "Dil",
+    "@language": {
+        "description": "Languages"
+    },
     "defaultLanguage": "Defolt dil",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Parçalar yerləşdirmə mərhələsində hərəkət edə bilər",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
     },
     "mayMoveInPlacingPhase_Detail": "Ayrı-ayrı yerləşdirmə və hərəkət mərhələləri yoxdur, yəni oyunçular hər bir hərəkətdə taxtaya bir parça yerləşdirmək və ya özlərindən birini hərəkət etdirmək (yerləşdirmək üçün qalan hissələri olduğu müddətcə) qərar verə bilərlər.",
     "@mayMoveInPlacingPhase_Detail": {
@@ -1179,6 +1127,10 @@
     "@movingPhase": {
         "description": "Moving phase"
     },
+    "flyingPhase": "Uçuş mərhələsi",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
     "sideToMove": "Hərəkət ediləcək tərəf: {player}",
     "@sideToMove": {
         "description": "The player whose turn it is.",
@@ -1227,6 +1179,10 @@
     "@algorithm": {
         "description": "Algorithm"
     },
+    "endgameNMoveRule": "Endgame N-Move qaydası",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
     "endgameNMoveRule_Detail": "Hər iki oyunçuda yalnız üç fiqur varsa və heç bir oyunçu müəyyən hərəkətlər çərçivəsində bir parça çıxarmazsa, oyun çəkilir.",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
@@ -1262,6 +1218,10 @@
     "hollow": "Boş dairə",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Azərbaycanca",
+    "@languageName": {
+        "description": "The name of the current language"
     },
     "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} Hərəkətlər}}",
     "@moveNumber": {
@@ -1425,50 +1385,90 @@
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta alqoritmi ən yaxşı hərəkəti tapmaq üçün axtarış alqoritmidir. Axtarış ağacını budamaq və səmərəliliyi artırmaq üçün minimax prinsipindən və iki dəyərdən, alfa və betadan istifadə edir. Alpha kompüterin əldə edə biləcəyi minimum balı, beta isə rəqibinin ala biləcəyi maksimum balı təmsil edir. Alqoritm kompüterə oyunda ağıllı, səmərəli qərarlar qəbul etməyə kömək edir.",
     "@whatIsAlphaBeta": {},
-    "appName": "Dəyirman",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Xoş gəldiniz",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "winRate": "Qazanma dərəcəsi",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "isDefenderMoveFirst": "İkinci oyunçu əvvəlcə hərəkət edir",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "none": "Heç biri",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Mövzu",
-    "@theme": {
-        "description": "Theme"
-    },
-    "language": "Dil",
-    "@language": {
-        "description": "Languages"
-    },
-    "mayMoveInPlacingPhase": "Parçalar yerləşdirmə mərhələsində hərəkət edə bilər",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "flyingPhase": "Uçuş mərhələsi",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "endgameNMoveRule": "Endgame N-Move qaydası",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "languageName": "Azərbaycanca",
-    "@languageName": {
-        "description": "The name of the current language"
-    },
+    "drawOnTheHumanExperienceDetail": "İnsan təcrübəsinə görə, qalib gəlməyə çalışsan, uduzacaqsan. Bunun əvəzinə, hədəfiniz kimi heç-heçəni hədəfləyin və oyunu uduzmaqdan çəkinin. Rəqibinizi müşahidə edin və yumşaq bir şəkildə səhv edə biləcəkləri bir vəziyyətə gətirin. Zəiflik göstərdikdə, fürsətdən istifadə edin və qələbə üçün yumşaq bir şəkildə itələyin. Bu şəkildə oyunda qalib gələ bilərsiniz.",
+    "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Bu oyunda birinci oyunçu ilə müqayisədə ikinci oyunçunun qalib gəlməsi daha asandır.",
+    "@firstMoveDetail": {},
+    "passiveDetail": "Passiv seçimini aktivləşdirmək, aqressiv şəkildə mümkün qədər tez qalib gəlməyə çalışmaq əvəzinə, mövqedə üstünlüyə malik olduqda AI-nin rahatlamasına səbəb olacaq.",
+    "@passiveDetail": {},
+    "moveRandomlyDetail": "Bu seçimi aktivləşdirmək oyunun təsadüfiliyini və əyləncəsini artırır, onu söndürmək isə süni intellektə qalib gəlməyin yollarını öyrənməyə kömək edə bilər.",
+    "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Süni intellekt öz fiqurlarının hərəkətliliyini nəzərə alırsa, o, nəinki rəqibin fiqurlarını mümkün qədər tez tutmağı hədəfləyəcək, həm də rəqibin hərəkətlərinin qarşısını almağı və eyni şeyi etməsinə mane olmağı da düşünəcək.",
+    "@considerMobilityOfPiecesDetail": {},
+    "whenBoardIsFull": "Lövhə dolu olduqda",
+    "@whenBoardIsFull": {},
+    "whenBoardIsFull_Detail": "Yerləşdirmə mərhələsinin sonunda, hərəkət mərhələsi başlamazdan əvvəl, lövhə parçalarla doludursa, hərəkət davam edir.",
+    "@whenBoardIsFull_Detail": {},
+    "sideToMoveRemovePiece": "Hərəkət mərhələsində ilk hərəkət edən oyunçu rəqibin fiqurlarından birini çıxarır.",
+    "@sideToMoveRemovePiece": {},
+    "agreeToDraw": "Hər iki tərəf heç-heçəyə razıdır.",
+    "@agreeToDraw": {},
+    "takeOpponentsPiece": "Rəqibinizin parçalarından birini götürün.",
+    "@takeOpponentsPiece": {},
+    "firstPlayerLose": "İlk oyunçu oyunu itirir.",
+    "@firstPlayerLose": {},
+    "firstAndSecondPlayerRemovePiece": "Birinci və ikinci oyunçular rəqibin fiqurlarından birini çıxarırlar.",
+    "@firstAndSecondPlayerRemovePiece": {},
+    "secondAndFirstPlayerRemovePiece": "İkinci və birinci oyunçular rəqibin fiqurlarından birini çıxarırlar.",
+    "@secondAndFirstPlayerRemovePiece": {},
+    "enteredFlyingPhase": "İndi uçma mərhələsinə girdi, rəqibin fiqurları lövhədə istənilən boş nöqtəyə atlaya bilər. Uçuş qaydasını \"Qayda Parametrləri\"ndə söndürə bilərsiniz.",
+    "@enteredFlyingPhase": {},
+    "whenStalemate": "Durğunlaşanda",
+    "@whenStalemate": {},
+    "whenStalemate_Detail": "Heç bir parça köçürülə bilməyəndə hansı hərəkəti izləyir?",
+    "@whenStalemate_Detail": {},
+    "endWithStalemateLoss": "Tıxanmış tərəf üçün çıxılmaz itki ilə başa çatın.",
+    "@endWithStalemateLoss": {},
+    "changeSideToMove": "Hərəkət etmək üçün tərəfi dəyişdirin.",
+    "@changeSideToMove": {},
+    "removeOpponentsPieceAndMakeNextMove": "Rəqibin fiqurlarından birini çıxarın və növbəti hərəkəti edin.",
+    "@removeOpponentsPieceAndMakeNextMove": {},
+    "endWithStalemateDraw": "Durğun heç-heçə ilə bitir.",
+    "@endWithStalemateDraw": {},
+    "removeOpponentsPieceAndChangeSideToMove": "Rəqibin fiqurlarından birini çıxarın və hərəkət etmək üçün tərəfi dəyişdirin.",
+    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "AI cavab gecikmə vaxtı",
+    "@aiResponseDelayTime": {},
+    "aiIsDelaying": "AI hazırda gecikmiş cavab mərhələsindədir. Davam etməzdən əvvəl bir az gözləyin.",
+    "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "Siz bitişik olmayan parçanı silə bilməzsiniz.",
+    "@tipCanNotRemoveNonadjacent": {},
+    "stalemateRemovalRegardlessOfMillFormation": "Durğun olarsa, dəyirmanın formalaşmasından asılı olmayaraq, rəqibin sizə bitişik fiqurları çıxarıla bilər.",
+    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "whatIsMcts": "MCTS simulyasiyalar vasitəsilə müxtəlif hərəkətləri araşdıraraq və qiymətləndirərək qərarlar qəbul edən yeni başlayanlar üçün əlverişli alqoritmdir.",
+    "@whatIsMcts": {},
+    "goldenJade": "Qızıl Jade",
+    "@goldenJade": {},
+    "forestWood": "Meşə ağacı",
+    "@forestWood": {},
+    "darkMystery": "Qaranlıq sirr",
+    "@darkMystery": {},
+    "midnightBlue": "Gecə yarısı Mavi",
+    "@midnightBlue": {},
+    "greenForest": "Yaşıl Meşə",
+    "@greenForest": {},
+    "greenMeadow": "Yaşıl çəmən",
+    "@greenMeadow": {},
+    "stonyPath": "Daşlı yol",
+    "@stonyPath": {},
+    "pastelPink": "Pastel Çəhrayı",
+    "@pastelPink": {},
+    "turquoiseSea": "Firuzəyi dəniz",
+    "@turquoiseSea": {},
+    "violetDream": "Bənövşəyi yuxu",
+    "@violetDream": {},
+    "mintChocolate": "Nanəli şokolad",
+    "@mintChocolate": {},
+    "skyBlue": "Göy Mavi",
+    "@skyBlue": {},
+    "playfulGarden": "Oynaq bağçası",
+    "@playfulGarden": {},
+    "whatIsRetrogradeAnalysis": "Retrograd Analiz alqoritmi müxtəlif başlanğıc mövqelərindən oyun sonu verilənlər bazası yaratmaq üçün çox dəyərli retrograd analizdən istifadə edir, sonra oyunu optimallaşdırmaq üçün bu verilənlər bazasını tətbiq edir. Bu yanaşma Ultra Güclü həllər kateqoriyasına aiddir.",
+    "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "Bu alqoritm üçün istifadəçi təlimatına baxmaq istərdinizmi?",
+    "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Mövqe üstünlüyü göstəricisini göstərin",
+    "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Mükəmməl verilənlər bazasından istifadə edin",
     "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "Ən müasir alqoritmlər vasitəsilə yaradılan qüsursuz oyun bazasından istifadə etmək üçün bu seçimi aktivləşdirin. Bu xüsusiyyət optimal hərəkətlər təklif etmək üçün həm açılış, həm də oyun sonu strategiyalarını birləşdirir. Bu, oyunda ən yüksək səviyyəli dəqiqliyə can atan oyunçular üçün üstünlük verilən seçimdir. Vasvası hesablama üsulları vasitəsilə yaradılmış verilənlər bazası mükəmməl oyun həlləri təklif etmək üçün nəzərdə tutulmuşdur.\n\nQeyd: Süni intellekt verilənlər bazasına daxil ola bilməsə, o, oyun qərarları üçün adi alqoritmlərə müraciət edəcək. Verilənlər bazası mövcud olduqda, \"Çətinlik Səviyyəsi\" faktiki olaraq məğlubedilməz olur və \"AI Thinking Time\" kəskin azalma ilə üzləşir. Verilənlər bazası nəticələri ən yüksək prioritetə malik olduğundan, \"AI-nin Playstyle\" seçimlərindəki bir çox parametr ləğv ediləcək.\n\nBu qüsursuz verilənlər bazasından maksimum yararlanmaq üçün bura klikləyin.",

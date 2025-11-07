@@ -1133,6 +1133,10 @@
             }
         }
     },
+    "loadFailed": "Įkelti nepavyko.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
     "filename": "Failo pavadinimas",
     "@filename": {
         "description": "File name"
@@ -1145,13 +1149,13 @@
     "@gameFiles": {
         "description": "Game files"
     },
-    "loadFailed": "Įkelti nepavyko.",
-    "@loadFailed": {
-        "description": "Load failed."
-    },
     "gameSavedTo": "Žaidimas išsaugotas",
     "@gameSavedTo": {
         "description": "The game is saved to"
+    },
+    "empty": "Tuščia",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
     },
     "noMove": "Jokio judesio.",
     "@noMove": {
@@ -1160,36 +1164,6 @@
     "restoredPosition": "Atkurta pradinė padėtis.",
     "@restoredPosition": {
         "description": "Restored initial position."
-    },
-    "placedCount": "Įdėta ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} gabalus}} reikia pašalinti.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "noPiecesCanBeRemoved": "Negalima pašalinti jokių gabalų.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
-    },
-    "empty": "Tuščia",
-    "@empty": {
-        "description": "Empty point, used in setup position toolbar."
     },
     "clean": "Švarus",
     "@clean": {
@@ -1202,6 +1176,32 @@
     "remove": "Pašalinti",
     "@remove": {
         "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Negalima pašalinti jokių gabalų.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} gabalus}} reikia pašalinti.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Įdėta ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedPieceCount": "Padėtų vienetų skaičius dėjimo fazėje.",
     "@placedPieceCount": {
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Išeikite ir iš naujo atidarykite programą, kad nustatymai įsigaliotų.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Per visą ekraną",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Išeikite ir iš naujo atidarykite programą, kad nustatymai įsigaliotų.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Miškas",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Bendrinkite GIF",
     "@shareGIF": {},
-    "duration": "Trukmė",
-    "@duration": {},
     "pixelRatio": "Pikselių santykis",
     "@pixelRatio": {},
+    "duration": "Trukmė",
+    "@duration": {},
     "gameScreenRecorder": "Žaidimo ekrano įrašymo įrenginys",
     "@gameScreenRecorder": {},
     "previous": "Ankstesnis",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Jei mąstymo laikas nustatytas į 0, tai reiškia, kad mąstymui nėra laiko apribojimų.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) yra modifikuota alfa-beta paieškos algoritmo forma, kuria siekiama pagerinti efektyvumą pakartotinai naudojant tarpinius paieškos rezultatus ir naudojant gerą pradinį spėjimą susiaurinti paieškos erdvę.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Atminkite, kad AI mąstymo laiko koregavimas gali būti ne visai tikslus. Tikrasis mąstymo laikas gali būti trumpesnis, kai sunkumo lygis nustatytas į mažesnę reikšmę, ir gali būti ilgesnis, kai AI yra vidutinio mąstymo, kai laikas baigiasi.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Jei nustatysite aukštą sudėtingumo lygį, bet nepadidinsite AI mąstymo laiko, tikrasis sunkumo lygis gali būti apribotas iki mažesnės vertės dėl mąstymo laiko apribojimo. Tikroji vertė gali skirtis priklausomai nuo mašinos veikimo.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) yra modifikuota alfa-beta paieškos algoritmo forma, kuria siekiama pagerinti efektyvumą pakartotinai naudojant tarpinius paieškos rezultatus ir naudojant gerą pradinį spėjimą susiaurinti paieškos erdvę.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) yra paieškos algoritmas, leidžiantis rasti geriausią žingsnį tam tikroje pozicijoje. Tai alfa-beta algoritmo patobulinimas ir naudoja nulio arba nulio langų paieškas, kad patvirtintų, jog žingsnis yra blogesnis ar ne blogesnis nei jau saugus pagrindinio varianto balas. PVS orientuojasi į perspektyviausius žingsnius ir vengia nereikalingų neoptimalių šakų paieškų, o tai padeda pagerinti paieškos efektyvumą.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta algoritmas yra paieškos algoritmas, skirtas rasti geriausią žingsnį. Jis naudoja minimalaus maksimalaus principą ir dvi vertes – alfa ir beta, kad apkarpytų paieškos medį ir padidintų efektyvumą. Alfa reiškia mažiausią balą, kuriuo kompiuteris yra įsitikinęs, kad gali gauti, o beta – didžiausią rezultatą, kurį gali gauti jo priešininkas. Algoritmas padeda kompiuteriui priimti protingus ir efektyvius žaidimo sprendimus.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Šiame žaidime antrajam žaidėjui lengviau laimėti nei pirmajam.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Remiantis žmonių patirtimi, jei bandysi laimėti, pralaimėsi. Vietoj to siekite lygiosiomis ir nepralaimėkite žaidimo. Stebėkite savo priešininką ir švelniai pritraukite jį į tokią padėtį, kurioje jie gali klysti. Kai jie parodo silpnumą, pasinaudokite proga ir švelniai stumkite pergalę. Tokiu būdu galite laimėti žaidimą.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Šiame žaidime antrajam žaidėjui lengviau laimėti nei pirmajam.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Įjungus pasyvų parinktį AI atsipalaiduos, kai turės pranašumą pozicijoje, o ne agresyviai bandys laimėti kuo greičiau.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Jei dirbtinis intelektas atsižvelgs į savo figūrų mobilumą, jis ne tik sieks kuo greičiau užfiksuoti priešininko figūras, bet ir apsvarstys galimybę blokuoti priešininko judesius ir neleisti jiems daryti to paties.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Įjungus šią parinktį padidėja žaidimo atsitiktinumas ir linksmumas, o išjungus ją galima ištirti būdus, kaip įveikti AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Jei dirbtinis intelektas atsižvelgs į savo figūrų mobilumą, jis ne tik sieks kuo greičiau užfiksuoti priešininko figūras, bet ir apsvarstys galimybę blokuoti priešininko judesius ir neleisti jiems daryti to paties.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Kai lenta pilna",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Pasibaigus dėjimo fazei, prieš prasidedant judėjimo fazei, įvyksta veiksmas, jei lenta yra pilna figūrėlių.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Miško mediena",
     "@forestWood": {},
-    "greenMeadow": "Žalioji pieva",
-    "@greenMeadow": {},
-    "stonyPath": "Akmenuotas takas",
-    "@stonyPath": {},
+    "darkMystery": "Tamsioji paslaptis",
+    "@darkMystery": {},
     "midnightBlue": "Vidurnakčio mėlyna",
     "@midnightBlue": {},
     "greenForest": "Žalias miškas",
     "@greenForest": {},
+    "greenMeadow": "Žalioji pieva",
+    "@greenMeadow": {},
+    "stonyPath": "Akmenuotas takas",
+    "@stonyPath": {},
     "pastelPink": "Pastelinė rožinė",
     "@pastelPink": {},
     "turquoiseSea": "Turkio jūra",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Žaismingas sodas",
     "@playfulGarden": {},
-    "darkMystery": "Tamsioji paslaptis",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Retrogradinės analizės algoritmas naudoja kelių reikšmių retrogradinę analizę, kad sukurtų žaidimo pabaigos duomenų bazę iš skirtingų pradžios pozicijų, tada pritaiko šią duomenų bazę, kad optimizuotų žaidimą. Šis metodas priklauso ypač stiprių sprendimų kategorijai.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Ar norėtumėte peržiūrėti šio algoritmo vartotojo vadovą?",

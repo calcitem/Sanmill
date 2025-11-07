@@ -1133,10 +1133,6 @@
             }
         }
     },
-    "gameSavedTo": "A játék el lett mentve ide",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "loadFailed": "A betöltés nem sikerült.",
     "@loadFailed": {
         "description": "Load failed."
@@ -1153,20 +1149,9 @@
     "@gameFiles": {
         "description": "Game files"
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} darab}} el kell távolítani.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "noPiecesCanBeRemoved": "Egyetlen darab sem távolítható el.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameSavedTo": "A játék el lett mentve ide",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Üres",
     "@empty": {
@@ -1191,6 +1176,21 @@
     "remove": "Távolít.",
     "@remove": {
         "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Egyetlen darab sem távolítható el.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} darab}} el kell távolítani.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Elhz. ({count})",
     "@placedCount": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "GIF megosztása",
     "@shareGIF": {},
-    "duration": "Időtartam",
-    "@duration": {},
     "pixelRatio": "Pixel arány",
     "@pixelRatio": {},
+    "duration": "Időtartam",
+    "@duration": {},
     "gameScreenRecorder": "Játék képernyő felvevő",
     "@gameScreenRecorder": {},
     "previous": "Előző",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "A 0-ra beállított AI gondolkodási idő azt jelenti, hogy a gondolkodásnak nincs időkorlátja.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "Az MTD(f) az alfa-béta keresési algoritmus egy módosított formája, amelynek célja a hatékonyság javítása a közbenső keresési eredmények újrafelhasználásával és egy jó kezdeti találgatással a keresési tér szűkítésére.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Kérjük, vegye figyelembe, hogy az AI gondolkodási idő beállítása nem feltétlenül teljesen pontos. A tényleges gondolkodási idő rövidebb lehet, ha a nehézségi szint alacsonyabb értékre van állítva, és hosszabb lehet, ha az AI középen gondolkodik, amikor lejár az idő.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Ha magasra állítja a nehézségi szintet, de nem növeli az AI gondolkodási idejét, a tényleges nehézségi szint alacsonyabb értékre korlátozódhat a gondolkodási idő korlátja miatt. A tényleges érték a gép teljesítményétől függően változhat.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "Az MTD(f) az alfa-béta keresési algoritmus egy módosított formája, amelynek célja a hatékonyság javítása a közbenső keresési eredmények újrafelhasználásával és egy jó kezdeti találgatással a keresési tér szűkítésére.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "A PVS (Principal Variation Search) egy keresési algoritmus az adott pozícióban a legjobb lépés megtalálására. Ez az alfa-béta algoritmus továbbfejlesztése, és nulla vagy nulla ablakban történő keresést használ annak megerősítésére, hogy egy lépés rosszabb vagy nem rosszabb, mint a fő variáció már biztonságos pontszáma. A PVS a legígéretesebb lépésekre összpontosít, és elkerüli a szuboptimális ágak szükségtelen keresését, ami javítja a keresés hatékonyságát.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Az alfa-béta algoritmus egy keresési algoritmus a legjobb lépés megtalálására. A minimax elvet és két értéket, az alfa és a béta értéket használja a keresési fa metszéséhez és a hatékonyság növeléséhez. Az alfa azt a minimális pontszámot jelenti, amelyet a számítógép biztosan el tud érni, míg a béta azt a maximális pontszámot jelenti, amelyet az ellenfél elérhet. Az algoritmus segít a számítógépnek okos, hatékony döntések meghozatalában a játék során.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Ebben a játékban a második játékos könnyebben nyer, mint az első játékos.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Az emberi tapasztalatok szerint, ha megpróbálsz nyerni, akkor veszítesz. Ehelyett célozzon döntetlent, és kerülje el a játék elvesztését. Figyeld meg ellenfeledet, és finoman csald olyan helyzetbe, ahol hibázhatnak. Amikor gyengeséget mutatnak, ragadja meg a lehetőséget, és finoman nyomja meg a győzelmet. Ily módon megnyerheti a játékot.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Ebben a játékban a második játékos könnyebben nyer, mint az első játékos.",
+    "@firstMoveDetail": {},
     "passiveDetail": "A Passzív opció engedélyezése azt eredményezi, hogy a mesterséges intelligencia ellazul, amikor előnyben van a pozícióban, ahelyett, hogy agresszíven próbálna nyerni a lehető leggyorsabban.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Ha az AI figyelembe veszi bábui mozgékonyságát, akkor nemcsak az ellenfél bábuinak mielőbbi elfogására törekszik, hanem azt is fontolóra veszi, hogy blokkolja az ellenfél mozgását, és megakadályozza, hogy ugyanezt tegye.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Ennek az opciónak az engedélyezése növeli a játék véletlenszerűségét és szórakozását, míg letiltása segíthet a mesterséges intelligencia legyőzésének módjainak tanulmányozásában.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Ha az AI figyelembe veszi bábui mozgékonyságát, akkor nemcsak az ellenfél bábuinak mielőbbi elfogására törekszik, hanem azt is fontolóra veszi, hogy blokkolja az ellenfél mozgását, és megakadályozza, hogy ugyanezt tegye.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Amikor megtelt a tábla",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Az elhelyezési fázis végén, mielőtt a mozgó fázis elkezdődne, az akció következik, ha a tábla tele van figurákkal.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Forest Wood",
     "@forestWood": {},
-    "greenMeadow": "Zöld rét",
-    "@greenMeadow": {},
-    "stonyPath": "Köves ösvény",
-    "@stonyPath": {},
+    "darkMystery": "Sötét rejtély",
+    "@darkMystery": {},
     "midnightBlue": "Éjkék",
     "@midnightBlue": {},
     "greenForest": "Zöld erdő",
     "@greenForest": {},
+    "greenMeadow": "Zöld rét",
+    "@greenMeadow": {},
+    "stonyPath": "Köves ösvény",
+    "@stonyPath": {},
     "pastelPink": "Pasztell rózsaszín",
     "@pastelPink": {},
     "turquoiseSea": "Türkiz tenger",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Játékos kert",
     "@playfulGarden": {},
-    "darkMystery": "Sötét rejtély",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "A Retrográd Analysis algoritmus többértékű retrográd elemzést használ a végjáték-adatbázis felépítéséhez különböző kezdőpozíciókból, majd ezt az adatbázist alkalmazza a játékmenet optimalizálására. Ez a megközelítés az Ultra-Strong megoldások kategóriájába tartozik.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Szeretné megtekinteni az algoritmus felhasználói útmutatóját?",

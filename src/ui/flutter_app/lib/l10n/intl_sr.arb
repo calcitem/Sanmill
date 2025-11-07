@@ -1137,10 +1137,6 @@
     "@loadFailed": {
         "description": "Load failed."
     },
-    "gameSavedTo": "Игра је сачувана на",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "filename": "Назив документа",
     "@filename": {
         "description": "File name"
@@ -1153,27 +1149,9 @@
     "@gameFiles": {
         "description": "Game files"
     },
-    "placedCount": "Пост. ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "pieceCountNeedToRemove": "{count,plural, =0{Комад}=1{[Кс27Кс] комад}other{[Кс47Кс] комади}} треба уклонити.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "gameSavedTo": "Игра је сачувана на",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Празан",
     "@empty": {
@@ -1202,6 +1180,28 @@
     "noPiecesCanBeRemoved": "Ниједан комад се не може уклонити.",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Комад}=1{[Кс27Кс] комад}other{[Кс47Кс] комади}} треба уклонити.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Пост. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedPieceCount": "Број постављених комада у фази постављања.",
     "@placedPieceCount": {
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Изађите и поново отворите апликацију да би подешавања ступила на снагу.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Цео екран",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Изађите и поново отворите апликацију да би подешавања ступила на снагу.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Форест",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Поделите ГИФ",
     "@shareGIF": {},
-    "duration": "Трајање",
-    "@duration": {},
     "pixelRatio": "Однос пиксела",
     "@pixelRatio": {},
+    "duration": "Трајање",
+    "@duration": {},
     "gameScreenRecorder": "Снимач екрана игре",
     "@gameScreenRecorder": {},
     "previous": "Претходна",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "АИ време размишљања постављено на 0 значи да нема временског ограничења за размишљање.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "МТД(ф) је модификовани облик алгоритма алфа-бета претраге који има за циљ да побољша ефикасност поновним коришћењем међурезултата претраге и коришћењем доброг почетног нагађања за сужавање простора за претрагу.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Имајте на уму да подешавање времена размишљања АИ можда није сасвим прецизно. Стварно време размишљања може бити краће када је ниво тежине постављен на нижу вредност и може бити дуже када је АИ усред размишљања када време истекне.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Ако поставите висок ниво тежине, али не повећате време размишљања АИ, стварни ниво тежине може бити ограничен на нижу вредност због временског ограничења за размишљање. Стварна вредност може да варира у зависности од перформанси машине.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "МТД(ф) је модификовани облик алгоритма алфа-бета претраге који има за циљ да побољша ефикасност поновним коришћењем међурезултата претраге и коришћењем доброг почетног нагађања за сужавање простора за претрагу.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "ПВС (Принципал Вариатион Сеарцх) је алгоритам за претрагу за проналажење најбољег потеза у датој позицији. То је побољшање алфа-бета алгоритма и користи нулту или нулту претрагу прозора да потврди да је потез гори или не гори од већ сигурног резултата из главне варијације. ПВС се фокусира на најперспективније потезе и избегава непотребне претраге субоптималних грана, што помаже у побољшању ефикасности претраге.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Алфа-бета алгоритам је алгоритам за претрагу за проналажење најбољег потеза. Користи принцип минимакса и две вредности, алфа и бета, да смањи стабло претраге и повећа ефикасност. Алфа представља минимални резултат за који је рачунар сигуран да може да добије, док бета представља максималан резултат који његов противник може да добије. Алгоритам помаже рачунару да доноси паметне, ефикасне одлуке у игри.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "У овој игри лакше је други играч да победи у односу на првог играча.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Према људском искуству, ако покушате да победите, изгубићете. Уместо тога, циљајте на реми као свој циљ и избегавајте да изгубите утакмицу. Посматрајте свог противника и нежно га намамите у позицију у којој може погрешити. Када покажу слабост, зграбите прилику и лагано гурајте ка победи. На овај начин можете победити у игри.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "У овој игри лакше је други играч да победи у односу на првог играча.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Омогућавање пасивне опције ће узроковати да се АИ опусти када има предност у позицији, уместо да агресивно покушава да победи што је брже могуће.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Ако АИ узме у обзир покретљивост својих фигура, не само да ће имати за циљ да ухвати противничке фигуре што је брже могуће, већ ће размотрити и блокирање покрета противника и спречавање њих да ураде исто.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Омогућавање ове опције повећава случајност и забаву у игри, док њено онемогућавање може помоћи у проучавању начина да се победи вештачка интелигенција.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Ако АИ узме у обзир покретљивост својих фигура, не само да ће имати за циљ да ухвати противничке фигуре што је брже могуће, већ ће размотрити и блокирање покрета противника и спречавање њих да ураде исто.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Кад је табла пуна",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "На крају фазе постављања, пре него што почне фаза кретања, следи акција ако је табла пуна комада.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Форест Воод",
     "@forestWood": {},
-    "greenMeadow": "Зелена ливада",
-    "@greenMeadow": {},
-    "stonyPath": "Стони Патх",
-    "@stonyPath": {},
+    "darkMystery": "Дарк Мистери",
+    "@darkMystery": {},
     "midnightBlue": "Поноћно плава",
     "@midnightBlue": {},
     "greenForest": "Греен Форест",
     "@greenForest": {},
+    "greenMeadow": "Зелена ливада",
+    "@greenMeadow": {},
+    "stonyPath": "Стони Патх",
+    "@stonyPath": {},
     "pastelPink": "Пастел Пинк",
     "@pastelPink": {},
     "turquoiseSea": "Тиркизно море",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Плаифул Гарден",
     "@playfulGarden": {},
-    "darkMystery": "Дарк Мистери",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Алгоритам ретроградне анализе користи ретроградну анализу са више вредности да би направио базу података за крај игре са различитиһ почетниһ позиција, а затим примењује ову базу података да би оптимизовао игру. Овај приступ спада у категорију ултра-јакиһ решења.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Да ли желите да видите упутство за употребу за овај алгоритам?",

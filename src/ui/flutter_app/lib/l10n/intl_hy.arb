@@ -1,71 +1,5 @@
 {
     "@@locale": "hy",
-    "cancel": "Չեղարկել",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "tipCannotMoveOpponentsPieces": "Դուք չեք կարող շարժել ձեր հակառակորդի խաղաքարերը:",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipHaveThreePiecesLeft": "Ձեզ մնացել է երեք խաղաքար:",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "options": "Ընտրանք",
-    "@options": {
-        "description": "Options"
-    },
-    "flyPieceCount": "Թռչող կտորի համարը",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "isDefenderMoveFirst": "Երկրորդ խաղացողը առաջինը շարժվում է",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "mayRemoveFromMillsAlways": "Ոչնչացնել ջրաղացները",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Երբ տեղադրման փուլի վերջում տախտակը լցվում է, այն կողմը, որը առաջինը տեղադրում է, պարտվում է խաղը: Հակառակ դեպքում խաղը ոչ-ոքի է:",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "none": "Ոչ ոք",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Թեմա",
-    "@theme": {
-        "description": "Theme"
-    },
-    "aiIsNotThinking": "AI-ն չի մտածում.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "drawerColor": "Ցանկի գույնը",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "bottom": "Ներքևում",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Կենտրոն",
-    "@center": {
-        "description": "Center"
-    },
-    "drawReasonEndgameRule50": "Խաղացողներից յուրաքանչյուրն ունի ընդամենը երեք ֆիգուր, և խաղացողներից ոչ մեկը չի հեռացնում խաղաքարը կոնկրետ քայլերի ընթացքում:",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "cleanedUp": "Մաքրվել է.",
-    "@cleanedUp": {
-        "description": "Cleaned up."
-    },
-    "viewAlgorithmGuide": "Ցանկանու՞մ եք դիտել այս ալգորիթմի օգտագործման ուղեցույցը:",
-    "@viewAlgorithmGuide": {},
     "appName": "Ջրաղաց",
     "@appName": {
         "description": "The app name"
@@ -134,6 +68,10 @@
     "@confirm": {
         "description": "Confirm"
     },
+    "cancel": "Չեղարկել",
+    "@cancel": {
+        "description": "Cancel"
+    },
     "tipSelectWrong": "Ընտրեք սխալ խաղաքարը:",
     "@tipSelectWrong": {
         "description": "Select the wrong piece."
@@ -194,9 +132,17 @@
     "@tipCanMoveOnePoint": {
         "description": "A piece can move 1 point."
     },
+    "tipCannotMoveOpponentsPieces": "Դուք չեք կարող շարժել ձեր հակառակորդի խաղաքարերը:",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
     "tipSelectPieceToMove": "Ընտրեք ձեր խաղաքարը տեղաշարժելու համար:",
     "@tipSelectPieceToMove": {
         "description": "Select your piece to move."
+    },
+    "tipHaveThreePiecesLeft": "Ձեզ մնացել է երեք խաղաքար:",
+    "@tipHaveThreePiecesLeft": {
+        "description": "You have 3 pieces left."
     },
     "tipCanMoveToAnyPoint": "Դուք կարող եք տեղափոխվել ցանկացած կետ:",
     "@tipCanMoveToAnyPoint": {
@@ -423,6 +369,10 @@
     "@settings": {
         "description": "Settings"
     },
+    "options": "Ընտրանք",
+    "@options": {
+        "description": "Options"
+    },
     "generalSettings": "Ընդհանուր կարգավորումներ",
     "@generalSettings": {
         "description": "General Settings"
@@ -499,6 +449,10 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
+    "flyPieceCount": "Թռչող կտորի համարը",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
     "flyPieceCount_Detail": "Եթե Flying-ը միացված է, երբ խաղացողը կրճատվում է որոշակի խաղաքարերի քանակով, նրա խաղաքարերը կարող են ազատ տեղաշարժվել դեպի ցանկացած չզբաղեցված կետ, այլ ոչ թե սահմանափակվել հարակից կետերով, ինչպես մնացած խաղում:",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
@@ -515,6 +469,10 @@
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
+    "isDefenderMoveFirst": "Երկրորդ խաղացողը առաջինը շարժվում է",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
     "isDefenderMoveFirst_Detail": "Խաղացողը, ով տեղափոխվում է երկրորդը տեղակայման փուլում, շարժվում է առաջինը շարժման փուլում:",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
@@ -527,6 +485,10 @@
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
+    "mayRemoveFromMillsAlways": "Ոչնչացնել ջրաղացները",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
+    },
     "mayRemoveFromMillsAlways_Detail": "Լռելյայնորեն, խաղացողները պետք է նախ հանեն ցանկացած այլ կտոր, նախքան ձևավորված ջրաղացից կտորը հեռացնելը: Միացրեք այս տարբերակը՝ սահմանափակումն անջատելու համար:",
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
@@ -534,6 +496,10 @@
     "isWhiteLoseButNotDrawWhenBoardFull": "Երկրորդ խաղացողը պարտվում է, երբ խաղատախտակը լի է",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Երբ տեղադրման փուլի վերջում տախտակը լցվում է, այն կողմը, որը առաջինը տեղադրում է, պարտվում է խաղը: Հակառակ դեպքում խաղը ոչ-ոքի է:",
+    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
     },
     "isLoseButNotChangeSideWhenNoWay": "Պարտվել, երբ ոչ մի օրինական քայլ",
     "@isLoseButNotChangeSideWhenNoWay": {
@@ -803,6 +769,14 @@
     "@animationDuration": {
         "description": "Animation duration"
     },
+    "none": "Ոչ ոք",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Թեմա",
+    "@theme": {
+        "description": "Theme"
+    },
     "helpContent": "Խաղը նպատակ ունի մրցակցին թողնել երեքից պակաս խաղաքարով կամ առանց օրինական քայլերի:\n\nԽաղն ինքնաբերաբար ոչ-ոքի է անցնում, եթե դիրքը տեղի է ունենում երրորդ անգամ կամ չի հեռացվում վերջին 100 (կարգավորելի) քայլերում:\n\nԽաղն ընթանում է երեք փուլով.\n\n1. Կտորների տեղադրում թափուր կետերի վրա\n2. Կտորների տեղափոխում հարակից կետեր\n3. (ըստ ցանկության փուլ) Ֆիգուրների տեղափոխում ցանկացած թափուր կետ, երբ խաղացողը կրճատվում է երեք կտորով\n\nՏեղադրում\n\nԽաղը սկսվում է դատարկ տախտակով, որը բաղկացած է քսանչորս միավոր ունեցող ցանցից: Խաղացողները հերթով դնում են իրենց խաղաքարերը թափուր կետերի վրա, մինչև յուրաքանչյուր խաղացող բոլոր խաղաքարերը տեղադրի խաղատախտակի վրա: Եթե խաղացողը կարող է ուղիղ դնել իր ֆիգուրներից երեքը, ապա նա ունի «ջրաղաց» և կարող է խաղատախտակից հեռացնել մրցակցի խաղաքարերից մեկը:\n\nՈրոշ կանոնների համաձայն, խաղացողները պետք է նախ հանեն ցանկացած այլ կտոր, նախքան ձևավորված ջրաղացից կտորը հանելը:\n\nՈրոշ կանոններով դուք չեք կարող կտորները տեղադրել հանված կտորների կետերում կրկին տեղադրման փուլում:\n\nԲոլոր խաղաքարերն օգտագործելուց հետո խաղացողները հերթով շարժվում են:\n\nՇարժվող\n\nՏեղափոխվելու համար խաղացողը իր խաղաքարերից մեկը տեղափոխում է տախտակի գծի երկայնքով դատարկ հարակից կետ: Եթե նա չի կարող դա անել, նա պարտվել է խաղը: Խաղացողը, ով իր խաղաքարերից երեքը հավասարեցնում է տախտակի գծի վրա, ունի ջրաղաց և կարող է հեռացնել իր հակառակորդի խաղաքարերից մեկը, ինչպես տեղաբաշխման փուլում: Ցանկացած խաղացող նվազեցնում է երկու կտոր, չունի նոր գործարաններ ստեղծելու հնարավորություն և այդպիսով պարտվում է խաղը: Խաղացողը կարող է նաև պարտվել, երբ ավելի քան երեք խաղաքարեր, եթե նրա հակառակորդը խոչընդոտի նրանց շարժմանը:\n\nԹռիչք\n\nԿանոնների որոշ տարբերակներում, երբ խաղացողին մնում է ընդամենը երեք խաղ, նրա խաղաքարերը կարող են թռչել, թռչել կամ ցատկել դեպի ցանկացած թափուր կետ, ոչ միայն հարակից կետերը:\n",
     "@helpContent": {
         "description": "Help Content"
@@ -917,6 +891,10 @@
     "@notAIsTurn": {
         "description": "It is not the AI's turn."
     },
+    "aiIsNotThinking": "AI-ն չի մտածում.",
+    "@aiIsNotThinking": {
+        "description": "AI is not thinking."
+    },
     "atEnd": "Դուք շարժման ցուցակի վերջում եք:",
     "@atEnd": {
         "description": "At the end of the move list."
@@ -957,6 +935,10 @@
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     },
+    "drawerColor": "Ցանկի գույնը",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
     "drawerTextColor": "Ցանկի տեքստի գույնը",
     "@drawerTextColor": {
         "description": "Menu text color"
@@ -992,6 +974,14 @@
     "top": "Գագաթ",
     "@top": {
         "description": "Top"
+    },
+    "bottom": "Ներքևում",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Կենտրոն",
+    "@center": {
+        "description": "Center"
     },
     "solidColor": "Հոծ գույն",
     "@solidColor": {
@@ -1197,6 +1187,10 @@
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
+    "drawReasonEndgameRule50": "Խաղացողներից յուրաքանչյուրն ունի ընդամենը երեք ֆիգուր, և խաղացողներից ոչ մեկը չի հեռացնում խաղաքարը կոնկրետ քայլերի ընթացքում:",
+    "@drawReasonEndgameRule50": {
+        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
     "threefoldRepetitionRule": "Եռակի կրկնության կանոն",
     "@threefoldRepetitionRule": {
         "description": "Threefold repetition rule"
@@ -1275,6 +1269,10 @@
     "clean": "Մաքուր",
     "@clean": {
         "description": "Clean"
+    },
+    "cleanedUp": "Մաքրվել է.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
     },
     "remove": "Հեռացնել",
     "@remove": {
@@ -1467,6 +1465,8 @@
     "@playfulGarden": {},
     "whatIsRetrogradeAnalysis": "Հետադիմական վերլուծության ալգորիթմը օգտագործում է բազմարժեք հետադիմական վերլուծություն՝ տարբեր մեկնարկային դիրքերից վերջնական խաղի տվյալների բազա ստեղծելու համար, այնուհետև կիրառում է այս տվյալների բազան՝ խաղը օպտիմալացնելու համար: Այս մոտեցումը պատկանում է Ultra-Strong լուծումների կատեգորիային:",
     "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "Ցանկանու՞մ եք դիտել այս ալգորիթմի օգտագործման ուղեցույցը:",
+    "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "Ցույց տալ դիրքային առավելությունների ցուցիչը",
     "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Օգտագործեք կատարյալ տվյալների բազա",
@@ -1505,12 +1505,12 @@
     "@marked": {},
     "menu": "Ցանկ",
     "@menu": {},
-    "showNumbersOnPieces": "Ցուցադրել թվերը քարերի վրա",
-    "@showNumbersOnPieces": {},
     "monochrome": "Մոնոխրոմ",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "Դուք կարող եք միացնել էկրանի ընթերցիչի աջակցությունը Ընդհանուր կարգավորումների մեջ Անհատականության կոնֆիգուրացիայում:",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Ցուցադրել թվերը քարերի վրա",
+    "@showNumbersOnPieces": {},
     "saveImage": "Պահպանել պատկերը",
     "@saveImage": {},
     "isAnalysisToolbarShown": "Անալիզիզիայի գործիքային գոտին ցուցադրվում է",

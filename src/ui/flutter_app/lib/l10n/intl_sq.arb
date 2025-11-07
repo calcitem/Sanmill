@@ -1133,6 +1133,14 @@
             }
         }
     },
+    "loadFailed": "Ngarkimi dështoi.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
+    "filename": "Emri i skedarit",
+    "@filename": {
+        "description": "File name"
+    },
     "browse": "Shfleto…",
     "@browse": {
         "description": "Browse…"
@@ -1141,21 +1149,9 @@
     "@gameFiles": {
         "description": "Game files"
     },
-    "loadFailed": "Ngarkimi dështoi.",
-    "@loadFailed": {
-        "description": "Load failed."
-    },
     "gameSavedTo": "Loja është ruajtur në",
     "@gameSavedTo": {
         "description": "The game is saved to"
-    },
-    "filename": "Emri i skedarit",
-    "@filename": {
-        "description": "File name"
-    },
-    "paste": "Ngjit",
-    "@paste": {
-        "description": "Paste"
     },
     "empty": "Bosh",
     "@empty": {
@@ -1226,6 +1222,10 @@
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
     },
+    "paste": "Ngjit",
+    "@paste": {
+        "description": "Paste"
+    },
     "pasteDone": "Pasta është bërë.",
     "@pasteDone": {
         "description": "The paste is done."
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Dilni dhe rihapni aplikacionin që cilësimet të hyjnë në fuqi.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Ekran i plotë",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Dilni dhe rihapni aplikacionin që cilësimet të hyjnë në fuqi.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Pyll",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Ndani GIF",
     "@shareGIF": {},
-    "duration": "Kohëzgjatja",
-    "@duration": {},
     "pixelRatio": "Raporti i pikselëve",
     "@pixelRatio": {},
+    "duration": "Kohëzgjatja",
+    "@duration": {},
     "gameScreenRecorder": "Regjistrues i ekranit të lojës",
     "@gameScreenRecorder": {},
     "previous": "E mëparshme",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Koha e të menduarit e AI e vendosur në 0 do të thotë se nuk ka kufi kohor për të menduar.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) është një formë e modifikuar e algoritmit alfa-beta të kërkimit që synon të përmirësojë efikasitetin duke ripërdorur rezultatet e ndërmjetme të kërkimit dhe duke përdorur një supozim të mirë fillestar për të ngushtuar hapësirën e kërkimit.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Ju lutemi, kini parasysh se rregullimi i kohës së të menduarit të AI mund të mos jetë plotësisht i saktë. Koha aktuale e të menduarit mund të jetë më e shkurtër kur niveli i vështirësisë është vendosur në një vlerë më të ulët dhe mund të jetë më e gjatë kur AI është në mes të mendimit kur koha mbaron.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Nëse e vendosni nivelin e vështirësisë të lartë, por nuk e rritni kohën e të menduarit të AI, niveli aktual i vështirësisë mund të kufizohet në një vlerë më të ulët për shkak të kufizimit të kohës së të menduarit. Vlera aktuale mund të ndryshojë në bazë të performancës së makinës.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) është një formë e modifikuar e algoritmit alfa-beta të kërkimit që synon të përmirësojë efikasitetin duke ripërdorur rezultatet e ndërmjetme të kërkimit dhe duke përdorur një supozim të mirë fillestar për të ngushtuar hapësirën e kërkimit.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) është një algoritëm kërkimi për të gjetur lëvizjen më të mirë në një pozicion të caktuar. Është një përmirësim i algoritmit alfa-beta dhe përdor kërkime të dritareve null ose zero për të konfirmuar se një lëvizje është më e keqe ose jo më e keqe se një rezultat tashmë i sigurt nga variacioni kryesor. PVS fokusohet në lëvizjet më premtuese dhe shmang kërkimet e panevojshme të degëve jooptimale, gjë që ndihmon në përmirësimin e efikasitetit të kërkimit.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritmi alfa-beta është një algoritëm kërkimi për të gjetur lëvizjen më të mirë. Ai përdor parimin minimax dhe dy vlera, alfa dhe beta, për të krasitur pemën e kërkimit dhe për të rritur efikasitetin. Alfa përfaqëson rezultatin minimal që kompjuteri është i sigurt se mund të marrë, ndërsa beta përfaqëson rezultatin maksimal që mund të marrë kundërshtari i tij. Algoritmi ndihmon kompjuterin të marrë vendime të zgjuara dhe efikase në një lojë.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Në këtë lojë, lojtari i dytë është më i lehtë të fitojë në krahasim me lojtarin e parë.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Sipas përvojës njerëzore, nëse përpiqeni të fitoni, do të humbni. Në vend të kësaj, synoni për një barazim si objektivin tuaj dhe shmangni humbjen e lojës. Vëzhgoni kundërshtarin tuaj dhe joshni butësisht në një pozicion ku ata mund të bëjnë gabime. Kur ata tregojnë dobësi, shfrytëzojeni mundësinë dhe nxitoni butësisht për fitore. Në këtë mënyrë, ju mund të fitoni lojën.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Në këtë lojë, lojtari i dytë është më i lehtë të fitojë në krahasim me lojtarin e parë.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Aktivizimi i opsionit Pasiv do të bëjë që AI të relaksohet kur ka një avantazh në pozicion, në vend që të përpiqet në mënyrë agresive të fitojë sa më shpejt që të jetë e mundur.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Nëse AI merr në konsideratë lëvizshmërinë e pjesëve të saj, ajo jo vetëm që do të synojë të kapë copat e kundërshtarit sa më shpejt që të jetë e mundur, por gjithashtu do të konsiderojë bllokimin e lëvizjeve të kundërshtarit dhe pengimin e tyre që të bëjnë të njëjtën gjë.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Aktivizimi i këtij opsioni rrit rastësinë dhe argëtimin e lojës, ndërsa çaktivizimi i tij mund të ndihmojë në studimin e mënyrave për të mposhtur AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Nëse AI merr në konsideratë lëvizshmërinë e pjesëve të saj, ajo jo vetëm që do të synojë të kapë copat e kundërshtarit sa më shpejt që të jetë e mundur, por gjithashtu do të konsiderojë bllokimin e lëvizjeve të kundërshtarit dhe pengimin e tyre që të bëjnë të njëjtën gjë.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Kur bordi është plot",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Në fund të fazës së vendosjes, përpara se të fillojë faza e lëvizjes, veprimi vijon nëse dërrasa është plot me copa.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Druri i pyllit",
     "@forestWood": {},
-    "greenMeadow": "Livadh i Gjelbër",
-    "@greenMeadow": {},
-    "stonyPath": "Rruga e gurtë",
-    "@stonyPath": {},
+    "darkMystery": "Misteri i Errët",
+    "@darkMystery": {},
     "midnightBlue": "Midnight Blue",
     "@midnightBlue": {},
     "greenForest": "Pylli i Gjelbër",
     "@greenForest": {},
+    "greenMeadow": "Livadh i Gjelbër",
+    "@greenMeadow": {},
+    "stonyPath": "Rruga e gurtë",
+    "@stonyPath": {},
     "pastelPink": "Rozë pastel",
     "@pastelPink": {},
     "turquoiseSea": "Deti bruz",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Kopsht lozonjare",
     "@playfulGarden": {},
-    "darkMystery": "Misteri i Errët",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritmi i Analizës Retrograde përdor analizën retrograde me shumë vlera për të ndërtuar një bazë të dhënash të fundit të lojës nga pozicione të ndryshme fillestare, më pas e aplikon këtë bazë të dhënash për të optimizuar lojën. Kjo qasje bie në kategorinë e zgjidhjeve ultra të forta.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Dëshironi të shikoni udhëzuesin e përdoruesit për këtë algoritëm?",

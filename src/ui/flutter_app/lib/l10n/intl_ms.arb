@@ -1145,21 +1145,13 @@
     "@browse": {
         "description": "Browse…"
     },
-    "gameSavedTo": "Permainan disimpan ke",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "gameFiles": "Fail permainan",
     "@gameFiles": {
         "description": "Game files"
     },
-    "placedPieceCount": "Kiraan kepingan diletakkan dalam fasa meletakkan.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
-    },
-    "noPiecesCanBeRemoved": "Tiada kepingan boleh dikeluarkan.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameSavedTo": "Permainan disimpan ke",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "kosong",
     "@empty": {
@@ -1185,16 +1177,9 @@
     "@remove": {
         "description": "Remove"
     },
-    "placedCount": "Diletakkan ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "noPiecesCanBeRemoved": "Tiada kepingan boleh dikeluarkan.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece} other{{count} pieces}} perlu dialih keluar.",
     "@pieceCountNeedToRemove": {
@@ -1206,6 +1191,21 @@
                 "example": "3"
             }
         }
+    },
+    "placedCount": "Diletakkan ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedPieceCount": "Kiraan kepingan diletakkan dalam fasa meletakkan.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "Pemain semasa telah meletakkan kepingan {count}.",
     "@hasPlacedPieceCount": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Kongsi GIF",
     "@shareGIF": {},
-    "duration": "Tempoh",
-    "@duration": {},
     "pixelRatio": "Nisbah piksel",
     "@pixelRatio": {},
+    "duration": "Tempoh",
+    "@duration": {},
     "gameScreenRecorder": "Perakam skrin permainan",
     "@gameScreenRecorder": {},
     "previous": "Sebelumnya",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Masa AI Thinking ditetapkan kepada 0 bermakna tiada had masa untuk berfikir.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) ialah bentuk algoritma carian alfa-beta yang diubah suai yang bertujuan untuk meningkatkan kecekapan dengan menggunakan semula hasil carian perantaraan dan menggunakan tekaan awal yang baik untuk mengecilkan ruang carian.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Harap maklum bahawa pelarasan masa pemikiran AI mungkin tidak tepat sepenuhnya. Masa pemikiran sebenar mungkin lebih pendek apabila tahap kesukaran ditetapkan kepada nilai yang lebih rendah dan mungkin lebih lama apabila AI sedang difikirkan apabila masa tamat.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Jika anda menetapkan tahap kesukaran tinggi tetapi tidak meningkatkan masa berfikir AI, tahap kesukaran sebenar mungkin dihadkan kepada nilai yang lebih rendah kerana kekangan masa berfikir. Nilai sebenar mungkin berbeza-beza berdasarkan prestasi mesin.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) ialah bentuk algoritma carian alfa-beta yang diubah suai yang bertujuan untuk meningkatkan kecekapan dengan menggunakan semula hasil carian perantaraan dan menggunakan tekaan awal yang baik untuk mengecilkan ruang carian.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) ialah algoritma carian untuk mencari langkah terbaik dalam kedudukan tertentu. Ia adalah peningkatan algoritma alfa-beta dan menggunakan carian tetingkap nol atau sifar untuk mengesahkan bahawa satu langkah adalah lebih teruk atau tidak lebih teruk daripada skor yang sudah selamat daripada variasi utama. PVS memfokuskan pada langkah yang paling menjanjikan dan mengelakkan carian yang tidak perlu bagi cawangan suboptimum, yang membantu meningkatkan kecekapan carian.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritma alfa-beta ialah algoritma carian untuk mencari langkah terbaik. Ia menggunakan prinsip minimax dan dua nilai, alfa dan beta, untuk memangkas pokok carian dan meningkatkan kecekapan. Alfa mewakili skor minimum yang komputer pasti boleh perolehi, manakala beta mewakili skor maksimum yang boleh diperolehi oleh lawannya. Algoritma membantu komputer membuat keputusan yang bijak dan cekap dalam permainan.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Dalam permainan ini, lebih mudah untuk pemain kedua untuk menang berbanding dengan pemain pertama.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Mengikut pengalaman manusia, jika anda cuba untuk menang, anda akan kalah. Sebaliknya, sasarkan untuk seri sebagai matlamat anda dan elakkan kalah dalam permainan. Perhatikan lawan anda dan perlahan-lahan tarik mereka ke posisi di mana mereka mungkin membuat kesilapan. Apabila mereka menunjukkan kelemahan, rebut peluang dan tolak perlahan-lahan untuk menang. Dengan cara ini, anda boleh memenangi permainan.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Dalam permainan ini, lebih mudah untuk pemain kedua untuk menang berbanding dengan pemain pertama.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Mendayakan pilihan Pasif akan menyebabkan AI berehat apabila ia mempunyai kelebihan dalam kedudukan, dan bukannya cuba secara agresif untuk menang secepat mungkin.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Jika AI mempertimbangkan mobiliti kepingannya, ia bukan sahaja bertujuan untuk menangkap kepingan lawan secepat mungkin, tetapi juga mempertimbangkan untuk menyekat pergerakan lawan dan menghalang mereka daripada melakukan perkara yang sama.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Mendayakan pilihan ini meningkatkan rawak dan keseronokan permainan sambil melumpuhkannya boleh membantu mengkaji cara untuk mengalahkan AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Jika AI mempertimbangkan mobiliti kepingannya, ia bukan sahaja bertujuan untuk menangkap kepingan lawan secepat mungkin, tetapi juga mempertimbangkan untuk menyekat pergerakan lawan dan menghalang mereka daripada melakukan perkara yang sama.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Apabila papan penuh",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Pada akhir fasa meletakkan, sebelum fasa bergerak bermula, tindakan akan menyusul jika papan penuh dengan kepingan.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Kayu Hutan",
     "@forestWood": {},
-    "greenMeadow": "Padang Rumput Hijau",
-    "@greenMeadow": {},
-    "stonyPath": "Laluan Berbatu",
-    "@stonyPath": {},
+    "darkMystery": "Misteri Gelap",
+    "@darkMystery": {},
     "midnightBlue": "Biru Tengah Malam",
     "@midnightBlue": {},
     "greenForest": "Hutan Hijau",
     "@greenForest": {},
+    "greenMeadow": "Padang Rumput Hijau",
+    "@greenMeadow": {},
+    "stonyPath": "Laluan Berbatu",
+    "@stonyPath": {},
     "pastelPink": "Merah Jambu Pastel",
     "@pastelPink": {},
     "turquoiseSea": "Laut Turquoise",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Taman yang suka bermain",
     "@playfulGarden": {},
-    "darkMystery": "Misteri Gelap",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritma Analisis Retrogred menggunakan analisis retrogred berbilang nilai untuk membina pangkalan data permainan akhir daripada kedudukan permulaan yang berbeza, kemudian menggunakan pangkalan data ini untuk mengoptimumkan permainan. Pendekatan ini termasuk dalam kategori penyelesaian Ultra-Kuat.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Adakah anda ingin melihat panduan pengguna untuk algoritma ini?",

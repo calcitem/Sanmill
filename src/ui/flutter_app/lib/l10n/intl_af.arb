@@ -1,61 +1,5 @@
 {
     "@@locale": "af",
-    "thinking": "Dink…",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "winRate": "Wenkoers",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "loseReasonlessThanThree": "{player} stuktelling is minder as drie.",
-    "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
-    },
-    "none": "Geen",
-    "@none": {
-        "description": "None"
-    },
-    "animationDuration": "Animasie duur",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "tutorial": "Tutoriaal",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "draw": "Teken",
-    "@draw": {
-        "description": "Draw"
-    },
-    "gameFiles": "Spellêers",
-    "@gameFiles": {
-        "description": "Game files"
-    },
-    "firstMoveDetail": "In hierdie speletjie is dit makliker vir die tweede speler om te wen in vergelyking met die eerste speler.",
-    "@firstMoveDetail": {},
-    "enteredFlyingPhase": "Noudat die vliegfase begin het, kan die teenstander se stukke na enige leë punt op die bord spring. Jy kan die vlieënde reël afskakel in die \"Reëlinstellings\".",
-    "@enteredFlyingPhase": {},
-    "whenStalemate": "Wanneer 'n dooiepunt bereik word",
-    "@whenStalemate": {},
-    "mintChocolate": "Munt Sjokolade",
-    "@mintChocolate": {},
-    "skyBlue": "Lugblou",
-    "@skyBlue": {},
-    "viewAlgorithmGuide": "Wil jy die gebruikersgids vir hierdie algoritme sien?",
-    "@viewAlgorithmGuide": {},
-    "showPositionalAdvantageIndicator": "Toon posisionele voordeel aanwyser",
-    "@showPositionalAdvantageIndicator": {},
     "appName": "Morabaraba",
     "@appName": {
         "description": "The app name"
@@ -230,6 +174,10 @@
     "@lost": {
         "description": "Lost"
     },
+    "thinking": "Dink…",
+    "@thinking": {
+        "description": "Thinking..."
+    },
     "newGame": "Nuwe spel",
     "@newGame": {
         "description": "New game"
@@ -290,6 +238,10 @@
             }
         }
     },
+    "winRate": "Wenkoers",
+    "@winRate": {
+        "description": "Win Rate"
+    },
     "score": "Telling:",
     "@score": {
         "description": "Score"
@@ -301,6 +253,16 @@
     "black": "Speler 2",
     "@black": {
         "description": "Player 2"
+    },
+    "loseReasonlessThanThree": "{player} stuktelling is minder as drie.",
+    "@loseReasonlessThanThree": {
+        "description": "Indicate that the player lost because they had less than three pieces left.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} het opgegee.",
     "@loseReasonResign": {
@@ -803,6 +765,18 @@
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
     },
+    "animationDuration": "Animasie duur",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "none": "Geen",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Tema",
+    "@theme": {
+        "description": "Theme"
+    },
     "helpContent": "Die speletjie het ten doel om die teenstander met minder as drie stukke oor te laat of geen wettige bewegings oor te hê nie.\n\nDie speletjie verloop in drie fases:\n\nFase 1:\n\nElke speler begin met 12 tokens genoem \"koeie\".\n\nMet 'n skoon bord, plaas elke speler beurtegewys een koei op 'n tyd op 'n kruising (sirkel). Die doel is om rye van drie te vorm, hetsy vertikaal, diagonaal, of horisontaal. Koeie mag slegs op onbesette kruisings geplaas word.\n\nWanneer drie-in-'n-ry bereik word, mag die speler een van die opponent se koeie skiet. 'n Speler mag nie 'n opponent se \"drie-in-'n-ry\" koeie skiet as daar ander koeie op die bord is om te skiet nie.\n\nSlegs een van die opponent se koeie mag op 'n slag geskiet word, selfs al word twee (of meer) lyne van drie-in-'n-ry met een skuif bereik.\n\nSodra 'n koei geskiet is, mag dit nie weer in die spel gebruik word nie.\n\nFase 2:\n\nWanneer al twaalf koeie van elke speler op die bord geplaas is, mag koeie van een kruising na 'n ander beweeg word. 'n Beweging bestaan daaruit om 'n koei van een kruising na 'n onbesette kruising wat onmiddellik daaraan gekoppel en aangrensend is, te skuif.\n\nSpelers mag hul eie rye van drie-in-'n-ry breek om nuwe lyne te vorm, of bloot hul koeie herposisioneer.\n\nKoeie mag heen en weer tussen dieselfde twee kruisings herhaaldelik beweeg word. 'n Drie-in-'n-ry mag gemaak, gebreek en herhaaldelik hervorm word.\n\nNieteenstaande die reël dat lyne herhaaldelik gebreek en hervorm mag word, as 'n speler 'n lyn breek om onmiddellik 'n nuwe lyn van drie 'koeie' te skep, mag sodanige speler nie die koei terugbeweeg na die oorspronklike kruising in sy/haar volgende skuif nie, as dit 'n nuwe lyn skep.\n\nElke keer as 'n drie-in-'n-ry hergemaak word, moet 'n opponent se koei geskiet word.\n\nFase 3:\n\nWanneer 'n speler al sy koeie behalwe drie verloor het, mag hy/sy 'n koei na enige vakante kruising op die bord skuif met elke beweging.\n\nDie wen van die spel:\n\nDie spel word gewen wanneer die opponent nie enige van sy koeie kan beweeg nie, of wanneer die opponent al sy koeie behalwe twee verloor het.\n\nWanneer 'n speler af is tot drie koeie, en geen speler 'n opponent se koei binne tien skuifbeurte kan skiet nie, is die spel 'n gelykop uitslag.\n",
     "@helpContent": {
         "description": "Help Content"
@@ -1093,6 +1067,10 @@
     "@helpImproveTranslate": {
         "description": "Help improve translate"
     },
+    "tutorial": "Tutoriaal",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
     "classicMill": "Klassieke Meul",
     "@classicMill": {
         "description": "Classic Mill"
@@ -1189,6 +1167,10 @@
     "@isDraw": {
         "description": "It is a Draw!"
     },
+    "draw": "Teken",
+    "@draw": {
+        "description": "Draw"
+    },
     "pieceHighlightColor": "Stuk hoogtepunt kleur",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
@@ -1263,6 +1245,10 @@
     "browse": "Snuffel…",
     "@browse": {
         "description": "Browse…"
+    },
+    "gameFiles": "Spellêers",
+    "@gameFiles": {
+        "description": "Game files"
     },
     "gameSavedTo": "Die speletjie word gestoor na",
     "@gameSavedTo": {
@@ -1401,6 +1387,8 @@
     "@whatIsAlphaBeta": {},
     "drawOnTheHumanExperienceDetail": "Volgens menslike ervaring, as jy probeer wen, sal jy verloor. Streef eerder na 'n gelykop as jou doelwit en vermy om die wedstryd te verloor. Kyk na jou teenstander en lok hulle sagkens in 'n posisie waar hulle foute kan maak. Wanneer hulle swakheid toon, gryp die geleentheid aan en druk saggies vir die oorwinning. Op hierdie manier kan jy die wedstryd wen.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "In hierdie speletjie is dit makliker vir die tweede speler om te wen in vergelyking met die eerste speler.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Deur die Passiewe opsie te aktiveer, sal die KI laat ontspan wanneer dit 'n voordeel in die posisie het, eerder as om so vinnig as moontlik aggressief te probeer wen.",
     "@passiveDetail": {},
     "moveRandomlyDetail": "Deur hierdie opsie te aktiveer, verhoog die ewekansigheid en pret van die spel, terwyl die deaktivering daarvan kan help om maniere te bestudeer om die KI te klop.",
@@ -1423,6 +1411,10 @@
     "@firstAndSecondPlayerRemovePiece": {},
     "secondAndFirstPlayerRemovePiece": "Die tweede en eerste speler verwyder een van die teenstander se stukke.",
     "@secondAndFirstPlayerRemovePiece": {},
+    "enteredFlyingPhase": "Noudat die vliegfase begin het, kan die teenstander se stukke na enige leë punt op die bord spring. Jy kan die vlieënde reël afskakel in die \"Reëlinstellings\".",
+    "@enteredFlyingPhase": {},
+    "whenStalemate": "Wanneer 'n dooiepunt bereik word",
+    "@whenStalemate": {},
     "whenStalemate_Detail": "Watter aksie volg wanneer geen stuk geskuif kan word nie?",
     "@whenStalemate_Detail": {},
     "endWithStalemateLoss": "Eindig met 'n dooiepunt-verlies vir die span wat geblokkeer is.",
@@ -1465,10 +1457,18 @@
     "@turquoiseSea": {},
     "violetDream": "Violetdroom",
     "@violetDream": {},
+    "mintChocolate": "Munt Sjokolade",
+    "@mintChocolate": {},
+    "skyBlue": "Lugblou",
+    "@skyBlue": {},
     "playfulGarden": "Speelsetuin",
     "@playfulGarden": {},
     "whatIsRetrogradeAnalysis": "Die retrograde-analise-algoritme gebruik multi-waarde retrograde analise om 'n eindspeldatabasis vanaf verskillende beginposisies te bou, en pas dan hierdie databasis toe om spel te optimaliseer. Hierdie benadering val onder die kategorie van Ultra-Strong oplossings.",
     "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "Wil jy die gebruikersgids vir hierdie algoritme sien?",
+    "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Toon posisionele voordeel aanwyser",
+    "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Gebruik perfekte databasis",
     "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "Aktiveer hierdie opsie om 'n foutlose speletjiedatabasis te gebruik wat deur die nuutste algoritmes gegenereer word. Hierdie kenmerk integreer beide opening- en eindspelstrategieë om optimale bewegings voor te stel. Dit is die voorkeurkeuse vir spelers wat die hoogste vlak van akkuraatheid in spel soek. Geskep deur noukeurige berekeningstegnieke, is die databasis ontwerp om byna perfekte speloplossings te bied.\n\nLet wel: Indien die KI nie toegang tot die databasis kry nie, sal dit na konvensionele algoritmes wend vir spelbesluite. Wanneer die databasis beskikbaar is, word die 'Moeilikheidsgraad' feitlik onverbeterlik, en 'KI-denktyd' ervaar 'n drastiese vermindering. Baie instellings binne 'AI's play style'-opsies sal tersyde gestel word, aangesien die databasisuitkomste die hoogste prioriteit het.\n\nVir leiding oor hoe om die meeste van hierdie foutlose databasis te maak, klik hier.",

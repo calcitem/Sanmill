@@ -1,91 +1,5 @@
 {
     "@@locale": "ja",
-    "blackWin": "プレイヤー 2 の勝利です。",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "winRate": "勝率",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "youWin": "あなたは勝ちました！おめでとうございます！",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "rules": "ルール",
-    "@rules": {
-        "description": "Rules"
-    },
-    "hasDiagonalLines": "対角線",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "standardNotation": "WMD表記",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "howToPlay": "遊戲方法",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "left": "左",
-    "@left": {
-        "description": "left"
-    },
-    "and": " と ",
-    "@and": {},
-    "takingBack": "取り戻す…",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "待っている…",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "done": "終わり。",
-    "@done": {
-        "description": "Done."
-    },
-    "showLegalMoves": "有効な手を表示",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "pieces": "ピース",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "tutorial": "チュートリアル",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "クラシックミル",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "ミックスミル",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "セイロンミル",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "noPoint": "ポイントなし",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "loadFailed": "読み込みに失敗しました。",
-    "@loadFailed": {
-        "description": "Load failed."
-    },
-    "paste": "貼り付け",
-    "@paste": {
-        "description": "Paste"
-    },
-    "duration": "時間",
-    "@duration": {},
-    "noTimeLimitForThinking": "AI 思考時間を 0 に設定すると、思考の時間制限がなくなります。",
-    "@noTimeLimitForThinking": {},
     "appName": "モリス",
     "@appName": {
         "description": "The app name"
@@ -248,6 +162,10 @@
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
+    "blackWin": "プレイヤー 2 の勝利です。",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
     "won": "勝利した",
     "@won": {
         "description": "Won"
@@ -319,6 +237,10 @@
                 "example": "Unknown error"
             }
         }
+    },
+    "winRate": "勝率",
+    "@winRate": {
+        "description": "Win Rate"
     },
     "score": "スコア：",
     "@score": {
@@ -401,6 +323,10 @@
     "gameOver": "ゲームオーバー",
     "@gameOver": {
         "description": "Game Over"
+    },
+    "youWin": "あなたは勝ちました！おめでとうございます！",
+    "@youWin": {
+        "description": "You win! Congratulations!"
     },
     "challengeHarderLevel": "より難しいレベルに挑戦しますか？新しいレベルはレベル {level} になります!",
     "@challengeHarderLevel": {
@@ -511,6 +437,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "rules": "ルール",
+    "@rules": {
+        "description": "Rules"
+    },
     "piecesCount": "各プレイヤーが持っている駒の数",
     "@piecesCount": {
         "description": "The number of pieces each player has"
@@ -530,6 +460,10 @@
     "piecesAtLeastCount": "最低駒数",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "対角線",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
     },
     "hasDiagonalLines_Detail": "ボードに 4 本の対角線を追加します。",
     "@hasDiagonalLines_Detail": {
@@ -687,6 +621,10 @@
     "@fontSize": {
         "description": "Font size"
     },
+    "standardNotation": "WMD表記",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
     "restore": "戻す",
     "@restore": {
         "description": "Restore"
@@ -725,6 +663,10 @@
     "@player2": {
         "description": "Player 2"
     },
+    "howToPlay": "遊戲方法",
+    "@howToPlay": {
+        "description": "How to play"
+    },
     "toPlacePiece": "利用可能なポイントをタップしてピースを配置します。",
     "@toPlacePiece": {
         "description": "Tap on any available point to place the piece."
@@ -761,6 +703,10 @@
     "@results": {
         "description": "Results"
     },
+    "left": "左",
+    "@left": {
+        "description": "left"
+    },
     "privacyPolicy": "プライバシーポリシー",
     "@privacyPolicy": {
         "description": "Privacy Policy"
@@ -773,6 +719,8 @@
     "@privacyPolicy_Detail_2": {
         "description": "Privacy Policy Detail 2"
     },
+    "and": " と ",
+    "@and": {},
     "accept": "受け入れる",
     "@accept": {
         "description": "Accept"
@@ -780,6 +728,14 @@
     "takeBack": "待った",
     "@takeBack": {
         "description": "Take back"
+    },
+    "takingBack": "取り戻す…",
+    "@takingBack": {
+        "description": "Taking back..."
+    },
+    "waiting": "待っている…",
+    "@waiting": {
+        "description": "Waiting..."
     },
     "stepForward": "踏み出す",
     "@stepForward": {
@@ -796,6 +752,10 @@
     "moveNow": "今すぐ移動",
     "@moveNow": {
         "description": "Move now"
+    },
+    "done": "終わり。",
+    "@done": {
+        "description": "Done."
     },
     "crackMill": "クラックミル",
     "@crackMill": {
@@ -1075,6 +1035,10 @@
     "@setupPosition": {
         "description": "Setup position"
     },
+    "showLegalMoves": "有効な手を表示",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
     "showLastMove": "最後の動きを表示",
     "@showLastMove": {
         "description": "Show last move"
@@ -1082,6 +1046,10 @@
     "showArrows": "矢印を表示",
     "@showArrows": {
         "description": "Show arrows"
+    },
+    "pieces": "ピース",
+    "@pieces": {
+        "description": "Pieces"
     },
     "showAnalysis": "分析を表示",
     "@showAnalysis": {
@@ -1098,6 +1066,22 @@
     "helpImproveTranslate": "翻訳の改善にご協力ください",
     "@helpImproveTranslate": {
         "description": "Help improve translate"
+    },
+    "tutorial": "チュートリアル",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "クラシックミル",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "ミックスミル",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "セイロンミル",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
     },
     "mayBreakAndRemakeMillRepeatedly": "ミルは壊してすぐに別のミルを作ってもよい",
     "@mayBreakAndRemakeMillRepeatedly": {
@@ -1130,6 +1114,10 @@
     "emptyPoint": "空のポイント",
     "@emptyPoint": {
         "description": "Empty point"
+    },
+    "noPoint": "ポイントなし",
+    "@noPoint": {
+        "description": "No point"
     },
     "placingPhase": "配置段階",
     "@placingPhase": {
@@ -1246,6 +1234,10 @@
             }
         }
     },
+    "loadFailed": "読み込みに失敗しました。",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
     "filename": "ファイル名",
     "@filename": {
         "description": "File name"
@@ -1331,6 +1323,10 @@
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
     },
+    "paste": "貼り付け",
+    "@paste": {
+        "description": "Paste"
+    },
     "pasteDone": "貼り付け完了です。",
     "@pasteDone": {
         "description": "The paste is done."
@@ -1361,6 +1357,8 @@
     "@shareGIF": {},
     "pixelRatio": "ピクセル比",
     "@pixelRatio": {},
+    "duration": "時間",
+    "@duration": {},
     "gameScreenRecorder": "ゲームスクリーンレコーダー",
     "@gameScreenRecorder": {},
     "previous": "前",
@@ -1375,6 +1373,8 @@
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "マウス ホイールを使用して、ピッカーの値を変更できます。",
     "@youCanUseMouseWheelInPicker": {},
+    "noTimeLimitForThinking": "AI 思考時間を 0 に設定すると、思考の時間制限がなくなります。",
+    "@noTimeLimitForThinking": {},
     "whatIsMtdf": "MTD(f) は、中間検索結果を再利用し、適切な初期推定を使用して検索スペースを狭めることによって効率を向上させることを目的とした、アルファ ベータ検索アルゴリズムの修正された形式です。",
     "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "AIの思考時間の調整は完全に正確ではない可能性があることに注意してください。実際の思考時間は、難易度を低く設定すると短くなり、時間切れでAIが思考中の場合は長くなる場合があります。",

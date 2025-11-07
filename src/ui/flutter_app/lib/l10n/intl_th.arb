@@ -1133,25 +1133,29 @@
             }
         }
     },
-    "gameSavedTo": "เกมถูกบันทึกไว้ใน",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
-    "gameFiles": "ไฟล์เกม",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "loadFailed": "โหลดไม่สำเร็จ",
     "@loadFailed": {
         "description": "Load failed."
+    },
+    "filename": "ชื่อไฟล์",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "เรียกดู…",
     "@browse": {
         "description": "Browse…"
     },
-    "filename": "ชื่อไฟล์",
-    "@filename": {
-        "description": "File name"
+    "gameFiles": "ไฟล์เกม",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "gameSavedTo": "เกมถูกบันทึกไว้ใน",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
+    "empty": "ว่างเปล่า",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
     },
     "noMove": "ไม่มีการเคลื่อนไหว",
     "@noMove": {
@@ -1160,21 +1164,6 @@
     "restoredPosition": "เรียกคืนตำแหน่งเริ่มต้น",
     "@restoredPosition": {
         "description": "Restored initial position."
-    },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} ชิ้น}} จําเป็นต้องเอาออก",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "empty": "ว่างเปล่า",
-    "@empty": {
-        "description": "Empty point, used in setup position toolbar."
     },
     "clean": "ทำความสะอาด",
     "@clean": {
@@ -1191,6 +1180,17 @@
     "noPiecesCanBeRemoved": "ไม่สามารถถอดชิ้นส่วนได้",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} ชิ้น}} จําเป็นต้องเอาออก",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "วาง ({count})",
     "@placedCount": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "แบ่งปัน GIF",
     "@shareGIF": {},
-    "duration": "ระยะเวลา",
-    "@duration": {},
     "pixelRatio": "อัตราส่วนพิกเซล",
     "@pixelRatio": {},
+    "duration": "ระยะเวลา",
+    "@duration": {},
     "gameScreenRecorder": "เครื่องบันทึกหน้าจอเกม",
     "@gameScreenRecorder": {},
     "previous": "ก่อนหน้า",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI ตั้งค่าเวลาคิดเป็น 0 หมายความว่าไม่มีเวลาจำกัดสำหรับการคิด",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) เป็นรูปแบบที่แก้ไขแล้วของอัลกอริทึมการค้นหาอัลฟ่าเบต้า ซึ่งมีจุดมุ่งหมายเพื่อปรับปรุงประสิทธิภาพโดยการใช้ผลการค้นหาระดับกลางซ้ำ และใช้การคาดเดาเริ่มต้นที่ดีเพื่อจำกัดพื้นที่การค้นหาให้แคบลง",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "โปรดทราบว่าการปรับเวลาคิดของ AI อาจไม่แม่นยำทั้งหมด เวลาในการคิดจริงอาจสั้นลงเมื่อระดับความยากถูกตั้งค่าให้ต่ำลง และอาจนานขึ้นเมื่อ AI อยู่ระหว่างกลางเมื่อหมดเวลา",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "หากคุณตั้งระดับความยากไว้สูงแต่ไม่ได้เพิ่มเวลาคิดของ AI ระดับความยากจริงอาจถูกจำกัดให้มีค่าน้อยลงเนื่องจากข้อจำกัดของเวลาในการคิด ค่าจริงอาจแตกต่างกันไปตามประสิทธิภาพของเครื่อง",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) เป็นรูปแบบที่แก้ไขแล้วของอัลกอริทึมการค้นหาอัลฟ่าเบต้า ซึ่งมีจุดมุ่งหมายเพื่อปรับปรุงประสิทธิภาพโดยการใช้ผลการค้นหาระดับกลางซ้ำ และใช้การคาดเดาเริ่มต้นที่ดีเพื่อจำกัดพื้นที่การค้นหาให้แคบลง",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) เป็นอัลกอริธึมการค้นหาเพื่อค้นหาการเคลื่อนไหวที่ดีที่สุดในตำแหน่งที่กำหนด เป็นการปรับปรุงอัลกอริทึมอัลฟาเบต้าและใช้การค้นหาหน้าต่าง null หรือศูนย์เพื่อยืนยันว่าการย้ายนั้นแย่กว่าหรือไม่แย่กว่าคะแนนที่ปลอดภัยอยู่แล้วจากรูปแบบหลัก PVS มุ่งเน้นไปที่การเคลื่อนไหวที่มีแนวโน้มมากที่สุดและหลีกเลี่ยงการค้นหาสาขาที่ไม่เหมาะสมโดยไม่จำเป็น ซึ่งช่วยปรับปรุงประสิทธิภาพของการค้นหา",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "อัลกอริทึมอัลฟ่าเบต้าเป็นอัลกอริทึมการค้นหาเพื่อค้นหาการเคลื่อนไหวที่ดีที่สุด ใช้หลักการ minimax และค่าสองค่าคือ alpha และ beta เพื่อตัดแผนผังการค้นหาและเพิ่มประสิทธิภาพ อัลฟ่าแสดงถึงคะแนนขั้นต่ำที่คอมพิวเตอร์มั่นใจว่าจะได้ ในขณะที่เบต้าแสดงถึงคะแนนสูงสุดที่ฝ่ายตรงข้ามทำได้ อัลกอริทึมช่วยให้คอมพิวเตอร์ตัดสินใจอย่างชาญฉลาดและมีประสิทธิภาพในเกม",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "ในเกมนี้ผู้เล่นคนที่สองจะชนะได้ง่ายกว่าเมื่อเทียบกับผู้เล่นคนแรก",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "ตามประสบการณ์ของมนุษย์ ถ้าคุณพยายามที่จะชนะ คุณจะแพ้ ให้มุ่งไปที่ผลเสมอเป็นเป้าหมายของคุณและหลีกเลี่ยงการแพ้ในเกม สังเกตคู่ต่อสู้ของคุณและค่อย ๆ หลอกล่อพวกเขาไปยังตำแหน่งที่พวกเขาอาจทำผิดพลาดได้ เมื่อพวกเขาแสดงความอ่อนแอ ให้ฉวยโอกาสและผลักดันอย่างนุ่มนวลเพื่อชัยชนะ ด้วยวิธีนี้คุณสามารถชนะเกมได้",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "ในเกมนี้ผู้เล่นคนที่สองจะชนะได้ง่ายกว่าเมื่อเทียบกับผู้เล่นคนแรก",
+    "@firstMoveDetail": {},
     "passiveDetail": "การเปิดใช้งานตัวเลือกแบบพาสซีฟจะทำให้ AI ผ่อนคลายเมื่อมีข้อได้เปรียบในตำแหน่ง แทนที่จะพยายามอย่างแข็งขันเพื่อเอาชนะให้เร็วที่สุด",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "หาก AI คำนึงถึงความคล่องตัวของชิ้นส่วน มันจะไม่เพียงมุ่งจับชิ้นส่วนของฝ่ายตรงข้ามโดยเร็วที่สุด แต่ยังพิจารณาปิดกั้นการเคลื่อนไหวของฝ่ายตรงข้ามและป้องกันไม่ให้พวกเขาทำเช่นเดียวกัน",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "การเปิดใช้งานตัวเลือกนี้จะเพิ่มความสุ่มและความสนุกของเกม ในขณะที่การปิดใช้งานจะช่วยให้ศึกษาวิธีเอาชนะ AI ได้",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "หาก AI คำนึงถึงความคล่องตัวของชิ้นส่วน มันจะไม่เพียงมุ่งจับชิ้นส่วนของฝ่ายตรงข้ามโดยเร็วที่สุด แต่ยังพิจารณาปิดกั้นการเคลื่อนไหวของฝ่ายตรงข้ามและป้องกันไม่ให้พวกเขาทำเช่นเดียวกัน",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "เมื่อกระดานเต็ม",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "ในตอนท้ายของขั้นตอนการวาง ก่อนที่ขั้นตอนการเคลื่อนไหวจะเริ่มต้นขึ้น การดำเนินการจะตามมาหากกระดานเต็มไปด้วยชิ้นส่วน",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "ไม้ป่า",
     "@forestWood": {},
-    "greenMeadow": "ทุ่งหญ้าสีเขียว",
-    "@greenMeadow": {},
-    "stonyPath": "เส้นทางหิน",
-    "@stonyPath": {},
+    "darkMystery": "ความลึกลับดำมืด",
+    "@darkMystery": {},
     "midnightBlue": "มิดไนท์บลู",
     "@midnightBlue": {},
     "greenForest": "ป่าเขียว",
     "@greenForest": {},
+    "greenMeadow": "ทุ่งหญ้าสีเขียว",
+    "@greenMeadow": {},
+    "stonyPath": "เส้นทางหิน",
+    "@stonyPath": {},
     "pastelPink": "สีชมพูพาสเทล",
     "@pastelPink": {},
     "turquoiseSea": "ทะเลสีฟ้าคราม",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "สวนขี้เล่น",
     "@playfulGarden": {},
-    "darkMystery": "ความลึกลับดำมืด",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "อัลกอริธึมการวิเคราะห์ถอยหลังเข้าคลองใช้การวิเคราะห์ถอยหลังเข้าคลองแบบหลายค่าเพื่อสร้างฐานข้อมูลตอนจบเกมจากตำแหน่งเริ่มต้นที่แตกต่างกัน จากนั้นใช้ฐานข้อมูลนี้เพื่อเพิ่มประสิทธิภาพการเล่นเกม วิธีการนี้จัดอยู่ในประเภทของโซลูชันที่แข็งแกร่งเป็นพิเศษ",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "คุณต้องการดูคู่มือผู้ใช้สำหรับอัลกอริทึมนี้หรือไม่?",

@@ -1133,33 +1133,29 @@
             }
         }
     },
-    "filename": "Filnavn",
-    "@filename": {
-        "description": "File name"
-    },
-    "gameSavedTo": "Spillet er lagret til",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
-    "gameFiles": "Spillfiler",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "loadFailed": "Lasten mislyktes.",
     "@loadFailed": {
         "description": "Load failed."
+    },
+    "filename": "Filnavn",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "Bla gjennom…",
     "@browse": {
         "description": "Browse…"
     },
+    "gameFiles": "Spillfiler",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "gameSavedTo": "Spillet er lagret til",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
     "empty": "Tømme",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
-    },
-    "noPiecesCanBeRemoved": "Ingen biter kan fjernes.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
     },
     "noMove": "Ingen bevegelse.",
     "@noMove": {
@@ -1181,16 +1177,9 @@
     "@remove": {
         "description": "Remove"
     },
-    "placedCount": "Plassert ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "noPiecesCanBeRemoved": "Ingen biter kan fjernes.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} må fjernes.",
     "@pieceCountNeedToRemove": {
@@ -1198,6 +1187,17 @@
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Plassert ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Del GIF",
     "@shareGIF": {},
-    "duration": "Varighet",
-    "@duration": {},
     "pixelRatio": "Pikselforhold",
     "@pixelRatio": {},
+    "duration": "Varighet",
+    "@duration": {},
     "gameScreenRecorder": "Spillskjermopptaker",
     "@gameScreenRecorder": {},
     "previous": "Tidligere",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Tenketid satt til 0 betyr at det ikke er noen tidsbegrensning for å tenke.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) er en modifisert form av alfa-beta-søkealgoritmen som har som mål å forbedre effektiviteten ved å gjenbruke mellomliggende søkeresultater og bruke en god innledende gjetning for å begrense søkeområdet.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Vær oppmerksom på at AI-tenkningstidsjusteringen kanskje ikke er helt presis. Den faktiske tenketiden kan være kortere når vanskelighetsgraden er satt til en lavere verdi og kan være lengre når AI-en er midt i tanken når tiden renner ut.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Hvis du setter vanskelighetsnivået høyt, men ikke øker AI-tenketiden, kan det faktiske vanskelighetsnivået begrenses til en lavere verdi på grunn av tenketidsbegrensningen. Den faktiske verdien kan variere basert på maskinens ytelse.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) er en modifisert form av alfa-beta-søkealgoritmen som har som mål å forbedre effektiviteten ved å gjenbruke mellomliggende søkeresultater og bruke en god innledende gjetning for å begrense søkeområdet.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) er en søkealgoritme for å finne det beste trekket i en gitt posisjon. Det er en forbedring av alfa-beta-algoritmen og bruker null- eller null-vindusøk for å bekrefte at et trekk er dårligere eller ikke dårligere enn en allerede sikker poengsum fra hovedvarianten. PVS fokuserer på de mest lovende trekkene og unngår unødvendige søk etter suboptimale grener, noe som bidrar til å forbedre søkets effektivitet.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta-algoritmen er en søkealgoritme for å finne det beste trekket. Den bruker minimax-prinsippet og to verdier, alfa og beta, for å beskjære søketreet og øke effektiviteten. Alfa representerer den minste poengsummen datamaskinen er sikker på at den kan få, mens beta representerer den maksimale poengsummen motstanderen kan få. Algoritmen hjelper datamaskinen med å ta smarte, effektive avgjørelser i et spill.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "I dette spillet er det lettere for den andre spilleren å vinne sammenlignet med den første spilleren.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Ifølge menneskelig erfaring, hvis du prøver å vinne, vil du tape. Sikt i stedet på uavgjort som mål og unngå å tape spillet. Observer motstanderen din og lok dem forsiktig inn i en posisjon der de kan gjøre feil. Når de viser svakhet, grip muligheten og press forsiktig for å vinne. På denne måten kan du vinne spillet.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "I dette spillet er det lettere for den andre spilleren å vinne sammenlignet med den første spilleren.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Aktivering av det passive alternativet vil få AI til å slappe av når den har en fordel i posisjonen, i stedet for aggressivt å prøve å vinne så raskt som mulig.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Hvis AI vurderer mobiliteten til brikkene sine, vil den ikke bare ta sikte på å fange motstanderens brikker så raskt som mulig, men også vurdere å blokkere motstanderens bevegelser og hindre dem i å gjøre det samme.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Aktivering av dette alternativet øker tilfeldigheten og moroa i spillet, mens deaktivering kan hjelpe med å studere måter å slå AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Hvis AI vurderer mobiliteten til brikkene sine, vil den ikke bare ta sikte på å fange motstanderens brikker så raskt som mulig, men også vurdere å blokkere motstanderens bevegelser og hindre dem i å gjøre det samme.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Når brettet er fullt",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "På slutten av plasseringsfasen, før flyttefasen begynner, følger handlingen hvis brettet er fullt av brikker.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Forest Wood",
     "@forestWood": {},
-    "greenMeadow": "Grønn Eng",
-    "@greenMeadow": {},
-    "stonyPath": "Steinete sti",
-    "@stonyPath": {},
+    "darkMystery": "Dark Mystery",
+    "@darkMystery": {},
     "midnightBlue": "Midnatt blå",
     "@midnightBlue": {},
     "greenForest": "Grønn skog",
     "@greenForest": {},
+    "greenMeadow": "Grønn Eng",
+    "@greenMeadow": {},
+    "stonyPath": "Steinete sti",
+    "@stonyPath": {},
     "pastelPink": "Pastell rosa",
     "@pastelPink": {},
     "turquoiseSea": "Turkis hav",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Leken hage",
     "@playfulGarden": {},
-    "darkMystery": "Dark Mystery",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritmen for retrograd analyse bruker retrograd analyse med flere verdier for å bygge en sluttspilldatabase fra forskjellige startposisjoner, og bruker deretter denne databasen for å optimalisere spillingen. Denne tilnærmingen faller inn under kategorien Ultra-Strong-løsninger.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Vil du se brukerveiledningen for denne algoritmen?",

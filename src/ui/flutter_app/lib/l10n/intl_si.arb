@@ -1,85 +1,5 @@
 {
     "@@locale": "si",
-    "loseReasonTimeOver": "කාලය අවසන්, {player} පරාජය විය.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
-    },
-    "about": "ගැන",
-    "@about": {
-        "description": "About"
-    },
-    "version": "අනුවාදය: {versionNumber}",
-    "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
-    },
-    "mayRemoveFromMillsAlways_Detail": "සාමාන්‍යයෙන්, ක්‍රීඩකයන් සෑදුනු මිල්ලකින් කැබලියක් ඉවත් කිරීමට පෙර වෙනත් කැබලි ඉවත් කල යුතුයි. මෙම සීමාව අක්‍රීය කිරීමට මෙම විකල්පය සක්‍රීය කරන්න.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "mayFly": "පියාසර",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "nMoveRule": "එන්-චලන නීතිය",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "statistics": "සංඛ්‍යානය",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "සමස්ත ක්‍රීඩා",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "ප්‍රතිඵල",
-    "@results": {
-        "description": "Results"
-    },
-    "left": "වම",
-    "@left": {
-        "description": "left"
-    },
-    "crackMill": "මිල්ල බිඳ දමන්න",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "removing": "ඉවත් කිරීම",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "ක්‍රීඩාව අවසන් තත්වය",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "pieceCount": "කැබලි ගණන:",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "top": "ඉහළ",
-    "@top": {
-        "description": "Top"
-    },
-    "previous": "පෙර",
-    "@previous": {},
-    "next": "ඊළඟ",
-    "@next": {},
-    "skyBlue": "අහස් නිල්",
-    "@skyBlue": {},
-    "usePerfectDatabase": "පරිපූර්ණ දත්ත ගබඩාව භාවිතා කරන්න",
-    "@usePerfectDatabase": {},
     "appName": "නෙරෙන්චි",
     "@appName": {
         "description": "The app name"
@@ -104,13 +24,13 @@
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "aiVsAi": "AI විරුද්ධ AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
     "humanVsHuman": "මිනිස්සු එරෙහිව මිනිස්සු",
     "@humanVsHuman": {
         "description": "Human Vs Human"
+    },
+    "aiVsAi": "AI විරුද්ධ AI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
     },
     "humanVsCloud": "මිනිස්සු එරෙහිව ක්ලවුඩ්",
     "@humanVsCloud": {
@@ -123,14 +43,6 @@
     "testViaLAN": "LAN හරහා පරීක්ෂණය",
     "@testViaLAN": {
         "description": "Test Via LAN"
-    },
-    "ok": "හරි",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "ස්ථීර කරන්න",
-    "@confirm": {
-        "description": "Confirm"
     },
     "move": "චලනය",
     "@move": {
@@ -148,6 +60,14 @@
     "@noGameRecord": {
         "description": "No record"
     },
+    "ok": "හරි",
+    "@ok": {
+        "description": "OK"
+    },
+    "confirm": "ස්ථීර කරන්න",
+    "@confirm": {
+        "description": "Confirm"
+    },
     "cancel": "අවලංගු",
     "@cancel": {
         "description": "Cancel"
@@ -155,6 +75,10 @@
     "tipSelectWrong": "වැරදි කෑල්ල තෝරන්න.",
     "@tipSelectWrong": {
         "description": "Select the wrong piece."
+    },
+    "tipPlace": "ඔබේ කැබලි තැබීම.",
+    "@tipPlace": {
+        "description": "Place your pieces."
     },
     "tipBanPlace": "ඔබට මෙහි තැබීමට නොහැක.",
     "@tipBanPlace": {
@@ -258,13 +182,13 @@
     "@newGame": {
         "description": "New game"
     },
-    "exportGame": "ක්‍රීඩාව අපනයනය කරන්න",
-    "@exportGame": {
-        "description": "Export game"
-    },
     "importGame": "ක්‍රීඩාව ආයාත කරන්න",
     "@importGame": {
         "description": "Import game"
+    },
+    "exportGame": "ක්‍රීඩාව අපනයනය කරන්න",
+    "@exportGame": {
+        "description": "Export game"
     },
     "gameImported": "ක්‍රීඩාව ආනයනය කරන ලදී.",
     "@gameImported": {
@@ -288,13 +212,13 @@
     "@pleaseWait": {
         "description": "Please wait..."
     },
-    "restart": "නැවත ආරම්භ කරන්න",
-    "@restart": {
-        "description": "Restart"
-    },
     "restartGame": "වත්මන් ක්‍රීඩාව නැවත ආරම්භ කරනවාද?",
     "@restartGame": {
         "description": "Restart current game?"
+    },
+    "restart": "නැවත ආරම්භ කරන්න",
+    "@restart": {
+        "description": "Restart"
     },
     "gameStarted": "ක්‍රීඩාව අරඹා ඇත, කරුණාකර තැන් පිටත් කරන්න.",
     "@gameStarted": {
@@ -350,6 +274,16 @@
             }
         }
     },
+    "loseReasonNoWay": "{player} යාමට ක්‍රමයක් නැත.",
+    "@loseReasonNoWay": {
+        "description": "Indicate that the player has no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
+    },
     "loseReasonBoardIsFull": "පුවරුව පිරී ඇත, සහ {player} යාමට ක්‍රමයක් නැත.",
     "@loseReasonBoardIsFull": {
         "description": "Indicate that the player has no way to go because the board is full.",
@@ -360,9 +294,9 @@
             }
         }
     },
-    "loseReasonNoWay": "{player} යාමට ක්‍රමයක් නැත.",
-    "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
+    "loseReasonTimeOver": "කාලය අවසන්, {player} පරාජය විය.",
+    "@loseReasonTimeOver": {
+        "description": "Time Over",
         "placeholders": {
             "player": {
                 "description": "The player who lost",
@@ -394,6 +328,17 @@
     "@youWin": {
         "description": "You win! Congratulations!"
     },
+    "challengeHarderLevel": "දුෂ්කර මට්ටමකට අභියෝග කිරීමටද? නව මට්ටම මට්ටම {level} වේවි!",
+    "@challengeHarderLevel": {
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
     "youLose": "ඔබ පරාජය විය!",
     "@youLose": {
         "description": "You Lose!"
@@ -401,6 +346,20 @@
     "analyze": "විශ්ලේෂණය කරන්න",
     "@analyze": {
         "description": "Analyze"
+    },
+    "about": "ගැන",
+    "@about": {
+        "description": "About"
+    },
+    "version": "අනුවාදය: {versionNumber}",
+    "@version": {
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "ස්තුතියි",
     "@thanks": {
@@ -490,6 +449,14 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
+    "flyPieceCount": "පියාසර කැස් සංඛ්‍යාව",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
+    "flyPieceCount_Detail": "පියාසර කිරීම සක්‍රීය වූ විට, ක්‍රීඩකයාගේ කැස් සංඛ්‍යාවකට අඩු වූ විට, ඇයගේ කැස් ක්‍රීඩාවේ අනෙකුත් කොටස්වලදී ආසන්න ලක්‍ෂ්‍යයන්ට සීමා කර නොගෙන ඕනෑම අනාරක්‍ෂිත ලක්‍ෂ්‍යයකට චලනය කළ හැකිය.",
+    "@flyPieceCount_Detail": {
+        "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
     "piecesAtLeastCount": "කැස් අවම",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
@@ -501,14 +468,6 @@
     "hasDiagonalLines_Detail": "පුවරුවට සමාන්තර රේඛා හතරක් එක් කරන්න.",
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
-    },
-    "flyPieceCount": "පියාසර කැස් සංඛ්‍යාව",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "පියාසර කිරීම සක්‍රීය වූ විට, ක්‍රීඩකයාගේ කැස් සංඛ්‍යාවකට අඩු වූ විට, ඇයගේ කැස් ක්‍රීඩාවේ අනෙකුත් කොටස්වලදී ආසන්න ලක්‍ෂ්‍යයන්ට සීමා කර නොගෙන ඕනෑම අනාරක්‍ෂිත ලක්‍ෂ්‍යයකට චලනය කළ හැකිය.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
     "isDefenderMoveFirst": "දෙවන ක්‍රීඩකයා පළමුව චලනය කරයි",
     "@isDefenderMoveFirst": {
@@ -522,9 +481,17 @@
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
+    "mayRemoveMultiple_Detail": "ක්‍රීඩකයෙක් එකවර වැඩියෙන් මිල් වසා දමන්නේ නම්, ඇය වසා දැමූ මිල් ගණන ඉවත් කරනු ඇත.",
+    "@mayRemoveMultiple_Detail": {
+        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
     "mayRemoveFromMillsAlways": "මිල්ලයන් විනාශ කරන්න",
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
+    },
+    "mayRemoveFromMillsAlways_Detail": "සාමාන්‍යයෙන්, ක්‍රීඩකයන් සෑදුනු මිල්ලකින් කැබලියක් ඉවත් කිරීමට පෙර වෙනත් කැබලි ඉවත් කල යුතුයි. මෙම සීමාව අක්‍රීය කිරීමට මෙම විකල්පය සක්‍රීය කරන්න.",
+    "@mayRemoveFromMillsAlways_Detail": {
+        "description": "mayRemoveFromMillsAlways_Detail"
     },
     "isWhiteLoseButNotDrawWhenBoardFull": "පුවරුව පිරෙන විට දෙවන ක්‍රීඩකයා පරාජය වේ",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
@@ -542,9 +509,17 @@
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
     },
+    "mayFly": "පියාසර",
+    "@mayFly": {
+        "description": "Flying"
+    },
     "mayFly_Detail": "ක්‍රීඩකයෙකුට කැබලි තුනක් හෝ හතරක් (වින්‍යාස කළ හැකි) පමණක් ඉතිරි වී තිබේ නම්, ඇයට කැබලිය කිසිදු නිදහස් ලකුණකට චලනය කළ හැකිය.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "එන්-චලන නීතිය",
+    "@nMoveRule": {
+        "description": "N-move rule"
     },
     "nMoveRule_Detail": "නිශ්චිත චලන ගණනක් තුළ කැබලි ඉවත් කිරීමක් නොවී තිබේ නම් ක්‍රීඩාව සම වේ.",
     "@nMoveRule_Detail": {
@@ -716,6 +691,26 @@
     "@needToPlayWithOwnPieces": {
         "description": "You need to play with your pieces."
     },
+    "statistics": "සංඛ්‍යානය",
+    "@statistics": {
+        "description": "Statistics"
+    },
+    "totalGames": "සමස්ත ක්‍රීඩා",
+    "@totalGames": {
+        "description": "Total games"
+    },
+    "results": "ප්‍රතිඵල",
+    "@results": {
+        "description": "Results"
+    },
+    "left": "වම",
+    "@left": {
+        "description": "left"
+    },
+    "privacyPolicy": "පෞද්ගලිකත්ව ප්‍රතිපත්තිය",
+    "@privacyPolicy": {
+        "description": "Privacy Policy"
+    },
     "privacyPolicy_Detail_1": "කරුණාකර සවිස්තරයෙන් කියවා, මෙම සමඟ ඔබ එකඟ බවට හා එය සම්පූර්ණයෙන්ම ඔබ තේරුම් ගන්නා බවට වහාම තහවුරු කරන්න ",
     "@privacyPolicy_Detail_1": {
         "description": "Privacy Policy Detail 1"
@@ -729,10 +724,6 @@
     "accept": "එකඟ වෙන්න",
     "@accept": {
         "description": "Accept"
-    },
-    "privacyPolicy": "පෞද්ගලිකත්ව ප්‍රතිපත්තිය",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
     },
     "takeBack": "ආපසු ගන්න",
     "@takeBack": {
@@ -766,6 +757,10 @@
     "@done": {
         "description": "Done."
     },
+    "crackMill": "මිල්ල බිඳ දමන්න",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
     "crackMill_Detail": "ක්‍රීඩකයෙකුට මිල්ලවල පමණක් කැබලි තිබේ නම්, මිල්ලවල කැබලි ඉවත් කිරීමට අගුළු දැමීමට නොවේ.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
@@ -774,13 +769,13 @@
     "@animationDuration": {
         "description": "Animation duration"
     },
-    "theme": "තේමාව",
-    "@theme": {
-        "description": "Theme"
-    },
     "none": "කිසිවක් නැත",
     "@none": {
         "description": "None"
+    },
+    "theme": "තේමාව",
+    "@theme": {
+        "description": "Theme"
     },
     "helpContent": "මෙම ක්‍රීඩාව ඉලක්කය වන්නේ ප්‍රතිපක්ෂයට තුනට වඩා අඩු කෑලි ඉතිරි කිරීම හෝ නීතිවිරෝධී චලන නොමැති කිරීමයි.\n\nක්‍රීඩාව තීරණාත්මක තත්වයක් තුන් වරක් සිදුවේ නම් හෝ අවසාන 100 (වින්‍යාස කළ හැකි) චලනවලින් කෑලි ඉවත් නොකරන නම් ක්‍රීඩාව ස්වයංක්‍රීයව මුදාහැරේ.\n\nක්‍රීඩාව තුන් අදියරවලින් ඉදිරියට යයි:\n\n1. හිස් ලක්ෂ්‍ය තැන්වල කෑලි තැබීම\n2. කෑලි ආසන්න ලක්ෂ්‍ය තැන් වෙත ගමන් කිරීම\n3. (විකල්ප අදියර) ක්‍රීඩකයාට කෑලි තුනකට හැරවූ විට ඕනෑම හිස් ලක්ෂ්‍යයකට කෑලි ගමන් කිරීම\n\nතැබීම\n\nක්‍රීඩාව හිස් පුවරුවක් සමඟ ආරම්භ වේ, එය විසිහතර ලක්ෂ්‍ය සහිත ජාලකයකි. ක්‍රීඩකයෝ තමන්ගේ කෑලි හිස් ලක්ෂ්‍යයන් මත තැබීමට පාරිභෝග\n\nිකයෝ වෙත මාරු වේ, එක් එක් ක්‍රීඩකයා සියලු කෑලි පුවරුව මත තැබීමට තැබීමට තැබේ. ක්‍රීඩකයෙකු තම කෑලි තුනක් සෘජුවම තබන විට, ඔහුට \"මිල්\" ඇති වේ සහ ප්‍රතිපක්ෂයේ කෑලි එකක් පුවරුවෙන් ඉවත් කළ හැකිය.\n\nසමහර නීතිවල, ක්‍රීඩකයෝ සෑදුණු මිල් එකකින් කෑලි එකක් ඉවත් කිරීමට පෙර වෙනත් කෑලි ඉවත් කළ යුතුය.\n\nතැබීමේ අදියරේදී ඉවත් කළ කෑලි ලක්ෂ්‍යන්ට නැවත කෑලි තැබීමට නොහැකිය සමහර නීතිවල.\n\nසියලු කෑලි භාවිතා කර ගත් පසු, ක්‍රීඩකයෝ මාරුවෙති.\n\nගමන් කිරීම\n\nගමන් කිරීමට, ක්‍රීඩකයෙකු තමන්ගේ කෑලි එකක් පුවරුවේ රේඛාවක් ඔස්සේ හිස් ආසන්න ලක්ෂ්‍යයකට ගමන් කරයි. ඔහු එසේ කළ නොහැකි නම්, ඔහු ක්‍රීඩාව පරාජය කර ඇත. ක්‍රීඩකයෙකු තමන\n\n්ගේ කෑලි තුනක් පුවරුවේ රේඛාවක ගෙන යන විට, ඔහුට මිල් ඇති වේ සහ තැබීමේ අදියරේදී වාගේ ප්‍රතිපක්ෂයේ කෑලි එකක් ඉවත් කළ හැකිය. කෑලි දෙකකට අඩුවූ කිසිදු ක්‍රීඩකයෙකුට නව මිල් සාදන්නේ නැත, එසේම ඔහු ක්‍රීඩාව පරාජය කර ඇත. ක්‍රීඩකයෙකු තමන්ගේ කෑලි තුනට වඩා වැඩියේදී ද ප්‍රතිපක්ෂය ඔහුගේ චලන වාරණය කරන විට ඔහු පරාජය කරයි.\n\nඉගිලීම\n\nසමහර නීති විකල්පයන්හි, ක්‍රීඩකයෙකුට කෑලි තුනක් ඉතිරි වූ විට, ඔහුගේ කෑලි ඉගිලීමට, හපන්නට හෝ පැන යාමට හැකිය, එනම් ආසන්න ලක්ෂ්‍යයන්ට පමණක් නොව ඕනෑම හිස් ලක්ෂ්‍යයකටය.\n",
     "@helpContent": {
@@ -822,6 +817,14 @@
     "@moving": {
         "description": "Moving"
     },
+    "removing": "ඉවත් කිරීම",
+    "@removing": {
+        "description": "Removing"
+    },
+    "gameOverCondition": "ක්‍රීඩාව අවසන් තත්වය",
+    "@gameOverCondition": {
+        "description": "Game over condition"
+    },
     "aisPlayStyle": "යන්ත්‍ර මානසිකත්වය",
     "@aisPlayStyle": {
         "description": "AI's play style"
@@ -845,6 +848,10 @@
     "considerMobility": "කැබලි සංචලනය සලකා බලන්න",
     "@considerMobility": {
         "description": "Consider mobility of pieces"
+    },
+    "pieceCount": "කැබලි ගණන:",
+    "@pieceCount": {
+        "description": "Piece count"
     },
     "inHand": "{player} අතේ: {count}",
     "@inHand": {
@@ -964,6 +971,10 @@
     "@toolbarLocationOnScreen": {
         "description": "Toolbar location on screen"
     },
+    "top": "ඉහළ",
+    "@top": {
+        "description": "Top"
+    },
     "bottom": "පහළ",
     "@bottom": {
         "description": "Bottom"
@@ -1080,6 +1091,10 @@
     "@mayBreakAndRemakeMillRepeatedly_Detail": {
         "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
     },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ක්‍රීඩකයෙකුට කැබලි තුනක් තිබෙන අවස්ථාවක දස චාලක පසුව කිසිදු ක්‍රීඩකයෙකු ප්‍රතිපක්ෂයේ කැබලි ඉවත් නොකරන විට තරඟය ඇදීමක් වේ",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ක්‍රීඩකයෙකුට කැබලි තුනක් පමණක් තිබෙන විට, හා කිසිදු ක්‍රීඩකයෙකුට චලන දහයක් තුළ ප්‍රතිපක්ෂයේ කැබලියක් ඉවත් කළ නොහැකි විට, ක්‍රීඩාව සම වේ.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
@@ -1112,17 +1127,9 @@
     "@movingPhase": {
         "description": "Moving phase"
     },
-    "selected": "තෝරාගත්",
-    "@selected": {
-        "description": "Selected"
-    },
     "flyingPhase": "පියාසර අවධිය",
     "@flyingPhase": {
         "description": "Flying phase"
-    },
-    "accessibility": "ප්‍රවේශය",
-    "@accessibility": {
-        "description": "Accessibility"
     },
     "sideToMove": "චලනය කිරීමට පැත්ත: {player}",
     "@sideToMove": {
@@ -1143,6 +1150,14 @@
                 "example": "d2-d3"
             }
         }
+    },
+    "selected": "තෝරාගත්",
+    "@selected": {
+        "description": "Selected"
+    },
+    "accessibility": "ප්‍රවේශය",
+    "@accessibility": {
+        "description": "Accessibility"
     },
     "screenReaderSupport": "තිර කියවන සහාය",
     "@screenReaderSupport": {
@@ -1172,13 +1187,13 @@
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
-    "threefoldRepetitionRule": "තුන් ගුණ නැවත නැවතීමේ නීතිය",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
     "drawReasonEndgameRule50": "එක් එක් ක්‍රීඩකයෙකුට කැබලි තුනක් පමණක් තිබෙනවා, හා නියමිත චලන තුළ කිසිදු ක්‍රීඩකයෙකු කැබලියක් ඉවත් නොකරන විට ක්‍රීඩාව සම වේ.",
     "@drawReasonEndgameRule50": {
         "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "තුන් ගුණ නැවත නැවතීමේ නීතිය",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
     },
     "threefoldRepetitionRule_Detail": "තත්වයක් තුන්වන වතාවට ඇති වීමේදී ක්‍රීඩාව සම වේ.",
     "@threefoldRepetitionRule_Detail": {
@@ -1223,13 +1238,13 @@
     "@loadFailed": {
         "description": "Load failed."
     },
-    "browse": "බ්‍රවුස් කරන්න…",
-    "@browse": {
-        "description": "Browse…"
-    },
     "filename": "ගොනු නාමය",
     "@filename": {
         "description": "File name"
+    },
+    "browse": "බ්‍රවුස් කරන්න…",
+    "@browse": {
+        "description": "Browse…"
     },
     "gameFiles": "ක්‍රීඩා ගොනු",
     "@gameFiles": {
@@ -1267,6 +1282,17 @@
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
     },
+    "pieceCountNeedToRemove": "{count,plural, =0{කැබලි නැත}=1{{count} කැබලිය}other{{count} කැබලි}} ඉවත් කල යුතුය.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
     "placedCount": "තැබූ ({count})",
     "@placedCount": {
         "description": "Placed N pieces. Used in setup position toolbar.",
@@ -1277,6 +1303,10 @@
                 "example": "3"
             }
         }
+    },
+    "placedPieceCount": "තැබීමේ අවධියේදී තැබූ කැබලි ගණන.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "වර්තමාන ක්‍රීඩකයා කැබලි {count} ක් තැබීමට සමත් විය.",
     "@hasPlacedPieceCount": {
@@ -1327,8 +1357,14 @@
     "@shareGIF": {},
     "pixelRatio": "පික්සල අනුපාතය",
     "@pixelRatio": {},
+    "duration": "කාලය",
+    "@duration": {},
     "gameScreenRecorder": "ක්‍රීඩා තිර රෙකෝඩරය",
     "@gameScreenRecorder": {},
+    "previous": "පෙර",
+    "@previous": {},
+    "next": "ඊළඟ",
+    "@next": {},
     "skip": "මග හරින්න",
     "@skip": {},
     "gotIt": "ගත්තා",
@@ -1397,18 +1433,18 @@
     "@aiIsDelaying": {},
     "tipCanNotRemoveNonadjacent": "ඔබට අසමීපිත කැබලියක් ඉවත් කළ නොහැක.",
     "@tipCanNotRemoveNonadjacent": {},
-    "forestWood": "වන ලී",
-    "@forestWood": {},
-    "darkMystery": "අඳුරු අබිරහස",
-    "@darkMystery": {},
-    "midnightBlue": "මැදියමේ නිල්",
-    "@midnightBlue": {},
     "stalemateRemovalRegardlessOfMillFormation": "ජරාවක් තිබේ නම්, ඔබේ ආසන්නයේ ප්‍රතිපක්ෂයේ කැබලි ඉවත් කළ හැක, ගල් යන්ත්‍රයේ සැකසුමක් තිබුණද වුවද.",
     "@stalemateRemovalRegardlessOfMillFormation": {},
     "whatIsMcts": "MCTS යනු නව ක්‍රීඩකයින්ට පහසු අල්ගොරිතමකි, එය අනුකරණයන් හරහා විවිධ චලන ගවේෂණය කරමින් සහ ඇගයීම් කරමින් තීරණ ගනී.",
     "@whatIsMcts": {},
     "goldenJade": "ස්වර්ණ මැණික්",
     "@goldenJade": {},
+    "forestWood": "වන ලී",
+    "@forestWood": {},
+    "darkMystery": "අඳුරු අබිරහස",
+    "@darkMystery": {},
+    "midnightBlue": "මැදියමේ නිල්",
+    "@midnightBlue": {},
     "greenForest": "කොළ වනය",
     "@greenForest": {},
     "greenMeadow": "කොළ ගොමරුව",
@@ -1417,8 +1453,14 @@
     "@stonyPath": {},
     "pastelPink": "පැස්ටල් රෝස",
     "@pastelPink": {},
+    "turquoiseSea": "තර්කුවාස් සාගරය",
+    "@turquoiseSea": {},
+    "violetDream": "වයලට් සිහිනය",
+    "@violetDream": {},
     "mintChocolate": "මින්ට් චොක්ලට්",
     "@mintChocolate": {},
+    "skyBlue": "අහස් නිල්",
+    "@skyBlue": {},
     "playfulGarden": "විනෝද උයන",
     "@playfulGarden": {},
     "whatIsRetrogradeAnalysis": "රිට්‍රෝග්‍රේඩ් විශ්ලේෂණ අල්ගොරිතමය බහු-අගය රිට්‍රෝග්‍රේඩ් විශ්ලේෂණය භාවිතා කර විවිධ ආරම්භක තත්වයන්ගෙන් අන්තිම ක්‍රීඩා දත්ත ගබඩාවක් ගොඩනගා, එවිට මෙම දත්ත ගබඩාව ක්‍රීඩා ප්‍රවාහය ප්‍රවර්ධනය කිරීමට අයදුම් කරයි. මෙම ප්‍රවේශය අති-ශක්තිමත් විසඳුම් ප්‍රවර්ගයට අයත් වේ.",
@@ -1427,56 +1469,14 @@
     "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "තත්ව වාසි දර්ශකය පෙන්වන්න",
     "@showPositionalAdvantageIndicator": {},
-    "turquoiseSea": "තර්කුවාස් සාගරය",
-    "@turquoiseSea": {},
-    "violetDream": "වයලට් සිහිනය",
-    "@violetDream": {},
-    "backgroundImage": "පසුබිම් රූපය",
-    "@backgroundImage": {},
+    "usePerfectDatabase": "පරිපූර්ණ දත්ත ගබඩාව භාවිතා කරන්න",
+    "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "අල්ලා නොලැබෙන ගේම් දත්ත ගබඩාවක් භාවිතා කිරීමට මෙම විකල්පය සක්‍රීය කරන්න. මෙම අංගය ආරම්භක හා අවසාන ක්‍රීඩා උපායන් දෙකම එක්කර අනුකූල චලන යෝජනා කරයි. ක්‍රීඩා ප්‍රවාහයේ උපරිම නිරවද්‍යතාවය සොයන ක්‍රීඩකයන්ට මෙය වඩාත් කැමති තේරීමකි. සුක්ෂ්ම ගණිතමය ක්‍රමවේදයන් හරහා සාදා ඇති දත්ත ගබඩාව ප්‍රායෝගිකත්වයේ නිමැවුම් සමීප ගේම් විසඳුම් ලබා දීමට නිර්මාණය කර ඇත.\n\nසටහන: AIට දත්ත ගබඩාවට ප්‍රවේශ වීමට නොහැකි වූවා නම්, එය ක්‍රීඩා තීරණ සඳහා සාමාන්‍ය අල්ගොරිතමවලට යොමු වේ. දත්ත ගබඩාව පවතින විට 'ක්‍රීඩා අභියෝගතා මට්ටම' අභිබවා යා නොහැකි වේ, සහ 'AI සිතුවිලි කාලය' දැඩි ලෙස අඩු වේ. 'AI ස්ටයිල් ප්ලේ' තේරීම්වල බොහෝ සැකසුම් දත්ත ගබඩා ප්‍රතිඵල ඉහළම ප්‍රමුඛතාව ගනු ලබන නිසා අභිබවා යනු ඇත.\n\nමෙම නිර්දෝෂ දත්ත ගබඩාවෙන් හොඳම ප්‍රතිලාභය ලබා ගැනීමට උපදෙස් සඳහා, මෙතන ක්ලික් කරන්න.",
     "@perfectDatabaseDescription": {},
+    "backgroundImage": "පසුබිම් රූපය",
+    "@backgroundImage": {},
     "whatIsRandom": "පරිපූර්ණ දත්ත ගබඩාව භාවිතා කරන්න' විකල්පය සක්‍රීය නොකළ විට, 'අහඹු' සැකසුම නිසා AIට චලන කැබලි අහඹුවෙන් චලනය කරන්නේ මෙවීම් තේරීම සඳහා කිසිදු අල්ගොරිතමයක් භාවිතා නොකරයි. මෙය සාමාන්‍යයෙන් අඩු ශක්තිමත් ක්‍රීඩා ප්‍රවාහයක් ගෙන එයි. අනෙක් අතට, 'පරිපූර්ණ දත්ත ගබඩාව භාවිතා කරන්න' විකල්පය සක්‍රීය කළ විට, AI තීරණ ගැනීමේ සඳහා 'පරිපූර්ණ දත්ත ගබඩාව' පමණක් යොදා ගනී, එය සාමාන්‍ය AI අල්ගොරිතමයන් සමඟ මිශ්‍ර නොකර. මෙම ප්‍රකාරයේදී, AIගේ චලන සම්පූර්ණයෙන්ම දත්ත ගබඩාවේ අන්තර්ගතය මත පදනම් වේ, වාස්තවික කාලීන ගණනයන් හෝ සෙවුම් අල්ගොරිතමයන් මත පැතිර නොවීමට යයි.",
     "@whatIsRandom": {},
-    "tipPlace": "ඔබේ කැබලි තැබීම.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "mayRemoveMultiple_Detail": "ක්‍රීඩකයෙක් එකවර වැඩියෙන් මිල් වසා දමන්නේ නම්, ඇය වසා දැමූ මිල් ගණන ඉවත් කරනු ඇත.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ක්‍රීඩකයෙකුට කැබලි තුනක් තිබෙන අවස්ථාවක දස චාලක පසුව කිසිදු ක්‍රීඩකයෙකු ප්‍රතිපක්ෂයේ කැබලි ඉවත් නොකරන විට තරඟය ඇදීමක් වේ",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "duration": "කාලය",
-    "@duration": {},
-    "pieceCountNeedToRemove": "{count,plural, =0{කැබලි නැත}=1{{count} කැබලිය}other{{count} කැබලි}} ඉවත් කල යුතුය.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "placedPieceCount": "තැබීමේ අවධියේදී තැබූ කැබලි ගණන.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
-    },
-    "challengeHarderLevel": "දුෂ්කර මට්ටමකට අභියෝග කිරීමටද? නව මට්ටම මට්ටම {level} වේවි!",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
-    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "ප්‍රතිවාදීන්ගේ කැබලි(ය) ඔවුන්ගේ අතින් ඉවත් කරන්න; ඉන්පසු එය ප්‍රතිවාදීන්ගේ තැබීමේ වරයි.",
     "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
     "whenFormingMillsDuringPlacingPhase": "තැබීමේ අවධියේදී නෙරෙන්චි නිර්මාණය කිරීමේදී",
@@ -1505,12 +1505,12 @@
     "@marked": {},
     "menu": "මෙනුව",
     "@menu": {},
-    "showNumbersOnPieces": "කැබලි මත අංක පෙන්වන්න",
-    "@showNumbersOnPieces": {},
     "monochrome": "එකාබද්ධ",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "ඔබට පොදු සැකසුම් වල ප්‍රවේශය සැකසුම් තුළ තිර කියවන සහය ස්විචය සක්‍රීය කළ හැකිය.",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "කැබලි මත අංක පෙන්වන්න",
+    "@showNumbersOnPieces": {},
     "saveImage": "පින්තූරය සුරකින්න",
     "@saveImage": {},
     "isAnalysisToolbarShown": "ප්‍රාදේශීය විද්‍යා තීරුව පෙන්වන්න",

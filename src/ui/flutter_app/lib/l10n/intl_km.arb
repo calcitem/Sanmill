@@ -320,6 +320,10 @@
     "@gameOverUnknownReason": {
         "description": "Game Over! Unknown reason."
     },
+    "gameOver": "ចប់ហ្គេម",
+    "@gameOver": {
+        "description": "Game Over"
+    },
     "youWin": "អ្នកឈ្នះ! សូមអបអរសាទរ!",
     "@youWin": {
         "description": "You win! Congratulations!"
@@ -449,13 +453,13 @@
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
-    "piecesAtLeastCount": "ចំនួនកូនអុកយ៉ាងតិច",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
     "flyPieceCount_Detail": "ប្រសិនបើការហោះត្រូវបានបើក នៅពេលដែលចំនួនកូនអុករបស់អ្នកលេងធ្លាក់ចុះក្រោមដែនកំណត់ជាក់លាក់ កូនអុករបស់ពួកគេមានសេរីភាពក្នុងការផ្លាស់ទីទៅចំណុចណាមួយដែលមិនទាន់មានកូនអុក ជំនួសឱ្យការត្រូវបានដាក់កម្រិតត្រឹមចំណុចជាប់គ្នាដូចក្នុងហ្គេមដែលនៅសល់។",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
+    "piecesAtLeastCount": "ចំនួនកូនអុកយ៉ាងតិច",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
     },
     "hasDiagonalLines": "បន្ទាត់អង្កត់ទ្រូង",
     "@hasDiagonalLines": {
@@ -465,13 +469,17 @@
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
+    "isDefenderMoveFirst": "អ្នកលេងទីពីរផ្លាស់ទីមុនគេ",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
     "isDefenderMoveFirst_Detail": "អ្នកលេងដែលផ្លាស់ទីទីពីរក្នុងដំណាក់កាលដាក់កូនអុក ផ្លាស់ទីមុនគេក្នុងដំណាក់កាលផ្លាស់ទី។",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "isDefenderMoveFirst": "អ្នកលេងទីពីរផ្លាស់ទីមុនគេ",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
+    "mayRemoveMultiple": "ដកចេញច្រើន",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
     },
     "mayRemoveMultiple_Detail": "ប្រសិនបើអ្នកលេងបិទមីលច្រើនជាងមួយក្នុងពេលតែមួយ នាងនឹងដកចេញចំនួនមីលដែលនាងបានបិទ។",
     "@mayRemoveMultiple_Detail": {
@@ -513,6 +521,14 @@
     "@nMoveRule": {
         "description": "N-move rule"
     },
+    "nMoveRule_Detail": "ហ្គេមត្រូវបានស្មើ ប្រសិនបើគ្មានការដកចេញក្នុងចំនួនចលនាជាក់លាក់ណាមួយ។",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+    },
+    "rollback": "មិនធ្វើវិញ",
+    "@rollback": {
+        "description": "Rollback"
+    },
     "pleaseSelect": "សូមជ្រើសរើស",
     "@pleaseSelect": {
         "description": "Please select"
@@ -524,10 +540,6 @@
     "moveHistoryCopied": "ប្រវត្តិចលនាត្រូវបានចម្លងទៅឃ្លីបបត។",
     "@moveHistoryCopied": {
         "description": "Move history copied to clipboard"
-    },
-    "nMoveRule_Detail": "ហ្គេមត្រូវបានស្មើ ប្រសិនបើគ្មានការដកចេញក្នុងចំនួនចលនាជាក់លាក់ណាមួយ។",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
     "help": "ជំនួយ",
     "@help": {
@@ -573,13 +585,13 @@
     "@blackPieceColor": {
         "description": "Player 2 piece color"
     },
-    "isPieceCountInHandShown": "បង្ហាញចំនួនកូនអុកដែលមិនទាន់ដាក់",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
     "messageColor": "ពណ៌សារ",
     "@messageColor": {
         "description": "Message color"
+    },
+    "isPieceCountInHandShown": "បង្ហាញចំនួនកូនអុកដែលមិនទាន់ដាក់",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
     },
     "isNotationsShown": "បង្ហាញសញ្ញាណនៅលើក្តារ",
     "@isNotationsShown": {
@@ -588,6 +600,14 @@
     "isHistoryNavigationToolbarShown": "បង្ហាញរបារឧបករណ៍រុករកប្រវត្តិ",
     "@isHistoryNavigationToolbarShown": {
         "description": "Show history navigation toolbar"
+    },
+    "display": "បង្ហាញ",
+    "@display": {
+        "description": "Display"
+    },
+    "boardBorderLineWidth": "ទទឹងបន្ទាត់ព្រំដែនក្តារ",
+    "@boardBorderLineWidth": {
+        "description": "Board borderline width"
     },
     "boardInnerLineWidth": "ទទឹងបន្ទាត់ខាងក្នុងក្តារ",
     "@boardInnerLineWidth": {
@@ -604,14 +624,6 @@
     "standardNotation": "សញ្ញាណ WMD",
     "@standardNotation": {
         "description": "Standard notation"
-    },
-    "display": "បង្ហាញ",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "ទទឹងបន្ទាត់ព្រំដែនក្តារ",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
     },
     "restore": "ស្តារឡើងវិញ",
     "@restore": {
@@ -638,6 +650,10 @@
     "hint": "ជំនួយ",
     "@hint": {
         "description": "Hint"
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "player1": "អ្នកលេង 1",
     "@player1": {
@@ -753,6 +769,14 @@
     "@animationDuration": {
         "description": "Animation duration"
     },
+    "none": "គ្មាន",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "ស្បែក",
+    "@theme": {
+        "description": "Theme"
+    },
     "helpContent": "គោលបំណងនៃហ្គេមគឺធ្វើឱ្យគូប្រកួតនៅសល់កូនអុកតិចជាងបី ឬគ្មានចលនាស្របច្បាប់។\n\nហ្គេមនឹងស្មើដោយស្វ័យប្រវត្តិ ប្រសិនបើទីតាំងណាមួយកើតឡើងជាលើកទីបី ឬមិនមានការដកចេញក្នុង 100 (អាចកំណត់រចនាសម្ព័ន្ធបាន) ចលនាចុងក្រោយ។\n\nហ្គេមដំណើរការជាបីដំណាក់កាល៖\n\n1. ការដាក់កូនអុកលើចំណុចទំនេរ\n2. ការផ្លាស់ទីកូនអុកទៅចំណុចជាប់គ្នា\n3. (ដំណាក់កាលស្រេចចិត្ត) ការផ្លាស់ទីកូនអុកទៅចំណុចទំនេរណាមួយនៅពេលកាត់បន្ថយអ្នកលេងឱ្យនៅសល់កូនអុកបី\n\nការដាក់\n\nហ្គេមចាប់ផ្តើមដោយក្តារទទេ ដែលមានក្រឡាចត្រង្គម្ភៃបួនចំណុច។ អ្នកលេងផ្លាស់វេនគ្នាដាក់កូនអុករបស់ពួកគេលើចំណុចទំនេរ រហូតដល់អ្នកលេងម្នាក់ៗបានដាក់កូនអុកទាំងអស់នៅលើក្តារ។ ប្រសិនបើអ្នកលេងអាចដាក់កូនអុករបស់គាត់បីជាប់គ្នា គាត់មាន \"មីល\" ហើយអាចដកកូនអុកមួយរបស់គូប្រកួតចេញពីក្តារ។\n\nនៅក្នុងសំណុំច្បាប់មួយចំនួន អ្នកលេងត្រូវតែដកកូនអុកផ្សេងទៀតចេញជាមុនសិន មុននឹងដកកូនអុកចេញពីមីលដែលបានបង្កើត។\n\nក្រោមច្បាប់ជាក់លាក់ អ្នកមិនអាចដាក់កូនអុកម្តងទៀតលើចំណុចដែលកូនអុកត្រូវបានដកចេញទេ។\n\nនៅពេលដែលកូនអុកទាំងអស់ត្រូវបានដាក់ អ្នកលេងផ្លាស់វេនគ្នាផ្លាស់ទីពួកវា។\n\nការផ្លាស់ទី\n\nដើម្បីផ្លាស់ទី អ្នកលេងផ្លាស់ទីកូនអុកមួយរបស់គាត់តាមបណ្តោយបន្ទាត់ក្តារទៅចំណុចទំនេរជាប់គ្នា។ ប្រសិនបើគាត់មិនអាចធ្វើបាន គាត់ចាញ់ហ្គេម។ អ្នកលេងដែលតម្រឹមកូនអុករបស់គាត់បីនៅលើបន្ទាត់ក្តារមានមីល ហើយអាចដកកូនអុកមួយរបស់គូប្រកួតចេញដូចក្នុងដំណាក់កាលដាក់។ ប្រសិនបើអ្នកលេងត្រូវបានកាត់បន្ថយឱ្យនៅសល់កូនអុកពីរ គ្មានជម្រើសដើម្បីបង្កើតមីលថ្មី ហើយដូច្នេះចាញ់ហ្គេម។ អ្នកលេងក៏អាចចាញ់នៅពេលមានកូនអុកច្រើនជាងបី ប្រសិនបើគូប្រកួតរបស់គាត់រារាំងពួកគេមិនឱ្យផ្លាស់ទី។\n\nការហោះ\n\nនៅក្នុងវ៉ារ្យ៉ង់មួយចំនួននៃច្បាប់ នៅពេលដែលអ្នកលេងនៅសល់តែកូនអុកបី កូនអុករបស់ពួកគេអាចហោះ លោត ឬលោតទៅចំណុចទំនេរណាមួយ មិនត្រឹមតែចំណុចជាប់គ្នាប៉ុណ្ណោះទេ។\n",
     "@helpContent": {
         "description": "Help Content"
@@ -804,6 +828,22 @@
     "aisPlayStyle": "របៀបលេងរបស់ AI",
     "@aisPlayStyle": {
         "description": "AI's play style"
+    },
+    "passive": "អសកម្ម",
+    "@passive": {
+        "description": "Passive"
+    },
+    "timeout": "អស់ពេល",
+    "@timeout": {
+        "description": "Timeout"
+    },
+    "appearance": "រូបរាង",
+    "@appearance": {
+        "description": "Appearance"
+    },
+    "drawOnHumanExperience": "ពឹងផ្អែកលើបទពិសោធន៍មនុស្ស",
+    "@drawOnHumanExperience": {
+        "description": "Draw on the human experience"
     },
     "considerMobility": "ពិចារណាលើការចល័តកូនអុក",
     "@considerMobility": {
@@ -923,6 +963,14 @@
     "@navigationToolbarIconColor": {
         "description": "Navigation toolbar icon color"
     },
+    "autoHideToolbar": "លាក់របារឧបករណ៍ដោយស្វ័យប្រវត្តិ",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "ទីតាំងរបារឧបករណ៍នៅលើអេក្រង់",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
     "top": "ខាងលើ",
     "@top": {
         "description": "Top"
@@ -930,6 +978,22 @@
     "bottom": "ខាងក្រោម",
     "@bottom": {
         "description": "Bottom"
+    },
+    "center": "កណ្តាល",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "ពណ៌រឹង",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "រូបភាព",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "ជ្រើសរើសរូបភាពរបស់អ្នក",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
     },
     "light": "ភ្លឺ",
     "@light": {
@@ -946,6 +1010,10 @@
     "currentTheme": "ស្បែកបច្ចុប្បន្ន",
     "@currentTheme": {
         "description": "Current theme"
+    },
+    "saveTheme": "រក្សាទុកស្បែក",
+    "@saveTheme": {
+        "description": "Save theme"
     },
     "showAnalysisGraph": "បង្ហាញក្រាហ្វវិភាគ",
     "@showAnalysisGraph": {
@@ -979,6 +1047,18 @@
     "@showArrows": {
         "description": "Show arrows"
     },
+    "pieces": "កូនអុក",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "បង្ហាញការវិភាគ",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "ខ្សែស្រឡាយ",
+    "@threads": {
+        "description": "Threads"
+    },
     "getInvolved": "ចូលរួម",
     "@getInvolved": {
         "description": "Get Involved"
@@ -994,6 +1074,18 @@
     "classicMill": "មីលបុរាណ",
     "@classicMill": {
         "description": "Classic Mill"
+    },
+    "mixedMill": "មីលចម្រុះ",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "មីលសីឡុន",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "មីលអាចត្រូវបានបំបែក និងបង្កើតឡើងវិញម្តងហើយម្តងទៀត",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
     },
     "mayBreakAndRemakeMillRepeatedly_Detail": "ប្រសិនបើអ្នកលេងបំបែកមីលដើម្បីបង្កើតមីលថ្មីភ្លាមៗ ពួកគេអាចផ្លាស់ទីកូនអុកនោះត្រឡប់ទៅចំណុចដើមវិញក្នុងចលនាបន្ទាប់របស់ពួកគេ ប្រសិនបើវាបង្កើតមីលថ្មីមួយទៀត។",
     "@mayBreakAndRemakeMillRepeatedly_Detail": {
@@ -1059,6 +1151,10 @@
             }
         }
     },
+    "selected": "បានជ្រើសរើស",
+    "@selected": {
+        "description": "Selected"
+    },
     "accessibility": "ភាពងាយស្រួល",
     "@accessibility": {
         "description": "Accessibility"
@@ -1075,14 +1171,6 @@
     "@draw": {
         "description": "Draw"
     },
-    "endgameNMoveRule": "ច្បាប់ N-ចលនា ចុងហ្គេម",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "ហ្គេមត្រូវបានស្មើ ប្រសិនបើអ្នកលេងណាម្នាក់មានតែកូនអុកបី ហើយគ្មានអ្នកលេងណាម្នាក់ដកកូនអុកចេញក្នុងចលនាជាក់លាក់ណាមួយ។",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
     "pieceHighlightColor": "ពណ៌បន្លិចកូនអុក",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
@@ -1090,6 +1178,14 @@
     "algorithm": "ក្បួនដោះស្រាយ",
     "@algorithm": {
         "description": "Algorithm"
+    },
+    "endgameNMoveRule": "ច្បាប់ N-ចលនា ចុងហ្គេម",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
+    "endgameNMoveRule_Detail": "ហ្គេមត្រូវបានស្មើ ប្រសិនបើអ្នកលេងណាម្នាក់មានតែកូនអុកបី ហើយគ្មានអ្នកលេងណាម្នាក់ដកកូនអុកចេញក្នុងចលនាជាក់លាក់ណាមួយ។",
+    "@endgameNMoveRule_Detail": {
+        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
     "drawReasonEndgameRule50": "អ្នកលេងណាម្នាក់មានតែកូនអុកបី ហើយគ្មានអ្នកលេងណាម្នាក់ដកកូនអុកចេញក្នុងចលនាជាក់លាក់ណាមួយ។",
     "@drawReasonEndgameRule50": {
@@ -1102,6 +1198,14 @@
     "threefoldRepetitionRule_Detail": "ហ្គេមត្រូវបានស្មើ ប្រសិនបើទីតាំងណាមួយកើតឡើងជាលើកទីបី។",
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "មីល! បន្តធ្វើចលនា។",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
+    },
+    "pointStyle": "រចនាប័ទ្មចំណុច",
+    "@pointStyle": {
+        "description": "Point style"
     },
     "pointWidth": "ទទឹងចំណុច",
     "@pointWidth": {
@@ -1134,6 +1238,14 @@
     "@loadFailed": {
         "description": "Load failed."
     },
+    "filename": "ឈ្មោះឯកសារ",
+    "@filename": {
+        "description": "File name"
+    },
+    "browse": "រកមើល…",
+    "@browse": {
+        "description": "Browse…"
+    },
     "gameFiles": "ឯកសារហ្គេម",
     "@gameFiles": {
         "description": "Game files"
@@ -1149,6 +1261,14 @@
     "noMove": "គ្មានចលនា។",
     "@noMove": {
         "description": "No move."
+    },
+    "restoredPosition": "បានស្តារទីតាំងដំបូងឡើងវិញ។",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "សម្អាត",
+    "@clean": {
+        "description": "Clean"
     },
     "cleanedUp": "បានសម្អាត។",
     "@cleanedUp": {
@@ -1203,6 +1323,10 @@
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
     },
+    "paste": "បិទភ្ជាប់",
+    "@paste": {
+        "description": "Paste"
+    },
     "pasteDone": "ការបិទភ្ជាប់រួចរាល់។",
     "@pasteDone": {
         "description": "The paste is done."
@@ -1223,6 +1347,10 @@
     "@reopenToTakeEffect": {
         "description": "Exit and reopen app for settings to take effect."
     },
+    "forest": "ព្រៃ",
+    "@forest": {},
+    "desktopImage": "រូបភាពផ្ទៃតុ",
+    "@desktopImage": {},
     "invalidPosition": "ទីតាំងមិនត្រឹមត្រូវ។",
     "@invalidPosition": {},
     "shareGIF": "ចែករំលែក GIF",
@@ -1253,58 +1381,42 @@
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "ប្រសិនបើអ្នកកំណត់កម្រិតលំបាកខ្ពស់ ប៉ុន្តែមិនបង្កើនពេលវេលាគិតរបស់ AI ទេ កម្រិតលំបាកជាក់ស្តែងអាចត្រូវបានកំណត់ត្រឹមកម្រិតទាបជាងដោយសារតែការដាក់កម្រិតពេលវេលាគិត។ តម្លៃជាក់ស្តែងអាចប្រែប្រួលអាស្រ័យលើដំណើរការរបស់ម៉ាស៊ីន។",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "gameOver": "ចប់ហ្គេម",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "mayRemoveMultiple": "ដកចេញច្រើន",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "rollback": "មិនធ្វើវិញ",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "player": "អ្នកលេង",
-    "@player": {
-        "description": "player"
-    },
-    "none": "គ្មាន",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "ស្បែក",
-    "@theme": {
-        "description": "Theme"
-    },
     "whatIsPvs": "PVS (Principal Variation Search) គឺជាក្បួនដោះស្រាយស្វែងរកដើម្បីស្វែងរកចលនាល្អបំផុតនៅក្នុងទីតាំងដែលបានផ្តល់ឱ្យ។ វាគឺជាការបង្កើនប្រសិទ្ធភាពនៃក្បួនដោះស្រាយ alpha-beta ហើយប្រើការស្វែងរកបង្អួច null ឬសូន្យដើម្បីបញ្ជាក់ថាចលនាមួយគឺអាក្រក់ជាង ឬមិនអាក្រក់ជាងពិន្ទុដែលមានសុវត្ថិភាពរួចហើយពីបំរែបំរួលចម្បង។ PVS ផ្តោតលើចលនាដែលមានសក្តានុពលបំផុត និងជៀសវាងការស្វែងរកសាខាដែលមិនល្អប្រសើរដែលមិនចាំបាច់ ដែលជួយកែលម្អប្រសិទ្ធភាពនៃការស្វែងរក។",
     "@whatIsPvs": {},
+    "whatIsAlphaBeta": "ក្បួនដោះស្រាយ alpha-beta គឺជាក្បួនដោះស្រាយស្វែងរកដើម្បីស្វែងរកចលនាល្អបំផុត។ វាប្រើគោលការណ៍ minimax និងតម្លៃពីរគឺ alpha និង beta ដើម្បីកាត់បន្ថយមែកធាងស្វែងរក និងបង្កើនប្រសិទ្ធភាព។ Alpha តំណាងឱ្យពិន្ទុអប្បបរមាដែលកុំព្យូទ័រប្រាកដថាវាអាចទទួលបាន ខណៈពេលដែល beta តំណាងឱ្យពិន្ទុអតិបរមាដែលគូប្រកួតរបស់វាអាចទទួលបាន។ ក្បួនដោះស្រាយជួយកុំព្យូទ័រធ្វើការសម្រេចចិត្តឆ្លាតវៃ និងមានប្រសិទ្ធភាពក្នុងហ្គេម។",
+    "@whatIsAlphaBeta": {},
     "drawOnTheHumanExperienceDetail": "យោងតាមបទពិសោធន៍របស់មនុស្ស ប្រសិនបើអ្នកព្យាយាមឈ្នះ អ្នកនឹងចាញ់។ ផ្ទុយទៅវិញ ចូរមានគោលដៅស្មើជាគោលដៅរបស់អ្នក ហើយជៀសវាងការចាញ់ហ្គេម។ សង្កេតមើលគូប្រកួតរបស់អ្នក ហើយទាក់ទាញពួកគេដោយថ្នមៗទៅកាន់ទីតាំងដែលពួកគេអាចធ្វើខុស។ នៅពេលពួកគេបង្ហាញភាពទន់ខ្សោយ ចាប់យកឱកាស ហើយជំរុញថ្នមៗដើម្បីឈ្នះ។ តាមវិធីនេះ អ្នកអាចឈ្នះហ្គេម។",
     "@drawOnTheHumanExperienceDetail": {},
     "firstMoveDetail": "នៅក្នុងហ្គេមនេះ វាមានភាពងាយស្រួលសម្រាប់អ្នកលេងទីពីរក្នុងការឈ្នះ បើប្រៀបធៀបទៅនឹងអ្នកលេងទីមួយ។",
     "@firstMoveDetail": {},
+    "passiveDetail": "ការបើកជម្រើសអសកម្មនឹងធ្វើឱ្យ AI បន្ធូរអារម្មណ៍នៅពេលវាមានគុណសម្បត្តិក្នុងទីតាំង ជាជាងព្យាយាមឈ្នះឱ្យបានលឿនតាមដែលអាចធ្វើទៅបាន។",
+    "@passiveDetail": {},
+    "moveRandomlyDetail": "ការបើកជម្រើសនេះបង្កើនភាពចៃដន្យ និងភាពសប្បាយរីករាយនៃហ្គេម ខណៈពេលដែលការបិទវាអាចជួយសិក្សាពីវិធីដើម្បីយកឈ្នះ AI ។",
+    "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "ប្រសិនបើ AI ពិចារណាលើការចល័តកូនអុករបស់វា វានឹងមិនត្រឹមតែមានគោលបំណងចាប់យកកូនអុករបស់គូប្រកួតឱ្យបានលឿនតាមដែលអាចធ្វើទៅបានប៉ុណ្ណោះទេ ប៉ុន្តែថែមទាំងពិចារណាលើការរារាំងចលនារបស់គូប្រកួត និងរារាំងពួកគេមិនឱ្យធ្វើដូចគ្នា។",
+    "@considerMobilityOfPiecesDetail": {},
+    "whenBoardIsFull": "នៅពេលក្តារពេញ",
+    "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "នៅចុងបញ្ចប់នៃដំណាក់កាលដាក់ មុនពេលដំណាក់កាលផ្លាស់ទីចាប់ផ្តើម សកម្មភាពនឹងកើតឡើងប្រសិនបើក្តារពេញដោយកូនអុក។",
     "@whenBoardIsFull_Detail": {},
     "sideToMoveRemovePiece": "អ្នកលេងដែលផ្លាស់ទីមុនគេក្នុងដំណាក់កាលផ្លាស់ទី ដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
     "@sideToMoveRemovePiece": {},
-    "considerMobilityOfPiecesDetail": "ប្រសិនបើ AI ពិចារណាលើការចល័តកូនអុករបស់វា វានឹងមិនត្រឹមតែមានគោលបំណងចាប់យកកូនអុករបស់គូប្រកួតឱ្យបានលឿនតាមដែលអាចធ្វើទៅបានប៉ុណ្ណោះទេ ប៉ុន្តែថែមទាំងពិចារណាលើការរារាំងចលនារបស់គូប្រកួត និងរារាំងពួកគេមិនឱ្យធ្វើដូចគ្នា។",
-    "@considerMobilityOfPiecesDetail": {},
-    "firstAndSecondPlayerRemovePiece": "អ្នកលេងទីមួយ និងទីពីរដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
-    "@firstAndSecondPlayerRemovePiece": {},
     "agreeToDraw": "ភាគីទាំងពីរយល់ព្រមស្មើគ្នា។",
     "@agreeToDraw": {},
     "takeOpponentsPiece": "យកកូនអុកមួយរបស់គូប្រកួតអ្នក។",
     "@takeOpponentsPiece": {},
     "firstPlayerLose": "អ្នកលេងទីមួយចាញ់ហ្គេម។",
     "@firstPlayerLose": {},
+    "firstAndSecondPlayerRemovePiece": "អ្នកលេងទីមួយ និងទីពីរដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
+    "@firstAndSecondPlayerRemovePiece": {},
     "secondAndFirstPlayerRemovePiece": "អ្នកលេងទីពីរ និងទីមួយដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
     "@secondAndFirstPlayerRemovePiece": {},
-    "whenStalemate_Detail": "តើសកម្មភាពអ្វីកើតឡើងនៅពេលគ្មានកូនអុកណាមួយអាចផ្លាស់ទីបាន?",
-    "@whenStalemate_Detail": {},
     "enteredFlyingPhase": "ឥឡូវនេះបានចូលដល់ដំណាក់កាលហោះហើយ កូនអុករបស់គូប្រកួតអាចលោតទៅចំណុចទទេណាមួយនៅលើក្តារ។ អ្នកអាចបិទច្បាប់ហោះនៅក្នុង \"ការកំណត់ច្បាប់\"។",
     "@enteredFlyingPhase": {},
     "whenStalemate": "នៅពេលជាប់គាំង",
     "@whenStalemate": {},
+    "whenStalemate_Detail": "តើសកម្មភាពអ្វីកើតឡើងនៅពេលគ្មានកូនអុកណាមួយអាចផ្លាស់ទីបាន?",
+    "@whenStalemate_Detail": {},
     "endWithStalemateLoss": "បញ្ចប់ដោយការចាញ់ដោយជាប់គាំងសម្រាប់ភាគីដែលត្រូវបានរារាំង។",
     "@endWithStalemateLoss": {},
     "changeSideToMove": "ប្តូរវេនផ្លាស់ទី។",
@@ -1323,28 +1435,12 @@
     "@tipCanNotRemoveNonadjacent": {},
     "stalemateRemovalRegardlessOfMillFormation": "ក្នុងស្ថានភាពជាប់គាំង អ្នកអាចដកកូនអុករបស់គូប្រកួតដែលនៅជាប់នឹងរបស់អ្នក ដោយមិនគិតពីការបង្កើតមីល។",
     "@stalemateRemovalRegardlessOfMillFormation": {},
-    "passive": "អសកម្ម",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "អស់ពេល",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "appearance": "រូបរាង",
-    "@appearance": {
-        "description": "Appearance"
-    },
-    "drawOnHumanExperience": "ពឹងផ្អែកលើបទពិសោធន៍មនុស្ស",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
     "whatIsMcts": "MCTS គឺជាក្បួនដោះស្រាយដែលងាយស្រួលសម្រាប់អ្នកចាប់ផ្តើមដំបូង ដែលធ្វើការសម្រេចចិត្តដោយការរុករក និងវាយតម្លៃចលនាផ្សេងៗតាមរយៈការក្លែងធ្វើ។",
     "@whatIsMcts": {},
-    "forestWood": "ឈើព្រៃ",
-    "@forestWood": {},
     "goldenJade": "ត្បូងថ្មមាស",
     "@goldenJade": {},
+    "forestWood": "ឈើព្រៃ",
+    "@forestWood": {},
     "darkMystery": "អាថ៌កំបាំងងងឹត",
     "@darkMystery": {},
     "midnightBlue": "ខៀវពាក់កណ្តាលអធ្រាត្រ",
@@ -1353,14 +1449,6 @@
     "@greenForest": {},
     "greenMeadow": "វាលស្មៅបៃតង",
     "@greenMeadow": {},
-    "autoHideToolbar": "លាក់របារឧបករណ៍ដោយស្វ័យប្រវត្តិ",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "ទីតាំងរបារឧបករណ៍នៅលើអេក្រង់",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
     "stonyPath": "ផ្លូវថ្ម",
     "@stonyPath": {},
     "pastelPink": "ផ្កាឈូកស្រាល",
@@ -1375,132 +1463,10 @@
     "@skyBlue": {},
     "playfulGarden": "សួនច្បាររីករាយ",
     "@playfulGarden": {},
-    "center": "កណ្តាល",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "ពណ៌រឹង",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "រូបភាព",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "ជ្រើសរើសរូបភាពរបស់អ្នក",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "saveTheme": "រក្សាទុកស្បែក",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "pieces": "កូនអុក",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "បង្ហាញការវិភាគ",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "ខ្សែស្រឡាយ",
-    "@threads": {
-        "description": "Threads"
-    },
-    "mixedMill": "មីលចម្រុះ",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "មីលសីឡុន",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "មីលអាចត្រូវបានបំបែក និងបង្កើតឡើងវិញម្តងហើយម្តងទៀត",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "selected": "បានជ្រើសរើស",
-    "@selected": {
-        "description": "Selected"
-    },
-    "continueToMakeMove": "មីល! បន្តធ្វើចលនា។",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "រចនាប័ទ្មចំណុច",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "filename": "ឈ្មោះឯកសារ",
-    "@filename": {
-        "description": "File name"
-    },
-    "browse": "រកមើល…",
-    "@browse": {
-        "description": "Browse…"
-    },
-    "restoredPosition": "បានស្តារទីតាំងដំបូងឡើងវិញ។",
-    "@restoredPosition": {
-        "description": "Restored initial position."
-    },
-    "clean": "សម្អាត",
-    "@clean": {
-        "description": "Clean"
-    },
-    "paste": "បិទភ្ជាប់",
-    "@paste": {
-        "description": "Paste"
-    },
-    "forest": "ព្រៃ",
-    "@forest": {},
-    "desktopImage": "រូបភាពផ្ទៃតុ",
-    "@desktopImage": {},
-    "whatIsAlphaBeta": "ក្បួនដោះស្រាយ alpha-beta គឺជាក្បួនដោះស្រាយស្វែងរកដើម្បីស្វែងរកចលនាល្អបំផុត។ វាប្រើគោលការណ៍ minimax និងតម្លៃពីរគឺ alpha និង beta ដើម្បីកាត់បន្ថយមែកធាងស្វែងរក និងបង្កើនប្រសិទ្ធភាព។ Alpha តំណាងឱ្យពិន្ទុអប្បបរមាដែលកុំព្យូទ័រប្រាកដថាវាអាចទទួលបាន ខណៈពេលដែល beta តំណាងឱ្យពិន្ទុអតិបរមាដែលគូប្រកួតរបស់វាអាចទទួលបាន។ ក្បួនដោះស្រាយជួយកុំព្យូទ័រធ្វើការសម្រេចចិត្តឆ្លាតវៃ និងមានប្រសិទ្ធភាពក្នុងហ្គេម។",
-    "@whatIsAlphaBeta": {},
-    "passiveDetail": "ការបើកជម្រើសអសកម្មនឹងធ្វើឱ្យ AI បន្ធូរអារម្មណ៍នៅពេលវាមានគុណសម្បត្តិក្នុងទីតាំង ជាជាងព្យាយាមឈ្នះឱ្យបានលឿនតាមដែលអាចធ្វើទៅបាន។",
-    "@passiveDetail": {},
-    "moveRandomlyDetail": "ការបើកជម្រើសនេះបង្កើនភាពចៃដន្យ និងភាពសប្បាយរីករាយនៃហ្គេម ខណៈពេលដែលការបិទវាអាចជួយសិក្សាពីវិធីដើម្បីយកឈ្នះ AI ។",
-    "@moveRandomlyDetail": {},
-    "whenBoardIsFull": "នៅពេលក្តារពេញ",
-    "@whenBoardIsFull": {},
-    "transparentCanvas": "ផ្ទាំងក្រណាត់ថ្លា",
-    "@transparentCanvas": {},
-    "restrictRepeatedMillsFormation": "ដាក់កម្រិតការបង្កើតមីលម្តងហើយម្តងទៀត",
-    "@restrictRepeatedMillsFormation": {},
-    "oneTimeUseMill_Detail": "មីលនីមួយៗអាចដកកូនអុករបស់គូប្រកួតចេញបានតែម្តងគត់។ អ្នកអាចបង្កើតវាឡើងវិញបាន ប៉ុន្តែវាមិនអាចប្រើសម្រាប់ការដកចេញបន្ថែមទៀតទេ។",
-    "@oneTimeUseMill_Detail": {},
-    "soundTheme": "ស្បែកសំឡេង",
-    "@soundTheme": {},
-    "useOpeningBook": "ប្រើក្បួនបើកឆាក",
-    "@useOpeningBook": {},
-    "areYouSureYouWantToClearAllAnnotations": "តើអ្នកប្រាកដថាចង់លុបចំណារពន្យល់ទាំងអស់ទេ?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
-    "llmPromptCopiedToClipboard": "ប្រអប់បញ្ចូល LLM ត្រូវបានចម្លងទៅឃ្លីបបត។",
-    "@llmPromptCopiedToClipboard": {},
-    "disconnectedFromOpponent": "បានផ្តាច់ចេញពីគូប្រកួត។",
-    "@disconnectedFromOpponent": {},
-    "connectionResetByPeer": "ការតភ្ជាប់ត្រូវបានកំណត់ឡើងវិញដោយ peer ។",
-    "@connectionResetByPeer": {},
-    "join": "ចូលរួម",
-    "@join": {},
-    "stop": "បញ្ឈប់",
-    "@stop": {},
-    "carpathianHeritage": "អាថ៌កំបាំងបាយ័ន",
-    "@carpathianHeritage": {},
-    "imperialGrandeur": "ភាពអស្ចារ្យរបស់អធិរាជ",
-    "@imperialGrandeur": {},
-    "savannaSunrise": "ព្រះអាទិត្យរះ Savanna",
-    "@savannaSunrise": {},
-    "spiceMarket": "ផ្សារគ្រឿងទេស",
-    "@spiceMarket": {},
-    "swipeToRevealTheDrawer": "អូសដើម្បីបង្ហាញម៉ឺនុយ",
-    "@swipeToRevealTheDrawer": {},
-    "showGameInfoOnScreenshots": "បង្ហាញព័ត៌មានហ្គេមនៅលើរូបថតអេក្រង់",
-    "@showGameInfoOnScreenshots": {},
-    "viewAlgorithmGuide": "តើអ្នកចង់មើលមគ្គុទ្ទេសក៍អ្នកប្រើសម្រាប់ក្បួនដោះស្រាយនេះទេ?",
-    "@viewAlgorithmGuide": {},
     "whatIsRetrogradeAnalysis": "ក្បួនដោះស្រាយការវិភាគថយក្រោយប្រើការវិភាគថយក្រោយពហុតម្លៃដើម្បីបង្កើតមូលដ្ឋានទិន្នន័យចុងហ្គេមពីទីតាំងចាប់ផ្តើមផ្សេងៗ បន្ទាប់មកអនុវត្តមូលដ្ឋានទិន្នន័យនេះដើម្បីបង្កើនប្រសិទ្ធភាពការលេងហ្គេម។ វិធីសាស្រ្តនេះស្ថិតនៅក្រោមប្រភេទនៃដំណោះស្រាយ Ultra-Strong ។",
     "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "តើអ្នកចង់មើលមគ្គុទ្ទេសក៍អ្នកប្រើសម្រាប់ក្បួនដោះស្រាយនេះទេ?",
+    "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "បង្ហាញសូចនាករគុណសម្បត្តិទីតាំង",
     "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "ប្រើមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ",
@@ -1565,10 +1531,16 @@
     "@verticalFlip": {},
     "innerOuterFlip": "ត្រឡប់ក្នុងក្រៅ",
     "@innerOuterFlip": {},
+    "transparentCanvas": "ផ្ទាំងក្រណាត់ថ្លា",
+    "@transparentCanvas": {},
+    "restrictRepeatedMillsFormation": "ដាក់កម្រិតការបង្កើតមីលម្តងហើយម្តងទៀត",
+    "@restrictRepeatedMillsFormation": {},
     "restrictRepeatedMillsFormation_Detail": "កូនអុកដែលផ្លាស់ទីពីមីលមួយដើម្បីបង្កើតមីលមួយទៀត មិនអាចត្រឡប់ទៅចំណុចដើមវិញភ្លាមៗនៅវេនបន្ទាប់ដើម្បីបង្កើតមីលម្តងទៀតទេ។ ចលនាផ្សេងគ្នាគឺចាំបាច់ជាមុនសិន។",
     "@restrictRepeatedMillsFormation_Detail": {},
     "oneTimeUseMill": "មីលប្រើម្តង",
     "@oneTimeUseMill": {},
+    "oneTimeUseMill_Detail": "មីលនីមួយៗអាចដកកូនអុករបស់គូប្រកួតចេញបានតែម្តងគត់។ អ្នកអាចបង្កើតវាឡើងវិញបាន ប៉ុន្តែវាមិនអាចប្រើសម្រាប់ការដកចេញបន្ថែមទៀតទេ។",
+    "@oneTimeUseMill_Detail": {},
     "currentRulesNoPerfectDatabase": "ច្បាប់បច្ចុប្បន្នដែលអ្នកបានកំណត់មិនមានមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះដែលត្រូវគ្នាទេ។ សម្រាប់ព័ត៌មានបន្ថែមអំពីមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ សូមចុចទីនេះ។",
     "@currentRulesNoPerfectDatabase": {},
     "focusOnBlockingPaths": "ផ្តោតលើការរារាំងផ្លូវ",
@@ -1603,6 +1575,8 @@
     "@promptMakeToolbarTransparent": {},
     "vibration": "បើករំញ័រក្នុងហ្គេម",
     "@vibration": {},
+    "soundTheme": "ស្បែកសំឡេង",
+    "@soundTheme": {},
     "ball": "បាល់",
     "@ball": {},
     "liquid": "រាវ",
@@ -1617,12 +1591,12 @@
     "@isToolbarAtBottom": {},
     "boardCornerRadius": "កាំជ្រុងក្តារ",
     "@boardCornerRadius": {},
+    "useOpeningBook": "ប្រើក្បួនបើកឆាក",
+    "@useOpeningBook": {},
     "currentRule": "បច្ចុប្បន្ន",
     "@currentRule": {},
     "nineMensMorris": "Nine Men's Morris",
     "@nineMensMorris": {},
-    "useOpeningBook_Detail": "អនុញ្ញាតឱ្យ AI ប្រើក្បួនបើកឆាកដែលត្រូវបានប្រើជាទូទៅដោយអ្នកលេងមនុស្សអាជីពក្នុងអំឡុងពេលដើមហ្គេម។ ចំណាំ៖ មុខងារនេះបច្ចុប្បន្នមានសម្រាប់តែសំណុំច្បាប់ជាក់លាក់ប៉ុណ្ណោះ។",
-    "@useOpeningBook_Detail": {},
     "twelveMensMorris": "Twelve Men's Morris",
     "@twelveMensMorris": {},
     "morabaraba": "Morabaraba",
@@ -1647,6 +1621,8 @@
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
+    "useOpeningBook_Detail": "អនុញ្ញាតឱ្យ AI ប្រើក្បួនបើកឆាកដែលត្រូវបានប្រើជាទូទៅដោយអ្នកលេងមនុស្សអាជីពក្នុងអំឡុងពេលដើមហ្គេម។ ចំណាំ៖ មុខងារនេះបច្ចុប្បន្នមានសម្រាប់តែសំណុំច្បាប់ជាក់លាក់ប៉ុណ្ណោះ។",
+    "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "បង្ហាញក្រាហ្វគុណសម្បត្តិ",
     "@showAdvantageGraph": {},
     "advantageGraphHint": "ក្រាហ្វគុណសម្បត្តិនឹងត្រូវបានគូរបន្ទាប់ពី AI ធ្វើចលនាប៉ុណ្ណោះ។ វានឹងមិនត្រូវបានគូរនៅពេលអ្នកលេងមនុស្សធ្វើចលនាទេ។",
@@ -1669,6 +1645,10 @@
     "@isAnnotationToolbarShown": {},
     "enterAnnotationMode": "ចូលរបៀបចំណារពន្យល់",
     "@enterAnnotationMode": {},
+    "areYouSureYouWantToClearAllAnnotations": "តើអ្នកប្រាកដថាចង់លុបចំណារពន្យល់ទាំងអស់ទេ?",
+    "@areYouSureYouWantToClearAllAnnotations": {},
+    "llmPromptCopiedToClipboard": "ប្រអប់បញ្ចូល LLM ត្រូវបានចម្លងទៅឃ្លីបបត។",
+    "@llmPromptCopiedToClipboard": {},
     "connectionRefusedTheServerMayBeDown": "ការតភ្ជាប់ត្រូវបានបដិសេធ ម៉ាស៊ីនមេអាចនឹងធ្លាក់។",
     "@connectionRefusedTheServerMayBeDown": {},
     "discoverySuccessfulAwaitingConnection": "ការរកឃើញជោគជ័យ កំពុងរង់ចាំការតភ្ជាប់...",
@@ -1677,12 +1657,16 @@
     "@noLanConnection": {},
     "takeScreenshot": "ថតរូបអេក្រង់",
     "@takeScreenshot": {},
+    "disconnectedFromOpponent": "បានផ្តាច់ចេញពីគូប្រកួត។",
+    "@disconnectedFromOpponent": {},
     "takeBackRequest": "សំណើដកថយ",
     "@takeBackRequest": {},
     "nothingToShow": "គ្មានអ្វីត្រូវបង្ហាញទេ។",
     "@nothingToShow": {},
     "stopHosting": "បញ្ឈប់ការបង្ហោះ",
     "@stopHosting": {},
+    "connectionResetByPeer": "ការតភ្ជាប់ត្រូវបានកំណត់ឡើងវិញដោយ peer ។",
+    "@connectionResetByPeer": {},
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "ការតភ្ជាប់បានបាត់បង់ដោយសារតែការអស់ពេល heartbeat ។ សូមតភ្ជាប់ឡើងវិញ។",
     "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
     "startHosting": "ចាប់ផ្តើមបង្ហោះ",
@@ -1765,16 +1749,12 @@
     "@opponentRequestedToRestartTheGameDoYouAccept": {},
     "yourTurn": "វេន​របស់​អ្នក។",
     "@yourTurn": {},
-    "failedToConnect": "មិនអាចតភ្ជាប់បានទេ៖ {error}",
-    "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
-    },
     "unableToReconnectPleaseRestartTheGame": "មិនអាចតភ្ជាប់ឡើងវិញបានទេ សូមចាប់ផ្តើមហ្គេមឡើងវិញ។",
     "@unableToReconnectPleaseRestartTheGame": {},
     "host": "ម៉ាស៊ីនមេ",
     "@host": {},
+    "join": "ចូលរួម",
+    "@join": {},
     "port": "ច្រក",
     "@port": {},
     "invalidIpAddress": "អាសយដ្ឋាន IP មិនត្រឹមត្រូវ។",
@@ -1786,6 +1766,12 @@
         "placeholders": {
             "attempt": {},
             "maxAttempt": {}
+        }
+    },
+    "failedToConnect": "មិនអាចតភ្ជាប់បានទេ៖ {error}",
+    "@failedToConnect": {
+        "placeholders": {
+            "error": {}
         }
     },
     "failedToStartHosting": "មិនអាចចាប់ផ្តើមបង្ហោះបានទេ៖ {error}",
@@ -1801,6 +1787,8 @@
             "port": {}
         }
     },
+    "stop": "បញ្ឈប់",
+    "@stop": {},
     "discover": "រកឃើញ",
     "@discover": {},
     "connect": "តភ្ជាប់",
@@ -1843,8 +1831,14 @@
     "@precisionCraft": {},
     "folkEmbroidery": "សិល្បៈកាត់តែងដៃប្រពៃណី",
     "@folkEmbroidery": {},
+    "carpathianHeritage": "អាថ៌កំបាំងបាយ័ន",
+    "@carpathianHeritage": {},
+    "imperialGrandeur": "ភាពអស្ចារ្យរបស់អធិរាជ",
+    "@imperialGrandeur": {},
     "bohemianCrystal": "គ្រីស្តាល់",
     "@bohemianCrystal": {},
+    "savannaSunrise": "ព្រះអាទិត្យរះ Savanna",
+    "@savannaSunrise": {},
     "harmonyBalance": "តុល្យភាពសុខដុម",
     "@harmonyBalance": {},
     "cinnamonSpice": "គ្រឿងទេសឈើអែម",
@@ -1855,6 +1849,12 @@
     "@carnivalSpirit": {},
     "custom": "ផ្ទាល់ខ្លួន",
     "@custom": {},
+    "spiceMarket": "ផ្សារគ្រឿងទេស",
+    "@spiceMarket": {},
+    "swipeToRevealTheDrawer": "អូសដើម្បីបង្ហាញម៉ឺនុយ",
+    "@swipeToRevealTheDrawer": {},
+    "showGameInfoOnScreenshots": "បង្ហាញព័ត៌មានហ្គេមនៅលើរូបថតអេក្រង់",
+    "@showGameInfoOnScreenshots": {},
     "humanMoveTime": "ដែនកំណត់ពេលវេលារបស់មនុស្ស",
     "@humanMoveTime": {},
     "noTimeLimitForHumanMoves": "គ្មានដែនកំណត់ពេលវេលាសម្រាប់ការដើររបស់មនុស្សទេ",

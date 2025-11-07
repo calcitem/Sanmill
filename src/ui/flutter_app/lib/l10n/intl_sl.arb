@@ -1137,13 +1137,13 @@
     "@loadFailed": {
         "description": "Load failed."
     },
-    "browse": "Prebrskaj …",
-    "@browse": {
-        "description": "Browse…"
-    },
     "filename": "Ime datoteke",
     "@filename": {
         "description": "File name"
+    },
+    "browse": "Prebrskaj …",
+    "@browse": {
+        "description": "Browse…"
     },
     "gameFiles": "Datoteke iger",
     "@gameFiles": {
@@ -1152,10 +1152,6 @@
     "gameSavedTo": "Igra je shranjena v",
     "@gameSavedTo": {
         "description": "The game is saved to"
-    },
-    "paste": "Prilepi",
-    "@paste": {
-        "description": "Paste"
     },
     "empty": "Prazno",
     "@empty": {
@@ -1226,6 +1222,10 @@
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
     },
+    "paste": "Prilepi",
+    "@paste": {
+        "description": "Paste"
+    },
     "pasteDone": "Pasta je narejena.",
     "@pasteDone": {
         "description": "The paste is done."
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Delite GIF",
     "@shareGIF": {},
-    "duration": "Trajanje",
-    "@duration": {},
     "pixelRatio": "Razmerje slikovnih pik",
     "@pixelRatio": {},
+    "duration": "Trajanje",
+    "@duration": {},
     "gameScreenRecorder": "Snemalnik zaslona v igri",
     "@gameScreenRecorder": {},
     "previous": "Prejšnja",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Čas razmišljanja AI, nastavljen na 0, pomeni, da za razmišljanje ni časovne omejitve.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) je spremenjena oblika iskalnega algoritma alfa-beta, katerega namen je izboljšati učinkovitost s ponovno uporabo vmesnih rezultatov iskanja in uporabo dobrega začetnega ugibanja za zožitev iskalnega prostora.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Zavedajte se, da prilagoditev časa razmišljanja AI morda ni povsem natančna. Dejanski čas razmišljanja je lahko krajši, če je težavnostna stopnja nastavljena na nižjo vrednost, in je lahko daljši, ko je AI sredi razmišljanja, ko se čas izteče.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Če nastavite visoko težavnostno stopnjo, vendar ne povečate časa za razmišljanje AI, je lahko dejanska težavnostna stopnja omejena na nižjo vrednost zaradi časovne omejitve razmišljanja. Dejanska vrednost se lahko razlikuje glede na delovanje stroja.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) je spremenjena oblika iskalnega algoritma alfa-beta, katerega namen je izboljšati učinkovitost s ponovno uporabo vmesnih rezultatov iskanja in uporabo dobrega začetnega ugibanja za zožitev iskalnega prostora.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) je iskalni algoritem za iskanje najboljše poteze v danem položaju. Je izboljšava algoritma alfa-beta in uporablja ničelna ali ničelna iskanja po oknu za potrditev, da je poteza slabša ali ne slabša od že varnega rezultata iz glavne različice. PVS se osredotoča na najbolj obetavne poteze in se izogiba nepotrebnemu iskanju neoptimalnih vej, kar pomaga izboljšati učinkovitost iskanja.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritem alfa-beta je iskalni algoritem za iskanje najboljše poteze. Uporablja načelo minimax in dve vrednosti, alfa in beta, za zmanjšanje iskalnega drevesa in povečanje učinkovitosti. Alfa predstavlja najmanjši rezultat, za katerega je računalnik prepričan, da ga lahko dobi, medtem ko beta predstavlja največji rezultat, ki ga lahko doseže nasprotnik. Algoritem pomaga računalniku sprejemati pametne in učinkovite odločitve v igri.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "V tej igri drugi igralec lažje zmaga kot prvi igralec.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Glede na človeške izkušnje, če poskušate zmagati, boste izgubili. Namesto tega si za cilj prizadevajte za remi in se izogibajte izgubi igre. Opazujte svojega nasprotnika in ga nežno zvabite v položaj, kjer lahko naredi napako. Ko pokažejo šibkost, izkoristite priložnost in nežno pritiskajte na zmago. Na ta način lahko zmagate v igri.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "V tej igri drugi igralec lažje zmaga kot prvi igralec.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Če omogočite pasivno možnost, se bo AI sprostil, ko ima prednost v položaju, namesto da bi agresivno poskušal čim hitreje zmagati.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Če umetna inteligenca upošteva mobilnost svojih figur, si ne bo prizadeval le čim hitreje zajeti nasprotnikove figure, ampak bo razmislil tudi o blokiranju nasprotnikovih gibov in preprečitvi, da bi storil isto.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Če omogočite to možnost, povečate naključnost in zabavnost igre, medtem ko jo onemogočite, lahko pomaga pri preučevanju načinov, kako premagati AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Če umetna inteligenca upošteva mobilnost svojih figur, si ne bo prizadeval le čim hitreje zajeti nasprotnikove figure, ampak bo razmislil tudi o blokiranju nasprotnikovih gibov in preprečitvi, da bi storil isto.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Ko je tabla polna",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Na koncu faze postavljanja, preden se začne faza premikanja, sledi akcija, če je plošča polna kosov.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Forest Wood",
     "@forestWood": {},
-    "greenMeadow": "Zeleni travnik",
-    "@greenMeadow": {},
-    "stonyPath": "Kamnita pot",
-    "@stonyPath": {},
+    "darkMystery": "Temna skrivnost",
+    "@darkMystery": {},
     "midnightBlue": "Polnočno modra",
     "@midnightBlue": {},
     "greenForest": "Zeleni gozd",
     "@greenForest": {},
+    "greenMeadow": "Zeleni travnik",
+    "@greenMeadow": {},
+    "stonyPath": "Kamnita pot",
+    "@stonyPath": {},
     "pastelPink": "Pastelno roza",
     "@pastelPink": {},
     "turquoiseSea": "Turkizno morje",
@@ -1360,18 +1362,16 @@
     "@skyBlue": {},
     "playfulGarden": "Igrivi vrt",
     "@playfulGarden": {},
-    "darkMystery": "Temna skrivnost",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritem retrogradne analize uporablja večvrednostno retrogradno analizo, da iz različnih začetnih položajev zgradi zbirko podatkov o končni igri, nato pa to zbirko podatkov uporabi za optimizacijo igranja. Ta pristop spada v kategorijo ultra-močnih rešitev.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Ali si želite ogledati uporabniški priročnik za ta algoritem?",
     "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
     "@showPositionalAdvantageIndicator": {},
-    "perfectDatabaseDescription": "Omogočite to možnost, če želite uporabljati brezhibno zbirko podatkov o igrah, ustvarjeno z najsodobnejšimi algoritmi. Ta funkcija združuje uvodne in končne strategije za predlaganje optimalnih potez. To je najprimernejša izbira za igralce, ki iščejo najvišjo stopnjo natančnosti igranja. Baza podatkov, ustvarjena z natančnimi računalniškimi tehnikami, je zasnovana tako, da ponuja skoraj popolne rešitve za igre.\n\nOpomba: če AI ne uspe dostopati do baze podatkov, se bo za odločitve glede igranja obrnil na običajne algoritme. Ko je zbirka podatkov na voljo, postane 'Stopnja težavnosti' praktično nepremagljiva, 'Čas za razmišljanje AI' pa se drastično skrajša. Veliko nastavitev v možnostih 'AI's play style' bo preglasenih, saj imajo rezultati baze podatkov najvišjo prednost.\n\nZa navodila o tem, kako kar najbolje izkoristiti to brezhibno bazo podatkov, kliknite tukaj.",
-    "@perfectDatabaseDescription": {},
     "usePerfectDatabase": "Uporabite popolno bazo podatkov",
     "@usePerfectDatabase": {},
+    "perfectDatabaseDescription": "Omogočite to možnost, če želite uporabljati brezhibno zbirko podatkov o igrah, ustvarjeno z najsodobnejšimi algoritmi. Ta funkcija združuje uvodne in končne strategije za predlaganje optimalnih potez. To je najprimernejša izbira za igralce, ki iščejo najvišjo stopnjo natančnosti igranja. Baza podatkov, ustvarjena z natančnimi računalniškimi tehnikami, je zasnovana tako, da ponuja skoraj popolne rešitve za igre.\n\nOpomba: če AI ne uspe dostopati do baze podatkov, se bo za odločitve glede igranja obrnil na običajne algoritme. Ko je zbirka podatkov na voljo, postane 'Stopnja težavnosti' praktično nepremagljiva, 'Čas za razmišljanje AI' pa se drastično skrajša. Veliko nastavitev v možnostih 'AI's play style' bo preglasenih, saj imajo rezultati baze podatkov najvišjo prednost.\n\nZa navodila o tem, kako kar najbolje izkoristiti to brezhibno bazo podatkov, kliknite tukaj.",
+    "@perfectDatabaseDescription": {},
     "backgroundImage": "Ozadna slika",
     "@backgroundImage": {},
     "whatIsRandom": "Ko možnost »Uporabi popolno bazo podatkov« ni omogočena, nastavitev »Naključno« povzroči, da umetna inteligenca premakne kose naključno brez uporabe algoritmov za izbiro potez. To običajno povzroči občutno šibkejše igranje. Nasprotno, ko je omogočena možnost »Uporabi popolno bazo podatkov«, se umetna inteligenca za sprejemanje odločitev zanaša izključno na »popolno bazo podatkov«, namesto da bi jo mešala s tradicionalnimi algoritmi umetne inteligence. V tem načinu poteze umetne inteligence v celoti temeljijo na vsebini baze podatkov, pri čemer se izogibajo zanašanju na izračune v realnem času ali algoritme iskanja.",

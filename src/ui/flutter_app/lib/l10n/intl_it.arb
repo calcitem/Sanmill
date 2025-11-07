@@ -1137,25 +1137,21 @@
     "@loadFailed": {
         "description": "Load failed."
     },
+    "filename": "Nome del file",
+    "@filename": {
+        "description": "File name"
+    },
     "browse": "Navigare…",
     "@browse": {
         "description": "Browse…"
-    },
-    "gameSavedTo": "Il gioco viene salvato in",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
     },
     "gameFiles": "File di gioco",
     "@gameFiles": {
         "description": "Game files"
     },
-    "filename": "Nome del file",
-    "@filename": {
-        "description": "File name"
-    },
-    "noPiecesCanBeRemoved": "Nessun pezzo può essere rimosso.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameSavedTo": "Il gioco viene salvato in",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Vuoto",
     "@empty": {
@@ -1181,16 +1177,9 @@
     "@remove": {
         "description": "Remove"
     },
-    "placedCount": "Posiz. ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "noPiecesCanBeRemoved": "Nessun pezzo può essere rimosso.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} devono essere rimossi.",
     "@pieceCountNeedToRemove": {
@@ -1198,6 +1187,17 @@
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Posiz. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Esci e riapri l'app per rendere effettive le impostazioni.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "A schermo intero",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Esci e riapri l'app per rendere effettive le impostazioni.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "foresta",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Condividi GIF",
     "@shareGIF": {},
-    "duration": "Durata",
-    "@duration": {},
     "pixelRatio": "Rapporto pixel",
     "@pixelRatio": {},
+    "duration": "Durata",
+    "@duration": {},
     "gameScreenRecorder": "Registratore dello schermo di gioco",
     "@gameScreenRecorder": {},
     "previous": "Precedente",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Tempo di pensiero AI impostato su 0 significa che non c'è limite di tempo per pensare.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) è una forma modificata dell'algoritmo di ricerca alfa-beta che mira a migliorare l'efficienza riutilizzando i risultati di ricerca intermedi e utilizzando una buona ipotesi iniziale per restringere lo spazio di ricerca.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Tieni presente che la regolazione del tempo di pensiero dell'IA potrebbe non essere del tutto precisa. Il tempo di pensiero effettivo può essere più breve quando il livello di difficoltà è impostato su un valore inferiore e può essere più lungo quando l'IA è a metà pensiero allo scadere del tempo.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Se si imposta il livello di difficoltà alto ma non si aumenta il tempo di riflessione dell'IA, il livello di difficoltà effettivo potrebbe essere limitato a un valore inferiore a causa del vincolo del tempo di riflessione. Il valore effettivo può variare in base alle prestazioni della macchina.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) è una forma modificata dell'algoritmo di ricerca alfa-beta che mira a migliorare l'efficienza riutilizzando i risultati di ricerca intermedi e utilizzando una buona ipotesi iniziale per restringere lo spazio di ricerca.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) è un algoritmo di ricerca per trovare la mossa migliore in una data posizione. È un miglioramento dell'algoritmo alfa-beta e utilizza ricerche di finestre nulle o nulle per confermare che una mossa è peggiore o non peggiore di un punteggio già sicuro dalla variazione principale. PVS si concentra sulle mosse più promettenti ed evita ricerche non necessarie di rami non ottimali, il che aiuta a migliorare l'efficienza della ricerca.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "L'algoritmo alpha-beta è un algoritmo di ricerca per trovare la mossa migliore. Utilizza il principio minimax e due valori, alfa e beta, per sfoltire l'albero di ricerca e aumentare l'efficienza. Alpha rappresenta il punteggio minimo che il computer è sicuro di poter ottenere, mentre beta rappresenta il punteggio massimo che il suo avversario può ottenere. L'algoritmo aiuta il computer a prendere decisioni intelligenti ed efficienti in un gioco.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "In questo gioco, è più facile vincere per il secondo giocatore rispetto al primo giocatore.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Secondo l'esperienza umana, se provi a vincere, perderai. Punta invece al pareggio come obiettivo ed evita di perdere la partita. Osserva il tuo avversario e attiralo delicatamente in una posizione in cui potrebbe commettere errori. Quando mostrano debolezza, cogli l'opportunità e spingi delicatamente per la vittoria. In questo modo, puoi vincere la partita.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "In questo gioco, è più facile vincere per il secondo giocatore rispetto al primo giocatore.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Abilitando l'opzione Passiva, l'IA si rilasserà quando ha un vantaggio nella posizione, piuttosto che tentare aggressivamente di vincere il più rapidamente possibile.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Se l'IA considera la mobilità dei suoi pezzi, non mirerà solo a catturare i pezzi dell'avversario il più rapidamente possibile, ma considererà anche di bloccare i movimenti dell'avversario e impedire loro di fare lo stesso.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Abilitare questa opzione aumenta la casualità e il divertimento del gioco mentre disabilitarla può aiutare a studiare modi per battere l'IA.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Se l'IA considera la mobilità dei suoi pezzi, non mirerà solo a catturare i pezzi dell'avversario il più rapidamente possibile, ma considererà anche di bloccare i movimenti dell'avversario e impedire loro di fare lo stesso.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Quando il tabellone è pieno",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Alla fine della fase di piazzamento, prima che inizi la fase di spostamento, l'azione segue se la scacchiera è piena di pezzi.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Legno della foresta",
     "@forestWood": {},
-    "greenMeadow": "Prato Verde",
-    "@greenMeadow": {},
-    "stonyPath": "Sentiero pietroso",
-    "@stonyPath": {},
+    "darkMystery": "Mistero oscuro",
+    "@darkMystery": {},
     "midnightBlue": "Blu notte",
     "@midnightBlue": {},
     "greenForest": "Foresta verde",
     "@greenForest": {},
+    "greenMeadow": "Prato Verde",
+    "@greenMeadow": {},
+    "stonyPath": "Sentiero pietroso",
+    "@stonyPath": {},
     "pastelPink": "Rosa pastello",
     "@pastelPink": {},
     "turquoiseSea": "Mare Turchese",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Giardino giocoso",
     "@playfulGarden": {},
-    "darkMystery": "Mistero oscuro",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "L'algoritmo di analisi retrograda utilizza l'analisi retrograda multivalore per creare un database finale da diverse posizioni di partenza, quindi applica questo database per ottimizzare il gioco. Questo approccio rientra nella categoria delle soluzioni Ultra-Strong.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Vuoi visualizzare la guida per l'utente di questo algoritmo?",

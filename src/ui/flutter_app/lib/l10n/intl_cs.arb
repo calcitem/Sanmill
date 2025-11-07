@@ -1133,17 +1133,13 @@
             }
         }
     },
-    "filename": "Název souboru",
-    "@filename": {
-        "description": "File name"
-    },
     "loadFailed": "Načtení se nezdařilo.",
     "@loadFailed": {
         "description": "Load failed."
     },
-    "gameSavedTo": "Hra je uložena do",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
+    "filename": "Název souboru",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "Procházet…",
     "@browse": {
@@ -1153,33 +1149,21 @@
     "@gameFiles": {
         "description": "Game files"
     },
-    "cannotPaste": "Nelze vložit.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
-    },
-    "restoredPosition": "Obnovena výchozí pozice.",
-    "@restoredPosition": {
-        "description": "Restored initial position."
-    },
-    "noPiecesCanBeRemoved": "Žádné kusy nelze odstranit.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
-    },
-    "placedPieceCount": "Počet umístěných kusů ve fázi umístění.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
+    "gameSavedTo": "Hra je uložena do",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Prázdný",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
     },
-    "remove": "Odstranit",
-    "@remove": {
-        "description": "Remove"
-    },
     "noMove": "Žádný pohyb.",
     "@noMove": {
         "description": "No move."
+    },
+    "restoredPosition": "Obnovena výchozí pozice.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
     },
     "clean": "Čistý",
     "@clean": {
@@ -1188,6 +1172,25 @@
     "cleanedUp": "Uklizený.",
     "@cleanedUp": {
         "description": "Cleaned up."
+    },
+    "remove": "Odstranit",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Žádné kusy nelze odstranit.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} kus}other{{count} kusy}} je třeba odstranit.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Umístě. ({count})",
     "@placedCount": {
@@ -1200,16 +1203,9 @@
             }
         }
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} kus}other{{count} kusy}} je třeba odstranit.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "placedPieceCount": "Počet umístěných kusů ve fázi umístění.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "{count, plural, =0{Aktuální hráč neumístil žádné figurky.} =1{Aktuální hráč umístil jednu figurku.} few{Aktuální hráč umístil {count} figurky.} many{Aktuální hráč umístil {count} figurek.} other{Aktuální hráč umístil {count} figurek.}}",
     "@hasPlacedPieceCount": {
@@ -1234,6 +1230,10 @@
     "@pasteDone": {
         "description": "The paste is done."
     },
+    "cannotPaste": "Nelze vložit.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
     "isUnplacedAndRemovedPiecesShown": "Zobrazit neumístěné a odstraněné kusy",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Sdílet GIF",
     "@shareGIF": {},
-    "duration": "Doba trvání",
-    "@duration": {},
     "pixelRatio": "Poměr pixelů",
     "@pixelRatio": {},
+    "duration": "Doba trvání",
+    "@duration": {},
     "gameScreenRecorder": "Záznamník herní obrazovky",
     "@gameScreenRecorder": {},
     "previous": "Předchozí",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Doba myšlení nastavená na 0 znamená, že na přemýšlení není žádný časový limit.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) je upravená forma vyhledávacího algoritmu alfa-beta, jehož cílem je zlepšit efektivitu opakovaným použitím mezivýsledků vyhledávání a použitím dobrého počátečního odhadu k zúžení prostoru pro vyhledávání.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Uvědomte si prosím, že úprava doby myšlení AI nemusí být zcela přesná. Skutečná doba přemýšlení může být kratší, když je úroveň obtížnosti nastavena na nižší hodnotu, a může být delší, když je AI uprostřed myšlenky, když čas vyprší.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Pokud nastavíte vysokou úroveň obtížnosti, ale nezvýšíte dobu přemýšlení AI, může být skutečná úroveň obtížnosti omezena na nižší hodnotu kvůli časovému omezení. Skutečná hodnota se může lišit v závislosti na výkonu stroje.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) je upravená forma vyhledávacího algoritmu alfa-beta, jehož cílem je zlepšit efektivitu opakovaným použitím mezivýsledků vyhledávání a použitím dobrého počátečního odhadu k zúžení prostoru pro vyhledávání.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) je vyhledávací algoritmus pro nalezení nejlepšího pohybu v dané pozici. Jedná se o vylepšení algoritmu alfa-beta a používá vyhledávání nulového nebo nulového okna k potvrzení, že tah je horší nebo ne horší než již bezpečné skóre z hlavní variace. PVS se zaměřuje na nejslibnější tahy a vyhýbá se zbytečnému prohledávání suboptimálních větví, což pomáhá zlepšit efektivitu vyhledávání.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritmus alfa-beta je vyhledávací algoritmus k nalezení nejlepšího tahu. Využívá princip minimaxu a dvou hodnot, alfa a beta, k ořezávání vyhledávacího stromu a zvýšení efektivity. Alfa představuje minimální skóre, o kterém si je počítač jistý, že může získat, zatímco beta představuje maximální skóre, které může získat jeho soupeř. Algoritmus pomáhá počítači činit chytrá a efektivní rozhodnutí ve hře.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "V této hře je pro druhého hráče snazší vyhrát ve srovnání s prvním hráčem.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Podle lidských zkušeností, když se pokusíte vyhrát, prohrajete. Místo toho si dejte za cíl remízu a vyhněte se prohře. Pozorujte svého soupeře a jemně ho nalákejte do pozice, kde může dělat chyby. Když ukážou slabost, chopte se příležitosti a jemně zatlačte na vítězství. Tímto způsobem můžete hru vyhrát.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "V této hře je pro druhého hráče snazší vyhrát ve srovnání s prvním hráčem.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Aktivace pasivní možnosti způsobí, že se AI uvolní, když má v pozici výhodu, než aby se agresivně snažila vyhrát co nejrychleji.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Pokud AI zváží pohyblivost svých figurek, nebude se snažit pouze co nejrychleji zachytit soupeřovy figurky, ale také zvážit zablokování soupeřových pohybů a zabránění jim v tom, aby udělali totéž.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Povolením této možnosti zvýšíte náhodnost a zábavu hry, zatímco její vypnutí může pomoci studovat způsoby, jak porazit AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Pokud AI zváží pohyblivost svých figurek, nebude se snažit pouze co nejrychleji zachytit soupeřovy figurky, ale také zvážit zablokování soupeřových pohybů a zabránění jim v tom, aby udělali totéž.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Když je deska plná",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Na konci fáze umisťování, před začátkem fáze pohybu, následuje akce, pokud je deska plná figurek.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Lesní dřevo",
     "@forestWood": {},
-    "greenMeadow": "Zelená louka",
-    "@greenMeadow": {},
-    "stonyPath": "Kamenitá cesta",
-    "@stonyPath": {},
+    "darkMystery": "Temná záhada",
+    "@darkMystery": {},
     "midnightBlue": "Půlnoční modrá",
     "@midnightBlue": {},
     "greenForest": "Zelený les",
     "@greenForest": {},
+    "greenMeadow": "Zelená louka",
+    "@greenMeadow": {},
+    "stonyPath": "Kamenitá cesta",
+    "@stonyPath": {},
     "pastelPink": "Pastelově růžová",
     "@pastelPink": {},
     "turquoiseSea": "Tyrkysové moře",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Hravá zahrada",
     "@playfulGarden": {},
-    "darkMystery": "Temná záhada",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritmus retrográdní analýzy využívá retrográdní analýzu s více hodnotami k vytvoření databáze konce hry z různých počátečních pozic a poté tuto databázi použije k optimalizaci hry. Tento přístup spadá do kategorie Ultra-Strong řešení.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Chcete zobrazit uživatelskou příručku pro tento algoritmus?",

@@ -1133,13 +1133,13 @@
             }
         }
     },
-    "filename": "Názov súboru",
-    "@filename": {
-        "description": "File name"
-    },
     "loadFailed": "Načítanie zlyhalo.",
     "@loadFailed": {
         "description": "Load failed."
+    },
+    "filename": "Názov súboru",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "Prehliadať…",
     "@browse": {
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Ukončite a znova otvorte aplikáciu, aby sa nastavenia prejavili.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Celá obrazovka",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Ukončite a znova otvorte aplikáciu, aby sa nastavenia prejavili.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "les",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Zdieľať GIF",
     "@shareGIF": {},
-    "duration": "Trvanie",
-    "@duration": {},
     "pixelRatio": "Pomer pixelov",
     "@pixelRatio": {},
+    "duration": "Trvanie",
+    "@duration": {},
     "gameScreenRecorder": "Záznamník hernej obrazovky",
     "@gameScreenRecorder": {},
     "previous": "Predchádzajúce",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Čas myslenia AI nastavený na 0 znamená, že neexistuje žiadny časový limit na premýšľanie.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) je upravená forma vyhľadávacieho algoritmu alfa-beta, ktorého cieľom je zlepšiť efektivitu opätovným použitím medzivýsledkov vyhľadávania a použitím dobrého počiatočného odhadu na zúženie priestoru vyhľadávania.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Upozorňujeme, že úprava času myslenia AI nemusí byť úplne presná. Skutočný čas na premýšľanie môže byť kratší, keď je úroveň obtiažnosti nastavená na nižšiu hodnotu, a môže byť dlhší, keď je AI v strede myslenia, keď vyprší čas.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Ak nastavíte vysokú úroveň obtiažnosti, ale nepredĺžite čas myslenia AI, skutočná úroveň obtiažnosti môže byť obmedzená na nižšiu hodnotu z dôvodu časového obmedzenia. Skutočná hodnota sa môže líšiť v závislosti od výkonu stroja.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) je upravená forma vyhľadávacieho algoritmu alfa-beta, ktorého cieľom je zlepšiť efektivitu opätovným použitím medzivýsledkov vyhľadávania a použitím dobrého počiatočného odhadu na zúženie priestoru vyhľadávania.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) je vyhľadávací algoritmus na nájdenie najlepšieho pohybu na danej pozícii. Ide o vylepšenie alfa-beta algoritmu a využíva vyhľadávanie nulového alebo nulového okna na potvrdenie, že pohyb je horší alebo nie horší ako už bezpečné skóre z hlavnej variácie. PVS sa zameriava na najsľubnejšie ťahy a vyhýba sa zbytočnému prehľadávaniu suboptimálnych vetiev, čo pomáha zlepšiť efektivitu vyhľadávania.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritmus alfa-beta je vyhľadávací algoritmus na nájdenie najlepšieho ťahu. Používa princíp minimax a dve hodnoty, alfa a beta, na orezanie stromu vyhľadávania a zvýšenie efektivity. Alfa predstavuje minimálne skóre, ktoré môže počítač získať, zatiaľ čo beta predstavuje maximálne skóre, ktoré môže získať jeho súper. Algoritmus pomáha počítaču robiť inteligentné a efektívne rozhodnutia v hre.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "V tejto hre je pre druhého hráča jednoduchšie vyhrať v porovnaní s prvým hráčom.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Podľa ľudských skúseností, ak sa pokúsite vyhrať, prehráte. Namiesto toho sa zamerajte na remízu a vyhnite sa strate hry. Pozorujte svojho súpera a jemne ho nalákajte do pozície, kde môže robiť chyby. Keď ukážu slabosť, chopte sa príležitosti a jemne zatlačte na víťazstvo. Týmto spôsobom môžete vyhrať hru.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "V tejto hre je pre druhého hráča jednoduchšie vyhrať v porovnaní s prvým hráčom.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Povolenie možnosti Passive spôsobí, že AI sa uvoľní, keď má v pozícii výhodu, namiesto toho, aby sa agresívne snažila vyhrať čo najrýchlejšie.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Ak AI zváži mobilitu svojich figúrok, nezameria sa len na to, aby čo najrýchlejšie zajali súperove figúrky, ale zváži aj blokovanie súperových pohybov a zabránenie im v tom, aby urobili to isté.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Povolenie tejto možnosti zvyšuje náhodnosť a zábavu hry, zatiaľ čo jej zakázanie môže pomôcť pri štúdiu spôsobov, ako poraziť AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Ak AI zváži mobilitu svojich figúrok, nezameria sa len na to, aby čo najrýchlejšie zajali súperove figúrky, ale zváži aj blokovanie súperových pohybov a zabránenie im v tom, aby urobili to isté.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Keď je tabuľa plná",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Na konci fázy umiestňovania, pred začiatkom fázy pohybu, nasleduje akcia, ak je hracia plocha plná figúrok.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Lesné drevo",
     "@forestWood": {},
-    "greenMeadow": "Zelená lúka",
-    "@greenMeadow": {},
-    "stonyPath": "Kamenistá cesta",
-    "@stonyPath": {},
+    "darkMystery": "Temná záhada",
+    "@darkMystery": {},
     "midnightBlue": "Polnočná modrá",
     "@midnightBlue": {},
     "greenForest": "Zelený les",
     "@greenForest": {},
+    "greenMeadow": "Zelená lúka",
+    "@greenMeadow": {},
+    "stonyPath": "Kamenistá cesta",
+    "@stonyPath": {},
     "pastelPink": "Pastelovo ružová",
     "@pastelPink": {},
     "turquoiseSea": "Tyrkysové more",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Hravá záhrada",
     "@playfulGarden": {},
-    "darkMystery": "Temná záhada",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritmus retrográdnej analýzy využíva retrográdnu analýzu s viacerými hodnotami na zostavenie databázy konca hry z rôznych počiatočných pozícií a potom túto databázu použije na optimalizáciu hry. Tento prístup patrí do kategórie ultrasilných riešení.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Chcete si pozrieť používateľskú príručku pre tento algoritmus?",

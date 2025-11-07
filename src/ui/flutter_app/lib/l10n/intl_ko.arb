@@ -1141,36 +1141,21 @@
     "@filename": {
         "description": "File name"
     },
-    "gameSavedTo": "게임이 저장됨",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
+    "browse": "찾아보기…",
+    "@browse": {
+        "description": "Browse…"
     },
     "gameFiles": "게임 파일",
     "@gameFiles": {
         "description": "Game files"
     },
-    "browse": "찾아보기…",
-    "@browse": {
-        "description": "Browse…"
+    "gameSavedTo": "게임이 저장됨",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "비어 있음",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
-    },
-    "noPiecesCanBeRemoved": "말을 제거할 수 없습니다.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
-    },
-    "placedCount": "배치됨({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
     },
     "noMove": "이동 없음.",
     "@noMove": {
@@ -1192,12 +1177,27 @@
     "@remove": {
         "description": "Remove"
     },
+    "noPiecesCanBeRemoved": "말을 제거할 수 없습니다.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count}개의 말}other{{count}개의 말}}을 제거해야 합니다.",
     "@pieceCountNeedToRemove": {
         "description": "Pieces need to remove.",
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "배치됨({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "설정을 적용하려면 앱을 종료한 후 다시 시작하세요.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "전체 화면",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "설정을 적용하려면 앱을 종료한 후 다시 시작하세요.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "숲",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "GIF 공유하기",
     "@shareGIF": {},
-    "duration": "지속 시간",
-    "@duration": {},
     "pixelRatio": "픽셀 비율",
     "@pixelRatio": {},
+    "duration": "지속 시간",
+    "@duration": {},
     "gameScreenRecorder": "게임 화면 녹화기",
     "@gameScreenRecorder": {},
     "previous": "이전",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI 생각 시간을 0으로 설정하면 생각할 시간 제한이 없습니다.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f)는 중간 검색 결과를 재사용하고 좋은 초기 추정을 사용하여 검색 범위를 좁힘으로써 효율성을 향상시키려는 알파-베타 검색 알고리즘의 변형입니다.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "AI 사고 시간 조정이 완전히 정확하지 않을 수 있음을 유의하십시오. 실제 생각하는 시간은 난이도가 낮은 값으로 설정되어 있을 때 더 짧을 수 있고 시간이 다 되어 AI가 중간 생각일 때 더 길어질 수 있습니다.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "난이도를 높게 설정했지만 AI 생각 시간을 늘리지 않으면 생각 시간 제약으로 인해 실제 난이도가 더 낮은 값으로 제한될 수 있습니다. 실제 값은 기계의 성능에 따라 다를 수 있습니다.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f)는 중간 검색 결과를 재사용하고 좋은 초기 추정을 사용하여 검색 범위를 좁힘으로써 효율성을 향상시키려는 알파-베타 검색 알고리즘의 변형입니다.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) 는 주어진 위치에서 최상의 움직임을 찾는 검색 알고리즘입니다. 이것은 알파-베타 알고리즘의 향상이며 null 또는 0 창 검색을 사용하여 이동이 기본 변동에서 이미 안전한 점수보다 더 나쁜지 또는 나쁘지 않은지 확인합니다. PVS는 가장 유망한 움직임에 집중하고 최적이 아닌 분기의 불필요한 검색을 피하여 검색의 효율성을 향상시킵니다.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alpha-beta 알고리즘은 최상의 움직임을 찾는 검색 알고리즘입니다. 검색 트리를 가지치기하고 효율성을 높이기 위해 minimax 원리와 두 값(alpha와 beta)을 사용합니다. Alpha는 컴퓨터가 얻을 수 있다고 확신하는 최소 점수를 나타내고, beta는 상대방이 얻을 수 있는 최대 점수를 나타냅니다. 이 알고리즘은 컴퓨터가 게임에서 현명하고 효율적인 결정을 내리는 데 도움이 됩니다.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "이 게임에서 선수에 비해 후수가 승리하기가 더 쉽습니다.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "인간의 경험에 따르면 이기려고 하면 지게 됩니다. 대신 무승부를 목표로 삼고 게임에서 지지 않도록 하십시오. 상대방을 관찰하고 실수할 수 있는 위치로 부드럽게 유인합니다. 그들이 약점을 보일 때 기회를 잡고 부드럽게 승리를 위해 밀어붙입니다. 이런 식으로 게임에서 이길 수 있습니다.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "이 게임에서 선수에 비해 후수가 승리하기가 더 쉽습니다.",
+    "@firstMoveDetail": {},
     "passiveDetail": "패시브 옵션을 활성화하면 AI가 유리한 위치에 있을 때 서두르기보다는 여유를 가지게 됩니다.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "AI가 자신의 말의 이동성을 고려하면 상대 말을 빠르게 잡으려고만 하는 것이 아니라 상대의 움직임을 차단하고 상대가 같은 것을 하는 것을 방지하는 것도 고려합니다.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "이 옵션을 활성화하면 게임의 임의성과 재미가 증가하지만, 비활성화하면 AI를 이기는 방법을 연구하는 데 도움이 됩니다.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "AI가 자신의 말의 이동성을 고려하면 상대 말을 빠르게 잡으려고만 하는 것이 아니라 상대의 움직임을 차단하고 상대가 같은 것을 하는 것을 방지하는 것도 고려합니다.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "보드가 가득 차 있을 때",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "말 놓기 단계가 끝나고 이동 단계가 시작되기 전에 보드가 말로 가득 차 있다면, 다음 단계가 이어집니다.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "포레스트 우드",
     "@forestWood": {},
-    "greenMeadow": "녹색 초원",
-    "@greenMeadow": {},
-    "stonyPath": "돌길",
-    "@stonyPath": {},
+    "darkMystery": "다크 미스테리",
+    "@darkMystery": {},
     "midnightBlue": "자정 블루",
     "@midnightBlue": {},
     "greenForest": "초록 숲",
     "@greenForest": {},
+    "greenMeadow": "녹색 초원",
+    "@greenMeadow": {},
+    "stonyPath": "돌길",
+    "@stonyPath": {},
     "pastelPink": "파스텔 핑크",
     "@pastelPink": {},
     "turquoiseSea": "터키석 바다",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "장난기 많은 정원",
     "@playfulGarden": {},
-    "darkMystery": "다크 미스테리",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "역행 분석 알고리즘은 다중 값 역행 분석을 사용하여 다양한 시작 위치에서 최종 게임 데이터베이스를 구축한 다음 이 데이터베이스를 적용하여 게임 플레이를 최적화합니다. 이 접근 방식은 울트라 스트롱 솔루션 범주에 속합니다.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "이 알고리즘의 사용자 가이드를 보시겠습니까?",

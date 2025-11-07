@@ -1133,9 +1133,9 @@
             }
         }
     },
-    "gameFiles": "Spelbestanden",
-    "@gameFiles": {
-        "description": "Game files"
+    "loadFailed": "Laden mislukt.",
+    "@loadFailed": {
+        "description": "Load failed."
     },
     "filename": "Bestandsnaam",
     "@filename": {
@@ -1145,9 +1145,9 @@
     "@browse": {
         "description": "Browse…"
     },
-    "loadFailed": "Laden mislukt.",
-    "@loadFailed": {
-        "description": "Load failed."
+    "gameFiles": "Spelbestanden",
+    "@gameFiles": {
+        "description": "Game files"
     },
     "gameSavedTo": "Het spel is opgeslagen op",
     "@gameSavedTo": {
@@ -1160,10 +1160,6 @@
     "noMove": "Geen zet.",
     "@noMove": {
         "description": "No move."
-    },
-    "noPiecesCanBeRemoved": "Er kunnen geen stukken worden verwijderd.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
     },
     "restoredPosition": "Herstelde beginpositie.",
     "@restoredPosition": {
@@ -1181,16 +1177,9 @@
     "@remove": {
         "description": "Remove"
     },
-    "placedCount": "Geplaatst ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "noPiecesCanBeRemoved": "Er kunnen geen stukken worden verwijderd.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} moet worden verwijderd.",
     "@pieceCountNeedToRemove": {
@@ -1198,6 +1187,17 @@
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Geplaatst ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Sluit de app en open deze opnieuw om de instellingen van kracht te laten worden.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Volledig scherm",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Sluit de app en open deze opnieuw om de instellingen van kracht te laten worden.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Woud",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Deel GIF",
     "@shareGIF": {},
-    "duration": "Looptijd",
-    "@duration": {},
     "pixelRatio": "Pixelverhouding",
     "@pixelRatio": {},
+    "duration": "Looptijd",
+    "@duration": {},
     "gameScreenRecorder": "Spelschermrecorder",
     "@gameScreenRecorder": {},
     "previous": "Vorig",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Denktijd ingesteld op 0 betekent dat er geen tijdslimiet is om na te denken.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) is een gewijzigde vorm van het alfa-bèta-zoekalgoritme dat tot doel heeft de efficiëntie te verbeteren door tussentijdse zoekresultaten te hergebruiken en een goede initiële schatting te gebruiken om de zoekruimte te verkleinen.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Houd er rekening mee dat de aanpassing van de denktijd van de AI mogelijk niet helemaal nauwkeurig is. De daadwerkelijke denktijd kan korter zijn als de moeilijkheidsgraad op een lagere waarde is ingesteld en kan langer zijn als de AI halverwege nadenkt als de tijd om is.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Als u de moeilijkheidsgraad hoog instelt maar de AI-denktijd niet verlengt, kan de werkelijke moeilijkheidsgraad worden beperkt tot een lagere waarde vanwege de beperking van de denktijd. De werkelijke waarde kan variëren op basis van de prestaties van de machine.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) is een gewijzigde vorm van het alfa-bèta-zoekalgoritme dat tot doel heeft de efficiëntie te verbeteren door tussentijdse zoekresultaten te hergebruiken en een goede initiële schatting te gebruiken om de zoekruimte te verkleinen.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) is een zoekalgoritme om de beste zet in een bepaalde stelling te vinden. Het is een verbetering van het alfa-bèta-algoritme en gebruikt nul- of nulvensterzoekopdrachten om te bevestigen dat een zet slechter of niet slechter is dan een reeds veilige score van de hoofdvariatie. PVS richt zich op de meest veelbelovende zetten en vermijdt onnodig zoeken in suboptimale branches, wat de efficiëntie van het zoeken helpt verbeteren.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Het alfa-bèta-algoritme is een zoekalgoritme om de beste zet te vinden. Het gebruikt het minimax-principe en twee waarden, alfa en bèta, om de zoekboom te snoeien en de efficiëntie te verhogen. Alfa staat voor de minimale score die de computer zeker kan behalen, terwijl bèta de maximale score vertegenwoordigt die de tegenstander kan behalen. Het algoritme helpt de computer om slimme, efficiënte beslissingen te nemen in een game.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "In dit spel is het gemakkelijker voor de tweede speler om te winnen in vergelijking met de eerste speler.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Volgens menselijke ervaring verlies je als je probeert te winnen. Streef in plaats daarvan naar een gelijkspel als je doel en voorkom dat je de wedstrijd verliest. Observeer je tegenstander en lok hem voorzichtig naar een positie waar hij fouten kan maken. Als ze zwakte tonen, grijp dan de kans en duw voorzichtig naar de overwinning. Op deze manier kun je het spel winnen.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "In dit spel is het gemakkelijker voor de tweede speler om te winnen in vergelijking met de eerste speler.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Als je de passieve optie inschakelt, ontspant de AI wanneer hij een voordeel heeft in de positie, in plaats van agressief te proberen zo snel mogelijk te winnen.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Als de AI rekening houdt met de beweeglijkheid van zijn stukken, zal hij niet alleen proberen de stukken van de tegenstander zo snel mogelijk te slaan, maar ook overwegen om de bewegingen van de tegenstander te blokkeren en te voorkomen dat hij hetzelfde doet.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Door deze optie in te schakelen, wordt de willekeur en het plezier van het spel vergroot, terwijl het uitschakelen kan helpen bij het bestuderen van manieren om de AI te verslaan.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Als de AI rekening houdt met de beweeglijkheid van zijn stukken, zal hij niet alleen proberen de stukken van de tegenstander zo snel mogelijk te slaan, maar ook overwegen om de bewegingen van de tegenstander te blokkeren en te voorkomen dat hij hetzelfde doet.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Als het bord vol is",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Aan het einde van de plaatsingsfase, voordat de verplaatsingsfase begint, volgt de actie als het bord vol met stukken is.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Bos Hout",
     "@forestWood": {},
-    "greenMeadow": "Groene Weide",
-    "@greenMeadow": {},
-    "stonyPath": "Steenachtig pad",
-    "@stonyPath": {},
+    "darkMystery": "Duister Mysterie",
+    "@darkMystery": {},
     "midnightBlue": "Middernacht blauw",
     "@midnightBlue": {},
     "greenForest": "Groen bos",
     "@greenForest": {},
+    "greenMeadow": "Groene Weide",
+    "@greenMeadow": {},
+    "stonyPath": "Steenachtig pad",
+    "@stonyPath": {},
     "pastelPink": "Pastelroze",
     "@pastelPink": {},
     "turquoiseSea": "Turquoise Zee",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Speelsetuin",
     "@playfulGarden": {},
-    "darkMystery": "Duister Mysterie",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Het algoritme voor retrograde-analyse maakt gebruik van meerwaardige retrograde-analyse om een eindspel-database op te bouwen vanuit verschillende startposities en past deze database vervolgens toe om de gameplay te optimaliseren. Deze aanpak valt onder de categorie Ultrasterke oplossingen.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Wilt u de gebruikershandleiding van dit algoritme bekijken?",
