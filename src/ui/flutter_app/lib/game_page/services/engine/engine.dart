@@ -1167,4 +1167,3 @@ class GameOutcome {
     return buffer.toString();
   }
 }
-
