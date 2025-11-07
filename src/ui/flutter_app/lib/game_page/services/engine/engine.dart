@@ -257,10 +257,11 @@ class Engine {
 
     String? response;
     for (int attempt = 0; attempt < 2; attempt++) {
-      response = await _waitResponse(<String>[
-        "bestmove",
-        "nobestmove",
-      ], expectedEpoch: currentEpoch, disableTimeout: softWait);
+      response = await _waitResponse(
+        <String>["bestmove", "nobestmove"],
+        expectedEpoch: currentEpoch,
+        disableTimeout: softWait,
+      );
 
       // If the engine restarted mid-wait (uciok seen), re-send position and go once
       if (_sawUciokDuringWait) {

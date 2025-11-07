@@ -940,6 +940,18 @@ class GameController {
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
     GameController().disableStats = true;
+
+    // If AI is already thinking, just send a soft stop to fetch the
+    // current best move from the ongoing search, and return without
+    // spawning another engineToGo loop.
+    if (!reversed && isEngineRunning) {
+      final bool aiThinking = await engine.isThinking();
+      if (aiThinking) {
+        await engine.stopSoft();
+        headerTipNotifier.showTip(S.of(context).thinking, snackBar: false);
+        return;
+      }
+    }
     if (_isMoveNowInProgress) {
       return; // silently ignore repeated taps
     }
