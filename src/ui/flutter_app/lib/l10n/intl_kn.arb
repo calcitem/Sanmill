@@ -150,7 +150,13 @@
     },
     "tipToMove": "ಸರಿಸಲು {player}.",
     "@tipToMove": {
-        "description": " to move."
+        "description": " to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "ಆಟಗಾರ 1 ಗೆಲುವುಗಳು!",
     "@whiteWin": {
@@ -190,7 +196,13 @@
     },
     "cannotImport": "ಆಮದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "ಚಲನೆಗಳು ಮತ್ತು ನಿಯಮಗಳು ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ.",
     "@movesAndRulesNotMatch": {
@@ -218,7 +230,13 @@
     },
     "error": "ದೋಷ: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "ಗೆಲುವಿನ ದರ",
     "@winRate": {
@@ -238,23 +256,53 @@
     },
     "loseReasonlessThanThree": "{player} ತುಂಡು ಎಣಿಕೆ ಮೂರಕ್ಕಿಂತ ಕಡಿಮೆ.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": " piece count is less than three.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonResign": "{player} ರಾಜೀನಾಮೆ.",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": " resign.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonNoWay": "{player} ಹೋಗಲು ಯಾವುದೇ ಮಾರ್ಗವಿಲ್ಲ.",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": " is no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonBoardIsFull": "ಬೋರ್ಡ್ ತುಂಬಿದೆ ಮತ್ತು {player} ಹೋಗಲು ಯಾವುದೇ ಮಾರ್ಗವಿಲ್ಲ.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "The board is full, no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "loseReasonTimeOver": "ಸಮಯ ಮುಗಿದಿದೆ, {player} ಕಳೆದುಹೋಗಿದೆ.",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "ಚಲಿಸುವ ಹಂತದಲ್ಲಿ, ಕೊನೆಯ ನಿರ್ದಿಷ್ಟ ಸಂಖ್ಯೆಯ ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತುಣುಕನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿಲ್ಲ.",
     "@drawReasonRule50": {
@@ -282,7 +330,14 @@
     },
     "challengeHarderLevel": "ಕಠಿಣ ಮಟ್ಟದ ಸವಾಲು? ಹೊಸ ಹಂತವು {level} ಮಟ್ಟವಾಗಿರುತ್ತದೆ!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "youLose": "ನೀವು ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ!",
     "@youLose": {
@@ -298,7 +353,13 @@
     },
     "version": "ಆವೃತ್ತಿ: {versionNumber}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "ಧನ್ಯವಾದಗಳು",
     "@thanks": {
@@ -574,7 +635,13 @@
     },
     "pick": "{element} ಅನ್ನು ಆರಿಸಿ",
     "@pick": {
-        "description": "Pick "
+        "description": "Pick ",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "ಮಾಹಿತಿ",
     "@info": {
@@ -788,11 +855,33 @@
     },
     "inHand": "{player} ಕೈಯಲ್ಲಿ: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "in hand",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "onBoard": "{player} ಬೋರ್ಡ್‌ನಲ್ಲಿ: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "on board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "ಮೇಲಿನಿಂದ ಬೋರ್ಡ್ ಆಫ್‌ಸೆಟ್",
     "@boardTop": {
@@ -1044,11 +1133,23 @@
     },
     "sideToMove": "ಸರಿಸಲು ಬದಿ: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "Side to move",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
     "lastMove": "ಕೊನೆಯ ಚಲನೆ: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ",
     "@selected": {
@@ -1212,8 +1313,8 @@
         "description": "The current player has placed {count} pieces.",
         "placeholders": {
             "count": {
-                "description": "Number of pieces placed.",
                 "type": "int",
+                "description": "Number of pieces placed.",
                 "example": "3"
             }
         }
