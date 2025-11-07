@@ -1,2019 +1,2019 @@
 {
-  "@@locale": "pl",
-  "appName": "Młynek",
-  "@appName": {
-    "description": "The app name"
-  },
-  "welcome": "Witaj",
-  "@welcome": {
-    "description": "Welcome"
-  },
-  "yes": "Tak",
-  "@yes": {
-    "description": "Yes"
-  },
-  "no": "Nie",
-  "@no": {
-    "description": "No"
-  },
-  "game": "Gra",
-  "@game": {
-    "description": "Game"
-  },
-  "humanVsAi": "Człowiek kontra SI",
-  "@humanVsAi": {
-    "description": "Human Vs AI"
-  },
-  "humanVsHuman": "Człowiek kontra człowiek",
-  "@humanVsHuman": {
-    "description": "Human Vs Human"
-  },
-  "aiVsAi": "AI kontra AI",
-  "@aiVsAi": {
-    "description": "AI Vs AI"
-  },
-  "humanVsCloud": "Człowiek kontra chmura",
-  "@humanVsCloud": {
-    "description": "Human Vs Cloud"
-  },
-  "humanVsLAN": "Człowiek kontra sieć LAN",
-  "@humanVsLAN": {
-    "description": "Human Vs LAN"
-  },
-  "testViaLAN": "Testy przez sieć LAN",
-  "@testViaLAN": {
-    "description": "Test Via LAN"
-  },
-  "move": "Przesuń",
-  "@move": {
-    "description": "Move"
-  },
-  "showMoveList": "Lista ruchów",
-  "@showMoveList": {
-    "description": "Move list"
-  },
-  "moveList": "Lista ruchów",
-  "@moveList": {
-    "description": "Move list"
-  },
-  "noGameRecord": "Brak zapisu",
-  "@noGameRecord": {
-    "description": "No record"
-  },
-  "ok": "OK",
-  "@ok": {
-    "description": "OK"
-  },
-  "confirm": "Potwierdź",
-  "@confirm": {
-    "description": "Confirm"
-  },
-  "cancel": "Anuluj",
-  "@cancel": {
-    "description": "Cancel"
-  },
-  "tipSelectWrong": "Wybrałeś niewłaściwy pionek.",
-  "@tipSelectWrong": {
-    "description": "Select the wrong piece."
-  },
-  "tipPlace": "Umieść swoje elementy.",
-  "@tipPlace": {
-    "description": "Place your pieces."
-  },
-  "tipBanPlace": "Nie można go tu umieścić.",
-  "@tipBanPlace": {
-    "description": "Cannot place it here."
-  },
-  "tipPlaced": "Umieszczone.",
-  "@tipPlaced": {
-    "description": "Placed."
-  },
-  "tipRemove": "Usuń element.",
-  "@tipRemove": {
-    "description": "Remove a piece."
-  },
-  "tipBanRemove": "Nie można usunąć.",
-  "@tipBanRemove": {
-    "description": "Cannot remove."
-  },
-  "tipRemoved": "Usunięty.",
-  "@tipRemoved": {
-    "description": "Removed."
-  },
-  "tipMove": "Przesuń element.",
-  "@tipMove": {
-    "description": "Move a piece."
-  },
-  "tipCannotPlace": "Nie możesz umieścić swojego kawałka tutaj.",
-  "@tipCannotPlace": {
-    "description": "You can't place your piece here."
-  },
-  "tipCannotMove": "Nie możesz przesunąć swojego kawałka tutaj.",
-  "@tipCannotMove": {
-    "description": "You can't move your piece here."
-  },
-  "tipMill": "Młyn! Usuń pionek przeciwnika.",
-  "@tipMill": {
-    "description": "Mill! Take your opponent's piece."
-  },
-  "tipContinueMill": "Kontynuuj usuwanie pionka przeciwnika.",
-  "@tipContinueMill": {
-    "description": "Continue to take your opponent's piece."
-  },
-  "tipSelectOpponentsPiece": "Wybierz jeden z pionków przeciwnika.",
-  "@tipSelectOpponentsPiece": {
-    "description": "Select one of your opponent's pieces."
-  },
-  "tipCannotRemovePieceFromMill": "Nie można usunąć pionka z młyna.",
-  "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a mill."
-  },
-  "tipCanMoveOnePoint": "Kawałek może poruszyć się o 1 punkt.",
-  "@tipCanMoveOnePoint": {
-    "description": "A piece can move 1 point."
-  },
-  "tipCannotMoveOpponentsPieces": "Nie możesz poruszyć kawałków przeciwnika.",
-  "@tipCannotMoveOpponentsPieces": {
-    "description": "You can't move your opponent's pieces."
-  },
-  "tipSelectPieceToMove": "Wybierz swoją figurkę, którą chcesz poruszyć.",
-  "@tipSelectPieceToMove": {
-    "description": "Select your piece to move."
-  },
-  "tipHaveThreePiecesLeft": "Zostały Ci 3 pionki.",
-  "@tipHaveThreePiecesLeft": {
-    "description": "You have 3 pieces left."
-  },
-  "tipCanMoveToAnyPoint": "Możesz poruszyć się do dowolnego punktu.",
-  "@tipCanMoveToAnyPoint": {
-    "description": "You can move to any point you like."
-  },
-  "tipToMove": "{player}, aby się przenieść.",
-  "@tipToMove": {
-    "description": " to move."
-  },
-  "whiteWin": "Gracz 1 wygrywa!",
-  "@whiteWin": {
-    "description": "Player 1 wins!"
-  },
-  "blackWin": "Gracz 2 wygrywa!",
-  "@blackWin": {
-    "description": "Player 2 wins!"
-  },
-  "won": "Wygrana",
-  "@won": {
-    "description": "Won"
-  },
-  "lost": "Przegrany",
-  "@lost": {
-    "description": "Lost"
-  },
-  "thinking": "Myśląc…",
-  "@thinking": {
-    "description": "Thinking..."
-  },
-  "newGame": "Nowa gra",
-  "@newGame": {
-    "description": "New game"
-  },
-  "importGame": "Importuj grę",
-  "@importGame": {
-    "description": "Import game"
-  },
-  "exportGame": "Eksportuj grę",
-  "@exportGame": {
-    "description": "Export game"
-  },
-  "gameImported": "Gra zaimportowana.",
-  "@gameImported": {
-    "description": "Game imported from the clipboard."
-  },
-  "cannotImport": "Nie można importować {invalidMove}",
-  "@cannotImport": {
-    "description": "Cannot import"
-  },
-  "movesAndRulesNotMatch": "Ruchy i zasady nie pasują do siebie.",
-  "@movesAndRulesNotMatch": {
-    "description": "Rules and moves do not match."
-  },
-  "pleaseWait": "Proszę czekać...",
-  "@pleaseWait": {
-    "description": "Please wait..."
-  },
-  "restartGame": "Zrestartować bieżącą grę?",
-  "@restartGame": {
-    "description": "Restart current game?"
-  },
-  "restart": "Uruchom ponownie",
-  "@restart": {
-    "description": "Restart"
-  },
-  "gameStarted": "Gra rozpoczęta, proszę umieścić.",
-  "@gameStarted": {
-    "description": "Game started, please place"
-  },
-  "analyzing": "Analizuję…",
-  "@analyzing": {
-    "description": "Analyzing ..."
-  },
-  "error": "Błąd: {message}",
-  "@error": {
-    "description": "Error"
-  },
-  "winRate": "Wskaźnik zwycięstwa",
-  "@winRate": {
-    "description": "Win Rate"
-  },
-  "score": "Wynik:",
-  "@score": {
-    "description": "Score"
-  },
-  "white": "Gracz 1",
-  "@white": {
-    "description": "Player 1"
-  },
-  "black": "Gracz 2",
-  "@black": {
-    "description": "Player 2"
-  },
-  "loseReasonlessThanThree": "{player} liczba sztuk jest mniejsza niż trzy.",
-  "@loseReasonlessThanThree": {
-    "description": " piece count is less than three."
-  },
-  "loseReasonResign": "{player} zrezygnował.",
-  "@loseReasonResign": {
-    "description": " resign."
-  },
-  "loseReasonNoWay": "{player} nie może wykonać ruchu.",
-  "@loseReasonNoWay": {
-    "description": " is no way to go."
-  },
-  "loseReasonBoardIsFull": "Plansza jest pełna i {player} nie ma dokąd pójść.",
-  "@loseReasonBoardIsFull": {
-    "description": "The board is full, no way to go."
-  },
-  "loseReasonTimeOver": "Czas się skończył, {player} przegrał.",
-  "@loseReasonTimeOver": {
-    "description": "Time Over"
-  },
-  "drawReasonRule50": "W fazie ruchu, żaden element nie został usunięty w ciągu ostatniej określonej liczby ruchów.",
-  "@drawReasonRule50": {
-    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-  },
-  "drawReasonBoardIsFull": "Jest to remis, ponieważ plansza jest pełna.",
-  "@drawReasonBoardIsFull": {
-    "description": "It is a Draw because the board is full"
-  },
-  "drawReasonThreefoldRepetition": "Jest to Remis z powodu potrójnego powtórzenia.",
-  "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw because of threefold repetition."
-  },
-  "gameOverUnknownReason": "Koniec gry! Nieznany powód.",
-  "@gameOverUnknownReason": {
-    "description": "Game Over! Unknown reason."
-  },
-  "gameOver": "Koniec gry",
-  "@gameOver": {
-    "description": "Game Over"
-  },
-  "youWin": "Wygrałeś! Gratulacje!",
-  "@youWin": {
-    "description": "You win! Congratulations!"
-  },
-  "challengeHarderLevel": "Zmierz się z trudniejszym poziomem? Nowy poziom będzie poziomem {level}!",
-  "@challengeHarderLevel": {
-    "description": "Challenge harder level?"
-  },
-  "youLose": "Przegrałeś!",
-  "@youLose": {
-    "description": "You Lose!"
-  },
-  "analyze": "Przeanalizuj",
-  "@analyze": {
-    "description": "Analyze"
-  },
-  "about": "Informacje o",
-  "@about": {
-    "description": "About"
-  },
-  "version": "Wersja: {versionNumber}",
-  "@version": {
-    "description": "Version"
-  },
-  "thanks": "Dzięki",
-  "@thanks": {
-    "description": "Thanks"
-  },
-  "settings": "Ustawienia",
-  "@settings": {
-    "description": "Settings"
-  },
-  "options": "Opcje",
-  "@options": {
-    "description": "Options"
-  },
-  "generalSettings": "Ustawienia główne",
-  "@generalSettings": {
-    "description": "General Settings"
-  },
-  "skillLevel": "Poziom trudności",
-  "@skillLevel": {
-    "description": "Difficulty level"
-  },
-  "moveTime": "Czas myślenia AI",
-  "@moveTime": {
-    "description": "AI thinking time"
-  },
-  "difficulty": "Trudność",
-  "@difficulty": {
-    "description": "Difficulty"
-  },
-  "playSounds": "Efekty dźwiękowe",
-  "@playSounds": {
-    "description": "Sound effects"
-  },
-  "playSoundsInTheGame": "Odtwarzaj dźwięki w grze",
-  "@playSoundsInTheGame": {
-    "description": "Play sounds in the game"
-  },
-  "keepMuteWhenTakingBack": "Wyciszenie podczas odbierania",
-  "@keepMuteWhenTakingBack": {
-    "description": "Keep mute when taking back"
-  },
-  "tone": "Dźwięk",
-  "@tone": {
-    "description": "Tone"
-  },
-  "whoMovesFirst": "Pierwszy ruch",
-  "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "human": "Człowiek",
-  "@human": {
-    "description": "Human"
-  },
-  "ai": "AI",
-  "@ai": {
-    "description": "AI"
-  },
-  "alternate": "Alternatywna strona",
-  "@alternate": {
-    "description": "Alternate"
-  },
-  "isAutoRestart": "Automatyczny restart gry po zakończeniu gry",
-  "@isAutoRestart": {
-    "description": "Auto-restart game when game over"
-  },
-  "isAutoChangeFirstMove": "Automatyczna zmiana pierwszego ruchu",
-  "@isAutoChangeFirstMove": {
-    "description": "Auto Change First Move"
-  },
-  "shufflingEnabled": "Losowy ruch",
-  "@shufflingEnabled": {
-    "description": "Random move"
-  },
-  "misc": "Różne",
-  "@misc": {
-    "description": "Miscellaneous"
-  },
-  "rules": "Zasady",
-  "@rules": {
-    "description": "Rules"
-  },
-  "piecesCount": "Liczba pionów, które ma każdy gracz",
-  "@piecesCount": {
-    "description": "The number of pieces each player has"
-  },
-  "piecesCount_Detail": "Ile pionów ma każdy z graczy?",
-  "@piecesCount_Detail": {
-    "description": "How many pieces does each player have?"
-  },
-  "flyPieceCount": "Numer latającego pionka",
-  "@flyPieceCount": {
-    "description": "The number of the flying piece"
-  },
-  "flyPieceCount_Detail": "Jeśli latanie jest włączone, to gdy gracz jest zredukowany do określonej liczby elementów, jego elementy mogą poruszać się do dowolnego niezajętego punktu, zamiast być ograniczone do sąsiednich punktów, jak w pozostałej części gry.",
-  "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "piecesAtLeastCount": "Minimalna liczba pionków",
-  "@piecesAtLeastCount": {
-    "description": "Pieces At Least"
-  },
-  "hasDiagonalLines": "Linie ukośne",
-  "@hasDiagonalLines": {
-    "description": "Diagonal lines"
-  },
-  "hasDiagonalLines_Detail": "Dodaj cztery linie ukośne do planszy.",
-  "@hasDiagonalLines_Detail": {
-    "description": "Add four diagonal lines to the board."
-  },
-  "isDefenderMoveFirst": "Drugi gracz porusza się jako pierwszy",
-  "@isDefenderMoveFirst": {
-    "description": "The second player moves first"
-  },
-  "isDefenderMoveFirst_Detail": "Gracz, który porusza się jako drugi w fazie układania, porusza się jako pierwszy w fazie ruchu.",
-  "@isDefenderMoveFirst_Detail": {
-    "description": "The player who moves second in the placing phase moves first in the moving phase."
-  },
-  "mayRemoveMultiple": "Wielokrotne usuwanie",
-  "@mayRemoveMultiple": {
-    "description": "Multi-remove"
-  },
-  "mayRemoveMultiple_Detail": "Jeśli gracz zamknie więcej niż jeden młyn na raz, będzie mógł usunąć tyle młynów, ile zamknął.",
-  "@mayRemoveMultiple_Detail": {
-    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-  },
-  "mayRemoveFromMillsAlways": "Niszczenie młynów",
-  "@mayRemoveFromMillsAlways": {
-    "description": "Destroy mills"
-  },
-  "mayRemoveFromMillsAlways_Detail": "Domyślnie, gracze muszą najpierw usunąć wszystkie inne elementy, zanim usuną element z uformowanego młyna. Włącz tę opcję, aby wyłączyć to ograniczenie.",
-  "@mayRemoveFromMillsAlways_Detail": {
-    "description": "mayRemoveFromMillsAlways_Detail"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Drugi gracz przegrywa, gdy plansza jest pełna",
-  "@isWhiteLoseButNotDrawWhenBoardFull": {
-    "description": "The second player loses when the board is full"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Na koniec fazy układania, gdy plansza jest pełna, strona, która ułożyła planszę jako pierwsza, przegrywa grę, w przeciwnym razie gra jest remisowa.",
-  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-  },
-  "isLoseButNotChangeSideWhenNoWay": "Przegrana, gdy nie ma legalnych ruchów",
-  "@isLoseButNotChangeSideWhenNoWay": {
-    "description": "Lose when no legal moves"
-  },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Gracz przegra, jeśli jego przeciwnik zablokuje go tak, że nie będzie mógł go ruszyć. Zmień stronę na ruch, jeśli ta opcja jest wyłączona.",
-  "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
-  },
-  "mayFly": "Latający",
-  "@mayFly": {
-    "description": "Flying"
-  },
-  "mayFly_Detail": "Jeśli graczowi pozostały tylko trzy lub cztery (konfigurowalne) figury, może je przenieść do dowolnego wolnego punktu.",
-  "@mayFly_Detail": {
-    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-  },
-  "nMoveRule": "Zasada N ruchów",
-  "@nMoveRule": {
-    "description": "N-move rule"
-  },
-  "nMoveRule_Detail": "Gra jest remisowana, jeśli w określonej liczbie ruchów każdy z graczy nie wykonał żadnego ruchu.",
-  "@nMoveRule_Detail": {
-    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-  },
-  "rollback": "Wycofanie",
-  "@rollback": {
-    "description": "Rollback"
-  },
-  "pleaseSelect": "Proszę wybrać",
-  "@pleaseSelect": {
-    "description": "Please select"
-  },
-  "copy": "Kopiuj",
-  "@copy": {
-    "description": "Copy"
-  },
-  "moveHistoryCopied": "Historia ruchów skopiowana do schowka.",
-  "@moveHistoryCopied": {
-    "description": "Move history copied to clipboard"
-  },
-  "help": "Pomoc",
-  "@help": {
-    "description": "Help"
-  },
-  "feedback": "Opinie",
-  "@feedback": {
-    "description": "Feedback"
-  },
-  "exit": "Wyjdź",
-  "@exit": {
-    "description": "Exit"
-  },
-  "ruleSettings": "Ustawienia reguł",
-  "@ruleSettings": {
-    "description": "Rule Settings"
-  },
-  "color": "Kolor",
-  "@color": {
-    "description": "Color"
-  },
-  "boardColor": "Kolor planszy",
-  "@boardColor": {
-    "description": "Board color"
-  },
-  "pieceColor": "Kolor elementów",
-  "@pieceColor": {
-    "description": "Piece color"
-  },
-  "backgroundColor": "Kolor tła",
-  "@backgroundColor": {
-    "description": "Background color"
-  },
-  "lineColor": "Kolor linii planszy",
-  "@lineColor": {
-    "description": "Board line color"
-  },
-  "whitePieceColor": "Kolor elementu gracza 1",
-  "@whitePieceColor": {
-    "description": "Player 1 piece color"
-  },
-  "blackPieceColor": "Kolor elementu gracza 2",
-  "@blackPieceColor": {
-    "description": "Player 2 piece color"
-  },
-  "messageColor": "Kolor wiadomości",
-  "@messageColor": {
-    "description": "Message color"
-  },
-  "isPieceCountInHandShown": "Pokazanie liczby sztuk w ręku",
-  "@isPieceCountInHandShown": {
-    "description": "Show count of pieces in hand"
-  },
-  "isNotationsShown": "Pokaż notacje na planszy",
-  "@isNotationsShown": {
-    "description": "Show notations on board"
-  },
-  "isHistoryNavigationToolbarShown": "Pokaż pasek nawigacyjny historii",
-  "@isHistoryNavigationToolbarShown": {
-    "description": "Show history navigation toolbar"
-  },
-  "display": "Wyświetl",
-  "@display": {
-    "description": "Display"
-  },
-  "boardBorderLineWidth": "Szerokość linii granicznej planszy",
-  "@boardBorderLineWidth": {
-    "description": "Board borderline width"
-  },
-  "boardInnerLineWidth": "Szerokość wewnętrznej linii planszy",
-  "@boardInnerLineWidth": {
-    "description": "Board inner line width"
-  },
-  "pieceWidth": "Szerokość elementu",
-  "@pieceWidth": {
-    "description": "Piece width"
-  },
-  "fontSize": "Rozmiar czcionki",
-  "@fontSize": {
-    "description": "Font size"
-  },
-  "standardNotation": "Notacja WMD",
-  "@standardNotation": {
-    "description": "Standard notation"
-  },
-  "restore": "Przywróć",
-  "@restore": {
-    "description": "Restore"
-  },
-  "restoreDefaultSettings": "Przywróć ustawienia domyślne",
-  "@restoreDefaultSettings": {
-    "description": "Restore Default Settings"
-  },
-  "pick": "Wybierz {element}",
-  "@pick": {
-    "description": "Pick "
-  },
-  "info": "Info",
-  "@info": {
-    "description": "Info"
-  },
-  "hint": "Wskazówka",
-  "@hint": {
-    "description": "Hint"
-  },
-  "player": "gracz",
-  "@player": {
-    "description": "player"
-  },
-  "player1": "Gracz 1",
-  "@player1": {
-    "description": "Player 1"
-  },
-  "player2": "Gracz 2",
-  "@player2": {
-    "description": "Player 2"
-  },
-  "howToPlay": "Jak grać",
-  "@howToPlay": {
-    "description": "How to play"
-  },
-  "toPlacePiece": "Stuknij w dowolny dostępny punkt, aby umieścić kawałek.",
-  "@toPlacePiece": {
-    "description": "Tap on any available point to place the piece."
-  },
-  "toSelectPiece": "Naciśnij na element, aby go przesunąć.",
-  "@toSelectPiece": {
-    "description": "Tap on a piece to move it."
-  },
-  "toMovePiece": "Stuknij w punkt połączony z elementem, aby go przesunąć.",
-  "@toMovePiece": {
-    "description": "Tap on point connected to piece to move it."
-  },
-  "toRemovePiece": "Stuknij w jeden z elementów przeciwnika, aby go usunąć.",
-  "@toRemovePiece": {
-    "description": "Tap on one of the opponent's pieces to remove it."
-  },
-  "needToCreateMillFirst": "Musisz najpierw stworzyć młyn, zanim będziesz mógł usunąć kawałek.",
-  "@needToCreateMillFirst": {
-    "description": "You need to create a mill first before you can remove a piece."
-  },
-  "needToPlayWithOwnPieces": "Musisz grać swoimi kawałkami.",
-  "@needToPlayWithOwnPieces": {
-    "description": "You need to play with your pieces."
-  },
-  "statistics": "Statystyki",
-  "@statistics": {
-    "description": "Statistics"
-  },
-  "totalGames": "Łączna liczba gier",
-  "@totalGames": {
-    "description": "Total games"
-  },
-  "results": "Wyniki",
-  "@results": {
-    "description": "Results"
-  },
-  "left": "w lewo",
-  "@left": {
-    "description": "left"
-  },
-  "privacyPolicy": "Polityka Prywatności",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
-  "privacyPolicy_Detail_1": "Proszę przeczytać uważnie i upewnić się, że w pełni rozumiesz i zgadzasz się z tym ",
-  "@privacyPolicy_Detail_1": {
-    "description": "Privacy Policy Detail 1"
-  },
-  "privacyPolicy_Detail_2": ". Jeśli nie zgadzasz się z niniejszą Polityką, prosimy nie korzystać z Aplikacji. Korzystanie z Aplikacji oznacza, że akceptujecie Państwo te warunki.",
-  "@privacyPolicy_Detail_2": {
-    "description": "Privacy Policy Detail 2"
-  },
-  "and": " oraz . ",
-  "@and": {},
-  "accept": "Zaakceptuj",
-  "@accept": {
-    "description": "Accept"
-  },
-  "takeBack": "Cofnij",
-  "@takeBack": {
-    "description": "Take back"
-  },
-  "takingBack": "Cofnij…",
-  "@takingBack": {
-    "description": "Taking back..."
-  },
-  "waiting": "Czekanie…",
-  "@waiting": {
-    "description": "Waiting..."
-  },
-  "stepForward": "Krok do przodu",
-  "@stepForward": {
-    "description": "Step forward"
-  },
-  "takeBackAll": "Cofnij wszystko",
-  "@takeBackAll": {
-    "description": "Take back all"
-  },
-  "stepForwardAll": "Krok do przodu wszyscy",
-  "@stepForwardAll": {
-    "description": "Step forward all"
-  },
-  "moveNow": "Rusz się teraz",
-  "@moveNow": {
-    "description": "Move now"
-  },
-  "done": "Gotowe.",
-  "@done": {
-    "description": "Done."
-  },
-  "crackMill": "Pęknięty młyn",
-  "@crackMill": {
-    "description": "Crack-mill"
-  },
-  "crackMill_Detail": "Jeśli gracz ma tylko elementy w młynach, elementy w młynach nie będą blokowane do usunięcia.",
-  "@crackMill_Detail": {
-    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-  },
-  "animationDuration": "Czas trwania animacji",
-  "@animationDuration": {
-    "description": "Animation duration"
-  },
-  "none": "Brak",
-  "@none": {
-    "description": "None"
-  },
-  "theme": "Temat",
-  "@theme": {
-    "description": "Theme"
-  },
-  "helpContent": "Celem gry jest pozostawienie przeciwnika z mniej niż trzema pionami lub bez legalnego ruchu.\n\nGra jest automatycznie remisowana, jeśli pozycja pojawia się po raz trzeci lub jeśli w ciągu ostatnich 100 (konfigurowalnych) ruchów nie został wykonany żaden ruch.\n\nGra przebiega w trzech fazach:\n\n1. Umieszczanie pionków na wolnych punktach\n2. Przesunięcie pionków na sąsiednie punkty\n3. (faza opcjonalna) Przenoszenie pionów na dowolny wolny punkt, gdy gracz został zredukowany do trzech pionów\n\nUmieszczanie\n\nGra rozpoczyna się od pustej planszy, która składa się z siatki z dwudziestoma czterema punktami. Gracze na zmianę umieszczają swoje kamienie na wolnych punktach, aż każdy z nich umieści wszystkie kamienie na planszy. Jeśli gracz umieści trzy swoje elementy w linii prostej, ma \"młyn\" i może usunąć jeden z elementów przeciwnika z planszy.\n\nW niektórych wariantach zasad, gracze muszą najpierw usunąć wszystkie inne elementy, zanim usuną element z uformowanego młyna.\n\nW niektórych wariantach zasad, wszystkie punkty z usuniętych elementów nie mogą być ponownie umieszczone w fazie umieszczania.\n\nGdy wszystkie elementy zostaną wykorzystane, gracze poruszają się na zmianę.\n\nPoruszanie się\n\nAby się poruszyć, gracz przesuwa jedną ze swoich figur wzdłuż linii planszy do wolnego sąsiedniego punktu. Jeśli nie może tego zrobić, przegrywa grę. Podobnie jak w fazie układania, gracz, który ustawi trzy swoje figurki na linii planszy, ma młyn i może usunąć jedną figurkę przeciwnika. Gracz, który zredukuje się do dwóch sztuk i nie ma możliwości utworzenia nowych młynów, przegrywa grę. Gracz może również przegrać z więcej niż trzema elementami, jeśli jego przeciwnik zablokuje je tak, że nie będzie mógł ich ruszyć.\n\nFlying\n\nW niektórych wariantach zasad, gdy graczowi pozostaną tylko trzy pionki, jego pionki mogą \"latać\", \"skakać\" lub \"przeskakiwać\" na dowolne wolne punkty, nie tylko sąsiednie.\n",
-  "@helpContent": {
-    "description": "Help Content"
-  },
-  "versionInfo": "Informacje o wersji",
-  "@versionInfo": {
-    "description": "Version info"
-  },
-  "eula": "EULA",
-  "@eula": {
-    "description": "EULA"
-  },
-  "license": "Licencja",
-  "@license": {
-    "description": "License"
-  },
-  "sourceCode": "Kod źródłowy",
-  "@sourceCode": {
-    "description": "Source code"
-  },
-  "appVersion": "Wersja aplikacji",
-  "@appVersion": {
-    "description": "App Version"
-  },
-  "general": "Ogólne",
-  "@general": {
-    "description": "General"
-  },
-  "advanced": "Zaawansowane",
-  "@advanced": {
-    "description": "Advanced"
-  },
-  "placing": "Umieszczanie",
-  "@placing": {
-    "description": "Placing"
-  },
-  "moving": "Przenoszenie",
-  "@moving": {
-    "description": "Moving"
-  },
-  "removing": "Usuwanie",
-  "@removing": {
-    "description": "Removing"
-  },
-  "gameOverCondition": "Warunek zakończenia gry",
-  "@gameOverCondition": {
-    "description": "Game over condition"
-  },
-  "aisPlayStyle": "Styl gry AI",
-  "@aisPlayStyle": {
-    "description": "AI's play style"
-  },
-  "passive": "Pasywne",
-  "@passive": {
-    "description": "Passive"
-  },
-  "timeout": "Koniec czasu",
-  "@timeout": {
-    "description": "Timeout"
-  },
-  "appearance": "Wygląd",
-  "@appearance": {
-    "description": "Appearance"
-  },
-  "drawOnHumanExperience": "Czerpanie z ludzkiego doświadczenia",
-  "@drawOnHumanExperience": {
-    "description": "Draw on the human experience"
-  },
-  "considerMobility": "Uwzględnij mobilność elementów",
-  "@considerMobility": {
-    "description": "Consider mobility of pieces"
-  },
-  "pieceCount": "Liczba elementów:",
-  "@pieceCount": {
-    "description": "Piece count"
-  },
-  "inHand": "{player} w ręku: {count}",
-  "@inHand": {
-    "description": "in hand"
-  },
-  "onBoard": "{player} na pokładzie: {count}",
-  "@onBoard": {
-    "description": "on board"
-  },
-  "boardTop": "Przesunięcie planszy od góry",
-  "@boardTop": {
-    "description": "Board offset from the top"
-  },
-  "notAIsTurn": "To nie jest kolej SI.",
-  "@notAIsTurn": {
-    "description": "It is not the AI's turn."
-  },
-  "aiIsNotThinking": "SI nie myśli.",
-  "@aiIsNotThinking": {
-    "description": "AI is not thinking."
-  },
-  "atEnd": "Na końcu listy ruchów.",
-  "@atEnd": {
-    "description": "At the end of the move list."
-  },
-  "tapBackAgainToLeave": "Stuknij ponownie w tył, aby wyjść.",
-  "@tapBackAgainToLeave": {
-    "description": "Tap Back again to exit."
-  },
-  "more": "Więcej",
-  "@more": {
-    "description": "More"
-  },
-  "experimental": "Jest to funkcja eksperymentalna.",
-  "@experimental": {
-    "description": "This is an experimental feature."
-  },
-  "experiments": "Eksperymenty",
-  "@experiments": {
-    "description": "Experiments"
-  },
-  "ossLicenses": "Licencje open source",
-  "@ossLicenses": {
-    "description": "Open source licenses"
-  },
-  "language": "Język",
-  "@language": {
-    "description": "Languages"
-  },
-  "defaultLanguage": "Domyślny język",
-  "@defaultLanguage": {
-    "description": "Default language"
-  },
-  "mayMoveInPlacingPhase": "Figurki mogą się poruszać w fazie umieszczania",
-  "@mayMoveInPlacingPhase": {
-    "description": "The pieces can move in the placing phase"
-  },
-  "mayMoveInPlacingPhase_Detail": "Nie ma oddzielnych faz umieszczania i poruszania, tzn. gracze mogą w każdym ruchu zdecydować, czy chcą umieścić element na planszy, czy poruszyć jeden ze swoich elementów (tak długo, jak długo mają pozostałe elementy do umieszczenia).",
-  "@mayMoveInPlacingPhase_Detail": {
-    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-  },
-  "drawerColor": "Kolor menu",
-  "@drawerColor": {
-    "description": "Menu color"
-  },
-  "drawerTextColor": "Kolor tekstu menu Menu",
-  "@drawerTextColor": {
-    "description": "Menu text color"
-  },
-  "drawerHighlightItemColor": "Kolor elementu podświetlenia menu",
-  "@drawerHighlightItemColor": {
-    "description": "Menu highlight item color"
-  },
-  "mainToolbarBackgroundColor": "Kolor tła głównego paska narzędzi",
-  "@mainToolbarBackgroundColor": {
-    "description": "Main toolbar background color"
-  },
-  "mainToolbarIconColor": "Kolor ikony głównego paska narzędzi",
-  "@mainToolbarIconColor": {
-    "description": "main toolbar icon color"
-  },
-  "navigationToolbarBackgroundColor": "Kolor tła paska nawigacyjnego",
-  "@navigationToolbarBackgroundColor": {
-    "description": "Navigation toolbar background color"
-  },
-  "navigationToolbarIconColor": "Kolor ikony paska nawigacyjnego",
-  "@navigationToolbarIconColor": {
-    "description": "Navigation toolbar icon color"
-  },
-  "autoHideToolbar": "Automatycznie ukryj pasek narzędzi",
-  "@autoHideToolbar": {
-    "description": "Automatically hide the toolbar"
-  },
-  "toolbarLocationOnScreen": "Lokalizacja paska narzędzi na ekranie",
-  "@toolbarLocationOnScreen": {
-    "description": "Toolbar location on screen"
-  },
-  "top": "Top",
-  "@top": {
-    "description": "Top"
-  },
-  "bottom": "Dolny",
-  "@bottom": {
-    "description": "Bottom"
-  },
-  "center": "Środek",
-  "@center": {
-    "description": "Center"
-  },
-  "solidColor": "Jednolity kolor",
-  "@solidColor": {
-    "description": "Solid color"
-  },
-  "picture": "Obrazek",
-  "@picture": {
-    "description": "Picture"
-  },
-  "chooseYourPicture": "Wybierz swoje zdjęcie",
-  "@chooseYourPicture": {
-    "description": "Choose your picture"
-  },
-  "light": "Lekki",
-  "@light": {
-    "description": "Light"
-  },
-  "dark": "Ciemny",
-  "@dark": {
-    "description": "Dark"
-  },
-  "themes": "Motywy",
-  "@themes": {
-    "description": "Themes"
-  },
-  "currentTheme": "Aktualny motyw",
-  "@currentTheme": {
-    "description": "Current theme"
-  },
-  "saveTheme": "Zapisz motyw",
-  "@saveTheme": {
-    "description": "Save theme"
-  },
-  "showAnalysisGraph": "Pokaż wykres analizy",
-  "@showAnalysisGraph": {
-    "description": "Show analysis graph"
-  },
-  "analysis": "Analiza",
-  "@analysis": {
-    "description": "Analysis"
-  },
-  "saveGame": "Zapisz grę",
-  "@saveGame": {
-    "description": "Save game"
-  },
-  "loadGame": "Wczytaj grę",
-  "@loadGame": {
-    "description": "Load game"
-  },
-  "setupPosition": "Pozycja ustawienia",
-  "@setupPosition": {
-    "description": "Setup position"
-  },
-  "showLegalMoves": "Pokaż legalne ruchy",
-  "@showLegalMoves": {
-    "description": "Show legal moves"
-  },
-  "showLastMove": "Pokaż ostatni ruch",
-  "@showLastMove": {
-    "description": "Show last move"
-  },
-  "showArrows": "Pokaż strzałki",
-  "@showArrows": {
-    "description": "Show arrows"
-  },
-  "pieces": "Kawałki",
-  "@pieces": {
-    "description": "Pieces"
-  },
-  "showAnalysis": "Pokaż analizę",
-  "@showAnalysis": {
-    "description": "Show analysis"
-  },
-  "threads": "Wątki",
-  "@threads": {
-    "description": "Threads"
-  },
-  "getInvolved": "Zaangażować się",
-  "@getInvolved": {
-    "description": "Get Involved"
-  },
-  "helpImproveTranslate": "Pomóż ulepszyć tłumaczenie",
-  "@helpImproveTranslate": {
-    "description": "Help improve translate"
-  },
-  "tutorial": "Instruktaż",
-  "@tutorial": {
-    "description": "Tutorial"
-  },
-  "classicMill": "Klasyczny młyn",
-  "@classicMill": {
-    "description": "Classic Mill"
-  },
-  "mixedMill": "Młyn mieszany",
-  "@mixedMill": {
-    "description": "Mixed Mill"
-  },
-  "ceylonMill": "Cejloński młyn",
-  "@ceylonMill": {
-    "description": "Ceylon Mill"
-  },
-  "mayBreakAndRemakeMillRepeatedly": "Młyn może być zepsuty i wielokrotnie przerabiany",
-  "@mayBreakAndRemakeMillRepeatedly": {
-    "description": "Mill may be broken and remade repeatedly"
-  },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Jeśli gracz rozbije młyn, aby natychmiast stworzyć nowy młyn, taki gracz może przesunąć taki element z powrotem do pierwotnego skrzyżowania w swoim następnym ruchu, jeśli zrobi nowy młyn.",
-  "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Gra jest remisowana, jeśli gracz ma trzy pionki i po dziesięciu ruchach żaden z graczy nie usuwa pionów przeciwnika",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kiedy gracz ma do trzech pionów i żaden z graczy nie może usunąć pionka przeciwnika w ciągu dziesięciu ruchów, gra kończy się remisem.",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-  },
-  "close": "Blisko",
-  "@close": {
-    "description": "Close"
-  },
-  "whitePiece": "Biały kawałek",
-  "@whitePiece": {
-    "description": "White piece"
-  },
-  "blackPiece": "Czarny kawałek",
-  "@blackPiece": {
-    "description": "Black piece"
-  },
-  "emptyPoint": "Pusty punkt",
-  "@emptyPoint": {
-    "description": "Empty point"
-  },
-  "noPoint": "Bez sensu",
-  "@noPoint": {
-    "description": "No point"
-  },
-  "placingPhase": "Faza rozmieszczania",
-  "@placingPhase": {
-    "description": "Placing phase"
-  },
-  "movingPhase": "Faza ruchu",
-  "@movingPhase": {
-    "description": "Moving phase"
-  },
-  "flyingPhase": "Faza latania",
-  "@flyingPhase": {
-    "description": "Flying phase"
-  },
-  "sideToMove": "Strona do przesunięcia: {player}",
-  "@sideToMove": {
-    "description": "Side to move"
-  },
-  "lastMove": "Ostatni ruch: {move}",
-  "@lastMove": {
-    "description": "Last move"
-  },
-  "selected": "Wybrany",
-  "@selected": {
-    "description": "Selected"
-  },
-  "accessibility": "Dostępność",
-  "@accessibility": {
-    "description": "Accessibility"
-  },
-  "screenReaderSupport": "Obsługa czytników ekranu",
-  "@screenReaderSupport": {
-    "description": "Screen reader support"
-  },
-  "isDraw": "To jest remis!",
-  "@isDraw": {
-    "description": "It is a Draw!"
-  },
-  "draw": "Remis",
-  "@draw": {
-    "description": "Draw"
-  },
-  "pieceHighlightColor": "Kolor podświetlenia kawałka",
-  "@pieceHighlightColor": {
-    "description": "Piece highlight color"
-  },
-  "algorithm": "Algorytm",
-  "@algorithm": {
-    "description": "Algorithm"
-  },
-  "endgameNMoveRule": "Endgame zasada N-Move",
-  "@endgameNMoveRule": {
-    "description": "Endgame N-Move rule"
-  },
-  "endgameNMoveRule_Detail": "Jeśli któryś z graczy ma tylko trzy pionki i żaden z nich nie usunie pionka w ramach określonych ruchów, gra jest remisowana.",
-  "@endgameNMoveRule_Detail": {
-    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-  },
-  "drawReasonEndgameRule50": "Każdy z graczy ma tylko trzy pionki i żaden z graczy nie usuwa pionka w ramach określonych ruchów.",
-  "@drawReasonEndgameRule50": {
-    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-  },
-  "threefoldRepetitionRule": "Zasada potrójnej powtarzalności",
-  "@threefoldRepetitionRule": {
-    "description": "Threefold repetition rule"
-  },
-  "threefoldRepetitionRule_Detail": "Gra jest remisowana, jeśli pozycja wystąpi po raz trzeci.",
-  "@threefoldRepetitionRule_Detail": {
-    "description": "The game is drawn if a position occurs for the third time."
-  },
-  "continueToMakeMove": "Młyn! Kontynuuj ruch.",
-  "@continueToMakeMove": {
-    "description": "Mill! Continue to make a move."
-  },
-  "pointStyle": "Styl punktowy",
-  "@pointStyle": {
-    "description": "Point style"
-  },
-  "pointWidth": "Szerokość punktu",
-  "@pointWidth": {
-    "description": "Point width"
-  },
-  "solid": "Solidny",
-  "@solid": {
-    "description": "Solid"
-  },
-  "hollow": "Dziurawy",
-  "@hollow": {
-    "description": "Hollow"
-  },
-  "languageName": "Polski",
-  "@languageName": {
-    "description": "The name of the current language"
-  },
-  "moveNumber": "{count,plural, =0{ruch}=1{{count} ruch}other{{count} ruch}}",
-  "@moveNumber": {
-    "description": "Moves to take back",
-    "placeholders": {
-      "count": {
-        "description": "Number of Moves",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "loadFailed": "Ładowanie nie powiodło się.",
-  "@loadFailed": {
-    "description": "Load failed."
-  },
-  "filename": "Nazwa pliku",
-  "@filename": {
-    "description": "File name"
-  },
-  "browse": "Przeglądaj…",
-  "@browse": {
-    "description": "Browse…"
-  },
-  "gameFiles": "Pliki gry",
-  "@gameFiles": {
-    "description": "Game files"
-  },
-  "gameSavedTo": "Gra została zapisana do",
-  "@gameSavedTo": {
-    "description": "The game is saved to"
-  },
-  "pieceCountNeedToRemove": "{count,plural, =0{sztuka}=1{{count} sztuka}other{{count} sztuki}} należy usunąć.",
-  "@pieceCountNeedToRemove": {
-    "description": "Pieces need to remove.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "empty": "Pusty",
-  "@empty": {
-    "description": "Empty point, used in setup position toolbar."
-  },
-  "noMove": "Bez ruchu.",
-  "@noMove": {
-    "description": "No move."
-  },
-  "restoredPosition": "Przywrócona pozycja początkowa.",
-  "@restoredPosition": {
-    "description": "Restored initial position."
-  },
-  "clean": "Czysty",
-  "@clean": {
-    "description": "Clean"
-  },
-  "cleanedUp": "Oczyszczone.",
-  "@cleanedUp": {
-    "description": "Cleaned up."
-  },
-  "remove": "Usunąć",
-  "@remove": {
-    "description": "Remove"
-  },
-  "noPiecesCanBeRemoved": "Nie można usunąć żadnych kawałków.",
-  "@noPiecesCanBeRemoved": {
-    "description": "No pieces can be removed."
-  },
-  "placedCount": "Umiesz. ({count})",
-  "@placedCount": {
-    "description": "Placed N pieces. Used in setup position toolbar.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "placedPieceCount": "Liczenie umieszczonych sztuk w fazie umieszczania.",
-  "@placedPieceCount": {
-    "description": "Placed piece count in the placing phase. Used in Semantics."
-  },
-  "hasPlacedPieceCount": "{count, plural, =0{Obecny gracz nie umieścił żadnych pionków.} =1{Obecny gracz umieścił jeden pionek.} few{Obecny gracz umieścił {count} pionki.} many{Obecny gracz umieścił {count} pionków.} other{Obecny gracz umieścił {count} pionka.}}",
-  "@hasPlacedPieceCount": {
-    "description": "Message describing how many pieces the current player has placed, with support for Polish pluralization.",
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "description": "Number of pieces placed by the player.",
-        "example": "3"
-      }
-    }
-  },
-  "notPlacingPhase": "Faza nie umieszczania, nie można jej zmienić.",
-  "@notPlacingPhase": {
-    "description": "Not placing phase, cannot change it."
-  },
-  "paste": "Pasta",
-  "@paste": {
-    "description": "Paste"
-  },
-  "pasteDone": "Wklejanie zakończone.",
-  "@pasteDone": {
-    "description": "The paste is done."
-  },
-  "cannotPaste": "Nie można wkleić.",
-  "@cannotPaste": {
-    "description": "Cannot paste."
-  },
-  "isUnplacedAndRemovedPiecesShown": "Pokaż nieumieszczone i usunięte elementy",
-  "@isUnplacedAndRemovedPiecesShown": {
-    "description": "Show unplaced and removed pieces"
-  },
-  "reopenToTakeEffect": "Wyjdź i ponownie otwórz aplikację, aby ustawienia zaczęły obowiązywać.",
-  "@reopenToTakeEffect": {
-    "description": "Exit and reopen app for settings to take effect."
-  },
-  "fullScreen": "Pełny ekran",
-  "@fullScreen": {
-    "description": "Full screen"
-  },
-  "forest": "Las",
-  "@forest": {},
-  "desktopImage": "Obraz pulpitu",
-  "@desktopImage": {},
-  "invalidPosition": "Nieprawidłowa pozycja.",
-  "@invalidPosition": {},
-  "shareGIF": "Udostępnij GIF",
-  "@shareGIF": {},
-  "duration": "Czas trwania",
-  "@duration": {},
-  "pixelRatio": "Stosunek pikseli",
-  "@pixelRatio": {},
-  "gameScreenRecorder": "Rejestrator ekranu gry",
-  "@gameScreenRecorder": {},
-  "previous": "Poprzedni",
-  "@previous": {},
-  "next": "Następny",
-  "@next": {},
-  "skip": "Pomijać",
-  "@skip": {},
-  "gotIt": "Rozumiem",
-  "@gotIt": {},
-  "youCanModifyRules": "Możesz modyfikować zasady gry w ustawieniach reguł.",
-  "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Możesz użyć kółka myszy, aby zmienić wartość w selektorze.",
-  "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "Czas myślenia AI ustawiony na 0 oznacza, że nie ma limitu czasu na myślenie.",
-  "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Należy pamiętać, że dostosowanie czasu myślenia AI może nie być całkowicie precyzyjne. Rzeczywisty czas myślenia może być krótszy, gdy poziom trudności jest ustawiony na niższą wartość, i może być dłuższy, gdy sztuczna inteligencja jest w połowie myślenia, gdy skończy się czas.",
-  "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Jeśli ustawisz wysoki poziom trudności, ale nie zwiększysz czasu myślenia AI, rzeczywisty poziom trudności może zostać ograniczony do niższej wartości ze względu na ograniczenie czasu myślenia. Rzeczywista wartość może się różnić w zależności od wydajności urządzenia.",
-  "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsMtdf": "MTD(f) to zmodyfikowana forma algorytmu wyszukiwania alfa-beta, której celem jest poprawa wydajności poprzez ponowne wykorzystanie pośrednich wyników wyszukiwania i użycie dobrego wstępnego przypuszczenia w celu zawężenia przestrzeni wyszukiwania.",
-  "@whatIsMtdf": {},
-  "whatIsPvs": "PVS (Principal Variation Search) to algorytm wyszukiwania w celu znalezienia najlepszego ruchu na danej pozycji. Jest to ulepszenie algorytmu alfa-beta i wykorzystuje przeszukiwanie okna zerowego lub zerowego, aby potwierdzić, że ruch jest gorszy lub nie gorszy niż już bezpieczny wynik z głównej zmiany. PVS koncentruje się na najbardziej obiecujących ruchach i unika niepotrzebnych poszukiwań nieoptymalnych gałęzi, co pomaga poprawić efektywność wyszukiwania.",
-  "@whatIsPvs": {},
-  "whatIsAlphaBeta": "Algorytm alfa-beta to algorytm wyszukiwania w celu znalezienia najlepszego ruchu. Wykorzystuje zasadę minimax i dwie wartości, alfa i beta, aby przyciąć drzewo wyszukiwania i zwiększyć wydajność. Alfa reprezentuje minimalny wynik, jaki komputer jest pewien, że może uzyskać, podczas gdy beta reprezentuje maksymalny wynik, jaki może uzyskać jego przeciwnik. Algorytm pomaga komputerowi podejmować mądre i efektywne decyzje w grze.",
-  "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "W tej grze drugiemu graczowi łatwiej jest wygrać niż pierwszemu graczowi.",
-  "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "Zgodnie z ludzkim doświadczeniem, jeśli spróbujesz wygrać, przegrasz. Zamiast tego celuj w remis i unikaj przegranej. Obserwuj swojego przeciwnika i delikatnie zwab go w miejsce, w którym może popełnić błąd. Kiedy okazują słabość, wykorzystaj okazję i delikatnie naciskaj, by wygrać. W ten sposób możesz wygrać grę.",
-  "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Włączenie opcji pasywnej spowoduje, że sztuczna inteligencja rozluźni się, gdy będzie miała przewagę na pozycji, zamiast agresywnie próbować wygrać tak szybko, jak to możliwe.",
-  "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Jeśli sztuczna inteligencja bierze pod uwagę mobilność swoich pionków, będzie dążyć nie tylko do jak najszybszego zbicia pionków przeciwnika, ale także rozważy blokowanie ruchów przeciwnika i uniemożliwienie mu zrobienia tego samego.",
-  "@considerMobilityOfPiecesDetail": {},
-  "moveRandomlyDetail": "Włączenie tej opcji zwiększa losowość i frajdę z gry, a jej wyłączenie może pomóc w badaniu sposobów na pokonanie sztucznej inteligencji.",
-  "@moveRandomlyDetail": {},
-  "whenBoardIsFull": "Gdy tablica jest pełna",
-  "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "Pod koniec fazy umieszczania, przed rozpoczęciem fazy ruchu, akcja następuje, jeśli plansza jest pełna pionków.",
-  "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "Gracz, który porusza się jako pierwszy w fazie ruchu, usuwa jeden z pionków przeciwnika.",
-  "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Obie strony zgadzają się na remis.",
-  "@agreeToDraw": {},
-  "takeOpponentsPiece": "Weź jeden z pionków przeciwnika.",
-  "@takeOpponentsPiece": {},
-  "firstPlayerLose": "Pierwszy gracz przegrywa grę.",
-  "@firstPlayerLose": {},
-  "firstAndSecondPlayerRemovePiece": "Pierwszy i drugi gracz usuwają jeden z pionków przeciwnika.",
-  "@firstAndSecondPlayerRemovePiece": {},
-  "secondAndFirstPlayerRemovePiece": "Drugi i pierwszy gracz usuwają jeden z pionków przeciwnika.",
-  "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Po wejściu w fazę latania pionki przeciwnika mogą przeskoczyć do dowolnego pustego miejsca na planszy. Regułę latania można wyłączyć w „Ustawieniach reguł”.",
-  "@enteredFlyingPhase": {},
-  "whenStalemate": "Kiedy impas",
-  "@whenStalemate": {},
-  "whenStalemate_Detail": "Jaka akcja następuje, gdy nie można poruszyć żadnej figury?",
-  "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Koniec z impasową porażką.",
-  "@endWithStalemateLoss": {},
-  "changeSideToMove": "Zmień stronę, aby się poruszać.",
-  "@changeSideToMove": {},
-  "removeOpponentsPieceAndMakeNextMove": "Usuń jeden z pionków przeciwnika i wykonaj następny ruch.",
-  "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Koniec z remisem impasowym.",
-  "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "Usuń jeden z pionków przeciwnika i zmień stronę, aby się poruszyć.",
-  "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "Czas opóźnienia odpowiedzi AI",
-  "@aiResponseDelayTime": {},
-  "aiIsDelaying": "Sztuczna inteligencja znajduje się obecnie w fazie opóźnionej reakcji. Odczekaj chwilę, zanim przejdziesz dalej.",
-  "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Nie możesz usunąć nieprzylegającego elementu.",
-  "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "W przypadku impasu piony przeciwnika sąsiadujące z twoimi mogą zostać usunięte, niezależnie od formacji młyna.",
-  "@stalemateRemovalRegardlessOfMillFormation": {},
-  "whatIsMcts": "MCTS to przyjazny dla początkujących algorytm, który podejmuje decyzje, badając i oceniając różne ruchy za pomocą symulacji.",
-  "@whatIsMcts": {},
-  "goldenJade": "Złoty Jadeit",
-  "@goldenJade": {},
-  "forestWood": "Drewno leśne",
-  "@forestWood": {},
-  "greenMeadow": "Zielona Łąka",
-  "@greenMeadow": {},
-  "stonyPath": "Kamienista Ścieżka",
-  "@stonyPath": {},
-  "midnightBlue": "Niebieska północ",
-  "@midnightBlue": {},
-  "greenForest": "Zielony las",
-  "@greenForest": {},
-  "pastelPink": "pastelowy róż",
-  "@pastelPink": {},
-  "turquoiseSea": "Turkusowe morze",
-  "@turquoiseSea": {},
-  "violetDream": "Fioletowy sen",
-  "@violetDream": {},
-  "mintChocolate": "Miętowa czekolada",
-  "@mintChocolate": {},
-  "skyBlue": "Niebieskie niebo",
-  "@skyBlue": {},
-  "playfulGarden": "figlarny ogród",
-  "@playfulGarden": {},
-  "darkMystery": "Mroczna tajemnica",
-  "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "Algorytm analizy wstecznej wykorzystuje wielowartościową analizę wsteczną do zbudowania bazy danych gier końcowych z różnych pozycji początkowych, a następnie stosuje tę bazę danych w celu optymalizacji rozgrywki. Takie podejście należy do kategorii rozwiązań Ultra-Strong.",
-  "@whatIsRetrogradeAnalysis": {},
-  "viewAlgorithmGuide": "Czy chcesz zobaczyć instrukcję obsługi tego algorytmu?",
-  "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "Pokaż wskaźnik przewagi pozycyjnej",
-  "@showPositionalAdvantageIndicator": {},
-  "usePerfectDatabase": "Użyj doskonałej bazy danych",
-  "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Włącz tę opcję, aby korzystać z bezbłędnej bazy danych gier generowanej za pomocą najnowocześniejszych algorytmów. Ta funkcja integruje strategie początkowe i końcowe, aby sugerować optymalne ruchy. Jest to preferowany wybór dla graczy, którzy poszukują najwyższego poziomu precyzji rozgrywki. Baza danych, utworzona dzięki skrupulatnym technikom obliczeniowym, została zaprojektowana tak, aby oferować niemal doskonałe rozwiązania w zakresie gier.\n\nUwaga: jeśli sztuczna inteligencja nie uzyska dostępu do bazy danych, przy podejmowaniu decyzji dotyczących rozgrywki zwróci się do konwencjonalnych algorytmów. Gdy baza danych jest dostępna, „Poziom trudności” staje się praktycznie nie do pobicia, a „Czas myślenia AI” ulega drastycznemu skróceniu. Wiele ustawień w opcjach „Styl gry AI” zostanie zastąpionych, ponieważ wyniki z bazy danych mają najwyższy priorytet.\n\nAby uzyskać wskazówki, jak najlepiej wykorzystać tę nieskazitelną bazę danych, kliknij tutaj.",
-  "@perfectDatabaseDescription": {},
-  "backgroundImage": "Obraz tła",
-  "@backgroundImage": {},
-  "whatIsRandom": "Gdy opcja „Użyj doskonałej bazy danych” nie jest włączona, ustawienie „Losowe” powoduje, że sztuczna inteligencja losowo przenosi elementy bez użycia jakichkolwiek algorytmów do wyboru ruchu. Zwykle skutkuje to znacznie słabszą rozgrywką. I odwrotnie, gdy włączona jest opcja „Użyj doskonałej bazy danych”, sztuczna inteligencja przy podejmowaniu decyzji opiera się wyłącznie na „Doskonałej bazie danych”, zamiast łączyć ją z tradycyjnymi algorytmami sztucznej inteligencji. W tym trybie ruchy sztucznej inteligencji opierają się całkowicie na zawartości bazy danych, unikając polegania na obliczeniach w czasie rzeczywistym lub algorytmach wyszukiwania.",
-  "@whatIsRandom": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn": "Usuń pionek (pionki) przeciwnika z jego ręki; następnie jest tura przeciwnika, aby umieścić pionek.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
-  "whenFormingMillsDuringPlacingPhase": "Podczas formowania młynów w fazie umieszczania",
-  "@whenFormingMillsDuringPlacingPhase": {},
-  "removeOpponentsPieceFromBoard": "Usuń pionek (pionki) przeciwnika z planszy.",
-  "@removeOpponentsPieceFromBoard": {},
-  "removeOpponentsPieceFromBoard_Detail": "Usuń pionek (pionki) przeciwnika z planszy; następnie jest tura przeciwnika, aby umieścić pionek.",
-  "@removeOpponentsPieceFromBoard_Detail": {},
-  "opponentRemovesOwnPiece": "Przeciwnik usuwa swój własny pionek (pionki) z planszy.",
-  "@opponentRemovesOwnPiece": {},
-  "opponentRemovesOwnPiece_Detail": "Zamiast ciebie podejmującego działanie, przeciwnik wybiera i usuwa swój własny pionek (pionki) z planszy, skutecznie podejmując działanie szkodliwe dla niego samego.",
-  "@opponentRemovesOwnPiece_Detail": {},
-  "removeOpponentsPieceFromHandThenYourTurn": "Usuń pionek (pionki) przeciwnika z jego ręki; następnie jest twoja tura, aby się poruszyć.",
-  "@removeOpponentsPieceFromHandThenYourTurn": {},
-  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Usuń pionek (pionki) z ręki przeciwnika. Jeśli zgodnie z ustawieniem wielokrotnego usuwania należy usunąć wiele pionków, a przeciwnik nie ma już żadnych pionków w ręku, kontynuuj usuwanie pionków przeciwnika z planszy. Następnie jest twoja kolej, aby się poruszyć. Jeśli nadal tworzysz młyny, możesz kontynuować usuwanie pionków przeciwnika.",
-  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Usuń pionek (pionki) z ręki przeciwnika. Jeśli zgodnie z ustawieniem wielokrotnego usuwania należy usunąć wiele pionków, a przeciwnik nie ma już żadnych pionków w ręku, kontynuuj usuwanie pionków przeciwnika z planszy. Następnie jest tura przeciwnika, aby się poruszyć.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
-  "markAndDelayRemovingPieces": "Zaznacz i opóźnij usuwanie pionków.",
-  "@markAndDelayRemovingPieces": {},
-  "markAndDelayRemovingPieces_Detail": "W fazie umieszczania pionki do usunięcia są zaznaczane i obaj gracze nie mogą umieszczać nowych pionków na tych polach. Po wejściu w fazę ruchu te zaznaczone pionki są całkowicie usuwane, a gracze mogą następnie przenieść swoje pionki na te teraz puste pola.",
-  "@markAndDelayRemovingPieces_Detail": {},
-  "whenFormingMillsDuringPlacingPhase_Detail": "Działania, które można podjąć podczas formowania młynów w fazie umieszczania.",
-  "@whenFormingMillsDuringPlacingPhase_Detail": {},
-  "marked": "Oznaczone",
-  "@marked": {},
-  "menu": "Menu",
-  "@menu": {},
-  "monochrome": "Monochromatyczny",
-  "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "Możesz włączyć wsparcie dla czytnika ekranu w ustawieniach dostępności w Ustawieniach ogólnych.",
-  "@youCanEnableScreenReaderSupport": {},
-  "showNumbersOnPieces": "Pokaż numery na pionkach",
-  "@showNumbersOnPieces": {},
-  "saveImage": "Zapisz obraz",
-  "@saveImage": {},
-  "isAnalysisToolbarShown": "Pokaż pasek narzędzi analizy",
-  "@isAnalysisToolbarShown": {},
-  "analysisToolbarBackgroundColor": "Kolor tła paska narzędzi analizy",
-  "@analysisToolbarBackgroundColor": {},
-  "analysisToolbarIconColor": "Kolor ikony paska narzędzi analizy",
-  "@analysisToolbarIconColor": {},
-  "transformed": "Przekształcone.",
-  "@transformed": {},
-  "cannotTransform": "Nie można przekształcić.",
-  "@cannotTransform": {},
-  "rotate": "Obróć",
-  "@rotate": {},
-  "horizontalFlip": "Poz.",
-  "@horizontalFlip": {},
-  "verticalFlip": "Pion.",
-  "@verticalFlip": {},
-  "innerOuterFlip": "W/Z",
-  "@innerOuterFlip": {},
-  "transparentCanvas": "Przezroczyste Płótno",
-  "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Ogranicz powtarzające się formacje młynów",
-  "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Pionek przeniesiony z jednego młyna do drugiego nie może natychmiast wrócić na oryginalne miejsce w następnej turze, aby ponownie utworzyć młyn. Najpierw wymagany jest inny ruch.",
-  "@restrictRepeatedMillsFormation_Detail": {},
-  "oneTimeUseMill": "Młyn jednorazowego użytku",
-  "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "Każdy młyn może usunąć tylko jedną część przeciwnika. Możesz go ponownie utworzyć, ale nie można go użyć do dodatkowego usuwania.",
-  "@oneTimeUseMill_Detail": {},
-  "currentRulesNoPerfectDatabase": "Ustawione przez ciebie aktualne zasady nie mają odpowiedniej idealnej bazy danych. Aby uzyskać więcej informacji o idealnej bazie danych, kliknij tutaj.",
-  "@currentRulesNoPerfectDatabase": {},
-  "focusOnBlockingPaths": "Skoncentruj się na blokowaniu dróg",
-  "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Priorytetem jest utrudnianie ruchów przeciwnika, a nie tworzenie młynów. Zamiast skupiać się na usuwaniu pionów poprzez ukończenie młynów, SI dąży do unieruchomienia przeciwnika, uniemożliwiając mu poruszanie się i zapewniając zwycięstwo poprzez wyczerpanie, a nie agresywną grę. Ta strategia nie blokuje aktywnie młynów przeciwnika.",
-  "@focusOnBlockingPaths_Detail": {},
-  "pieceImage": "Obrazek figury",
-  "@pieceImage": {},
-  "importColorSettings": "Importuj ustawienia kolorów",
-  "@importColorSettings": {},
-  "exportColorSettings": "Eksportuj ustawienia kolorów",
-  "@exportColorSettings": {},
-  "import": "Importuj",
-  "@import": {},
-  "export": "Eksportuj",
-  "@export": {},
-  "pleaseCopyJsonToClipboard": "Najpierw skopiuj ustawienia formatu JSON do schowka.",
-  "@pleaseCopyJsonToClipboard": {},
-  "copiedToClipboard": "Skopiowano do schowka.",
-  "@copiedToClipboard": {},
-  "imported": "Zaimportowano.",
-  "@imported": {},
-  "boardImage": "Obraz tablicy",
-  "@boardImage": {},
-  "autumnLeaves": "Jesienne Liście",
-  "@autumnLeaves": {},
-  "legendaryLand": "Legendarna Ziemia",
-  "@legendaryLand": {},
-  "vignetteEffect": "Efekt winiety",
-  "@vignetteEffect": {},
-  "promptMakeToolbarTransparent": "Czy chcesz, aby pasek narzędzi był całkowicie przezroczysty, gdy ustawiony jest obraz tła planszy?",
-  "@promptMakeToolbarTransparent": {},
-  "vibration": "Włącz wibracje w grze",
-  "@vibration": {},
-  "soundTheme": "Motyw dźwięku",
-  "@soundTheme": {},
-  "ball": "Piłka",
-  "@ball": {},
-  "liquid": "Płyn",
-  "@liquid": {},
-  "wood": "Drewno",
-  "@wood": {},
-  "placeEffectAnimation": "Efekt animacji przy stawianiu pionka",
-  "@placeEffectAnimation": {},
-  "removeEffectAnimation": "Efekt animacji przy usuwaniu pionka",
-  "@removeEffectAnimation": {},
-  "isToolbarAtBottom": "Pokaż pasek narzędzi na dole",
-  "@isToolbarAtBottom": {},
-  "boardCornerRadius": "Promień narożnika tablicy",
-  "@boardCornerRadius": {},
-  "useOpeningBook": "Użyj książki otwierającej",
-  "@useOpeningBook": {},
-  "currentRule": "Bieżący",
-  "@currentRule": {},
-  "nineMensMorris": "Nine Men's Morris",
-  "@nineMensMorris": {},
-  "twelveMensMorris": "Twelve Men's Morris",
-  "@twelveMensMorris": {},
-  "morabaraba": "Morabaraba",
-  "@morabaraba": {},
-  "dooz": "Dooz",
-  "@dooz": {},
-  "chamGonu": "Cham Gonu",
-  "@chamGonu": {},
-  "zhiQi": "Zhi Qi",
-  "@zhiQi": {},
-  "chengSanQi": "Cheng San Qi",
-  "@chengSanQi": {},
-  "mulMulan": "Mul-Mulan",
-  "@mulMulan": {},
-  "nerenchi": "Nerenchi",
-  "@nerenchi": {},
-  "ruleSet": "Zestaw zasad",
-  "@ruleSet": {},
-  "laskerMorris": "Lasker Morris",
-  "@laskerMorris": {},
-  "oneTimeMill": "One-Time Mill",
-  "@oneTimeMill": {},
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {},
-  "useOpeningBook_Detail": "Pozwól SI korzystać z ruchów otwarcia, które są powszechnie stosowane przez profesjonalnych ludzkich graczy na wczesnym etapie gry. Uwaga: Ta funkcja jest obecnie dostępna tylko dla określonych zestawów zasad.",
-  "@useOpeningBook_Detail": {},
-  "showAdvantageGraph": "Pokaż wykres przewagi",
-  "@showAdvantageGraph": {},
-  "advantageGraphHint": "Wykres przewagi zostanie narysowany tylko po wykonaniu ruchu przez SI. Nie zostanie narysowany, gdy ruch wykona gracz ludzki.",
-  "@advantageGraphHint": {},
-  "removalBasedOnMillCounts": "Wyłącz usuwanie do czasu umieszczenia wszystkich pionków. Gracze usuwają pionki na podstawie liczby młynków.",
-  "@removalBasedOnMillCounts": {},
-  "removalBasedOnMillCounts_Detail": "Wyłącz usuwanie do czasu umieszczenia wszystkich pionków. Gracze usuwają pionki na podstawie liczby młynków: jeśli liczba jest równa, obaj gracze usuwają tę samą liczbę pionków; jeśli jeden ma więcej, usuwa dodatkowego pionka, zachowując różnicę jednego pionka. Jeśli tylko jeden utworzy młyn, usuwa dwa pionki, a drugi usuwa jeden. Jeśli żaden nie utworzy młyna, obaj usuwają po jednym pionku.",
-  "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "El Filja",
-  "@elfilja": {},
-  "tipSelectOwnPiece": "Wybierz jedną ze swoich figur.",
-  "@tipSelectOwnPiece": {},
-  "notYourTurn": "To nie twoja tura.",
-  "@notYourTurn": {},
-  "annotationToolbarBackgroundColor": "Kolor tła paska narzędzi adnotacji",
-  "@annotationToolbarBackgroundColor": {},
-  "annotationToolbarIconColor": "Kolor ikony paska narzędzi adnotacji",
-  "@annotationToolbarIconColor": {},
-  "isAnnotationToolbarShown": "Pokaż pasek narzędzi adnotacji",
-  "@isAnnotationToolbarShown": {},
-  "enterAnnotationMode": "Wejdź w tryb adnotacji",
-  "@enterAnnotationMode": {},
-  "areYouSureYouWantToClearAllAnnotations": "Czy na pewno chcesz wyczyścić wszystkie adnotacje?",
-  "@areYouSureYouWantToClearAllAnnotations": {},
-  "llmPromptCopiedToClipboard": "Podpowiedź LLM skopiowana do schowka.",
-  "@llmPromptCopiedToClipboard": {},
-  "connectionRefusedTheServerMayBeDown": "Odmowa połączenia, serwer może być wyłączony.",
-  "@connectionRefusedTheServerMayBeDown": {},
-  "discoverySuccessfulAwaitingConnection": "Odkrycie zakończone sukcesem, oczekiwanie na połączenie...",
-  "@discoverySuccessfulAwaitingConnection": {},
-  "noLanConnection": "Brak połączenia LAN",
-  "@noLanConnection": {},
-  "takeScreenshot": "Zrób zrzut ekranu",
-  "@takeScreenshot": {},
-  "disconnectedFromOpponent": "Rozłączono z przeciwnikiem.",
-  "@disconnectedFromOpponent": {},
-  "takeBackRequest": "Żądanie cofnięcia ruchu",
-  "@takeBackRequest": {},
-  "nothingToShow": "Nic do pokazania.",
-  "@nothingToShow": {},
-  "stopHosting": "Zatrzymaj hostowanie",
-  "@stopHosting": {},
-  "connectionResetByPeer": "Połączenie zresetowane przez peer.",
-  "@connectionResetByPeer": {},
-  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Utracono połączenie z powodu przekroczenia czasu bicia serca. Proszę ponownie się połączyć.",
-  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
-  "startHosting": "Rozpocznij hostowanie",
-  "@startHosting": {},
-  "restartRequestRejected": "Żądanie restartu odrzucone.",
-  "@restartRequestRejected": {},
-  "notConnectedToLanOpponent": "Nie połączono z przeciwnikiem LAN.",
-  "@notConnectedToLanOpponent": {},
-  "llmPrompt": "Podpowiedź LLM",
-  "@llmPrompt": {},
-  "gameRestarted": "Gra zrestartowana.",
-  "@gameRestarted": {},
-  "takeBackRejected": "Cofnięcie ruchu odrzucone.",
-  "@takeBackRejected": {},
-  "areYouSureYouWantToResignThisGame": "Czy na pewno chcesz poddać tę grę?",
-  "@areYouSureYouWantToResignThisGame": {},
-  "opponentResignedYouWin": "Przeciwnik poddał się. Wygrywasz!",
-  "@opponentResignedYouWin": {},
-  "clearAllAnnotations": "Wyczyść wszystkie adnotacje",
-  "@clearAllAnnotations": {},
-  "connectedWaitingForOpponentSMove": "Połączono, oczekiwanie na ruch przeciwnika...",
-  "@connectedWaitingForOpponentSMove": {},
-  "networkStatusDisconnected": "Status sieci: Rozłączono",
-  "@networkStatusDisconnected": {},
-  "takeBackRequestSentToTheOpponent": "Żądanie cofnięcia ruchu wysłane do przeciwnika.",
-  "@takeBackRequestSentToTheOpponent": {},
-  "theOpponentMayHaveLeftTheGame": "Przeciwnik mógł opuścić grę",
-  "@theOpponentMayHaveLeftTheGame": {},
-  "connectedToHostSuccessfully": "Połączono z hostem pomyślnie.",
-  "@connectedToHostSuccessfully": {},
-  "connectionLostHeartbeatTimeout": "Utracono połączenie: przekroczenie czasu bicia serca",
-  "@connectionLostHeartbeatTimeout": {},
-  "noHostDiscovered": "Nie odkryto hosta.",
-  "@noHostDiscovered": {},
-  "confirmResignation": "Potwierdź poddanie się",
-  "@confirmResignation": {},
-  "startedHostingGameWaitingForPlayersToJoin": "Rozpoczęto hostowanie gry, oczekiwanie na dołączenie graczy...",
-  "@startedHostingGameWaitingForPlayersToJoin": {},
-  "connectionTimedOutNetworkConnectionUnstable": "Przekroczono czas połączenia, połączenie sieciowe niestabilne.",
-  "@connectionTimedOutNetworkConnectionUnstable": {},
-  "noLlmPromptAvailable": "Brak dostępnej podpowiedzi LLM.",
-  "@noLlmPromptAvailable": {},
-  "youResignedGameOver": "Podałeś się. Koniec gry.",
-  "@youResignedGameOver": {},
-  "serverIp": "IP serwera",
-  "@serverIp": {},
-  "confirmClear": "Potwierdź wyczyszczenie",
-  "@confirmClear": {},
-  "opponentSTurn": "Tura przeciwnika.",
-  "@opponentSTurn": {},
-  "waitingAClientConnection": "Oczekiwanie na połączenie klienta...",
-  "@waitingAClientConnection": {},
-  "takeBackRequestWasRejectedOrFailed": "Żądanie cofnięcia ruchu zostało odrzucone lub nie powiodło się.",
-  "@takeBackRequestWasRejectedOrFailed": {},
-  "addText": "Dodaj tekst",
-  "@addText": {},
-  "exitAnnotationMode": "Wyjdź z trybu adnotacji",
-  "@exitAnnotationMode": {},
-  "typeYourAnnotation": "Wpisz swoją adnotację",
-  "@typeYourAnnotation": {},
-  "attemptingToReconnect": "Próba ponownego połączenia...",
-  "@attemptingToReconnect": {},
-  "restartRequestSentWaitingForOpponentSResponse": "Wysłano żądanie restartu. Oczekiwanie na odpowiedź przeciwnika...",
-  "@restartRequestSentWaitingForOpponentSResponse": {},
-  "serverIsStopped": "Serwer jest zatrzymany.",
-  "@serverIsStopped": {},
-  "restartRequest": "Żądanie restartu",
-  "@restartRequest": {},
-  "cannotRequestATakeBackWhenItSNotYourTurn": "Nie można zażądać cofnięcia ruchu, gdy nie jest twoja tura.",
-  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
-  "takeBackAccepted": "Cofnięcie ruchu zaakceptowane.",
-  "@takeBackAccepted": {},
-  "localNetworkSettings": "Ustawienia sieci lokalnej",
-  "@localNetworkSettings": {},
-  "reconnectedSuccessfully": "Ponowne połączenie pomyślne!",
-  "@reconnectedSuccessfully": {},
-  "failedToSaveImageToGallery": "Nie udało się zapisać obrazu do Galerii.",
-  "@failedToSaveImageToGallery": {},
-  "opponentRequestedToRestartTheGameDoYouAccept": "Przeciwnik zażądał restartu gry. Czy akceptujesz?",
-  "@opponentRequestedToRestartTheGameDoYouAccept": {},
-  "yourTurn": "Twoja tura.",
-  "@yourTurn": {},
-  "unableToReconnectPleaseRestartTheGame": "Nie można ponownie się połączyć, proszę zrestartować grę.",
-  "@unableToReconnectPleaseRestartTheGame": {},
-  "host": "Host",
-  "@host": {},
-  "join": "Dołącz",
-  "@join": {},
-  "port": "Port",
-  "@port": {},
-  "invalidIpAddress": "Nieprawidłowy adres IP.",
-  "@invalidIpAddress": {},
-  "invalidPort": "Nieprawidłowy port.",
-  "@invalidPort": {},
-  "connectingAttempt": "Łączenie: Próba {attempt}/{maxAttempt}",
-  "@connectingAttempt": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempt": {}
-    }
-  },
-  "failedToConnect": "Nie udało się połączyć: {error}",
-  "@failedToConnect": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "failedToStartHosting": "Nie udało się rozpocząć hostowania: {error}",
-  "@failedToStartHosting": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "hostDiscovered": "Odkryto hosta: {ip}:{port}",
-  "@hostDiscovered": {
-    "placeholders": {
-      "ip": {},
-      "port": {}
-    }
-  },
-  "stop": "Zatrzymaj",
-  "@stop": {},
-  "discover": "Odkryj",
-  "@discover": {},
-  "connect": "Połącz",
-  "@connect": {},
-  "clientConnected": "Klient połączony: {clientIp}:{clientPort}",
-  "@clientConnected": {
-    "placeholders": {
-      "clientIp": {},
-      "clientPort": {}
-    }
-  },
-  "discoveringSeconds": "Odkrywanie: {seconds} s",
-  "@discoveringSeconds": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "reconnecting": "Ponowne łączenie ({attempt}/{maxAttempts})",
-  "@reconnecting": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempts": {}
-    }
-  },
-  "connected": "Połączono",
-  "@connected": {},
-  "delete": "Usuń",
-  "@delete": {},
-  "ancientEgypt": "Starożytny Egipt",
-  "@ancientEgypt": {},
-  "gothicIce": "Gotyk Lód",
-  "@gothicIce": {},
-  "riceField": "Pole Ryżowe",
-  "@riceField": {},
-  "chinesePorcelain": "Chińska Porcelana",
-  "@chinesePorcelain": {},
-  "desertDusk": "Pustynny Zmierzch",
-  "@desertDusk": {},
-  "precisionCraft": "Precyzyjne Rzemiosło",
-  "@precisionCraft": {},
-  "folkEmbroidery": "Haft Ludowy",
-  "@folkEmbroidery": {},
-  "carpathianHeritage": "Dziedzictwo Karpackie",
-  "@carpathianHeritage": {},
-  "imperialGrandeur": "Imperialna Wspaniałość",
-  "@imperialGrandeur": {},
-  "bohemianCrystal": "Czeski Kryształ",
-  "@bohemianCrystal": {},
-  "savannaSunrise": "Sawanna Wschód Słońca",
-  "@savannaSunrise": {},
-  "harmonyBalance": "Harmonia i Równowaga",
-  "@harmonyBalance": {},
-  "cinnamonSpice": "Przyprawa Cynamonowa",
-  "@cinnamonSpice": {},
-  "anatolianMosaic": "Mozaika Anatolijska",
-  "@anatolianMosaic": {},
-  "carnivalSpirit": "Duch Karnawału",
-  "@carnivalSpirit": {},
-  "custom": "Zwyczaj",
-  "@custom": {},
-  "spiceMarket": "Targ przypraw",
-  "@spiceMarket": {},
-  "swipeToRevealTheDrawer": "Przeciągnij, aby odsłonić szufladę",
-  "@swipeToRevealTheDrawer": {},
-  "showGameInfoOnScreenshots": "Pokaż informacje o grze na zrzutach ekranu",
-  "@showGameInfoOnScreenshots": {},
-  "humanMoveTime": "Limit czasu dla człowieka",
-  "@humanMoveTime": {},
-  "noTimeLimitForHumanMoves": "Brak limitu czasu dla ruchów człowieka",
-  "@noTimeLimitForHumanMoves": {},
-  "timeoutLoseWillBeApplied": "Przegrana przez przekroczenie czasu zostanie zastosowana dla gracza ludzkiego",
-  "@timeoutLoseWillBeApplied": {},
-  "identifyingBoard": "Rozpoznawanie planszy...",
-  "@identifyingBoard": {},
-  "youCanEnterAnyModelName": "Możesz wprowadzić dowolną nazwę modelu.",
-  "@youCanEnterAnyModelName": {},
-  "boardPositionAppliedFenCopiedToClipboard": "Pozycja planszy zastosowana. FEN skopiowany do schowka.",
-  "@boardPositionAppliedFenCopiedToClipboard": {},
-  "suggestionTryTakingAClearerPictureOfTheBoard": "Sugestia: spróbuj zrobić wyraźniejsze zdjęcie planszy.",
-  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
-  "llmPromptTemplate": "Szablon polecenia LLM",
-  "@llmPromptTemplate": {},
-  "noValidBoardDetected": "Nie wykryto poprawnej planszy.",
-  "@noValidBoardDetected": {},
-  "selectingImageFromAlbum": "Wybieranie obrazu z albumu...",
-  "@selectingImageFromAlbum": {},
-  "configurePromptTemplate": "Skonfiguruj szablon polecenia",
-  "@configurePromptTemplate": {},
-  "editPromptTemplateForLlmAnalysis": "Edytuj szablon polecenia do analizy przez LLM",
-  "@editPromptTemplateForLlmAnalysis": {},
-  "failedToGenerateFenFromRecognizedBoard": "Nie udało się wygenerować FEN z rozpoznanej planszy.",
-  "@failedToGenerateFenFromRecognizedBoard": {},
-  "outputInCurrentLanguage": "Wyjście w bieżącym języku",
-  "@outputInCurrentLanguage": {},
-  "commonBaseUrls": "Typowe adresy Base URL",
-  "@commonBaseUrls": {},
-  "viewCommonModels": "Zobacz popularne modele",
-  "@viewCommonModels": {},
-  "recognitionParametersUpdated": "Parametry rozpoznawania zaktualizowane.",
-  "@recognitionParametersUpdated": {},
-  "whiteSMove": "Ruch białych",
-  "@whiteSMove": {},
-  "resetToDefaults": "Przywróć ustawienia domyślne",
-  "@resetToDefaults": {},
-  "photoShoot": "Sesja zdjęciowa",
-  "@photoShoot": {},
-  "failedToApplyRecognizedBoardPosition": "Nie udało się zastosować rozpoznanej pozycji planszy.",
-  "@failedToApplyRecognizedBoardPosition": {},
-  "llmPromptContent": "Zawartość polecenia LLM",
-  "@llmPromptContent": {},
-  "llmNotConfiguredPleaseCheckYourSettings": "LLM nie jest skonfigurowane. Sprawdź ustawienia.",
-  "@llmNotConfiguredPleaseCheckYourSettings": {},
-  "setProviderModelApiKeyAndBaseUrl": "Ustaw dostawcę, model, API Key i Base URL",
-  "@setProviderModelApiKeyAndBaseUrl": {},
-  "llmConfiguration": "Konfiguracja LLM",
-  "@llmConfiguration": {},
-  "configureLlmProvider": "Skonfiguruj dostawcę LLM",
-  "@configureLlmProvider": {},
-  "llmPromptTemplateHeader": "Nagłówek szablonu polecenia LLM",
-  "@llmPromptTemplateHeader": {},
-  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Żadne pionki nie zostały rozpoznane na obrazie. Spróbuj ponownie.",
-  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
-  "recognizeBoardFromImage": "Rozpoznaj planszę z obrazu",
-  "@recognizeBoardFromImage": {},
-  "viewTips": "Zobacz wskazówki",
-  "@viewTips": {},
-  "applyToBoard": "Zastosuj do planszy",
-  "@applyToBoard": {},
-  "adjustBoardArea": "Dopasuj obszar planszy",
-  "@adjustBoardArea": {},
-  "viewCommonUrls": "Zobacz popularne URL-e",
-  "@viewCommonUrls": {},
-  "colorAnalysisFailed": "Analiza kolorów nie powiodła się!",
-  "@colorAnalysisFailed": {},
-  "analyzingGameBoardImage": "Analizowanie obrazu planszy...",
-  "@analyzingGameBoardImage": {},
-  "selectFromAlbum": "Wybierz z albumu",
-  "@selectFromAlbum": {},
-  "noBoardPointDetected": "Nie wykryto punktu na planszy!",
-  "@noBoardPointDetected": {},
-  "ifLeftEmptyDefaultTemplateWillBeUsed": "Jeśli pozostawione puste, zostanie użyty szablon domyślny",
-  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
-  "llmConfig": "Konfiguracja LLM",
-  "@llmConfig": {},
-  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Czy na pewno chcesz przywrócić szablony poleceń do wartości domyślnych?",
-  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
-  "llmPromptTemplateFooter": "Stopka szablonu polecenia LLM",
-  "@llmPromptTemplateFooter": {},
-  "loadingResponse": "Ładowanie odpowiedzi...",
-  "@loadingResponse": {},
-  "applyThisResultToBoard": "Zastosuj ten wynik do planszy",
-  "@applyThisResultToBoard": {},
-  "takingPicture": "Robienie zdjęcia...",
-  "@takingPicture": {},
-  "pleaseSelectAGameBoardImageToIdentify": "Wybierz obraz planszy do rozpoznania",
-  "@pleaseSelectAGameBoardImageToIdentify": {},
-  "identificationResults": "Wyniki rozpoznawania",
-  "@identificationResults": {},
-  "analyzeTheMovesAndProvideInsights": "Analizuj ruchy i udziel wnikliwych informacji.",
-  "@analyzeTheMovesAndProvideInsights": {},
-  "getApiKey": "Pobierz API Key",
-  "@getApiKey": {},
-  "entireRecognitionProcessFailedToComplete": "Cały proces rozpoznawania nie został ukończony.",
-  "@entireRecognitionProcessFailedToComplete": {},
-  "boardRecognitionResult": "Wynik rozpoznania planszy",
-  "@boardRecognitionResult": {},
-  "askLlm": "Zapytaj LLM",
-  "@askLlm": {},
-  "boardDetectionFailed": "Wykrywanie planszy nie powiodło się!",
-  "@boardDetectionFailed": {},
-  "noBoardPointDetectedCannotIdentifyPiece": "Nie wykryto punktu na planszy, nie można rozpoznać pionka!",
-  "@noBoardPointDetectedCannotIdentifyPiece": {},
-  "copyFen": "Kopiuj FEN",
-  "@copyFen": {},
-  "commonlyUsedModels": "Popularne modele",
-  "@commonlyUsedModels": {},
-  "apiKeyOptional": "API Key (opcjonalnie)",
-  "@apiKeyOptional": {},
-  "noImageSelected": "Nie wybrano obrazu",
-  "@noImageSelected": {},
-  "blackSMove": "Ruch czarnych",
-  "@blackSMove": {},
-  "llm": "Duży model językowy",
-  "@llm": {},
-  "llmProvider": "Dostawca",
-  "@llmProvider": {},
-  "baseUrl": "Podstawowy URL",
-  "@baseUrl": {},
-  "model": "Model",
-  "@model": {},
-  "temperature": "Temperatura",
-  "@temperature": {},
-  "llmCommandReceivedProcessing": "Polecenie odebrane! SI przetwarza...",
-  "@llmCommandReceivedProcessing": {},
-  "llmDeepThinkingWait": "Trwa głębokie myślenie, proszę czekać...",
-  "@llmDeepThinkingWait": {},
-  "llmPresentingSoon": "Wkrótce zostanie zaprezentowane...",
-  "@llmPresentingSoon": {},
-  "recognitionParameters": "Parametry rozpoznawania",
-  "@recognitionParameters": {},
-  "adjustParamsDesc": "Dostosuj parametry, aby poprawić dokładność rozpoznawania",
-  "@adjustParamsDesc": {},
-  "saveParameters": "Zapisz parametry",
-  "@saveParameters": {},
-  "unableToStartImageRecognition": "Nie można uruchomić rozpoznawania obrazu: {error}",
-  "@unableToStartImageRecognition": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "File system error"
-      }
-    }
-  },
-  "imageRecognitionFailed": "Rozpoznawanie obrazu nie powiodło się: {error}",
-  "@imageRecognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Could not detect corners"
-      }
-    }
-  },
-  "appliedPositionDetails": "Zastosowano pozycję z {whiteCount} białymi i {blackCount} czarnymi pionkami",
-  "@appliedPositionDetails": {
-    "placeholders": {
-      "whiteCount": {
-        "type": "int",
-        "example": "9"
-      },
-      "blackCount": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
-  "fenCopiedToClipboard": "(FEN skopiowano do schowka)",
-  "@fenCopiedToClipboard": {},
-  "recognitionFailed": "Rozpoznawanie nie powiodło się: {error}",
-  "@recognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Invalid FEN structure"
-      }
-    }
-  },
-  "myRating": "Moja ocena",
-  "@myRating": {},
-  "gamesPlayed": "Rozegrane gry",
-  "@gamesPlayed": {},
-  "wins": "Wygrane",
-  "@wins": {},
-  "losses": "Przegrane",
-  "@losses": {},
-  "draws": "Remisy",
-  "@draws": {},
-  "lastUpdated": "Ostatnia aktualizacja",
-  "@lastUpdated": {},
-  "format": "Format:",
-  "@format": {},
-  "resetStatistics": "Resetuj statystyki",
-  "@resetStatistics": {},
-  "drawRate": "Współczynnik remisów",
-  "@drawRate": {},
-  "lossRate": "Współczynnik przegranych",
-  "@lossRate": {},
-  "aiStatistics": "Statystyki SI",
-  "@aiStatistics": {},
-  "enableStatistics": "Włącz statystyki",
-  "@enableStatistics": {},
-  "enableStatistics_Detail": "Gdy włączone, wyniki gier będą zapisywane w statystykach. Jednak gry obejmujące cofanie ruchów nie będą zapisywane. Gdy wyłączone, zbieranie statystyk jest wstrzymane.",
-  "@enableStatistics_Detail": {},
-  "thisWillResetAllGameStatistics": "Spowoduje to zresetowanie wszystkich statystyk gry. Tej czynności nie można cofnąć.",
-  "@thisWillResetAllGameStatistics": {},
-  "boardInnerRingSize": "Rozmiar wewnętrznego pierścienia planszy",
-  "@boardInnerRingSize": {},
-  "boardShadowEnabled": "Cień planszy",
-  "@boardShadowEnabled": {},
-  "trapAwareness": "Wykrywanie pułapek",
-  "@trapAwareness": {},
-  "trapAwarenessDescription": "Podświetlaj ruchy-pułapki grubymi okręgami i strzałkami podczas analizy.",
-  "@trapAwarenessDescription": {},
-  "trapExists": "Istnieje pułapka. Ruchy-pułapki: {trapMoves}",
-  "@trapExists": {
-    "placeholders": {
-      "trapMoves": {
-        "type": "String"
-      }
-    }
-  },
-  "custodianCapture": "Uchwycenie flankujące",
-  "@custodianCapture": {},
-  "custodianCaptureDescription": "Załóż jeden z elementów przeciwnika między dwoma w linii prostej, aby go uchwycić.",
-  "@custodianCaptureDescription": {},
-  "custodianCaptureEnable": "Pozwól, aby wychwytywać flanking",
-  "@custodianCaptureEnable": {},
-  "interventionCapture": "Przechwytywanie interwencji",
-  "@interventionCapture": {},
-  "interventionCaptureDescription": "Przejdź do pustego punktu między dwoma elementami przeciwnika, aby uchwycić je oba.",
-  "@interventionCaptureDescription": {},
-  "interventionCaptureEnable": "Pozwól na przechwytywanie interwencji",
-  "@interventionCaptureEnable": {},
-  "leapCapture": "SKUPU SKUPU",
-  "@leapCapture": {},
-  "leapCaptureDescription": "Uchwyć, przeskakując przez sąsiedniego elementu przeciwnika w pusty punkt za nią.",
-  "@leapCaptureDescription": {},
-  "leapCaptureEnable": "Pozwól schwytać skok",
-  "@leapCaptureEnable": {},
-  "captureApplicableLines": "Odpowiednie linie",
-  "@captureApplicableLines": {},
-  "captureSquareEdges": "Wzdłuż krawędzi kwadratu",
-  "@captureSquareEdges": {},
-  "captureCrossLines": "Wzdłuż linii ortogonalnych przecinających kwadrat",
-  "@captureCrossLines": {},
-  "captureDiagonalLines": "Wzdłuż linii ukośnych przecinających kwadrat",
-  "@captureDiagonalLines": {},
-  "captureExecutionPhases": "Fazy wykonania",
-  "@captureExecutionPhases": {},
-  "capturePiecesCondition": "Dostępność podczas fazy ruchu na podstawie pozostałych elementów",
-  "@capturePiecesCondition": {},
-  "capturePiecesConditionUnlimited": "Bez ograniczeń",
-  "@capturePiecesConditionUnlimited": {},
-  "capturePiecesConditionSelfLeqThree": "Dostępne, gdy masz trzy lub mniej elementów",
-  "@capturePiecesConditionSelfLeqThree": {},
-  "stopPlacingWhenTwoEmptySquares": "Zatrzymaj umieszczanie, gdy pozostaną tylko dwa puste pola",
-  "@stopPlacingWhenTwoEmptySquares": {},
-  "stopPlacingWhenTwoEmptySquares_Detail": "Po włączeniu faza umieszczania kończy się, a faza ruchu zaczyna się, gdy na planszy pozostały tylko 2 wolne miejsca, niezależnie od pionków w ręce. Ta zasada dotyczy tylko gier z 12 pionkami.",
-  "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@@locale": "pl",
+    "appName": "Młynek",
+    "@appName": {
+        "description": "The app name"
+    },
+    "welcome": "Witaj",
+    "@welcome": {
+        "description": "Welcome"
+    },
+    "yes": "Tak",
+    "@yes": {
+        "description": "Yes"
+    },
+    "no": "Nie",
+    "@no": {
+        "description": "No"
+    },
+    "game": "Gra",
+    "@game": {
+        "description": "Game"
+    },
+    "humanVsAi": "Człowiek kontra SI",
+    "@humanVsAi": {
+        "description": "Human Vs AI"
+    },
+    "humanVsHuman": "Człowiek kontra człowiek",
+    "@humanVsHuman": {
+        "description": "Human Vs Human"
+    },
+    "aiVsAi": "AI kontra AI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
+    },
+    "humanVsCloud": "Człowiek kontra chmura",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
+    },
+    "humanVsLAN": "Człowiek kontra sieć LAN",
+    "@humanVsLAN": {
+        "description": "Human Vs LAN"
+    },
+    "testViaLAN": "Testy przez sieć LAN",
+    "@testViaLAN": {
+        "description": "Test Via LAN"
+    },
+    "move": "Przesuń",
+    "@move": {
+        "description": "Move"
+    },
+    "showMoveList": "Lista ruchów",
+    "@showMoveList": {
+        "description": "Move list"
+    },
+    "moveList": "Lista ruchów",
+    "@moveList": {
+        "description": "Move list"
+    },
+    "noGameRecord": "Brak zapisu",
+    "@noGameRecord": {
+        "description": "No record"
+    },
+    "ok": "OK",
+    "@ok": {
+        "description": "OK"
+    },
+    "confirm": "Potwierdź",
+    "@confirm": {
+        "description": "Confirm"
+    },
+    "cancel": "Anuluj",
+    "@cancel": {
+        "description": "Cancel"
+    },
+    "tipSelectWrong": "Wybrałeś niewłaściwy pionek.",
+    "@tipSelectWrong": {
+        "description": "Select the wrong piece."
+    },
+    "tipPlace": "Umieść swoje elementy.",
+    "@tipPlace": {
+        "description": "Place your pieces."
+    },
+    "tipBanPlace": "Nie można go tu umieścić.",
+    "@tipBanPlace": {
+        "description": "Cannot place it here."
+    },
+    "tipPlaced": "Umieszczone.",
+    "@tipPlaced": {
+        "description": "Placed."
+    },
+    "tipRemove": "Usuń element.",
+    "@tipRemove": {
+        "description": "Remove a piece."
+    },
+    "tipBanRemove": "Nie można usunąć.",
+    "@tipBanRemove": {
+        "description": "Cannot remove."
+    },
+    "tipRemoved": "Usunięty.",
+    "@tipRemoved": {
+        "description": "Removed."
+    },
+    "tipMove": "Przesuń element.",
+    "@tipMove": {
+        "description": "Move a piece."
+    },
+    "tipCannotPlace": "Nie możesz umieścić swojego kawałka tutaj.",
+    "@tipCannotPlace": {
+        "description": "You can't place your piece here."
+    },
+    "tipCannotMove": "Nie możesz przesunąć swojego kawałka tutaj.",
+    "@tipCannotMove": {
+        "description": "You can't move your piece here."
+    },
+    "tipMill": "Młyn! Usuń pionek przeciwnika.",
+    "@tipMill": {
+        "description": "Mill! Take your opponent's piece."
+    },
+    "tipContinueMill": "Kontynuuj usuwanie pionka przeciwnika.",
+    "@tipContinueMill": {
+        "description": "Continue to take your opponent's piece."
+    },
+    "tipSelectOpponentsPiece": "Wybierz jeden z pionków przeciwnika.",
+    "@tipSelectOpponentsPiece": {
+        "description": "Select one of your opponent's pieces."
+    },
+    "tipCannotRemovePieceFromMill": "Nie można usunąć pionka z młyna.",
+    "@tipCannotRemovePieceFromMill": {
+        "description": "You cannot remove a piece from a mill."
+    },
+    "tipCanMoveOnePoint": "Kawałek może poruszyć się o 1 punkt.",
+    "@tipCanMoveOnePoint": {
+        "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "Nie możesz poruszyć kawałków przeciwnika.",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
+    "tipSelectPieceToMove": "Wybierz swoją figurkę, którą chcesz poruszyć.",
+    "@tipSelectPieceToMove": {
+        "description": "Select your piece to move."
+    },
+    "tipHaveThreePiecesLeft": "Zostały Ci 3 pionki.",
+    "@tipHaveThreePiecesLeft": {
+        "description": "You have 3 pieces left."
+    },
+    "tipCanMoveToAnyPoint": "Możesz poruszyć się do dowolnego punktu.",
+    "@tipCanMoveToAnyPoint": {
+        "description": "You can move to any point you like."
+    },
+    "tipToMove": "{player}, aby się przenieść.",
+    "@tipToMove": {
+        "description": " to move."
+    },
+    "whiteWin": "Gracz 1 wygrywa!",
+    "@whiteWin": {
+        "description": "Player 1 wins!"
+    },
+    "blackWin": "Gracz 2 wygrywa!",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
+    "won": "Wygrana",
+    "@won": {
+        "description": "Won"
+    },
+    "lost": "Przegrany",
+    "@lost": {
+        "description": "Lost"
+    },
+    "thinking": "Myśląc…",
+    "@thinking": {
+        "description": "Thinking..."
+    },
+    "newGame": "Nowa gra",
+    "@newGame": {
+        "description": "New game"
+    },
+    "importGame": "Importuj grę",
+    "@importGame": {
+        "description": "Import game"
+    },
+    "exportGame": "Eksportuj grę",
+    "@exportGame": {
+        "description": "Export game"
+    },
+    "gameImported": "Gra zaimportowana.",
+    "@gameImported": {
+        "description": "Game imported from the clipboard."
+    },
+    "cannotImport": "Nie można importować {invalidMove}",
+    "@cannotImport": {
+        "description": "Cannot import"
+    },
+    "movesAndRulesNotMatch": "Ruchy i zasady nie pasują do siebie.",
+    "@movesAndRulesNotMatch": {
+        "description": "Rules and moves do not match."
+    },
+    "pleaseWait": "Proszę czekać...",
+    "@pleaseWait": {
+        "description": "Please wait..."
+    },
+    "restartGame": "Zrestartować bieżącą grę?",
+    "@restartGame": {
+        "description": "Restart current game?"
+    },
+    "restart": "Uruchom ponownie",
+    "@restart": {
+        "description": "Restart"
+    },
+    "gameStarted": "Gra rozpoczęta, proszę umieścić.",
+    "@gameStarted": {
+        "description": "Game started, please place"
+    },
+    "analyzing": "Analizuję…",
+    "@analyzing": {
+        "description": "Analyzing ..."
+    },
+    "error": "Błąd: {message}",
+    "@error": {
+        "description": "Error"
+    },
+    "winRate": "Wskaźnik zwycięstwa",
+    "@winRate": {
+        "description": "Win Rate"
+    },
+    "score": "Wynik:",
+    "@score": {
+        "description": "Score"
+    },
+    "white": "Gracz 1",
+    "@white": {
+        "description": "Player 1"
+    },
+    "black": "Gracz 2",
+    "@black": {
+        "description": "Player 2"
+    },
+    "loseReasonlessThanThree": "{player} liczba sztuk jest mniejsza niż trzy.",
+    "@loseReasonlessThanThree": {
+        "description": " piece count is less than three."
+    },
+    "loseReasonResign": "{player} zrezygnował.",
+    "@loseReasonResign": {
+        "description": " resign."
+    },
+    "loseReasonNoWay": "{player} nie może wykonać ruchu.",
+    "@loseReasonNoWay": {
+        "description": " is no way to go."
+    },
+    "loseReasonBoardIsFull": "Plansza jest pełna i {player} nie ma dokąd pójść.",
+    "@loseReasonBoardIsFull": {
+        "description": "The board is full, no way to go."
+    },
+    "loseReasonTimeOver": "Czas się skończył, {player} przegrał.",
+    "@loseReasonTimeOver": {
+        "description": "Time Over"
+    },
+    "drawReasonRule50": "W fazie ruchu, żaden element nie został usunięty w ciągu ostatniej określonej liczby ruchów.",
+    "@drawReasonRule50": {
+        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+    },
+    "drawReasonBoardIsFull": "Jest to remis, ponieważ plansza jest pełna.",
+    "@drawReasonBoardIsFull": {
+        "description": "It is a Draw because the board is full"
+    },
+    "drawReasonThreefoldRepetition": "Jest to Remis z powodu potrójnego powtórzenia.",
+    "@drawReasonThreefoldRepetition": {
+        "description": "It is a Draw because of threefold repetition."
+    },
+    "gameOverUnknownReason": "Koniec gry! Nieznany powód.",
+    "@gameOverUnknownReason": {
+        "description": "Game Over! Unknown reason."
+    },
+    "gameOver": "Koniec gry",
+    "@gameOver": {
+        "description": "Game Over"
+    },
+    "youWin": "Wygrałeś! Gratulacje!",
+    "@youWin": {
+        "description": "You win! Congratulations!"
+    },
+    "challengeHarderLevel": "Zmierz się z trudniejszym poziomem? Nowy poziom będzie poziomem {level}!",
+    "@challengeHarderLevel": {
+        "description": "Challenge harder level?"
+    },
+    "youLose": "Przegrałeś!",
+    "@youLose": {
+        "description": "You Lose!"
+    },
+    "analyze": "Przeanalizuj",
+    "@analyze": {
+        "description": "Analyze"
+    },
+    "about": "Informacje o",
+    "@about": {
+        "description": "About"
+    },
+    "version": "Wersja: {versionNumber}",
+    "@version": {
+        "description": "Version"
+    },
+    "thanks": "Dzięki",
+    "@thanks": {
+        "description": "Thanks"
+    },
+    "settings": "Ustawienia",
+    "@settings": {
+        "description": "Settings"
+    },
+    "options": "Opcje",
+    "@options": {
+        "description": "Options"
+    },
+    "generalSettings": "Ustawienia główne",
+    "@generalSettings": {
+        "description": "General Settings"
+    },
+    "skillLevel": "Poziom trudności",
+    "@skillLevel": {
+        "description": "Difficulty level"
+    },
+    "moveTime": "Czas myślenia AI",
+    "@moveTime": {
+        "description": "AI thinking time"
+    },
+    "difficulty": "Trudność",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
+    "playSounds": "Efekty dźwiękowe",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
+    "playSoundsInTheGame": "Odtwarzaj dźwięki w grze",
+    "@playSoundsInTheGame": {
+        "description": "Play sounds in the game"
+    },
+    "keepMuteWhenTakingBack": "Wyciszenie podczas odbierania",
+    "@keepMuteWhenTakingBack": {
+        "description": "Keep mute when taking back"
+    },
+    "tone": "Dźwięk",
+    "@tone": {
+        "description": "Tone"
+    },
+    "whoMovesFirst": "Pierwszy ruch",
+    "@whoMovesFirst": {
+        "description": "First move"
+    },
+    "human": "Człowiek",
+    "@human": {
+        "description": "Human"
+    },
+    "ai": "AI",
+    "@ai": {
+        "description": "AI"
+    },
+    "alternate": "Alternatywna strona",
+    "@alternate": {
+        "description": "Alternate"
+    },
+    "isAutoRestart": "Automatyczny restart gry po zakończeniu gry",
+    "@isAutoRestart": {
+        "description": "Auto-restart game when game over"
+    },
+    "isAutoChangeFirstMove": "Automatyczna zmiana pierwszego ruchu",
+    "@isAutoChangeFirstMove": {
+        "description": "Auto Change First Move"
+    },
+    "shufflingEnabled": "Losowy ruch",
+    "@shufflingEnabled": {
+        "description": "Random move"
+    },
+    "misc": "Różne",
+    "@misc": {
+        "description": "Miscellaneous"
+    },
+    "rules": "Zasady",
+    "@rules": {
+        "description": "Rules"
+    },
+    "piecesCount": "Liczba pionów, które ma każdy gracz",
+    "@piecesCount": {
+        "description": "The number of pieces each player has"
+    },
+    "piecesCount_Detail": "Ile pionów ma każdy z graczy?",
+    "@piecesCount_Detail": {
+        "description": "How many pieces does each player have?"
+    },
+    "flyPieceCount": "Numer latającego pionka",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
+    "flyPieceCount_Detail": "Jeśli latanie jest włączone, to gdy gracz jest zredukowany do określonej liczby elementów, jego elementy mogą poruszać się do dowolnego niezajętego punktu, zamiast być ograniczone do sąsiednich punktów, jak w pozostałej części gry.",
+    "@flyPieceCount_Detail": {
+        "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
+    "piecesAtLeastCount": "Minimalna liczba pionków",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "Linie ukośne",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
+    "hasDiagonalLines_Detail": "Dodaj cztery linie ukośne do planszy.",
+    "@hasDiagonalLines_Detail": {
+        "description": "Add four diagonal lines to the board."
+    },
+    "isDefenderMoveFirst": "Drugi gracz porusza się jako pierwszy",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
+    "isDefenderMoveFirst_Detail": "Gracz, który porusza się jako drugi w fazie układania, porusza się jako pierwszy w fazie ruchu.",
+    "@isDefenderMoveFirst_Detail": {
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
+    },
+    "mayRemoveMultiple": "Wielokrotne usuwanie",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
+    },
+    "mayRemoveMultiple_Detail": "Jeśli gracz zamknie więcej niż jeden młyn na raz, będzie mógł usunąć tyle młynów, ile zamknął.",
+    "@mayRemoveMultiple_Detail": {
+        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
+    "mayRemoveFromMillsAlways": "Niszczenie młynów",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
+    },
+    "mayRemoveFromMillsAlways_Detail": "Domyślnie, gracze muszą najpierw usunąć wszystkie inne elementy, zanim usuną element z uformowanego młyna. Włącz tę opcję, aby wyłączyć to ograniczenie.",
+    "@mayRemoveFromMillsAlways_Detail": {
+        "description": "mayRemoveFromMillsAlways_Detail"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull": "Drugi gracz przegrywa, gdy plansza jest pełna",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Na koniec fazy układania, gdy plansza jest pełna, strona, która ułożyła planszę jako pierwsza, przegrywa grę, w przeciwnym razie gra jest remisowa.",
+    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+    },
+    "isLoseButNotChangeSideWhenNoWay": "Przegrana, gdy nie ma legalnych ruchów",
+    "@isLoseButNotChangeSideWhenNoWay": {
+        "description": "Lose when no legal moves"
+    },
+    "isLoseButNotChangeSideWhenNoWay_Detail": "Gracz przegra, jeśli jego przeciwnik zablokuje go tak, że nie będzie mógł go ruszyć. Zmień stronę na ruch, jeśli ta opcja jest wyłączona.",
+    "@isLoseButNotChangeSideWhenNoWay_Detail": {
+        "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+    },
+    "mayFly": "Latający",
+    "@mayFly": {
+        "description": "Flying"
+    },
+    "mayFly_Detail": "Jeśli graczowi pozostały tylko trzy lub cztery (konfigurowalne) figury, może je przenieść do dowolnego wolnego punktu.",
+    "@mayFly_Detail": {
+        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "Zasada N ruchów",
+    "@nMoveRule": {
+        "description": "N-move rule"
+    },
+    "nMoveRule_Detail": "Gra jest remisowana, jeśli w określonej liczbie ruchów każdy z graczy nie wykonał żadnego ruchu.",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+    },
+    "rollback": "Wycofanie",
+    "@rollback": {
+        "description": "Rollback"
+    },
+    "pleaseSelect": "Proszę wybrać",
+    "@pleaseSelect": {
+        "description": "Please select"
+    },
+    "copy": "Kopiuj",
+    "@copy": {
+        "description": "Copy"
+    },
+    "moveHistoryCopied": "Historia ruchów skopiowana do schowka.",
+    "@moveHistoryCopied": {
+        "description": "Move history copied to clipboard"
+    },
+    "help": "Pomoc",
+    "@help": {
+        "description": "Help"
+    },
+    "feedback": "Opinie",
+    "@feedback": {
+        "description": "Feedback"
+    },
+    "exit": "Wyjdź",
+    "@exit": {
+        "description": "Exit"
+    },
+    "ruleSettings": "Ustawienia reguł",
+    "@ruleSettings": {
+        "description": "Rule Settings"
+    },
+    "color": "Kolor",
+    "@color": {
+        "description": "Color"
+    },
+    "boardColor": "Kolor planszy",
+    "@boardColor": {
+        "description": "Board color"
+    },
+    "pieceColor": "Kolor elementów",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "Kolor tła",
+    "@backgroundColor": {
+        "description": "Background color"
+    },
+    "lineColor": "Kolor linii planszy",
+    "@lineColor": {
+        "description": "Board line color"
+    },
+    "whitePieceColor": "Kolor elementu gracza 1",
+    "@whitePieceColor": {
+        "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "Kolor elementu gracza 2",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
+    },
+    "messageColor": "Kolor wiadomości",
+    "@messageColor": {
+        "description": "Message color"
+    },
+    "isPieceCountInHandShown": "Pokazanie liczby sztuk w ręku",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
+    },
+    "isNotationsShown": "Pokaż notacje na planszy",
+    "@isNotationsShown": {
+        "description": "Show notations on board"
+    },
+    "isHistoryNavigationToolbarShown": "Pokaż pasek nawigacyjny historii",
+    "@isHistoryNavigationToolbarShown": {
+        "description": "Show history navigation toolbar"
+    },
+    "display": "Wyświetl",
+    "@display": {
+        "description": "Display"
+    },
+    "boardBorderLineWidth": "Szerokość linii granicznej planszy",
+    "@boardBorderLineWidth": {
+        "description": "Board borderline width"
+    },
+    "boardInnerLineWidth": "Szerokość wewnętrznej linii planszy",
+    "@boardInnerLineWidth": {
+        "description": "Board inner line width"
+    },
+    "pieceWidth": "Szerokość elementu",
+    "@pieceWidth": {
+        "description": "Piece width"
+    },
+    "fontSize": "Rozmiar czcionki",
+    "@fontSize": {
+        "description": "Font size"
+    },
+    "standardNotation": "Notacja WMD",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
+    "restore": "Przywróć",
+    "@restore": {
+        "description": "Restore"
+    },
+    "restoreDefaultSettings": "Przywróć ustawienia domyślne",
+    "@restoreDefaultSettings": {
+        "description": "Restore Default Settings"
+    },
+    "pick": "Wybierz {element}",
+    "@pick": {
+        "description": "Pick "
+    },
+    "info": "Info",
+    "@info": {
+        "description": "Info"
+    },
+    "hint": "Wskazówka",
+    "@hint": {
+        "description": "Hint"
+    },
+    "player": "gracz",
+    "@player": {
+        "description": "player"
+    },
+    "player1": "Gracz 1",
+    "@player1": {
+        "description": "Player 1"
+    },
+    "player2": "Gracz 2",
+    "@player2": {
+        "description": "Player 2"
+    },
+    "howToPlay": "Jak grać",
+    "@howToPlay": {
+        "description": "How to play"
+    },
+    "toPlacePiece": "Stuknij w dowolny dostępny punkt, aby umieścić kawałek.",
+    "@toPlacePiece": {
+        "description": "Tap on any available point to place the piece."
+    },
+    "toSelectPiece": "Naciśnij na element, aby go przesunąć.",
+    "@toSelectPiece": {
+        "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "Stuknij w punkt połączony z elementem, aby go przesunąć.",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
+    },
+    "toRemovePiece": "Stuknij w jeden z elementów przeciwnika, aby go usunąć.",
+    "@toRemovePiece": {
+        "description": "Tap on one of the opponent's pieces to remove it."
+    },
+    "needToCreateMillFirst": "Musisz najpierw stworzyć młyn, zanim będziesz mógł usunąć kawałek.",
+    "@needToCreateMillFirst": {
+        "description": "You need to create a mill first before you can remove a piece."
+    },
+    "needToPlayWithOwnPieces": "Musisz grać swoimi kawałkami.",
+    "@needToPlayWithOwnPieces": {
+        "description": "You need to play with your pieces."
+    },
+    "statistics": "Statystyki",
+    "@statistics": {
+        "description": "Statistics"
+    },
+    "totalGames": "Łączna liczba gier",
+    "@totalGames": {
+        "description": "Total games"
+    },
+    "results": "Wyniki",
+    "@results": {
+        "description": "Results"
+    },
+    "left": "w lewo",
+    "@left": {
+        "description": "left"
+    },
+    "privacyPolicy": "Polityka Prywatności",
+    "@privacyPolicy": {
+        "description": "Privacy Policy"
+    },
+    "privacyPolicy_Detail_1": "Proszę przeczytać uważnie i upewnić się, że w pełni rozumiesz i zgadzasz się z tym ",
+    "@privacyPolicy_Detail_1": {
+        "description": "Privacy Policy Detail 1"
+    },
+    "privacyPolicy_Detail_2": ". Jeśli nie zgadzasz się z niniejszą Polityką, prosimy nie korzystać z Aplikacji. Korzystanie z Aplikacji oznacza, że akceptujecie Państwo te warunki.",
+    "@privacyPolicy_Detail_2": {
+        "description": "Privacy Policy Detail 2"
+    },
+    "and": " oraz . ",
+    "@and": {},
+    "accept": "Zaakceptuj",
+    "@accept": {
+        "description": "Accept"
+    },
+    "takeBack": "Cofnij",
+    "@takeBack": {
+        "description": "Take back"
+    },
+    "takingBack": "Cofnij…",
+    "@takingBack": {
+        "description": "Taking back..."
+    },
+    "waiting": "Czekanie…",
+    "@waiting": {
+        "description": "Waiting..."
+    },
+    "stepForward": "Krok do przodu",
+    "@stepForward": {
+        "description": "Step forward"
+    },
+    "takeBackAll": "Cofnij wszystko",
+    "@takeBackAll": {
+        "description": "Take back all"
+    },
+    "stepForwardAll": "Krok do przodu wszyscy",
+    "@stepForwardAll": {
+        "description": "Step forward all"
+    },
+    "moveNow": "Rusz się teraz",
+    "@moveNow": {
+        "description": "Move now"
+    },
+    "done": "Gotowe.",
+    "@done": {
+        "description": "Done."
+    },
+    "crackMill": "Pęknięty młyn",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
+    "crackMill_Detail": "Jeśli gracz ma tylko elementy w młynach, elementy w młynach nie będą blokowane do usunięcia.",
+    "@crackMill_Detail": {
+        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "animationDuration": "Czas trwania animacji",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "none": "Brak",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Temat",
+    "@theme": {
+        "description": "Theme"
+    },
+    "helpContent": "Celem gry jest pozostawienie przeciwnika z mniej niż trzema pionami lub bez legalnego ruchu.\n\nGra jest automatycznie remisowana, jeśli pozycja pojawia się po raz trzeci lub jeśli w ciągu ostatnich 100 (konfigurowalnych) ruchów nie został wykonany żaden ruch.\n\nGra przebiega w trzech fazach:\n\n1. Umieszczanie pionków na wolnych punktach\n2. Przesunięcie pionków na sąsiednie punkty\n3. (faza opcjonalna) Przenoszenie pionów na dowolny wolny punkt, gdy gracz został zredukowany do trzech pionów\n\nUmieszczanie\n\nGra rozpoczyna się od pustej planszy, która składa się z siatki z dwudziestoma czterema punktami. Gracze na zmianę umieszczają swoje kamienie na wolnych punktach, aż każdy z nich umieści wszystkie kamienie na planszy. Jeśli gracz umieści trzy swoje elementy w linii prostej, ma \"młyn\" i może usunąć jeden z elementów przeciwnika z planszy.\n\nW niektórych wariantach zasad, gracze muszą najpierw usunąć wszystkie inne elementy, zanim usuną element z uformowanego młyna.\n\nW niektórych wariantach zasad, wszystkie punkty z usuniętych elementów nie mogą być ponownie umieszczone w fazie umieszczania.\n\nGdy wszystkie elementy zostaną wykorzystane, gracze poruszają się na zmianę.\n\nPoruszanie się\n\nAby się poruszyć, gracz przesuwa jedną ze swoich figur wzdłuż linii planszy do wolnego sąsiedniego punktu. Jeśli nie może tego zrobić, przegrywa grę. Podobnie jak w fazie układania, gracz, który ustawi trzy swoje figurki na linii planszy, ma młyn i może usunąć jedną figurkę przeciwnika. Gracz, który zredukuje się do dwóch sztuk i nie ma możliwości utworzenia nowych młynów, przegrywa grę. Gracz może również przegrać z więcej niż trzema elementami, jeśli jego przeciwnik zablokuje je tak, że nie będzie mógł ich ruszyć.\n\nFlying\n\nW niektórych wariantach zasad, gdy graczowi pozostaną tylko trzy pionki, jego pionki mogą \"latać\", \"skakać\" lub \"przeskakiwać\" na dowolne wolne punkty, nie tylko sąsiednie.\n",
+    "@helpContent": {
+        "description": "Help Content"
+    },
+    "versionInfo": "Informacje o wersji",
+    "@versionInfo": {
+        "description": "Version info"
+    },
+    "eula": "EULA",
+    "@eula": {
+        "description": "EULA"
+    },
+    "license": "Licencja",
+    "@license": {
+        "description": "License"
+    },
+    "sourceCode": "Kod źródłowy",
+    "@sourceCode": {
+        "description": "Source code"
+    },
+    "appVersion": "Wersja aplikacji",
+    "@appVersion": {
+        "description": "App Version"
+    },
+    "general": "Ogólne",
+    "@general": {
+        "description": "General"
+    },
+    "advanced": "Zaawansowane",
+    "@advanced": {
+        "description": "Advanced"
+    },
+    "placing": "Umieszczanie",
+    "@placing": {
+        "description": "Placing"
+    },
+    "moving": "Przenoszenie",
+    "@moving": {
+        "description": "Moving"
+    },
+    "removing": "Usuwanie",
+    "@removing": {
+        "description": "Removing"
+    },
+    "gameOverCondition": "Warunek zakończenia gry",
+    "@gameOverCondition": {
+        "description": "Game over condition"
+    },
+    "aisPlayStyle": "Styl gry AI",
+    "@aisPlayStyle": {
+        "description": "AI's play style"
+    },
+    "passive": "Pasywne",
+    "@passive": {
+        "description": "Passive"
+    },
+    "timeout": "Koniec czasu",
+    "@timeout": {
+        "description": "Timeout"
+    },
+    "appearance": "Wygląd",
+    "@appearance": {
+        "description": "Appearance"
+    },
+    "drawOnHumanExperience": "Czerpanie z ludzkiego doświadczenia",
+    "@drawOnHumanExperience": {
+        "description": "Draw on the human experience"
+    },
+    "considerMobility": "Uwzględnij mobilność elementów",
+    "@considerMobility": {
+        "description": "Consider mobility of pieces"
+    },
+    "pieceCount": "Liczba elementów:",
+    "@pieceCount": {
+        "description": "Piece count"
+    },
+    "inHand": "{player} w ręku: {count}",
+    "@inHand": {
+        "description": "in hand"
+    },
+    "onBoard": "{player} na pokładzie: {count}",
+    "@onBoard": {
+        "description": "on board"
+    },
+    "boardTop": "Przesunięcie planszy od góry",
+    "@boardTop": {
+        "description": "Board offset from the top"
+    },
+    "notAIsTurn": "To nie jest kolej SI.",
+    "@notAIsTurn": {
+        "description": "It is not the AI's turn."
+    },
+    "aiIsNotThinking": "SI nie myśli.",
+    "@aiIsNotThinking": {
+        "description": "AI is not thinking."
+    },
+    "atEnd": "Na końcu listy ruchów.",
+    "@atEnd": {
+        "description": "At the end of the move list."
+    },
+    "tapBackAgainToLeave": "Stuknij ponownie w tył, aby wyjść.",
+    "@tapBackAgainToLeave": {
+        "description": "Tap Back again to exit."
+    },
+    "more": "Więcej",
+    "@more": {
+        "description": "More"
+    },
+    "experimental": "Jest to funkcja eksperymentalna.",
+    "@experimental": {
+        "description": "This is an experimental feature."
+    },
+    "experiments": "Eksperymenty",
+    "@experiments": {
+        "description": "Experiments"
+    },
+    "ossLicenses": "Licencje open source",
+    "@ossLicenses": {
+        "description": "Open source licenses"
+    },
+    "language": "Język",
+    "@language": {
+        "description": "Languages"
+    },
+    "defaultLanguage": "Domyślny język",
+    "@defaultLanguage": {
+        "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Figurki mogą się poruszać w fazie umieszczania",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "Nie ma oddzielnych faz umieszczania i poruszania, tzn. gracze mogą w każdym ruchu zdecydować, czy chcą umieścić element na planszy, czy poruszyć jeden ze swoich elementów (tak długo, jak długo mają pozostałe elementy do umieszczenia).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Kolor menu",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Kolor tekstu menu Menu",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerHighlightItemColor": "Kolor elementu podświetlenia menu",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Kolor tła głównego paska narzędzi",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "Kolor ikony głównego paska narzędzi",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Kolor tła paska nawigacyjnego",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Kolor ikony paska nawigacyjnego",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Automatycznie ukryj pasek narzędzi",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Lokalizacja paska narzędzi na ekranie",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Top",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Dolny",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Środek",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Jednolity kolor",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Obrazek",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Wybierz swoje zdjęcie",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Lekki",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Ciemny",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Motywy",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Aktualny motyw",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Zapisz motyw",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "showAnalysisGraph": "Pokaż wykres analizy",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analiza",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Zapisz grę",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Wczytaj grę",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Pozycja ustawienia",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Pokaż legalne ruchy",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Pokaż ostatni ruch",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Pokaż strzałki",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Kawałki",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Pokaż analizę",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Wątki",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Zaangażować się",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Pomóż ulepszyć tłumaczenie",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Instruktaż",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasyczny młyn",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Młyn mieszany",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Cejloński młyn",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Młyn może być zepsuty i wielokrotnie przerabiany",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Jeśli gracz rozbije młyn, aby natychmiast stworzyć nowy młyn, taki gracz może przesunąć taki element z powrotem do pierwotnego skrzyżowania w swoim następnym ruchu, jeśli zrobi nowy młyn.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Gra jest remisowana, jeśli gracz ma trzy pionki i po dziesięciu ruchach żaden z graczy nie usuwa pionów przeciwnika",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kiedy gracz ma do trzech pionów i żaden z graczy nie może usunąć pionka przeciwnika w ciągu dziesięciu ruchów, gra kończy się remisem.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "close": "Blisko",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Biały kawałek",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Czarny kawałek",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "emptyPoint": "Pusty punkt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Bez sensu",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Faza rozmieszczania",
+    "@placingPhase": {
+        "description": "Placing phase"
+    },
+    "movingPhase": "Faza ruchu",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Faza latania",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Strona do przesunięcia: {player}",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Ostatni ruch: {move}",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Wybrany",
+    "@selected": {
+        "description": "Selected"
+    },
+    "accessibility": "Dostępność",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Obsługa czytników ekranu",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "isDraw": "To jest remis!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Remis",
+    "@draw": {
+        "description": "Draw"
+    },
+    "pieceHighlightColor": "Kolor podświetlenia kawałka",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
+    },
+    "algorithm": "Algorytm",
+    "@algorithm": {
+        "description": "Algorithm"
+    },
+    "endgameNMoveRule": "Endgame zasada N-Move",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
+    "endgameNMoveRule_Detail": "Jeśli któryś z graczy ma tylko trzy pionki i żaden z nich nie usunie pionka w ramach określonych ruchów, gra jest remisowana.",
+    "@endgameNMoveRule_Detail": {
+        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+    },
+    "drawReasonEndgameRule50": "Każdy z graczy ma tylko trzy pionki i żaden z graczy nie usuwa pionka w ramach określonych ruchów.",
+    "@drawReasonEndgameRule50": {
+        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "Zasada potrójnej powtarzalności",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
+    },
+    "threefoldRepetitionRule_Detail": "Gra jest remisowana, jeśli pozycja wystąpi po raz trzeci.",
+    "@threefoldRepetitionRule_Detail": {
+        "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "Młyn! Kontynuuj ruch.",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
+    },
+    "pointStyle": "Styl punktowy",
+    "@pointStyle": {
+        "description": "Point style"
+    },
+    "pointWidth": "Szerokość punktu",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "solid": "Solidny",
+    "@solid": {
+        "description": "Solid"
+    },
+    "hollow": "Dziurawy",
+    "@hollow": {
+        "description": "Hollow"
+    },
+    "languageName": "Polski",
+    "@languageName": {
+        "description": "The name of the current language"
+    },
+    "moveNumber": "{count,plural, =0{ruch}=1{{count} ruch}other{{count} ruch}}",
+    "@moveNumber": {
+        "description": "Moves to take back",
+        "placeholders": {
+            "count": {
+                "description": "Number of Moves",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "loadFailed": "Ładowanie nie powiodło się.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
+    "filename": "Nazwa pliku",
+    "@filename": {
+        "description": "File name"
+    },
+    "browse": "Przeglądaj…",
+    "@browse": {
+        "description": "Browse…"
+    },
+    "gameFiles": "Pliki gry",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "gameSavedTo": "Gra została zapisana do",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{sztuka}=1{{count} sztuka}other{{count} sztuki}} należy usunąć.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "empty": "Pusty",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
+    },
+    "noMove": "Bez ruchu.",
+    "@noMove": {
+        "description": "No move."
+    },
+    "restoredPosition": "Przywrócona pozycja początkowa.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "Czysty",
+    "@clean": {
+        "description": "Clean"
+    },
+    "cleanedUp": "Oczyszczone.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Usunąć",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Nie można usunąć żadnych kawałków.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "placedCount": "Umiesz. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedPieceCount": "Liczenie umieszczonych sztuk w fazie umieszczania.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
+    },
+    "hasPlacedPieceCount": "{count, plural, =0{Obecny gracz nie umieścił żadnych pionków.} =1{Obecny gracz umieścił jeden pionek.} few{Obecny gracz umieścił {count} pionki.} many{Obecny gracz umieścił {count} pionków.} other{Obecny gracz umieścił {count} pionka.}}",
+    "@hasPlacedPieceCount": {
+        "description": "Message describing how many pieces the current player has placed, with support for Polish pluralization.",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "description": "Number of pieces placed by the player.",
+                "example": "3"
+            }
+        }
+    },
+    "notPlacingPhase": "Faza nie umieszczania, nie można jej zmienić.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
+    "paste": "Pasta",
+    "@paste": {
+        "description": "Paste"
+    },
+    "pasteDone": "Wklejanie zakończone.",
+    "@pasteDone": {
+        "description": "The paste is done."
+    },
+    "cannotPaste": "Nie można wkleić.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
+    "isUnplacedAndRemovedPiecesShown": "Pokaż nieumieszczone i usunięte elementy",
+    "@isUnplacedAndRemovedPiecesShown": {
+        "description": "Show unplaced and removed pieces"
+    },
+    "reopenToTakeEffect": "Wyjdź i ponownie otwórz aplikację, aby ustawienia zaczęły obowiązywać.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
+    },
+    "fullScreen": "Pełny ekran",
+    "@fullScreen": {
+        "description": "Full screen"
+    },
+    "forest": "Las",
+    "@forest": {},
+    "desktopImage": "Obraz pulpitu",
+    "@desktopImage": {},
+    "invalidPosition": "Nieprawidłowa pozycja.",
+    "@invalidPosition": {},
+    "shareGIF": "Udostępnij GIF",
+    "@shareGIF": {},
+    "duration": "Czas trwania",
+    "@duration": {},
+    "pixelRatio": "Stosunek pikseli",
+    "@pixelRatio": {},
+    "gameScreenRecorder": "Rejestrator ekranu gry",
+    "@gameScreenRecorder": {},
+    "previous": "Poprzedni",
+    "@previous": {},
+    "next": "Następny",
+    "@next": {},
+    "skip": "Pomijać",
+    "@skip": {},
+    "gotIt": "Rozumiem",
+    "@gotIt": {},
+    "youCanModifyRules": "Możesz modyfikować zasady gry w ustawieniach reguł.",
+    "@youCanModifyRules": {},
+    "youCanUseMouseWheelInPicker": "Możesz użyć kółka myszy, aby zmienić wartość w selektorze.",
+    "@youCanUseMouseWheelInPicker": {},
+    "noTimeLimitForThinking": "Czas myślenia AI ustawiony na 0 oznacza, że nie ma limitu czasu na myślenie.",
+    "@noTimeLimitForThinking": {},
+    "noteAiThinkingTimeMayNotBePrecise": "Należy pamiętać, że dostosowanie czasu myślenia AI może nie być całkowicie precyzyjne. Rzeczywisty czas myślenia może być krótszy, gdy poziom trudności jest ustawiony na niższą wartość, i może być dłuższy, gdy sztuczna inteligencja jest w połowie myślenia, gdy skończy się czas.",
+    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "noteActualDifficultyLevelMayBeLimited": "Jeśli ustawisz wysoki poziom trudności, ale nie zwiększysz czasu myślenia AI, rzeczywisty poziom trudności może zostać ograniczony do niższej wartości ze względu na ograniczenie czasu myślenia. Rzeczywista wartość może się różnić w zależności od wydajności urządzenia.",
+    "@noteActualDifficultyLevelMayBeLimited": {},
+    "whatIsMtdf": "MTD(f) to zmodyfikowana forma algorytmu wyszukiwania alfa-beta, której celem jest poprawa wydajności poprzez ponowne wykorzystanie pośrednich wyników wyszukiwania i użycie dobrego wstępnego przypuszczenia w celu zawężenia przestrzeni wyszukiwania.",
+    "@whatIsMtdf": {},
+    "whatIsPvs": "PVS (Principal Variation Search) to algorytm wyszukiwania w celu znalezienia najlepszego ruchu na danej pozycji. Jest to ulepszenie algorytmu alfa-beta i wykorzystuje przeszukiwanie okna zerowego lub zerowego, aby potwierdzić, że ruch jest gorszy lub nie gorszy niż już bezpieczny wynik z głównej zmiany. PVS koncentruje się na najbardziej obiecujących ruchach i unika niepotrzebnych poszukiwań nieoptymalnych gałęzi, co pomaga poprawić efektywność wyszukiwania.",
+    "@whatIsPvs": {},
+    "whatIsAlphaBeta": "Algorytm alfa-beta to algorytm wyszukiwania w celu znalezienia najlepszego ruchu. Wykorzystuje zasadę minimax i dwie wartości, alfa i beta, aby przyciąć drzewo wyszukiwania i zwiększyć wydajność. Alfa reprezentuje minimalny wynik, jaki komputer jest pewien, że może uzyskać, podczas gdy beta reprezentuje maksymalny wynik, jaki może uzyskać jego przeciwnik. Algorytm pomaga komputerowi podejmować mądre i efektywne decyzje w grze.",
+    "@whatIsAlphaBeta": {},
+    "firstMoveDetail": "W tej grze drugiemu graczowi łatwiej jest wygrać niż pierwszemu graczowi.",
+    "@firstMoveDetail": {},
+    "drawOnTheHumanExperienceDetail": "Zgodnie z ludzkim doświadczeniem, jeśli spróbujesz wygrać, przegrasz. Zamiast tego celuj w remis i unikaj przegranej. Obserwuj swojego przeciwnika i delikatnie zwab go w miejsce, w którym może popełnić błąd. Kiedy okazują słabość, wykorzystaj okazję i delikatnie naciskaj, by wygrać. W ten sposób możesz wygrać grę.",
+    "@drawOnTheHumanExperienceDetail": {},
+    "passiveDetail": "Włączenie opcji pasywnej spowoduje, że sztuczna inteligencja rozluźni się, gdy będzie miała przewagę na pozycji, zamiast agresywnie próbować wygrać tak szybko, jak to możliwe.",
+    "@passiveDetail": {},
+    "considerMobilityOfPiecesDetail": "Jeśli sztuczna inteligencja bierze pod uwagę mobilność swoich pionków, będzie dążyć nie tylko do jak najszybszego zbicia pionków przeciwnika, ale także rozważy blokowanie ruchów przeciwnika i uniemożliwienie mu zrobienia tego samego.",
+    "@considerMobilityOfPiecesDetail": {},
+    "moveRandomlyDetail": "Włączenie tej opcji zwiększa losowość i frajdę z gry, a jej wyłączenie może pomóc w badaniu sposobów na pokonanie sztucznej inteligencji.",
+    "@moveRandomlyDetail": {},
+    "whenBoardIsFull": "Gdy tablica jest pełna",
+    "@whenBoardIsFull": {},
+    "whenBoardIsFull_Detail": "Pod koniec fazy umieszczania, przed rozpoczęciem fazy ruchu, akcja następuje, jeśli plansza jest pełna pionków.",
+    "@whenBoardIsFull_Detail": {},
+    "sideToMoveRemovePiece": "Gracz, który porusza się jako pierwszy w fazie ruchu, usuwa jeden z pionków przeciwnika.",
+    "@sideToMoveRemovePiece": {},
+    "agreeToDraw": "Obie strony zgadzają się na remis.",
+    "@agreeToDraw": {},
+    "takeOpponentsPiece": "Weź jeden z pionków przeciwnika.",
+    "@takeOpponentsPiece": {},
+    "firstPlayerLose": "Pierwszy gracz przegrywa grę.",
+    "@firstPlayerLose": {},
+    "firstAndSecondPlayerRemovePiece": "Pierwszy i drugi gracz usuwają jeden z pionków przeciwnika.",
+    "@firstAndSecondPlayerRemovePiece": {},
+    "secondAndFirstPlayerRemovePiece": "Drugi i pierwszy gracz usuwają jeden z pionków przeciwnika.",
+    "@secondAndFirstPlayerRemovePiece": {},
+    "enteredFlyingPhase": "Po wejściu w fazę latania pionki przeciwnika mogą przeskoczyć do dowolnego pustego miejsca na planszy. Regułę latania można wyłączyć w „Ustawieniach reguł”.",
+    "@enteredFlyingPhase": {},
+    "whenStalemate": "Kiedy impas",
+    "@whenStalemate": {},
+    "whenStalemate_Detail": "Jaka akcja następuje, gdy nie można poruszyć żadnej figury?",
+    "@whenStalemate_Detail": {},
+    "endWithStalemateLoss": "Koniec z impasową porażką.",
+    "@endWithStalemateLoss": {},
+    "changeSideToMove": "Zmień stronę, aby się poruszać.",
+    "@changeSideToMove": {},
+    "removeOpponentsPieceAndMakeNextMove": "Usuń jeden z pionków przeciwnika i wykonaj następny ruch.",
+    "@removeOpponentsPieceAndMakeNextMove": {},
+    "endWithStalemateDraw": "Koniec z remisem impasowym.",
+    "@endWithStalemateDraw": {},
+    "removeOpponentsPieceAndChangeSideToMove": "Usuń jeden z pionków przeciwnika i zmień stronę, aby się poruszyć.",
+    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "Czas opóźnienia odpowiedzi AI",
+    "@aiResponseDelayTime": {},
+    "aiIsDelaying": "Sztuczna inteligencja znajduje się obecnie w fazie opóźnionej reakcji. Odczekaj chwilę, zanim przejdziesz dalej.",
+    "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "Nie możesz usunąć nieprzylegającego elementu.",
+    "@tipCanNotRemoveNonadjacent": {},
+    "stalemateRemovalRegardlessOfMillFormation": "W przypadku impasu piony przeciwnika sąsiadujące z twoimi mogą zostać usunięte, niezależnie od formacji młyna.",
+    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "whatIsMcts": "MCTS to przyjazny dla początkujących algorytm, który podejmuje decyzje, badając i oceniając różne ruchy za pomocą symulacji.",
+    "@whatIsMcts": {},
+    "goldenJade": "Złoty Jadeit",
+    "@goldenJade": {},
+    "forestWood": "Drewno leśne",
+    "@forestWood": {},
+    "greenMeadow": "Zielona Łąka",
+    "@greenMeadow": {},
+    "stonyPath": "Kamienista Ścieżka",
+    "@stonyPath": {},
+    "midnightBlue": "Niebieska północ",
+    "@midnightBlue": {},
+    "greenForest": "Zielony las",
+    "@greenForest": {},
+    "pastelPink": "pastelowy róż",
+    "@pastelPink": {},
+    "turquoiseSea": "Turkusowe morze",
+    "@turquoiseSea": {},
+    "violetDream": "Fioletowy sen",
+    "@violetDream": {},
+    "mintChocolate": "Miętowa czekolada",
+    "@mintChocolate": {},
+    "skyBlue": "Niebieskie niebo",
+    "@skyBlue": {},
+    "playfulGarden": "figlarny ogród",
+    "@playfulGarden": {},
+    "darkMystery": "Mroczna tajemnica",
+    "@darkMystery": {},
+    "whatIsRetrogradeAnalysis": "Algorytm analizy wstecznej wykorzystuje wielowartościową analizę wsteczną do zbudowania bazy danych gier końcowych z różnych pozycji początkowych, a następnie stosuje tę bazę danych w celu optymalizacji rozgrywki. Takie podejście należy do kategorii rozwiązań Ultra-Strong.",
+    "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "Czy chcesz zobaczyć instrukcję obsługi tego algorytmu?",
+    "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Pokaż wskaźnik przewagi pozycyjnej",
+    "@showPositionalAdvantageIndicator": {},
+    "usePerfectDatabase": "Użyj doskonałej bazy danych",
+    "@usePerfectDatabase": {},
+    "perfectDatabaseDescription": "Włącz tę opcję, aby korzystać z bezbłędnej bazy danych gier generowanej za pomocą najnowocześniejszych algorytmów. Ta funkcja integruje strategie początkowe i końcowe, aby sugerować optymalne ruchy. Jest to preferowany wybór dla graczy, którzy poszukują najwyższego poziomu precyzji rozgrywki. Baza danych, utworzona dzięki skrupulatnym technikom obliczeniowym, została zaprojektowana tak, aby oferować niemal doskonałe rozwiązania w zakresie gier.\n\nUwaga: jeśli sztuczna inteligencja nie uzyska dostępu do bazy danych, przy podejmowaniu decyzji dotyczących rozgrywki zwróci się do konwencjonalnych algorytmów. Gdy baza danych jest dostępna, „Poziom trudności” staje się praktycznie nie do pobicia, a „Czas myślenia AI” ulega drastycznemu skróceniu. Wiele ustawień w opcjach „Styl gry AI” zostanie zastąpionych, ponieważ wyniki z bazy danych mają najwyższy priorytet.\n\nAby uzyskać wskazówki, jak najlepiej wykorzystać tę nieskazitelną bazę danych, kliknij tutaj.",
+    "@perfectDatabaseDescription": {},
+    "backgroundImage": "Obraz tła",
+    "@backgroundImage": {},
+    "whatIsRandom": "Gdy opcja „Użyj doskonałej bazy danych” nie jest włączona, ustawienie „Losowe” powoduje, że sztuczna inteligencja losowo przenosi elementy bez użycia jakichkolwiek algorytmów do wyboru ruchu. Zwykle skutkuje to znacznie słabszą rozgrywką. I odwrotnie, gdy włączona jest opcja „Użyj doskonałej bazy danych”, sztuczna inteligencja przy podejmowaniu decyzji opiera się wyłącznie na „Doskonałej bazie danych”, zamiast łączyć ją z tradycyjnymi algorytmami sztucznej inteligencji. W tym trybie ruchy sztucznej inteligencji opierają się całkowicie na zawartości bazy danych, unikając polegania na obliczeniach w czasie rzeczywistym lub algorytmach wyszukiwania.",
+    "@whatIsRandom": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn": "Usuń pionek (pionki) przeciwnika z jego ręki; następnie jest tura przeciwnika, aby umieścić pionek.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "whenFormingMillsDuringPlacingPhase": "Podczas formowania młynów w fazie umieszczania",
+    "@whenFormingMillsDuringPlacingPhase": {},
+    "removeOpponentsPieceFromBoard": "Usuń pionek (pionki) przeciwnika z planszy.",
+    "@removeOpponentsPieceFromBoard": {},
+    "removeOpponentsPieceFromBoard_Detail": "Usuń pionek (pionki) przeciwnika z planszy; następnie jest tura przeciwnika, aby umieścić pionek.",
+    "@removeOpponentsPieceFromBoard_Detail": {},
+    "opponentRemovesOwnPiece": "Przeciwnik usuwa swój własny pionek (pionki) z planszy.",
+    "@opponentRemovesOwnPiece": {},
+    "opponentRemovesOwnPiece_Detail": "Zamiast ciebie podejmującego działanie, przeciwnik wybiera i usuwa swój własny pionek (pionki) z planszy, skutecznie podejmując działanie szkodliwe dla niego samego.",
+    "@opponentRemovesOwnPiece_Detail": {},
+    "removeOpponentsPieceFromHandThenYourTurn": "Usuń pionek (pionki) przeciwnika z jego ręki; następnie jest twoja tura, aby się poruszyć.",
+    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "removeOpponentsPieceFromHandThenYourTurn_Detail": "Usuń pionek (pionki) z ręki przeciwnika. Jeśli zgodnie z ustawieniem wielokrotnego usuwania należy usunąć wiele pionków, a przeciwnik nie ma już żadnych pionków w ręku, kontynuuj usuwanie pionków przeciwnika z planszy. Następnie jest twoja kolej, aby się poruszyć. Jeśli nadal tworzysz młyny, możesz kontynuować usuwanie pionków przeciwnika.",
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Usuń pionek (pionki) z ręki przeciwnika. Jeśli zgodnie z ustawieniem wielokrotnego usuwania należy usunąć wiele pionków, a przeciwnik nie ma już żadnych pionków w ręku, kontynuuj usuwanie pionków przeciwnika z planszy. Następnie jest tura przeciwnika, aby się poruszyć.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "markAndDelayRemovingPieces": "Zaznacz i opóźnij usuwanie pionków.",
+    "@markAndDelayRemovingPieces": {},
+    "markAndDelayRemovingPieces_Detail": "W fazie umieszczania pionki do usunięcia są zaznaczane i obaj gracze nie mogą umieszczać nowych pionków na tych polach. Po wejściu w fazę ruchu te zaznaczone pionki są całkowicie usuwane, a gracze mogą następnie przenieść swoje pionki na te teraz puste pola.",
+    "@markAndDelayRemovingPieces_Detail": {},
+    "whenFormingMillsDuringPlacingPhase_Detail": "Działania, które można podjąć podczas formowania młynów w fazie umieszczania.",
+    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "marked": "Oznaczone",
+    "@marked": {},
+    "menu": "Menu",
+    "@menu": {},
+    "monochrome": "Monochromatyczny",
+    "@monochrome": {},
+    "youCanEnableScreenReaderSupport": "Możesz włączyć wsparcie dla czytnika ekranu w ustawieniach dostępności w Ustawieniach ogólnych.",
+    "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Pokaż numery na pionkach",
+    "@showNumbersOnPieces": {},
+    "saveImage": "Zapisz obraz",
+    "@saveImage": {},
+    "isAnalysisToolbarShown": "Pokaż pasek narzędzi analizy",
+    "@isAnalysisToolbarShown": {},
+    "analysisToolbarBackgroundColor": "Kolor tła paska narzędzi analizy",
+    "@analysisToolbarBackgroundColor": {},
+    "analysisToolbarIconColor": "Kolor ikony paska narzędzi analizy",
+    "@analysisToolbarIconColor": {},
+    "transformed": "Przekształcone.",
+    "@transformed": {},
+    "cannotTransform": "Nie można przekształcić.",
+    "@cannotTransform": {},
+    "rotate": "Obróć",
+    "@rotate": {},
+    "horizontalFlip": "Poz.",
+    "@horizontalFlip": {},
+    "verticalFlip": "Pion.",
+    "@verticalFlip": {},
+    "innerOuterFlip": "W/Z",
+    "@innerOuterFlip": {},
+    "transparentCanvas": "Przezroczyste Płótno",
+    "@transparentCanvas": {},
+    "restrictRepeatedMillsFormation": "Ogranicz powtarzające się formacje młynów",
+    "@restrictRepeatedMillsFormation": {},
+    "restrictRepeatedMillsFormation_Detail": "Pionek przeniesiony z jednego młyna do drugiego nie może natychmiast wrócić na oryginalne miejsce w następnej turze, aby ponownie utworzyć młyn. Najpierw wymagany jest inny ruch.",
+    "@restrictRepeatedMillsFormation_Detail": {},
+    "oneTimeUseMill": "Młyn jednorazowego użytku",
+    "@oneTimeUseMill": {},
+    "oneTimeUseMill_Detail": "Każdy młyn może usunąć tylko jedną część przeciwnika. Możesz go ponownie utworzyć, ale nie można go użyć do dodatkowego usuwania.",
+    "@oneTimeUseMill_Detail": {},
+    "currentRulesNoPerfectDatabase": "Ustawione przez ciebie aktualne zasady nie mają odpowiedniej idealnej bazy danych. Aby uzyskać więcej informacji o idealnej bazie danych, kliknij tutaj.",
+    "@currentRulesNoPerfectDatabase": {},
+    "focusOnBlockingPaths": "Skoncentruj się na blokowaniu dróg",
+    "@focusOnBlockingPaths": {},
+    "focusOnBlockingPaths_Detail": "Priorytetem jest utrudnianie ruchów przeciwnika, a nie tworzenie młynów. Zamiast skupiać się na usuwaniu pionów poprzez ukończenie młynów, SI dąży do unieruchomienia przeciwnika, uniemożliwiając mu poruszanie się i zapewniając zwycięstwo poprzez wyczerpanie, a nie agresywną grę. Ta strategia nie blokuje aktywnie młynów przeciwnika.",
+    "@focusOnBlockingPaths_Detail": {},
+    "pieceImage": "Obrazek figury",
+    "@pieceImage": {},
+    "importColorSettings": "Importuj ustawienia kolorów",
+    "@importColorSettings": {},
+    "exportColorSettings": "Eksportuj ustawienia kolorów",
+    "@exportColorSettings": {},
+    "import": "Importuj",
+    "@import": {},
+    "export": "Eksportuj",
+    "@export": {},
+    "pleaseCopyJsonToClipboard": "Najpierw skopiuj ustawienia formatu JSON do schowka.",
+    "@pleaseCopyJsonToClipboard": {},
+    "copiedToClipboard": "Skopiowano do schowka.",
+    "@copiedToClipboard": {},
+    "imported": "Zaimportowano.",
+    "@imported": {},
+    "boardImage": "Obraz tablicy",
+    "@boardImage": {},
+    "autumnLeaves": "Jesienne Liście",
+    "@autumnLeaves": {},
+    "legendaryLand": "Legendarna Ziemia",
+    "@legendaryLand": {},
+    "vignetteEffect": "Efekt winiety",
+    "@vignetteEffect": {},
+    "promptMakeToolbarTransparent": "Czy chcesz, aby pasek narzędzi był całkowicie przezroczysty, gdy ustawiony jest obraz tła planszy?",
+    "@promptMakeToolbarTransparent": {},
+    "vibration": "Włącz wibracje w grze",
+    "@vibration": {},
+    "soundTheme": "Motyw dźwięku",
+    "@soundTheme": {},
+    "ball": "Piłka",
+    "@ball": {},
+    "liquid": "Płyn",
+    "@liquid": {},
+    "wood": "Drewno",
+    "@wood": {},
+    "placeEffectAnimation": "Efekt animacji przy stawianiu pionka",
+    "@placeEffectAnimation": {},
+    "removeEffectAnimation": "Efekt animacji przy usuwaniu pionka",
+    "@removeEffectAnimation": {},
+    "isToolbarAtBottom": "Pokaż pasek narzędzi na dole",
+    "@isToolbarAtBottom": {},
+    "boardCornerRadius": "Promień narożnika tablicy",
+    "@boardCornerRadius": {},
+    "useOpeningBook": "Użyj książki otwierającej",
+    "@useOpeningBook": {},
+    "currentRule": "Bieżący",
+    "@currentRule": {},
+    "nineMensMorris": "Nine Men's Morris",
+    "@nineMensMorris": {},
+    "twelveMensMorris": "Twelve Men's Morris",
+    "@twelveMensMorris": {},
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {},
+    "dooz": "Dooz",
+    "@dooz": {},
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {},
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {},
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {},
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {},
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {},
+    "ruleSet": "Zestaw zasad",
+    "@ruleSet": {},
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {},
+    "oneTimeMill": "One-Time Mill",
+    "@oneTimeMill": {},
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {},
+    "useOpeningBook_Detail": "Pozwól SI korzystać z ruchów otwarcia, które są powszechnie stosowane przez profesjonalnych ludzkich graczy na wczesnym etapie gry. Uwaga: Ta funkcja jest obecnie dostępna tylko dla określonych zestawów zasad.",
+    "@useOpeningBook_Detail": {},
+    "showAdvantageGraph": "Pokaż wykres przewagi",
+    "@showAdvantageGraph": {},
+    "advantageGraphHint": "Wykres przewagi zostanie narysowany tylko po wykonaniu ruchu przez SI. Nie zostanie narysowany, gdy ruch wykona gracz ludzki.",
+    "@advantageGraphHint": {},
+    "removalBasedOnMillCounts": "Wyłącz usuwanie do czasu umieszczenia wszystkich pionków. Gracze usuwają pionki na podstawie liczby młynków.",
+    "@removalBasedOnMillCounts": {},
+    "removalBasedOnMillCounts_Detail": "Wyłącz usuwanie do czasu umieszczenia wszystkich pionków. Gracze usuwają pionki na podstawie liczby młynków: jeśli liczba jest równa, obaj gracze usuwają tę samą liczbę pionków; jeśli jeden ma więcej, usuwa dodatkowego pionka, zachowując różnicę jednego pionka. Jeśli tylko jeden utworzy młyn, usuwa dwa pionki, a drugi usuwa jeden. Jeśli żaden nie utworzy młyna, obaj usuwają po jednym pionku.",
+    "@removalBasedOnMillCounts_Detail": {},
+    "elfilja": "El Filja",
+    "@elfilja": {},
+    "tipSelectOwnPiece": "Wybierz jedną ze swoich figur.",
+    "@tipSelectOwnPiece": {},
+    "notYourTurn": "To nie twoja tura.",
+    "@notYourTurn": {},
+    "annotationToolbarBackgroundColor": "Kolor tła paska narzędzi adnotacji",
+    "@annotationToolbarBackgroundColor": {},
+    "annotationToolbarIconColor": "Kolor ikony paska narzędzi adnotacji",
+    "@annotationToolbarIconColor": {},
+    "isAnnotationToolbarShown": "Pokaż pasek narzędzi adnotacji",
+    "@isAnnotationToolbarShown": {},
+    "enterAnnotationMode": "Wejdź w tryb adnotacji",
+    "@enterAnnotationMode": {},
+    "areYouSureYouWantToClearAllAnnotations": "Czy na pewno chcesz wyczyścić wszystkie adnotacje?",
+    "@areYouSureYouWantToClearAllAnnotations": {},
+    "llmPromptCopiedToClipboard": "Podpowiedź LLM skopiowana do schowka.",
+    "@llmPromptCopiedToClipboard": {},
+    "connectionRefusedTheServerMayBeDown": "Odmowa połączenia, serwer może być wyłączony.",
+    "@connectionRefusedTheServerMayBeDown": {},
+    "discoverySuccessfulAwaitingConnection": "Odkrycie zakończone sukcesem, oczekiwanie na połączenie...",
+    "@discoverySuccessfulAwaitingConnection": {},
+    "noLanConnection": "Brak połączenia LAN",
+    "@noLanConnection": {},
+    "takeScreenshot": "Zrób zrzut ekranu",
+    "@takeScreenshot": {},
+    "disconnectedFromOpponent": "Rozłączono z przeciwnikiem.",
+    "@disconnectedFromOpponent": {},
+    "takeBackRequest": "Żądanie cofnięcia ruchu",
+    "@takeBackRequest": {},
+    "nothingToShow": "Nic do pokazania.",
+    "@nothingToShow": {},
+    "stopHosting": "Zatrzymaj hostowanie",
+    "@stopHosting": {},
+    "connectionResetByPeer": "Połączenie zresetowane przez peer.",
+    "@connectionResetByPeer": {},
+    "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Utracono połączenie z powodu przekroczenia czasu bicia serca. Proszę ponownie się połączyć.",
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "startHosting": "Rozpocznij hostowanie",
+    "@startHosting": {},
+    "restartRequestRejected": "Żądanie restartu odrzucone.",
+    "@restartRequestRejected": {},
+    "notConnectedToLanOpponent": "Nie połączono z przeciwnikiem LAN.",
+    "@notConnectedToLanOpponent": {},
+    "llmPrompt": "Podpowiedź LLM",
+    "@llmPrompt": {},
+    "gameRestarted": "Gra zrestartowana.",
+    "@gameRestarted": {},
+    "takeBackRejected": "Cofnięcie ruchu odrzucone.",
+    "@takeBackRejected": {},
+    "areYouSureYouWantToResignThisGame": "Czy na pewno chcesz poddać tę grę?",
+    "@areYouSureYouWantToResignThisGame": {},
+    "opponentResignedYouWin": "Przeciwnik poddał się. Wygrywasz!",
+    "@opponentResignedYouWin": {},
+    "clearAllAnnotations": "Wyczyść wszystkie adnotacje",
+    "@clearAllAnnotations": {},
+    "connectedWaitingForOpponentSMove": "Połączono, oczekiwanie na ruch przeciwnika...",
+    "@connectedWaitingForOpponentSMove": {},
+    "networkStatusDisconnected": "Status sieci: Rozłączono",
+    "@networkStatusDisconnected": {},
+    "takeBackRequestSentToTheOpponent": "Żądanie cofnięcia ruchu wysłane do przeciwnika.",
+    "@takeBackRequestSentToTheOpponent": {},
+    "theOpponentMayHaveLeftTheGame": "Przeciwnik mógł opuścić grę",
+    "@theOpponentMayHaveLeftTheGame": {},
+    "connectedToHostSuccessfully": "Połączono z hostem pomyślnie.",
+    "@connectedToHostSuccessfully": {},
+    "connectionLostHeartbeatTimeout": "Utracono połączenie: przekroczenie czasu bicia serca",
+    "@connectionLostHeartbeatTimeout": {},
+    "noHostDiscovered": "Nie odkryto hosta.",
+    "@noHostDiscovered": {},
+    "confirmResignation": "Potwierdź poddanie się",
+    "@confirmResignation": {},
+    "startedHostingGameWaitingForPlayersToJoin": "Rozpoczęto hostowanie gry, oczekiwanie na dołączenie graczy...",
+    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "connectionTimedOutNetworkConnectionUnstable": "Przekroczono czas połączenia, połączenie sieciowe niestabilne.",
+    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "noLlmPromptAvailable": "Brak dostępnej podpowiedzi LLM.",
+    "@noLlmPromptAvailable": {},
+    "youResignedGameOver": "Podałeś się. Koniec gry.",
+    "@youResignedGameOver": {},
+    "serverIp": "IP serwera",
+    "@serverIp": {},
+    "confirmClear": "Potwierdź wyczyszczenie",
+    "@confirmClear": {},
+    "opponentSTurn": "Tura przeciwnika.",
+    "@opponentSTurn": {},
+    "waitingAClientConnection": "Oczekiwanie na połączenie klienta...",
+    "@waitingAClientConnection": {},
+    "takeBackRequestWasRejectedOrFailed": "Żądanie cofnięcia ruchu zostało odrzucone lub nie powiodło się.",
+    "@takeBackRequestWasRejectedOrFailed": {},
+    "addText": "Dodaj tekst",
+    "@addText": {},
+    "exitAnnotationMode": "Wyjdź z trybu adnotacji",
+    "@exitAnnotationMode": {},
+    "typeYourAnnotation": "Wpisz swoją adnotację",
+    "@typeYourAnnotation": {},
+    "attemptingToReconnect": "Próba ponownego połączenia...",
+    "@attemptingToReconnect": {},
+    "restartRequestSentWaitingForOpponentSResponse": "Wysłano żądanie restartu. Oczekiwanie na odpowiedź przeciwnika...",
+    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "serverIsStopped": "Serwer jest zatrzymany.",
+    "@serverIsStopped": {},
+    "restartRequest": "Żądanie restartu",
+    "@restartRequest": {},
+    "cannotRequestATakeBackWhenItSNotYourTurn": "Nie można zażądać cofnięcia ruchu, gdy nie jest twoja tura.",
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "takeBackAccepted": "Cofnięcie ruchu zaakceptowane.",
+    "@takeBackAccepted": {},
+    "localNetworkSettings": "Ustawienia sieci lokalnej",
+    "@localNetworkSettings": {},
+    "reconnectedSuccessfully": "Ponowne połączenie pomyślne!",
+    "@reconnectedSuccessfully": {},
+    "failedToSaveImageToGallery": "Nie udało się zapisać obrazu do Galerii.",
+    "@failedToSaveImageToGallery": {},
+    "opponentRequestedToRestartTheGameDoYouAccept": "Przeciwnik zażądał restartu gry. Czy akceptujesz?",
+    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "yourTurn": "Twoja tura.",
+    "@yourTurn": {},
+    "unableToReconnectPleaseRestartTheGame": "Nie można ponownie się połączyć, proszę zrestartować grę.",
+    "@unableToReconnectPleaseRestartTheGame": {},
+    "host": "Host",
+    "@host": {},
+    "join": "Dołącz",
+    "@join": {},
+    "port": "Port",
+    "@port": {},
+    "invalidIpAddress": "Nieprawidłowy adres IP.",
+    "@invalidIpAddress": {},
+    "invalidPort": "Nieprawidłowy port.",
+    "@invalidPort": {},
+    "connectingAttempt": "Łączenie: Próba {attempt}/{maxAttempt}",
+    "@connectingAttempt": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempt": {}
+        }
+    },
+    "failedToConnect": "Nie udało się połączyć: {error}",
+    "@failedToConnect": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "failedToStartHosting": "Nie udało się rozpocząć hostowania: {error}",
+    "@failedToStartHosting": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "hostDiscovered": "Odkryto hosta: {ip}:{port}",
+    "@hostDiscovered": {
+        "placeholders": {
+            "ip": {},
+            "port": {}
+        }
+    },
+    "stop": "Zatrzymaj",
+    "@stop": {},
+    "discover": "Odkryj",
+    "@discover": {},
+    "connect": "Połącz",
+    "@connect": {},
+    "clientConnected": "Klient połączony: {clientIp}:{clientPort}",
+    "@clientConnected": {
+        "placeholders": {
+            "clientIp": {},
+            "clientPort": {}
+        }
+    },
+    "discoveringSeconds": "Odkrywanie: {seconds} s",
+    "@discoveringSeconds": {
+        "placeholders": {
+            "seconds": {}
+        }
+    },
+    "reconnecting": "Ponowne łączenie ({attempt}/{maxAttempts})",
+    "@reconnecting": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempts": {}
+        }
+    },
+    "connected": "Połączono",
+    "@connected": {},
+    "delete": "Usuń",
+    "@delete": {},
+    "ancientEgypt": "Starożytny Egipt",
+    "@ancientEgypt": {},
+    "gothicIce": "Gotyk Lód",
+    "@gothicIce": {},
+    "riceField": "Pole Ryżowe",
+    "@riceField": {},
+    "chinesePorcelain": "Chińska Porcelana",
+    "@chinesePorcelain": {},
+    "desertDusk": "Pustynny Zmierzch",
+    "@desertDusk": {},
+    "precisionCraft": "Precyzyjne Rzemiosło",
+    "@precisionCraft": {},
+    "folkEmbroidery": "Haft Ludowy",
+    "@folkEmbroidery": {},
+    "carpathianHeritage": "Dziedzictwo Karpackie",
+    "@carpathianHeritage": {},
+    "imperialGrandeur": "Imperialna Wspaniałość",
+    "@imperialGrandeur": {},
+    "bohemianCrystal": "Czeski Kryształ",
+    "@bohemianCrystal": {},
+    "savannaSunrise": "Sawanna Wschód Słońca",
+    "@savannaSunrise": {},
+    "harmonyBalance": "Harmonia i Równowaga",
+    "@harmonyBalance": {},
+    "cinnamonSpice": "Przyprawa Cynamonowa",
+    "@cinnamonSpice": {},
+    "anatolianMosaic": "Mozaika Anatolijska",
+    "@anatolianMosaic": {},
+    "carnivalSpirit": "Duch Karnawału",
+    "@carnivalSpirit": {},
+    "custom": "Zwyczaj",
+    "@custom": {},
+    "spiceMarket": "Targ przypraw",
+    "@spiceMarket": {},
+    "swipeToRevealTheDrawer": "Przeciągnij, aby odsłonić szufladę",
+    "@swipeToRevealTheDrawer": {},
+    "showGameInfoOnScreenshots": "Pokaż informacje o grze na zrzutach ekranu",
+    "@showGameInfoOnScreenshots": {},
+    "humanMoveTime": "Limit czasu dla człowieka",
+    "@humanMoveTime": {},
+    "noTimeLimitForHumanMoves": "Brak limitu czasu dla ruchów człowieka",
+    "@noTimeLimitForHumanMoves": {},
+    "timeoutLoseWillBeApplied": "Przegrana przez przekroczenie czasu zostanie zastosowana dla gracza ludzkiego",
+    "@timeoutLoseWillBeApplied": {},
+    "identifyingBoard": "Rozpoznawanie planszy...",
+    "@identifyingBoard": {},
+    "youCanEnterAnyModelName": "Możesz wprowadzić dowolną nazwę modelu.",
+    "@youCanEnterAnyModelName": {},
+    "boardPositionAppliedFenCopiedToClipboard": "Pozycja planszy zastosowana. FEN skopiowany do schowka.",
+    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "suggestionTryTakingAClearerPictureOfTheBoard": "Sugestia: spróbuj zrobić wyraźniejsze zdjęcie planszy.",
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "llmPromptTemplate": "Szablon polecenia LLM",
+    "@llmPromptTemplate": {},
+    "noValidBoardDetected": "Nie wykryto poprawnej planszy.",
+    "@noValidBoardDetected": {},
+    "selectingImageFromAlbum": "Wybieranie obrazu z albumu...",
+    "@selectingImageFromAlbum": {},
+    "configurePromptTemplate": "Skonfiguruj szablon polecenia",
+    "@configurePromptTemplate": {},
+    "editPromptTemplateForLlmAnalysis": "Edytuj szablon polecenia do analizy przez LLM",
+    "@editPromptTemplateForLlmAnalysis": {},
+    "failedToGenerateFenFromRecognizedBoard": "Nie udało się wygenerować FEN z rozpoznanej planszy.",
+    "@failedToGenerateFenFromRecognizedBoard": {},
+    "outputInCurrentLanguage": "Wyjście w bieżącym języku",
+    "@outputInCurrentLanguage": {},
+    "commonBaseUrls": "Typowe adresy Base URL",
+    "@commonBaseUrls": {},
+    "viewCommonModels": "Zobacz popularne modele",
+    "@viewCommonModels": {},
+    "recognitionParametersUpdated": "Parametry rozpoznawania zaktualizowane.",
+    "@recognitionParametersUpdated": {},
+    "whiteSMove": "Ruch białych",
+    "@whiteSMove": {},
+    "resetToDefaults": "Przywróć ustawienia domyślne",
+    "@resetToDefaults": {},
+    "photoShoot": "Sesja zdjęciowa",
+    "@photoShoot": {},
+    "failedToApplyRecognizedBoardPosition": "Nie udało się zastosować rozpoznanej pozycji planszy.",
+    "@failedToApplyRecognizedBoardPosition": {},
+    "llmPromptContent": "Zawartość polecenia LLM",
+    "@llmPromptContent": {},
+    "llmNotConfiguredPleaseCheckYourSettings": "LLM nie jest skonfigurowane. Sprawdź ustawienia.",
+    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "setProviderModelApiKeyAndBaseUrl": "Ustaw dostawcę, model, API Key i Base URL",
+    "@setProviderModelApiKeyAndBaseUrl": {},
+    "llmConfiguration": "Konfiguracja LLM",
+    "@llmConfiguration": {},
+    "configureLlmProvider": "Skonfiguruj dostawcę LLM",
+    "@configureLlmProvider": {},
+    "llmPromptTemplateHeader": "Nagłówek szablonu polecenia LLM",
+    "@llmPromptTemplateHeader": {},
+    "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Żadne pionki nie zostały rozpoznane na obrazie. Spróbuj ponownie.",
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "recognizeBoardFromImage": "Rozpoznaj planszę z obrazu",
+    "@recognizeBoardFromImage": {},
+    "viewTips": "Zobacz wskazówki",
+    "@viewTips": {},
+    "applyToBoard": "Zastosuj do planszy",
+    "@applyToBoard": {},
+    "adjustBoardArea": "Dopasuj obszar planszy",
+    "@adjustBoardArea": {},
+    "viewCommonUrls": "Zobacz popularne URL-e",
+    "@viewCommonUrls": {},
+    "colorAnalysisFailed": "Analiza kolorów nie powiodła się!",
+    "@colorAnalysisFailed": {},
+    "analyzingGameBoardImage": "Analizowanie obrazu planszy...",
+    "@analyzingGameBoardImage": {},
+    "selectFromAlbum": "Wybierz z albumu",
+    "@selectFromAlbum": {},
+    "noBoardPointDetected": "Nie wykryto punktu na planszy!",
+    "@noBoardPointDetected": {},
+    "ifLeftEmptyDefaultTemplateWillBeUsed": "Jeśli pozostawione puste, zostanie użyty szablon domyślny",
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "llmConfig": "Konfiguracja LLM",
+    "@llmConfig": {},
+    "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Czy na pewno chcesz przywrócić szablony poleceń do wartości domyślnych?",
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "llmPromptTemplateFooter": "Stopka szablonu polecenia LLM",
+    "@llmPromptTemplateFooter": {},
+    "loadingResponse": "Ładowanie odpowiedzi...",
+    "@loadingResponse": {},
+    "applyThisResultToBoard": "Zastosuj ten wynik do planszy",
+    "@applyThisResultToBoard": {},
+    "takingPicture": "Robienie zdjęcia...",
+    "@takingPicture": {},
+    "pleaseSelectAGameBoardImageToIdentify": "Wybierz obraz planszy do rozpoznania",
+    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "identificationResults": "Wyniki rozpoznawania",
+    "@identificationResults": {},
+    "analyzeTheMovesAndProvideInsights": "Analizuj ruchy i udziel wnikliwych informacji.",
+    "@analyzeTheMovesAndProvideInsights": {},
+    "getApiKey": "Pobierz API Key",
+    "@getApiKey": {},
+    "entireRecognitionProcessFailedToComplete": "Cały proces rozpoznawania nie został ukończony.",
+    "@entireRecognitionProcessFailedToComplete": {},
+    "boardRecognitionResult": "Wynik rozpoznania planszy",
+    "@boardRecognitionResult": {},
+    "askLlm": "Zapytaj LLM",
+    "@askLlm": {},
+    "boardDetectionFailed": "Wykrywanie planszy nie powiodło się!",
+    "@boardDetectionFailed": {},
+    "noBoardPointDetectedCannotIdentifyPiece": "Nie wykryto punktu na planszy, nie można rozpoznać pionka!",
+    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "copyFen": "Kopiuj FEN",
+    "@copyFen": {},
+    "commonlyUsedModels": "Popularne modele",
+    "@commonlyUsedModels": {},
+    "apiKeyOptional": "API Key (opcjonalnie)",
+    "@apiKeyOptional": {},
+    "noImageSelected": "Nie wybrano obrazu",
+    "@noImageSelected": {},
+    "blackSMove": "Ruch czarnych",
+    "@blackSMove": {},
+    "llm": "Duży model językowy",
+    "@llm": {},
+    "llmProvider": "Dostawca",
+    "@llmProvider": {},
+    "baseUrl": "Podstawowy URL",
+    "@baseUrl": {},
+    "model": "Model",
+    "@model": {},
+    "temperature": "Temperatura",
+    "@temperature": {},
+    "llmCommandReceivedProcessing": "Polecenie odebrane! SI przetwarza...",
+    "@llmCommandReceivedProcessing": {},
+    "llmDeepThinkingWait": "Trwa głębokie myślenie, proszę czekać...",
+    "@llmDeepThinkingWait": {},
+    "llmPresentingSoon": "Wkrótce zostanie zaprezentowane...",
+    "@llmPresentingSoon": {},
+    "recognitionParameters": "Parametry rozpoznawania",
+    "@recognitionParameters": {},
+    "adjustParamsDesc": "Dostosuj parametry, aby poprawić dokładność rozpoznawania",
+    "@adjustParamsDesc": {},
+    "saveParameters": "Zapisz parametry",
+    "@saveParameters": {},
+    "unableToStartImageRecognition": "Nie można uruchomić rozpoznawania obrazu: {error}",
+    "@unableToStartImageRecognition": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "File system error"
+            }
+        }
+    },
+    "imageRecognitionFailed": "Rozpoznawanie obrazu nie powiodło się: {error}",
+    "@imageRecognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Could not detect corners"
+            }
+        }
+    },
+    "appliedPositionDetails": "Zastosowano pozycję z {whiteCount} białymi i {blackCount} czarnymi pionkami",
+    "@appliedPositionDetails": {
+        "placeholders": {
+            "whiteCount": {
+                "type": "int",
+                "example": "9"
+            },
+            "blackCount": {
+                "type": "int",
+                "example": "8"
+            }
+        }
+    },
+    "fenCopiedToClipboard": "(FEN skopiowano do schowka)",
+    "@fenCopiedToClipboard": {},
+    "recognitionFailed": "Rozpoznawanie nie powiodło się: {error}",
+    "@recognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Invalid FEN structure"
+            }
+        }
+    },
+    "myRating": "Moja ocena",
+    "@myRating": {},
+    "gamesPlayed": "Rozegrane gry",
+    "@gamesPlayed": {},
+    "wins": "Wygrane",
+    "@wins": {},
+    "losses": "Przegrane",
+    "@losses": {},
+    "draws": "Remisy",
+    "@draws": {},
+    "lastUpdated": "Ostatnia aktualizacja",
+    "@lastUpdated": {},
+    "format": "Format:",
+    "@format": {},
+    "resetStatistics": "Resetuj statystyki",
+    "@resetStatistics": {},
+    "drawRate": "Współczynnik remisów",
+    "@drawRate": {},
+    "lossRate": "Współczynnik przegranych",
+    "@lossRate": {},
+    "aiStatistics": "Statystyki SI",
+    "@aiStatistics": {},
+    "enableStatistics": "Włącz statystyki",
+    "@enableStatistics": {},
+    "enableStatistics_Detail": "Gdy włączone, wyniki gier będą zapisywane w statystykach. Jednak gry obejmujące cofanie ruchów nie będą zapisywane. Gdy wyłączone, zbieranie statystyk jest wstrzymane.",
+    "@enableStatistics_Detail": {},
+    "thisWillResetAllGameStatistics": "Spowoduje to zresetowanie wszystkich statystyk gry. Tej czynności nie można cofnąć.",
+    "@thisWillResetAllGameStatistics": {},
+    "boardInnerRingSize": "Rozmiar wewnętrznego pierścienia planszy",
+    "@boardInnerRingSize": {},
+    "boardShadowEnabled": "Cień planszy",
+    "@boardShadowEnabled": {},
+    "trapAwareness": "Wykrywanie pułapek",
+    "@trapAwareness": {},
+    "trapAwarenessDescription": "Podświetlaj ruchy-pułapki grubymi okręgami i strzałkami podczas analizy.",
+    "@trapAwarenessDescription": {},
+    "trapExists": "Istnieje pułapka. Ruchy-pułapki: {trapMoves}",
+    "@trapExists": {
+        "placeholders": {
+            "trapMoves": {
+                "type": "String"
+            }
+        }
+    },
+    "custodianCapture": "Uchwycenie flankujące",
+    "@custodianCapture": {},
+    "custodianCaptureDescription": "Załóż jeden z elementów przeciwnika między dwoma w linii prostej, aby go uchwycić.",
+    "@custodianCaptureDescription": {},
+    "custodianCaptureEnable": "Pozwól, aby wychwytywać flanking",
+    "@custodianCaptureEnable": {},
+    "interventionCapture": "Przechwytywanie interwencji",
+    "@interventionCapture": {},
+    "interventionCaptureDescription": "Przejdź do pustego punktu między dwoma elementami przeciwnika, aby uchwycić je oba.",
+    "@interventionCaptureDescription": {},
+    "interventionCaptureEnable": "Pozwól na przechwytywanie interwencji",
+    "@interventionCaptureEnable": {},
+    "leapCapture": "SKUPU SKUPU",
+    "@leapCapture": {},
+    "leapCaptureDescription": "Uchwyć, przeskakując przez sąsiedniego elementu przeciwnika w pusty punkt za nią.",
+    "@leapCaptureDescription": {},
+    "leapCaptureEnable": "Pozwól schwytać skok",
+    "@leapCaptureEnable": {},
+    "captureApplicableLines": "Odpowiednie linie",
+    "@captureApplicableLines": {},
+    "captureSquareEdges": "Wzdłuż krawędzi kwadratu",
+    "@captureSquareEdges": {},
+    "captureCrossLines": "Wzdłuż linii ortogonalnych przecinających kwadrat",
+    "@captureCrossLines": {},
+    "captureDiagonalLines": "Wzdłuż linii ukośnych przecinających kwadrat",
+    "@captureDiagonalLines": {},
+    "captureExecutionPhases": "Fazy wykonania",
+    "@captureExecutionPhases": {},
+    "capturePiecesCondition": "Dostępność podczas fazy ruchu na podstawie pozostałych elementów",
+    "@capturePiecesCondition": {},
+    "capturePiecesConditionUnlimited": "Bez ograniczeń",
+    "@capturePiecesConditionUnlimited": {},
+    "capturePiecesConditionSelfLeqThree": "Dostępne, gdy masz trzy lub mniej elementów",
+    "@capturePiecesConditionSelfLeqThree": {},
+    "stopPlacingWhenTwoEmptySquares": "Zatrzymaj umieszczanie, gdy pozostaną tylko dwa puste pola",
+    "@stopPlacingWhenTwoEmptySquares": {},
+    "stopPlacingWhenTwoEmptySquares_Detail": "Po włączeniu faza umieszczania kończy się, a faza ruchu zaczyna się, gdy na planszy pozostały tylko 2 wolne miejsca, niezależnie od pionków w ręce. Ta zasada dotyczy tylko gier z 12 pionkami.",
+    "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

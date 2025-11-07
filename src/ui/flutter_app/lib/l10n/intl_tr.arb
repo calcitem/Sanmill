@@ -1,2019 +1,2019 @@
 {
-  "@@locale": "tr",
-  "appName": "9-12 Taş",
-  "@appName": {
-    "description": "The app name"
-  },
-  "welcome": "Hoşgeldiniz",
-  "@welcome": {
-    "description": "Welcome"
-  },
-  "yes": "Evet",
-  "@yes": {
-    "description": "Yes"
-  },
-  "no": "Hayır",
-  "@no": {
-    "description": "No"
-  },
-  "game": "Oyun",
-  "@game": {
-    "description": "Game"
-  },
-  "humanVsAi": "İnsana Karşı Yapay Zeka",
-  "@humanVsAi": {
-    "description": "Human Vs AI"
-  },
-  "humanVsHuman": "İnsana Karşı İnsan",
-  "@humanVsHuman": {
-    "description": "Human Vs Human"
-  },
-  "aiVsAi": "AI vs AI",
-  "@aiVsAi": {
-    "description": "AI Vs AI"
-  },
-  "humanVsCloud": "İnsana Karşı Bulut",
-  "@humanVsCloud": {
-    "description": "Human Vs Cloud"
-  },
-  "humanVsLAN": "İnsana Karşı LAN",
-  "@humanVsLAN": {
-    "description": "Human Vs LAN"
-  },
-  "testViaLAN": "LAN Üzerinden Test Et",
-  "@testViaLAN": {
-    "description": "Test Via LAN"
-  },
-  "move": "Hamle",
-  "@move": {
-    "description": "Move"
-  },
-  "showMoveList": "Hamle Listesi",
-  "@showMoveList": {
-    "description": "Move list"
-  },
-  "moveList": "Hamle listesi",
-  "@moveList": {
-    "description": "Move list"
-  },
-  "noGameRecord": "Kayıt yok",
-  "@noGameRecord": {
-    "description": "No record"
-  },
-  "ok": "TAMAM",
-  "@ok": {
-    "description": "OK"
-  },
-  "confirm": "Onayla",
-  "@confirm": {
-    "description": "Confirm"
-  },
-  "cancel": "İptal",
-  "@cancel": {
-    "description": "Cancel"
-  },
-  "tipSelectWrong": "Yanlış bir parça seçtiniz.",
-  "@tipSelectWrong": {
-    "description": "Select the wrong piece."
-  },
-  "tipPlace": "Taşlarınızı yerleştirin.",
-  "@tipPlace": {
-    "description": "Place your pieces."
-  },
-  "tipBanPlace": "Buraya yerleştiremezsiniz.",
-  "@tipBanPlace": {
-    "description": "Cannot place it here."
-  },
-  "tipPlaced": "Yerleştirildi.",
-  "@tipPlaced": {
-    "description": "Placed."
-  },
-  "tipRemove": "Bir taşı çıkarın.",
-  "@tipRemove": {
-    "description": "Remove a piece."
-  },
-  "tipBanRemove": "Kaldırılamıyor.",
-  "@tipBanRemove": {
-    "description": "Cannot remove."
-  },
-  "tipRemoved": "Kaldırıldı.",
-  "@tipRemoved": {
-    "description": "Removed."
-  },
-  "tipMove": "Bir parçayı hareket ettirin.",
-  "@tipMove": {
-    "description": "Move a piece."
-  },
-  "tipCannotPlace": "Buraya taşını koyamazsın.",
-  "@tipCannotPlace": {
-    "description": "You can't place your piece here."
-  },
-  "tipCannotMove": "Buraya taşını taşıyamazsın.",
-  "@tipCannotMove": {
-    "description": "You can't move your piece here."
-  },
-  "tipMill": "Değirmen! Rakibin taşını çıkar.",
-  "@tipMill": {
-    "description": "Mill! Take your opponent's piece."
-  },
-  "tipContinueMill": "Rakibin taşını çıkarmaya devam et.",
-  "@tipContinueMill": {
-    "description": "Continue to take your opponent's piece."
-  },
-  "tipSelectOpponentsPiece": "Rakibinizin taşlarından birini seçin.",
-  "@tipSelectOpponentsPiece": {
-    "description": "Select one of your opponent's pieces."
-  },
-  "tipCannotRemovePieceFromMill": "Değirmendeki bir taşı çıkaramazsınız.",
-  "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a mill."
-  },
-  "tipCanMoveOnePoint": "Bir taş sadece bitişik bir noktaya hareket edebilir.",
-  "@tipCanMoveOnePoint": {
-    "description": "A piece can move 1 point."
-  },
-  "tipCannotMoveOpponentsPieces": "Rakibinizin taşlarını hareket ettiremezsiniz.",
-  "@tipCannotMoveOpponentsPieces": {
-    "description": "You can't move your opponent's pieces."
-  },
-  "tipSelectPieceToMove": "Taşınacak parçanızı seçin.",
-  "@tipSelectPieceToMove": {
-    "description": "Select your piece to move."
-  },
-  "tipHaveThreePiecesLeft": "3 parçanız kaldı.",
-  "@tipHaveThreePiecesLeft": {
-    "description": "You have 3 pieces left."
-  },
-  "tipCanMoveToAnyPoint": "İstediğiniz noktaya hareket edebilirsiniz.",
-  "@tipCanMoveToAnyPoint": {
-    "description": "You can move to any point you like."
-  },
-  "tipToMove": "{player} hareket ettirin.",
-  "@tipToMove": {
-    "description": " to move."
-  },
-  "whiteWin": "Oyuncu 1 kazanır!",
-  "@whiteWin": {
-    "description": "Player 1 wins!"
-  },
-  "blackWin": "2. oyuncu kazanır!",
-  "@blackWin": {
-    "description": "Player 2 wins!"
-  },
-  "won": "Kazanan",
-  "@won": {
-    "description": "Won"
-  },
-  "lost": "Kaybeden",
-  "@lost": {
-    "description": "Lost"
-  },
-  "thinking": "Düşünüyor...",
-  "@thinking": {
-    "description": "Thinking..."
-  },
-  "newGame": "Yeni oyun",
-  "@newGame": {
-    "description": "New game"
-  },
-  "importGame": "Oyunu içe aktar",
-  "@importGame": {
-    "description": "Import game"
-  },
-  "exportGame": "Oyunu dışa aktar",
-  "@exportGame": {
-    "description": "Export game"
-  },
-  "gameImported": "Oyun içe aktarıldı.",
-  "@gameImported": {
-    "description": "Game imported from the clipboard."
-  },
-  "cannotImport": "{invalidMove} içe aktarılamıyor",
-  "@cannotImport": {
-    "description": "Cannot import"
-  },
-  "movesAndRulesNotMatch": "Hareketler ve kurallar uyuşmuyor.",
-  "@movesAndRulesNotMatch": {
-    "description": "Rules and moves do not match."
-  },
-  "pleaseWait": "Lütfen bekle...",
-  "@pleaseWait": {
-    "description": "Please wait..."
-  },
-  "restartGame": "Mevcut oyun yeniden başlatılsın mı?",
-  "@restartGame": {
-    "description": "Restart current game?"
-  },
-  "restart": "Tekrar başlat",
-  "@restart": {
-    "description": "Restart"
-  },
-  "gameStarted": "Oyun başladı lütfen yer verin.",
-  "@gameStarted": {
-    "description": "Game started, please place"
-  },
-  "analyzing": "Analiz…",
-  "@analyzing": {
-    "description": "Analyzing ..."
-  },
-  "error": "Hata: {message}",
-  "@error": {
-    "description": "Error"
-  },
-  "winRate": "Kazanma oranı",
-  "@winRate": {
-    "description": "Win Rate"
-  },
-  "score": "Puan:",
-  "@score": {
-    "description": "Score"
-  },
-  "white": "Oyuncu 1",
-  "@white": {
-    "description": "Player 1"
-  },
-  "black": "Oyuncu 2",
-  "@black": {
-    "description": "Player 2"
-  },
-  "loseReasonlessThanThree": "{player} parça sayısı üçten az.",
-  "@loseReasonlessThanThree": {
-    "description": " piece count is less than three."
-  },
-  "loseReasonResign": "{player} istifa etti.",
-  "@loseReasonResign": {
-    "description": " resign."
-  },
-  "loseReasonNoWay": "{player}'in gidecek yolu yok.",
-  "@loseReasonNoWay": {
-    "description": " is no way to go."
-  },
-  "loseReasonBoardIsFull": "Pano dolu ve {player}'in gidecek yolu yok.",
-  "@loseReasonBoardIsFull": {
-    "description": "The board is full, no way to go."
-  },
-  "loseReasonTimeOver": "Zaman bitti, {player} kayıp.",
-  "@loseReasonTimeOver": {
-    "description": "Time Over"
-  },
-  "drawReasonRule50": "Hareket etme aşamasında, son belirli sayıda hamlede hiçbir parça kaldırılmadı.",
-  "@drawReasonRule50": {
-    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-  },
-  "drawReasonBoardIsFull": "Tahta dolu olduğu için Beraberliktir.",
-  "@drawReasonBoardIsFull": {
-    "description": "It is a Draw because the board is full"
-  },
-  "drawReasonThreefoldRepetition": "Üç katlı tekrardan dolayı Beraberliktir.",
-  "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw because of threefold repetition."
-  },
-  "gameOverUnknownReason": "Oyun bitti! Bilinmeyen sebep.",
-  "@gameOverUnknownReason": {
-    "description": "Game Over! Unknown reason."
-  },
-  "gameOver": "Oyun bitti",
-  "@gameOver": {
-    "description": "Game Over"
-  },
-  "youWin": "Sen kazandın! Tebrikler!",
-  "@youWin": {
-    "description": "You win! Congratulations!"
-  },
-  "challengeHarderLevel": "Daha zor bir seviyeye meydan okumak istiyor musun? Yeni seviye {level} olacak.",
-  "@challengeHarderLevel": {
-    "description": "Challenge harder level?"
-  },
-  "youLose": "Kaybettin!",
-  "@youLose": {
-    "description": "You Lose!"
-  },
-  "analyze": "analiz et",
-  "@analyze": {
-    "description": "Analyze"
-  },
-  "about": "hakkında",
-  "@about": {
-    "description": "About"
-  },
-  "version": "Sürüm: {versionNumber}",
-  "@version": {
-    "description": "Version"
-  },
-  "thanks": "Teşekkürler",
-  "@thanks": {
-    "description": "Thanks"
-  },
-  "settings": "Ayarlar",
-  "@settings": {
-    "description": "Settings"
-  },
-  "options": "Seç.",
-  "@options": {
-    "description": "Options"
-  },
-  "generalSettings": "Genel Ayarlar",
-  "@generalSettings": {
-    "description": "General Settings"
-  },
-  "skillLevel": "Zorluk seviyesi",
-  "@skillLevel": {
-    "description": "Difficulty level"
-  },
-  "moveTime": "AI düşünme zamanı",
-  "@moveTime": {
-    "description": "AI thinking time"
-  },
-  "difficulty": "Zorluk",
-  "@difficulty": {
-    "description": "Difficulty"
-  },
-  "playSounds": "Ses efektleri",
-  "@playSounds": {
-    "description": "Sound effects"
-  },
-  "playSoundsInTheGame": "Oyunda sesleri çal",
-  "@playSoundsInTheGame": {
-    "description": "Play sounds in the game"
-  },
-  "keepMuteWhenTakingBack": "Geri alırken sessize alın",
-  "@keepMuteWhenTakingBack": {
-    "description": "Keep mute when taking back"
-  },
-  "tone": "ton",
-  "@tone": {
-    "description": "Tone"
-  },
-  "whoMovesFirst": "İlk hamle",
-  "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "human": "İnsan",
-  "@human": {
-    "description": "Human"
-  },
-  "ai": "yapay zeka",
-  "@ai": {
-    "description": "AI"
-  },
-  "alternate": "Alternatif",
-  "@alternate": {
-    "description": "Alternate"
-  },
-  "isAutoRestart": "Oyun bittiğinde oyunu otomatik olarak yeniden başlat",
-  "@isAutoRestart": {
-    "description": "Auto-restart game when game over"
-  },
-  "isAutoChangeFirstMove": "İlk Hamleyi Otomatik Değiştir",
-  "@isAutoChangeFirstMove": {
-    "description": "Auto Change First Move"
-  },
-  "shufflingEnabled": "Rastgele Hamle",
-  "@shufflingEnabled": {
-    "description": "Random move"
-  },
-  "misc": "Çeşitli",
-  "@misc": {
-    "description": "Miscellaneous"
-  },
-  "rules": "Kurallar",
-  "@rules": {
-    "description": "Rules"
-  },
-  "piecesCount": "Her oyuncunun sahip olduğu parça sayısı",
-  "@piecesCount": {
-    "description": "The number of pieces each player has"
-  },
-  "piecesCount_Detail": "Her oyuncunun kaç taşı vardır?",
-  "@piecesCount_Detail": {
-    "description": "How many pieces does each player have?"
-  },
-  "flyPieceCount": "Uçan parçanın numarası",
-  "@flyPieceCount": {
-    "description": "The number of the flying piece"
-  },
-  "flyPieceCount_Detail": "Uçma etkinleştirilirse, bir oyuncu belirli bir parça sayısına düştüğünde, taşları oyunun geri kalanında olduğu gibi bitişik noktalarla sınırlı olmak yerine boş herhangi bir noktaya hareket etmekte serbesttir.",
-  "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "piecesAtLeastCount": "En Az Adet",
-  "@piecesAtLeastCount": {
-    "description": "Pieces At Least"
-  },
-  "hasDiagonalLines": "çapraz çizgiler",
-  "@hasDiagonalLines": {
-    "description": "Diagonal lines"
-  },
-  "hasDiagonalLines_Detail": "Tahtaya dört çapraz çizgi ekleyin.",
-  "@hasDiagonalLines_Detail": {
-    "description": "Add four diagonal lines to the board."
-  },
-  "isDefenderMoveFirst": "İkinci oyuncu önce hareket eder",
-  "@isDefenderMoveFirst": {
-    "description": "The second player moves first"
-  },
-  "isDefenderMoveFirst_Detail": "Yerleştirme aşamasında ikinci olan oyuncu, hareket aşamasında ilk hamleyi yapar.",
-  "@isDefenderMoveFirst_Detail": {
-    "description": "The player who moves second in the placing phase moves first in the moving phase."
-  },
-  "mayRemoveMultiple": "çoklu kaldır",
-  "@mayRemoveMultiple": {
-    "description": "Multi-remove"
-  },
-  "mayRemoveMultiple_Detail": "Bir oyuncu aynı anda birden fazla değirmeni kapatırsa, kapattığı değirmen sayısını kaldırabilecektir.",
-  "@mayRemoveMultiple_Detail": {
-    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-  },
-  "mayRemoveFromMillsAlways": "Değirmenleri yok et",
-  "@mayRemoveFromMillsAlways": {
-    "description": "Destroy mills"
-  },
-  "mayRemoveFromMillsAlways_Detail": "Varsayılan olarak, bir değirmeni oluşturan taşlar kaldırılmadan önce diğer tüm taşlar kaldırılmalıdır. Bu kısıtlamayı kaldırmak için bu seçeneği etkinleştirin.",
-  "@mayRemoveFromMillsAlways_Detail": {
-    "description": "mayRemoveFromMillsAlways_Detail"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Tahta dolduğunda ikinci oyuncu kaybeder",
-  "@isWhiteLoseButNotDrawWhenBoardFull": {
-    "description": "The second player loses when the board is full"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Yerleştirme aşamasının sonunda, eğer tahta dolarsa, ilk taşları yerleştiren taraf kaybeder; aksi halde oyun beraberlikle sonuçlanır.",
-  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-  },
-  "isLoseButNotChangeSideWhenNoWay": "Yasal hamle olmadığında kaybet",
-  "@isLoseButNotChangeSideWhenNoWay": {
-    "description": "Lose when no legal moves"
-  },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Eğer bir oyuncu rakibini hareket edemez hale getirirse, o oyuncu kaybeder. Bu seçenek kapalıysa, hamle yapabilen taraf değişir.",
-  "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
-  },
-  "mayFly": "Uçan",
-  "@mayFly": {
-    "description": "Flying"
-  },
-  "mayFly_Detail": "Bir oyuncunun yalnızca üç veya dört (yapılandırılabilir) taşı kalmışsa, taşı herhangi bir boş noktaya taşıyabilir.",
-  "@mayFly_Detail": {
-    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-  },
-  "nMoveRule": "N-hareket kuralı",
-  "@nMoveRule": {
-    "description": "N-move rule"
-  },
-  "nMoveRule_Detail": "Her oyuncu tarafından belirli sayıda hamlede herhangi bir çıkarma yapılmamışsa oyun berabere biter.",
-  "@nMoveRule_Detail": {
-    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-  },
-  "rollback": "geri alma",
-  "@rollback": {
-    "description": "Rollback"
-  },
-  "pleaseSelect": "Lütfen seçin",
-  "@pleaseSelect": {
-    "description": "Please select"
-  },
-  "copy": "kopyala",
-  "@copy": {
-    "description": "Copy"
-  },
-  "moveHistoryCopied": "Kopyalanan geçmişi panoya taşı.",
-  "@moveHistoryCopied": {
-    "description": "Move history copied to clipboard"
-  },
-  "help": "Yardım",
-  "@help": {
-    "description": "Help"
-  },
-  "feedback": "geri bildirim",
-  "@feedback": {
-    "description": "Feedback"
-  },
-  "exit": "çıkış",
-  "@exit": {
-    "description": "Exit"
-  },
-  "ruleSettings": "Kural Ayarları",
-  "@ruleSettings": {
-    "description": "Rule Settings"
-  },
-  "color": "Renk",
-  "@color": {
-    "description": "Color"
-  },
-  "boardColor": "Tahta rengi",
-  "@boardColor": {
-    "description": "Board color"
-  },
-  "pieceColor": "parça rengi",
-  "@pieceColor": {
-    "description": "Piece color"
-  },
-  "backgroundColor": "Arka plan rengi",
-  "@backgroundColor": {
-    "description": "Background color"
-  },
-  "lineColor": "Tahta çizgi rengi",
-  "@lineColor": {
-    "description": "Board line color"
-  },
-  "whitePieceColor": "Oyuncu 1'in parça rengi",
-  "@whitePieceColor": {
-    "description": "Player 1 piece color"
-  },
-  "blackPieceColor": "Oyuncu 2'nin parça rengi",
-  "@blackPieceColor": {
-    "description": "Player 2 piece color"
-  },
-  "messageColor": "Mesaj rengi",
-  "@messageColor": {
-    "description": "Message color"
-  },
-  "isPieceCountInHandShown": "Eldeki parça sayısını göster",
-  "@isPieceCountInHandShown": {
-    "description": "Show count of pieces in hand"
-  },
-  "isNotationsShown": "Notları tahtada göster",
-  "@isNotationsShown": {
-    "description": "Show notations on board"
-  },
-  "isHistoryNavigationToolbarShown": "Geçmiş gezinme araç çubuğunu göster",
-  "@isHistoryNavigationToolbarShown": {
-    "description": "Show history navigation toolbar"
-  },
-  "display": "Görüntüle",
-  "@display": {
-    "description": "Display"
-  },
-  "boardBorderLineWidth": "Tahta sınır çizgisi kalınlığı",
-  "@boardBorderLineWidth": {
-    "description": "Board borderline width"
-  },
-  "boardInnerLineWidth": "Pano iç çizgi genişliği",
-  "@boardInnerLineWidth": {
-    "description": "Board inner line width"
-  },
-  "pieceWidth": "Parça genişliği",
-  "@pieceWidth": {
-    "description": "Piece width"
-  },
-  "fontSize": "Yazı Boyutu",
-  "@fontSize": {
-    "description": "Font size"
-  },
-  "standardNotation": "WMD gösterimi",
-  "@standardNotation": {
-    "description": "Standard notation"
-  },
-  "restore": "Geri Yükle",
-  "@restore": {
-    "description": "Restore"
-  },
-  "restoreDefaultSettings": "Varsayılan Ayarlara Geri Dön",
-  "@restoreDefaultSettings": {
-    "description": "Restore Default Settings"
-  },
-  "pick": "{element}'i seçin",
-  "@pick": {
-    "description": "Pick "
-  },
-  "info": "Bilgi",
-  "@info": {
-    "description": "Info"
-  },
-  "hint": "İpucu",
-  "@hint": {
-    "description": "Hint"
-  },
-  "player": "oyuncu",
-  "@player": {
-    "description": "player"
-  },
-  "player1": "oyuncu 1",
-  "@player1": {
-    "description": "Player 1"
-  },
-  "player2": "oyuncu 2",
-  "@player2": {
-    "description": "Player 2"
-  },
-  "howToPlay": "Nasıl oynanır",
-  "@howToPlay": {
-    "description": "How to play"
-  },
-  "toPlacePiece": "Parçayı yerleştirmek için uygun bir noktaya dokunun.",
-  "@toPlacePiece": {
-    "description": "Tap on any available point to place the piece."
-  },
-  "toSelectPiece": "Taşımak için bir parçaya dokunun.",
-  "@toSelectPiece": {
-    "description": "Tap on a piece to move it."
-  },
-  "toMovePiece": "Taşımak için parçaya bağlı noktaya dokunun.",
-  "@toMovePiece": {
-    "description": "Tap on point connected to piece to move it."
-  },
-  "toRemovePiece": "Kaldırmak için rakibin tek parçasına dokunun.",
-  "@toRemovePiece": {
-    "description": "Tap on one of the opponent's pieces to remove it."
-  },
-  "needToCreateMillFirst": "Bir parçayı çıkarmadan önce bir değirmen oluşturmanız gerekir.",
-  "@needToCreateMillFirst": {
-    "description": "You need to create a mill first before you can remove a piece."
-  },
-  "needToPlayWithOwnPieces": "Taşlarınla oynaman gerekiyor.",
-  "@needToPlayWithOwnPieces": {
-    "description": "You need to play with your pieces."
-  },
-  "statistics": "İstatistik",
-  "@statistics": {
-    "description": "Statistics"
-  },
-  "totalGames": "Toplam oyunlar",
-  "@totalGames": {
-    "description": "Total games"
-  },
-  "results": "Sonuçlar",
-  "@results": {
-    "description": "Results"
-  },
-  "left": "ayrıldı",
-  "@left": {
-    "description": "left"
-  },
-  "privacyPolicy": "Gizlilik Politikası",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
-  "privacyPolicy_Detail_1": "Lütfen dikkatlice okuyun ve bunu tam olarak anladığınızdan ve kabul ettiğinizden emin olun. ",
-  "@privacyPolicy_Detail_1": {
-    "description": "Privacy Policy Detail 1"
-  },
-  "privacyPolicy_Detail_2": ". Bu Politikayı kabul etmiyorsanız, lütfen bu Uygulamayı kullanmayın. Uygulamayı kullanmak, bu şartları kabul ettiğiniz anlamına gelir.",
-  "@privacyPolicy_Detail_2": {
-    "description": "Privacy Policy Detail 2"
-  },
-  "and": " ve ",
-  "@and": {},
-  "accept": "Kabul etmek",
-  "@accept": {
-    "description": "Accept"
-  },
-  "takeBack": "Geri al",
-  "@takeBack": {
-    "description": "Take back"
-  },
-  "takingBack": "Geri almak…",
-  "@takingBack": {
-    "description": "Taking back..."
-  },
-  "waiting": "Bekleniyor…",
-  "@waiting": {
-    "description": "Waiting..."
-  },
-  "stepForward": "Öne çık",
-  "@stepForward": {
-    "description": "Step forward"
-  },
-  "takeBackAll": "Tümünü Geri Al",
-  "@takeBackAll": {
-    "description": "Take back all"
-  },
-  "stepForwardAll": "Tümünü İleri Taşı",
-  "@stepForwardAll": {
-    "description": "Step forward all"
-  },
-  "moveNow": "Şimdi hareket et",
-  "@moveNow": {
-    "description": "Move now"
-  },
-  "done": "Bitti.",
-  "@done": {
-    "description": "Done."
-  },
-  "crackMill": "çatlak değirmeni",
-  "@crackMill": {
-    "description": "Crack-mill"
-  },
-  "crackMill_Detail": "Eğer bir oyuncunun tüm taşları değirmenlerdeyse, bu taşlar çıkartılmak üzere kilitlenmez.",
-  "@crackMill_Detail": {
-    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-  },
-  "animationDuration": "Animasyon süresi",
-  "@animationDuration": {
-    "description": "Animation duration"
-  },
-  "none": "Yok",
-  "@none": {
-    "description": "None"
-  },
-  "theme": "Tema",
-  "@theme": {
-    "description": "Theme"
-  },
-  "helpContent": "Oyun, rakibi üçten az taşla veya yasal hamle yapamayacak şekilde etkisiz hale getirmeyi amaçlar.\n\nÜçüncü kez aynı pozisyon oluşursa veya son 100 (yapılandırılabilir) hamlede hiçbir taş çıkarılmamışsa, oyun otomatik olarak sona erer.\n\nOyun üç aşamada ilerler:\n\n1. Boş noktalara taş yerleştirme\n2. Taşları bitişik noktalara taşıma\n3. (isteğe bağlı aşama) Oyuncu üç parçaya indirildiğinde taşları herhangi bir boş noktaya taşıyabilir\n\nYerleştirme\n\nOyun, yirmi dört noktalık bir ızgaradan oluşan boş bir tahta ile başlar. Oyuncular sırayla taşlarını boş noktalara yerleştirir, tüm taşlar yerleştirilene kadar. Bir oyuncu üç taşını düz bir çizgiye getirebilirse, bir 'değirmen' oluşturmuş olur ve rakibinin taşlarından birini tahtadan çıkarabilir.\n\nBazı kural varyasyonlarında, oyuncular şekillendirilmiş bir değirmeni bozmadan önce diğer taşları çıkarmalıdır.\n\nBazı kural varyasyonlarında, çıkarılan taşlar yerleştirme aşamasında tekrar konumlandırılmayabilir.\n\nTüm parçalar yerleştirildikten sonra, oyuncular sırayla hareket ederler.\n\nHareketli\n\nHareket etmek için, bir oyuncu taşlarından birini boş bir bitişik noktaya boyunca bir tahta çizgisi üzerinde taşır. Bunu yapamazsa, oyunu kaybetmiş olur. Yerleştirme aşamasında olduğu gibi, üç taşını bir tahta çizgisine getiren bir oyuncunun bir değirmeni vardır ve rakibinin taşlarından birini çıkarabilir. Eğer herhangi bir oyuncu iki parçaya düşerse ve yeni değirmenler oluşturamıyorsa, bu durumda oyunu kaybetmiş olur. Eğer rakibi onları hareket edemeyecek şekilde bloke ederse, bir oyuncu üçten fazla taşla da kaybedebilir.\n\nUçan\n\nKuralların bazı varyantlarında, eğer bir oyuncunun yalnızca üç taşı kalmışsa, taşlarını sadece bitişik noktalara değil, herhangi bir boş noktaya da 'uçabilir', 'zıplayabilir' veya 'gezebilir'.",
-  "@helpContent": {
-    "description": "Help Content"
-  },
-  "versionInfo": "Sürüm bilgisi",
-  "@versionInfo": {
-    "description": "Version info"
-  },
-  "eula": "SKLA",
-  "@eula": {
-    "description": "EULA"
-  },
-  "license": "Lisans",
-  "@license": {
-    "description": "License"
-  },
-  "sourceCode": "Kaynak kodu",
-  "@sourceCode": {
-    "description": "Source code"
-  },
-  "appVersion": "Uygulama sürümü",
-  "@appVersion": {
-    "description": "App Version"
-  },
-  "general": "Genel",
-  "@general": {
-    "description": "General"
-  },
-  "advanced": "ileri",
-  "@advanced": {
-    "description": "Advanced"
-  },
-  "placing": "Yrlş.",
-  "@placing": {
-    "description": "Placing"
-  },
-  "moving": "Hareket",
-  "@moving": {
-    "description": "Moving"
-  },
-  "removing": "Kaldırma",
-  "@removing": {
-    "description": "Removing"
-  },
-  "gameOverCondition": "Oyun bitti durumu",
-  "@gameOverCondition": {
-    "description": "Game over condition"
-  },
-  "aisPlayStyle": "AI'nın oyun stili",
-  "@aisPlayStyle": {
-    "description": "AI's play style"
-  },
-  "passive": "Pasif",
-  "@passive": {
-    "description": "Passive"
-  },
-  "timeout": "Zaman aşımı",
-  "@timeout": {
-    "description": "Timeout"
-  },
-  "appearance": "Görünüm",
-  "@appearance": {
-    "description": "Appearance"
-  },
-  "drawOnHumanExperience": "İnsan deneyiminden yararlanın",
-  "@drawOnHumanExperience": {
-    "description": "Draw on the human experience"
-  },
-  "considerMobility": "Parçaların hareketliliğini düşünün",
-  "@considerMobility": {
-    "description": "Consider mobility of pieces"
-  },
-  "pieceCount": "Parça sayısı:",
-  "@pieceCount": {
-    "description": "Piece count"
-  },
-  "inHand": "{player} elinde: {count}",
-  "@inHand": {
-    "description": "in hand"
-  },
-  "onBoard": "tahtada {player}: {count}",
-  "@onBoard": {
-    "description": "on board"
-  },
-  "boardTop": "Üstten tahta ofseti",
-  "@boardTop": {
-    "description": "Board offset from the top"
-  },
-  "notAIsTurn": "AI'nın sırası değil.",
-  "@notAIsTurn": {
-    "description": "It is not the AI's turn."
-  },
-  "aiIsNotThinking": "AI düşünmüyor.",
-  "@aiIsNotThinking": {
-    "description": "AI is not thinking."
-  },
-  "atEnd": "Hareket listesinin sonunda.",
-  "@atEnd": {
-    "description": "At the end of the move list."
-  },
-  "tapBackAgainToLeave": "Ayrılmak için tekrar geri dokunun.",
-  "@tapBackAgainToLeave": {
-    "description": "Tap Back again to exit."
-  },
-  "more": "Daha",
-  "@more": {
-    "description": "More"
-  },
-  "experimental": "Bu deneysel bir özelliktir.",
-  "@experimental": {
-    "description": "This is an experimental feature."
-  },
-  "experiments": "Deneysel Özellikler",
-  "@experiments": {
-    "description": "Experiments"
-  },
-  "ossLicenses": "Açık kaynak lisansları",
-  "@ossLicenses": {
-    "description": "Open source licenses"
-  },
-  "language": "Dil",
-  "@language": {
-    "description": "Languages"
-  },
-  "defaultLanguage": "Varsayılan dil",
-  "@defaultLanguage": {
-    "description": "Default language"
-  },
-  "mayMoveInPlacingPhase": "Parçalar yerleştirme aşamasında hareket edebilir",
-  "@mayMoveInPlacingPhase": {
-    "description": "The pieces can move in the placing phase"
-  },
-  "mayMoveInPlacingPhase_Detail": "Ayrı yerleştirme ve hareket etme aşamaları yoktur; yani oyuncular her turda bir taş yerleştirmeyi veya mevcut bir taşı hareket ettirmeyi (yerleştirmeleri gereken taşlar kaldığı sürece) seçebilirler.",
-  "@mayMoveInPlacingPhase_Detail": {
-    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-  },
-  "drawerColor": "Menü rengi",
-  "@drawerColor": {
-    "description": "Menu color"
-  },
-  "drawerTextColor": "Menü metin rengi",
-  "@drawerTextColor": {
-    "description": "Menu text color"
-  },
-  "drawerHighlightItemColor": "Menüdeki vurgulanmış öğe rengi",
-  "@drawerHighlightItemColor": {
-    "description": "Menu highlight item color"
-  },
-  "mainToolbarBackgroundColor": "Ana araç çubuğu arka plan rengi",
-  "@mainToolbarBackgroundColor": {
-    "description": "Main toolbar background color"
-  },
-  "mainToolbarIconColor": "Ana araç çubuğu simge rengi",
-  "@mainToolbarIconColor": {
-    "description": "main toolbar icon color"
-  },
-  "navigationToolbarBackgroundColor": "Gezinme araç çubuğu arka plan rengi",
-  "@navigationToolbarBackgroundColor": {
-    "description": "Navigation toolbar background color"
-  },
-  "navigationToolbarIconColor": "Gezinme araç çubuğu simge rengi",
-  "@navigationToolbarIconColor": {
-    "description": "Navigation toolbar icon color"
-  },
-  "autoHideToolbar": "Araç çubuğunu otomatik olarak gizle",
-  "@autoHideToolbar": {
-    "description": "Automatically hide the toolbar"
-  },
-  "toolbarLocationOnScreen": "Ekrandaki araç çubuğunun konumu",
-  "@toolbarLocationOnScreen": {
-    "description": "Toolbar location on screen"
-  },
-  "top": "Üst",
-  "@top": {
-    "description": "Top"
-  },
-  "bottom": "Alt",
-  "@bottom": {
-    "description": "Bottom"
-  },
-  "center": "Merkez",
-  "@center": {
-    "description": "Center"
-  },
-  "solidColor": "Düz Renk",
-  "@solidColor": {
-    "description": "Solid color"
-  },
-  "picture": "Resim",
-  "@picture": {
-    "description": "Picture"
-  },
-  "chooseYourPicture": "Resminizi seçin",
-  "@chooseYourPicture": {
-    "description": "Choose your picture"
-  },
-  "light": "Işık",
-  "@light": {
-    "description": "Light"
-  },
-  "dark": "Karanlık",
-  "@dark": {
-    "description": "Dark"
-  },
-  "themes": "Temalar",
-  "@themes": {
-    "description": "Themes"
-  },
-  "currentTheme": "Mevcut tema",
-  "@currentTheme": {
-    "description": "Current theme"
-  },
-  "saveTheme": "Temayı kaydet",
-  "@saveTheme": {
-    "description": "Save theme"
-  },
-  "showAnalysisGraph": "Analiz grafiğini göster",
-  "@showAnalysisGraph": {
-    "description": "Show analysis graph"
-  },
-  "analysis": "analiz",
-  "@analysis": {
-    "description": "Analysis"
-  },
-  "saveGame": "Oyunu kaydet",
-  "@saveGame": {
-    "description": "Save game"
-  },
-  "loadGame": "Oyunu yükle",
-  "@loadGame": {
-    "description": "Load game"
-  },
-  "setupPosition": "Kurulum konumu",
-  "@setupPosition": {
-    "description": "Setup position"
-  },
-  "showLegalMoves": "Yasal hamleleri göster",
-  "@showLegalMoves": {
-    "description": "Show legal moves"
-  },
-  "showLastMove": "Son hareketi göster",
-  "@showLastMove": {
-    "description": "Show last move"
-  },
-  "showArrows": "Okları göster",
-  "@showArrows": {
-    "description": "Show arrows"
-  },
-  "pieces": "Taşlar",
-  "@pieces": {
-    "description": "Pieces"
-  },
-  "showAnalysis": "Analizi göster",
-  "@showAnalysis": {
-    "description": "Show analysis"
-  },
-  "threads": "İş Parçacıkları",
-  "@threads": {
-    "description": "Threads"
-  },
-  "getInvolved": "Katılın",
-  "@getInvolved": {
-    "description": "Get Involved"
-  },
-  "helpImproveTranslate": "Çeviri İyileştirmeye Yardımcı Ol",
-  "@helpImproveTranslate": {
-    "description": "Help improve translate"
-  },
-  "tutorial": "öğretici",
-  "@tutorial": {
-    "description": "Tutorial"
-  },
-  "classicMill": "Klasik Değirmen",
-  "@classicMill": {
-    "description": "Classic Mill"
-  },
-  "mixedMill": "karışık değirmen",
-  "@mixedMill": {
-    "description": "Mixed Mill"
-  },
-  "ceylonMill": "Seylan Değirmeni",
-  "@ceylonMill": {
-    "description": "Ceylon Mill"
-  },
-  "mayBreakAndRemakeMillRepeatedly": "Değirmen kırılabilir ve tekrar tekrar üretilebilir",
-  "@mayBreakAndRemakeMillRepeatedly": {
-    "description": "Mill may be broken and remade repeatedly"
-  },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Bir oyuncu hemen yeni bir değirmen oluşturmak için bir değirmeni kırarsa, bu oyuncu yeni bir değirmen yaparsa bir sonraki hamlesinde bu parçayı orijinal bağlantı noktasına geri taşıyabilir.",
-  "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Bir oyuncunun üç taşı varsa ve on hamleden sonra hiçbir oyuncu rakibin taşlarını kaldırmazsa oyun berabere biter",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Bir oyuncu üç parçaya düştüğünde ve hiçbir oyuncu on hamle içinde rakibinin taşını çıkaramazsa, oyun berabere olur.",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-  },
-  "close": "Kapat",
-  "@close": {
-    "description": "Close"
-  },
-  "whitePiece": "Beyaz parça",
-  "@whitePiece": {
-    "description": "White piece"
-  },
-  "blackPiece": "Siyah parça",
-  "@blackPiece": {
-    "description": "Black piece"
-  },
-  "emptyPoint": "boş nokta",
-  "@emptyPoint": {
-    "description": "Empty point"
-  },
-  "noPoint": "Anlamı yok",
-  "@noPoint": {
-    "description": "No point"
-  },
-  "placingPhase": "yerleştirme aşaması",
-  "@placingPhase": {
-    "description": "Placing phase"
-  },
-  "movingPhase": "Hareketli aşama",
-  "@movingPhase": {
-    "description": "Moving phase"
-  },
-  "flyingPhase": "Uçma aşaması",
-  "@flyingPhase": {
-    "description": "Flying phase"
-  },
-  "sideToMove": "Taşınacak taraf: {player}",
-  "@sideToMove": {
-    "description": "Side to move"
-  },
-  "lastMove": "Son hareket: {move}",
-  "@lastMove": {
-    "description": "Last move"
-  },
-  "selected": "Seçildi",
-  "@selected": {
-    "description": "Selected"
-  },
-  "accessibility": "Ulaşılabilirlik",
-  "@accessibility": {
-    "description": "Accessibility"
-  },
-  "screenReaderSupport": "Ekran okuyucu desteği",
-  "@screenReaderSupport": {
-    "description": "Screen reader support"
-  },
-  "isDraw": "Bu bir Beraberlik!",
-  "@isDraw": {
-    "description": "It is a Draw!"
-  },
-  "draw": "Berabere",
-  "@draw": {
-    "description": "Draw"
-  },
-  "pieceHighlightColor": "Parça vurgu rengi",
-  "@pieceHighlightColor": {
-    "description": "Piece highlight color"
-  },
-  "algorithm": "Algoritma",
-  "@algorithm": {
-    "description": "Algorithm"
-  },
-  "endgameNMoveRule": "Endgame N-Move kuralı",
-  "@endgameNMoveRule": {
-    "description": "Endgame N-Move rule"
-  },
-  "endgameNMoveRule_Detail": "Her iki oyuncunun da sadece üç taşı varsa ve hiçbir oyuncu belirli bir hamlede bir taşı kaldırmazsa, oyun berabere biter.",
-  "@endgameNMoveRule_Detail": {
-    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-  },
-  "drawReasonEndgameRule50": "Her iki oyuncunun da sadece üç taşı vardır ve hiçbir oyuncu belirli bir hamlede bir taşı kaldırmaz.",
-  "@drawReasonEndgameRule50": {
-    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-  },
-  "threefoldRepetitionRule": "Üçlü tekrar kuralı",
-  "@threefoldRepetitionRule": {
-    "description": "Threefold repetition rule"
-  },
-  "threefoldRepetitionRule_Detail": "Bir pozisyon üçüncü kez oluşursa oyun berabere biter.",
-  "@threefoldRepetitionRule_Detail": {
-    "description": "The game is drawn if a position occurs for the third time."
-  },
-  "continueToMakeMove": "Değirmen! Hareket etmeye devam edin.",
-  "@continueToMakeMove": {
-    "description": "Mill! Continue to make a move."
-  },
-  "pointStyle": "Nokta stili",
-  "@pointStyle": {
-    "description": "Point style"
-  },
-  "pointWidth": "Nokta genişliği",
-  "@pointWidth": {
-    "description": "Point width"
-  },
-  "solid": "Sağlam",
-  "@solid": {
-    "description": "Solid"
-  },
-  "hollow": "Oyuk",
-  "@hollow": {
-    "description": "Hollow"
-  },
-  "languageName": "Türkçe",
-  "@languageName": {
-    "description": "The name of the current language"
-  },
-  "moveNumber": "{count,plural, =0{Hamle Yok}=1{{count} Hamle}other{{count} Hamle}}",
-  "@moveNumber": {
-    "description": "Moves to take back",
-    "placeholders": {
-      "count": {
-        "description": "Number of Moves",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "loadFailed": "Yükleme başarısız.",
-  "@loadFailed": {
-    "description": "Load failed."
-  },
-  "filename": "Dosya adı",
-  "@filename": {
-    "description": "File name"
-  },
-  "gameSavedTo": "Oyun şuraya kaydedilir",
-  "@gameSavedTo": {
-    "description": "The game is saved to"
-  },
-  "browse": "Araştır…",
-  "@browse": {
-    "description": "Browse…"
-  },
-  "gameFiles": "Oyun dosyaları",
-  "@gameFiles": {
-    "description": "Game files"
-  },
-  "empty": "Boş",
-  "@empty": {
-    "description": "Empty point, used in setup position toolbar."
-  },
-  "restoredPosition": "İlk konumu geri yüklendi.",
-  "@restoredPosition": {
-    "description": "Restored initial position."
-  },
-  "clean": "Temiz",
-  "@clean": {
-    "description": "Clean"
-  },
-  "cleanedUp": "Temizledik.",
-  "@cleanedUp": {
-    "description": "Cleaned up."
-  },
-  "remove": "Kaldırmak",
-  "@remove": {
-    "description": "Remove"
-  },
-  "noPiecesCanBeRemoved": "Hiçbir parça çıkarılamaz.",
-  "@noPiecesCanBeRemoved": {
-    "description": "No pieces can be removed."
-  },
-  "pieceCountNeedToRemove": "{count,plural, =0{Parça}=1{{count} parça}other{{count} parça}} kaldırmanız gerekiyor.",
-  "@pieceCountNeedToRemove": {
-    "description": "Pieces need to remove.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "placedCount": "Yrl. ({count})",
-  "@placedCount": {
-    "description": "Placed N pieces. Used in setup position toolbar.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "placedPieceCount": "Yerleştirme aşamasında yerleştirilen parça sayısı.",
-  "@placedPieceCount": {
-    "description": "Placed piece count in the placing phase. Used in Semantics."
-  },
-  "hasPlacedPieceCount": "Mevcut oyuncu {count} adet taşı yerleştirdi.",
-  "@hasPlacedPieceCount": {
-    "description": "The current player has placed {count} pieces.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "notPlacingPhase": "Yerleştirme aşaması değil, değiştirilemez.",
-  "@notPlacingPhase": {
-    "description": "Not placing phase, cannot change it."
-  },
-  "paste": "Ypş.",
-  "@paste": {
-    "description": "Paste"
-  },
-  "pasteDone": "Yapıştırma tamamlandı.",
-  "@pasteDone": {
-    "description": "The paste is done."
-  },
-  "cannotPaste": "Yapıştırılamıyor.",
-  "@cannotPaste": {
-    "description": "Cannot paste."
-  },
-  "noMove": "Hamle yok.",
-  "@noMove": {
-    "description": "No move."
-  },
-  "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve çıkarılmış parçaları göster",
-  "@isUnplacedAndRemovedPiecesShown": {
-    "description": "Show unplaced and removed pieces"
-  },
-  "fullScreen": "Tam ekran",
-  "@fullScreen": {
-    "description": "Full screen"
-  },
-  "reopenToTakeEffect": "Ayarların etkili olabilmesi için uygulamayı kapatıp yeniden açın.",
-  "@reopenToTakeEffect": {
-    "description": "Exit and reopen app for settings to take effect."
-  },
-  "forest": "Orman",
-  "@forest": {},
-  "desktopImage": "Masaüstü Resmi",
-  "@desktopImage": {},
-  "invalidPosition": "Geçersiz pozisyon.",
-  "@invalidPosition": {},
-  "shareGIF": "GIF paylaş",
-  "@shareGIF": {},
-  "duration": "Süre",
-  "@duration": {},
-  "pixelRatio": "piksel oranı",
-  "@pixelRatio": {},
-  "gameScreenRecorder": "Oyun ekran kaydedici",
-  "@gameScreenRecorder": {},
-  "previous": "Öncesi",
-  "@previous": {},
-  "next": "Sonraki",
-  "@next": {},
-  "skip": "Atlamak",
-  "@skip": {},
-  "gotIt": "Anladım",
-  "@gotIt": {},
-  "youCanModifyRules": "Oyunun kurallarını kural ayarlarından değiştirebilirsiniz.",
-  "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Seçicideki değeri değiştirmek için fare tekerleğini kullanabilirsiniz.",
-  "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "AI Düşünme süresinin 0 olarak ayarlanması, düşünmek için herhangi bir zaman sınırı olmadığı anlamına gelir.",
-  "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Lütfen AI düşünme süresi ayarının tam olarak kesin olmayabileceğini unutmayın. Gerçek düşünme süresi, zorluk seviyesi daha düşük bir değere ayarlandığında daha kısa olabilir ve süre dolduğunda yapay zeka orta düşüncede olduğunda daha uzun olabilir.",
-  "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Zorluk seviyesini yüksek seçerseniz fakat AI'nin düşünme süresini artırmazsanız, gerçek zorluk seviyesi düşünme süresi kısıtlamaları nedeniyle daha düşük olabilir. Bu durum makinenin performansına bağlı olarak değişiklik gösterebilir.",
-  "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsMtdf": "MTD(f), ara arama sonuçlarını yeniden kullanarak ve arama alanını daraltmak için iyi bir ilk tahmin kullanarak verimliliği artırmayı amaçlayan alfa-beta arama algoritmasının değiştirilmiş bir biçimidir.",
-  "@whatIsMtdf": {},
-  "whatIsPvs": "PVS (Principal Variation Search), belirli bir konumdaki en iyi hareketi bulmak için bir arama algoritmasıdır. Bu, alfa-beta algoritmasının bir geliştirmesidir ve bir hareketin ana varyasyondan zaten güvenli bir puandan daha kötü olduğunu veya daha kötü olmadığını doğrulamak için boş veya sıfır pencere aramaları kullanır. PVS, en umut verici hareketlere odaklanır ve yetersiz dallarda gereksiz arama yapılmasını önler, bu da aramanın verimliliğini artırmaya yardımcı olur.",
-  "@whatIsPvs": {},
-  "whatIsAlphaBeta": "Alfa-beta algoritması, en iyi hamleyi bulmak için bir arama algoritmasıdır. Arama ağacını budamak ve verimliliği artırmak için minimax ilkesini ve alfa ve beta olmak üzere iki değeri kullanır. Alfa, bilgisayarın alabileceğinden emin olduğu en düşük puanı, beta ise rakibinin alabileceği en yüksek puanı temsil eder. Algoritma, bilgisayarın bir oyunda akıllı ve verimli kararlar almasına yardımcı olur.",
-  "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "Bu oyunda ikinci oyuncunun kazanması birinci oyuncuya göre daha kolaydır.",
-  "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "İnsan deneyimine göre, kazanmaya çalışırsan kaybedersin. Bunun yerine, hedefiniz olarak beraberliği hedefleyin ve oyunu kaybetmekten kaçının. Rakibinizi gözlemleyin ve onu hata yapabilecekleri bir konuma nazikçe çekin. Zayıflık gösterdiklerinde, fırsatı değerlendirin ve kazanmak için nazikçe bastırın. Bu sayede oyunu kazanabilirsiniz.",
-  "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Pasif seçeneğinin etkinleştirilmesi, AI'nın pozisyonda bir avantaja sahip olduğunda agresif bir şekilde mümkün olan en kısa sürede kazanmaya çalışmak yerine rahatlamasına neden olacaktır.",
-  "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Yapay zeka, taşlarının hareketliliğini dikkate alırsa, yalnızca rakibin taşlarını olabildiğince çabuk ele geçirmeyi amaçlamaz, aynı zamanda rakibin hareketlerini bloke etmeyi ve onların da aynısını yapmasını engellemeyi düşünür.",
-  "@considerMobilityOfPiecesDetail": {},
-  "moveRandomlyDetail": "Bu seçeneği etkinleştirmek, oyunun rastgeleliğini ve eğlencesini artırırken devre dışı bırakmak, yapay zekayı yenmenin yollarını araştırmaya yardımcı olabilir.",
-  "@moveRandomlyDetail": {},
-  "whenBoardIsFull": "Tahta dolduğunda",
-  "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "Yerleştirme aşamasının sonunda, hareket aşaması başlamadan önce, tahta taşlarla doluysa eylem takip eder.",
-  "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "Hareket aşamasında ilk hamleyi yapan oyuncu, rakibinin taşlarından birini alır.",
-  "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Her iki taraf da berabere kalmayı kabul eder.",
-  "@agreeToDraw": {},
-  "takeOpponentsPiece": "Rakibinizin taşlarından birini alın.",
-  "@takeOpponentsPiece": {},
-  "firstPlayerLose": "İlk oyuncu oyunu kaybeder.",
-  "@firstPlayerLose": {},
-  "firstAndSecondPlayerRemovePiece": "Birinci ve ikinci oyuncular rakibin taşlarından birini alır.",
-  "@firstAndSecondPlayerRemovePiece": {},
-  "secondAndFirstPlayerRemovePiece": "İkinci ve birinci oyuncular rakibin taşlarından birini alır.",
-  "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Artık 'Uçma Aşaması'na geçildi, rakip taşlar tahtadaki herhangi bir boş yere atlayabilir. 'Kural Ayarları'ndan uçuş kuralını devre dışı bırakabilirsiniz.",
-  "@enteredFlyingPhase": {},
-  "whenStalemate": "Çıkmaza girildiğinde",
-  "@whenStalemate": {},
-  "whenStalemate_Detail": "Hiçbir taş hareket ettirilemiyorsa hangi aksiyon alınır?",
-  "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Çıkmaz kaybıyla bitirin.",
-  "@endWithStalemateLoss": {},
-  "changeSideToMove": "Hareket etmek için tarafı değiştirin.",
-  "@changeSideToMove": {},
-  "removeOpponentsPieceAndMakeNextMove": "Rakibin taşlarından birini çıkarın ve bir sonraki hamleyi yapın.",
-  "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Çıkmaz beraberliği ile bitirin.",
-  "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "Rakibin taşlarından birini çıkarın ve hareket etmek için tarafı değiştirin.",
-  "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "AI yanıt gecikme süresi",
-  "@aiResponseDelayTime": {},
-  "aiIsDelaying": "AI şu anda gecikmeli bir yanıt aşamasındadır. Devam etmeden önce lütfen bir süre bekleyin.",
-  "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Bitişik olmayan bir parçayı kaldıramazsınız.",
-  "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "Çıkmaz durumunda, rakibin size bitişik taşları, değirmen oluşumundan bağımsız olarak kaldırılabilir.",
-  "@stalemateRemovalRegardlessOfMillFormation": {},
-  "whatIsMcts": "MCTS, simülasyonlar aracılığıyla farklı hareketleri keşfederek ve değerlendirerek kararlar veren yeni başlayanlar için uygun bir algoritmadır.",
-  "@whatIsMcts": {},
-  "goldenJade": "altın yeşim",
-  "@goldenJade": {},
-  "forestWood": "Orman Ağacı",
-  "@forestWood": {},
-  "greenMeadow": "yeşil çayır",
-  "@greenMeadow": {},
-  "stonyPath": "taşlı yol",
-  "@stonyPath": {},
-  "midnightBlue": "Gece yarısı mavisi",
-  "@midnightBlue": {},
-  "greenForest": "Yeşil orman",
-  "@greenForest": {},
-  "pastelPink": "pastel pembe",
-  "@pastelPink": {},
-  "turquoiseSea": "Turkuaz Deniz",
-  "@turquoiseSea": {},
-  "violetDream": "Menekşe Rüyası",
-  "@violetDream": {},
-  "mintChocolate": "Naneli çikolata",
-  "@mintChocolate": {},
-  "skyBlue": "Gökyüzü mavisi",
-  "@skyBlue": {},
-  "playfulGarden": "eğlenceli bahçe",
-  "@playfulGarden": {},
-  "darkMystery": "Karanlık Gizem",
-  "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "Geriye Dönük Analiz algoritması, farklı başlangıç konumlarından bir oyunsonu veritabanı oluşturmak için çok değerli geriye dönük analizi kullanır ve ardından oyunu optimize etmek için bu veritabanını uygular. Bu yaklaşım, ultra güçlü çözüm kategorisine girer.",
-  "@whatIsRetrogradeAnalysis": {},
-  "viewAlgorithmGuide": "Bu algoritmanın kullanım kılavuzunu görüntülemek ister misiniz?",
-  "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "Konumsal avantaj göstergesini göster",
-  "@showPositionalAdvantageIndicator": {},
-  "usePerfectDatabase": "Mükemmel Veritabanını Kullanın",
-  "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Bu seçeneği etkinleştirerek, keskin algoritmalar aracılığıyla üretilen kusursuz bir oyun veritabanı kullanın. Bu özellik, hem açılış hem de oyun sonu stratejilerini bütünleştirerek en uygun hamleleri önerir. Bu, oyun içinde en yüksek düzeyde hassasiyet arayan oyuncular için tercih edilen seçimdir. Titiz hesaplama teknikleri kullanılarak oluşturulan bu veritabanı, neredeyse kusursuz oyun çözümleri sunmayı hedefler.\n\nNot: Eğer yapay zeka veritabanına erişemiyorsa, oyun kararları için geleneksel algoritmalara başvuracaktır. Veritabanı mevcut olduğunda, 'Zorluk Seviyesi' neredeyse yenilmez hale gelir ve 'Yapay Zeka Düşünme Süresi' büyük ölçüde azalır. 'Yapay Zeka'nın Oyun Tarzı' seçeneklerindeki birçok ayar, veritabanı sonuçlarının en yüksek önceliğe sahip olması nedeniyle geçersiz kılınacaktır.\n\nBu kusursuz veritabanından en iyi şekilde nasıl yararlanabileceğiniz konusunda rehberlik için buraya tıklayın.",
-  "@perfectDatabaseDescription": {},
-  "backgroundImage": "Arka plan resmi",
-  "@backgroundImage": {},
-  "whatIsRandom": "Kullan 'mükemmel veritabanı' seçeneği etkinleştirilmediğinde, 'Rasgele' ayarı, AI'nin herhangi bir hamle seçimi algoritması kullanmadan parçaları rasgele hareket ettirmesine neden olur. Bu, genellikle önemli ölçüde daha zayıf oyun deneyimiyle sonuçlanır. Buna karşılık, 'Mükemmel veritabanını kullan' etkinleştirildiğinde, AI kararlarını verirken yalnızca 'Mükemmel Veritabanı'na güvenir ve geleneksel AI algoritmalarıyla birleştirmek yerine ona bağlı kalır. Bu modda, AI'nin hamleleri tamamen veritabanının içeriğine dayanır, gerçek zamanlı hesaplamalara veya arama algoritmalarına bağımlılıktan kaçınır.",
-  "@whatIsRandom": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn": "Rakibin parça(lar)ını elinden çıkarın; ardından sıra rakibin parça yerleştirmesine gelir.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
-  "whenFormingMillsDuringPlacingPhase": "Yerleştirme aşamasında değirmenler oluşturulurken",
-  "@whenFormingMillsDuringPlacingPhase": {},
-  "removeOpponentsPieceFromBoard": "Tahtadan rakibin parça(lar)ını çıkarın.",
-  "@removeOpponentsPieceFromBoard": {},
-  "removeOpponentsPieceFromBoard_Detail": "Tahtadan rakibin parça(lar)ını çıkarın; ardından sıra rakibin parça yerleştirmesine gelir.",
-  "@removeOpponentsPieceFromBoard_Detail": {},
-  "opponentRemovesOwnPiece": "Rakip kendi parça(lar)ını tahtadan çıkarır.",
-  "@opponentRemovesOwnPiece": {},
-  "opponentRemovesOwnPiece_Detail": "Sizin bir eylem yapmanız yerine, rakip kendi parça(lar)ını tahtadan seçer ve çıkarır, kendisine zararlı olan bir eylemi etkin bir şekilde gerçekleştirir.",
-  "@opponentRemovesOwnPiece_Detail": {},
-  "removeOpponentsPieceFromHandThenYourTurn": "Rakibin parça(lar)ını elinden çıkarın; ardından sıra sizin parça hareket ettirmenize gelir.",
-  "@removeOpponentsPieceFromHandThenYourTurn": {},
-  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Rakibin elinden parça(lar)ı çıkarın. Çoklu-çıkarma ayarına göre birden fazla parça çıkarılacaksa ve rakibin elinde hiç parça kalmadıysa, rakibin tahtadaki parçalarını çıkarmaya devam edin. Ardından sıra sizin parça hareket ettirmenize gelir. Değirmenler oluşturmaya devam ederseniz, rakibin parçalarını çıkarmaya devam edebilirsiniz.",
-  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Rakibin elinden parça(lar)ı çıkarın. Çoklu-çıkarma ayarına göre birden fazla parça çıkarılacaksa ve rakibin elinde hiç parça kalmadıysa, rakibin tahtadaki parçalarını çıkarmaya devam edin. Ardından sıra rakibin parça hareket ettirmesine gelir.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
-  "markAndDelayRemovingPieces": "Parçaları işaretle ve çıkarmayı geciktir.",
-  "@markAndDelayRemovingPieces": {},
-  "markAndDelayRemovingPieces_Detail": "Yerleştirme aşamasında çıkarılacak parçalar işaretlenir ve her iki oyuncu için de bu noktalara yeni parçalar yerleştirilemez. Hareket aşamasına girildiğinde, bu işaretli parçalar tamamen çıkarılır ve oyuncular ardından parçalarını şimdi boş olan bu noktalara taşıyabilirler.",
-  "@markAndDelayRemovingPieces_Detail": {},
-  "whenFormingMillsDuringPlacingPhase_Detail": "Yerleştirme aşamasında değirmenler oluşturulurken yapılabilecek eylemler.",
-  "@whenFormingMillsDuringPlacingPhase_Detail": {},
-  "marked": "İşaretli",
-  "@marked": {},
-  "menu": "Menü",
-  "@menu": {},
-  "monochrome": "Monokrom",
-  "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "Ekran okuyucu desteğini Genel Ayarlar'daki Erişilebilirlik yapılandırmasında açabilirsiniz.",
-  "@youCanEnableScreenReaderSupport": {},
-  "showNumbersOnPieces": "Taşlarda numaraları göster",
-  "@showNumbersOnPieces": {},
-  "saveImage": "Resmi kaydet",
-  "@saveImage": {},
-  "isAnalysisToolbarShown": "Analiz araç çubuğunu göster",
-  "@isAnalysisToolbarShown": {},
-  "analysisToolbarBackgroundColor": "Analiz araç çubuğu arka plan rengi",
-  "@analysisToolbarBackgroundColor": {},
-  "analysisToolbarIconColor": "Analiz araç çubuğu simge rengi",
-  "@analysisToolbarIconColor": {},
-  "transformed": "Dönüştürüldü.",
-  "@transformed": {},
-  "cannotTransform": "Dönüştürülemez.",
-  "@cannotTransform": {},
-  "rotate": "Döndür",
-  "@rotate": {},
-  "horizontalFlip": "H Çevir",
-  "@horizontalFlip": {},
-  "verticalFlip": "V Çevir",
-  "@verticalFlip": {},
-  "innerOuterFlip": "İç Dış",
-  "@innerOuterFlip": {},
-  "transparentCanvas": "Şeffaf Tuval",
-  "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Tekrarlanan Değirmen Oluşumunu Kısıtla",
-  "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Bir değirmenden alınıp başka bir değirmen oluşturmak için taşınan bir parça, bir sonraki turda hemen orijinal noktaya dönüp yeniden değirmen oluşturamaz. Önce farklı bir hamle gereklidir.",
-  "@restrictRepeatedMillsFormation_Detail": {},
-  "oneTimeUseMill": "Tek kullanımlık değirmen",
-  "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "Her değirmen sadece bir kez rakibin parçasını çıkarabilir. Tekrar oluşturabilirsiniz, ancak ek çıkarmalar için kullanılamaz.",
-  "@oneTimeUseMill_Detail": {},
-  "currentRulesNoPerfectDatabase": "Belirlediğiniz mevcut kuralların karşılık gelen mükemmel bir veritabanı yoktur. Mükemmel veritabanı hakkında daha fazla bilgi için lütfen buraya tıklayın.",
-  "@currentRulesNoPerfectDatabase": {},
-  "focusOnBlockingPaths": "Engelleyici yollar üzerinde yoğunlaşın",
-  "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Oyunun belirli aşamalarında, değirmenler oluşturmanın önüne rakibin hareketlerini engellemeyi koyun. Parçaları değirmenleri tamamlayarak kaldırmaya odaklanmak yerine, AI bu aşamalar sırasında rakibi tuzağa düşürmeyi, hareket edemez hale getirmeyi ve agresif oyun yerine yıpratma yoluyla zaferi sağlamayı hedefler. Bu aşama özel stratejisi, rakibin değirmenlerini aktif olarak engellemez.",
-  "@focusOnBlockingPaths_Detail": {},
-  "pieceImage": "Satranç parçası resmi",
-  "@pieceImage": {},
-  "importColorSettings": "Renk ayarlarını içe aktar",
-  "@importColorSettings": {},
-  "exportColorSettings": "Renk ayarlarını dışa aktar",
-  "@exportColorSettings": {},
-  "import": "İçe aktar",
-  "@import": {},
-  "export": "Dışa aktar",
-  "@export": {},
-  "pleaseCopyJsonToClipboard": "Lütfen önce JSON biçim ayarlarını panoya kopyalayın.",
-  "@pleaseCopyJsonToClipboard": {},
-  "copiedToClipboard": "Panoya kopyalandı.",
-  "@copiedToClipboard": {},
-  "imported": "İçe aktarıldı.",
-  "@imported": {},
-  "boardImage": "Tahta görüntüsü",
-  "@boardImage": {},
-  "autumnLeaves": "Sonbahar Yaprakları",
-  "@autumnLeaves": {},
-  "legendaryLand": "Efsanevi Diyar",
-  "@legendaryLand": {},
-  "vignetteEffect": "Vinyet efekti",
-  "@vignetteEffect": {},
-  "promptMakeToolbarTransparent": "Tahta arka plan resmi ayarlandığında araç çubuğunu tamamen şeffaf yapmak ister misiniz?",
-  "@promptMakeToolbarTransparent": {},
-  "vibration": "Oyunda titreşimi etkinleştir",
-  "@vibration": {},
-  "soundTheme": "Ses teması",
-  "@soundTheme": {},
-  "ball": "Top",
-  "@ball": {},
-  "liquid": "Sıvı",
-  "@liquid": {},
-  "wood": "Odun",
-  "@wood": {},
-  "placeEffectAnimation": "Taş yerleştirme animasyon efekti",
-  "@placeEffectAnimation": {},
-  "removeEffectAnimation": "Taş kaldırma animasyon efekti",
-  "@removeEffectAnimation": {},
-  "isToolbarAtBottom": "Araç çubuğunu altta göster",
-  "@isToolbarAtBottom": {},
-  "boardCornerRadius": "Pano köşe yarıçapı",
-  "@boardCornerRadius": {},
-  "useOpeningBook": "Açılış kitabını kullanın",
-  "@useOpeningBook": {},
-  "currentRule": "Mevcut",
-  "@currentRule": {},
-  "nineMensMorris": "Dokuz taş",
-  "@nineMensMorris": {},
-  "twelveMensMorris": "On iki taş",
-  "@twelveMensMorris": {},
-  "morabaraba": "Morabaraba",
-  "@morabaraba": {},
-  "dooz": "Dooz",
-  "@dooz": {},
-  "chamGonu": "Cham Gonu",
-  "@chamGonu": {},
-  "zhiQi": "Zhi Qi",
-  "@zhiQi": {},
-  "chengSanQi": "Cheng San Qi",
-  "@chengSanQi": {},
-  "mulMulan": "Mul-Mulan",
-  "@mulMulan": {},
-  "nerenchi": "Nerenchi",
-  "@nerenchi": {},
-  "ruleSet": "Kural seti",
-  "@ruleSet": {},
-  "laskerMorris": "Lasker Morris",
-  "@laskerMorris": {},
-  "oneTimeMill": "One-Time Mill",
-  "@oneTimeMill": {},
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {},
-  "useOpeningBook_Detail": "Yapay zekanın, oyunun erken aşamalarında profesyonel insan oyuncular tarafından sıkça kullanılan açılış hamlelerini kullanmasına izin verin. Not: Bu özellik şu anda yalnızca belirli kurallar setleri için mevcuttur.",
-  "@useOpeningBook_Detail": {},
-  "showAdvantageGraph": "Avantaj grafiğini göster",
-  "@showAdvantageGraph": {},
-  "advantageGraphHint": "Avantaj grafiği yalnızca Yapay Zeka bir hamle yaptıktan sonra çizilecektir. İnsan oyuncu hamle yaptığında çizilmeyecektir.",
-  "@advantageGraphHint": {},
-  "removalBasedOnMillCounts": "Tüm taşlar yerleştirilene kadar taşları kaldırma işlemini devre dışı bırak, ardından değirmen sayısına göre taşları kaldır.",
-  "@removalBasedOnMillCounts": {},
-  "removalBasedOnMillCounts_Detail": "Tüm taşlar yerleştirilene kadar taşları kaldırma işlemini devre dışı bırak, ardından değirmen sayısına göre taşları kaldır: eşitse her iki taraf da aynı sayıda taş kaldırır; bir tarafın sayısı fazlaysa, aradaki farkın bir taş olarak kalması için bir taş fazladan kaldırır. Yalnız bir taraf değirmen oluşturduysa, o taraf iki taş kaldırır, diğeri bir taş kaldırır. Hiç değirmen oluşmazsa, her iki taraf da birer taş kaldırır.",
-  "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "El Filja",
-  "@elfilja": {},
-  "tipSelectOwnPiece": "Taşlarından birini seç.",
-  "@tipSelectOwnPiece": {},
-  "notYourTurn": "Sıra sende değil.",
-  "@notYourTurn": {},
-  "annotationToolbarBackgroundColor": "Ek açıklama araç çubuğu arka plan rengi",
-  "@annotationToolbarBackgroundColor": {},
-  "annotationToolbarIconColor": "Ek açıklama araç çubuğu simge rengi",
-  "@annotationToolbarIconColor": {},
-  "isAnnotationToolbarShown": "Ek açıklama araç çubuğunu göster",
-  "@isAnnotationToolbarShown": {},
-  "enterAnnotationMode": "Ek açıklama moduna gir",
-  "@enterAnnotationMode": {},
-  "areYouSureYouWantToClearAllAnnotations": "Tüm ek açıklamaları temizlemek istediğine emin misin?",
-  "@areYouSureYouWantToClearAllAnnotations": {},
-  "llmPromptCopiedToClipboard": "LLM istemi panoya kopyalandı.",
-  "@llmPromptCopiedToClipboard": {},
-  "connectionRefusedTheServerMayBeDown": "Bağlantı reddedildi, sunucu kapalı olabilir.",
-  "@connectionRefusedTheServerMayBeDown": {},
-  "discoverySuccessfulAwaitingConnection": "Keşif başarılı, bağlantı bekleniyor...",
-  "@discoverySuccessfulAwaitingConnection": {},
-  "noLanConnection": "LAN bağlantısı yok",
-  "@noLanConnection": {},
-  "takeScreenshot": "Ekran görüntüsü al",
-  "@takeScreenshot": {},
-  "disconnectedFromOpponent": "Rakiple bağlantı kesildi.",
-  "@disconnectedFromOpponent": {},
-  "takeBackRequest": "Geri Alma İsteği",
-  "@takeBackRequest": {},
-  "nothingToShow": "Gösterilecek bir şey yok.",
-  "@nothingToShow": {},
-  "stopHosting": "Sunuculuğu Durdur",
-  "@stopHosting": {},
-  "connectionResetByPeer": "Bağlantı eş tarafından sıfırlandı.",
-  "@connectionResetByPeer": {},
-  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Heartbeat zaman aşımından dolayı bağlantı kaybedildi. Lütfen yeniden bağlanın.",
-  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
-  "startHosting": "Sunuculuğu Başlat",
-  "@startHosting": {},
-  "restartRequestRejected": "Yeniden başlatma isteği reddedildi.",
-  "@restartRequestRejected": {},
-  "notConnectedToLanOpponent": "LAN rakibine bağlı değil.",
-  "@notConnectedToLanOpponent": {},
-  "llmPrompt": "LLM istemi",
-  "@llmPrompt": {},
-  "gameRestarted": "Oyun yeniden başlatıldı.",
-  "@gameRestarted": {},
-  "takeBackRejected": "Geri alma reddedildi.",
-  "@takeBackRejected": {},
-  "areYouSureYouWantToResignThisGame": "Bu oyundan vazgeçmek istediğine emin misin?",
-  "@areYouSureYouWantToResignThisGame": {},
-  "opponentResignedYouWin": "Rakip vazgeçti. Kazandın!",
-  "@opponentResignedYouWin": {},
-  "clearAllAnnotations": "Tüm ek açıklamaları temizle",
-  "@clearAllAnnotations": {},
-  "connectedWaitingForOpponentSMove": "Bağlandı, rakibin hamlesi bekleniyor...",
-  "@connectedWaitingForOpponentSMove": {},
-  "networkStatusDisconnected": "Ağ durumu: Bağlı değil",
-  "@networkStatusDisconnected": {},
-  "takeBackRequestSentToTheOpponent": "Geri alma isteği rakibe gönderildi.",
-  "@takeBackRequestSentToTheOpponent": {},
-  "theOpponentMayHaveLeftTheGame": "Rakip oyundan ayrılmış olabilir",
-  "@theOpponentMayHaveLeftTheGame": {},
-  "connectedToHostSuccessfully": "Sunucuya başarıyla bağlanıldı.",
-  "@connectedToHostSuccessfully": {},
-  "connectionLostHeartbeatTimeout": "Bağlantı kaybedildi: heartbeat zaman aşımı",
-  "@connectionLostHeartbeatTimeout": {},
-  "noHostDiscovered": "Hiçbir sunucu keşfedilmedi.",
-  "@noHostDiscovered": {},
-  "confirmResignation": "Vazgeçmeyi onayla",
-  "@confirmResignation": {},
-  "startedHostingGameWaitingForPlayersToJoin": "Oyun sunuculuğu başlatıldı, oyuncuların katılması bekleniyor...",
-  "@startedHostingGameWaitingForPlayersToJoin": {},
-  "connectionTimedOutNetworkConnectionUnstable": "Bağlantı zaman aşımına uğradı, ağ bağlantısı kararsız.",
-  "@connectionTimedOutNetworkConnectionUnstable": {},
-  "noLlmPromptAvailable": "Kullanılabilir bir LLM istemi yok.",
-  "@noLlmPromptAvailable": {},
-  "youResignedGameOver": "Vazgeçtin. Oyun bitti.",
-  "@youResignedGameOver": {},
-  "serverIp": "Sunucu IP",
-  "@serverIp": {},
-  "confirmClear": "Temizlemeyi onayla",
-  "@confirmClear": {},
-  "opponentSTurn": "Rakibin sırası.",
-  "@opponentSTurn": {},
-  "waitingAClientConnection": "Bir istemci bağlantısı bekleniyor...",
-  "@waitingAClientConnection": {},
-  "takeBackRequestWasRejectedOrFailed": "Geri alma isteği reddedildi veya başarısız oldu.",
-  "@takeBackRequestWasRejectedOrFailed": {},
-  "addText": "Metin ekle",
-  "@addText": {},
-  "exitAnnotationMode": "Ek açıklama modundan çık",
-  "@exitAnnotationMode": {},
-  "typeYourAnnotation": "Ek açıklamanızı yazın",
-  "@typeYourAnnotation": {},
-  "attemptingToReconnect": "Yeniden bağlanmaya çalışılıyor...",
-  "@attemptingToReconnect": {},
-  "restartRequestSentWaitingForOpponentSResponse": "Yeniden başlatma isteği gönderildi. Rakibin yanıtı bekleniyor...",
-  "@restartRequestSentWaitingForOpponentSResponse": {},
-  "serverIsStopped": "Sunucu durduruldu.",
-  "@serverIsStopped": {},
-  "restartRequest": "Yeniden başlatma isteği",
-  "@restartRequest": {},
-  "cannotRequestATakeBackWhenItSNotYourTurn": "Sıra sende değilken geri alma isteğinde bulunamazsın.",
-  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
-  "takeBackAccepted": "Geri alma kabul edildi.",
-  "@takeBackAccepted": {},
-  "localNetworkSettings": "Yerel ağ ayarları",
-  "@localNetworkSettings": {},
-  "reconnectedSuccessfully": "Başarıyla yeniden bağlanıldı!",
-  "@reconnectedSuccessfully": {},
-  "failedToSaveImageToGallery": "Görüntü Galeriye kaydedilemedi.",
-  "@failedToSaveImageToGallery": {},
-  "opponentRequestedToRestartTheGameDoYouAccept": "Rakip oyunu yeniden başlatmayı istedi. Kabul ediyor musun?",
-  "@opponentRequestedToRestartTheGameDoYouAccept": {},
-  "yourTurn": "Senin sıran.",
-  "@yourTurn": {},
-  "unableToReconnectPleaseRestartTheGame": "Yeniden bağlanılamıyor, lütfen oyunu yeniden başlat.",
-  "@unableToReconnectPleaseRestartTheGame": {},
-  "host": "Sunucu",
-  "@host": {},
-  "join": "Katıl",
-  "@join": {},
-  "port": "Port",
-  "@port": {},
-  "invalidIpAddress": "Geçersiz IP adresi.",
-  "@invalidIpAddress": {},
-  "invalidPort": "Geçersiz port.",
-  "@invalidPort": {},
-  "connectingAttempt": "Bağlanılıyor: Deneme {attempt}/{maxAttempt}",
-  "@connectingAttempt": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempt": {}
-    }
-  },
-  "failedToConnect": "Bağlanma başarısız: {error}",
-  "@failedToConnect": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "failedToStartHosting": "Sunuculuğu başlatma başarısız: {error}",
-  "@failedToStartHosting": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "hostDiscovered": "Sunucu bulundu: {ip}:{port}",
-  "@hostDiscovered": {
-    "placeholders": {
-      "ip": {},
-      "port": {}
-    }
-  },
-  "stop": "Durdur",
-  "@stop": {},
-  "discover": "Keşfet",
-  "@discover": {},
-  "connect": "Bağlan",
-  "@connect": {},
-  "clientConnected": "İstemci bağlandı: {clientIp}:{clientPort}",
-  "@clientConnected": {
-    "placeholders": {
-      "clientIp": {},
-      "clientPort": {}
-    }
-  },
-  "discoveringSeconds": "Keşfediliyor: {seconds} s",
-  "@discoveringSeconds": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "reconnecting": "Yeniden bağlanılıyor ({attempt}/{maxAttempts})",
-  "@reconnecting": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempts": {}
-    }
-  },
-  "connected": "Bağlandı",
-  "@connected": {},
-  "delete": "Sil",
-  "@delete": {},
-  "ancientEgypt": "Antik Mısır",
-  "@ancientEgypt": {},
-  "gothicIce": "Gotik Buz",
-  "@gothicIce": {},
-  "riceField": "Pirinç Tarlası",
-  "@riceField": {},
-  "chinesePorcelain": "Çin Porseleni",
-  "@chinesePorcelain": {},
-  "desertDusk": "Çöldeki Alacakaranlık",
-  "@desertDusk": {},
-  "precisionCraft": "Hassas El Sanatları",
-  "@precisionCraft": {},
-  "folkEmbroidery": "Halk Nakışı",
-  "@folkEmbroidery": {},
-  "carpathianHeritage": "Karpat Mirası",
-  "@carpathianHeritage": {},
-  "imperialGrandeur": "İmparatorluk İhtişamı",
-  "@imperialGrandeur": {},
-  "bohemianCrystal": "Bohem Kristali",
-  "@bohemianCrystal": {},
-  "savannaSunrise": "Savanna Gündoğumu",
-  "@savannaSunrise": {},
-  "harmonyBalance": "Uyum ve Denge",
-  "@harmonyBalance": {},
-  "cinnamonSpice": "Tarçın Baharatı",
-  "@cinnamonSpice": {},
-  "anatolianMosaic": "Anadolu Mozaiği",
-  "@anatolianMosaic": {},
-  "carnivalSpirit": "Karnaval Ruhu",
-  "@carnivalSpirit": {},
-  "custom": "Özel",
-  "@custom": {},
-  "spiceMarket": "Baharat Pazarı",
-  "@spiceMarket": {},
-  "swipeToRevealTheDrawer": "Çekmeceyi açmak için kaydırın",
-  "@swipeToRevealTheDrawer": {},
-  "showGameInfoOnScreenshots": "Ekran görüntülerinde oyun bilgilerini göster",
-  "@showGameInfoOnScreenshots": {},
-  "humanMoveTime": "İnsan zaman sınırı",
-  "@humanMoveTime": {},
-  "noTimeLimitForHumanMoves": "İnsan hamleleri için zaman sınırı yok",
-  "@noTimeLimitForHumanMoves": {},
-  "timeoutLoseWillBeApplied": "İnsan oyuncu için zaman aşımı kaybı uygulanacaktır",
-  "@timeoutLoseWillBeApplied": {},
-  "identifyingBoard": "Oyun tahtası tanımlanıyor...",
-  "@identifyingBoard": {},
-  "youCanEnterAnyModelName": "Herhangi bir model adını girebilirsiniz.",
-  "@youCanEnterAnyModelName": {},
-  "boardPositionAppliedFenCopiedToClipboard": "Tahta konumu uygulandı. FEN panoya kopyalandı.",
-  "@boardPositionAppliedFenCopiedToClipboard": {},
-  "suggestionTryTakingAClearerPictureOfTheBoard": "Öneri: Tahtanın daha net bir fotoğrafını çekmeyi deneyin.",
-  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
-  "llmPromptTemplate": "LLM istem şablonu",
-  "@llmPromptTemplate": {},
-  "noValidBoardDetected": "Geçerli tahta tespit edilemedi.",
-  "@noValidBoardDetected": {},
-  "selectingImageFromAlbum": "Albümden görüntü seçiliyor...",
-  "@selectingImageFromAlbum": {},
-  "configurePromptTemplate": "İstem şablonunu yapılandır",
-  "@configurePromptTemplate": {},
-  "editPromptTemplateForLlmAnalysis": "LLM analizi için istem şablonunu düzenle",
-  "@editPromptTemplateForLlmAnalysis": {},
-  "failedToGenerateFenFromRecognizedBoard": "Tanınan tahtadan FEN oluşturulamadı.",
-  "@failedToGenerateFenFromRecognizedBoard": {},
-  "outputInCurrentLanguage": "Geçerli dilde çıktı",
-  "@outputInCurrentLanguage": {},
-  "commonBaseUrls": "Yaygın Base URL'ler",
-  "@commonBaseUrls": {},
-  "viewCommonModels": "Yaygın modelleri görüntüle",
-  "@viewCommonModels": {},
-  "recognitionParametersUpdated": "Tanıma parametreleri güncellendi.",
-  "@recognitionParametersUpdated": {},
-  "whiteSMove": "Beyazın hamlesi",
-  "@whiteSMove": {},
-  "resetToDefaults": "Varsayılana sıfırla",
-  "@resetToDefaults": {},
-  "photoShoot": "Fotoğraf çekimi",
-  "@photoShoot": {},
-  "failedToApplyRecognizedBoardPosition": "Tanınan tahta pozisyonu uygulanamadı.",
-  "@failedToApplyRecognizedBoardPosition": {},
-  "llmPromptContent": "LLM istem içeriği",
-  "@llmPromptContent": {},
-  "llmNotConfiguredPleaseCheckYourSettings": "LLM yapılandırılmadı. Lütfen ayarlarınızı kontrol edin.",
-  "@llmNotConfiguredPleaseCheckYourSettings": {},
-  "setProviderModelApiKeyAndBaseUrl": "Sağlayıcıyı, modeli, API Key ve Base URL'i belirle",
-  "@setProviderModelApiKeyAndBaseUrl": {},
-  "llmConfiguration": "LLM yapılandırması",
-  "@llmConfiguration": {},
-  "configureLlmProvider": "LLM sağlayıcısını yapılandır",
-  "@configureLlmProvider": {},
-  "llmPromptTemplateHeader": "LLM istem şablonu başlığı",
-  "@llmPromptTemplateHeader": {},
-  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Görüntüde hiçbir taş tanınmadı. Lütfen tekrar deneyin.",
-  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
-  "recognizeBoardFromImage": "Görüntüden tahtayı tanı",
-  "@recognizeBoardFromImage": {},
-  "viewTips": "İpuçlarını görüntüle",
-  "@viewTips": {},
-  "applyToBoard": "Tahtaya uygula",
-  "@applyToBoard": {},
-  "adjustBoardArea": "Tahta alanını ayarla",
-  "@adjustBoardArea": {},
-  "viewCommonUrls": "Yaygın URL'leri görüntüle",
-  "@viewCommonUrls": {},
-  "colorAnalysisFailed": "Renk analizi başarısız oldu!",
-  "@colorAnalysisFailed": {},
-  "analyzingGameBoardImage": "Oyun tahtası görüntüsü analiz ediliyor...",
-  "@analyzingGameBoardImage": {},
-  "selectFromAlbum": "Albümden seç",
-  "@selectFromAlbum": {},
-  "noBoardPointDetected": "Tahta noktası algılanamadı!",
-  "@noBoardPointDetected": {},
-  "ifLeftEmptyDefaultTemplateWillBeUsed": "Boş bırakılırsa varsayılan şablon kullanılacak",
-  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
-  "llmConfig": "LLM yapılandırması",
-  "@llmConfig": {},
-  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "İstem şablonlarını varsayılan değerlere sıfırlamak istediğinizden emin misiniz?",
-  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
-  "llmPromptTemplateFooter": "LLM istem şablonu altbilgisi",
-  "@llmPromptTemplateFooter": {},
-  "loadingResponse": "Yanıt yükleniyor...",
-  "@loadingResponse": {},
-  "applyThisResultToBoard": "Bu sonucu tahtaya uygula",
-  "@applyThisResultToBoard": {},
-  "takingPicture": "Fotoğraf çekiliyor...",
-  "@takingPicture": {},
-  "pleaseSelectAGameBoardImageToIdentify": "Tanımlamak için lütfen bir oyun tahtası resmi seçin",
-  "@pleaseSelectAGameBoardImageToIdentify": {},
-  "identificationResults": "Tanıma sonuçları",
-  "@identificationResults": {},
-  "analyzeTheMovesAndProvideInsights": "Hamleleri analiz et ve içgörü sağla",
-  "@analyzeTheMovesAndProvideInsights": {},
-  "getApiKey": "API Key al",
-  "@getApiKey": {},
-  "entireRecognitionProcessFailedToComplete": "Tüm tanıma işlemi tamamlanamadı.",
-  "@entireRecognitionProcessFailedToComplete": {},
-  "boardRecognitionResult": "Tahta tanıma sonucu",
-  "@boardRecognitionResult": {},
-  "askLlm": "LLM'e sor",
-  "@askLlm": {},
-  "boardDetectionFailed": "Tahta algılama başarısız oldu!",
-  "@boardDetectionFailed": {},
-  "noBoardPointDetectedCannotIdentifyPiece": "Tahta noktası algılanamadı, bu yüzden taş tanımlanamaz!",
-  "@noBoardPointDetectedCannotIdentifyPiece": {},
-  "copyFen": "FEN'i kopyala",
-  "@copyFen": {},
-  "commonlyUsedModels": "Sık kullanılan modeller",
-  "@commonlyUsedModels": {},
-  "apiKeyOptional": "API Key (isteğe bağlı)",
-  "@apiKeyOptional": {},
-  "noImageSelected": "Görüntü seçilmedi",
-  "@noImageSelected": {},
-  "blackSMove": "Siyahın hamlesi",
-  "@blackSMove": {},
-  "llm": "Büyük Dil Modeli",
-  "@llm": {},
-  "llmProvider": "Sağlayıcı",
-  "@llmProvider": {},
-  "baseUrl": "Temel URL",
-  "@baseUrl": {},
-  "model": "Model",
-  "@model": {},
-  "temperature": "Sıcaklık",
-  "@temperature": {},
-  "llmCommandReceivedProcessing": "Komut alındı! Yapay zeka işliyor...",
-  "@llmCommandReceivedProcessing": {},
-  "llmDeepThinkingWait": "Derin düşünme sürüyor, lütfen bekleyin...",
-  "@llmDeepThinkingWait": {},
-  "llmPresentingSoon": "Yakında sunulacak...",
-  "@llmPresentingSoon": {},
-  "recognitionParameters": "Tanıma parametreleri",
-  "@recognitionParameters": {},
-  "adjustParamsDesc": "Tanıma doğruluğunu artırmak için parametreleri ayarlayın",
-  "@adjustParamsDesc": {},
-  "saveParameters": "Parametreleri kaydet",
-  "@saveParameters": {},
-  "unableToStartImageRecognition": "Görüntü tanıma başlatılamadı: {error}",
-  "@unableToStartImageRecognition": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "File system error"
-      }
-    }
-  },
-  "imageRecognitionFailed": "Görüntü tanıma başarısız: {error}",
-  "@imageRecognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Could not detect corners"
-      }
-    }
-  },
-  "appliedPositionDetails": "{whiteCount} beyaz ve {blackCount} siyah taşlı konum uygulandı",
-  "@appliedPositionDetails": {
-    "placeholders": {
-      "whiteCount": {
-        "type": "int",
-        "example": "9"
-      },
-      "blackCount": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
-  "fenCopiedToClipboard": "(FEN panoya kopyalandı)",
-  "@fenCopiedToClipboard": {},
-  "recognitionFailed": "Tanıma başarısız: {error}",
-  "@recognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Invalid FEN structure"
-      }
-    }
-  },
-  "myRating": "Derecelendirmem",
-  "@myRating": {},
-  "gamesPlayed": "Oynanan oyunlar",
-  "@gamesPlayed": {},
-  "wins": "Galibiyet",
-  "@wins": {},
-  "losses": "Mağlubiyet",
-  "@losses": {},
-  "draws": "Beraberlik",
-  "@draws": {},
-  "lastUpdated": "Son güncelleme",
-  "@lastUpdated": {},
-  "format": "Biçim:",
-  "@format": {},
-  "resetStatistics": "İstatistikleri sıfırla",
-  "@resetStatistics": {},
-  "drawRate": "Beraberlik oranı",
-  "@drawRate": {},
-  "lossRate": "Mağlubiyet oranı",
-  "@lossRate": {},
-  "aiStatistics": "Yapay zeka istatistikleri",
-  "@aiStatistics": {},
-  "enableStatistics": "İstatistikleri etkinleştir",
-  "@enableStatistics": {},
-  "enableStatistics_Detail": "Etkinleştirildiğinde, oyun sonuçları istatistiklere kaydedilecektir. Ancak, geri alma içeren oyunlar kaydedilmeyecektir. Devre dışı bırakıldığında, istatistik toplama duraklatılır.",
-  "@enableStatistics_Detail": {},
-  "thisWillResetAllGameStatistics": "Bu, tüm oyun istatistiklerini sıfırlayacaktır. Bu işlem geri alınamaz.",
-  "@thisWillResetAllGameStatistics": {},
-  "boardInnerRingSize": "Tahtanın iç halka boyutu",
-  "@boardInnerRingSize": {},
-  "boardShadowEnabled": "Tahta gölgesi",
-  "@boardShadowEnabled": {},
-  "trapAwareness": "Tuzak tespiti",
-  "@trapAwareness": {},
-  "trapAwarenessDescription": "Analiz sırasında tuzak hamlelerini kalın daireler ve oklarla vurgula.",
-  "@trapAwarenessDescription": {},
-  "trapExists": "Tuzak var. Tuzak hamleleri: {trapMoves}",
-  "@trapExists": {
-    "placeholders": {
-      "trapMoves": {
-        "type": "String"
-      }
-    }
-  },
-  "custodianCapture": "Kuşatma yakalama",
-  "@custodianCapture": {},
-  "custodianCaptureDescription": "Rakibinizin parçalarından birini ikiniz arasındaki parçalarından yakalamak için düz bir çizgide ekleyin.",
-  "@custodianCaptureDescription": {},
-  "custodianCaptureEnable": "Kuşatma yakalamasına izin ver",
-  "@custodianCaptureEnable": {},
-  "interventionCapture": "Müdahale yakalama",
-  "@interventionCapture": {},
-  "interventionCaptureDescription": "Her ikisini de yakalamak için rakibinizin iki parçasından ikisi arasındaki boş noktaya geçin.",
-  "@interventionCaptureDescription": {},
-  "interventionCaptureEnable": "Müdahale yakalamasına izin ver",
-  "@interventionCaptureEnable": {},
-  "leapCapture": "Atlama yakalama",
-  "@leapCapture": {},
-  "leapCaptureDescription": "Bitişik bir rakibin parçasının üzerinden boş noktaya atlayarak yakalayın.",
-  "@leapCaptureDescription": {},
-  "leapCaptureEnable": "Atlama yakalamasına izin ver",
-  "@leapCaptureEnable": {},
-  "captureApplicableLines": "Uygulanabilir çizgiler",
-  "@captureApplicableLines": {},
-  "captureSquareEdges": "Meydanın kenarları boyunca",
-  "@captureSquareEdges": {},
-  "captureCrossLines": "Meydanı geçen dikey çizgiler boyunca",
-  "@captureCrossLines": {},
-  "captureDiagonalLines": "Meydanı geçen çapraz çizgiler boyunca",
-  "@captureDiagonalLines": {},
-  "captureExecutionPhases": "Yürütme aşamaları",
-  "@captureExecutionPhases": {},
-  "capturePiecesCondition": "Kalan parçalara dayalı olarak hareketli aşamada kullanılabilirlik",
-  "@capturePiecesCondition": {},
-  "capturePiecesConditionUnlimited": "Kısıtlama Yok",
-  "@capturePiecesConditionUnlimited": {},
-  "capturePiecesConditionSelfLeqThree": "Üç veya daha az parçanız olduğunda mevcuttur",
-  "@capturePiecesConditionSelfLeqThree": {},
-  "stopPlacingWhenTwoEmptySquares": "Yalnızca iki boş kare kaldığında yerleştirmeyi durdur",
-  "@stopPlacingWhenTwoEmptySquares": {},
-  "stopPlacingWhenTwoEmptySquares_Detail": "Etkinleştirildiğinde, tahtada yalnızca 2 boş alan kaldığında yerleştirme aşaması sona erer ve hareket aşamı başlar, eldeki taşlar ne olursa olsun. Bu kural yalnızca 12 taşlı oyunlar için geçerlidir.",
-  "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@@locale": "tr",
+    "appName": "9-12 Taş",
+    "@appName": {
+        "description": "The app name"
+    },
+    "welcome": "Hoşgeldiniz",
+    "@welcome": {
+        "description": "Welcome"
+    },
+    "yes": "Evet",
+    "@yes": {
+        "description": "Yes"
+    },
+    "no": "Hayır",
+    "@no": {
+        "description": "No"
+    },
+    "game": "Oyun",
+    "@game": {
+        "description": "Game"
+    },
+    "humanVsAi": "İnsana Karşı Yapay Zeka",
+    "@humanVsAi": {
+        "description": "Human Vs AI"
+    },
+    "humanVsHuman": "İnsana Karşı İnsan",
+    "@humanVsHuman": {
+        "description": "Human Vs Human"
+    },
+    "aiVsAi": "AI vs AI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
+    },
+    "humanVsCloud": "İnsana Karşı Bulut",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
+    },
+    "humanVsLAN": "İnsana Karşı LAN",
+    "@humanVsLAN": {
+        "description": "Human Vs LAN"
+    },
+    "testViaLAN": "LAN Üzerinden Test Et",
+    "@testViaLAN": {
+        "description": "Test Via LAN"
+    },
+    "move": "Hamle",
+    "@move": {
+        "description": "Move"
+    },
+    "showMoveList": "Hamle Listesi",
+    "@showMoveList": {
+        "description": "Move list"
+    },
+    "moveList": "Hamle listesi",
+    "@moveList": {
+        "description": "Move list"
+    },
+    "noGameRecord": "Kayıt yok",
+    "@noGameRecord": {
+        "description": "No record"
+    },
+    "ok": "TAMAM",
+    "@ok": {
+        "description": "OK"
+    },
+    "confirm": "Onayla",
+    "@confirm": {
+        "description": "Confirm"
+    },
+    "cancel": "İptal",
+    "@cancel": {
+        "description": "Cancel"
+    },
+    "tipSelectWrong": "Yanlış bir parça seçtiniz.",
+    "@tipSelectWrong": {
+        "description": "Select the wrong piece."
+    },
+    "tipPlace": "Taşlarınızı yerleştirin.",
+    "@tipPlace": {
+        "description": "Place your pieces."
+    },
+    "tipBanPlace": "Buraya yerleştiremezsiniz.",
+    "@tipBanPlace": {
+        "description": "Cannot place it here."
+    },
+    "tipPlaced": "Yerleştirildi.",
+    "@tipPlaced": {
+        "description": "Placed."
+    },
+    "tipRemove": "Bir taşı çıkarın.",
+    "@tipRemove": {
+        "description": "Remove a piece."
+    },
+    "tipBanRemove": "Kaldırılamıyor.",
+    "@tipBanRemove": {
+        "description": "Cannot remove."
+    },
+    "tipRemoved": "Kaldırıldı.",
+    "@tipRemoved": {
+        "description": "Removed."
+    },
+    "tipMove": "Bir parçayı hareket ettirin.",
+    "@tipMove": {
+        "description": "Move a piece."
+    },
+    "tipCannotPlace": "Buraya taşını koyamazsın.",
+    "@tipCannotPlace": {
+        "description": "You can't place your piece here."
+    },
+    "tipCannotMove": "Buraya taşını taşıyamazsın.",
+    "@tipCannotMove": {
+        "description": "You can't move your piece here."
+    },
+    "tipMill": "Değirmen! Rakibin taşını çıkar.",
+    "@tipMill": {
+        "description": "Mill! Take your opponent's piece."
+    },
+    "tipContinueMill": "Rakibin taşını çıkarmaya devam et.",
+    "@tipContinueMill": {
+        "description": "Continue to take your opponent's piece."
+    },
+    "tipSelectOpponentsPiece": "Rakibinizin taşlarından birini seçin.",
+    "@tipSelectOpponentsPiece": {
+        "description": "Select one of your opponent's pieces."
+    },
+    "tipCannotRemovePieceFromMill": "Değirmendeki bir taşı çıkaramazsınız.",
+    "@tipCannotRemovePieceFromMill": {
+        "description": "You cannot remove a piece from a mill."
+    },
+    "tipCanMoveOnePoint": "Bir taş sadece bitişik bir noktaya hareket edebilir.",
+    "@tipCanMoveOnePoint": {
+        "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "Rakibinizin taşlarını hareket ettiremezsiniz.",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
+    "tipSelectPieceToMove": "Taşınacak parçanızı seçin.",
+    "@tipSelectPieceToMove": {
+        "description": "Select your piece to move."
+    },
+    "tipHaveThreePiecesLeft": "3 parçanız kaldı.",
+    "@tipHaveThreePiecesLeft": {
+        "description": "You have 3 pieces left."
+    },
+    "tipCanMoveToAnyPoint": "İstediğiniz noktaya hareket edebilirsiniz.",
+    "@tipCanMoveToAnyPoint": {
+        "description": "You can move to any point you like."
+    },
+    "tipToMove": "{player} hareket ettirin.",
+    "@tipToMove": {
+        "description": " to move."
+    },
+    "whiteWin": "Oyuncu 1 kazanır!",
+    "@whiteWin": {
+        "description": "Player 1 wins!"
+    },
+    "blackWin": "2. oyuncu kazanır!",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
+    "won": "Kazanan",
+    "@won": {
+        "description": "Won"
+    },
+    "lost": "Kaybeden",
+    "@lost": {
+        "description": "Lost"
+    },
+    "thinking": "Düşünüyor...",
+    "@thinking": {
+        "description": "Thinking..."
+    },
+    "newGame": "Yeni oyun",
+    "@newGame": {
+        "description": "New game"
+    },
+    "importGame": "Oyunu içe aktar",
+    "@importGame": {
+        "description": "Import game"
+    },
+    "exportGame": "Oyunu dışa aktar",
+    "@exportGame": {
+        "description": "Export game"
+    },
+    "gameImported": "Oyun içe aktarıldı.",
+    "@gameImported": {
+        "description": "Game imported from the clipboard."
+    },
+    "cannotImport": "{invalidMove} içe aktarılamıyor",
+    "@cannotImport": {
+        "description": "Cannot import"
+    },
+    "movesAndRulesNotMatch": "Hareketler ve kurallar uyuşmuyor.",
+    "@movesAndRulesNotMatch": {
+        "description": "Rules and moves do not match."
+    },
+    "pleaseWait": "Lütfen bekle...",
+    "@pleaseWait": {
+        "description": "Please wait..."
+    },
+    "restartGame": "Mevcut oyun yeniden başlatılsın mı?",
+    "@restartGame": {
+        "description": "Restart current game?"
+    },
+    "restart": "Tekrar başlat",
+    "@restart": {
+        "description": "Restart"
+    },
+    "gameStarted": "Oyun başladı lütfen yer verin.",
+    "@gameStarted": {
+        "description": "Game started, please place"
+    },
+    "analyzing": "Analiz…",
+    "@analyzing": {
+        "description": "Analyzing ..."
+    },
+    "error": "Hata: {message}",
+    "@error": {
+        "description": "Error"
+    },
+    "winRate": "Kazanma oranı",
+    "@winRate": {
+        "description": "Win Rate"
+    },
+    "score": "Puan:",
+    "@score": {
+        "description": "Score"
+    },
+    "white": "Oyuncu 1",
+    "@white": {
+        "description": "Player 1"
+    },
+    "black": "Oyuncu 2",
+    "@black": {
+        "description": "Player 2"
+    },
+    "loseReasonlessThanThree": "{player} parça sayısı üçten az.",
+    "@loseReasonlessThanThree": {
+        "description": " piece count is less than three."
+    },
+    "loseReasonResign": "{player} istifa etti.",
+    "@loseReasonResign": {
+        "description": " resign."
+    },
+    "loseReasonNoWay": "{player}'in gidecek yolu yok.",
+    "@loseReasonNoWay": {
+        "description": " is no way to go."
+    },
+    "loseReasonBoardIsFull": "Pano dolu ve {player}'in gidecek yolu yok.",
+    "@loseReasonBoardIsFull": {
+        "description": "The board is full, no way to go."
+    },
+    "loseReasonTimeOver": "Zaman bitti, {player} kayıp.",
+    "@loseReasonTimeOver": {
+        "description": "Time Over"
+    },
+    "drawReasonRule50": "Hareket etme aşamasında, son belirli sayıda hamlede hiçbir parça kaldırılmadı.",
+    "@drawReasonRule50": {
+        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+    },
+    "drawReasonBoardIsFull": "Tahta dolu olduğu için Beraberliktir.",
+    "@drawReasonBoardIsFull": {
+        "description": "It is a Draw because the board is full"
+    },
+    "drawReasonThreefoldRepetition": "Üç katlı tekrardan dolayı Beraberliktir.",
+    "@drawReasonThreefoldRepetition": {
+        "description": "It is a Draw because of threefold repetition."
+    },
+    "gameOverUnknownReason": "Oyun bitti! Bilinmeyen sebep.",
+    "@gameOverUnknownReason": {
+        "description": "Game Over! Unknown reason."
+    },
+    "gameOver": "Oyun bitti",
+    "@gameOver": {
+        "description": "Game Over"
+    },
+    "youWin": "Sen kazandın! Tebrikler!",
+    "@youWin": {
+        "description": "You win! Congratulations!"
+    },
+    "challengeHarderLevel": "Daha zor bir seviyeye meydan okumak istiyor musun? Yeni seviye {level} olacak.",
+    "@challengeHarderLevel": {
+        "description": "Challenge harder level?"
+    },
+    "youLose": "Kaybettin!",
+    "@youLose": {
+        "description": "You Lose!"
+    },
+    "analyze": "analiz et",
+    "@analyze": {
+        "description": "Analyze"
+    },
+    "about": "hakkında",
+    "@about": {
+        "description": "About"
+    },
+    "version": "Sürüm: {versionNumber}",
+    "@version": {
+        "description": "Version"
+    },
+    "thanks": "Teşekkürler",
+    "@thanks": {
+        "description": "Thanks"
+    },
+    "settings": "Ayarlar",
+    "@settings": {
+        "description": "Settings"
+    },
+    "options": "Seç.",
+    "@options": {
+        "description": "Options"
+    },
+    "generalSettings": "Genel Ayarlar",
+    "@generalSettings": {
+        "description": "General Settings"
+    },
+    "skillLevel": "Zorluk seviyesi",
+    "@skillLevel": {
+        "description": "Difficulty level"
+    },
+    "moveTime": "AI düşünme zamanı",
+    "@moveTime": {
+        "description": "AI thinking time"
+    },
+    "difficulty": "Zorluk",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
+    "playSounds": "Ses efektleri",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
+    "playSoundsInTheGame": "Oyunda sesleri çal",
+    "@playSoundsInTheGame": {
+        "description": "Play sounds in the game"
+    },
+    "keepMuteWhenTakingBack": "Geri alırken sessize alın",
+    "@keepMuteWhenTakingBack": {
+        "description": "Keep mute when taking back"
+    },
+    "tone": "ton",
+    "@tone": {
+        "description": "Tone"
+    },
+    "whoMovesFirst": "İlk hamle",
+    "@whoMovesFirst": {
+        "description": "First move"
+    },
+    "human": "İnsan",
+    "@human": {
+        "description": "Human"
+    },
+    "ai": "yapay zeka",
+    "@ai": {
+        "description": "AI"
+    },
+    "alternate": "Alternatif",
+    "@alternate": {
+        "description": "Alternate"
+    },
+    "isAutoRestart": "Oyun bittiğinde oyunu otomatik olarak yeniden başlat",
+    "@isAutoRestart": {
+        "description": "Auto-restart game when game over"
+    },
+    "isAutoChangeFirstMove": "İlk Hamleyi Otomatik Değiştir",
+    "@isAutoChangeFirstMove": {
+        "description": "Auto Change First Move"
+    },
+    "shufflingEnabled": "Rastgele Hamle",
+    "@shufflingEnabled": {
+        "description": "Random move"
+    },
+    "misc": "Çeşitli",
+    "@misc": {
+        "description": "Miscellaneous"
+    },
+    "rules": "Kurallar",
+    "@rules": {
+        "description": "Rules"
+    },
+    "piecesCount": "Her oyuncunun sahip olduğu parça sayısı",
+    "@piecesCount": {
+        "description": "The number of pieces each player has"
+    },
+    "piecesCount_Detail": "Her oyuncunun kaç taşı vardır?",
+    "@piecesCount_Detail": {
+        "description": "How many pieces does each player have?"
+    },
+    "flyPieceCount": "Uçan parçanın numarası",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
+    "flyPieceCount_Detail": "Uçma etkinleştirilirse, bir oyuncu belirli bir parça sayısına düştüğünde, taşları oyunun geri kalanında olduğu gibi bitişik noktalarla sınırlı olmak yerine boş herhangi bir noktaya hareket etmekte serbesttir.",
+    "@flyPieceCount_Detail": {
+        "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
+    "piecesAtLeastCount": "En Az Adet",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "çapraz çizgiler",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
+    "hasDiagonalLines_Detail": "Tahtaya dört çapraz çizgi ekleyin.",
+    "@hasDiagonalLines_Detail": {
+        "description": "Add four diagonal lines to the board."
+    },
+    "isDefenderMoveFirst": "İkinci oyuncu önce hareket eder",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
+    "isDefenderMoveFirst_Detail": "Yerleştirme aşamasında ikinci olan oyuncu, hareket aşamasında ilk hamleyi yapar.",
+    "@isDefenderMoveFirst_Detail": {
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
+    },
+    "mayRemoveMultiple": "çoklu kaldır",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
+    },
+    "mayRemoveMultiple_Detail": "Bir oyuncu aynı anda birden fazla değirmeni kapatırsa, kapattığı değirmen sayısını kaldırabilecektir.",
+    "@mayRemoveMultiple_Detail": {
+        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
+    "mayRemoveFromMillsAlways": "Değirmenleri yok et",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
+    },
+    "mayRemoveFromMillsAlways_Detail": "Varsayılan olarak, bir değirmeni oluşturan taşlar kaldırılmadan önce diğer tüm taşlar kaldırılmalıdır. Bu kısıtlamayı kaldırmak için bu seçeneği etkinleştirin.",
+    "@mayRemoveFromMillsAlways_Detail": {
+        "description": "mayRemoveFromMillsAlways_Detail"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull": "Tahta dolduğunda ikinci oyuncu kaybeder",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Yerleştirme aşamasının sonunda, eğer tahta dolarsa, ilk taşları yerleştiren taraf kaybeder; aksi halde oyun beraberlikle sonuçlanır.",
+    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+    },
+    "isLoseButNotChangeSideWhenNoWay": "Yasal hamle olmadığında kaybet",
+    "@isLoseButNotChangeSideWhenNoWay": {
+        "description": "Lose when no legal moves"
+    },
+    "isLoseButNotChangeSideWhenNoWay_Detail": "Eğer bir oyuncu rakibini hareket edemez hale getirirse, o oyuncu kaybeder. Bu seçenek kapalıysa, hamle yapabilen taraf değişir.",
+    "@isLoseButNotChangeSideWhenNoWay_Detail": {
+        "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+    },
+    "mayFly": "Uçan",
+    "@mayFly": {
+        "description": "Flying"
+    },
+    "mayFly_Detail": "Bir oyuncunun yalnızca üç veya dört (yapılandırılabilir) taşı kalmışsa, taşı herhangi bir boş noktaya taşıyabilir.",
+    "@mayFly_Detail": {
+        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "N-hareket kuralı",
+    "@nMoveRule": {
+        "description": "N-move rule"
+    },
+    "nMoveRule_Detail": "Her oyuncu tarafından belirli sayıda hamlede herhangi bir çıkarma yapılmamışsa oyun berabere biter.",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+    },
+    "rollback": "geri alma",
+    "@rollback": {
+        "description": "Rollback"
+    },
+    "pleaseSelect": "Lütfen seçin",
+    "@pleaseSelect": {
+        "description": "Please select"
+    },
+    "copy": "kopyala",
+    "@copy": {
+        "description": "Copy"
+    },
+    "moveHistoryCopied": "Kopyalanan geçmişi panoya taşı.",
+    "@moveHistoryCopied": {
+        "description": "Move history copied to clipboard"
+    },
+    "help": "Yardım",
+    "@help": {
+        "description": "Help"
+    },
+    "feedback": "geri bildirim",
+    "@feedback": {
+        "description": "Feedback"
+    },
+    "exit": "çıkış",
+    "@exit": {
+        "description": "Exit"
+    },
+    "ruleSettings": "Kural Ayarları",
+    "@ruleSettings": {
+        "description": "Rule Settings"
+    },
+    "color": "Renk",
+    "@color": {
+        "description": "Color"
+    },
+    "boardColor": "Tahta rengi",
+    "@boardColor": {
+        "description": "Board color"
+    },
+    "pieceColor": "parça rengi",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "Arka plan rengi",
+    "@backgroundColor": {
+        "description": "Background color"
+    },
+    "lineColor": "Tahta çizgi rengi",
+    "@lineColor": {
+        "description": "Board line color"
+    },
+    "whitePieceColor": "Oyuncu 1'in parça rengi",
+    "@whitePieceColor": {
+        "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "Oyuncu 2'nin parça rengi",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
+    },
+    "messageColor": "Mesaj rengi",
+    "@messageColor": {
+        "description": "Message color"
+    },
+    "isPieceCountInHandShown": "Eldeki parça sayısını göster",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
+    },
+    "isNotationsShown": "Notları tahtada göster",
+    "@isNotationsShown": {
+        "description": "Show notations on board"
+    },
+    "isHistoryNavigationToolbarShown": "Geçmiş gezinme araç çubuğunu göster",
+    "@isHistoryNavigationToolbarShown": {
+        "description": "Show history navigation toolbar"
+    },
+    "display": "Görüntüle",
+    "@display": {
+        "description": "Display"
+    },
+    "boardBorderLineWidth": "Tahta sınır çizgisi kalınlığı",
+    "@boardBorderLineWidth": {
+        "description": "Board borderline width"
+    },
+    "boardInnerLineWidth": "Pano iç çizgi genişliği",
+    "@boardInnerLineWidth": {
+        "description": "Board inner line width"
+    },
+    "pieceWidth": "Parça genişliği",
+    "@pieceWidth": {
+        "description": "Piece width"
+    },
+    "fontSize": "Yazı Boyutu",
+    "@fontSize": {
+        "description": "Font size"
+    },
+    "standardNotation": "WMD gösterimi",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
+    "restore": "Geri Yükle",
+    "@restore": {
+        "description": "Restore"
+    },
+    "restoreDefaultSettings": "Varsayılan Ayarlara Geri Dön",
+    "@restoreDefaultSettings": {
+        "description": "Restore Default Settings"
+    },
+    "pick": "{element}'i seçin",
+    "@pick": {
+        "description": "Pick "
+    },
+    "info": "Bilgi",
+    "@info": {
+        "description": "Info"
+    },
+    "hint": "İpucu",
+    "@hint": {
+        "description": "Hint"
+    },
+    "player": "oyuncu",
+    "@player": {
+        "description": "player"
+    },
+    "player1": "oyuncu 1",
+    "@player1": {
+        "description": "Player 1"
+    },
+    "player2": "oyuncu 2",
+    "@player2": {
+        "description": "Player 2"
+    },
+    "howToPlay": "Nasıl oynanır",
+    "@howToPlay": {
+        "description": "How to play"
+    },
+    "toPlacePiece": "Parçayı yerleştirmek için uygun bir noktaya dokunun.",
+    "@toPlacePiece": {
+        "description": "Tap on any available point to place the piece."
+    },
+    "toSelectPiece": "Taşımak için bir parçaya dokunun.",
+    "@toSelectPiece": {
+        "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "Taşımak için parçaya bağlı noktaya dokunun.",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
+    },
+    "toRemovePiece": "Kaldırmak için rakibin tek parçasına dokunun.",
+    "@toRemovePiece": {
+        "description": "Tap on one of the opponent's pieces to remove it."
+    },
+    "needToCreateMillFirst": "Bir parçayı çıkarmadan önce bir değirmen oluşturmanız gerekir.",
+    "@needToCreateMillFirst": {
+        "description": "You need to create a mill first before you can remove a piece."
+    },
+    "needToPlayWithOwnPieces": "Taşlarınla oynaman gerekiyor.",
+    "@needToPlayWithOwnPieces": {
+        "description": "You need to play with your pieces."
+    },
+    "statistics": "İstatistik",
+    "@statistics": {
+        "description": "Statistics"
+    },
+    "totalGames": "Toplam oyunlar",
+    "@totalGames": {
+        "description": "Total games"
+    },
+    "results": "Sonuçlar",
+    "@results": {
+        "description": "Results"
+    },
+    "left": "ayrıldı",
+    "@left": {
+        "description": "left"
+    },
+    "privacyPolicy": "Gizlilik Politikası",
+    "@privacyPolicy": {
+        "description": "Privacy Policy"
+    },
+    "privacyPolicy_Detail_1": "Lütfen dikkatlice okuyun ve bunu tam olarak anladığınızdan ve kabul ettiğinizden emin olun. ",
+    "@privacyPolicy_Detail_1": {
+        "description": "Privacy Policy Detail 1"
+    },
+    "privacyPolicy_Detail_2": ". Bu Politikayı kabul etmiyorsanız, lütfen bu Uygulamayı kullanmayın. Uygulamayı kullanmak, bu şartları kabul ettiğiniz anlamına gelir.",
+    "@privacyPolicy_Detail_2": {
+        "description": "Privacy Policy Detail 2"
+    },
+    "and": " ve ",
+    "@and": {},
+    "accept": "Kabul etmek",
+    "@accept": {
+        "description": "Accept"
+    },
+    "takeBack": "Geri al",
+    "@takeBack": {
+        "description": "Take back"
+    },
+    "takingBack": "Geri almak…",
+    "@takingBack": {
+        "description": "Taking back..."
+    },
+    "waiting": "Bekleniyor…",
+    "@waiting": {
+        "description": "Waiting..."
+    },
+    "stepForward": "Öne çık",
+    "@stepForward": {
+        "description": "Step forward"
+    },
+    "takeBackAll": "Tümünü Geri Al",
+    "@takeBackAll": {
+        "description": "Take back all"
+    },
+    "stepForwardAll": "Tümünü İleri Taşı",
+    "@stepForwardAll": {
+        "description": "Step forward all"
+    },
+    "moveNow": "Şimdi hareket et",
+    "@moveNow": {
+        "description": "Move now"
+    },
+    "done": "Bitti.",
+    "@done": {
+        "description": "Done."
+    },
+    "crackMill": "çatlak değirmeni",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
+    "crackMill_Detail": "Eğer bir oyuncunun tüm taşları değirmenlerdeyse, bu taşlar çıkartılmak üzere kilitlenmez.",
+    "@crackMill_Detail": {
+        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "animationDuration": "Animasyon süresi",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "none": "Yok",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Tema",
+    "@theme": {
+        "description": "Theme"
+    },
+    "helpContent": "Oyun, rakibi üçten az taşla veya yasal hamle yapamayacak şekilde etkisiz hale getirmeyi amaçlar.\n\nÜçüncü kez aynı pozisyon oluşursa veya son 100 (yapılandırılabilir) hamlede hiçbir taş çıkarılmamışsa, oyun otomatik olarak sona erer.\n\nOyun üç aşamada ilerler:\n\n1. Boş noktalara taş yerleştirme\n2. Taşları bitişik noktalara taşıma\n3. (isteğe bağlı aşama) Oyuncu üç parçaya indirildiğinde taşları herhangi bir boş noktaya taşıyabilir\n\nYerleştirme\n\nOyun, yirmi dört noktalık bir ızgaradan oluşan boş bir tahta ile başlar. Oyuncular sırayla taşlarını boş noktalara yerleştirir, tüm taşlar yerleştirilene kadar. Bir oyuncu üç taşını düz bir çizgiye getirebilirse, bir 'değirmen' oluşturmuş olur ve rakibinin taşlarından birini tahtadan çıkarabilir.\n\nBazı kural varyasyonlarında, oyuncular şekillendirilmiş bir değirmeni bozmadan önce diğer taşları çıkarmalıdır.\n\nBazı kural varyasyonlarında, çıkarılan taşlar yerleştirme aşamasında tekrar konumlandırılmayabilir.\n\nTüm parçalar yerleştirildikten sonra, oyuncular sırayla hareket ederler.\n\nHareketli\n\nHareket etmek için, bir oyuncu taşlarından birini boş bir bitişik noktaya boyunca bir tahta çizgisi üzerinde taşır. Bunu yapamazsa, oyunu kaybetmiş olur. Yerleştirme aşamasında olduğu gibi, üç taşını bir tahta çizgisine getiren bir oyuncunun bir değirmeni vardır ve rakibinin taşlarından birini çıkarabilir. Eğer herhangi bir oyuncu iki parçaya düşerse ve yeni değirmenler oluşturamıyorsa, bu durumda oyunu kaybetmiş olur. Eğer rakibi onları hareket edemeyecek şekilde bloke ederse, bir oyuncu üçten fazla taşla da kaybedebilir.\n\nUçan\n\nKuralların bazı varyantlarında, eğer bir oyuncunun yalnızca üç taşı kalmışsa, taşlarını sadece bitişik noktalara değil, herhangi bir boş noktaya da 'uçabilir', 'zıplayabilir' veya 'gezebilir'.",
+    "@helpContent": {
+        "description": "Help Content"
+    },
+    "versionInfo": "Sürüm bilgisi",
+    "@versionInfo": {
+        "description": "Version info"
+    },
+    "eula": "SKLA",
+    "@eula": {
+        "description": "EULA"
+    },
+    "license": "Lisans",
+    "@license": {
+        "description": "License"
+    },
+    "sourceCode": "Kaynak kodu",
+    "@sourceCode": {
+        "description": "Source code"
+    },
+    "appVersion": "Uygulama sürümü",
+    "@appVersion": {
+        "description": "App Version"
+    },
+    "general": "Genel",
+    "@general": {
+        "description": "General"
+    },
+    "advanced": "ileri",
+    "@advanced": {
+        "description": "Advanced"
+    },
+    "placing": "Yrlş.",
+    "@placing": {
+        "description": "Placing"
+    },
+    "moving": "Hareket",
+    "@moving": {
+        "description": "Moving"
+    },
+    "removing": "Kaldırma",
+    "@removing": {
+        "description": "Removing"
+    },
+    "gameOverCondition": "Oyun bitti durumu",
+    "@gameOverCondition": {
+        "description": "Game over condition"
+    },
+    "aisPlayStyle": "AI'nın oyun stili",
+    "@aisPlayStyle": {
+        "description": "AI's play style"
+    },
+    "passive": "Pasif",
+    "@passive": {
+        "description": "Passive"
+    },
+    "timeout": "Zaman aşımı",
+    "@timeout": {
+        "description": "Timeout"
+    },
+    "appearance": "Görünüm",
+    "@appearance": {
+        "description": "Appearance"
+    },
+    "drawOnHumanExperience": "İnsan deneyiminden yararlanın",
+    "@drawOnHumanExperience": {
+        "description": "Draw on the human experience"
+    },
+    "considerMobility": "Parçaların hareketliliğini düşünün",
+    "@considerMobility": {
+        "description": "Consider mobility of pieces"
+    },
+    "pieceCount": "Parça sayısı:",
+    "@pieceCount": {
+        "description": "Piece count"
+    },
+    "inHand": "{player} elinde: {count}",
+    "@inHand": {
+        "description": "in hand"
+    },
+    "onBoard": "tahtada {player}: {count}",
+    "@onBoard": {
+        "description": "on board"
+    },
+    "boardTop": "Üstten tahta ofseti",
+    "@boardTop": {
+        "description": "Board offset from the top"
+    },
+    "notAIsTurn": "AI'nın sırası değil.",
+    "@notAIsTurn": {
+        "description": "It is not the AI's turn."
+    },
+    "aiIsNotThinking": "AI düşünmüyor.",
+    "@aiIsNotThinking": {
+        "description": "AI is not thinking."
+    },
+    "atEnd": "Hareket listesinin sonunda.",
+    "@atEnd": {
+        "description": "At the end of the move list."
+    },
+    "tapBackAgainToLeave": "Ayrılmak için tekrar geri dokunun.",
+    "@tapBackAgainToLeave": {
+        "description": "Tap Back again to exit."
+    },
+    "more": "Daha",
+    "@more": {
+        "description": "More"
+    },
+    "experimental": "Bu deneysel bir özelliktir.",
+    "@experimental": {
+        "description": "This is an experimental feature."
+    },
+    "experiments": "Deneysel Özellikler",
+    "@experiments": {
+        "description": "Experiments"
+    },
+    "ossLicenses": "Açık kaynak lisansları",
+    "@ossLicenses": {
+        "description": "Open source licenses"
+    },
+    "language": "Dil",
+    "@language": {
+        "description": "Languages"
+    },
+    "defaultLanguage": "Varsayılan dil",
+    "@defaultLanguage": {
+        "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Parçalar yerleştirme aşamasında hareket edebilir",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "Ayrı yerleştirme ve hareket etme aşamaları yoktur; yani oyuncular her turda bir taş yerleştirmeyi veya mevcut bir taşı hareket ettirmeyi (yerleştirmeleri gereken taşlar kaldığı sürece) seçebilirler.",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Menü rengi",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Menü metin rengi",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerHighlightItemColor": "Menüdeki vurgulanmış öğe rengi",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Ana araç çubuğu arka plan rengi",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "Ana araç çubuğu simge rengi",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Gezinme araç çubuğu arka plan rengi",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Gezinme araç çubuğu simge rengi",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Araç çubuğunu otomatik olarak gizle",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Ekrandaki araç çubuğunun konumu",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Üst",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Alt",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Merkez",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Düz Renk",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Resim",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Resminizi seçin",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Işık",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Karanlık",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temalar",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Mevcut tema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Temayı kaydet",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "showAnalysisGraph": "Analiz grafiğini göster",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "analiz",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Oyunu kaydet",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Oyunu yükle",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Kurulum konumu",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Yasal hamleleri göster",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Son hareketi göster",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Okları göster",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Taşlar",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Analizi göster",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "İş Parçacıkları",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Katılın",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Çeviri İyileştirmeye Yardımcı Ol",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "öğretici",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasik Değirmen",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "karışık değirmen",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Seylan Değirmeni",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Değirmen kırılabilir ve tekrar tekrar üretilebilir",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Bir oyuncu hemen yeni bir değirmen oluşturmak için bir değirmeni kırarsa, bu oyuncu yeni bir değirmen yaparsa bir sonraki hamlesinde bu parçayı orijinal bağlantı noktasına geri taşıyabilir.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Bir oyuncunun üç taşı varsa ve on hamleden sonra hiçbir oyuncu rakibin taşlarını kaldırmazsa oyun berabere biter",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Bir oyuncu üç parçaya düştüğünde ve hiçbir oyuncu on hamle içinde rakibinin taşını çıkaramazsa, oyun berabere olur.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "close": "Kapat",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Beyaz parça",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Siyah parça",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "emptyPoint": "boş nokta",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Anlamı yok",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "yerleştirme aşaması",
+    "@placingPhase": {
+        "description": "Placing phase"
+    },
+    "movingPhase": "Hareketli aşama",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Uçma aşaması",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Taşınacak taraf: {player}",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Son hareket: {move}",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Seçildi",
+    "@selected": {
+        "description": "Selected"
+    },
+    "accessibility": "Ulaşılabilirlik",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekran okuyucu desteği",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "isDraw": "Bu bir Beraberlik!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Berabere",
+    "@draw": {
+        "description": "Draw"
+    },
+    "pieceHighlightColor": "Parça vurgu rengi",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritma",
+    "@algorithm": {
+        "description": "Algorithm"
+    },
+    "endgameNMoveRule": "Endgame N-Move kuralı",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
+    "endgameNMoveRule_Detail": "Her iki oyuncunun da sadece üç taşı varsa ve hiçbir oyuncu belirli bir hamlede bir taşı kaldırmazsa, oyun berabere biter.",
+    "@endgameNMoveRule_Detail": {
+        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+    },
+    "drawReasonEndgameRule50": "Her iki oyuncunun da sadece üç taşı vardır ve hiçbir oyuncu belirli bir hamlede bir taşı kaldırmaz.",
+    "@drawReasonEndgameRule50": {
+        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "Üçlü tekrar kuralı",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
+    },
+    "threefoldRepetitionRule_Detail": "Bir pozisyon üçüncü kez oluşursa oyun berabere biter.",
+    "@threefoldRepetitionRule_Detail": {
+        "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "Değirmen! Hareket etmeye devam edin.",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
+    },
+    "pointStyle": "Nokta stili",
+    "@pointStyle": {
+        "description": "Point style"
+    },
+    "pointWidth": "Nokta genişliği",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "solid": "Sağlam",
+    "@solid": {
+        "description": "Solid"
+    },
+    "hollow": "Oyuk",
+    "@hollow": {
+        "description": "Hollow"
+    },
+    "languageName": "Türkçe",
+    "@languageName": {
+        "description": "The name of the current language"
+    },
+    "moveNumber": "{count,plural, =0{Hamle Yok}=1{{count} Hamle}other{{count} Hamle}}",
+    "@moveNumber": {
+        "description": "Moves to take back",
+        "placeholders": {
+            "count": {
+                "description": "Number of Moves",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "loadFailed": "Yükleme başarısız.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
+    "filename": "Dosya adı",
+    "@filename": {
+        "description": "File name"
+    },
+    "gameSavedTo": "Oyun şuraya kaydedilir",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
+    "browse": "Araştır…",
+    "@browse": {
+        "description": "Browse…"
+    },
+    "gameFiles": "Oyun dosyaları",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "empty": "Boş",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
+    },
+    "restoredPosition": "İlk konumu geri yüklendi.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "Temiz",
+    "@clean": {
+        "description": "Clean"
+    },
+    "cleanedUp": "Temizledik.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Kaldırmak",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Hiçbir parça çıkarılamaz.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Parça}=1{{count} parça}other{{count} parça}} kaldırmanız gerekiyor.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Yrl. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedPieceCount": "Yerleştirme aşamasında yerleştirilen parça sayısı.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
+    },
+    "hasPlacedPieceCount": "Mevcut oyuncu {count} adet taşı yerleştirdi.",
+    "@hasPlacedPieceCount": {
+        "description": "The current player has placed {count} pieces.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "notPlacingPhase": "Yerleştirme aşaması değil, değiştirilemez.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
+    "paste": "Ypş.",
+    "@paste": {
+        "description": "Paste"
+    },
+    "pasteDone": "Yapıştırma tamamlandı.",
+    "@pasteDone": {
+        "description": "The paste is done."
+    },
+    "cannotPaste": "Yapıştırılamıyor.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
+    "noMove": "Hamle yok.",
+    "@noMove": {
+        "description": "No move."
+    },
+    "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve çıkarılmış parçaları göster",
+    "@isUnplacedAndRemovedPiecesShown": {
+        "description": "Show unplaced and removed pieces"
+    },
+    "fullScreen": "Tam ekran",
+    "@fullScreen": {
+        "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Ayarların etkili olabilmesi için uygulamayı kapatıp yeniden açın.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
+    },
+    "forest": "Orman",
+    "@forest": {},
+    "desktopImage": "Masaüstü Resmi",
+    "@desktopImage": {},
+    "invalidPosition": "Geçersiz pozisyon.",
+    "@invalidPosition": {},
+    "shareGIF": "GIF paylaş",
+    "@shareGIF": {},
+    "duration": "Süre",
+    "@duration": {},
+    "pixelRatio": "piksel oranı",
+    "@pixelRatio": {},
+    "gameScreenRecorder": "Oyun ekran kaydedici",
+    "@gameScreenRecorder": {},
+    "previous": "Öncesi",
+    "@previous": {},
+    "next": "Sonraki",
+    "@next": {},
+    "skip": "Atlamak",
+    "@skip": {},
+    "gotIt": "Anladım",
+    "@gotIt": {},
+    "youCanModifyRules": "Oyunun kurallarını kural ayarlarından değiştirebilirsiniz.",
+    "@youCanModifyRules": {},
+    "youCanUseMouseWheelInPicker": "Seçicideki değeri değiştirmek için fare tekerleğini kullanabilirsiniz.",
+    "@youCanUseMouseWheelInPicker": {},
+    "noTimeLimitForThinking": "AI Düşünme süresinin 0 olarak ayarlanması, düşünmek için herhangi bir zaman sınırı olmadığı anlamına gelir.",
+    "@noTimeLimitForThinking": {},
+    "noteAiThinkingTimeMayNotBePrecise": "Lütfen AI düşünme süresi ayarının tam olarak kesin olmayabileceğini unutmayın. Gerçek düşünme süresi, zorluk seviyesi daha düşük bir değere ayarlandığında daha kısa olabilir ve süre dolduğunda yapay zeka orta düşüncede olduğunda daha uzun olabilir.",
+    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "noteActualDifficultyLevelMayBeLimited": "Zorluk seviyesini yüksek seçerseniz fakat AI'nin düşünme süresini artırmazsanız, gerçek zorluk seviyesi düşünme süresi kısıtlamaları nedeniyle daha düşük olabilir. Bu durum makinenin performansına bağlı olarak değişiklik gösterebilir.",
+    "@noteActualDifficultyLevelMayBeLimited": {},
+    "whatIsMtdf": "MTD(f), ara arama sonuçlarını yeniden kullanarak ve arama alanını daraltmak için iyi bir ilk tahmin kullanarak verimliliği artırmayı amaçlayan alfa-beta arama algoritmasının değiştirilmiş bir biçimidir.",
+    "@whatIsMtdf": {},
+    "whatIsPvs": "PVS (Principal Variation Search), belirli bir konumdaki en iyi hareketi bulmak için bir arama algoritmasıdır. Bu, alfa-beta algoritmasının bir geliştirmesidir ve bir hareketin ana varyasyondan zaten güvenli bir puandan daha kötü olduğunu veya daha kötü olmadığını doğrulamak için boş veya sıfır pencere aramaları kullanır. PVS, en umut verici hareketlere odaklanır ve yetersiz dallarda gereksiz arama yapılmasını önler, bu da aramanın verimliliğini artırmaya yardımcı olur.",
+    "@whatIsPvs": {},
+    "whatIsAlphaBeta": "Alfa-beta algoritması, en iyi hamleyi bulmak için bir arama algoritmasıdır. Arama ağacını budamak ve verimliliği artırmak için minimax ilkesini ve alfa ve beta olmak üzere iki değeri kullanır. Alfa, bilgisayarın alabileceğinden emin olduğu en düşük puanı, beta ise rakibinin alabileceği en yüksek puanı temsil eder. Algoritma, bilgisayarın bir oyunda akıllı ve verimli kararlar almasına yardımcı olur.",
+    "@whatIsAlphaBeta": {},
+    "firstMoveDetail": "Bu oyunda ikinci oyuncunun kazanması birinci oyuncuya göre daha kolaydır.",
+    "@firstMoveDetail": {},
+    "drawOnTheHumanExperienceDetail": "İnsan deneyimine göre, kazanmaya çalışırsan kaybedersin. Bunun yerine, hedefiniz olarak beraberliği hedefleyin ve oyunu kaybetmekten kaçının. Rakibinizi gözlemleyin ve onu hata yapabilecekleri bir konuma nazikçe çekin. Zayıflık gösterdiklerinde, fırsatı değerlendirin ve kazanmak için nazikçe bastırın. Bu sayede oyunu kazanabilirsiniz.",
+    "@drawOnTheHumanExperienceDetail": {},
+    "passiveDetail": "Pasif seçeneğinin etkinleştirilmesi, AI'nın pozisyonda bir avantaja sahip olduğunda agresif bir şekilde mümkün olan en kısa sürede kazanmaya çalışmak yerine rahatlamasına neden olacaktır.",
+    "@passiveDetail": {},
+    "considerMobilityOfPiecesDetail": "Yapay zeka, taşlarının hareketliliğini dikkate alırsa, yalnızca rakibin taşlarını olabildiğince çabuk ele geçirmeyi amaçlamaz, aynı zamanda rakibin hareketlerini bloke etmeyi ve onların da aynısını yapmasını engellemeyi düşünür.",
+    "@considerMobilityOfPiecesDetail": {},
+    "moveRandomlyDetail": "Bu seçeneği etkinleştirmek, oyunun rastgeleliğini ve eğlencesini artırırken devre dışı bırakmak, yapay zekayı yenmenin yollarını araştırmaya yardımcı olabilir.",
+    "@moveRandomlyDetail": {},
+    "whenBoardIsFull": "Tahta dolduğunda",
+    "@whenBoardIsFull": {},
+    "whenBoardIsFull_Detail": "Yerleştirme aşamasının sonunda, hareket aşaması başlamadan önce, tahta taşlarla doluysa eylem takip eder.",
+    "@whenBoardIsFull_Detail": {},
+    "sideToMoveRemovePiece": "Hareket aşamasında ilk hamleyi yapan oyuncu, rakibinin taşlarından birini alır.",
+    "@sideToMoveRemovePiece": {},
+    "agreeToDraw": "Her iki taraf da berabere kalmayı kabul eder.",
+    "@agreeToDraw": {},
+    "takeOpponentsPiece": "Rakibinizin taşlarından birini alın.",
+    "@takeOpponentsPiece": {},
+    "firstPlayerLose": "İlk oyuncu oyunu kaybeder.",
+    "@firstPlayerLose": {},
+    "firstAndSecondPlayerRemovePiece": "Birinci ve ikinci oyuncular rakibin taşlarından birini alır.",
+    "@firstAndSecondPlayerRemovePiece": {},
+    "secondAndFirstPlayerRemovePiece": "İkinci ve birinci oyuncular rakibin taşlarından birini alır.",
+    "@secondAndFirstPlayerRemovePiece": {},
+    "enteredFlyingPhase": "Artık 'Uçma Aşaması'na geçildi, rakip taşlar tahtadaki herhangi bir boş yere atlayabilir. 'Kural Ayarları'ndan uçuş kuralını devre dışı bırakabilirsiniz.",
+    "@enteredFlyingPhase": {},
+    "whenStalemate": "Çıkmaza girildiğinde",
+    "@whenStalemate": {},
+    "whenStalemate_Detail": "Hiçbir taş hareket ettirilemiyorsa hangi aksiyon alınır?",
+    "@whenStalemate_Detail": {},
+    "endWithStalemateLoss": "Çıkmaz kaybıyla bitirin.",
+    "@endWithStalemateLoss": {},
+    "changeSideToMove": "Hareket etmek için tarafı değiştirin.",
+    "@changeSideToMove": {},
+    "removeOpponentsPieceAndMakeNextMove": "Rakibin taşlarından birini çıkarın ve bir sonraki hamleyi yapın.",
+    "@removeOpponentsPieceAndMakeNextMove": {},
+    "endWithStalemateDraw": "Çıkmaz beraberliği ile bitirin.",
+    "@endWithStalemateDraw": {},
+    "removeOpponentsPieceAndChangeSideToMove": "Rakibin taşlarından birini çıkarın ve hareket etmek için tarafı değiştirin.",
+    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "AI yanıt gecikme süresi",
+    "@aiResponseDelayTime": {},
+    "aiIsDelaying": "AI şu anda gecikmeli bir yanıt aşamasındadır. Devam etmeden önce lütfen bir süre bekleyin.",
+    "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "Bitişik olmayan bir parçayı kaldıramazsınız.",
+    "@tipCanNotRemoveNonadjacent": {},
+    "stalemateRemovalRegardlessOfMillFormation": "Çıkmaz durumunda, rakibin size bitişik taşları, değirmen oluşumundan bağımsız olarak kaldırılabilir.",
+    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "whatIsMcts": "MCTS, simülasyonlar aracılığıyla farklı hareketleri keşfederek ve değerlendirerek kararlar veren yeni başlayanlar için uygun bir algoritmadır.",
+    "@whatIsMcts": {},
+    "goldenJade": "altın yeşim",
+    "@goldenJade": {},
+    "forestWood": "Orman Ağacı",
+    "@forestWood": {},
+    "greenMeadow": "yeşil çayır",
+    "@greenMeadow": {},
+    "stonyPath": "taşlı yol",
+    "@stonyPath": {},
+    "midnightBlue": "Gece yarısı mavisi",
+    "@midnightBlue": {},
+    "greenForest": "Yeşil orman",
+    "@greenForest": {},
+    "pastelPink": "pastel pembe",
+    "@pastelPink": {},
+    "turquoiseSea": "Turkuaz Deniz",
+    "@turquoiseSea": {},
+    "violetDream": "Menekşe Rüyası",
+    "@violetDream": {},
+    "mintChocolate": "Naneli çikolata",
+    "@mintChocolate": {},
+    "skyBlue": "Gökyüzü mavisi",
+    "@skyBlue": {},
+    "playfulGarden": "eğlenceli bahçe",
+    "@playfulGarden": {},
+    "darkMystery": "Karanlık Gizem",
+    "@darkMystery": {},
+    "whatIsRetrogradeAnalysis": "Geriye Dönük Analiz algoritması, farklı başlangıç konumlarından bir oyunsonu veritabanı oluşturmak için çok değerli geriye dönük analizi kullanır ve ardından oyunu optimize etmek için bu veritabanını uygular. Bu yaklaşım, ultra güçlü çözüm kategorisine girer.",
+    "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "Bu algoritmanın kullanım kılavuzunu görüntülemek ister misiniz?",
+    "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Konumsal avantaj göstergesini göster",
+    "@showPositionalAdvantageIndicator": {},
+    "usePerfectDatabase": "Mükemmel Veritabanını Kullanın",
+    "@usePerfectDatabase": {},
+    "perfectDatabaseDescription": "Bu seçeneği etkinleştirerek, keskin algoritmalar aracılığıyla üretilen kusursuz bir oyun veritabanı kullanın. Bu özellik, hem açılış hem de oyun sonu stratejilerini bütünleştirerek en uygun hamleleri önerir. Bu, oyun içinde en yüksek düzeyde hassasiyet arayan oyuncular için tercih edilen seçimdir. Titiz hesaplama teknikleri kullanılarak oluşturulan bu veritabanı, neredeyse kusursuz oyun çözümleri sunmayı hedefler.\n\nNot: Eğer yapay zeka veritabanına erişemiyorsa, oyun kararları için geleneksel algoritmalara başvuracaktır. Veritabanı mevcut olduğunda, 'Zorluk Seviyesi' neredeyse yenilmez hale gelir ve 'Yapay Zeka Düşünme Süresi' büyük ölçüde azalır. 'Yapay Zeka'nın Oyun Tarzı' seçeneklerindeki birçok ayar, veritabanı sonuçlarının en yüksek önceliğe sahip olması nedeniyle geçersiz kılınacaktır.\n\nBu kusursuz veritabanından en iyi şekilde nasıl yararlanabileceğiniz konusunda rehberlik için buraya tıklayın.",
+    "@perfectDatabaseDescription": {},
+    "backgroundImage": "Arka plan resmi",
+    "@backgroundImage": {},
+    "whatIsRandom": "Kullan 'mükemmel veritabanı' seçeneği etkinleştirilmediğinde, 'Rasgele' ayarı, AI'nin herhangi bir hamle seçimi algoritması kullanmadan parçaları rasgele hareket ettirmesine neden olur. Bu, genellikle önemli ölçüde daha zayıf oyun deneyimiyle sonuçlanır. Buna karşılık, 'Mükemmel veritabanını kullan' etkinleştirildiğinde, AI kararlarını verirken yalnızca 'Mükemmel Veritabanı'na güvenir ve geleneksel AI algoritmalarıyla birleştirmek yerine ona bağlı kalır. Bu modda, AI'nin hamleleri tamamen veritabanının içeriğine dayanır, gerçek zamanlı hesaplamalara veya arama algoritmalarına bağımlılıktan kaçınır.",
+    "@whatIsRandom": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn": "Rakibin parça(lar)ını elinden çıkarın; ardından sıra rakibin parça yerleştirmesine gelir.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "whenFormingMillsDuringPlacingPhase": "Yerleştirme aşamasında değirmenler oluşturulurken",
+    "@whenFormingMillsDuringPlacingPhase": {},
+    "removeOpponentsPieceFromBoard": "Tahtadan rakibin parça(lar)ını çıkarın.",
+    "@removeOpponentsPieceFromBoard": {},
+    "removeOpponentsPieceFromBoard_Detail": "Tahtadan rakibin parça(lar)ını çıkarın; ardından sıra rakibin parça yerleştirmesine gelir.",
+    "@removeOpponentsPieceFromBoard_Detail": {},
+    "opponentRemovesOwnPiece": "Rakip kendi parça(lar)ını tahtadan çıkarır.",
+    "@opponentRemovesOwnPiece": {},
+    "opponentRemovesOwnPiece_Detail": "Sizin bir eylem yapmanız yerine, rakip kendi parça(lar)ını tahtadan seçer ve çıkarır, kendisine zararlı olan bir eylemi etkin bir şekilde gerçekleştirir.",
+    "@opponentRemovesOwnPiece_Detail": {},
+    "removeOpponentsPieceFromHandThenYourTurn": "Rakibin parça(lar)ını elinden çıkarın; ardından sıra sizin parça hareket ettirmenize gelir.",
+    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "removeOpponentsPieceFromHandThenYourTurn_Detail": "Rakibin elinden parça(lar)ı çıkarın. Çoklu-çıkarma ayarına göre birden fazla parça çıkarılacaksa ve rakibin elinde hiç parça kalmadıysa, rakibin tahtadaki parçalarını çıkarmaya devam edin. Ardından sıra sizin parça hareket ettirmenize gelir. Değirmenler oluşturmaya devam ederseniz, rakibin parçalarını çıkarmaya devam edebilirsiniz.",
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Rakibin elinden parça(lar)ı çıkarın. Çoklu-çıkarma ayarına göre birden fazla parça çıkarılacaksa ve rakibin elinde hiç parça kalmadıysa, rakibin tahtadaki parçalarını çıkarmaya devam edin. Ardından sıra rakibin parça hareket ettirmesine gelir.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "markAndDelayRemovingPieces": "Parçaları işaretle ve çıkarmayı geciktir.",
+    "@markAndDelayRemovingPieces": {},
+    "markAndDelayRemovingPieces_Detail": "Yerleştirme aşamasında çıkarılacak parçalar işaretlenir ve her iki oyuncu için de bu noktalara yeni parçalar yerleştirilemez. Hareket aşamasına girildiğinde, bu işaretli parçalar tamamen çıkarılır ve oyuncular ardından parçalarını şimdi boş olan bu noktalara taşıyabilirler.",
+    "@markAndDelayRemovingPieces_Detail": {},
+    "whenFormingMillsDuringPlacingPhase_Detail": "Yerleştirme aşamasında değirmenler oluşturulurken yapılabilecek eylemler.",
+    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "marked": "İşaretli",
+    "@marked": {},
+    "menu": "Menü",
+    "@menu": {},
+    "monochrome": "Monokrom",
+    "@monochrome": {},
+    "youCanEnableScreenReaderSupport": "Ekran okuyucu desteğini Genel Ayarlar'daki Erişilebilirlik yapılandırmasında açabilirsiniz.",
+    "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Taşlarda numaraları göster",
+    "@showNumbersOnPieces": {},
+    "saveImage": "Resmi kaydet",
+    "@saveImage": {},
+    "isAnalysisToolbarShown": "Analiz araç çubuğunu göster",
+    "@isAnalysisToolbarShown": {},
+    "analysisToolbarBackgroundColor": "Analiz araç çubuğu arka plan rengi",
+    "@analysisToolbarBackgroundColor": {},
+    "analysisToolbarIconColor": "Analiz araç çubuğu simge rengi",
+    "@analysisToolbarIconColor": {},
+    "transformed": "Dönüştürüldü.",
+    "@transformed": {},
+    "cannotTransform": "Dönüştürülemez.",
+    "@cannotTransform": {},
+    "rotate": "Döndür",
+    "@rotate": {},
+    "horizontalFlip": "H Çevir",
+    "@horizontalFlip": {},
+    "verticalFlip": "V Çevir",
+    "@verticalFlip": {},
+    "innerOuterFlip": "İç Dış",
+    "@innerOuterFlip": {},
+    "transparentCanvas": "Şeffaf Tuval",
+    "@transparentCanvas": {},
+    "restrictRepeatedMillsFormation": "Tekrarlanan Değirmen Oluşumunu Kısıtla",
+    "@restrictRepeatedMillsFormation": {},
+    "restrictRepeatedMillsFormation_Detail": "Bir değirmenden alınıp başka bir değirmen oluşturmak için taşınan bir parça, bir sonraki turda hemen orijinal noktaya dönüp yeniden değirmen oluşturamaz. Önce farklı bir hamle gereklidir.",
+    "@restrictRepeatedMillsFormation_Detail": {},
+    "oneTimeUseMill": "Tek kullanımlık değirmen",
+    "@oneTimeUseMill": {},
+    "oneTimeUseMill_Detail": "Her değirmen sadece bir kez rakibin parçasını çıkarabilir. Tekrar oluşturabilirsiniz, ancak ek çıkarmalar için kullanılamaz.",
+    "@oneTimeUseMill_Detail": {},
+    "currentRulesNoPerfectDatabase": "Belirlediğiniz mevcut kuralların karşılık gelen mükemmel bir veritabanı yoktur. Mükemmel veritabanı hakkında daha fazla bilgi için lütfen buraya tıklayın.",
+    "@currentRulesNoPerfectDatabase": {},
+    "focusOnBlockingPaths": "Engelleyici yollar üzerinde yoğunlaşın",
+    "@focusOnBlockingPaths": {},
+    "focusOnBlockingPaths_Detail": "Oyunun belirli aşamalarında, değirmenler oluşturmanın önüne rakibin hareketlerini engellemeyi koyun. Parçaları değirmenleri tamamlayarak kaldırmaya odaklanmak yerine, AI bu aşamalar sırasında rakibi tuzağa düşürmeyi, hareket edemez hale getirmeyi ve agresif oyun yerine yıpratma yoluyla zaferi sağlamayı hedefler. Bu aşama özel stratejisi, rakibin değirmenlerini aktif olarak engellemez.",
+    "@focusOnBlockingPaths_Detail": {},
+    "pieceImage": "Satranç parçası resmi",
+    "@pieceImage": {},
+    "importColorSettings": "Renk ayarlarını içe aktar",
+    "@importColorSettings": {},
+    "exportColorSettings": "Renk ayarlarını dışa aktar",
+    "@exportColorSettings": {},
+    "import": "İçe aktar",
+    "@import": {},
+    "export": "Dışa aktar",
+    "@export": {},
+    "pleaseCopyJsonToClipboard": "Lütfen önce JSON biçim ayarlarını panoya kopyalayın.",
+    "@pleaseCopyJsonToClipboard": {},
+    "copiedToClipboard": "Panoya kopyalandı.",
+    "@copiedToClipboard": {},
+    "imported": "İçe aktarıldı.",
+    "@imported": {},
+    "boardImage": "Tahta görüntüsü",
+    "@boardImage": {},
+    "autumnLeaves": "Sonbahar Yaprakları",
+    "@autumnLeaves": {},
+    "legendaryLand": "Efsanevi Diyar",
+    "@legendaryLand": {},
+    "vignetteEffect": "Vinyet efekti",
+    "@vignetteEffect": {},
+    "promptMakeToolbarTransparent": "Tahta arka plan resmi ayarlandığında araç çubuğunu tamamen şeffaf yapmak ister misiniz?",
+    "@promptMakeToolbarTransparent": {},
+    "vibration": "Oyunda titreşimi etkinleştir",
+    "@vibration": {},
+    "soundTheme": "Ses teması",
+    "@soundTheme": {},
+    "ball": "Top",
+    "@ball": {},
+    "liquid": "Sıvı",
+    "@liquid": {},
+    "wood": "Odun",
+    "@wood": {},
+    "placeEffectAnimation": "Taş yerleştirme animasyon efekti",
+    "@placeEffectAnimation": {},
+    "removeEffectAnimation": "Taş kaldırma animasyon efekti",
+    "@removeEffectAnimation": {},
+    "isToolbarAtBottom": "Araç çubuğunu altta göster",
+    "@isToolbarAtBottom": {},
+    "boardCornerRadius": "Pano köşe yarıçapı",
+    "@boardCornerRadius": {},
+    "useOpeningBook": "Açılış kitabını kullanın",
+    "@useOpeningBook": {},
+    "currentRule": "Mevcut",
+    "@currentRule": {},
+    "nineMensMorris": "Dokuz taş",
+    "@nineMensMorris": {},
+    "twelveMensMorris": "On iki taş",
+    "@twelveMensMorris": {},
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {},
+    "dooz": "Dooz",
+    "@dooz": {},
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {},
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {},
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {},
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {},
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {},
+    "ruleSet": "Kural seti",
+    "@ruleSet": {},
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {},
+    "oneTimeMill": "One-Time Mill",
+    "@oneTimeMill": {},
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {},
+    "useOpeningBook_Detail": "Yapay zekanın, oyunun erken aşamalarında profesyonel insan oyuncular tarafından sıkça kullanılan açılış hamlelerini kullanmasına izin verin. Not: Bu özellik şu anda yalnızca belirli kurallar setleri için mevcuttur.",
+    "@useOpeningBook_Detail": {},
+    "showAdvantageGraph": "Avantaj grafiğini göster",
+    "@showAdvantageGraph": {},
+    "advantageGraphHint": "Avantaj grafiği yalnızca Yapay Zeka bir hamle yaptıktan sonra çizilecektir. İnsan oyuncu hamle yaptığında çizilmeyecektir.",
+    "@advantageGraphHint": {},
+    "removalBasedOnMillCounts": "Tüm taşlar yerleştirilene kadar taşları kaldırma işlemini devre dışı bırak, ardından değirmen sayısına göre taşları kaldır.",
+    "@removalBasedOnMillCounts": {},
+    "removalBasedOnMillCounts_Detail": "Tüm taşlar yerleştirilene kadar taşları kaldırma işlemini devre dışı bırak, ardından değirmen sayısına göre taşları kaldır: eşitse her iki taraf da aynı sayıda taş kaldırır; bir tarafın sayısı fazlaysa, aradaki farkın bir taş olarak kalması için bir taş fazladan kaldırır. Yalnız bir taraf değirmen oluşturduysa, o taraf iki taş kaldırır, diğeri bir taş kaldırır. Hiç değirmen oluşmazsa, her iki taraf da birer taş kaldırır.",
+    "@removalBasedOnMillCounts_Detail": {},
+    "elfilja": "El Filja",
+    "@elfilja": {},
+    "tipSelectOwnPiece": "Taşlarından birini seç.",
+    "@tipSelectOwnPiece": {},
+    "notYourTurn": "Sıra sende değil.",
+    "@notYourTurn": {},
+    "annotationToolbarBackgroundColor": "Ek açıklama araç çubuğu arka plan rengi",
+    "@annotationToolbarBackgroundColor": {},
+    "annotationToolbarIconColor": "Ek açıklama araç çubuğu simge rengi",
+    "@annotationToolbarIconColor": {},
+    "isAnnotationToolbarShown": "Ek açıklama araç çubuğunu göster",
+    "@isAnnotationToolbarShown": {},
+    "enterAnnotationMode": "Ek açıklama moduna gir",
+    "@enterAnnotationMode": {},
+    "areYouSureYouWantToClearAllAnnotations": "Tüm ek açıklamaları temizlemek istediğine emin misin?",
+    "@areYouSureYouWantToClearAllAnnotations": {},
+    "llmPromptCopiedToClipboard": "LLM istemi panoya kopyalandı.",
+    "@llmPromptCopiedToClipboard": {},
+    "connectionRefusedTheServerMayBeDown": "Bağlantı reddedildi, sunucu kapalı olabilir.",
+    "@connectionRefusedTheServerMayBeDown": {},
+    "discoverySuccessfulAwaitingConnection": "Keşif başarılı, bağlantı bekleniyor...",
+    "@discoverySuccessfulAwaitingConnection": {},
+    "noLanConnection": "LAN bağlantısı yok",
+    "@noLanConnection": {},
+    "takeScreenshot": "Ekran görüntüsü al",
+    "@takeScreenshot": {},
+    "disconnectedFromOpponent": "Rakiple bağlantı kesildi.",
+    "@disconnectedFromOpponent": {},
+    "takeBackRequest": "Geri Alma İsteği",
+    "@takeBackRequest": {},
+    "nothingToShow": "Gösterilecek bir şey yok.",
+    "@nothingToShow": {},
+    "stopHosting": "Sunuculuğu Durdur",
+    "@stopHosting": {},
+    "connectionResetByPeer": "Bağlantı eş tarafından sıfırlandı.",
+    "@connectionResetByPeer": {},
+    "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Heartbeat zaman aşımından dolayı bağlantı kaybedildi. Lütfen yeniden bağlanın.",
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "startHosting": "Sunuculuğu Başlat",
+    "@startHosting": {},
+    "restartRequestRejected": "Yeniden başlatma isteği reddedildi.",
+    "@restartRequestRejected": {},
+    "notConnectedToLanOpponent": "LAN rakibine bağlı değil.",
+    "@notConnectedToLanOpponent": {},
+    "llmPrompt": "LLM istemi",
+    "@llmPrompt": {},
+    "gameRestarted": "Oyun yeniden başlatıldı.",
+    "@gameRestarted": {},
+    "takeBackRejected": "Geri alma reddedildi.",
+    "@takeBackRejected": {},
+    "areYouSureYouWantToResignThisGame": "Bu oyundan vazgeçmek istediğine emin misin?",
+    "@areYouSureYouWantToResignThisGame": {},
+    "opponentResignedYouWin": "Rakip vazgeçti. Kazandın!",
+    "@opponentResignedYouWin": {},
+    "clearAllAnnotations": "Tüm ek açıklamaları temizle",
+    "@clearAllAnnotations": {},
+    "connectedWaitingForOpponentSMove": "Bağlandı, rakibin hamlesi bekleniyor...",
+    "@connectedWaitingForOpponentSMove": {},
+    "networkStatusDisconnected": "Ağ durumu: Bağlı değil",
+    "@networkStatusDisconnected": {},
+    "takeBackRequestSentToTheOpponent": "Geri alma isteği rakibe gönderildi.",
+    "@takeBackRequestSentToTheOpponent": {},
+    "theOpponentMayHaveLeftTheGame": "Rakip oyundan ayrılmış olabilir",
+    "@theOpponentMayHaveLeftTheGame": {},
+    "connectedToHostSuccessfully": "Sunucuya başarıyla bağlanıldı.",
+    "@connectedToHostSuccessfully": {},
+    "connectionLostHeartbeatTimeout": "Bağlantı kaybedildi: heartbeat zaman aşımı",
+    "@connectionLostHeartbeatTimeout": {},
+    "noHostDiscovered": "Hiçbir sunucu keşfedilmedi.",
+    "@noHostDiscovered": {},
+    "confirmResignation": "Vazgeçmeyi onayla",
+    "@confirmResignation": {},
+    "startedHostingGameWaitingForPlayersToJoin": "Oyun sunuculuğu başlatıldı, oyuncuların katılması bekleniyor...",
+    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "connectionTimedOutNetworkConnectionUnstable": "Bağlantı zaman aşımına uğradı, ağ bağlantısı kararsız.",
+    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "noLlmPromptAvailable": "Kullanılabilir bir LLM istemi yok.",
+    "@noLlmPromptAvailable": {},
+    "youResignedGameOver": "Vazgeçtin. Oyun bitti.",
+    "@youResignedGameOver": {},
+    "serverIp": "Sunucu IP",
+    "@serverIp": {},
+    "confirmClear": "Temizlemeyi onayla",
+    "@confirmClear": {},
+    "opponentSTurn": "Rakibin sırası.",
+    "@opponentSTurn": {},
+    "waitingAClientConnection": "Bir istemci bağlantısı bekleniyor...",
+    "@waitingAClientConnection": {},
+    "takeBackRequestWasRejectedOrFailed": "Geri alma isteği reddedildi veya başarısız oldu.",
+    "@takeBackRequestWasRejectedOrFailed": {},
+    "addText": "Metin ekle",
+    "@addText": {},
+    "exitAnnotationMode": "Ek açıklama modundan çık",
+    "@exitAnnotationMode": {},
+    "typeYourAnnotation": "Ek açıklamanızı yazın",
+    "@typeYourAnnotation": {},
+    "attemptingToReconnect": "Yeniden bağlanmaya çalışılıyor...",
+    "@attemptingToReconnect": {},
+    "restartRequestSentWaitingForOpponentSResponse": "Yeniden başlatma isteği gönderildi. Rakibin yanıtı bekleniyor...",
+    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "serverIsStopped": "Sunucu durduruldu.",
+    "@serverIsStopped": {},
+    "restartRequest": "Yeniden başlatma isteği",
+    "@restartRequest": {},
+    "cannotRequestATakeBackWhenItSNotYourTurn": "Sıra sende değilken geri alma isteğinde bulunamazsın.",
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "takeBackAccepted": "Geri alma kabul edildi.",
+    "@takeBackAccepted": {},
+    "localNetworkSettings": "Yerel ağ ayarları",
+    "@localNetworkSettings": {},
+    "reconnectedSuccessfully": "Başarıyla yeniden bağlanıldı!",
+    "@reconnectedSuccessfully": {},
+    "failedToSaveImageToGallery": "Görüntü Galeriye kaydedilemedi.",
+    "@failedToSaveImageToGallery": {},
+    "opponentRequestedToRestartTheGameDoYouAccept": "Rakip oyunu yeniden başlatmayı istedi. Kabul ediyor musun?",
+    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "yourTurn": "Senin sıran.",
+    "@yourTurn": {},
+    "unableToReconnectPleaseRestartTheGame": "Yeniden bağlanılamıyor, lütfen oyunu yeniden başlat.",
+    "@unableToReconnectPleaseRestartTheGame": {},
+    "host": "Sunucu",
+    "@host": {},
+    "join": "Katıl",
+    "@join": {},
+    "port": "Port",
+    "@port": {},
+    "invalidIpAddress": "Geçersiz IP adresi.",
+    "@invalidIpAddress": {},
+    "invalidPort": "Geçersiz port.",
+    "@invalidPort": {},
+    "connectingAttempt": "Bağlanılıyor: Deneme {attempt}/{maxAttempt}",
+    "@connectingAttempt": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempt": {}
+        }
+    },
+    "failedToConnect": "Bağlanma başarısız: {error}",
+    "@failedToConnect": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "failedToStartHosting": "Sunuculuğu başlatma başarısız: {error}",
+    "@failedToStartHosting": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "hostDiscovered": "Sunucu bulundu: {ip}:{port}",
+    "@hostDiscovered": {
+        "placeholders": {
+            "ip": {},
+            "port": {}
+        }
+    },
+    "stop": "Durdur",
+    "@stop": {},
+    "discover": "Keşfet",
+    "@discover": {},
+    "connect": "Bağlan",
+    "@connect": {},
+    "clientConnected": "İstemci bağlandı: {clientIp}:{clientPort}",
+    "@clientConnected": {
+        "placeholders": {
+            "clientIp": {},
+            "clientPort": {}
+        }
+    },
+    "discoveringSeconds": "Keşfediliyor: {seconds} s",
+    "@discoveringSeconds": {
+        "placeholders": {
+            "seconds": {}
+        }
+    },
+    "reconnecting": "Yeniden bağlanılıyor ({attempt}/{maxAttempts})",
+    "@reconnecting": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempts": {}
+        }
+    },
+    "connected": "Bağlandı",
+    "@connected": {},
+    "delete": "Sil",
+    "@delete": {},
+    "ancientEgypt": "Antik Mısır",
+    "@ancientEgypt": {},
+    "gothicIce": "Gotik Buz",
+    "@gothicIce": {},
+    "riceField": "Pirinç Tarlası",
+    "@riceField": {},
+    "chinesePorcelain": "Çin Porseleni",
+    "@chinesePorcelain": {},
+    "desertDusk": "Çöldeki Alacakaranlık",
+    "@desertDusk": {},
+    "precisionCraft": "Hassas El Sanatları",
+    "@precisionCraft": {},
+    "folkEmbroidery": "Halk Nakışı",
+    "@folkEmbroidery": {},
+    "carpathianHeritage": "Karpat Mirası",
+    "@carpathianHeritage": {},
+    "imperialGrandeur": "İmparatorluk İhtişamı",
+    "@imperialGrandeur": {},
+    "bohemianCrystal": "Bohem Kristali",
+    "@bohemianCrystal": {},
+    "savannaSunrise": "Savanna Gündoğumu",
+    "@savannaSunrise": {},
+    "harmonyBalance": "Uyum ve Denge",
+    "@harmonyBalance": {},
+    "cinnamonSpice": "Tarçın Baharatı",
+    "@cinnamonSpice": {},
+    "anatolianMosaic": "Anadolu Mozaiği",
+    "@anatolianMosaic": {},
+    "carnivalSpirit": "Karnaval Ruhu",
+    "@carnivalSpirit": {},
+    "custom": "Özel",
+    "@custom": {},
+    "spiceMarket": "Baharat Pazarı",
+    "@spiceMarket": {},
+    "swipeToRevealTheDrawer": "Çekmeceyi açmak için kaydırın",
+    "@swipeToRevealTheDrawer": {},
+    "showGameInfoOnScreenshots": "Ekran görüntülerinde oyun bilgilerini göster",
+    "@showGameInfoOnScreenshots": {},
+    "humanMoveTime": "İnsan zaman sınırı",
+    "@humanMoveTime": {},
+    "noTimeLimitForHumanMoves": "İnsan hamleleri için zaman sınırı yok",
+    "@noTimeLimitForHumanMoves": {},
+    "timeoutLoseWillBeApplied": "İnsan oyuncu için zaman aşımı kaybı uygulanacaktır",
+    "@timeoutLoseWillBeApplied": {},
+    "identifyingBoard": "Oyun tahtası tanımlanıyor...",
+    "@identifyingBoard": {},
+    "youCanEnterAnyModelName": "Herhangi bir model adını girebilirsiniz.",
+    "@youCanEnterAnyModelName": {},
+    "boardPositionAppliedFenCopiedToClipboard": "Tahta konumu uygulandı. FEN panoya kopyalandı.",
+    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "suggestionTryTakingAClearerPictureOfTheBoard": "Öneri: Tahtanın daha net bir fotoğrafını çekmeyi deneyin.",
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "llmPromptTemplate": "LLM istem şablonu",
+    "@llmPromptTemplate": {},
+    "noValidBoardDetected": "Geçerli tahta tespit edilemedi.",
+    "@noValidBoardDetected": {},
+    "selectingImageFromAlbum": "Albümden görüntü seçiliyor...",
+    "@selectingImageFromAlbum": {},
+    "configurePromptTemplate": "İstem şablonunu yapılandır",
+    "@configurePromptTemplate": {},
+    "editPromptTemplateForLlmAnalysis": "LLM analizi için istem şablonunu düzenle",
+    "@editPromptTemplateForLlmAnalysis": {},
+    "failedToGenerateFenFromRecognizedBoard": "Tanınan tahtadan FEN oluşturulamadı.",
+    "@failedToGenerateFenFromRecognizedBoard": {},
+    "outputInCurrentLanguage": "Geçerli dilde çıktı",
+    "@outputInCurrentLanguage": {},
+    "commonBaseUrls": "Yaygın Base URL'ler",
+    "@commonBaseUrls": {},
+    "viewCommonModels": "Yaygın modelleri görüntüle",
+    "@viewCommonModels": {},
+    "recognitionParametersUpdated": "Tanıma parametreleri güncellendi.",
+    "@recognitionParametersUpdated": {},
+    "whiteSMove": "Beyazın hamlesi",
+    "@whiteSMove": {},
+    "resetToDefaults": "Varsayılana sıfırla",
+    "@resetToDefaults": {},
+    "photoShoot": "Fotoğraf çekimi",
+    "@photoShoot": {},
+    "failedToApplyRecognizedBoardPosition": "Tanınan tahta pozisyonu uygulanamadı.",
+    "@failedToApplyRecognizedBoardPosition": {},
+    "llmPromptContent": "LLM istem içeriği",
+    "@llmPromptContent": {},
+    "llmNotConfiguredPleaseCheckYourSettings": "LLM yapılandırılmadı. Lütfen ayarlarınızı kontrol edin.",
+    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "setProviderModelApiKeyAndBaseUrl": "Sağlayıcıyı, modeli, API Key ve Base URL'i belirle",
+    "@setProviderModelApiKeyAndBaseUrl": {},
+    "llmConfiguration": "LLM yapılandırması",
+    "@llmConfiguration": {},
+    "configureLlmProvider": "LLM sağlayıcısını yapılandır",
+    "@configureLlmProvider": {},
+    "llmPromptTemplateHeader": "LLM istem şablonu başlığı",
+    "@llmPromptTemplateHeader": {},
+    "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Görüntüde hiçbir taş tanınmadı. Lütfen tekrar deneyin.",
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "recognizeBoardFromImage": "Görüntüden tahtayı tanı",
+    "@recognizeBoardFromImage": {},
+    "viewTips": "İpuçlarını görüntüle",
+    "@viewTips": {},
+    "applyToBoard": "Tahtaya uygula",
+    "@applyToBoard": {},
+    "adjustBoardArea": "Tahta alanını ayarla",
+    "@adjustBoardArea": {},
+    "viewCommonUrls": "Yaygın URL'leri görüntüle",
+    "@viewCommonUrls": {},
+    "colorAnalysisFailed": "Renk analizi başarısız oldu!",
+    "@colorAnalysisFailed": {},
+    "analyzingGameBoardImage": "Oyun tahtası görüntüsü analiz ediliyor...",
+    "@analyzingGameBoardImage": {},
+    "selectFromAlbum": "Albümden seç",
+    "@selectFromAlbum": {},
+    "noBoardPointDetected": "Tahta noktası algılanamadı!",
+    "@noBoardPointDetected": {},
+    "ifLeftEmptyDefaultTemplateWillBeUsed": "Boş bırakılırsa varsayılan şablon kullanılacak",
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "llmConfig": "LLM yapılandırması",
+    "@llmConfig": {},
+    "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "İstem şablonlarını varsayılan değerlere sıfırlamak istediğinizden emin misiniz?",
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "llmPromptTemplateFooter": "LLM istem şablonu altbilgisi",
+    "@llmPromptTemplateFooter": {},
+    "loadingResponse": "Yanıt yükleniyor...",
+    "@loadingResponse": {},
+    "applyThisResultToBoard": "Bu sonucu tahtaya uygula",
+    "@applyThisResultToBoard": {},
+    "takingPicture": "Fotoğraf çekiliyor...",
+    "@takingPicture": {},
+    "pleaseSelectAGameBoardImageToIdentify": "Tanımlamak için lütfen bir oyun tahtası resmi seçin",
+    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "identificationResults": "Tanıma sonuçları",
+    "@identificationResults": {},
+    "analyzeTheMovesAndProvideInsights": "Hamleleri analiz et ve içgörü sağla",
+    "@analyzeTheMovesAndProvideInsights": {},
+    "getApiKey": "API Key al",
+    "@getApiKey": {},
+    "entireRecognitionProcessFailedToComplete": "Tüm tanıma işlemi tamamlanamadı.",
+    "@entireRecognitionProcessFailedToComplete": {},
+    "boardRecognitionResult": "Tahta tanıma sonucu",
+    "@boardRecognitionResult": {},
+    "askLlm": "LLM'e sor",
+    "@askLlm": {},
+    "boardDetectionFailed": "Tahta algılama başarısız oldu!",
+    "@boardDetectionFailed": {},
+    "noBoardPointDetectedCannotIdentifyPiece": "Tahta noktası algılanamadı, bu yüzden taş tanımlanamaz!",
+    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "copyFen": "FEN'i kopyala",
+    "@copyFen": {},
+    "commonlyUsedModels": "Sık kullanılan modeller",
+    "@commonlyUsedModels": {},
+    "apiKeyOptional": "API Key (isteğe bağlı)",
+    "@apiKeyOptional": {},
+    "noImageSelected": "Görüntü seçilmedi",
+    "@noImageSelected": {},
+    "blackSMove": "Siyahın hamlesi",
+    "@blackSMove": {},
+    "llm": "Büyük Dil Modeli",
+    "@llm": {},
+    "llmProvider": "Sağlayıcı",
+    "@llmProvider": {},
+    "baseUrl": "Temel URL",
+    "@baseUrl": {},
+    "model": "Model",
+    "@model": {},
+    "temperature": "Sıcaklık",
+    "@temperature": {},
+    "llmCommandReceivedProcessing": "Komut alındı! Yapay zeka işliyor...",
+    "@llmCommandReceivedProcessing": {},
+    "llmDeepThinkingWait": "Derin düşünme sürüyor, lütfen bekleyin...",
+    "@llmDeepThinkingWait": {},
+    "llmPresentingSoon": "Yakında sunulacak...",
+    "@llmPresentingSoon": {},
+    "recognitionParameters": "Tanıma parametreleri",
+    "@recognitionParameters": {},
+    "adjustParamsDesc": "Tanıma doğruluğunu artırmak için parametreleri ayarlayın",
+    "@adjustParamsDesc": {},
+    "saveParameters": "Parametreleri kaydet",
+    "@saveParameters": {},
+    "unableToStartImageRecognition": "Görüntü tanıma başlatılamadı: {error}",
+    "@unableToStartImageRecognition": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "File system error"
+            }
+        }
+    },
+    "imageRecognitionFailed": "Görüntü tanıma başarısız: {error}",
+    "@imageRecognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Could not detect corners"
+            }
+        }
+    },
+    "appliedPositionDetails": "{whiteCount} beyaz ve {blackCount} siyah taşlı konum uygulandı",
+    "@appliedPositionDetails": {
+        "placeholders": {
+            "whiteCount": {
+                "type": "int",
+                "example": "9"
+            },
+            "blackCount": {
+                "type": "int",
+                "example": "8"
+            }
+        }
+    },
+    "fenCopiedToClipboard": "(FEN panoya kopyalandı)",
+    "@fenCopiedToClipboard": {},
+    "recognitionFailed": "Tanıma başarısız: {error}",
+    "@recognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Invalid FEN structure"
+            }
+        }
+    },
+    "myRating": "Derecelendirmem",
+    "@myRating": {},
+    "gamesPlayed": "Oynanan oyunlar",
+    "@gamesPlayed": {},
+    "wins": "Galibiyet",
+    "@wins": {},
+    "losses": "Mağlubiyet",
+    "@losses": {},
+    "draws": "Beraberlik",
+    "@draws": {},
+    "lastUpdated": "Son güncelleme",
+    "@lastUpdated": {},
+    "format": "Biçim:",
+    "@format": {},
+    "resetStatistics": "İstatistikleri sıfırla",
+    "@resetStatistics": {},
+    "drawRate": "Beraberlik oranı",
+    "@drawRate": {},
+    "lossRate": "Mağlubiyet oranı",
+    "@lossRate": {},
+    "aiStatistics": "Yapay zeka istatistikleri",
+    "@aiStatistics": {},
+    "enableStatistics": "İstatistikleri etkinleştir",
+    "@enableStatistics": {},
+    "enableStatistics_Detail": "Etkinleştirildiğinde, oyun sonuçları istatistiklere kaydedilecektir. Ancak, geri alma içeren oyunlar kaydedilmeyecektir. Devre dışı bırakıldığında, istatistik toplama duraklatılır.",
+    "@enableStatistics_Detail": {},
+    "thisWillResetAllGameStatistics": "Bu, tüm oyun istatistiklerini sıfırlayacaktır. Bu işlem geri alınamaz.",
+    "@thisWillResetAllGameStatistics": {},
+    "boardInnerRingSize": "Tahtanın iç halka boyutu",
+    "@boardInnerRingSize": {},
+    "boardShadowEnabled": "Tahta gölgesi",
+    "@boardShadowEnabled": {},
+    "trapAwareness": "Tuzak tespiti",
+    "@trapAwareness": {},
+    "trapAwarenessDescription": "Analiz sırasında tuzak hamlelerini kalın daireler ve oklarla vurgula.",
+    "@trapAwarenessDescription": {},
+    "trapExists": "Tuzak var. Tuzak hamleleri: {trapMoves}",
+    "@trapExists": {
+        "placeholders": {
+            "trapMoves": {
+                "type": "String"
+            }
+        }
+    },
+    "custodianCapture": "Kuşatma yakalama",
+    "@custodianCapture": {},
+    "custodianCaptureDescription": "Rakibinizin parçalarından birini ikiniz arasındaki parçalarından yakalamak için düz bir çizgide ekleyin.",
+    "@custodianCaptureDescription": {},
+    "custodianCaptureEnable": "Kuşatma yakalamasına izin ver",
+    "@custodianCaptureEnable": {},
+    "interventionCapture": "Müdahale yakalama",
+    "@interventionCapture": {},
+    "interventionCaptureDescription": "Her ikisini de yakalamak için rakibinizin iki parçasından ikisi arasındaki boş noktaya geçin.",
+    "@interventionCaptureDescription": {},
+    "interventionCaptureEnable": "Müdahale yakalamasına izin ver",
+    "@interventionCaptureEnable": {},
+    "leapCapture": "Atlama yakalama",
+    "@leapCapture": {},
+    "leapCaptureDescription": "Bitişik bir rakibin parçasının üzerinden boş noktaya atlayarak yakalayın.",
+    "@leapCaptureDescription": {},
+    "leapCaptureEnable": "Atlama yakalamasına izin ver",
+    "@leapCaptureEnable": {},
+    "captureApplicableLines": "Uygulanabilir çizgiler",
+    "@captureApplicableLines": {},
+    "captureSquareEdges": "Meydanın kenarları boyunca",
+    "@captureSquareEdges": {},
+    "captureCrossLines": "Meydanı geçen dikey çizgiler boyunca",
+    "@captureCrossLines": {},
+    "captureDiagonalLines": "Meydanı geçen çapraz çizgiler boyunca",
+    "@captureDiagonalLines": {},
+    "captureExecutionPhases": "Yürütme aşamaları",
+    "@captureExecutionPhases": {},
+    "capturePiecesCondition": "Kalan parçalara dayalı olarak hareketli aşamada kullanılabilirlik",
+    "@capturePiecesCondition": {},
+    "capturePiecesConditionUnlimited": "Kısıtlama Yok",
+    "@capturePiecesConditionUnlimited": {},
+    "capturePiecesConditionSelfLeqThree": "Üç veya daha az parçanız olduğunda mevcuttur",
+    "@capturePiecesConditionSelfLeqThree": {},
+    "stopPlacingWhenTwoEmptySquares": "Yalnızca iki boş kare kaldığında yerleştirmeyi durdur",
+    "@stopPlacingWhenTwoEmptySquares": {},
+    "stopPlacingWhenTwoEmptySquares_Detail": "Etkinleştirildiğinde, tahtada yalnızca 2 boş alan kaldığında yerleştirme aşaması sona erer ve hareket aşamı başlar, eldeki taşlar ne olursa olsun. Bu kural yalnızca 12 taşlı oyunlar için geçerlidir.",
+    "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }
