@@ -14,9 +14,10 @@ This script:
 import json
 import os
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from collections import OrderedDict
 import copy
+import xml.etree.ElementTree as ET
 
 
 def load_arb_file(file_path: Path) -> Dict[str, Any]:
@@ -45,6 +46,69 @@ def save_arb_file(file_path: Path, data: Dict[str, Any]) -> None:
         json.dump(data, f, ensure_ascii=False, indent=4)
         # Add newline at end of file
         f.write('\n')
+
+
+def get_android_app_name(locale: str, project_root: Path) -> Optional[str]:
+    """
+    Get app name from Android strings.xml for given locale.
+
+    Tries multiple strategies to find the correct values directory:
+    1. Direct match: values-{locale}
+    2. Region code format: values-{locale with _ replaced by -r}
+    3. Base language: values-{first part before _}
+    4. Special mappings (e.g., nb -> nn)
+
+    Args:
+        locale: Locale string (e.g., 'zh', 'zh_Hant', 'de_ch')
+        project_root: Project root directory
+
+    Returns:
+        App name string from strings.xml, or None if not found
+    """
+    res_dir = project_root / 'src' / 'ui' / 'flutter_app' / 'android' / 'app' / 'src' / 'main' / 'res'
+
+    # Special locale mappings
+    special_mappings = {
+        'nb': 'nn',  # Norwegian Bokmål -> Norwegian Nynorsk
+    }
+
+    # Build list of possible values directory names to try
+    possible_dirs = []
+
+    # 1. Try direct match
+    possible_dirs.append(f'values-{locale}')
+
+    # 2. Try region code format (e.g., zh_Hant -> zh-rHant)
+    if '_' in locale:
+        locale_with_region = locale.replace('_', '-r')
+        possible_dirs.append(f'values-{locale_with_region}')
+
+    # 3. Try base language (e.g., zh_Hant -> zh, de_ch -> de)
+    if '_' in locale:
+        base_lang = locale.split('_')[0]
+        possible_dirs.append(f'values-{base_lang}')
+
+    # 4. Try special mappings
+    if locale in special_mappings:
+        mapped_locale = special_mappings[locale]
+        possible_dirs.append(f'values-{mapped_locale}')
+
+    # Try each possible directory
+    for dir_name in possible_dirs:
+        strings_file = res_dir / dir_name / 'strings.xml'
+        if strings_file.exists():
+            try:
+                tree = ET.parse(strings_file)
+                root = tree.getroot()
+                # Find <string name="app_name">...</string>
+                for string_elem in root.findall('string'):
+                    if string_elem.get('name') == 'app_name':
+                        return string_elem.text
+            except Exception:
+                # Silently skip parsing errors
+                continue
+
+    return None
 
 
 def merge_metadata_structure(
@@ -151,6 +215,7 @@ def normalize_arb_file(
     arb_file_path: Path,
     template_data: Dict[str, Any],
     template_keys: List[str],
+    project_root: Path,
     dry_run: bool = False
 ) -> bool:
     """
@@ -160,6 +225,7 @@ def normalize_arb_file(
         arb_file_path: Path to the ARB file to normalize
         template_data: Template ARB data
         template_keys: List of keys in template order
+        project_root: Project root directory
         dry_run: If True, don't write changes to disk
 
     Returns:
@@ -171,6 +237,9 @@ def normalize_arb_file(
 
     # Extract locale from filename: intl_<locale>.arb
     locale = arb_file_path.stem.replace('intl_', '')
+
+    # Get app name from Android strings.xml if available
+    android_app_name = get_android_app_name(locale, project_root)
 
     # Create a new ordered dictionary with template structure
     normalized_data = OrderedDict()
@@ -184,6 +253,16 @@ def normalize_arb_file(
         if key == "@@locale":
             # Always use filename-derived locale to ensure consistency
             normalized_data[key] = locale
+        elif key == "appName" and android_app_name is not None:
+            # Sync appName from Android strings.xml
+            normalized_data[key] = android_app_name
+
+            # Add normalized metadata
+            metadata_key = f"@{key}"
+            if metadata_key in template_data or metadata_key in file_data:
+                normalized_data[metadata_key] = normalize_entry_metadata(
+                    key, template_data, file_data
+                )
         elif key in file_data:
             # Entry exists in file, keep translated value
             normalized_data[key] = file_data[key]
@@ -227,6 +306,7 @@ def normalize_arb_file(
 
 def normalize_all_arb_files(
     l10n_dir: Path,
+    project_root: Path,
     reference_file: str = 'intl_en.arb',
     dry_run: bool = False
 ) -> None:
@@ -235,6 +315,7 @@ def normalize_all_arb_files(
 
     Args:
         l10n_dir: Directory containing ARB files
+        project_root: Project root directory
         reference_file: Name of the reference ARB file
         dry_run: If True, don't write changes to disk
     """
@@ -267,7 +348,7 @@ def normalize_all_arb_files(
             continue  # Skip template file
 
         files_processed += 1
-        changed = normalize_arb_file(arb_file, template_data, template_keys, dry_run)
+        changed = normalize_arb_file(arb_file, template_data, template_keys, project_root, dry_run)
 
         if changed:
             files_modified += 1
@@ -313,7 +394,7 @@ def main():
         print(f"❌ Error: l10n directory not found at {l10n_dir}")
         return
 
-    normalize_all_arb_files(l10n_dir, dry_run=args.dry_run)
+    normalize_all_arb_files(l10n_dir, project_root, dry_run=args.dry_run)
 
 
 if __name__ == '__main__':

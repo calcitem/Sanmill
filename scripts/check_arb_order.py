@@ -12,8 +12,9 @@ This script validates:
 import json
 import os
 from pathlib import Path
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
 from collections import OrderedDict
+import xml.etree.ElementTree as ET
 
 
 def load_arb_file(file_path: Path) -> Dict[str, Any]:
@@ -28,6 +29,69 @@ def load_arb_file(file_path: Path) -> Dict[str, Any]:
     """
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f, object_pairs_hook=OrderedDict)
+
+
+def get_android_app_name(locale: str, project_root: Path) -> Optional[str]:
+    """
+    Get app name from Android strings.xml for given locale.
+
+    Tries multiple strategies to find the correct values directory:
+    1. Direct match: values-{locale}
+    2. Region code format: values-{locale with _ replaced by -r}
+    3. Base language: values-{first part before _}
+    4. Special mappings (e.g., nb -> nn)
+
+    Args:
+        locale: Locale string (e.g., 'zh', 'zh_Hant', 'de_ch')
+        project_root: Project root directory
+
+    Returns:
+        App name string from strings.xml, or None if not found
+    """
+    res_dir = project_root / 'src' / 'ui' / 'flutter_app' / 'android' / 'app' / 'src' / 'main' / 'res'
+
+    # Special locale mappings
+    special_mappings = {
+        'nb': 'nn',  # Norwegian Bokmål -> Norwegian Nynorsk
+    }
+
+    # Build list of possible values directory names to try
+    possible_dirs = []
+
+    # 1. Try direct match
+    possible_dirs.append(f'values-{locale}')
+
+    # 2. Try region code format (e.g., zh_Hant -> zh-rHant)
+    if '_' in locale:
+        locale_with_region = locale.replace('_', '-r')
+        possible_dirs.append(f'values-{locale_with_region}')
+
+    # 3. Try base language (e.g., zh_Hant -> zh, de_ch -> de)
+    if '_' in locale:
+        base_lang = locale.split('_')[0]
+        possible_dirs.append(f'values-{base_lang}')
+
+    # 4. Try special mappings
+    if locale in special_mappings:
+        mapped_locale = special_mappings[locale]
+        possible_dirs.append(f'values-{mapped_locale}')
+
+    # Try each possible directory
+    for dir_name in possible_dirs:
+        strings_file = res_dir / dir_name / 'strings.xml'
+        if strings_file.exists():
+            try:
+                tree = ET.parse(strings_file)
+                root = tree.getroot()
+                # Find <string name="app_name">...</string>
+                for string_elem in root.findall('string'):
+                    if string_elem.get('name') == 'app_name':
+                        return string_elem.text
+            except Exception as e:
+                print(f"Warning: Failed to parse {strings_file}: {e}")
+                continue
+
+    return None
 
 
 def compare_structure(
@@ -144,7 +208,8 @@ def check_entry_metadata(
 def check_arb_file(
     arb_file_path: Path,
     template_data: Dict[str, Any],
-    template_keys: List[str]
+    template_keys: List[str],
+    project_root: Path
 ) -> Tuple[bool, List[str]]:
     """
     Check if ARB file matches template structure.
@@ -153,6 +218,7 @@ def check_arb_file(
         arb_file_path: Path to ARB file to check
         template_data: Template ARB data
         template_keys: List of keys in template order
+        project_root: Project root directory
 
     Returns:
         Tuple of (is_valid, list of issues)
@@ -174,6 +240,18 @@ def check_arb_file(
                 f"  ❌ @@locale mismatch: expected '{expected_locale}' "
                 f"(from filename) but got '{actual_locale}'"
             )
+
+    # Check if appName matches Android strings.xml
+    android_app_name = get_android_app_name(expected_locale, project_root)
+    if android_app_name is not None:
+        arb_app_name = file_data.get('appName')
+        if arb_app_name != android_app_name:
+            issues.append(
+                f"  ❌ appName mismatch with Android strings.xml: "
+                f"expected '{android_app_name}' but got '{arb_app_name}'"
+            )
+    # If no Android strings.xml found, we don't report it as an error
+    # (some locales might not have Android resources)
 
     # Check for missing entries from template
     missing_entries = []
@@ -208,12 +286,13 @@ def check_arb_file(
     return (len(issues) == 0, issues)
 
 
-def check_arb_order(l10n_dir: Path, reference_file: str = 'intl_en.arb') -> None:
+def check_arb_order(l10n_dir: Path, project_root: Path, reference_file: str = 'intl_en.arb') -> None:
     """
     Check if all ARB files match the template structure exactly.
 
     Args:
         l10n_dir: Directory containing ARB files
+        project_root: Project root directory
         reference_file: Name of the reference ARB file
     """
     # Load reference file
@@ -239,7 +318,7 @@ def check_arb_order(l10n_dir: Path, reference_file: str = 'intl_en.arb') -> None
             continue  # Skip reference file
 
         files_checked += 1
-        is_valid, issues = check_arb_file(arb_file, template_data, template_keys)
+        is_valid, issues = check_arb_file(arb_file, template_data, template_keys, project_root)
 
         if is_valid:
             print(f"✅ {arb_file.name}: Perfect match with template")
@@ -276,7 +355,7 @@ def main():
         print(f"❌ Error: l10n directory not found at {l10n_dir}")
         return
 
-    check_arb_order(l10n_dir)
+    check_arb_order(l10n_dir, project_root)
 
 
 if __name__ == '__main__':
