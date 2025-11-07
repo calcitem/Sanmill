@@ -161,6 +161,23 @@ def check_arb_file(
     file_keys = list(file_data.keys())
     issues = []
 
+    # Check for missing entries from template
+    missing_entries = []
+    for key in template_keys:
+        # Skip @@locale and metadata keys
+        if key == "@@locale" or key.startswith("@"):
+            continue
+
+        if key not in file_keys:
+            missing_entries.append(key)
+
+    if missing_entries:
+        issues.append(f"  ❌ Missing {len(missing_entries)} entries from template:")
+        for entry in missing_entries[:5]:  # Show first 5
+            issues.append(f"      - {entry}")
+        if len(missing_entries) > 5:
+            issues.append(f"      ... and {len(missing_entries) - 5} more")
+
     # Check top-level key order
     common_keys = [key for key in template_keys if key in file_keys]
     file_common_order = [key for key in file_keys if key in common_keys]
