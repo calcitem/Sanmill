@@ -1,137 +1,5 @@
 {
     "@@locale": "zu",
-    "aiVsAi": "I-AI vs. I-AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Umuntu Vs. Ifu",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "tipMove": "Hambisa ucezu.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "black": "Umdlali 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "gameOver": "Umdlalo uphelile",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "shufflingEnabled": "Hambisa ngokungahleliwe",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "piecesCount_Detail": "Umdlali ngamunye unezingcezu ezingaki?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "hasDiagonalLines": "Imigqa ediagonal",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Faka imigqa emine edayagonali ebhodini.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "mayFly": "Ukundiza",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "nMoveRule": "Umthetho wokuhambisa uN",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "pieceColor": "Umbala wocezu",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Umbala wangemuva",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "player2": "Umdlali 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "toMovePiece": "Thepha ephuzwini elixhunywe esiqeshaneni ukuze usihambise.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "crackMill": "Umshini wokugaya",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "animationDuration": "Ubude besikhathi sokugqwayiza",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Lutho",
-    "@none": {
-        "description": "None"
-    },
-    "ossLicenses": "Amalayisense omthombo ovulekile",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Ulimi",
-    "@language": {
-        "description": "Languages"
-    },
-    "drawerColor": "Umbala wemenyu",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "toolbarLocationOnScreen": "Indawo yebha yamathuluzi esikrinini",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Phezulu",
-    "@top": {
-        "description": "Top"
-    },
-    "showLegalMoves": "Bonisa iminyakazo esemthethweni",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Bonisa umnyakazo wokugcina",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "getInvolved": "Bandakanya",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "mixedMill": "I-Mixed Mill",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Umdlalo udwetshwa uma umdlali enezingcezu ezintathu futhi emva kweminyaka eyishumi akekho umdlali osusa izingcezu zomdlali ophikisana naye",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "threefoldRepetitionRule_Detail": "Umdlalo udwetshwa uma indawo yenzeka okwesithathu.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Isigayo! Qhubeka nokwenza umnyakazo.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "browse": "Phequlula…",
-    "@browse": {
-        "description": "Browse…"
-    },
-    "gameScreenRecorder": "Irekhoda yesikrini segeyimu",
-    "@gameScreenRecorder": {},
-    "changeSideToMove": "Shintsha uhlangothi ukuze uhambise.",
-    "@changeSideToMove": {},
-    "tipCanNotRemoveNonadjacent": "Awukwazi ukususa ucezu olungasondelene.",
-    "@tipCanNotRemoveNonadjacent": {},
-    "showPositionalAdvantageIndicator": "Bonisa inkomba yenzuzo yendawo",
-    "@showPositionalAdvantageIndicator": {},
     "appName": "Umlabalaba",
     "@appName": {
         "description": "The app name"
@@ -159,6 +27,14 @@
     "humanVsHuman": "Umuntu Vs. Umuntu",
     "@humanVsHuman": {
         "description": "Human Vs Human"
+    },
+    "aiVsAi": "I-AI vs. I-AI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
+    },
+    "humanVsCloud": "Umuntu Vs. Ifu",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
     },
     "humanVsLAN": "Umuntu Vs. I-LAN",
     "@humanVsLAN": {
@@ -224,6 +100,10 @@
     "@tipRemoved": {
         "description": "Removed."
     },
+    "tipMove": "Hambisa ucezu.",
+    "@tipMove": {
+        "description": "Move a piece."
+    },
     "tipCannotPlace": "Awukwazi ukubeka ucezu lwakho lapha.",
     "@tipCannotPlace": {
         "description": "You can't place your piece here."
@@ -244,10 +124,6 @@
     "@tipSelectOpponentsPiece": {
         "description": "Select one of your opponent's pieces."
     },
-    "tipCannotMoveOpponentsPieces": "Awukwazi ukuhambisa izingcezu zomphikisi wakho.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
     "tipCannotRemovePieceFromMill": "Awukwazi ukususa ucezu emshinini wokugaya.",
     "@tipCannotRemovePieceFromMill": {
         "description": "You cannot remove a piece from a mill."
@@ -255,6 +131,10 @@
     "tipCanMoveOnePoint": "Isiqephu singanyakazisa iphoyinti elingu-1.",
     "@tipCanMoveOnePoint": {
         "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "Awukwazi ukuhambisa izingcezu zomphikisi wakho.",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
     },
     "tipSelectPieceToMove": "Khetha ucezu lwakho ukuze uhambise.",
     "@tipSelectPieceToMove": {
@@ -370,6 +250,10 @@
     "@white": {
         "description": "Player 1"
     },
+    "black": "Umdlali 2",
+    "@black": {
+        "description": "Player 2"
+    },
     "loseReasonlessThanThree": "{player} isibalo socezu singaphansi kokuthathu.",
     "@loseReasonlessThanThree": {
         "description": "Indicate that the player lost because they had less than three pieces left.",
@@ -435,6 +319,10 @@
     "gameOverUnknownReason": "Umdlalo uphelile! Isizathu esingaziwa.",
     "@gameOverUnknownReason": {
         "description": "Game Over! Unknown reason."
+    },
+    "gameOver": "Umdlalo uphelile",
+    "@gameOver": {
+        "description": "Game Over"
     },
     "youWin": "Uwinile! Siyakuhalalisela!",
     "@youWin": {
@@ -541,6 +429,10 @@
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
+    "shufflingEnabled": "Hambisa ngokungahleliwe",
+    "@shufflingEnabled": {
+        "description": "Random move"
+    },
     "misc": "Okunhlobonhlobo",
     "@misc": {
         "description": "Miscellaneous"
@@ -553,6 +445,10 @@
     "@piecesCount": {
         "description": "The number of pieces each player has"
     },
+    "piecesCount_Detail": "Umdlali ngamunye unezingcezu ezingaki?",
+    "@piecesCount_Detail": {
+        "description": "How many pieces does each player have?"
+    },
     "flyPieceCount": "Inombolo yesiqephu esindizayo",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
@@ -564,6 +460,14 @@
     "piecesAtLeastCount": "Izingcezu Okungenani",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "Imigqa ediagonal",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
+    "hasDiagonalLines_Detail": "Faka imigqa emine edayagonali ebhodini.",
+    "@hasDiagonalLines_Detail": {
+        "description": "Add four diagonal lines to the board."
     },
     "isDefenderMoveFirst": "Umdlali wesibili uhamba phambili",
     "@isDefenderMoveFirst": {
@@ -605,9 +509,17 @@
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
     },
+    "mayFly": "Ukundiza",
+    "@mayFly": {
+        "description": "Flying"
+    },
     "mayFly_Detail": "Uma umdlali enezingcezu ezintathu noma ezine kuphela (ezilungisekayo) ezisele, angasusa ucezu aluyise kunoma iyiphi indawo yamahhala.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "Umthetho wokuhambisa uN",
+    "@nMoveRule": {
+        "description": "N-move rule"
     },
     "nMoveRule_Detail": "Umdlalo uyadwetshwa uma kungazange kube khona ukususwa enanini elithile lokunyakaza.",
     "@nMoveRule_Detail": {
@@ -652,6 +564,14 @@
     "boardColor": "Umbala webhodi",
     "@boardColor": {
         "description": "Board color"
+    },
+    "pieceColor": "Umbala wocezu",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "Umbala wangemuva",
+    "@backgroundColor": {
+        "description": "Background color"
     },
     "lineColor": "Umbala womugqa webhodi",
     "@lineColor": {
@@ -739,6 +659,10 @@
     "@player1": {
         "description": "Player 1"
     },
+    "player2": "Umdlali 2",
+    "@player2": {
+        "description": "Player 2"
+    },
     "howToPlay": "Idlalwa kanjani",
     "@howToPlay": {
         "description": "How to play"
@@ -750,6 +674,10 @@
     "toSelectPiece": "Thepha ucezu ukuze ulususe.",
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "Thepha ephuzwini elixhunywe esiqeshaneni ukuze usihambise.",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
     },
     "toRemovePiece": "Thepha ucezu olulodwa lombangi ukuze ulususe.",
     "@toRemovePiece": {
@@ -829,9 +757,21 @@
     "@done": {
         "description": "Done."
     },
+    "crackMill": "Umshini wokugaya",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
     "crackMill_Detail": "Uma umdlali enezicucu kuphela ezigayweni, izingcezu ezigayweni ngeke zikhiye ukuze zisuswe.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "animationDuration": "Ubude besikhathi sokugqwayiza",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "none": "Lutho",
+    "@none": {
+        "description": "None"
     },
     "theme": "Itimu",
     "@theme": {
@@ -975,6 +915,14 @@
     "@experiments": {
         "description": "Experiments"
     },
+    "ossLicenses": "Amalayisense omthombo ovulekile",
+    "@ossLicenses": {
+        "description": "Open source licenses"
+    },
+    "language": "Ulimi",
+    "@language": {
+        "description": "Languages"
+    },
     "defaultLanguage": "Ulimi oluzenzakalelayo",
     "@defaultLanguage": {
         "description": "Default language"
@@ -986,6 +934,10 @@
     "mayMoveInPlacingPhase_Detail": "Azikho izigaba ezihlukile zokubeka nezinyakazayo, okungukuthi, abadlali banganquma kukho konke umnyakazo ukuthi bafuna ukubeka ucezu ebhodini noma bahambise esinye sezingcezu zabo (inqobo nje uma benezicucu ezisele ukuze bazibeke).",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Umbala wemenyu",
+    "@drawerColor": {
+        "description": "Menu color"
     },
     "drawerTextColor": "Umbala wombhalo wemenyu",
     "@drawerTextColor": {
@@ -1014,6 +966,14 @@
     "autoHideToolbar": "Fihla ibha yamathuluzi ngokuzenzakalelayo",
     "@autoHideToolbar": {
         "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Indawo yebha yamathuluzi esikrinini",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Phezulu",
+    "@top": {
+        "description": "Top"
     },
     "bottom": "Phansi",
     "@bottom": {
@@ -1075,6 +1035,14 @@
     "@setupPosition": {
         "description": "Setup position"
     },
+    "showLegalMoves": "Bonisa iminyakazo esemthethweni",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Bonisa umnyakazo wokugcina",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
     "showArrows": "Bonisa imicibisholo",
     "@showArrows": {
         "description": "Show arrows"
@@ -1091,6 +1059,10 @@
     "@threads": {
         "description": "Threads"
     },
+    "getInvolved": "Bandakanya",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
     "helpImproveTranslate": "Siza ukuthuthukisa ukuhumusha",
     "@helpImproveTranslate": {
         "description": "Help improve translate"
@@ -1103,6 +1075,10 @@
     "@classicMill": {
         "description": "Classic Mill"
     },
+    "mixedMill": "I-Mixed Mill",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
     "ceylonMill": "I-Ceylon Mill",
     "@ceylonMill": {
         "description": "Ceylon Mill"
@@ -1114,6 +1090,10 @@
     "mayBreakAndRemakeMillRepeatedly_Detail": "Uma umdlali ephula isigayo ukuze akhe isigayo esisha ngokushesha, umdlali onjalo angakwazi ukubuyisela ucezu olunjalo endaweni yokuhlangana yasekuqaleni ekuhambeni kwakhe okulandelayo uma enza isigayo esisha.",
     "@mayBreakAndRemakeMillRepeatedly_Detail": {
         "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Umdlalo udwetshwa uma umdlali enezingcezu ezintathu futhi emva kweminyaka eyishumi akekho umdlali osusa izingcezu zomdlali ophikisana naye",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
     },
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Uma umdlali ehle waba yizicucu ezintathu, futhi kungekho mdlali ongasusa ucezu lombangi phakathi nomnyakazo oyishumi, umdlalo uwumdwebo.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
@@ -1215,6 +1195,14 @@
     "@threefoldRepetitionRule": {
         "description": "Threefold repetition rule"
     },
+    "threefoldRepetitionRule_Detail": "Umdlalo udwetshwa uma indawo yenzeka okwesithathu.",
+    "@threefoldRepetitionRule_Detail": {
+        "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "Isigayo! Qhubeka nokwenza umnyakazo.",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
+    },
     "pointStyle": "Isitayela sephoyinti",
     "@pointStyle": {
         "description": "Point style"
@@ -1253,6 +1241,10 @@
     "filename": "Igama lefayela",
     "@filename": {
         "description": "File name"
+    },
+    "browse": "Phequlula…",
+    "@browse": {
+        "description": "Browse…"
     },
     "gameFiles": "Amafayela wegeyimu",
     "@gameFiles": {
@@ -1367,6 +1359,8 @@
     "@pixelRatio": {},
     "duration": "Ubude besikhathi",
     "@duration": {},
+    "gameScreenRecorder": "Irekhoda yesikrini segeyimu",
+    "@gameScreenRecorder": {},
     "previous": "Ngaphambilini",
     "@previous": {},
     "next": "Olandelayo",
@@ -1425,6 +1419,8 @@
     "@whenStalemate_Detail": {},
     "endWithStalemateLoss": "Phelisa ngokulahlekelwa okumile ohlangothini oluvinjiwe.",
     "@endWithStalemateLoss": {},
+    "changeSideToMove": "Shintsha uhlangothi ukuze uhambise.",
+    "@changeSideToMove": {},
     "removeOpponentsPieceAndMakeNextMove": "Susa eyodwa yezingcezu zombangi bese wenza umnyakazo olandelayo.",
     "@removeOpponentsPieceAndMakeNextMove": {},
     "endWithStalemateDraw": "Qeda ngokulingana okumile.",
@@ -1435,6 +1431,8 @@
     "@aiResponseDelayTime": {},
     "aiIsDelaying": "I-AI okwamanje isesigabeni sokuphendula esibambezelekile. Sicela ulinde isikhashana ngaphambi kokuthi uqhubeke.",
     "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "Awukwazi ukususa ucezu olungasondelene.",
+    "@tipCanNotRemoveNonadjacent": {},
     "stalemateRemovalRegardlessOfMillFormation": "Uma kumile, izingcezu zombangi ezincikene nezakho zingasuswa, kungakhathaliseki ukuthi ukwakheka kwesigayo.",
     "@stalemateRemovalRegardlessOfMillFormation": {},
     "whatIsMcts": "I-MCTS iyi-algorithm elungele abaqalayo eyenza izinqumo ngokuhlola nokuhlola ukunyakaza okuhlukile ngokulingisa.",
@@ -1469,6 +1467,8 @@
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Ungathanda ukubuka umhlahlandlela womsebenzisi wale algorithm?",
     "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Bonisa inkomba yenzuzo yendawo",
+    "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Sebenzisa i-database ephelele",
     "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "Nika amandla le nketho ukuze usebenzise isizindalwazi segeyimu esingenasici esikhiqizwe ngama-algorithms asezingeni eliphezulu. Lesi sici sihlanganisa kokubili amasu okuvula nawokuqeda ukuphakamisa umnyakazo olungile. Lokhu ukukhetha okuncanyelwayo kwabadlali abafuna ileveli ephezulu yokunemba ekudlalweni kwegeyimu. Idalwe ngamasu ekhompyutha ahlakaniphile, isizindalwazi siklanyelwe ukunikeza izixazululo zegeyimu ezicishe ziphelele.\n\nQaphela: Uma i-AI ihluleka ukufinyelela kusizindalwazi, izophendukela kuma-algorithms avamile ezinqumweni zokudlala umdlalo. Uma isizindalwazi sitholakala, 'Izinga Lobunzima' licishe lingehluleki, futhi 'Isikhathi Sokucabanga Se-AI' sithola ukuncipha okukhulu. Izilungiselelo eziningi ezingaphakathi kwezinketho ze-'AI's play style' zizokhishwa, njengoba imiphumela yesizindalwazi ibambe phezulu kakhulu.\n\nUkuze uthole umhlahlandlela wokuthi ungayisebenzisa kanjani ngokugcwele le database engenasici, chofoza lapha.",

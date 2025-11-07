@@ -1133,56 +1133,41 @@
             }
         }
     },
-    "gameSavedTo": "खेल सहेजा गया है",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "loadFailed": "लोड विफल हो गया।",
     "@loadFailed": {
         "description": "Load failed."
-    },
-    "browse": "ब्राउज़ करें…",
-    "@browse": {
-        "description": "Browse…"
     },
     "filename": "फ़ाइल का नाम",
     "@filename": {
         "description": "File name"
     },
+    "browse": "ब्राउज़ करें…",
+    "@browse": {
+        "description": "Browse…"
+    },
     "gameFiles": "खेल फ़ाइलें",
     "@gameFiles": {
         "description": "Game files"
     },
-    "placedCount": "रखा गया ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "noMove": "कोई चाल नहीं।",
-    "@noMove": {
-        "description": "No move."
-    },
-    "noPiecesCanBeRemoved": "कोई टुकड़ा नहीं हटाया जा सकता है।",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameSavedTo": "खेल सहेजा गया है",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "खाली",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
     },
-    "clean": "स्वच्छ",
-    "@clean": {
-        "description": "Clean"
+    "noMove": "कोई चाल नहीं।",
+    "@noMove": {
+        "description": "No move."
     },
     "restoredPosition": "प्रारंभिक स्थिति बहाल।",
     "@restoredPosition": {
         "description": "Restored initial position."
+    },
+    "clean": "स्वच्छ",
+    "@clean": {
+        "description": "Clean"
     },
     "cleanedUp": "सफाई की।",
     "@cleanedUp": {
@@ -1192,12 +1177,27 @@
     "@remove": {
         "description": "Remove"
     },
+    "noPiecesCanBeRemoved": "कोई टुकड़ा नहीं हटाया जा सकता है।",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
     "pieceCountNeedToRemove": "{count, plural, =0{टुकड़ा}=1{{count} टुकड़ा}other{{count} टुकड़े}} को निकालने की जरूरत है।",
     "@pieceCountNeedToRemove": {
         "description": "Pieces need to remove.",
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "रखा गया ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "सेटिंग्स के लिए एप्लिकेशन को बाहर निकालें और फिर से खोलना।",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "पूर्ण स्क्रीन",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "सेटिंग्स के लिए एप्लिकेशन को बाहर निकालें और फिर से खोलना।",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "जंगल",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "जीआईएफ साझा करें",
     "@shareGIF": {},
-    "duration": "अवधि",
-    "@duration": {},
     "pixelRatio": "पिक्सेल अनुपात",
     "@pixelRatio": {},
+    "duration": "अवधि",
+    "@duration": {},
     "gameScreenRecorder": "गेम स्क्रीन रिकॉर्डर",
     "@gameScreenRecorder": {},
     "previous": "पिछला",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "एआई थिंकिंग टाइम 0 पर सेट होने का मतलब है कि सोचने की कोई समय सीमा नहीं है।",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "एमटीडी (एफ) अल्फा-बीटा खोज एल्गोरिदम का एक संशोधित रूप है जिसका उद्देश्य मध्यवर्ती खोज परिणामों का पुन: उपयोग करके और खोज स्थान को कम करने के लिए एक अच्छे प्रारंभिक अनुमान का उपयोग करके दक्षता में सुधार करना है।",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "कृपया ध्यान रखें कि एआई सोच समय समायोजन पूरी तरह से सटीक नहीं हो सकता है। वास्तविक सोच समय कम हो सकता है जब कठिनाई का स्तर कम मान पर सेट होता है और जब समय समाप्त हो जाता है तो एआई मध्य-विचार होने पर लंबा हो सकता है।",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "यदि आप कठिनाई स्तर को उच्च सेट करते हैं लेकिन एआई सोच समय में वृद्धि नहीं करते हैं, तो वास्तविक कठिनाई स्तर सोचने के समय की कमी के कारण कम मूल्य तक सीमित हो सकता है। मशीन के प्रदर्शन के आधार पर वास्तविक मूल्य भिन्न हो सकता है।",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "एमटीडी (एफ) अल्फा-बीटा खोज एल्गोरिदम का एक संशोधित रूप है जिसका उद्देश्य मध्यवर्ती खोज परिणामों का पुन: उपयोग करके और खोज स्थान को कम करने के लिए एक अच्छे प्रारंभिक अनुमान का उपयोग करके दक्षता में सुधार करना है।",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (प्रिंसिपल वैरिएशन सर्च) किसी दिए गए स्थान में सर्वश्रेष्ठ चाल खोजने के लिए एक खोज एल्गोरिथम है। यह अल्फा-बीटा एल्गोरिथ्म का एक संवर्द्धन है और यह पुष्टि करने के लिए शून्य या शून्य विंडो खोजों का उपयोग करता है कि मुख्य बदलाव से पहले से सुरक्षित स्कोर की तुलना में चाल खराब है या खराब नहीं है। पीवीएस सबसे आशाजनक कदमों पर ध्यान केंद्रित करता है और उप-इष्टतम शाखाओं की अनावश्यक खोजों से बचता है, जो खोज की दक्षता में सुधार करने में मदद करता है।",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "अल्फ़ा-बीटा एल्गोरिद्म सर्वश्रेष्ठ चाल खोजने के लिए एक खोज एल्गोरिद्म है। यह सर्च ट्री को कम करने और दक्षता बढ़ाने के लिए मिनिमैक्स सिद्धांत और दो मानों, अल्फा और बीटा का उपयोग करता है। अल्फा उस न्यूनतम स्कोर का प्रतिनिधित्व करता है जिसे कंप्यूटर निश्चित रूप से प्राप्त कर सकता है, जबकि बीटा अधिकतम स्कोर का प्रतिनिधित्व करता है जो उसके प्रतिद्वंद्वी को मिल सकता है। एल्गोरिदम कंप्यूटर को गेम में स्मार्ट, कुशल निर्णय लेने में मदद करता है।",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "इस खेल में पहले खिलाड़ी की तुलना में दूसरे खिलाड़ी के लिए जीतना आसान होता है।",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "मानव अनुभव के अनुसार यदि आप जीतने का प्रयास करेंगे तो आप हार जाएंगे। इसके बजाय, अपने लक्ष्य के रूप में ड्रॉ का लक्ष्य रखें और खेल को खोने से बचें। अपने प्रतिद्वंद्वी का निरीक्षण करें और धीरे से उन्हें ऐसी स्थिति में फुसलाएं जहां वे गलतियां कर सकते हैं। जब वे कमजोरी दिखाते हैं, अवसर को जब्त करें और जीत के लिए धीरे-धीरे धक्का दें। इस तरह आप गेम जीत सकते हैं।",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "इस खेल में पहले खिलाड़ी की तुलना में दूसरे खिलाड़ी के लिए जीतना आसान होता है।",
+    "@firstMoveDetail": {},
     "passiveDetail": "निष्क्रिय विकल्प को सक्षम करने से एआई आराम कर सकता है जब स्थिति में लाभ होता है, बजाय आक्रामक रूप से जितनी जल्दी हो सके जीतने की कोशिश कर रहा है।",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "यदि एआई अपने टुकड़ों की गतिशीलता पर विचार करता है, तो यह न केवल प्रतिद्वंद्वी के टुकड़ों को जितनी जल्दी हो सके कब्जा करने का लक्ष्य रखेगा, बल्कि प्रतिद्वंद्वी के आंदोलनों को अवरुद्ध करने और उन्हें ऐसा करने से रोकने पर भी विचार करेगा।",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "इस विकल्प को सक्षम करने से खेल की यादृच्छिकता और मज़ा बढ़ जाता है जबकि इसे अक्षम करने से एआई को मात देने के तरीकों का अध्ययन करने में मदद मिल सकती है।",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "यदि एआई अपने टुकड़ों की गतिशीलता पर विचार करता है, तो यह न केवल प्रतिद्वंद्वी के टुकड़ों को जितनी जल्दी हो सके कब्जा करने का लक्ष्य रखेगा, बल्कि प्रतिद्वंद्वी के आंदोलनों को अवरुद्ध करने और उन्हें ऐसा करने से रोकने पर भी विचार करेगा।",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "जब बोर्ड भरा हुआ है",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "रखने के चरण के अंत में, गतिमान चरण शुरू होने से पहले, यदि बोर्ड टुकड़ों से भरा हुआ है तो कार्रवाई होती है।",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "जंगल की लकड़ी",
     "@forestWood": {},
-    "greenMeadow": "हरी घास का मैदान",
-    "@greenMeadow": {},
-    "stonyPath": "पथरीला रास्ता",
-    "@stonyPath": {},
+    "darkMystery": "डार्क मिस्ट्री",
+    "@darkMystery": {},
     "midnightBlue": "मिडनाइट ब्लू",
     "@midnightBlue": {},
     "greenForest": "हरे जंगल",
     "@greenForest": {},
+    "greenMeadow": "हरी घास का मैदान",
+    "@greenMeadow": {},
+    "stonyPath": "पथरीला रास्ता",
+    "@stonyPath": {},
     "pastelPink": "पेस्टल पिंक",
     "@pastelPink": {},
     "turquoiseSea": "फ़िरोज़ा सागर",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "चंचल उद्यान",
     "@playfulGarden": {},
-    "darkMystery": "डार्क मिस्ट्री",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "रेट्रोग्रेड एनालिसिस एल्गोरिथम अलग-अलग स्टार्ट पोजीशन से एंडगेम डेटाबेस बनाने के लिए मल्टी-वैल्यूड रेट्रोग्रेड एनालिसिस का उपयोग करता है, फिर गेमप्ले को ऑप्टिमाइज़ करने के लिए इस डेटाबेस को लागू करता है। यह दृष्टिकोण अल्ट्रा-स्ट्रॉन्ग सॉल्यूशंस की श्रेणी में आता है।",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "क्या आप इस एल्गोरिथ्म के लिए उपयोगकर्ता मार्गदर्शिका देखना चाहेंगे?",
@@ -1404,12 +1404,12 @@
     "@marked": {},
     "menu": "मेन्यू",
     "@menu": {},
-    "showNumbersOnPieces": "मोहरों पर संख्याएँ दिखाएँ",
-    "@showNumbersOnPieces": {},
     "monochrome": "एकरंगी",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "आप सामान्य सेटिंग्स की एक्सेसिबिलिटी कॉन्फ़िगरेशन में स्क्रीन रीडर सपोर्ट को चालू कर सकते हैं।",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "मोहरों पर संख्याएँ दिखाएँ",
+    "@showNumbersOnPieces": {},
     "saveImage": "छवि सहेजें",
     "@saveImage": {},
     "isAnalysisToolbarShown": "विश्लेषण टूलबार दिखाई दे रहा है",
@@ -1494,8 +1494,6 @@
     "@useOpeningBook": {},
     "currentRule": "वर्तमान",
     "@currentRule": {},
-    "ruleSet": "नियम सेट",
-    "@ruleSet": {},
     "nineMensMorris": "नौ आदमी का खेल",
     "@nineMensMorris": {},
     "twelveMensMorris": "बारह आदमी का खेल",
@@ -1514,6 +1512,8 @@
     "@mulMulan": {},
     "nerenchi": "नेरेनची",
     "@nerenchi": {},
+    "ruleSet": "नियम सेट",
+    "@ruleSet": {},
     "laskerMorris": "लैस्कर मॉरिस",
     "@laskerMorris": {},
     "oneTimeMill": "मेलनित्सा",

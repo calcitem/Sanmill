@@ -1145,21 +1145,13 @@
     "@browse": {
         "description": "Browse…"
     },
-    "gameSavedTo": "Permainan disimpan ke",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "gameFiles": "File permainan",
     "@gameFiles": {
         "description": "Game files"
     },
-    "notPlacingPhase": "Tidak menempatkan fase, tidak dapat mengubahnya.",
-    "@notPlacingPhase": {
-        "description": "Not placing phase, cannot change it."
-    },
-    "noPiecesCanBeRemoved": "Tidak ada potongan yang bisa dihilangkan.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameSavedTo": "Permainan disimpan ke",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Kosong",
     "@empty": {
@@ -1185,16 +1177,9 @@
     "@remove": {
         "description": "Remove"
     },
-    "placedCount": "Ditemp. ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "noPiecesCanBeRemoved": "Tidak ada potongan yang bisa dihilangkan.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} perlu dihapus.",
     "@pieceCountNeedToRemove": {
@@ -1202,6 +1187,17 @@
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Ditemp. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1222,6 +1218,10 @@
             }
         }
     },
+    "notPlacingPhase": "Tidak menempatkan fase, tidak dapat mengubahnya.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
     "paste": "Tempel",
     "@paste": {
         "description": "Paste"
@@ -1238,13 +1238,13 @@
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Keluar dan buka kembali aplikasi agar pengaturan diterapkan.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Layar penuh",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Keluar dan buka kembali aplikasi agar pengaturan diterapkan.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Hutan",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Bagikan GIF",
     "@shareGIF": {},
-    "duration": "Durasi",
-    "@duration": {},
     "pixelRatio": "Rasio piksel",
     "@pixelRatio": {},
+    "duration": "Durasi",
+    "@duration": {},
     "gameScreenRecorder": "Perekam layar permainan",
     "@gameScreenRecorder": {},
     "previous": "Sebelumnya",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Waktu berpikir AI diatur ke 0 berarti tidak ada batasan waktu untuk berpikir.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) adalah bentuk modifikasi dari algoritme pencarian alfa-beta yang bertujuan untuk meningkatkan efisiensi dengan menggunakan kembali hasil pencarian antara dan menggunakan tebakan awal yang baik untuk mempersempit ruang pencarian.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Perlu diketahui bahwa penyesuaian waktu berpikir AI mungkin tidak sepenuhnya tepat. Waktu berpikir yang sebenarnya mungkin lebih pendek saat tingkat kesulitan diatur ke nilai yang lebih rendah dan mungkin lebih lama saat AI sedang berpikir saat waktu habis.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Jika Anda menyetel tingkat kesulitan tinggi tetapi tidak menambah waktu berpikir AI, tingkat kesulitan sebenarnya mungkin dibatasi ke nilai yang lebih rendah karena batasan waktu berpikir. Nilai sebenarnya dapat bervariasi berdasarkan performa mesin.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) adalah bentuk modifikasi dari algoritme pencarian alfa-beta yang bertujuan untuk meningkatkan efisiensi dengan menggunakan kembali hasil pencarian antara dan menggunakan tebakan awal yang baik untuk mempersempit ruang pencarian.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) adalah algoritma pencarian untuk menemukan langkah terbaik pada posisi tertentu. Ini adalah peningkatan algoritme alfa-beta dan menggunakan pencarian jendela nol atau nol untuk mengonfirmasi bahwa suatu langkah lebih buruk atau tidak lebih buruk daripada skor yang sudah aman dari variasi utama. PVS berfokus pada gerakan yang paling menjanjikan dan menghindari pencarian cabang suboptimal yang tidak perlu, yang membantu meningkatkan efisiensi pencarian.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Algoritma alpha-beta adalah algoritma pencarian untuk menemukan langkah terbaik. Ia menggunakan prinsip minimax dan dua nilai, alfa dan beta, untuk memangkas pohon pencarian dan meningkatkan efisiensi. Alpha mewakili skor minimum yang bisa didapat komputer, sedangkan beta mewakili skor maksimum yang bisa didapat lawannya. Algoritme membantu komputer membuat keputusan yang cerdas dan efisien dalam sebuah game.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Dalam permainan ini, pemain kedua lebih mudah menang dibandingkan dengan pemain pertama.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Menurut pengalaman manusia, jika Anda mencoba untuk menang, Anda akan kalah. Alih-alih, bidik hasil imbang sebagai tujuan Anda dan hindari kekalahan. Amati lawan Anda dan dengan lembut pancing mereka ke posisi di mana mereka bisa membuat kesalahan. Ketika mereka menunjukkan kelemahan, raih kesempatan itu dan dorong dengan lembut untuk menang. Dengan cara ini, Anda bisa memenangkan permainan.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Dalam permainan ini, pemain kedua lebih mudah menang dibandingkan dengan pemain pertama.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Mengaktifkan opsi Pasif akan menyebabkan AI menjadi santai ketika memiliki keunggulan dalam posisinya, daripada secara agresif mencoba untuk menang secepat mungkin.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Jika AI mempertimbangkan mobilitas bidaknya, itu tidak hanya bertujuan untuk menangkap bidak lawan secepat mungkin, tetapi juga mempertimbangkan untuk memblokir gerakan lawan dan mencegah mereka melakukan hal yang sama.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Mengaktifkan opsi ini meningkatkan keacakan dan kesenangan game sambil menonaktifkannya dapat membantu mempelajari cara untuk mengalahkan AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Jika AI mempertimbangkan mobilitas bidaknya, itu tidak hanya bertujuan untuk menangkap bidak lawan secepat mungkin, tetapi juga mempertimbangkan untuk memblokir gerakan lawan dan mencegah mereka melakukan hal yang sama.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Saat papan penuh",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Di akhir fase penempatan, sebelum fase bergerak dimulai, tindakan akan mengikuti jika papan sudah penuh dengan bidak.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Kayu Hutan",
     "@forestWood": {},
-    "greenMeadow": "Padang Rumput Hijau",
-    "@greenMeadow": {},
-    "stonyPath": "Jalan berbatu",
-    "@stonyPath": {},
+    "darkMystery": "Misteri Gelap",
+    "@darkMystery": {},
     "midnightBlue": "Biru Tengah Malam",
     "@midnightBlue": {},
     "greenForest": "Hutan hijau",
     "@greenForest": {},
+    "greenMeadow": "Padang Rumput Hijau",
+    "@greenMeadow": {},
+    "stonyPath": "Jalan berbatu",
+    "@stonyPath": {},
     "pastelPink": "Merah Muda Pastel",
     "@pastelPink": {},
     "turquoiseSea": "Laut pirus",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Taman Bermain",
     "@playfulGarden": {},
-    "darkMystery": "Misteri Gelap",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritme Analisis Retrograde menggunakan analisis retrograde multi-nilai untuk membangun database endgame dari berbagai posisi awal, lalu menerapkan database ini untuk mengoptimalkan gameplay. Pendekatan ini termasuk dalam kategori solusi Ultra-Kuat.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Apakah Anda ingin melihat panduan pengguna untuk algoritme ini?",

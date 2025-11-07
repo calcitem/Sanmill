@@ -4,122 +4,6 @@
     "@appName": {
         "description": "The app name"
     },
-    "tipContinueMill": "Endelea kuchukua kipande cha mpinzani wako.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipCannotMoveOpponentsPieces": "Huwezi kusonga vipande vya mpinzani wako.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipSelectPieceToMove": "Chagua kipande chako ili kusonga.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "cannotImport": "Haiwezi kuleta {invalidMove}",
-    "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
-    },
-    "pleaseWait": "Tafadhali subiri.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "whoMovesFirst": "Kwanza hoja",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Binadamu",
-    "@human": {
-        "description": "Human"
-    },
-    "shufflingEnabled": "Sogeza nasibu",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "lineColor": "Rangi ya mstari wa bodi",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Mchezaji kipande 1 cha rangi",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Mchezaji 2 kipande rangi",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "player": "mchezaji",
-    "@player": {
-        "description": "player"
-    },
-    "none": "Hakuna",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Mada",
-    "@theme": {
-        "description": "Theme"
-    },
-    "experiments": "Majaribio",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "close": "Funga",
-    "@close": {
-        "description": "Close"
-    },
-    "endgameNMoveRule": "Mwisho wa mchezo sheria ya N-Move",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "threefoldRepetitionRule": "Kanuni ya kurudia mara tatu",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "cleanedUp": "Imesafishwa.",
-    "@cleanedUp": {
-        "description": "Cleaned up."
-    },
-    "remove": "Ondoa",
-    "@remove": {
-        "description": "Remove"
-    },
-    "forest": "Msitu",
-    "@forest": {},
-    "desktopImage": "Picha ya Eneo-kazi",
-    "@desktopImage": {},
-    "invalidPosition": "Nafasi batili.",
-    "@invalidPosition": {},
-    "shareGIF": "Shiriki GIF",
-    "@shareGIF": {},
-    "pixelRatio": "Uwiano wa pixel",
-    "@pixelRatio": {},
-    "duration": "Muda",
-    "@duration": {},
-    "gameScreenRecorder": "Kinasa skrini cha mchezo",
-    "@gameScreenRecorder": {},
-    "next": "Inayofuata",
-    "@next": {},
-    "skip": "Ruka",
-    "@skip": {},
-    "gotIt": "Nimeelewa",
-    "@gotIt": {},
-    "whenStalemate": "Wakati mkwamo",
-    "@whenStalemate": {},
-    "removeOpponentsPieceAndChangeSideToMove": "Ondoa moja ya vipande vya mpinzani na ubadilishe upande wa kusonga.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
-    "aiResponseDelayTime": "Wakati wa kuchelewa kwa majibu ya AI",
-    "@aiResponseDelayTime": {},
-    "skyBlue": "Bluu ya Anga",
-    "@skyBlue": {},
-    "showPositionalAdvantageIndicator": "Onyesha kiashiria cha faida ya nafasi",
-    "@showPositionalAdvantageIndicator": {},
     "welcome": "Karibu",
     "@welcome": {
         "description": "Welcome"
@@ -232,6 +116,10 @@
     "@tipMill": {
         "description": "Mill! Take your opponent's piece."
     },
+    "tipContinueMill": "Endelea kuchukua kipande cha mpinzani wako.",
+    "@tipContinueMill": {
+        "description": "Continue to take your opponent's piece."
+    },
     "tipSelectOpponentsPiece": "Chagua moja ya vipande vya mpinzani wako.",
     "@tipSelectOpponentsPiece": {
         "description": "Select one of your opponent's pieces."
@@ -243,6 +131,14 @@
     "tipCanMoveOnePoint": "Kipande kinaweza kusonga pointi 1.",
     "@tipCanMoveOnePoint": {
         "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "Huwezi kusonga vipande vya mpinzani wako.",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
+    "tipSelectPieceToMove": "Chagua kipande chako ili kusonga.",
+    "@tipSelectPieceToMove": {
+        "description": "Select your piece to move."
     },
     "tipHaveThreePiecesLeft": "Umebakisha vipande vitatu.",
     "@tipHaveThreePiecesLeft": {
@@ -298,9 +194,23 @@
     "@gameImported": {
         "description": "Game imported from the clipboard."
     },
+    "cannotImport": "Haiwezi kuleta {invalidMove}",
+    "@cannotImport": {
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
+    },
     "movesAndRulesNotMatch": "Hatua na sheria hazilingani.",
     "@movesAndRulesNotMatch": {
         "description": "Rules and moves do not match."
+    },
+    "pleaseWait": "Tafadhali subiri.",
+    "@pleaseWait": {
+        "description": "Please wait..."
     },
     "restartGame": "Ungependa kuanzisha upya mchezo wa sasa?",
     "@restartGame": {
@@ -495,6 +405,14 @@
     "@tone": {
         "description": "Tone"
     },
+    "whoMovesFirst": "Kwanza hoja",
+    "@whoMovesFirst": {
+        "description": "First move"
+    },
+    "human": "Binadamu",
+    "@human": {
+        "description": "Human"
+    },
     "ai": "AI",
     "@ai": {
         "description": "AI"
@@ -510,6 +428,10 @@
     "isAutoChangeFirstMove": "Badilisha Otomatiki Hoja ya Kwanza",
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
+    },
+    "shufflingEnabled": "Sogeza nasibu",
+    "@shufflingEnabled": {
+        "description": "Random move"
     },
     "misc": "Mbalimbali",
     "@misc": {
@@ -591,10 +513,6 @@
     "@mayFly": {
         "description": "Flying"
     },
-    "nMoveRule_Detail": "Mchezo huchorwa ikiwa hakuna kuondolewa katika idadi mahususi ya hatua.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
     "mayFly_Detail": "Ikiwa mchezaji ana vipande vitatu au vinne tu (vinavyoweza kusanidiwa) vilivyosalia, anaweza kusogeza kipande hicho hadi sehemu yoyote ya bure.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
@@ -602,6 +520,10 @@
     "nMoveRule": "Sheria ya N-hamisha",
     "@nMoveRule": {
         "description": "N-move rule"
+    },
+    "nMoveRule_Detail": "Mchezo huchorwa ikiwa hakuna kuondolewa katika idadi mahususi ya hatua.",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
     "rollback": "Rudisha nyuma",
     "@rollback": {
@@ -650,6 +572,18 @@
     "backgroundColor": "Rangi ya usuli",
     "@backgroundColor": {
         "description": "Background color"
+    },
+    "lineColor": "Rangi ya mstari wa bodi",
+    "@lineColor": {
+        "description": "Board line color"
+    },
+    "whitePieceColor": "Mchezaji kipande 1 cha rangi",
+    "@whitePieceColor": {
+        "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "Mchezaji 2 kipande rangi",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
     },
     "messageColor": "Rangi ya ujumbe",
     "@messageColor": {
@@ -716,6 +650,10 @@
     "hint": "Kidokezo",
     "@hint": {
         "description": "Hint"
+    },
+    "player": "mchezaji",
+    "@player": {
+        "description": "player"
     },
     "player1": "Mchezaji 1",
     "@player1": {
@@ -830,6 +768,14 @@
     "animationDuration": "Muda wa uhuishaji",
     "@animationDuration": {
         "description": "Animation duration"
+    },
+    "none": "Hakuna",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Mada",
+    "@theme": {
+        "description": "Theme"
     },
     "helpContent": "Mchezo unalenga kumwacha mpinzani na vipande vichache vya tatu au bila hatua za kisheria.\n\nMchezo huchorwa kiotomatiki ikiwa nafasi itatokea kwa mara ya tatu au haitoi kuondolewa katika hatua 100 za mwisho (zinazoweza kusanidiwa).\n\nMchezo unaendelea katika awamu tatu:\n\n1. Kuweka vipande kwenye pointi zilizo wazi\n2. Vipande vya kusonga kwa pointi za karibu\n3. (awamu ya hiari) Kusogeza vipande hadi sehemu yoyote iliyo wazi wakati wa kupunguza mchezaji hadi vipande vitatu\n\nKuweka\n\nMchezo huanza na bodi tupu, ambayo ina gridi ya taifa yenye pointi ishirini na nne. Wachezaji hubadilishana kuweka vipande vyao kwenye pointi zilizo wazi hadi kila mchezaji aweke vipande vyote ubaoni. Ikiwa mchezaji anaweza kuweka vipande vyake vitatu sawa, ana \"kinu\" na anaweza kuondoa moja ya vipande vya mpinzani wake kwenye ubao.\n\nKatika sheria zingine, wachezaji lazima waondoe vipande vingine kwanza kabla ya kuondoa kipande kutoka kwa kinu kilichoundwa.\n\nHuwezi kuweka vipande kwa pointi za vipande vilivyoondolewa tena katika awamu ya kuweka katika baadhi ya sheria.\n\nMara baada ya kutumia vipande vyote, wachezaji huchukua zamu kusonga.\n\nKusonga\n\nIli kusogea, mchezaji husogeza kipande chake kimoja kwenye mstari wa ubao hadi sehemu iliyo wazi karibu. Ikiwa hawezi kufanya hivyo, amepoteza mchezo. Mchezaji anayepanga vipande vyake vitatu kwenye mstari wa ubao ana kinu na anaweza kuondoa kipande kimoja cha mpinzani wake kama katika awamu ya kuweka. Mchezaji yeyote hupunguza vipande viwili, hana chaguo kuunda mills mpya, na hivyo kupoteza mchezo. Mchezaji pia anaweza kupoteza zaidi ya vipande vitatu ikiwa mpinzani wake atavizuia kusonga mbele.\n\nKuruka\n\nKatika baadhi ya vipengele vya sheria, mara mchezaji anapobakisha vipande vitatu pekee, vipande vyake vinaweza kuruka, kurukaruka, au kuruka hadi pointi zozote zilizo wazi, si zile zilizo karibu pekee.\n",
     "@helpContent": {
@@ -964,6 +910,10 @@
     "experimental": "Ni kipengele cha majaribio.",
     "@experimental": {
         "description": "This is an experimental feature."
+    },
+    "experiments": "Majaribio",
+    "@experiments": {
+        "description": "Experiments"
     },
     "ossLicenses": "Leseni za chanzo huria",
     "@ossLicenses": {
@@ -1149,6 +1099,10 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
+    "close": "Funga",
+    "@close": {
+        "description": "Close"
+    },
     "whitePiece": "Kipande nyeupe",
     "@whitePiece": {
         "description": "White piece"
@@ -1225,6 +1179,10 @@
     "@algorithm": {
         "description": "Algorithm"
     },
+    "endgameNMoveRule": "Mwisho wa mchezo sheria ya N-Move",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
     "endgameNMoveRule_Detail": "Mchezo utachorwa ikiwa mchezaji yeyote ana vipande vitatu pekee na hakuna mchezaji anayeondoa kipande ndani ya miondoko mahususi.",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
@@ -1232,6 +1190,10 @@
     "drawReasonEndgameRule50": "Mchezaji yeyote ana vipande vitatu pekee, na hakuna mchezaji anayeondoa kipande ndani ya hatua maalum.",
     "@drawReasonEndgameRule50": {
         "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "Kanuni ya kurudia mara tatu",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
     },
     "threefoldRepetitionRule_Detail": "Mchezo hutolewa ikiwa nafasi itatokea kwa mara ya tatu.",
     "@threefoldRepetitionRule_Detail": {
@@ -1308,6 +1270,14 @@
     "@clean": {
         "description": "Clean"
     },
+    "cleanedUp": "Imesafishwa.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Ondoa",
+    "@remove": {
+        "description": "Remove"
+    },
     "noPiecesCanBeRemoved": "Hakuna vipande vinaweza kuondolewa.",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
@@ -1377,8 +1347,28 @@
     "@reopenToTakeEffect": {
         "description": "Exit and reopen app for settings to take effect."
     },
+    "forest": "Msitu",
+    "@forest": {},
+    "desktopImage": "Picha ya Eneo-kazi",
+    "@desktopImage": {},
+    "invalidPosition": "Nafasi batili.",
+    "@invalidPosition": {},
+    "shareGIF": "Shiriki GIF",
+    "@shareGIF": {},
+    "pixelRatio": "Uwiano wa pixel",
+    "@pixelRatio": {},
+    "duration": "Muda",
+    "@duration": {},
+    "gameScreenRecorder": "Kinasa skrini cha mchezo",
+    "@gameScreenRecorder": {},
     "previous": "Iliyotangulia",
     "@previous": {},
+    "next": "Inayofuata",
+    "@next": {},
+    "skip": "Ruka",
+    "@skip": {},
+    "gotIt": "Nimeelewa",
+    "@gotIt": {},
     "youCanModifyRules": "Unaweza kurekebisha sheria za mchezo katika mipangilio ya sheria.",
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "Unaweza kutumia gurudumu la kipanya kubadilisha thamani katika kiteuzi.",
@@ -1423,6 +1413,8 @@
     "@secondAndFirstPlayerRemovePiece": {},
     "enteredFlyingPhase": "Sasa imeingia kwenye awamu ya kuruka, vipande vya mpinzani vinaweza kuruka kwenye sehemu yoyote tupu kwenye ubao. Unaweza kuzima utawala wa kuruka katika \"Mipangilio ya Kanuni\".",
     "@enteredFlyingPhase": {},
+    "whenStalemate": "Wakati mkwamo",
+    "@whenStalemate": {},
     "whenStalemate_Detail": "Ni hatua gani hufuata wakati hakuna kipande kinachoweza kusongeshwa?",
     "@whenStalemate_Detail": {},
     "endWithStalemateLoss": "Maliza kwa hasara iliyosimama kwa upande ambao umezuiwa.",
@@ -1433,6 +1425,10 @@
     "@removeOpponentsPieceAndMakeNextMove": {},
     "endWithStalemateDraw": "Malizia kwa sare ya bila kufungana.",
     "@endWithStalemateDraw": {},
+    "removeOpponentsPieceAndChangeSideToMove": "Ondoa moja ya vipande vya mpinzani na ubadilishe upande wa kusonga.",
+    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "Wakati wa kuchelewa kwa majibu ya AI",
+    "@aiResponseDelayTime": {},
     "aiIsDelaying": "AI kwa sasa iko katika awamu ya majibu iliyochelewa. Tafadhali subiri kwa muda kabla ya kuendelea.",
     "@aiIsDelaying": {},
     "tipCanNotRemoveNonadjacent": "Huwezi kuondoa kipande kisicho karibu.",
@@ -1463,16 +1459,20 @@
     "@violetDream": {},
     "mintChocolate": "Chokoleti ya Mint",
     "@mintChocolate": {},
+    "skyBlue": "Bluu ya Anga",
+    "@skyBlue": {},
     "playfulGarden": "Bustani ya kucheza",
     "@playfulGarden": {},
     "whatIsRetrogradeAnalysis": "Kanuni ya Uchanganuzi wa Retrograde hutumia uchanganuzi wa urejeshaji wa thamani nyingi ili kuunda hifadhidata ya mchezo wa mwisho kutoka nafasi tofauti za kuanza, kisha hutumia hifadhidata hii ili kuboresha uchezaji wa mchezo. Mbinu hii iko chini ya kategoria ya Suluhu zenye Nguvu Zaidi.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Je, ungependa kuona mwongozo wa mtumiaji wa kanuni hii?",
     "@viewAlgorithmGuide": {},
-    "perfectDatabaseDescription": "Washa chaguo hili ili kutumia hifadhidata isiyo na dosari ya mchezo inayozalishwa kupitia kanuni za kisasa. Kipengele hiki huunganisha mikakati ya kufungua na ya mwisho ili kupendekeza hatua bora. Hili ndilo chaguo linalopendelewa kwa wachezaji wanaotafuta kiwango cha juu cha usahihi katika uchezaji. Imeundwa kupitia mbinu za kimakinifu za kukokotoa, hifadhidata imeundwa ili kutoa suluhu zilizo karibu kabisa za mchezo.\n\nKumbuka: Iwapo AI itashindwa kufikia hifadhidata, itageuka kuwa kanuni za kawaida za maamuzi ya uchezaji mchezo. Hifadhidata inapopatikana, 'Kiwango cha Ugumu' huwa kisichoweza kushindwa, na 'Wakati wa Kufikiria wa AI' hupunguzwa sana. Mipangilio mingi ndani ya chaguo za 'AI's play style' itabatilishwa, kwa kuwa matokeo ya hifadhidata yana kipaumbele cha juu zaidi.\n\nKwa mwongozo wa jinsi ya kufaidika zaidi na hifadhidata hii isiyo na dosari, bofya hapa.",
-    "@perfectDatabaseDescription": {},
+    "showPositionalAdvantageIndicator": "Onyesha kiashiria cha faida ya nafasi",
+    "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Tumia hifadhidata kamili",
     "@usePerfectDatabase": {},
+    "perfectDatabaseDescription": "Washa chaguo hili ili kutumia hifadhidata isiyo na dosari ya mchezo inayozalishwa kupitia kanuni za kisasa. Kipengele hiki huunganisha mikakati ya kufungua na ya mwisho ili kupendekeza hatua bora. Hili ndilo chaguo linalopendelewa kwa wachezaji wanaotafuta kiwango cha juu cha usahihi katika uchezaji. Imeundwa kupitia mbinu za kimakinifu za kukokotoa, hifadhidata imeundwa ili kutoa suluhu zilizo karibu kabisa za mchezo.\n\nKumbuka: Iwapo AI itashindwa kufikia hifadhidata, itageuka kuwa kanuni za kawaida za maamuzi ya uchezaji mchezo. Hifadhidata inapopatikana, 'Kiwango cha Ugumu' huwa kisichoweza kushindwa, na 'Wakati wa Kufikiria wa AI' hupunguzwa sana. Mipangilio mingi ndani ya chaguo za 'AI's play style' itabatilishwa, kwa kuwa matokeo ya hifadhidata yana kipaumbele cha juu zaidi.\n\nKwa mwongozo wa jinsi ya kufaidika zaidi na hifadhidata hii isiyo na dosari, bofya hapa.",
+    "@perfectDatabaseDescription": {},
     "backgroundImage": "Picha ya nyuma",
     "@backgroundImage": {},
     "whatIsRandom": "Wakati chaguo la 'Tumia hifadhidata kamili' halijawashwa, mpangilio wa 'Nasibu' husababisha AI kusogeza vipande bila mpangilio bila kutumia kanuni zozote za uteuzi wa kusogeza. Hii kwa kawaida husababisha uchezaji dhaifu zaidi. Kinyume chake, 'Tumia hifadhidata kamili' inapowezeshwa, AI hutegemea pekee 'Hifadhi Database Kamili' kwa kufanya maamuzi, badala ya kuichanganya na algoriti za jadi za AI. Katika hali hii, hatua za AI zinategemea kabisa maudhui ya hifadhidata, ikiepuka kutegemea hesabu za wakati halisi au algoriti za utafutaji.",

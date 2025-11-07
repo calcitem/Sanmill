@@ -1137,53 +1137,60 @@
     "@loadFailed": {
         "description": "Load failed."
     },
-    "gameSavedTo": "Das Spiel wird gespeichert unter",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "filename": "Dateiname",
     "@filename": {
         "description": "File name"
-    },
-    "gameFiles": "Spiel-Dateien",
-    "@gameFiles": {
-        "description": "Game files"
     },
     "browse": "Durchsuchen…",
     "@browse": {
         "description": "Browse…"
     },
-    "noPiecesCanBeRemoved": "Es können keine Teile entfernt werden.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameFiles": "Spiel-Dateien",
+    "@gameFiles": {
+        "description": "Game files"
     },
-    "placedPieceCount": "Platzierte Stückzahl in der Platzierungsphase.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
+    "gameSavedTo": "Das Spiel wird gespeichert unter",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Leer",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
     },
-    "remove": "Entfernen",
-    "@remove": {
-        "description": "Remove"
-    },
     "noMove": "Keine Bewegung.",
     "@noMove": {
         "description": "No move."
-    },
-    "clean": "Leeren",
-    "@clean": {
-        "description": "Clean"
     },
     "restoredPosition": "Ausgangsposition wiederhergestellt.",
     "@restoredPosition": {
         "description": "Restored initial position."
     },
+    "clean": "Leeren",
+    "@clean": {
+        "description": "Clean"
+    },
     "cleanedUp": "Aufgeräumt.",
     "@cleanedUp": {
         "description": "Cleaned up."
+    },
+    "remove": "Entfernen",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Es können keine Teile entfernt werden.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Stein}=1{{count} Stein}other{{count} Steine}} müssen entfernt werden.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Pzt ({count})",
     "@placedCount": {
@@ -1196,16 +1203,9 @@
             }
         }
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Stein}=1{{count} Stein}other{{count} Steine}} müssen entfernt werden.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "placedPieceCount": "Platzierte Stückzahl in der Platzierungsphase.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "Der aktuelle Spieler hat {count} Steine platziert.",
     "@hasPlacedPieceCount": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "GIF teilen",
     "@shareGIF": {},
-    "duration": "Dauer",
-    "@duration": {},
     "pixelRatio": "Pixelverhältnis",
     "@pixelRatio": {},
+    "duration": "Dauer",
+    "@duration": {},
     "gameScreenRecorder": "Bildschirmrekorder für Spiele",
     "@gameScreenRecorder": {},
     "previous": "Vorherige",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "KI-Denkzeit auf 0 gesetzt bedeutet, dass es keine Zeitbegrenzung für das Denken gibt.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) ist eine modifizierte Form des Alpha-Beta-Suchalgorithmus, der darauf abzielt, die Effizienz zu verbessern, indem Zwischenergebnisse wiederverwendet werden und eine gute Anfangsschätzung verwendet wird, um den Suchraum einzugrenzen.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Bitte beachte, dass die Anpassung der KI-Denkzeit möglicherweise nicht ganz genau ist. Die tatsächliche Bedenkzeit kann kürzer sein, wenn der Schwierigkeitsgrad auf einen niedrigeren Wert eingestellt ist, und kann länger sein, wenn die KI mitten im Denken ist, wenn die Zeit abläuft.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Wenn Sie den Schwierigkeitsgrad hoch einstellen, aber die KI-Denkzeit nicht erhöhen, kann der tatsächliche Schwierigkeitsgrad aufgrund der Bedenkzeitbeschränkung auf einen niedrigeren Wert begrenzt werden. Der tatsächliche Wert kann je nach Leistung der Maschine variieren.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) ist eine modifizierte Form des Alpha-Beta-Suchalgorithmus, der darauf abzielt, die Effizienz zu verbessern, indem Zwischenergebnisse wiederverwendet werden und eine gute Anfangsschätzung verwendet wird, um den Suchraum einzugrenzen.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) ist ein Suchalgorithmus, um den besten Zug in einer bestimmten Stellung zu finden. Es ist eine Verbesserung des Alpha-Beta-Algorithmus und verwendet Null- oder Nullfenstersuchen, um zu bestätigen, dass ein Zug schlechter oder nicht schlechter ist als ein bereits sicheres Ergebnis aus der Hauptvariante. PVS konzentriert sich auf die vielversprechendsten Züge und vermeidet unnötige Suchen suboptimaler Verzweigungen, wodurch die Effizienz der Suche verbessert wird.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Der Alpha-Beta-Algorithmus ist ein Suchalgorithmus, um den besten Zug zu finden. Es verwendet das Mini-Max-Prinzip und zwei Werte, Alpha und Beta, um den Suchbaum zu verkürzen und die Effizienz zu steigern. Alpha stellt die minimale Punktzahl dar, die der Computer sicher erreichen kann, während Beta die maximale Punktzahl darstellt, die sein Gegner erzielen kann. Der Algorithmus hilft dem Computer, intelligente und effiziente Entscheidungen in einem Spiel zu treffen.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "In diesem Spiel hat der zweite Spieler leichter die Chance zu gewinnen als der erste.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Nach menschlicher Erfahrung werden Sie verlieren, wenn Sie versuchen zu gewinnen. Wir empfehlen stattdessen ein Unentschieden als Ziel anzustreben und es zu vermeiden es, das Spiel zu verlieren. Beobachten Sie Ihren Gegner und locken Sie ihn sanft in eine Position, in der er Fehler machen kann. Wenn sie Schwäche zeigen, nutzen Sie die Gelegenheit und drängen Sie sanft auf den Sieg. Auf diese Weise können Sie das Spiel gewinnen.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "In diesem Spiel hat der zweite Spieler leichter die Chance zu gewinnen als der erste.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Die Aktivierung der passiven Option bewirkt, dass sich die KI entspannt, wenn sie einen Vorteil in der Position hat, anstatt aggressiv zu versuchen, so schnell wie möglich zu gewinnen.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Wenn die KI die Beweglichkeit ihrer Steine berücksichtigt, wird sie nicht nur versuchen, die Steine des Gegners so schnell wie möglich zu erobern, sondern auch die Bewegungen des Gegners blockieren und verhindern, dass dieser das Gleiche tut.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Das Aktivieren dieser Option erhöht die Zufälligkeit und den Spaß des Spiels, während das Deaktivieren dazu beitragen kann, Wege zu finden, die KI zu schlagen.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Wenn die KI die Beweglichkeit ihrer Steine berücksichtigt, wird sie nicht nur versuchen, die Steine des Gegners so schnell wie möglich zu erobern, sondern auch die Bewegungen des Gegners blockieren und verhindern, dass dieser das Gleiche tut.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Wenn das Brett voll ist",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Am Ende der Platzierungsphase, bevor die Bewegungsphase beginnt, folgt die Aktion, wenn der Spielplan voller Steine ist.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Waldholz",
     "@forestWood": {},
-    "greenMeadow": "Grüne Wiese",
-    "@greenMeadow": {},
-    "stonyPath": "Steiniger Weg",
-    "@stonyPath": {},
+    "darkMystery": "Dunkles Geheimnis",
+    "@darkMystery": {},
     "midnightBlue": "Mitternachtsblau",
     "@midnightBlue": {},
     "greenForest": "Grüner Wald",
     "@greenForest": {},
+    "greenMeadow": "Grüne Wiese",
+    "@greenMeadow": {},
+    "stonyPath": "Steiniger Weg",
+    "@stonyPath": {},
     "pastelPink": "Pastellrosa",
     "@pastelPink": {},
     "turquoiseSea": "Türkises Meer",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Verspielter Garten",
     "@playfulGarden": {},
-    "darkMystery": "Dunkles Geheimnis",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Der Retrograde-Analyse-Algorithmus verwendet eine mehrwertige Retrograde-Analyse, um eine Endspieldatenbank aus verschiedenen Startpositionen zu erstellen, und wendet diese Datenbank dann an, um das Gameplay zu optimieren. Dieser Ansatz fällt in die Kategorie der ultrastarken Lösungen.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Möchten Sie das Benutzerhandbuch für diesen Algorithmus anzeigen?",

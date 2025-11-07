@@ -1,101 +1,5 @@
 {
     "@@locale": "he",
-    "difficulty": "קושי",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "השחקן השני מפסיד כשהלוח מלא",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "nMoveRule": "כלל N-move",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "boardInnerLineWidth": "רוחב הקו הפנימי של הלוח",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "player": "שחקן",
-    "@player": {
-        "description": "player"
-    },
-    "results": "תוצאות",
-    "@results": {
-        "description": "Results"
-    },
-    "moveNow": "זוז עכשיו",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "animationDuration": "משך הנפשה",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "versionInfo": "מידע על גרסה",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "רישיון",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "קוד מקור",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "language": "שפה",
-    "@language": {
-        "description": "Languages"
-    },
-    "mayMoveInPlacingPhase": "החלקים יכולים לנוע בשלב ההצבה",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "algorithm": "אַלגוֹרִיתְם",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "restoredPosition": "מיקום התחלתי משוחזר.",
-    "@restoredPosition": {
-        "description": "Restored initial position."
-    },
-    "clean": "לְנַקוֹת",
-    "@clean": {
-        "description": "Clean"
-    },
-    "pixelRatio": "יחס פיקסלים",
-    "@pixelRatio": {},
-    "duration": "מֶשֶׁך",
-    "@duration": {},
-    "gameScreenRecorder": "מקליט מסך משחק",
-    "@gameScreenRecorder": {},
-    "previous": "קודם",
-    "@previous": {},
-    "next": "הַבָּא",
-    "@next": {},
-    "skip": "לדלג",
-    "@skip": {},
-    "gotIt": "הבנת",
-    "@gotIt": {},
-    "whatIsMtdf": "MTD(f) הוא צורה שונה של אלגוריתם החיפוש אלפא-ביתא שמטרתה לשפר את היעילות על ידי שימוש חוזר בתוצאות חיפוש ביניים ושימוש בניחוש ראשוני טוב כדי לצמצם את מרחב החיפוש.",
-    "@whatIsMtdf": {},
-    "noteAiThinkingTimeMayNotBePrecise": "אנא שים לב שהתאמת זמן החשיבה של AI עשויה להיות לא מדויקת לחלוטין. זמן החשיבה בפועל עשוי להיות קצר יותר כאשר רמת הקושי מוגדרת לערך נמוך יותר ועשוי להיות ארוך יותר כאשר ה-AI נמצא באמצע המחשבה כאשר הזמן אוזל.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
-    "whenBoardIsFull": "כשהלוח מלא",
-    "@whenBoardIsFull": {},
-    "agreeToDraw": "שני הצדדים מסכימים לתיקו.",
-    "@agreeToDraw": {},
-    "whenStalemate": "כאשר קיפאון",
-    "@whenStalemate": {},
-    "changeSideToMove": "שנה את הצד כדי לזוז.",
-    "@changeSideToMove": {},
-    "showPositionalAdvantageIndicator": "הצג מחוון יתרון מיקום",
-    "@showPositionalAdvantageIndicator": {},
     "appName": "טחנה",
     "@appName": {
         "description": "The app name"
@@ -481,6 +385,10 @@
     "@moveTime": {
         "description": "AI thinking time"
     },
+    "difficulty": "קושי",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
     "playSounds": "אפקטים קוליים",
     "@playSounds": {
         "description": "Sound effects"
@@ -585,6 +493,10 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
+    "isWhiteLoseButNotDrawWhenBoardFull": "השחקן השני מפסיד כשהלוח מלא",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
     "isWhiteLoseButNotDrawWhenBoardFull_Detail": "כאשר הלוח מלא בסוף שלב ההצבה, הצד שממקם ראשון מפסיד במשחק. אחרת, המשחק הוא תיקו.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
@@ -604,6 +516,10 @@
     "mayFly_Detail": "אם לשחקן נותרו רק שלושה או ארבעה חלקים (ניתנים להגדרה), היא יכולה להעביר את הכלי לכל נקודה פנויה.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "כלל N-move",
+    "@nMoveRule": {
+        "description": "N-move rule"
     },
     "nMoveRule_Detail": "המשחק מוגרל אם לא הייתה הסרה במספר מסוים של מהלכים.",
     "@nMoveRule_Detail": {
@@ -693,6 +609,10 @@
     "@boardBorderLineWidth": {
         "description": "Board borderline width"
     },
+    "boardInnerLineWidth": "רוחב הקו הפנימי של הלוח",
+    "@boardInnerLineWidth": {
+        "description": "Board inner line width"
+    },
     "pieceWidth": "רוחב חתיכה",
     "@pieceWidth": {
         "description": "Piece width"
@@ -730,6 +650,10 @@
     "hint": "רֶמֶז",
     "@hint": {
         "description": "Hint"
+    },
+    "player": "שחקן",
+    "@player": {
+        "description": "player"
     },
     "player1": "שחקן 1",
     "@player1": {
@@ -774,6 +698,10 @@
     "totalGames": "סך הכל משחקים",
     "@totalGames": {
         "description": "Total games"
+    },
+    "results": "תוצאות",
+    "@results": {
+        "description": "Results"
     },
     "left": "שמאלה",
     "@left": {
@@ -821,6 +749,10 @@
     "@stepForwardAll": {
         "description": "Step forward all"
     },
+    "moveNow": "זוז עכשיו",
+    "@moveNow": {
+        "description": "Move now"
+    },
     "done": "בוצע.",
     "@done": {
         "description": "Done."
@@ -833,6 +765,10 @@
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
     },
+    "animationDuration": "משך הנפשה",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
     "none": "אף אחד",
     "@none": {
         "description": "None"
@@ -844,6 +780,22 @@
     "helpContent": "המשחק נועד להשאיר את היריב עם פחות משלושה כלים או ללא מהלכים חוקיים.\n\nהמשחק מושך אוטומטית אם עמדה מתרחשת בפעם השלישית או לא מבצעת הסרה ב-100 המהלכים האחרונים (ניתנים להגדרה).\n\nהמשחק מתקדם בשלושה שלבים:\n\n1. הנחת חלקים על נקודות פנויות\n2. העברת חלקים לנקודות סמוכות\n3. (שלב אופציונלי) העברת כלים לכל נקודה פנויה בעת צמצום השחקן לשלושה כלים\n\nהַצָבָה\n\nהמשחק מתחיל עם לוח ריק, המורכב מרשת עם עשרים וארבע נקודות. שחקנים מתחלפים ומניחים את הכלים שלהם בנקודות פנויות עד שכל שחקן הניח את כל הכלים על הלוח. אם שחקן יכול לשים שלוש מהכלים שלו ישר, יש לו \"טחנה\" והוא רשאי להסיר את אחת הכלים של יריבו מהלוח.\n\nבחוקים מסוימים, שחקנים חייבים להסיר תחילה כל חלק אחר לפני הסרת חתיכה מטחנה שנוצרה.\n\nאתה לא יכול למקם את החלקים לנקודות של החלקים שהוסרו שוב בשלב ההצבה בחוקים מסוימים.\n\nלאחר השימוש בכל החלקים, השחקנים מתחלפים בתנועה.\n\nמעבר דירה\n\nכדי לזוז, שחקן מזיז את אחד הכלים שלו לאורך קו לוח לנקודה סמוכה פנויה. אם הוא לא יכול לעשות זאת, הוא הפסיד במשחק. לשחקן שמיישר שלוש מהכלים שלו על קו לוח יש טחנה והוא רשאי להסיר את אחת מהכלים של יריבו כמו בשלב ההצבה. כל שחקן מפחית לשני חלקים, אין לו אפשרות ליצור טחנות חדשות, ובכך מפסיד את המשחק. שחקן יכול גם להפסיד כאשר יותר משלושה כלים אם היריב שלו חוסם אותם מלנוע.\n\nעַף\n\nבגרסאות מסוימות של הכללים, ברגע שלשחקן נותרו רק שלושה חלקים, הכלים שלו יכולים לעוף, לקפוץ או לקפוץ לכל נקודה פנויה, לא רק לסמוכות.\n",
     "@helpContent": {
         "description": "Help Content"
+    },
+    "versionInfo": "מידע על גרסה",
+    "@versionInfo": {
+        "description": "Version info"
+    },
+    "eula": "EULA",
+    "@eula": {
+        "description": "EULA"
+    },
+    "license": "רישיון",
+    "@license": {
+        "description": "License"
+    },
+    "sourceCode": "קוד מקור",
+    "@sourceCode": {
+        "description": "Source code"
     },
     "appVersion": "גרסת האפליקציה",
     "@appVersion": {
@@ -967,9 +919,17 @@
     "@ossLicenses": {
         "description": "Open source licenses"
     },
+    "language": "שפה",
+    "@language": {
+        "description": "Languages"
+    },
     "defaultLanguage": "שפת ברירת מחדל",
     "@defaultLanguage": {
         "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "החלקים יכולים לנוע בשלב ההצבה",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
     },
     "mayMoveInPlacingPhase_Detail": "אין שלבי מיקום ותנועה ברורים, כלומר, השחקנים יכולים להחליט בכל מהלך אם הם רוצים להניח כלים על הלוח או להזיז את אחד הכלים שלהם (כל עוד יש להם כלים שנותרו למקם).",
     "@mayMoveInPlacingPhase_Detail": {
@@ -1215,6 +1175,10 @@
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
     },
+    "algorithm": "אַלגוֹרִיתְם",
+    "@algorithm": {
+        "description": "Algorithm"
+    },
     "endgameNMoveRule": "סוף המשחק N-Move כלל",
     "@endgameNMoveRule": {
         "description": "Endgame N-Move rule"
@@ -1297,6 +1261,14 @@
     "noMove": "אין מהלך.",
     "@noMove": {
         "description": "No move."
+    },
+    "restoredPosition": "מיקום התחלתי משוחזר.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "לְנַקוֹת",
+    "@clean": {
+        "description": "Clean"
     },
     "cleanedUp": "ניקה.",
     "@cleanedUp": {
@@ -1383,12 +1355,30 @@
     "@invalidPosition": {},
     "shareGIF": "שתף GIF",
     "@shareGIF": {},
+    "pixelRatio": "יחס פיקסלים",
+    "@pixelRatio": {},
+    "duration": "מֶשֶׁך",
+    "@duration": {},
+    "gameScreenRecorder": "מקליט מסך משחק",
+    "@gameScreenRecorder": {},
+    "previous": "קודם",
+    "@previous": {},
+    "next": "הַבָּא",
+    "@next": {},
+    "skip": "לדלג",
+    "@skip": {},
+    "gotIt": "הבנת",
+    "@gotIt": {},
     "youCanModifyRules": "אתה יכול לשנות את כללי המשחק בהגדרות הכללים.",
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "אתה יכול להשתמש בגלגל העכבר כדי לשנות את הערך בבורר.",
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "זמן חשיבה בינה מלאכותית מוגדר ל-0 אומר שאין מגבלת זמן לחשיבה.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) הוא צורה שונה של אלגוריתם החיפוש אלפא-ביתא שמטרתה לשפר את היעילות על ידי שימוש חוזר בתוצאות חיפוש ביניים ושימוש בניחוש ראשוני טוב כדי לצמצם את מרחב החיפוש.",
+    "@whatIsMtdf": {},
+    "noteAiThinkingTimeMayNotBePrecise": "אנא שים לב שהתאמת זמן החשיבה של AI עשויה להיות לא מדויקת לחלוטין. זמן החשיבה בפועל עשוי להיות קצר יותר כאשר רמת הקושי מוגדרת לערך נמוך יותר ועשוי להיות ארוך יותר כאשר ה-AI נמצא באמצע המחשבה כאשר הזמן אוזל.",
+    "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "אם תגדיר את רמת הקושי גבוה אך לא תגדיל את זמן החשיבה של AI, רמת הקושי בפועל עשויה להיות מוגבלת לערך נמוך יותר בגלל אילוץ זמן החשיבה. הערך בפועל עשוי להשתנות בהתאם לביצועי המכשיר.",
     "@noteActualDifficultyLevelMayBeLimited": {},
     "whatIsPvs": "PVS (Principal Variation Search) הוא אלגוריתם חיפוש למציאת המהלך הטוב ביותר בעמדה נתונה. זהו שיפור של אלגוריתם אלפא-ביתא ומשתמש בחיפושי חלון null או אפס כדי לאשר שהמהלך גרוע או לא גרוע יותר מאשר ציון בטוח כבר מהווריאציה הראשית. PVS מתמקדת במהלכים המבטיחים ביותר ונמנעת מחיפושים מיותרים של סניפים לא אופטימליים, מה שעוזר לשפר את יעילות החיפוש.",
@@ -1405,10 +1395,14 @@
     "@moveRandomlyDetail": {},
     "considerMobilityOfPiecesDetail": "אם ה-AI מחשיב את הניידות של הכלים שלו, הוא לא רק ישאף ללכוד את הכלים של היריב כמה שיותר מהר, אלא גם ישקול לחסום את התנועות של היריב ולמנוע מהם לעשות את אותו הדבר.",
     "@considerMobilityOfPiecesDetail": {},
+    "whenBoardIsFull": "כשהלוח מלא",
+    "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "בסוף שלב ההצבה, לפני תחילת שלב ההזזה, הפעולה תופיע אם הלוח מלא בחלקים.",
     "@whenBoardIsFull_Detail": {},
     "sideToMoveRemovePiece": "השחקן שזז ראשון בשלב התנועה מסיר את אחד הכלים של היריב.",
     "@sideToMoveRemovePiece": {},
+    "agreeToDraw": "שני הצדדים מסכימים לתיקו.",
+    "@agreeToDraw": {},
     "takeOpponentsPiece": "קח את אחד הכלים של היריב שלך.",
     "@takeOpponentsPiece": {},
     "firstPlayerLose": "השחקן הראשון מפסיד במשחק.",
@@ -1419,10 +1413,14 @@
     "@secondAndFirstPlayerRemovePiece": {},
     "enteredFlyingPhase": "כעת נכנסו לשלב הטיסה, הכלים של היריב יכולים לקפוץ לכל נקודה ריקה על הלוח. אתה יכול לבטל את כלל המעוף ב\"הגדרות כללים\".",
     "@enteredFlyingPhase": {},
+    "whenStalemate": "כאשר קיפאון",
+    "@whenStalemate": {},
     "whenStalemate_Detail": "איזו פעולה תופיע כאשר לא ניתן להזיז כל חלק?",
     "@whenStalemate_Detail": {},
     "endWithStalemateLoss": "סיים עם הפסד קיפאון לצד שנחסם.",
     "@endWithStalemateLoss": {},
+    "changeSideToMove": "שנה את הצד כדי לזוז.",
+    "@changeSideToMove": {},
     "removeOpponentsPieceAndMakeNextMove": "הסר את אחד הכלים של היריב ועשה את המהלך הבא.",
     "@removeOpponentsPieceAndMakeNextMove": {},
     "endWithStalemateDraw": "סיים בתיקו מבוי סתום.",
@@ -1469,6 +1467,8 @@
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "האם תרצה לראות את המדריך למשתמש עבור אלגוריתם זה?",
     "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "הצג מחוון יתרון מיקום",
+    "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "השתמש במסד נתונים מושלם",
     "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "אפשר אפשרות זו כדי להשתמש במסד נתונים ללא רבב של משחקים שנוצר באמצעות אלגוריתמים חדשניים. תכונה זו משלבת גם אסטרטגיות פתיחה וגם אסטרטגיות סיום כדי להציע מהלכים אופטימליים. זוהי הבחירה המועדפת על שחקנים שמחפשים את רמת הדיוק הגבוהה ביותר במשחק. נוצר באמצעות טכניקות חישוב מדוקדקות, מסד הנתונים נועד להציע פתרונות משחק כמעט מושלמים.\n\nהערה: אם הבינה המלאכותית לא מצליחה לגשת למסד הנתונים, היא תפנה לאלגוריתמים קונבנציונליים להחלטות משחק. כאשר מסד הנתונים זמין, 'רמת הקושי' הופכת כמעט ללא תחרות, ו-'AI Thinking Time' חווה ירידה דרסטית. הגדרות רבות באפשרויות 'סגנון המשחק של AI' יעקפו, מכיוון שתוצאות מסד הנתונים הן בעדיפות הגבוהה ביותר.\n\nלהדרכה כיצד להפיק את המרב ממסד הנתונים ללא רבב זה, לחץ כאן.",
@@ -1505,12 +1505,12 @@
     "@marked": {},
     "menu": "תַפְרִיט",
     "@menu": {},
-    "showNumbersOnPieces": "הצג מספרים על הקלטות",
-    "@showNumbersOnPieces": {},
     "monochrome": "מונוכרום",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "תוכל להפעיל את תמיכת קורא המסך בהגדרות הנגישות בהגדרות הכלליות.",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "הצג מספרים על הקלטות",
+    "@showNumbersOnPieces": {},
     "saveImage": "שמור תמונה",
     "@saveImage": {},
     "isAnalysisToolbarShown": "הצג סרגל כלים לניתוח",

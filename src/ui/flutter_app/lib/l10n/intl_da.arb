@@ -1133,10 +1133,6 @@
             }
         }
     },
-    "gameFiles": "Spil filer",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "loadFailed": "Indlæsning mislykkedes.",
     "@loadFailed": {
         "description": "Load failed."
@@ -1149,41 +1145,52 @@
     "@browse": {
         "description": "Browse…"
     },
+    "gameFiles": "Spil filer",
+    "@gameFiles": {
+        "description": "Game files"
+    },
     "gameSavedTo": "Spillet er gemt til",
     "@gameSavedTo": {
         "description": "The game is saved to"
-    },
-    "cleanedUp": "Ryddet op.",
-    "@cleanedUp": {
-        "description": "Cleaned up."
-    },
-    "noPiecesCanBeRemoved": "Ingen stykker kan fjernes.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
-    },
-    "placedPieceCount": "Placeret styktal i placeringsfasen.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "empty": "Tom",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
     },
-    "remove": "Fjerne",
-    "@remove": {
-        "description": "Remove"
-    },
     "noMove": "Ingen bevægelse.",
     "@noMove": {
         "description": "No move."
+    },
+    "restoredPosition": "Gendannet udgangsposition.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
     },
     "clean": "Ren",
     "@clean": {
         "description": "Clean"
     },
-    "restoredPosition": "Gendannet udgangsposition.",
-    "@restoredPosition": {
-        "description": "Restored initial position."
+    "cleanedUp": "Ryddet op.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Fjerne",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Ingen stykker kan fjernes.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} skal fjernes.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Placeret ({count})",
     "@placedCount": {
@@ -1196,16 +1203,9 @@
             }
         }
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} skal fjernes.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "placedPieceCount": "Placeret styktal i placeringsfasen.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "Den nuværende spiller har placeret {count} brikker.",
     "@hasPlacedPieceCount": {
@@ -1222,13 +1222,13 @@
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
     },
-    "pasteDone": "Pastaen er færdig.",
-    "@pasteDone": {
-        "description": "The paste is done."
-    },
     "paste": "sæt ind",
     "@paste": {
         "description": "Paste"
+    },
+    "pasteDone": "Pastaen er færdig.",
+    "@pasteDone": {
+        "description": "The paste is done."
     },
     "cannotPaste": "Kan ikke indsætte.",
     "@cannotPaste": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Del GIF",
     "@shareGIF": {},
-    "duration": "Varighed",
-    "@duration": {},
     "pixelRatio": "Pixelforhold",
     "@pixelRatio": {},
+    "duration": "Varighed",
+    "@duration": {},
     "gameScreenRecorder": "Spil skærmoptager",
     "@gameScreenRecorder": {},
     "previous": "Tidligere",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Tænketid sat til 0 betyder, at der ikke er nogen tidsbegrænsning for tænkning.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) er en modificeret form af alfa-beta-søgealgoritmen, der har til formål at forbedre effektiviteten ved at genbruge mellemliggende søgeresultater og bruge et godt indledende gæt til at indsnævre søgerummet.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Vær opmærksom på, at AI-tænketidsjusteringen muligvis ikke er helt præcis. Den faktiske tænketid kan være kortere, når sværhedsgraden er sat til en lavere værdi og kan være længere, når AI'en er midtvejs, når tiden løber ud.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Hvis du indstiller sværhedsgraden højt, men ikke øger AI-tænketiden, kan det faktiske sværhedsgrad være begrænset til en lavere værdi på grund af tænketidsbegrænsningen. Den faktiske værdi kan variere baseret på maskinens ydeevne.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) er en modificeret form af alfa-beta-søgealgoritmen, der har til formål at forbedre effektiviteten ved at genbruge mellemliggende søgeresultater og bruge et godt indledende gæt til at indsnævre søgerummet.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) er en søgealgoritme til at finde det bedste træk i en given position. Det er en forbedring af alfa-beta-algoritmen og bruger nul- eller nul-vinduesøgninger til at bekræfte, at et træk er værre eller ikke værre end en allerede sikker score fra hovedvariationen. PVS fokuserer på de mest lovende træk og undgår unødvendige søgninger af suboptimale grene, hvilket er med til at forbedre effektiviteten af søgningen.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta-algoritmen er en søgealgoritme til at finde det bedste træk. Den bruger minimax-princippet og to værdier, alfa og beta, til at beskære søgetræet og øge effektiviteten. Alfa repræsenterer den mindste score, som computeren er sikker på, den kan få, mens beta repræsenterer den maksimale score, dens modstander kan få. Algoritmen hjælper computeren med at træffe smarte, effektive beslutninger i et spil.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "I dette spil er det lettere for den anden spiller at vinde sammenlignet med den første spiller.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Ifølge menneskelig erfaring, hvis du forsøger at vinde, vil du tabe. Sigt i stedet efter uafgjort som dit mål og undgå at tabe spillet. Observer din modstander og lok dem forsigtigt ind i en position, hvor de kan begå fejl. Når de viser svaghed, så gribe chancen og skub forsigtigt til sejren. På denne måde kan du vinde spillet.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "I dette spil er det lettere for den anden spiller at vinde sammenlignet med den første spiller.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Aktivering af den passive mulighed vil få AI til at slappe af, når den har en fordel i positionen, i stedet for aggressivt at forsøge at vinde så hurtigt som muligt.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Hvis AI'en overvejer mobiliteten af sine brikker, vil den ikke kun sigte mod at fange modstanderens brikker så hurtigt som muligt, men også overveje at blokere modstanderens bevægelser og forhindre dem i at gøre det samme.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Aktivering af denne mulighed øger tilfældigheden og sjovt ved spillet, mens deaktivering af det kan hjælpe med at studere måder at slå AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Hvis AI'en overvejer mobiliteten af sine brikker, vil den ikke kun sigte mod at fange modstanderens brikker så hurtigt som muligt, men også overveje at blokere modstanderens bevægelser og forhindre dem i at gøre det samme.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Når bestyrelsen er fuld",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Ved slutningen af placeringsfasen, før flyttefasen begynder, følger handlingen, hvis brættet er fyldt med brikker.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Skov Skov",
     "@forestWood": {},
-    "greenMeadow": "Grøn Eng",
-    "@greenMeadow": {},
-    "stonyPath": "Stenet sti",
-    "@stonyPath": {},
+    "darkMystery": "Mørkt mysterium",
+    "@darkMystery": {},
     "midnightBlue": "Midnatsblå",
     "@midnightBlue": {},
     "greenForest": "Grøn Skov",
     "@greenForest": {},
+    "greenMeadow": "Grøn Eng",
+    "@greenMeadow": {},
+    "stonyPath": "Stenet sti",
+    "@stonyPath": {},
     "pastelPink": "Pastel Pink",
     "@pastelPink": {},
     "turquoiseSea": "Turkis hav",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Legefuld have",
     "@playfulGarden": {},
-    "darkMystery": "Mørkt mysterium",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Retrogradanalysealgoritmen bruger retrogradanalyse med flere værdier til at bygge en slutspilsdatabase fra forskellige startpositioner og anvender derefter denne database til at optimere gameplayet. Denne tilgang falder ind under kategorien Ultra-Strong-løsninger.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Vil du se brugervejledningen til denne algoritme?",
@@ -1404,12 +1404,12 @@
     "@marked": {},
     "menu": "Menu",
     "@menu": {},
-    "showNumbersOnPieces": "Vis numre på brikker",
-    "@showNumbersOnPieces": {},
     "monochrome": "Monokrom",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "Du kan aktivere skærmoplæserstøtte i indstillingerne for Generelle indstillinger under Tilgængelighed.",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Vis numre på brikker",
+    "@showNumbersOnPieces": {},
     "saveImage": "Gem billede",
     "@saveImage": {},
     "isAnalysisToolbarShown": "Vis analyseværktøjslinje",

@@ -182,6 +182,10 @@
     "@newGame": {
         "description": "New game"
     },
+    "importGame": "Імпарт гульні",
+    "@importGame": {
+        "description": "Import game"
+    },
     "exportGame": "Экспарт гульні",
     "@exportGame": {
         "description": "Export game"
@@ -339,6 +343,14 @@
     "@youLose": {
         "description": "You Lose!"
     },
+    "analyze": "Прааналізаваць",
+    "@analyze": {
+        "description": "Analyze"
+    },
+    "about": "Аб",
+    "@about": {
+        "description": "About"
+    },
     "version": "Версія: {versionNumber}",
     "@version": {
         "description": "Version",
@@ -457,9 +469,17 @@
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
+    "isDefenderMoveFirst": "Першым ходзіць другі гулец",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
     "isDefenderMoveFirst_Detail": "Гулец, які ідзе другім у фазе размяшчэння, ідзе першым у фазе перамяшчэння.",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
+    },
+    "mayRemoveMultiple": "Мульты-выдаліць",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
     },
     "mayRemoveMultiple_Detail": "Калі гулец закрывае больш за адзін млын адначасова, ён выдаляе колькасць млыноў, якія ён зачыніў.",
     "@mayRemoveMultiple_Detail": {
@@ -473,6 +493,10 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
+    "isWhiteLoseButNotDrawWhenBoardFull": "Другі гулец прайграе, калі дошка поўная",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
     "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Калі дошка запоўнена ў канцы фазы размяшчэння, бок, які ставіць першым, прайграе гульню. У адваротным выпадку гульня нічыя.",
     "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
         "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
@@ -484,6 +508,10 @@
     "isLoseButNotChangeSideWhenNoWay_Detail": "Гулец прайграе, калі яго супернік заблакуе іх так, што іх немагчыма перасунуць. Змяніце бок, каб рухацца, калі гэты параметр адключаны.",
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+    },
+    "mayFly": "Палёт",
+    "@mayFly": {
+        "description": "Flying"
     },
     "mayFly_Detail": "Калі ў гульца засталіся толькі тры ці чатыры (канфігуруемыя) фігуры, ён можа перамясціць фігуру ў любую вольную кропку.",
     "@mayFly_Detail": {
@@ -529,6 +557,10 @@
     "@ruleSettings": {
         "description": "Rule Settings"
     },
+    "color": "Колер",
+    "@color": {
+        "description": "Color"
+    },
     "boardColor": "Колер дошкі",
     "@boardColor": {
         "description": "Board color"
@@ -548,6 +580,22 @@
     "whitePieceColor": "Гулец 1 колер фігуры",
     "@whitePieceColor": {
         "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "Гулец 2 штукі колер",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
+    },
+    "messageColor": "Колер паведамлення",
+    "@messageColor": {
+        "description": "Message color"
+    },
+    "isPieceCountInHandShown": "Паказаць колькасць неразмешчаных фігур",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
+    },
+    "isNotationsShown": "Пакажыце абазначэнні на дошцы",
+    "@isNotationsShown": {
+        "description": "Show notations on board"
     },
     "isHistoryNavigationToolbarShown": "Паказаць панэль інструментаў навігацыі па гісторыі",
     "@isHistoryNavigationToolbarShown": {
@@ -716,6 +764,10 @@
     "crackMill_Detail": "Калі ў гульца ёсць толькі фігуры ў млынах, фігуры ў млынах не будуць заблакіраваны для выдалення.",
     "@crackMill_Detail": {
         "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "animationDuration": "Працягласць анімацыі",
+    "@animationDuration": {
+        "description": "Animation duration"
     },
     "none": "Няма",
     "@none": {
@@ -1007,6 +1059,10 @@
     "@threads": {
         "description": "Threads"
     },
+    "getInvolved": "Прыняць удзел",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
     "helpImproveTranslate": "Дапамажыце палепшыць пераклад",
     "@helpImproveTranslate": {
         "description": "Help improve translate"
@@ -1123,6 +1179,10 @@
     "@algorithm": {
         "description": "Algorithm"
     },
+    "endgameNMoveRule": "Правіла N-ходу ў эндшпілі",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
     "endgameNMoveRule_Detail": "Гульня залічваецца ўнічыю, калі ў любога з гульцоў ёсць толькі тры фігуры і ні адзін з гульцоў не выдаляе фігуру за пэўныя хады.",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
@@ -1213,6 +1273,10 @@
     "cleanedUp": "Пачысцілі.",
     "@cleanedUp": {
         "description": "Cleaned up."
+    },
+    "remove": "Выдаліць",
+    "@remove": {
+        "description": "Remove"
     },
     "noPiecesCanBeRemoved": "Немагчыма выдаліць кавалкі.",
     "@noPiecesCanBeRemoved": {
@@ -1363,6 +1427,8 @@
     "@endWithStalemateDraw": {},
     "removeOpponentsPieceAndChangeSideToMove": "Выдаліце адну з фігур суперніка і зменіце бок, каб рухацца.",
     "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "Час затрымкі адказу AI",
+    "@aiResponseDelayTime": {},
     "aiIsDelaying": "ШІ зараз знаходзіцца ў фазе адкладзенага рэагавання. Калі ласка, пачакайце некаторы час, перш чым працягваць.",
     "@aiIsDelaying": {},
     "tipCanNotRemoveNonadjacent": "Вы не можаце выдаліць несуседнюю частку.",
@@ -1403,72 +1469,6 @@
     "@viewAlgorithmGuide": {},
     "showPositionalAdvantageIndicator": "Паказаць індыкатар пазіцыйнай перавагі",
     "@showPositionalAdvantageIndicator": {},
-    "importGame": "Імпарт гульні",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "analyze": "Прааналізаваць",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "about": "Аб",
-    "@about": {
-        "description": "About"
-    },
-    "isDefenderMoveFirst": "Першым ходзіць другі гулец",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "mayRemoveMultiple": "Мульты-выдаліць",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Другі гулец прайграе, калі дошка поўная",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "mayFly": "Палёт",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "color": "Колер",
-    "@color": {
-        "description": "Color"
-    },
-    "blackPieceColor": "Гулец 2 штукі колер",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Колер паведамлення",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "isPieceCountInHandShown": "Паказаць колькасць неразмешчаных фігур",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Пакажыце абазначэнні на дошцы",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "animationDuration": "Працягласць анімацыі",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "getInvolved": "Прыняць удзел",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "endgameNMoveRule": "Правіла N-ходу ў эндшпілі",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "remove": "Выдаліць",
-    "@remove": {
-        "description": "Remove"
-    },
-    "aiResponseDelayTime": "Час затрымкі адказу AI",
-    "@aiResponseDelayTime": {},
     "usePerfectDatabase": "Выкарыстоўвайце ідэальную базу дадзеных",
     "@usePerfectDatabase": {},
     "perfectDatabaseDescription": "Уключыце гэту опцыю, каб выкарыстоўваць бездакорную базу дадзеных гульняў, згенераваную з дапамогай перадавых алгарытмаў. Гэтая функцыя аб'ядноўвае стратэгіі адкрыцця і эндшпіля, каб прапаноўваць аптымальныя хады. Гэта пераважны выбар для гульцоў, якія шукаюць найвышэйшы ўзровень дакладнасці ў гульні. База дадзеных, створаная з дапамогай дбайных вылічальных метадаў, прапануе амаль ідэальныя гульнявыя рашэнні.\n\nЗаўвага: калі штучнаму інтэлекту не атрымаецца атрымаць доступ да базы дадзеных, ён будзе звяртацца да звычайных алгарытмаў для прыняцця гульнявых рашэнняў. Калі база дадзеных даступная, «Узровень складанасці» становіцца практычна непераўзыдзеным, а «Час разважанняў AI» рэзка скарачаецца. Многія параметры ў параметрах «Стыль гульні штучнага інтэлекту» будуць перавызначаны, паколькі вынікі базы дадзеных маюць самы высокі прыярытэт.\n\nКаб атрымаць інструкцыі аб тым, як максімальна выкарыстоўваць гэтую бездакорную базу дадзеных, націсніце тут.",

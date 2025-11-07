@@ -1137,17 +1137,17 @@
     "@loadFailed": {
         "description": "Load failed."
     },
-    "gameFiles": "Arquivos do jogo",
-    "@gameFiles": {
-        "description": "Game files"
+    "filename": "Nome do arquivo",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "Navegar…",
     "@browse": {
         "description": "Browse…"
     },
-    "filename": "Nome do arquivo",
-    "@filename": {
-        "description": "File name"
+    "gameFiles": "Arquivos do jogo",
+    "@gameFiles": {
+        "description": "Game files"
     },
     "gameSavedTo": "O jogo é salvo em",
     "@gameSavedTo": {
@@ -1160,10 +1160,6 @@
     "noMove": "Nenhum movimento.",
     "@noMove": {
         "description": "No move."
-    },
-    "cannotPaste": "Não é possível colar.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
     },
     "restoredPosition": "Posição inicial restaurada.",
     "@restoredPosition": {
@@ -1185,23 +1181,23 @@
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
     },
-    "placedCount": "Coloc. ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} precisam ser removidos.",
     "@pieceCountNeedToRemove": {
         "description": "Pieces need to remove.",
         "placeholders": {
             "count": {
                 "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Coloc. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
                 "type": "int",
                 "example": "3"
             }
@@ -1234,6 +1230,10 @@
     "@pasteDone": {
         "description": "The paste is done."
     },
+    "cannotPaste": "Não é possível colar.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
     "isUnplacedAndRemovedPiecesShown": "Mostrar peças não colocadas e removidas",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Compartilhar um GIF",
     "@shareGIF": {},
-    "duration": "Duração",
-    "@duration": {},
     "pixelRatio": "Proporção de pixels",
     "@pixelRatio": {},
+    "duration": "Duração",
+    "@duration": {},
     "gameScreenRecorder": "Gravador de tela para jogos",
     "@gameScreenRecorder": {},
     "previous": "Anterior",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Tempo de raciocínio da IA definido como 0 significa que não há limite de tempo para pensar.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) é uma forma modificada do algoritmo de busca alfa-beta que visa melhorar a eficiência, reutilizando os resultados intermediários da busca e usando uma boa estimativa inicial para reduzir o tempo de busca.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Por favor, note que o ajuste do tempo de raciocínio da IA pode não ser totalmente preciso. O tempo real de raciocínio pode ser mais curto se a dificuldade for definida como um valor mais baixo, e pode ser mais longo se a IA estiver pensando quando o tempo acabar.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Se você definir a dificuldade alta, mas não aumentar o tempo de raciocínio da IA, o nível de dificuldade real pode ser limitado a um valor mais baixo devido à limitação do tempo de raciocínio. O valor real pode variar dependendo do desempenho da máquina.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) é uma forma modificada do algoritmo de busca alfa-beta que visa melhorar a eficiência, reutilizando os resultados intermediários da busca e usando uma boa estimativa inicial para reduzir o tempo de busca.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) é um algoritmo de busca para encontrar o melhor movimento em uma determinada posição. É um aprimoramento do algoritmo alfa-beta e usa pesquisas de janela nula ou zero para confirmar se um movimento é pior ou não pior do que uma pontuação já segura da variação principal. O PVS se concentra nos movimentos mais promissores e evita buscas desnecessárias de ramificações abaixo do ideal, o que ajuda a melhorar a eficiência da busca.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "O algoritmo alfa-beta é um algoritmo de busca para encontrar o melhor lance. Utiliza o princípio minimax e dois valores, alfa e beta, para reduzir o espectro de buscas e aumentar a eficiência. Alfa representa a pontuação mínima que o computador está seguro de obter, enquanto beta representa a pontuação máxima que o oponente pode obter. O algoritmo ajuda o computador a tomar decisões inteligentes e eficientes durante uma partida.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Neste jogo, é mais fácil para o segundo jogador vencer em comparação com o primeiro jogador.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "De acordo com a experiência humana, se você tentar ganhar, perderá. Em vez disso, busque o empate como objetivo e evite perder a partida. Observe seu oponente e conduza-o suavemente a uma posição em que possa cometer erros. Quando mostrar fraqueza, aproveite a oportunidade e pressione suavemente para vencer. Dessa forma, você poderá ganhar a partida.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Neste jogo, é mais fácil para o segundo jogador vencer em comparação com o primeiro jogador.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Ativar a opção Passivo fará com que a IA relaxe quando tiver vantagem na posição, em vez de tentar ganhar agressivamente o mais rápido possível.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Se a IA levar em conta a mobilidade de suas peças, ela não só tentará capturar as peças do oponente o mais rápido possível, mas também bloqueará os movimentos do adversário e evitará que ele faça o mesmo.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Ativar essa opção aumenta a aleatoriedade e a diversão do jogo, enquanto desativá-la pode ajudar a estudar formas de vencer a IA.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Se a IA levar em conta a mobilidade de suas peças, ela não só tentará capturar as peças do oponente o mais rápido possível, mas também bloqueará os movimentos do adversário e evitará que ele faça o mesmo.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Quando o tabuleiro está cheio",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "No final da fase de colocação, antes do início da fase de movimento, a ação segue se o tabuleiro estiver cheio de peças.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Madeira da floresta",
     "@forestWood": {},
-    "greenMeadow": "Prado verde",
-    "@greenMeadow": {},
-    "stonyPath": "Caminho de pedra",
-    "@stonyPath": {},
+    "darkMystery": "Mistério escuro",
+    "@darkMystery": {},
     "midnightBlue": "Azul meia-noite",
     "@midnightBlue": {},
     "greenForest": "Floresta verde",
     "@greenForest": {},
+    "greenMeadow": "Prado verde",
+    "@greenMeadow": {},
+    "stonyPath": "Caminho de pedra",
+    "@stonyPath": {},
     "pastelPink": "Rosa pastel",
     "@pastelPink": {},
     "turquoiseSea": "Água do mar turquesa",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Jardim lúdico",
     "@playfulGarden": {},
-    "darkMystery": "Mistério escuro",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "O algoritmo de análise retrógrada utiliza uma análise retrógrada de múltiplos valores para criar uma base de dados de finais a partir de diferentes posições iniciais e depois aplica essa base para otimizar o jogo. Esta abordagem está incluída na categoria de soluções ultrafortes.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Deseja consultar o guia do usuário deste algoritmo?",

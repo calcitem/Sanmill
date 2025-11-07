@@ -1141,10 +1141,6 @@
     "@filename": {
         "description": "File name"
     },
-    "gameSavedTo": "Oyun şuraya kaydedilir",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
     "browse": "Araştır…",
     "@browse": {
         "description": "Browse…"
@@ -1153,9 +1149,17 @@
     "@gameFiles": {
         "description": "Game files"
     },
+    "gameSavedTo": "Oyun şuraya kaydedilir",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
     "empty": "Boş",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
+    },
+    "noMove": "Hamle yok.",
+    "@noMove": {
+        "description": "No move."
     },
     "restoredPosition": "İlk konumu geri yüklendi.",
     "@restoredPosition": {
@@ -1230,10 +1234,6 @@
     "@cannotPaste": {
         "description": "Cannot paste."
     },
-    "noMove": "Hamle yok.",
-    "@noMove": {
-        "description": "No move."
-    },
     "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve çıkarılmış parçaları göster",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "GIF paylaş",
     "@shareGIF": {},
-    "duration": "Süre",
-    "@duration": {},
     "pixelRatio": "piksel oranı",
     "@pixelRatio": {},
+    "duration": "Süre",
+    "@duration": {},
     "gameScreenRecorder": "Oyun ekran kaydedici",
     "@gameScreenRecorder": {},
     "previous": "Öncesi",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Düşünme süresinin 0 olarak ayarlanması, düşünmek için herhangi bir zaman sınırı olmadığı anlamına gelir.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f), ara arama sonuçlarını yeniden kullanarak ve arama alanını daraltmak için iyi bir ilk tahmin kullanarak verimliliği artırmayı amaçlayan alfa-beta arama algoritmasının değiştirilmiş bir biçimidir.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Lütfen AI düşünme süresi ayarının tam olarak kesin olmayabileceğini unutmayın. Gerçek düşünme süresi, zorluk seviyesi daha düşük bir değere ayarlandığında daha kısa olabilir ve süre dolduğunda yapay zeka orta düşüncede olduğunda daha uzun olabilir.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Zorluk seviyesini yüksek seçerseniz fakat AI'nin düşünme süresini artırmazsanız, gerçek zorluk seviyesi düşünme süresi kısıtlamaları nedeniyle daha düşük olabilir. Bu durum makinenin performansına bağlı olarak değişiklik gösterebilir.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f), ara arama sonuçlarını yeniden kullanarak ve arama alanını daraltmak için iyi bir ilk tahmin kullanarak verimliliği artırmayı amaçlayan alfa-beta arama algoritmasının değiştirilmiş bir biçimidir.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search), belirli bir konumdaki en iyi hareketi bulmak için bir arama algoritmasıdır. Bu, alfa-beta algoritmasının bir geliştirmesidir ve bir hareketin ana varyasyondan zaten güvenli bir puandan daha kötü olduğunu veya daha kötü olmadığını doğrulamak için boş veya sıfır pencere aramaları kullanır. PVS, en umut verici hareketlere odaklanır ve yetersiz dallarda gereksiz arama yapılmasını önler, bu da aramanın verimliliğini artırmaya yardımcı olur.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta algoritması, en iyi hamleyi bulmak için bir arama algoritmasıdır. Arama ağacını budamak ve verimliliği artırmak için minimax ilkesini ve alfa ve beta olmak üzere iki değeri kullanır. Alfa, bilgisayarın alabileceğinden emin olduğu en düşük puanı, beta ise rakibinin alabileceği en yüksek puanı temsil eder. Algoritma, bilgisayarın bir oyunda akıllı ve verimli kararlar almasına yardımcı olur.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Bu oyunda ikinci oyuncunun kazanması birinci oyuncuya göre daha kolaydır.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "İnsan deneyimine göre, kazanmaya çalışırsan kaybedersin. Bunun yerine, hedefiniz olarak beraberliği hedefleyin ve oyunu kaybetmekten kaçının. Rakibinizi gözlemleyin ve onu hata yapabilecekleri bir konuma nazikçe çekin. Zayıflık gösterdiklerinde, fırsatı değerlendirin ve kazanmak için nazikçe bastırın. Bu sayede oyunu kazanabilirsiniz.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Bu oyunda ikinci oyuncunun kazanması birinci oyuncuya göre daha kolaydır.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Pasif seçeneğinin etkinleştirilmesi, AI'nın pozisyonda bir avantaja sahip olduğunda agresif bir şekilde mümkün olan en kısa sürede kazanmaya çalışmak yerine rahatlamasına neden olacaktır.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Yapay zeka, taşlarının hareketliliğini dikkate alırsa, yalnızca rakibin taşlarını olabildiğince çabuk ele geçirmeyi amaçlamaz, aynı zamanda rakibin hareketlerini bloke etmeyi ve onların da aynısını yapmasını engellemeyi düşünür.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Bu seçeneği etkinleştirmek, oyunun rastgeleliğini ve eğlencesini artırırken devre dışı bırakmak, yapay zekayı yenmenin yollarını araştırmaya yardımcı olabilir.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Yapay zeka, taşlarının hareketliliğini dikkate alırsa, yalnızca rakibin taşlarını olabildiğince çabuk ele geçirmeyi amaçlamaz, aynı zamanda rakibin hareketlerini bloke etmeyi ve onların da aynısını yapmasını engellemeyi düşünür.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Tahta dolduğunda",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Yerleştirme aşamasının sonunda, hareket aşaması başlamadan önce, tahta taşlarla doluysa eylem takip eder.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Orman Ağacı",
     "@forestWood": {},
-    "greenMeadow": "yeşil çayır",
-    "@greenMeadow": {},
-    "stonyPath": "taşlı yol",
-    "@stonyPath": {},
+    "darkMystery": "Karanlık Gizem",
+    "@darkMystery": {},
     "midnightBlue": "Gece yarısı mavisi",
     "@midnightBlue": {},
     "greenForest": "Yeşil orman",
     "@greenForest": {},
+    "greenMeadow": "yeşil çayır",
+    "@greenMeadow": {},
+    "stonyPath": "taşlı yol",
+    "@stonyPath": {},
     "pastelPink": "pastel pembe",
     "@pastelPink": {},
     "turquoiseSea": "Turkuaz Deniz",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "eğlenceli bahçe",
     "@playfulGarden": {},
-    "darkMystery": "Karanlık Gizem",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Geriye Dönük Analiz algoritması, farklı başlangıç konumlarından bir oyunsonu veritabanı oluşturmak için çok değerli geriye dönük analizi kullanır ve ardından oyunu optimize etmek için bu veritabanını uygular. Bu yaklaşım, ultra güçlü çözüm kategorisine girer.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Bu algoritmanın kullanım kılavuzunu görüntülemek ister misiniz?",

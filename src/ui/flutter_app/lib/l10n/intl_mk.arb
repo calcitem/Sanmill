@@ -1133,59 +1133,25 @@
             }
         }
     },
-    "filename": "Име на датотека",
-    "@filename": {
-        "description": "File name"
-    },
-    "gameSavedTo": "Играта е зачувана во",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
-    "gameFiles": "Датотеки за игри",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "loadFailed": "Вчитувањето не успеа.",
     "@loadFailed": {
         "description": "Load failed."
+    },
+    "filename": "Име на датотека",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "Прелистајте…",
     "@browse": {
         "description": "Browse…"
     },
-    "noPiecesCanBeRemoved": "Ниту едно парче не може да се отстрани.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
+    "gameFiles": "Датотеки за игри",
+    "@gameFiles": {
+        "description": "Game files"
     },
-    "hasPlacedPieceCount": "Тековниот играч постави {count} парчиња.",
-    "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "paste": "Залепи",
-    "@paste": {
-        "description": "Paste"
-    },
-    "cannotPaste": "Не може да се залепи.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
-    },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} парче}other{{count} парчиња}} треба да се отстрани.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "gameSavedTo": "Играта е зачувана во",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Празен",
     "@empty": {
@@ -1211,6 +1177,21 @@
     "@remove": {
         "description": "Remove"
     },
+    "noPiecesCanBeRemoved": "Ниту едно парче не може да се отстрани.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} парче}other{{count} парчиња}} треба да се отстрани.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
     "placedCount": "Поставено ({count})",
     "@placedCount": {
         "description": "Placed N pieces. Used in setup position toolbar.",
@@ -1226,25 +1207,44 @@
     "@placedPieceCount": {
         "description": "Placed piece count in the placing phase. Used in Semantics."
     },
+    "hasPlacedPieceCount": "Тековниот играч постави {count} парчиња.",
+    "@hasPlacedPieceCount": {
+        "description": "The current player has placed {count} pieces.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
     "notPlacingPhase": "Не се поставува фаза, не може да се промени.",
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
+    },
+    "paste": "Залепи",
+    "@paste": {
+        "description": "Paste"
     },
     "pasteDone": "Пастата е готова.",
     "@pasteDone": {
         "description": "The paste is done."
     },
+    "cannotPaste": "Не може да се залепи.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
     "isUnplacedAndRemovedPiecesShown": "Прикажи непоставени и отстранети парчиња",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Излезете и отворете ја повторно апликацијата за поставките да стапат на сила.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Цел екран",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Излезете и отворете ја повторно апликацијата за поставките да стапат на сила.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Шума",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Споделете GIF",
     "@shareGIF": {},
-    "duration": "Времетраење",
-    "@duration": {},
     "pixelRatio": "Сооднос на пиксели",
     "@pixelRatio": {},
+    "duration": "Времетраење",
+    "@duration": {},
     "gameScreenRecorder": "Снимач на екранот на играта",
     "@gameScreenRecorder": {},
     "previous": "Претходна",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Времето за размислување поставено на 0 значи дека нема временско ограничување за размислување.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) е модифицирана форма на алфа-бета алгоритам за пребарување што има за цел да ја подобри ефикасноста со повторна употреба на средни резултати од пребарувањето и користење на добра почетна претпоставка за стеснување на просторот за пребарување.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Имајте предвид дека прилагодувањето на времето за размислување со вештачка интелигенција можеби не е целосно прецизно. Вистинското време на размислување може да биде пократко кога нивото на тежина е поставено на помала вредност и може да биде подолго кога вештачката интелигенција е во средина на размислување кога ќе истече времето.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Ако го поставите нивото на тежина високо, но не го зголемите времето за размислување со вештачка интелигенција, вистинското ниво на тежина може да биде ограничено на помала вредност поради ограничувањето на времето за размислување. Вистинската вредност може да варира врз основа на перформансите на машината.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) е модифицирана форма на алфа-бета алгоритам за пребарување што има за цел да ја подобри ефикасноста со повторна употреба на средни резултати од пребарувањето и користење на добра почетна претпоставка за стеснување на просторот за пребарување.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) е алгоритам за пребарување за да се најде најдобриот потег во дадена позиција. Тоа е подобрување на алфа-бета алгоритмот и користи нула или нула пребарување на прозорци за да потврди дека потегот е полош или не полош од веќе безбедниот резултат од главната варијација. PVS се фокусира на најперспективните потези и ги избегнува непотребните пребарувања на неоптимални гранки, што помага да се подобри ефикасноста на пребарувањето.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Алфа-бета алгоритам е алгоритам за пребарување за да се најде најдобриот потег. Го користи принципот минимакс и две вредности, алфа и бета, за да го исече дрвото за пребарување и да ја зголеми ефикасноста. Алфа го претставува минималниот резултат што компјутерот е сигурен дека може да го добие, додека бета го претставува максималниот резултат што може да го добие неговиот противник. Алгоритмот му помага на компјутерот да донесува паметни, ефикасни одлуки во играта.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Во оваа игра, полесно е вториот играч да победи во споредба со првиот играч.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Според човечкото искуство, ако се обидете да победите, ќе изгубите. Наместо тоа, целјте кон реми како ваша цел и избегнувајте да ја изгубите играта. Набљудувајте го вашиот противник и нежно намами го во позиција каде што може да направи грешки. Кога ќе покажат слабост, искористете ја шансата и нежно притискајте за победа. На овој начин, можете да ја добиете играта.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Во оваа игра, полесно е вториот играч да победи во споредба со првиот играч.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Овозможувањето на Пасивната опција ќе предизвика ВИ да се опушти кога има предност во позицијата, наместо агресивно да се обидува да победи што е можно побрзо.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Ако вештачката интелигенција ја земе предвид мобилноста на своите фигури, таа не само што ќе има за цел да ги фати фигурите на противникот што е можно побрзо, туку ќе размисли и да ги блокира движењата на противникот и да ги спречи да го прават истото.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Овозможувањето на оваа опција ја зголемува случајноста и забавата на играта, додека нејзиното оневозможување може да помогне во проучувањето на начините како да се победи вештачката интелигенција.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Ако вештачката интелигенција ја земе предвид мобилноста на своите фигури, таа не само што ќе има за цел да ги фати фигурите на противникот што е можно побрзо, туку ќе размисли и да ги блокира движењата на противникот и да ги спречи да го прават истото.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Кога таблата е полна",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "На крајот од фазата на поставување, пред да започне фазата на поместување, следува дејство доколку таблата е полна со парчиња.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Шумско дрво",
     "@forestWood": {},
-    "greenMeadow": "Зелена ливада",
-    "@greenMeadow": {},
-    "stonyPath": "Камената патека",
-    "@stonyPath": {},
+    "darkMystery": "Темна мистерија",
+    "@darkMystery": {},
     "midnightBlue": "Полноќно сино",
     "@midnightBlue": {},
     "greenForest": "Зелена шума",
     "@greenForest": {},
+    "greenMeadow": "Зелена ливада",
+    "@greenMeadow": {},
+    "stonyPath": "Камената патека",
+    "@stonyPath": {},
     "pastelPink": "Пастел розова",
     "@pastelPink": {},
     "turquoiseSea": "Тиркизно Море",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Разиграна градина",
     "@playfulGarden": {},
-    "darkMystery": "Темна мистерија",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Алгоритмот за ретроградна анализа користи ретроградна анализа со повеќе вредности за да изгради база на податоци за крајната игра од различни почетни позиции, а потоа ја применува оваа база за оптимизирање на играта. Овој пристап спаѓа во категоријата Ултра-силни решенија.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Дали сакате да го погледнете корисничкото упатство за овој алгоритам?",

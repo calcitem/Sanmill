@@ -1133,17 +1133,13 @@
             }
         }
     },
-    "filename": "Filnamn",
-    "@filename": {
-        "description": "File name"
-    },
     "loadFailed": "Laddningen misslyckades.",
     "@loadFailed": {
         "description": "Load failed."
     },
-    "gameSavedTo": "Spelet sparas till",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
+    "filename": "Filnamn",
+    "@filename": {
+        "description": "File name"
     },
     "browse": "Bläddra…",
     "@browse": {
@@ -1153,6 +1149,14 @@
     "@gameFiles": {
         "description": "Game files"
     },
+    "gameSavedTo": "Spelet sparas till",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
+    "empty": "Tömma",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
+    },
     "noMove": "Ingen rörelse.",
     "@noMove": {
         "description": "No move."
@@ -1160,14 +1164,6 @@
     "restoredPosition": "Återställt utgångsläge.",
     "@restoredPosition": {
         "description": "Restored initial position."
-    },
-    "cannotPaste": "Kan inte klistra in.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
-    },
-    "empty": "Tömma",
-    "@empty": {
-        "description": "Empty point, used in setup position toolbar."
     },
     "clean": "Rena",
     "@clean": {
@@ -1234,17 +1230,21 @@
     "@pasteDone": {
         "description": "The paste is done."
     },
+    "cannotPaste": "Kan inte klistra in.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
     "isUnplacedAndRemovedPiecesShown": "Visa oplacerade och borttagna bitar",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Avsluta och öppna appen igen för att inställningarna ska börja gälla.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Fullskärm",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Avsluta och öppna appen igen för att inställningarna ska börja gälla.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Skog",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Dela GIF",
     "@shareGIF": {},
-    "duration": "Varaktighet",
-    "@duration": {},
     "pixelRatio": "Pixelförhållande",
     "@pixelRatio": {},
+    "duration": "Varaktighet",
+    "@duration": {},
     "gameScreenRecorder": "Spelskärminspelare",
     "@gameScreenRecorder": {},
     "previous": "Tidigare",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Tänketid inställd på 0 betyder att det inte finns någon tidsgräns för tänkande.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) är en modifierad form av alfa-beta-sökalgoritmen som syftar till att förbättra effektiviteten genom att återanvända mellanliggande sökresultat och använda en bra initial gissning för att begränsa sökutrymmet.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Var medveten om att AI-tänketidsjusteringen kanske inte är helt exakt. Den faktiska tanketiden kan vara kortare när svårighetsgraden är inställd på ett lägre värde och kan vara längre när AI:n är halvtänkt när tiden går ut.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Om du ställer in svårighetsgraden högt men inte ökar AI-tänketiden, kan den faktiska svårighetsgraden begränsas till ett lägre värde på grund av tanketidsbegränsningen. Det faktiska värdet kan variera beroende på maskinens prestanda.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) är en modifierad form av alfa-beta-sökalgoritmen som syftar till att förbättra effektiviteten genom att återanvända mellanliggande sökresultat och använda en bra initial gissning för att begränsa sökutrymmet.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) är en sökalgoritm för att hitta det bästa draget i en given position. Det är en förbättring av alfa-beta-algoritmen och använder noll- eller noll-fönstersökningar för att bekräfta att ett drag är sämre eller inte sämre än en redan säker poäng från huvudvarianten. PVS fokuserar på de mest lovande dragen och undviker onödiga sökningar av suboptimala grenar, vilket hjälper till att förbättra effektiviteten i sökningen.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta-algoritmen är en sökalgoritm för att hitta det bästa draget. Den använder minimax-principen och två värden, alfa och beta, för att beskära sökträdet och öka effektiviteten. Alfa representerar den lägsta poäng som datorn är säker på att den kan få, medan beta representerar den maximala poäng som motståndaren kan få. Algoritmen hjälper datorn att fatta smarta, effektiva beslut i ett spel.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "I det här spelet är det lättare för den andra spelaren att vinna jämfört med den första spelaren.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Enligt mänsklig erfarenhet kommer du att förlora om du försöker vinna. Sikta istället på oavgjort som ditt mål och undvik att förlora matchen. Observera din motståndare och lura dem försiktigt till en position där de kan göra misstag. När de visar svaghet, ta tillfället i akt och tryck försiktigt för vinsten. På så sätt kan du vinna spelet.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "I det här spelet är det lättare för den andra spelaren att vinna jämfört med den första spelaren.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Om du aktiverar alternativet Passive kommer AI:n att slappna av när den har en fördel i positionen, snarare än att aggressivt försöka vinna så snabbt som möjligt.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Om AI:n överväger rörligheten hos sina pjäser, kommer den inte bara att sträva efter att fånga motståndarens pjäser så snabbt som möjligt, utan också överväga att blockera motståndarens rörelser och förhindra dem från att göra detsamma.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Om du aktiverar det här alternativet ökar spelets slumpmässighet och nöje samtidigt som du inaktiverar det kan hjälpa till att studera sätt att slå AI.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Om AI:n överväger rörligheten hos sina pjäser, kommer den inte bara att sträva efter att fånga motståndarens pjäser så snabbt som möjligt, utan också överväga att blockera motståndarens rörelser och förhindra dem från att göra detsamma.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "När tavlan är full",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "I slutet av placeringsfasen, innan flyttfasen börjar, följer åtgärden om brädet är fullt av pjäser.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Skogsved",
     "@forestWood": {},
-    "greenMeadow": "Grön äng",
-    "@greenMeadow": {},
-    "stonyPath": "Stenig väg",
-    "@stonyPath": {},
+    "darkMystery": "Mörkt mysterium",
+    "@darkMystery": {},
     "midnightBlue": "Midnattsblå",
     "@midnightBlue": {},
     "greenForest": "Grön skog",
     "@greenForest": {},
+    "greenMeadow": "Grön äng",
+    "@greenMeadow": {},
+    "stonyPath": "Stenig väg",
+    "@stonyPath": {},
     "pastelPink": "Pastellrosa",
     "@pastelPink": {},
     "turquoiseSea": "Turkos hav",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Lekfull trädgård",
     "@playfulGarden": {},
-    "darkMystery": "Mörkt mysterium",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Algoritmen för retrograd analys använder retrograd analys med flera värden för att bygga en slutspelsdatabas från olika startpositioner, och tillämpar sedan denna databas för att optimera spelet. Detta tillvägagångssätt faller under kategorin Ultrastarka lösningar.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Vill du se användarhandboken för denna algoritm?",

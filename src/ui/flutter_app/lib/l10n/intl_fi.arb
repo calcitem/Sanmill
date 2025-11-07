@@ -1145,13 +1145,41 @@
     "@browse": {
         "description": "Browse…"
     },
+    "gameFiles": "Pelitiedostot",
+    "@gameFiles": {
+        "description": "Game files"
+    },
     "gameSavedTo": "Peli on tallennettu kohteeseen",
     "@gameSavedTo": {
         "description": "The game is saved to"
     },
-    "gameFiles": "Pelitiedostot",
-    "@gameFiles": {
-        "description": "Game files"
+    "empty": "Tyhjä",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
+    },
+    "noMove": "Ei liikettä.",
+    "@noMove": {
+        "description": "No move."
+    },
+    "restoredPosition": "Alkuasento palautettu.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "Puhdas",
+    "@clean": {
+        "description": "Clean"
+    },
+    "cleanedUp": "Siivottu.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Poista",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Yhtään nappulaa ei voi poistaa.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} on poistettava.",
     "@pieceCountNeedToRemove": {
@@ -1164,38 +1192,6 @@
             }
         }
     },
-    "empty": "Tyhjä",
-    "@empty": {
-        "description": "Empty point, used in setup position toolbar."
-    },
-    "noPiecesCanBeRemoved": "Yhtään nappulaa ei voi poistaa.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
-    },
-    "placedPieceCount": "Sijoitetun kappaleen määrä sijoitusvaiheessa.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
-    },
-    "noMove": "Ei liikettä.",
-    "@noMove": {
-        "description": "No move."
-    },
-    "clean": "Puhdas",
-    "@clean": {
-        "description": "Clean"
-    },
-    "restoredPosition": "Alkuasento palautettu.",
-    "@restoredPosition": {
-        "description": "Restored initial position."
-    },
-    "cleanedUp": "Siivottu.",
-    "@cleanedUp": {
-        "description": "Cleaned up."
-    },
-    "remove": "Poista",
-    "@remove": {
-        "description": "Remove"
-    },
     "placedCount": "Sijoitettu ({count})",
     "@placedCount": {
         "description": "Placed N pieces. Used in setup position toolbar.",
@@ -1206,6 +1202,10 @@
                 "example": "3"
             }
         }
+    },
+    "placedPieceCount": "Sijoitetun kappaleen määrä sijoitusvaiheessa.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "Nykyinen pelaaja on asettanut {count} nappuloita.",
     "@hasPlacedPieceCount": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Jaa GIF",
     "@shareGIF": {},
-    "duration": "Kesto",
-    "@duration": {},
     "pixelRatio": "Pikselisuhde",
     "@pixelRatio": {},
+    "duration": "Kesto",
+    "@duration": {},
     "gameScreenRecorder": "Pelin näytön nauhoitin",
     "@gameScreenRecorder": {},
     "previous": "Edellinen",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Ajatteluajaksi asetettu 0:ksi tarkoittaa, että ajattelulle ei ole aikarajaa.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) on alfabeta-hakualgoritmin muunneltu muoto, jonka tavoitteena on parantaa tehokkuutta käyttämällä uudelleen välihakutuloksia ja käyttämällä hyvää alkuarvausta hakutilan kaventamiseksi.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Huomaa, että tekoälyn ajatteluajan säätö ei välttämättä ole täysin tarkka. Todellinen ajatteluaika voi olla lyhyempi, kun vaikeustaso on asetettu pienemmälle arvolle, ja voi olla pidempi, kun tekoäly on puoliajattelu, kun aika loppuu.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Jos asetat vaikeustason korkeaksi, mutta et lisää tekoälyn ajatteluaikaa, todellinen vaikeustaso voi rajoittua pienempään arvoon ajatteluaikarajoituksen vuoksi. Todellinen arvo voi vaihdella koneen suorituskyvyn mukaan.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) on alfabeta-hakualgoritmin muunneltu muoto, jonka tavoitteena on parantaa tehokkuutta käyttämällä uudelleen välihakutuloksia ja käyttämällä hyvää alkuarvausta hakutilan kaventamiseksi.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) on hakualgoritmi parhaan liikkeen löytämiseksi tietyssä paikassa. Se on alfa-beta-algoritmin parannus ja käyttää nolla- tai nollaikkunahakuja varmistaakseen, että liike on huonompi tai ei huonompi kuin päämuunnelman jo turvallinen pistemäärä. PVS keskittyy lupaavimpiin liikkeisiin ja välttää tarpeettomia etsintää alioptimaalisista haaroista, mikä auttaa parantamaan haun tehokkuutta.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta-algoritmi on hakualgoritmi parhaan liikkeen löytämiseksi. Se käyttää minimax-periaatetta ja kahta arvoa, alfaa ja betaa, karsimaan hakupuuta ja lisäämään tehokkuutta. Alfa edustaa vähimmäispistemäärää, jonka tietokone on varma, että se voi saada, kun taas beta edustaa vastustajansa enimmäispistemäärää. Algoritmi auttaa tietokonetta tekemään älykkäitä ja tehokkaita päätöksiä pelissä.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa ensimmäiseen verrattuna.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Ihmiskokemuksen mukaan jos yrität voittaa, häviät. Pyri sen sijaan tasapeliin ja vältä pelin häviämistä. Tarkkaile vastustajaasi ja houkuttele hellästi asentoon, jossa he voivat tehdä virheitä. Kun he osoittavat heikkoutta, tartu tilaisuuteen ja työnnä hellästi voittoon. Tällä tavalla voit voittaa pelin.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa ensimmäiseen verrattuna.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Passiivisen vaihtoehdon ottaminen käyttöön saa tekoälyn rentoutumaan, kun sillä on asemassa etua, sen sijaan, että se yrittäisi aggressiivisesti voittaa mahdollisimman nopeasti.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Jos tekoäly ottaa huomioon nappuloidensa liikkuvuuden, se ei ainoastaan pyri vangitsemaan vastustajan nappuloita mahdollisimman nopeasti, vaan myös harkitsemaan vastustajan liikkeiden estämistä ja estämistä heidän tekemästä samoin.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Tämän vaihtoehdon ottaminen käyttöön lisää pelin satunnaisuutta ja hauskuutta, kun taas sen poistaminen käytöstä voi auttaa tutkimaan tapoja voittaa tekoäly.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Jos tekoäly ottaa huomioon nappuloidensa liikkuvuuden, se ei ainoastaan pyri vangitsemaan vastustajan nappuloita mahdollisimman nopeasti, vaan myös harkitsemaan vastustajan liikkeiden estämistä ja estämistä heidän tekemästä samoin.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Kun lauta on täynnä",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Sijoitusvaiheen lopussa, ennen siirtovaiheen alkamista, toiminta seuraa, jos lauta on täynnä nappuloita.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Metsä Puu",
     "@forestWood": {},
-    "greenMeadow": "Vihreä Niitty",
-    "@greenMeadow": {},
-    "stonyPath": "Kivinen Polku",
-    "@stonyPath": {},
+    "darkMystery": "Tumma Mysteeri",
+    "@darkMystery": {},
     "midnightBlue": "Yönsininen",
     "@midnightBlue": {},
     "greenForest": "Vihreä metsä",
     "@greenForest": {},
+    "greenMeadow": "Vihreä Niitty",
+    "@greenMeadow": {},
+    "stonyPath": "Kivinen Polku",
+    "@stonyPath": {},
     "pastelPink": "Pastelli Pinkki",
     "@pastelPink": {},
     "turquoiseSea": "Turkoosi Meri",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Leikkisä Puutarha",
     "@playfulGarden": {},
-    "darkMystery": "Tumma Mysteeri",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Retrograde Analysis -algoritmi käyttää moniarvoista retrogradista analyysiä loppupelitietokannan rakentamiseen eri aloituspaikoista ja käyttää sitten tätä tietokantaa pelin optimoimiseksi. Tämä lähestymistapa kuuluu Ultra-Strong-ratkaisujen luokkaan.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Haluatko nähdä tämän algoritmin käyttöoppaan?",

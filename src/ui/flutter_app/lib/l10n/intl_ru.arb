@@ -1133,56 +1133,37 @@
             }
         }
     },
-    "gameSavedTo": "Игра сохраняется в",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
-    "browse": "Просматривать…",
-    "@browse": {
-        "description": "Browse…"
+    "loadFailed": "Загрузка не удалась.",
+    "@loadFailed": {
+        "description": "Load failed."
     },
     "filename": "Имя файла",
     "@filename": {
         "description": "File name"
     },
-    "loadFailed": "Загрузка не удалась.",
-    "@loadFailed": {
-        "description": "Load failed."
+    "browse": "Просматривать…",
+    "@browse": {
+        "description": "Browse…"
     },
     "gameFiles": "Файлы игры",
     "@gameFiles": {
         "description": "Game files"
     },
-    "hasPlacedPieceCount": "{count, plural, =0{Текущий игрок не разместил ни одной фишки.} =1{Текущий игрок разместил одну фишку.} few{Текущий игрок разместил {count} фишки.} many{Текущий игрок разместил {count} фишек.} other{Текущий игрок разместил {count} фишки.}}",
-    "@hasPlacedPieceCount": {
-        "description": "Message describing how many pieces the current player has placed, with support for Russian pluralization.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed by the player.",
-                "example": "3"
-            }
-        }
+    "gameSavedTo": "Игра сохраняется в",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Пустой",
     "@empty": {
         "description": "Empty point, used in setup position toolbar."
     },
-    "cannotPaste": "Не могу вставить.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
+    "noMove": "Нет движения.",
+    "@noMove": {
+        "description": "No move."
     },
-    "paste": "Вставить",
-    "@paste": {
-        "description": "Paste"
-    },
-    "remove": "Удалять",
-    "@remove": {
-        "description": "Remove"
-    },
-    "placedPieceCount": "Подсчет размещенных фигур на этапе размещения.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
+    "restoredPosition": "Восстановлено исходное положение.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
     },
     "clean": "Чистый",
     "@clean": {
@@ -1192,32 +1173,13 @@
     "@cleanedUp": {
         "description": "Cleaned up."
     },
+    "remove": "Удалять",
+    "@remove": {
+        "description": "Remove"
+    },
     "noPiecesCanBeRemoved": "Никакие фрагменты не могут быть удалены.",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
-    },
-    "placedCount": "Разм. ({count})",
-    "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
-    "notPlacingPhase": "Не размещая фазу, не может ее изменить.",
-    "@notPlacingPhase": {
-        "description": "Not placing phase, cannot change it."
-    },
-    "pasteDone": "Паста готова.",
-    "@pasteDone": {
-        "description": "The paste is done."
-    },
-    "noMove": "Нет движения.",
-    "@noMove": {
-        "description": "No move."
     },
     "pieceCountNeedToRemove": "{count, plural, =0{Нужно удалить фигуру.} one{Нужно удалить {count} фигуру.} few{Нужно удалить {count} фигуры.} many{Нужно удалить {count} фигур.} other{Нужно удалить {count} фигур.}}",
     "@pieceCountNeedToRemove": {
@@ -1230,9 +1192,47 @@
             }
         }
     },
-    "restoredPosition": "Восстановлено исходное положение.",
-    "@restoredPosition": {
-        "description": "Restored initial position."
+    "placedCount": "Разм. ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedPieceCount": "Подсчет размещенных фигур на этапе размещения.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
+    },
+    "hasPlacedPieceCount": "{count, plural, =0{Текущий игрок не разместил ни одной фишки.} =1{Текущий игрок разместил одну фишку.} few{Текущий игрок разместил {count} фишки.} many{Текущий игрок разместил {count} фишек.} other{Текущий игрок разместил {count} фишки.}}",
+    "@hasPlacedPieceCount": {
+        "description": "Message describing how many pieces the current player has placed, with support for Russian pluralization.",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "description": "Number of pieces placed by the player.",
+                "example": "3"
+            }
+        }
+    },
+    "notPlacingPhase": "Не размещая фазу, не может ее изменить.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
+    "paste": "Вставить",
+    "@paste": {
+        "description": "Paste"
+    },
+    "pasteDone": "Паста готова.",
+    "@pasteDone": {
+        "description": "The paste is done."
+    },
+    "cannotPaste": "Не могу вставить.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
     },
     "isUnplacedAndRemovedPiecesShown": "Показать неразмещенные и удаленные фрагменты",
     "@isUnplacedAndRemovedPiecesShown": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Поделись гифкой",
     "@shareGIF": {},
-    "duration": "Продолжительность",
-    "@duration": {},
     "pixelRatio": "Соотношение пикселей",
     "@pixelRatio": {},
+    "duration": "Продолжительность",
+    "@duration": {},
     "gameScreenRecorder": "Запись игрового экрана",
     "@gameScreenRecorder": {},
     "previous": "Предыдущий",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Время обдумывания ИИ, установленное на 0, означает, что время обдумывания не ограничено.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) — это модифицированная форма алгоритма альфа-бета-поиска, целью которого является повышение эффективности за счет повторного использования промежуточных результатов поиска и использования хорошего начального предположения для сужения пространства поиска.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Имейте в виду, что корректировка времени обдумывания ИИ может быть не совсем точной. Фактическое время обдумывания может быть короче, если уровень сложности установлен на более низкое значение, и может быть больше, когда ИИ находится в середине размышлений, когда время истекает.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Если вы установите высокий уровень сложности, но не увеличите время обдумывания ИИ, фактический уровень сложности может быть ограничен более низким значением из-за ограничения времени обдумывания. Фактическое значение может варьироваться в зависимости от производительности машины.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) — это модифицированная форма алгоритма альфа-бета-поиска, целью которого является повышение эффективности за счет повторного использования промежуточных результатов поиска и использования хорошего начального предположения для сужения пространства поиска.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) — алгоритм поиска лучшего хода в заданной позиции. Это усовершенствование альфа-бета-алгоритма, в котором используется нулевой или нулевой поиск в окне, чтобы подтвердить, что ход хуже или не хуже, чем уже безопасный результат основного варианта. PVS фокусируется на наиболее перспективных ходах и избегает ненужных поисков неоптимальных ветвей, что помогает повысить эффективность поиска.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Алгоритм альфа-бета — это поисковый алгоритм для нахождения наилучшего хода. Он использует принцип минимакса и два значения, альфа и бета, для обрезки дерева поиска и повышения эффективности. Альфа представляет собой минимальное количество очков, которое компьютер может получить, а бета представляет собой максимальное количество очков, которое может получить его противник. Алгоритм помогает компьютеру принимать разумные и эффективные решения в игре.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "В этой игре второму игроку легче выиграть, чем первому.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Согласно человеческому опыту, если вы попытаетесь выиграть, вы проиграете. Вместо этого стремитесь к ничьей в качестве своей цели и избегайте проигрыша в игре. Наблюдайте за противником и мягко заманивайте его в положение, в котором он может совершить ошибку. Когда они проявляют слабость, воспользуйтесь возможностью и осторожно подтолкните к победе. Таким образом, вы можете выиграть игру.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "В этой игре второму игроку легче выиграть, чем первому.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Включение пассивной опции заставит ИИ расслабиться, когда у него есть преимущество в позиции, а не агрессивно пытаться выиграть как можно быстрее.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Если ИИ учитывает подвижность своих фигур, он не только будет стремиться как можно быстрее захватить фигуры противника, но также рассмотрит возможность блокирования движений противника и предотвращения того, чтобы он делал то же самое.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Включение этой опции увеличивает случайность и удовольствие от игры, а ее отключение может помочь изучить способы победить ИИ.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Если ИИ учитывает подвижность своих фигур, он не только будет стремиться как можно быстрее захватить фигуры противника, но также рассмотрит возможность блокирования движений противника и предотвращения того, чтобы он делал то же самое.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Когда доска заполнена",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "В конце фазы размещения, до начала фазы перемещения, действие следует, если доска заполнена фигурами.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Лесная древесина",
     "@forestWood": {},
-    "greenMeadow": "Зеленый луг",
-    "@greenMeadow": {},
-    "stonyPath": "Каменистая тропа",
-    "@stonyPath": {},
+    "darkMystery": "Темная тайна",
+    "@darkMystery": {},
     "midnightBlue": "Темно-синий",
     "@midnightBlue": {},
     "greenForest": "Зеленый лес",
     "@greenForest": {},
+    "greenMeadow": "Зеленый луг",
+    "@greenMeadow": {},
+    "stonyPath": "Каменистая тропа",
+    "@stonyPath": {},
     "pastelPink": "Пастельно-розовый",
     "@pastelPink": {},
     "turquoiseSea": "Бирюзовое море",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Игривый сад",
     "@playfulGarden": {},
-    "darkMystery": "Темная тайна",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Алгоритм ретроградного анализа использует многозначный ретроградный анализ для создания базы данных эндшпиля с разных начальных позиций, а затем применяет эту базу данных для оптимизации игрового процесса. Этот подход относится к категории сверхсильных решений.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Хотите просмотреть руководство пользователя для этого алгоритма?",
@@ -1404,12 +1404,12 @@
     "@marked": {},
     "menu": "Меню",
     "@menu": {},
-    "showNumbersOnPieces": "Показать номера на фигурах",
-    "@showNumbersOnPieces": {},
     "monochrome": "Монохром",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "Вы можете включить поддержку экранного диктора в настройках доступности в общих настройках.",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Показать номера на фигурах",
+    "@showNumbersOnPieces": {},
     "saveImage": "Сохранить изображение",
     "@saveImage": {},
     "isAnalysisToolbarShown": "Показать панель инструментов анализа",

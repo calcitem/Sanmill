@@ -1,85 +1,5 @@
 {
     "@@locale": "vi",
-    "tipCannotPlace": "Bạn không thể đặt mảnh của bạn ở đây.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCanMoveOnePoint": "Một mảnh có thể di chuyển 1 điểm.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "restart": "Khởi động lại",
-    "@restart": {
-        "description": "Restart"
-    },
-    "playSounds": "Hiệu ứng âm thanh",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "piecesCount": "Số quân cờ mỗi người chơi có",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "flyPieceCount": "Số mảnh bay",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "nMoveRule": "Quy tắc di chuyển N",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "boardColor": "Màu bàn cờ",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Màu quân cờ",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Màu nền",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "standardNotation": "ký hiệu WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "player": "người chơi",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Người chơi 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Người chơi 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Cách chơi",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Chạm vào bất kỳ điểm trống nào để đặt quân cờ.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Chạm vào một mảnh để di chuyển nó.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Chạm vào một điểm được kết nối với một mảnh để di chuyển nó.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Chạm vào một mảnh của đối thủ để loại bỏ.",
-    "@toRemovePiece": {
-        "description": "Tap on one of the opponent's pieces to remove it."
-    },
-    "theme": "chủ đề",
-    "@theme": {
-        "description": "Theme"
-    },
     "appName": "Cối xay",
     "@appName": {
         "description": "The app name"
@@ -108,86 +28,22 @@
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
+    "aiVsAi": "AI vs AI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
     },
-    "drawerTextColor": "Màu văn bản menu",
-    "@drawerTextColor": {
-        "description": "Menu text color"
+    "humanVsCloud": "Con người vs. Đám mây",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
     },
-    "drawerHighlightItemColor": "Menu làm nổi bật màu mục",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
+    "humanVsLAN": "Con người vs. mạng LAN",
+    "@humanVsLAN": {
+        "description": "Human Vs LAN"
     },
-    "mainToolbarBackgroundColor": "Màu nền thanh công cụ chính",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
+    "testViaLAN": "Kiểm tra qua mạng LAN",
+    "@testViaLAN": {
+        "description": "Test Via LAN"
     },
-    "mainToolbarIconColor": "Màu biểu tượng thanh công cụ chính",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Màu nền của thanh công cụ điều hướng",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Màu biểu tượng thanh công cụ điều hướng",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Tự động ẩn thanh công cụ",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "saveGame": "Lưu trò chơi",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Tải trò chơi",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu một người chơi phá vỡ một cối xay để tạo một cối xay mới ngay lập tức, thì người chơi đó có thể di chuyển quân cờ đó trở lại đường giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra một cối xay mới.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Ván cờ hòa nếu một đấu thủ có ba quân và sau mười nước đi không đấu thủ nào lấy được quân của đối phương",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "close": "Đóng",
-    "@close": {
-        "description": "Close"
-    },
-    "emptyPoint": "điểm trống",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Không có điểm",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "threefoldRepetitionRule": "Quy tắc lặp lại ba lần",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "languageName": "Tiếng Việt",
-    "@languageName": {
-        "description": "The name of the current language"
-    },
-    "forest": "Rừng",
-    "@forest": {},
-    "desktopImage": "Hình ảnh máy tính để bàn",
-    "@desktopImage": {},
-    "invalidPosition": "Vị trí không hợp lệ.",
-    "@invalidPosition": {},
-    "shareGIF": "Chia sẻ ảnh GIF",
-    "@shareGIF": {},
-    "mintChocolate": "Sôcôla bạc hà",
-    "@mintChocolate": {},
-    "skyBlue": "Trời xanh",
-    "@skyBlue": {},
     "move": "Di chuyển",
     "@move": {
         "description": "Move"
@@ -248,6 +104,10 @@
     "@tipMove": {
         "description": "Move a piece."
     },
+    "tipCannotPlace": "Bạn không thể đặt mảnh của bạn ở đây.",
+    "@tipCannotPlace": {
+        "description": "You can't place your piece here."
+    },
     "tipCannotMove": "Bạn không thể di chuyển quân cờ của mình ở đây.",
     "@tipCannotMove": {
         "description": "You can't move your piece here."
@@ -267,6 +127,10 @@
     "tipCannotRemovePieceFromMill": "Bạn không thể loại bỏ quân cờ từ cối xay.",
     "@tipCannotRemovePieceFromMill": {
         "description": "You cannot remove a piece from a mill."
+    },
+    "tipCanMoveOnePoint": "Một mảnh có thể di chuyển 1 điểm.",
+    "@tipCanMoveOnePoint": {
+        "description": "A piece can move 1 point."
     },
     "tipCannotMoveOpponentsPieces": "Bạn không thể di chuyển quân cờ của đối thủ.",
     "@tipCannotMoveOpponentsPieces": {
@@ -351,6 +215,10 @@
     "restartGame": "Khởi động lại trò chơi hiện tại?",
     "@restartGame": {
         "description": "Restart current game?"
+    },
+    "restart": "Khởi động lại",
+    "@restart": {
+        "description": "Restart"
     },
     "gameStarted": "Trò chơi bắt đầu, xin vui lòng đặt.",
     "@gameStarted": {
@@ -521,6 +389,10 @@
     "@difficulty": {
         "description": "Difficulty"
     },
+    "playSounds": "Hiệu ứng âm thanh",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
     "playSoundsInTheGame": "Phát âm thanh trong trò chơi",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
@@ -569,9 +441,17 @@
     "@rules": {
         "description": "Rules"
     },
+    "piecesCount": "Số quân cờ mỗi người chơi có",
+    "@piecesCount": {
+        "description": "The number of pieces each player has"
+    },
     "piecesCount_Detail": "Mỗi người chơi có bao nhiêu quân cờ?",
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
+    },
+    "flyPieceCount": "Số mảnh bay",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
     },
     "flyPieceCount_Detail": "Nếu Bay được bật, khi một người chơi bị giảm số lượng quân cờ cụ thể, quân cờ của cô ấy có thể tự do di chuyển đến bất kỳ điểm trống nào thay vì bị giới hạn ở các điểm liền kề như trong phần còn lại của trò chơi.",
     "@flyPieceCount_Detail": {
@@ -637,6 +517,10 @@
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
+    "nMoveRule": "Quy tắc di chuyển N",
+    "@nMoveRule": {
+        "description": "N-move rule"
+    },
     "nMoveRule_Detail": "Trò chơi được hòa nếu không có sự loại bỏ nào trong một số nước đi cụ thể.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
@@ -661,10 +545,6 @@
     "@help": {
         "description": "Help"
     },
-    "lineColor": "Màu đường kẻ bảng",
-    "@lineColor": {
-        "description": "Board line color"
-    },
     "feedback": "Nhận xét",
     "@feedback": {
         "description": "Feedback"
@@ -680,6 +560,22 @@
     "color": "Màu sắc",
     "@color": {
         "description": "Color"
+    },
+    "boardColor": "Màu bàn cờ",
+    "@boardColor": {
+        "description": "Board color"
+    },
+    "pieceColor": "Màu quân cờ",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "Màu nền",
+    "@backgroundColor": {
+        "description": "Background color"
+    },
+    "lineColor": "Màu đường kẻ bảng",
+    "@lineColor": {
+        "description": "Board line color"
     },
     "whitePieceColor": "Người chơi 1 mảnh màu",
     "@whitePieceColor": {
@@ -725,6 +621,10 @@
     "@fontSize": {
         "description": "Font size"
     },
+    "standardNotation": "ký hiệu WMD",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
     "restore": "Khôi phục",
     "@restore": {
         "description": "Restore"
@@ -751,6 +651,38 @@
     "@hint": {
         "description": "Hint"
     },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
+    },
+    "player1": "Người chơi 1",
+    "@player1": {
+        "description": "Player 1"
+    },
+    "player2": "Người chơi 2",
+    "@player2": {
+        "description": "Player 2"
+    },
+    "howToPlay": "Cách chơi",
+    "@howToPlay": {
+        "description": "How to play"
+    },
+    "toPlacePiece": "Chạm vào bất kỳ điểm trống nào để đặt quân cờ.",
+    "@toPlacePiece": {
+        "description": "Tap on any available point to place the piece."
+    },
+    "toSelectPiece": "Chạm vào một mảnh để di chuyển nó.",
+    "@toSelectPiece": {
+        "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "Chạm vào một điểm được kết nối với một mảnh để di chuyển nó.",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
+    },
+    "toRemovePiece": "Chạm vào một mảnh của đối thủ để loại bỏ.",
+    "@toRemovePiece": {
+        "description": "Tap on one of the opponent's pieces to remove it."
+    },
     "needToCreateMillFirst": "Trước tiên, bạn cần tạo một cối xay trước khi có thể loại bỏ một mảnh.",
     "@needToCreateMillFirst": {
         "description": "You need to create a mill first before you can remove a piece."
@@ -767,14 +699,6 @@
     "@totalGames": {
         "description": "Total games"
     },
-    "privacyPolicy_Detail_1": "Vui lòng đọc kỹ và đảm bảo rằng bạn hoàn toàn hiểu và đồng ý với điều này ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Nếu bạn không đồng ý với Chính sách này, vui lòng không sử dụng ứng dụng này. Việc sử dụng ứng dụng ngụ ý rằng bạn chấp nhận các điều khoản này.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
     "results": "Kết quả",
     "@results": {
         "description": "Results"
@@ -786,6 +710,14 @@
     "privacyPolicy": "Chính sách bảo mật",
     "@privacyPolicy": {
         "description": "Privacy Policy"
+    },
+    "privacyPolicy_Detail_1": "Vui lòng đọc kỹ và đảm bảo rằng bạn hoàn toàn hiểu và đồng ý với điều này ",
+    "@privacyPolicy_Detail_1": {
+        "description": "Privacy Policy Detail 1"
+    },
+    "privacyPolicy_Detail_2": ". Nếu bạn không đồng ý với Chính sách này, vui lòng không sử dụng ứng dụng này. Việc sử dụng ứng dụng ngụ ý rằng bạn chấp nhận các điều khoản này.",
+    "@privacyPolicy_Detail_2": {
+        "description": "Privacy Policy Detail 2"
     },
     "and": " Và ",
     "@and": {},
@@ -841,21 +773,9 @@
     "@none": {
         "description": "None"
     },
-    "aiVsAi": "AI vs AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Con người vs. Đám mây",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Con người vs. mạng LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Kiểm tra qua mạng LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
+    "theme": "chủ đề",
+    "@theme": {
+        "description": "Theme"
     },
     "helpContent": "Trò chơi nhằm mục đích khiến đối thủ có ít hơn ba quân cờ hoặc không có nước đi hợp pháp.\n\nTrò chơi sẽ tự động rút nếu một vị trí xuất hiện lần thứ ba hoặc không bị loại bỏ trong 100 nước đi (có thể định cấu hình) cuối cùng.\n\nTrò chơi tiến hành theo ba giai đoạn:\n\n1. Đặt quân cờ vào điểm trống\n2. Di chuyển các quân cờ đến các điểm liền kề\n3. (giai đoạn tùy chọn) Di chuyển các quân cờ đến bất kỳ điểm trống nào khi giảm người chơi xuống còn ba quân cờ\n\nđặt\n\nTrò chơi bắt đầu với một bàn trống, bao gồm một lưới có hai mươi bốn điểm. Người chơi thay phiên nhau đặt các quân cờ của mình vào các điểm trống cho đến khi mỗi người chơi đặt xong tất cả các quân cờ trên bàn cờ. Nếu một người chơi có thể đặt thẳng ba quân cờ của mình, anh ta có một \"cối xay\" và có thể loại bỏ một trong các quân cờ của đối thủ khỏi bàn cờ.\n\nTrong một số quy tắc, người chơi phải loại bỏ bất kỳ quân cờ nào khác trước khi loại bỏ một quân cờ khỏi cối xay đã hình thành.\n\nBạn không thể đặt lại các quân cờ vào điểm của các quân cờ đã bị loại bỏ trong giai đoạn đặt theo một số quy tắc.\n\nSau khi sử dụng hết quân cờ, người chơi thay phiên nhau di chuyển.\n\nDi chuyển\n\nĐể di chuyển, người chơi di chuyển một trong các quân cờ của mình dọc theo một đường bàn cờ đến một điểm trống liền kề. Nếu anh ta không thể làm như vậy, anh ta đã thua trò chơi. Một người chơi sắp xếp ba quân của mình trên một đường bàn cờ có một cối xay và có thể loại bỏ một trong các quân của đối thủ của mình như trong giai đoạn đặt. Bất kỳ người chơi nào bị giảm xuống còn hai quân cờ, không có tùy chọn để tạo thành các nhà máy mới và do đó sẽ thua trò chơi. Một người chơi cũng có thể thua khi có nhiều hơn ba quân cờ nếu đối thủ của anh ta chặn họ di chuyển.\n\nbay\n\nTrong một số biến thể của quy tắc, một khi người chơi chỉ còn ba quân, quân của anh ta có thể bay, nhảy hoặc nhảy đến bất kỳ điểm trống nào, không chỉ các điểm liền kề.\n",
     "@helpContent": {
@@ -864,6 +784,10 @@
     "versionInfo": "Thông tin phiên bản",
     "@versionInfo": {
         "description": "Version info"
+    },
+    "eula": "EULA",
+    "@eula": {
+        "description": "EULA"
     },
     "license": "Giấy phép",
     "@license": {
@@ -1015,6 +939,34 @@
     "@drawerColor": {
         "description": "Menu color"
     },
+    "drawerTextColor": "Màu văn bản menu",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerHighlightItemColor": "Menu làm nổi bật màu mục",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Màu nền thanh công cụ chính",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "Màu biểu tượng thanh công cụ chính",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Màu nền của thanh công cụ điều hướng",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Màu biểu tượng thanh công cụ điều hướng",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Tự động ẩn thanh công cụ",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
     "toolbarLocationOnScreen": "Vị trí thanh công cụ trên màn hình",
     "@toolbarLocationOnScreen": {
         "description": "Toolbar location on screen"
@@ -1070,6 +1022,14 @@
     "analysis": "Phân tích",
     "@analysis": {
         "description": "Analysis"
+    },
+    "saveGame": "Lưu trò chơi",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Tải trò chơi",
+    "@loadGame": {
+        "description": "Load game"
     },
     "setupPosition": "Vị trí thiết lập",
     "@setupPosition": {
@@ -1127,9 +1087,21 @@
     "@mayBreakAndRemakeMillRepeatedly": {
         "description": "Mill may be broken and remade repeatedly"
     },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu một người chơi phá vỡ một cối xay để tạo một cối xay mới ngay lập tức, thì người chơi đó có thể di chuyển quân cờ đó trở lại đường giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra một cối xay mới.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Ván cờ hòa nếu một đấu thủ có ba quân và sau mười nước đi không đấu thủ nào lấy được quân của đối phương",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
     "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Khi một người chơi còn ba quân và không người chơi nào có thể lấy quân của đối phương trong vòng mười nước đi, trò chơi sẽ hòa.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "close": "Đóng",
+    "@close": {
+        "description": "Close"
     },
     "whitePiece": "mảnh trắng",
     "@whitePiece": {
@@ -1138,6 +1110,14 @@
     "blackPiece": "mảnh màu đen",
     "@blackPiece": {
         "description": "Black piece"
+    },
+    "emptyPoint": "điểm trống",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Không có điểm",
+    "@noPoint": {
+        "description": "No point"
     },
     "placingPhase": "giai đoạn đặt",
     "@placingPhase": {
@@ -1211,6 +1191,10 @@
     "@drawReasonEndgameRule50": {
         "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
     },
+    "threefoldRepetitionRule": "Quy tắc lặp lại ba lần",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
+    },
     "threefoldRepetitionRule_Detail": "Trò chơi được hòa nếu một vị trí xuất hiện lần thứ ba.",
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
@@ -1234,6 +1218,10 @@
     "hollow": "Rỗng",
     "@hollow": {
         "description": "Hollow"
+    },
+    "languageName": "Tiếng Việt",
+    "@languageName": {
+        "description": "The name of the current language"
     },
     "moveNumber": "{count,plural, =0{Di chuyển}=1{{count} Di chuyển}other{{count} Di chuyển}}",
     "@moveNumber": {
@@ -1359,6 +1347,14 @@
     "@reopenToTakeEffect": {
         "description": "Exit and reopen app for settings to take effect."
     },
+    "forest": "Rừng",
+    "@forest": {},
+    "desktopImage": "Hình ảnh máy tính để bàn",
+    "@desktopImage": {},
+    "invalidPosition": "Vị trí không hợp lệ.",
+    "@invalidPosition": {},
+    "shareGIF": "Chia sẻ ảnh GIF",
+    "@shareGIF": {},
     "pixelRatio": "Tỷ lệ pixel",
     "@pixelRatio": {},
     "duration": "Khoảng thời gian",
@@ -1461,6 +1457,10 @@
     "@turquoiseSea": {},
     "violetDream": "Giấc mơ màu tím",
     "@violetDream": {},
+    "mintChocolate": "Sôcôla bạc hà",
+    "@mintChocolate": {},
+    "skyBlue": "Trời xanh",
+    "@skyBlue": {},
     "playfulGarden": "Khu vườn vui tươi",
     "@playfulGarden": {},
     "whatIsRetrogradeAnalysis": "Thuật toán Phân tích ngược dòng sử dụng phân tích ngược dòng đa giá trị để xây dựng cơ sở dữ liệu kết thúc trò chơi từ các vị trí bắt đầu khác nhau, sau đó áp dụng cơ sở dữ liệu này để tối ưu hóa lối chơi. Cách tiếp cận này thuộc danh mục Giải pháp siêu mạnh.",

@@ -1133,18 +1133,6 @@
             }
         }
     },
-    "browse": "Ko‘rib chiqish…",
-    "@browse": {
-        "description": "Browse…"
-    },
-    "gameSavedTo": "Oʻyin saqlab qolindi",
-    "@gameSavedTo": {
-        "description": "The game is saved to"
-    },
-    "gameFiles": "O'yin fayllar",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "loadFailed": "Yuklanmadi.",
     "@loadFailed": {
         "description": "Load failed."
@@ -1153,16 +1141,17 @@
     "@filename": {
         "description": "File name"
     },
-    "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} dona}other{{count} dona}} olib tashlash kerak.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "browse": "Ko‘rib chiqish…",
+    "@browse": {
+        "description": "Browse…"
+    },
+    "gameFiles": "O'yin fayllar",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "gameSavedTo": "Oʻyin saqlab qolindi",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
     },
     "empty": "Bo'sh",
     "@empty": {
@@ -1191,6 +1180,17 @@
     "noPiecesCanBeRemoved": "Hech qanday bo'lakni olib tashlab bo'lmaydi.",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} dona}other{{count} dona}} olib tashlash kerak.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Joylasht. ({count})",
     "@placedCount": {
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "GIF-ni ulashing",
     "@shareGIF": {},
-    "duration": "Davomiyligi",
-    "@duration": {},
     "pixelRatio": "Piksel nisbati",
     "@pixelRatio": {},
+    "duration": "Davomiyligi",
+    "@duration": {},
     "gameScreenRecorder": "O'yin ekran yozuvchisi",
     "@gameScreenRecorder": {},
     "previous": "Oldingi",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Fikrlash vaqti 0 ga o‘rnatilgani fikrlash uchun vaqt chegarasi yo‘qligini anglatadi.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) alfa-beta qidiruv algoritmining o'zgartirilgan shakli bo'lib, qidiruv natijalarini qayta ishlatish va qidiruv maydonini toraytirish uchun yaxshi dastlabki taxminni qo'llash orqali samaradorlikni oshirishga qaratilgan.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Shuni yodda tutingki, AI fikrlash vaqtini sozlash to'liq aniq bo'lmasligi mumkin. Haqiqiy fikrlash vaqti qiyinchilik darajasi pastroq qiymatga o'rnatilganda qisqaroq bo'lishi mumkin va vaqt tugashi bilan AI o'rtada bo'lganda uzoqroq bo'lishi mumkin.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Agar siz qiyinchilik darajasini yuqori o'rnatsangiz, lekin AI fikrlash vaqtini oshirmasangiz, fikrlash vaqti cheklanganligi sababli haqiqiy qiyinchilik darajasi pastroq qiymat bilan cheklanishi mumkin. Haqiqiy qiymat mashinaning ishlashiga qarab farq qilishi mumkin.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) alfa-beta qidiruv algoritmining o'zgartirilgan shakli bo'lib, qidiruv natijalarini qayta ishlatish va qidiruv maydonini toraytirish uchun yaxshi dastlabki taxminni qo'llash orqali samaradorlikni oshirishga qaratilgan.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) - bu ma'lum bir pozitsiyada eng yaxshi harakatni topish uchun qidiruv algoritmi. Bu alfa-beta algoritmining takomillashtirilgani bo'lib, harakatning asosiy o'zgarishlardan allaqachon xavfsiz balldan yomonroq yoki yomonroq emasligini tasdiqlash uchun null yoki nol oyna qidiruvlaridan foydalanadi. PVS eng istiqbolli harakatlarga e'tibor qaratadi va suboptimal filiallarni keraksiz qidirishdan qochadi, bu esa qidiruv samaradorligini oshirishga yordam beradi.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beta algoritmi eng yaxshi harakatni topish uchun qidiruv algoritmidir. Qidiruv daraxtini kesish va samaradorlikni oshirish uchun u minimax printsipidan va ikkita qiymatdan, alfa va betadan foydalanadi. Alpha kompyuter olishi mumkin bo'lgan minimal ballni, beta esa raqib olishi mumkin bo'lgan maksimal ballni ifodalaydi. Algoritm kompyuterga o'yinda oqilona va samarali qarorlar qabul qilishga yordam beradi.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Bu o'yinda birinchi o'yinchiga nisbatan ikkinchi o'yinchining g'alaba qozonishi osonroq.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Insoniyat tajribasiga ko'ra, g'alaba qozonishga harakat qilsangiz, yutqazasiz. Buning o'rniga durangni maqsad qilib oling va o'yinni yutqazmang. Raqibingizni kuzatib boring va ularni xato qilishlari mumkin bo'lgan joyga muloyimlik bilan jalb qiling. Ular kuchsizligini ko'rsatsa, imkoniyatdan foydalaning va g'alaba uchun muloyimlik bilan turting. Shu tarzda siz o'yinda g'alaba qozonishingiz mumkin.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Bu o'yinda birinchi o'yinchiga nisbatan ikkinchi o'yinchining g'alaba qozonishi osonroq.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Passiv opsiyani yoqish AIni imkon qadar tezroq g'alaba qozonishga agressiv harakat qilishdan ko'ra, pozitsiyada ustunlikka ega bo'lganda bo'shashishiga olib keladi.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Agar sun'iy intellekt o'z donalarining harakatchanligini hisobga olsa, u nafaqat raqibning donalarini imkon qadar tezroq qo'lga kiritishni maqsad qilib qo'ymaydi, balki raqibning harakatlarini to'sib qo'yish va ularni xuddi shunday qilishiga yo'l qo'ymaslik haqida ham o'ylaydi.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Ushbu parametrni yoqish oʻyinning tasodifiyligi va qiziqarliligini oshiradi, uni oʻchirib qoʻyish esa AIni engish yoʻllarini oʻrganishga yordam beradi.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Agar sun'iy intellekt o'z donalarining harakatchanligini hisobga olsa, u nafaqat raqibning donalarini imkon qadar tezroq qo'lga kiritishni maqsad qilib qo'ymaydi, balki raqibning harakatlarini to'sib qo'yish va ularni xuddi shunday qilishiga yo'l qo'ymaslik haqida ham o'ylaydi.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Doska to'lganida",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Joylashtirish bosqichining oxirida, harakatlanish bosqichi boshlanishidan oldin, taxta bo'laklarga to'la bo'lsa, harakat quyidagicha bo'ladi.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "O'rmon yog'ochi",
     "@forestWood": {},
-    "greenMeadow": "Yashil o'tloq",
-    "@greenMeadow": {},
-    "stonyPath": "Toshli yo'l",
-    "@stonyPath": {},
+    "darkMystery": "Qorong'u sir",
+    "@darkMystery": {},
     "midnightBlue": "Yarim tun moviy",
     "@midnightBlue": {},
     "greenForest": "Yashil o'rmon",
     "@greenForest": {},
+    "greenMeadow": "Yashil o'tloq",
+    "@greenMeadow": {},
+    "stonyPath": "Toshli yo'l",
+    "@stonyPath": {},
     "pastelPink": "Pastel pushti",
     "@pastelPink": {},
     "turquoiseSea": "Turkuaz dengiz",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "O'yin bog'i",
     "@playfulGarden": {},
-    "darkMystery": "Qorong'u sir",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Retrograd tahlil algoritmi turli boshlang'ich pozitsiyalardan o'yin oxiri ma'lumotlar bazasini yaratish uchun ko'p qiymatli retrograd tahlildan foydalanadi, so'ngra o'yinni optimallashtirish uchun ushbu ma'lumotlar bazasini qo'llaydi. Ushbu yondashuv Ultra-kuchli yechimlar toifasiga kiradi.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Ushbu algoritm uchun foydalanuvchi qo'llanmasini ko'rishni xohlaysizmi?",
@@ -1404,12 +1404,12 @@
     "@marked": {},
     "menu": "Menyu",
     "@menu": {},
-    "showNumbersOnPieces": "Dasturxonlarda raqamlarni ko'rsatish",
-    "@showNumbersOnPieces": {},
     "monochrome": "Monoxrom",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "Siz Umumiy sozlamalar ichidagi Yordamchi vositalar sozlamalarida ekran o'quvchisi yordamini yoqishingiz mumkin.",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Dasturxonlarda raqamlarni ko'rsatish",
+    "@showNumbersOnPieces": {},
     "saveImage": "Rasmni saqlash",
     "@saveImage": {},
     "isAnalysisToolbarShown": "Tahlil vositasi panelini ko'rsating",

@@ -1141,29 +1141,17 @@
     "@filename": {
         "description": "File name"
     },
-    "gameFiles": "Mängu failid",
-    "@gameFiles": {
-        "description": "Game files"
-    },
     "browse": "Sirvi…",
     "@browse": {
         "description": "Browse…"
     },
+    "gameFiles": "Mängu failid",
+    "@gameFiles": {
+        "description": "Game files"
+    },
     "gameSavedTo": "Mäng salvestatakse asukohta",
     "@gameSavedTo": {
         "description": "The game is saved to"
-    },
-    "cannotPaste": "Ei saa kleepida.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
-    },
-    "noPiecesCanBeRemoved": "Ühtegi tükki ei saa eemaldada.",
-    "@noPiecesCanBeRemoved": {
-        "description": "No pieces can be removed."
-    },
-    "placedPieceCount": "Paigutatud tükkide arv paigutusfaasis.",
-    "@placedPieceCount": {
-        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "empty": "Tühi",
     "@empty": {
@@ -1173,13 +1161,13 @@
     "@noMove": {
         "description": "No move."
     },
-    "clean": "Puhas",
-    "@clean": {
-        "description": "Clean"
-    },
     "restoredPosition": "Algasend taastatud.",
     "@restoredPosition": {
         "description": "Restored initial position."
+    },
+    "clean": "Puhas",
+    "@clean": {
+        "description": "Clean"
     },
     "cleanedUp": "Koristatud.",
     "@cleanedUp": {
@@ -1188,6 +1176,21 @@
     "remove": "Eemalda",
     "@remove": {
         "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Ühtegi tükki ei saa eemaldada.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} tükki}} tuleb eemaldada.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
     },
     "placedCount": "Paigut. ({count})",
     "@placedCount": {
@@ -1200,16 +1203,9 @@
             }
         }
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} tükki}} tuleb eemaldada.",
-    "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+    "placedPieceCount": "Paigutatud tükkide arv paigutusfaasis.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
     },
     "hasPlacedPieceCount": "Praegune mängija on asetanud {count} nuppe.",
     "@hasPlacedPieceCount": {
@@ -1234,17 +1230,21 @@
     "@pasteDone": {
         "description": "The paste is done."
     },
+    "cannotPaste": "Ei saa kleepida.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
     "isUnplacedAndRemovedPiecesShown": "Näita asetamata ja eemaldatud tükke",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Väljuge ja avage rakendus uuesti, et seaded jõustuksid.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Täisekraan",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Väljuge ja avage rakendus uuesti, et seaded jõustuksid.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Mets",
     "@forest": {},
@@ -1254,10 +1254,10 @@
     "@invalidPosition": {},
     "shareGIF": "Jagage GIF-i",
     "@shareGIF": {},
-    "duration": "Kestus",
-    "@duration": {},
     "pixelRatio": "Pikslite suhe",
     "@pixelRatio": {},
+    "duration": "Kestus",
+    "@duration": {},
     "gameScreenRecorder": "Mängu ekraani salvestaja",
     "@gameScreenRecorder": {},
     "previous": "Eelmine",
@@ -1274,26 +1274,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "AI Kui mõtlemisaeg on seatud väärtusele 0, siis mõtlemisel pole ajalimiiti.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Pange tähele, et AI mõtlemisaja reguleerimine ei pruugi olla täiesti täpne. Tegelik mõtlemisaeg võib olla lühem, kui raskusaste on seatud madalamale väärtusele, ja võib olla pikem, kui AI on keskmise mõtteviisiga, kui aeg otsa saab.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Kui seate raskusastme kõrgeks, kuid ei suurenda tehisintellekti mõtlemisaega, võib tegelik raskusaste piirduda mõtlemisaja piirangu tõttu madalama väärtusega. Tegelik väärtus võib olenevalt masina jõudlusest erineda.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) on otsingualgoritm, mis võimaldab leida antud positsioonil parima käigu. See on alfa-beeta-algoritmi täiustus ja kasutab null- või nullaknaotsingut, et kinnitada, kas käik on halvem või mitte halvem kui peamise variatsiooni juba ohutu skoor. PVS keskendub kõige paljutõotavamatele käikudele ja väldib ebavajalikke otsinguid suboptimaalsetest harudest, mis aitab parandada otsingu efektiivsust.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alfa-beeta algoritm on otsingualgoritm parima käigu leidmiseks. See kasutab otsingupuu kärpimiseks ja tõhususe suurendamiseks minimaxi põhimõtet ja kahte väärtust, alfa ja beeta. Alfa esindab minimaalset punktisummat, milleni arvuti on kindel, et ta saab, samas kui beeta esindab maksimaalset punktisummat, mille vastane võib saada. Algoritm aitab arvutil teha mängus nutikaid ja tõhusaid otsuseid.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "Selles mängus on teisel mängijal lihtsam võita võrreldes esimese mängijaga.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Inimkogemuse järgi, kui üritad võita, siis kaotad. Selle asemel seadke oma eesmärgiks viik ja vältige mängu kaotamist. Jälgige oma vastast ja meelitage ta õrnalt asendisse, kus nad võivad vigu teha. Kui nad näitavad nõrkust, kasutage võimalust ja suruge õrnalt võidu poole. Sel viisil võite mängu võita.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "Selles mängus on teisel mängijal lihtsam võita võrreldes esimese mängijaga.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Suvandi Passiivne lubamine paneb tehisintellekti lõõgastuma, kui tal on positsioonil eelis, selle asemel, et püüda agressiivselt võita võimalikult kiiresti.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Kui tehisintellekt arvestab oma nuppude liikuvust, ei ole selle eesmärk mitte ainult vastase nuppude võimalikult kiire tabamine, vaid kaalub ka vastase liikumiste blokeerimist ja takistamist neil sama tegemast.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Selle valiku lubamine suurendab mängu juhuslikkust ja lõbusust, samas kui selle keelamine võib aidata uurida viise, kuidas AI-d ületada.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Kui tehisintellekt arvestab oma nuppude liikuvust, ei ole selle eesmärk mitte ainult vastase nuppude võimalikult kiire tabamine, vaid kaalub ka vastase liikumiste blokeerimist ja takistamist neil sama tegemast.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Kui laud on täis",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Paigutamisfaasi lõpus, enne liikumisfaasi algust, järgneb tegevus, kui laud on tükke täis.",
@@ -1340,14 +1340,16 @@
     "@goldenJade": {},
     "forestWood": "Metsa puit",
     "@forestWood": {},
-    "greenMeadow": "Roheline heinamaa",
-    "@greenMeadow": {},
-    "stonyPath": "Kivi tee",
-    "@stonyPath": {},
+    "darkMystery": "Tume müsteerium",
+    "@darkMystery": {},
     "midnightBlue": "Kesköösinine",
     "@midnightBlue": {},
     "greenForest": "Roheline mets",
     "@greenForest": {},
+    "greenMeadow": "Roheline heinamaa",
+    "@greenMeadow": {},
+    "stonyPath": "Kivi tee",
+    "@stonyPath": {},
     "pastelPink": "Pastelne roosa",
     "@pastelPink": {},
     "turquoiseSea": "Türkiissinine meri",
@@ -1360,8 +1362,6 @@
     "@skyBlue": {},
     "playfulGarden": "Mänguline aed",
     "@playfulGarden": {},
-    "darkMystery": "Tume müsteerium",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Retrograadse analüüsi algoritm kasutab mitme väärtusega retrograadset analüüsi, et luua erinevatest alguspositsioonidest lõppmängu andmebaas, seejärel rakendab see andmebaas mängu optimeerimiseks. See lähenemisviis kuulub ülitugevate lahenduste kategooriasse.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Kas soovite vaadata selle algoritmi kasutusjuhendit?",

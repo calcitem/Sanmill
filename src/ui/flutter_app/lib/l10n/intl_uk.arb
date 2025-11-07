@@ -20,65 +20,6 @@
     "@game": {
         "description": "Game"
     },
-    "mayRemoveMultiple": "Багаторазове видалення",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "messageColor": "Колір повідомлення",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "stepForwardAll": "Всі кроки вперед",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "theme": "Тема",
-    "@theme": {
-        "description": "Theme"
-    },
-    "getInvolved": "Бути втягнутим",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "draw": "Нічия",
-    "@draw": {
-        "description": "Draw"
-    },
-    "algorithm": "Алгоритм",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "pointStyle": "Точковий стиль",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Ширина точки",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Тверда",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Порожнистий",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Українська",
-    "@languageName": {
-        "description": "The name of the current language"
-    },
-    "moveNumber": "{count,plural, =0{Переїхати}=1{{count} Переїхати}other{{count} Рухає}}",
-    "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
-    },
     "humanVsAi": "Людина проти ШІ",
     "@humanVsAi": {
         "description": "Human Vs AI"
@@ -536,6 +477,10 @@
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
+    "mayRemoveMultiple": "Багаторазове видалення",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
+    },
     "mayRemoveMultiple_Detail": "Якщо гравець закриває більше одного млина одночасно, він видаляє кількість закритих млинів.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
@@ -639,6 +584,10 @@
     "blackPieceColor": "Колір гравця 2 шт",
     "@blackPieceColor": {
         "description": "Player 2 piece color"
+    },
+    "messageColor": "Колір повідомлення",
+    "@messageColor": {
+        "description": "Message color"
     },
     "isPieceCountInHandShown": "Показати кількість нерозставлених фігур",
     "@isPieceCountInHandShown": {
@@ -796,6 +745,10 @@
     "@takeBackAll": {
         "description": "Take back all"
     },
+    "stepForwardAll": "Всі кроки вперед",
+    "@stepForwardAll": {
+        "description": "Step forward all"
+    },
     "moveNow": "Рухайтеся зараз",
     "@moveNow": {
         "description": "Move now"
@@ -819,6 +772,10 @@
     "none": "Жодного",
     "@none": {
         "description": "None"
+    },
+    "theme": "Тема",
+    "@theme": {
+        "description": "Theme"
     },
     "helpContent": "Мета гри – залишити супернику менше трьох фігур або залишити жодного допустимого ходу. \n\nГра автоматично завершує нічию, якщо позиція виникає втретє або не відбувається жодного видалення протягом останніх 100 (настроюваних) ходів. \n\nГра проходить у три етапи: \n\n1. Розміщення фігур на вільних точках \n2. Переміщення фігур на сусідні точки \n3. (додаткова фаза) Переміщення фігур у будь-яку вільну точку, коли гравець зменшується до трьох фігур \n\nРозміщення \n\nГра починається з порожнього поля, яке складається з сітки з двадцятьма чотирма точками. Гравці по черзі розміщують свої фігури на вільних точках, поки кожен гравець не розмістить усі фігури на дошці. Якщо гравець може поставити три свої фігури прямо, він має «млин» і може видалити одну з фігур свого суперника з дошки. \n\nУ деяких наборах правил гравці повинні спочатку видалити будь-які інші частини, перш ніж витягти частину зі сформованого млина. \n\nЗгідно з певними правилами, ви не можете знову розміщувати фігури на точках, з яких фігури були видалені. \n\nКоли всі фігури розставлені, гравці по черзі пересувають їх. \n\nПереїзд \n\nДля переміщення гравець переміщує одну зі своїх фігур уздовж лінії дошки до вільної сусідньої точки. Якщо він не може, він програє гру. Гравець, який вирівнює три свої фігури на лінії дошки, має млин і може видалити одну з фігур свого суперника, як у фазі розміщення. Якщо гравець зменшується до двох частин, він не має можливості створити нові млини, і, отже, програє гру. Гравець також може програти, коли більше трьох фігур, якщо його суперник блокує їх рух. \n\nполіт \n\nУ деяких варіантах правил, якщо у гравця залишилося лише три фігури, їхні фігури можуть літати, стрибати або стрибати на будь-які вільні точки, а не лише на сусідні.\n",
     "@helpContent": {
@@ -1102,6 +1059,10 @@
     "@threads": {
         "description": "Threads"
     },
+    "getInvolved": "Бути втягнутим",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
     "helpImproveTranslate": "Допоможіть покращити переклад",
     "@helpImproveTranslate": {
         "description": "Help improve translate"
@@ -1206,9 +1167,17 @@
     "@isDraw": {
         "description": "It is a Draw!"
     },
+    "draw": "Нічия",
+    "@draw": {
+        "description": "Draw"
+    },
     "pieceHighlightColor": "Колір виділення шматка",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "algorithm": "Алгоритм",
+    "@algorithm": {
+        "description": "Algorithm"
     },
     "endgameNMoveRule": "Правило N-Move в кінці гри",
     "@endgameNMoveRule": {
@@ -1234,6 +1203,37 @@
     "@continueToMakeMove": {
         "description": "Mill! Continue to make a move."
     },
+    "pointStyle": "Точковий стиль",
+    "@pointStyle": {
+        "description": "Point style"
+    },
+    "pointWidth": "Ширина точки",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "solid": "Тверда",
+    "@solid": {
+        "description": "Solid"
+    },
+    "hollow": "Порожнистий",
+    "@hollow": {
+        "description": "Hollow"
+    },
+    "languageName": "Українська",
+    "@languageName": {
+        "description": "The name of the current language"
+    },
+    "moveNumber": "{count,plural, =0{Переїхати}=1{{count} Переїхати}other{{count} Рухає}}",
+    "@moveNumber": {
+        "description": "Moves to take back",
+        "placeholders": {
+            "count": {
+                "description": "Number of Moves",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
     "loadFailed": "Не вдалося завантажити.",
     "@loadFailed": {
         "description": "Load failed."
@@ -1253,14 +1253,6 @@
     "gameSavedTo": "Гра збережена в",
     "@gameSavedTo": {
         "description": "The game is saved to"
-    },
-    "notPlacingPhase": "Не розміщуючи фазу, не можна її змінити.",
-    "@notPlacingPhase": {
-        "description": "Not placing phase, cannot change it."
-    },
-    "cannotPaste": "Неможливо вставити.",
-    "@cannotPaste": {
-        "description": "Cannot paste."
     },
     "empty": "Порожній",
     "@empty": {
@@ -1327,6 +1319,10 @@
             }
         }
     },
+    "notPlacingPhase": "Не розміщуючи фазу, не можна її змінити.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
     "paste": "Вставити",
     "@paste": {
         "description": "Paste"
@@ -1335,17 +1331,21 @@
     "@pasteDone": {
         "description": "The paste is done."
     },
+    "cannotPaste": "Неможливо вставити.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
     "isUnplacedAndRemovedPiecesShown": "Показати нерозставлені та видалені частини",
     "@isUnplacedAndRemovedPiecesShown": {
         "description": "Show unplaced and removed pieces"
     },
-    "reopenToTakeEffect": "Вийдіть і знову відкрийте програму, щоб налаштування вступили в силу.",
-    "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
-    },
     "fullScreen": "Повноекранний",
     "@fullScreen": {
         "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Вийдіть і знову відкрийте програму, щоб налаштування вступили в силу.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Ліс",
     "@forest": {},
@@ -1355,10 +1355,10 @@
     "@invalidPosition": {},
     "shareGIF": "Поділіться GIF",
     "@shareGIF": {},
-    "duration": "Тривалість",
-    "@duration": {},
     "pixelRatio": "Співвідношення пікселів",
     "@pixelRatio": {},
+    "duration": "Тривалість",
+    "@duration": {},
     "gameScreenRecorder": "Диктофон ігрового екрану",
     "@gameScreenRecorder": {},
     "previous": "Попередній",
@@ -1375,26 +1375,26 @@
     "@youCanUseMouseWheelInPicker": {},
     "noTimeLimitForThinking": "Час мислення штучного інтелекту, встановлений на 0, означає відсутність обмеження часу на мислення.",
     "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) — це модифікована форма альфа-бета-алгоритму пошуку, спрямована на підвищення ефективності шляхом повторного використання проміжних результатів пошуку та використання правильного початкового припущення для звуження простору пошуку.",
+    "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Майте на увазі, що налаштування часу мислення ШІ може бути не зовсім точним. Фактичний час на обдумування може бути коротшим, якщо рівень складності встановлено на нижче значення, і може бути довшим, коли штучний інтелект знаходиться на середині обдумування, коли час закінчується.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "Якщо встановити високий рівень складності, але не збільшити час на обдумування ШІ, фактичний рівень складності може бути обмежений нижчим значенням через обмеження часу на обдумування. Фактичне значення може відрізнятися залежно від продуктивності машини.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsMtdf": "MTD(f) — це модифікована форма альфа-бета-алгоритму пошуку, спрямована на підвищення ефективності шляхом повторного використання проміжних результатів пошуку та використання правильного початкового припущення для звуження простору пошуку.",
-    "@whatIsMtdf": {},
     "whatIsPvs": "PVS (Principal Variation Search) — це алгоритм пошуку для пошуку найкращого ходу в даній позиції. Це покращення альфа-бета-алгоритму та використовує нульовий або нульовий пошук у вікні, щоб підтвердити, що хід є гіршим або не гіршим, ніж уже безпечний результат основного варіанту. PVS фокусується на найбільш перспективних рухах і уникає непотрібних пошуків неоптимальних гілок, що сприяє підвищенню ефективності пошуку.",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Альфа-бета-алгоритм — це алгоритм пошуку для пошуку найкращого ходу. Він використовує мінімаксний принцип і два значення, альфа і бета, для скорочення дерева пошуку та підвищення ефективності. Альфа представляє мінімальний бал, який комп’ютер впевнений, що може отримати, тоді як бета представляє максимальний бал, який може отримати його опонент. Алгоритм допомагає комп’ютеру приймати розумні ефективні рішення в грі.",
     "@whatIsAlphaBeta": {},
-    "firstMoveDetail": "У цій грі другому гравцеві легше виграти, ніж першому.",
-    "@firstMoveDetail": {},
     "drawOnTheHumanExperienceDetail": "Згідно з людським досвідом, намагаючись виграти, ви програєте. Натомість поставте собі за мету нічию та уникайте програшу. Спостерігайте за своїм суперником і обережно заманюйте його в позицію, де він може зробити помилку. Коли вони виявляють слабкість, скористайтеся нагодою і обережно домагайтеся перемоги. Таким чином ви можете виграти гру.",
     "@drawOnTheHumanExperienceDetail": {},
+    "firstMoveDetail": "У цій грі другому гравцеві легше виграти, ніж першому.",
+    "@firstMoveDetail": {},
     "passiveDetail": "Увімкнення параметра Passive змусить ШІ розслабитися, коли він має перевагу в позиції, а не агресивно намагатися виграти якомога швидше.",
     "@passiveDetail": {},
-    "considerMobilityOfPiecesDetail": "Якщо штучний інтелект враховує рухливість своїх фігур, він не лише намагатиметься захопити фігури супротивника якомога швидше, але також розглядатиме можливість блокування рухів супротивника та запобігання йому робити те ж саме.",
-    "@considerMobilityOfPiecesDetail": {},
     "moveRandomlyDetail": "Увімкнення цієї опції збільшує випадковість і задоволення від гри, а вимкнення може допомогти вивчити способи перемогти ШІ.",
     "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "Якщо штучний інтелект враховує рухливість своїх фігур, він не лише намагатиметься захопити фігури супротивника якомога швидше, але також розглядатиме можливість блокування рухів супротивника та запобігання йому робити те ж саме.",
+    "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "Коли дошка повна",
     "@whenBoardIsFull": {},
     "whenBoardIsFull_Detail": "Наприкінці фази розміщення, перед початком фази переміщення, дія починається, якщо дошка заповнена фігурами.",
@@ -1441,14 +1441,16 @@
     "@goldenJade": {},
     "forestWood": "лісовий ліс",
     "@forestWood": {},
-    "greenMeadow": "Зелений Луг",
-    "@greenMeadow": {},
-    "stonyPath": "Кам'яний шлях",
-    "@stonyPath": {},
+    "darkMystery": "Темна таємниця",
+    "@darkMystery": {},
     "midnightBlue": "Синій опівночі",
     "@midnightBlue": {},
     "greenForest": "Зелений ліс",
     "@greenForest": {},
+    "greenMeadow": "Зелений Луг",
+    "@greenMeadow": {},
+    "stonyPath": "Кам'яний шлях",
+    "@stonyPath": {},
     "pastelPink": "Пастельно-рожевий",
     "@pastelPink": {},
     "turquoiseSea": "Бірюзове море",
@@ -1461,8 +1463,6 @@
     "@skyBlue": {},
     "playfulGarden": "Грайливий сад",
     "@playfulGarden": {},
-    "darkMystery": "Темна таємниця",
-    "@darkMystery": {},
     "whatIsRetrogradeAnalysis": "Алгоритм ретроградного аналізу використовує багатозначний ретроградний аналіз для створення бази даних ендшпілю з різних початкових позицій, а потім застосовує цю базу даних для оптимізації ігрового процесу. Цей підхід відноситься до категорії надміцних рішень.",
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Бажаєте переглянути посібник користувача для цього алгоритму?",
@@ -1505,12 +1505,12 @@
     "@marked": {},
     "menu": "Меню",
     "@menu": {},
-    "showNumbersOnPieces": "Показати номери на фігурах",
-    "@showNumbersOnPieces": {},
     "monochrome": "Монохром",
     "@monochrome": {},
     "youCanEnableScreenReaderSupport": "Ви можете увімкнути підтримку зчитувача екрану в налаштуваннях загальних налаштувань в розділі Доступність.",
     "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Показати номери на фігурах",
+    "@showNumbersOnPieces": {},
     "saveImage": "Зберегти зображення",
     "@saveImage": {},
     "isAnalysisToolbarShown": "Показати панель інструментів аналізу",
