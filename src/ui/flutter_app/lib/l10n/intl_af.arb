@@ -1,2120 +1,2120 @@
 {
-  "@@locale": "af",
-  "thinking": "Dink…",
-  "@thinking": {
-    "description": "Thinking..."
-  },
-  "winRate": "Wenkoers",
-  "@winRate": {
-    "description": "Win Rate"
-  },
-  "loseReasonlessThanThree": "{player} stuktelling is minder as drie.",
-  "@loseReasonlessThanThree": {
-    "description": "Indicate that the player lost because they had less than three pieces left.",
-    "placeholders": {
-      "player": {
-        "description": "The player who lost",
-        "example": "Player 1"
-      }
-    }
-  },
-  "none": "Geen",
-  "@none": {
-    "description": "None"
-  },
-  "animationDuration": "Animasie duur",
-  "@animationDuration": {
-    "description": "Animation duration"
-  },
-  "theme": "Tema",
-  "@theme": {
-    "description": "Theme"
-  },
-  "tutorial": "Tutoriaal",
-  "@tutorial": {
-    "description": "Tutorial"
-  },
-  "draw": "Teken",
-  "@draw": {
-    "description": "Draw"
-  },
-  "gameFiles": "Spellêers",
-  "@gameFiles": {
-    "description": "Game files"
-  },
-  "firstMoveDetail": "In hierdie speletjie is dit makliker vir die tweede speler om te wen in vergelyking met die eerste speler.",
-  "@firstMoveDetail": {},
-  "enteredFlyingPhase": "Noudat die vliegfase begin het, kan die teenstander se stukke na enige leë punt op die bord spring. Jy kan die vlieënde reël afskakel in die \"Reëlinstellings\".",
-  "@enteredFlyingPhase": {},
-  "whenStalemate": "Wanneer 'n dooiepunt bereik word",
-  "@whenStalemate": {},
-  "mintChocolate": "Munt Sjokolade",
-  "@mintChocolate": {},
-  "skyBlue": "Lugblou",
-  "@skyBlue": {},
-  "viewAlgorithmGuide": "Wil jy die gebruikersgids vir hierdie algoritme sien?",
-  "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "Toon posisionele voordeel aanwyser",
-  "@showPositionalAdvantageIndicator": {},
-  "appName": "Morabaraba",
-  "@appName": {
-    "description": "The app name"
-  },
-  "welcome": "Welkom",
-  "@welcome": {
-    "description": "Welcome"
-  },
-  "yes": "Ja",
-  "@yes": {
-    "description": "Yes"
-  },
-  "no": "Nee",
-  "@no": {
-    "description": "No"
-  },
-  "game": "Spel",
-  "@game": {
-    "description": "Game"
-  },
-  "humanVsAi": "Mens vs. KI",
-  "@humanVsAi": {
-    "description": "Human Vs AI"
-  },
-  "humanVsHuman": "Mens vs. Mens",
-  "@humanVsHuman": {
-    "description": "Human Vs Human"
-  },
-  "aiVsAi": "KI vs. KI",
-  "@aiVsAi": {
-    "description": "AI Vs AI"
-  },
-  "humanVsCloud": "Mens vs. Wolk",
-  "@humanVsCloud": {
-    "description": "Human Vs Cloud"
-  },
-  "humanVsLAN": "Mens vs. LAN",
-  "@humanVsLAN": {
-    "description": "Human Vs LAN"
-  },
-  "testViaLAN": "Toets via LAN",
-  "@testViaLAN": {
-    "description": "Test Via LAN"
-  },
-  "move": "Trek",
-  "@move": {
-    "description": "Move"
-  },
-  "showMoveList": "Skuiflys",
-  "@showMoveList": {
-    "description": "Move list"
-  },
-  "moveList": "Skuiflys",
-  "@moveList": {
-    "description": "Move list"
-  },
-  "noGameRecord": "Geen rekord nie",
-  "@noGameRecord": {
-    "description": "No record"
-  },
-  "ok": "OK",
-  "@ok": {
-    "description": "OK"
-  },
-  "confirm": "Bevestig",
-  "@confirm": {
-    "description": "Confirm"
-  },
-  "cancel": "Kanselleer",
-  "@cancel": {
-    "description": "Cancel"
-  },
-  "tipSelectWrong": "Jy het die verkeerde stuk gekies.",
-  "@tipSelectWrong": {
-    "description": "Select the wrong piece."
-  },
-  "tipPlace": "Plaas jou stukke.",
-  "@tipPlace": {
-    "description": "Place your pieces."
-  },
-  "tipBanPlace": "Jy kan dit nie hier plaas nie.",
-  "@tipBanPlace": {
-    "description": "Cannot place it here."
-  },
-  "tipPlaced": "Jy het geplaas.",
-  "@tipPlaced": {
-    "description": "Placed."
-  },
-  "tipRemove": "Verwyder 'n stuk.",
-  "@tipRemove": {
-    "description": "Remove a piece."
-  },
-  "tipBanRemove": "Jy kan dit nie verwyder nie.",
-  "@tipBanRemove": {
-    "description": "Cannot remove."
-  },
-  "tipRemoved": "Jy het verwyder.",
-  "@tipRemoved": {
-    "description": "Removed."
-  },
-  "tipMove": "Skuif 'n stuk.",
-  "@tipMove": {
-    "description": "Move a piece."
-  },
-  "tipCannotPlace": "Jy kan nie jou stuk hier plaas nie.",
-  "@tipCannotPlace": {
-    "description": "You can't place your piece here."
-  },
-  "tipCannotMove": "Jy kan nie jou stuk hierheen skuif nie.",
-  "@tipCannotMove": {
-    "description": "You can't move your piece here."
-  },
-  "tipMill": "Meul! Neem jou teenstander se stuk.",
-  "@tipMill": {
-    "description": "Mill! Take your opponent's piece."
-  },
-  "tipContinueMill": "Gaan voort om jou teenstander se stuk te neem.",
-  "@tipContinueMill": {
-    "description": "Continue to take your opponent's piece."
-  },
-  "tipSelectOpponentsPiece": "Kies een van jou teenstander se stukke.",
-  "@tipSelectOpponentsPiece": {
-    "description": "Select one of your opponent's pieces."
-  },
-  "tipCannotRemovePieceFromMill": "Jy kan nie 'n stuk uit 'n meule verwyder nie.",
-  "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a mill."
-  },
-  "tipCanMoveOnePoint": "'n Stuk kan 1 punt beweeg.",
-  "@tipCanMoveOnePoint": {
-    "description": "A piece can move 1 point."
-  },
-  "tipCannotMoveOpponentsPieces": "Jy kan nie jou teenstander se stukke skuif nie.",
-  "@tipCannotMoveOpponentsPieces": {
-    "description": "You can't move your opponent's pieces."
-  },
-  "tipSelectPieceToMove": "Kies jou stuk om te beweeg.",
-  "@tipSelectPieceToMove": {
-    "description": "Select your piece to move."
-  },
-  "tipHaveThreePiecesLeft": "Jy het drie stukke oor.",
-  "@tipHaveThreePiecesLeft": {
-    "description": "You have 3 pieces left."
-  },
-  "tipCanMoveToAnyPoint": "Jy kan beweeg na enige punt wat jy wil.",
-  "@tipCanMoveToAnyPoint": {
-    "description": "You can move to any point you like."
-  },
-  "tipToMove": "{player} om te beweeg.",
-  "@tipToMove": {
-    "description": "The tip that the given player is to move.",
-    "placeholders": {
-      "player": {
+    "@@locale": "af",
+    "thinking": "Dink…",
+    "@thinking": {
+        "description": "Thinking..."
+    },
+    "winRate": "Wenkoers",
+    "@winRate": {
+        "description": "Win Rate"
+    },
+    "loseReasonlessThanThree": "{player} stuktelling is minder as drie.",
+    "@loseReasonlessThanThree": {
+        "description": "Indicate that the player lost because they had less than three pieces left.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
+    },
+    "none": "Geen",
+    "@none": {
+        "description": "None"
+    },
+    "animationDuration": "Animasie duur",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "theme": "Tema",
+    "@theme": {
+        "description": "Theme"
+    },
+    "tutorial": "Tutoriaal",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "draw": "Teken",
+    "@draw": {
+        "description": "Draw"
+    },
+    "gameFiles": "Spellêers",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "firstMoveDetail": "In hierdie speletjie is dit makliker vir die tweede speler om te wen in vergelyking met die eerste speler.",
+    "@firstMoveDetail": {},
+    "enteredFlyingPhase": "Noudat die vliegfase begin het, kan die teenstander se stukke na enige leë punt op die bord spring. Jy kan die vlieënde reël afskakel in die \"Reëlinstellings\".",
+    "@enteredFlyingPhase": {},
+    "whenStalemate": "Wanneer 'n dooiepunt bereik word",
+    "@whenStalemate": {},
+    "mintChocolate": "Munt Sjokolade",
+    "@mintChocolate": {},
+    "skyBlue": "Lugblou",
+    "@skyBlue": {},
+    "viewAlgorithmGuide": "Wil jy die gebruikersgids vir hierdie algoritme sien?",
+    "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Toon posisionele voordeel aanwyser",
+    "@showPositionalAdvantageIndicator": {},
+    "appName": "Morabaraba",
+    "@appName": {
+        "description": "The app name"
+    },
+    "welcome": "Welkom",
+    "@welcome": {
+        "description": "Welcome"
+    },
+    "yes": "Ja",
+    "@yes": {
+        "description": "Yes"
+    },
+    "no": "Nee",
+    "@no": {
+        "description": "No"
+    },
+    "game": "Spel",
+    "@game": {
+        "description": "Game"
+    },
+    "humanVsAi": "Mens vs. KI",
+    "@humanVsAi": {
+        "description": "Human Vs AI"
+    },
+    "humanVsHuman": "Mens vs. Mens",
+    "@humanVsHuman": {
+        "description": "Human Vs Human"
+    },
+    "aiVsAi": "KI vs. KI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
+    },
+    "humanVsCloud": "Mens vs. Wolk",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
+    },
+    "humanVsLAN": "Mens vs. LAN",
+    "@humanVsLAN": {
+        "description": "Human Vs LAN"
+    },
+    "testViaLAN": "Toets via LAN",
+    "@testViaLAN": {
+        "description": "Test Via LAN"
+    },
+    "move": "Trek",
+    "@move": {
+        "description": "Move"
+    },
+    "showMoveList": "Skuiflys",
+    "@showMoveList": {
+        "description": "Move list"
+    },
+    "moveList": "Skuiflys",
+    "@moveList": {
+        "description": "Move list"
+    },
+    "noGameRecord": "Geen rekord nie",
+    "@noGameRecord": {
+        "description": "No record"
+    },
+    "ok": "OK",
+    "@ok": {
+        "description": "OK"
+    },
+    "confirm": "Bevestig",
+    "@confirm": {
+        "description": "Confirm"
+    },
+    "cancel": "Kanselleer",
+    "@cancel": {
+        "description": "Cancel"
+    },
+    "tipSelectWrong": "Jy het die verkeerde stuk gekies.",
+    "@tipSelectWrong": {
+        "description": "Select the wrong piece."
+    },
+    "tipPlace": "Plaas jou stukke.",
+    "@tipPlace": {
+        "description": "Place your pieces."
+    },
+    "tipBanPlace": "Jy kan dit nie hier plaas nie.",
+    "@tipBanPlace": {
+        "description": "Cannot place it here."
+    },
+    "tipPlaced": "Jy het geplaas.",
+    "@tipPlaced": {
+        "description": "Placed."
+    },
+    "tipRemove": "Verwyder 'n stuk.",
+    "@tipRemove": {
+        "description": "Remove a piece."
+    },
+    "tipBanRemove": "Jy kan dit nie verwyder nie.",
+    "@tipBanRemove": {
+        "description": "Cannot remove."
+    },
+    "tipRemoved": "Jy het verwyder.",
+    "@tipRemoved": {
+        "description": "Removed."
+    },
+    "tipMove": "Skuif 'n stuk.",
+    "@tipMove": {
+        "description": "Move a piece."
+    },
+    "tipCannotPlace": "Jy kan nie jou stuk hier plaas nie.",
+    "@tipCannotPlace": {
+        "description": "You can't place your piece here."
+    },
+    "tipCannotMove": "Jy kan nie jou stuk hierheen skuif nie.",
+    "@tipCannotMove": {
+        "description": "You can't move your piece here."
+    },
+    "tipMill": "Meul! Neem jou teenstander se stuk.",
+    "@tipMill": {
+        "description": "Mill! Take your opponent's piece."
+    },
+    "tipContinueMill": "Gaan voort om jou teenstander se stuk te neem.",
+    "@tipContinueMill": {
+        "description": "Continue to take your opponent's piece."
+    },
+    "tipSelectOpponentsPiece": "Kies een van jou teenstander se stukke.",
+    "@tipSelectOpponentsPiece": {
+        "description": "Select one of your opponent's pieces."
+    },
+    "tipCannotRemovePieceFromMill": "Jy kan nie 'n stuk uit 'n meule verwyder nie.",
+    "@tipCannotRemovePieceFromMill": {
+        "description": "You cannot remove a piece from a mill."
+    },
+    "tipCanMoveOnePoint": "'n Stuk kan 1 punt beweeg.",
+    "@tipCanMoveOnePoint": {
+        "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "Jy kan nie jou teenstander se stukke skuif nie.",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
+    "tipSelectPieceToMove": "Kies jou stuk om te beweeg.",
+    "@tipSelectPieceToMove": {
+        "description": "Select your piece to move."
+    },
+    "tipHaveThreePiecesLeft": "Jy het drie stukke oor.",
+    "@tipHaveThreePiecesLeft": {
+        "description": "You have 3 pieces left."
+    },
+    "tipCanMoveToAnyPoint": "Jy kan beweeg na enige punt wat jy wil.",
+    "@tipCanMoveToAnyPoint": {
+        "description": "You can move to any point you like."
+    },
+    "tipToMove": "{player} om te beweeg.",
+    "@tipToMove": {
+        "description": "The tip that the given player is to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
+    },
+    "whiteWin": "Speler 1 wen!",
+    "@whiteWin": {
+        "description": "Player 1 wins!"
+    },
+    "blackWin": "Speler 2 wen!",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
+    "won": "Gewen",
+    "@won": {
+        "description": "Won"
+    },
+    "lost": "Verlore",
+    "@lost": {
+        "description": "Lost"
+    },
+    "newGame": "Nuwe spel",
+    "@newGame": {
+        "description": "New game"
+    },
+    "importGame": "Voer speletjie in",
+    "@importGame": {
+        "description": "Import game"
+    },
+    "exportGame": "Voer speletjie uit",
+    "@exportGame": {
+        "description": "Export game"
+    },
+    "gameImported": "Speletjie ingevoer.",
+    "@gameImported": {
+        "description": "Game imported from the clipboard."
+    },
+    "cannotImport": "Kan nie invoer nie {invalidMove}",
+    "@cannotImport": {
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
+    },
+    "movesAndRulesNotMatch": "Bewegings en reëls stem nie ooreen nie.",
+    "@movesAndRulesNotMatch": {
+        "description": "Rules and moves do not match."
+    },
+    "pleaseWait": "Wag asseblief.",
+    "@pleaseWait": {
+        "description": "Please wait..."
+    },
+    "restartGame": "Herbegin die huidige speletjie?",
+    "@restartGame": {
+        "description": "Restart current game?"
+    },
+    "restart": "Begin oor",
+    "@restart": {
+        "description": "Restart"
+    },
+    "gameStarted": "Die wedstryd het begin, plaas asseblief.",
+    "@gameStarted": {
+        "description": "Game started, please place"
+    },
+    "analyzing": "Ontleed tans …",
+    "@analyzing": {
+        "description": "Analyzing ..."
+    },
+    "error": "Fout: {message}",
+    "@error": {
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
+    },
+    "score": "Telling:",
+    "@score": {
+        "description": "Score"
+    },
+    "white": "Speler 1",
+    "@white": {
+        "description": "Player 1"
+    },
+    "black": "Speler 2",
+    "@black": {
+        "description": "Player 2"
+    },
+    "loseReasonResign": "{player} het opgegee.",
+    "@loseReasonResign": {
+        "description": "Indicate that the player resigned.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
+    },
+    "loseReasonNoWay": "{player} het geen skuif om te maak nie.",
+    "@loseReasonNoWay": {
+        "description": "Indicate that the player has no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
+    },
+    "loseReasonBoardIsFull": "Die bord is vol, en {player} het geen skuif om te maak nie.",
+    "@loseReasonBoardIsFull": {
+        "description": "Indicate that the player has no way to go because the board is full.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
+    },
+    "loseReasonTimeOver": "Tyd is verby, {player} verlore.",
+    "@loseReasonTimeOver": {
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
+    },
+    "drawReasonRule50": "In die bewegende fase is geen stuk verwyder in die laaste spesifieke aantal skuiwe nie.",
+    "@drawReasonRule50": {
+        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+    },
+    "drawReasonBoardIsFull": "Dit is 'n trekking want die bord is vol.",
+    "@drawReasonBoardIsFull": {
+        "description": "It is a Draw because the board is full"
+    },
+    "drawReasonThreefoldRepetition": "Dit is 'n trekking as gevolg van drievoudige herhaling.",
+    "@drawReasonThreefoldRepetition": {
+        "description": "It is a Draw because of threefold repetition."
+    },
+    "gameOverUnknownReason": "Spel verby! Onbekende rede.",
+    "@gameOverUnknownReason": {
+        "description": "Game Over! Unknown reason."
+    },
+    "gameOver": "Spel verby",
+    "@gameOver": {
+        "description": "Game Over"
+    },
+    "youWin": "Jy wen! Baie geluk!",
+    "@youWin": {
+        "description": "You win! Congratulations!"
+    },
+    "challengeHarderLevel": "Daag moeiliker vlak uit? Die nuwe vlak sal vlak {level} wees!",
+    "@challengeHarderLevel": {
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "youLose": "Jy verloor!",
+    "@youLose": {
+        "description": "You Lose!"
+    },
+    "analyze": "Ontleed",
+    "@analyze": {
+        "description": "Analyze"
+    },
+    "about": "Oor",
+    "@about": {
+        "description": "About"
+    },
+    "version": "Weergawe: {versionNumber}",
+    "@version": {
+        "description": "Version",
+        "placeholders": {
+            "versionNumber": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
+    },
+    "thanks": "Dankie",
+    "@thanks": {
+        "description": "Thanks"
+    },
+    "settings": "Instellings",
+    "@settings": {
+        "description": "Settings"
+    },
+    "options": "Opsies",
+    "@options": {
+        "description": "Options"
+    },
+    "generalSettings": "Algemene instellings",
+    "@generalSettings": {
+        "description": "General Settings"
+    },
+    "skillLevel": "Moeilikheidsgraad",
+    "@skillLevel": {
+        "description": "Difficulty level"
+    },
+    "moveTime": "KI-denktyd",
+    "@moveTime": {
+        "description": "AI thinking time"
+    },
+    "difficulty": "Moeilikheid",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
+    "playSounds": "Byklanke",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
+    "playSoundsInTheGame": "Speel klanke in die speletjie",
+    "@playSoundsInTheGame": {
+        "description": "Play sounds in the game"
+    },
+    "keepMuteWhenTakingBack": "Hou stil wanneer jy terugneem",
+    "@keepMuteWhenTakingBack": {
+        "description": "Keep mute when taking back"
+    },
+    "tone": "Toon",
+    "@tone": {
+        "description": "Tone"
+    },
+    "whoMovesFirst": "Eerste skuif",
+    "@whoMovesFirst": {
+        "description": "First move"
+    },
+    "human": "Mens",
+    "@human": {
+        "description": "Human"
+    },
+    "ai": "KI",
+    "@ai": {
+        "description": "AI"
+    },
+    "alternate": "Wissel af",
+    "@alternate": {
+        "description": "Alternate"
+    },
+    "isAutoRestart": "Herbegin die speletjie outomaties wanneer die speletjie verby is",
+    "@isAutoRestart": {
+        "description": "Auto-restart game when game over"
+    },
+    "isAutoChangeFirstMove": "Outo-verandering eerste skuif",
+    "@isAutoChangeFirstMove": {
+        "description": "Auto Change First Move"
+    },
+    "shufflingEnabled": "Beweeg willekeurig",
+    "@shufflingEnabled": {
+        "description": "Random move"
+    },
+    "misc": "Diverse",
+    "@misc": {
+        "description": "Miscellaneous"
+    },
+    "rules": "Reëls",
+    "@rules": {
+        "description": "Rules"
+    },
+    "piecesCount": "Die aantal stukke wat elke speler het",
+    "@piecesCount": {
+        "description": "The number of pieces each player has"
+    },
+    "piecesCount_Detail": "Hoeveel stukke het elke speler?",
+    "@piecesCount_Detail": {
+        "description": "How many pieces does each player have?"
+    },
+    "flyPieceCount": "Die nommer van die vlieënde stuk",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
+    "flyPieceCount_Detail": "As Vlieg geaktiveer is, wanneer 'n speler tot 'n spesifieke stuktelling verminder word, is haar stukke vry om na enige onbesette punt te skuif in plaas daarvan om beperk te word tot aangrensende punte soos in die res van die speletjie.",
+    "@flyPieceCount_Detail": {
+        "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
+    "piecesAtLeastCount": "Stukke Ten minste",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "Diagonale lyne",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
+    "hasDiagonalLines_Detail": "Voeg vier diagonale lyne by die bord.",
+    "@hasDiagonalLines_Detail": {
+        "description": "Add four diagonal lines to the board."
+    },
+    "isDefenderMoveFirst": "Die tweede speler beweeg eerste",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
+    "isDefenderMoveFirst_Detail": "Die speler wat tweede beweeg in die plasingsfase, beweeg eerste in die beweegfase.",
+    "@isDefenderMoveFirst_Detail": {
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
+    },
+    "mayRemoveMultiple": "Multi-verwyder",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
+    },
+    "mayRemoveMultiple_Detail": "As 'n speler meer as een meule op een slag toemaak, sal sy die aantal meule wat sy gesluit het, verwyder.",
+    "@mayRemoveMultiple_Detail": {
+        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
+    "mayRemoveFromMillsAlways": "Vernietig meulens",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
+    },
+    "mayRemoveFromMillsAlways_Detail": "By verstek moet spelers eers enige ander stukke verwyder voordat 'n stuk uit 'n gevormde meul verwyder word. Aktiveer hierdie opsie om die beperking te deaktiveer.",
+    "@mayRemoveFromMillsAlways_Detail": {
+        "description": "mayRemoveFromMillsAlways_Detail"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull": "Die tweede speler verloor wanneer die bord vol is",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wanneer die bord vol is aan die einde van die plasingsfase, verloor die kant wat eerste plaas die wedstryd. Andersins is die wedstryd gelykop.",
+    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+    },
+    "isLoseButNotChangeSideWhenNoWay": "Verloor wanneer geen wettige skuiwe nie",
+    "@isLoseButNotChangeSideWhenNoWay": {
+        "description": "Lose when no legal moves"
+    },
+    "isLoseButNotChangeSideWhenNoWay_Detail": "Die speler sal verloor as sy teenstander hulle blokkeer sodat hulle nie geskuif kan word nie. Verander kant om te skuif as hierdie opsie gedeaktiveer is.",
+    "@isLoseButNotChangeSideWhenNoWay_Detail": {
+        "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+    },
+    "mayFly": "Vlieg",
+    "@mayFly": {
+        "description": "Flying"
+    },
+    "mayFly_Detail": "As 'n speler net drie of vier (konfigureerbare) stukke oor het, kan sy die stuk na enige vrypunt skuif.",
+    "@mayFly_Detail": {
+        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "N-skuif reël",
+    "@nMoveRule": {
+        "description": "N-move rule"
+    },
+    "nMoveRule_Detail": "Die wedstryd word gelykop gemaak as daar geen verwydering in 'n spesifieke aantal skuiwe was nie.",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+    },
+    "rollback": "Terugrol",
+    "@rollback": {
+        "description": "Rollback"
+    },
+    "pleaseSelect": "Kies asseblief",
+    "@pleaseSelect": {
+        "description": "Please select"
+    },
+    "copy": "Kopieer",
+    "@copy": {
+        "description": "Copy"
+    },
+    "moveHistoryCopied": "Skuif geskiedenis wat na knipbord gekopieer is.",
+    "@moveHistoryCopied": {
+        "description": "Move history copied to clipboard"
+    },
+    "help": "Help",
+    "@help": {
+        "description": "Help"
+    },
+    "feedback": "Terugvoer",
+    "@feedback": {
+        "description": "Feedback"
+    },
+    "exit": "Verlaat",
+    "@exit": {
+        "description": "Exit"
+    },
+    "ruleSettings": "Reëlinstellings",
+    "@ruleSettings": {
+        "description": "Rule Settings"
+    },
+    "color": "Kleur",
+    "@color": {
+        "description": "Color"
+    },
+    "boardColor": "Bord kleur",
+    "@boardColor": {
+        "description": "Board color"
+    },
+    "pieceColor": "Stuk kleur",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "Agtergrondkleur",
+    "@backgroundColor": {
+        "description": "Background color"
+    },
+    "lineColor": "Bordlyn kleur",
+    "@lineColor": {
+        "description": "Board line color"
+    },
+    "whitePieceColor": "Speler 1 stuk kleur",
+    "@whitePieceColor": {
+        "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "Speler 2 stuk kleur",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
+    },
+    "messageColor": "Boodskap kleur",
+    "@messageColor": {
+        "description": "Message color"
+    },
+    "isPieceCountInHandShown": "Toon telling van ongeplaasde stukke",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
+    },
+    "isNotationsShown": "Wys notasies aan boord",
+    "@isNotationsShown": {
+        "description": "Show notations on board"
+    },
+    "isHistoryNavigationToolbarShown": "Wys geskiedenisnavigasienutsbalk",
+    "@isHistoryNavigationToolbarShown": {
+        "description": "Show history navigation toolbar"
+    },
+    "display": "Vertoon",
+    "@display": {
+        "description": "Display"
+    },
+    "boardBorderLineWidth": "Borderlyn breedte",
+    "@boardBorderLineWidth": {
+        "description": "Board borderline width"
+    },
+    "boardInnerLineWidth": "Bord binnelyn breedte",
+    "@boardInnerLineWidth": {
+        "description": "Board inner line width"
+    },
+    "pieceWidth": "Stuk breedte",
+    "@pieceWidth": {
+        "description": "Piece width"
+    },
+    "fontSize": "Skrifgrootte",
+    "@fontSize": {
+        "description": "Font size"
+    },
+    "standardNotation": "WMD-notasie",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
+    "restore": "Herstel",
+    "@restore": {
+        "description": "Restore"
+    },
+    "restoreDefaultSettings": "Herstel verstekinstellings",
+    "@restoreDefaultSettings": {
+        "description": "Restore Default Settings"
+    },
+    "pick": "Kies {element}",
+    "@pick": {
+        "description": "Used in the color picker.",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
+    },
+    "info": "Inligting",
+    "@info": {
+        "description": "Info"
+    },
+    "hint": "Wenk",
+    "@hint": {
+        "description": "Hint"
+    },
+    "player": "speler",
+    "@player": {
+        "description": "player"
+    },
+    "player1": "Speler 1",
+    "@player1": {
+        "description": "Player 1"
+    },
+    "player2": "Speler 2",
+    "@player2": {
+        "description": "Player 2"
+    },
+    "howToPlay": "Hoe om te speel",
+    "@howToPlay": {
+        "description": "How to play"
+    },
+    "toPlacePiece": "Tik op enige beskikbare punt om die stuk te plaas.",
+    "@toPlacePiece": {
+        "description": "Tap on any available point to place the piece."
+    },
+    "toSelectPiece": "Tik op 'n stuk om dit te skuif.",
+    "@toSelectPiece": {
+        "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "Tik op 'n punt wat aan 'n stuk gekoppel is om dit te skuif.",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
+    },
+    "toRemovePiece": "Tik op die teenstander se een stuk om te verwyder.",
+    "@toRemovePiece": {
+        "description": "Tap on one of the opponent's pieces to remove it."
+    },
+    "needToCreateMillFirst": "Jy moet eers 'n meul skep voordat jy 'n stuk kan verwyder.",
+    "@needToCreateMillFirst": {
+        "description": "You need to create a mill first before you can remove a piece."
+    },
+    "needToPlayWithOwnPieces": "Jy moet met jou stukke speel.",
+    "@needToPlayWithOwnPieces": {
+        "description": "You need to play with your pieces."
+    },
+    "statistics": "Statistiek",
+    "@statistics": {
+        "description": "Statistics"
+    },
+    "totalGames": "Totale speletjies",
+    "@totalGames": {
+        "description": "Total games"
+    },
+    "results": "Resultate",
+    "@results": {
+        "description": "Results"
+    },
+    "left": "links",
+    "@left": {
+        "description": "left"
+    },
+    "privacyPolicy": "Privaatheidsbeleid",
+    "@privacyPolicy": {
+        "description": "Privacy Policy"
+    },
+    "privacyPolicy_Detail_1": "Lees asseblief aandagtig deur en maak seker dat u dit ten volle verstaan en daarmee saamstem ",
+    "@privacyPolicy_Detail_1": {
+        "description": "Privacy Policy Detail 1"
+    },
+    "privacyPolicy_Detail_2": ". As jy nie tot hierdie beleid instem nie, moet asseblief nie hierdie toepassing gebruik nie. Die gebruik van die toepassing impliseer dat u hierdie bepalings aanvaar.",
+    "@privacyPolicy_Detail_2": {
+        "description": "Privacy Policy Detail 2"
+    },
+    "and": " en ",
+    "@and": {},
+    "accept": "Aanvaar",
+    "@accept": {
+        "description": "Accept"
+    },
+    "takeBack": "Neem terug",
+    "@takeBack": {
+        "description": "Take back"
+    },
+    "takingBack": "Neem tans terug …",
+    "@takingBack": {
+        "description": "Taking back..."
+    },
+    "waiting": "Wag tans …",
+    "@waiting": {
+        "description": "Waiting..."
+    },
+    "stepForward": "Tree vorentoe",
+    "@stepForward": {
+        "description": "Step forward"
+    },
+    "takeBackAll": "Neem alles terug",
+    "@takeBackAll": {
+        "description": "Take back all"
+    },
+    "stepForwardAll": "Stap vorentoe almal",
+    "@stepForwardAll": {
+        "description": "Step forward all"
+    },
+    "moveNow": "Beweeg nou",
+    "@moveNow": {
+        "description": "Move now"
+    },
+    "done": "Klaar.",
+    "@done": {
+        "description": "Done."
+    },
+    "crackMill": "Kraak-meul",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
+    "crackMill_Detail": "As 'n speler net stukke in meule het, sal die stukke in die meule nie gesluit word om te verwyder nie.",
+    "@crackMill_Detail": {
+        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "helpContent": "Die speletjie het ten doel om die teenstander met minder as drie stukke oor te laat of geen wettige bewegings oor te hê nie.\n\nDie speletjie verloop in drie fases:\n\nFase 1:\n\nElke speler begin met 12 tokens genoem \"koeie\".\n\nMet 'n skoon bord, plaas elke speler beurtegewys een koei op 'n tyd op 'n kruising (sirkel). Die doel is om rye van drie te vorm, hetsy vertikaal, diagonaal, of horisontaal. Koeie mag slegs op onbesette kruisings geplaas word.\n\nWanneer drie-in-'n-ry bereik word, mag die speler een van die opponent se koeie skiet. 'n Speler mag nie 'n opponent se \"drie-in-'n-ry\" koeie skiet as daar ander koeie op die bord is om te skiet nie.\n\nSlegs een van die opponent se koeie mag op 'n slag geskiet word, selfs al word twee (of meer) lyne van drie-in-'n-ry met een skuif bereik.\n\nSodra 'n koei geskiet is, mag dit nie weer in die spel gebruik word nie.\n\nFase 2:\n\nWanneer al twaalf koeie van elke speler op die bord geplaas is, mag koeie van een kruising na 'n ander beweeg word. 'n Beweging bestaan daaruit om 'n koei van een kruising na 'n onbesette kruising wat onmiddellik daaraan gekoppel en aangrensend is, te skuif.\n\nSpelers mag hul eie rye van drie-in-'n-ry breek om nuwe lyne te vorm, of bloot hul koeie herposisioneer.\n\nKoeie mag heen en weer tussen dieselfde twee kruisings herhaaldelik beweeg word. 'n Drie-in-'n-ry mag gemaak, gebreek en herhaaldelik hervorm word.\n\nNieteenstaande die reël dat lyne herhaaldelik gebreek en hervorm mag word, as 'n speler 'n lyn breek om onmiddellik 'n nuwe lyn van drie 'koeie' te skep, mag sodanige speler nie die koei terugbeweeg na die oorspronklike kruising in sy/haar volgende skuif nie, as dit 'n nuwe lyn skep.\n\nElke keer as 'n drie-in-'n-ry hergemaak word, moet 'n opponent se koei geskiet word.\n\nFase 3:\n\nWanneer 'n speler al sy koeie behalwe drie verloor het, mag hy/sy 'n koei na enige vakante kruising op die bord skuif met elke beweging.\n\nDie wen van die spel:\n\nDie spel word gewen wanneer die opponent nie enige van sy koeie kan beweeg nie, of wanneer die opponent al sy koeie behalwe twee verloor het.\n\nWanneer 'n speler af is tot drie koeie, en geen speler 'n opponent se koei binne tien skuifbeurte kan skiet nie, is die spel 'n gelykop uitslag.\n",
+    "@helpContent": {
+        "description": "Help Content"
+    },
+    "versionInfo": "Weergawe inligting",
+    "@versionInfo": {
+        "description": "Version info"
+    },
+    "eula": "EULA",
+    "@eula": {
+        "description": "EULA"
+    },
+    "license": "Lisensie",
+    "@license": {
+        "description": "License"
+    },
+    "sourceCode": "Bronkode",
+    "@sourceCode": {
+        "description": "Source code"
+    },
+    "appVersion": "App weergawe",
+    "@appVersion": {
+        "description": "App Version"
+    },
+    "general": "Algemeen",
+    "@general": {
+        "description": "General"
+    },
+    "advanced": "Gevorderd",
+    "@advanced": {
+        "description": "Advanced"
+    },
+    "placing": "Plasing",
+    "@placing": {
+        "description": "Placing"
+    },
+    "moving": "Skuiffase",
+    "@moving": {
+        "description": "Moving"
+    },
+    "removing": "Verwydering",
+    "@removing": {
+        "description": "Removing"
+    },
+    "gameOverCondition": "Game over toestand",
+    "@gameOverCondition": {
+        "description": "Game over condition"
+    },
+    "aisPlayStyle": "KI se speelstyl",
+    "@aisPlayStyle": {
+        "description": "AI's play style"
+    },
+    "passive": "Passief",
+    "@passive": {
+        "description": "Passive"
+    },
+    "timeout": "Uitteltyd",
+    "@timeout": {
+        "description": "Timeout"
+    },
+    "appearance": "Voorkoms",
+    "@appearance": {
+        "description": "Appearance"
+    },
+    "drawOnHumanExperience": "Gebruik die menslike ervaring",
+    "@drawOnHumanExperience": {
+        "description": "Draw on the human experience"
+    },
+    "considerMobility": "Oorweeg die beweeglikheid van stukke",
+    "@considerMobility": {
+        "description": "Consider mobility of pieces"
+    },
+    "pieceCount": "Stukkie telling:",
+    "@pieceCount": {
+        "description": "Piece count"
+    },
+    "inHand": "{player} in die hand: {count}",
+    "@inHand": {
+        "description": "The pieces a player has in his hand.",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "onBoard": "{player} aan boord: {count}",
+    "@onBoard": {
+        "description": "The pieces a player has on the board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "boardTop": "Bord verskuif van bo af",
+    "@boardTop": {
+        "description": "Board offset from the top"
+    },
+    "notAIsTurn": "Dit is nie die KI se beurt nie.",
+    "@notAIsTurn": {
+        "description": "It is not the AI's turn."
+    },
+    "aiIsNotThinking": "KI dink nie.",
+    "@aiIsNotThinking": {
+        "description": "AI is not thinking."
+    },
+    "atEnd": "Jy is aan die einde van die skuiflys.",
+    "@atEnd": {
+        "description": "At the end of the move list."
+    },
+    "tapBackAgainToLeave": "Tik weer terug om te vertrek.",
+    "@tapBackAgainToLeave": {
+        "description": "Tap Back again to exit."
+    },
+    "more": "Meer",
+    "@more": {
+        "description": "More"
+    },
+    "experimental": "Dit is 'n eksperimentele kenmerk.",
+    "@experimental": {
+        "description": "This is an experimental feature."
+    },
+    "experiments": "Eksperimente",
+    "@experiments": {
+        "description": "Experiments"
+    },
+    "ossLicenses": "Oopbron lisensies",
+    "@ossLicenses": {
+        "description": "Open source licenses"
+    },
+    "language": "Taal",
+    "@language": {
+        "description": "Languages"
+    },
+    "defaultLanguage": "Verstektaal",
+    "@defaultLanguage": {
+        "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Die stukke kan in die plasingsfase beweeg",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "Daar is geen duidelike plaas- en beweegfases nie, dit wil sê die spelers kan by elke beweging besluit of hulle 'n stuk op die bord wil plaas of een van hul stukke wil skuif (solank hulle oorblywende stukke het om te plaas).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Spyskaart kleur",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Kieslys teks kleur",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerHighlightItemColor": "Kieslys beklemtoon item kleur",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Hoofnutsbalk agtergrondkleur",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "Hoofnutsbalkikoonkleur",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Navigasie-nutsbalk agtergrondkleur",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Navigasienutsbalkikoonkleur",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Versteek die nutsbalk outomaties",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Nutsbalk se ligging op die skerm",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Top",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Onderkant",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Sentrum",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Soliede kleur",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Prent",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Kies jou prentjie",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Lig",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Donker",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Temas",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Huidige tema",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Stoor tema",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "showAnalysisGraph": "Wys ontledingsgrafiek",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Ontleding",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Stoor spel",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Laai speletjie",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Opstel posisie",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Wys wettige skuiwe",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Wys laaste beweging",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Wys pyle",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Stukke",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Wys ontleding",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Drade",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Raak betrokke",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Help om vertaal te verbeter",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "classicMill": "Klassieke Meul",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Gemengde Meul",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceylon Meule",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Meul kan herhaaldelik gebreek en herbou word",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "As 'n speler 'n meul breek om dadelik 'n nuwe meul te skep, kan so speler so 'n stuk terugskuif na die oorspronklike aansluiting in sy volgende skuif as dit 'n nuwe meul maak.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Die wedstryd word gelykop gemaak as 'n speler drie stukke het en na tien skuiwe verwyder geen speler die teenstander se stukke",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wanneer 'n speler af is op drie stukke, en nie een van die speler kan 'n teenstander se stuk binne tien skuiwe verwyder nie, is die wedstryd gelykop.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "close": "Sluit",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Wit stuk",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Swart stuk",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "emptyPoint": "Leë punt",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Geen punt",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Plaas fase",
+    "@placingPhase": {
+        "description": "Placing phase"
+    },
+    "movingPhase": "Bewegende fase",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Vliegfase",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Kant om te beweeg: {player}",
+    "@sideToMove": {
         "description": "The player whose turn it is.",
-        "example": "Player 1"
-      }
-    }
-  },
-  "whiteWin": "Speler 1 wen!",
-  "@whiteWin": {
-    "description": "Player 1 wins!"
-  },
-  "blackWin": "Speler 2 wen!",
-  "@blackWin": {
-    "description": "Player 2 wins!"
-  },
-  "won": "Gewen",
-  "@won": {
-    "description": "Won"
-  },
-  "lost": "Verlore",
-  "@lost": {
-    "description": "Lost"
-  },
-  "newGame": "Nuwe spel",
-  "@newGame": {
-    "description": "New game"
-  },
-  "importGame": "Voer speletjie in",
-  "@importGame": {
-    "description": "Import game"
-  },
-  "exportGame": "Voer speletjie uit",
-  "@exportGame": {
-    "description": "Export game"
-  },
-  "gameImported": "Speletjie ingevoer.",
-  "@gameImported": {
-    "description": "Game imported from the clipboard."
-  },
-  "cannotImport": "Kan nie invoer nie {invalidMove}",
-  "@cannotImport": {
-    "description": "Cannot import",
-    "placeholders": {
-      "invalidMove": {
-        "description": "Invalid move",
-        "example": "x1-y2"
-      }
-    }
-  },
-  "movesAndRulesNotMatch": "Bewegings en reëls stem nie ooreen nie.",
-  "@movesAndRulesNotMatch": {
-    "description": "Rules and moves do not match."
-  },
-  "pleaseWait": "Wag asseblief.",
-  "@pleaseWait": {
-    "description": "Please wait..."
-  },
-  "restartGame": "Herbegin die huidige speletjie?",
-  "@restartGame": {
-    "description": "Restart current game?"
-  },
-  "restart": "Begin oor",
-  "@restart": {
-    "description": "Restart"
-  },
-  "gameStarted": "Die wedstryd het begin, plaas asseblief.",
-  "@gameStarted": {
-    "description": "Game started, please place"
-  },
-  "analyzing": "Ontleed tans …",
-  "@analyzing": {
-    "description": "Analyzing ..."
-  },
-  "error": "Fout: {message}",
-  "@error": {
-    "description": "Error",
-    "placeholders": {
-      "message": {
-        "description": "The Error message",
-        "example": "Unknown error"
-      }
-    }
-  },
-  "score": "Telling:",
-  "@score": {
-    "description": "Score"
-  },
-  "white": "Speler 1",
-  "@white": {
-    "description": "Player 1"
-  },
-  "black": "Speler 2",
-  "@black": {
-    "description": "Player 2"
-  },
-  "loseReasonResign": "{player} het opgegee.",
-  "@loseReasonResign": {
-    "description": "Indicate that the player resigned.",
-    "placeholders": {
-      "player": {
-        "description": "The player who resigned",
-        "example": "Player 1"
-      }
-    }
-  },
-  "loseReasonNoWay": "{player} het geen skuif om te maak nie.",
-  "@loseReasonNoWay": {
-    "description": "Indicate that the player has no way to go.",
-    "placeholders": {
-      "player": {
-        "description": "The player who lost",
-        "example": "Player 1"
-      }
-    }
-  },
-  "loseReasonBoardIsFull": "Die bord is vol, en {player} het geen skuif om te maak nie.",
-  "@loseReasonBoardIsFull": {
-    "description": "Indicate that the player has no way to go because the board is full.",
-    "placeholders": {
-      "player": {
-        "description": "The player who lost",
-        "example": "Player 1"
-      }
-    }
-  },
-  "loseReasonTimeOver": "Tyd is verby, {player} verlore.",
-  "@loseReasonTimeOver": {
-    "description": "Time Over",
-    "placeholders": {
-      "player": {
-        "description": "The player who lost",
-        "example": "Player 1"
-      }
-    }
-  },
-  "drawReasonRule50": "In die bewegende fase is geen stuk verwyder in die laaste spesifieke aantal skuiwe nie.",
-  "@drawReasonRule50": {
-    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-  },
-  "drawReasonBoardIsFull": "Dit is 'n trekking want die bord is vol.",
-  "@drawReasonBoardIsFull": {
-    "description": "It is a Draw because the board is full"
-  },
-  "drawReasonThreefoldRepetition": "Dit is 'n trekking as gevolg van drievoudige herhaling.",
-  "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw because of threefold repetition."
-  },
-  "gameOverUnknownReason": "Spel verby! Onbekende rede.",
-  "@gameOverUnknownReason": {
-    "description": "Game Over! Unknown reason."
-  },
-  "gameOver": "Spel verby",
-  "@gameOver": {
-    "description": "Game Over"
-  },
-  "youWin": "Jy wen! Baie geluk!",
-  "@youWin": {
-    "description": "You win! Congratulations!"
-  },
-  "challengeHarderLevel": "Daag moeiliker vlak uit? Die nuwe vlak sal vlak {level} wees!",
-  "@challengeHarderLevel": {
-    "description": "Challenge harder level?",
-    "placeholders": {
-      "level": {
-        "description": "The new level",
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "youLose": "Jy verloor!",
-  "@youLose": {
-    "description": "You Lose!"
-  },
-  "analyze": "Ontleed",
-  "@analyze": {
-    "description": "Analyze"
-  },
-  "about": "Oor",
-  "@about": {
-    "description": "About"
-  },
-  "version": "Weergawe: {versionNumber}",
-  "@version": {
-    "description": "Version",
-    "placeholders": {
-      "versionNumber": {
-        "description": "The current version",
-        "example": "1.1.38"
-      }
-    }
-  },
-  "thanks": "Dankie",
-  "@thanks": {
-    "description": "Thanks"
-  },
-  "settings": "Instellings",
-  "@settings": {
-    "description": "Settings"
-  },
-  "options": "Opsies",
-  "@options": {
-    "description": "Options"
-  },
-  "generalSettings": "Algemene instellings",
-  "@generalSettings": {
-    "description": "General Settings"
-  },
-  "skillLevel": "Moeilikheidsgraad",
-  "@skillLevel": {
-    "description": "Difficulty level"
-  },
-  "moveTime": "KI-denktyd",
-  "@moveTime": {
-    "description": "AI thinking time"
-  },
-  "difficulty": "Moeilikheid",
-  "@difficulty": {
-    "description": "Difficulty"
-  },
-  "playSounds": "Byklanke",
-  "@playSounds": {
-    "description": "Sound effects"
-  },
-  "playSoundsInTheGame": "Speel klanke in die speletjie",
-  "@playSoundsInTheGame": {
-    "description": "Play sounds in the game"
-  },
-  "keepMuteWhenTakingBack": "Hou stil wanneer jy terugneem",
-  "@keepMuteWhenTakingBack": {
-    "description": "Keep mute when taking back"
-  },
-  "tone": "Toon",
-  "@tone": {
-    "description": "Tone"
-  },
-  "whoMovesFirst": "Eerste skuif",
-  "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "human": "Mens",
-  "@human": {
-    "description": "Human"
-  },
-  "ai": "KI",
-  "@ai": {
-    "description": "AI"
-  },
-  "alternate": "Wissel af",
-  "@alternate": {
-    "description": "Alternate"
-  },
-  "isAutoRestart": "Herbegin die speletjie outomaties wanneer die speletjie verby is",
-  "@isAutoRestart": {
-    "description": "Auto-restart game when game over"
-  },
-  "isAutoChangeFirstMove": "Outo-verandering eerste skuif",
-  "@isAutoChangeFirstMove": {
-    "description": "Auto Change First Move"
-  },
-  "shufflingEnabled": "Beweeg willekeurig",
-  "@shufflingEnabled": {
-    "description": "Random move"
-  },
-  "misc": "Diverse",
-  "@misc": {
-    "description": "Miscellaneous"
-  },
-  "rules": "Reëls",
-  "@rules": {
-    "description": "Rules"
-  },
-  "piecesCount": "Die aantal stukke wat elke speler het",
-  "@piecesCount": {
-    "description": "The number of pieces each player has"
-  },
-  "piecesCount_Detail": "Hoeveel stukke het elke speler?",
-  "@piecesCount_Detail": {
-    "description": "How many pieces does each player have?"
-  },
-  "flyPieceCount": "Die nommer van die vlieënde stuk",
-  "@flyPieceCount": {
-    "description": "The number of the flying piece"
-  },
-  "flyPieceCount_Detail": "As Vlieg geaktiveer is, wanneer 'n speler tot 'n spesifieke stuktelling verminder word, is haar stukke vry om na enige onbesette punt te skuif in plaas daarvan om beperk te word tot aangrensende punte soos in die res van die speletjie.",
-  "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "piecesAtLeastCount": "Stukke Ten minste",
-  "@piecesAtLeastCount": {
-    "description": "Pieces At Least"
-  },
-  "hasDiagonalLines": "Diagonale lyne",
-  "@hasDiagonalLines": {
-    "description": "Diagonal lines"
-  },
-  "hasDiagonalLines_Detail": "Voeg vier diagonale lyne by die bord.",
-  "@hasDiagonalLines_Detail": {
-    "description": "Add four diagonal lines to the board."
-  },
-  "isDefenderMoveFirst": "Die tweede speler beweeg eerste",
-  "@isDefenderMoveFirst": {
-    "description": "The second player moves first"
-  },
-  "isDefenderMoveFirst_Detail": "Die speler wat tweede beweeg in die plasingsfase, beweeg eerste in die beweegfase.",
-  "@isDefenderMoveFirst_Detail": {
-    "description": "The player who moves second in the placing phase moves first in the moving phase."
-  },
-  "mayRemoveMultiple": "Multi-verwyder",
-  "@mayRemoveMultiple": {
-    "description": "Multi-remove"
-  },
-  "mayRemoveMultiple_Detail": "As 'n speler meer as een meule op een slag toemaak, sal sy die aantal meule wat sy gesluit het, verwyder.",
-  "@mayRemoveMultiple_Detail": {
-    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-  },
-  "mayRemoveFromMillsAlways": "Vernietig meulens",
-  "@mayRemoveFromMillsAlways": {
-    "description": "Destroy mills"
-  },
-  "mayRemoveFromMillsAlways_Detail": "By verstek moet spelers eers enige ander stukke verwyder voordat 'n stuk uit 'n gevormde meul verwyder word. Aktiveer hierdie opsie om die beperking te deaktiveer.",
-  "@mayRemoveFromMillsAlways_Detail": {
-    "description": "mayRemoveFromMillsAlways_Detail"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Die tweede speler verloor wanneer die bord vol is",
-  "@isWhiteLoseButNotDrawWhenBoardFull": {
-    "description": "The second player loses when the board is full"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wanneer die bord vol is aan die einde van die plasingsfase, verloor die kant wat eerste plaas die wedstryd. Andersins is die wedstryd gelykop.",
-  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-  },
-  "isLoseButNotChangeSideWhenNoWay": "Verloor wanneer geen wettige skuiwe nie",
-  "@isLoseButNotChangeSideWhenNoWay": {
-    "description": "Lose when no legal moves"
-  },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Die speler sal verloor as sy teenstander hulle blokkeer sodat hulle nie geskuif kan word nie. Verander kant om te skuif as hierdie opsie gedeaktiveer is.",
-  "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
-  },
-  "mayFly": "Vlieg",
-  "@mayFly": {
-    "description": "Flying"
-  },
-  "mayFly_Detail": "As 'n speler net drie of vier (konfigureerbare) stukke oor het, kan sy die stuk na enige vrypunt skuif.",
-  "@mayFly_Detail": {
-    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-  },
-  "nMoveRule": "N-skuif reël",
-  "@nMoveRule": {
-    "description": "N-move rule"
-  },
-  "nMoveRule_Detail": "Die wedstryd word gelykop gemaak as daar geen verwydering in 'n spesifieke aantal skuiwe was nie.",
-  "@nMoveRule_Detail": {
-    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-  },
-  "rollback": "Terugrol",
-  "@rollback": {
-    "description": "Rollback"
-  },
-  "pleaseSelect": "Kies asseblief",
-  "@pleaseSelect": {
-    "description": "Please select"
-  },
-  "copy": "Kopieer",
-  "@copy": {
-    "description": "Copy"
-  },
-  "moveHistoryCopied": "Skuif geskiedenis wat na knipbord gekopieer is.",
-  "@moveHistoryCopied": {
-    "description": "Move history copied to clipboard"
-  },
-  "help": "Help",
-  "@help": {
-    "description": "Help"
-  },
-  "feedback": "Terugvoer",
-  "@feedback": {
-    "description": "Feedback"
-  },
-  "exit": "Verlaat",
-  "@exit": {
-    "description": "Exit"
-  },
-  "ruleSettings": "Reëlinstellings",
-  "@ruleSettings": {
-    "description": "Rule Settings"
-  },
-  "color": "Kleur",
-  "@color": {
-    "description": "Color"
-  },
-  "boardColor": "Bord kleur",
-  "@boardColor": {
-    "description": "Board color"
-  },
-  "pieceColor": "Stuk kleur",
-  "@pieceColor": {
-    "description": "Piece color"
-  },
-  "backgroundColor": "Agtergrondkleur",
-  "@backgroundColor": {
-    "description": "Background color"
-  },
-  "lineColor": "Bordlyn kleur",
-  "@lineColor": {
-    "description": "Board line color"
-  },
-  "whitePieceColor": "Speler 1 stuk kleur",
-  "@whitePieceColor": {
-    "description": "Player 1 piece color"
-  },
-  "blackPieceColor": "Speler 2 stuk kleur",
-  "@blackPieceColor": {
-    "description": "Player 2 piece color"
-  },
-  "messageColor": "Boodskap kleur",
-  "@messageColor": {
-    "description": "Message color"
-  },
-  "isPieceCountInHandShown": "Toon telling van ongeplaasde stukke",
-  "@isPieceCountInHandShown": {
-    "description": "Show count of pieces in hand"
-  },
-  "isNotationsShown": "Wys notasies aan boord",
-  "@isNotationsShown": {
-    "description": "Show notations on board"
-  },
-  "isHistoryNavigationToolbarShown": "Wys geskiedenisnavigasienutsbalk",
-  "@isHistoryNavigationToolbarShown": {
-    "description": "Show history navigation toolbar"
-  },
-  "display": "Vertoon",
-  "@display": {
-    "description": "Display"
-  },
-  "boardBorderLineWidth": "Borderlyn breedte",
-  "@boardBorderLineWidth": {
-    "description": "Board borderline width"
-  },
-  "boardInnerLineWidth": "Bord binnelyn breedte",
-  "@boardInnerLineWidth": {
-    "description": "Board inner line width"
-  },
-  "pieceWidth": "Stuk breedte",
-  "@pieceWidth": {
-    "description": "Piece width"
-  },
-  "fontSize": "Skrifgrootte",
-  "@fontSize": {
-    "description": "Font size"
-  },
-  "standardNotation": "WMD-notasie",
-  "@standardNotation": {
-    "description": "Standard notation"
-  },
-  "restore": "Herstel",
-  "@restore": {
-    "description": "Restore"
-  },
-  "restoreDefaultSettings": "Herstel verstekinstellings",
-  "@restoreDefaultSettings": {
-    "description": "Restore Default Settings"
-  },
-  "pick": "Kies {element}",
-  "@pick": {
-    "description": "Used in the color picker.",
-    "placeholders": {
-      "element": {
-        "description": "The element to pick the color for.",
-        "example": "Background color"
-      }
-    }
-  },
-  "info": "Inligting",
-  "@info": {
-    "description": "Info"
-  },
-  "hint": "Wenk",
-  "@hint": {
-    "description": "Hint"
-  },
-  "player": "speler",
-  "@player": {
-    "description": "player"
-  },
-  "player1": "Speler 1",
-  "@player1": {
-    "description": "Player 1"
-  },
-  "player2": "Speler 2",
-  "@player2": {
-    "description": "Player 2"
-  },
-  "howToPlay": "Hoe om te speel",
-  "@howToPlay": {
-    "description": "How to play"
-  },
-  "toPlacePiece": "Tik op enige beskikbare punt om die stuk te plaas.",
-  "@toPlacePiece": {
-    "description": "Tap on any available point to place the piece."
-  },
-  "toSelectPiece": "Tik op 'n stuk om dit te skuif.",
-  "@toSelectPiece": {
-    "description": "Tap on a piece to move it."
-  },
-  "toMovePiece": "Tik op 'n punt wat aan 'n stuk gekoppel is om dit te skuif.",
-  "@toMovePiece": {
-    "description": "Tap on point connected to piece to move it."
-  },
-  "toRemovePiece": "Tik op die teenstander se een stuk om te verwyder.",
-  "@toRemovePiece": {
-    "description": "Tap on one of the opponent's pieces to remove it."
-  },
-  "needToCreateMillFirst": "Jy moet eers 'n meul skep voordat jy 'n stuk kan verwyder.",
-  "@needToCreateMillFirst": {
-    "description": "You need to create a mill first before you can remove a piece."
-  },
-  "needToPlayWithOwnPieces": "Jy moet met jou stukke speel.",
-  "@needToPlayWithOwnPieces": {
-    "description": "You need to play with your pieces."
-  },
-  "statistics": "Statistiek",
-  "@statistics": {
-    "description": "Statistics"
-  },
-  "totalGames": "Totale speletjies",
-  "@totalGames": {
-    "description": "Total games"
-  },
-  "results": "Resultate",
-  "@results": {
-    "description": "Results"
-  },
-  "left": "links",
-  "@left": {
-    "description": "left"
-  },
-  "privacyPolicy": "Privaatheidsbeleid",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
-  "privacyPolicy_Detail_1": "Lees asseblief aandagtig deur en maak seker dat u dit ten volle verstaan en daarmee saamstem ",
-  "@privacyPolicy_Detail_1": {
-    "description": "Privacy Policy Detail 1"
-  },
-  "privacyPolicy_Detail_2": ". As jy nie tot hierdie beleid instem nie, moet asseblief nie hierdie toepassing gebruik nie. Die gebruik van die toepassing impliseer dat u hierdie bepalings aanvaar.",
-  "@privacyPolicy_Detail_2": {
-    "description": "Privacy Policy Detail 2"
-  },
-  "and": " en ",
-  "@and": {},
-  "accept": "Aanvaar",
-  "@accept": {
-    "description": "Accept"
-  },
-  "takeBack": "Neem terug",
-  "@takeBack": {
-    "description": "Take back"
-  },
-  "takingBack": "Neem tans terug …",
-  "@takingBack": {
-    "description": "Taking back..."
-  },
-  "waiting": "Wag tans …",
-  "@waiting": {
-    "description": "Waiting..."
-  },
-  "stepForward": "Tree vorentoe",
-  "@stepForward": {
-    "description": "Step forward"
-  },
-  "takeBackAll": "Neem alles terug",
-  "@takeBackAll": {
-    "description": "Take back all"
-  },
-  "stepForwardAll": "Stap vorentoe almal",
-  "@stepForwardAll": {
-    "description": "Step forward all"
-  },
-  "moveNow": "Beweeg nou",
-  "@moveNow": {
-    "description": "Move now"
-  },
-  "done": "Klaar.",
-  "@done": {
-    "description": "Done."
-  },
-  "crackMill": "Kraak-meul",
-  "@crackMill": {
-    "description": "Crack-mill"
-  },
-  "crackMill_Detail": "As 'n speler net stukke in meule het, sal die stukke in die meule nie gesluit word om te verwyder nie.",
-  "@crackMill_Detail": {
-    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-  },
-  "helpContent": "Die speletjie het ten doel om die teenstander met minder as drie stukke oor te laat of geen wettige bewegings oor te hê nie.\n\nDie speletjie verloop in drie fases:\n\nFase 1:\n\nElke speler begin met 12 tokens genoem \"koeie\".\n\nMet 'n skoon bord, plaas elke speler beurtegewys een koei op 'n tyd op 'n kruising (sirkel). Die doel is om rye van drie te vorm, hetsy vertikaal, diagonaal, of horisontaal. Koeie mag slegs op onbesette kruisings geplaas word.\n\nWanneer drie-in-'n-ry bereik word, mag die speler een van die opponent se koeie skiet. 'n Speler mag nie 'n opponent se \"drie-in-'n-ry\" koeie skiet as daar ander koeie op die bord is om te skiet nie.\n\nSlegs een van die opponent se koeie mag op 'n slag geskiet word, selfs al word twee (of meer) lyne van drie-in-'n-ry met een skuif bereik.\n\nSodra 'n koei geskiet is, mag dit nie weer in die spel gebruik word nie.\n\nFase 2:\n\nWanneer al twaalf koeie van elke speler op die bord geplaas is, mag koeie van een kruising na 'n ander beweeg word. 'n Beweging bestaan daaruit om 'n koei van een kruising na 'n onbesette kruising wat onmiddellik daaraan gekoppel en aangrensend is, te skuif.\n\nSpelers mag hul eie rye van drie-in-'n-ry breek om nuwe lyne te vorm, of bloot hul koeie herposisioneer.\n\nKoeie mag heen en weer tussen dieselfde twee kruisings herhaaldelik beweeg word. 'n Drie-in-'n-ry mag gemaak, gebreek en herhaaldelik hervorm word.\n\nNieteenstaande die reël dat lyne herhaaldelik gebreek en hervorm mag word, as 'n speler 'n lyn breek om onmiddellik 'n nuwe lyn van drie 'koeie' te skep, mag sodanige speler nie die koei terugbeweeg na die oorspronklike kruising in sy/haar volgende skuif nie, as dit 'n nuwe lyn skep.\n\nElke keer as 'n drie-in-'n-ry hergemaak word, moet 'n opponent se koei geskiet word.\n\nFase 3:\n\nWanneer 'n speler al sy koeie behalwe drie verloor het, mag hy/sy 'n koei na enige vakante kruising op die bord skuif met elke beweging.\n\nDie wen van die spel:\n\nDie spel word gewen wanneer die opponent nie enige van sy koeie kan beweeg nie, of wanneer die opponent al sy koeie behalwe twee verloor het.\n\nWanneer 'n speler af is tot drie koeie, en geen speler 'n opponent se koei binne tien skuifbeurte kan skiet nie, is die spel 'n gelykop uitslag.\n",
-  "@helpContent": {
-    "description": "Help Content"
-  },
-  "versionInfo": "Weergawe inligting",
-  "@versionInfo": {
-    "description": "Version info"
-  },
-  "eula": "EULA",
-  "@eula": {
-    "description": "EULA"
-  },
-  "license": "Lisensie",
-  "@license": {
-    "description": "License"
-  },
-  "sourceCode": "Bronkode",
-  "@sourceCode": {
-    "description": "Source code"
-  },
-  "appVersion": "App weergawe",
-  "@appVersion": {
-    "description": "App Version"
-  },
-  "general": "Algemeen",
-  "@general": {
-    "description": "General"
-  },
-  "advanced": "Gevorderd",
-  "@advanced": {
-    "description": "Advanced"
-  },
-  "placing": "Plasing",
-  "@placing": {
-    "description": "Placing"
-  },
-  "moving": "Skuiffase",
-  "@moving": {
-    "description": "Moving"
-  },
-  "removing": "Verwydering",
-  "@removing": {
-    "description": "Removing"
-  },
-  "gameOverCondition": "Game over toestand",
-  "@gameOverCondition": {
-    "description": "Game over condition"
-  },
-  "aisPlayStyle": "KI se speelstyl",
-  "@aisPlayStyle": {
-    "description": "AI's play style"
-  },
-  "passive": "Passief",
-  "@passive": {
-    "description": "Passive"
-  },
-  "timeout": "Uitteltyd",
-  "@timeout": {
-    "description": "Timeout"
-  },
-  "appearance": "Voorkoms",
-  "@appearance": {
-    "description": "Appearance"
-  },
-  "drawOnHumanExperience": "Gebruik die menslike ervaring",
-  "@drawOnHumanExperience": {
-    "description": "Draw on the human experience"
-  },
-  "considerMobility": "Oorweeg die beweeglikheid van stukke",
-  "@considerMobility": {
-    "description": "Consider mobility of pieces"
-  },
-  "pieceCount": "Stukkie telling:",
-  "@pieceCount": {
-    "description": "Piece count"
-  },
-  "inHand": "{player} in die hand: {count}",
-  "@inHand": {
-    "description": "The pieces a player has in his hand.",
-    "placeholders": {
-      "player": {
-        "description": "The specified player",
-        "example": "Player 1"
-      },
-      "count": {
-        "description": "The count of pieces in hand",
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "onBoard": "{player} aan boord: {count}",
-  "@onBoard": {
-    "description": "The pieces a player has on the board",
-    "placeholders": {
-      "player": {
-        "description": "The specified player",
-        "example": "White"
-      },
-      "count": {
-        "description": "The count of pieces on board",
-        "type": "int",
-        "example": "5"
-      }
-    }
-  },
-  "boardTop": "Bord verskuif van bo af",
-  "@boardTop": {
-    "description": "Board offset from the top"
-  },
-  "notAIsTurn": "Dit is nie die KI se beurt nie.",
-  "@notAIsTurn": {
-    "description": "It is not the AI's turn."
-  },
-  "aiIsNotThinking": "KI dink nie.",
-  "@aiIsNotThinking": {
-    "description": "AI is not thinking."
-  },
-  "atEnd": "Jy is aan die einde van die skuiflys.",
-  "@atEnd": {
-    "description": "At the end of the move list."
-  },
-  "tapBackAgainToLeave": "Tik weer terug om te vertrek.",
-  "@tapBackAgainToLeave": {
-    "description": "Tap Back again to exit."
-  },
-  "more": "Meer",
-  "@more": {
-    "description": "More"
-  },
-  "experimental": "Dit is 'n eksperimentele kenmerk.",
-  "@experimental": {
-    "description": "This is an experimental feature."
-  },
-  "experiments": "Eksperimente",
-  "@experiments": {
-    "description": "Experiments"
-  },
-  "ossLicenses": "Oopbron lisensies",
-  "@ossLicenses": {
-    "description": "Open source licenses"
-  },
-  "language": "Taal",
-  "@language": {
-    "description": "Languages"
-  },
-  "defaultLanguage": "Verstektaal",
-  "@defaultLanguage": {
-    "description": "Default language"
-  },
-  "mayMoveInPlacingPhase": "Die stukke kan in die plasingsfase beweeg",
-  "@mayMoveInPlacingPhase": {
-    "description": "The pieces can move in the placing phase"
-  },
-  "mayMoveInPlacingPhase_Detail": "Daar is geen duidelike plaas- en beweegfases nie, dit wil sê die spelers kan by elke beweging besluit of hulle 'n stuk op die bord wil plaas of een van hul stukke wil skuif (solank hulle oorblywende stukke het om te plaas).",
-  "@mayMoveInPlacingPhase_Detail": {
-    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-  },
-  "drawerColor": "Spyskaart kleur",
-  "@drawerColor": {
-    "description": "Menu color"
-  },
-  "drawerTextColor": "Kieslys teks kleur",
-  "@drawerTextColor": {
-    "description": "Menu text color"
-  },
-  "drawerHighlightItemColor": "Kieslys beklemtoon item kleur",
-  "@drawerHighlightItemColor": {
-    "description": "Menu highlight item color"
-  },
-  "mainToolbarBackgroundColor": "Hoofnutsbalk agtergrondkleur",
-  "@mainToolbarBackgroundColor": {
-    "description": "Main toolbar background color"
-  },
-  "mainToolbarIconColor": "Hoofnutsbalkikoonkleur",
-  "@mainToolbarIconColor": {
-    "description": "main toolbar icon color"
-  },
-  "navigationToolbarBackgroundColor": "Navigasie-nutsbalk agtergrondkleur",
-  "@navigationToolbarBackgroundColor": {
-    "description": "Navigation toolbar background color"
-  },
-  "navigationToolbarIconColor": "Navigasienutsbalkikoonkleur",
-  "@navigationToolbarIconColor": {
-    "description": "Navigation toolbar icon color"
-  },
-  "autoHideToolbar": "Versteek die nutsbalk outomaties",
-  "@autoHideToolbar": {
-    "description": "Automatically hide the toolbar"
-  },
-  "toolbarLocationOnScreen": "Nutsbalk se ligging op die skerm",
-  "@toolbarLocationOnScreen": {
-    "description": "Toolbar location on screen"
-  },
-  "top": "Top",
-  "@top": {
-    "description": "Top"
-  },
-  "bottom": "Onderkant",
-  "@bottom": {
-    "description": "Bottom"
-  },
-  "center": "Sentrum",
-  "@center": {
-    "description": "Center"
-  },
-  "solidColor": "Soliede kleur",
-  "@solidColor": {
-    "description": "Solid color"
-  },
-  "picture": "Prent",
-  "@picture": {
-    "description": "Picture"
-  },
-  "chooseYourPicture": "Kies jou prentjie",
-  "@chooseYourPicture": {
-    "description": "Choose your picture"
-  },
-  "light": "Lig",
-  "@light": {
-    "description": "Light"
-  },
-  "dark": "Donker",
-  "@dark": {
-    "description": "Dark"
-  },
-  "themes": "Temas",
-  "@themes": {
-    "description": "Themes"
-  },
-  "currentTheme": "Huidige tema",
-  "@currentTheme": {
-    "description": "Current theme"
-  },
-  "saveTheme": "Stoor tema",
-  "@saveTheme": {
-    "description": "Save theme"
-  },
-  "showAnalysisGraph": "Wys ontledingsgrafiek",
-  "@showAnalysisGraph": {
-    "description": "Show analysis graph"
-  },
-  "analysis": "Ontleding",
-  "@analysis": {
-    "description": "Analysis"
-  },
-  "saveGame": "Stoor spel",
-  "@saveGame": {
-    "description": "Save game"
-  },
-  "loadGame": "Laai speletjie",
-  "@loadGame": {
-    "description": "Load game"
-  },
-  "setupPosition": "Opstel posisie",
-  "@setupPosition": {
-    "description": "Setup position"
-  },
-  "showLegalMoves": "Wys wettige skuiwe",
-  "@showLegalMoves": {
-    "description": "Show legal moves"
-  },
-  "showLastMove": "Wys laaste beweging",
-  "@showLastMove": {
-    "description": "Show last move"
-  },
-  "showArrows": "Wys pyle",
-  "@showArrows": {
-    "description": "Show arrows"
-  },
-  "pieces": "Stukke",
-  "@pieces": {
-    "description": "Pieces"
-  },
-  "showAnalysis": "Wys ontleding",
-  "@showAnalysis": {
-    "description": "Show analysis"
-  },
-  "threads": "Drade",
-  "@threads": {
-    "description": "Threads"
-  },
-  "getInvolved": "Raak betrokke",
-  "@getInvolved": {
-    "description": "Get Involved"
-  },
-  "helpImproveTranslate": "Help om vertaal te verbeter",
-  "@helpImproveTranslate": {
-    "description": "Help improve translate"
-  },
-  "classicMill": "Klassieke Meul",
-  "@classicMill": {
-    "description": "Classic Mill"
-  },
-  "mixedMill": "Gemengde Meul",
-  "@mixedMill": {
-    "description": "Mixed Mill"
-  },
-  "ceylonMill": "Ceylon Meule",
-  "@ceylonMill": {
-    "description": "Ceylon Mill"
-  },
-  "mayBreakAndRemakeMillRepeatedly": "Meul kan herhaaldelik gebreek en herbou word",
-  "@mayBreakAndRemakeMillRepeatedly": {
-    "description": "Mill may be broken and remade repeatedly"
-  },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "As 'n speler 'n meul breek om dadelik 'n nuwe meul te skep, kan so speler so 'n stuk terugskuif na die oorspronklike aansluiting in sy volgende skuif as dit 'n nuwe meul maak.",
-  "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Die wedstryd word gelykop gemaak as 'n speler drie stukke het en na tien skuiwe verwyder geen speler die teenstander se stukke",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wanneer 'n speler af is op drie stukke, en nie een van die speler kan 'n teenstander se stuk binne tien skuiwe verwyder nie, is die wedstryd gelykop.",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-  },
-  "close": "Sluit",
-  "@close": {
-    "description": "Close"
-  },
-  "whitePiece": "Wit stuk",
-  "@whitePiece": {
-    "description": "White piece"
-  },
-  "blackPiece": "Swart stuk",
-  "@blackPiece": {
-    "description": "Black piece"
-  },
-  "emptyPoint": "Leë punt",
-  "@emptyPoint": {
-    "description": "Empty point"
-  },
-  "noPoint": "Geen punt",
-  "@noPoint": {
-    "description": "No point"
-  },
-  "placingPhase": "Plaas fase",
-  "@placingPhase": {
-    "description": "Placing phase"
-  },
-  "movingPhase": "Bewegende fase",
-  "@movingPhase": {
-    "description": "Moving phase"
-  },
-  "flyingPhase": "Vliegfase",
-  "@flyingPhase": {
-    "description": "Flying phase"
-  },
-  "sideToMove": "Kant om te beweeg: {player}",
-  "@sideToMove": {
-    "description": "The player whose turn it is.",
-    "placeholders": {
-      "player": {
-        "description": "The player to move",
-        "example": "Player 1"
-      }
-    }
-  },
-  "lastMove": "Laaste skuif: {move}",
-  "@lastMove": {
-    "description": "Last move",
-    "placeholders": {
-      "move": {
-        "description": "The last move",
-        "example": "d2-d3"
-      }
-    }
-  },
-  "selected": "Gekies",
-  "@selected": {
-    "description": "Selected"
-  },
-  "accessibility": "Toeganklikheid",
-  "@accessibility": {
-    "description": "Accessibility"
-  },
-  "screenReaderSupport": "Skermleser ondersteuning",
-  "@screenReaderSupport": {
-    "description": "Screen reader support"
-  },
-  "isDraw": "Dit is 'n trekking!",
-  "@isDraw": {
-    "description": "It is a Draw!"
-  },
-  "pieceHighlightColor": "Stuk hoogtepunt kleur",
-  "@pieceHighlightColor": {
-    "description": "Piece highlight color"
-  },
-  "algorithm": "Algoritme",
-  "@algorithm": {
-    "description": "Algorithm"
-  },
-  "endgameNMoveRule": "Eindspel N-Move reël",
-  "@endgameNMoveRule": {
-    "description": "Endgame N-Move rule"
-  },
-  "endgameNMoveRule_Detail": "Die wedstryd word getrek as een van die spelers slegs drie stukke het en nie een van die spelers 'n stuk binne spesifieke bewegings verwyder nie.",
-  "@endgameNMoveRule_Detail": {
-    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-  },
-  "drawReasonEndgameRule50": "Enige speler het net drie stukke, en nie een speler verwyder 'n stuk binne spesifieke bewegings nie.",
-  "@drawReasonEndgameRule50": {
-    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-  },
-  "threefoldRepetitionRule": "Drievoudige herhalingsreël",
-  "@threefoldRepetitionRule": {
-    "description": "Threefold repetition rule"
-  },
-  "threefoldRepetitionRule_Detail": "Die wedstryd word gelykop as 'n posisie vir die derde keer voorkom.",
-  "@threefoldRepetitionRule_Detail": {
-    "description": "The game is drawn if a position occurs for the third time."
-  },
-  "continueToMakeMove": "Meul! Gaan voort om 'n skuif te maak.",
-  "@continueToMakeMove": {
-    "description": "Mill! Continue to make a move."
-  },
-  "pointStyle": "Punt styl",
-  "@pointStyle": {
-    "description": "Point style"
-  },
-  "pointWidth": "Punt breedte",
-  "@pointWidth": {
-    "description": "Point width"
-  },
-  "solid": "Solied",
-  "@solid": {
-    "description": "Solid"
-  },
-  "hollow": "Hol",
-  "@hollow": {
-    "description": "Hollow"
-  },
-  "languageName": "Afrikaans",
-  "@languageName": {
-    "description": "The name of the current language"
-  },
-  "moveNumber": "{count,plural, =0{Beweeg}=1{{count} Beweeg}other{{count} Bewegings}}",
-  "@moveNumber": {
-    "description": "Moves to take back",
-    "placeholders": {
-      "count": {
-        "description": "Number of Moves",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "loadFailed": "Laai het misluk.",
-  "@loadFailed": {
-    "description": "Load failed."
-  },
-  "filename": "Lêernaam",
-  "@filename": {
-    "description": "File name"
-  },
-  "browse": "Snuffel…",
-  "@browse": {
-    "description": "Browse…"
-  },
-  "gameSavedTo": "Die speletjie word gestoor na",
-  "@gameSavedTo": {
-    "description": "The game is saved to"
-  },
-  "empty": "Leeg",
-  "@empty": {
-    "description": "Empty point, used in setup position toolbar."
-  },
-  "noMove": "Geen beweging nie.",
-  "@noMove": {
-    "description": "No move."
-  },
-  "restoredPosition": "Herstel aanvanklike posisie.",
-  "@restoredPosition": {
-    "description": "Restored initial position."
-  },
-  "clean": "Skoon",
-  "@clean": {
-    "description": "Clean"
-  },
-  "cleanedUp": "Opgeruim.",
-  "@cleanedUp": {
-    "description": "Cleaned up."
-  },
-  "remove": "Verwyder",
-  "@remove": {
-    "description": "Remove"
-  },
-  "noPiecesCanBeRemoved": "Geen stukke kan verwyder word nie.",
-  "@noPiecesCanBeRemoved": {
-    "description": "No pieces can be removed."
-  },
-  "pieceCountNeedToRemove": "{count,plural, =0{Stuk}=1{{count} stuk}other{{count} stukke}} moet verwyder word.",
-  "@pieceCountNeedToRemove": {
-    "description": "Pieces need to remove.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "placedCount": "Gpl ({count})",
-  "@placedCount": {
-    "description": "Placed N pieces. Used in setup position toolbar.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "placedPieceCount": "Geplaasde stuktelling in die plasingsfase.",
-  "@placedPieceCount": {
-    "description": "Placed piece count in the placing phase. Used in Semantics."
-  },
-  "hasPlacedPieceCount": "Die huidige speler het {count} stukke geplaas.",
-  "@hasPlacedPieceCount": {
-    "description": "The current player has placed {count} pieces.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "notPlacingPhase": "Plaas nie fase nie, kan dit nie verander nie.",
-  "@notPlacingPhase": {
-    "description": "Not placing phase, cannot change it."
-  },
-  "paste": "Plak",
-  "@paste": {
-    "description": "Paste"
-  },
-  "pasteDone": "Die pasta is klaar.",
-  "@pasteDone": {
-    "description": "The paste is done."
-  },
-  "cannotPaste": "Kan nie plak nie.",
-  "@cannotPaste": {
-    "description": "Cannot paste."
-  },
-  "isUnplacedAndRemovedPiecesShown": "Wys ongeplaasde en verwyderde stukke",
-  "@isUnplacedAndRemovedPiecesShown": {
-    "description": "Show unplaced and removed pieces"
-  },
-  "fullScreen": "Volskerm",
-  "@fullScreen": {
-    "description": "Full screen"
-  },
-  "reopenToTakeEffect": "Verlaat en heropen app vir instellings om in werking te tree.",
-  "@reopenToTakeEffect": {
-    "description": "Exit and reopen app for settings to take effect."
-  },
-  "forest": "Bos",
-  "@forest": {},
-  "desktopImage": "Werkskermbeeld",
-  "@desktopImage": {},
-  "invalidPosition": "Ongeldige posisie.",
-  "@invalidPosition": {},
-  "shareGIF": "Deel GIF",
-  "@shareGIF": {},
-  "pixelRatio": "Pixel verhouding",
-  "@pixelRatio": {},
-  "duration": "Duur",
-  "@duration": {},
-  "gameScreenRecorder": "Speletjieskermopnemer",
-  "@gameScreenRecorder": {},
-  "previous": "Vorige",
-  "@previous": {},
-  "next": "Volgende",
-  "@next": {},
-  "skip": "Huppel",
-  "@skip": {},
-  "gotIt": "Het dit",
-  "@gotIt": {},
-  "youCanModifyRules": "Jy kan die reëls van die spel verander in die reëlinstellings.",
-  "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Jy kan die muiswiel gebruik om die waarde in die kieser te verander.",
-  "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "KI Dinktyd wat op 0 gestel is, beteken daar is geen tydsbeperking vir dink nie.",
-  "@noTimeLimitForThinking": {},
-  "whatIsMtdf": "MTD(f) is 'n gewysigde vorm van die alfa-beta-soekalgoritme wat daarop gemik is om doeltreffendheid te verbeter deur intermediêre soekresultate te hergebruik en 'n goeie aanvanklike raaiskoot te gebruik om die soekruimte te verklein.",
-  "@whatIsMtdf": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Wees asseblief bewus daarvan dat die KI-denktydaanpassing dalk nie heeltemal presies is nie. Die werklike dinktyd kan korter wees wanneer die moeilikheidsgraad op 'n laer waarde gestel is en kan langer wees wanneer die KI halfgedink is wanneer die tyd uitloop.",
-  "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "As jy die moeilikheidsgraad hoog stel, maar nie die KI-denktyd verhoog nie, kan die werklike moeilikheidsgraad beperk word tot 'n laer waarde as gevolg van die dinktydbeperking. Die werklike waarde kan verskil afhangende van die masjien se werkverrigting.",
-  "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsPvs": "PVS (Principal Variation Search) is 'n soekalgoritme om die beste skuif in 'n gegewe posisie te vind. Dit is 'n verbetering van die alfa-beta-algoritme en gebruik nul- of nul-venstersoektogte om te bevestig dat 'n skuif slegter of nie slegter is as 'n reeds veilige telling van die hoofvariasie nie. PVS fokus op die mees belowende bewegings en vermy onnodige soektogte van suboptimale takke, wat help om die doeltreffendheid van die soektog te verbeter.",
-  "@whatIsPvs": {},
-  "whatIsAlphaBeta": "Die alfa-beta-algoritme is 'n soekalgoritme om die beste skuif te vind. Dit gebruik die minimax-beginsel en twee waardes, alfa en beta, om die soekboom te snoei en doeltreffendheid te verhoog. Alfa verteenwoordig die minimum telling wat die rekenaar seker is dat dit kan kry, terwyl beta die maksimum telling verteenwoordig wat sy teenstander kan kry. Die algoritme help die rekenaar om slim, doeltreffende besluite in 'n speletjie te neem.",
-  "@whatIsAlphaBeta": {},
-  "drawOnTheHumanExperienceDetail": "Volgens menslike ervaring, as jy probeer wen, sal jy verloor. Streef eerder na 'n gelykop as jou doelwit en vermy om die wedstryd te verloor. Kyk na jou teenstander en lok hulle sagkens in 'n posisie waar hulle foute kan maak. Wanneer hulle swakheid toon, gryp die geleentheid aan en druk saggies vir die oorwinning. Op hierdie manier kan jy die wedstryd wen.",
-  "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Deur die Passiewe opsie te aktiveer, sal die KI laat ontspan wanneer dit 'n voordeel in die posisie het, eerder as om so vinnig as moontlik aggressief te probeer wen.",
-  "@passiveDetail": {},
-  "moveRandomlyDetail": "Deur hierdie opsie te aktiveer, verhoog die ewekansigheid en pret van die spel, terwyl die deaktivering daarvan kan help om maniere te bestudeer om die KI te klop.",
-  "@moveRandomlyDetail": {},
-  "considerMobilityOfPiecesDetail": "As die KI die beweeglikheid van sy stukke in ag neem, sal dit nie net daarop gemik wees om die opponent se stukke so vinnig as moontlik te vang nie, maar dit ook oorweeg om die opponent se bewegings te blokkeer en te verhoed dat hulle dieselfde doen.",
-  "@considerMobilityOfPiecesDetail": {},
-  "whenBoardIsFull": "Wanneer die bord vol is",
-  "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "Aan die einde van die plasingsfase, voordat die beweegfase begin, volg die aksie as die bord vol stukke is.",
-  "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "Die speler wat eerste in die beweegfase beweeg, verwyder een van die opponent se stukke.",
-  "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Albei kante stem in tot 'n gelykopuitslag.",
-  "@agreeToDraw": {},
-  "takeOpponentsPiece": "Neem een van jou teenstander se stukke.",
-  "@takeOpponentsPiece": {},
-  "firstPlayerLose": "Die eerste speler verloor die wedstryd.",
-  "@firstPlayerLose": {},
-  "firstAndSecondPlayerRemovePiece": "Die eerste en tweede speler verwyder een van die teenstander se stukke.",
-  "@firstAndSecondPlayerRemovePiece": {},
-  "secondAndFirstPlayerRemovePiece": "Die tweede en eerste speler verwyder een van die teenstander se stukke.",
-  "@secondAndFirstPlayerRemovePiece": {},
-  "whenStalemate_Detail": "Watter aksie volg wanneer geen stuk geskuif kan word nie?",
-  "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Eindig met 'n dooiepunt-verlies vir die span wat geblokkeer is.",
-  "@endWithStalemateLoss": {},
-  "changeSideToMove": "Verander die kant om te beweeg.",
-  "@changeSideToMove": {},
-  "removeOpponentsPieceAndMakeNextMove": "Verwyder een van die teenstander se stukke en maak die volgende skuif.",
-  "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Eindig met 'n dooiepunt-trekking.",
-  "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "Verwyder een van die teenstander se stukke en verander die kant om te beweeg.",
-  "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "KI reaksie vertraging tyd",
-  "@aiResponseDelayTime": {},
-  "aiIsDelaying": "KI is tans in 'n vertraagde reaksiefase. Wag asseblief 'n rukkie voor jy voortgaan.",
-  "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Jy kan nie 'n nie-aangrensende stuk verwyder nie.",
-  "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "As dit doodloop, kan die teenstander se stukke langs joune verwyder word, ongeag die meulformasie.",
-  "@stalemateRemovalRegardlessOfMillFormation": {},
-  "whatIsMcts": "MCTS is 'n beginnersvriendelike algoritme wat besluite neem deur verskillende bewegings deur simulasies te ondersoek en te evalueer.",
-  "@whatIsMcts": {},
-  "goldenJade": "Goue Jade",
-  "@goldenJade": {},
-  "forestWood": "Boshout",
-  "@forestWood": {},
-  "darkMystery": "Donker misterie",
-  "@darkMystery": {},
-  "midnightBlue": "Middernagblou",
-  "@midnightBlue": {},
-  "greenForest": "Groen Bos",
-  "@greenForest": {},
-  "greenMeadow": "Groen Weide",
-  "@greenMeadow": {},
-  "stonyPath": "Klippad",
-  "@stonyPath": {},
-  "pastelPink": "Pastelpienk",
-  "@pastelPink": {},
-  "turquoiseSea": "Turkooissee",
-  "@turquoiseSea": {},
-  "violetDream": "Violetdroom",
-  "@violetDream": {},
-  "playfulGarden": "Speelsetuin",
-  "@playfulGarden": {},
-  "whatIsRetrogradeAnalysis": "Die retrograde-analise-algoritme gebruik multi-waarde retrograde analise om 'n eindspeldatabasis vanaf verskillende beginposisies te bou, en pas dan hierdie databasis toe om spel te optimaliseer. Hierdie benadering val onder die kategorie van Ultra-Strong oplossings.",
-  "@whatIsRetrogradeAnalysis": {},
-  "usePerfectDatabase": "Gebruik perfekte databasis",
-  "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Aktiveer hierdie opsie om 'n foutlose speletjiedatabasis te gebruik wat deur die nuutste algoritmes gegenereer word. Hierdie kenmerk integreer beide opening- en eindspelstrategieë om optimale bewegings voor te stel. Dit is die voorkeurkeuse vir spelers wat die hoogste vlak van akkuraatheid in spel soek. Geskep deur noukeurige berekeningstegnieke, is die databasis ontwerp om byna perfekte speloplossings te bied.\n\nLet wel: Indien die KI nie toegang tot die databasis kry nie, sal dit na konvensionele algoritmes wend vir spelbesluite. Wanneer die databasis beskikbaar is, word die 'Moeilikheidsgraad' feitlik onverbeterlik, en 'KI-denktyd' ervaar 'n drastiese vermindering. Baie instellings binne 'AI's play style'-opsies sal tersyde gestel word, aangesien die databasisuitkomste die hoogste prioriteit het.\n\nVir leiding oor hoe om die meeste van hierdie foutlose databasis te maak, klik hier.",
-  "@perfectDatabaseDescription": {},
-  "backgroundImage": "Agtergrondbeeld",
-  "@backgroundImage": {},
-  "whatIsRandom": "Wanneer die 'Gebruik perfekte databasis' opsie nie geaktiveer is nie, veroorsaak die 'Ewekansige' instelling dat die KI stukke ewekansig skuif sonder om enige algoritmes vir skuifseleksie te gebruik. Dit lei gewoonlik tot beduidend swakker spel. In teenstelling, wanneer 'Gebruik perfekte databasis' geaktiveer is, steun die KI uitsluitlik op die 'Perfekte Databasis' vir besluitneming, in plaas daarvan om dit te meng met tradisionele KI-algoritmes. In hierdie modus is die KI se skuifbewegings heeltemal gebaseer op die inhoud van die databasis, en vermy afhanklikheid van regstreekse berekeninge of soekalgoritmes.",
-  "@whatIsRandom": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn": "Verwyder die opponent se stukke uit hul hand; dan is dit die opponent se beurt om te plaas.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
-  "whenFormingMillsDuringPlacingPhase": "Wanneer meulens gevorm word tydens die plasing fase",
-  "@whenFormingMillsDuringPlacingPhase": {},
-  "removeOpponentsPieceFromBoard": "Verwyder opponent se stukke van die bord af.",
-  "@removeOpponentsPieceFromBoard": {},
-  "removeOpponentsPieceFromBoard_Detail": "Verwyder die opponent se stukke van die bord af; dan is dit die opponent se beurt om te plaas.",
-  "@removeOpponentsPieceFromBoard_Detail": {},
-  "opponentRemovesOwnPiece": "Die opponent verwyder hul eie stukke van die bord af.",
-  "@opponentRemovesOwnPiece": {},
-  "opponentRemovesOwnPiece_Detail": "In plaas daarvan dat jy optree, kies die opponent en verwyder hul eie stukke van die bord af, wat effektief 'n aksie neem wat nadelig vir hulself is.",
-  "@opponentRemovesOwnPiece_Detail": {},
-  "removeOpponentsPieceFromHandThenYourTurn": "Verwyder die opponent se stukke uit hul hand; dan is dit jou beurt om te skuif.",
-  "@removeOpponentsPieceFromHandThenYourTurn": {},
-  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Verwyder stukke uit die opponent se hand. As daar volgens die Multi-verwyder instelling meervoudige stukke verwyder moet word en die opponent het geen stukke oor in hul hand nie, gaan voort om die opponent se stukke van die bord af te verwyder. Dan is dit jou beurt om te skuif. As jy aanhou om meulens te vorm, kan jy aanhou om die opponent se stukke te verwyder.",
-  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Verwyder stukke uit die opponent se hand. As daar volgens die Multi-verwyder instelling meervoudige stukke verwyder moet word en die opponent het geen stukke oor in hul hand nie, gaan voort om die opponent se stukke van die bord af te verwyder. Dan is dit die opponent se beurt om te skuif.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
-  "markAndDelayRemovingPieces": "Merk en vertraag die verwydering van stukke.",
-  "@markAndDelayRemovingPieces": {},
-  "markAndDelayRemovingPieces_Detail": "Gedurende die plasing fase word die stukke wat verwyder moet word gemerk, en vir beide spelers kan geen nuwe stukke op hierdie punte geplaas word nie. Wanneer die skuif fase betree word, word hierdie gemerkte stukke heeltemal verwyder, en spelers kan dan hul stukke skuif na hierdie nou-leë punte.",
-  "@markAndDelayRemovingPieces_Detail": {},
-  "whenFormingMillsDuringPlacingPhase_Detail": "Die aksies wat geneem kan word tydens die vorming van meulens in die plasingsfase.",
-  "@whenFormingMillsDuringPlacingPhase_Detail": {},
-  "marked": "Gemarkeerd",
-  "@marked": {},
-  "menu": "Kieslys",
-  "@menu": {},
-  "monochrome": "Monochroom",
-  "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "U kan skermleserondersteuning inskakel in die toeganklikheidinstellings onder Algemene Instellings.",
-  "@youCanEnableScreenReaderSupport": {},
-  "showNumbersOnPieces": "Toon getalle op stukke",
-  "@showNumbersOnPieces": {},
-  "saveImage": "Stoor beeld",
-  "@saveImage": {},
-  "isAnalysisToolbarShown": "Wys ontledingsnutsbalk",
-  "@isAnalysisToolbarShown": {},
-  "analysisToolbarBackgroundColor": "Agtergrondkleur van ontledingsnutsbalk",
-  "@analysisToolbarBackgroundColor": {},
-  "analysisToolbarIconColor": "Ikoonkleur van ontledingsnutsbalk",
-  "@analysisToolbarIconColor": {},
-  "transformed": "Omskep.",
-  "@transformed": {},
-  "cannotTransform": "Kan nie omskep nie.",
-  "@cannotTransform": {},
-  "rotate": "Draai",
-  "@rotate": {},
-  "horizontalFlip": "H Draai",
-  "@horizontalFlip": {},
-  "verticalFlip": "V Draai",
-  "@verticalFlip": {},
-  "innerOuterFlip": "IO Draai",
-  "@innerOuterFlip": {},
-  "transparentCanvas": "Deursigtige Doek",
-  "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Beperk Herhaalde Meulvorming",
-  "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "'n Stuk wat van een meul na 'n ander geskuif is, kan nie onmiddellik terugkeer na die oorspronklike punt op die volgende beurt om weer 'n meul te vorm nie. 'n Ander skuif is eers nodig.",
-  "@restrictRepeatedMillsFormation_Detail": {},
-  "oneTimeUseMill": "Eenmalige gebruik meul",
-  "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "Elke meul kan slegs een keer 'n teenstander se stuk verwyder. Jy kan dit weer hervorm, maar dit kan nie vir bykomende verwyderings gebruik word nie.",
-  "@oneTimeUseMill_Detail": {},
-  "currentRulesNoPerfectDatabase": "Die huidige reëls wat u ingestel het, het nie 'n ooreenstemmende perfekte databasis nie. Vir meer inligting oor die perfekte databasis, klik asseblief hier.",
-  "@currentRulesNoPerfectDatabase": {},
-  "focusOnBlockingPaths": "Fokus op blokkeer paaie",
-  "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Tydens spesifieke fases van die spel, prioritiseer om die teenstander se beweging te belemmer eerder as om rye van drie te vorm. In plaas daarvan om te fokus op die verwydering van stukke deur rye van drie te voltooi, mik die KI daarna om die teenstander tydens hierdie fases vas te keer, sodat hulle nie kan beweeg nie en 'n oorwinning deur uitputting verseker. Hierdie fase-spesifieke strategie blokkeer nie aktief die teenstander se rye van drie nie.",
-  "@focusOnBlockingPaths_Detail": {},
-  "pieceImage": "Stukkieprentjie",
-  "@pieceImage": {},
-  "importColorSettings": "Kleurinstellings invoer",
-  "@importColorSettings": {},
-  "exportColorSettings": "Kleurinstellings uitvoer",
-  "@exportColorSettings": {},
-  "import": "Invoer",
-  "@import": {},
-  "export": "Uitvoer",
-  "@export": {},
-  "pleaseCopyJsonToClipboard": "Kopieer asseblief eers die JSON-formaatinstellings na die knipbord.",
-  "@pleaseCopyJsonToClipboard": {},
-  "copiedToClipboard": "Na knipbord gekopieer.",
-  "@copiedToClipboard": {},
-  "imported": "Geïmporteer.",
-  "@imported": {},
-  "boardImage": "Bordbeeld",
-  "@boardImage": {},
-  "autumnLeaves": "Herfsblare",
-  "@autumnLeaves": {},
-  "legendaryLand": "Legendariese Land",
-  "@legendaryLand": {},
-  "vignetteEffect": "Vignet-effek",
-  "@vignetteEffect": {},
-  "promptMakeToolbarTransparent": "Wil jy die werkbalk heeltemal deurskynend maak wanneer 'n bordanfronstoepasafbeelding ingestel is?",
-  "@promptMakeToolbarTransparent": {},
-  "vibration": "Skakel vibrasie in die spel aan",
-  "@vibration": {},
-  "soundTheme": "Klank tema",
-  "@soundTheme": {},
-  "ball": "Bal",
-  "@ball": {},
-  "liquid": "Vloeistof",
-  "@liquid": {},
-  "wood": "Hout",
-  "@wood": {},
-  "placeEffectAnimation": "Stuk plaas animasie-effek",
-  "@placeEffectAnimation": {},
-  "removeEffectAnimation": "Stuk verwydering animasie-effek",
-  "@removeEffectAnimation": {},
-  "isToolbarAtBottom": "Wys werkbalk onder",
-  "@isToolbarAtBottom": {},
-  "boardCornerRadius": "Raadhoekradius van die bord",
-  "@boardCornerRadius": {},
-  "useOpeningBook": "Gebruik openingsboek",
-  "@useOpeningBook": {},
-  "currentRule": "Huidig",
-  "@currentRule": {},
-  "nineMensMorris": "Nine Men's Morris",
-  "@nineMensMorris": {},
-  "twelveMensMorris": "Twelve Men's Morris",
-  "@twelveMensMorris": {},
-  "morabaraba": "Morabaraba",
-  "@morabaraba": {},
-  "dooz": "Dooz",
-  "@dooz": {},
-  "chamGonu": "Cham Gonu",
-  "@chamGonu": {},
-  "zhiQi": "Zhi Qi",
-  "@zhiQi": {},
-  "chengSanQi": "Cheng San Qi",
-  "@chengSanQi": {},
-  "mulMulan": "Mul-Mulan",
-  "@mulMulan": {},
-  "nerenchi": "Nerenchi",
-  "@nerenchi": {},
-  "ruleSet": "Reël stel",
-  "@ruleSet": {},
-  "laskerMorris": "Lasker Morris",
-  "@laskerMorris": {},
-  "oneTimeMill": "One-Time Mill",
-  "@oneTimeMill": {},
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {},
-  "useOpeningBook_Detail": "Laat die AI openingstrekke gebruik wat algemeen deur professionele menslike spelers tydens die vroeë spel gebruik word. Let wel: Hierdie funksie is tans slegs beskikbaar vir spesifieke reël stelle.",
-  "@useOpeningBook_Detail": {},
-  "showAdvantageGraph": "Wys voordeelgrafiek",
-  "@showAdvantageGraph": {},
-  "advantageGraphHint": "Voorspronggrafiek sal slegs geteken word nadat die KI 'n skuif maak. Dit sal nie geteken word wanneer die menslike speler 'n skuif maak nie.",
-  "@advantageGraphHint": {},
-  "removalBasedOnMillCounts": "Skakel verwydering uit totdat alle stukke geplaas is. Spelers verwyder stukke op grond van Morabaraba-tellings.",
-  "@removalBasedOnMillCounts": {},
-  "removalBasedOnMillCounts_Detail": "Skakel verwydering uit totdat alle stukke geplaas is. Spelers verwyder stukke op grond van Morabaraba-tellings: as dit gelyk is, verwyder albei dieselfde aantal stukke; as een meer het, verwyder hy een ekstra, met ’n verskil van net één stuk. As slegs een Morabaraba vorm, verwyder daardie speler twee stukke en die ander speler een. As geen speler ’n Morabaraba vorm nie, verwyder albei een stuk.",
-  "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "El Filja",
-  "@elfilja": {},
-  "tipSelectOwnPiece": "Kies een van jou stukke.",
-  "@tipSelectOwnPiece": {},
-  "notYourTurn": "Dis nie jou beurt nie.",
-  "@notYourTurn": {},
-  "annotationToolbarBackgroundColor": "Annotasie-nutsbalk agtergrondkleur",
-  "@annotationToolbarBackgroundColor": {},
-  "annotationToolbarIconColor": "Annotasie-nutsbalk ikoonkleur",
-  "@annotationToolbarIconColor": {},
-  "isAnnotationToolbarShown": "Wys annotasie-nutsbalk",
-  "@isAnnotationToolbarShown": {},
-  "enterAnnotationMode": "Gaan annotasiemodus binne",
-  "@enterAnnotationMode": {},
-  "areYouSureYouWantToClearAllAnnotations": "Is jy seker jy wil alle annotasies uitvee?",
-  "@areYouSureYouWantToClearAllAnnotations": {},
-  "llmPromptCopiedToClipboard": "LLM-prompt na knipbord gekopieer.",
-  "@llmPromptCopiedToClipboard": {},
-  "connectionRefusedTheServerMayBeDown": "Verbinding geweier, die bediener is moontlik af.",
-  "@connectionRefusedTheServerMayBeDown": {},
-  "discoverySuccessfulAwaitingConnection": "Ontdekking suksesvol, wag vir verbinding...",
-  "@discoverySuccessfulAwaitingConnection": {},
-  "noLanConnection": "Geen LAN-verbinding",
-  "@noLanConnection": {},
-  "takeScreenshot": "Neem screenshot",
-  "@takeScreenshot": {},
-  "disconnectedFromOpponent": "Van teenstander ontkoppel.",
-  "@disconnectedFromOpponent": {},
-  "takeBackRequest": "Terugneem versoek",
-  "@takeBackRequest": {},
-  "nothingToShow": "Niks om te wys.",
-  "@nothingToShow": {},
-  "stopHosting": "Stop hosting",
-  "@stopHosting": {},
-  "connectionResetByPeer": "Verbinding teruggestel deur teenstander.",
-  "@connectionResetByPeer": {},
-  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Verbinding verlore weens hartklop-tydverstreking. Koppel asseblief weer.",
-  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
-  "startHosting": "Begin hosting",
-  "@startHosting": {},
-  "restartRequestRejected": "Herbegin versoek verwerp.",
-  "@restartRequestRejected": {},
-  "notConnectedToLanOpponent": "Nie gekoppel aan LAN-teenstander nie.",
-  "@notConnectedToLanOpponent": {},
-  "llmPrompt": "LLM-prompt",
-  "@llmPrompt": {},
-  "gameRestarted": "Spel herbegin.",
-  "@gameRestarted": {},
-  "takeBackRejected": "Terugneem verwerp.",
-  "@takeBackRejected": {},
-  "areYouSureYouWantToResignThisGame": "Is jy seker jy wil hierdie spel bedank?",
-  "@areYouSureYouWantToResignThisGame": {},
-  "opponentResignedYouWin": "Teenstander het bedank. Jy wen!",
-  "@opponentResignedYouWin": {},
-  "clearAllAnnotations": "Vee alle annotasies uit",
-  "@clearAllAnnotations": {},
-  "connectedWaitingForOpponentSMove": "Gekoppel, wag vir teenstander se skuif...",
-  "@connectedWaitingForOpponentSMove": {},
-  "networkStatusDisconnected": "Netwerkstatus: Ontkoppel",
-  "@networkStatusDisconnected": {},
-  "takeBackRequestSentToTheOpponent": "Terugneem versoek aan die teenstander gestuur.",
-  "@takeBackRequestSentToTheOpponent": {},
-  "theOpponentMayHaveLeftTheGame": "Die teenstander het dalk die spel verlaat",
-  "@theOpponentMayHaveLeftTheGame": {},
-  "connectedToHostSuccessfully": "Suksesvol aan gasheer gekoppel.",
-  "@connectedToHostSuccessfully": {},
-  "connectionLostHeartbeatTimeout": "Verbinding verlore: hartklop-tydverstreking",
-  "@connectionLostHeartbeatTimeout": {},
-  "noHostDiscovered": "Geen gasheer ontdek nie.",
-  "@noHostDiscovered": {},
-  "confirmResignation": "Bevestig bedanking",
-  "@confirmResignation": {},
-  "startedHostingGameWaitingForPlayersToJoin": "Begin spel host, wag vir spelers om aan te sluit...",
-  "@startedHostingGameWaitingForPlayersToJoin": {},
-  "connectionTimedOutNetworkConnectionUnstable": "Verbinding het uitgetel, netwerkverbinding onstabiel.",
-  "@connectionTimedOutNetworkConnectionUnstable": {},
-  "noLlmPromptAvailable": "Geen LLM-prompt beskikbaar nie.",
-  "@noLlmPromptAvailable": {},
-  "youResignedGameOver": "Jy het bedank. Spel verby.",
-  "@youResignedGameOver": {},
-  "serverIp": "Bediener IP",
-  "@serverIp": {},
-  "confirmClear": "Bevestig uitvee",
-  "@confirmClear": {},
-  "opponentSTurn": "Teenstander se beurt.",
-  "@opponentSTurn": {},
-  "waitingAClientConnection": "Wag vir 'n kliëntverbinding...",
-  "@waitingAClientConnection": {},
-  "takeBackRequestWasRejectedOrFailed": "Terugneem versoek is verwerp of het misluk.",
-  "@takeBackRequestWasRejectedOrFailed": {},
-  "addText": "Voeg teks by",
-  "@addText": {},
-  "exitAnnotationMode": "Verlaat annotasiemodus",
-  "@exitAnnotationMode": {},
-  "typeYourAnnotation": "Tik jou annotasie",
-  "@typeYourAnnotation": {},
-  "attemptingToReconnect": "Probeer om weer te koppel...",
-  "@attemptingToReconnect": {},
-  "restartRequestSentWaitingForOpponentSResponse": "Herbegin versoek gestuur. Wag vir teenstander se reaksie...",
-  "@restartRequestSentWaitingForOpponentSResponse": {},
-  "serverIsStopped": "Bediener is gestop.",
-  "@serverIsStopped": {},
-  "restartRequest": "Herbegin versoek",
-  "@restartRequest": {},
-  "cannotRequestATakeBackWhenItSNotYourTurn": "Kan nie 'n terugneem versoek indien as dit nie jou beurt is nie.",
-  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
-  "takeBackAccepted": "Terugneem aanvaar.",
-  "@takeBackAccepted": {},
-  "localNetworkSettings": "Plaaslike netwerk instellings",
-  "@localNetworkSettings": {},
-  "reconnectedSuccessfully": "Suksesvol herkoppel!",
-  "@reconnectedSuccessfully": {},
-  "failedToSaveImageToGallery": "Misluk om beeld na Gallery te stoor.",
-  "@failedToSaveImageToGallery": {},
-  "opponentRequestedToRestartTheGameDoYouAccept": "Teenstander het versoek om die spel te herbegin. Aanvaar jy?",
-  "@opponentRequestedToRestartTheGameDoYouAccept": {},
-  "yourTurn": "Jou beurt.",
-  "@yourTurn": {},
-  "unableToReconnectPleaseRestartTheGame": "Kan nie herkoppel nie, herbegin asseblief die spel.",
-  "@unableToReconnectPleaseRestartTheGame": {},
-  "host": "Gasheer",
-  "@host": {},
-  "join": "Sluit aan",
-  "@join": {},
-  "port": "Poort",
-  "@port": {},
-  "invalidIpAddress": "Ongeldige IP-adres.",
-  "@invalidIpAddress": {},
-  "invalidPort": "Ongeldige poort.",
-  "@invalidPort": {},
-  "connectingAttempt": "Verbind: Poging {attempt}/{maxAttempt}",
-  "@connectingAttempt": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempt": {}
-    }
-  },
-  "failedToConnect": "Misluk om te koppel: {error}",
-  "@failedToConnect": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "failedToStartHosting": "Misluk om hosting te begin: {error}",
-  "@failedToStartHosting": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "hostDiscovered": "Gasheer ontdek: {ip}:{port}",
-  "@hostDiscovered": {
-    "placeholders": {
-      "ip": {},
-      "port": {}
-    }
-  },
-  "stop": "Stop",
-  "@stop": {},
-  "discover": "Ontdek",
-  "@discover": {},
-  "connect": "Koppel",
-  "@connect": {},
-  "clientConnected": "Kliënt gekoppel: {clientIp}:{clientPort}",
-  "@clientConnected": {
-    "placeholders": {
-      "clientIp": {},
-      "clientPort": {}
-    }
-  },
-  "discoveringSeconds": "Ontdek: {seconds} s",
-  "@discoveringSeconds": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "reconnecting": "Herkoppel ({attempt}/{maxAttempts})",
-  "@reconnecting": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempts": {}
-    }
-  },
-  "connected": "Gekoppel",
-  "@connected": {},
-  "delete": "Vee uit",
-  "@delete": {},
-  "ancientEgypt": "Antieke Egipte",
-  "@ancientEgypt": {},
-  "gothicIce": "Gotiese Ys",
-  "@gothicIce": {},
-  "riceField": "Rysveld",
-  "@riceField": {},
-  "chinesePorcelain": "Chinese Porselein",
-  "@chinesePorcelain": {},
-  "desertDusk": "Woestynskemer",
-  "@desertDusk": {},
-  "precisionCraft": "Presisievakmanskap",
-  "@precisionCraft": {},
-  "folkEmbroidery": "Volksborduurwerk",
-  "@folkEmbroidery": {},
-  "carpathianHeritage": "Karpatiese Erfenis",
-  "@carpathianHeritage": {},
-  "imperialGrandeur": "Keiserlike Grootheid",
-  "@imperialGrandeur": {},
-  "bohemianCrystal": "Boheemse Kristal",
-  "@bohemianCrystal": {},
-  "savannaSunrise": "Savanna Sonsopkoms",
-  "@savannaSunrise": {},
-  "harmonyBalance": "Harmonie Balans",
-  "@harmonyBalance": {},
-  "cinnamonSpice": "Kaneelspesery",
-  "@cinnamonSpice": {},
-  "anatolianMosaic": "Anatoliese Mosaïek",
-  "@anatolianMosaic": {},
-  "carnivalSpirit": "Karnavalgees",
-  "@carnivalSpirit": {},
-  "custom": "Pasgemaak",
-  "@custom": {},
-  "spiceMarket": "Speseryemark",
-  "@spiceMarket": {},
-  "swipeToRevealTheDrawer": "Swiep om die laai te wys",
-  "@swipeToRevealTheDrawer": {},
-  "showGameInfoOnScreenshots": "Wys spelinligting op skermgrepe",
-  "@showGameInfoOnScreenshots": {},
-  "humanMoveTime": "Menslike tydsbeperking",
-  "@humanMoveTime": {},
-  "noTimeLimitForHumanMoves": "Geen tydsbeperking vir menslike skuiwe nie",
-  "@noTimeLimitForHumanMoves": {},
-  "timeoutLoseWillBeApplied": "Tydsverlies sal toegepas word vir menslike speler",
-  "@timeoutLoseWillBeApplied": {},
-  "identifyingBoard": "Speelbord word geïdentifiseer…",
-  "@identifyingBoard": {},
-  "youCanEnterAnyModelName": "Jy kan enige modelnaam invoer",
-  "@youCanEnterAnyModelName": {},
-  "boardPositionAppliedFenCopiedToClipboard": "Speelbordposisie toegepas. FEN na knipbord gekopieer.",
-  "@boardPositionAppliedFenCopiedToClipboard": {},
-  "suggestionTryTakingAClearerPictureOfTheBoard": "Voorstel: Probeer ’n skerpeler foto van die speelbord neem",
-  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
-  "llmPromptTemplate": "LLM‑promptsjabloon",
-  "@llmPromptTemplate": {},
-  "noValidBoardDetected": "Geen geldige speelbord gevind nie",
-  "@noValidBoardDetected": {},
-  "selectingImageFromAlbum": "Beeld uit album word geselekteer…",
-  "@selectingImageFromAlbum": {},
-  "configurePromptTemplate": "Konfigureer promptsjabloon",
-  "@configurePromptTemplate": {},
-  "editPromptTemplateForLlmAnalysis": "Wysig promptsjabloon vir LLM-ontleding",
-  "@editPromptTemplateForLlmAnalysis": {},
-  "failedToGenerateFenFromRecognizedBoard": "Kon nie FEN vanaf herkende speelbord genereer nie",
-  "@failedToGenerateFenFromRecognizedBoard": {},
-  "outputInCurrentLanguage": "Uitset in huidige taal",
-  "@outputInCurrentLanguage": {},
-  "commonBaseUrls": "Algemene Base URLs",
-  "@commonBaseUrls": {},
-  "viewCommonModels": "Kyk algemene modelle",
-  "@viewCommonModels": {},
-  "recognitionParametersUpdated": "Herkenningsparameters bygewerk",
-  "@recognitionParametersUpdated": {},
-  "whiteSMove": "Wit se skuif",
-  "@whiteSMove": {},
-  "resetToDefaults": "Herstel na verstek",
-  "@resetToDefaults": {},
-  "photoShoot": "Fotosessie",
-  "@photoShoot": {},
-  "failedToApplyRecognizedBoardPosition": "Kon nie herkende speelbordposisie toepas nie",
-  "@failedToApplyRecognizedBoardPosition": {},
-  "llmPromptContent": "LLM‑promptinhoud",
-  "@llmPromptContent": {},
-  "llmNotConfiguredPleaseCheckYourSettings": "LLM nie gekonfigureer nie. Kontroleer asseblief jou instellings.",
-  "@llmNotConfiguredPleaseCheckYourSettings": {},
-  "setProviderModelApiKeyAndBaseUrl": "Stel verskaffer, model, API-sleutel en Base URL in",
-  "@setProviderModelApiKeyAndBaseUrl": {},
-  "llmConfiguration": "LLM‑konfigurasie",
-  "@llmConfiguration": {},
-  "configureLlmProvider": "Konfigureer LLM‑verskaffer",
-  "@configureLlmProvider": {},
-  "llmPromptTemplateHeader": "LLM‑promptsjabloonopskrif",
-  "@llmPromptTemplateHeader": {},
-  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Geen stukke is in die afbeelding herken nie. Probeer asseblief weer.",
-  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
-  "recognizeBoardFromImage": "Herken speelbord vanaf afbeelding",
-  "@recognizeBoardFromImage": {},
-  "viewTips": "Kyk wenke",
-  "@viewTips": {},
-  "applyToBoard": "Toepas op speelbord",
-  "@applyToBoard": {},
-  "adjustBoardArea": "Pas speelbordarea aan",
-  "@adjustBoardArea": {},
-  "viewCommonUrls": "Kyk algemene URL's",
-  "@viewCommonUrls": {},
-  "colorAnalysisFailed": "Kleuranalise het misluk!",
-  "@colorAnalysisFailed": {},
-  "analyzingGameBoardImage": "Besig om speelbordbeeld te ontleed…",
-  "@analyzingGameBoardImage": {},
-  "selectFromAlbum": "Selekteer uit album",
-  "@selectFromAlbum": {},
-  "noBoardPointDetected": "Geen speelbordpunt gevind nie!",
-  "@noBoardPointDetected": {},
-  "ifLeftEmptyDefaultTemplateWillBeUsed": "Indien leeg gelaat, word die versteksjabloon gebruik",
-  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
-  "llmConfig": "LLM‑konfigurasie",
-  "@llmConfig": {},
-  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Is jy seker jy wil die promptsjablone na verstekwaardes terugstel?",
-  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
-  "llmPromptTemplateFooter": "LLM‑promptsjabloonvoetstuk",
-  "@llmPromptTemplateFooter": {},
-  "loadingResponse": "Laai reaksie…",
-  "@loadingResponse": {},
-  "applyThisResultToBoard": "Pas hierdie resultaat op die speelbord toe",
-  "@applyThisResultToBoard": {},
-  "takingPicture": "Neem foto…",
-  "@takingPicture": {},
-  "pleaseSelectAGameBoardImageToIdentify": "Kies asseblief ’n speelbordbeeld om te identifiseer",
-  "@pleaseSelectAGameBoardImageToIdentify": {},
-  "identificationResults": "Identifikasie‑resultate",
-  "@identificationResults": {},
-  "analyzeTheMovesAndProvideInsights": "Analiseer die skuife en verskaf insigte.",
-  "@analyzeTheMovesAndProvideInsights": {},
-  "getApiKey": "Kry API‑sleutel",
-  "@getApiKey": {},
-  "entireRecognitionProcessFailedToComplete": "Hele herkenningsproses kon nie voltooi word nie",
-  "@entireRecognitionProcessFailedToComplete": {},
-  "boardRecognitionResult": "Speelbordherkenningsresultaat",
-  "@boardRecognitionResult": {},
-  "askLlm": "Vra LLM",
-  "@askLlm": {},
-  "boardDetectionFailed": "Speelbordopsporing het misluk!",
-  "@boardDetectionFailed": {},
-  "noBoardPointDetectedCannotIdentifyPiece": "Geen speelbordpunt gevind nie, kan stuk nie identifiseer nie!",
-  "@noBoardPointDetectedCannotIdentifyPiece": {},
-  "copyFen": "Kopieer FEN",
-  "@copyFen": {},
-  "commonlyUsedModels": "Wyd gebruikte modelle",
-  "@commonlyUsedModels": {},
-  "apiKeyOptional": "API‑sleutel (opsioneel)",
-  "@apiKeyOptional": {},
-  "noImageSelected": "Geen beeld geselekteer nie",
-  "@noImageSelected": {},
-  "blackSMove": "Swart se skuif",
-  "@blackSMove": {},
-  "llm": "Groot Taalmodel",
-  "@llm": {},
-  "llmProvider": "Verskaffer",
-  "@llmProvider": {},
-  "baseUrl": "Basis-URL",
-  "@baseUrl": {},
-  "model": "Model",
-  "@model": {},
-  "temperature": "Temperatuur",
-  "@temperature": {},
-  "llmCommandReceivedProcessing": "Opdrag ontvang! KI besig om te verwerk...",
-  "@llmCommandReceivedProcessing": {},
-  "llmDeepThinkingWait": "Diep denke aan die gang, wag asseblief...",
-  "@llmDeepThinkingWait": {},
-  "llmPresentingSoon": "Bied binnekort aan...",
-  "@llmPresentingSoon": {},
-  "recognitionParameters": "Herkenningsparameters",
-  "@recognitionParameters": {},
-  "adjustParamsDesc": "Pas parameters aan om herkenningsakkuraatheid te verbeter",
-  "@adjustParamsDesc": {},
-  "saveParameters": "Stoor parameters",
-  "@saveParameters": {},
-  "unableToStartImageRecognition": "Kan nie beeldherkenning begin nie: {error}",
-  "@unableToStartImageRecognition": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "File system error"
-      }
-    }
-  },
-  "imageRecognitionFailed": "Beeldherkenning het misluk: {error}",
-  "@imageRecognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Could not detect corners"
-      }
-    }
-  },
-  "appliedPositionDetails": "Toegepaste posisie met {whiteCount} wit en {blackCount} swart stukke",
-  "@appliedPositionDetails": {
-    "placeholders": {
-      "whiteCount": {
-        "type": "int",
-        "example": "9"
-      },
-      "blackCount": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
-  "fenCopiedToClipboard": "(FEN na knipbord gekopieer)",
-  "@fenCopiedToClipboard": {},
-  "recognitionFailed": "Herkenning het misluk: {error}",
-  "@recognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Invalid FEN structure"
-      }
-    }
-  },
-  "myRating": "My gradering",
-  "@myRating": {},
-  "gamesPlayed": "Speletjies gespeel",
-  "@gamesPlayed": {},
-  "wins": "Oorwinnings",
-  "@wins": {},
-  "losses": "Verliese",
-  "@losses": {},
-  "draws": "Gelykopuitslae",
-  "@draws": {},
-  "lastUpdated": "Laas opgedateer",
-  "@lastUpdated": {},
-  "format": "Formaat:",
-  "@format": {},
-  "resetStatistics": "Stel statistieke terug",
-  "@resetStatistics": {},
-  "drawRate": "Gelykopkoers",
-  "@drawRate": {},
-  "lossRate": "Verlieskoers",
-  "@lossRate": {},
-  "aiStatistics": "KI-statistieke",
-  "@aiStatistics": {},
-  "enableStatistics": "Aktiveer statistieke",
-  "@enableStatistics": {},
-  "enableStatistics_Detail": "Wanneer geaktiveer, sal speletjie-uitslae in statistieke aangeteken word. Speletjies wat terugnames behels, sal egter nie aangeteken word nie. Wanneer gedeaktiveer, word die insameling van statistieke onderbreek.",
-  "@enableStatistics_Detail": {},
-  "thisWillResetAllGameStatistics": "Dit sal alle speletjiestatistieke terugstel. Hierdie aksie kan nie ongedaan gemaak word nie.",
-  "@thisWillResetAllGameStatistics": {},
-  "boardInnerRingSize": "Binne-ringgrootte van die bord",
-  "@boardInnerRingSize": {},
-  "boardShadowEnabled": "Bordskadu",
-  "@boardShadowEnabled": {},
-  "trapAwareness": "Lokvalbewustheid",
-  "@trapAwareness": {},
-  "trapAwarenessDescription": "Beklemtoon lokvalskuiwe met vet sirkels en pyle tydens ontleding.",
-  "@trapAwarenessDescription": {},
-  "trapExists": "Lokval bestaan. Lokvalskuiwe: {trapMoves}",
-  "@trapExists": {
-    "placeholders": {
-      "trapMoves": {
-        "type": "String"
-      }
-    }
-  },
-  "custodianCapture": "Flankerende vangs",
-  "@custodianCapture": {},
-  "custodianCaptureDescription": "Sluit een van u teenstanders se stukke tussen twee van u in 'n reguit lyn om dit vas te vang.",
-  "@custodianCaptureDescription": {},
-  "custodianCaptureEnable": "Laat flankerende vaslegging toe",
-  "@custodianCaptureEnable": {},
-  "interventionCapture": "Ingryping vaslegging",
-  "@interventionCapture": {},
-  "interventionCaptureDescription": "Beweeg in die leë punt tussen twee van u teenstanders se stukke om albei vas te lê.",
-  "@interventionCaptureDescription": {},
-  "interventionCaptureEnable": "Laat ingryping vaslegging toe",
-  "@interventionCaptureEnable": {},
-  "leapCapture": "Vang deur te spring",
-  "@leapCapture": {},
-  "leapCaptureDescription": "Vang deur oor die stuk van 'n aangrensende teenstander in die leë punt verder te spring.",
-  "@leapCaptureDescription": {},
-  "leapCaptureEnable": "Laat springopvang",
-  "@leapCaptureEnable": {},
-  "captureApplicableLines": "Toepaslike lyne",
-  "@captureApplicableLines": {},
-  "captureSquareEdges": "Langs die rande van die plein",
-  "@captureSquareEdges": {},
-  "captureCrossLines": "Langs ortogonale lyne wat die vierkant kruis",
-  "@captureCrossLines": {},
-  "captureDiagonalLines": "Langs diagonale lyne wat die vierkant kruis",
-  "@captureDiagonalLines": {},
-  "captureExecutionPhases": "Uitvoeringsfases",
-  "@captureExecutionPhases": {},
-  "capturePiecesCondition": "Beskikbaarheid tydens die bewegende fase gebaseer op oorblywende stukke",
-  "@capturePiecesCondition": {},
-  "capturePiecesConditionUnlimited": "Geen beperking nie",
-  "@capturePiecesConditionUnlimited": {},
-  "capturePiecesConditionSelfLeqThree": "Beskikbaar as u drie of minder stukke het",
-  "@capturePiecesConditionSelfLeqThree": {},
-  "stopPlacingWhenTwoEmptySquares": "Stop plaas wanneer slegs twee leë vierkante oorbly",
-  "@stopPlacingWhenTwoEmptySquares": {},
-  "stopPlacingWhenTwoEmptySquares_Detail": "Wanneer geaktiveer, eindig die plaasfase en begin die skuiffase wanneer die bord slegs 2 leë spasies oorhet, ongeag stukke in die hand. Hierdie reël geld slegs vir 12-stuk speletjies.",
-  "@stopPlacingWhenTwoEmptySquares_Detail": {}
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
+    },
+    "lastMove": "Laaste skuif: {move}",
+    "@lastMove": {
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
+    },
+    "selected": "Gekies",
+    "@selected": {
+        "description": "Selected"
+    },
+    "accessibility": "Toeganklikheid",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Skermleser ondersteuning",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "isDraw": "Dit is 'n trekking!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "pieceHighlightColor": "Stuk hoogtepunt kleur",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritme",
+    "@algorithm": {
+        "description": "Algorithm"
+    },
+    "endgameNMoveRule": "Eindspel N-Move reël",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
+    "endgameNMoveRule_Detail": "Die wedstryd word getrek as een van die spelers slegs drie stukke het en nie een van die spelers 'n stuk binne spesifieke bewegings verwyder nie.",
+    "@endgameNMoveRule_Detail": {
+        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+    },
+    "drawReasonEndgameRule50": "Enige speler het net drie stukke, en nie een speler verwyder 'n stuk binne spesifieke bewegings nie.",
+    "@drawReasonEndgameRule50": {
+        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "Drievoudige herhalingsreël",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
+    },
+    "threefoldRepetitionRule_Detail": "Die wedstryd word gelykop as 'n posisie vir die derde keer voorkom.",
+    "@threefoldRepetitionRule_Detail": {
+        "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "Meul! Gaan voort om 'n skuif te maak.",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
+    },
+    "pointStyle": "Punt styl",
+    "@pointStyle": {
+        "description": "Point style"
+    },
+    "pointWidth": "Punt breedte",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "solid": "Solied",
+    "@solid": {
+        "description": "Solid"
+    },
+    "hollow": "Hol",
+    "@hollow": {
+        "description": "Hollow"
+    },
+    "languageName": "Afrikaans",
+    "@languageName": {
+        "description": "The name of the current language"
+    },
+    "moveNumber": "{count,plural, =0{Beweeg}=1{{count} Beweeg}other{{count} Bewegings}}",
+    "@moveNumber": {
+        "description": "Moves to take back",
+        "placeholders": {
+            "count": {
+                "description": "Number of Moves",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "loadFailed": "Laai het misluk.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
+    "filename": "Lêernaam",
+    "@filename": {
+        "description": "File name"
+    },
+    "browse": "Snuffel…",
+    "@browse": {
+        "description": "Browse…"
+    },
+    "gameSavedTo": "Die speletjie word gestoor na",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
+    "empty": "Leeg",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
+    },
+    "noMove": "Geen beweging nie.",
+    "@noMove": {
+        "description": "No move."
+    },
+    "restoredPosition": "Herstel aanvanklike posisie.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "Skoon",
+    "@clean": {
+        "description": "Clean"
+    },
+    "cleanedUp": "Opgeruim.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Verwyder",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Geen stukke kan verwyder word nie.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Stuk}=1{{count} stuk}other{{count} stukke}} moet verwyder word.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedCount": "Gpl ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedPieceCount": "Geplaasde stuktelling in die plasingsfase.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
+    },
+    "hasPlacedPieceCount": "Die huidige speler het {count} stukke geplaas.",
+    "@hasPlacedPieceCount": {
+        "description": "The current player has placed {count} pieces.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "notPlacingPhase": "Plaas nie fase nie, kan dit nie verander nie.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
+    "paste": "Plak",
+    "@paste": {
+        "description": "Paste"
+    },
+    "pasteDone": "Die pasta is klaar.",
+    "@pasteDone": {
+        "description": "The paste is done."
+    },
+    "cannotPaste": "Kan nie plak nie.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
+    "isUnplacedAndRemovedPiecesShown": "Wys ongeplaasde en verwyderde stukke",
+    "@isUnplacedAndRemovedPiecesShown": {
+        "description": "Show unplaced and removed pieces"
+    },
+    "fullScreen": "Volskerm",
+    "@fullScreen": {
+        "description": "Full screen"
+    },
+    "reopenToTakeEffect": "Verlaat en heropen app vir instellings om in werking te tree.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
+    },
+    "forest": "Bos",
+    "@forest": {},
+    "desktopImage": "Werkskermbeeld",
+    "@desktopImage": {},
+    "invalidPosition": "Ongeldige posisie.",
+    "@invalidPosition": {},
+    "shareGIF": "Deel GIF",
+    "@shareGIF": {},
+    "pixelRatio": "Pixel verhouding",
+    "@pixelRatio": {},
+    "duration": "Duur",
+    "@duration": {},
+    "gameScreenRecorder": "Speletjieskermopnemer",
+    "@gameScreenRecorder": {},
+    "previous": "Vorige",
+    "@previous": {},
+    "next": "Volgende",
+    "@next": {},
+    "skip": "Huppel",
+    "@skip": {},
+    "gotIt": "Het dit",
+    "@gotIt": {},
+    "youCanModifyRules": "Jy kan die reëls van die spel verander in die reëlinstellings.",
+    "@youCanModifyRules": {},
+    "youCanUseMouseWheelInPicker": "Jy kan die muiswiel gebruik om die waarde in die kieser te verander.",
+    "@youCanUseMouseWheelInPicker": {},
+    "noTimeLimitForThinking": "KI Dinktyd wat op 0 gestel is, beteken daar is geen tydsbeperking vir dink nie.",
+    "@noTimeLimitForThinking": {},
+    "whatIsMtdf": "MTD(f) is 'n gewysigde vorm van die alfa-beta-soekalgoritme wat daarop gemik is om doeltreffendheid te verbeter deur intermediêre soekresultate te hergebruik en 'n goeie aanvanklike raaiskoot te gebruik om die soekruimte te verklein.",
+    "@whatIsMtdf": {},
+    "noteAiThinkingTimeMayNotBePrecise": "Wees asseblief bewus daarvan dat die KI-denktydaanpassing dalk nie heeltemal presies is nie. Die werklike dinktyd kan korter wees wanneer die moeilikheidsgraad op 'n laer waarde gestel is en kan langer wees wanneer die KI halfgedink is wanneer die tyd uitloop.",
+    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "noteActualDifficultyLevelMayBeLimited": "As jy die moeilikheidsgraad hoog stel, maar nie die KI-denktyd verhoog nie, kan die werklike moeilikheidsgraad beperk word tot 'n laer waarde as gevolg van die dinktydbeperking. Die werklike waarde kan verskil afhangende van die masjien se werkverrigting.",
+    "@noteActualDifficultyLevelMayBeLimited": {},
+    "whatIsPvs": "PVS (Principal Variation Search) is 'n soekalgoritme om die beste skuif in 'n gegewe posisie te vind. Dit is 'n verbetering van die alfa-beta-algoritme en gebruik nul- of nul-venstersoektogte om te bevestig dat 'n skuif slegter of nie slegter is as 'n reeds veilige telling van die hoofvariasie nie. PVS fokus op die mees belowende bewegings en vermy onnodige soektogte van suboptimale takke, wat help om die doeltreffendheid van die soektog te verbeter.",
+    "@whatIsPvs": {},
+    "whatIsAlphaBeta": "Die alfa-beta-algoritme is 'n soekalgoritme om die beste skuif te vind. Dit gebruik die minimax-beginsel en twee waardes, alfa en beta, om die soekboom te snoei en doeltreffendheid te verhoog. Alfa verteenwoordig die minimum telling wat die rekenaar seker is dat dit kan kry, terwyl beta die maksimum telling verteenwoordig wat sy teenstander kan kry. Die algoritme help die rekenaar om slim, doeltreffende besluite in 'n speletjie te neem.",
+    "@whatIsAlphaBeta": {},
+    "drawOnTheHumanExperienceDetail": "Volgens menslike ervaring, as jy probeer wen, sal jy verloor. Streef eerder na 'n gelykop as jou doelwit en vermy om die wedstryd te verloor. Kyk na jou teenstander en lok hulle sagkens in 'n posisie waar hulle foute kan maak. Wanneer hulle swakheid toon, gryp die geleentheid aan en druk saggies vir die oorwinning. Op hierdie manier kan jy die wedstryd wen.",
+    "@drawOnTheHumanExperienceDetail": {},
+    "passiveDetail": "Deur die Passiewe opsie te aktiveer, sal die KI laat ontspan wanneer dit 'n voordeel in die posisie het, eerder as om so vinnig as moontlik aggressief te probeer wen.",
+    "@passiveDetail": {},
+    "moveRandomlyDetail": "Deur hierdie opsie te aktiveer, verhoog die ewekansigheid en pret van die spel, terwyl die deaktivering daarvan kan help om maniere te bestudeer om die KI te klop.",
+    "@moveRandomlyDetail": {},
+    "considerMobilityOfPiecesDetail": "As die KI die beweeglikheid van sy stukke in ag neem, sal dit nie net daarop gemik wees om die opponent se stukke so vinnig as moontlik te vang nie, maar dit ook oorweeg om die opponent se bewegings te blokkeer en te verhoed dat hulle dieselfde doen.",
+    "@considerMobilityOfPiecesDetail": {},
+    "whenBoardIsFull": "Wanneer die bord vol is",
+    "@whenBoardIsFull": {},
+    "whenBoardIsFull_Detail": "Aan die einde van die plasingsfase, voordat die beweegfase begin, volg die aksie as die bord vol stukke is.",
+    "@whenBoardIsFull_Detail": {},
+    "sideToMoveRemovePiece": "Die speler wat eerste in die beweegfase beweeg, verwyder een van die opponent se stukke.",
+    "@sideToMoveRemovePiece": {},
+    "agreeToDraw": "Albei kante stem in tot 'n gelykopuitslag.",
+    "@agreeToDraw": {},
+    "takeOpponentsPiece": "Neem een van jou teenstander se stukke.",
+    "@takeOpponentsPiece": {},
+    "firstPlayerLose": "Die eerste speler verloor die wedstryd.",
+    "@firstPlayerLose": {},
+    "firstAndSecondPlayerRemovePiece": "Die eerste en tweede speler verwyder een van die teenstander se stukke.",
+    "@firstAndSecondPlayerRemovePiece": {},
+    "secondAndFirstPlayerRemovePiece": "Die tweede en eerste speler verwyder een van die teenstander se stukke.",
+    "@secondAndFirstPlayerRemovePiece": {},
+    "whenStalemate_Detail": "Watter aksie volg wanneer geen stuk geskuif kan word nie?",
+    "@whenStalemate_Detail": {},
+    "endWithStalemateLoss": "Eindig met 'n dooiepunt-verlies vir die span wat geblokkeer is.",
+    "@endWithStalemateLoss": {},
+    "changeSideToMove": "Verander die kant om te beweeg.",
+    "@changeSideToMove": {},
+    "removeOpponentsPieceAndMakeNextMove": "Verwyder een van die teenstander se stukke en maak die volgende skuif.",
+    "@removeOpponentsPieceAndMakeNextMove": {},
+    "endWithStalemateDraw": "Eindig met 'n dooiepunt-trekking.",
+    "@endWithStalemateDraw": {},
+    "removeOpponentsPieceAndChangeSideToMove": "Verwyder een van die teenstander se stukke en verander die kant om te beweeg.",
+    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "KI reaksie vertraging tyd",
+    "@aiResponseDelayTime": {},
+    "aiIsDelaying": "KI is tans in 'n vertraagde reaksiefase. Wag asseblief 'n rukkie voor jy voortgaan.",
+    "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "Jy kan nie 'n nie-aangrensende stuk verwyder nie.",
+    "@tipCanNotRemoveNonadjacent": {},
+    "stalemateRemovalRegardlessOfMillFormation": "As dit doodloop, kan die teenstander se stukke langs joune verwyder word, ongeag die meulformasie.",
+    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "whatIsMcts": "MCTS is 'n beginnersvriendelike algoritme wat besluite neem deur verskillende bewegings deur simulasies te ondersoek en te evalueer.",
+    "@whatIsMcts": {},
+    "goldenJade": "Goue Jade",
+    "@goldenJade": {},
+    "forestWood": "Boshout",
+    "@forestWood": {},
+    "darkMystery": "Donker misterie",
+    "@darkMystery": {},
+    "midnightBlue": "Middernagblou",
+    "@midnightBlue": {},
+    "greenForest": "Groen Bos",
+    "@greenForest": {},
+    "greenMeadow": "Groen Weide",
+    "@greenMeadow": {},
+    "stonyPath": "Klippad",
+    "@stonyPath": {},
+    "pastelPink": "Pastelpienk",
+    "@pastelPink": {},
+    "turquoiseSea": "Turkooissee",
+    "@turquoiseSea": {},
+    "violetDream": "Violetdroom",
+    "@violetDream": {},
+    "playfulGarden": "Speelsetuin",
+    "@playfulGarden": {},
+    "whatIsRetrogradeAnalysis": "Die retrograde-analise-algoritme gebruik multi-waarde retrograde analise om 'n eindspeldatabasis vanaf verskillende beginposisies te bou, en pas dan hierdie databasis toe om spel te optimaliseer. Hierdie benadering val onder die kategorie van Ultra-Strong oplossings.",
+    "@whatIsRetrogradeAnalysis": {},
+    "usePerfectDatabase": "Gebruik perfekte databasis",
+    "@usePerfectDatabase": {},
+    "perfectDatabaseDescription": "Aktiveer hierdie opsie om 'n foutlose speletjiedatabasis te gebruik wat deur die nuutste algoritmes gegenereer word. Hierdie kenmerk integreer beide opening- en eindspelstrategieë om optimale bewegings voor te stel. Dit is die voorkeurkeuse vir spelers wat die hoogste vlak van akkuraatheid in spel soek. Geskep deur noukeurige berekeningstegnieke, is die databasis ontwerp om byna perfekte speloplossings te bied.\n\nLet wel: Indien die KI nie toegang tot die databasis kry nie, sal dit na konvensionele algoritmes wend vir spelbesluite. Wanneer die databasis beskikbaar is, word die 'Moeilikheidsgraad' feitlik onverbeterlik, en 'KI-denktyd' ervaar 'n drastiese vermindering. Baie instellings binne 'AI's play style'-opsies sal tersyde gestel word, aangesien die databasisuitkomste die hoogste prioriteit het.\n\nVir leiding oor hoe om die meeste van hierdie foutlose databasis te maak, klik hier.",
+    "@perfectDatabaseDescription": {},
+    "backgroundImage": "Agtergrondbeeld",
+    "@backgroundImage": {},
+    "whatIsRandom": "Wanneer die 'Gebruik perfekte databasis' opsie nie geaktiveer is nie, veroorsaak die 'Ewekansige' instelling dat die KI stukke ewekansig skuif sonder om enige algoritmes vir skuifseleksie te gebruik. Dit lei gewoonlik tot beduidend swakker spel. In teenstelling, wanneer 'Gebruik perfekte databasis' geaktiveer is, steun die KI uitsluitlik op die 'Perfekte Databasis' vir besluitneming, in plaas daarvan om dit te meng met tradisionele KI-algoritmes. In hierdie modus is die KI se skuifbewegings heeltemal gebaseer op die inhoud van die databasis, en vermy afhanklikheid van regstreekse berekeninge of soekalgoritmes.",
+    "@whatIsRandom": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn": "Verwyder die opponent se stukke uit hul hand; dan is dit die opponent se beurt om te plaas.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "whenFormingMillsDuringPlacingPhase": "Wanneer meulens gevorm word tydens die plasing fase",
+    "@whenFormingMillsDuringPlacingPhase": {},
+    "removeOpponentsPieceFromBoard": "Verwyder opponent se stukke van die bord af.",
+    "@removeOpponentsPieceFromBoard": {},
+    "removeOpponentsPieceFromBoard_Detail": "Verwyder die opponent se stukke van die bord af; dan is dit die opponent se beurt om te plaas.",
+    "@removeOpponentsPieceFromBoard_Detail": {},
+    "opponentRemovesOwnPiece": "Die opponent verwyder hul eie stukke van die bord af.",
+    "@opponentRemovesOwnPiece": {},
+    "opponentRemovesOwnPiece_Detail": "In plaas daarvan dat jy optree, kies die opponent en verwyder hul eie stukke van die bord af, wat effektief 'n aksie neem wat nadelig vir hulself is.",
+    "@opponentRemovesOwnPiece_Detail": {},
+    "removeOpponentsPieceFromHandThenYourTurn": "Verwyder die opponent se stukke uit hul hand; dan is dit jou beurt om te skuif.",
+    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "removeOpponentsPieceFromHandThenYourTurn_Detail": "Verwyder stukke uit die opponent se hand. As daar volgens die Multi-verwyder instelling meervoudige stukke verwyder moet word en die opponent het geen stukke oor in hul hand nie, gaan voort om die opponent se stukke van die bord af te verwyder. Dan is dit jou beurt om te skuif. As jy aanhou om meulens te vorm, kan jy aanhou om die opponent se stukke te verwyder.",
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Verwyder stukke uit die opponent se hand. As daar volgens die Multi-verwyder instelling meervoudige stukke verwyder moet word en die opponent het geen stukke oor in hul hand nie, gaan voort om die opponent se stukke van die bord af te verwyder. Dan is dit die opponent se beurt om te skuif.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "markAndDelayRemovingPieces": "Merk en vertraag die verwydering van stukke.",
+    "@markAndDelayRemovingPieces": {},
+    "markAndDelayRemovingPieces_Detail": "Gedurende die plasing fase word die stukke wat verwyder moet word gemerk, en vir beide spelers kan geen nuwe stukke op hierdie punte geplaas word nie. Wanneer die skuif fase betree word, word hierdie gemerkte stukke heeltemal verwyder, en spelers kan dan hul stukke skuif na hierdie nou-leë punte.",
+    "@markAndDelayRemovingPieces_Detail": {},
+    "whenFormingMillsDuringPlacingPhase_Detail": "Die aksies wat geneem kan word tydens die vorming van meulens in die plasingsfase.",
+    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "marked": "Gemarkeerd",
+    "@marked": {},
+    "menu": "Kieslys",
+    "@menu": {},
+    "monochrome": "Monochroom",
+    "@monochrome": {},
+    "youCanEnableScreenReaderSupport": "U kan skermleserondersteuning inskakel in die toeganklikheidinstellings onder Algemene Instellings.",
+    "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Toon getalle op stukke",
+    "@showNumbersOnPieces": {},
+    "saveImage": "Stoor beeld",
+    "@saveImage": {},
+    "isAnalysisToolbarShown": "Wys ontledingsnutsbalk",
+    "@isAnalysisToolbarShown": {},
+    "analysisToolbarBackgroundColor": "Agtergrondkleur van ontledingsnutsbalk",
+    "@analysisToolbarBackgroundColor": {},
+    "analysisToolbarIconColor": "Ikoonkleur van ontledingsnutsbalk",
+    "@analysisToolbarIconColor": {},
+    "transformed": "Omskep.",
+    "@transformed": {},
+    "cannotTransform": "Kan nie omskep nie.",
+    "@cannotTransform": {},
+    "rotate": "Draai",
+    "@rotate": {},
+    "horizontalFlip": "H Draai",
+    "@horizontalFlip": {},
+    "verticalFlip": "V Draai",
+    "@verticalFlip": {},
+    "innerOuterFlip": "IO Draai",
+    "@innerOuterFlip": {},
+    "transparentCanvas": "Deursigtige Doek",
+    "@transparentCanvas": {},
+    "restrictRepeatedMillsFormation": "Beperk Herhaalde Meulvorming",
+    "@restrictRepeatedMillsFormation": {},
+    "restrictRepeatedMillsFormation_Detail": "'n Stuk wat van een meul na 'n ander geskuif is, kan nie onmiddellik terugkeer na die oorspronklike punt op die volgende beurt om weer 'n meul te vorm nie. 'n Ander skuif is eers nodig.",
+    "@restrictRepeatedMillsFormation_Detail": {},
+    "oneTimeUseMill": "Eenmalige gebruik meul",
+    "@oneTimeUseMill": {},
+    "oneTimeUseMill_Detail": "Elke meul kan slegs een keer 'n teenstander se stuk verwyder. Jy kan dit weer hervorm, maar dit kan nie vir bykomende verwyderings gebruik word nie.",
+    "@oneTimeUseMill_Detail": {},
+    "currentRulesNoPerfectDatabase": "Die huidige reëls wat u ingestel het, het nie 'n ooreenstemmende perfekte databasis nie. Vir meer inligting oor die perfekte databasis, klik asseblief hier.",
+    "@currentRulesNoPerfectDatabase": {},
+    "focusOnBlockingPaths": "Fokus op blokkeer paaie",
+    "@focusOnBlockingPaths": {},
+    "focusOnBlockingPaths_Detail": "Tydens spesifieke fases van die spel, prioritiseer om die teenstander se beweging te belemmer eerder as om rye van drie te vorm. In plaas daarvan om te fokus op die verwydering van stukke deur rye van drie te voltooi, mik die KI daarna om die teenstander tydens hierdie fases vas te keer, sodat hulle nie kan beweeg nie en 'n oorwinning deur uitputting verseker. Hierdie fase-spesifieke strategie blokkeer nie aktief die teenstander se rye van drie nie.",
+    "@focusOnBlockingPaths_Detail": {},
+    "pieceImage": "Stukkieprentjie",
+    "@pieceImage": {},
+    "importColorSettings": "Kleurinstellings invoer",
+    "@importColorSettings": {},
+    "exportColorSettings": "Kleurinstellings uitvoer",
+    "@exportColorSettings": {},
+    "import": "Invoer",
+    "@import": {},
+    "export": "Uitvoer",
+    "@export": {},
+    "pleaseCopyJsonToClipboard": "Kopieer asseblief eers die JSON-formaatinstellings na die knipbord.",
+    "@pleaseCopyJsonToClipboard": {},
+    "copiedToClipboard": "Na knipbord gekopieer.",
+    "@copiedToClipboard": {},
+    "imported": "Geïmporteer.",
+    "@imported": {},
+    "boardImage": "Bordbeeld",
+    "@boardImage": {},
+    "autumnLeaves": "Herfsblare",
+    "@autumnLeaves": {},
+    "legendaryLand": "Legendariese Land",
+    "@legendaryLand": {},
+    "vignetteEffect": "Vignet-effek",
+    "@vignetteEffect": {},
+    "promptMakeToolbarTransparent": "Wil jy die werkbalk heeltemal deurskynend maak wanneer 'n bordanfronstoepasafbeelding ingestel is?",
+    "@promptMakeToolbarTransparent": {},
+    "vibration": "Skakel vibrasie in die spel aan",
+    "@vibration": {},
+    "soundTheme": "Klank tema",
+    "@soundTheme": {},
+    "ball": "Bal",
+    "@ball": {},
+    "liquid": "Vloeistof",
+    "@liquid": {},
+    "wood": "Hout",
+    "@wood": {},
+    "placeEffectAnimation": "Stuk plaas animasie-effek",
+    "@placeEffectAnimation": {},
+    "removeEffectAnimation": "Stuk verwydering animasie-effek",
+    "@removeEffectAnimation": {},
+    "isToolbarAtBottom": "Wys werkbalk onder",
+    "@isToolbarAtBottom": {},
+    "boardCornerRadius": "Raadhoekradius van die bord",
+    "@boardCornerRadius": {},
+    "useOpeningBook": "Gebruik openingsboek",
+    "@useOpeningBook": {},
+    "currentRule": "Huidig",
+    "@currentRule": {},
+    "nineMensMorris": "Nine Men's Morris",
+    "@nineMensMorris": {},
+    "twelveMensMorris": "Twelve Men's Morris",
+    "@twelveMensMorris": {},
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {},
+    "dooz": "Dooz",
+    "@dooz": {},
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {},
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {},
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {},
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {},
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {},
+    "ruleSet": "Reël stel",
+    "@ruleSet": {},
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {},
+    "oneTimeMill": "One-Time Mill",
+    "@oneTimeMill": {},
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {},
+    "useOpeningBook_Detail": "Laat die AI openingstrekke gebruik wat algemeen deur professionele menslike spelers tydens die vroeë spel gebruik word. Let wel: Hierdie funksie is tans slegs beskikbaar vir spesifieke reël stelle.",
+    "@useOpeningBook_Detail": {},
+    "showAdvantageGraph": "Wys voordeelgrafiek",
+    "@showAdvantageGraph": {},
+    "advantageGraphHint": "Voorspronggrafiek sal slegs geteken word nadat die KI 'n skuif maak. Dit sal nie geteken word wanneer die menslike speler 'n skuif maak nie.",
+    "@advantageGraphHint": {},
+    "removalBasedOnMillCounts": "Skakel verwydering uit totdat alle stukke geplaas is. Spelers verwyder stukke op grond van Morabaraba-tellings.",
+    "@removalBasedOnMillCounts": {},
+    "removalBasedOnMillCounts_Detail": "Skakel verwydering uit totdat alle stukke geplaas is. Spelers verwyder stukke op grond van Morabaraba-tellings: as dit gelyk is, verwyder albei dieselfde aantal stukke; as een meer het, verwyder hy een ekstra, met ’n verskil van net één stuk. As slegs een Morabaraba vorm, verwyder daardie speler twee stukke en die ander speler een. As geen speler ’n Morabaraba vorm nie, verwyder albei een stuk.",
+    "@removalBasedOnMillCounts_Detail": {},
+    "elfilja": "El Filja",
+    "@elfilja": {},
+    "tipSelectOwnPiece": "Kies een van jou stukke.",
+    "@tipSelectOwnPiece": {},
+    "notYourTurn": "Dis nie jou beurt nie.",
+    "@notYourTurn": {},
+    "annotationToolbarBackgroundColor": "Annotasie-nutsbalk agtergrondkleur",
+    "@annotationToolbarBackgroundColor": {},
+    "annotationToolbarIconColor": "Annotasie-nutsbalk ikoonkleur",
+    "@annotationToolbarIconColor": {},
+    "isAnnotationToolbarShown": "Wys annotasie-nutsbalk",
+    "@isAnnotationToolbarShown": {},
+    "enterAnnotationMode": "Gaan annotasiemodus binne",
+    "@enterAnnotationMode": {},
+    "areYouSureYouWantToClearAllAnnotations": "Is jy seker jy wil alle annotasies uitvee?",
+    "@areYouSureYouWantToClearAllAnnotations": {},
+    "llmPromptCopiedToClipboard": "LLM-prompt na knipbord gekopieer.",
+    "@llmPromptCopiedToClipboard": {},
+    "connectionRefusedTheServerMayBeDown": "Verbinding geweier, die bediener is moontlik af.",
+    "@connectionRefusedTheServerMayBeDown": {},
+    "discoverySuccessfulAwaitingConnection": "Ontdekking suksesvol, wag vir verbinding...",
+    "@discoverySuccessfulAwaitingConnection": {},
+    "noLanConnection": "Geen LAN-verbinding",
+    "@noLanConnection": {},
+    "takeScreenshot": "Neem screenshot",
+    "@takeScreenshot": {},
+    "disconnectedFromOpponent": "Van teenstander ontkoppel.",
+    "@disconnectedFromOpponent": {},
+    "takeBackRequest": "Terugneem versoek",
+    "@takeBackRequest": {},
+    "nothingToShow": "Niks om te wys.",
+    "@nothingToShow": {},
+    "stopHosting": "Stop hosting",
+    "@stopHosting": {},
+    "connectionResetByPeer": "Verbinding teruggestel deur teenstander.",
+    "@connectionResetByPeer": {},
+    "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Verbinding verlore weens hartklop-tydverstreking. Koppel asseblief weer.",
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "startHosting": "Begin hosting",
+    "@startHosting": {},
+    "restartRequestRejected": "Herbegin versoek verwerp.",
+    "@restartRequestRejected": {},
+    "notConnectedToLanOpponent": "Nie gekoppel aan LAN-teenstander nie.",
+    "@notConnectedToLanOpponent": {},
+    "llmPrompt": "LLM-prompt",
+    "@llmPrompt": {},
+    "gameRestarted": "Spel herbegin.",
+    "@gameRestarted": {},
+    "takeBackRejected": "Terugneem verwerp.",
+    "@takeBackRejected": {},
+    "areYouSureYouWantToResignThisGame": "Is jy seker jy wil hierdie spel bedank?",
+    "@areYouSureYouWantToResignThisGame": {},
+    "opponentResignedYouWin": "Teenstander het bedank. Jy wen!",
+    "@opponentResignedYouWin": {},
+    "clearAllAnnotations": "Vee alle annotasies uit",
+    "@clearAllAnnotations": {},
+    "connectedWaitingForOpponentSMove": "Gekoppel, wag vir teenstander se skuif...",
+    "@connectedWaitingForOpponentSMove": {},
+    "networkStatusDisconnected": "Netwerkstatus: Ontkoppel",
+    "@networkStatusDisconnected": {},
+    "takeBackRequestSentToTheOpponent": "Terugneem versoek aan die teenstander gestuur.",
+    "@takeBackRequestSentToTheOpponent": {},
+    "theOpponentMayHaveLeftTheGame": "Die teenstander het dalk die spel verlaat",
+    "@theOpponentMayHaveLeftTheGame": {},
+    "connectedToHostSuccessfully": "Suksesvol aan gasheer gekoppel.",
+    "@connectedToHostSuccessfully": {},
+    "connectionLostHeartbeatTimeout": "Verbinding verlore: hartklop-tydverstreking",
+    "@connectionLostHeartbeatTimeout": {},
+    "noHostDiscovered": "Geen gasheer ontdek nie.",
+    "@noHostDiscovered": {},
+    "confirmResignation": "Bevestig bedanking",
+    "@confirmResignation": {},
+    "startedHostingGameWaitingForPlayersToJoin": "Begin spel host, wag vir spelers om aan te sluit...",
+    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "connectionTimedOutNetworkConnectionUnstable": "Verbinding het uitgetel, netwerkverbinding onstabiel.",
+    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "noLlmPromptAvailable": "Geen LLM-prompt beskikbaar nie.",
+    "@noLlmPromptAvailable": {},
+    "youResignedGameOver": "Jy het bedank. Spel verby.",
+    "@youResignedGameOver": {},
+    "serverIp": "Bediener IP",
+    "@serverIp": {},
+    "confirmClear": "Bevestig uitvee",
+    "@confirmClear": {},
+    "opponentSTurn": "Teenstander se beurt.",
+    "@opponentSTurn": {},
+    "waitingAClientConnection": "Wag vir 'n kliëntverbinding...",
+    "@waitingAClientConnection": {},
+    "takeBackRequestWasRejectedOrFailed": "Terugneem versoek is verwerp of het misluk.",
+    "@takeBackRequestWasRejectedOrFailed": {},
+    "addText": "Voeg teks by",
+    "@addText": {},
+    "exitAnnotationMode": "Verlaat annotasiemodus",
+    "@exitAnnotationMode": {},
+    "typeYourAnnotation": "Tik jou annotasie",
+    "@typeYourAnnotation": {},
+    "attemptingToReconnect": "Probeer om weer te koppel...",
+    "@attemptingToReconnect": {},
+    "restartRequestSentWaitingForOpponentSResponse": "Herbegin versoek gestuur. Wag vir teenstander se reaksie...",
+    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "serverIsStopped": "Bediener is gestop.",
+    "@serverIsStopped": {},
+    "restartRequest": "Herbegin versoek",
+    "@restartRequest": {},
+    "cannotRequestATakeBackWhenItSNotYourTurn": "Kan nie 'n terugneem versoek indien as dit nie jou beurt is nie.",
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "takeBackAccepted": "Terugneem aanvaar.",
+    "@takeBackAccepted": {},
+    "localNetworkSettings": "Plaaslike netwerk instellings",
+    "@localNetworkSettings": {},
+    "reconnectedSuccessfully": "Suksesvol herkoppel!",
+    "@reconnectedSuccessfully": {},
+    "failedToSaveImageToGallery": "Misluk om beeld na Gallery te stoor.",
+    "@failedToSaveImageToGallery": {},
+    "opponentRequestedToRestartTheGameDoYouAccept": "Teenstander het versoek om die spel te herbegin. Aanvaar jy?",
+    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "yourTurn": "Jou beurt.",
+    "@yourTurn": {},
+    "unableToReconnectPleaseRestartTheGame": "Kan nie herkoppel nie, herbegin asseblief die spel.",
+    "@unableToReconnectPleaseRestartTheGame": {},
+    "host": "Gasheer",
+    "@host": {},
+    "join": "Sluit aan",
+    "@join": {},
+    "port": "Poort",
+    "@port": {},
+    "invalidIpAddress": "Ongeldige IP-adres.",
+    "@invalidIpAddress": {},
+    "invalidPort": "Ongeldige poort.",
+    "@invalidPort": {},
+    "connectingAttempt": "Verbind: Poging {attempt}/{maxAttempt}",
+    "@connectingAttempt": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempt": {}
+        }
+    },
+    "failedToConnect": "Misluk om te koppel: {error}",
+    "@failedToConnect": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "failedToStartHosting": "Misluk om hosting te begin: {error}",
+    "@failedToStartHosting": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "hostDiscovered": "Gasheer ontdek: {ip}:{port}",
+    "@hostDiscovered": {
+        "placeholders": {
+            "ip": {},
+            "port": {}
+        }
+    },
+    "stop": "Stop",
+    "@stop": {},
+    "discover": "Ontdek",
+    "@discover": {},
+    "connect": "Koppel",
+    "@connect": {},
+    "clientConnected": "Kliënt gekoppel: {clientIp}:{clientPort}",
+    "@clientConnected": {
+        "placeholders": {
+            "clientIp": {},
+            "clientPort": {}
+        }
+    },
+    "discoveringSeconds": "Ontdek: {seconds} s",
+    "@discoveringSeconds": {
+        "placeholders": {
+            "seconds": {}
+        }
+    },
+    "reconnecting": "Herkoppel ({attempt}/{maxAttempts})",
+    "@reconnecting": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempts": {}
+        }
+    },
+    "connected": "Gekoppel",
+    "@connected": {},
+    "delete": "Vee uit",
+    "@delete": {},
+    "ancientEgypt": "Antieke Egipte",
+    "@ancientEgypt": {},
+    "gothicIce": "Gotiese Ys",
+    "@gothicIce": {},
+    "riceField": "Rysveld",
+    "@riceField": {},
+    "chinesePorcelain": "Chinese Porselein",
+    "@chinesePorcelain": {},
+    "desertDusk": "Woestynskemer",
+    "@desertDusk": {},
+    "precisionCraft": "Presisievakmanskap",
+    "@precisionCraft": {},
+    "folkEmbroidery": "Volksborduurwerk",
+    "@folkEmbroidery": {},
+    "carpathianHeritage": "Karpatiese Erfenis",
+    "@carpathianHeritage": {},
+    "imperialGrandeur": "Keiserlike Grootheid",
+    "@imperialGrandeur": {},
+    "bohemianCrystal": "Boheemse Kristal",
+    "@bohemianCrystal": {},
+    "savannaSunrise": "Savanna Sonsopkoms",
+    "@savannaSunrise": {},
+    "harmonyBalance": "Harmonie Balans",
+    "@harmonyBalance": {},
+    "cinnamonSpice": "Kaneelspesery",
+    "@cinnamonSpice": {},
+    "anatolianMosaic": "Anatoliese Mosaïek",
+    "@anatolianMosaic": {},
+    "carnivalSpirit": "Karnavalgees",
+    "@carnivalSpirit": {},
+    "custom": "Pasgemaak",
+    "@custom": {},
+    "spiceMarket": "Speseryemark",
+    "@spiceMarket": {},
+    "swipeToRevealTheDrawer": "Swiep om die laai te wys",
+    "@swipeToRevealTheDrawer": {},
+    "showGameInfoOnScreenshots": "Wys spelinligting op skermgrepe",
+    "@showGameInfoOnScreenshots": {},
+    "humanMoveTime": "Menslike tydsbeperking",
+    "@humanMoveTime": {},
+    "noTimeLimitForHumanMoves": "Geen tydsbeperking vir menslike skuiwe nie",
+    "@noTimeLimitForHumanMoves": {},
+    "timeoutLoseWillBeApplied": "Tydsverlies sal toegepas word vir menslike speler",
+    "@timeoutLoseWillBeApplied": {},
+    "identifyingBoard": "Speelbord word geïdentifiseer…",
+    "@identifyingBoard": {},
+    "youCanEnterAnyModelName": "Jy kan enige modelnaam invoer",
+    "@youCanEnterAnyModelName": {},
+    "boardPositionAppliedFenCopiedToClipboard": "Speelbordposisie toegepas. FEN na knipbord gekopieer.",
+    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "suggestionTryTakingAClearerPictureOfTheBoard": "Voorstel: Probeer ’n skerpeler foto van die speelbord neem",
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "llmPromptTemplate": "LLM‑promptsjabloon",
+    "@llmPromptTemplate": {},
+    "noValidBoardDetected": "Geen geldige speelbord gevind nie",
+    "@noValidBoardDetected": {},
+    "selectingImageFromAlbum": "Beeld uit album word geselekteer…",
+    "@selectingImageFromAlbum": {},
+    "configurePromptTemplate": "Konfigureer promptsjabloon",
+    "@configurePromptTemplate": {},
+    "editPromptTemplateForLlmAnalysis": "Wysig promptsjabloon vir LLM-ontleding",
+    "@editPromptTemplateForLlmAnalysis": {},
+    "failedToGenerateFenFromRecognizedBoard": "Kon nie FEN vanaf herkende speelbord genereer nie",
+    "@failedToGenerateFenFromRecognizedBoard": {},
+    "outputInCurrentLanguage": "Uitset in huidige taal",
+    "@outputInCurrentLanguage": {},
+    "commonBaseUrls": "Algemene Base URLs",
+    "@commonBaseUrls": {},
+    "viewCommonModels": "Kyk algemene modelle",
+    "@viewCommonModels": {},
+    "recognitionParametersUpdated": "Herkenningsparameters bygewerk",
+    "@recognitionParametersUpdated": {},
+    "whiteSMove": "Wit se skuif",
+    "@whiteSMove": {},
+    "resetToDefaults": "Herstel na verstek",
+    "@resetToDefaults": {},
+    "photoShoot": "Fotosessie",
+    "@photoShoot": {},
+    "failedToApplyRecognizedBoardPosition": "Kon nie herkende speelbordposisie toepas nie",
+    "@failedToApplyRecognizedBoardPosition": {},
+    "llmPromptContent": "LLM‑promptinhoud",
+    "@llmPromptContent": {},
+    "llmNotConfiguredPleaseCheckYourSettings": "LLM nie gekonfigureer nie. Kontroleer asseblief jou instellings.",
+    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "setProviderModelApiKeyAndBaseUrl": "Stel verskaffer, model, API-sleutel en Base URL in",
+    "@setProviderModelApiKeyAndBaseUrl": {},
+    "llmConfiguration": "LLM‑konfigurasie",
+    "@llmConfiguration": {},
+    "configureLlmProvider": "Konfigureer LLM‑verskaffer",
+    "@configureLlmProvider": {},
+    "llmPromptTemplateHeader": "LLM‑promptsjabloonopskrif",
+    "@llmPromptTemplateHeader": {},
+    "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Geen stukke is in die afbeelding herken nie. Probeer asseblief weer.",
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "recognizeBoardFromImage": "Herken speelbord vanaf afbeelding",
+    "@recognizeBoardFromImage": {},
+    "viewTips": "Kyk wenke",
+    "@viewTips": {},
+    "applyToBoard": "Toepas op speelbord",
+    "@applyToBoard": {},
+    "adjustBoardArea": "Pas speelbordarea aan",
+    "@adjustBoardArea": {},
+    "viewCommonUrls": "Kyk algemene URL's",
+    "@viewCommonUrls": {},
+    "colorAnalysisFailed": "Kleuranalise het misluk!",
+    "@colorAnalysisFailed": {},
+    "analyzingGameBoardImage": "Besig om speelbordbeeld te ontleed…",
+    "@analyzingGameBoardImage": {},
+    "selectFromAlbum": "Selekteer uit album",
+    "@selectFromAlbum": {},
+    "noBoardPointDetected": "Geen speelbordpunt gevind nie!",
+    "@noBoardPointDetected": {},
+    "ifLeftEmptyDefaultTemplateWillBeUsed": "Indien leeg gelaat, word die versteksjabloon gebruik",
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "llmConfig": "LLM‑konfigurasie",
+    "@llmConfig": {},
+    "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Is jy seker jy wil die promptsjablone na verstekwaardes terugstel?",
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "llmPromptTemplateFooter": "LLM‑promptsjabloonvoetstuk",
+    "@llmPromptTemplateFooter": {},
+    "loadingResponse": "Laai reaksie…",
+    "@loadingResponse": {},
+    "applyThisResultToBoard": "Pas hierdie resultaat op die speelbord toe",
+    "@applyThisResultToBoard": {},
+    "takingPicture": "Neem foto…",
+    "@takingPicture": {},
+    "pleaseSelectAGameBoardImageToIdentify": "Kies asseblief ’n speelbordbeeld om te identifiseer",
+    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "identificationResults": "Identifikasie‑resultate",
+    "@identificationResults": {},
+    "analyzeTheMovesAndProvideInsights": "Analiseer die skuife en verskaf insigte.",
+    "@analyzeTheMovesAndProvideInsights": {},
+    "getApiKey": "Kry API‑sleutel",
+    "@getApiKey": {},
+    "entireRecognitionProcessFailedToComplete": "Hele herkenningsproses kon nie voltooi word nie",
+    "@entireRecognitionProcessFailedToComplete": {},
+    "boardRecognitionResult": "Speelbordherkenningsresultaat",
+    "@boardRecognitionResult": {},
+    "askLlm": "Vra LLM",
+    "@askLlm": {},
+    "boardDetectionFailed": "Speelbordopsporing het misluk!",
+    "@boardDetectionFailed": {},
+    "noBoardPointDetectedCannotIdentifyPiece": "Geen speelbordpunt gevind nie, kan stuk nie identifiseer nie!",
+    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "copyFen": "Kopieer FEN",
+    "@copyFen": {},
+    "commonlyUsedModels": "Wyd gebruikte modelle",
+    "@commonlyUsedModels": {},
+    "apiKeyOptional": "API‑sleutel (opsioneel)",
+    "@apiKeyOptional": {},
+    "noImageSelected": "Geen beeld geselekteer nie",
+    "@noImageSelected": {},
+    "blackSMove": "Swart se skuif",
+    "@blackSMove": {},
+    "llm": "Groot Taalmodel",
+    "@llm": {},
+    "llmProvider": "Verskaffer",
+    "@llmProvider": {},
+    "baseUrl": "Basis-URL",
+    "@baseUrl": {},
+    "model": "Model",
+    "@model": {},
+    "temperature": "Temperatuur",
+    "@temperature": {},
+    "llmCommandReceivedProcessing": "Opdrag ontvang! KI besig om te verwerk...",
+    "@llmCommandReceivedProcessing": {},
+    "llmDeepThinkingWait": "Diep denke aan die gang, wag asseblief...",
+    "@llmDeepThinkingWait": {},
+    "llmPresentingSoon": "Bied binnekort aan...",
+    "@llmPresentingSoon": {},
+    "recognitionParameters": "Herkenningsparameters",
+    "@recognitionParameters": {},
+    "adjustParamsDesc": "Pas parameters aan om herkenningsakkuraatheid te verbeter",
+    "@adjustParamsDesc": {},
+    "saveParameters": "Stoor parameters",
+    "@saveParameters": {},
+    "unableToStartImageRecognition": "Kan nie beeldherkenning begin nie: {error}",
+    "@unableToStartImageRecognition": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "File system error"
+            }
+        }
+    },
+    "imageRecognitionFailed": "Beeldherkenning het misluk: {error}",
+    "@imageRecognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Could not detect corners"
+            }
+        }
+    },
+    "appliedPositionDetails": "Toegepaste posisie met {whiteCount} wit en {blackCount} swart stukke",
+    "@appliedPositionDetails": {
+        "placeholders": {
+            "whiteCount": {
+                "type": "int",
+                "example": "9"
+            },
+            "blackCount": {
+                "type": "int",
+                "example": "8"
+            }
+        }
+    },
+    "fenCopiedToClipboard": "(FEN na knipbord gekopieer)",
+    "@fenCopiedToClipboard": {},
+    "recognitionFailed": "Herkenning het misluk: {error}",
+    "@recognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Invalid FEN structure"
+            }
+        }
+    },
+    "myRating": "My gradering",
+    "@myRating": {},
+    "gamesPlayed": "Speletjies gespeel",
+    "@gamesPlayed": {},
+    "wins": "Oorwinnings",
+    "@wins": {},
+    "losses": "Verliese",
+    "@losses": {},
+    "draws": "Gelykopuitslae",
+    "@draws": {},
+    "lastUpdated": "Laas opgedateer",
+    "@lastUpdated": {},
+    "format": "Formaat:",
+    "@format": {},
+    "resetStatistics": "Stel statistieke terug",
+    "@resetStatistics": {},
+    "drawRate": "Gelykopkoers",
+    "@drawRate": {},
+    "lossRate": "Verlieskoers",
+    "@lossRate": {},
+    "aiStatistics": "KI-statistieke",
+    "@aiStatistics": {},
+    "enableStatistics": "Aktiveer statistieke",
+    "@enableStatistics": {},
+    "enableStatistics_Detail": "Wanneer geaktiveer, sal speletjie-uitslae in statistieke aangeteken word. Speletjies wat terugnames behels, sal egter nie aangeteken word nie. Wanneer gedeaktiveer, word die insameling van statistieke onderbreek.",
+    "@enableStatistics_Detail": {},
+    "thisWillResetAllGameStatistics": "Dit sal alle speletjiestatistieke terugstel. Hierdie aksie kan nie ongedaan gemaak word nie.",
+    "@thisWillResetAllGameStatistics": {},
+    "boardInnerRingSize": "Binne-ringgrootte van die bord",
+    "@boardInnerRingSize": {},
+    "boardShadowEnabled": "Bordskadu",
+    "@boardShadowEnabled": {},
+    "trapAwareness": "Lokvalbewustheid",
+    "@trapAwareness": {},
+    "trapAwarenessDescription": "Beklemtoon lokvalskuiwe met vet sirkels en pyle tydens ontleding.",
+    "@trapAwarenessDescription": {},
+    "trapExists": "Lokval bestaan. Lokvalskuiwe: {trapMoves}",
+    "@trapExists": {
+        "placeholders": {
+            "trapMoves": {
+                "type": "String"
+            }
+        }
+    },
+    "custodianCapture": "Flankerende vangs",
+    "@custodianCapture": {},
+    "custodianCaptureDescription": "Sluit een van u teenstanders se stukke tussen twee van u in 'n reguit lyn om dit vas te vang.",
+    "@custodianCaptureDescription": {},
+    "custodianCaptureEnable": "Laat flankerende vaslegging toe",
+    "@custodianCaptureEnable": {},
+    "interventionCapture": "Ingryping vaslegging",
+    "@interventionCapture": {},
+    "interventionCaptureDescription": "Beweeg in die leë punt tussen twee van u teenstanders se stukke om albei vas te lê.",
+    "@interventionCaptureDescription": {},
+    "interventionCaptureEnable": "Laat ingryping vaslegging toe",
+    "@interventionCaptureEnable": {},
+    "leapCapture": "Vang deur te spring",
+    "@leapCapture": {},
+    "leapCaptureDescription": "Vang deur oor die stuk van 'n aangrensende teenstander in die leë punt verder te spring.",
+    "@leapCaptureDescription": {},
+    "leapCaptureEnable": "Laat springopvang",
+    "@leapCaptureEnable": {},
+    "captureApplicableLines": "Toepaslike lyne",
+    "@captureApplicableLines": {},
+    "captureSquareEdges": "Langs die rande van die plein",
+    "@captureSquareEdges": {},
+    "captureCrossLines": "Langs ortogonale lyne wat die vierkant kruis",
+    "@captureCrossLines": {},
+    "captureDiagonalLines": "Langs diagonale lyne wat die vierkant kruis",
+    "@captureDiagonalLines": {},
+    "captureExecutionPhases": "Uitvoeringsfases",
+    "@captureExecutionPhases": {},
+    "capturePiecesCondition": "Beskikbaarheid tydens die bewegende fase gebaseer op oorblywende stukke",
+    "@capturePiecesCondition": {},
+    "capturePiecesConditionUnlimited": "Geen beperking nie",
+    "@capturePiecesConditionUnlimited": {},
+    "capturePiecesConditionSelfLeqThree": "Beskikbaar as u drie of minder stukke het",
+    "@capturePiecesConditionSelfLeqThree": {},
+    "stopPlacingWhenTwoEmptySquares": "Stop plaas wanneer slegs twee leë vierkante oorbly",
+    "@stopPlacingWhenTwoEmptySquares": {},
+    "stopPlacingWhenTwoEmptySquares_Detail": "Wanneer geaktiveer, eindig die plaasfase en begin die skuiffase wanneer die bord slegs 2 leë spasies oorhet, ongeag stukke in die hand. Hierdie reël geld slegs vir 12-stuk speletjies.",
+    "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }

@@ -1,2019 +1,2019 @@
 {
-  "@@locale": "lv",
-  "appName": "Dzirnavas",
-  "@appName": {
-    "description": "The app name"
-  },
-  "welcome": "Laipni lūdzam",
-  "@welcome": {
-    "description": "Welcome"
-  },
-  "yes": "Jā",
-  "@yes": {
-    "description": "Yes"
-  },
-  "no": "Nē",
-  "@no": {
-    "description": "No"
-  },
-  "game": "Spēle",
-  "@game": {
-    "description": "Game"
-  },
-  "humanVsAi": "Cilvēks vs. AI",
-  "@humanVsAi": {
-    "description": "Human Vs AI"
-  },
-  "humanVsHuman": "Cilvēks pret cilvēku",
-  "@humanVsHuman": {
-    "description": "Human Vs Human"
-  },
-  "aiVsAi": "AI vs. AI",
-  "@aiVsAi": {
-    "description": "AI Vs AI"
-  },
-  "humanVsCloud": "Cilvēks pret mākoni",
-  "@humanVsCloud": {
-    "description": "Human Vs Cloud"
-  },
-  "humanVsLAN": "Cilvēks pret LAN",
-  "@humanVsLAN": {
-    "description": "Human Vs LAN"
-  },
-  "testViaLAN": "Tests, izmantojot LAN",
-  "@testViaLAN": {
-    "description": "Test Via LAN"
-  },
-  "move": "Pārvietot",
-  "@move": {
-    "description": "Move"
-  },
-  "showMoveList": "Pārvietojumu saraksts",
-  "@showMoveList": {
-    "description": "Move list"
-  },
-  "moveList": "Pārvietojumu saraksts",
-  "@moveList": {
-    "description": "Move list"
-  },
-  "noGameRecord": "Nav ieraksta",
-  "@noGameRecord": {
-    "description": "No record"
-  },
-  "ok": "LABI",
-  "@ok": {
-    "description": "OK"
-  },
-  "confirm": "Apstiprināt",
-  "@confirm": {
-    "description": "Confirm"
-  },
-  "cancel": "Atcelt",
-  "@cancel": {
-    "description": "Cancel"
-  },
-  "tipSelectWrong": "Izvēlieties nepareizu gabalu.",
-  "@tipSelectWrong": {
-    "description": "Select the wrong piece."
-  },
-  "tipPlace": "Ievietojiet savus gabalus.",
-  "@tipPlace": {
-    "description": "Place your pieces."
-  },
-  "tipBanPlace": "Šeit to nevar ievietot.",
-  "@tipBanPlace": {
-    "description": "Cannot place it here."
-  },
-  "tipPlaced": "Jūs ievietojāt.",
-  "@tipPlaced": {
-    "description": "Placed."
-  },
-  "tipRemove": "Noņemiet kādu gabaliņu.",
-  "@tipRemove": {
-    "description": "Remove a piece."
-  },
-  "tipBanRemove": "Jūs to nevarat noņemt.",
-  "@tipBanRemove": {
-    "description": "Cannot remove."
-  },
-  "tipRemoved": "Jūs noņēmāt.",
-  "@tipRemoved": {
-    "description": "Removed."
-  },
-  "tipMove": "Pārvietot figūru.",
-  "@tipMove": {
-    "description": "Move a piece."
-  },
-  "tipCannotPlace": "Jūs nevarat šeit novietot savu figūru.",
-  "@tipCannotPlace": {
-    "description": "You can't place your piece here."
-  },
-  "tipCannotMove": "Jūs nevarat pārvietot savu figūru šeit.",
-  "@tipCannotMove": {
-    "description": "You can't move your piece here."
-  },
-  "tipMill": "Dzirnavas! Paņem pretinieka figūru.",
-  "@tipMill": {
-    "description": "Mill! Take your opponent's piece."
-  },
-  "tipContinueMill": "Turpiniet ņemt pretinieka figūru.",
-  "@tipContinueMill": {
-    "description": "Continue to take your opponent's piece."
-  },
-  "tipSelectOpponentsPiece": "Izvēlieties vienu no pretinieka figūrām.",
-  "@tipSelectOpponentsPiece": {
-    "description": "Select one of your opponent's pieces."
-  },
-  "tipCannotRemovePieceFromMill": "Jūs nevarat izņemt figūru no dzirnavām.",
-  "@tipCannotRemovePieceFromMill": {
-    "description": "You cannot remove a piece from a mill."
-  },
-  "tipCanMoveOnePoint": "Figūra var pārvietoties par 1 punktu.",
-  "@tipCanMoveOnePoint": {
-    "description": "A piece can move 1 point."
-  },
-  "tipCannotMoveOpponentsPieces": "Jūs nevarat pārvietot pretinieka figūru.",
-  "@tipCannotMoveOpponentsPieces": {
-    "description": "You can't move your opponent's pieces."
-  },
-  "tipSelectPieceToMove": "Izvēlieties savu figūru, ko pārvietot.",
-  "@tipSelectPieceToMove": {
-    "description": "Select your piece to move."
-  },
-  "tipHaveThreePiecesLeft": "Jums ir palikušas trīs figūras.",
-  "@tipHaveThreePiecesLeft": {
-    "description": "You have 3 pieces left."
-  },
-  "tipCanMoveToAnyPoint": "Jūs varat pārvietoties uz jebkuru punktu.",
-  "@tipCanMoveToAnyPoint": {
-    "description": "You can move to any point you like."
-  },
-  "tipToMove": "{player}, lai pārvietotos.",
-  "@tipToMove": {
-    "description": " to move."
-  },
-  "whiteWin": "Uzvar 1. spēlētājs!",
-  "@whiteWin": {
-    "description": "Player 1 wins!"
-  },
-  "blackWin": "2. spēlētājs uzvar!",
-  "@blackWin": {
-    "description": "Player 2 wins!"
-  },
-  "won": "Uzvarēja",
-  "@won": {
-    "description": "Won"
-  },
-  "lost": "Zaudēts",
-  "@lost": {
-    "description": "Lost"
-  },
-  "thinking": "Domājot…",
-  "@thinking": {
-    "description": "Thinking..."
-  },
-  "newGame": "Jauna spēle",
-  "@newGame": {
-    "description": "New game"
-  },
-  "importGame": "Importēt spēli",
-  "@importGame": {
-    "description": "Import game"
-  },
-  "exportGame": "Eksportēt spēli",
-  "@exportGame": {
-    "description": "Export game"
-  },
-  "gameImported": "Spēle importēta.",
-  "@gameImported": {
-    "description": "Game imported from the clipboard."
-  },
-  "cannotImport": "Nevar importēt {invalidMove}",
-  "@cannotImport": {
-    "description": "Cannot import"
-  },
-  "movesAndRulesNotMatch": "Kustības un noteikumi nesakrīt.",
-  "@movesAndRulesNotMatch": {
-    "description": "Rules and moves do not match."
-  },
-  "pleaseWait": "Lūdzu, uzgaidiet.",
-  "@pleaseWait": {
-    "description": "Please wait..."
-  },
-  "restartGame": "Restartēt pašreizējo spēli?",
-  "@restartGame": {
-    "description": "Restart current game?"
-  },
-  "restart": "Restartēt",
-  "@restart": {
-    "description": "Restart"
-  },
-  "gameStarted": "Spēle ir uzsākta, lūdzu, ievietojiet.",
-  "@gameStarted": {
-    "description": "Game started, please place"
-  },
-  "analyzing": "Analizē…",
-  "@analyzing": {
-    "description": "Analyzing ..."
-  },
-  "error": "Kļūda: {message}",
-  "@error": {
-    "description": "Error"
-  },
-  "winRate": "Uzvaras koeficients",
-  "@winRate": {
-    "description": "Win Rate"
-  },
-  "score": "Rezultāts:",
-  "@score": {
-    "description": "Score"
-  },
-  "white": "Spēlētājs 1",
-  "@white": {
-    "description": "Player 1"
-  },
-  "black": "Spēlētājs 2",
-  "@black": {
-    "description": "Player 2"
-  },
-  "loseReasonlessThanThree": "{player} gabalu skaits ir mazāks par trim.",
-  "@loseReasonlessThanThree": {
-    "description": " piece count is less than three."
-  },
-  "loseReasonResign": "{player} atkāpšanās.",
-  "@loseReasonResign": {
-    "description": " resign."
-  },
-  "loseReasonNoWay": "{player} vairs nav kā iet.",
-  "@loseReasonNoWay": {
-    "description": " is no way to go."
-  },
-  "loseReasonBoardIsFull": "Dēlis ir pilns, un {player} vairs nav kur iet.",
-  "@loseReasonBoardIsFull": {
-    "description": "The board is full, no way to go."
-  },
-  "loseReasonTimeOver": "Laiks ir beidzies, {player} zaudēts.",
-  "@loseReasonTimeOver": {
-    "description": "Time Over"
-  },
-  "drawReasonRule50": "Pārvietošanas fāzē pēdējā noteiktajā gājienu skaitā nav izņemta neviena figūra.",
-  "@drawReasonRule50": {
-    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-  },
-  "drawReasonBoardIsFull": "Tas ir neizšķirts, jo tāfele ir pilna.",
-  "@drawReasonBoardIsFull": {
-    "description": "It is a Draw because the board is full"
-  },
-  "drawReasonThreefoldRepetition": "Tas ir neizšķirts trīskāršas atkārtošanās dēļ.",
-  "@drawReasonThreefoldRepetition": {
-    "description": "It is a Draw because of threefold repetition."
-  },
-  "gameOverUnknownReason": "Spēle ir beigusies! Nav zināms iemesls.",
-  "@gameOverUnknownReason": {
-    "description": "Game Over! Unknown reason."
-  },
-  "gameOver": "Spēles beigas",
-  "@gameOver": {
-    "description": "Game Over"
-  },
-  "youWin": "Jūs uzvarējāt! Apsveicam!",
-  "@youWin": {
-    "description": "You win! Congratulations!"
-  },
-  "challengeHarderLevel": "Izaicinājums grūtāks līmenis? Jaunais līmenis būs {level}!",
-  "@challengeHarderLevel": {
-    "description": "Challenge harder level?"
-  },
-  "youLose": "Jūs zaudējat!",
-  "@youLose": {
-    "description": "You Lose!"
-  },
-  "analyze": "Analizēt",
-  "@analyze": {
-    "description": "Analyze"
-  },
-  "about": "Par",
-  "@about": {
-    "description": "About"
-  },
-  "version": "Versija: {versionNumber}",
-  "@version": {
-    "description": "Version"
-  },
-  "thanks": "Paldies",
-  "@thanks": {
-    "description": "Thanks"
-  },
-  "settings": "Iestatījumi",
-  "@settings": {
-    "description": "Settings"
-  },
-  "options": "Iespējas",
-  "@options": {
-    "description": "Options"
-  },
-  "generalSettings": "Vispārīgie iestatījumi",
-  "@generalSettings": {
-    "description": "General Settings"
-  },
-  "skillLevel": "Grūtības līmenis",
-  "@skillLevel": {
-    "description": "Difficulty level"
-  },
-  "moveTime": "Mākslīgā intelekta domāšanas laiks",
-  "@moveTime": {
-    "description": "AI thinking time"
-  },
-  "difficulty": "Grūtības",
-  "@difficulty": {
-    "description": "Difficulty"
-  },
-  "playSounds": "Skaņas efekti",
-  "@playSounds": {
-    "description": "Sound effects"
-  },
-  "playSoundsInTheGame": "Spēlē atskaņot skaņas",
-  "@playSoundsInTheGame": {
-    "description": "Play sounds in the game"
-  },
-  "keepMuteWhenTakingBack": "Atgriešanās laikā saglabāt izslēgtu skaņu",
-  "@keepMuteWhenTakingBack": {
-    "description": "Keep mute when taking back"
-  },
-  "tone": "Toni",
-  "@tone": {
-    "description": "Tone"
-  },
-  "whoMovesFirst": "Pirmais gājiens",
-  "@whoMovesFirst": {
-    "description": "First move"
-  },
-  "human": "Cilvēks",
-  "@human": {
-    "description": "Human"
-  },
-  "ai": "MĀKSLĪGAIS INTELEKTS",
-  "@ai": {
-    "description": "AI"
-  },
-  "alternate": "Alternatīva",
-  "@alternate": {
-    "description": "Alternate"
-  },
-  "isAutoRestart": "Automātiska spēles atsākšana, kad spēle ir beigusies",
-  "@isAutoRestart": {
-    "description": "Auto-restart game when game over"
-  },
-  "isAutoChangeFirstMove": "Automātiski mainīt pirmo gājienu",
-  "@isAutoChangeFirstMove": {
-    "description": "Auto Change First Move"
-  },
-  "shufflingEnabled": "Nejaušs gājiens",
-  "@shufflingEnabled": {
-    "description": "Random move"
-  },
-  "misc": "Dažādi",
-  "@misc": {
-    "description": "Miscellaneous"
-  },
-  "rules": "Noteikumi",
-  "@rules": {
-    "description": "Rules"
-  },
-  "piecesCount": "Katra spēlētāja figūru skaits",
-  "@piecesCount": {
-    "description": "The number of pieces each player has"
-  },
-  "piecesCount_Detail": "Cik figūru ir katram spēlētājam?",
-  "@piecesCount_Detail": {
-    "description": "How many pieces does each player have?"
-  },
-  "flyPieceCount": "Lidojošās figūras numurs",
-  "@flyPieceCount": {
-    "description": "The number of the flying piece"
-  },
-  "flyPieceCount_Detail": "Ja ir ieslēgta funkcija \"Lidojošā figūra\", kad spēlētāja figūru skaits ir samazināts līdz noteiktam skaitlim, viņa figūras var brīvi pārvietoties uz jebkuru neaizņemtu punktu, nevis tikai uz blakus esošiem punktiem, kā tas ir pārējā spēles laikā.",
-  "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-  },
-  "piecesAtLeastCount": "Vismazākais figūru skaits",
-  "@piecesAtLeastCount": {
-    "description": "Pieces At Least"
-  },
-  "hasDiagonalLines": "Diagonālās līnijas",
-  "@hasDiagonalLines": {
-    "description": "Diagonal lines"
-  },
-  "hasDiagonalLines_Detail": "Pievienojiet laukumam četras diagonālās līnijas.",
-  "@hasDiagonalLines_Detail": {
-    "description": "Add four diagonal lines to the board."
-  },
-  "isDefenderMoveFirst": "Otrais spēlētājs pārvietojas pirmais",
-  "@isDefenderMoveFirst": {
-    "description": "The second player moves first"
-  },
-  "isDefenderMoveFirst_Detail": "Spēlētājs, kurš izvietošanas fāzē pārvietojas otrais, pārvietošanas fāzē pārvietojas pirmais.",
-  "@isDefenderMoveFirst_Detail": {
-    "description": "The player who moves second in the placing phase moves first in the moving phase."
-  },
-  "mayRemoveMultiple": "Vairākkārtēja pārvietošana",
-  "@mayRemoveMultiple": {
-    "description": "Multi-remove"
-  },
-  "mayRemoveMultiple_Detail": "Ja spēlētājs noslēdz vairāk nekā vienu dzirnaviņu vienlaicīgi, viņš noņems tik dzirnaviņu, cik viņš noslēdzis.",
-  "@mayRemoveMultiple_Detail": {
-    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-  },
-  "mayRemoveFromMillsAlways": "Iznīcināt dzirnavas",
-  "@mayRemoveFromMillsAlways": {
-    "description": "Destroy mills"
-  },
-  "mayRemoveFromMillsAlways_Detail": "Pēc noklusējuma spēlētājiem vispirms ir jānoņem visas citas figūras, pirms noņemt figūru no izveidotajām dzirnavām. Ieslēdziet šo opciju, lai atspējotu šo ierobežojumu.",
-  "@mayRemoveFromMillsAlways_Detail": {
-    "description": "mayRemoveFromMillsAlways_Detail"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Otrais spēlētājs zaudē, kad tāfele ir pilna",
-  "@isWhiteLoseButNotDrawWhenBoardFull": {
-    "description": "The second player loses when the board is full"
-  },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ja izvietošanas fāzes beigās dēlis ir pilns, zaudē tā puse, kas pirmā izvieto figūru. Pretējā gadījumā spēle ir neizšķirta.",
-  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-  },
-  "isLoseButNotChangeSideWhenNoWay": "Zaudēt, ja nav likumīgu gājienu",
-  "@isLoseButNotChangeSideWhenNoWay": {
-    "description": "Lose when no legal moves"
-  },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Spēlētājs zaudē, ja pretinieks bloķē tā, ka to nevar pārvietot. Ja šī opcija ir atspējota, mainiet pusi, lai pārvietotos.",
-  "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
-  },
-  "mayFly": "Skrējiens",
-  "@mayFly": {
-    "description": "Flying"
-  },
-  "mayFly_Detail": "Ja spēlētājam ir palikušas tikai trīs vai četras (konfigurējamas) figūras, viņš var pārvietot figūru uz jebkuru brīvu punktu.",
-  "@mayFly_Detail": {
-    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-  },
-  "nMoveRule": "N gājienu noteikums",
-  "@nMoveRule": {
-    "description": "N-move rule"
-  },
-  "nMoveRule_Detail": "Spēle tiek izlozēta, ja katrs spēlētājs noteiktā gājienu skaitā nav izdarījis nevienu gājienu.",
-  "@nMoveRule_Detail": {
-    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-  },
-  "rollback": "Atgriešanās",
-  "@rollback": {
-    "description": "Rollback"
-  },
-  "pleaseSelect": "Lūdzu, izvēlieties",
-  "@pleaseSelect": {
-    "description": "Please select"
-  },
-  "copy": "Kopēt",
-  "@copy": {
-    "description": "Copy"
-  },
-  "moveHistoryCopied": "Pārvietojumu vēsture tiek kopēta uz starpliktuvi.",
-  "@moveHistoryCopied": {
-    "description": "Move history copied to clipboard"
-  },
-  "help": "Palīdzība",
-  "@help": {
-    "description": "Help"
-  },
-  "feedback": "Atsauksmes",
-  "@feedback": {
-    "description": "Feedback"
-  },
-  "exit": "Iziet no",
-  "@exit": {
-    "description": "Exit"
-  },
-  "ruleSettings": "Noteikumi",
-  "@ruleSettings": {
-    "description": "Rule Settings"
-  },
-  "color": "Krāsa",
-  "@color": {
-    "description": "Color"
-  },
-  "boardColor": "Dēļa krāsa",
-  "@boardColor": {
-    "description": "Board color"
-  },
-  "pieceColor": "Gabala krāsa",
-  "@pieceColor": {
-    "description": "Piece color"
-  },
-  "backgroundColor": "Fona krāsa",
-  "@backgroundColor": {
-    "description": "Background color"
-  },
-  "lineColor": "Borta līnijas krāsa",
-  "@lineColor": {
-    "description": "Board line color"
-  },
-  "whitePieceColor": "Spēlētāja 1 figūras krāsa",
-  "@whitePieceColor": {
-    "description": "Player 1 piece color"
-  },
-  "blackPieceColor": "Spēlētāja 2 figūras krāsa",
-  "@blackPieceColor": {
-    "description": "Player 2 piece color"
-  },
-  "messageColor": "Ziņojuma krāsa",
-  "@messageColor": {
-    "description": "Message color"
-  },
-  "isPieceCountInHandShown": "Rādīt rokā esošo figūru skaitu",
-  "@isPieceCountInHandShown": {
-    "description": "Show count of pieces in hand"
-  },
-  "isNotationsShown": "Rādīt uzrakstus uz tāfeles",
-  "@isNotationsShown": {
-    "description": "Show notations on board"
-  },
-  "isHistoryNavigationToolbarShown": "Rādīt vēstures navigācijas rīkjoslu",
-  "@isHistoryNavigationToolbarShown": {
-    "description": "Show history navigation toolbar"
-  },
-  "display": "Rādīt",
-  "@display": {
-    "description": "Display"
-  },
-  "boardBorderLineWidth": "Borta robežas platums",
-  "@boardBorderLineWidth": {
-    "description": "Board borderline width"
-  },
-  "boardInnerLineWidth": "Borta iekšējās līnijas platums",
-  "@boardInnerLineWidth": {
-    "description": "Board inner line width"
-  },
-  "pieceWidth": "Gabala platums",
-  "@pieceWidth": {
-    "description": "Piece width"
-  },
-  "fontSize": "Fonta lielums",
-  "@fontSize": {
-    "description": "Font size"
-  },
-  "standardNotation": "WMD pieraksts",
-  "@standardNotation": {
-    "description": "Standard notation"
-  },
-  "restore": "Atjaunot",
-  "@restore": {
-    "description": "Restore"
-  },
-  "restoreDefaultSettings": "Atjaunot noklusējuma iestatījumus",
-  "@restoreDefaultSettings": {
-    "description": "Restore Default Settings"
-  },
-  "pick": "Izvēlieties {element}",
-  "@pick": {
-    "description": "Pick "
-  },
-  "info": "Info",
-  "@info": {
-    "description": "Info"
-  },
-  "hint": "Padoms",
-  "@hint": {
-    "description": "Hint"
-  },
-  "player": "spēlētājs",
-  "@player": {
-    "description": "player"
-  },
-  "player1": "Spēlētājs 1",
-  "@player1": {
-    "description": "Player 1"
-  },
-  "player2": "Spēlētājs 2",
-  "@player2": {
-    "description": "Player 2"
-  },
-  "howToPlay": "Kā spēlēt",
-  "@howToPlay": {
-    "description": "How to play"
-  },
-  "toPlacePiece": "Pieskarieties jebkuram pieejamajam punktam, lai novietotu figūru.",
-  "@toPlacePiece": {
-    "description": "Tap on any available point to place the piece."
-  },
-  "toSelectPiece": "Pieskarieties figūrai, lai to pārvietotu.",
-  "@toSelectPiece": {
-    "description": "Tap on a piece to move it."
-  },
-  "toMovePiece": "Pieskarieties punktam, kas savienots ar figūru, lai to pārvietotu.",
-  "@toMovePiece": {
-    "description": "Tap on point connected to piece to move it."
-  },
-  "toRemovePiece": "Pieskarieties pretinieka vienai figūrai, lai to noņemtu.",
-  "@toRemovePiece": {
-    "description": "Tap on one of the opponent's pieces to remove it."
-  },
-  "needToCreateMillFirst": "Pirms figūras noņemšanas vispirms ir jāizveido dzirnavas.",
-  "@needToCreateMillFirst": {
-    "description": "You need to create a mill first before you can remove a piece."
-  },
-  "needToPlayWithOwnPieces": "Jums ir jāspēlē ar figūrām.",
-  "@needToPlayWithOwnPieces": {
-    "description": "You need to play with your pieces."
-  },
-  "statistics": "Statistika",
-  "@statistics": {
-    "description": "Statistics"
-  },
-  "totalGames": "Kopējais spēļu skaits",
-  "@totalGames": {
-    "description": "Total games"
-  },
-  "results": "Rezultāti",
-  "@results": {
-    "description": "Results"
-  },
-  "left": "pa kreisi",
-  "@left": {
-    "description": "left"
-  },
-  "privacyPolicy": "Privātuma politika",
-  "@privacyPolicy": {
-    "description": "Privacy Policy"
-  },
-  "privacyPolicy_Detail_1": "Lūdzu, uzmanīgi izlasiet un pārliecinieties, ka pilnībā to saprotat un piekrītat. ",
-  "@privacyPolicy_Detail_1": {
-    "description": "Privacy Policy Detail 1"
-  },
-  "privacyPolicy_Detail_2": ". Ja nepiekrītat šai politikai, lūdzu, nelietojiet šo lietotni. Lietojot lietotni, jūs piekrītat šiem noteikumiem.",
-  "@privacyPolicy_Detail_2": {
-    "description": "Privacy Policy Detail 2"
-  },
-  "and": " un ",
-  "@and": {},
-  "accept": "Piekrītu",
-  "@accept": {
-    "description": "Accept"
-  },
-  "takeBack": "Atgriezt",
-  "@takeBack": {
-    "description": "Take back"
-  },
-  "takingBack": "Atgriešanās…",
-  "@takingBack": {
-    "description": "Taking back..."
-  },
-  "waiting": "Gaidīšana…",
-  "@waiting": {
-    "description": "Waiting..."
-  },
-  "stepForward": "Solis uz priekšu",
-  "@stepForward": {
-    "description": "Step forward"
-  },
-  "takeBackAll": "Atgriezt visu",
-  "@takeBackAll": {
-    "description": "Take back all"
-  },
-  "stepForwardAll": "Solis uz priekšu visi",
-  "@stepForwardAll": {
-    "description": "Step forward all"
-  },
-  "moveNow": "Pārvietot tagad",
-  "@moveNow": {
-    "description": "Move now"
-  },
-  "done": "Paveikts.",
-  "@done": {
-    "description": "Done."
-  },
-  "crackMill": "Plaisu dzirnavas",
-  "@crackMill": {
-    "description": "Crack-mill"
-  },
-  "crackMill_Detail": "Ja spēlētājam ir tikai gabali dzirnavās, dzirnavās esošie gabali netiks bloķēti, lai tos noņemtu.",
-  "@crackMill_Detail": {
-    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-  },
-  "animationDuration": "Animācijas ilgums",
-  "@animationDuration": {
-    "description": "Animation duration"
-  },
-  "none": "Nav",
-  "@none": {
-    "description": "None"
-  },
-  "theme": "Tēma",
-  "@theme": {
-    "description": "Theme"
-  },
-  "helpContent": "Spēles mērķis ir atstāt pretinieku ar mazāk nekā trim figūrām vai bez likumīgiem gājieniem.\n\nSpēle automātiski tiek izlozēta, ja kāda pozīcija rodas trešo reizi vai ja pēdējo 100 (konfigurējamu) gājienu laikā nav izdarīts neviens gājiens.\n\nSpēle norisinās trīs posmos:\n\n1. Figūru novietošana uz brīvajiem punktiem\n2. Figūru pārvietošana uz blakus punktiem\n3. (fakultatīvs posms) figūru pārvietošana uz jebkuru brīvo punktu, kad spēlētājs ir samazinājies līdz trim figūrām.\n\nNovietošana\n\nSpēle sākas ar tukšu galdu, kas sastāv no režģa ar divdesmit četriem punktiem. Spēlētāji pēc kārtas izvieto savas figūras uz brīvajiem punktiem, līdz katrs spēlētājs ir izvietojis visas figūras uz galda. Ja spēlētājs var novietot trīs savas figūras taisni, viņam ir \"dzirnaviņas\", un viņš var noņemt vienu pretinieka figūru no dēļa.\n\nDažos noteikumos ir noteikts, ka spēlētājiem vispirms ir jānoņem visas citas figūras, pirms noņemt figūru no izveidotās dzirnaviņas.\n\nDažos noteikumos izvietošanas fāzē figūriņas vairs nevar novietot līdz noņemtās figūriņas punktiem.\n\nKad visas figūriņas ir izmantotas, spēlētāji pēc kārtas sāk kustību.\n\nPārvietošanās\n\nLai pārvietotos, spēlētājs pārvieto vienu no savām figūrām pa dēļa līniju uz brīvo blakus esošo punktu. Ja viņš to nevar izdarīt, viņš ir zaudējis spēli. Tāpat kā izvietošanas fāzē, spēlētājam, kurš izlīdzina trīs savas figūras uz dēļa līnijas, ir dzirnaviņas un viņš var noņemt vienu no pretinieka figūrām. Jebkuram spēlētājam, kurš samazinās līdz divām figūrām, nav iespējas veidot jaunas dzirnaviņas, un tādējādi viņš zaudē spēli. Spēlētājs var zaudēt arī tad, ja ir vairāk nekā trīs figūras, ja pretinieks bloķē to kustību.\n\nLidojošās\n\nDažos noteikumu variantos, kad spēlētājam ir palikušas tikai trīs figūras, viņa figūras var lidot, lēkt vai lēkt uz jebkuriem brīviem punktiem, ne tikai uz blakus esošajiem.",
-  "@helpContent": {
-    "description": "Help Content"
-  },
-  "versionInfo": "Informācija par versiju",
-  "@versionInfo": {
-    "description": "Version info"
-  },
-  "eula": "EULA",
-  "@eula": {
-    "description": "EULA"
-  },
-  "license": "Licence",
-  "@license": {
-    "description": "License"
-  },
-  "sourceCode": "Avota kods",
-  "@sourceCode": {
-    "description": "Source code"
-  },
-  "appVersion": "Lietotnes versija",
-  "@appVersion": {
-    "description": "App Version"
-  },
-  "general": "Vispārīgi",
-  "@general": {
-    "description": "General"
-  },
-  "advanced": "Uzlabots",
-  "@advanced": {
-    "description": "Advanced"
-  },
-  "placing": "Ievietošana",
-  "@placing": {
-    "description": "Placing"
-  },
-  "moving": "Pārvietošana",
-  "@moving": {
-    "description": "Moving"
-  },
-  "removing": "Noņemšana",
-  "@removing": {
-    "description": "Removing"
-  },
-  "gameOverCondition": "Spēles beigu stāvoklis",
-  "@gameOverCondition": {
-    "description": "Game over condition"
-  },
-  "aisPlayStyle": "Mākslīgā intelekta spēles stils",
-  "@aisPlayStyle": {
-    "description": "AI's play style"
-  },
-  "passive": "Pasīvais",
-  "@passive": {
-    "description": "Passive"
-  },
-  "timeout": "Laika pārtraukums",
-  "@timeout": {
-    "description": "Timeout"
-  },
-  "appearance": "Izskats",
-  "@appearance": {
-    "description": "Appearance"
-  },
-  "drawOnHumanExperience": "Izmanto cilvēka pieredzi",
-  "@drawOnHumanExperience": {
-    "description": "Draw on the human experience"
-  },
-  "considerMobility": "Ņemiet vērā elementu mobilitāti",
-  "@considerMobility": {
-    "description": "Consider mobility of pieces"
-  },
-  "pieceCount": "Gabalu skaits:",
-  "@pieceCount": {
-    "description": "Piece count"
-  },
-  "inHand": "{player} rokā: {count}",
-  "@inHand": {
-    "description": "in hand"
-  },
-  "onBoard": "{player} uz borta: {count}",
-  "@onBoard": {
-    "description": "on board"
-  },
-  "boardTop": "Dēlis nobīdīts no augšas",
-  "@boardTop": {
-    "description": "Board offset from the top"
-  },
-  "notAIsTurn": "Mākslīgais intelekts nav uz rindas.",
-  "@notAIsTurn": {
-    "description": "It is not the AI's turn."
-  },
-  "aiIsNotThinking": "Mākslīgais intelekts nedomā.",
-  "@aiIsNotThinking": {
-    "description": "AI is not thinking."
-  },
-  "atEnd": "Jūs esat gājienu saraksta beigās.",
-  "@atEnd": {
-    "description": "At the end of the move list."
-  },
-  "tapBackAgainToLeave": "Pieskarieties atpakaļ, lai izietu.",
-  "@tapBackAgainToLeave": {
-    "description": "Tap Back again to exit."
-  },
-  "more": "Vairāk",
-  "@more": {
-    "description": "More"
-  },
-  "experimental": "Šī ir eksperimentāla funkcija.",
-  "@experimental": {
-    "description": "This is an experimental feature."
-  },
-  "experiments": "Eksperimenti",
-  "@experiments": {
-    "description": "Experiments"
-  },
-  "ossLicenses": "Atvērtā pirmkoda licences",
-  "@ossLicenses": {
-    "description": "Open source licenses"
-  },
-  "language": "Valoda",
-  "@language": {
-    "description": "Languages"
-  },
-  "defaultLanguage": "Noklusējuma valoda",
-  "@defaultLanguage": {
-    "description": "Default language"
-  },
-  "mayMoveInPlacingPhase": "Figūriņas var pārvietoties izvietošanas fāzē",
-  "@mayMoveInPlacingPhase": {
-    "description": "The pieces can move in the placing phase"
-  },
-  "mayMoveInPlacingPhase_Detail": "Nav atšķirīgu novietošanas un pārvietošanas fāžu, t. i., spēlētāji katrā gājienā var izlemt, vai viņi vēlas novietot figūru uz galda vai pārvietot kādu no savām figūrām (ja vien viņiem ir atlikušas figūras, ko novietot).",
-  "@mayMoveInPlacingPhase_Detail": {
-    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-  },
-  "drawerColor": "Izvēlnes krāsa",
-  "@drawerColor": {
-    "description": "Menu color"
-  },
-  "drawerTextColor": "Izvēlnes teksta krāsa",
-  "@drawerTextColor": {
-    "description": "Menu text color"
-  },
-  "drawerHighlightItemColor": "Izvēlnes izcelšanas vienuma krāsa",
-  "@drawerHighlightItemColor": {
-    "description": "Menu highlight item color"
-  },
-  "mainToolbarBackgroundColor": "Galvenās rīkjoslas fona krāsa",
-  "@mainToolbarBackgroundColor": {
-    "description": "Main toolbar background color"
-  },
-  "mainToolbarIconColor": "Galvenās rīkjoslas ikonas krāsa",
-  "@mainToolbarIconColor": {
-    "description": "main toolbar icon color"
-  },
-  "navigationToolbarBackgroundColor": "Navigācijas rīkjoslas fona krāsa",
-  "@navigationToolbarBackgroundColor": {
-    "description": "Navigation toolbar background color"
-  },
-  "navigationToolbarIconColor": "Navigācijas rīkjoslas ikonas krāsa",
-  "@navigationToolbarIconColor": {
-    "description": "Navigation toolbar icon color"
-  },
-  "autoHideToolbar": "Automātiski paslēpt rīkjoslu",
-  "@autoHideToolbar": {
-    "description": "Automatically hide the toolbar"
-  },
-  "toolbarLocationOnScreen": "Rīkjoslas atrašanās vieta ekrānā",
-  "@toolbarLocationOnScreen": {
-    "description": "Toolbar location on screen"
-  },
-  "top": "Tops",
-  "@top": {
-    "description": "Top"
-  },
-  "bottom": "Apakšā",
-  "@bottom": {
-    "description": "Bottom"
-  },
-  "center": "Centrs",
-  "@center": {
-    "description": "Center"
-  },
-  "solidColor": "Vienkrāsaina",
-  "@solidColor": {
-    "description": "Solid color"
-  },
-  "picture": "Bilde",
-  "@picture": {
-    "description": "Picture"
-  },
-  "chooseYourPicture": "Izvēlieties savu attēlu",
-  "@chooseYourPicture": {
-    "description": "Choose your picture"
-  },
-  "light": "Gaisma",
-  "@light": {
-    "description": "Light"
-  },
-  "dark": "Tumšs",
-  "@dark": {
-    "description": "Dark"
-  },
-  "themes": "Tēmas",
-  "@themes": {
-    "description": "Themes"
-  },
-  "currentTheme": "Pašreizējā tēma",
-  "@currentTheme": {
-    "description": "Current theme"
-  },
-  "saveTheme": "Saglabāt motīvu",
-  "@saveTheme": {
-    "description": "Save theme"
-  },
-  "showAnalysisGraph": "Rādīt analīzes grafiku",
-  "@showAnalysisGraph": {
-    "description": "Show analysis graph"
-  },
-  "analysis": "Analīze",
-  "@analysis": {
-    "description": "Analysis"
-  },
-  "saveGame": "Saglabā spēli",
-  "@saveGame": {
-    "description": "Save game"
-  },
-  "loadGame": "Ielādēt spēli",
-  "@loadGame": {
-    "description": "Load game"
-  },
-  "setupPosition": "Iestatīšanas pozīcija",
-  "@setupPosition": {
-    "description": "Setup position"
-  },
-  "showLegalMoves": "Rādīt likumīgus gājienus",
-  "@showLegalMoves": {
-    "description": "Show legal moves"
-  },
-  "showLastMove": "Rādīt pēdējo kustību",
-  "@showLastMove": {
-    "description": "Show last move"
-  },
-  "showArrows": "Rādīt bultiņas",
-  "@showArrows": {
-    "description": "Show arrows"
-  },
-  "pieces": "Gabali",
-  "@pieces": {
-    "description": "Pieces"
-  },
-  "showAnalysis": "Rādīt analīzi",
-  "@showAnalysis": {
-    "description": "Show analysis"
-  },
-  "threads": "Vītnes",
-  "@threads": {
-    "description": "Threads"
-  },
-  "getInvolved": "Iesaistīties",
-  "@getInvolved": {
-    "description": "Get Involved"
-  },
-  "helpImproveTranslate": "Palīdziet uzlabot tulkošanu",
-  "@helpImproveTranslate": {
-    "description": "Help improve translate"
-  },
-  "tutorial": "Apmācība",
-  "@tutorial": {
-    "description": "Tutorial"
-  },
-  "classicMill": "Klasiskās dzirnavas",
-  "@classicMill": {
-    "description": "Classic Mill"
-  },
-  "mixedMill": "Jauktās dzirnavas",
-  "@mixedMill": {
-    "description": "Mixed Mill"
-  },
-  "ceylonMill": "Ceilonas dzirnavas",
-  "@ceylonMill": {
-    "description": "Ceylon Mill"
-  },
-  "mayBreakAndRemakeMillRepeatedly": "Dzirnavas var būt salauztas un atkārtoti pārtaisītas",
-  "@mayBreakAndRemakeMillRepeatedly": {
-    "description": "Mill may be broken and remade repeatedly"
-  },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
-  "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-  },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kad spēlētājs ir nonācis līdz trim figūrām un neviens spēlētājs nevar noņemt pretinieka gabalu desmit gājienu laikā, spēle ir neizšķirta.",
-  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-  },
-  "close": "Aizvērt",
-  "@close": {
-    "description": "Close"
-  },
-  "whitePiece": "Balts gabals",
-  "@whitePiece": {
-    "description": "White piece"
-  },
-  "blackPiece": "Melns gabals",
-  "@blackPiece": {
-    "description": "Black piece"
-  },
-  "emptyPoint": "Tukšs punkts",
-  "@emptyPoint": {
-    "description": "Empty point"
-  },
-  "noPoint": "Nav jēgas",
-  "@noPoint": {
-    "description": "No point"
-  },
-  "placingPhase": "Ievietošanas fāze",
-  "@placingPhase": {
-    "description": "Placing phase"
-  },
-  "movingPhase": "Pārvietošanās fāze",
-  "@movingPhase": {
-    "description": "Moving phase"
-  },
-  "flyingPhase": "Lidošanas fāze",
-  "@flyingPhase": {
-    "description": "Flying phase"
-  },
-  "sideToMove": "Pārvietojama puse: {player}",
-  "@sideToMove": {
-    "description": "Side to move"
-  },
-  "lastMove": "Pēdējais gājiens: {move}",
-  "@lastMove": {
-    "description": "Last move"
-  },
-  "selected": "Atlasīts",
-  "@selected": {
-    "description": "Selected"
-  },
-  "accessibility": "Pieejamība",
-  "@accessibility": {
-    "description": "Accessibility"
-  },
-  "screenReaderSupport": "Ekrāna lasītāja atbalsts",
-  "@screenReaderSupport": {
-    "description": "Screen reader support"
-  },
-  "isDraw": "Tas ir neizšķirts!",
-  "@isDraw": {
-    "description": "It is a Draw!"
-  },
-  "draw": "Zīmēt",
-  "@draw": {
-    "description": "Draw"
-  },
-  "pieceHighlightColor": "Gabalu izceltā krāsa",
-  "@pieceHighlightColor": {
-    "description": "Piece highlight color"
-  },
-  "algorithm": "Algoritms",
-  "@algorithm": {
-    "description": "Algorithm"
-  },
-  "endgameNMoveRule": "Beigu spēles N-Move noteikums",
-  "@endgameNMoveRule": {
-    "description": "Endgame N-Move rule"
-  },
-  "endgameNMoveRule_Detail": "Ja kādam no spēlētājiem ir tikai trīs gabali un neviens no spēlētājiem neizņem gabalu konkrētu kustību ietvaros, spēle tiek izlozēta.",
-  "@endgameNMoveRule_Detail": {
-    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-  },
-  "drawReasonEndgameRule50": "Katram spēlētājam ir tikai trīs gabali, un neviens no spēlētājiem neizņem gabalu noteiktos gājienos.",
-  "@drawReasonEndgameRule50": {
-    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-  },
-  "threefoldRepetitionRule": "Trīskāršs atkārtošanas noteikums",
-  "@threefoldRepetitionRule": {
-    "description": "Threefold repetition rule"
-  },
-  "threefoldRepetitionRule_Detail": "Spēle tiek izlozēta, ja pozīcija rodas trešo reizi.",
-  "@threefoldRepetitionRule_Detail": {
-    "description": "The game is drawn if a position occurs for the third time."
-  },
-  "continueToMakeMove": "Dzirnavas! Turpiniet veikt kustību.",
-  "@continueToMakeMove": {
-    "description": "Mill! Continue to make a move."
-  },
-  "pointStyle": "Punkta stils",
-  "@pointStyle": {
-    "description": "Point style"
-  },
-  "pointWidth": "Punkta platums",
-  "@pointWidth": {
-    "description": "Point width"
-  },
-  "solid": "Ciets",
-  "@solid": {
-    "description": "Solid"
-  },
-  "hollow": "Dobis",
-  "@hollow": {
-    "description": "Hollow"
-  },
-  "languageName": "Latviešu",
-  "@languageName": {
-    "description": "The name of the current language"
-  },
-  "moveNumber": "{count,plural, =0{Pārvietot}=1{{count} Pārvietot}other{{count} Kustības}}",
-  "@moveNumber": {
-    "description": "Moves to take back",
-    "placeholders": {
-      "count": {
-        "description": "Number of Moves",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "filename": "Faila nosaukums",
-  "@filename": {
-    "description": "File name"
-  },
-  "browse": "Pārlūkot…",
-  "@browse": {
-    "description": "Browse…"
-  },
-  "gameSavedTo": "Spēle ir saglabāta",
-  "@gameSavedTo": {
-    "description": "The game is saved to"
-  },
-  "gameFiles": "Spēļu faili",
-  "@gameFiles": {
-    "description": "Game files"
-  },
-  "loadFailed": "Ielāde neizdevās.",
-  "@loadFailed": {
-    "description": "Load failed."
-  },
-  "hasPlacedPieceCount": "Pašreizējais spēlētājs ir ievietojis {count} figūras.",
-  "@hasPlacedPieceCount": {
-    "description": "The current player has placed {count} pieces.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "noMove": "Nekādas kustības.",
-  "@noMove": {
-    "description": "No move."
-  },
-  "restoredPosition": "Atjaunota sākotnējā pozīcija.",
-  "@restoredPosition": {
-    "description": "Restored initial position."
-  },
-  "clean": "Tīrs",
-  "@clean": {
-    "description": "Clean"
-  },
-  "cleanedUp": "Satīrīts.",
-  "@cleanedUp": {
-    "description": "Cleaned up."
-  },
-  "remove": "Noņemt",
-  "@remove": {
-    "description": "Remove"
-  },
-  "noPiecesCanBeRemoved": "Nevienu gabalu nevar noņemt.",
-  "@noPiecesCanBeRemoved": {
-    "description": "No pieces can be removed."
-  },
-  "empty": "Tukšs",
-  "@empty": {
-    "description": "Empty point, used in setup position toolbar."
-  },
-  "placedCount": "Izvietots ({count})",
-  "@placedCount": {
-    "description": "Placed N pieces. Used in setup position toolbar.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces placed.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} ir jānoņem.",
-  "@pieceCountNeedToRemove": {
-    "description": "Pieces need to remove.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces.",
-        "type": "int",
-        "example": "3"
-      }
-    }
-  },
-  "placedPieceCount": "Nolikto gabalu skaits izvietošanas fāzē.",
-  "@placedPieceCount": {
-    "description": "Placed piece count in the placing phase. Used in Semantics."
-  },
-  "notPlacingPhase": "Nenovieto fāzi, nevar to mainīt.",
-  "@notPlacingPhase": {
-    "description": "Not placing phase, cannot change it."
-  },
-  "paste": "Ielīmēt",
-  "@paste": {
-    "description": "Paste"
-  },
-  "pasteDone": "Pasta ir gatava.",
-  "@pasteDone": {
-    "description": "The paste is done."
-  },
-  "cannotPaste": "Nevar ielīmēt.",
-  "@cannotPaste": {
-    "description": "Cannot paste."
-  },
-  "isUnplacedAndRemovedPiecesShown": "Rādīt nenovietotos un noņemtos gabalus",
-  "@isUnplacedAndRemovedPiecesShown": {
-    "description": "Show unplaced and removed pieces"
-  },
-  "reopenToTakeEffect": "Izejiet un atkārtoti atveriet lietotni, lai iestatījumi stātos spēkā.",
-  "@reopenToTakeEffect": {
-    "description": "Exit and reopen app for settings to take effect."
-  },
-  "fullScreen": "Pilnekrāna režīms",
-  "@fullScreen": {
-    "description": "Full screen"
-  },
-  "forest": "Mežs",
-  "@forest": {},
-  "desktopImage": "Darbvirsmas attēls",
-  "@desktopImage": {},
-  "invalidPosition": "Nederīga pozīcija.",
-  "@invalidPosition": {},
-  "shareGIF": "Kopīgojiet GIF",
-  "@shareGIF": {},
-  "duration": "Ilgums",
-  "@duration": {},
-  "pixelRatio": "Pikseļu attiecība",
-  "@pixelRatio": {},
-  "gameScreenRecorder": "Spēles ekrāna ierakstītājs",
-  "@gameScreenRecorder": {},
-  "previous": "Iepriekšējais",
-  "@previous": {},
-  "next": "Nākamais",
-  "@next": {},
-  "skip": "Izlaist",
-  "@skip": {},
-  "gotIt": "Sapratu",
-  "@gotIt": {},
-  "youCanModifyRules": "Noteikumu iestatījumos varat mainīt spēles noteikumus.",
-  "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Varat izmantot peles ritenīti, lai mainītu atlasītāja vērtību.",
-  "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "AI Domāšanas laiks, kas iestatīts uz 0, nozīmē, ka domāšanai nav laika ierobežojumu.",
-  "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Lūdzu, ņemiet vērā, ka AI domāšanas laika pielāgošana var nebūt pilnīgi precīza. Faktiskais domāšanas laiks var būt īsāks, ja grūtības līmenis ir iestatīts uz zemāku vērtību, un var būt garāks, ja AI ir vidējas domāšanas laiks, kad laiks beidzas.",
-  "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Ja iestatāt augstu grūtības pakāpi, bet nepalielināt AI domāšanas laiku, domāšanas laika ierobežojuma dēļ faktiskais grūtības līmenis var būt ierobežots līdz zemākam. Faktiskā vērtība var atšķirties atkarībā no iekārtas veiktspējas.",
-  "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsMtdf": "MTD(f) ir alfa-beta meklēšanas algoritma modificēts veids, kura mērķis ir uzlabot efektivitāti, atkārtoti izmantojot starpposma meklēšanas rezultātus un izmantojot labu sākotnējo minējumu, lai sašaurinātu meklēšanas vietu.",
-  "@whatIsMtdf": {},
-  "whatIsPvs": "PVS (Principal Variation Search) ir meklēšanas algoritms, lai atrastu labāko kustību noteiktā pozīcijā. Tas ir alfa-beta algoritma uzlabojums un izmanto nulles vai nulles logu meklēšanu, lai apstiprinātu, ka kustība ir sliktāka vai nav sliktāka par jau drošu rezultātu no galvenās variācijas. PVS koncentrējas uz daudzsološākajiem gājieniem un izvairās no nevajadzīgas suboptimālo zaru meklēšanas, kas palīdz uzlabot meklēšanas efektivitāti.",
-  "@whatIsPvs": {},
-  "whatIsAlphaBeta": "Alfa-beta algoritms ir meklēšanas algoritms, lai atrastu labāko kustību. Tas izmanto minimax principu un divas vērtības — alfa un beta, lai apgrieztu meklēšanas koku un palielinātu efektivitāti. Alfa ir minimālais rezultāts, par kuru dators ir pārliecināts, ka tas var iegūt, bet beta ir maksimālais rezultāts, ko var iegūt pretinieks. Algoritms palīdz datoram pieņemt gudrus un efektīvus lēmumus spēlē.",
-  "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "Šajā spēlē otrajam spēlētājam ir vieglāk uzvarēt, salīdzinot ar pirmo spēlētāju.",
-  "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "Saskaņā ar cilvēku pieredzi, ja jūs mēģināt uzvarēt, jūs zaudējat. Tā vietā tiecieties uz neizšķirtu kā savu mērķi un izvairieties zaudēt spēli. Vērojiet pretinieku un viegli ieviliniet viņu tādā stāvoklī, kurā viņi var kļūdīties. Kad viņi izrāda vājumu, izmantojiet iespēju un maigi spiediet uz uzvaru. Tādā veidā jūs varat uzvarēt spēli.",
-  "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Pasīvās opcijas iespējošana liks AI atslābt, kad tam ir priekšrocības attiecīgajā pozīcijā, nevis agresīvi mēģināt uzvarēt pēc iespējas ātrāk.",
-  "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Ja mākslīgais intelekts ņem vērā savu figūru mobilitāti, tā mērķis būs ne tikai pēc iespējas ātrāk notvert pretinieka figūras, bet arī apsvērt iespēju bloķēt pretinieka kustības un neļaut viņiem darīt to pašu.",
-  "@considerMobilityOfPiecesDetail": {},
-  "moveRandomlyDetail": "Šīs opcijas iespējošana palielina spēles nejaušību un jautrību, savukārt tās atspējošana var palīdzēt izpētīt veidus, kā pārspēt AI.",
-  "@moveRandomlyDetail": {},
-  "whenBoardIsFull": "Kad dēlis ir pilns",
-  "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "Izvietošanas fāzes beigās, pirms pārvietošanās fāzes sākuma, darbība seko, ja dēlis ir pilns ar figūrām.",
-  "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "Spēlētājs, kurš kustības fāzē kustas pirmais, noņem vienu no pretinieka figūrām.",
-  "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Abas puses vienojas par neizšķirtu.",
-  "@agreeToDraw": {},
-  "takeOpponentsPiece": "Paņemiet vienu no pretinieka figūrām.",
-  "@takeOpponentsPiece": {},
-  "firstPlayerLose": "Pirmais spēlētājs zaudē spēli.",
-  "@firstPlayerLose": {},
-  "firstAndSecondPlayerRemovePiece": "Pirmais un otrais spēlētājs noņem vienu no pretinieka figūrām.",
-  "@firstAndSecondPlayerRemovePiece": {},
-  "secondAndFirstPlayerRemovePiece": "Otrais un pirmais spēlētājs noņem vienu no pretinieka figūrām.",
-  "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Tagad iegājis lidošanas fāzē, pretinieka figūras var pārlēkt uz jebkuru tukšu punktu uz galda. Lidošanas kārtulu varat izslēgt sadaļā \"Noteikumu iestatījumi\".",
-  "@enteredFlyingPhase": {},
-  "whenStalemate": "Kad strupceļš",
-  "@whenStalemate": {},
-  "whenStalemate_Detail": "Kāda darbība notiek, ja nevienu gabalu nevar pārvietot?",
-  "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Beidziet ar strupceļa zaudējumu.",
-  "@endWithStalemateLoss": {},
-  "changeSideToMove": "Mainiet pusi, lai pārvietotos.",
-  "@changeSideToMove": {},
-  "removeOpponentsPieceAndMakeNextMove": "Noņemiet vienu no pretinieka figūrām un veiciet nākamo gājienu.",
-  "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Beidziet ar strupceļa neizšķirtu.",
-  "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "Noņemiet vienu no pretinieka figūrām un mainiet pusi, lai pārvietotos.",
-  "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "AI reakcijas aizkaves laiks",
-  "@aiResponseDelayTime": {},
-  "aiIsDelaying": "AI pašlaik ir aizkavētas reakcijas fāzē. Pirms turpināt, lūdzu, uzgaidiet kādu laiku.",
-  "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Jūs nevarat noņemt blakus esošo gabalu.",
-  "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "Ja ir strupceļš, pretinieka figūras, kas atrodas blakus jums, var tikt noņemtas neatkarīgi no dzirnavu veidošanās.",
-  "@stalemateRemovalRegardlessOfMillFormation": {},
-  "whatIsMcts": "MCTS ir iesācējiem draudzīgs algoritms, kas pieņem lēmumus, pētot un novērtējot dažādas kustības, izmantojot simulācijas.",
-  "@whatIsMcts": {},
-  "goldenJade": "Zelta skuķis",
-  "@goldenJade": {},
-  "forestWood": "Meža koksne",
-  "@forestWood": {},
-  "greenMeadow": "Zaļā pļava",
-  "@greenMeadow": {},
-  "stonyPath": "Akmeņains ceļš",
-  "@stonyPath": {},
-  "midnightBlue": "Pusnakts zila",
-  "@midnightBlue": {},
-  "greenForest": "Zaļais mežs",
-  "@greenForest": {},
-  "pastelPink": "Pastels rozā",
-  "@pastelPink": {},
-  "turquoiseSea": "Tirkīza jūra",
-  "@turquoiseSea": {},
-  "violetDream": "Violetais sapnis",
-  "@violetDream": {},
-  "mintChocolate": "Piparmētru šokolāde",
-  "@mintChocolate": {},
-  "skyBlue": "Debesu zils",
-  "@skyBlue": {},
-  "playfulGarden": "Rotaļīgs dārzs",
-  "@playfulGarden": {},
-  "darkMystery": "Tumšais noslēpums",
-  "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "Retrogrādās analīzes algoritms izmanto daudzvērtīgu retrogrādo analīzi, lai izveidotu beigu datu bāzi no dažādām sākuma pozīcijām, un pēc tam izmanto šo datu bāzi, lai optimizētu spēli. Šī pieeja ietilpst īpaši spēcīgu risinājumu kategorijā.",
-  "@whatIsRetrogradeAnalysis": {},
-  "viewAlgorithmGuide": "Vai vēlaties skatīt šī algoritma lietotāja rokasgrāmatu?",
-  "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "Rādīt pozīcijas priekšrocības indikatoru",
-  "@showPositionalAdvantageIndicator": {},
-  "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's play style' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
-  "@perfectDatabaseDescription": {},
-  "usePerfectDatabase": "Izmantojiet perfektu datu bāzi",
-  "@usePerfectDatabase": {},
-  "backgroundImage": "Fona attēls",
-  "@backgroundImage": {},
-  "whatIsRandom": "Ja opcija “Izmantot perfektu datu bāzi” nav iespējota, iestatījums “Nejaušs” liek AI nejauši pārvietot gabalus, neizmantojot pārvietošanas atlases algoritmus. Tas parasti rada ievērojami vājāku spēli. Un otrādi, ja ir iespējota opcija “Izmantot perfektu datu bāzi”, AI lēmumu pieņemšanā paļaujas tikai uz ideālo datu bāzi, nevis sajauc to ar tradicionālajiem AI algoritmiem. Šajā režīmā AI darbības ir pilnībā balstītas uz datu bāzes saturu, izvairoties no paļaušanās uz reāllaika aprēķiniem vai meklēšanas algoritmiem.",
-  "@whatIsRandom": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn": "Noņem pretinieka figūru(-as) no rokas; tad pretinieka gājiens novietot.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
-  "whenFormingMillsDuringPlacingPhase": "Veidojot dzirnavas izvietošanas fāzes laikā",
-  "@whenFormingMillsDuringPlacingPhase": {},
-  "removeOpponentsPieceFromBoard": "Noņem pretinieka figūru(-as) no galda.",
-  "@removeOpponentsPieceFromBoard": {},
-  "removeOpponentsPieceFromBoard_Detail": "Noņem pretinieka figūru(-as) no galda; tad pretinieka gājiens novietot figūru.",
-  "@removeOpponentsPieceFromBoard_Detail": {},
-  "opponentRemovesOwnPiece": "Pretinieks noņem no galda pats savu figūru(-as).",
-  "@opponentRemovesOwnPiece": {},
-  "opponentRemovesOwnPiece_Detail": "Tavā gājiena vietā pretinieks izvēlas un noņem no galda pats savu figūru (-as), faktiski veicot sev kaitīgu darbību.",
-  "@opponentRemovesOwnPiece_Detail": {},
-  "removeOpponentsPieceFromHandThenYourTurn": "Noņem pretinieka figūru(-as) no viņa rokas; tad ir tavs gājiens.",
-  "@removeOpponentsPieceFromHandThenYourTurn": {},
-  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Noņem figūru(-as) no pretinieka rokas. Ja saskaņā ar iestatījumu “Vairāku figūru noņemšana” ir jānoņem vairākas figūras un pretiniekam rokā vairs nav figūru, turpini noņemt pretinieka figūras no galda. Pēc tam ir tavs gājiens. Ja turpini veidot dzirnavas, tu vari turpināt noņemt pretinieka figūras.",
-  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Noņem figūru(-as) no pretinieka rokas. Ja saskaņā ar iestatījumu “Vairāku figūru noņemšana” ir jānoņem vairākas figūras un pretiniekam rokā vairs nav figūru, turpini noņemt pretinieka figūras no galda. Pēc tam ir pretinieka gājiens.",
-  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
-  "markAndDelayRemovingPieces": "Atzīmēt un aizkavēt figūru noņemšanu.",
-  "@markAndDelayRemovingPieces": {},
-  "markAndDelayRemovingPieces_Detail": "Izvietošanas fāzes laikā noņemamās figūras tiek atzīmētas, un abi spēlētāji nevar novietot jaunas figūras uz šiem punktiem. Sākoties kustību fāzei, šīs atzīmētās figūras tiek noņemtas visas uzreiz, un spēlētāji pēc tam var pārvietot savas figūras uz šiem tagad tukšajiem punktiem.",
-  "@markAndDelayRemovingPieces_Detail": {},
-  "whenFormingMillsDuringPlacingPhase_Detail": "Darbības, kas veicamas, veidojot dzirnavas izvietošanas posmā.",
-  "@whenFormingMillsDuringPlacingPhase_Detail": {},
-  "marked": "Označeno",
-  "@marked": {},
-  "menu": "Izvēlne",
-  "@menu": {},
-  "monochrome": "Monohroms",
-  "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "Jūs varat iespējot ekrāna lasītāja atbalstu pieejamības iestatījumos Vispārīgajos iestatījumos.",
-  "@youCanEnableScreenReaderSupport": {},
-  "showNumbersOnPieces": "Rādīt numurus uz figūrām",
-  "@showNumbersOnPieces": {},
-  "saveImage": "Saglabāt attēlu",
-  "@saveImage": {},
-  "isAnalysisToolbarShown": "Parādīt analīzes rīkjoslu",
-  "@isAnalysisToolbarShown": {},
-  "analysisToolbarBackgroundColor": "Analīzes rīkjoslas fona krāsa",
-  "@analysisToolbarBackgroundColor": {},
-  "analysisToolbarIconColor": "Analīzes rīkjoslas ikonas krāsa",
-  "@analysisToolbarIconColor": {},
-  "transformed": "Transformēts.",
-  "@transformed": {},
-  "cannotTransform": "Nevar pārveidot.",
-  "@cannotTransform": {},
-  "rotate": "Pagriezt",
-  "@rotate": {},
-  "horizontalFlip": "H Apgriezt",
-  "@horizontalFlip": {},
-  "verticalFlip": "V Apgriezt",
-  "@verticalFlip": {},
-  "innerOuterFlip": "IO Apgriezt",
-  "@innerOuterFlip": {},
-  "transparentCanvas": "Caurspīdīgs Audekls",
-  "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Ierobežot atkārtotu dzirnaviņu veidošanos",
-  "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Figūra, kas pārvietota no viena dzirnavām uz citām, nevar nekavējoties atgriezties sākotnējā punktā nākamajā gājienā, lai atkal veidotu dzirnavas. Vispirms ir nepieciešams cits gājiens.",
-  "@restrictRepeatedMillsFormation_Detail": {},
-  "oneTimeUseMill": "Vienreiz lietojama dzirnavas",
-  "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "Katra dzirnava var noņemt tikai vienu pretinieka gabalu. Jūs varat to atkārtoti izveidot, bet to nevar izmantot papildu noņemšanai.",
-  "@oneTimeUseMill_Detail": {},
-  "currentRulesNoPerfectDatabase": "Pašreizējiem noteikumiem, ko esat iestatījis, nav atbilstošas ideālās datubāzes. Lai iegūtu vairāk informācijas par ideālo datubāzi, lūdzu, noklikšķiniet šeit.",
-  "@currentRulesNoPerfectDatabase": {},
-  "focusOnBlockingPaths": "Koncentrējieties uz ceļu bloķēšanu",
-  "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Prioritizējiet pretinieka kustību bloķēšanu, nevis dzirnavu veidošanu. Tā vietā, lai koncentrētos uz figūru noņemšanu, pabeidzot dzirnavas, AI cenšas ieslodzīt pretinieku, padarot viņu nespējīgu kustēties un nodrošinot uzvaru ar izturību, nevis agresīvu spēli. Šī stratēģija aktīvi nebloķē pretinieka dzirnavas.",
-  "@focusOnBlockingPaths_Detail": {},
-  "pieceImage": "Figūras attēls",
-  "@pieceImage": {},
-  "importColorSettings": "Importēt krāsu iestatījumus",
-  "@importColorSettings": {},
-  "exportColorSettings": "Eksportēt krāsu iestatījumus",
-  "@exportColorSettings": {},
-  "import": "Importēt",
-  "@import": {},
-  "export": "Eksportēt",
-  "@export": {},
-  "pleaseCopyJsonToClipboard": "Lūdzu, vispirms nokopējiet JSON formāta iestatījumus starpliktuvē.",
-  "@pleaseCopyJsonToClipboard": {},
-  "copiedToClipboard": "Nokopēts starpliktuvē.",
-  "@copiedToClipboard": {},
-  "imported": "Importēts.",
-  "@imported": {},
-  "boardImage": "Dēļa attēls",
-  "@boardImage": {},
-  "autumnLeaves": "Rudens lapas",
-  "@autumnLeaves": {},
-  "legendaryLand": "Leģendārā zeme",
-  "@legendaryLand": {},
-  "vignetteEffect": "Vinjete efekts",
-  "@vignetteEffect": {},
-  "promptMakeToolbarTransparent": "Vai vēlaties padarīt rīku jos pilnīgi caurspīdīgu, kad ir iestatīta dēļa fona attēls?",
-  "@promptMakeToolbarTransparent": {},
-  "vibration": "Iespējot vibrāciju spēlē",
-  "@vibration": {},
-  "soundTheme": "Skaņas tēma",
-  "@soundTheme": {},
-  "ball": "Bumba",
-  "@ball": {},
-  "liquid": "Šķidrums",
-  "@liquid": {},
-  "wood": "Koks",
-  "@wood": {},
-  "placeEffectAnimation": "Figūras novietošanas animācijas efekts",
-  "@placeEffectAnimation": {},
-  "removeEffectAnimation": "Figūras noņemšanas animācijas efekts",
-  "@removeEffectAnimation": {},
-  "isToolbarAtBottom": "Rādīt rīkjoslu apakšā",
-  "@isToolbarAtBottom": {},
-  "boardCornerRadius": "Dēļa stūra rādiuss",
-  "@boardCornerRadius": {},
-  "useOpeningBook": "Izmantojiet atvēršanas grāmatu",
-  "@useOpeningBook": {},
-  "currentRule": "Pašreizējais",
-  "@currentRule": {},
-  "nineMensMorris": "Nine Men's Morris",
-  "@nineMensMorris": {},
-  "twelveMensMorris": "Twelve Men's Morris",
-  "@twelveMensMorris": {},
-  "morabaraba": "Morabaraba",
-  "@morabaraba": {},
-  "dooz": "Dooz",
-  "@dooz": {},
-  "chamGonu": "Cham Gonu",
-  "@chamGonu": {},
-  "zhiQi": "Zhi Qi",
-  "@zhiQi": {},
-  "chengSanQi": "Cheng San Qi",
-  "@chengSanQi": {},
-  "mulMulan": "Mul-Mulan",
-  "@mulMulan": {},
-  "nerenchi": "Nerenchi",
-  "@nerenchi": {},
-  "ruleSet": "Noteikumu kopa",
-  "@ruleSet": {},
-  "laskerMorris": "Lasker Morris",
-  "@laskerMorris": {},
-  "oneTimeMill": "One-Time Mill",
-  "@oneTimeMill": {},
-  "daSanQi": "Da San Qi",
-  "@daSanQi": {},
-  "useOpeningBook_Detail": "Ļaujiet AI izmantot atklāšanas gājienus, ko bieži izmanto profesionālie cilvēku spēlētāji spēles sākumā. Piezīme: Šī funkcija pašlaik ir pieejama tikai konkrētiem noteikumu kopumiem.",
-  "@useOpeningBook_Detail": {},
-  "showAdvantageGraph": "Parādīt priekšrocību grafiku",
-  "@showAdvantageGraph": {},
-  "advantageGraphHint": "Priekšrocību grafiks tiks uzzīmēts tikai pēc tam, kad MI veiks gājienu. Tas netiks uzzīmēts, kad gājienu veiks cilvēka spēlētājs.",
-  "@advantageGraphHint": {},
-  "removalBasedOnMillCounts": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz to dzirnavu skaitu.",
-  "@removalBasedOnMillCounts": {},
-  "removalBasedOnMillCounts_Detail": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz dzirnavu skaitu: ja skaits ir vienāds, abi noņem vienādu skaitu figūru; ja vienam ir vairāk, tas noņem vienu papildu figūru, saglabājot starpību vienas figūras apjomā. Ja tikai viens spēlētājs izveido dzirnavas, viņš noņem divas figūras, bet otrs noņem vienu. Ja neviens neizveido dzirnavas, abi noņem pa vienai figūrai.",
-  "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "El Filja",
-  "@elfilja": {},
-  "tipSelectOwnPiece": "Izvēlies vienu no savām figūrām.",
-  "@tipSelectOwnPiece": {},
-  "notYourTurn": "Nav tava kārta.",
-  "@notYourTurn": {},
-  "annotationToolbarBackgroundColor": "Piezīmju rīkjoslas fona krāsa",
-  "@annotationToolbarBackgroundColor": {},
-  "annotationToolbarIconColor": "Piezīmju rīkjoslas ikonu krāsa",
-  "@annotationToolbarIconColor": {},
-  "isAnnotationToolbarShown": "Rādīt piezīmju rīkjoslu",
-  "@isAnnotationToolbarShown": {},
-  "enterAnnotationMode": "Ieeiet piezīmju režīmā",
-  "@enterAnnotationMode": {},
-  "areYouSureYouWantToClearAllAnnotations": "Vai tiešām vēlaties notīrīt visas piezīmes?",
-  "@areYouSureYouWantToClearAllAnnotations": {},
-  "llmPromptCopiedToClipboard": "LLM uzvedne nokopēta starpliktuvē.",
-  "@llmPromptCopiedToClipboard": {},
-  "connectionRefusedTheServerMayBeDown": "Savienojums noraidīts, serveris var būt izslēgts.",
-  "@connectionRefusedTheServerMayBeDown": {},
-  "discoverySuccessfulAwaitingConnection": "Atklāšana veiksmīga, gaida savienojumu...",
-  "@discoverySuccessfulAwaitingConnection": {},
-  "noLanConnection": "Nav LAN savienojuma",
-  "@noLanConnection": {},
-  "takeScreenshot": "Uzņem ekrānuzņēmumu",
-  "@takeScreenshot": {},
-  "disconnectedFromOpponent": "Atvienots no pretinieka.",
-  "@disconnectedFromOpponent": {},
-  "takeBackRequest": "Atkāpšanās pieprasījums",
-  "@takeBackRequest": {},
-  "nothingToShow": "Nav ko parādīt.",
-  "@nothingToShow": {},
-  "stopHosting": "Pārtraukt spēles vadīšanu",
-  "@stopHosting": {},
-  "connectionResetByPeer": "Savienojumu atiestatīja pretējā puse.",
-  "@connectionResetByPeer": {},
-  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Savienojums zaudēts sirdsdarbības laika pārsniegšanas dēļ. Lūdzu, atjaunojiet savienojumu.",
-  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
-  "startHosting": "Sākt spēles vadīšanu",
-  "@startHosting": {},
-  "restartRequestRejected": "Pārstartēšanas pieprasījums noraidīts.",
-  "@restartRequestRejected": {},
-  "notConnectedToLanOpponent": "Nav savienojuma ar LAN pretinieku.",
-  "@notConnectedToLanOpponent": {},
-  "llmPrompt": "LLM uzvedne",
-  "@llmPrompt": {},
-  "gameRestarted": "Spēle restartēta.",
-  "@gameRestarted": {},
-  "takeBackRejected": "Atkāpšanās noraidīta.",
-  "@takeBackRejected": {},
-  "areYouSureYouWantToResignThisGame": "Vai tiešām vēlaties padoties no šīs spēles?",
-  "@areYouSureYouWantToResignThisGame": {},
-  "opponentResignedYouWin": "Pretinieks ir padojies. Jūs uzvarējāt!",
-  "@opponentResignedYouWin": {},
-  "clearAllAnnotations": "Notīrīt visas piezīmes",
-  "@clearAllAnnotations": {},
-  "connectedWaitingForOpponentSMove": "Savienots, gaida pretinieka gājienu...",
-  "@connectedWaitingForOpponentSMove": {},
-  "networkStatusDisconnected": "Tīkla statuss: Atvienots",
-  "@networkStatusDisconnected": {},
-  "takeBackRequestSentToTheOpponent": "Atkāpšanās pieprasījums nosūtīts pretiniekam.",
-  "@takeBackRequestSentToTheOpponent": {},
-  "theOpponentMayHaveLeftTheGame": "Pretinieks varbūt ir atstājis spēli",
-  "@theOpponentMayHaveLeftTheGame": {},
-  "connectedToHostSuccessfully": "Veiksmīgi savienots ar spēles vadītāju.",
-  "@connectedToHostSuccessfully": {},
-  "connectionLostHeartbeatTimeout": "Savienojums zaudēts: sirdsdarbības laika pārsniegšana",
-  "@connectionLostHeartbeatTimeout": {},
-  "noHostDiscovered": "Nav atrasts spēles vadītājs.",
-  "@noHostDiscovered": {},
-  "confirmResignation": "Apstiprināt padīšanos",
-  "@confirmResignation": {},
-  "startedHostingGameWaitingForPlayersToJoin": "Spēles rīkošana uzsākta, gaida spēlētāju pievienošanos...",
-  "@startedHostingGameWaitingForPlayersToJoin": {},
-  "connectionTimedOutNetworkConnectionUnstable": "Savienojuma laiks beidzies, tīkla savienojums ir nestabils.",
-  "@connectionTimedOutNetworkConnectionUnstable": {},
-  "noLlmPromptAvailable": "Nav pieejama LLM uzvedne.",
-  "@noLlmPromptAvailable": {},
-  "youResignedGameOver": "Jūs padojāties. Spēle beigusies.",
-  "@youResignedGameOver": {},
-  "serverIp": "Servera IP",
-  "@serverIp": {},
-  "confirmClear": "Apstiprināt notīrīšanu",
-  "@confirmClear": {},
-  "opponentSTurn": "Pretinieka kārta.",
-  "@opponentSTurn": {},
-  "waitingAClientConnection": "Gaida klienta savienojumu...",
-  "@waitingAClientConnection": {},
-  "takeBackRequestWasRejectedOrFailed": "Atkāpšanās pieprasījums tika noraidīts vai neizdevās.",
-  "@takeBackRequestWasRejectedOrFailed": {},
-  "addText": "Pievienot tekstu",
-  "@addText": {},
-  "exitAnnotationMode": "Iziet no piezīmju režīma",
-  "@exitAnnotationMode": {},
-  "typeYourAnnotation": "Ierakstiet savu piezīmi",
-  "@typeYourAnnotation": {},
-  "attemptingToReconnect": "Mēģina atjaunot savienojumu...",
-  "@attemptingToReconnect": {},
-  "restartRequestSentWaitingForOpponentSResponse": "Pārstartēšanas pieprasījums nosūtīts. Gaida pretinieka atbildi...",
-  "@restartRequestSentWaitingForOpponentSResponse": {},
-  "serverIsStopped": "Serveris ir apturēts.",
-  "@serverIsStopped": {},
-  "restartRequest": "Pārstartēšanas pieprasījums",
-  "@restartRequest": {},
-  "cannotRequestATakeBackWhenItSNotYourTurn": "Nevar pieprasīt atkāpšanos, kad nav tava kārta.",
-  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
-  "takeBackAccepted": "Atkāpšanās pieņemta.",
-  "@takeBackAccepted": {},
-  "localNetworkSettings": "Vietējās tīkla iestatījumi",
-  "@localNetworkSettings": {},
-  "reconnectedSuccessfully": "Savienojums veiksmīgi atjaunots!",
-  "@reconnectedSuccessfully": {},
-  "failedToSaveImageToGallery": "Neizdevās saglabāt attēlu galerijā.",
-  "@failedToSaveImageToGallery": {},
-  "opponentRequestedToRestartTheGameDoYouAccept": "Pretinieks pieprasīja spēles pārstartēšanu. Vai piekrītat?",
-  "@opponentRequestedToRestartTheGameDoYouAccept": {},
-  "yourTurn": "Tava kārta.",
-  "@yourTurn": {},
-  "unableToReconnectPleaseRestartTheGame": "Nevar atjaunot savienojumu, lūdzu, restartējiet spēli.",
-  "@unableToReconnectPleaseRestartTheGame": {},
-  "host": "Spēles vadītājs",
-  "@host": {},
-  "join": "Pievienoties",
-  "@join": {},
-  "port": "Ports",
-  "@port": {},
-  "invalidIpAddress": "Nederīga IP adrese.",
-  "@invalidIpAddress": {},
-  "invalidPort": "Nederīgs ports.",
-  "@invalidPort": {},
-  "connectingAttempt": "Savienojamies: Mēģinājums {attempt}/{maxAttempt}",
-  "@connectingAttempt": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempt": {}
-    }
-  },
-  "failedToConnect": "Neizdevās savienoties: {error}",
-  "@failedToConnect": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "failedToStartHosting": "Neizdevās uzsākt spēles vadīšanu: {error}",
-  "@failedToStartHosting": {
-    "placeholders": {
-      "error": {}
-    }
-  },
-  "hostDiscovered": "Spēles vadītājs atrasts: {ip}:{port}",
-  "@hostDiscovered": {
-    "placeholders": {
-      "ip": {},
-      "port": {}
-    }
-  },
-  "stop": "Apturēt",
-  "@stop": {},
-  "discover": "Atklāt",
-  "@discover": {},
-  "connect": "Savienoties",
-  "@connect": {},
-  "clientConnected": "Klients pievienojies: {clientIp}:{clientPort}",
-  "@clientConnected": {
-    "placeholders": {
-      "clientIp": {},
-      "clientPort": {}
-    }
-  },
-  "discoveringSeconds": "Meklē: {seconds} s",
-  "@discoveringSeconds": {
-    "placeholders": {
-      "seconds": {}
-    }
-  },
-  "reconnecting": "Atjaunojam savienojumu ({attempt}/{maxAttempts})",
-  "@reconnecting": {
-    "placeholders": {
-      "attempt": {},
-      "maxAttempts": {}
-    }
-  },
-  "connected": "Savienots",
-  "@connected": {},
-  "delete": "Dzēst",
-  "@delete": {},
-  "ancientEgypt": "Senā Ēģipte",
-  "@ancientEgypt": {},
-  "gothicIce": "Gotiskais Ledus",
-  "@gothicIce": {},
-  "riceField": "Rīsu Lauks",
-  "@riceField": {},
-  "chinesePorcelain": "Ķīnas Porcelāns",
-  "@chinesePorcelain": {},
-  "desertDusk": "Tuksneša Krēsla",
-  "@desertDusk": {},
-  "precisionCraft": "Precīza Amatniecība",
-  "@precisionCraft": {},
-  "folkEmbroidery": "Tautas Izšuvumi",
-  "@folkEmbroidery": {},
-  "carpathianHeritage": "Karpatu Mantojums",
-  "@carpathianHeritage": {},
-  "imperialGrandeur": "Impērijas Diženumu",
-  "@imperialGrandeur": {},
-  "bohemianCrystal": "Bohēmijas Kristāls",
-  "@bohemianCrystal": {},
-  "savannaSunrise": "Savannas Saullēkts",
-  "@savannaSunrise": {},
-  "harmonyBalance": "Harmonija un Līdzsvars",
-  "@harmonyBalance": {},
-  "cinnamonSpice": "Kanēļa Garšviela",
-  "@cinnamonSpice": {},
-  "anatolianMosaic": "Anatolijas Mozaīka",
-  "@anatolianMosaic": {},
-  "carnivalSpirit": "Karnevāla Gars",
-  "@carnivalSpirit": {},
-  "custom": "Pasūtījuma",
-  "@custom": {},
-  "spiceMarket": "Garšvielu tirgus",
-  "@spiceMarket": {},
-  "swipeToRevealTheDrawer": "Pavelciet, lai atvērtu atvilktni",
-  "@swipeToRevealTheDrawer": {},
-  "showGameInfoOnScreenshots": "Rādīt spēles informāciju ekrānuzņēmumos",
-  "@showGameInfoOnScreenshots": {},
-  "humanMoveTime": "Cilvēka laika limits",
-  "@humanMoveTime": {},
-  "noTimeLimitForHumanMoves": "Cilvēka gājieniem nav laika ierobežojuma",
-  "@noTimeLimitForHumanMoves": {},
-  "timeoutLoseWillBeApplied": "Cilvēka spēlētājam tiks piemērots zaudējums laika limita pārsniegšanas dēļ",
-  "@timeoutLoseWillBeApplied": {},
-  "identifyingBoard": "Spēles dēļa identificēšana…",
-  "@identifyingBoard": {},
-  "youCanEnterAnyModelName": "Jūs varat ievadīt jebkuru modeļa nosaukumu.",
-  "@youCanEnterAnyModelName": {},
-  "boardPositionAppliedFenCopiedToClipboard": "Spēles dēļa pozīcija pielietota. FEN nokopēts starpliktuvē.",
-  "@boardPositionAppliedFenCopiedToClipboard": {},
-  "suggestionTryTakingAClearerPictureOfTheBoard": "Ieteikums: mēģiniet nofotografēt dēli skaidrāk.",
-  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
-  "llmPromptTemplate": "LLM prompt veidne",
-  "@llmPromptTemplate": {},
-  "noValidBoardDetected": "Nederīgs spēles dēlis netika atrasts.",
-  "@noValidBoardDetected": {},
-  "selectingImageFromAlbum": "Attēla atlase no albuma…",
-  "@selectingImageFromAlbum": {},
-  "configurePromptTemplate": "Konfigurēt prompt veidni",
-  "@configurePromptTemplate": {},
-  "editPromptTemplateForLlmAnalysis": "Rediģēt prompt veidni LLM analīzei",
-  "@editPromptTemplateForLlmAnalysis": {},
-  "failedToGenerateFenFromRecognizedBoard": "Neizdevās ģenerēt FEN no atpazītā dēļa.",
-  "@failedToGenerateFenFromRecognizedBoard": {},
-  "outputInCurrentLanguage": "Izvade pašreizējā valodā",
-  "@outputInCurrentLanguage": {},
-  "commonBaseUrls": "Bieži izmantotie Base URL",
-  "@commonBaseUrls": {},
-  "viewCommonModels": "Skatīt bieži izmantotos modeļus",
-  "@viewCommonModels": {},
-  "recognitionParametersUpdated": "Atpazīšanas parametri atjaunināti.",
-  "@recognitionParametersUpdated": {},
-  "whiteSMove": "Baltā gājiens",
-  "@whiteSMove": {},
-  "resetToDefaults": "Atiestatīt pēc noklusējuma",
-  "@resetToDefaults": {},
-  "photoShoot": "Fotografēšana",
-  "@photoShoot": {},
-  "failedToApplyRecognizedBoardPosition": "Neizdevās lietot atpazīto dēļa pozīciju.",
-  "@failedToApplyRecognizedBoardPosition": {},
-  "llmPromptContent": "LLM prompt saturs",
-  "@llmPromptContent": {},
-  "llmNotConfiguredPleaseCheckYourSettings": "LLM nav konfigurēts. Lūdzu, pārbaudiet iestatījumus.",
-  "@llmNotConfiguredPleaseCheckYourSettings": {},
-  "setProviderModelApiKeyAndBaseUrl": "Iestatīt pakalpojumu sniedzēju, modeli, API Key un Base URL",
-  "@setProviderModelApiKeyAndBaseUrl": {},
-  "llmConfiguration": "LLM konfigurācija",
-  "@llmConfiguration": {},
-  "configureLlmProvider": "Konfigurēt LLM pakalpojumu sniedzēju",
-  "@configureLlmProvider": {},
-  "llmPromptTemplateHeader": "LLM prompt veidnes galvene",
-  "@llmPromptTemplateHeader": {},
-  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Attēlā netika atpazītas nevienas figūras. Lūdzu, mēģiniet vēlreiz.",
-  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
-  "recognizeBoardFromImage": "Atpazīt dēli no attēla",
-  "@recognizeBoardFromImage": {},
-  "viewTips": "Skatīt padomus",
-  "@viewTips": {},
-  "applyToBoard": "Lietot uz dēļa",
-  "@applyToBoard": {},
-  "adjustBoardArea": "Regulēt dēļa laukumu",
-  "@adjustBoardArea": {},
-  "viewCommonUrls": "Skatīt bieži izmantotos URL",
-  "@viewCommonUrls": {},
-  "colorAnalysisFailed": "Krāsu analīze neizdevās!",
-  "@colorAnalysisFailed": {},
-  "analyzingGameBoardImage": "Analizējam spēles dēļa attēlu…",
-  "@analyzingGameBoardImage": {},
-  "selectFromAlbum": "Izvēlēties no albuma",
-  "@selectFromAlbum": {},
-  "noBoardPointDetected": "Dēļa punkts netika noteikts!",
-  "@noBoardPointDetected": {},
-  "ifLeftEmptyDefaultTemplateWillBeUsed": "Ja atstāts tukšs, tiks izmantota noklusējuma veidne",
-  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
-  "llmConfig": "LLM konfigurācija",
-  "@llmConfig": {},
-  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Vai tiešām vēlaties atiestatīt prompt veidnes uz noklusējuma vērtībām?",
-  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
-  "llmPromptTemplateFooter": "LLM prompt veidnes kājene",
-  "@llmPromptTemplateFooter": {},
-  "loadingResponse": "Ielādē atbildi…",
-  "@loadingResponse": {},
-  "applyThisResultToBoard": "Lietot šo rezultātu uz dēļa",
-  "@applyThisResultToBoard": {},
-  "takingPicture": "Fotografē…",
-  "@takingPicture": {},
-  "pleaseSelectAGameBoardImageToIdentify": "Lūdzu, izvēlieties spēles dēļa attēlu atpazīšanai",
-  "@pleaseSelectAGameBoardImageToIdentify": {},
-  "identificationResults": "Identifikācijas rezultāti",
-  "@identificationResults": {},
-  "analyzeTheMovesAndProvideInsights": "Analizēt gājienus un sniegt ieskatus.",
-  "@analyzeTheMovesAndProvideInsights": {},
-  "getApiKey": "Iegūt API Key",
-  "@getApiKey": {},
-  "entireRecognitionProcessFailedToComplete": "Viss atpazīšanas process neizdevās pabeigt.",
-  "@entireRecognitionProcessFailedToComplete": {},
-  "boardRecognitionResult": "Dēļa atpazīšanas rezultāts",
-  "@boardRecognitionResult": {},
-  "askLlm": "Jautāt LLM",
-  "@askLlm": {},
-  "boardDetectionFailed": "Dēļa noteikšana neizdevās!",
-  "@boardDetectionFailed": {},
-  "noBoardPointDetectedCannotIdentifyPiece": "Dēļa punkti netika noteikti, figūru nevar atpazīt!",
-  "@noBoardPointDetectedCannotIdentifyPiece": {},
-  "copyFen": "Kopēt FEN",
-  "@copyFen": {},
-  "commonlyUsedModels": "Bieži izmantotie modeļi",
-  "@commonlyUsedModels": {},
-  "apiKeyOptional": "API Key (pēc izvēles)",
-  "@apiKeyOptional": {},
-  "noImageSelected": "Nav izvēlēts attēls",
-  "@noImageSelected": {},
-  "blackSMove": "Melnā gājiens",
-  "@blackSMove": {},
-  "llm": "Liels valodas modelis",
-  "@llm": {},
-  "llmProvider": "Piegādātājs",
-  "@llmProvider": {},
-  "baseUrl": "Bāzes URL",
-  "@baseUrl": {},
-  "model": "Modelis",
-  "@model": {},
-  "temperature": "Temperatūra",
-  "@temperature": {},
-  "llmCommandReceivedProcessing": "Komanda saņemta! AI apstrādā...",
-  "@llmCommandReceivedProcessing": {},
-  "llmDeepThinkingWait": "Notiek dziļa domāšana, lūdzu, uzgaidiet...",
-  "@llmDeepThinkingWait": {},
-  "llmPresentingSoon": "Drīzumā tiks prezentēts...",
-  "@llmPresentingSoon": {},
-  "recognitionParameters": "Atpazīšanas parametri",
-  "@recognitionParameters": {},
-  "adjustParamsDesc": "Pielāgojiet parametrus, lai uzlabotu atpazīšanas precizitāti",
-  "@adjustParamsDesc": {},
-  "saveParameters": "Saglabāt parametrus",
-  "@saveParameters": {},
-  "unableToStartImageRecognition": "Nevar sākt attēla atpazīšanu: {error}",
-  "@unableToStartImageRecognition": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "File system error"
-      }
-    }
-  },
-  "imageRecognitionFailed": "Attēla atpazīšana neizdevās: {error}",
-  "@imageRecognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Could not detect corners"
-      }
-    }
-  },
-  "appliedPositionDetails": "Pielietota pozīcija ar {whiteCount} baltām un {blackCount} melnām figūrām",
-  "@appliedPositionDetails": {
-    "placeholders": {
-      "whiteCount": {
-        "type": "int",
-        "example": "9"
-      },
-      "blackCount": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
-  "fenCopiedToClipboard": "(FEN nokopēts uz starpliktuvi)",
-  "@fenCopiedToClipboard": {},
-  "recognitionFailed": "Atpazīšana neizdevās: {error}",
-  "@recognitionFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Invalid FEN structure"
-      }
-    }
-  },
-  "myRating": "Mans vērtējums",
-  "@myRating": {},
-  "gamesPlayed": "Spēlētās spēles",
-  "@gamesPlayed": {},
-  "wins": "Uzvaras",
-  "@wins": {},
-  "losses": "Zaudējumi",
-  "@losses": {},
-  "draws": "Neizšķirti",
-  "@draws": {},
-  "lastUpdated": "Pēdējo reizi atjaunināts",
-  "@lastUpdated": {},
-  "format": "Formāts:",
-  "@format": {},
-  "resetStatistics": "Atiestatīt statistiku",
-  "@resetStatistics": {},
-  "drawRate": "Neizšķirtu īpatsvars",
-  "@drawRate": {},
-  "lossRate": "Zaudējumu īpatsvars",
-  "@lossRate": {},
-  "aiStatistics": "MI statistika",
-  "@aiStatistics": {},
-  "enableStatistics": "Iespējot statistiku",
-  "@enableStatistics": {},
-  "enableStatistics_Detail": "Kad iespējots, spēļu rezultāti tiks reģistrēti statistikā. Tomēr spēles, kas ietver gājienu atcelšanu, netiks reģistrētas. Kad atspējots, statistikas vākšana tiek apturēta.",
-  "@enableStatistics_Detail": {},
-  "thisWillResetAllGameStatistics": "Tiks atiestatīta visa spēļu statistika. Šo darbību nevar atsaukt.",
-  "@thisWillResetAllGameStatistics": {},
-  "boardInnerRingSize": "Dēļa iekšējā gredzena izmērs",
-  "@boardInnerRingSize": {},
-  "boardShadowEnabled": "Dēļa ēna",
-  "@boardShadowEnabled": {},
-  "trapAwareness": "Slazdu noteikšana",
-  "@trapAwareness": {},
-  "trapAwarenessDescription": "Analīzes laikā izcel slazdu gājienus ar trekniem apļiem un bultām.",
-  "@trapAwarenessDescription": {},
-  "trapExists": "Pastāv slazds. Slazdu gājieni: {trapMoves}",
-  "@trapExists": {
-    "placeholders": {
-      "trapMoves": {
-        "type": "String"
-      }
-    }
-  },
-  "custodianCapture": "Sānu tveršana",
-  "@custodianCapture": {},
-  "custodianCaptureDescription": "Ievietojiet vienu no pretinieka gabaliem starp diviem jūsu taisnā līnijā, lai to uztvertu.",
-  "@custodianCaptureDescription": {},
-  "custodianCaptureEnable": "Ļaujiet sānu uztveršanu",
-  "@custodianCaptureEnable": {},
-  "interventionCapture": "Iejaukšanās",
-  "@interventionCapture": {},
-  "interventionCaptureDescription": "Pārvietojieties tukšā punktā starp diviem pretinieka gabaliem, lai tos abus uztvertu.",
-  "@interventionCaptureDescription": {},
-  "interventionCaptureEnable": "Ļaujiet uztvert intervenci",
-  "@interventionCaptureEnable": {},
-  "leapCapture": "Lēciena uztveršana",
-  "@leapCapture": {},
-  "leapCaptureDescription": "Uztveriet, pārlecot virs blakus esošā pretinieka gabala tukšajā punktā ārpus tā.",
-  "@leapCaptureDescription": {},
-  "leapCaptureEnable": "Ļaujiet lēciena uztveršanai",
-  "@leapCaptureEnable": {},
-  "captureApplicableLines": "Piemērojamās līnijas",
-  "@captureApplicableLines": {},
-  "captureSquareEdges": "Gar laukuma malām",
-  "@captureSquareEdges": {},
-  "captureCrossLines": "Gar ortogonālām līnijām, kas šķērso kvadrātu",
-  "@captureCrossLines": {},
-  "captureDiagonalLines": "Gar diagonālām līnijām, kas šķērso kvadrātu",
-  "@captureDiagonalLines": {},
-  "captureExecutionPhases": "Izpildes posmi",
-  "@captureExecutionPhases": {},
-  "capturePiecesCondition": "Pieejamība kustīgajā fāzē, pamatojoties uz atlikušajiem gabaliem",
-  "@capturePiecesCondition": {},
-  "capturePiecesConditionUnlimited": "Nav ierobežojuma",
-  "@capturePiecesConditionUnlimited": {},
-  "capturePiecesConditionSelfLeqThree": "Pieejams, kad jums ir trīs vai mazāk",
-  "@capturePiecesConditionSelfLeqThree": {},
-  "stopPlacingWhenTwoEmptySquares": "Pārtraukt novietošanu, kad paliek tikai divi tukši kvadrāti",
-  "@stopPlacingWhenTwoEmptySquares": {},
-  "stopPlacingWhenTwoEmptySquares_Detail": "Kad iespējots, novietošanas fāze beidzas un gājienu fāze sākas, kad uz galda ir palikušas tikai 2 tukšas vietas, neatkarīgi no figūrām rokā. Šis noteikums attiecas tikai uz spēlēm ar 12 figūrām.",
-  "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@@locale": "lv",
+    "appName": "Dzirnavas",
+    "@appName": {
+        "description": "The app name"
+    },
+    "welcome": "Laipni lūdzam",
+    "@welcome": {
+        "description": "Welcome"
+    },
+    "yes": "Jā",
+    "@yes": {
+        "description": "Yes"
+    },
+    "no": "Nē",
+    "@no": {
+        "description": "No"
+    },
+    "game": "Spēle",
+    "@game": {
+        "description": "Game"
+    },
+    "humanVsAi": "Cilvēks vs. AI",
+    "@humanVsAi": {
+        "description": "Human Vs AI"
+    },
+    "humanVsHuman": "Cilvēks pret cilvēku",
+    "@humanVsHuman": {
+        "description": "Human Vs Human"
+    },
+    "aiVsAi": "AI vs. AI",
+    "@aiVsAi": {
+        "description": "AI Vs AI"
+    },
+    "humanVsCloud": "Cilvēks pret mākoni",
+    "@humanVsCloud": {
+        "description": "Human Vs Cloud"
+    },
+    "humanVsLAN": "Cilvēks pret LAN",
+    "@humanVsLAN": {
+        "description": "Human Vs LAN"
+    },
+    "testViaLAN": "Tests, izmantojot LAN",
+    "@testViaLAN": {
+        "description": "Test Via LAN"
+    },
+    "move": "Pārvietot",
+    "@move": {
+        "description": "Move"
+    },
+    "showMoveList": "Pārvietojumu saraksts",
+    "@showMoveList": {
+        "description": "Move list"
+    },
+    "moveList": "Pārvietojumu saraksts",
+    "@moveList": {
+        "description": "Move list"
+    },
+    "noGameRecord": "Nav ieraksta",
+    "@noGameRecord": {
+        "description": "No record"
+    },
+    "ok": "LABI",
+    "@ok": {
+        "description": "OK"
+    },
+    "confirm": "Apstiprināt",
+    "@confirm": {
+        "description": "Confirm"
+    },
+    "cancel": "Atcelt",
+    "@cancel": {
+        "description": "Cancel"
+    },
+    "tipSelectWrong": "Izvēlieties nepareizu gabalu.",
+    "@tipSelectWrong": {
+        "description": "Select the wrong piece."
+    },
+    "tipPlace": "Ievietojiet savus gabalus.",
+    "@tipPlace": {
+        "description": "Place your pieces."
+    },
+    "tipBanPlace": "Šeit to nevar ievietot.",
+    "@tipBanPlace": {
+        "description": "Cannot place it here."
+    },
+    "tipPlaced": "Jūs ievietojāt.",
+    "@tipPlaced": {
+        "description": "Placed."
+    },
+    "tipRemove": "Noņemiet kādu gabaliņu.",
+    "@tipRemove": {
+        "description": "Remove a piece."
+    },
+    "tipBanRemove": "Jūs to nevarat noņemt.",
+    "@tipBanRemove": {
+        "description": "Cannot remove."
+    },
+    "tipRemoved": "Jūs noņēmāt.",
+    "@tipRemoved": {
+        "description": "Removed."
+    },
+    "tipMove": "Pārvietot figūru.",
+    "@tipMove": {
+        "description": "Move a piece."
+    },
+    "tipCannotPlace": "Jūs nevarat šeit novietot savu figūru.",
+    "@tipCannotPlace": {
+        "description": "You can't place your piece here."
+    },
+    "tipCannotMove": "Jūs nevarat pārvietot savu figūru šeit.",
+    "@tipCannotMove": {
+        "description": "You can't move your piece here."
+    },
+    "tipMill": "Dzirnavas! Paņem pretinieka figūru.",
+    "@tipMill": {
+        "description": "Mill! Take your opponent's piece."
+    },
+    "tipContinueMill": "Turpiniet ņemt pretinieka figūru.",
+    "@tipContinueMill": {
+        "description": "Continue to take your opponent's piece."
+    },
+    "tipSelectOpponentsPiece": "Izvēlieties vienu no pretinieka figūrām.",
+    "@tipSelectOpponentsPiece": {
+        "description": "Select one of your opponent's pieces."
+    },
+    "tipCannotRemovePieceFromMill": "Jūs nevarat izņemt figūru no dzirnavām.",
+    "@tipCannotRemovePieceFromMill": {
+        "description": "You cannot remove a piece from a mill."
+    },
+    "tipCanMoveOnePoint": "Figūra var pārvietoties par 1 punktu.",
+    "@tipCanMoveOnePoint": {
+        "description": "A piece can move 1 point."
+    },
+    "tipCannotMoveOpponentsPieces": "Jūs nevarat pārvietot pretinieka figūru.",
+    "@tipCannotMoveOpponentsPieces": {
+        "description": "You can't move your opponent's pieces."
+    },
+    "tipSelectPieceToMove": "Izvēlieties savu figūru, ko pārvietot.",
+    "@tipSelectPieceToMove": {
+        "description": "Select your piece to move."
+    },
+    "tipHaveThreePiecesLeft": "Jums ir palikušas trīs figūras.",
+    "@tipHaveThreePiecesLeft": {
+        "description": "You have 3 pieces left."
+    },
+    "tipCanMoveToAnyPoint": "Jūs varat pārvietoties uz jebkuru punktu.",
+    "@tipCanMoveToAnyPoint": {
+        "description": "You can move to any point you like."
+    },
+    "tipToMove": "{player}, lai pārvietotos.",
+    "@tipToMove": {
+        "description": " to move."
+    },
+    "whiteWin": "Uzvar 1. spēlētājs!",
+    "@whiteWin": {
+        "description": "Player 1 wins!"
+    },
+    "blackWin": "2. spēlētājs uzvar!",
+    "@blackWin": {
+        "description": "Player 2 wins!"
+    },
+    "won": "Uzvarēja",
+    "@won": {
+        "description": "Won"
+    },
+    "lost": "Zaudēts",
+    "@lost": {
+        "description": "Lost"
+    },
+    "thinking": "Domājot…",
+    "@thinking": {
+        "description": "Thinking..."
+    },
+    "newGame": "Jauna spēle",
+    "@newGame": {
+        "description": "New game"
+    },
+    "importGame": "Importēt spēli",
+    "@importGame": {
+        "description": "Import game"
+    },
+    "exportGame": "Eksportēt spēli",
+    "@exportGame": {
+        "description": "Export game"
+    },
+    "gameImported": "Spēle importēta.",
+    "@gameImported": {
+        "description": "Game imported from the clipboard."
+    },
+    "cannotImport": "Nevar importēt {invalidMove}",
+    "@cannotImport": {
+        "description": "Cannot import"
+    },
+    "movesAndRulesNotMatch": "Kustības un noteikumi nesakrīt.",
+    "@movesAndRulesNotMatch": {
+        "description": "Rules and moves do not match."
+    },
+    "pleaseWait": "Lūdzu, uzgaidiet.",
+    "@pleaseWait": {
+        "description": "Please wait..."
+    },
+    "restartGame": "Restartēt pašreizējo spēli?",
+    "@restartGame": {
+        "description": "Restart current game?"
+    },
+    "restart": "Restartēt",
+    "@restart": {
+        "description": "Restart"
+    },
+    "gameStarted": "Spēle ir uzsākta, lūdzu, ievietojiet.",
+    "@gameStarted": {
+        "description": "Game started, please place"
+    },
+    "analyzing": "Analizē…",
+    "@analyzing": {
+        "description": "Analyzing ..."
+    },
+    "error": "Kļūda: {message}",
+    "@error": {
+        "description": "Error"
+    },
+    "winRate": "Uzvaras koeficients",
+    "@winRate": {
+        "description": "Win Rate"
+    },
+    "score": "Rezultāts:",
+    "@score": {
+        "description": "Score"
+    },
+    "white": "Spēlētājs 1",
+    "@white": {
+        "description": "Player 1"
+    },
+    "black": "Spēlētājs 2",
+    "@black": {
+        "description": "Player 2"
+    },
+    "loseReasonlessThanThree": "{player} gabalu skaits ir mazāks par trim.",
+    "@loseReasonlessThanThree": {
+        "description": " piece count is less than three."
+    },
+    "loseReasonResign": "{player} atkāpšanās.",
+    "@loseReasonResign": {
+        "description": " resign."
+    },
+    "loseReasonNoWay": "{player} vairs nav kā iet.",
+    "@loseReasonNoWay": {
+        "description": " is no way to go."
+    },
+    "loseReasonBoardIsFull": "Dēlis ir pilns, un {player} vairs nav kur iet.",
+    "@loseReasonBoardIsFull": {
+        "description": "The board is full, no way to go."
+    },
+    "loseReasonTimeOver": "Laiks ir beidzies, {player} zaudēts.",
+    "@loseReasonTimeOver": {
+        "description": "Time Over"
+    },
+    "drawReasonRule50": "Pārvietošanas fāzē pēdējā noteiktajā gājienu skaitā nav izņemta neviena figūra.",
+    "@drawReasonRule50": {
+        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+    },
+    "drawReasonBoardIsFull": "Tas ir neizšķirts, jo tāfele ir pilna.",
+    "@drawReasonBoardIsFull": {
+        "description": "It is a Draw because the board is full"
+    },
+    "drawReasonThreefoldRepetition": "Tas ir neizšķirts trīskāršas atkārtošanās dēļ.",
+    "@drawReasonThreefoldRepetition": {
+        "description": "It is a Draw because of threefold repetition."
+    },
+    "gameOverUnknownReason": "Spēle ir beigusies! Nav zināms iemesls.",
+    "@gameOverUnknownReason": {
+        "description": "Game Over! Unknown reason."
+    },
+    "gameOver": "Spēles beigas",
+    "@gameOver": {
+        "description": "Game Over"
+    },
+    "youWin": "Jūs uzvarējāt! Apsveicam!",
+    "@youWin": {
+        "description": "You win! Congratulations!"
+    },
+    "challengeHarderLevel": "Izaicinājums grūtāks līmenis? Jaunais līmenis būs {level}!",
+    "@challengeHarderLevel": {
+        "description": "Challenge harder level?"
+    },
+    "youLose": "Jūs zaudējat!",
+    "@youLose": {
+        "description": "You Lose!"
+    },
+    "analyze": "Analizēt",
+    "@analyze": {
+        "description": "Analyze"
+    },
+    "about": "Par",
+    "@about": {
+        "description": "About"
+    },
+    "version": "Versija: {versionNumber}",
+    "@version": {
+        "description": "Version"
+    },
+    "thanks": "Paldies",
+    "@thanks": {
+        "description": "Thanks"
+    },
+    "settings": "Iestatījumi",
+    "@settings": {
+        "description": "Settings"
+    },
+    "options": "Iespējas",
+    "@options": {
+        "description": "Options"
+    },
+    "generalSettings": "Vispārīgie iestatījumi",
+    "@generalSettings": {
+        "description": "General Settings"
+    },
+    "skillLevel": "Grūtības līmenis",
+    "@skillLevel": {
+        "description": "Difficulty level"
+    },
+    "moveTime": "Mākslīgā intelekta domāšanas laiks",
+    "@moveTime": {
+        "description": "AI thinking time"
+    },
+    "difficulty": "Grūtības",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
+    "playSounds": "Skaņas efekti",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
+    "playSoundsInTheGame": "Spēlē atskaņot skaņas",
+    "@playSoundsInTheGame": {
+        "description": "Play sounds in the game"
+    },
+    "keepMuteWhenTakingBack": "Atgriešanās laikā saglabāt izslēgtu skaņu",
+    "@keepMuteWhenTakingBack": {
+        "description": "Keep mute when taking back"
+    },
+    "tone": "Toni",
+    "@tone": {
+        "description": "Tone"
+    },
+    "whoMovesFirst": "Pirmais gājiens",
+    "@whoMovesFirst": {
+        "description": "First move"
+    },
+    "human": "Cilvēks",
+    "@human": {
+        "description": "Human"
+    },
+    "ai": "MĀKSLĪGAIS INTELEKTS",
+    "@ai": {
+        "description": "AI"
+    },
+    "alternate": "Alternatīva",
+    "@alternate": {
+        "description": "Alternate"
+    },
+    "isAutoRestart": "Automātiska spēles atsākšana, kad spēle ir beigusies",
+    "@isAutoRestart": {
+        "description": "Auto-restart game when game over"
+    },
+    "isAutoChangeFirstMove": "Automātiski mainīt pirmo gājienu",
+    "@isAutoChangeFirstMove": {
+        "description": "Auto Change First Move"
+    },
+    "shufflingEnabled": "Nejaušs gājiens",
+    "@shufflingEnabled": {
+        "description": "Random move"
+    },
+    "misc": "Dažādi",
+    "@misc": {
+        "description": "Miscellaneous"
+    },
+    "rules": "Noteikumi",
+    "@rules": {
+        "description": "Rules"
+    },
+    "piecesCount": "Katra spēlētāja figūru skaits",
+    "@piecesCount": {
+        "description": "The number of pieces each player has"
+    },
+    "piecesCount_Detail": "Cik figūru ir katram spēlētājam?",
+    "@piecesCount_Detail": {
+        "description": "How many pieces does each player have?"
+    },
+    "flyPieceCount": "Lidojošās figūras numurs",
+    "@flyPieceCount": {
+        "description": "The number of the flying piece"
+    },
+    "flyPieceCount_Detail": "Ja ir ieslēgta funkcija \"Lidojošā figūra\", kad spēlētāja figūru skaits ir samazināts līdz noteiktam skaitlim, viņa figūras var brīvi pārvietoties uz jebkuru neaizņemtu punktu, nevis tikai uz blakus esošiem punktiem, kā tas ir pārējā spēles laikā.",
+    "@flyPieceCount_Detail": {
+        "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    },
+    "piecesAtLeastCount": "Vismazākais figūru skaits",
+    "@piecesAtLeastCount": {
+        "description": "Pieces At Least"
+    },
+    "hasDiagonalLines": "Diagonālās līnijas",
+    "@hasDiagonalLines": {
+        "description": "Diagonal lines"
+    },
+    "hasDiagonalLines_Detail": "Pievienojiet laukumam četras diagonālās līnijas.",
+    "@hasDiagonalLines_Detail": {
+        "description": "Add four diagonal lines to the board."
+    },
+    "isDefenderMoveFirst": "Otrais spēlētājs pārvietojas pirmais",
+    "@isDefenderMoveFirst": {
+        "description": "The second player moves first"
+    },
+    "isDefenderMoveFirst_Detail": "Spēlētājs, kurš izvietošanas fāzē pārvietojas otrais, pārvietošanas fāzē pārvietojas pirmais.",
+    "@isDefenderMoveFirst_Detail": {
+        "description": "The player who moves second in the placing phase moves first in the moving phase."
+    },
+    "mayRemoveMultiple": "Vairākkārtēja pārvietošana",
+    "@mayRemoveMultiple": {
+        "description": "Multi-remove"
+    },
+    "mayRemoveMultiple_Detail": "Ja spēlētājs noslēdz vairāk nekā vienu dzirnaviņu vienlaicīgi, viņš noņems tik dzirnaviņu, cik viņš noslēdzis.",
+    "@mayRemoveMultiple_Detail": {
+        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+    },
+    "mayRemoveFromMillsAlways": "Iznīcināt dzirnavas",
+    "@mayRemoveFromMillsAlways": {
+        "description": "Destroy mills"
+    },
+    "mayRemoveFromMillsAlways_Detail": "Pēc noklusējuma spēlētājiem vispirms ir jānoņem visas citas figūras, pirms noņemt figūru no izveidotajām dzirnavām. Ieslēdziet šo opciju, lai atspējotu šo ierobežojumu.",
+    "@mayRemoveFromMillsAlways_Detail": {
+        "description": "mayRemoveFromMillsAlways_Detail"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull": "Otrais spēlētājs zaudē, kad tāfele ir pilna",
+    "@isWhiteLoseButNotDrawWhenBoardFull": {
+        "description": "The second player loses when the board is full"
+    },
+    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ja izvietošanas fāzes beigās dēlis ir pilns, zaudē tā puse, kas pirmā izvieto figūru. Pretējā gadījumā spēle ir neizšķirta.",
+    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+    },
+    "isLoseButNotChangeSideWhenNoWay": "Zaudēt, ja nav likumīgu gājienu",
+    "@isLoseButNotChangeSideWhenNoWay": {
+        "description": "Lose when no legal moves"
+    },
+    "isLoseButNotChangeSideWhenNoWay_Detail": "Spēlētājs zaudē, ja pretinieks bloķē tā, ka to nevar pārvietot. Ja šī opcija ir atspējota, mainiet pusi, lai pārvietotos.",
+    "@isLoseButNotChangeSideWhenNoWay_Detail": {
+        "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+    },
+    "mayFly": "Skrējiens",
+    "@mayFly": {
+        "description": "Flying"
+    },
+    "mayFly_Detail": "Ja spēlētājam ir palikušas tikai trīs vai četras (konfigurējamas) figūras, viņš var pārvietot figūru uz jebkuru brīvu punktu.",
+    "@mayFly_Detail": {
+        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+    },
+    "nMoveRule": "N gājienu noteikums",
+    "@nMoveRule": {
+        "description": "N-move rule"
+    },
+    "nMoveRule_Detail": "Spēle tiek izlozēta, ja katrs spēlētājs noteiktā gājienu skaitā nav izdarījis nevienu gājienu.",
+    "@nMoveRule_Detail": {
+        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+    },
+    "rollback": "Atgriešanās",
+    "@rollback": {
+        "description": "Rollback"
+    },
+    "pleaseSelect": "Lūdzu, izvēlieties",
+    "@pleaseSelect": {
+        "description": "Please select"
+    },
+    "copy": "Kopēt",
+    "@copy": {
+        "description": "Copy"
+    },
+    "moveHistoryCopied": "Pārvietojumu vēsture tiek kopēta uz starpliktuvi.",
+    "@moveHistoryCopied": {
+        "description": "Move history copied to clipboard"
+    },
+    "help": "Palīdzība",
+    "@help": {
+        "description": "Help"
+    },
+    "feedback": "Atsauksmes",
+    "@feedback": {
+        "description": "Feedback"
+    },
+    "exit": "Iziet no",
+    "@exit": {
+        "description": "Exit"
+    },
+    "ruleSettings": "Noteikumi",
+    "@ruleSettings": {
+        "description": "Rule Settings"
+    },
+    "color": "Krāsa",
+    "@color": {
+        "description": "Color"
+    },
+    "boardColor": "Dēļa krāsa",
+    "@boardColor": {
+        "description": "Board color"
+    },
+    "pieceColor": "Gabala krāsa",
+    "@pieceColor": {
+        "description": "Piece color"
+    },
+    "backgroundColor": "Fona krāsa",
+    "@backgroundColor": {
+        "description": "Background color"
+    },
+    "lineColor": "Borta līnijas krāsa",
+    "@lineColor": {
+        "description": "Board line color"
+    },
+    "whitePieceColor": "Spēlētāja 1 figūras krāsa",
+    "@whitePieceColor": {
+        "description": "Player 1 piece color"
+    },
+    "blackPieceColor": "Spēlētāja 2 figūras krāsa",
+    "@blackPieceColor": {
+        "description": "Player 2 piece color"
+    },
+    "messageColor": "Ziņojuma krāsa",
+    "@messageColor": {
+        "description": "Message color"
+    },
+    "isPieceCountInHandShown": "Rādīt rokā esošo figūru skaitu",
+    "@isPieceCountInHandShown": {
+        "description": "Show count of pieces in hand"
+    },
+    "isNotationsShown": "Rādīt uzrakstus uz tāfeles",
+    "@isNotationsShown": {
+        "description": "Show notations on board"
+    },
+    "isHistoryNavigationToolbarShown": "Rādīt vēstures navigācijas rīkjoslu",
+    "@isHistoryNavigationToolbarShown": {
+        "description": "Show history navigation toolbar"
+    },
+    "display": "Rādīt",
+    "@display": {
+        "description": "Display"
+    },
+    "boardBorderLineWidth": "Borta robežas platums",
+    "@boardBorderLineWidth": {
+        "description": "Board borderline width"
+    },
+    "boardInnerLineWidth": "Borta iekšējās līnijas platums",
+    "@boardInnerLineWidth": {
+        "description": "Board inner line width"
+    },
+    "pieceWidth": "Gabala platums",
+    "@pieceWidth": {
+        "description": "Piece width"
+    },
+    "fontSize": "Fonta lielums",
+    "@fontSize": {
+        "description": "Font size"
+    },
+    "standardNotation": "WMD pieraksts",
+    "@standardNotation": {
+        "description": "Standard notation"
+    },
+    "restore": "Atjaunot",
+    "@restore": {
+        "description": "Restore"
+    },
+    "restoreDefaultSettings": "Atjaunot noklusējuma iestatījumus",
+    "@restoreDefaultSettings": {
+        "description": "Restore Default Settings"
+    },
+    "pick": "Izvēlieties {element}",
+    "@pick": {
+        "description": "Pick "
+    },
+    "info": "Info",
+    "@info": {
+        "description": "Info"
+    },
+    "hint": "Padoms",
+    "@hint": {
+        "description": "Hint"
+    },
+    "player": "spēlētājs",
+    "@player": {
+        "description": "player"
+    },
+    "player1": "Spēlētājs 1",
+    "@player1": {
+        "description": "Player 1"
+    },
+    "player2": "Spēlētājs 2",
+    "@player2": {
+        "description": "Player 2"
+    },
+    "howToPlay": "Kā spēlēt",
+    "@howToPlay": {
+        "description": "How to play"
+    },
+    "toPlacePiece": "Pieskarieties jebkuram pieejamajam punktam, lai novietotu figūru.",
+    "@toPlacePiece": {
+        "description": "Tap on any available point to place the piece."
+    },
+    "toSelectPiece": "Pieskarieties figūrai, lai to pārvietotu.",
+    "@toSelectPiece": {
+        "description": "Tap on a piece to move it."
+    },
+    "toMovePiece": "Pieskarieties punktam, kas savienots ar figūru, lai to pārvietotu.",
+    "@toMovePiece": {
+        "description": "Tap on point connected to piece to move it."
+    },
+    "toRemovePiece": "Pieskarieties pretinieka vienai figūrai, lai to noņemtu.",
+    "@toRemovePiece": {
+        "description": "Tap on one of the opponent's pieces to remove it."
+    },
+    "needToCreateMillFirst": "Pirms figūras noņemšanas vispirms ir jāizveido dzirnavas.",
+    "@needToCreateMillFirst": {
+        "description": "You need to create a mill first before you can remove a piece."
+    },
+    "needToPlayWithOwnPieces": "Jums ir jāspēlē ar figūrām.",
+    "@needToPlayWithOwnPieces": {
+        "description": "You need to play with your pieces."
+    },
+    "statistics": "Statistika",
+    "@statistics": {
+        "description": "Statistics"
+    },
+    "totalGames": "Kopējais spēļu skaits",
+    "@totalGames": {
+        "description": "Total games"
+    },
+    "results": "Rezultāti",
+    "@results": {
+        "description": "Results"
+    },
+    "left": "pa kreisi",
+    "@left": {
+        "description": "left"
+    },
+    "privacyPolicy": "Privātuma politika",
+    "@privacyPolicy": {
+        "description": "Privacy Policy"
+    },
+    "privacyPolicy_Detail_1": "Lūdzu, uzmanīgi izlasiet un pārliecinieties, ka pilnībā to saprotat un piekrītat. ",
+    "@privacyPolicy_Detail_1": {
+        "description": "Privacy Policy Detail 1"
+    },
+    "privacyPolicy_Detail_2": ". Ja nepiekrītat šai politikai, lūdzu, nelietojiet šo lietotni. Lietojot lietotni, jūs piekrītat šiem noteikumiem.",
+    "@privacyPolicy_Detail_2": {
+        "description": "Privacy Policy Detail 2"
+    },
+    "and": " un ",
+    "@and": {},
+    "accept": "Piekrītu",
+    "@accept": {
+        "description": "Accept"
+    },
+    "takeBack": "Atgriezt",
+    "@takeBack": {
+        "description": "Take back"
+    },
+    "takingBack": "Atgriešanās…",
+    "@takingBack": {
+        "description": "Taking back..."
+    },
+    "waiting": "Gaidīšana…",
+    "@waiting": {
+        "description": "Waiting..."
+    },
+    "stepForward": "Solis uz priekšu",
+    "@stepForward": {
+        "description": "Step forward"
+    },
+    "takeBackAll": "Atgriezt visu",
+    "@takeBackAll": {
+        "description": "Take back all"
+    },
+    "stepForwardAll": "Solis uz priekšu visi",
+    "@stepForwardAll": {
+        "description": "Step forward all"
+    },
+    "moveNow": "Pārvietot tagad",
+    "@moveNow": {
+        "description": "Move now"
+    },
+    "done": "Paveikts.",
+    "@done": {
+        "description": "Done."
+    },
+    "crackMill": "Plaisu dzirnavas",
+    "@crackMill": {
+        "description": "Crack-mill"
+    },
+    "crackMill_Detail": "Ja spēlētājam ir tikai gabali dzirnavās, dzirnavās esošie gabali netiks bloķēti, lai tos noņemtu.",
+    "@crackMill_Detail": {
+        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+    },
+    "animationDuration": "Animācijas ilgums",
+    "@animationDuration": {
+        "description": "Animation duration"
+    },
+    "none": "Nav",
+    "@none": {
+        "description": "None"
+    },
+    "theme": "Tēma",
+    "@theme": {
+        "description": "Theme"
+    },
+    "helpContent": "Spēles mērķis ir atstāt pretinieku ar mazāk nekā trim figūrām vai bez likumīgiem gājieniem.\n\nSpēle automātiski tiek izlozēta, ja kāda pozīcija rodas trešo reizi vai ja pēdējo 100 (konfigurējamu) gājienu laikā nav izdarīts neviens gājiens.\n\nSpēle norisinās trīs posmos:\n\n1. Figūru novietošana uz brīvajiem punktiem\n2. Figūru pārvietošana uz blakus punktiem\n3. (fakultatīvs posms) figūru pārvietošana uz jebkuru brīvo punktu, kad spēlētājs ir samazinājies līdz trim figūrām.\n\nNovietošana\n\nSpēle sākas ar tukšu galdu, kas sastāv no režģa ar divdesmit četriem punktiem. Spēlētāji pēc kārtas izvieto savas figūras uz brīvajiem punktiem, līdz katrs spēlētājs ir izvietojis visas figūras uz galda. Ja spēlētājs var novietot trīs savas figūras taisni, viņam ir \"dzirnaviņas\", un viņš var noņemt vienu pretinieka figūru no dēļa.\n\nDažos noteikumos ir noteikts, ka spēlētājiem vispirms ir jānoņem visas citas figūras, pirms noņemt figūru no izveidotās dzirnaviņas.\n\nDažos noteikumos izvietošanas fāzē figūriņas vairs nevar novietot līdz noņemtās figūriņas punktiem.\n\nKad visas figūriņas ir izmantotas, spēlētāji pēc kārtas sāk kustību.\n\nPārvietošanās\n\nLai pārvietotos, spēlētājs pārvieto vienu no savām figūrām pa dēļa līniju uz brīvo blakus esošo punktu. Ja viņš to nevar izdarīt, viņš ir zaudējis spēli. Tāpat kā izvietošanas fāzē, spēlētājam, kurš izlīdzina trīs savas figūras uz dēļa līnijas, ir dzirnaviņas un viņš var noņemt vienu no pretinieka figūrām. Jebkuram spēlētājam, kurš samazinās līdz divām figūrām, nav iespējas veidot jaunas dzirnaviņas, un tādējādi viņš zaudē spēli. Spēlētājs var zaudēt arī tad, ja ir vairāk nekā trīs figūras, ja pretinieks bloķē to kustību.\n\nLidojošās\n\nDažos noteikumu variantos, kad spēlētājam ir palikušas tikai trīs figūras, viņa figūras var lidot, lēkt vai lēkt uz jebkuriem brīviem punktiem, ne tikai uz blakus esošajiem.",
+    "@helpContent": {
+        "description": "Help Content"
+    },
+    "versionInfo": "Informācija par versiju",
+    "@versionInfo": {
+        "description": "Version info"
+    },
+    "eula": "EULA",
+    "@eula": {
+        "description": "EULA"
+    },
+    "license": "Licence",
+    "@license": {
+        "description": "License"
+    },
+    "sourceCode": "Avota kods",
+    "@sourceCode": {
+        "description": "Source code"
+    },
+    "appVersion": "Lietotnes versija",
+    "@appVersion": {
+        "description": "App Version"
+    },
+    "general": "Vispārīgi",
+    "@general": {
+        "description": "General"
+    },
+    "advanced": "Uzlabots",
+    "@advanced": {
+        "description": "Advanced"
+    },
+    "placing": "Ievietošana",
+    "@placing": {
+        "description": "Placing"
+    },
+    "moving": "Pārvietošana",
+    "@moving": {
+        "description": "Moving"
+    },
+    "removing": "Noņemšana",
+    "@removing": {
+        "description": "Removing"
+    },
+    "gameOverCondition": "Spēles beigu stāvoklis",
+    "@gameOverCondition": {
+        "description": "Game over condition"
+    },
+    "aisPlayStyle": "Mākslīgā intelekta spēles stils",
+    "@aisPlayStyle": {
+        "description": "AI's play style"
+    },
+    "passive": "Pasīvais",
+    "@passive": {
+        "description": "Passive"
+    },
+    "timeout": "Laika pārtraukums",
+    "@timeout": {
+        "description": "Timeout"
+    },
+    "appearance": "Izskats",
+    "@appearance": {
+        "description": "Appearance"
+    },
+    "drawOnHumanExperience": "Izmanto cilvēka pieredzi",
+    "@drawOnHumanExperience": {
+        "description": "Draw on the human experience"
+    },
+    "considerMobility": "Ņemiet vērā elementu mobilitāti",
+    "@considerMobility": {
+        "description": "Consider mobility of pieces"
+    },
+    "pieceCount": "Gabalu skaits:",
+    "@pieceCount": {
+        "description": "Piece count"
+    },
+    "inHand": "{player} rokā: {count}",
+    "@inHand": {
+        "description": "in hand"
+    },
+    "onBoard": "{player} uz borta: {count}",
+    "@onBoard": {
+        "description": "on board"
+    },
+    "boardTop": "Dēlis nobīdīts no augšas",
+    "@boardTop": {
+        "description": "Board offset from the top"
+    },
+    "notAIsTurn": "Mākslīgais intelekts nav uz rindas.",
+    "@notAIsTurn": {
+        "description": "It is not the AI's turn."
+    },
+    "aiIsNotThinking": "Mākslīgais intelekts nedomā.",
+    "@aiIsNotThinking": {
+        "description": "AI is not thinking."
+    },
+    "atEnd": "Jūs esat gājienu saraksta beigās.",
+    "@atEnd": {
+        "description": "At the end of the move list."
+    },
+    "tapBackAgainToLeave": "Pieskarieties atpakaļ, lai izietu.",
+    "@tapBackAgainToLeave": {
+        "description": "Tap Back again to exit."
+    },
+    "more": "Vairāk",
+    "@more": {
+        "description": "More"
+    },
+    "experimental": "Šī ir eksperimentāla funkcija.",
+    "@experimental": {
+        "description": "This is an experimental feature."
+    },
+    "experiments": "Eksperimenti",
+    "@experiments": {
+        "description": "Experiments"
+    },
+    "ossLicenses": "Atvērtā pirmkoda licences",
+    "@ossLicenses": {
+        "description": "Open source licenses"
+    },
+    "language": "Valoda",
+    "@language": {
+        "description": "Languages"
+    },
+    "defaultLanguage": "Noklusējuma valoda",
+    "@defaultLanguage": {
+        "description": "Default language"
+    },
+    "mayMoveInPlacingPhase": "Figūriņas var pārvietoties izvietošanas fāzē",
+    "@mayMoveInPlacingPhase": {
+        "description": "The pieces can move in the placing phase"
+    },
+    "mayMoveInPlacingPhase_Detail": "Nav atšķirīgu novietošanas un pārvietošanas fāžu, t. i., spēlētāji katrā gājienā var izlemt, vai viņi vēlas novietot figūru uz galda vai pārvietot kādu no savām figūrām (ja vien viņiem ir atlikušas figūras, ko novietot).",
+    "@mayMoveInPlacingPhase_Detail": {
+        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+    },
+    "drawerColor": "Izvēlnes krāsa",
+    "@drawerColor": {
+        "description": "Menu color"
+    },
+    "drawerTextColor": "Izvēlnes teksta krāsa",
+    "@drawerTextColor": {
+        "description": "Menu text color"
+    },
+    "drawerHighlightItemColor": "Izvēlnes izcelšanas vienuma krāsa",
+    "@drawerHighlightItemColor": {
+        "description": "Menu highlight item color"
+    },
+    "mainToolbarBackgroundColor": "Galvenās rīkjoslas fona krāsa",
+    "@mainToolbarBackgroundColor": {
+        "description": "Main toolbar background color"
+    },
+    "mainToolbarIconColor": "Galvenās rīkjoslas ikonas krāsa",
+    "@mainToolbarIconColor": {
+        "description": "main toolbar icon color"
+    },
+    "navigationToolbarBackgroundColor": "Navigācijas rīkjoslas fona krāsa",
+    "@navigationToolbarBackgroundColor": {
+        "description": "Navigation toolbar background color"
+    },
+    "navigationToolbarIconColor": "Navigācijas rīkjoslas ikonas krāsa",
+    "@navigationToolbarIconColor": {
+        "description": "Navigation toolbar icon color"
+    },
+    "autoHideToolbar": "Automātiski paslēpt rīkjoslu",
+    "@autoHideToolbar": {
+        "description": "Automatically hide the toolbar"
+    },
+    "toolbarLocationOnScreen": "Rīkjoslas atrašanās vieta ekrānā",
+    "@toolbarLocationOnScreen": {
+        "description": "Toolbar location on screen"
+    },
+    "top": "Tops",
+    "@top": {
+        "description": "Top"
+    },
+    "bottom": "Apakšā",
+    "@bottom": {
+        "description": "Bottom"
+    },
+    "center": "Centrs",
+    "@center": {
+        "description": "Center"
+    },
+    "solidColor": "Vienkrāsaina",
+    "@solidColor": {
+        "description": "Solid color"
+    },
+    "picture": "Bilde",
+    "@picture": {
+        "description": "Picture"
+    },
+    "chooseYourPicture": "Izvēlieties savu attēlu",
+    "@chooseYourPicture": {
+        "description": "Choose your picture"
+    },
+    "light": "Gaisma",
+    "@light": {
+        "description": "Light"
+    },
+    "dark": "Tumšs",
+    "@dark": {
+        "description": "Dark"
+    },
+    "themes": "Tēmas",
+    "@themes": {
+        "description": "Themes"
+    },
+    "currentTheme": "Pašreizējā tēma",
+    "@currentTheme": {
+        "description": "Current theme"
+    },
+    "saveTheme": "Saglabāt motīvu",
+    "@saveTheme": {
+        "description": "Save theme"
+    },
+    "showAnalysisGraph": "Rādīt analīzes grafiku",
+    "@showAnalysisGraph": {
+        "description": "Show analysis graph"
+    },
+    "analysis": "Analīze",
+    "@analysis": {
+        "description": "Analysis"
+    },
+    "saveGame": "Saglabā spēli",
+    "@saveGame": {
+        "description": "Save game"
+    },
+    "loadGame": "Ielādēt spēli",
+    "@loadGame": {
+        "description": "Load game"
+    },
+    "setupPosition": "Iestatīšanas pozīcija",
+    "@setupPosition": {
+        "description": "Setup position"
+    },
+    "showLegalMoves": "Rādīt likumīgus gājienus",
+    "@showLegalMoves": {
+        "description": "Show legal moves"
+    },
+    "showLastMove": "Rādīt pēdējo kustību",
+    "@showLastMove": {
+        "description": "Show last move"
+    },
+    "showArrows": "Rādīt bultiņas",
+    "@showArrows": {
+        "description": "Show arrows"
+    },
+    "pieces": "Gabali",
+    "@pieces": {
+        "description": "Pieces"
+    },
+    "showAnalysis": "Rādīt analīzi",
+    "@showAnalysis": {
+        "description": "Show analysis"
+    },
+    "threads": "Vītnes",
+    "@threads": {
+        "description": "Threads"
+    },
+    "getInvolved": "Iesaistīties",
+    "@getInvolved": {
+        "description": "Get Involved"
+    },
+    "helpImproveTranslate": "Palīdziet uzlabot tulkošanu",
+    "@helpImproveTranslate": {
+        "description": "Help improve translate"
+    },
+    "tutorial": "Apmācība",
+    "@tutorial": {
+        "description": "Tutorial"
+    },
+    "classicMill": "Klasiskās dzirnavas",
+    "@classicMill": {
+        "description": "Classic Mill"
+    },
+    "mixedMill": "Jauktās dzirnavas",
+    "@mixedMill": {
+        "description": "Mixed Mill"
+    },
+    "ceylonMill": "Ceilonas dzirnavas",
+    "@ceylonMill": {
+        "description": "Ceylon Mill"
+    },
+    "mayBreakAndRemakeMillRepeatedly": "Dzirnavas var būt salauztas un atkārtoti pārtaisītas",
+    "@mayBreakAndRemakeMillRepeatedly": {
+        "description": "Mill may be broken and remade repeatedly"
+    },
+    "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
+    "@mayBreakAndRemakeMillRepeatedly_Detail": {
+        "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+    },
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kad spēlētājs ir nonācis līdz trim figūrām un neviens spēlētājs nevar noņemt pretinieka gabalu desmit gājienu laikā, spēle ir neizšķirta.",
+    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+    },
+    "close": "Aizvērt",
+    "@close": {
+        "description": "Close"
+    },
+    "whitePiece": "Balts gabals",
+    "@whitePiece": {
+        "description": "White piece"
+    },
+    "blackPiece": "Melns gabals",
+    "@blackPiece": {
+        "description": "Black piece"
+    },
+    "emptyPoint": "Tukšs punkts",
+    "@emptyPoint": {
+        "description": "Empty point"
+    },
+    "noPoint": "Nav jēgas",
+    "@noPoint": {
+        "description": "No point"
+    },
+    "placingPhase": "Ievietošanas fāze",
+    "@placingPhase": {
+        "description": "Placing phase"
+    },
+    "movingPhase": "Pārvietošanās fāze",
+    "@movingPhase": {
+        "description": "Moving phase"
+    },
+    "flyingPhase": "Lidošanas fāze",
+    "@flyingPhase": {
+        "description": "Flying phase"
+    },
+    "sideToMove": "Pārvietojama puse: {player}",
+    "@sideToMove": {
+        "description": "Side to move"
+    },
+    "lastMove": "Pēdējais gājiens: {move}",
+    "@lastMove": {
+        "description": "Last move"
+    },
+    "selected": "Atlasīts",
+    "@selected": {
+        "description": "Selected"
+    },
+    "accessibility": "Pieejamība",
+    "@accessibility": {
+        "description": "Accessibility"
+    },
+    "screenReaderSupport": "Ekrāna lasītāja atbalsts",
+    "@screenReaderSupport": {
+        "description": "Screen reader support"
+    },
+    "isDraw": "Tas ir neizšķirts!",
+    "@isDraw": {
+        "description": "It is a Draw!"
+    },
+    "draw": "Zīmēt",
+    "@draw": {
+        "description": "Draw"
+    },
+    "pieceHighlightColor": "Gabalu izceltā krāsa",
+    "@pieceHighlightColor": {
+        "description": "Piece highlight color"
+    },
+    "algorithm": "Algoritms",
+    "@algorithm": {
+        "description": "Algorithm"
+    },
+    "endgameNMoveRule": "Beigu spēles N-Move noteikums",
+    "@endgameNMoveRule": {
+        "description": "Endgame N-Move rule"
+    },
+    "endgameNMoveRule_Detail": "Ja kādam no spēlētājiem ir tikai trīs gabali un neviens no spēlētājiem neizņem gabalu konkrētu kustību ietvaros, spēle tiek izlozēta.",
+    "@endgameNMoveRule_Detail": {
+        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+    },
+    "drawReasonEndgameRule50": "Katram spēlētājam ir tikai trīs gabali, un neviens no spēlētājiem neizņem gabalu noteiktos gājienos.",
+    "@drawReasonEndgameRule50": {
+        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+    },
+    "threefoldRepetitionRule": "Trīskāršs atkārtošanas noteikums",
+    "@threefoldRepetitionRule": {
+        "description": "Threefold repetition rule"
+    },
+    "threefoldRepetitionRule_Detail": "Spēle tiek izlozēta, ja pozīcija rodas trešo reizi.",
+    "@threefoldRepetitionRule_Detail": {
+        "description": "The game is drawn if a position occurs for the third time."
+    },
+    "continueToMakeMove": "Dzirnavas! Turpiniet veikt kustību.",
+    "@continueToMakeMove": {
+        "description": "Mill! Continue to make a move."
+    },
+    "pointStyle": "Punkta stils",
+    "@pointStyle": {
+        "description": "Point style"
+    },
+    "pointWidth": "Punkta platums",
+    "@pointWidth": {
+        "description": "Point width"
+    },
+    "solid": "Ciets",
+    "@solid": {
+        "description": "Solid"
+    },
+    "hollow": "Dobis",
+    "@hollow": {
+        "description": "Hollow"
+    },
+    "languageName": "Latviešu",
+    "@languageName": {
+        "description": "The name of the current language"
+    },
+    "moveNumber": "{count,plural, =0{Pārvietot}=1{{count} Pārvietot}other{{count} Kustības}}",
+    "@moveNumber": {
+        "description": "Moves to take back",
+        "placeholders": {
+            "count": {
+                "description": "Number of Moves",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "filename": "Faila nosaukums",
+    "@filename": {
+        "description": "File name"
+    },
+    "browse": "Pārlūkot…",
+    "@browse": {
+        "description": "Browse…"
+    },
+    "gameSavedTo": "Spēle ir saglabāta",
+    "@gameSavedTo": {
+        "description": "The game is saved to"
+    },
+    "gameFiles": "Spēļu faili",
+    "@gameFiles": {
+        "description": "Game files"
+    },
+    "loadFailed": "Ielāde neizdevās.",
+    "@loadFailed": {
+        "description": "Load failed."
+    },
+    "hasPlacedPieceCount": "Pašreizējais spēlētājs ir ievietojis {count} figūras.",
+    "@hasPlacedPieceCount": {
+        "description": "The current player has placed {count} pieces.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "noMove": "Nekādas kustības.",
+    "@noMove": {
+        "description": "No move."
+    },
+    "restoredPosition": "Atjaunota sākotnējā pozīcija.",
+    "@restoredPosition": {
+        "description": "Restored initial position."
+    },
+    "clean": "Tīrs",
+    "@clean": {
+        "description": "Clean"
+    },
+    "cleanedUp": "Satīrīts.",
+    "@cleanedUp": {
+        "description": "Cleaned up."
+    },
+    "remove": "Noņemt",
+    "@remove": {
+        "description": "Remove"
+    },
+    "noPiecesCanBeRemoved": "Nevienu gabalu nevar noņemt.",
+    "@noPiecesCanBeRemoved": {
+        "description": "No pieces can be removed."
+    },
+    "empty": "Tukšs",
+    "@empty": {
+        "description": "Empty point, used in setup position toolbar."
+    },
+    "placedCount": "Izvietots ({count})",
+    "@placedCount": {
+        "description": "Placed N pieces. Used in setup position toolbar.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces placed.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} ir jānoņem.",
+    "@pieceCountNeedToRemove": {
+        "description": "Pieces need to remove.",
+        "placeholders": {
+            "count": {
+                "description": "Number of pieces.",
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "placedPieceCount": "Nolikto gabalu skaits izvietošanas fāzē.",
+    "@placedPieceCount": {
+        "description": "Placed piece count in the placing phase. Used in Semantics."
+    },
+    "notPlacingPhase": "Nenovieto fāzi, nevar to mainīt.",
+    "@notPlacingPhase": {
+        "description": "Not placing phase, cannot change it."
+    },
+    "paste": "Ielīmēt",
+    "@paste": {
+        "description": "Paste"
+    },
+    "pasteDone": "Pasta ir gatava.",
+    "@pasteDone": {
+        "description": "The paste is done."
+    },
+    "cannotPaste": "Nevar ielīmēt.",
+    "@cannotPaste": {
+        "description": "Cannot paste."
+    },
+    "isUnplacedAndRemovedPiecesShown": "Rādīt nenovietotos un noņemtos gabalus",
+    "@isUnplacedAndRemovedPiecesShown": {
+        "description": "Show unplaced and removed pieces"
+    },
+    "reopenToTakeEffect": "Izejiet un atkārtoti atveriet lietotni, lai iestatījumi stātos spēkā.",
+    "@reopenToTakeEffect": {
+        "description": "Exit and reopen app for settings to take effect."
+    },
+    "fullScreen": "Pilnekrāna režīms",
+    "@fullScreen": {
+        "description": "Full screen"
+    },
+    "forest": "Mežs",
+    "@forest": {},
+    "desktopImage": "Darbvirsmas attēls",
+    "@desktopImage": {},
+    "invalidPosition": "Nederīga pozīcija.",
+    "@invalidPosition": {},
+    "shareGIF": "Kopīgojiet GIF",
+    "@shareGIF": {},
+    "duration": "Ilgums",
+    "@duration": {},
+    "pixelRatio": "Pikseļu attiecība",
+    "@pixelRatio": {},
+    "gameScreenRecorder": "Spēles ekrāna ierakstītājs",
+    "@gameScreenRecorder": {},
+    "previous": "Iepriekšējais",
+    "@previous": {},
+    "next": "Nākamais",
+    "@next": {},
+    "skip": "Izlaist",
+    "@skip": {},
+    "gotIt": "Sapratu",
+    "@gotIt": {},
+    "youCanModifyRules": "Noteikumu iestatījumos varat mainīt spēles noteikumus.",
+    "@youCanModifyRules": {},
+    "youCanUseMouseWheelInPicker": "Varat izmantot peles ritenīti, lai mainītu atlasītāja vērtību.",
+    "@youCanUseMouseWheelInPicker": {},
+    "noTimeLimitForThinking": "AI Domāšanas laiks, kas iestatīts uz 0, nozīmē, ka domāšanai nav laika ierobežojumu.",
+    "@noTimeLimitForThinking": {},
+    "noteAiThinkingTimeMayNotBePrecise": "Lūdzu, ņemiet vērā, ka AI domāšanas laika pielāgošana var nebūt pilnīgi precīza. Faktiskais domāšanas laiks var būt īsāks, ja grūtības līmenis ir iestatīts uz zemāku vērtību, un var būt garāks, ja AI ir vidējas domāšanas laiks, kad laiks beidzas.",
+    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "noteActualDifficultyLevelMayBeLimited": "Ja iestatāt augstu grūtības pakāpi, bet nepalielināt AI domāšanas laiku, domāšanas laika ierobežojuma dēļ faktiskais grūtības līmenis var būt ierobežots līdz zemākam. Faktiskā vērtība var atšķirties atkarībā no iekārtas veiktspējas.",
+    "@noteActualDifficultyLevelMayBeLimited": {},
+    "whatIsMtdf": "MTD(f) ir alfa-beta meklēšanas algoritma modificēts veids, kura mērķis ir uzlabot efektivitāti, atkārtoti izmantojot starpposma meklēšanas rezultātus un izmantojot labu sākotnējo minējumu, lai sašaurinātu meklēšanas vietu.",
+    "@whatIsMtdf": {},
+    "whatIsPvs": "PVS (Principal Variation Search) ir meklēšanas algoritms, lai atrastu labāko kustību noteiktā pozīcijā. Tas ir alfa-beta algoritma uzlabojums un izmanto nulles vai nulles logu meklēšanu, lai apstiprinātu, ka kustība ir sliktāka vai nav sliktāka par jau drošu rezultātu no galvenās variācijas. PVS koncentrējas uz daudzsološākajiem gājieniem un izvairās no nevajadzīgas suboptimālo zaru meklēšanas, kas palīdz uzlabot meklēšanas efektivitāti.",
+    "@whatIsPvs": {},
+    "whatIsAlphaBeta": "Alfa-beta algoritms ir meklēšanas algoritms, lai atrastu labāko kustību. Tas izmanto minimax principu un divas vērtības — alfa un beta, lai apgrieztu meklēšanas koku un palielinātu efektivitāti. Alfa ir minimālais rezultāts, par kuru dators ir pārliecināts, ka tas var iegūt, bet beta ir maksimālais rezultāts, ko var iegūt pretinieks. Algoritms palīdz datoram pieņemt gudrus un efektīvus lēmumus spēlē.",
+    "@whatIsAlphaBeta": {},
+    "firstMoveDetail": "Šajā spēlē otrajam spēlētājam ir vieglāk uzvarēt, salīdzinot ar pirmo spēlētāju.",
+    "@firstMoveDetail": {},
+    "drawOnTheHumanExperienceDetail": "Saskaņā ar cilvēku pieredzi, ja jūs mēģināt uzvarēt, jūs zaudējat. Tā vietā tiecieties uz neizšķirtu kā savu mērķi un izvairieties zaudēt spēli. Vērojiet pretinieku un viegli ieviliniet viņu tādā stāvoklī, kurā viņi var kļūdīties. Kad viņi izrāda vājumu, izmantojiet iespēju un maigi spiediet uz uzvaru. Tādā veidā jūs varat uzvarēt spēli.",
+    "@drawOnTheHumanExperienceDetail": {},
+    "passiveDetail": "Pasīvās opcijas iespējošana liks AI atslābt, kad tam ir priekšrocības attiecīgajā pozīcijā, nevis agresīvi mēģināt uzvarēt pēc iespējas ātrāk.",
+    "@passiveDetail": {},
+    "considerMobilityOfPiecesDetail": "Ja mākslīgais intelekts ņem vērā savu figūru mobilitāti, tā mērķis būs ne tikai pēc iespējas ātrāk notvert pretinieka figūras, bet arī apsvērt iespēju bloķēt pretinieka kustības un neļaut viņiem darīt to pašu.",
+    "@considerMobilityOfPiecesDetail": {},
+    "moveRandomlyDetail": "Šīs opcijas iespējošana palielina spēles nejaušību un jautrību, savukārt tās atspējošana var palīdzēt izpētīt veidus, kā pārspēt AI.",
+    "@moveRandomlyDetail": {},
+    "whenBoardIsFull": "Kad dēlis ir pilns",
+    "@whenBoardIsFull": {},
+    "whenBoardIsFull_Detail": "Izvietošanas fāzes beigās, pirms pārvietošanās fāzes sākuma, darbība seko, ja dēlis ir pilns ar figūrām.",
+    "@whenBoardIsFull_Detail": {},
+    "sideToMoveRemovePiece": "Spēlētājs, kurš kustības fāzē kustas pirmais, noņem vienu no pretinieka figūrām.",
+    "@sideToMoveRemovePiece": {},
+    "agreeToDraw": "Abas puses vienojas par neizšķirtu.",
+    "@agreeToDraw": {},
+    "takeOpponentsPiece": "Paņemiet vienu no pretinieka figūrām.",
+    "@takeOpponentsPiece": {},
+    "firstPlayerLose": "Pirmais spēlētājs zaudē spēli.",
+    "@firstPlayerLose": {},
+    "firstAndSecondPlayerRemovePiece": "Pirmais un otrais spēlētājs noņem vienu no pretinieka figūrām.",
+    "@firstAndSecondPlayerRemovePiece": {},
+    "secondAndFirstPlayerRemovePiece": "Otrais un pirmais spēlētājs noņem vienu no pretinieka figūrām.",
+    "@secondAndFirstPlayerRemovePiece": {},
+    "enteredFlyingPhase": "Tagad iegājis lidošanas fāzē, pretinieka figūras var pārlēkt uz jebkuru tukšu punktu uz galda. Lidošanas kārtulu varat izslēgt sadaļā \"Noteikumu iestatījumi\".",
+    "@enteredFlyingPhase": {},
+    "whenStalemate": "Kad strupceļš",
+    "@whenStalemate": {},
+    "whenStalemate_Detail": "Kāda darbība notiek, ja nevienu gabalu nevar pārvietot?",
+    "@whenStalemate_Detail": {},
+    "endWithStalemateLoss": "Beidziet ar strupceļa zaudējumu.",
+    "@endWithStalemateLoss": {},
+    "changeSideToMove": "Mainiet pusi, lai pārvietotos.",
+    "@changeSideToMove": {},
+    "removeOpponentsPieceAndMakeNextMove": "Noņemiet vienu no pretinieka figūrām un veiciet nākamo gājienu.",
+    "@removeOpponentsPieceAndMakeNextMove": {},
+    "endWithStalemateDraw": "Beidziet ar strupceļa neizšķirtu.",
+    "@endWithStalemateDraw": {},
+    "removeOpponentsPieceAndChangeSideToMove": "Noņemiet vienu no pretinieka figūrām un mainiet pusi, lai pārvietotos.",
+    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "aiResponseDelayTime": "AI reakcijas aizkaves laiks",
+    "@aiResponseDelayTime": {},
+    "aiIsDelaying": "AI pašlaik ir aizkavētas reakcijas fāzē. Pirms turpināt, lūdzu, uzgaidiet kādu laiku.",
+    "@aiIsDelaying": {},
+    "tipCanNotRemoveNonadjacent": "Jūs nevarat noņemt blakus esošo gabalu.",
+    "@tipCanNotRemoveNonadjacent": {},
+    "stalemateRemovalRegardlessOfMillFormation": "Ja ir strupceļš, pretinieka figūras, kas atrodas blakus jums, var tikt noņemtas neatkarīgi no dzirnavu veidošanās.",
+    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "whatIsMcts": "MCTS ir iesācējiem draudzīgs algoritms, kas pieņem lēmumus, pētot un novērtējot dažādas kustības, izmantojot simulācijas.",
+    "@whatIsMcts": {},
+    "goldenJade": "Zelta skuķis",
+    "@goldenJade": {},
+    "forestWood": "Meža koksne",
+    "@forestWood": {},
+    "greenMeadow": "Zaļā pļava",
+    "@greenMeadow": {},
+    "stonyPath": "Akmeņains ceļš",
+    "@stonyPath": {},
+    "midnightBlue": "Pusnakts zila",
+    "@midnightBlue": {},
+    "greenForest": "Zaļais mežs",
+    "@greenForest": {},
+    "pastelPink": "Pastels rozā",
+    "@pastelPink": {},
+    "turquoiseSea": "Tirkīza jūra",
+    "@turquoiseSea": {},
+    "violetDream": "Violetais sapnis",
+    "@violetDream": {},
+    "mintChocolate": "Piparmētru šokolāde",
+    "@mintChocolate": {},
+    "skyBlue": "Debesu zils",
+    "@skyBlue": {},
+    "playfulGarden": "Rotaļīgs dārzs",
+    "@playfulGarden": {},
+    "darkMystery": "Tumšais noslēpums",
+    "@darkMystery": {},
+    "whatIsRetrogradeAnalysis": "Retrogrādās analīzes algoritms izmanto daudzvērtīgu retrogrādo analīzi, lai izveidotu beigu datu bāzi no dažādām sākuma pozīcijām, un pēc tam izmanto šo datu bāzi, lai optimizētu spēli. Šī pieeja ietilpst īpaši spēcīgu risinājumu kategorijā.",
+    "@whatIsRetrogradeAnalysis": {},
+    "viewAlgorithmGuide": "Vai vēlaties skatīt šī algoritma lietotāja rokasgrāmatu?",
+    "@viewAlgorithmGuide": {},
+    "showPositionalAdvantageIndicator": "Rādīt pozīcijas priekšrocības indikatoru",
+    "@showPositionalAdvantageIndicator": {},
+    "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's play style' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
+    "@perfectDatabaseDescription": {},
+    "usePerfectDatabase": "Izmantojiet perfektu datu bāzi",
+    "@usePerfectDatabase": {},
+    "backgroundImage": "Fona attēls",
+    "@backgroundImage": {},
+    "whatIsRandom": "Ja opcija “Izmantot perfektu datu bāzi” nav iespējota, iestatījums “Nejaušs” liek AI nejauši pārvietot gabalus, neizmantojot pārvietošanas atlases algoritmus. Tas parasti rada ievērojami vājāku spēli. Un otrādi, ja ir iespējota opcija “Izmantot perfektu datu bāzi”, AI lēmumu pieņemšanā paļaujas tikai uz ideālo datu bāzi, nevis sajauc to ar tradicionālajiem AI algoritmiem. Šajā režīmā AI darbības ir pilnībā balstītas uz datu bāzes saturu, izvairoties no paļaušanās uz reāllaika aprēķiniem vai meklēšanas algoritmiem.",
+    "@whatIsRandom": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn": "Noņem pretinieka figūru(-as) no rokas; tad pretinieka gājiens novietot.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "whenFormingMillsDuringPlacingPhase": "Veidojot dzirnavas izvietošanas fāzes laikā",
+    "@whenFormingMillsDuringPlacingPhase": {},
+    "removeOpponentsPieceFromBoard": "Noņem pretinieka figūru(-as) no galda.",
+    "@removeOpponentsPieceFromBoard": {},
+    "removeOpponentsPieceFromBoard_Detail": "Noņem pretinieka figūru(-as) no galda; tad pretinieka gājiens novietot figūru.",
+    "@removeOpponentsPieceFromBoard_Detail": {},
+    "opponentRemovesOwnPiece": "Pretinieks noņem no galda pats savu figūru(-as).",
+    "@opponentRemovesOwnPiece": {},
+    "opponentRemovesOwnPiece_Detail": "Tavā gājiena vietā pretinieks izvēlas un noņem no galda pats savu figūru (-as), faktiski veicot sev kaitīgu darbību.",
+    "@opponentRemovesOwnPiece_Detail": {},
+    "removeOpponentsPieceFromHandThenYourTurn": "Noņem pretinieka figūru(-as) no viņa rokas; tad ir tavs gājiens.",
+    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "removeOpponentsPieceFromHandThenYourTurn_Detail": "Noņem figūru(-as) no pretinieka rokas. Ja saskaņā ar iestatījumu “Vairāku figūru noņemšana” ir jānoņem vairākas figūras un pretiniekam rokā vairs nav figūru, turpini noņemt pretinieka figūras no galda. Pēc tam ir tavs gājiens. Ja turpini veidot dzirnavas, tu vari turpināt noņemt pretinieka figūras.",
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Noņem figūru(-as) no pretinieka rokas. Ja saskaņā ar iestatījumu “Vairāku figūru noņemšana” ir jānoņem vairākas figūras un pretiniekam rokā vairs nav figūru, turpini noņemt pretinieka figūras no galda. Pēc tam ir pretinieka gājiens.",
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "markAndDelayRemovingPieces": "Atzīmēt un aizkavēt figūru noņemšanu.",
+    "@markAndDelayRemovingPieces": {},
+    "markAndDelayRemovingPieces_Detail": "Izvietošanas fāzes laikā noņemamās figūras tiek atzīmētas, un abi spēlētāji nevar novietot jaunas figūras uz šiem punktiem. Sākoties kustību fāzei, šīs atzīmētās figūras tiek noņemtas visas uzreiz, un spēlētāji pēc tam var pārvietot savas figūras uz šiem tagad tukšajiem punktiem.",
+    "@markAndDelayRemovingPieces_Detail": {},
+    "whenFormingMillsDuringPlacingPhase_Detail": "Darbības, kas veicamas, veidojot dzirnavas izvietošanas posmā.",
+    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "marked": "Označeno",
+    "@marked": {},
+    "menu": "Izvēlne",
+    "@menu": {},
+    "monochrome": "Monohroms",
+    "@monochrome": {},
+    "youCanEnableScreenReaderSupport": "Jūs varat iespējot ekrāna lasītāja atbalstu pieejamības iestatījumos Vispārīgajos iestatījumos.",
+    "@youCanEnableScreenReaderSupport": {},
+    "showNumbersOnPieces": "Rādīt numurus uz figūrām",
+    "@showNumbersOnPieces": {},
+    "saveImage": "Saglabāt attēlu",
+    "@saveImage": {},
+    "isAnalysisToolbarShown": "Parādīt analīzes rīkjoslu",
+    "@isAnalysisToolbarShown": {},
+    "analysisToolbarBackgroundColor": "Analīzes rīkjoslas fona krāsa",
+    "@analysisToolbarBackgroundColor": {},
+    "analysisToolbarIconColor": "Analīzes rīkjoslas ikonas krāsa",
+    "@analysisToolbarIconColor": {},
+    "transformed": "Transformēts.",
+    "@transformed": {},
+    "cannotTransform": "Nevar pārveidot.",
+    "@cannotTransform": {},
+    "rotate": "Pagriezt",
+    "@rotate": {},
+    "horizontalFlip": "H Apgriezt",
+    "@horizontalFlip": {},
+    "verticalFlip": "V Apgriezt",
+    "@verticalFlip": {},
+    "innerOuterFlip": "IO Apgriezt",
+    "@innerOuterFlip": {},
+    "transparentCanvas": "Caurspīdīgs Audekls",
+    "@transparentCanvas": {},
+    "restrictRepeatedMillsFormation": "Ierobežot atkārtotu dzirnaviņu veidošanos",
+    "@restrictRepeatedMillsFormation": {},
+    "restrictRepeatedMillsFormation_Detail": "Figūra, kas pārvietota no viena dzirnavām uz citām, nevar nekavējoties atgriezties sākotnējā punktā nākamajā gājienā, lai atkal veidotu dzirnavas. Vispirms ir nepieciešams cits gājiens.",
+    "@restrictRepeatedMillsFormation_Detail": {},
+    "oneTimeUseMill": "Vienreiz lietojama dzirnavas",
+    "@oneTimeUseMill": {},
+    "oneTimeUseMill_Detail": "Katra dzirnava var noņemt tikai vienu pretinieka gabalu. Jūs varat to atkārtoti izveidot, bet to nevar izmantot papildu noņemšanai.",
+    "@oneTimeUseMill_Detail": {},
+    "currentRulesNoPerfectDatabase": "Pašreizējiem noteikumiem, ko esat iestatījis, nav atbilstošas ideālās datubāzes. Lai iegūtu vairāk informācijas par ideālo datubāzi, lūdzu, noklikšķiniet šeit.",
+    "@currentRulesNoPerfectDatabase": {},
+    "focusOnBlockingPaths": "Koncentrējieties uz ceļu bloķēšanu",
+    "@focusOnBlockingPaths": {},
+    "focusOnBlockingPaths_Detail": "Prioritizējiet pretinieka kustību bloķēšanu, nevis dzirnavu veidošanu. Tā vietā, lai koncentrētos uz figūru noņemšanu, pabeidzot dzirnavas, AI cenšas ieslodzīt pretinieku, padarot viņu nespējīgu kustēties un nodrošinot uzvaru ar izturību, nevis agresīvu spēli. Šī stratēģija aktīvi nebloķē pretinieka dzirnavas.",
+    "@focusOnBlockingPaths_Detail": {},
+    "pieceImage": "Figūras attēls",
+    "@pieceImage": {},
+    "importColorSettings": "Importēt krāsu iestatījumus",
+    "@importColorSettings": {},
+    "exportColorSettings": "Eksportēt krāsu iestatījumus",
+    "@exportColorSettings": {},
+    "import": "Importēt",
+    "@import": {},
+    "export": "Eksportēt",
+    "@export": {},
+    "pleaseCopyJsonToClipboard": "Lūdzu, vispirms nokopējiet JSON formāta iestatījumus starpliktuvē.",
+    "@pleaseCopyJsonToClipboard": {},
+    "copiedToClipboard": "Nokopēts starpliktuvē.",
+    "@copiedToClipboard": {},
+    "imported": "Importēts.",
+    "@imported": {},
+    "boardImage": "Dēļa attēls",
+    "@boardImage": {},
+    "autumnLeaves": "Rudens lapas",
+    "@autumnLeaves": {},
+    "legendaryLand": "Leģendārā zeme",
+    "@legendaryLand": {},
+    "vignetteEffect": "Vinjete efekts",
+    "@vignetteEffect": {},
+    "promptMakeToolbarTransparent": "Vai vēlaties padarīt rīku jos pilnīgi caurspīdīgu, kad ir iestatīta dēļa fona attēls?",
+    "@promptMakeToolbarTransparent": {},
+    "vibration": "Iespējot vibrāciju spēlē",
+    "@vibration": {},
+    "soundTheme": "Skaņas tēma",
+    "@soundTheme": {},
+    "ball": "Bumba",
+    "@ball": {},
+    "liquid": "Šķidrums",
+    "@liquid": {},
+    "wood": "Koks",
+    "@wood": {},
+    "placeEffectAnimation": "Figūras novietošanas animācijas efekts",
+    "@placeEffectAnimation": {},
+    "removeEffectAnimation": "Figūras noņemšanas animācijas efekts",
+    "@removeEffectAnimation": {},
+    "isToolbarAtBottom": "Rādīt rīkjoslu apakšā",
+    "@isToolbarAtBottom": {},
+    "boardCornerRadius": "Dēļa stūra rādiuss",
+    "@boardCornerRadius": {},
+    "useOpeningBook": "Izmantojiet atvēršanas grāmatu",
+    "@useOpeningBook": {},
+    "currentRule": "Pašreizējais",
+    "@currentRule": {},
+    "nineMensMorris": "Nine Men's Morris",
+    "@nineMensMorris": {},
+    "twelveMensMorris": "Twelve Men's Morris",
+    "@twelveMensMorris": {},
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {},
+    "dooz": "Dooz",
+    "@dooz": {},
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {},
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {},
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {},
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {},
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {},
+    "ruleSet": "Noteikumu kopa",
+    "@ruleSet": {},
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {},
+    "oneTimeMill": "One-Time Mill",
+    "@oneTimeMill": {},
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {},
+    "useOpeningBook_Detail": "Ļaujiet AI izmantot atklāšanas gājienus, ko bieži izmanto profesionālie cilvēku spēlētāji spēles sākumā. Piezīme: Šī funkcija pašlaik ir pieejama tikai konkrētiem noteikumu kopumiem.",
+    "@useOpeningBook_Detail": {},
+    "showAdvantageGraph": "Parādīt priekšrocību grafiku",
+    "@showAdvantageGraph": {},
+    "advantageGraphHint": "Priekšrocību grafiks tiks uzzīmēts tikai pēc tam, kad MI veiks gājienu. Tas netiks uzzīmēts, kad gājienu veiks cilvēka spēlētājs.",
+    "@advantageGraphHint": {},
+    "removalBasedOnMillCounts": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz to dzirnavu skaitu.",
+    "@removalBasedOnMillCounts": {},
+    "removalBasedOnMillCounts_Detail": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz dzirnavu skaitu: ja skaits ir vienāds, abi noņem vienādu skaitu figūru; ja vienam ir vairāk, tas noņem vienu papildu figūru, saglabājot starpību vienas figūras apjomā. Ja tikai viens spēlētājs izveido dzirnavas, viņš noņem divas figūras, bet otrs noņem vienu. Ja neviens neizveido dzirnavas, abi noņem pa vienai figūrai.",
+    "@removalBasedOnMillCounts_Detail": {},
+    "elfilja": "El Filja",
+    "@elfilja": {},
+    "tipSelectOwnPiece": "Izvēlies vienu no savām figūrām.",
+    "@tipSelectOwnPiece": {},
+    "notYourTurn": "Nav tava kārta.",
+    "@notYourTurn": {},
+    "annotationToolbarBackgroundColor": "Piezīmju rīkjoslas fona krāsa",
+    "@annotationToolbarBackgroundColor": {},
+    "annotationToolbarIconColor": "Piezīmju rīkjoslas ikonu krāsa",
+    "@annotationToolbarIconColor": {},
+    "isAnnotationToolbarShown": "Rādīt piezīmju rīkjoslu",
+    "@isAnnotationToolbarShown": {},
+    "enterAnnotationMode": "Ieeiet piezīmju režīmā",
+    "@enterAnnotationMode": {},
+    "areYouSureYouWantToClearAllAnnotations": "Vai tiešām vēlaties notīrīt visas piezīmes?",
+    "@areYouSureYouWantToClearAllAnnotations": {},
+    "llmPromptCopiedToClipboard": "LLM uzvedne nokopēta starpliktuvē.",
+    "@llmPromptCopiedToClipboard": {},
+    "connectionRefusedTheServerMayBeDown": "Savienojums noraidīts, serveris var būt izslēgts.",
+    "@connectionRefusedTheServerMayBeDown": {},
+    "discoverySuccessfulAwaitingConnection": "Atklāšana veiksmīga, gaida savienojumu...",
+    "@discoverySuccessfulAwaitingConnection": {},
+    "noLanConnection": "Nav LAN savienojuma",
+    "@noLanConnection": {},
+    "takeScreenshot": "Uzņem ekrānuzņēmumu",
+    "@takeScreenshot": {},
+    "disconnectedFromOpponent": "Atvienots no pretinieka.",
+    "@disconnectedFromOpponent": {},
+    "takeBackRequest": "Atkāpšanās pieprasījums",
+    "@takeBackRequest": {},
+    "nothingToShow": "Nav ko parādīt.",
+    "@nothingToShow": {},
+    "stopHosting": "Pārtraukt spēles vadīšanu",
+    "@stopHosting": {},
+    "connectionResetByPeer": "Savienojumu atiestatīja pretējā puse.",
+    "@connectionResetByPeer": {},
+    "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Savienojums zaudēts sirdsdarbības laika pārsniegšanas dēļ. Lūdzu, atjaunojiet savienojumu.",
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "startHosting": "Sākt spēles vadīšanu",
+    "@startHosting": {},
+    "restartRequestRejected": "Pārstartēšanas pieprasījums noraidīts.",
+    "@restartRequestRejected": {},
+    "notConnectedToLanOpponent": "Nav savienojuma ar LAN pretinieku.",
+    "@notConnectedToLanOpponent": {},
+    "llmPrompt": "LLM uzvedne",
+    "@llmPrompt": {},
+    "gameRestarted": "Spēle restartēta.",
+    "@gameRestarted": {},
+    "takeBackRejected": "Atkāpšanās noraidīta.",
+    "@takeBackRejected": {},
+    "areYouSureYouWantToResignThisGame": "Vai tiešām vēlaties padoties no šīs spēles?",
+    "@areYouSureYouWantToResignThisGame": {},
+    "opponentResignedYouWin": "Pretinieks ir padojies. Jūs uzvarējāt!",
+    "@opponentResignedYouWin": {},
+    "clearAllAnnotations": "Notīrīt visas piezīmes",
+    "@clearAllAnnotations": {},
+    "connectedWaitingForOpponentSMove": "Savienots, gaida pretinieka gājienu...",
+    "@connectedWaitingForOpponentSMove": {},
+    "networkStatusDisconnected": "Tīkla statuss: Atvienots",
+    "@networkStatusDisconnected": {},
+    "takeBackRequestSentToTheOpponent": "Atkāpšanās pieprasījums nosūtīts pretiniekam.",
+    "@takeBackRequestSentToTheOpponent": {},
+    "theOpponentMayHaveLeftTheGame": "Pretinieks varbūt ir atstājis spēli",
+    "@theOpponentMayHaveLeftTheGame": {},
+    "connectedToHostSuccessfully": "Veiksmīgi savienots ar spēles vadītāju.",
+    "@connectedToHostSuccessfully": {},
+    "connectionLostHeartbeatTimeout": "Savienojums zaudēts: sirdsdarbības laika pārsniegšana",
+    "@connectionLostHeartbeatTimeout": {},
+    "noHostDiscovered": "Nav atrasts spēles vadītājs.",
+    "@noHostDiscovered": {},
+    "confirmResignation": "Apstiprināt padīšanos",
+    "@confirmResignation": {},
+    "startedHostingGameWaitingForPlayersToJoin": "Spēles rīkošana uzsākta, gaida spēlētāju pievienošanos...",
+    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "connectionTimedOutNetworkConnectionUnstable": "Savienojuma laiks beidzies, tīkla savienojums ir nestabils.",
+    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "noLlmPromptAvailable": "Nav pieejama LLM uzvedne.",
+    "@noLlmPromptAvailable": {},
+    "youResignedGameOver": "Jūs padojāties. Spēle beigusies.",
+    "@youResignedGameOver": {},
+    "serverIp": "Servera IP",
+    "@serverIp": {},
+    "confirmClear": "Apstiprināt notīrīšanu",
+    "@confirmClear": {},
+    "opponentSTurn": "Pretinieka kārta.",
+    "@opponentSTurn": {},
+    "waitingAClientConnection": "Gaida klienta savienojumu...",
+    "@waitingAClientConnection": {},
+    "takeBackRequestWasRejectedOrFailed": "Atkāpšanās pieprasījums tika noraidīts vai neizdevās.",
+    "@takeBackRequestWasRejectedOrFailed": {},
+    "addText": "Pievienot tekstu",
+    "@addText": {},
+    "exitAnnotationMode": "Iziet no piezīmju režīma",
+    "@exitAnnotationMode": {},
+    "typeYourAnnotation": "Ierakstiet savu piezīmi",
+    "@typeYourAnnotation": {},
+    "attemptingToReconnect": "Mēģina atjaunot savienojumu...",
+    "@attemptingToReconnect": {},
+    "restartRequestSentWaitingForOpponentSResponse": "Pārstartēšanas pieprasījums nosūtīts. Gaida pretinieka atbildi...",
+    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "serverIsStopped": "Serveris ir apturēts.",
+    "@serverIsStopped": {},
+    "restartRequest": "Pārstartēšanas pieprasījums",
+    "@restartRequest": {},
+    "cannotRequestATakeBackWhenItSNotYourTurn": "Nevar pieprasīt atkāpšanos, kad nav tava kārta.",
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "takeBackAccepted": "Atkāpšanās pieņemta.",
+    "@takeBackAccepted": {},
+    "localNetworkSettings": "Vietējās tīkla iestatījumi",
+    "@localNetworkSettings": {},
+    "reconnectedSuccessfully": "Savienojums veiksmīgi atjaunots!",
+    "@reconnectedSuccessfully": {},
+    "failedToSaveImageToGallery": "Neizdevās saglabāt attēlu galerijā.",
+    "@failedToSaveImageToGallery": {},
+    "opponentRequestedToRestartTheGameDoYouAccept": "Pretinieks pieprasīja spēles pārstartēšanu. Vai piekrītat?",
+    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "yourTurn": "Tava kārta.",
+    "@yourTurn": {},
+    "unableToReconnectPleaseRestartTheGame": "Nevar atjaunot savienojumu, lūdzu, restartējiet spēli.",
+    "@unableToReconnectPleaseRestartTheGame": {},
+    "host": "Spēles vadītājs",
+    "@host": {},
+    "join": "Pievienoties",
+    "@join": {},
+    "port": "Ports",
+    "@port": {},
+    "invalidIpAddress": "Nederīga IP adrese.",
+    "@invalidIpAddress": {},
+    "invalidPort": "Nederīgs ports.",
+    "@invalidPort": {},
+    "connectingAttempt": "Savienojamies: Mēģinājums {attempt}/{maxAttempt}",
+    "@connectingAttempt": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempt": {}
+        }
+    },
+    "failedToConnect": "Neizdevās savienoties: {error}",
+    "@failedToConnect": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "failedToStartHosting": "Neizdevās uzsākt spēles vadīšanu: {error}",
+    "@failedToStartHosting": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "hostDiscovered": "Spēles vadītājs atrasts: {ip}:{port}",
+    "@hostDiscovered": {
+        "placeholders": {
+            "ip": {},
+            "port": {}
+        }
+    },
+    "stop": "Apturēt",
+    "@stop": {},
+    "discover": "Atklāt",
+    "@discover": {},
+    "connect": "Savienoties",
+    "@connect": {},
+    "clientConnected": "Klients pievienojies: {clientIp}:{clientPort}",
+    "@clientConnected": {
+        "placeholders": {
+            "clientIp": {},
+            "clientPort": {}
+        }
+    },
+    "discoveringSeconds": "Meklē: {seconds} s",
+    "@discoveringSeconds": {
+        "placeholders": {
+            "seconds": {}
+        }
+    },
+    "reconnecting": "Atjaunojam savienojumu ({attempt}/{maxAttempts})",
+    "@reconnecting": {
+        "placeholders": {
+            "attempt": {},
+            "maxAttempts": {}
+        }
+    },
+    "connected": "Savienots",
+    "@connected": {},
+    "delete": "Dzēst",
+    "@delete": {},
+    "ancientEgypt": "Senā Ēģipte",
+    "@ancientEgypt": {},
+    "gothicIce": "Gotiskais Ledus",
+    "@gothicIce": {},
+    "riceField": "Rīsu Lauks",
+    "@riceField": {},
+    "chinesePorcelain": "Ķīnas Porcelāns",
+    "@chinesePorcelain": {},
+    "desertDusk": "Tuksneša Krēsla",
+    "@desertDusk": {},
+    "precisionCraft": "Precīza Amatniecība",
+    "@precisionCraft": {},
+    "folkEmbroidery": "Tautas Izšuvumi",
+    "@folkEmbroidery": {},
+    "carpathianHeritage": "Karpatu Mantojums",
+    "@carpathianHeritage": {},
+    "imperialGrandeur": "Impērijas Diženumu",
+    "@imperialGrandeur": {},
+    "bohemianCrystal": "Bohēmijas Kristāls",
+    "@bohemianCrystal": {},
+    "savannaSunrise": "Savannas Saullēkts",
+    "@savannaSunrise": {},
+    "harmonyBalance": "Harmonija un Līdzsvars",
+    "@harmonyBalance": {},
+    "cinnamonSpice": "Kanēļa Garšviela",
+    "@cinnamonSpice": {},
+    "anatolianMosaic": "Anatolijas Mozaīka",
+    "@anatolianMosaic": {},
+    "carnivalSpirit": "Karnevāla Gars",
+    "@carnivalSpirit": {},
+    "custom": "Pasūtījuma",
+    "@custom": {},
+    "spiceMarket": "Garšvielu tirgus",
+    "@spiceMarket": {},
+    "swipeToRevealTheDrawer": "Pavelciet, lai atvērtu atvilktni",
+    "@swipeToRevealTheDrawer": {},
+    "showGameInfoOnScreenshots": "Rādīt spēles informāciju ekrānuzņēmumos",
+    "@showGameInfoOnScreenshots": {},
+    "humanMoveTime": "Cilvēka laika limits",
+    "@humanMoveTime": {},
+    "noTimeLimitForHumanMoves": "Cilvēka gājieniem nav laika ierobežojuma",
+    "@noTimeLimitForHumanMoves": {},
+    "timeoutLoseWillBeApplied": "Cilvēka spēlētājam tiks piemērots zaudējums laika limita pārsniegšanas dēļ",
+    "@timeoutLoseWillBeApplied": {},
+    "identifyingBoard": "Spēles dēļa identificēšana…",
+    "@identifyingBoard": {},
+    "youCanEnterAnyModelName": "Jūs varat ievadīt jebkuru modeļa nosaukumu.",
+    "@youCanEnterAnyModelName": {},
+    "boardPositionAppliedFenCopiedToClipboard": "Spēles dēļa pozīcija pielietota. FEN nokopēts starpliktuvē.",
+    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "suggestionTryTakingAClearerPictureOfTheBoard": "Ieteikums: mēģiniet nofotografēt dēli skaidrāk.",
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "llmPromptTemplate": "LLM prompt veidne",
+    "@llmPromptTemplate": {},
+    "noValidBoardDetected": "Nederīgs spēles dēlis netika atrasts.",
+    "@noValidBoardDetected": {},
+    "selectingImageFromAlbum": "Attēla atlase no albuma…",
+    "@selectingImageFromAlbum": {},
+    "configurePromptTemplate": "Konfigurēt prompt veidni",
+    "@configurePromptTemplate": {},
+    "editPromptTemplateForLlmAnalysis": "Rediģēt prompt veidni LLM analīzei",
+    "@editPromptTemplateForLlmAnalysis": {},
+    "failedToGenerateFenFromRecognizedBoard": "Neizdevās ģenerēt FEN no atpazītā dēļa.",
+    "@failedToGenerateFenFromRecognizedBoard": {},
+    "outputInCurrentLanguage": "Izvade pašreizējā valodā",
+    "@outputInCurrentLanguage": {},
+    "commonBaseUrls": "Bieži izmantotie Base URL",
+    "@commonBaseUrls": {},
+    "viewCommonModels": "Skatīt bieži izmantotos modeļus",
+    "@viewCommonModels": {},
+    "recognitionParametersUpdated": "Atpazīšanas parametri atjaunināti.",
+    "@recognitionParametersUpdated": {},
+    "whiteSMove": "Baltā gājiens",
+    "@whiteSMove": {},
+    "resetToDefaults": "Atiestatīt pēc noklusējuma",
+    "@resetToDefaults": {},
+    "photoShoot": "Fotografēšana",
+    "@photoShoot": {},
+    "failedToApplyRecognizedBoardPosition": "Neizdevās lietot atpazīto dēļa pozīciju.",
+    "@failedToApplyRecognizedBoardPosition": {},
+    "llmPromptContent": "LLM prompt saturs",
+    "@llmPromptContent": {},
+    "llmNotConfiguredPleaseCheckYourSettings": "LLM nav konfigurēts. Lūdzu, pārbaudiet iestatījumus.",
+    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "setProviderModelApiKeyAndBaseUrl": "Iestatīt pakalpojumu sniedzēju, modeli, API Key un Base URL",
+    "@setProviderModelApiKeyAndBaseUrl": {},
+    "llmConfiguration": "LLM konfigurācija",
+    "@llmConfiguration": {},
+    "configureLlmProvider": "Konfigurēt LLM pakalpojumu sniedzēju",
+    "@configureLlmProvider": {},
+    "llmPromptTemplateHeader": "LLM prompt veidnes galvene",
+    "@llmPromptTemplateHeader": {},
+    "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Attēlā netika atpazītas nevienas figūras. Lūdzu, mēģiniet vēlreiz.",
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "recognizeBoardFromImage": "Atpazīt dēli no attēla",
+    "@recognizeBoardFromImage": {},
+    "viewTips": "Skatīt padomus",
+    "@viewTips": {},
+    "applyToBoard": "Lietot uz dēļa",
+    "@applyToBoard": {},
+    "adjustBoardArea": "Regulēt dēļa laukumu",
+    "@adjustBoardArea": {},
+    "viewCommonUrls": "Skatīt bieži izmantotos URL",
+    "@viewCommonUrls": {},
+    "colorAnalysisFailed": "Krāsu analīze neizdevās!",
+    "@colorAnalysisFailed": {},
+    "analyzingGameBoardImage": "Analizējam spēles dēļa attēlu…",
+    "@analyzingGameBoardImage": {},
+    "selectFromAlbum": "Izvēlēties no albuma",
+    "@selectFromAlbum": {},
+    "noBoardPointDetected": "Dēļa punkts netika noteikts!",
+    "@noBoardPointDetected": {},
+    "ifLeftEmptyDefaultTemplateWillBeUsed": "Ja atstāts tukšs, tiks izmantota noklusējuma veidne",
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "llmConfig": "LLM konfigurācija",
+    "@llmConfig": {},
+    "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Vai tiešām vēlaties atiestatīt prompt veidnes uz noklusējuma vērtībām?",
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "llmPromptTemplateFooter": "LLM prompt veidnes kājene",
+    "@llmPromptTemplateFooter": {},
+    "loadingResponse": "Ielādē atbildi…",
+    "@loadingResponse": {},
+    "applyThisResultToBoard": "Lietot šo rezultātu uz dēļa",
+    "@applyThisResultToBoard": {},
+    "takingPicture": "Fotografē…",
+    "@takingPicture": {},
+    "pleaseSelectAGameBoardImageToIdentify": "Lūdzu, izvēlieties spēles dēļa attēlu atpazīšanai",
+    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "identificationResults": "Identifikācijas rezultāti",
+    "@identificationResults": {},
+    "analyzeTheMovesAndProvideInsights": "Analizēt gājienus un sniegt ieskatus.",
+    "@analyzeTheMovesAndProvideInsights": {},
+    "getApiKey": "Iegūt API Key",
+    "@getApiKey": {},
+    "entireRecognitionProcessFailedToComplete": "Viss atpazīšanas process neizdevās pabeigt.",
+    "@entireRecognitionProcessFailedToComplete": {},
+    "boardRecognitionResult": "Dēļa atpazīšanas rezultāts",
+    "@boardRecognitionResult": {},
+    "askLlm": "Jautāt LLM",
+    "@askLlm": {},
+    "boardDetectionFailed": "Dēļa noteikšana neizdevās!",
+    "@boardDetectionFailed": {},
+    "noBoardPointDetectedCannotIdentifyPiece": "Dēļa punkti netika noteikti, figūru nevar atpazīt!",
+    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "copyFen": "Kopēt FEN",
+    "@copyFen": {},
+    "commonlyUsedModels": "Bieži izmantotie modeļi",
+    "@commonlyUsedModels": {},
+    "apiKeyOptional": "API Key (pēc izvēles)",
+    "@apiKeyOptional": {},
+    "noImageSelected": "Nav izvēlēts attēls",
+    "@noImageSelected": {},
+    "blackSMove": "Melnā gājiens",
+    "@blackSMove": {},
+    "llm": "Liels valodas modelis",
+    "@llm": {},
+    "llmProvider": "Piegādātājs",
+    "@llmProvider": {},
+    "baseUrl": "Bāzes URL",
+    "@baseUrl": {},
+    "model": "Modelis",
+    "@model": {},
+    "temperature": "Temperatūra",
+    "@temperature": {},
+    "llmCommandReceivedProcessing": "Komanda saņemta! AI apstrādā...",
+    "@llmCommandReceivedProcessing": {},
+    "llmDeepThinkingWait": "Notiek dziļa domāšana, lūdzu, uzgaidiet...",
+    "@llmDeepThinkingWait": {},
+    "llmPresentingSoon": "Drīzumā tiks prezentēts...",
+    "@llmPresentingSoon": {},
+    "recognitionParameters": "Atpazīšanas parametri",
+    "@recognitionParameters": {},
+    "adjustParamsDesc": "Pielāgojiet parametrus, lai uzlabotu atpazīšanas precizitāti",
+    "@adjustParamsDesc": {},
+    "saveParameters": "Saglabāt parametrus",
+    "@saveParameters": {},
+    "unableToStartImageRecognition": "Nevar sākt attēla atpazīšanu: {error}",
+    "@unableToStartImageRecognition": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "File system error"
+            }
+        }
+    },
+    "imageRecognitionFailed": "Attēla atpazīšana neizdevās: {error}",
+    "@imageRecognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Could not detect corners"
+            }
+        }
+    },
+    "appliedPositionDetails": "Pielietota pozīcija ar {whiteCount} baltām un {blackCount} melnām figūrām",
+    "@appliedPositionDetails": {
+        "placeholders": {
+            "whiteCount": {
+                "type": "int",
+                "example": "9"
+            },
+            "blackCount": {
+                "type": "int",
+                "example": "8"
+            }
+        }
+    },
+    "fenCopiedToClipboard": "(FEN nokopēts uz starpliktuvi)",
+    "@fenCopiedToClipboard": {},
+    "recognitionFailed": "Atpazīšana neizdevās: {error}",
+    "@recognitionFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Invalid FEN structure"
+            }
+        }
+    },
+    "myRating": "Mans vērtējums",
+    "@myRating": {},
+    "gamesPlayed": "Spēlētās spēles",
+    "@gamesPlayed": {},
+    "wins": "Uzvaras",
+    "@wins": {},
+    "losses": "Zaudējumi",
+    "@losses": {},
+    "draws": "Neizšķirti",
+    "@draws": {},
+    "lastUpdated": "Pēdējo reizi atjaunināts",
+    "@lastUpdated": {},
+    "format": "Formāts:",
+    "@format": {},
+    "resetStatistics": "Atiestatīt statistiku",
+    "@resetStatistics": {},
+    "drawRate": "Neizšķirtu īpatsvars",
+    "@drawRate": {},
+    "lossRate": "Zaudējumu īpatsvars",
+    "@lossRate": {},
+    "aiStatistics": "MI statistika",
+    "@aiStatistics": {},
+    "enableStatistics": "Iespējot statistiku",
+    "@enableStatistics": {},
+    "enableStatistics_Detail": "Kad iespējots, spēļu rezultāti tiks reģistrēti statistikā. Tomēr spēles, kas ietver gājienu atcelšanu, netiks reģistrētas. Kad atspējots, statistikas vākšana tiek apturēta.",
+    "@enableStatistics_Detail": {},
+    "thisWillResetAllGameStatistics": "Tiks atiestatīta visa spēļu statistika. Šo darbību nevar atsaukt.",
+    "@thisWillResetAllGameStatistics": {},
+    "boardInnerRingSize": "Dēļa iekšējā gredzena izmērs",
+    "@boardInnerRingSize": {},
+    "boardShadowEnabled": "Dēļa ēna",
+    "@boardShadowEnabled": {},
+    "trapAwareness": "Slazdu noteikšana",
+    "@trapAwareness": {},
+    "trapAwarenessDescription": "Analīzes laikā izcel slazdu gājienus ar trekniem apļiem un bultām.",
+    "@trapAwarenessDescription": {},
+    "trapExists": "Pastāv slazds. Slazdu gājieni: {trapMoves}",
+    "@trapExists": {
+        "placeholders": {
+            "trapMoves": {
+                "type": "String"
+            }
+        }
+    },
+    "custodianCapture": "Sānu tveršana",
+    "@custodianCapture": {},
+    "custodianCaptureDescription": "Ievietojiet vienu no pretinieka gabaliem starp diviem jūsu taisnā līnijā, lai to uztvertu.",
+    "@custodianCaptureDescription": {},
+    "custodianCaptureEnable": "Ļaujiet sānu uztveršanu",
+    "@custodianCaptureEnable": {},
+    "interventionCapture": "Iejaukšanās",
+    "@interventionCapture": {},
+    "interventionCaptureDescription": "Pārvietojieties tukšā punktā starp diviem pretinieka gabaliem, lai tos abus uztvertu.",
+    "@interventionCaptureDescription": {},
+    "interventionCaptureEnable": "Ļaujiet uztvert intervenci",
+    "@interventionCaptureEnable": {},
+    "leapCapture": "Lēciena uztveršana",
+    "@leapCapture": {},
+    "leapCaptureDescription": "Uztveriet, pārlecot virs blakus esošā pretinieka gabala tukšajā punktā ārpus tā.",
+    "@leapCaptureDescription": {},
+    "leapCaptureEnable": "Ļaujiet lēciena uztveršanai",
+    "@leapCaptureEnable": {},
+    "captureApplicableLines": "Piemērojamās līnijas",
+    "@captureApplicableLines": {},
+    "captureSquareEdges": "Gar laukuma malām",
+    "@captureSquareEdges": {},
+    "captureCrossLines": "Gar ortogonālām līnijām, kas šķērso kvadrātu",
+    "@captureCrossLines": {},
+    "captureDiagonalLines": "Gar diagonālām līnijām, kas šķērso kvadrātu",
+    "@captureDiagonalLines": {},
+    "captureExecutionPhases": "Izpildes posmi",
+    "@captureExecutionPhases": {},
+    "capturePiecesCondition": "Pieejamība kustīgajā fāzē, pamatojoties uz atlikušajiem gabaliem",
+    "@capturePiecesCondition": {},
+    "capturePiecesConditionUnlimited": "Nav ierobežojuma",
+    "@capturePiecesConditionUnlimited": {},
+    "capturePiecesConditionSelfLeqThree": "Pieejams, kad jums ir trīs vai mazāk",
+    "@capturePiecesConditionSelfLeqThree": {},
+    "stopPlacingWhenTwoEmptySquares": "Pārtraukt novietošanu, kad paliek tikai divi tukši kvadrāti",
+    "@stopPlacingWhenTwoEmptySquares": {},
+    "stopPlacingWhenTwoEmptySquares_Detail": "Kad iespējots, novietošanas fāze beidzas un gājienu fāze sākas, kad uz galda ir palikušas tikai 2 tukšas vietas, neatkarīgi no figūrām rokā. Šis noteikums attiecas tikai uz spēlēm ar 12 figūrām.",
+    "@stopPlacingWhenTwoEmptySquares_Detail": {}
 }
