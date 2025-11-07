@@ -161,6 +161,20 @@ def check_arb_file(
     file_keys = list(file_data.keys())
     issues = []
 
+    # Extract expected locale from filename: intl_<locale>.arb
+    expected_locale = arb_file_path.stem.replace('intl_', '')
+
+    # Check if @@locale exists and matches filename
+    if "@@locale" not in file_data:
+        issues.append(f"  ❌ Missing @@locale key")
+    else:
+        actual_locale = file_data["@@locale"]
+        if actual_locale != expected_locale:
+            issues.append(
+                f"  ❌ @@locale mismatch: expected '{expected_locale}' "
+                f"(from filename) but got '{actual_locale}'"
+            )
+
     # Check for missing entries from template
     missing_entries = []
     for key in template_keys:

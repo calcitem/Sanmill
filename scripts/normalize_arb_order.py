@@ -182,8 +182,8 @@ def normalize_arb_file(
             continue
 
         if key == "@@locale":
-            # Keep original locale value from file, or use filename-derived locale
-            normalized_data[key] = file_data.get(key, locale)
+            # Always use filename-derived locale to ensure consistency
+            normalized_data[key] = locale
         elif key in file_data:
             # Entry exists in file, keep translated value
             normalized_data[key] = file_data[key]
