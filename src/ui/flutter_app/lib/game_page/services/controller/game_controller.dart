@@ -38,6 +38,10 @@ class GameController {
 
   bool disableStats = false;
 
+  // Prevent concurrent Move Now actions that could trigger repeated stops
+  // and epoch bumps on the engine side.
+  bool _isMoveNowInProgress = false;
+
   String? value;
   AiMoveType? aiMoveType;
 
@@ -936,31 +940,37 @@ class GameController {
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
     GameController().disableStats = true;
-
-    switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
-      case EngineResponseOK():
-      case EngineGameIsOver():
-        gameResultNotifier.showResult(force: true);
-        break;
-      case EngineResponseHumanOK():
-        gameResultNotifier.showResult();
-        break;
-      case EngineTimeOut():
-        headerTipNotifier.showTip(strTimeout);
-        break;
-      case EngineNoBestMove():
-        headerTipNotifier.showTip(strNoBestMoveErr);
-        break;
-      case EngineResponseSkip():
-        headerTipNotifier.showTip("Error: Skip"); // TODO
-        break;
-      default:
-        logger.e("$tag Unknown engine response type.");
-        break;
+    if (_isMoveNowInProgress) {
+      return; // silently ignore repeated taps
     }
-
-    if (reversed) {
-      gameInstance.reverseWhoIsAi();
+    _isMoveNowInProgress = true;
+    try {
+      switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
+        case EngineResponseOK():
+        case EngineGameIsOver():
+          gameResultNotifier.showResult(force: true);
+          break;
+        case EngineResponseHumanOK():
+          gameResultNotifier.showResult();
+          break;
+        case EngineTimeOut():
+          headerTipNotifier.showTip(strTimeout);
+          break;
+        case EngineNoBestMove():
+          headerTipNotifier.showTip(strNoBestMoveErr);
+          break;
+        case EngineResponseSkip():
+          headerTipNotifier.showTip("Error: Skip"); // TODO
+          break;
+        default:
+          logger.e("$tag Unknown engine response type.");
+          break;
+      }
+    } finally {
+      if (reversed) {
+        gameInstance.reverseWhoIsAi();
+      }
+      _isMoveNowInProgress = false;
     }
   }
 

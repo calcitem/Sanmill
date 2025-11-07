@@ -143,16 +143,23 @@ class Engine {
     String? fen;
     final String normalizedFen;
 
-    if (await isThinking()) {
+    bool softWait = false;
+    final bool currentlyThinking = await isThinking();
+
+    if (moveNow && currentlyThinking) {
+      // Soft-stop for Move Now while thinking: do not bump epoch
+      // and do not cancel waiting; we will wait for the current
+      // search to yield a stable bestmove.
+      await stopSoft();
+      softWait = true;
+    } else if (currentlyThinking) {
+      // Normal search requested but engine is already thinking: perform
+      // a hard stop to start a fresh search.
       await stopSearching();
-      // After stopping, reset cancellation flag for new search
       _isSearchCancelled = false;
-      // Note: stopSearching() already incremented _searchEpoch
     } else if (moveNow) {
-      // When user clicks "Move Now", stop any existing search first,
-      // then start a new search with configured moveTime
+      // Move Now when engine is idle: start a fresh timed search.
       await stopSearching();
-      // After stopping, reset cancellation flag for new search
       _isSearchCancelled = false;
       final String? fen = _getPositionFen();
       if (fen == null) {
@@ -161,8 +168,6 @@ class Engine {
       }
       await _send(fen);
       await _send("go");
-      // Let the engine search according to configured moveTime
-      // instead of stopping immediately
     }
 
     // Capture current epoch for this search session after any stopSearching() calls
@@ -255,7 +260,7 @@ class Engine {
       response = await _waitResponse(<String>[
         "bestmove",
         "nobestmove",
-      ], expectedEpoch: currentEpoch);
+      ], expectedEpoch: currentEpoch, disableTimeout: softWait);
 
       // If the engine restarted mid-wait (uciok seen), re-send position and go once
       if (_sawUciokDuringWait) {
@@ -344,6 +349,7 @@ class Engine {
     int sleep = 100,
     int times = 0,
     int? expectedEpoch,
+    bool disableTimeout = false,
   }) async {
     // Check if search has been cancelled or widget disposed
     if (_isSearchCancelled) {
@@ -373,7 +379,11 @@ class Engine {
       timeLimit = settings.moveTime * 10 * 64 + 10;
     }
 
-    if (times > timeLimit) {
+    // In soft-stop Move Now flow (disableTimeout == true) and not in dev mode,
+    // we do not enforce the time limit: the engine may need to complete the
+    // current iteration before producing a stable bestmove.
+    final bool enforceTimeout = !disableTimeout || EnvironmentConfig.devMode;
+    if (enforceTimeout && times > timeLimit) {
       logger.t("$_logTag Timeout. sleep = $sleep, times = $times");
 
       // Note:
@@ -415,6 +425,7 @@ class Engine {
         prefixes,
         times: times + 1,
         expectedEpoch: expectedEpoch,
+        disableTimeout: disableTimeout,
       ),
     );
   }
@@ -428,6 +439,16 @@ class Engine {
     // Set cancellation flag to stop waiting for responses
     _isSearchCancelled = true;
 
+    await _send("stop");
+  }
+
+  /// Soft stop: ask the engine to stop as soon as possible without
+  /// invalidating the current search epoch or cancelling pending waits.
+  ///
+  /// This is used by the Move Now feature while the engine is thinking:
+  /// we prefer to return the best move from the current interrupted
+  /// search instead of discarding it via epoch bump.
+  Future<void> stopSoft() async {
     await _send("stop");
   }
 
