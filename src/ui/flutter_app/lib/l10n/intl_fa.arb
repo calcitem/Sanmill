@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "آیا می‌خواهید اکنون قوانین بازی را پیکربندی کنید؟",
+    "@configureRulesPrompt": {},
+    "configureRules": "پیکربندی قوانین",
+    "@configureRules": {}
 }

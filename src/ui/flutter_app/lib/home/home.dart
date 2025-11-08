@@ -618,6 +618,51 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           fullscreenDialog: true,
         ),
       );
+
+      // Show rule settings onboarding dialog for Russian and Persian locales
+      _showRuleSettingsOnboarding();
+    }
+  }
+
+  /// Show rule settings onboarding dialog for specific locales
+  void _showRuleSettingsOnboarding() {
+    final Locale locale = Localizations.localeOf(context);
+    final String languageCode = locale.languageCode;
+
+    // Only show for Russian (ru) and Persian (fa) locales
+    if (languageCode == 'ru' || languageCode == 'fa') {
+      showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(S.of(context).configureRules),
+            content: Text(S.of(context).configureRulesPrompt),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  // User chose not to configure rules, just close the dialog
+                  Navigator.of(context).pop(false);
+                },
+                child: Text(S.of(context).no),
+              ),
+              TextButton(
+                onPressed: () {
+                  // User chose to configure rules
+                  Navigator.of(context).pop(true);
+                },
+                child: Text(S.of(context).yes),
+              ),
+            ],
+          );
+        },
+      ).then((bool? result) {
+        if (result == true) {
+          // Navigate to Rule Settings page
+          _changeIndex(_DrawerIndex.ruleSettings);
+        }
+        // If result is false or null, do nothing (no prompt on exit)
+      });
     }
   }
 

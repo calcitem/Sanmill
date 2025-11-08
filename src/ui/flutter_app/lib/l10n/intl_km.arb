@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "តើអ្នកចង់កំណត់រចនាសម្ព័ន្ធច្បាប់ហ្គេមឥឡូវនេះទេ?",
+    "@configureRulesPrompt": {},
+    "configureRules": "កំណត់រចនាសម្ព័ន្ធច្បាប់",
+    "@configureRules": {}
 }

@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Haluatko määrittää pelin säännöt nyt?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Määritä säännöt",
+    "@configureRules": {}
 }

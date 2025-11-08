@@ -2128,5 +2128,13 @@
                 "type": "String"
             }
         }
+    },
+    "configureRulesPrompt": "您现在想要配置游戏规则吗？",
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
+    "configureRules": "配置规则",
+    "@configureRules": {
+        "description": "Button text for configuring rules"
     }
 }

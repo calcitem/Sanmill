@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Vai vēlaties tagad konfigurēt spēles noteikumus?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Konfigurēt noteikumus",
+    "@configureRules": {}
 }

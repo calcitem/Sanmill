@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Vols configurar les regles del joc ara?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Configurar regles",
+    "@configureRules": {}
 }

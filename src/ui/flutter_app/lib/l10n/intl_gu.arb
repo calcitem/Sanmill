@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "શું તમે હવે રમતના નિયમો રૂપરેખાંકિત કરવા માંગો છો?",
+    "@configureRulesPrompt": {},
+    "configureRules": "નિયમો રૂપરેખાંકિત કરો",
+    "@configureRules": {}
 }

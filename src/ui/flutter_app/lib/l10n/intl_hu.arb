@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Szeretné most beállítani a játék szabályait?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Szabályok beállítása",
+    "@configureRules": {}
 }

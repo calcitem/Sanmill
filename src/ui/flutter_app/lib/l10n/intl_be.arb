@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Ці хочаце вы зараз наладзіць правілы гульні?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Наладзіць правілы",
+    "@configureRules": {}
 }

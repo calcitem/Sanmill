@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Θέλετε να διαμορφώσετε τους κανόνες του παιχνιδιού τώρα;",
+    "@configureRulesPrompt": {},
+    "configureRules": "Διαμόρφωση κανόνων",
+    "@configureRules": {}
 }

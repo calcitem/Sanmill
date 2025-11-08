@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Дали сакате да ги конфигурирате правилата на играта сега?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Конфигурирај правила",
+    "@configureRules": {}
 }

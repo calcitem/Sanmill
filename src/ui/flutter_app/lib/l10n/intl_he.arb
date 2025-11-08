@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "האם תרצה להגדיר את חוקי המשחק עכשיו?",
+    "@configureRulesPrompt": {},
+    "configureRules": "הגדר חוקים",
+    "@configureRules": {}
 }

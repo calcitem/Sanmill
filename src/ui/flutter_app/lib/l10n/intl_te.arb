@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "మీరు ఇప్పుడు ఆట నియమాలను కాన్ఫిగర్ చేయాలనుకుంటున్నారా?",
+    "@configureRulesPrompt": {},
+    "configureRules": "నియమాలను కాన్ఫిగర్ చేయండి",
+    "@configureRules": {}
 }

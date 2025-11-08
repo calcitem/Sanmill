@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "நீங்கள் இப்போது விளையாட்டு விதிகளை உள்ளமைக்க விரும்புகிறீர்களா?",
+    "@configureRulesPrompt": {},
+    "configureRules": "விதிகளை உள்ளமைக்கவும்",
+    "@configureRules": {}
 }

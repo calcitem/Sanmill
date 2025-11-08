@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "አሁን የጨዋታ ደንቦችን ማዋቀር ይፈልጋሉ?",
+    "@configureRulesPrompt": {},
+    "configureRules": "ደንቦችን ያዋቅሩ",
+    "@configureRules": {}
 }

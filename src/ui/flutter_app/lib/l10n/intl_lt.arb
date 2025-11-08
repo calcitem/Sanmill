@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Ar norite dabar sukonfigūruoti žaidimo taisykles?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Konfigūruoti taisykles",
+    "@configureRules": {}
 }

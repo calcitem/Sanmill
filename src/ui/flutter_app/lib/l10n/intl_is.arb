@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Viltu stilla reglur leiksins núna?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Stilla reglur",
+    "@configureRules": {}
 }
