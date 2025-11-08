@@ -2114,6 +2114,7 @@
     "capturePiecesConditionSelfLeqThree": "Доступно, коли у вас три або менше штук",
     "@capturePiecesConditionSelfLeqThree": {},
     "stopPlacingWhenTwoEmptySquares": "Завершувати фазу розміщення, коли на дошці лишаються лише 2 порожні клітинки",
+    "stopPlacingWhenTwoEmptySquares": "Припиніть розміщувати, коли залишилося тільки два порожніх квадрати",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Коли увімкнено, фаза розміщення закінчується і починається фаза переміщення, коли на дошці залишається лише 2 порожні клітинки, незалежно від кількості фігур у руці. Це правило застосовується лише до ігор із 12 фігурами.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
@@ -2128,5 +2129,11 @@
                 "type": "String"
             }
         }
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "stopPlacingWhenTwoEmptySquares_Detail": "Коли ця опція увімкнена, фаза розміщення закінчується і починається фаза переміщення, коли на дошці залишається лише 2 порожні клітинки, незалежно від кількості фігур у руці. Це правило застосовується лише до ігор з 12 фігурами.",
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Ви можете подати заявку на повернення тільки відразу після переходу.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": "Shown when player attempts to request a take back not immediately after their move in LAN mode."
     }
 }
