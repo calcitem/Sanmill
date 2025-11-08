@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Quando abilitato, la fase di posizionamento termina e la fase di movimento inizia quando la scacchiera ha solo 2 spazi vuoti rimasti, indipendentemente dai pezzi in mano. Questa regola si applica solo ai giochi a 12 pezzi.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Puoi richiedere un'annullamento solo immediatamente dopo la tua mossa.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Se desideri una sfida maggiore, ti suggeriamo di attivare l'opzione \"{setting}\" e di scaricare il database completo sul tuo dispositivo come indicato.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

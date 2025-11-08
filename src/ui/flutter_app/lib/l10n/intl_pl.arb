@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Po włączeniu faza umieszczania kończy się, a faza ruchu zaczyna się, gdy na planszy pozostały tylko 2 wolne miejsca, niezależnie od pionków w ręce. Ta zasada dotyczy tylko gier z 12 pionkami.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Możesz poprosić o cofnięcie tylko bezpośrednio po swoim ruchu.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Jeśli chcesz większego wyzwania, sugerujemy włączenie opcji \"{setting}\" i pobranie pełnej bazy danych na swoje urządzenie zgodnie z instrukcjami.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

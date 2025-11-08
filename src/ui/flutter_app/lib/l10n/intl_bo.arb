@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "སྤྱོད་པའི་སྐབས། གཞོང་པང་ལ་སྟོང་གནས་༢་ལས་མེད་པའི་སྐབས་གཞག་པའི་རིམ་པ་མཇུག་སྒྲིལ་ཞིང་སྐྱོད་པའི་རིམ་པ་འགོ་འཛུགས་པ་རེད། ལག་ཏུ་ཡོད་པའི་སྐྱེད་ཆ་ཁག་ལ་མ་ལྟོས་པར། འདི་ནི་སྐྱེད་ཆ་༡༢་པའི་རྩེད་མོ་ལ་མ་གཏོགས་འཇོག་མི་ཐུབ།",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "ཁྱེད་ཀྱིས་ཁྱེད་རང་གི་འགུལ་སྐྱོད་བྱས་རྗེས་མ་ཐག་ཏུ་ཕྱིར་འཐེན་ཞུ་རྒྱུ་བྱེད་ཐུབ།",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "ཁྱེད་ཀྱིས་དཀའ་ཚད་མཐོ་བ་དགོས་ན། ང་ཚོས་ \"{setting}\" འདེམས་ཚན་སྤྱོད་རུང་བཟོ་རྒྱུ་དང༌། བརྡ་སྟོན་བཞིན་ཁྱེད་ཀྱི་སྒྲིག་ཆས་ལ་གཞི་གྲངས་མཛོད་ཆ་ཚང་ཕབ་ལེན་བྱེད་པར་འདེམས་འོས་བྱེད།",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Jika diaktifkan, fase penempatan berakhir dan fase pergerakan dimulai ketika papan hanya memiliki 2 ruang kosong tersisa, terlepas dari bidak di tangan. Aturan ini hanya berlaku untuk permainan 12 bidak.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Anda hanya dapat meminta pembatalan segera setelah langkah Anda.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Jika Anda menginginkan tantangan yang lebih besar, kami sarankan mengaktifkan opsi \"{setting}\" dan mengunduh database lengkap ke perangkat Anda seperti yang diminta.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

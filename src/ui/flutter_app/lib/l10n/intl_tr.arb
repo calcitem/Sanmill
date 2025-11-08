@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Etkinleştirildiğinde, tahtada yalnızca 2 boş alan kaldığında yerleştirme aşaması sona erer ve hareket aşamı başlar, eldeki taşlar ne olursa olsun. Bu kural yalnızca 12 taşlı oyunlar için geçerlidir.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Sadece hamlenizden hemen sonra geri alma talep edebilirsiniz.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Daha büyük bir zorluk istiyorsanız, \"{setting}\" seçeneğini etkinleştirmenizi ve belirtildiği gibi cihazınıza tam veritabanını indirmenizi öneririz.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

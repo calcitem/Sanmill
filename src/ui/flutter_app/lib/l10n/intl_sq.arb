@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Kur aktivizohet, faza e vendosjes përfundon dhe faza e lëvizjes fillon kur tabela ka vetëm 2 vende bosh të mbetura, pavarësisht nga copat në dorë. Ky rregull aplikohet vetëm për lojëra me 12 copa.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Ju mund të kërkoni tërheqje vetëm menjëherë pas lëvizjes suaj.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Nëse dëshironi një sfidë më të madhe, ne sugjerojmë të aktivizoni opsionin \"{setting}\" dhe të shkarkoni bazën e të dhënave të plotë në pajisjen tuaj siç tregohet.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

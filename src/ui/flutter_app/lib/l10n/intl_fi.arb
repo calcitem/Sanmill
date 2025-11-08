@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Kun tämä on käytössä, asettamisvaihe päättyy ja siirtovaihe alkaa, kun laudalla on vain 2 tyhjää paikkaa jäljellä, riippumatta kädessä olevista nappuloista. Tämä sääntö koskee vain 12-nappulaisia pelejä.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Voit pyytää peruutusta vain välittömästi siirtosi jälkeen.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Jos haluat suuremman haasteen, suosittelemme ottamaan käyttöön \"{setting}\" -vaihtoehdon ja lataamaan täydellisen tietokannan laitteeseesi kehotteen mukaisesti.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

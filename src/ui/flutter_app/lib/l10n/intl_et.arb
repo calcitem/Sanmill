@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Kui see on lubatud, lõpeb paigutamise faas ja algab liikumise faas, kui laual on ainult 2 tühja kohta, olenemata käes olevatest nuuppudest. See reegel kehtib ainult 12-nupuga mängude puhul.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Saate tagasivõtmist taotleda ainult kohe pärast oma käiku.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Kui soovite suuremat väljakutset, soovitame lubada valiku \"{setting}\" ja laadida täielik andmebaas oma seadmesse vastavalt juhistele.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

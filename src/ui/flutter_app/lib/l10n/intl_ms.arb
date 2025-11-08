@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Apabila didayakan, fasa peletakan berakhir dan fasa pergerakan bermula apabila papan hanya mempunyai 2 ruang kosong yang tinggal, tanpa mengira buah di tangan. Peraturan ini hanya terpakai untuk permainan 12 buah.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Anda hanya boleh meminta pembatalan sejurus selepas langkah anda.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Jika anda mahukan cabaran yang lebih besar, kami cadangkan mengaktifkan pilihan \"{setting}\" dan memuat turun pangkalan data lengkap ke peranti anda seperti yang diminta.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

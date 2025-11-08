@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Когато е активирано, фазата на поставяне приключва и фазата на движение започва, когато на дъската останат само 2 празни места, независимо от фигурите в ръка. Това правило се прилага само за игри с 12 фигури.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Можете да поискате връщане само веднага след вашия ход.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Ако искате по-голямо предизвикателство, предлагаме да активирате опцията \"{setting}\" и да изтеглите пълната база данни на вашето устройство, както е указано.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

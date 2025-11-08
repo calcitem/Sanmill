@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Kad iespējots, novietošanas fāze beidzas un gājienu fāze sākas, kad uz galda ir palikušas tikai 2 tukšas vietas, neatkarīgi no figūrām rokā. Šis noteikums attiecas tikai uz spēlēm ar 12 figūrām.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Jūs varat pieprasīt atcelšanu tikai tūlīt pēc sava gājiena.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Ja vēlaties lielāku izaicinājumu, iesakām iespējot opciju \"{setting}\" un lejupielādēt pilnīgu datubāzi savā ierīcē, kā norādīts.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

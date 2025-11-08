@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Cuando está habilitado, la fase de colocación termina y la fase de movimiento comienza cuando el tablero tiene solo 2 espacios vacíos, independientemente de las piezas en la mano. Esta regla solo se aplica a juegos de 12 piezas.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Solo puedes solicitar un retroceso inmediatamente después de tu movimiento.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Si desea un mayor desafío, le sugerimos activar la opción \"{setting}\" y descargar la base de datos completa en su dispositivo como se indica.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

@@ -77,6 +77,25 @@ class GameResultAlertDialog extends StatelessWidget {
 
     logger.t("$_logTag Game over reason string: $content");
 
+    // Check if we should show perfect database hint
+    final bool shouldShowPerfectDatabaseHint =
+        DB().ruleSettings.isLikelyNineMensMorris() &&
+        !DB().generalSettings.usePerfectDatabase &&
+        (DB().generalSettings.moveTime == 0 || DB().generalSettings.moveTime > 10) &&
+        DB().generalSettings.skillLevel == Constants.highestSkillLevel &&
+        _gameResult == GameResult.win &&
+        gameMode == GameMode.humanVsAi;
+
+    if (shouldShowPerfectDatabaseHint) {
+      content.writeln();
+      content.writeln();
+      content.writeln(
+        S.of(context).perfectDatabaseChallengeHint(
+          S.of(context).usePerfectDatabase,
+        ),
+      );
+    }
+
     final bool canChallenge =
         canChallengeNextLevel(_gameResult!) == true &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&

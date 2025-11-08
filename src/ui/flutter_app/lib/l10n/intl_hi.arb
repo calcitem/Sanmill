@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "जब सक्षम हो, तो बोर्ड पर केवल 2 खाली जगहें बची होने पर रखने का चरण समाप्त हो जाता है और चलने का चरण शुरू हो जाता है, हाथ में मोहरों की परवाह किए बिना। यह नियम केवल 12-मोहरा खेलों के लिए लागू होता है।",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "आप केवल अपनी चाल के तुरंत बाद ही वापस लेने का अनुरोध कर सकते हैं।",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "यदि आप अधिक चुनौती चाहते हैं, तो हम \"{setting}\" विकल्प को सक्षम करने और संकेत के अनुसार अपने डिवाइस में पूर्ण डेटाबेस डाउनलोड करने का सुझाव देते हैं।",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

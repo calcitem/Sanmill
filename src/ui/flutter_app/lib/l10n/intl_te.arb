@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "ప్రారంభించినప్పుడు, బోర్డ్‌లో కేవలం 2 ఖాళీ స్థలాలు మిగిలినప్పుడు ఉంచే దశ ముగుస్తుంది మరియు కదిలించే దశ ప్రారంభమవుతుంది, చేతిలో ముక్కలు ఉన్నా లేకపోయినా. ఈ నియమం 12-ముక్కల ఆటలకు మాత్రమే వర్తిస్తుంది.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "మీ తరలింపు తర్వాత వెంటనే మాత్రమే మీరు వెనుకకు తీసుకోవడాన్ని అభ్యర్థించవచ్చు.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "మీరు మరింత పెద్ద సవాలును కోరుకుంటే, \"{setting}\" ఎంపికను ప్రారంభించి, సూచించిన విధంగా మీ పరికరానికి పూర్తి డేటాబేస్‌ను డౌన్‌లోడ్ చేయమని మేము సూచిస్తున్నాము.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

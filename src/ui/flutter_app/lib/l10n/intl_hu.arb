@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Ha engedélyezve van, a lehelyezési fázis véget ér, és a mozgatási fázis kezdődik, amikor a táblán csak 2 üres hely marad, függetlenül a kézben lévő bábúktól. Ez a szabály csak a 12 bábús játékokra vonatkozik.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Csak közvetlenül a lépésed után kérhetsz visszavonást.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Ha nagyobb kihívást szeretnél, javasoljuk, hogy engedélyezd a \"{setting}\" opciót, és az útmutatás szerint töltsd le a teljes adatbázist az eszközödre.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

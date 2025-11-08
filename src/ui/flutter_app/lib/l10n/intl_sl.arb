@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Ko je omogočeno, se faza postavljanja konča in faza premikanja se začne, ko ima plošča samo še 2 prosti mesti, ne glede na figure v roki. To pravilo velja samo za igre z 12 figurami.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Vrnitev lahko zahtevate samo takoj po vaši potezi.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Če želite večji izziv, predlagamo, da omogočite možnost \"{setting}\" in prenesete celotno bazo podatkov na svojo napravo, kot je navedeno.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

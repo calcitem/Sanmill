@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Když je povoleno, fáze umísťování končí a fáze pohybu začíná, když na desce zbývají pouze 2 prázdná místa, bez ohledu na kameny v ruce. Toto pravidlo platí pouze pro hry s 12 kameny.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Vrácení tahu můžete požadovat pouze ihned po svém tahu.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Pokud chcete větší výzvu, doporučujeme povolit možnost \"{setting}\" a stáhnout kompletní databázi do vašeho zařízení podle pokynů.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

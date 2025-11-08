@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Kai įjungta, dėjimo fazė baigiasi ir prasideda judėjimo fazė, kai lentoje lieka tik 2 tušti laukai, nepaisant rankoje esančių figūrų. Ši taisyklė taikoma tik 12 figūrų žaidimams.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Galite prašyti atšaukti tik iš karto po savo ėjimo.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Jei norite didesnio iššūkio, siūlome įjungti parinktį \"{setting}\" ir atsisiųsti visą duomenų bazę į savo įrenginį, kaip nurodyta.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "সক্রিয় থাকলে, বোর্ডে শুধুমাত্র ২টি খালি জায়গা থাকলে স্থাপন পর্ব শেষ হয় এবং চলন পর্ব শুরু হয়, হাতে থাকা টুকরা নির্বিশেষে। এই নিয়মটি শুধুমাত্র ১২-টুকরা গেমের জন্য প্রযোজ্য।",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "আপনি শুধুমাত্র আপনার চাল দেওয়ার পরপরই ফিরিয়ে নেওয়ার অনুরোধ করতে পারেন।",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "আপনি যদি আরও বড় চ্যালেঞ্জ চান, আমরা \"{setting}\" বিকল্পটি সক্ষম করার এবং নির্দেশিত হিসাবে আপনার ডিভাইসে সম্পূর্ণ ডাটাবেস ডাউনলোড করার পরামর্শ দিই।",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

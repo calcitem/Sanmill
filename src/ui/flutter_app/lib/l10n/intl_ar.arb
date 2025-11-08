@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "عند التمكين، تنتهي مرحلة الوضع وتبدأ مرحلة التحريك عندما يتبقى في اللوحة مساحتان فارغتان فقط، بغض النظر عن القطع في اليد. تنطبق هذه القاعدة فقط على ألعاب 12 قطعة.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "يمكنك طلب التراجع فقط مباشرة بعد حركتك.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "إذا كنت تريد تحديًا أكبر، نقترح تفعيل خيار \"{setting}\" وتنزيل قاعدة البيانات الكاملة إلى جهازك كما هو موضح.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

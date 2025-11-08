@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "සක්‍රීය කළ විට, පුවරුවේ හිස් ඉඩ 2ක් පමණක් ඉතිරිව ඇති විට තැබීමේ අදියර අවසන් වන අතර චලන අදියර ආරම්භ වේ, අතේ ඇති කැබලි නොතකා. මෙම රීතිය 12-කැබලි ක්‍රීඩා සඳහා පමණක් අදාළ වේ.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "ඔබගේ චලනයෙන් වහාම පසුව පමණක් ආපසු ගැනීමට ඉල්ලීමක් කළ හැක.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "ඔබට වැඩි අභියෝගයක් අවශ්‍ය නම්, \"{setting}\" විකල්පය සබල කිරීම සහ පෙන්වා ඇති පරිදි ඔබේ උපාංගයට සම්පූර්ණ දත්ත ගබඩාව බාගත කිරීම අපි යෝජනා කරමු.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

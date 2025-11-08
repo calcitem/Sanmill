@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "När det är aktiverat avslutas placeringsfasen och flyttfasen börjar när brädet bara har 2 tomma platser kvar, oavsett pjäser i handen. Denna regel gäller endast för 12-pjässpel.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Du kan bara begära ångring omedelbart efter ditt drag.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Om du vill ha en större utmaning föreslår vi att du aktiverar alternativet \"{setting}\" och laddar ner hela databasen till din enhet enligt anvisningarna.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

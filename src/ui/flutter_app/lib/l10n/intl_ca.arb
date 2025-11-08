@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Quan s'activa, la fase de col·locació finalitza i comença la fase de moviment quan el tauler té només 2 espais buits, independentment de les peces a la mà. Aquesta regla només s'aplica a jocs de 12 peces.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Només pots sol·licitar un retrocés immediatament després del teu moviment.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Si voleu un repte més gran, us suggerim activar l'opció \"{setting}\" i descarregar la base de dades completa al vostre dispositiu tal com s'indica.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

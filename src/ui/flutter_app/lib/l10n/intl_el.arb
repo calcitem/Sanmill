@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Όταν είναι ενεργοποιημένο, η φάση τοποθέτησης τελειώνει και η φάση κίνησης ξεκινά όταν ο πίνακας έχει μόνο 2 κενές θέσεις, ανεξάρτητα από τα κομμάτια στο χέρι. Αυτός ο κανόνας ισχύει μόνο για παιχνίδια 12 κομματιών.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Μπορείτε να ζητήσετε επαναφορά μόνο αμέσως μετά την κίνησή σας.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Εάν θέλετε μεγαλύτερη πρόκληση, προτείνουμε να ενεργοποιήσετε την επιλογή \"{setting}\" και να κατεβάσετε την πλήρη βάση δεδομένων στη συσκευή σας όπως υποδεικνύεται.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

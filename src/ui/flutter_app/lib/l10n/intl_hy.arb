@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Երբ միացված է, տեղադրման փուլը ավարտվում է, և քայլի փուլը սկսվում է, երբ տախտակին մնում է միայն 2 դատարկ տեղ, անկախ ձեռքում եղած խաղաքարերից: Այս կանոնը կիրառվում է միայն 12 խաղաքարերով խաղերի համար:",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Դուք կարող եք հետ վերադարձի հարցում անել միայն ձեր քայլից անմիջապես հետո։",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Եթե ցանկանում եք ավելի մեծ մարտահրավեր, մենք առաջարկում ենք միացնել \"{setting}\" տարբերակը և ներբեռնել ամբողջական տվյալների բազան ձեր սարքի մեջ, ինչպես ցուցադրված է։",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

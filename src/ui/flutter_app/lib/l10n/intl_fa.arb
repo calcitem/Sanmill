@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "وقتی فعال باشد، مرحله قرار دادن به پایان می‌رسد و مرحله حرکت زمانی شروع می‌شود که صفحه فقط ۲ فضای خالی داشته باشد، صرف نظر از مهره‌های موجود در دست. این قانون فقط برای بازی‌های ۱۲ مهره‌ای اعمال می‌شود.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "شما فقط می‌توانید بلافاصله پس از حرکت خود درخواست بازگشت دهید.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "اگر می‌خواهید چالش بیشتری داشته باشید، پیشنهاد می‌کنیم گزینه \"{setting}\" را فعال کنید و پایگاه داده کامل را همانطور که دستور داده شده به دستگاه خود دانلود کنید.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

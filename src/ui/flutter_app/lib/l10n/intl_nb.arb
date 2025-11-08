@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Når aktivert, slutter plasseringsfasen og flyttefasen begynner når brettet bare har 2 tomme plasser igjen, uavhengig av brikker i hånden. Denne regelen gjelder bare for 12-brikkspill.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Du kan kun be om tilbaketrekking umiddelbart etter ditt trekk.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Hvis du ønsker en større utfordring, foreslår vi at du aktiverer alternativet \"{setting}\" og laster ned den komplette databasen til enheten din som angitt.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }
