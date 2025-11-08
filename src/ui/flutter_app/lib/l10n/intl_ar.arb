@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "توقف عن الوضع عندما يتبقى مربعان فارغان فقط",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "عند التمكين، تنتهي مرحلة الوضع وتبدأ مرحلة التحريك عندما يتبقى في اللوحة مساحتان فارغتان فقط، بغض النظر عن القطع في اليد. تنطبق هذه القاعدة فقط على ألعاب 12 قطعة.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "يمكنك طلب التراجع فقط مباشرة بعد حركتك.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Sluta placera när bara två tomma rutor återstår",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "När det är aktiverat avslutas placeringsfasen och flyttfasen börjar när brädet bara har 2 tomma platser kvar, oavsett pjäser i handen. Denna regel gäller endast för 12-pjässpel.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Du kan bara begära ångring omedelbart efter ditt drag.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Zastavit umísťování, když zbývají pouze dva prázdné čtverce",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Když je povoleno, fáze umísťování končí a fáze pohybu začíná, když na desce zbývají pouze 2 prázdná místa, bez ohledu na kameny v ruce. Toto pravidlo platí pouze pro hry s 12 kameny.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Vrácení tahu můžete požadovat pouze ihned po svém tahu.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

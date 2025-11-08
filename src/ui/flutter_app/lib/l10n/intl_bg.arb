@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Спрете поставянето, когато останат само два празни квадрата",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Когато е активирано, фазата на поставяне приключва и фазата на движение започва, когато на дъската останат само 2 празни места, независимо от фигурите в ръка. Това правило се прилага само за игри с 12 фигури.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Можете да поискате връщане само веднага след вашия ход.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

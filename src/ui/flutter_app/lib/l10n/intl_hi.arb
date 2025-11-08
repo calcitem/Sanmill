@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "जब केवल दो खाली वर्ग शेष रहें तो रखना बंद करें",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "जब सक्षम हो, तो बोर्ड पर केवल 2 खाली जगहें बची होने पर रखने का चरण समाप्त हो जाता है और चलने का चरण शुरू हो जाता है, हाथ में मोहरों की परवाह किए बिना। यह नियम केवल 12-मोहरा खेलों के लिए लागू होता है।",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "आप केवल अपनी चाल के तुरंत बाद ही वापस लेने का अनुरोध कर सकते हैं।",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

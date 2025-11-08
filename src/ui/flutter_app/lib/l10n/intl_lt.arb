@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Sustabdyti dėjimą, kai lieka tik du tušti kvadratai",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Kai įjungta, dėjimo fazė baigiasi ir prasideda judėjimo fazė, kai lentoje lieka tik 2 tušti laukai, nepaisant rankoje esančių figūrų. Ši taisyklė taikoma tik 12 figūrų žaidimams.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Galite prašyti atšaukti tik iš karto po savo ėjimo.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

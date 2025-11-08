@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Parar de colocar quando restarem apenas dois quadrados vazios",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Quando ativado, a fase de colocação termina e a fase de movimento começa quando o tabuleiro tem apenas 2 espaços vazios restantes, independentemente das peças na mão. Esta regra aplica-se apenas a jogos de 12 peças.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Você só pode solicitar um retrocesso imediatamente após o seu movimento.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

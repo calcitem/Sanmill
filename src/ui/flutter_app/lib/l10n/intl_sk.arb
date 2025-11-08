@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Zastaviť umiestňovanie, keď zostanú iba dve prázdne štvorce",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Keď je povolené, fáza umiestňovania sa skončí a fáza pohybu začne, keď má doska iba 2 prázdne miesta, bez ohľadu na kamene v ruke. Toto pravidlo platí iba pre hry s 12 kameňmi.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Vrátenie ťahu môžete požadovať len bezprostredne po vašom ťahu.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

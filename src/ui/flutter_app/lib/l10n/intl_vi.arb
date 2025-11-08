@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Dừng đặt khi chỉ còn lại hai ô trống",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Khi được bật, giai đoạn đặt quân kết thúc và giai đoạn di chuyển bắt đầu khi bàn cờ chỉ còn 2 ô trống, bất kể số quân trên tay. Quy tắc này chỉ áp dụng cho trò chơi 12 quân.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Bạn chỉ có thể yêu cầu rút lại ngay sau nước đi của bạn.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

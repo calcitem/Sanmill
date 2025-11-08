@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "ಕೇವಲ ಎರಡು ಖಾಲಿ ಚೌಕಗಳು ಉಳಿದಾಗ ಇಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ಬೋರ್ಡ್‌ನಲ್ಲಿ ಕೇವಲ 2 ಖಾಲಿ ಸ್ಥಳಗಳು ಉಳಿದಾಗ ಇಡುವ ಹಂತ ಮುಗಿಯುತ್ತದೆ ಮತ್ತು ಚಲನೆಯ ಹಂತ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಕೈಯಲ್ಲಿರುವ ತುಂಡುಗಳ ಲೆಕ್ಕವಿಲ್ಲದೆ. ಈ ನಿಯಮವು ಕೇವಲ 12-ತುಂಡು ಆಟಗಳಿಗೆ ಮಾತ್ರ ಅನ್ವಯಿಸುತ್ತದೆ.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "ನಿಮ್ಮ ನಡೆಯ ತಕ್ಷಣ ನಂತರ ಮಾತ್ರ ನೀವು ಹಿಂತೆಗೆದುಕೊಳ್ಳುವಿಕೆಯನ್ನು ವಿನಂತಿಸಬಹುದು.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

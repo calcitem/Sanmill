@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "빈 칸이 두 개만 남았을 때 배치 중지",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "활성화하면 보드에 빈 공간이 2개만 남았을 때 배치 단계가 종료되고 이동 단계가 시작됩니다. 손에 있는 말 개수와 관계없이 적용됩니다. 이 규칙은 12개 말 게임에만 적용됩니다.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "당신의 수를 둔 직후에만 무르기를 요청할 수 있습니다.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

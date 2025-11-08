@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Hættu að setja þegar aðeins tveir tómir reitir eru eftir",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Þegar þetta er virkt lýkur staðsetningarfasanum og hreyfingarfasinn byrjar þegar borðið hefur aðeins 2 tóm rými eftir, óháð mönnunum í hendi. Þessi regla á aðeins við um 12 manna leiki.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Þú getur aðeins beðið um afturköllun strax eftir leikinn þinn.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

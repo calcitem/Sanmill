@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "જ્યારે માત્ર બે ખાલી ચોરસ બાકી રહે ત્યારે મૂકવાનું બંધ કરો",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "જ્યારે સક્ષમ હોય ત્યારે, બોર્ડ પર માત્ર 2 ખાલી જગ્યાઓ બાકી હોય ત્યારે મૂકવાનો તબક્કો સમાપ્ત થાય છે અને ખસેડવાનો તબક્કો શરૂ થાય છે, હાથમાં રહેલા ટુકડાઓને ધ્યાનમાં લીધા વિના. આ નિયમ ફક્ત 12-ટુકડાની રમતો માટે લાગુ પડે છે.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "તમે તમારી ચાલ પછી તરત જ પાછું લેવાની વિનંતી કરી શકો છો.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

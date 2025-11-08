@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Lehelyezés leállítása, ha csak két üres négyzet marad",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Ha engedélyezve van, a lehelyezési fázis véget ér, és a mozgatási fázis kezdődik, amikor a táblán csak 2 üres hely marad, függetlenül a kézben lévő bábúktól. Ez a szabály csak a 12 bábús játékokra vonatkozik.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Csak közvetlenül a lépésed után kérhetsz visszavonást.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

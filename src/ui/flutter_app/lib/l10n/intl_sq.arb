@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Ndalo vendosjen kur mbeten vetëm dy katrorë bosh",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Kur aktivizohet, faza e vendosjes përfundon dhe faza e lëvizjes fillon kur tabela ka vetëm 2 vende bosh të mbetura, pavarësisht nga copat në dorë. Ky rregull aplikohet vetëm për lojëra me 12 copa.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Ju mund të kërkoni tërheqje vetëm menjëherë pas lëvizjes suaj.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

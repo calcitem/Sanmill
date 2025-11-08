@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "இரண்டு வெற்று சதுரங்கள் மட்டுமே எஞ்சியிருக்கும்போது வைப்பதை நிறுத்துங்கள்",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "இயக்கப்பட்டால், பலகையில் 2 வெற்று இடங்கள் மட்டுமே எஞ்சியிருக்கும்போது வைக்கும் கட்டம் முடிவடைந்து நகர்த்தும் கட்டம் தொடங்குகிறது, கையில் உள்ள காய்களைப் பொருட்படுத்தாமல். இந்த விதி 12-காய் விளையாட்டுகளுக்கு மட்டுமே பொருந்தும்.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "உங்கள் நகர்வுக்கு உடனடியாகப் பிறகு மட்டுமே திரும்பப் பெறுவதை கோரலாம்.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

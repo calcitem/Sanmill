@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "শুধুমাত্র দুটি খালি বর্গক্ষেত্র অবশিষ্ট থাকলে স্থাপন বন্ধ করুন",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "সক্রিয় থাকলে, বোর্ডে শুধুমাত্র ২টি খালি জায়গা থাকলে স্থাপন পর্ব শেষ হয় এবং চলন পর্ব শুরু হয়, হাতে থাকা টুকরা নির্বিশেষে। এই নিয়মটি শুধুমাত্র ১২-টুকরা গেমের জন্য প্রযোজ্য।",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "আপনি শুধুমাত্র আপনার চাল দেওয়ার পরপরই ফিরিয়ে নেওয়ার অনুরোধ করতে পারেন।",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

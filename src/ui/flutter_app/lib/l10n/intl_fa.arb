@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "توقف قرار دادن وقتی فقط دو مربع خالی باقی می‌ماند",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "وقتی فعال باشد، مرحله قرار دادن به پایان می‌رسد و مرحله حرکت زمانی شروع می‌شود که صفحه فقط ۲ فضای خالی داشته باشد، صرف نظر از مهره‌های موجود در دست. این قانون فقط برای بازی‌های ۱۲ مهره‌ای اعمال می‌شود.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "شما فقط می‌توانید بلافاصله پس از حرکت خود درخواست بازگشت دهید.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

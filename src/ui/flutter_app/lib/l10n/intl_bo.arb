@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "སྟོང་པའི་གྲུ་བཞི་གཉིས་ལས་མེད་པའི་སྐབས་གཞག་པ་མཚམས་འཇོག",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "སྤྱོད་པའི་སྐབས། གཞོང་པང་ལ་སྟོང་གནས་༢་ལས་མེད་པའི་སྐབས་གཞག་པའི་རིམ་པ་མཇུག་སྒྲིལ་ཞིང་སྐྱོད་པའི་རིམ་པ་འགོ་འཛུགས་པ་རེད། ལག་ཏུ་ཡོད་པའི་སྐྱེད་ཆ་ཁག་ལ་མ་ལྟོས་པར། འདི་ནི་སྐྱེད་ཆ་༡༢་པའི་རྩེད་མོ་ལ་མ་གཏོགས་འཇོག་མི་ཐུབ།",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "ཁྱེད་ཀྱིས་ཁྱེད་རང་གི་འགུལ་སྐྱོད་བྱས་རྗེས་མ་ཐག་ཏུ་ཕྱིར་འཐེན་ཞུ་རྒྱུ་བྱེད་ཐུབ།",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }
