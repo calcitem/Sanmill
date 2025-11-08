@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Has perdut diverses partides seguides al nivell 1. Vols canviar a l'algorisme MCTS més fàcil per reduir la dificultat?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Felicitats per guanyar al nivell 30 de MCTS! Vols canviar a l'algorisme MTD(f) per un desafiament més gran?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Color de ressaltat de peces capturables",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Ressalta peces capturables",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

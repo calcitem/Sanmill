@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "ನೀವು ಹಂತ 1 ರಲ್ಲಿ ಸತತವಾಗಿ ಹಲವು ಆಟಗಳನ್ನು ಸೋತಿದ್ದೀರಿ. ತೊಂದರೆ ಕಡಿಮೆ ಮಾಡಲು ಸುಲಭವಾದ MCTS ಅಲ್ಗಾರಿದಮ್‌ಗೆ ಬದಲಾಯಿಸಲು ಬಯಸುವಿರಾ?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS ಹಂತ 30 ರಲ್ಲಿ ಗೆದ್ದಿದ್ದಕ್ಕಾಗಿ ಅಭಿನಂದನೆಗಳು! ಹೆಚ್ಚಿನ ಸವಾಲಿಗಾಗಿ MTD(f) ಅಲ್ಗಾರಿದಮ್‌ಗೆ ಬದಲಾಯಿಸಲು ಬಯಸುವಿರಾ?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "ಸೆರೆಹಿಡಿಯಬಹುದಾದ ಕಲ್ಲುಗಳ ಹೈಲೈಟ್ ಬಣ್ಣ",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "ಸೆರೆಹಿಡಿಯಬಹುದಾದ ಕಲ್ಲುಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

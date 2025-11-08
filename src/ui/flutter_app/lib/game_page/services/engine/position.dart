@@ -1905,6 +1905,67 @@ class Position {
     return const GameResponseOK();
   }
 
+  /// Get all capturable pieces for the current side to move
+  /// Returns a list of square indices that can be captured
+  List<int> getCapturablePieces() {
+    final List<int> capturablePieces = <int>[];
+
+    // Only show capturable pieces when it's removal phase
+    if (action != Act.remove) {
+      return capturablePieces;
+    }
+
+    final int remainingRemovals = pieceToRemoveCount[sideToMove]!;
+    if (remainingRemovals == 0) {
+      return capturablePieces;
+    }
+
+    final int custodianTargets = _custodianCaptureTargets[sideToMove]!;
+    final int custodianCount = _custodianRemovalCount[sideToMove]!;
+    final int interventionTargets = _interventionCaptureTargets[sideToMove]!;
+    final int interventionCount = _interventionRemovalCount[sideToMove]!;
+    final int leapTargets = _leapCaptureTargets[sideToMove]!;
+    final int leapCount = _leapRemovalCount[sideToMove]!;
+
+    final int captureCount = custodianCount + interventionCount + leapCount;
+
+    // Check each square on the board
+    for (int s = sqBegin; s < sqEnd; s++) {
+      // Must be opponent's piece
+      if (_board[s] != sideToMove.opponent) {
+        continue;
+      }
+
+      final int mask = squareBb(s);
+      final bool isCustodianTarget = (custodianTargets & mask) != 0;
+      final bool isInterventionTarget = (interventionTargets & mask) != 0;
+      final bool isLeapTarget = (leapTargets & mask) != 0;
+      final bool isCaptureTarget =
+          isCustodianTarget || isInterventionTarget || isLeapTarget;
+
+      // If there are capture obligations, only those pieces are capturable
+      if (captureCount > 0) {
+        if (isCaptureTarget) {
+          capturablePieces.add(s);
+        }
+        continue;
+      }
+
+      // If no capture obligations, check mill rules
+      if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
+          _potentialMillsCount(s, PieceColor.nobody) > 0 &&
+          !_isAllInMills(sideToMove.opponent)) {
+        // Piece is in a mill and cannot be removed
+        continue;
+      }
+
+      // This piece is capturable
+      capturablePieces.add(s);
+    }
+
+    return capturablePieces;
+  }
+
   GameResponse _selectPiece(int sq) {
     // Allow selecting pieces during placing phase if allowed
     if (phase != Phase.moving &&

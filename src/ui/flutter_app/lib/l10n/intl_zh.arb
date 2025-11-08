@@ -1175,6 +1175,14 @@
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
     },
+    "capturablePieceHighlightColor": "可吃掉棋子高亮颜色",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "高亮可吃掉的棋子",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    },
     "algorithm": "算法",
     "@algorithm": {
         "description": "Algorithm"

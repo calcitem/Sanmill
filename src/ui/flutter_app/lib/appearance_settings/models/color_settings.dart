@@ -43,6 +43,7 @@ class ColorSettings {
     this.analysisToolbarIconColor = UIColors.cocoaBean60,
     this.annotationToolbarBackgroundColor = UIColors.burlyWood,
     this.annotationToolbarIconColor = UIColors.cocoaBean60,
+    this.capturablePieceHighlightColor = Colors.orange,
   });
 
   /// Encodes a Json style map Color a [ColorSettings] object
@@ -182,6 +183,14 @@ class ColorSettings {
   )
   @HiveField(18, defaultValue: UIColors.cocoaBean60)
   final Color annotationToolbarIconColor;
+
+  /// Color for highlighting capturable pieces
+  @JsonKey(
+    fromJson: ColorAdapter.colorFromJson,
+    toJson: ColorAdapter.colorToJson,
+  )
+  @HiveField(19, defaultValue: Colors.orange)
+  final Color capturablePieceHighlightColor;
 
   /// Decodes a Json from a [ColorSettings] object
   Map<String, dynamic> toJson() => _$ColorSettingsToJson(this);

@@ -1175,6 +1175,14 @@
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
     },
+    "capturablePieceHighlightColor": "Capturable piece highlight color",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Highlight capturable pieces",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    },
     "algorithm": "Algorithm",
     "@algorithm": {
         "description": "Algorithm"

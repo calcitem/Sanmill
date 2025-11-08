@@ -93,6 +93,7 @@ class DisplaySettings {
     this.isScreenshotGameInfoShown = true,
     this.boardInnerRingSize = 1.0,
     this.boardShadowEnabled = false,
+    this.isCapturablePiecesHighlightShown = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -238,6 +239,10 @@ class DisplaySettings {
 
   @HiveField(42, defaultValue: false)
   final bool boardShadowEnabled;
+
+  /// Whether to highlight capturable pieces when opponent can capture
+  @HiveField(43, defaultValue: false)
+  final bool isCapturablePiecesHighlightShown;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

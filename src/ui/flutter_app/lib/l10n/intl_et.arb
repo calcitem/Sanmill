@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Olete kaotanud mitu mängu järjest tasemel 1. Kas soovite lihtsama MCTS-algoritmi kasutamisele üle minna, et raskusastet vähendada?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Palju õnne võidu puhul MCTS tasemel 30! Kas soovite suurema väljakutse saamiseks MTD(f)-algoritmile üle minna?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Hõivatavate malenuputeesiletõstmise värv",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Tõsta esile hõivatavad malenupud",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

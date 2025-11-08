@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Pralaimėjote kelis žaidimus iš eilės 1 lygyje. Ar norėtumėte pereiti prie lengvesnio MCTS algoritmo, kad sumažintumėte sudėtingumą?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Sveikiname laimėjus MCTS 30 lygyje! Ar norėtumėte pereiti prie MTD(f) algoritmo didesniam iššūkiui?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Paimamų figūrų paryškinimo spalva",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Paryškinti paimamas figūras",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

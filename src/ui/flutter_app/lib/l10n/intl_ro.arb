@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Ați pierdut mai multe jocuri la rând la nivelul 1. Doriți să treceți la algoritmul MCTS mai ușor pentru a reduce dificultatea?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Felicitări pentru victoria de la nivelul 30 MCTS! Doriți să treceți la algoritmul MTD(f) pentru o provocare mai mare?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Culoarea evidențierii pieselor care pot fi capturate",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Evidențiază piesele care pot fi capturate",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

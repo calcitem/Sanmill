@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "레벨 1에서 여러 게임을 연속으로 졌습니다. 난이도를 낮추기 위해 더 쉬운 MCTS 알고리즘으로 전환하시겠습니까?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS 레벨 30에서 승리하신 것을 축하드립니다! 더 큰 도전을 위해 MTD(f) 알고리즘으로 전환하시겠습니까?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "제거 가능한 말 강조 색상",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "제거 가능한 말 강조",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

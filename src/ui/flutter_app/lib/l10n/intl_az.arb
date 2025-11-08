@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Səviyyə 1-də ardıcıl olaraq bir neçə oyun uduzmusunuz. Çətinliyi azaltmaq üçün daha asan MCTS alqoritminə keçmək istərdiniz?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS Səviyyə 30-da qalib gəldiyiniz üçün təbrik edirik! Daha böyük çətinlik üçün MTD(f) alqoritminə keçmək istərdiniz?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Tutula bilən fiqurların vurğulama rəngi",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Tutula bilən fiqurları vurğula",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

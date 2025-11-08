@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Izgubili ste več iger zapored na ravni 1. Želite preklopiti na lažji algoritem MCTS za zmanjšanje težavnosti?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Čestitke za zmago na ravni 30 MCTS! Želite preklopiti na algoritem MTD(f) za večji izziv?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Barva označevanja odvzemljivih figur",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Označi odvzemljive figure",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

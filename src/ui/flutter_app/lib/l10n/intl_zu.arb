@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Ulahlekelwe imidlalo eminingana ngokulandelana ku-Level 1. Ungathanda ukushintshela ku-algorithm ye-MCTS elula kakhulu ukuze unciphise ubunzima?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Siyakuhalalisela ngokuwina ku-MCTS Level 30! Ungathanda ukushintshela ku-algorithm ye-MTD(f) yinselelo enkulu?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Umbala wokugcizelela izingxenye ezingathathwa",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Gcizelela izingxenye ezingathathwa",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

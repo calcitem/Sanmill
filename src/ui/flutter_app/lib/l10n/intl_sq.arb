@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Keni humbur disa lojëra rresht në nivelin 1. Doni të kaloni te algoritmi më i lehtë MCTS për të zvogëluar vështirësinë?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Urime për fitoren në nivelin 30 të MCTS! Doni të kaloni te algoritmi MTD(f) për një sfidë më të madhe?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Ngjyra e theksimit të copave të kapshme",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Theksoni copat e kapshme",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

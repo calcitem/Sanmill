@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Вы проиграли несколько игр подряд на уровне 1. Хотите переключиться на более простой алгоритм MCTS, чтобы снизить сложность?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Поздравляем с победой на уровне 30 MCTS! Хотите переключиться на алгоритм MTD(f) для большей сложности?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Цвет подсветки фигур, которые можно взять",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Подсвечивать фигуры, которые можно взять",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "நீங்கள் நிலை 1 இல் தொடர்ச்சியாக பல விளையாட்டுகளை இழந்துள்ளீர்கள். சிரமத்தை குறைக்க எளிதான MCTS அல்காரிதத்திற்கு மாற விரும்புகிறீர்களா?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS நிலை 30 இல் வெற்றி பெற்றதற்கு வாழ்த்துக்கள்! அதிக சவாலுக்கு MTD(f) அல்காரிதத்திற்கு மாற விரும்புகிறீர்களா?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "கைப்பற்றக்கூடிய காய்களின் முன்னிலைப்படுத்தும் நிறம்",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "கைப்பற்றக்கூடிய காய்களை முன்னிலைப்படுத்து",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

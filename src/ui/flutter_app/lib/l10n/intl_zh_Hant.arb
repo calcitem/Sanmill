@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "您在 1 級已經連續輸了多局棋。要切換到更簡單的 MCTS 演算法以降低難度嗎？",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "恭喜您在 MCTS 30 級獲勝！要切換到 MTD(f) 演算法以迎接更大的挑戰嗎？",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "可吃掉棋子高亮顏色",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "高亮可吃掉的棋子",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

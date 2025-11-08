@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Seviye 1'de art arda birkaç oyun kaybettiniz. Zorluğu azaltmak için daha kolay MCTS algoritmasına geçmek ister misiniz?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS Seviye 30'da kazandığınız için tebrikler! Daha büyük bir meydan okuma için MTD(f) algoritmasına geçmek ister misiniz?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Alınabilir taşların vurgulama rengi",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Alınabilir taşları vurgula",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "レベル1で何度も連続して負けています。難易度を下げるため、より簡単なMCTSアルゴリズムに切り替えますか？",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTSレベル30で勝利おめでとうございます！より大きなチャレンジのためにMTD(f)アルゴリズムに切り替えますか？",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "取得可能な駒のハイライト色",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "取得可能な駒をハイライト",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

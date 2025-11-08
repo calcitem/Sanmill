@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "ཁྱེད་ཀྱིས་རིམ་པ་ ༡ ནང་མུ་མཐུད་རྩེད་མོ་མང་པོ་ཕམ་ཟིན། དཀའ་ངལ་ཉུང་སྒྲིལ་བྱེད་པའི་ཆེད་དུ་སྟབས་བདེ་བའི་ MCTS རྩིས་ལས་ལ་བརྗེ་རྒྱུ་ཡིན་ནམ།",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS རིམ་པ་ ༣༠ ནང་རྒྱལ་བ་ཐོབ་པར་བཀྲ་ཤིས་བདེ་ལེགས། དཀའ་ངལ་ཆེ་བའི་ཆེད་དུ་ MTD(f) རྩིས་ལས་ལ་བརྗེ་རྒྱུ་ཡིན་ནམ།",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "འཛིན་ཐུབ་པའི་རྩེད་ཆས་གསལ་བའི་ཁ་དོག",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "འཛིན་ཐུབ་པའི་རྩེད་ཆས་གསལ་བཏོན།",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

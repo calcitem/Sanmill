@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Sie haben mehrere Spiele hintereinander auf Stufe 1 verloren. Möchten Sie zum einfacheren MCTS-Algorithmus wechseln, um die Schwierigkeit zu reduzieren?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Herzlichen Glückwunsch zum Gewinn auf MCTS-Stufe 30! Möchten Sie zum MTD(f)-Algorithmus wechseln, um eine grössere Herausforderung zu meistern?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Hervorhebungsfarbe für entfernbare Steine",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Entfernbare Steine hervorheben",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

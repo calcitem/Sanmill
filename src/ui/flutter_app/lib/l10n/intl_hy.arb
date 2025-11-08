@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Դուք կորցրել եք մի քանի խաղեր անընդմեջ մակարդակ 1-ում։ Ցանկանո՞ւմ եք անցնել ավելի հեշտ MCTS ալգորիթմին՝ բարդությունը նվազեցնելու համար։",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Շնորհավորում ենք MCTS մակարդակ 30-ում հաղթելու համար։ Ցանկանո՞ւմ եք անցնել MTD(f) ալգորիթմին՝ ավելի մեծ մարտահրավերի համար։",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Վերցվող խաղաքարերի գունանշման գույնը",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Գունանշել վերցվող խաղաքարերը",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

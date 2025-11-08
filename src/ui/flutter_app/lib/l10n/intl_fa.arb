@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "شما چندین بازی پشت سر هم را در سطح 1 باخته‌اید. آیا می‌خواهید برای کاهش سختی به الگوریتم ساده‌تر MCTS تغییر دهید؟",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "تبریک به شما برای برد در سطح 30 MCTS! آیا می‌خواهید برای چالش بیشتر به الگوریتم MTD(f) تغییر دهید؟",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "رنگ برجسته‌سازی مهره‌های قابل حذف",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "برجسته‌سازی مهره‌های قابل حذف",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

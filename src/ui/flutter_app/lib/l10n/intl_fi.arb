@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Olet hävinnyt useita pelejä peräkkäin tasolla 1. Haluatko vaihtaa helpompaan MCTS-algoritmiin vaikeustason pienentämiseksi?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Onnittelut voitosta MCTS-tasolla 30! Haluatko vaihtaa MTD(f)-algoritmiin suuremman haasteen saamiseksi?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Poistettavien nappuloiden korostusväri",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Korosta poistettavat nappulat",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

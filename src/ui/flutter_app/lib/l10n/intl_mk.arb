@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Изгубивте неколку игри едноподруго на ниво 1. Дали сакате да преминете на полесниот MCTS алгоритам за да ја намалите тежината?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Честитки за победата на ниво 30 на MCTS! Дали сакате да преминете на MTD(f) алгоритамот за поголем предизвик?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Боја на истакнување на фигурите што можат да се земат",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Истакни фигури што можат да се земат",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

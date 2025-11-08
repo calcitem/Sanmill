@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Du har tabt flere spil i træk på niveau 1. Vil du skifte til den nemmere MCTS-algoritme for at reducere sværhedsgraden?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Tillykke med sejren på MCTS niveau 30! Vil du skifte til MTD(f)-algoritmen for en større udfordring?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Farve til fremhævning af fangbare brikker",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Fremhæv fangbare brikker",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }
