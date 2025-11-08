@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Prohráli jste několik her v řadě na úrovni 1. Chcete přepnout na jednodušší algoritmus MCTS, abyste snížili obtížnost?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Gratulujeme k vítězství na úrovni 30 MCTS! Chcete přepnout na algoritmus MTD(f) pro větší výzvu?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Barva zvýraznění odebíratelných kamenů",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Zvýraznit odebíratelné kameny",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

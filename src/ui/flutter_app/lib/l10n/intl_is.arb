@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Þú hefur tapað nokkrum leikjum í röð á stigi 1. Viltu skipta yfir í auðveldara MCTS reikniritið til að minnka erfiðleikastigið?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Til hamingju með sigurinn á MCTS stigi 30! Viltu skipta yfir í MTD(f) reikniritið fyrir meiri áskorun?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Litur á auðkenningu yfirtöku",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Auðkenna yfirtökumanns",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

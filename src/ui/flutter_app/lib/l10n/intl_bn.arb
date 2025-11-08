@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "আপনি লেভেল ১-এ পরপর কয়েকটি গেম হেরেছেন। অসুবিধা কমাতে সহজ MCTS অ্যালগরিদমে পরিবর্তন করতে চান?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS লেভেল ৩০-এ জেতার জন্য অভিনন্দন! আরও বড় চ্যালেঞ্জের জন্য MTD(f) অ্যালগরিদমে পরিবর্তন করতে চান?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "ধরা যায় এমন গুটির হাইলাইট রঙ",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "ধরা যায় এমন গুটি হাইলাইট করুন",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

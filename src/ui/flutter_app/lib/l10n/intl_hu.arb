@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Több játékot is elveszített egymás után az 1. szinten. Szeretne átváltani a könnyebb MCTS algoritmusra a nehézség csökkentése érdekében?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Gratulálunk a győzelemhez az MCTS 30. szinten! Szeretne átváltani az MTD(f) algoritmusra nagyobb kihívás érdekében?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Levehető bábuk kiemelési színe",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Levehető bábuk kiemelése",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

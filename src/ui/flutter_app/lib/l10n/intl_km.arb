@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "អ្នកបានចាញ់ហ្គេមជាបន្តបន្ទាប់នៅកម្រិត ១។ តើអ្នកចង់ប្តូរទៅក្បួនដោះស្រាយ MCTS ដែលងាយស្រួលជាងដើម្បីបន្ថយការលំបាកទេ?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "សូមអបអរសាទរដែលបានឈ្នះនៅកម្រិត ៣០ របស់ MCTS! តើអ្នកចង់ប្តូរទៅក្បួនដោះស្រាយ MTD(f) ដើម្បីបញ្ហាប្រឈមកាន់តែធំទេ?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "ពណ៌រំលេចធ្វើបន្លិចដែលអាចចាប់បាន",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "រំលេចធ្វើបន្លិចដែលអាចចាប់បាន",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Siz 1-darajada ketma-ket bir nechta o'yinni yutqazdingiz. Qiyinlikni kamaytirish uchun osonroq MCTS algoritmiga o'tishni xohlaysizmi?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS 30-darajada g'alaba qozonganingiz bilan tabriklаymiz! Katta qiyinchilik uchun MTD(f) algoritmiga o'tishni xohlaysizmi?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Olinadigan toshlalni ajratib ko'rsatish rangi",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Olinadigan toshlarni ajratib ko'rsatish",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "በደረጃ 1 ተከታታይ ጨዋታዎችን አጥተዋል። ችግርን ለመቀነስ ወደ ቀላል MCTS አልጎሪዝም መቀየር ይፈልጋሉ?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "በ MCTS ደረጃ 30 በማሸነፍዎ እንኳን ደስ አለዎት! ለበለጠ ፈተና ወደ MTD(f) አልጎሪዝም መቀየር ይፈልጋሉ?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "የሚያዙ ቁርጥራጮችን የማድመቅ ቀለም",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "የሚያዙ ቁርጥራጮችን አድምቅ",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

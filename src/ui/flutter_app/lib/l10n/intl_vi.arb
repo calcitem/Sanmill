@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Bạn đã thua nhiều ván liên tiếp ở Cấp độ 1. Bạn có muốn chuyển sang thuật toán MCTS dễ hơn để giảm độ khó không?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Chúc mừng bạn đã chiến thắng ở Cấp độ 30 MCTS! Bạn có muốn chuyển sang thuật toán MTD(f) để thử thách lớn hơn không?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Màu làm nổi bật quân cờ có thể bắt",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Làm nổi bật quân cờ có thể bắt",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

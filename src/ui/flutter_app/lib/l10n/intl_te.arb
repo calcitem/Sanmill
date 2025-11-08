@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "మీరు లెవల్ 1 లో వరుసగా అనేక ఆటలను ఓడిపోయారు. కష్టాన్ని తగ్గించడానికి సులభమైన MCTS అల్గోరిథంకు మారాలనుకుంటున్నారా?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS లెవల్ 30 లో గెలిచినందుకు అభినందనలు! మరింత సవాలు కోసం MTD(f) అల్గోరిథంకు మారాలనుకుంటున్నారా?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "తీయగల ముక్కలను హైలైట్ చేసే రంగు",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "తీయగల ముక్కలను హైలైట్ చేయండి",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

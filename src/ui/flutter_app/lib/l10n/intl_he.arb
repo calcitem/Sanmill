@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "הפסדת כמה משחקים ברציפות ברמה 1. האם תרצה לעבור לאלגוריתם MCTS הקל יותר כדי להפחית את הקושי?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "מזל טוב על הניצחון ברמה 30 של MCTS! האם תרצה לעבור לאלגוריתם MTD(f) לאתגר גדול יותר?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "צבע הדגשה של כלים הניתנים להסרה",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "הדגש כלים הניתנים להסרה",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

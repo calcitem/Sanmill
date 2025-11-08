@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "ඔබ මට්ටම 1 හි අඛණ්ඩව ක්‍රීඩා කිහිපයක් පරාජය වී ඇත. අපහසුතා අඩු කිරීමට පහසු MCTS ඇල්ගොරිතමයට මාරු වීමට ඔබ කැමතිද?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS මට්ටම 30 හි ජයග්‍රහණය සම්බන්ධයෙන් සුභ පැතුම්! වැඩි අභියෝගයක් සඳහා MTD(f) ඇල්ගොරිතමයට මාරු වීමට ඔබ කැමතිද?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "ග්‍රහණය කළ හැකි කොටස් උද්දීපනය කිරීමේ වර්ණය",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "ග්‍රහණය කළ හැකි කොටස් උද්දීපනය කරන්න",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

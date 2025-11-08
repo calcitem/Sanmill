@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Anda telah kalah beberapa permainan berturut-turut di Tahap 1. Adakah anda ingin beralih kepada algoritma MCTS yang lebih mudah untuk mengurangkan kesukaran?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Tahniah atas kemenangan di Tahap 30 MCTS! Adakah anda ingin beralih kepada algoritma MTD(f) untuk cabaran yang lebih besar?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Warna sorot buah yang boleh diambil",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Sorot buah yang boleh diambil",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

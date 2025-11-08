@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "તમે લેવલ 1 પર સતત કેટલીક રમતો હારી ગયા છો. શું તમે મુશ્કેલી ઘટાડવા માટે સરળ MCTS અલ્ગોરિધમ પર સ્વિચ કરવા માંગો છો?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS લેવલ 30 પર જીતવા બદલ અભિનંદન! શું તમે મોટા પડકાર માટે MTD(f) અલ્ગોરિધમ પર સ્વિચ કરવા માંગો છો?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "પકડી શકાય તેવા ટુકડાઓને હાઇલાઇટ કરવાનો રંગ",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "પકડી શકાય તેવા ટુકડાઓને હાઇલાઇટ કરો",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

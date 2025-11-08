@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Jūs esat zaudējis vairākas spēles pēc kārtas 1. līmenī. Vai vēlaties pārslēgties uz vienkāršāku MCTS algoritmu, lai samazinātu grūtības?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Apsveicam ar uzvaru MCTS 30. līmenī! Vai vēlaties pārslēgties uz MTD(f) algoritmu lielākam izaicinājumam?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Noņemamo figūru izcelšanas krāsa",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Izcelt noņemamās figūras",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

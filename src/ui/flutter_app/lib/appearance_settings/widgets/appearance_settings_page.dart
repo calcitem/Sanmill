@@ -389,6 +389,8 @@ class AppearanceSettingsPage extends StatelessWidget {
       blackPieceColor: AppTheme.colorThemes[selectedTheme]!.blackPieceColor,
       pieceHighlightColor:
           AppTheme.colorThemes[selectedTheme]!.pieceHighlightColor,
+      capturablePieceHighlightColor:
+          AppTheme.colorThemes[selectedTheme]!.capturablePieceHighlightColor,
       messageColor: AppTheme.colorThemes[selectedTheme]!.messageColor,
       drawerColor: AppTheme.colorThemes[selectedTheme]!.drawerColor,
       drawerTextColor: AppTheme.colorThemes[selectedTheme]!.drawerTextColor,
@@ -482,6 +484,16 @@ class AppearanceSettingsPage extends StatelessWidget {
           value: DB().colorSettings.pieceHighlightColor,
           onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
             pieceHighlightColor: val,
+          ),
+        ),
+        SettingsListTile.color(
+          key: const Key(
+            'color_settings_card_capturable_piece_highlight_color_settings_list_tile',
+          ),
+          titleString: S.of(context).capturablePieceHighlightColor,
+          value: DB().colorSettings.capturablePieceHighlightColor,
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            capturablePieceHighlightColor: val,
           ),
         ),
         SettingsListTile.color(
@@ -826,6 +838,15 @@ class AppearanceSettingsPage extends StatelessWidget {
           onChanged: (bool val) => DB().displaySettings = displaySettings
               .copyWith(isNumbersOnPiecesShown: val),
           titleString: S.of(context).showNumbersOnPieces,
+        ),
+        SettingsListTile.switchTile(
+          key: const Key(
+            'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
+          ),
+          value: displaySettings.isCapturablePiecesHighlightShown,
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isCapturablePiecesHighlightShown: val),
+          titleString: S.of(context).highlightCapturablePieces,
         ),
         SettingsListTile(
           key: const Key(

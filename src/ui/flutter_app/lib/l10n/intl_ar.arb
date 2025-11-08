@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "لقد خسرت عدة ألعاب متتالية في المستوى 1. هل ترغب في التبديل إلى خوارزمية MCTS الأسهل لتقليل الصعوبة؟",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "تهانينا على الفوز في المستوى 30 من MCTS! هل ترغب في التبديل إلى خوارزمية MTD(f) لتحدٍ أكبر؟",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "لون تمييز القطع القابلة للأسر",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "تمييز القطع القابلة للأسر",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

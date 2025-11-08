@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Du har förlorat flera spel i rad på nivå 1. Vill du byta till den enklare MCTS-algoritmen för att minska svårighetsgraden?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Grattis till segern på MCTS nivå 30! Vill du byta till MTD(f)-algoritmen för en större utmaning?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Färg för att markera flyttbara pjäser",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Markera flyttbara pjäser",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

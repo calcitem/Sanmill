@@ -318,6 +318,26 @@ class PiecePainter extends CustomPainter {
       }
     }
 
+    // Draw capturable pieces highlight if enabled
+    if (DB().displaySettings.isCapturablePiecesHighlightShown &&
+        GameController().gameInstance.gameMode != GameMode.setupPosition &&
+        GameController().position.action == Act.remove) {
+      final List<int> capturablePieces =
+          GameController().position.getCapturablePieces();
+
+      paint.color = DB().colorSettings.capturablePieceHighlightColor;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 3;
+
+      for (final int sq in capturablePieces) {
+        final int? index = squareToIndex[sq];
+        if (index != null) {
+          final Offset pos = pointFromIndex(index, size);
+          canvas.drawCircle(pos, pieceWidth / 2, paint);
+        }
+      }
+    }
+
     // Draw focus and blur positions.
     if (focusIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {

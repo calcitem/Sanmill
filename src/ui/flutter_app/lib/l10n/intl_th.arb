@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "คุณแพ้เกมหลายเกมติดต่อกันในระดับ 1 คุณต้องการเปลี่ยนไปใช้อัลกอริทึม MCTS ที่ง่ายกว่าเพื่อลดความยากหรือไม่?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "ขอแสดงความยินดีกับการชนะในระดับ 30 ของ MCTS! คุณต้องการเปลี่ยนไปใช้อัลกอริทึม MTD(f) เพื่อความท้าทายที่มากขึ้นหรือไม่?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "สีเน้นหมากที่จับได้",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "เน้นหมากที่จับได้",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

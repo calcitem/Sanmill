@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "آپ نے لیول 1 میں لگاتار کئی گیمز ہار دیے ہیں۔ کیا آپ مشکل کو کم کرنے کے لیے آسان MCTS الگورتھم پر سوئچ کرنا چاہیں گے؟",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "MCTS لیول 30 میں جیتنے پر مبارکباد! کیا آپ زیادہ چیلنج کے لیے MTD(f) الگورتھم پر سوئچ کرنا چاہیں گے؟",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "قابل گرفتن مہروں کی نمایاں کرنے کا رنگ",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "قابل گرفتن مہروں کو نمایاں کریں",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

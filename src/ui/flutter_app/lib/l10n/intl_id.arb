@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Anda telah kalah beberapa permainan berturut-turut di Level 1. Apakah Anda ingin beralih ke algoritma MCTS yang lebih mudah untuk mengurangi kesulitan?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Selamat atas kemenangan di Level 30 MCTS! Apakah Anda ingin beralih ke algoritma MTD(f) untuk tantangan yang lebih besar?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Warna sorotan bidak yang dapat diambil",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Sorot bidak yang dapat diambil",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

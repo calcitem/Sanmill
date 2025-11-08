@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Jy het verskeie wedstryde agtereenvolgens by Vlak 1 verloor. Wil jy na die makliker MCTS-algoritme oorskakel om die moeilikheidsgraad te verminder?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Baie geluk met die wen by MCTS Vlak 30! Wil jy na die MTD(f)-algoritme oorskakel vir 'n groter uitdaging?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Kleur vir uitgeligte vanbare stukke",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Lig vanbare stukke uit",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }

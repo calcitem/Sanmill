@@ -2138,5 +2138,13 @@
     "switchToMctsSuggestion": "Umepoteza michezo kadhaa mfululizo kwenye Kiwango 1. Je, ungependa kubadilisha kwa algorithm ya MCTS iliyo rahisi zaidi ili kupunguza ugumu?",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Hongera kwa kushinda katika Kiwango cha 30 cha MCTS! Je, ungependa kubadilisha kwa algorithm ya MTD(f) kwa changamoto kubwa zaidi?",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "capturablePieceHighlightColor": "Rangi ya kuangazia vipande vinavyoweza kuchukuliwa",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
+    "highlightCapturablePieces": "Angazia vipande vinavyoweza kuchukuliwa",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    }
 }
