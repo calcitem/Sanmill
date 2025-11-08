@@ -768,9 +768,9 @@ class GameController {
                 networkService?.sendMove("take back:$steps:accepted");
                 // Locally apply the 1-step rollback
                 HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
-                // Update turn state after rollback
+                // Update turn state after rollback: if sideToMove != localColor, it's opponent's turn
                 final PieceColor localColor = getLocalColor();
-                isLanOpponentTurn = (position.sideToMove == localColor);
+                isLanOpponentTurn = (position.sideToMove != localColor);
               },
               child: const Text("Yes"),
             ),
