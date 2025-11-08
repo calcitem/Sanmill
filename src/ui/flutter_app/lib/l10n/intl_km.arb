@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "នៅពេលបើក ដំណាក់កាលដាក់បញ្ចប់ ហើយដំណាក់កាលផ្លាស់ទីចាប់ផ្តើមនៅពេលដែលក្តារមានតែកន្លែងទទេ ២ នៅសល់ ដោយមិនគិតពីបំណែកនៅក្នុងដៃ។ ច្បាប់នេះអនុវត្តតែសម្រាប់ហ្គេមបំណែក ១២ ប៉ុណ្ណោះ។",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "អ្នកអាចស្នើសុំការដកត្រលប់វិញបានតែភ្លាមៗបន្ទាប់ពីការផ្លាស់ទីរបស់អ្នក។",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "ប្រសិនបើអ្នកចង់បានការប្រជែងកាន់តែធំ យើងសូមណែនាំឱ្យបើកជម្រើស \"{setting}\" ហើយទាញយកមូលដ្ឋានទិន្នន័យពេញលេញទៅក្នុងឧបករណ៍របស់អ្នកតាមការណែនាំ។",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

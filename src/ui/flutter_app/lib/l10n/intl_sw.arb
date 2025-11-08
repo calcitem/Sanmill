@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Inapowashwa, awamu ya kuweka inaisha na awamu ya kusogeza inaanza wakati ubao una nafasi 2 tupu zilizobaki, bila kujali vipande mkononi. Sheria hii inatumika tu kwa michezo ya vipande 12.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Unaweza kuomba kurudi nyuma mara baada ya harakati yako.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Ikiwa unataka changamoto kubwa zaidi, tunapendekeza kuwezesha chaguo la \"{setting}\" na kupakua hifadhidata kamili kwenye kifaa chako kama ilivyoonyeshwa.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

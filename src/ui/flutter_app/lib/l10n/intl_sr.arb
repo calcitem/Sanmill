@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Када је омогућено, фаза постављања се завршава и фаза покрета почиње када табла има само 2 празна места, без обзира на фигуре у руци. Ово правило важи само за игре са 12 фигура.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Можете затражити повратак само одмах након вашег потеза.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Ако желите већи изазов, предлажемо да омогућите опцију \"{setting}\" и преузмете комплетну базу података на ваш уређај како је наведено.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

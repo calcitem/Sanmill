@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Пры ўключэнні фаза размяшчэння заканчваецца і пачынаецца фаза руху, калі на дошцы застаецца толькі 2 пустыя месцы, незалежна ад фігур у руцэ. Гэтае правіла прымяняецца толькі да гульняў з 12 фігурамі.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Вы можаце запытаць адмену толькі адразу пасля вашага хаду.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Калі вы жадаеце больш складаную задачу, мы рэкамендуем уключыць опцыю \"{setting}\" і спампаваць поўную базу даных на вашу прыладу, як указана.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

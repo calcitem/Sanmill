@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Wanneer geaktiveer, eindig die plaasfase en begin die skuiffase wanneer die bord slegs 2 leë spasies oorhet, ongeag stukke in die hand. Hierdie reël geld slegs vir 12-stuk speletjies.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Jy kan slegs onmiddellik na jou skuif 'n terugname versoek.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "As jy 'n groter uitdaging wil hê, stel ons voor dat jy die \"{setting}\" opsie aktiveer en die volledige databasis na jou toestel aflaai soos aangedui.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

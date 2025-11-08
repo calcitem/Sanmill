@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "இயக்கப்பட்டால், பலகையில் 2 வெற்று இடங்கள் மட்டுமே எஞ்சியிருக்கும்போது வைக்கும் கட்டம் முடிவடைந்து நகர்த்தும் கட்டம் தொடங்குகிறது, கையில் உள்ள காய்களைப் பொருட்படுத்தாமல். இந்த விதி 12-காய் விளையாட்டுகளுக்கு மட்டுமே பொருந்தும்.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "உங்கள் நகர்வுக்கு உடனடியாகப் பிறகு மட்டுமே திரும்பப் பெறுவதை கோரலாம்.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "நீங்கள் அதிக சவாலை விரும்பினால், \"{setting}\" விருப்பத்தை இயக்கவும், அறிவுறுத்தப்பட்டபடி உங்கள் சாதனத்தில் முழுமையான தரவுத்தளத்தைப் பதிவிறக்கவும் நாங்கள் பரிந்துரைக்கிறோம்.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

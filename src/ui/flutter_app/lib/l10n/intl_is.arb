@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Þegar þetta er virkt lýkur staðsetningarfasanum og hreyfingarfasinn byrjar þegar borðið hefur aðeins 2 tóm rými eftir, óháð mönnunum í hendi. Þessi regla á aðeins við um 12 manna leiki.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Þú getur aðeins beðið um afturköllun strax eftir leikinn þinn.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Ef þú vilt meiri áskorun, mælum við með að virkja valkostinn \"{setting}\" og hlaða niður fullkomnum gagnagrunni á tækið þitt eins og bent er á.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

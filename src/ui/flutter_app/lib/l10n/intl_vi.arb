@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Khi được bật, giai đoạn đặt quân kết thúc và giai đoạn di chuyển bắt đầu khi bàn cờ chỉ còn 2 ô trống, bất kể số quân trên tay. Quy tắc này chỉ áp dụng cho trò chơi 12 quân.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Bạn chỉ có thể yêu cầu rút lại ngay sau nước đi của bạn.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Nếu bạn muốn có thử thách lớn hơn, chúng tôi khuyên bạn nên bật tùy chọn \"{setting}\" và tải xuống cơ sở dữ liệu hoàn chỉnh vào thiết bị của bạn theo hướng dẫn.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

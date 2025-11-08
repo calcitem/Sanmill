@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "כאשר מופעל, שלב ההצבה מסתיים ושלב התנועה מתחיל כאשר הלוח כולל רק 2 משבצות ריקות, ללא תלות בכלים שביד. כלל זה חל רק על משחקים של 12 כלים.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "אתה יכול לבקש החזרה רק מיד לאחר המהלך שלך.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "אם אתה רוצה אתגר גדול יותר, אנו מציעים להפעיל את האפשרות \"{setting}\" ולהוריד את מסד הנתונים המלא למכשיר שלך כפי שמוצג.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

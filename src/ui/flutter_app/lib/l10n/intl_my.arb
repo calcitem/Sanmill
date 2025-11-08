@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "ဖွင့်ထားလျှင် ဘုတ်ပေါ်တွင် ဗလာနေရာ 2 ခုသာ ကျန်ရှိတော့သောအခါ ထားသည့်အဆင့် ပြီးဆုံးပြီး ရွှေ့သည့်အဆင့် စတင်သည်။ လက်၌ရှိသော အကွက်များ မည်မျှပင်ရှိစေကာမူ။ ဤစည်းမျဉ်းသည် 12-အကွက် ဂိမ်းများအတွက်သာ သက်ရောက်ပါသည်။",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "သင်သည် သင်၏ရွှေ့လျားမှုအပြီးတွင်သာ ပြန်ယူခြင်းကို တောင်းဆိုနိုင်သည်။",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "သင်သည် ပိုမိုကြီးမားသော စိန်ခေါ်မှုကို လိုချင်ပါက၊ \"{setting}\" ရွေးချယ်မှုကို ဖွင့်ပြီး လမ်းညွှန်ချက်အတိုင်း သင့်စက်ပစ္စည်းသို့ ပြည့်စုံသော ဒေတာဘေ့စ်ကို ဒေါင်းလုပ်လုပ်ရန် ကျွန်ုပ်တို့ အကြံပြုပါသည်။",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

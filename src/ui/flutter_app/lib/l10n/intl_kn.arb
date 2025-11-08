@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ಬೋರ್ಡ್‌ನಲ್ಲಿ ಕೇವಲ 2 ಖಾಲಿ ಸ್ಥಳಗಳು ಉಳಿದಾಗ ಇಡುವ ಹಂತ ಮುಗಿಯುತ್ತದೆ ಮತ್ತು ಚಲನೆಯ ಹಂತ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಕೈಯಲ್ಲಿರುವ ತುಂಡುಗಳ ಲೆಕ್ಕವಿಲ್ಲದೆ. ಈ ನಿಯಮವು ಕೇವಲ 12-ತುಂಡು ಆಟಗಳಿಗೆ ಮಾತ್ರ ಅನ್ವಯಿಸುತ್ತದೆ.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "ನಿಮ್ಮ ನಡೆಯ ತಕ್ಷಣ ನಂತರ ಮಾತ್ರ ನೀವು ಹಿಂತೆಗೆದುಕೊಳ್ಳುವಿಕೆಯನ್ನು ವಿನಂತಿಸಬಹುದು.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "ನೀವು ಹೆಚ್ಚಿನ ಸವಾಲನ್ನು ಬಯಸಿದರೆ, \"{setting}\" ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಮತ್ತು ಸೂಚಿಸಿದಂತೆ ನಿಮ್ಮ ಸಾಧನಕ್ಕೆ ಸಂಪೂರ್ಣ ಡೇಟಾಬೇಸ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ನಾವು ಸೂಚಿಸುತ್ತೇವೆ.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

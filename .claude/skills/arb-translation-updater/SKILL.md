@@ -16,6 +16,122 @@ This skill helps batch update all language ARB (Application Resource Bundle) fil
 - Batch translate new UI strings for the Flutter app
 - Maintain consistency across all localization files
 
+## **CRITICAL RULES** ⚠️
+
+### Rule 1: New Strings MUST Be Added at the END of ARB Files
+
+**ALWAYS add new translation entries at the very end of each ARB file, just before the closing `}`.**
+
+- ✅ CORRECT: Add entries after the last existing entry in the file
+- ❌ WRONG: Insert entries in the middle of the file
+- This applies to BOTH manual additions (to `intl_en.arb` and `intl_zh.arb`) AND automated additions via the update script
+
+**Example:**
+```json
+{
+  "existingKey1": "...",
+  "@existingKey1": {},
+  "existingKey2": "...",
+  "@existingKey2": {},
+  // Add new entries HERE ↓
+  "newKey": "...",
+  "@newKey": {}
+}
+```
+
+### Rule 2: All Metadata Descriptions MUST Be in English
+
+**ALL ARB files (including non-English languages) must have metadata descriptions written in English.**
+
+- ✅ CORRECT: `"@perfectDatabaseChallengeHint": {"description": "Hint to enable perfect database for greater challenge", ...}`
+- ❌ WRONG: `"@perfectDatabaseChallengeHint": {"description": "启用完美数据库以获得更大挑战的提示", ...}` (in `intl_zh.arb`)
+
+This applies to:
+- The `description` field in `@key` metadata
+- Placeholder descriptions within metadata
+- ALL language files: `intl_en.arb`, `intl_zh.arb`, `intl_ja.arb`, etc.
+
+**Rationale:** Flutter's ARB format specification requires metadata to be in English for tooling compatibility and consistency across all locales.
+
+### Rule 3: ALWAYS Check for Existing Entries Before Adding
+
+**Before adding new translations, ALWAYS check if the key already exists in the ARB files.**
+
+**Check before adding:**
+```bash
+# Check if key exists in a specific file
+grep -c "keyName" intl_en.arb
+
+# Check all files
+for file in intl_*.arb; do
+  count=$(grep -c "keyName" "$file")
+  echo "$file: $count occurrences"
+done
+```
+
+**Decision matrix:**
+- **If count = 0 (no occurrences)**: ✅ Add the new entry
+- **If count = 2 (one complete entry: key + metadata)**: ⚠️ Entry already complete, DO NOT add again
+- **If count = 1 or count > 2**: ❌ Incomplete or duplicate entry - fix before proceeding
+
+**If duplicates exist:**
+1. Remove ALL occurrences of the duplicate key
+2. Re-add only ONE complete entry (key + metadata) at the END of the file
+3. Validate JSON format after fixing
+
+**Prevention:**
+- Always use version control to check what was actually added
+- Don't assume keys need to be added just because the task mentions them
+- Verify the current state of ARB files before running update scripts
+
+### Rule 4: MUST Use 4-Space Indentation
+
+**ALL ARB files MUST use 4-space indentation, NOT 2-space or tabs.**
+
+**Indentation levels:**
+- Top-level keys: 4 spaces
+- Metadata object first level: 8 spaces (4+4)
+- Placeholders object: 8 spaces
+- Placeholder keys: 12 spaces (4+4+4)
+- Placeholder properties: 16 spaces (4+4+4+4)
+
+**Example with correct 4-space indentation:**
+```json
+{
+    "myKey": "My value",
+    "@myKey": {
+        "description": "My description",
+        "placeholders": {
+            "param": {
+                "description": "Parameter description",
+                "type": "String"
+            }
+        }
+    }
+}
+```
+
+**❌ WRONG (2-space indentation):**
+```json
+{
+  "myKey": "My value",
+  "@myKey": {
+    "description": "My description",
+    "placeholders": {
+      "param": {
+        "description": "Parameter description",
+        "type": "String"
+      }
+    }
+  }
+}
+```
+
+**Important:**
+- When creating `new-items.txt`, use 4-space indentation
+- The `update_arb_files.sh` script will copy indentation exactly as written
+- Always verify indentation after running the update script
+
 ## Workflow Overview
 
 ```
@@ -33,7 +149,7 @@ This skill helps batch update all language ARB (Application Resource Bundle) fil
 **Use git to see what was recently added** (most reliable method):
 
 ```bash
-cd /home/user/Sanmill/src/ui/flutter_app/lib/l10n
+cd src/ui/flutter_app/lib/l10n
 
 # Check recent changes to English ARB file
 git log -p --follow -1 intl_en.arb
@@ -114,7 +230,7 @@ The `update_arb_files.sh` script reads from `new-items.txt` with this format:
 
 **Format Rules:**
 - Comment line: `// intl_<locale>.arb` (indicates which file to update)
-- Entries: JSON key-value pairs with proper indentation (2 spaces)
+- Entries: JSON key-value pairs with proper indentation (4 spaces)
 - Blank line between different locale sections
 - No trailing comma on last entry in each section
 - **Do NOT include intl_en.arb or intl_zh.arb** in new-items.txt (these are already updated)
@@ -124,22 +240,22 @@ The `update_arb_files.sh` script reads from `new-items.txt` with this format:
 
 ```txt
 // intl_ja.arb
-  "stopPlacing": "配置を停止",
-  "@stopPlacing": {},
-  "stopPlacing_Detail": "ボード上に空きスペースが2つだけ残ったときに配置フェーズが終了します。",
-  "@stopPlacing_Detail": {}
+    "stopPlacing": "配置を停止",
+    "@stopPlacing": {},
+    "stopPlacing_Detail": "ボード上に空きスペースが2つだけ残ったときに配置フェーズが終了します。",
+    "@stopPlacing_Detail": {}
 
 // intl_fr.arb
-  "stopPlacing": "Arrêter le placement",
-  "@stopPlacing": {},
-  "stopPlacing_Detail": "La phase de placement se termine lorsque le plateau n'a plus que 2 espaces vides.",
-  "@stopPlacing_Detail": {}
+    "stopPlacing": "Arrêter le placement",
+    "@stopPlacing": {},
+    "stopPlacing_Detail": "La phase de placement se termine lorsque le plateau n'a plus que 2 espaces vides.",
+    "@stopPlacing_Detail": {}
 
 // intl_de.arb
-  "stopPlacing": "Setzen beenden",
-  "@stopPlacing": {},
-  "stopPlacing_Detail": "Die Setzphase endet, wenn das Brett nur noch 2 freie Felder hat.",
-  "@stopPlacing_Detail": {}
+    "stopPlacing": "Setzen beenden",
+    "@stopPlacing": {},
+    "stopPlacing_Detail": "Die Setzphase endet, wenn das Brett nur noch 2 freie Felder hat.",
+    "@stopPlacing_Detail": {}
 ```
 
 ### Step 5: Run Update Script
@@ -147,7 +263,7 @@ The `update_arb_files.sh` script reads from `new-items.txt` with this format:
 Execute the update script to apply all translations:
 
 ```bash
-cd /home/user/Sanmill/src/ui/flutter_app/lib/l10n
+cd src/ui/flutter_app/lib/l10n
 
 # Run the update script
 ./update_arb_files.sh
@@ -406,7 +522,7 @@ After running the update process:
 
 ```bash
 # 1. Navigate to l10n directory
-cd /home/user/Sanmill/src/ui/flutter_app/lib/l10n
+cd src/ui/flutter_app/lib/l10n
 
 # 2. Use git to identify what's new
 git diff HEAD~1 intl_en.arb
@@ -461,7 +577,7 @@ git diff intl_de.arb
 rm new-items.txt  # Optional: keep for reference
 
 # 13. Commit changes
-cd /home/user/Sanmill
+# Navigate to project root directory
 git add src/ui/flutter_app/lib/l10n/intl_*.arb
 git commit -m "i18n: Add translations for new feature across all languages"
 ```

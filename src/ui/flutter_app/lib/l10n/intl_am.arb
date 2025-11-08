@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "ሲነቃ፣ ሰሌዳው 2 ባዶ ቦታዎች ብቻ ሲኖሩት የማስቀመጫ ደረጃ ያበቃል እና የመንቀሳቀስ ደረጃ ይጀምራል፣ በእጅ ያሉ ቁርጥራጮችን ሳይጠቅስ። ይህ ደንብ ለ12-ቁራጭ ጨዋታዎች ብቻ ይተገበራል።",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "የእርስዎን እንቅስቃሴ ካደረጉ በኋላ ብቻ መልሰው ማግኘት ይችላሉ።",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "ከፍተኛ ፈተና ከፈለጉ፣ \"{setting}\" አማራጩን ማንቃት እና እንደተጠየቀው ሙሉ የውሂብ ጎታውን ወደ መሣሪያዎ ማውረድ እንመክራለን።",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

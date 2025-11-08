@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Aktivləşdirildikdə, lövhədə yalnız 2 boş yer qaldıqda, əldə olan fiqurlardan asılı olmayaraq yerləşdirmə mərhələsi bitir və hərəkət mərhələsi başlayır. Bu qayda yalnız 12 fiqurlu oyunlara şamil edilir.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Yalnız hərəkətinizdən dərhal sonra geri götürməni tələb edə bilərsiniz.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Daha böyük bir çətinlik istəyirsinizsə, \"{setting}\" seçimini aktivləşdirməyi və göstərildiyi kimi tam verilənlər bazasını cihazınıza endirməyi tövsiyə edirik.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

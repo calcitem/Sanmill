@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Când este activată, faza de plasare se termină și faza de mișcare începe când tabla are doar 2 spații goale rămase, indiferent de piesele din mână. Această regulă se aplică doar jocurilor cu 12 piese.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Puteți solicita revenirea doar imediat după mutarea dvs.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Dacă doriți o provocare mai mare, vă sugerăm să activați opțiunea \"{setting}\" și să descărcați baza de date completă pe dispozitivul dvs. conform instrucțiunilor.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

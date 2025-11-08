@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "Yoqilganda, doskada faqat 2 bo'sh joy qolganda joylashtirish bosqichi tugaydi va harakat bosqichi boshlanadi, qo'ldagi figuralardan qat'i nazar. Bu qoida faqat 12 figurali o'yinlarga tegishli.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "Siz faqat harakatingizdan keyin darhol qaytarishni so'rashingiz mumkin.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "Agar siz ko'proq qiyinchilik istasangiz, \"{setting}\" parametrini yoqishni va ko'rsatilganidek, to'liq ma'lumotlar bazasini qurilmangizga yuklab olishni tavsiya qilamiz.",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

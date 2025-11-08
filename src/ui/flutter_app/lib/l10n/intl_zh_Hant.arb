@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "啟用後，當棋盤只剩2個空位時，無論手中是否還有棋子，放子階段都會結束並進入走子階段。此規則僅適用於12子棋。",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "你只能在剛走完棋後立即請求悔棋。",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "如您想要更大的挑戰，建議將「{setting}」的開關打開，並按提示下載完整的資料庫到裝置中。",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

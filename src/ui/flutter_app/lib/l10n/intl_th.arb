@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "เมื่อเปิดใช้งาน ขั้นตอนการวางจะสิ้นสุดและขั้นตอนการเคลื่อนย้ายจะเริ่มต้นเมื่อกระดานมีพื้นที่ว่างเพียง 2 ช่อง โดยไม่คำนึงถึงหมากที่อยู่ในมือ กฎนี้ใช้กับเกมหมาก 12 ตัวเท่านั้น",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "คุณสามารถขอเดินกลับได้ทันทีหลังจากเดินของคุณเท่านั้น",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "หากคุณต้องการความท้าทายที่มากขึ้น เราขอแนะนำให้เปิดใช้งานตัวเลือก \"{setting}\" และดาวน์โหลดฐานข้อมูลที่สมบูรณ์ไปยังอุปกรณ์ของคุณตามที่ระบุ",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }

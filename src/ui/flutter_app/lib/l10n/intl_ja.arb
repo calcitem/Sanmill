@@ -2118,5 +2118,15 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "有効にすると、ボード上に空きスペースが2つだけ残ったときに配置フェーズが終了し、移動フェーズが始まります。手持ちの駒に関係なく適用されます。このルールは12駒ゲームにのみ適用されます。",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "あなたの手番の直後にのみ待ったをリクエストできます。",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {}
+    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "perfectDatabaseChallengeHint": "より大きなチャレンジをご希望の場合は、\"{setting}\"オプションを有効にし、プロンプトに従ってデバイスに完全なデータベースをダウンロードすることをお勧めします。",
+    "@perfectDatabaseChallengeHint": {
+        "description": "Hint to enable perfect database for greater challenge",
+        "placeholders": {
+            "setting": {
+                "description": "The setting name (Use perfect database)",
+                "type": "String"
+            }
+        }
+    }
 }
