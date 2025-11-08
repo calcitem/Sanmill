@@ -5,8 +5,8 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';

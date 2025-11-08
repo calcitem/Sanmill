@@ -394,6 +394,15 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                 key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
+                  // Cache localized strings at the start to avoid BuildContext usage across async gaps
+                  final String strNotYourTurn = S.of(context).notYourTurn;
+                  final String strNoLanConnection =
+                      S.of(context).noLanConnection;
+                  final String strTimeout = S.of(context).timeout;
+                  final String strNoBestMoveErr = S
+                      .of(context)
+                      .error(S.of(context).noMove);
+
                   final int? square = squareFromPoint(
                     pointFromOffset(d.localPosition, dimension),
                   );
@@ -410,23 +419,18 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                       GameMode.humanVsLAN) {
                     if (GameController().isLanOpponentTurn) {
                       rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        S.of(context).notYourTurn,
+                        strNotYourTurn,
                       );
                       return;
                     }
                     if (GameController().networkService == null ||
                         !GameController().networkService!.isConnected) {
                       GameController().headerTipNotifier.showTip(
-                        S.of(context).noLanConnection,
+                        strNoLanConnection,
                       );
                       return;
                     }
                   }
-
-                  final String strTimeout = S.of(context).timeout;
-                  final String strNoBestMoveErr = S
-                      .of(context)
-                      .error(S.of(context).noMove);
 
                   final EngineResponse response = await tapHandler.onBoardTap(
                     square,

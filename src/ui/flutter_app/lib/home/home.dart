@@ -665,7 +665,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           );
         },
       ).then((bool? result) {
-        if (result == true) {
+        // Use if-null operator to handle nullable bool conversion
+        if (result ?? false) {
           // Navigate to Rule Settings page
           _changeIndex(_DrawerIndex.ruleSettings);
         }

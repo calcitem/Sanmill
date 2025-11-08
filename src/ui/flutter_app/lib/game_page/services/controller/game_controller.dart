@@ -576,7 +576,8 @@ class GameController {
               );
               onClientConnected?.call(hostAddress, port);
             })
-            .catchError((error) {
+            // Explicitly type the error parameter for lint compliance
+            .catchError((Object error) {
               logger.e("$_logTag [LAN] Client connection error: $error");
               headerTipNotifier.showTip("Connection failed: $error");
             });
@@ -650,7 +651,8 @@ class GameController {
       if (gameInstance.doMove(move)) {
         logger.i("$_logTag [LAN] Move applied successfully");
         // Refresh LAN turn state and tip from authoritative board state
-        refreshLanTurn(showTip: true, snackBar: false);
+        // Using default parameters (showTip: true, snackBar: false)
+        refreshLanTurn();
         logger.i("$_logTag [LAN] Move processed successfully: $moveNotation");
         logger.i("$_logTag [LAN] New position: ${position.fen}");
 
@@ -695,7 +697,8 @@ class GameController {
 
       // After sending our move, it becomes opponent's turn
       // Refresh LAN turn state and tip from authoritative board state
-      refreshLanTurn(showTip: true, snackBar: false);
+      // Using default parameters (showTip: true, snackBar: false)
+      refreshLanTurn();
     } catch (e, st) {
       logger.e("$_logTag [LAN] Failed to send move '$moveNotation': $e");
       logger.d("$_logTag [LAN] Stack trace: $st");
@@ -792,7 +795,8 @@ class GameController {
                 // Locally apply the 1-step rollback
                 HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
                 // Refresh LAN turn state and tip from authoritative board state
-                refreshLanTurn(showTip: true, snackBar: false);
+                // Using default parameters (showTip: true, snackBar: false)
+                refreshLanTurn();
               },
               child: const Text("Yes"),
             ),
@@ -1042,8 +1046,10 @@ class GameController {
       reversed = true;
     }
 
+    // Cache localized strings before async operations to avoid BuildContext usage across async gaps
     final String strTimeout = S.of(context).timeout;
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
+    final String strThinking = S.of(context).thinking;
 
     GameController().disableStats = true;
 
@@ -1054,7 +1060,7 @@ class GameController {
       final bool aiThinking = await engine.isThinking();
       if (aiThinking) {
         await engine.stopSoft();
-        headerTipNotifier.showTip(S.of(context).thinking, snackBar: false);
+        headerTipNotifier.showTip(strThinking, snackBar: false);
         return;
       }
     }
@@ -1063,6 +1069,7 @@ class GameController {
     }
     _isMoveNowInProgress = true;
     try {
+      // Pass context to engineToGo immediately before the async call
       switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
         case EngineResponseOK():
         case EngineGameIsOver():
