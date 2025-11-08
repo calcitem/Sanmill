@@ -236,6 +236,7 @@ def normalize_arb_file(
     original_json = json.dumps(file_data, ensure_ascii=False, indent=4)
 
     # Extract locale from filename: intl_<locale>.arb
+    # Preserves original casing (e.g., de_CH, zh_Hant) as required by Flutter
     locale = arb_file_path.stem.replace('intl_', '')
 
     # Get app name from Android strings.xml if available

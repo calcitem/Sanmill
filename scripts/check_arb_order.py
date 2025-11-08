@@ -228,6 +228,7 @@ def check_arb_file(
     issues = []
 
     # Extract expected locale from filename: intl_<locale>.arb
+    # Preserves original casing (e.g., de_CH, zh_Hant) as required by Flutter
     expected_locale = arb_file_path.stem.replace('intl_', '')
 
     # Check if @@locale exists and matches filename
