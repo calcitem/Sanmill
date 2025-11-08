@@ -254,7 +254,7 @@
     "@black": {
         "description": "Player 2"
     },
-    "loseReasonlessThanThree": "{player} 의 말 개수가 3개 미만입보다 적습니다.",
+    "loseReasonlessThanThree": "{player} 의 말 개수가 3개 미만입니다.",
     "@loseReasonlessThanThree": {
         "description": " piece count is less than three.",
         "placeholders": {
@@ -473,7 +473,7 @@
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "말이 전부 배치되고 이동시킬 때, 말을 두 번째로 배치하기 시작한 사람이 먼저 이동하도록 합.",
+    "isDefenderMoveFirst_Detail": "말이 전부 배치되고 이동시킬 때, 말을 두 번째로 배치하기 시작한 사람이 먼저 이동하도록 합니다.",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
