@@ -987,6 +987,7 @@ enum GameMode {
   humanVsHuman,
   aiVsAi,
   setupPosition,
+  puzzle,
   humanVsCloud, // Not Implemented
   humanVsLAN,
   testViaLAN, // Not Implemented
@@ -1023,6 +1024,8 @@ extension GameModeExtension on GameMode {
         } else {
           return FluentIcons.person_24_regular;
         }
+      case GameMode.puzzle:
+        return FluentIcons.puzzle_piece_24_filled;
       case GameMode.humanVsCloud:
         return FluentIcons.person_24_filled;
       case GameMode.humanVsLAN:
@@ -1054,6 +1057,8 @@ extension GameModeExtension on GameMode {
         } else {
           return FluentIcons.bot_24_regular;
         }
+      case GameMode.puzzle:
+        return FluentIcons.lightbulb_24_filled;
       case GameMode.humanVsCloud:
         return FluentIcons.cloud_24_filled;
       case GameMode.humanVsLAN:
@@ -1075,6 +1080,7 @@ extension GameModeExtension on GameMode {
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:
       case GameMode.humanVsCloud:
+      case GameMode.puzzle:
         return <PieceColor, bool>{
           PieceColor.white: false,
           PieceColor.black: false,
