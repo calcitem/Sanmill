@@ -1074,8 +1074,11 @@ class NetworkService with WidgetsBindingObserver {
       if (ctx != null) {
         final String ot = S.of(ctx).opponentSTurn;
         final String yt = S.of(ctx).yourTurn;
+        // Use actual turn state derived from sideToMove/localColor for accuracy
+        final bool isMyTurn =
+            GameController().position.sideToMove == localColor;
         GameController().headerTipNotifier.showTip(
-          GameController().isLanOpponentTurn ? ot : yt,
+          isMyTurn ? yt : ot,
           snackBar: false,
         );
       }

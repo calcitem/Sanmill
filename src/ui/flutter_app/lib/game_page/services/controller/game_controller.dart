@@ -591,7 +591,8 @@ class GameController {
       logger.i("$_logTag [LAN] Creating ExtMove from notation: $moveNotation");
       final ExtMove move = ExtMove(
         moveNotation,
-        side: position.sideToMove.opponent,
+        // Use current sideToMove as the moving side on receiver
+        side: position.sideToMove,
       );
 
       logger.i("$_logTag [LAN] Attempting to apply move: ${move.notation}");
@@ -616,7 +617,9 @@ class GameController {
         final String yt = context != null
             ? S.of(context).yourTurn
             : "Your turn";
-        headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
+        // Derive tip directly from actual side-to-move to avoid stale flags
+        final bool isMyTurn = (position.sideToMove == localColor);
+        headerTipNotifier.showTip(isMyTurn ? yt : ot, snackBar: false);
         logger.i("$_logTag [LAN] Move processed successfully: $moveNotation");
         logger.i("$_logTag [LAN] New position: ${position.fen}");
 
@@ -675,7 +678,9 @@ class GameController {
           ? S.of(context).opponentSTurn
           : "Opponent's turn";
       final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-      headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
+      // Derive tip directly from actual side-to-move to avoid stale flags
+      final bool isMyTurn = (position.sideToMove == localColor);
+      headerTipNotifier.showTip(isMyTurn ? yt : ot, snackBar: false);
     } catch (e, st) {
       logger.e("$_logTag [LAN] Failed to send move '$moveNotation': $e");
       logger.d("$_logTag [LAN] Stack trace: $st");
