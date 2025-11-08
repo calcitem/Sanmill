@@ -61,6 +61,9 @@ class NetworkService with WidgetsBindingObserver {
   DateTime? _backgroundStartTime;
   static const Duration _maxBackgroundTime = Duration(minutes: 2);
 
+  // Store pending takeback requests received while app is in background
+  int? _pendingTakeBackSteps;
+
   ServerSocket? get serverSocket => _serverSocket;
 
   bool get isConnected {
@@ -137,6 +140,19 @@ class NetworkService with WidgetsBindingObserver {
     }
 
     _backgroundStartTime = null;
+
+    // Process any pending takeback requests that were received while in background
+    if (_pendingTakeBackSteps != null) {
+      final steps = _pendingTakeBackSteps!;
+      _pendingTakeBackSteps = null;
+      logger.i("$_logTag Processing pending takeback request for $steps step(s)");
+      // Delay slightly to ensure UI is ready
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (!_disposed) {
+          GameController().handleTakeBackRequest(steps);
+        }
+      });
+    }
   }
 
   void _checkConnectionAfterResume() {
@@ -903,7 +919,13 @@ class NetworkService with WidgetsBindingObserver {
 
         if (command == "request") {
           logger.i("$_logTag [LAN] Opponent requests take back of $steps step(s) - showing dialog");
-          GameController().handleTakeBackRequest(steps);
+          // Check if app is in background or if Navigator is not available
+          if (_isInBackground) {
+            logger.i("$_logTag [LAN] App is in background, storing takeback request for later");
+            _pendingTakeBackSteps = steps;
+          } else {
+            GameController().handleTakeBackRequest(steps);
+          }
         } else if (command == "accepted") {
           logger.i("$_logTag [LAN] Take back request accepted - performing rollback of $steps step(s)");
           _performLanTakeBack(steps);
