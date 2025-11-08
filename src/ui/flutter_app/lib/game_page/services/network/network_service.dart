@@ -1046,7 +1046,8 @@ class NetworkService with WidgetsBindingObserver {
           logger.i(
             "$_logTag [LAN] Set lanHostPlaysWhite=$hpw from host announce",
           );
-          GameController().refreshLanTurn(showTip: true, snackBar: false);
+          // Using default parameters (showTip: true, snackBar: false)
+          GameController().refreshLanTurn();
         } else {
           logger.w(
             "$_logTag [LAN] Malformed announce hostPlaysWhite: $message",
@@ -1066,7 +1067,8 @@ class NetworkService with WidgetsBindingObserver {
           final bool hpw = parts[2].toLowerCase() == "true";
           GameController().lanHostPlaysWhite = hpw;
           logger.i("$_logTag [LAN] Received hostPlaysWhite=$hpw from host");
-          GameController().refreshLanTurn(showTip: true, snackBar: false);
+          // Using default parameters (showTip: true, snackBar: false)
+          GameController().refreshLanTurn();
         } else {
           logger.w(
             "$_logTag [LAN] Malformed response hostPlaysWhite: $message",
@@ -1109,7 +1111,8 @@ class NetworkService with WidgetsBindingObserver {
     try {
       HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
       // Refresh LAN turn state and tip from authoritative board state
-      GameController().refreshLanTurn(showTip: true, snackBar: false);
+      // Using default parameters (showTip: true, snackBar: false)
+      GameController().refreshLanTurn();
     } catch (e, st) {
       logger.e("$_logTag Error performing take back: $e");
       logger.d("$_logTag Stack trace: $st");
