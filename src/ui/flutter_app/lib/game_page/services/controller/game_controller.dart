@@ -545,6 +545,10 @@ class GameController {
               "$_logTag [LAN] Set isLanOpponentTurn to false (host moves first)",
             );
             headerIconsNotifier.showIcons(); // Update icons immediately
+            // Announce host's chosen color to client for correct localColor mapping
+            final bool hpw = lanHostPlaysWhite ?? true;
+            logger.i("$_logTag [LAN] Announce hostPlaysWhite=$hpw to client");
+            networkService?.sendMove("announce:hostPlaysWhite:$hpw");
             onClientConnected?.call(clientIp, clientPort);
           },
         );

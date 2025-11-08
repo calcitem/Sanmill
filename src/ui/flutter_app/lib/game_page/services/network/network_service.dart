@@ -458,6 +458,9 @@ class NetworkService with WidgetsBindingObserver {
 
         logger.i("$_logTag [LAN] Requesting aiMovesFirst setting from host");
         sendMove("request:aiMovesFirst");
+        // Also request host's chosen color so client can compute localColor correctly
+        logger.i("$_logTag [LAN] Requesting hostPlaysWhite from host");
+        sendMove("request:hostPlaysWhite");
         logger.i("$_logTag [LAN] Client connection fully established");
         return;
       } catch (e, st) {
@@ -1027,6 +1030,45 @@ class NetworkService with WidgetsBindingObserver {
           GameController().headerTipNotifier.showTip(takeBackRejected);
         } else {
           logger.w("$_logTag [LAN] Unknown take back command: $command");
+        }
+        return;
+      }
+
+      // Host color synchronization
+      if (message.startsWith("announce:hostPlaysWhite:")) {
+        logger.i("$_logTag [LAN] Processing host color announce: $message");
+        final parts = message.split(":");
+        if (parts.length >= 3) {
+          final bool hpw = parts[2].toLowerCase() == "true";
+          GameController().lanHostPlaysWhite = hpw;
+          logger.i(
+            "$_logTag [LAN] Set lanHostPlaysWhite=$hpw from host announce",
+          );
+          GameController().refreshLanTurn(showTip: true, snackBar: false);
+        } else {
+          logger.w(
+            "$_logTag [LAN] Malformed announce hostPlaysWhite: $message",
+          );
+        }
+        return;
+      }
+      if (message.startsWith("request:hostPlaysWhite")) {
+        final bool hpw = GameController().lanHostPlaysWhite ?? true;
+        logger.i("$_logTag [LAN] Responding hostPlaysWhite=$hpw");
+        sendMove("response:hostPlaysWhite:$hpw");
+        return;
+      }
+      if (message.startsWith("response:hostPlaysWhite:")) {
+        final parts = message.split(":");
+        if (parts.length >= 3) {
+          final bool hpw = parts[2].toLowerCase() == "true";
+          GameController().lanHostPlaysWhite = hpw;
+          logger.i("$_logTag [LAN] Received hostPlaysWhite=$hpw from host");
+          GameController().refreshLanTurn(showTip: true, snackBar: false);
+        } else {
+          logger.w(
+            "$_logTag [LAN] Malformed response hostPlaysWhite: $message",
+          );
         }
         return;
       }
