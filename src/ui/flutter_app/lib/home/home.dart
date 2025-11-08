@@ -633,6 +633,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (languageCode == 'ru' ||
         languageCode == 'fa' ||
         languageCode == 'fr' ||
+        languageCode == 'tr' ||
         languageCode == 'zh') {
       showDialog<bool>(
         context: context,
