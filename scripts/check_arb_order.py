@@ -205,6 +205,46 @@ def check_entry_metadata(
     return issues
 
 
+def validate_bcp47_format(locale: str) -> Optional[str]:
+    """
+    Validate that locale code follows BCP47 case conventions.
+
+    BCP47 format rules:
+    - Language subtag: lowercase (e.g., 'de', 'zh')
+    - Script subtag: Title case (e.g., 'Hant', 'Latn')
+    - Region subtag: UPPERCASE (e.g., 'CH', 'CN', 'US')
+
+    Args:
+        locale: Locale string to validate (e.g., 'de_CH', 'zh_Hant')
+
+    Returns:
+        Error message if validation fails, None if valid
+    """
+    parts = locale.split('_')
+
+    # Language code (first part) must be lowercase
+    if len(parts) >= 1:
+        lang = parts[0]
+        if lang != lang.lower():
+            return f"Language code '{lang}' should be lowercase"
+
+    # For locales with region or script codes
+    if len(parts) == 2:
+        second_part = parts[1]
+
+        # Check if it's a region code (2 uppercase letters) or script code (4 letters, title case)
+        if len(second_part) == 2:
+            # This is a region code, must be UPPERCASE
+            if second_part != second_part.upper():
+                return f"Region code '{second_part}' should be UPPERCASE (e.g., '{second_part.upper()}')"
+        elif len(second_part) == 4:
+            # This is a script code, must be Title case (first letter uppercase, rest lowercase)
+            if second_part != second_part.capitalize():
+                return f"Script code '{second_part}' should be Title case (e.g., '{second_part.capitalize()}')"
+
+    return None
+
+
 def check_arb_file(
     arb_file_path: Path,
     template_data: Dict[str, Any],
@@ -230,11 +270,22 @@ def check_arb_file(
     # Extract expected locale from filename: intl_<locale>.arb
     expected_locale = arb_file_path.stem.replace('intl_', '')
 
+    # Validate BCP47 format for filename locale
+    bcp47_error = validate_bcp47_format(expected_locale)
+    if bcp47_error:
+        issues.append(f"  ❌ Filename locale format: {bcp47_error}")
+
     # Check if @@locale exists and matches filename
     if "@@locale" not in file_data:
         issues.append(f"  ❌ Missing @@locale key")
     else:
         actual_locale = file_data["@@locale"]
+
+        # Validate BCP47 format for @@locale value
+        bcp47_error = validate_bcp47_format(actual_locale)
+        if bcp47_error:
+            issues.append(f"  ❌ @@locale format: {bcp47_error}")
+
         if actual_locale != expected_locale:
             issues.append(
                 f"  ❌ @@locale mismatch: expected '{expected_locale}' "

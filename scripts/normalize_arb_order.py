@@ -211,6 +211,42 @@ def normalize_entry_metadata(
     return merge_metadata_structure(template_metadata, file_metadata)
 
 
+def normalize_bcp47_locale(locale: str) -> str:
+    """
+    Normalize locale code to follow BCP47 case conventions.
+
+    BCP47 format rules:
+    - Language subtag: lowercase (e.g., 'de', 'zh')
+    - Script subtag: Title case (e.g., 'Hant', 'Latn')
+    - Region subtag: UPPERCASE (e.g., 'CH', 'CN', 'US')
+
+    Args:
+        locale: Locale string to normalize (e.g., 'de_ch', 'zh_hant')
+
+    Returns:
+        Normalized locale string (e.g., 'de_CH', 'zh_Hant')
+    """
+    parts = locale.split('_')
+
+    # Language code (first part) must be lowercase
+    if len(parts) >= 1:
+        parts[0] = parts[0].lower()
+
+    # For locales with region or script codes
+    if len(parts) == 2:
+        second_part = parts[1]
+
+        # Check if it's a region code (2 letters) or script code (4 letters)
+        if len(second_part) == 2:
+            # This is a region code, make UPPERCASE
+            parts[1] = second_part.upper()
+        elif len(second_part) == 4:
+            # This is a script code, make Title case
+            parts[1] = second_part.capitalize()
+
+    return '_'.join(parts)
+
+
 def normalize_arb_file(
     arb_file_path: Path,
     template_data: Dict[str, Any],
@@ -237,6 +273,9 @@ def normalize_arb_file(
 
     # Extract locale from filename: intl_<locale>.arb
     locale = arb_file_path.stem.replace('intl_', '')
+
+    # Normalize locale to BCP47 format
+    locale = normalize_bcp47_locale(locale)
 
     # Get app name from Android strings.xml if available
     android_app_name = get_android_app_name(locale, project_root)
