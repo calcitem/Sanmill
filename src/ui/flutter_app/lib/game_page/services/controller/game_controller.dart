@@ -602,7 +602,8 @@ class GameController {
         // So when position.sideToMove != localColor (opponent just played), it's our turn
         final PieceColor localColor = getLocalColor();
         final bool wasOpponentTurn = isLanOpponentTurn;
-        isLanOpponentTurn = (position.sideToMove == localColor);
+        // Opponent's turn means: sideToMove is NOT localColor
+        isLanOpponentTurn = (position.sideToMove != localColor);
         logger.i(
           "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
         );
@@ -662,7 +663,8 @@ class GameController {
       // In LAN vs LAN mode, when position.sideToMove == localColor (we just played), it's opponent's turn
       final PieceColor localColor = getLocalColor();
       final bool wasOpponentTurn = isLanOpponentTurn;
-      isLanOpponentTurn = (position.sideToMove == localColor);
+      // Opponent's turn means: sideToMove is NOT localColor
+      isLanOpponentTurn = (position.sideToMove != localColor);
       logger.i("$_logTag [LAN] Move sent successfully");
       logger.i(
         "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
@@ -700,12 +702,13 @@ class GameController {
       headerTipNotifier.showTip(notConnectedToLanOpponent);
       return false;
     }
-    if (isLanOpponentTurn) {
+    // Only allow take-back immediately after your move, i.e., while it's opponent's turn
+    if (!isLanOpponentTurn) {
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String cannotRequestATakeBackWhenItSNotYourTurn = context != null
-          ? S.of(context).cannotRequestATakeBackWhenItSNotYourTurn
-          : "Cannot request a take back when it's not your turn";
-      headerTipNotifier.showTip(cannotRequestATakeBackWhenItSNotYourTurn);
+      final String msg = context != null
+          ? S.of(context).canOnlyRequestTakeBackRightAfterYourMove
+          : "You can only request a take back immediately after your move.";
+      headerTipNotifier.showTip(msg);
       return false;
     }
 
@@ -771,6 +774,19 @@ class GameController {
                 // Update turn state after rollback: if sideToMove != localColor, it's opponent's turn
                 final PieceColor localColor = getLocalColor();
                 isLanOpponentTurn = (position.sideToMove != localColor);
+                // Refresh icons/semantics and tip to reflect new turn state
+                headerIconsNotifier.showIcons();
+                boardSemanticsNotifier.updateSemantics();
+                final BuildContext? ctx =
+                    rootScaffoldMessengerKey.currentContext;
+                if (ctx != null) {
+                  final String ot = S.of(ctx).opponentSTurn;
+                  final String yt = S.of(ctx).yourTurn;
+                  headerTipNotifier.showTip(
+                    isLanOpponentTurn ? ot : yt,
+                    snackBar: false,
+                  );
+                }
               },
               child: const Text("Yes"),
             ),

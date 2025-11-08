@@ -1739,6 +1739,10 @@
     "@cannotRequestATakeBackWhenItSNotYourTurn": {},
     "takeBackAccepted": "Take back accepted.",
     "@takeBackAccepted": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "You can only request a take back immediately after your move.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": "Shown when player attempts to request a take back not immediately after their move in LAN mode."
+    },
     "localNetworkSettings": "Local network settings",
     "@localNetworkSettings": {},
     "reconnectedSuccessfully": "Reconnected successfully!",

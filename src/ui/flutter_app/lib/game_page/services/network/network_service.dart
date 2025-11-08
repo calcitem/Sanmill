@@ -145,7 +145,9 @@ class NetworkService with WidgetsBindingObserver {
     if (_pendingTakeBackSteps != null) {
       final steps = _pendingTakeBackSteps!;
       _pendingTakeBackSteps = null;
-      logger.i("$_logTag Processing pending takeback request for $steps step(s)");
+      logger.i(
+        "$_logTag Processing pending takeback request for $steps step(s)",
+      );
       // Delay slightly to ensure UI is ready
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!_disposed) {
@@ -227,7 +229,9 @@ class NetworkService with WidgetsBindingObserver {
       throw Exception("NetworkService disposed; cannot start host.");
     }
 
-    logger.i("$_logTag [LAN] Starting host setup on port $port with IP: $localIpAddress");
+    logger.i(
+      "$_logTag [LAN] Starting host setup on port $port with IP: $localIpAddress",
+    );
     this.onClientConnected = onClientConnected;
 
     try {
@@ -250,7 +254,9 @@ class NetworkService with WidgetsBindingObserver {
       }
       _boundIpAddress = bindIp; // Store it for later usage
 
-      logger.i("$_logTag [LAN] Attempting to bind server socket to $bindIp:$port");
+      logger.i(
+        "$_logTag [LAN] Attempting to bind server socket to $bindIp:$port",
+      );
       _serverSocket = await ServerSocket.bind(InternetAddress(bindIp), port);
       isHost = true;
       logger.i("$_logTag [LAN] Successfully hosting on $bindIp:$port");
@@ -263,7 +269,9 @@ class NetworkService with WidgetsBindingObserver {
           final remoteAddr = socket.remoteAddress.address;
           final remotePort = socket.remotePort;
 
-          logger.i("$_logTag [LAN] Incoming connection attempt from $remoteAddr:$remotePort");
+          logger.i(
+            "$_logTag [LAN] Incoming connection attempt from $remoteAddr:$remotePort",
+          );
 
           if (lastConnAttempt != null &&
               now.difference(lastConnAttempt!).inSeconds < 2) {
@@ -276,12 +284,16 @@ class NetworkService with WidgetsBindingObserver {
           lastConnAttempt = now;
 
           if (_clientSocket != null && !_clientSocket!.isClosed) {
-            logger.w("$_logTag [LAN] Rejecting connection from $remoteAddr:$remotePort - already have a client");
+            logger.w(
+              "$_logTag [LAN] Rejecting connection from $remoteAddr:$remotePort - already have a client",
+            );
             socket.destroy();
             return;
           }
 
-          logger.i("$_logTag [LAN] Accepting new client connection from $remoteAddr:$remotePort");
+          logger.i(
+            "$_logTag [LAN] Accepting new client connection from $remoteAddr:$remotePort",
+          );
           _handleNewClient(socket);
         },
         onError: (error, st) {
@@ -292,7 +304,9 @@ class NetworkService with WidgetsBindingObserver {
         onDone: () {
           logger.i("$_logTag [LAN] Server socket stream closed");
           if (!_disposed && isHost) {
-            logger.w("$_logTag [LAN] Server socket closed unexpectedly while still active");
+            logger.w(
+              "$_logTag [LAN] Server socket closed unexpectedly while still active",
+            );
             _handleDisconnection(reason: "Server socket closed unexpectedly");
           }
         },
@@ -348,29 +362,39 @@ class NetworkService with WidgetsBindingObserver {
     int retryCount = _maxReconnectAttempts,
   }) async {
     if (_disposed) {
-      logger.e("$_logTag [LAN] connectToHost() called on disposed NetworkService");
+      logger.e(
+        "$_logTag [LAN] connectToHost() called on disposed NetworkService",
+      );
       throw Exception("NetworkService disposed; cannot connect.");
     }
 
-    logger.i("$_logTag [LAN] Starting client connection to $host:$port (max retries: $retryCount)");
+    logger.i(
+      "$_logTag [LAN] Starting client connection to $host:$port (max retries: $retryCount)",
+    );
     isHost = false;
     _reconnectAttempts = 0;
 
     for (int attempt = 0; attempt < retryCount; attempt++) {
       if (_disposed) {
-        logger.w("$_logTag [LAN] Connection aborted - NetworkService disposed during retry loop");
+        logger.w(
+          "$_logTag [LAN] Connection aborted - NetworkService disposed during retry loop",
+        );
         break;
       }
 
       _reconnectAttempts = attempt + 1;
       try {
-        logger.i("$_logTag [LAN] Connection attempt ${attempt + 1}/$retryCount to $host:$port");
+        logger.i(
+          "$_logTag [LAN] Connection attempt ${attempt + 1}/$retryCount to $host:$port",
+        );
         final startTime = DateTime.now();
 
         final socket = await Socket.connect(host, port).timeout(
           _connectionTimeout,
           onTimeout: () {
-            logger.e("$_logTag [LAN] Connection timeout after ${_connectionTimeout.inSeconds}s on attempt ${attempt + 1}");
+            logger.e(
+              "$_logTag [LAN] Connection timeout after ${_connectionTimeout.inSeconds}s on attempt ${attempt + 1}",
+            );
             throw TimeoutException(
               "Connection timed out after ${_connectionTimeout.inSeconds}s",
             );
@@ -378,10 +402,14 @@ class NetworkService with WidgetsBindingObserver {
         );
 
         final connectTime = DateTime.now().difference(startTime);
-        logger.i("$_logTag [LAN] TCP socket connected in ${connectTime.inMilliseconds}ms");
+        logger.i(
+          "$_logTag [LAN] TCP socket connected in ${connectTime.inMilliseconds}ms",
+        );
 
         if (_disposed) {
-          logger.w("$_logTag [LAN] NetworkService disposed after socket connect, destroying socket");
+          logger.w(
+            "$_logTag [LAN] NetworkService disposed after socket connect, destroying socket",
+          );
           socket.destroy();
           return;
         }
@@ -390,7 +418,9 @@ class NetworkService with WidgetsBindingObserver {
         _opponentAddress = host;
         _opponentPort = port;
         _lastConnectionTime = DateTime.now();
-        logger.i("$_logTag [LAN] Successfully connected to $host:$port at ${_lastConnectionTime!.toIso8601String()}");
+        logger.i(
+          "$_logTag [LAN] Successfully connected to $host:$port at ${_lastConnectionTime!.toIso8601String()}",
+        );
 
         _messagesSent = 0;
         _messagesReceived = 0;
@@ -400,7 +430,9 @@ class NetworkService with WidgetsBindingObserver {
         logger.i("$_logTag [LAN] Starting socket listener");
         _listenToSocket(socket);
 
-        logger.i("$_logTag [LAN] Starting protocol handshake (version: $protocolVersion)");
+        logger.i(
+          "$_logTag [LAN] Starting protocol handshake (version: $protocolVersion)",
+        );
         _protocolHandshakeCompleter = Completer<bool>();
         sendMove("protocol:$protocolVersion");
 
@@ -415,10 +447,14 @@ class NetworkService with WidgetsBindingObserver {
 
         final handshakeTime = DateTime.now().difference(handshakeStartTime);
         if (!success) {
-          logger.e("$_logTag [LAN] Protocol handshake failed (took ${handshakeTime.inMilliseconds}ms)");
+          logger.e(
+            "$_logTag [LAN] Protocol handshake failed (took ${handshakeTime.inMilliseconds}ms)",
+          );
           throw Exception("Protocol handshake failed or mismatched");
         }
-        logger.i("$_logTag [LAN] Protocol handshake successful (took ${handshakeTime.inMilliseconds}ms)");
+        logger.i(
+          "$_logTag [LAN] Protocol handshake successful (took ${handshakeTime.inMilliseconds}ms)",
+        );
 
         logger.i("$_logTag [LAN] Requesting aiMovesFirst setting from host");
         sendMove("request:aiMovesFirst");
@@ -594,7 +630,9 @@ class NetworkService with WidgetsBindingObserver {
   }
 
   void _listenToSocket(Socket socket) {
-    logger.i("$_logTag [LAN] Setting up socket listener for ${socket.remoteAddress.address}:${socket.remotePort}");
+    logger.i(
+      "$_logTag [LAN] Setting up socket listener for ${socket.remoteAddress.address}:${socket.remotePort}",
+    );
     socket
         .cast<List<int>>()
         .transform(utf8.decoder)
@@ -602,7 +640,9 @@ class NetworkService with WidgetsBindingObserver {
         .listen(
           (String line) {
             if (_disposed) {
-              logger.t("$_logTag [LAN] Ignoring message - NetworkService disposed");
+              logger.t(
+                "$_logTag [LAN] Ignoring message - NetworkService disposed",
+              );
               return;
             }
             final remotePort = socket.remotePort;
@@ -626,24 +666,36 @@ class NetworkService with WidgetsBindingObserver {
               if (!isHost) {
                 _lastHeartbeatReceived = DateTime.now();
                 _sendMessageInternal("heartbeatAck");
-                logger.t("$_logTag [LAN] [Client] Received heartbeat, sent ack");
+                logger.t(
+                  "$_logTag [LAN] [Client] Received heartbeat, sent ack",
+                );
               } else {
-                logger.t("$_logTag [LAN] [Host] Received unexpected heartbeat from client");
+                logger.t(
+                  "$_logTag [LAN] [Host] Received unexpected heartbeat from client",
+                );
               }
               return;
             }
             if (trimmed == "heartbeatAck") {
               if (isHost) {
-                final timeSinceLast = DateTime.now().difference(_lastHeartbeatReceived);
+                final timeSinceLast = DateTime.now().difference(
+                  _lastHeartbeatReceived,
+                );
                 _lastHeartbeatReceived = DateTime.now();
-                logger.t("$_logTag [LAN] [Host] Received heartbeatAck (${timeSinceLast.inMilliseconds}ms since last)");
+                logger.t(
+                  "$_logTag [LAN] [Host] Received heartbeatAck (${timeSinceLast.inMilliseconds}ms since last)",
+                );
               } else {
-                logger.t("$_logTag [LAN] [Client] Received unexpected heartbeatAck from host");
+                logger.t(
+                  "$_logTag [LAN] [Client] Received unexpected heartbeatAck from host",
+                );
               }
               return;
             }
 
-            logger.i("$_logTag [LAN] Adding message to queue: $trimmed (queue size: ${_messageQueue.length})");
+            logger.i(
+              "$_logTag [LAN] Adding message to queue: $trimmed (queue size: ${_messageQueue.length})",
+            );
             _messageQueue.add(trimmed);
             _processMessageQueue();
           },
@@ -656,10 +708,14 @@ class NetworkService with WidgetsBindingObserver {
           },
           onDone: () {
             if (!_disposed) {
-              logger.i("$_logTag [LAN] Socket stream closed by remote $_opponentAddress:$_opponentPort");
+              logger.i(
+                "$_logTag [LAN] Socket stream closed by remote $_opponentAddress:$_opponentPort",
+              );
               _handleDisconnection(reason: "Remote socket closed");
             } else {
-              logger.i("$_logTag [LAN] Socket stream closed (expected - service disposed)");
+              logger.i(
+                "$_logTag [LAN] Socket stream closed (expected - service disposed)",
+              );
             }
           },
         );
@@ -676,14 +732,18 @@ class NetworkService with WidgetsBindingObserver {
   Future<void> _processMessageQueue() async {
     if (_isProcessingMessages || _disposed) {
       if (_isProcessingMessages) {
-        logger.t("$_logTag [LAN] Message queue already being processed, skipping");
+        logger.t(
+          "$_logTag [LAN] Message queue already being processed, skipping",
+        );
       }
       return;
     }
     _isProcessingMessages = true;
 
     final queueSize = _messageQueue.length;
-    logger.i("$_logTag [LAN] Starting message queue processing ($queueSize messages)");
+    logger.i(
+      "$_logTag [LAN] Starting message queue processing ($queueSize messages)",
+    );
 
     try {
       final timer = Timer(_messageProcessingTimeout * 2, () {
@@ -703,13 +763,17 @@ class NetworkService with WidgetsBindingObserver {
 
       while (_messageQueue.isNotEmpty && !_disposed) {
         final message = _messageQueue.removeFirst();
-        logger.i("$_logTag [LAN] Processing message ${processedCount + 1}/$queueSize: $message");
+        logger.i(
+          "$_logTag [LAN] Processing message ${processedCount + 1}/$queueSize: $message",
+        );
         _handleNetworkMessage(message);
         processedCount++;
 
         if (processedCount >= 5 ||
             DateTime.now().difference(startTime).inMilliseconds > 100) {
-          logger.t("$_logTag [LAN] Yielding control after $processedCount messages");
+          logger.t(
+            "$_logTag [LAN] Yielding control after $processedCount messages",
+          );
           await Future<void>.delayed(Duration.zero);
           processedCount = 0;
         }
@@ -717,7 +781,9 @@ class NetworkService with WidgetsBindingObserver {
       timer.cancel();
 
       final processingTime = DateTime.now().difference(startTime);
-      logger.i("$_logTag [LAN] Message queue processing complete ($queueSize messages in ${processingTime.inMilliseconds}ms)");
+      logger.i(
+        "$_logTag [LAN] Message queue processing complete ($queueSize messages in ${processingTime.inMilliseconds}ms)",
+      );
     } catch (e, st) {
       logger.e("$_logTag [LAN] Error processing message queue: $e");
       logger.d("$_logTag [LAN] Queue processing stack trace: $st");
@@ -777,7 +843,9 @@ class NetworkService with WidgetsBindingObserver {
         _clientSocket!.write("$message\n");
         _messagesSent++;
         final sendTime = DateTime.now().difference(startTime);
-        logger.t("$_logTag [LAN] Sent message #$_messagesSent in ${sendTime.inMicroseconds}μs => $message");
+        logger.t(
+          "$_logTag [LAN] Sent message #$_messagesSent in ${sendTime.inMicroseconds}μs => $message",
+        );
       } catch (e, st) {
         logger.e("$_logTag [LAN] Error sending message '$message': $e");
         logger.d("$_logTag [LAN] Send error stack trace: $st");
@@ -786,10 +854,14 @@ class NetworkService with WidgetsBindingObserver {
           if (e.message.contains("Connection reset by peer") ||
               e.message.contains("Broken pipe") ||
               e.message.contains("Software caused connection abort")) {
-            logger.w("$_logTag [LAN] Connection lost during send: ${e.message}");
+            logger.w(
+              "$_logTag [LAN] Connection lost during send: ${e.message}",
+            );
             _handleDisconnection(error: "Connection error: ${e.message}");
           } else {
-            logger.e("$_logTag [LAN] Socket exception during send: ${e.message}");
+            logger.e(
+              "$_logTag [LAN] Socket exception during send: ${e.message}",
+            );
             _handleDisconnection(error: "Send error: ${e.message}");
           }
         } else {
@@ -871,7 +943,9 @@ class NetworkService with WidgetsBindingObserver {
         logger.i("$_logTag [LAN] Processing restart message: $message");
         final parts = message.split(":");
         if (parts.length < 2) {
-          logger.w("$_logTag [LAN] Malformed restart message (missing parts): $message");
+          logger.w(
+            "$_logTag [LAN] Malformed restart message (missing parts): $message",
+          );
           return;
         }
 
@@ -881,7 +955,9 @@ class NetworkService with WidgetsBindingObserver {
           logger.i("$_logTag [LAN] Opponent requests restart - showing dialog");
           GameController().handleRestartRequest();
         } else if (cmd == "accepted") {
-          logger.i("$_logTag [LAN] Opponent accepted restart - restarting game");
+          logger.i(
+            "$_logTag [LAN] Opponent accepted restart - restarting game",
+          );
           GameController().reset(lanRestart: true);
           GameController().headerTipNotifier.showTip("Game restarted");
         } else if (cmd == "rejected") {
@@ -897,15 +973,21 @@ class NetworkService with WidgetsBindingObserver {
         logger.i("$_logTag [LAN] Processing take back message: $message");
         final parts = message.split(':');
         if (parts.length < 3) {
-          logger.w("$_logTag [LAN] Malformed take back message (expected 3 parts, got ${parts.length}): $message");
+          logger.w(
+            "$_logTag [LAN] Malformed take back message (expected 3 parts, got ${parts.length}): $message",
+          );
           return;
         }
         final stepCountStr = parts[1];
         final command = parts[2];
-        logger.i("$_logTag [LAN] Take back - steps: $stepCountStr, command: $command");
+        logger.i(
+          "$_logTag [LAN] Take back - steps: $stepCountStr, command: $command",
+        );
         final steps = int.tryParse(stepCountStr);
         if (steps == null || steps <= 0) {
-          logger.w("$_logTag [LAN] Invalid step count in take back message: $stepCountStr");
+          logger.w(
+            "$_logTag [LAN] Invalid step count in take back message: $stepCountStr",
+          );
           return;
         }
 
@@ -918,16 +1000,22 @@ class NetworkService with WidgetsBindingObserver {
             : "Take back rejected";
 
         if (command == "request") {
-          logger.i("$_logTag [LAN] Opponent requests take back of $steps step(s) - showing dialog");
+          logger.i(
+            "$_logTag [LAN] Opponent requests take back of $steps step(s) - showing dialog",
+          );
           // Check if app is in background or if Navigator is not available
           if (_isInBackground) {
-            logger.i("$_logTag [LAN] App is in background, storing takeback request for later");
+            logger.i(
+              "$_logTag [LAN] App is in background, storing takeback request for later",
+            );
             _pendingTakeBackSteps = steps;
           } else {
             GameController().handleTakeBackRequest(steps);
           }
         } else if (command == "accepted") {
-          logger.i("$_logTag [LAN] Take back request accepted - performing rollback of $steps step(s)");
+          logger.i(
+            "$_logTag [LAN] Take back request accepted - performing rollback of $steps step(s)",
+          );
           _performLanTakeBack(steps);
           GameController().pendingTakeBackCompleter?.complete(true);
           GameController().pendingTakeBackCompleter = null;
@@ -953,7 +1041,9 @@ class NetworkService with WidgetsBindingObserver {
         logger.i("$_logTag [LAN] Processing aiMovesFirst response: $message");
         final parts = message.split(":");
         if (parts.length < 3) {
-          logger.w("$_logTag [LAN] Malformed aiMovesFirst response (expected 3 parts, got ${parts.length}): $message");
+          logger.w(
+            "$_logTag [LAN] Malformed aiMovesFirst response (expected 3 parts, got ${parts.length}): $message",
+          );
           return;
         }
         final valueStr = parts[2];
@@ -977,6 +1067,18 @@ class NetworkService with WidgetsBindingObserver {
       final localColor = GameController().getLocalColor();
       GameController().isLanOpponentTurn =
           GameController().position.sideToMove != localColor;
+      // Refresh UI to reflect the updated turn after take back
+      GameController().headerIconsNotifier.showIcons();
+      GameController().boardSemanticsNotifier.updateSemantics();
+      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
+      if (ctx != null) {
+        final String ot = S.of(ctx).opponentSTurn;
+        final String yt = S.of(ctx).yourTurn;
+        GameController().headerTipNotifier.showTip(
+          GameController().isLanOpponentTurn ? ot : yt,
+          snackBar: false,
+        );
+      }
     } catch (e, st) {
       logger.e("$_logTag Error performing take back: $e");
       logger.d("$_logTag Stack trace: $st");
@@ -1003,14 +1105,22 @@ class NetworkService with WidgetsBindingObserver {
 
   void _handleDisconnection({String? reason, String? error}) {
     if (_disposed) {
-      logger.t("$_logTag [LAN] _handleDisconnection called but already disposed");
+      logger.t(
+        "$_logTag [LAN] _handleDisconnection called but already disposed",
+      );
       return;
     }
     final String disconnectReason = error ?? reason ?? "Unknown reason";
 
-    logger.w("$_logTag [LAN] Handling disconnection - Reason: $disconnectReason");
-    logger.i("$_logTag [LAN] Connection state at disconnect - isHost: $isHost, opponent: $_opponentAddress:$_opponentPort");
-    logger.i("$_logTag [LAN] Message stats - Sent: $_messagesSent, Received: $_messagesReceived");
+    logger.w(
+      "$_logTag [LAN] Handling disconnection - Reason: $disconnectReason",
+    );
+    logger.i(
+      "$_logTag [LAN] Connection state at disconnect - isHost: $isHost, opponent: $_opponentAddress:$_opponentPort",
+    );
+    logger.i(
+      "$_logTag [LAN] Message stats - Sent: $_messagesSent, Received: $_messagesReceived",
+    );
 
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     final String disconnectedMsg = context != null
@@ -1019,7 +1129,9 @@ class NetworkService with WidgetsBindingObserver {
     String userFriendlyMessage = disconnectedMsg;
 
     if (error != null && error.contains("Connection reset by peer")) {
-      logger.w("$_logTag [LAN] Connection reset by peer - opponent likely disconnected");
+      logger.w(
+        "$_logTag [LAN] Connection reset by peer - opponent likely disconnected",
+      );
       final String opponentLeftMsg = context != null
           ? S.of(context).theOpponentMayHaveLeftTheGame
           : "Opponent may have left the game";
@@ -1067,13 +1179,17 @@ class NetworkService with WidgetsBindingObserver {
     }
     WidgetsBinding.instance.removeObserver(this);
     logger.i("$_logTag [LAN] dispose() called - cleaning up network resources");
-    logger.i("$_logTag [LAN] Final stats - Messages sent: $_messagesSent, received: $_messagesReceived");
+    logger.i(
+      "$_logTag [LAN] Final stats - Messages sent: $_messagesSent, received: $_messagesReceived",
+    );
     _disposeInternals();
   }
 
   void _disposeInternals() {
     if (_disposed) {
-      logger.t("$_logTag [LAN] _disposeInternals() called but already disposed");
+      logger.t(
+        "$_logTag [LAN] _disposeInternals() called but already disposed",
+      );
       return;
     }
     logger.i("$_logTag [LAN] Starting internal disposal");
@@ -1088,10 +1204,14 @@ class NetworkService with WidgetsBindingObserver {
     try {
       if (_serverSocket != null) {
         if (_serverSocket!.port > 0) {
-          logger.i("$_logTag [LAN] Closing server socket on port ${_serverSocket!.port}");
+          logger.i(
+            "$_logTag [LAN] Closing server socket on port ${_serverSocket!.port}",
+          );
           _serverSocket!.close();
         } else {
-          logger.w("$_logTag [LAN] Skipping close of invalid server socket (port=0)");
+          logger.w(
+            "$_logTag [LAN] Skipping close of invalid server socket (port=0)",
+          );
         }
       }
     } catch (e) {
@@ -1119,7 +1239,9 @@ class NetworkService with WidgetsBindingObserver {
 
     final queueSize = _messageQueue.length;
     if (queueSize > 0) {
-      logger.w("$_logTag [LAN] Clearing $queueSize pending messages from queue");
+      logger.w(
+        "$_logTag [LAN] Clearing $queueSize pending messages from queue",
+      );
     }
     _messageQueue.clear();
     _isProcessingMessages = false;
