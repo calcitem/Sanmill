@@ -630,7 +630,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     final String languageCode = locale.languageCode;
 
     // Only show for Russian (ru) and Persian (fa) locales
-    if (languageCode == 'ru' || languageCode == 'fa') {
+    if (languageCode == 'ru' ||
+        languageCode == 'fa' ||
+        languageCode == 'fr' ||
+        languageCode == 'zh') {
       showDialog<bool>(
         context: context,
         barrierDismissible: false,

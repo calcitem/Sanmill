@@ -81,7 +81,8 @@ class GameResultAlertDialog extends StatelessWidget {
     final bool shouldShowPerfectDatabaseHint =
         DB().ruleSettings.isLikelyNineMensMorris() &&
         !DB().generalSettings.usePerfectDatabase &&
-        (DB().generalSettings.moveTime == 0 || DB().generalSettings.moveTime > 10) &&
+        (DB().generalSettings.moveTime == 0 ||
+            DB().generalSettings.moveTime > 10) &&
         DB().generalSettings.skillLevel == Constants.highestSkillLevel &&
         _gameResult == GameResult.win &&
         gameMode == GameMode.humanVsAi;
@@ -90,9 +91,9 @@ class GameResultAlertDialog extends StatelessWidget {
       content.writeln();
       content.writeln();
       content.writeln(
-        S.of(context).perfectDatabaseChallengeHint(
-          S.of(context).usePerfectDatabase,
-        ),
+        S
+            .of(context)
+            .perfectDatabaseChallengeHint(S.of(context).usePerfectDatabase),
       );
     }
 
