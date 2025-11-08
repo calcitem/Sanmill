@@ -396,8 +396,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                 onTapUp: (TapUpDetails d) async {
                   // Cache localized strings at the start to avoid BuildContext usage across async gaps
                   final String strNotYourTurn = S.of(context).notYourTurn;
-                  final String strNoLanConnection =
-                      S.of(context).noLanConnection;
+                  final String strNoLanConnection = S
+                      .of(context)
+                      .noLanConnection;
                   final String strTimeout = S.of(context).timeout;
                   final String strNoBestMoveErr = S
                       .of(context)
@@ -522,6 +523,10 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       ).then((_) {
         // Reset flag when dialog is dismissed
         _isDialogShowing = false;
+
+        if (!mounted) {
+          return;
+        }
 
         // Check if we should show algorithm suggestion dialog
         final StatsSettings statsSettings = DB().statsSettings;

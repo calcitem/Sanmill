@@ -142,7 +142,8 @@ class PlayerStats {
       blackWins: blackWins ?? this.blackWins,
       blackLosses: blackLosses ?? this.blackLosses,
       blackDraws: blackDraws ?? this.blackDraws,
-      consecutiveLossesAtLevel1NonMcts: consecutiveLossesAtLevel1NonMcts ??
+      consecutiveLossesAtLevel1NonMcts:
+          consecutiveLossesAtLevel1NonMcts ??
           this.consecutiveLossesAtLevel1NonMcts,
     );
   }
@@ -180,8 +181,10 @@ class StatsSettings {
           ? PlayerStats.fromJson(json['humanStats'] as Map<String, dynamic>)
           : const PlayerStats(),
       aiDifficultyStatsMap: levelStatsMap,
-      shouldSuggestMctsSwitch: json['shouldSuggestMctsSwitch'] as bool? ?? false,
-      shouldSuggestMtdfSwitch: json['shouldSuggestMtdfSwitch'] as bool? ?? false,
+      shouldSuggestMctsSwitch:
+          json['shouldSuggestMctsSwitch'] as bool? ?? false,
+      shouldSuggestMtdfSwitch:
+          json['shouldSuggestMtdfSwitch'] as bool? ?? false,
     );
   }
 

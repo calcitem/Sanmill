@@ -7,10 +7,7 @@ part of '../game_page.dart';
 
 /// Dialog that suggests switching to a different algorithm based on performance
 class AlgorithmSuggestionDialog extends StatelessWidget {
-  const AlgorithmSuggestionDialog({
-    required this.suggestionType,
-    super.key,
-  });
+  const AlgorithmSuggestionDialog({required this.suggestionType, super.key});
 
   final AlgorithmSuggestionType suggestionType;
 
@@ -87,14 +84,12 @@ class AlgorithmSuggestionDialog extends StatelessWidget {
             // Reset the suggestion flag
             final StatsSettings statsSettings = DB().statsSettings;
             DB().statsSettings = statsSettings.copyWith(
-              shouldSuggestMctsSwitch: suggestionType ==
-                      AlgorithmSuggestionType.switchToMcts
-                  ? false
-                  : statsSettings.shouldSuggestMctsSwitch,
-              shouldSuggestMtdfSwitch: suggestionType ==
-                      AlgorithmSuggestionType.switchToMtdf
-                  ? false
-                  : statsSettings.shouldSuggestMtdfSwitch,
+              shouldSuggestMctsSwitch:
+                  suggestionType != AlgorithmSuggestionType.switchToMcts &&
+                  statsSettings.shouldSuggestMctsSwitch,
+              shouldSuggestMtdfSwitch:
+                  suggestionType != AlgorithmSuggestionType.switchToMtdf &&
+                  statsSettings.shouldSuggestMtdfSwitch,
             );
 
             // Close the dialog
@@ -120,14 +115,12 @@ class AlgorithmSuggestionDialog extends StatelessWidget {
             // Reset the suggestion flag
             final StatsSettings statsSettings = DB().statsSettings;
             DB().statsSettings = statsSettings.copyWith(
-              shouldSuggestMctsSwitch: suggestionType ==
-                      AlgorithmSuggestionType.switchToMcts
-                  ? false
-                  : statsSettings.shouldSuggestMctsSwitch,
-              shouldSuggestMtdfSwitch: suggestionType ==
-                      AlgorithmSuggestionType.switchToMtdf
-                  ? false
-                  : statsSettings.shouldSuggestMtdfSwitch,
+              shouldSuggestMctsSwitch:
+                  suggestionType != AlgorithmSuggestionType.switchToMcts &&
+                  statsSettings.shouldSuggestMctsSwitch,
+              shouldSuggestMtdfSwitch:
+                  suggestionType != AlgorithmSuggestionType.switchToMtdf &&
+                  statsSettings.shouldSuggestMtdfSwitch,
             );
 
             // Close the dialog

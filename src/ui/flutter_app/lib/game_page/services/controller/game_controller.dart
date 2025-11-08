@@ -1070,6 +1070,9 @@ class GameController {
     _isMoveNowInProgress = true;
     try {
       // Pass context to engineToGo immediately before the async call
+      if (!context.mounted) {
+        return;
+      }
       switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
         case EngineResponseOK():
         case EngineGameIsOver():

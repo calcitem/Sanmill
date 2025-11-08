@@ -5,8 +5,8 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
@@ -26,7 +26,6 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
-import '../../statistics/model/stats_settings.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -34,6 +33,7 @@ import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../../statistics/model/stats_settings.dart';
 import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
