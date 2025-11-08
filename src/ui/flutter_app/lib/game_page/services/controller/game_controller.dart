@@ -598,11 +598,11 @@ class GameController {
       if (gameInstance.doMove(move)) {
         logger.i("$_logTag [LAN] Move applied successfully");
         // Update turn based on local color
-        // In LAN vs LAN mode, after receiving opponent's move, we should be able to play
-        // So when position.sideToMove != localColor (opponent just played), it's our turn
+        // After opponent's move is processed, position.sideToMove switches to our color
+        // When position.sideToMove == localColor, it's our turn (not opponent's turn)
         final PieceColor localColor = getLocalColor();
         final bool wasOpponentTurn = isLanOpponentTurn;
-        isLanOpponentTurn = (position.sideToMove == localColor);
+        isLanOpponentTurn = (position.sideToMove != localColor);
         logger.i(
           "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
         );
@@ -658,11 +658,11 @@ class GameController {
       logger.i("$_logTag [LAN] Current position before send: ${position.fen}");
       networkService?.sendMove(moveNotation);
 
-      // After sending our move, it becomes opponent's turn
-      // In LAN vs LAN mode, when position.sideToMove == localColor (we just played), it's opponent's turn
+      // After sending our move, position.sideToMove switches to opponent's color
+      // When position.sideToMove != localColor, it's opponent's turn
       final PieceColor localColor = getLocalColor();
       final bool wasOpponentTurn = isLanOpponentTurn;
-      isLanOpponentTurn = (position.sideToMove == localColor);
+      isLanOpponentTurn = (position.sideToMove != localColor);
       logger.i("$_logTag [LAN] Move sent successfully");
       logger.i(
         "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
@@ -768,7 +768,9 @@ class GameController {
                 networkService?.sendMove("take back:$steps:accepted");
                 // Locally apply the 1-step rollback
                 HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
-                // Also mark the next turn, etc. as needed
+                // Update turn state after rollback
+                final PieceColor localColor = getLocalColor();
+                isLanOpponentTurn = (position.sideToMove != localColor);
               },
               child: const Text("Yes"),
             ),
