@@ -438,14 +438,23 @@ class GameController {
     bool hostPlaysWhite = true, // Explicitly enforce Host as White
     void Function(String, int)? onClientConnected,
   }) {
+    logger.i("$_logTag [LAN] startLanGame() called - isHost: $isHost, port: $port, hostPlaysWhite: $hostPlaysWhite");
+    if (hostAddress != null) {
+      logger.i("$_logTag [LAN] Target host address: $hostAddress");
+    }
+
     gameInstance.gameMode = GameMode.humanVsLAN;
     lanHostPlaysWhite = hostPlaysWhite;
+    logger.i("$_logTag [LAN] Game mode set to humanVsLAN");
 
     headerIconsNotifier.showIcons();
 
     if (networkService == null || !networkService!.isConnected) {
+      logger.i("$_logTag [LAN] Creating new NetworkService (existing was ${networkService == null ? 'null' : 'not connected'})");
       networkService?.dispose();
       networkService = NetworkService();
+    } else {
+      logger.i("$_logTag [LAN] Reusing existing connected NetworkService");
     }
 
     final BuildContext? currentContext =
@@ -457,6 +466,7 @@ class GameController {
 
     try {
       if (isHost) {
+        logger.i("$_logTag [LAN] Starting as HOST");
         position.sideToMove = PieceColor.white; // Host starts as White
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: false,
@@ -464,12 +474,13 @@ class GameController {
         final PieceColor localColor = getLocalColor();
         isLanOpponentTurn =
             (position.sideToMove != localColor); // Should be false for Host
+        logger.i("$_logTag [LAN] Host setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn");
 
         networkService!.startHost(
           port,
           onClientConnected: (String clientIp, int clientPort) {
             logger.i(
-              "$_logTag onClientConnected => IP:$clientIp, port:$clientPort",
+              "$_logTag [LAN] Client connected callback - IP: $clientIp, port: $clientPort",
             );
             headerTipNotifier.showTip(
               "Client connected at $clientIp:$clientPort",
@@ -477,34 +488,43 @@ class GameController {
             );
             // Ensure turn state is correct after connection
             isLanOpponentTurn = false; // Host moves first
+            logger.i("$_logTag [LAN] Set isLanOpponentTurn to false (host moves first)");
             headerIconsNotifier.showIcons(); // Update icons immediately
             onClientConnected?.call(clientIp, clientPort);
           },
         );
       } else if (hostAddress != null) {
+        logger.i("$_logTag [LAN] Starting as CLIENT connecting to $hostAddress:$port");
         position.sideToMove = PieceColor.white; // Game starts with White
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: true,
         );
         networkService!.connectToHost(hostAddress, port).then((_) {
+          logger.i("$_logTag [LAN] Client successfully connected to host");
           final PieceColor localColor = getLocalColor();
           isLanOpponentTurn = (position.sideToMove != localColor);
+          logger.i("$_logTag [LAN] Client setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn");
 
           headerTipNotifier.showTip(
             connectedWaitingForOpponentSMove,
             snackBar: false,
           );
           onClientConnected?.call(hostAddress, port);
+        }).catchError((error) {
+          logger.e("$_logTag [LAN] Client connection error: $error");
+          headerTipNotifier.showTip("Connection failed: $error");
         });
       } else {
-        logger.e("$_logTag Host address required when not hosting");
+        logger.e("$_logTag [LAN] Error: Host address required when not hosting");
         headerTipNotifier.showTip("Error: Host address required");
         return;
       }
 
       boardSemanticsNotifier.updateSemantics();
-    } catch (e) {
-      logger.e("$_logTag LAN game setup failed: $e");
+      logger.i("$_logTag [LAN] LAN game setup initiated successfully");
+    } catch (e, st) {
+      logger.e("$_logTag [LAN] LAN game setup failed: $e");
+      logger.d("$_logTag [LAN] Stack trace: $st");
       headerTipNotifier.showTip("Failed to start LAN game: $e");
       resetLanState(); // Reset on failure
     }
@@ -527,28 +547,38 @@ class GameController {
   /// Handles a move received from the LAN opponent
   void handleLanMove(String moveNotation) {
     if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.w("$_logTag Ignoring LAN move: wrong mode");
+      logger.w("$_logTag [LAN] Ignoring move - not in LAN mode (current: ${gameInstance.gameMode})");
       return;
     }
 
+    logger.i("$_logTag [LAN] handleLanMove() called with: $moveNotation");
+    logger.i("$_logTag [LAN] Current position: ${position.fen}");
+    logger.i("$_logTag [LAN] Current turn: ${position.sideToMove}, isLanOpponentTurn: $isLanOpponentTurn");
+
     try {
       if (moveNotation.startsWith("request:aiMovesFirst")) {
+        logger.i("$_logTag [LAN] Received aiMovesFirst request from client");
         // Host receives a request from Client and returns the aiMovesFirst value
         final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
         networkService?.sendMove("response:aiMovesFirst:$aiMovesFirst");
-        logger.i("$_logTag Sent aiMovesFirst: $aiMovesFirst to Client");
+        logger.i("$_logTag [LAN] Sent aiMovesFirst response: $aiMovesFirst to client");
         return;
       }
 
+      logger.i("$_logTag [LAN] Creating ExtMove from notation: $moveNotation");
       final ExtMove move = ExtMove(
         moveNotation,
         side: position.sideToMove.opponent,
       );
 
+      logger.i("$_logTag [LAN] Attempting to apply move: ${move.notation}");
       if (gameInstance.doMove(move)) {
+        logger.i("$_logTag [LAN] Move applied successfully");
         // Update turn based on local color
         final PieceColor localColor = getLocalColor();
+        final bool wasOpponentTurn = isLanOpponentTurn;
         isLanOpponentTurn = (position.sideToMove != localColor);
+        logger.i("$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn");
         boardSemanticsNotifier.updateSemantics();
 
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -559,43 +589,58 @@ class GameController {
             ? S.of(context).yourTurn
             : "Your turn";
         headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
-        logger.i("$_logTag Successfully processed LAN move: $moveNotation");
+        logger.i("$_logTag [LAN] Move processed successfully: $moveNotation");
+        logger.i("$_logTag [LAN] New position: ${position.fen}");
 
         gameRecorder.appendMoveIfDifferent(move);
         if (position.phase == Phase.gameOver) {
+          logger.i("$_logTag [LAN] Game is over after opponent's move");
           gameResultNotifier.showResult(force: true);
         }
       } else {
-        logger.e("$_logTag Invalid move received from LAN: $moveNotation");
+        logger.e("$_logTag [LAN] Invalid move received: $moveNotation");
+        logger.e("$_logTag [LAN] Position state: ${position.fen}");
+        logger.e("$_logTag [LAN] Expected side to move: ${position.sideToMove}");
         headerTipNotifier.showTip("Opponent sent an invalid move");
       }
-    } catch (e) {
-      logger.e("$_logTag Error processing LAN move: $e");
+    } catch (e, st) {
+      logger.e("$_logTag [LAN] Error processing LAN move '$moveNotation': $e");
+      logger.d("$_logTag [LAN] Stack trace: $st");
       headerTipNotifier.showTip("Error with opponent's move: $e");
     }
   }
 
   /// Sends a move to the LAN opponent
   void sendLanMove(String moveNotation) {
+    logger.i("$_logTag [LAN] sendLanMove() called with: $moveNotation");
+    logger.i("$_logTag [LAN] Game mode: ${gameInstance.gameMode}, isLanOpponentTurn: $isLanOpponentTurn");
+
     if (gameInstance.gameMode != GameMode.humanVsLAN || isLanOpponentTurn) {
-      logger.w("$_logTag Cannot send move: not your turn or wrong mode");
+      logger.w("$_logTag [LAN] Cannot send move - mode: ${gameInstance.gameMode}, isOpponentTurn: $isLanOpponentTurn");
       return;
     }
 
     try {
+      logger.i("$_logTag [LAN] Sending move to opponent: $moveNotation");
+      logger.i("$_logTag [LAN] Current position before send: ${position.fen}");
       networkService?.sendMove(moveNotation);
+
       // After sending, toggle turn based on local color
       final PieceColor localColor = getLocalColor();
+      final bool wasOpponentTurn = isLanOpponentTurn;
       isLanOpponentTurn = (position.sideToMove != localColor);
-      logger.i("$_logTag Sent move to LAN opponent: $moveNotation");
+      logger.i("$_logTag [LAN] Move sent successfully");
+      logger.i("$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn");
+
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
       final String ot = context != null
           ? S.of(context).opponentSTurn
           : "Opponent's turn";
       final String yt = context != null ? S.of(context).yourTurn : "Your turn";
       headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
-    } catch (e) {
-      logger.e("$_logTag Failed to send move: $e");
+    } catch (e, st) {
+      logger.e("$_logTag [LAN] Failed to send move '$moveNotation': $e");
+      logger.d("$_logTag [LAN] Stack trace: $st");
       headerTipNotifier.showTip("Failed to send move: $e");
     }
   }
