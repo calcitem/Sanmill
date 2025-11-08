@@ -518,6 +518,28 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       ).then((_) {
         // Reset flag when dialog is dismissed
         _isDialogShowing = false;
+
+        // Check if we should show algorithm suggestion dialog
+        final StatsSettings statsSettings = DB().statsSettings;
+
+        // Show MCTS suggestion dialog if needed
+        if (statsSettings.shouldSuggestMctsSwitch) {
+          showDialog(
+            context: context,
+            builder: (_) => const AlgorithmSuggestionDialog(
+              suggestionType: AlgorithmSuggestionType.switchToMcts,
+            ),
+          );
+        }
+        // Show MTD(f) suggestion dialog if needed
+        else if (statsSettings.shouldSuggestMtdfSwitch) {
+          showDialog(
+            context: context,
+            builder: (_) => const AlgorithmSuggestionDialog(
+              suggestionType: AlgorithmSuggestionType.switchToMtdf,
+            ),
+          );
+        }
       });
     }
   }

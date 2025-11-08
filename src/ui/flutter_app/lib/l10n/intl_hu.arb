@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Szeretné most beállítani a játék szabályait?",
     "@configureRulesPrompt": {},
     "configureRules": "Szabályok beállítása",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritmus javaslat",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Több játékot is elveszített egymás után az 1. szinten. Szeretne átváltani a könnyebb MCTS algoritmusra a nehézség csökkentése érdekében?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Gratulálunk a győzelemhez az MCTS 30. szinten! Szeretne átváltani az MTD(f) algoritmusra nagyobb kihívás érdekében?",
+    "@switchToMtdfSuggestion": {}
 }

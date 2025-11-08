@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Vai vēlaties tagad konfigurēt spēles noteikumus?",
     "@configureRulesPrompt": {},
     "configureRules": "Konfigurēt noteikumus",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritma ieteikums",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Jūs esat zaudējis vairākas spēles pēc kārtas 1. līmenī. Vai vēlaties pārslēgties uz vienkāršāku MCTS algoritmu, lai samazinātu grūtības?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Apsveicam ar uzvaru MCTS 30. līmenī! Vai vēlaties pārslēgties uz MTD(f) algoritmu lielākam izaicinājumam?",
+    "@switchToMtdfSuggestion": {}
 }

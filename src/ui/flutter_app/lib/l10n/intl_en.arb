@@ -2136,5 +2136,11 @@
     "configureRules": "Configure Rules",
     "@configureRules": {
         "description": "Button text for configuring rules"
-    }
+    },
+    "algorithmSuggestionTitle": "Algorithm Suggestion",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "You've lost several games in a row at Level 1. Would you like to switch to the easier MCTS algorithm to reduce difficulty?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Congratulations on winning at MCTS Level 30! Would you like to switch to the MTD(f) algorithm for a greater challenge?",
+    "@switchToMtdfSuggestion": {}
 }

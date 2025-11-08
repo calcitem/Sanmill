@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Ցանկանու՞մ եք հիմա կարգավորել խաղի կանոնները:",
     "@configureRulesPrompt": {},
     "configureRules": "Կարգավորել կանոնները",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Ալգորիթմի առաջարկ",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Դուք կորցրել եք մի քանի խաղեր անընդմեջ մակարդակ 1-ում։ Ցանկանո՞ւմ եք անցնել ավելի հեշտ MCTS ալգորիթմին՝ բարդությունը նվազեցնելու համար։",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Շնորհավորում ենք MCTS մակարդակ 30-ում հաղթելու համար։ Ցանկանո՞ւմ եք անցնել MTD(f) ալգորիթմին՝ ավելի մեծ մարտահրավերի համար։",
+    "@switchToMtdfSuggestion": {}
 }

@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Je, ungependa kusanidi sheria za mchezo sasa?",
     "@configureRulesPrompt": {},
     "configureRules": "Sanidi Sheria",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Mapendekezo ya Algorithm",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Umepoteza michezo kadhaa mfululizo kwenye Kiwango 1. Je, ungependa kubadilisha kwa algorithm ya MCTS iliyo rahisi zaidi ili kupunguza ugumu?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Hongera kwa kushinda katika Kiwango cha 30 cha MCTS! Je, ungependa kubadilisha kwa algorithm ya MTD(f) kwa changamoto kubwa zaidi?",
+    "@switchToMtdfSuggestion": {}
 }

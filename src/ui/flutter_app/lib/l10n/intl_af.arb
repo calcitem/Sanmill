@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Wil jy nou die spelreëls konfigureer?",
     "@configureRulesPrompt": {},
     "configureRules": "Konfigureer Reëls",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritme Voorstel",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Jy het verskeie wedstryde agtereenvolgens by Vlak 1 verloor. Wil jy na die makliker MCTS-algoritme oorskakel om die moeilikheidsgraad te verminder?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Baie geluk met die wen by MCTS Vlak 30! Wil jy na die MTD(f)-algoritme oorskakel vir 'n groter uitdaging?",
+    "@switchToMtdfSuggestion": {}
 }

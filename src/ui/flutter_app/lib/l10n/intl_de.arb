@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Möchten Sie jetzt die Spielregeln konfigurieren?",
     "@configureRulesPrompt": {},
     "configureRules": "Regeln konfigurieren",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algorithmusvorschlag",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Sie haben mehrere Spiele hintereinander auf Stufe 1 verloren. Möchten Sie zum einfacheren MCTS-Algorithmus wechseln, um die Schwierigkeit zu reduzieren?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Herzlichen Glückwunsch zum Gewinn auf MCTS-Stufe 30! Möchten Sie zum MTD(f)-Algorithmus wechseln, um eine größere Herausforderung zu meistern?",
+    "@switchToMtdfSuggestion": {}
 }

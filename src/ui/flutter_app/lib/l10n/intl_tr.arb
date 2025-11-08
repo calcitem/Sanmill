@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Şimdi oyun kurallarını yapılandırmak ister misiniz?",
     "@configureRulesPrompt": {},
     "configureRules": "Kuralları Yapılandır",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritma Önerisi",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Seviye 1'de art arda birkaç oyun kaybettiniz. Zorluğu azaltmak için daha kolay MCTS algoritmasına geçmek ister misiniz?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS Seviye 30'da kazandığınız için tebrikler! Daha büyük bir meydan okuma için MTD(f) algoritmasına geçmek ister misiniz?",
+    "@switchToMtdfSuggestion": {}
 }

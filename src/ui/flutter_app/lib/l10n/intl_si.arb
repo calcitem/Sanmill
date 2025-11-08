@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "ඔබට දැන් ක්‍රීඩා නීති වින්‍යාස කිරීමට අවශ්‍යද?",
     "@configureRulesPrompt": {},
     "configureRules": "නීති වින්‍යාස කරන්න",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "ඇල්ගොරිතම යෝජනාව",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "ඔබ මට්ටම 1 හි අඛණ්ඩව ක්‍රීඩා කිහිපයක් පරාජය වී ඇත. අපහසුතා අඩු කිරීමට පහසු MCTS ඇල්ගොරිතමයට මාරු වීමට ඔබ කැමතිද?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS මට්ටම 30 හි ජයග්‍රහණය සම්බන්ධයෙන් සුභ පැතුම්! වැඩි අභියෝගයක් සඳහා MTD(f) ඇල්ගොරිතමයට මාරු වීමට ඔබ කැමතිද?",
+    "@switchToMtdfSuggestion": {}
 }

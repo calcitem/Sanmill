@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Θέλετε να διαμορφώσετε τους κανόνες του παιχνιδιού τώρα;",
     "@configureRulesPrompt": {},
     "configureRules": "Διαμόρφωση κανόνων",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Πρόταση αλγορίθμου",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Έχετε χάσει αρκετά παιχνίδια στη σειρά στο Επίπεδο 1. Θέλετε να αλλάξετε στον ευκολότερο αλγόριθμο MCTS για να μειώσετε τη δυσκολία;",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Συγχαρητήρια για τη νίκη στο Επίπεδο 30 του MCTS! Θέλετε να αλλάξετε στον αλγόριθμο MTD(f) για μεγαλύτερη πρόκληση;",
+    "@switchToMtdfSuggestion": {}
 }

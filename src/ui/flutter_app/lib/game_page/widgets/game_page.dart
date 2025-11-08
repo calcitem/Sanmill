@@ -26,6 +26,7 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
+import '../../statistics/model/stats_settings.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -50,6 +51,7 @@ import 'toolbars/game_toolbar.dart';
 import 'vignette_overlay.dart';
 
 part 'board_semantics.dart';
+part 'dialogs/algorithm_suggestion_dialog.dart';
 part 'dialogs/game_result_alert_dialog.dart';
 part 'dialogs/info_dialog.dart';
 part 'dialogs/move_list_dialog.dart';

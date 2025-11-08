@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "ನೀವು ಈಗ ಆಟದ ನಿಯಮಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ಬಯಸುವಿರಾ?",
     "@configureRulesPrompt": {},
     "configureRules": "ನಿಯಮಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "ಅಲ್ಗಾರಿದಮ್ ಸಲಹೆ",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "ನೀವು ಹಂತ 1 ರಲ್ಲಿ ಸತತವಾಗಿ ಹಲವು ಆಟಗಳನ್ನು ಸೋತಿದ್ದೀರಿ. ತೊಂದರೆ ಕಡಿಮೆ ಮಾಡಲು ಸುಲಭವಾದ MCTS ಅಲ್ಗಾರಿದಮ್‌ಗೆ ಬದಲಾಯಿಸಲು ಬಯಸುವಿರಾ?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS ಹಂತ 30 ರಲ್ಲಿ ಗೆದ್ದಿದ್ದಕ್ಕಾಗಿ ಅಭಿನಂದನೆಗಳು! ಹೆಚ್ಚಿನ ಸವಾಲಿಗಾಗಿ MTD(f) ಅಲ್ಗಾರಿದಮ್‌ಗೆ ಬದಲಾಯಿಸಲು ಬಯಸುವಿರಾ?",
+    "@switchToMtdfSuggestion": {}
 }

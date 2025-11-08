@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Haluatko määrittää pelin säännöt nyt?",
     "@configureRulesPrompt": {},
     "configureRules": "Määritä säännöt",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritmiehdotus",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Olet hävinnyt useita pelejä peräkkäin tasolla 1. Haluatko vaihtaa helpompaan MCTS-algoritmiin vaikeustason pienentämiseksi?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Onnittelut voitosta MCTS-tasolla 30! Haluatko vaihtaa MTD(f)-algoritmiin suuremman haasteen saamiseksi?",
+    "@switchToMtdfSuggestion": {}
 }

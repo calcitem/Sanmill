@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Ali želite zdaj konfigurirati pravila igre?",
     "@configureRulesPrompt": {},
     "configureRules": "Konfiguriraj pravila",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Predlog algoritma",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Izgubili ste več iger zapored na ravni 1. Želite preklopiti na lažji algoritem MCTS za zmanjšanje težavnosti?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Čestitke za zmago na ravni 30 MCTS! Želite preklopiti na algoritem MTD(f) za večji izziv?",
+    "@switchToMtdfSuggestion": {}
 }

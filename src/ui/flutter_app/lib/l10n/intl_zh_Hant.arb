@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "您現在想要配置遊戲規則嗎？",
     "@configureRulesPrompt": {},
     "configureRules": "配置規則",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "演算法建議",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "您在 1 級已經連續輸了多局棋。要切換到更簡單的 MCTS 演算法以降低難度嗎？",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "恭喜您在 MCTS 30 級獲勝！要切換到 MTD(f) 演算法以迎接更大的挑戰嗎？",
+    "@switchToMtdfSuggestion": {}
 }

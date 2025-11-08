@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "మీరు ఇప్పుడు ఆట నియమాలను కాన్ఫిగర్ చేయాలనుకుంటున్నారా?",
     "@configureRulesPrompt": {},
     "configureRules": "నియమాలను కాన్ఫిగర్ చేయండి",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "అల్గోరిథం సూచన",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "మీరు లెవల్ 1 లో వరుసగా అనేక ఆటలను ఓడిపోయారు. కష్టాన్ని తగ్గించడానికి సులభమైన MCTS అల్గోరిథంకు మారాలనుకుంటున్నారా?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS లెవల్ 30 లో గెలిచినందుకు అభినందనలు! మరింత సవాలు కోసం MTD(f) అల్గోరిథంకు మారాలనుకుంటున్నారా?",
+    "@switchToMtdfSuggestion": {}
 }

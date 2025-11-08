@@ -322,6 +322,54 @@ class EloRatingService {
     int aiBlackLosses = aiDifficultyStats.blackLosses;
     int aiBlackDraws = aiDifficultyStats.blackDraws;
 
+    // Track consecutive losses at Level 1 with non-MCTS algorithm
+    // to suggest switching to easier MCTS algorithm
+    int newConsecutiveLossesAtLevel1NonMcts =
+        humanStats.consecutiveLossesAtLevel1NonMcts;
+
+    if (aiDifficulty == 1 &&
+        DB().generalSettings.searchAlgorithm != SearchAlgorithm.mcts) {
+      // At Level 1 with non-MCTS algorithm
+      if (outcome == HumanOutcome.opponentWin) {
+        // Player lost - increment consecutive losses counter
+        newConsecutiveLossesAtLevel1NonMcts++;
+        logger.i(
+          "$_logTag Level 1 consecutive losses (non-MCTS): $newConsecutiveLossesAtLevel1NonMcts",
+        );
+      } else {
+        // Player won or drew - reset counter
+        newConsecutiveLossesAtLevel1NonMcts = 0;
+      }
+    } else {
+      // Not Level 1 or using MCTS - reset counter
+      newConsecutiveLossesAtLevel1NonMcts = 0;
+    }
+
+    // Check if we should suggest switching to MCTS
+    // Suggest after 5 consecutive losses (so on the 6th, 7th, etc.)
+    bool shouldSuggestMcts = false;
+    if (aiDifficulty == 1 &&
+        DB().generalSettings.searchAlgorithm != SearchAlgorithm.mcts &&
+        outcome == HumanOutcome.opponentWin &&
+        newConsecutiveLossesAtLevel1NonMcts > 5) {
+      shouldSuggestMcts = true;
+      logger.i(
+        "$_logTag Suggesting switch to MCTS after $newConsecutiveLossesAtLevel1NonMcts consecutive losses",
+      );
+    }
+
+    // Check if we should suggest switching to MTD(f)
+    // Suggest when player wins at MCTS Level 30
+    bool shouldSuggestMtdf = false;
+    if (aiDifficulty == 30 &&
+        DB().generalSettings.searchAlgorithm == SearchAlgorithm.mcts &&
+        outcome == HumanOutcome.playerWin) {
+      shouldSuggestMtdf = true;
+      logger.i(
+        "$_logTag Suggesting switch to MTD(f) after winning at MCTS Level 30",
+      );
+    }
+
     // Update color-specific stats based on who played which color
     if (isAiWhite) {
       // AI played as white, human played as black
@@ -383,6 +431,7 @@ class EloRatingService {
       blackWins: humanBlackWins,
       blackLosses: humanBlackLosses,
       blackDraws: humanBlackDraws,
+      consecutiveLossesAtLevel1NonMcts: newConsecutiveLossesAtLevel1NonMcts,
     );
 
     // Update AI statistics (rating remains fixed)
@@ -411,9 +460,11 @@ class EloRatingService {
           blackDraws: aiBlackDraws,
         );
 
-    // Save updated ratings
+    // Save updated ratings and suggestion flags
     final StatsSettings newSettings = settings.copyWith(
       humanStats: newHumanStatsObject,
+      shouldSuggestMctsSwitch: shouldSuggestMcts,
+      shouldSuggestMtdfSwitch: shouldSuggestMtdf,
     );
 
     // Update AI stats in the settings

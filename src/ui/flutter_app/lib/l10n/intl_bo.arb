@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "ད་ལྟ་རྩེད་མོའི་ཁྲིམས་སྒྲིག་འགོད་བྱེད་དགོས་སམ།",
     "@configureRulesPrompt": {},
     "configureRules": "ཁྲིམས་སྒྲིག་འགོད",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "རྩིས་ལས་བསམ་འཆར།",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "ཁྱེད་ཀྱིས་རིམ་པ་ ༡ ནང་མུ་མཐུད་རྩེད་མོ་མང་པོ་ཕམ་ཟིན། དཀའ་ངལ་ཉུང་སྒྲིལ་བྱེད་པའི་ཆེད་དུ་སྟབས་བདེ་བའི་ MCTS རྩིས་ལས་ལ་བརྗེ་རྒྱུ་ཡིན་ནམ།",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS རིམ་པ་ ༣༠ ནང་རྒྱལ་བ་ཐོབ་པར་བཀྲ་ཤིས་བདེ་ལེགས། དཀའ་ངལ་ཆེ་བའི་ཆེད་དུ་ MTD(f) རྩིས་ལས་ལ་བརྗེ་རྒྱུ་ཡིན་ནམ།",
+    "@switchToMtdfSuggestion": {}
 }

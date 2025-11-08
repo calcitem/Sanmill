@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "O'yin qoidalarini hozir sozlamoqchimisiz?",
     "@configureRulesPrompt": {},
     "configureRules": "Qoidalarni sozlash",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritm taklifi",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Siz 1-darajada ketma-ket bir nechta o'yinni yutqazdingiz. Qiyinlikni kamaytirish uchun osonroq MCTS algoritmiga o'tishni xohlaysizmi?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS 30-darajada g'alaba qozonganingiz bilan tabriklаymiz! Katta qiyinchilik uchun MTD(f) algoritmiga o'tishni xohlaysizmi?",
+    "@switchToMtdfSuggestion": {}
 }

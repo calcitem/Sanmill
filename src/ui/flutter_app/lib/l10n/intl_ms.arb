@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Adakah anda ingin mengkonfigurasi peraturan permainan sekarang?",
     "@configureRulesPrompt": {},
     "configureRules": "Konfigurasi Peraturan",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Cadangan Algoritma",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Anda telah kalah beberapa permainan berturut-turut di Tahap 1. Adakah anda ingin beralih kepada algoritma MCTS yang lebih mudah untuk mengurangkan kesukaran?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Tahniah atas kemenangan di Tahap 30 MCTS! Adakah anda ingin beralih kepada algoritma MTD(f) untuk cabaran yang lebih besar?",
+    "@switchToMtdfSuggestion": {}
 }

@@ -40,6 +40,8 @@ class PlayerStats {
     this.blackWins = 0,
     this.blackLosses = 0,
     this.blackDraws = 0,
+    // Algorithm difficulty tracking
+    this.consecutiveLossesAtLevel1NonMcts = 0,
   });
 
   factory PlayerStats.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,8 @@ class PlayerStats {
       blackWins: json['blackWins'] as int? ?? 0,
       blackLosses: json['blackLosses'] as int? ?? 0,
       blackDraws: json['blackDraws'] as int? ?? 0,
+      consecutiveLossesAtLevel1NonMcts:
+          json['consecutiveLossesAtLevel1NonMcts'] as int? ?? 0,
     );
   }
 
@@ -80,6 +84,7 @@ class PlayerStats {
       'blackWins': blackWins,
       'blackLosses': blackLosses,
       'blackDraws': blackDraws,
+      'consecutiveLossesAtLevel1NonMcts': consecutiveLossesAtLevel1NonMcts,
     };
   }
 
@@ -100,6 +105,11 @@ class PlayerStats {
   final int blackLosses;
   final int blackDraws;
 
+  // Algorithm difficulty tracking
+  // Track consecutive losses at Level 1 with non-MCTS algorithm
+  // to suggest switching to easier MCTS algorithm
+  final int consecutiveLossesAtLevel1NonMcts;
+
   PlayerStats copyWith({
     int? rating,
     int? gamesPlayed,
@@ -115,6 +125,7 @@ class PlayerStats {
     int? blackWins,
     int? blackLosses,
     int? blackDraws,
+    int? consecutiveLossesAtLevel1NonMcts,
   }) {
     return PlayerStats(
       rating: rating ?? this.rating,
@@ -131,6 +142,8 @@ class PlayerStats {
       blackWins: blackWins ?? this.blackWins,
       blackLosses: blackLosses ?? this.blackLosses,
       blackDraws: blackDraws ?? this.blackDraws,
+      consecutiveLossesAtLevel1NonMcts: consecutiveLossesAtLevel1NonMcts ??
+          this.consecutiveLossesAtLevel1NonMcts,
     );
   }
 }
@@ -142,6 +155,8 @@ class StatsSettings {
     this.isStatsEnabled = true,
     this.humanStats = const PlayerStats(),
     Map<int, PlayerStats>? aiDifficultyStatsMap,
+    this.shouldSuggestMctsSwitch = false,
+    this.shouldSuggestMtdfSwitch = false,
   }) : aiDifficultyStatsMap =
            aiDifficultyStatsMap ?? const <int, PlayerStats>{};
 
@@ -165,6 +180,8 @@ class StatsSettings {
           ? PlayerStats.fromJson(json['humanStats'] as Map<String, dynamic>)
           : const PlayerStats(),
       aiDifficultyStatsMap: levelStatsMap,
+      shouldSuggestMctsSwitch: json['shouldSuggestMctsSwitch'] as bool? ?? false,
+      shouldSuggestMtdfSwitch: json['shouldSuggestMtdfSwitch'] as bool? ?? false,
     );
   }
 
@@ -178,6 +195,8 @@ class StatsSettings {
       'isStatsEnabled': isStatsEnabled,
       'humanStats': humanStats.toJson(),
       'aiDifficultyStatsMap': jsonMap,
+      'shouldSuggestMctsSwitch': shouldSuggestMctsSwitch,
+      'shouldSuggestMtdfSwitch': shouldSuggestMtdfSwitch,
     };
   }
 
@@ -189,6 +208,12 @@ class StatsSettings {
 
   /// Map from AI difficulty level (1-30) to its statistics.
   final Map<int, PlayerStats> aiDifficultyStatsMap;
+
+  /// Flag to suggest switching to MCTS algorithm after consecutive losses at Level 1
+  final bool shouldSuggestMctsSwitch;
+
+  /// Flag to suggest switching to MTD(f) algorithm after winning at MCTS Level 30
+  final bool shouldSuggestMtdfSwitch;
 
   /// Get statistics for a specific AI difficulty level.
   ///
@@ -213,11 +238,17 @@ class StatsSettings {
     bool? isStatsEnabled,
     PlayerStats? humanStats,
     Map<int, PlayerStats>? aiDifficultyStatsMap,
+    bool? shouldSuggestMctsSwitch,
+    bool? shouldSuggestMtdfSwitch,
   }) {
     return StatsSettings(
       isStatsEnabled: isStatsEnabled ?? this.isStatsEnabled,
       humanStats: humanStats ?? this.humanStats,
       aiDifficultyStatsMap: aiDifficultyStatsMap ?? this.aiDifficultyStatsMap,
+      shouldSuggestMctsSwitch:
+          shouldSuggestMctsSwitch ?? this.shouldSuggestMctsSwitch,
+      shouldSuggestMtdfSwitch:
+          shouldSuggestMtdfSwitch ?? this.shouldSuggestMtdfSwitch,
     );
   }
 }

@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "क्या आप अभी खेल के नियम कॉन्फ़िगर करना चाहेंगे?",
     "@configureRulesPrompt": {},
     "configureRules": "नियम कॉन्फ़िगर करें",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "एल्गोरिदम सुझाव",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "आप लेवल 1 पर लगातार कई गेम हार चुके हैं। क्या आप कठिनाई कम करने के लिए आसान MCTS एल्गोरिदम पर स्विच करना चाहेंगे?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS लेवल 30 पर जीतने पर बधाई! क्या आप बड़ी चुनौती के लिए MTD(f) एल्गोरिदम पर स्विच करना चाहेंगे?",
+    "@switchToMtdfSuggestion": {}
 }

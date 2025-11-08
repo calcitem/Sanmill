@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "ဂိမ်းစည်းမျဉ်းများကို ယခု စီစဉ်သတ်မှတ်လိုပါသလား?",
     "@configureRulesPrompt": {},
     "configureRules": "စည်းမျဉ်းများ စီစဉ်သတ်မှတ်ရန်",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "အယ်လဂိုရီသမ် အကြံပြုချက်",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "သင်သည် အဆင့် ၁ တွင် ဂိမ်းများစွာကို ဆက်တိုက်ရှုံးနေပါသည်။ အခက်အခဲလျှော့ချရန် ပိုလွယ်ကူသော MCTS အယ်လဂိုရီသမ်သို့ ပြောင်းလိုပါသလား?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "MCTS အဆင့် ၃၀ တွင် အနိုင်ရသည့်အတွက် ဂုဏ်ယူပါသည်! ပိုမိုစိန်ခေါ်မှုရှိရန် MTD(f) အယ်လဂိုရီသမ်သို့ ပြောင်းလိုပါသလား?",
+    "@switchToMtdfSuggestion": {}
 }

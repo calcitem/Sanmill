@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Ingabe ufuna ukulungiselela imithetho yomdlalo manje?",
     "@configureRulesPrompt": {},
     "configureRules": "Lungiselela Imithetho",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Isiphakamiso se-Algorithm",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Ulahlekelwe imidlalo eminingana ngokulandelana ku-Level 1. Ungathanda ukushintshela ku-algorithm ye-MCTS elula kakhulu ukuze unciphise ubunzima?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Siyakuhalalisela ngokuwina ku-MCTS Level 30! Ungathanda ukushintshela ku-algorithm ye-MTD(f) yinselelo enkulu?",
+    "@switchToMtdfSuggestion": {}
 }

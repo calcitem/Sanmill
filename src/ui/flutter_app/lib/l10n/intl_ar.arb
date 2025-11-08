@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "هل ترغب في تكوين قواعد اللعبة الآن؟",
     "@configureRulesPrompt": {},
     "configureRules": "تكوين القواعد",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "اقتراح الخوارزمية",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "لقد خسرت عدة ألعاب متتالية في المستوى 1. هل ترغب في التبديل إلى خوارزمية MCTS الأسهل لتقليل الصعوبة؟",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "تهانينا على الفوز في المستوى 30 من MCTS! هل ترغب في التبديل إلى خوارزمية MTD(f) لتحدٍ أكبر؟",
+    "@switchToMtdfSuggestion": {}
 }

@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Chcete teraz nakonfigurovať pravidlá hry?",
     "@configureRulesPrompt": {},
     "configureRules": "Konfigurovať pravidlá",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Návrh algoritmu",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Prehrali ste niekoľko hier za sebou na úrovni 1. Chcete prepnúť na jednoduchší algoritmus MCTS, aby ste znížili obtiažnosť?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Gratulujem k víťazstvu na úrovni 30 MCTS! Chcete prepnúť na algoritmus MTD(f) pre väčšiu výzvu?",
+    "@switchToMtdfSuggestion": {}
 }

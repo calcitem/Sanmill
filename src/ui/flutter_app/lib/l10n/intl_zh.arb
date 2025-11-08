@@ -2136,5 +2136,11 @@
     "configureRules": "配置规则",
     "@configureRules": {
         "description": "Button text for configuring rules"
-    }
+    },
+    "algorithmSuggestionTitle": "算法建议",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "您在 1 级已经连续输了多局棋。要切换到更简单的 MCTS 算法以降低难度吗？",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "恭喜您在 MCTS 30 级获胜！要切换到 MTD(f) 算法以迎接更大的挑战吗？",
+    "@switchToMtdfSuggestion": {}
 }

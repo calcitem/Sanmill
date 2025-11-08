@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Wilt u nu de spelregels configureren?",
     "@configureRulesPrompt": {},
     "configureRules": "Regels configureren",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Algoritme-advies",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Je hebt meerdere spellen achter elkaar verloren op niveau 1. Wil je overschakelen naar het eenvoudigere MCTS-algoritme om de moeilijkheidsgraad te verlagen?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Gefeliciteerd met de overwinning op MCTS-niveau 30! Wil je overschakelen naar het MTD(f)-algoritme voor een grotere uitdaging?",
+    "@switchToMtdfSuggestion": {}
 }

@@ -2132,5 +2132,11 @@
     "configureRulesPrompt": "Viltu stilla reglur leiksins núna?",
     "@configureRulesPrompt": {},
     "configureRules": "Stilla reglur",
-    "@configureRules": {}
+    "@configureRules": {},
+    "algorithmSuggestionTitle": "Reiknirit tillaga",
+    "@algorithmSuggestionTitle": {},
+    "switchToMctsSuggestion": "Þú hefur tapað nokkrum leikjum í röð á stigi 1. Viltu skipta yfir í auðveldara MCTS reikniritið til að minnka erfiðleikastigið?",
+    "@switchToMctsSuggestion": {},
+    "switchToMtdfSuggestion": "Til hamingju með sigurinn á MCTS stigi 30! Viltu skipta yfir í MTD(f) reikniritið fyrir meiri áskorun?",
+    "@switchToMtdfSuggestion": {}
 }
