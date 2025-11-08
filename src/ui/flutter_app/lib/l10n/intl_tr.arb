@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Şimdi oyun kurallarını yapılandırmak ister misiniz?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Kuralları Yapılandır",
+    "@configureRules": {}
 }

@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Je, ungependa kusanidi sheria za mchezo sasa?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Sanidi Sheria",
+    "@configureRules": {}
 }

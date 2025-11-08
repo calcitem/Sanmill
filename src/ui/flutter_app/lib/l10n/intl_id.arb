@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Apakah Anda ingin mengonfigurasi aturan permainan sekarang?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Konfigurasi Aturan",
+    "@configureRules": {}
 }

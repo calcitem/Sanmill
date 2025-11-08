@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "هل ترغب في تكوين قواعد اللعبة الآن؟",
+    "@configureRulesPrompt": {},
+    "configureRules": "تكوين القواعد",
+    "@configureRules": {}
 }

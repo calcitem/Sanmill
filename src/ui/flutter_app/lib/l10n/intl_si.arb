@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "ඔබට දැන් ක්‍රීඩා නීති වින්‍යාස කිරීමට අවශ්‍යද?",
+    "@configureRulesPrompt": {},
+    "configureRules": "නීති වින්‍යාස කරන්න",
+    "@configureRules": {}
 }

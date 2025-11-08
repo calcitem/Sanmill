@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "지금 게임 규칙을 구성하시겠습니까?",
+    "@configureRulesPrompt": {},
+    "configureRules": "규칙 구성",
+    "@configureRules": {}
 }

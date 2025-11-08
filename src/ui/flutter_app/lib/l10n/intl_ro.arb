@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Doriți să configurați regulile jocului acum?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Configurați reguli",
+    "@configureRules": {}
 }

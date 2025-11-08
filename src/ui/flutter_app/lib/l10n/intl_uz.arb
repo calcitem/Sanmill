@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "O'yin qoidalarini hozir sozlamoqchimisiz?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Qoidalarni sozlash",
+    "@configureRules": {}
 }

@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Ցանկանու՞մ եք հիմա կարգավորել խաղի կանոնները:",
+    "@configureRulesPrompt": {},
+    "configureRules": "Կարգավորել կանոնները",
+    "@configureRules": {}
 }

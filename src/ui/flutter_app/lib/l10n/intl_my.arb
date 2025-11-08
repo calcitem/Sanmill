@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "ဂိမ်းစည်းမျဉ်းများကို ယခု စီစဉ်သတ်မှတ်လိုပါသလား?",
+    "@configureRulesPrompt": {},
+    "configureRules": "စည်းမျဉ်းများ စီစဉ်သတ်မှတ်ရန်",
+    "@configureRules": {}
 }

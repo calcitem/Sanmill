@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Bạn có muốn cấu hình quy tắc trò chơi bây giờ không?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Cấu hình quy tắc",
+    "@configureRules": {}
 }

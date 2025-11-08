@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Vil du konfigurere spillets regler nu?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Konfigurer regler",
+    "@configureRules": {}
 }

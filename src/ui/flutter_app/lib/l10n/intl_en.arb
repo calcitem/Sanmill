@@ -2128,5 +2128,13 @@
                 "type": "String"
             }
         }
+    },
+    "configureRulesPrompt": "Would you like to configure the game rules now?",
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
+    "configureRules": "Configure Rules",
+    "@configureRules": {
+        "description": "Button text for configuring rules"
     }
 }

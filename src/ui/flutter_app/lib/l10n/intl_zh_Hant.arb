@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "您現在想要配置遊戲規則嗎？",
+    "@configureRulesPrompt": {},
+    "configureRules": "配置規則",
+    "@configureRules": {}
 }

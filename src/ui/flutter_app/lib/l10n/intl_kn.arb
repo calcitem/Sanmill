@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "ನೀವು ಈಗ ಆಟದ ನಿಯಮಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ಬಯಸುವಿರಾ?",
+    "@configureRulesPrompt": {},
+    "configureRules": "ನಿಯಮಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ",
+    "@configureRules": {}
 }

@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "کیا آپ ابھی کھیل کے قوانین کی تشکیل کرنا چاہیں گے؟",
+    "@configureRulesPrompt": {},
+    "configureRules": "قوانین کی تشکیل کریں",
+    "@configureRules": {}
 }

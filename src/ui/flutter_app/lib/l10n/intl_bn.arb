@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "আপনি কি এখন গেমের নিয়ম কনফিগার করতে চান?",
+    "@configureRulesPrompt": {},
+    "configureRules": "নিয়ম কনফিগার করুন",
+    "@configureRules": {}
 }

@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "Ingabe ufuna ukulungiselela imithetho yomdlalo manje?",
+    "@configureRulesPrompt": {},
+    "configureRules": "Lungiselela Imithetho",
+    "@configureRules": {}
 }

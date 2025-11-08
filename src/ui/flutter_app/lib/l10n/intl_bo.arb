@@ -2128,5 +2128,9 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "configureRulesPrompt": "ད་ལྟ་རྩེད་མོའི་ཁྲིམས་སྒྲིག་འགོད་བྱེད་དགོས་སམ།",
+    "@configureRulesPrompt": {},
+    "configureRules": "ཁྲིམས་སྒྲིག་འགོད",
+    "@configureRules": {}
 }
