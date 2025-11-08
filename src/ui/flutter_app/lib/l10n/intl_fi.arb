@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Lopeta asettaminen, kun vain kaksi tyhjää ruutua jää jäljelle",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Kun tämä on käytössä, asettamisvaihe päättyy ja siirtovaihe alkaa, kun laudalla on vain 2 tyhjää paikkaa jäljellä, riippumatta kädessä olevista nappuloista. Tämä sääntö koskee vain 12-nappulaisia pelejä.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Voit pyytää peruutusta vain välittömästi siirtosi jälkeen.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

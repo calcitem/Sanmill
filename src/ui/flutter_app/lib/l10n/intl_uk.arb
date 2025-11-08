@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Припинити розміщення, коли залишиться лише два порожніх квадрати",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Коли увімкнено, фаза розміщення закінчується і фаза ходу починається, коли на дошці залишається лише 2 вільних місця, незалежно від фігур у руці. Це правило застосовується лише до ігор з 12 фігурами.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Ви можете запитати скасування лише одразу після вашого ходу.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

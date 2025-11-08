@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "ሁለት ባዶ ካሬዎች ብቻ ሲቀሩ ማስቀመጥ ያቁሙ",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "ሲነቃ፣ ሰሌዳው 2 ባዶ ቦታዎች ብቻ ሲኖሩት የማስቀመጫ ደረጃ ያበቃል እና የመንቀሳቀስ ደረጃ ይጀምራል፣ በእጅ ያሉ ቁርጥራጮችን ሳይጠቅስ። ይህ ደንብ ለ12-ቁራጭ ጨዋታዎች ብቻ ይተገበራል።",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "የእርስዎን እንቅስቃሴ ካደረጉ በኋላ ብቻ መልሰው ማግኘት ይችላሉ።",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

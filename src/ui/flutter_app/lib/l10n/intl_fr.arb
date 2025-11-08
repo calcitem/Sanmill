@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Arrêter le placement lorsqu'il ne reste que deux cases vides",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Lorsqu'elle est activée, la phase de placement se termine et la phase de déplacement commence lorsque le plateau n'a plus que 2 espaces vides, quel que soit le nombre de pièces en main. Cette règle s'applique uniquement aux jeux à 12 pièces.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Vous ne pouvez demander un retour en arrière qu'immédiatement après votre coup.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

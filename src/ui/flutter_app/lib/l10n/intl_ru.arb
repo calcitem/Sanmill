@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Прекратить размещение, когда останется только два пустых квадрата",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "При включении фаза размещения заканчивается и фаза хода начинается, когда на доске остается только 2 пустых места, независимо от фишек в руке. Это правило применяется только к играм с 12 фишками.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Вы можете запросить отмену только сразу после вашего хода.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

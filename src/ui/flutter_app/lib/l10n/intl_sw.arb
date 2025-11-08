@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Acha kuweka wakati miraba miwili tupu tu inabaki",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Inapowashwa, awamu ya kuweka inaisha na awamu ya kusogeza inaanza wakati ubao una nafasi 2 tupu zilizobaki, bila kujali vipande mkononi. Sheria hii inatumika tu kwa michezo ya vipande 12.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Unaweza kuomba kurudi nyuma mara baada ya harakati yako.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

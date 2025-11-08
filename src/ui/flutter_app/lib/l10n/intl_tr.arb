@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Yalnızca iki boş kare kaldığında yerleştirmeyi durdur",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Etkinleştirildiğinde, tahtada yalnızca 2 boş alan kaldığında yerleştirme aşaması sona erer ve hareket aşamı başlar, eldeki taşlar ne olursa olsun. Bu kural yalnızca 12 taşlı oyunlar için geçerlidir.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Sadece hamlenizden hemen sonra geri alma talep edebilirsiniz.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

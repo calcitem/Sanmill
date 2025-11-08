@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Stopp plassering når bare to tomme ruter gjenstår",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Når aktivert, slutter plasseringsfasen og flyttefasen begynner når brettet bare har 2 tomme plasser igjen, uavhengig av brikker i hånden. Denne regelen gjelder bare for 12-brikkspill.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Du kan kun be om tilbaketrekking umiddelbart etter ditt trekk.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

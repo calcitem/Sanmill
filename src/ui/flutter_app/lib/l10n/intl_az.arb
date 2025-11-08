@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Yalnız iki boş kvadrat qaldıqda yerləşdirməyi dayandırın",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Aktivləşdirildikdə, lövhədə yalnız 2 boş yer qaldıqda, əldə olan fiqurlardan asılı olmayaraq yerləşdirmə mərhələsi bitir və hərəkət mərhələsi başlayır. Bu qayda yalnız 12 fiqurlu oyunlara şamil edilir.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Yalnız hərəkətinizdən dərhal sonra geri götürməni tələb edə bilərsiniz.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

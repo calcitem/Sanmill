@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Faqat ikkita bo'sh kvadrat qolganda joylashtirni to'xtating",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Yoqilganda, doskada faqat 2 bo'sh joy qolganda joylashtirish bosqichi tugaydi va harakat bosqichi boshlanadi, qo'ldagi figuralardan qat'i nazar. Bu qoida faqat 12 figurali o'yinlarga tegishli.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Siz faqat harakatingizdan keyin darhol qaytarishni so'rashingiz mumkin.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

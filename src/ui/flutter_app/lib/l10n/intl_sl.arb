@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Prenehajte s postavljanjem, ko ostaneta le dva prazna kvadrata",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Ko je omogočeno, se faza postavljanja konča in faza premikanja se začne, ko ima plošča samo še 2 prosti mesti, ne glede na figure v roki. To pravilo velja samo za igre z 12 figurami.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Vrnitev lahko zahtevate samo takoj po vaši potezi.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

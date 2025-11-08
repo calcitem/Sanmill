@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "හිස් වර්ග දෙකක් පමණක් ඉතිරි වූ විට තැබීම නවත්වන්න",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "සක්‍රීය කළ විට, පුවරුවේ හිස් ඉඩ 2ක් පමණක් ඉතිරිව ඇති විට තැබීමේ අදියර අවසන් වන අතර චලන අදියර ආරම්භ වේ, අතේ ඇති කැබලි නොතකා. මෙම රීතිය 12-කැබලි ක්‍රීඩා සඳහා පමණක් අදාළ වේ.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "ඔබගේ චලනයෙන් වහාම පසුව පමණක් ආපසු ගැනීමට ඉල්ලීමක් කළ හැක.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

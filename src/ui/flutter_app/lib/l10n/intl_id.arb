@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Hentikan penempatan ketika hanya tersisa dua kotak kosong",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Jika diaktifkan, fase penempatan berakhir dan fase pergerakan dimulai ketika papan hanya memiliki 2 ruang kosong tersisa, terlepas dari bidak di tangan. Aturan ini hanya berlaku untuk permainan 12 bidak.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Anda hanya dapat meminta pembatalan segera setelah langkah Anda.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

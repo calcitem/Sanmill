@@ -2116,5 +2116,7 @@
     "stopPlacingWhenTwoEmptySquares": "Atura la col·locació quan només quedin dos quadrats buits",
     "@stopPlacingWhenTwoEmptySquares": {},
     "stopPlacingWhenTwoEmptySquares_Detail": "Quan s'activa, la fase de col·locació finalitza i comença la fase de moviment quan el tauler té només 2 espais buits, independentment de les peces a la mà. Aquesta regla només s'aplica a jocs de 12 peces.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {}
+    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "canOnlyRequestTakeBackRightAfterYourMove": "Només pots sol·licitar un retrocés immediatament després del teu moviment.",
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }
