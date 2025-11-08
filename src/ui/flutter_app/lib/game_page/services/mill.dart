@@ -34,6 +34,7 @@ import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/config/constants.dart';
 import '../../shared/services/native_methods.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';

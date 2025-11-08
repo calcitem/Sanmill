@@ -116,6 +116,7 @@ class SanmillAppState extends State<SanmillApp> {
       }
 
       return MaterialApp(
+        navigatorKey: navigatorStateKey,
         key: GlobalKey<ScaffoldState>(),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: S.localizationsDelegates,

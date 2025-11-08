@@ -145,8 +145,8 @@ class GameController {
   /// Shows a confirmation dialog; if accepted, sends "restart:accepted" and resets game;
   /// otherwise, sends "restart:rejected".
   void handleRestartRequest() {
-    // Use a global context (e.g. rootScaffoldMessengerKey.currentContext) to show the dialog.
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    // Use a global navigator context to guarantee Navigator availability
+    final BuildContext? context = currentNavigatorKey.currentContext;
     if (context == null) {
       return;
     }
@@ -200,8 +200,8 @@ class GameController {
       return;
     }
 
-    // In LAN mode, confirm with the player first
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    // In LAN mode, confirm with the player first (Navigator must be present)
+    final BuildContext? context = currentNavigatorKey.currentContext;
     if (context == null) {
       return;
     }
@@ -438,7 +438,9 @@ class GameController {
     bool hostPlaysWhite = true, // Explicitly enforce Host as White
     void Function(String, int)? onClientConnected,
   }) {
-    logger.i("$_logTag [LAN] startLanGame() called - isHost: $isHost, port: $port, hostPlaysWhite: $hostPlaysWhite");
+    logger.i(
+      "$_logTag [LAN] startLanGame() called - isHost: $isHost, port: $port, hostPlaysWhite: $hostPlaysWhite",
+    );
     if (hostAddress != null) {
       logger.i("$_logTag [LAN] Target host address: $hostAddress");
     }
@@ -450,7 +452,9 @@ class GameController {
     headerIconsNotifier.showIcons();
 
     if (networkService == null || !networkService!.isConnected) {
-      logger.i("$_logTag [LAN] Creating new NetworkService (existing was ${networkService == null ? 'null' : 'not connected'})");
+      logger.i(
+        "$_logTag [LAN] Creating new NetworkService (existing was ${networkService == null ? 'null' : 'not connected'})",
+      );
       networkService?.dispose();
       networkService = NetworkService();
     } else {
@@ -474,7 +478,9 @@ class GameController {
         final PieceColor localColor = getLocalColor();
         isLanOpponentTurn =
             (position.sideToMove != localColor); // Should be false for Host
-        logger.i("$_logTag [LAN] Host setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn");
+        logger.i(
+          "$_logTag [LAN] Host setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn",
+        );
 
         networkService!.startHost(
           port,
@@ -488,34 +494,45 @@ class GameController {
             );
             // Ensure turn state is correct after connection
             isLanOpponentTurn = false; // Host moves first
-            logger.i("$_logTag [LAN] Set isLanOpponentTurn to false (host moves first)");
+            logger.i(
+              "$_logTag [LAN] Set isLanOpponentTurn to false (host moves first)",
+            );
             headerIconsNotifier.showIcons(); // Update icons immediately
             onClientConnected?.call(clientIp, clientPort);
           },
         );
       } else if (hostAddress != null) {
-        logger.i("$_logTag [LAN] Starting as CLIENT connecting to $hostAddress:$port");
+        logger.i(
+          "$_logTag [LAN] Starting as CLIENT connecting to $hostAddress:$port",
+        );
         position.sideToMove = PieceColor.white; // Game starts with White
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: true,
         );
-        networkService!.connectToHost(hostAddress, port).then((_) {
-          logger.i("$_logTag [LAN] Client successfully connected to host");
-          final PieceColor localColor = getLocalColor();
-          isLanOpponentTurn = (position.sideToMove != localColor);
-          logger.i("$_logTag [LAN] Client setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn");
+        networkService!
+            .connectToHost(hostAddress, port)
+            .then((_) {
+              logger.i("$_logTag [LAN] Client successfully connected to host");
+              final PieceColor localColor = getLocalColor();
+              isLanOpponentTurn = (position.sideToMove != localColor);
+              logger.i(
+                "$_logTag [LAN] Client setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn",
+              );
 
-          headerTipNotifier.showTip(
-            connectedWaitingForOpponentSMove,
-            snackBar: false,
-          );
-          onClientConnected?.call(hostAddress, port);
-        }).catchError((error) {
-          logger.e("$_logTag [LAN] Client connection error: $error");
-          headerTipNotifier.showTip("Connection failed: $error");
-        });
+              headerTipNotifier.showTip(
+                connectedWaitingForOpponentSMove,
+                snackBar: false,
+              );
+              onClientConnected?.call(hostAddress, port);
+            })
+            .catchError((error) {
+              logger.e("$_logTag [LAN] Client connection error: $error");
+              headerTipNotifier.showTip("Connection failed: $error");
+            });
       } else {
-        logger.e("$_logTag [LAN] Error: Host address required when not hosting");
+        logger.e(
+          "$_logTag [LAN] Error: Host address required when not hosting",
+        );
         headerTipNotifier.showTip("Error: Host address required");
         return;
       }
@@ -547,13 +564,17 @@ class GameController {
   /// Handles a move received from the LAN opponent
   void handleLanMove(String moveNotation) {
     if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.w("$_logTag [LAN] Ignoring move - not in LAN mode (current: ${gameInstance.gameMode})");
+      logger.w(
+        "$_logTag [LAN] Ignoring move - not in LAN mode (current: ${gameInstance.gameMode})",
+      );
       return;
     }
 
     logger.i("$_logTag [LAN] handleLanMove() called with: $moveNotation");
     logger.i("$_logTag [LAN] Current position: ${position.fen}");
-    logger.i("$_logTag [LAN] Current turn: ${position.sideToMove}, isLanOpponentTurn: $isLanOpponentTurn");
+    logger.i(
+      "$_logTag [LAN] Current turn: ${position.sideToMove}, isLanOpponentTurn: $isLanOpponentTurn",
+    );
 
     try {
       if (moveNotation.startsWith("request:aiMovesFirst")) {
@@ -561,7 +582,9 @@ class GameController {
         // Host receives a request from Client and returns the aiMovesFirst value
         final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
         networkService?.sendMove("response:aiMovesFirst:$aiMovesFirst");
-        logger.i("$_logTag [LAN] Sent aiMovesFirst response: $aiMovesFirst to client");
+        logger.i(
+          "$_logTag [LAN] Sent aiMovesFirst response: $aiMovesFirst to client",
+        );
         return;
       }
 
@@ -578,7 +601,9 @@ class GameController {
         final PieceColor localColor = getLocalColor();
         final bool wasOpponentTurn = isLanOpponentTurn;
         isLanOpponentTurn = (position.sideToMove != localColor);
-        logger.i("$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn");
+        logger.i(
+          "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
+        );
         boardSemanticsNotifier.updateSemantics();
 
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -600,7 +625,9 @@ class GameController {
       } else {
         logger.e("$_logTag [LAN] Invalid move received: $moveNotation");
         logger.e("$_logTag [LAN] Position state: ${position.fen}");
-        logger.e("$_logTag [LAN] Expected side to move: ${position.sideToMove}");
+        logger.e(
+          "$_logTag [LAN] Expected side to move: ${position.sideToMove}",
+        );
         headerTipNotifier.showTip("Opponent sent an invalid move");
       }
     } catch (e, st) {
@@ -613,10 +640,14 @@ class GameController {
   /// Sends a move to the LAN opponent
   void sendLanMove(String moveNotation) {
     logger.i("$_logTag [LAN] sendLanMove() called with: $moveNotation");
-    logger.i("$_logTag [LAN] Game mode: ${gameInstance.gameMode}, isLanOpponentTurn: $isLanOpponentTurn");
+    logger.i(
+      "$_logTag [LAN] Game mode: ${gameInstance.gameMode}, isLanOpponentTurn: $isLanOpponentTurn",
+    );
 
     if (gameInstance.gameMode != GameMode.humanVsLAN || isLanOpponentTurn) {
-      logger.w("$_logTag [LAN] Cannot send move - mode: ${gameInstance.gameMode}, isOpponentTurn: $isLanOpponentTurn");
+      logger.w(
+        "$_logTag [LAN] Cannot send move - mode: ${gameInstance.gameMode}, isOpponentTurn: $isLanOpponentTurn",
+      );
       return;
     }
 
@@ -630,7 +661,9 @@ class GameController {
       final bool wasOpponentTurn = isLanOpponentTurn;
       isLanOpponentTurn = (position.sideToMove != localColor);
       logger.i("$_logTag [LAN] Move sent successfully");
-      logger.i("$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn");
+      logger.i(
+        "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
+      );
 
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
       final String ot = context != null
@@ -709,7 +742,8 @@ class GameController {
       networkService?.sendMove("take back:$steps:rejected");
       return;
     }
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    // Use the global navigator key context to ensure a Navigator is present
+    final BuildContext? context = currentNavigatorKey.currentContext;
     if (context == null) {
       // If no context, auto-reject
       networkService?.sendMove("take back:$steps:rejected");
