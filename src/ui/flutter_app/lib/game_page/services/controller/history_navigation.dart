@@ -286,7 +286,8 @@ class HistoryNavigator {
     }
 
     // 3) Reset board, replay moves from root to current HEAD
-    GameController().reset();
+    // Preserve LAN connection during history replay if we're originally in LAN mode.
+    GameController().reset(preserveLan: backupMode == GameMode.humanVsLAN);
     posKeyHistory.clear();
 
     final GameRecorder tempRec = GameController().newGameRecorder!;

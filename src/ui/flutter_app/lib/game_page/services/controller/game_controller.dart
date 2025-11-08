@@ -325,8 +325,18 @@ class GameController {
     logger.i("$_logTag Local player resigned. Winner: $winnerColor");
   }
 
-  /// Modify the reset method so that in LAN restart mode the socket is preserved.
-  void reset({bool force = false, bool lanRestart = false}) {
+  /// Resets controller and game state.
+  ///
+  /// When [lanRestart] is true in LAN mode, the network socket is preserved.
+  /// When [preserveLan] is true, the LAN connection and opponent-turn flag are
+  /// kept intact regardless of the current game mode. This is mainly used by
+  /// history replay (e.g. LAN take-back) to avoid disconnects and host-role
+  /// mis-detection during temporary mode switches.
+  void reset({
+    bool force = false,
+    bool lanRestart = false,
+    bool preserveLan = false,
+  }) {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
@@ -349,25 +359,29 @@ class GameController {
     // Reset game timing tracking
     _resetGameTiming();
 
-    if (gameModeBak == GameMode.humanVsLAN) {
-      // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
-      // But if this is a LAN restart (both agreed), do NOT dispose socket.
-      if (force || !(networkService?.isConnected ?? false)) {
+    // Preserve LAN connection/flags when requested (e.g. during history replay).
+    if (!preserveLan) {
+      if (gameModeBak == GameMode.humanVsLAN) {
+        // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
+        // But if this is a LAN restart (both agreed), do NOT dispose socket.
+        if (force || !(networkService?.isConnected ?? false)) {
+          networkService?.dispose();
+          networkService = null;
+          isLanOpponentTurn = false;
+        } else if (!lanRestart) {
+          // For normal LAN reset, dispose the connection.
+          networkService?.dispose();
+          networkService = null;
+          isLanOpponentTurn = false;
+        }
+        // Otherwise (lanRestart == true) keep the socket open.
+      } else {
+        // Non-LAN reset: dispose any existing LAN connection.
         networkService?.dispose();
         networkService = null;
-        isLanOpponentTurn = false;
-      } else if (!lanRestart) {
-        // For normal LAN reset, dispose the connection.
-        networkService?.dispose();
-        networkService = null;
-        isLanOpponentTurn = false;
-      }
-      // Otherwise (lanRestart == true) keep the socket open.
-    } else {
-      networkService?.dispose();
-      networkService = null;
-      if (!force) {
-        isLanOpponentTurn = false;
+        if (!force) {
+          isLanOpponentTurn = false;
+        }
       }
     }
 
