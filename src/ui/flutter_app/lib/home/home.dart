@@ -610,8 +610,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Future<void> _showTutorialDialog() async {
-    // Skip tutorial dialog in debug mode
-    if (!kDebugMode && DB().generalSettings.showTutorial) {
+    // Show tutorial dialog if enabled in settings
+    if (DB().generalSettings.showTutorial) {
       await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const TutorialDialog(),
