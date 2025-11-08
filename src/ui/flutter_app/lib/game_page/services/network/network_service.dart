@@ -100,8 +100,10 @@ class NetworkService with WidgetsBindingObserver {
 
     logger.i("$_logTag App lifecycle changed to $state");
 
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
+    // Only consider 'paused' as background state.
+    // 'inactive' means app is still visible but not responding to user input
+    // (e.g., system dialogs, notification shade), so we should still show dialogs.
+    if (state == AppLifecycleState.paused) {
       _isInBackground = true;
       _backgroundStartTime = DateTime.now();
       logger.i("$_logTag App went to background");
