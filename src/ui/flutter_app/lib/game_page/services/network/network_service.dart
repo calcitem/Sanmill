@@ -1064,24 +1064,8 @@ class NetworkService with WidgetsBindingObserver {
   static void _performLanTakeBack(int steps) {
     try {
       HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
-      final localColor = GameController().getLocalColor();
-      GameController().isLanOpponentTurn =
-          GameController().position.sideToMove != localColor;
-      // Refresh UI to reflect the updated turn after take back
-      GameController().headerIconsNotifier.showIcons();
-      GameController().boardSemanticsNotifier.updateSemantics();
-      final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-      if (ctx != null) {
-        final String ot = S.of(ctx).opponentSTurn;
-        final String yt = S.of(ctx).yourTurn;
-        // Use actual turn state derived from sideToMove/localColor for accuracy
-        final bool isMyTurn =
-            GameController().position.sideToMove == localColor;
-        GameController().headerTipNotifier.showTip(
-          isMyTurn ? yt : ot,
-          snackBar: false,
-        );
-      }
+      // Refresh LAN turn state and tip from authoritative board state
+      GameController().refreshLanTurn(showTip: true, snackBar: false);
     } catch (e, st) {
       logger.e("$_logTag Error performing take back: $e");
       logger.d("$_logTag Stack trace: $st");

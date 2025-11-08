@@ -113,6 +113,39 @@ class GameController {
     logger.i("$_logTag initialized");
   }
 
+  /// Recompute LAN turn state from the authoritative board state and update UI.
+  ///
+  /// This method must be called right after any state change that may alter
+  /// `position.sideToMove` (local move, remote move, take-back, restart, etc).
+  /// It ensures `isLanOpponentTurn` and the header tip stay consistent on both
+  /// peers by using the single source of truth:
+  ///   isLanOpponentTurn = (position.sideToMove != localColor)
+  void refreshLanTurn({bool showTip = true, bool snackBar = false}) {
+    if (gameInstance.gameMode != GameMode.humanVsLAN) {
+      return;
+    }
+    final PieceColor localColor = getLocalColor();
+    final bool wasOpponentTurn = isLanOpponentTurn;
+    isLanOpponentTurn = (position.sideToMove != localColor);
+    logger.i(
+      "$_logTag [LAN] refreshLanTurn: local=$localColor, sideToMove=${position.sideToMove}, "
+      "isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
+    );
+    if (showTip) {
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String ot = context != null
+          ? S.of(context).opponentSTurn
+          : "Opponent's turn";
+      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
+      headerTipNotifier.showTip(
+        isLanOpponentTurn ? ot : yt,
+        snackBar: snackBar,
+      );
+    }
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+  }
+
   /// Determines the local player's color based on whether they are Host or Client
   PieceColor getLocalColor() {
     final bool amIHost = networkService?.isHost ?? false;
@@ -612,28 +645,8 @@ class GameController {
       logger.i("$_logTag [LAN] Attempting to apply move: ${move.notation}");
       if (gameInstance.doMove(move)) {
         logger.i("$_logTag [LAN] Move applied successfully");
-        // Update turn based on local color
-        // In LAN vs LAN mode, after receiving opponent's move, we should be able to play
-        // So when position.sideToMove != localColor (opponent just played), it's our turn
-        final PieceColor localColor = getLocalColor();
-        final bool wasOpponentTurn = isLanOpponentTurn;
-        // Opponent's turn means: sideToMove is NOT localColor
-        isLanOpponentTurn = (position.sideToMove != localColor);
-        logger.i(
-          "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
-        );
-        boardSemanticsNotifier.updateSemantics();
-
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        final String ot = context != null
-            ? S.of(context).opponentSTurn
-            : "Opponent's turn";
-        final String yt = context != null
-            ? S.of(context).yourTurn
-            : "Your turn";
-        // Derive tip directly from actual side-to-move to avoid stale flags
-        final bool isMyTurn = (position.sideToMove == localColor);
-        headerTipNotifier.showTip(isMyTurn ? yt : ot, snackBar: false);
+        // Refresh LAN turn state and tip from authoritative board state
+        refreshLanTurn(showTip: true, snackBar: false);
         logger.i("$_logTag [LAN] Move processed successfully: $moveNotation");
         logger.i("$_logTag [LAN] New position: ${position.fen}");
 
@@ -677,24 +690,8 @@ class GameController {
       networkService?.sendMove(moveNotation);
 
       // After sending our move, it becomes opponent's turn
-      // In LAN vs LAN mode, when position.sideToMove == localColor (we just played), it's opponent's turn
-      final PieceColor localColor = getLocalColor();
-      final bool wasOpponentTurn = isLanOpponentTurn;
-      // Opponent's turn means: sideToMove is NOT localColor
-      isLanOpponentTurn = (position.sideToMove != localColor);
-      logger.i("$_logTag [LAN] Move sent successfully");
-      logger.i(
-        "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
-      );
-
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String ot = context != null
-          ? S.of(context).opponentSTurn
-          : "Opponent's turn";
-      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-      // Derive tip directly from actual side-to-move to avoid stale flags
-      final bool isMyTurn = (position.sideToMove == localColor);
-      headerTipNotifier.showTip(isMyTurn ? yt : ot, snackBar: false);
+      // Refresh LAN turn state and tip from authoritative board state
+      refreshLanTurn(showTip: true, snackBar: false);
     } catch (e, st) {
       logger.e("$_logTag [LAN] Failed to send move '$moveNotation': $e");
       logger.d("$_logTag [LAN] Stack trace: $st");
@@ -790,22 +787,8 @@ class GameController {
                 networkService?.sendMove("take back:$steps:accepted");
                 // Locally apply the 1-step rollback
                 HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
-                // Update turn state after rollback: if sideToMove != localColor, it's opponent's turn
-                final PieceColor localColor = getLocalColor();
-                isLanOpponentTurn = (position.sideToMove != localColor);
-                // Refresh icons/semantics and tip to reflect new turn state
-                headerIconsNotifier.showIcons();
-                boardSemanticsNotifier.updateSemantics();
-                final BuildContext? ctx =
-                    rootScaffoldMessengerKey.currentContext;
-                if (ctx != null) {
-                  final String ot = S.of(ctx).opponentSTurn;
-                  final String yt = S.of(ctx).yourTurn;
-                  headerTipNotifier.showTip(
-                    isLanOpponentTurn ? ot : yt,
-                    snackBar: false,
-                  );
-                }
+                // Refresh LAN turn state and tip from authoritative board state
+                refreshLanTurn(showTip: true, snackBar: false);
               },
               child: const Text("Yes"),
             ),
