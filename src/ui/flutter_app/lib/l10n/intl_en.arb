@@ -2118,7 +2118,5 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "When enabled, the placing phase ends and moving phase begins when the board has only 2 empty spaces left, regardless of pieces in hand. This rule only applies to 12-piece games.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "You can only request a take back immediately after your move.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {
-        "description": "Shown when player attempts to request a take back not immediately after their move in LAN mode."
-    }
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }

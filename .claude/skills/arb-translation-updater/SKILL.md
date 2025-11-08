@@ -56,6 +56,7 @@ git diff intl_zh.arb
 - Look for newly added key-value pairs
 - Note both the key and its metadata (lines starting with `@`)
 - Each translation typically has 2 lines: `"key": "value"` and `"@key": {}`
+- **IMPORTANT**: All metadata objects must be empty `{}` - NO `description` field in any language file (including English and Chinese)
 
 **Priority:**
 1. If both `intl_en.arb` and `intl_zh.arb` have new entries → use both as translation reference
@@ -117,6 +118,7 @@ The `update_arb_files.sh` script reads from `new-items.txt` with this format:
 - Blank line between different locale sections
 - No trailing comma on last entry in each section
 - **Do NOT include intl_en.arb or intl_zh.arb** in new-items.txt (these are already updated)
+- **CRITICAL**: All `@key` metadata must be empty objects `{}` - NEVER include `description` or any other fields
 
 **Example new-items.txt:**
 
@@ -310,6 +312,35 @@ grep "^//" new-items.txt
 **Problem:** Not properly translated, just English copied
 
 **Solution:** Regenerate translations ensuring each language gets proper localization
+
+### Issue: Metadata contains description field
+
+**Problem:** ARB files have `"@key": {"description": "..."}` instead of `"@key": {}`
+
+**Solution:**
+```python
+# Fix all ARB files to have empty metadata objects
+import json
+
+for locale in ['en', 'zh', 'ja', 'fr', ...]:  # all locales
+    file_path = f'intl_{locale}.arb'
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # Remove description from all @ keys
+    for key in list(data.keys()):
+        if key.startswith('@'):
+            data[key] = {}
+
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+        f.write('\n')
+```
+
+**Important:**
+- ALL language files (including `intl_en.arb` and `intl_zh.arb`) must have empty metadata objects `{}`
+- NEVER add `description` or any other fields to metadata
+- This applies to both base language files and all translations
 
 ## Best Practices
 

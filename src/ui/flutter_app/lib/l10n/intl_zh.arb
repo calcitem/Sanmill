@@ -2118,7 +2118,5 @@
     "stopPlacingWhenTwoEmptySquares_Detail": "启用后，当棋盘只剩2个空位时，无论手中是否还有棋子，放子阶段都会结束并进入走子阶段。此规则仅适用于12子棋。",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "你只能在刚走完棋后立即请求悔棋。",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {
-        "description": "当玩家试图在局域网模式下不在刚走完棋后立即请求悔棋时显示。"
-    }
+    "@canOnlyRequestTakeBackRightAfterYourMove": {}
 }
