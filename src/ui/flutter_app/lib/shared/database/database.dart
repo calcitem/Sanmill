@@ -16,6 +16,7 @@ import '../../appearance_settings/models/color_settings.dart';
 import '../../appearance_settings/models/display_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
+import '../../puzzle/models/puzzle_models.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../statistics/model/stats_settings.dart';
 import '../config/constants.dart';
@@ -94,6 +95,15 @@ class Database {
   /// Key at which the [_statsSettingsBox] will be saved
   static const String _statsSettingsBoxName = "statsSettings";
 
+  /// [PuzzleSettings] Box reference
+  static late final Box<PuzzleSettings> _puzzleSettingsBox;
+
+  /// Key at which the [PuzzleSettings] will be saved in the [_puzzleSettingsBox]
+  static const String puzzleSettingsKey = "settings";
+
+  /// Key at which the [_puzzleSettingsBox] will be saved
+  static const String _puzzleSettingsBoxName = "puzzleSettings";
+
   /// Initializes the local database
   static Future<void> init() async {
     await Hive.initFlutter("Sanmill");
@@ -104,6 +114,7 @@ class Database {
     await _initColorSettings();
     await _initCustomThemes();
     await _initStatsSettings();
+    await _initPuzzleSettings();
 
     if (await _DatabaseMigration.migrate() == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
@@ -118,6 +129,7 @@ class Database {
     await _displaySettingsBox.delete(displaySettingsKey);
     await _customThemesBox.delete(customThemesKey);
     await _statsSettingsBox.delete(statsSettingsKey);
+    await _puzzleSettingsBox.delete(puzzleSettingsKey);
   }
 
   /// GeneralSettings
@@ -336,4 +348,30 @@ class Database {
   /// Gets the stored [StatsSettings] or returns a default value
   StatsSettings get statsSettings =>
       _statsSettingsBox.get(statsSettingsKey) ?? const StatsSettings();
+
+  /// PuzzleSettings
+
+  /// Initializes the [PuzzleSettings] reference
+  static Future<void> _initPuzzleSettings() async {
+    Hive.registerAdapter<PuzzleDifficulty>(PuzzleDifficultyAdapter());
+    Hive.registerAdapter<PuzzleCategory>(PuzzleCategoryAdapter());
+    Hive.registerAdapter<PuzzleInfo>(PuzzleInfoAdapter());
+    Hive.registerAdapter<PuzzleProgress>(PuzzleProgressAdapter());
+    Hive.registerAdapter<PuzzleSettings>(PuzzleSettingsAdapter());
+    _puzzleSettingsBox = await Hive.openBox<PuzzleSettings>(
+      _puzzleSettingsBoxName,
+    );
+  }
+
+  /// Listens to changes inside the PuzzleSettings Box
+  ValueListenable<Box<PuzzleSettings>> get listenPuzzleSettings =>
+      _puzzleSettingsBox.listenable(keys: <String>[puzzleSettingsKey]);
+
+  /// Saves the given [settings] to the PuzzleSettings Box
+  set puzzleSettings(PuzzleSettings settings) =>
+      _puzzleSettingsBox.put(puzzleSettingsKey, settings);
+
+  /// Gets the stored [PuzzleSettings] or returns a default value
+  PuzzleSettings get puzzleSettings =>
+      _puzzleSettingsBox.get(puzzleSettingsKey) ?? const PuzzleSettings();
 }

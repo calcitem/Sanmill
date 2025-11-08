@@ -29,6 +29,7 @@ import '../generated/intl/l10n.dart';
 import '../main.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
+import '../puzzle/pages/puzzle_list_page.dart';
 import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
@@ -51,6 +52,7 @@ enum _DrawerIndex {
   aiVsAi,
   humanVsLAN,
   setupPosition,
+  puzzle,
   statistics,
   settingsGroup,
   generalSettings,
@@ -82,6 +84,8 @@ extension _DrawerScreen on _DrawerIndex {
           GameMode.setupPosition,
           key: const Key("setup_position"),
         );
+      case _DrawerIndex.puzzle:
+        return const PuzzleListPage();
       case _DrawerIndex.statistics:
         return const StatisticsPage();
       case _DrawerIndex.generalSettings:
@@ -452,6 +456,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),
+      // Puzzle item
+      CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_puzzle'),
+        itemValue: _DrawerIndex.puzzle,
+        itemTitle: S.of(context).puzzles,
+        itemIcon: const Icon(FluentIcons.puzzle_piece_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: _changeIndex,
+      ),
       // Statistics item
       CustomDrawerItem<_DrawerIndex>(
         key: const Key('drawer_item_statistics'),

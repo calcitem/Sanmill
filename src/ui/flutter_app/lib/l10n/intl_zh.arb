@@ -2150,5 +2150,161 @@
     "switchToMctsSuggestion": "您在 1 级已经连续输了多局棋。要切换到更简单的 MCTS 算法以降低难度吗？",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "恭喜您在 MCTS 30 级获胜！要切换到 MTD(f) 算法以迎接更大的挑战吗？",
-    "@switchToMtdfSuggestion": {}
+    "@switchToMtdfSuggestion": {},
+    "puzzles": "谜题",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "谜题",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "暂无可用谜题",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "筛选",
+    "@filter": {
+        "description": "Filter"
+    },
+    "difficulty": "难度",
+    "@difficulty": {
+        "description": "Difficulty"
+    },
+    "category": "分类",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "清除筛选",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "close": "关闭",
+    "@close": {
+        "description": "Close"
+    },
+    "puzzleStatistics": "谜题统计",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "总谜题数",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "已完成",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "总星数",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "完成度",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "新手",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "简单",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "中等",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "困难",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "专家",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "大师",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "成三",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "吃子",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "获胜",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "防守",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "找最佳着法",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "残局",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "开局",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "综合",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "退出谜题？",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "您的进度将会丢失。确定吗？",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "exit": "退出",
+    "@exit": {
+        "description": "Exit"
+    },
+    "moves": "步数",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "最优",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "检查解答",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "放弃",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "谜题已解决！",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "已使用提示",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "再试一次",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "返回列表",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "解答",
+    "@solution": {
+        "description": "Puzzle solution"
+    }
 }
