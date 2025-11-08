@@ -598,9 +598,11 @@ class GameController {
       if (gameInstance.doMove(move)) {
         logger.i("$_logTag [LAN] Move applied successfully");
         // Update turn based on local color
+        // In LAN vs LAN mode, after receiving opponent's move, we should be able to play
+        // So when position.sideToMove != localColor (opponent just played), it's our turn
         final PieceColor localColor = getLocalColor();
         final bool wasOpponentTurn = isLanOpponentTurn;
-        isLanOpponentTurn = (position.sideToMove != localColor);
+        isLanOpponentTurn = (position.sideToMove == localColor);
         logger.i(
           "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
         );
@@ -656,10 +658,11 @@ class GameController {
       logger.i("$_logTag [LAN] Current position before send: ${position.fen}");
       networkService?.sendMove(moveNotation);
 
-      // After sending, toggle turn based on local color
+      // After sending our move, it becomes opponent's turn
+      // In LAN vs LAN mode, when position.sideToMove == localColor (we just played), it's opponent's turn
       final PieceColor localColor = getLocalColor();
       final bool wasOpponentTurn = isLanOpponentTurn;
-      isLanOpponentTurn = (position.sideToMove != localColor);
+      isLanOpponentTurn = (position.sideToMove == localColor);
       logger.i("$_logTag [LAN] Move sent successfully");
       logger.i(
         "$_logTag [LAN] Turn updated - local: $localColor, current: ${position.sideToMove}, isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
