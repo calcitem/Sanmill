@@ -136,7 +136,31 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     }
 
     final GameController controller = GameController();
-    _moveCountBeforeRecording = controller.gameRecorder.mainlineMoves.length;
+
+    // Load the captured position to the game board
+    // This ensures the board is at the correct starting position when user returns
+    final bool loaded = controller.position.setFen(_capturedPosition!);
+    if (!loaded) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to load position. Please recapture.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      logger.e("$_tag Failed to load captured position for recording");
+      return;
+    }
+
+    // Reset the game recorder to clear all previous moves
+    controller.gameRecorder.reset();
+    controller.gameRecorder.setupPosition = _capturedPosition!;
+
+    // Refresh UI elements
+    controller.headerIconsNotifier.showIcons();
+    controller.boardSemanticsNotifier.updateSemantics();
+
+    // Start recording from move 0
+    _moveCountBeforeRecording = 0;
 
     setState(() {
       _isRecordingSolution = true;
@@ -150,7 +174,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       ),
     );
 
-    logger.i("$_tag Started recording solution moves");
+    logger.i("$_tag Started recording solution moves from captured position");
   }
 
   /// Stop recording solution moves
@@ -383,7 +407,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             _buildWorkflowStep(
               '2',
               'Record Solution',
-              'Start recording, go back to board, play solution moves, return and stop',
+              'Click Start Recording (board resets to start position), go back, play moves, return and stop',
               _solutionMoves.isNotEmpty,
             ),
             _buildWorkflowStep(
@@ -633,11 +657,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     ),
                     _buildInstructionStep(
                       '2',
-                      'Click "Start Recording" button below',
+                      'Click "Start Recording" button (this resets the board to your captured position)',
                     ),
                     _buildInstructionStep(
                       '3',
-                      'Go back and play the solution moves on the game board',
+                      'Go back (press ← button) to the game board and play your solution moves',
                     ),
                     _buildInstructionStep(
                       '4',
@@ -679,7 +703,16 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '→ Go back (press ← button) and play solution moves on the board',
+                      '→ The board has been reset to your starting position',
+                      style: TextStyle(
+                        color: Colors.green[100],
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '→ Go back (press ← button) and play your solution moves',
                       style: TextStyle(
                         color: Colors.green[100],
                         fontSize: 13,
