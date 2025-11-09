@@ -162,7 +162,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             Icon(
               FluentIcons.puzzle_piece_24_regular,
               size: 64,
-              color: Colors.grey[600],
+              color: Colors.grey[400],
             ),
             const SizedBox(height: 16),
             Text(

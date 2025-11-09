@@ -229,7 +229,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   ],
                 ),
                 // Divider
-                Container(height: 60, width: 1, color: Colors.grey),
+                Container(height: 60, width: 1, color: Colors.grey[700]),
                 // Best streak
                 Column(
                   children: <Widget>[
@@ -287,7 +287,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                     ? FluentIcons.trophy_24_filled
                     : FluentIcons.emoji_sad_24_regular,
                 size: 80,
-                color: newRecord ? Colors.amber : Colors.grey,
+                color: newRecord ? Colors.amber : Colors.grey[400],
               ),
               const SizedBox(height: 24),
               Text(
