@@ -169,7 +169,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
                 key: const Key('game_page_drawer_icon_align'),
                 alignment: AlignmentDirectional.topStart,
                 child: SafeArea(
-                  child: CustomDrawerIcon.of(context)!.drawerIcon,
+                  child:
+                      CustomDrawerIcon.of(context)?.drawerIcon ?? const SizedBox.shrink(),
                 ),
               ),
               // Analysis button in the top-right corner
