@@ -24,6 +24,7 @@ class PuzzleInfo extends HiveObject {
     DateTime? createdDate,
     this.version = 1,
     this.rating,
+    this.ruleVariantId = 'standard_9mm', // Default to standard Nine Men's Morris
   }) : createdDate = createdDate ?? DateTime.now();
 
   /// Unique identifier for the puzzle
@@ -87,6 +88,12 @@ class PuzzleInfo extends HiveObject {
   @HiveField(14)
   final int? rating;
 
+  /// Rule variant ID this puzzle is designed for
+  /// Examples: 'standard_9mm', 'twelve_mens_morris', 'russian_mill', etc.
+  /// This ensures puzzles are only shown when the correct rule set is active.
+  @HiveField(15)
+  final String ruleVariantId;
+
   /// Creates a copy with updated fields
   PuzzleInfo copyWith({
     String? id,
@@ -104,6 +111,7 @@ class PuzzleInfo extends HiveObject {
     DateTime? createdDate,
     int? version,
     int? rating,
+    String? ruleVariantId,
   }) {
     return PuzzleInfo(
       id: id ?? this.id,
@@ -121,6 +129,7 @@ class PuzzleInfo extends HiveObject {
       createdDate: createdDate ?? this.createdDate,
       version: version ?? this.version,
       rating: rating ?? this.rating,
+      ruleVariantId: ruleVariantId ?? this.ruleVariantId,
     );
   }
 
@@ -142,6 +151,7 @@ class PuzzleInfo extends HiveObject {
       'createdDate': createdDate.toIso8601String(),
       'version': version,
       'rating': rating,
+      'ruleVariantId': ruleVariantId,
     };
   }
 
@@ -175,6 +185,7 @@ class PuzzleInfo extends HiveObject {
           : DateTime.now(),
       version: json['version'] as int? ?? 1,
       rating: json['rating'] as int?,
+      ruleVariantId: json['ruleVariantId'] as String? ?? 'standard_9mm',
     );
   }
 }

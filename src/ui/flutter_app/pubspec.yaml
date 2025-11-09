@@ -15,6 +15,7 @@ dependencies:
   confetti: 0.8.0
   crop_your_image: 2.0.0
   copy_with_extension: 10.0.1
+  crypto: 3.0.6
   cupertino_icons: 1.0.8
   device_info_plus: 12.1.0
   extended_sliver: 2.1.3
