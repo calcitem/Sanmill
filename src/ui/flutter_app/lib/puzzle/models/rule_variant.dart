@@ -10,6 +10,8 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import 'rule_schema_version.dart';
 
+part 'rule_variant.g.dart';
+
 /// Rule variant identifier for puzzles
 ///
 /// Each variant represents a unique rule configuration that affects gameplay.
