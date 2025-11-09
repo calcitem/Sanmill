@@ -7,18 +7,27 @@
 
 library puzzle_adapters;
 
+import 'dart:convert' as convert;
+
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import 'puzzle_models.dart';
 
 part 'puzzle_adapters.g.dart';
 
+/// Type ids reserved for puzzle-related Hive adapters.
+const int puzzleInfoTypeId = 30;
+const int puzzleProgressTypeId = 31;
+const int puzzleSettingsTypeId = 32;
+const int puzzleDifficultyTypeId = 33;
+const int puzzleCategoryTypeId = 34;
+
 // Enums need manual adapters
 
 /// Adapter for PuzzleDifficulty enum
 class PuzzleDifficultyAdapter extends TypeAdapter<PuzzleDifficulty> {
   @override
-  final int typeId = 33;
+  final int typeId = puzzleDifficultyTypeId;
 
   @override
   PuzzleDifficulty read(BinaryReader reader) {
@@ -34,7 +43,7 @@ class PuzzleDifficultyAdapter extends TypeAdapter<PuzzleDifficulty> {
 /// Adapter for PuzzleCategory enum
 class PuzzleCategoryAdapter extends TypeAdapter<PuzzleCategory> {
   @override
-  final int typeId = 34;
+  final int typeId = puzzleCategoryTypeId;
 
   @override
   PuzzleCategory read(BinaryReader reader) {
