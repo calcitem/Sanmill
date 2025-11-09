@@ -44,14 +44,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             _buildPerformanceCard(stats, s),
             const SizedBox(height: 16),
 
-            // Success rate by difficulty
-            _buildDifficultyStatsCard(s),
-            const SizedBox(height: 16),
-
-            // Success rate by category
-            _buildCategoryStatsCard(s),
-            const SizedBox(height: 16),
-
             // Recent activity
             _buildRecentActivityCard(s),
           ],
@@ -234,113 +226,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     );
   }
 
-  Widget _buildDifficultyStatsCard(S s) {
-    // TODO: Calculate actual stats from history
-    final List<MapEntry<PuzzleDifficulty, double>>
-    difficultyStats = <MapEntry<PuzzleDifficulty, double>>[
-      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.beginner, 85.0),
-      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.easy, 75.0),
-      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.medium, 60.0),
-      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.hard, 45.0),
-      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.expert, 30.0),
-      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.master, 15.0),
-    ];
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              s.puzzleStatsByDifficulty,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            ...difficultyStats.map((MapEntry<PuzzleDifficulty, double> entry) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: _buildProgressBar(
-                  entry.key.displayName(context),
-                  entry.value,
-                  _getDifficultyColor(entry.key),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCategoryStatsCard(S s) {
-    // TODO: Calculate actual stats from history
-    final List<MapEntry<PuzzleCategory, double>> categoryStats =
-        <MapEntry<PuzzleCategory, double>>[
-          const MapEntry<PuzzleCategory, double>(PuzzleCategory.formMill, 70.0),
-          const MapEntry<PuzzleCategory, double>(
-            PuzzleCategory.capturePieces,
-            65.0,
-          ),
-          const MapEntry<PuzzleCategory, double>(PuzzleCategory.winGame, 55.0),
-          const MapEntry<PuzzleCategory, double>(PuzzleCategory.defend, 50.0),
-        ];
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              s.puzzleStatsByCategory,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            ...categoryStats.map((MapEntry<PuzzleCategory, double> entry) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: _buildProgressBar(
-                  entry.key.displayName(context),
-                  entry.value,
-                  Colors.blue,
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProgressBar(String label, double percentage, Color color) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(label),
-            Text(
-              '${percentage.toStringAsFixed(0)}%',
-              style: TextStyle(fontWeight: FontWeight.bold, color: color),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        LinearProgressIndicator(
-          value: percentage / 100,
-          backgroundColor: Colors.grey[800],
-          valueColor: AlwaysStoppedAnimation<Color>(color),
-        ),
-      ],
-    );
-  }
-
   Widget _buildRecentActivityCard(S s) {
     final List<PuzzleAttemptResult> recentAttempts = _ratingService
         .getAttemptHistory(limit: 5);
@@ -449,23 +334,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
       return '${diff.inMinutes}m ago';
     } else {
       return 'Just now';
-    }
-  }
-
-  Color _getDifficultyColor(PuzzleDifficulty difficulty) {
-    switch (difficulty) {
-      case PuzzleDifficulty.beginner:
-        return Colors.green;
-      case PuzzleDifficulty.easy:
-        return Colors.lightGreen;
-      case PuzzleDifficulty.medium:
-        return Colors.orange;
-      case PuzzleDifficulty.hard:
-        return Colors.deepOrange;
-      case PuzzleDifficulty.expert:
-        return Colors.red;
-      case PuzzleDifficulty.master:
-        return Colors.purple;
     }
   }
 }
