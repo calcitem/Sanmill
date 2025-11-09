@@ -2306,5 +2306,232 @@
     "solution": "解答",
     "@solution": {
         "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "创建新谜题",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "编辑谜题",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "自定义",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "选择谜题",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "已选 {count} 个",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "全选",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "导出",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "导入",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "成功导出 {count} 个谜题",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "导出谜题失败",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "成功导入 {count} 个谜题",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "导入谜题失败",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "删除 {count} 个谜题？",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "已删除 {count} 个谜题",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "无法删除内置谜题",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "如何创建谜题",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. 设置棋盘局面\n2. 捕获当前局面\n3. 录制解答步骤\n4. 填写谜题详情\n5. 保存",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "设置局面",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "捕获局面",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "局面捕获成功",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "尚未捕获局面",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "请先捕获局面",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "录制解答",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "开始录制",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "停止录制",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "正在录制...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "开始录制解答步骤",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "已录制 {count} 步",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "解答：{count} 步",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "尚未录制解答",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "清除解答",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "谜题详情",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "标题",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "描述",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "类别",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "难度",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "提示",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "标签",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "用逗号分隔标签",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "作者",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "标题为必填项",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "描述为必填项",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "局面为必填项",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "解答为必填项",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "谜题创建成功",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "谜题更新成功",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "保存谜题失败",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "可选",
+    "@optional": {
+        "description": "Optional field indicator"
     }
 }

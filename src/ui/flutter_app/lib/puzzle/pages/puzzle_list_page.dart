@@ -5,13 +5,16 @@
 //
 // Page displaying the list of available puzzles
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
+import '../services/puzzle_export_service.dart';
 import '../services/puzzle_manager.dart';
 import '../widgets/puzzle_card.dart';
+import 'puzzle_creation_page.dart';
 import 'puzzle_page.dart';
 
 /// Page showing the list of puzzles
@@ -27,10 +30,33 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   PuzzleDifficulty? _selectedDifficulty;
   PuzzleCategory? _selectedCategory;
 
+  // Multi-select mode
+  bool _isMultiSelectMode = false;
+  final Set<String> _selectedPuzzleIds = <String>{};
+
   @override
   void initState() {
     super.initState();
     _puzzleManager.init();
+  }
+
+  void _toggleMultiSelectMode() {
+    setState(() {
+      _isMultiSelectMode = !_isMultiSelectMode;
+      if (!_isMultiSelectMode) {
+        _selectedPuzzleIds.clear();
+      }
+    });
+  }
+
+  void _togglePuzzleSelection(String puzzleId) {
+    setState(() {
+      if (_selectedPuzzleIds.contains(puzzleId)) {
+        _selectedPuzzleIds.remove(puzzleId);
+      } else {
+        _selectedPuzzleIds.add(puzzleId);
+      }
+    });
   }
 
   List<PuzzleInfo> get _filteredPuzzles {
@@ -57,20 +83,70 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.puzzles),
+        title: _isMultiSelectMode
+            ? Text(s.puzzleSelectedCount(_selectedPuzzleIds.length))
+            : Text(s.puzzles),
+        leading: _isMultiSelectMode
+            ? IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: _toggleMultiSelectMode,
+              )
+            : null,
         actions: <Widget>[
-          // Filter button
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: _showFilterDialog,
-          ),
-          // Stats button
-          IconButton(
-            icon: const Icon(Icons.bar_chart),
-            onPressed: _showStatsDialog,
-          ),
+          if (_isMultiSelectMode) ...<Widget>[
+            // Select all
+            IconButton(
+              icon: const Icon(FluentIcons.select_all_on_24_regular),
+              onPressed: _selectAllPuzzles,
+              tooltip: s.puzzleSelectAll,
+            ),
+            // Export selected
+            if (_selectedPuzzleIds.isNotEmpty)
+              IconButton(
+                icon: const Icon(FluentIcons.share_24_regular),
+                onPressed: _exportSelectedPuzzles,
+                tooltip: s.puzzleExport,
+              ),
+            // Delete selected (only custom puzzles)
+            if (_canDeleteSelected)
+              IconButton(
+                icon: const Icon(FluentIcons.delete_24_regular),
+                onPressed: _deleteSelectedPuzzles,
+                tooltip: s.delete,
+              ),
+          ] else ...<Widget>[
+            // Import button
+            IconButton(
+              icon: const Icon(FluentIcons.arrow_download_24_regular),
+              onPressed: _importPuzzles,
+              tooltip: s.puzzleImport,
+            ),
+            // Multi-select button
+            IconButton(
+              icon: const Icon(FluentIcons.multiselect_24_regular),
+              onPressed: _toggleMultiSelectMode,
+              tooltip: s.puzzleSelect,
+            ),
+            // Filter button
+            IconButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: _showFilterDialog,
+            ),
+            // Stats button
+            IconButton(
+              icon: const Icon(Icons.bar_chart),
+              onPressed: _showStatsDialog,
+            ),
+          ],
         ],
       ),
+      floatingActionButton: _isMultiSelectMode
+          ? null
+          : FloatingActionButton(
+              onPressed: _createNewPuzzle,
+              tooltip: s.puzzleCreateNew,
+              child: const Icon(FluentIcons.add_24_regular),
+            ),
       body: ValueListenableBuilder<PuzzleSettings>(
         valueListenable: _puzzleManager.settingsNotifier,
         builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
@@ -107,11 +183,25 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                     final PuzzleInfo puzzle = puzzles[index];
                     final PuzzleProgress? progress =
                         settings.getProgress(puzzle.id);
+                    final bool isSelected = _selectedPuzzleIds.contains(puzzle.id);
 
                     return PuzzleCard(
                       puzzle: puzzle,
                       progress: progress,
-                      onTap: () => _openPuzzle(puzzle),
+                      onTap: _isMultiSelectMode
+                          ? () => _togglePuzzleSelection(puzzle.id)
+                          : () => _openPuzzle(puzzle),
+                      onLongPress: _isMultiSelectMode
+                          ? null
+                          : () {
+                              _toggleMultiSelectMode();
+                              _togglePuzzleSelection(puzzle.id);
+                            },
+                      isSelected: _isMultiSelectMode ? isSelected : null,
+                      showCustomBadge: puzzle.isCustom,
+                      onEdit: puzzle.isCustom && !_isMultiSelectMode
+                          ? () => _editPuzzle(puzzle)
+                          : null,
                     );
                   },
                 ),
@@ -270,5 +360,177 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         builder: (BuildContext context) => PuzzlePage(puzzle: puzzle),
       ),
     );
+  }
+
+  /// Check if any selected puzzle can be deleted
+  bool get _canDeleteSelected {
+    return _selectedPuzzleIds.any((String id) {
+      final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(id);
+      return puzzle != null && puzzle.isCustom;
+    });
+  }
+
+  /// Select all visible puzzles
+  void _selectAllPuzzles() {
+    setState(() {
+      _selectedPuzzleIds.clear();
+      _selectedPuzzleIds.addAll(_filteredPuzzles.map((PuzzleInfo p) => p.id));
+    });
+  }
+
+  /// Export selected puzzles
+  Future<void> _exportSelectedPuzzles() async {
+    if (_selectedPuzzleIds.isEmpty) return;
+
+    final List<PuzzleInfo> puzzlesToExport = _selectedPuzzleIds
+        .map((String id) => _puzzleManager.getPuzzleById(id))
+        .whereType<PuzzleInfo>()
+        .toList();
+
+    if (puzzlesToExport.isEmpty) return;
+
+    final bool success = await _puzzleManager.exportAndSharePuzzles(
+      puzzlesToExport,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          success
+              ? S.of(context).puzzleExportSuccess(puzzlesToExport.length)
+              : S.of(context).puzzleExportFailed,
+        ),
+        backgroundColor: success ? Colors.green : Colors.red,
+      ),
+    );
+
+    if (success) {
+      setState(() {
+        _isMultiSelectMode = false;
+        _selectedPuzzleIds.clear();
+      });
+    }
+  }
+
+  /// Delete selected puzzles
+  Future<void> _deleteSelectedPuzzles() async {
+    if (_selectedPuzzleIds.isEmpty) return;
+
+    // Filter to only custom puzzles
+    final List<String> customPuzzleIds = _selectedPuzzleIds
+        .where((String id) {
+          final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(id);
+          return puzzle != null && puzzle.isCustom;
+        })
+        .toList();
+
+    if (customPuzzleIds.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzleCannotDeleteBuiltIn),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    // Confirm deletion
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).confirm),
+          content: Text(
+            S.of(context).puzzleDeleteConfirm(customPuzzleIds.length),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(S.of(context).delete),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true) return;
+
+    final int deletedCount = _puzzleManager.deletePuzzles(customPuzzleIds);
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).puzzleDeleted(deletedCount)),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    setState(() {
+      _isMultiSelectMode = false;
+      _selectedPuzzleIds.clear();
+    });
+  }
+
+  /// Import puzzles from file
+  Future<void> _importPuzzles() async {
+    final ImportResult result = await _puzzleManager.importPuzzles();
+
+    if (!mounted) return;
+
+    if (result.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            S.of(context).puzzleImportSuccess(result.puzzles.length),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            result.errorMessage ?? S.of(context).puzzleImportFailed,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  /// Create a new puzzle
+  Future<void> _createNewPuzzle() async {
+    final bool? created = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(
+        builder: (BuildContext context) => const PuzzleCreationPage(),
+      ),
+    );
+
+    if (created == true) {
+      setState(() {});
+    }
+  }
+
+  /// Edit an existing custom puzzle
+  Future<void> _editPuzzle(PuzzleInfo puzzle) async {
+    final bool? updated = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(
+        builder: (BuildContext context) => PuzzleCreationPage(
+          puzzleToEdit: puzzle,
+        ),
+      ),
+    );
+
+    if (updated == true) {
+      setState(() {});
+    }
   }
 }

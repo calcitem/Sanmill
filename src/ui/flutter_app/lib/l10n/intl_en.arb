@@ -2306,5 +2306,232 @@
     "solution": "Solution",
     "@solution": {
         "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Create New Puzzle",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Edit Puzzle",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Custom",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "Select Puzzles",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Selected",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Select All",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Export",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Import",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "Successfully exported {count} puzzle(s)",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "Failed to export puzzles",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "Successfully imported {count} puzzle(s)",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "Failed to import puzzles",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "Delete {count} puzzle(s)?",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "Deleted {count} puzzle(s)",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Setup Position",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "Capture Position",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "Position captured successfully",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "No position captured yet",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "Please capture a position first",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Record Solution",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Start Recording",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Stop Recording",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Recording...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Started recording solution moves",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "Recorded {count} move(s)",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "Solution: {count} move(s)",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Clear Solution",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "Puzzle Details",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Title",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Description",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Category",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Difficulty",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Hint",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tags",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separate tags with commas",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Author",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "Title is required",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Description is required",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Position is required",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Solution is required",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puzzle created successfully",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puzzle updated successfully",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Failed to save puzzle",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "optional",
+    "@optional": {
+        "description": "Optional field indicator"
     }
 }

@@ -11,6 +11,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/puzzle_models.dart';
 import 'built_in_puzzles.dart';
+import 'puzzle_export_service.dart';
 
 /// Singleton service for managing puzzles
 class PuzzleManager {
@@ -207,6 +208,141 @@ class PuzzleManager {
   /// Get built-in puzzles collection
   List<PuzzleInfo> _getBuiltInPuzzles() {
     return getBuiltInPuzzles();
+  }
+
+  /// Add a new custom puzzle
+  /// Returns true if successful, false if puzzle with same ID already exists
+  bool addCustomPuzzle(PuzzleInfo puzzle) {
+    // Check if puzzle with same ID already exists
+    if (getPuzzleById(puzzle.id) != null) {
+      logger.w("$_tag Puzzle with id ${puzzle.id} already exists");
+      return false;
+    }
+
+    logger.i("$_tag Adding custom puzzle: ${puzzle.title}");
+    final List<PuzzleInfo> updatedPuzzles = List<PuzzleInfo>.from(settingsNotifier.value.allPuzzles)
+      ..add(puzzle);
+
+    final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
+      allPuzzles: updatedPuzzles,
+    );
+    _saveSettings(newSettings);
+    return true;
+  }
+
+  /// Delete a puzzle (only custom puzzles can be deleted)
+  /// Returns true if successful, false if puzzle doesn't exist or is built-in
+  bool deletePuzzle(String puzzleId) {
+    final PuzzleInfo? puzzle = getPuzzleById(puzzleId);
+
+    if (puzzle == null) {
+      logger.w("$_tag Cannot delete: puzzle $puzzleId not found");
+      return false;
+    }
+
+    if (!puzzle.isCustom) {
+      logger.w("$_tag Cannot delete built-in puzzle: $puzzleId");
+      return false;
+    }
+
+    logger.i("$_tag Deleting custom puzzle: ${puzzle.title}");
+    final List<PuzzleInfo> updatedPuzzles = settingsNotifier.value.allPuzzles
+        .where((PuzzleInfo p) => p.id != puzzleId)
+        .toList();
+
+    final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
+      allPuzzles: updatedPuzzles,
+    );
+    _saveSettings(newSettings);
+    return true;
+  }
+
+  /// Delete multiple puzzles at once
+  /// Returns the number of successfully deleted puzzles
+  int deletePuzzles(List<String> puzzleIds) {
+    int deletedCount = 0;
+    for (final String id in puzzleIds) {
+      if (deletePuzzle(id)) {
+        deletedCount++;
+      }
+    }
+    return deletedCount;
+  }
+
+  /// Get all custom puzzles
+  List<PuzzleInfo> getCustomPuzzles() {
+    return settingsNotifier.value.allPuzzles
+        .where((PuzzleInfo p) => p.isCustom)
+        .toList();
+  }
+
+  /// Get all built-in puzzles
+  List<PuzzleInfo> getBuiltInPuzzlesFromSettings() {
+    return settingsNotifier.value.allPuzzles
+        .where((PuzzleInfo p) => !p.isCustom)
+        .toList();
+  }
+
+  /// Export puzzles to a file and share
+  /// Returns true if successful
+  Future<bool> exportAndSharePuzzles(List<PuzzleInfo> puzzles, {String? fileName}) async {
+    logger.i("$_tag Exporting ${puzzles.length} puzzles");
+    return await PuzzleExportService.sharePuzzles(puzzles, fileName: fileName);
+  }
+
+  /// Import puzzles from a file
+  /// Returns ImportResult with success status and imported puzzles
+  Future<ImportResult> importPuzzles() async {
+    logger.i("$_tag Starting puzzle import");
+    final ImportResult result = await PuzzleExportService.importPuzzles();
+
+    if (result.success && result.puzzles.isNotEmpty) {
+      // Add imported puzzles to the collection
+      int addedCount = 0;
+      int skippedCount = 0;
+
+      for (final PuzzleInfo puzzle in result.puzzles) {
+        // Ensure imported puzzles are marked as custom
+        final PuzzleInfo customPuzzle = puzzle.copyWith(isCustom: true);
+
+        if (addCustomPuzzle(customPuzzle)) {
+          addedCount++;
+        } else {
+          skippedCount++;
+        }
+      }
+
+      logger.i("$_tag Imported $addedCount puzzles, skipped $skippedCount duplicates");
+    }
+
+    return result;
+  }
+
+  /// Update an existing puzzle
+  /// Returns true if successful, false if puzzle doesn't exist or is built-in
+  bool updatePuzzle(PuzzleInfo updatedPuzzle) {
+    final PuzzleInfo? existingPuzzle = getPuzzleById(updatedPuzzle.id);
+
+    if (existingPuzzle == null) {
+      logger.w("$_tag Cannot update: puzzle ${updatedPuzzle.id} not found");
+      return false;
+    }
+
+    if (!existingPuzzle.isCustom) {
+      logger.w("$_tag Cannot update built-in puzzle: ${updatedPuzzle.id}");
+      return false;
+    }
+
+    logger.i("$_tag Updating custom puzzle: ${updatedPuzzle.title}");
+    final List<PuzzleInfo> updatedPuzzles = settingsNotifier.value.allPuzzles
+        .map((PuzzleInfo p) => p.id == updatedPuzzle.id ? updatedPuzzle : p)
+        .toList();
+
+    final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
+      allPuzzles: updatedPuzzles,
+    );
+    _saveSettings(newSettings);
+    return true;
   }
 
   /// Dispose resources
