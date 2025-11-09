@@ -8,6 +8,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
 import '../models/puzzle_models.dart';
 
@@ -59,18 +60,12 @@ class PuzzleCard extends StatelessWidget {
                     Checkbox(value: selected, onChanged: (_) => onTap?.call()),
                     const SizedBox(width: 8),
                   ],
-                  // Category icon
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: _getDifficultyColor().withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      puzzle.category.icon,
-                      color: _getDifficultyColor(),
-                      size: 28,
+                  // Mini board showing puzzle position
+                  SizedBox(
+                    width: 64,
+                    height: 64,
+                    child: MiniBoard(
+                      boardLayout: _extractBoardLayout(puzzle.initialPosition),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -161,6 +156,19 @@ class PuzzleCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Extract board layout from FEN string
+  /// FEN format: "boardLayout activeColor phase action counts..."
+  /// Example: "OO******/********/******** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1"
+  /// Returns just the board layout part: "OO******/********/********"
+  String _extractBoardLayout(String fen) {
+    final List<String> parts = fen.split(' ');
+    if (parts.isEmpty) {
+      // Return empty board if FEN is invalid
+      return '********/********/********';
+    }
+    return parts[0];
   }
 
   Widget _buildBadge(String text, Color color) {
