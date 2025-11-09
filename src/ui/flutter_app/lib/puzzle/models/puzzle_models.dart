@@ -26,3 +26,4 @@ part 'puzzle_difficulty.dart';
 part 'puzzle_info.dart';
 part 'puzzle_progress.dart';
 part 'puzzle_settings.dart';
+part 'puzzle_models.g.dart';
