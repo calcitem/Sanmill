@@ -133,26 +133,27 @@ The initial position describes the board state using a specialized notation.
 ### Standard Format
 
 ```
-POSITION SIDE PHASE MOVE_COUNT HAND_PIECES CAPTURED_PIECES MOVE_HISTORY
+RING1/RING2/RING3 SIDE PHASE ACTION WHITEONBOARD WHITEINHAND BLACKONBOARD BLACKINHAND ...
 ```
 
 ### Example
 
 ```
-***************OO*X* w p 5 9 0 []
+OO******/********/******** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1
 ```
 
 **Breakdown**:
-- `***************OO*X*`: Board position (24 squares)
-  - `*` = empty square
-  - `O` = white piece
-  - `X` = black piece
+- `OO******/********/********`: Board position (3 rings × 8 positions each = 24 squares)
+  - Each ring separated by `/`
+  - Each ring has exactly 8 positions arranged clockwise
+  - `*` = empty square, `O` = white piece, `@` = black piece
 - `w`: Side to move (`w` = white, `b` = black)
-- `p`: Game phase (`p` = placing, `m` = moving, `e` = endgame)
-- `5`: Move number
-- `9`: Pieces in hand (to be placed)
-- `0`: Pieces captured
-- `[]`: Move history (can be omitted for puzzles)
+- `p`: Game phase (`r` = ready, `p` = placing, `m` = moving, `o` = game over)
+- `p`: Action (`p` = place, `s` = select, `r` = remove)
+- `2 7 0 9`: Piece counts (white on board, white in hand, black on board, black in hand)
+- Additional fields for game state (remove counts, last mill positions, etc.)
+
+**Important**: Each ring must have exactly 8 characters representing the 8 positions going clockwise around that ring.
 
 See `MULTI_RULE_PUZZLES.md` for complete FEN specification.
 
