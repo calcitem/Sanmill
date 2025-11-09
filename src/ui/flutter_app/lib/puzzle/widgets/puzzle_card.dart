@@ -54,6 +54,7 @@ class PuzzleCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // Selection indicator (if in multi-select mode)
                   if (showSelection) ...<Widget>[
@@ -73,6 +74,7 @@ class PuzzleCard extends StatelessWidget {
                   // Puzzle info
                   Expanded(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         // Title
