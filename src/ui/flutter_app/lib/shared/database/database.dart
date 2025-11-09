@@ -353,11 +353,21 @@ class Database {
 
   /// Initializes the [PuzzleSettings] reference
   static Future<void> _initPuzzleSettings() async {
-    Hive.registerAdapter<PuzzleDifficulty>(PuzzleDifficultyAdapter());
-    Hive.registerAdapter<PuzzleCategory>(PuzzleCategoryAdapter());
-    Hive.registerAdapter<PuzzleInfo>(PuzzleInfoAdapter());
-    Hive.registerAdapter<PuzzleProgress>(PuzzleProgressAdapter());
-    Hive.registerAdapter<PuzzleSettings>(PuzzleSettingsAdapter());
+    if (!Hive.isAdapterRegistered(puzzleDifficultyTypeId)) {
+      Hive.registerAdapter<PuzzleDifficulty>(PuzzleDifficultyAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleCategoryTypeId)) {
+      Hive.registerAdapter<PuzzleCategory>(PuzzleCategoryAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleInfoTypeId)) {
+      Hive.registerAdapter<PuzzleInfo>(PuzzleInfoAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleProgressTypeId)) {
+      Hive.registerAdapter<PuzzleProgress>(PuzzleProgressAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleSettingsTypeId)) {
+      Hive.registerAdapter<PuzzleSettings>(PuzzleSettingsAdapter());
+    }
     _puzzleSettingsBox = await Hive.openBox<PuzzleSettings>(
       _puzzleSettingsBoxName,
     );

@@ -106,7 +106,7 @@ class PuzzleManager {
       moveCount: moveCount,
       optimalMoveCount: optimalMoveCount,
       difficulty: difficulty,
-      hintsUsed: totalHintsUsed > 0,
+      hintsUsed: hintsUsed,
     );
 
     final bool isNewBest = currentProgress == null ||
