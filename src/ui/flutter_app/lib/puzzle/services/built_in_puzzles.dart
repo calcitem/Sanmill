@@ -16,7 +16,8 @@ import '../models/puzzle_models.dart';
 ///   [MillsBitmask] [Rule50] [Ply]
 ///
 /// Where:
-/// - Ring: @ = Black, O = White, * = Empty, X = Marked
+/// - Ring: @ = Black, O = White, * = Empty, X = Marked (8 positions per ring)
+/// - Each ring has 8 positions arranged clockwise: top-left, top, top-right, right, bottom-right, bottom, bottom-left, left
 /// - Side: w = White, b = Black
 /// - Phase: r = Ready, p = Placing, m = Moving, o = GameOver
 /// - Action: p = Place, s = Select, r = Remove
@@ -31,7 +32,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.beginner,
       // White has two pieces in a row, needs one more to form a mill
       initialPosition:
-          'OO*****/*******/******* w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
+          'OO******/********/******** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['c1'], // Complete the mill
       ],
@@ -48,7 +49,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.beginner,
       // White needs to complete a vertical mill
       initialPosition:
-          'O******/*******/O****** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
+          'O*******/********/O******* w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['a4'], // Complete vertical mill
       ],
@@ -66,7 +67,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.easy,
       // Position allowing double mill setup
       initialPosition:
-          'O*O**@@/O*O**@@/******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 1',
+          'O*O**@@*/O*O**@@*/******** w p p 4 5 4 5 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['b1', 'd2'], // Create two mill threats
       ],
@@ -82,7 +83,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.easy,
       // Position where forming a mill leads to capture
       initialPosition:
-          'OO***@@/*******/@****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1',
+          'OO***@@*/********/@******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['c1', 'xf1'], // Form mill then remove
       ],
@@ -100,7 +101,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.medium,
       // Moving phase with winning combination
       initialPosition:
-          'O@O****/O@O****/******* w m s 3 0 3 0 0 0 0 0 0 0 0 0 5',
+          'O@O*****/O@O*****/******** w m s 3 0 3 0 0 0 0 0 0 0 0 0 5',
       solutionMoves: <List<String>>[
         <String>['a1-d1', 'd1-d2'], // Winning moves
       ],
@@ -116,7 +117,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.medium,
       // Complex mid-game position
       initialPosition:
-          '*O@**O@/*O@**O@/******* w m s 4 0 4 0 0 0 0 0 0 0 0 0 6',
+          '*O@**O@*/*O@**O@*/******** w m s 4 0 4 0 0 0 0 0 0 0 0 0 6',
       solutionMoves: <List<String>>[
         <String>['b1-a1', 'b2-b1'], // Force winning position
       ],
@@ -134,7 +135,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.hard,
       // Defensive scenario
       initialPosition:
-          'O@O*@*@/O@O*@*@/******* w m s 4 0 5 0 0 0 0 0 0 0 0 0 7',
+          'O@O*@*@*/O@O*@*@*/******** w m s 4 0 5 0 0 0 0 0 0 0 0 0 7',
       solutionMoves: <List<String>>[
         <String>['a1-d1'], // Block opponent's threat
       ],
@@ -150,7 +151,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.hard,
       // Three pieces each - flying phase
       initialPosition:
-          'O**@***/O**@***/O**@*** w m s 3 0 3 0 0 0 0 0 0 0 0 0 10',
+          'O**@***/O**@***/O**@**** w m s 3 0 3 0 0 0 0 0 0 0 0 0 10',
       solutionMoves: <List<String>>[
         <String>['a1-c1', 'c1-c2'], // Flying to win
       ],
@@ -168,7 +169,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.expert,
       // Opening position with strategic potential
       initialPosition:
-          'O*O*@@*/O******/******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 3',
+          'O*O*@@**/O*******/******** w p p 3 6 3 6 0 0 0 0 0 0 0 0 3',
       solutionMoves: <List<String>>[
         <String>['b1', 'd1'], // Create multiple threats
       ],
@@ -184,7 +185,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.expert,
       // Critical position with one correct solution
       initialPosition:
-          'OO@@**@/*O@@**@/******* w m s 4 0 5 0 0 0 0 0 0 0 0 0 8',
+          'OO@@**@*/*O@@**@*/******** w m s 4 0 5 0 0 0 0 0 0 0 0 0 8',
       solutionMoves: <List<String>>[
         <String>['a1-a4', 'b2-b1'], // Precise sequence
       ],
@@ -202,7 +203,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.master,
       // Extremely complex position
       initialPosition:
-          'O@O@*@@/OO@@*@@/@****** w m s 5 0 6 0 0 0 0 0 0 0 0 0 12',
+          'O@O@*@@*/OO@@*@@*/@******* w m s 5 0 6 0 0 0 0 0 0 0 0 0 12',
       solutionMoves: <List<String>>[
         <String>['a1-a7'], // Complex winning move
       ],
@@ -218,7 +219,7 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       difficulty: PuzzleDifficulty.master,
       // Perfect play required
       initialPosition:
-          'O**@***/O**@***/***@*** w m s 2 0 3 0 0 0 0 0 0 0 0 0 15',
+          'O**@***/O**@***/***@**** w m s 2 0 3 0 0 0 0 0 0 0 0 0 15',
       solutionMoves: <List<String>>[
         <String>['a1-c1', 'a2-c2'], // Perfect technique
       ],
