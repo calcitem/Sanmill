@@ -33,6 +33,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   final PuzzleManager _puzzleManager = PuzzleManager();
   int _moveCount = 0;
   bool _hintsUsed = false;
+  int _lastRecordedMoveIndex = -1;
 
   @override
   void initState() {
@@ -52,8 +53,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // Load the initial position
     controller.position.setupPosition(widget.puzzle.initialPosition);
 
-    // Reset move count
+    // Reset state
     _moveCount = 0;
+    _lastRecordedMoveIndex = -1;
+    _validator.reset();
+    _hintService.reset();
   }
 
   @override
@@ -103,10 +107,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
             // Puzzle info panel
             _buildInfoPanel(s),
 
-            // Game board (using existing GamePage widget)
+            // Game board - properly constructed with GameMode
             Expanded(
-              child: GamePage(
-                onMove: _onPlayerMove,
+              child: _PuzzleGameBoard(
+                puzzle: widget.puzzle,
+                onMoveCompleted: _onPlayerMove,
               ),
             ),
 
@@ -209,15 +214,25 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
-  void _onPlayerMove(ExtMove move) {
-    setState(() {
-      _moveCount++;
-      // Add move to validator (you'll need to convert ExtMove to notation)
-      // _validator.addMove(moveNotation);
-    });
+  void _onPlayerMove() {
+    // Get the latest move from the game recorder
+    final GameController controller = GameController();
+    final List<ExtMove> moves = controller.recorder.movesMainLine;
 
-    // Auto-check after each move
-    _checkSolution(autoCheck: true);
+    // Check if there are new moves
+    if (moves.length > _lastRecordedMoveIndex + 1) {
+      final ExtMove latestMove = moves[_lastRecordedMoveIndex + 1];
+      _lastRecordedMoveIndex++;
+
+      setState(() {
+        _moveCount++;
+        // Add move to validator using the move's string representation
+        _validator.addMove(latestMove.move);
+      });
+
+      // Auto-check after each move
+      _checkSolution(autoCheck: true);
+    }
   }
 
   void _checkSolution({bool autoCheck = false}) {
@@ -353,11 +368,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   void _resetPuzzle() {
     setState(() {
-      _validator.reset();
-      _hintService.reset();
+      _initializePuzzle();
       _moveCount = 0;
       _hintsUsed = false;
-      _initializePuzzle();
     });
   }
 
@@ -394,6 +407,58 @@ class _PuzzlePageState extends State<PuzzlePage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Wrapper widget for GamePage that monitors move completion
+class _PuzzleGameBoard extends StatefulWidget {
+  const _PuzzleGameBoard({
+    required this.puzzle,
+    required this.onMoveCompleted,
+  });
+
+  final PuzzleInfo puzzle;
+  final VoidCallback onMoveCompleted;
+
+  @override
+  State<_PuzzleGameBoard> createState() => _PuzzleGameBoardState();
+}
+
+class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
+  late final GameController _controller;
+  int _lastMoveCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = GameController();
+
+    // Listen to recorder changes to detect when moves are made
+    _controller.recorder.addListener(_onRecorderChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.recorder.removeListener(_onRecorderChanged);
+    super.dispose();
+  }
+
+  void _onRecorderChanged() {
+    final int currentMoveCount = _controller.recorder.movesMainLine.length;
+    if (currentMoveCount > _lastMoveCount) {
+      _lastMoveCount = currentMoveCount;
+      // Notify parent that a move was completed
+      widget.onMoveCompleted();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Use GamePage with puzzle mode
+    return GamePage(
+      GameMode.puzzle,
+      key: const Key("puzzle_game"),
     );
   }
 }
