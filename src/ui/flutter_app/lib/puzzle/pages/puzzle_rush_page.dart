@@ -11,6 +11,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import 'puzzle_page.dart';
@@ -60,7 +61,12 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   /// Build setup/intro screen
   Widget _buildSetupScreen(S s) {
     return Scaffold(
-      appBar: AppBar(title: Text(s.puzzleRush)),
+      appBar: AppBar(
+        title: Text(
+          s.puzzleRush,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -197,7 +203,10 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.puzzleRush),
+        title: Text(
+          s.puzzleRush,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,
@@ -260,7 +269,12 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     final bool outOfLives = _livesRemaining <= 0;
 
     return Scaffold(
-      appBar: AppBar(title: Text(s.puzzleRushResults)),
+      appBar: AppBar(
+        title: Text(
+          s.puzzleRushResults,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

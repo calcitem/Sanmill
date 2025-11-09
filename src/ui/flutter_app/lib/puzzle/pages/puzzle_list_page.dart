@@ -9,6 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_export_service.dart';
 import '../services/puzzle_manager.dart';
@@ -83,8 +84,14 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     return Scaffold(
       appBar: AppBar(
         title: _isMultiSelectMode
-            ? Text(s.puzzleSelectedCount(_selectedPuzzleIds.length))
-            : Text(s.puzzles),
+            ? Text(
+                s.puzzleSelectedCount(_selectedPuzzleIds.length),
+                style: AppTheme.appBarTheme.titleTextStyle,
+              )
+            : Text(
+                s.puzzles,
+                style: AppTheme.appBarTheme.titleTextStyle,
+              ),
         leading: _isMultiSelectMode
             ? IconButton(
                 icon: const Icon(Icons.close),

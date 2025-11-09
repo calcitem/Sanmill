@@ -269,6 +269,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       appBar: AppBar(
         title: Text(
           _isEditing ? S.of(context).puzzleEdit : S.of(context).puzzleCreateNew,
+          style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
           IconButton(
