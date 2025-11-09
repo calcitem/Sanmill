@@ -421,7 +421,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             _buildWorkflowStep(
               '1',
               'Setup Position',
-              'Go to game board, set up starting position, return and capture',
+              'Open board (setup or play moves), create starting position, return and capture',
               _capturedPosition != null,
             ),
             _buildWorkflowStep(
@@ -562,7 +562,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Go back and set up the puzzle starting position on the game board, then return here to capture it',
+                        'Open the board (setup mode to place pieces, or play mode to make moves), create the puzzle starting position, then return here to capture it',
                         style: TextStyle(fontSize: 13, color: Colors.blue[100]),
                       ),
                     ),
@@ -617,12 +617,21 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 ],
               ),
             const SizedBox(height: 12),
+            // Button to open board in setup mode (manually place pieces)
             OutlinedButton.icon(
               onPressed: () => _openGameBoard(GameMode.setupPosition),
               icon: const Icon(FluentIcons.window_new_24_regular),
               label: Text(S.of(context).puzzleOpenBoardSetup),
             ),
             const SizedBox(height: 8),
+            // Button to open board in play mode (make moves to reach position)
+            OutlinedButton.icon(
+              onPressed: () => _openGameBoard(GameMode.humanVsHuman),
+              icon: const Icon(FluentIcons.play_24_regular),
+              label: Text(S.of(context).puzzleOpenBoardPlay),
+            ),
+            const SizedBox(height: 8),
+            // Button to capture current board position
             ElevatedButton.icon(
               onPressed: _capturePosition,
               icon: const Icon(FluentIcons.camera_24_regular),
