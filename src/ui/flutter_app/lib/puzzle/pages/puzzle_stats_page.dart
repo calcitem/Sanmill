@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/themes/app_theme.dart';
-import '../models/puzzle_models.dart';
 import '../services/puzzle_rating_service.dart';
 
 /// Advanced statistics page for puzzles
@@ -314,9 +313,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
         ),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[400],
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
           textAlign: TextAlign.center,
         ),
       ],

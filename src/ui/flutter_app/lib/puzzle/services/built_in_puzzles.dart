@@ -240,7 +240,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Find best responses to center opening',
       category: PuzzleCategory.opening,
       difficulty: PuzzleDifficulty.beginner,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 74
       initialPosition:
           '********/****O***/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1',
@@ -254,7 +253,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
         <String>['f2'],
       ],
       optimalMoveCount: 1,
-      hint: 'Multiple strong responses - control center or symmetric positions.',
+      hint:
+          'Multiple strong responses - control center or symmetric positions.',
       tags: <String>['opening', 'brilliant-mill', 'opening-book'],
     ),
     PuzzleInfo(
@@ -263,7 +263,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Respond to middle ring opening',
       category: PuzzleCategory.opening,
       difficulty: PuzzleDifficulty.beginner,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 97
       initialPosition:
           '********/O*******/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1',
@@ -286,7 +285,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Best responses to flank opening',
       category: PuzzleCategory.opening,
       difficulty: PuzzleDifficulty.beginner,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 120
       initialPosition:
           '********/******O*/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1',
@@ -309,7 +307,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Best tactical moves after initial exchange',
       category: PuzzleCategory.findBestMove,
       difficulty: PuzzleDifficulty.easy,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 246
       initialPosition:
           '********/@***O***/******** w p p 1 8 1 8 0 0 0 0 0 0 0 0 2',
@@ -331,7 +328,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Find the only winning move',
       category: PuzzleCategory.findBestMove,
       difficulty: PuzzleDifficulty.expert,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 11890
       initialPosition:
           '******O@/OOO@@O@O/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6',
@@ -348,7 +344,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Find the precise tactical move',
       category: PuzzleCategory.findBestMove,
       difficulty: PuzzleDifficulty.expert,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 11920
       initialPosition:
           '*****@O*/@@OOOO@O/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6',
@@ -365,7 +360,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       description: 'Dominate the center to win',
       category: PuzzleCategory.findBestMove,
       difficulty: PuzzleDifficulty.expert,
-      ruleVariantId: 'standard_9mm',
       // From opening_book.dart line 11950
       initialPosition:
           '*@O*****/OO@O@@OO/******** b p p 6 3 4 4 0 0 0 0 0 0 0 0 6',
@@ -381,7 +375,6 @@ List<PuzzleInfo> getBuiltInPuzzles() {
     // Opening Book Positions - Twelve Men's Morris (elFilja)
     // =========================================================================
     // Source: opening_book.dart - elFiljaFenToBestMoves
-
     PuzzleInfo(
       id: 'opening_12mm_001',
       title: 'elFilja: Opening Move',
@@ -403,7 +396,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
         <String>['f2'],
       ],
       optimalMoveCount: 1,
-      hint: 'Central positions offer maximum flexibility in Twelve Men\'s Morris.',
+      hint:
+          "Central positions offer maximum flexibility in Twelve Men's Morris.",
       tags: <String>['twelve-mens-morris', 'opening', 'opening-book'],
     ),
     PuzzleInfo(
@@ -430,7 +424,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
         <String>['b4'],
       ],
       optimalMoveCount: 1,
-      hint: 'Multiple strong moves - focus on completing rings and creating mills.',
+      hint:
+          'Multiple strong moves - focus on completing rings and creating mills.',
       tags: <String>['twelve-mens-morris', 'tactics', 'opening-book'],
     ),
     PuzzleInfo(
