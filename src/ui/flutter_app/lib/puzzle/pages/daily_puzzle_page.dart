@@ -9,6 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/daily_puzzle_service.dart';
 import '../services/puzzle_manager.dart';
@@ -34,7 +35,12 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
 
     if (puzzle == null) {
       return Scaffold(
-        appBar: AppBar(title: Text(s.dailyPuzzle)),
+        appBar: AppBar(
+          title: Text(
+            s.dailyPuzzle,
+            style: AppTheme.appBarTheme.titleTextStyle,
+          ),
+        ),
         body: Center(child: Text(s.noPuzzlesAvailable)),
       );
     }
@@ -45,7 +51,10 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.dailyPuzzle),
+        title: Text(
+          s.dailyPuzzle,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
         actions: <Widget>[
           // Streak info
           IconButton(

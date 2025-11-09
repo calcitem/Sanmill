@@ -9,6 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_rating_service.dart';
 
@@ -30,7 +31,12 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     final PuzzleRating rating = _ratingService.getUserRating();
 
     return Scaffold(
-      appBar: AppBar(title: Text(s.puzzleStatistics)),
+      appBar: AppBar(
+        title: Text(
+          s.puzzleStatistics,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

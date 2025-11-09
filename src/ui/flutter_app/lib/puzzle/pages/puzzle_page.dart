@@ -12,6 +12,7 @@ import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_hint_service.dart';
 import '../services/puzzle_manager.dart';
@@ -121,7 +122,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.puzzle.title),
+          title: Text(
+            widget.puzzle.title,
+            style: AppTheme.appBarTheme.titleTextStyle,
+          ),
           actions: <Widget>[
             // Hint button
             if (DB().puzzleSettings.showHints && _hintService.hasHints)

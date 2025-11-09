@@ -9,6 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import 'puzzle_page.dart';
@@ -50,7 +51,12 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   /// Build setup/intro screen
   Widget _buildSetupScreen(S s) {
     return Scaffold(
-      appBar: AppBar(title: Text(s.puzzleStreak)),
+      appBar: AppBar(
+        title: Text(
+          s.puzzleStreak,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -190,7 +196,10 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.puzzleStreak),
+        title: Text(
+          s.puzzleStreak,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,
@@ -275,7 +284,12 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     final bool newRecord = _currentStreak > _bestStreak;
 
     return Scaffold(
-      appBar: AppBar(title: Text(s.puzzleStreakResults)),
+      appBar: AppBar(
+        title: Text(
+          s.puzzleStreakResults,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -9,6 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 
 /// Puzzle Battle mode - compete against others
 class PuzzleBattlePage extends StatelessWidget {
@@ -19,7 +20,12 @@ class PuzzleBattlePage extends StatelessWidget {
     final S s = S.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(s.puzzleBattle)),
+      appBar: AppBar(
+        title: Text(
+          s.puzzleBattle,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),

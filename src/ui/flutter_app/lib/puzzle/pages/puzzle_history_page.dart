@@ -9,6 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import '../services/puzzle_rating_service.dart';
@@ -49,7 +50,10 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(s.puzzleHistory),
+        title: Text(
+          s.puzzleHistory,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
         actions: <Widget>[
           // Filter menu
           PopupMenuButton<String>(
