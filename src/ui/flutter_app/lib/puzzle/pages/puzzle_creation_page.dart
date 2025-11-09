@@ -73,7 +73,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     _selectedCategory = puzzle.category;
     _selectedDifficulty = puzzle.difficulty;
     _capturedPosition = puzzle.initialPosition;
-    // Note: Can't reload solution moves into the game board
+
+    // Load existing solution moves
+    // Take the first solution path if multiple exist
+    if (puzzle.solutionMoves.isNotEmpty) {
+      _solutionMoves.clear();
+      _solutionMoves.addAll(puzzle.solutionMoves.first);
+    }
   }
 
   /// Capture the current board position as the puzzle starting position
