@@ -27,8 +27,9 @@ class PuzzleListPage extends StatefulWidget {
 
 class _PuzzleListPageState extends State<PuzzleListPage> {
   final PuzzleManager _puzzleManager = PuzzleManager();
-  PuzzleDifficulty? _selectedDifficulty;
-  PuzzleCategory? _selectedCategory;
+  // Multi-select filters
+  final Set<PuzzleDifficulty> _selectedDifficulties = <PuzzleDifficulty>{};
+  final Set<PuzzleCategory> _selectedCategories = <PuzzleCategory>{};
 
   // Multi-select mode
   bool _isMultiSelectMode = false;
@@ -62,15 +63,17 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   List<PuzzleInfo> get _filteredPuzzles {
     List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles();
 
-    if (_selectedDifficulty != null) {
+    // Filter by difficulty (multiple selection)
+    if (_selectedDifficulties.isNotEmpty) {
       puzzles = puzzles
-          .where((PuzzleInfo p) => p.difficulty == _selectedDifficulty)
+          .where((PuzzleInfo p) => _selectedDifficulties.contains(p.difficulty))
           .toList();
     }
 
-    if (_selectedCategory != null) {
+    // Filter by category (multiple selection)
+    if (_selectedCategories.isNotEmpty) {
       puzzles = puzzles
-          .where((PuzzleInfo p) => p.category == _selectedCategory)
+          .where((PuzzleInfo p) => _selectedCategories.contains(p.category))
           .toList();
     }
 
@@ -182,7 +185,8 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
               return Column(
                 children: <Widget>[
                   // Filter chips
-                  if (_selectedDifficulty != null || _selectedCategory != null)
+                  if (_selectedDifficulties.isNotEmpty ||
+                      _selectedCategories.isNotEmpty)
                     _buildFilterChips(s),
 
                   // Puzzle list
@@ -232,17 +236,24 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Wrap(
         spacing: 8.0,
+        runSpacing: 4.0,
         children: <Widget>[
-          if (_selectedDifficulty != null)
-            Chip(
-              label: Text(_selectedDifficulty!.getDisplayName(S.of, context)),
-              onDeleted: () => setState(() => _selectedDifficulty = null),
+          // Difficulty filter chips
+          ..._selectedDifficulties.map(
+            (PuzzleDifficulty d) => Chip(
+              label: Text(d.getDisplayName(S.of, context)),
+              onDeleted: () => setState(() => _selectedDifficulties.remove(d)),
+              deleteIcon: const Icon(Icons.close, size: 18),
             ),
-          if (_selectedCategory != null)
-            Chip(
-              label: Text(_selectedCategory!.getDisplayName(S.of, context)),
-              onDeleted: () => setState(() => _selectedCategory = null),
+          ),
+          // Category filter chips
+          ..._selectedCategories.map(
+            (PuzzleCategory c) => Chip(
+              label: Text(c.getDisplayName(S.of, context)),
+              onDeleted: () => setState(() => _selectedCategories.remove(c)),
+              deleteIcon: const Icon(Icons.close, size: 18),
             ),
+          ),
         ],
       ),
     );
@@ -254,60 +265,77 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(s.filter),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  s.difficulty,
-                  style: Theme.of(context).textTheme.titleSmall,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) {
+            return AlertDialog(
+              title: Text(s.filter),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      s.difficulty,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    ...PuzzleDifficulty.values.map(
+                      (PuzzleDifficulty d) => CheckboxListTile(
+                        title: Text(d.getDisplayName(S.of, context)),
+                        value: _selectedDifficulties.contains(d),
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            if (checked == true) {
+                              _selectedDifficulties.add(d);
+                            } else {
+                              _selectedDifficulties.remove(d);
+                            }
+                          });
+                          setDialogState(() {}); // Update dialog state
+                        },
+                      ),
+                    ),
+                    const Divider(),
+                    Text(
+                      s.category,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    ...PuzzleCategory.values.map(
+                      (PuzzleCategory c) => CheckboxListTile(
+                        title: Text(c.getDisplayName(S.of, context)),
+                        value: _selectedCategories.contains(c),
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            if (checked == true) {
+                              _selectedCategories.add(c);
+                            } else {
+                              _selectedCategories.remove(c);
+                            }
+                          });
+                          setDialogState(() {}); // Update dialog state
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                ...PuzzleDifficulty.values.map(
-                  (PuzzleDifficulty d) => RadioListTile<PuzzleDifficulty>(
-                    title: Text(d.getDisplayName(S.of, context)),
-                    value: d,
-                    groupValue: _selectedDifficulty,
-                    onChanged: (PuzzleDifficulty? value) {
-                      setState(() => _selectedDifficulty = value);
-                      Navigator.of(context).pop();
-                    },
-                  ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedDifficulties.clear();
+                      _selectedCategories.clear();
+                    });
+                    setDialogState(() {}); // Update dialog state
+                  },
+                  child: Text(s.clearFilter),
                 ),
-                const Divider(),
-                Text(s.category, style: Theme.of(context).textTheme.titleSmall),
-                ...PuzzleCategory.values.map(
-                  (PuzzleCategory c) => RadioListTile<PuzzleCategory>(
-                    title: Text(c.getDisplayName(S.of, context)),
-                    value: c,
-                    groupValue: _selectedCategory,
-                    onChanged: (PuzzleCategory? value) {
-                      setState(() => _selectedCategory = value);
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(s.close),
                 ),
               ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _selectedDifficulty = null;
-                  _selectedCategory = null;
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text(s.clearFilter),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(s.close),
-            ),
-          ],
+            );
+          },
         );
       },
     );
