@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../game_page/services/mill.dart';
 import '../models/puzzle_models.dart';
 
 /// Service for exporting and importing puzzles
@@ -155,6 +156,16 @@ class PuzzleExportService {
           final Map<String, dynamic> puzzleJson =
               puzzlesJson[i] as Map<String, dynamic>;
           final PuzzleInfo puzzle = PuzzleInfo.fromJson(puzzleJson);
+
+          // Validate FEN format
+          final Position tempPosition = Position();
+          if (!tempPosition.validateFen(puzzle.initialPosition)) {
+            errors.add(
+              'Puzzle ${i + 1} ("${puzzle.title}") has invalid FEN format',
+            );
+            continue;
+          }
+
           importedPuzzles.add(puzzle);
         } catch (e) {
           errors.add('Failed to parse puzzle ${i + 1}: $e');
@@ -184,7 +195,16 @@ class PuzzleExportService {
     try {
       final Map<String, dynamic> json =
           jsonDecode(jsonString) as Map<String, dynamic>;
-      return PuzzleInfo.fromJson(json);
+      final PuzzleInfo puzzle = PuzzleInfo.fromJson(json);
+
+      // Validate FEN format
+      final Position tempPosition = Position();
+      if (!tempPosition.validateFen(puzzle.initialPosition)) {
+        assert(false, 'Invalid FEN format in puzzle: ${puzzle.title}');
+        return null;
+      }
+
+      return puzzle;
     } catch (e) {
       // Log error but don't expose details to production
       assert(false, 'Error importing puzzle from string: $e');
@@ -354,6 +374,12 @@ class PuzzleExportService {
 
     if (puzzle.initialPosition.trim().isEmpty) {
       return 'Puzzle must have a valid position';
+    }
+
+    // Validate FEN format
+    final Position tempPosition = Position();
+    if (!tempPosition.validateFen(puzzle.initialPosition)) {
+      return 'Puzzle has invalid FEN format. Please check the position.';
     }
 
     if (puzzle.solutionMoves.isEmpty) {
