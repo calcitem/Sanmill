@@ -2916,5 +2916,17 @@
     "puzzleInvalidPosition": "无效的局面",
     "@puzzleInvalidPosition": {
         "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "打开棋盘（摆局）",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "打开棋盘（走子）",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "请点击下方按钮打开棋盘，走完解答后按返回回到本页。",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
     }
 }

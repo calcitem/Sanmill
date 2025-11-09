@@ -37,6 +37,13 @@ class GameRecorder {
     return node.children.isEmpty;
   }
 
+  /// Resets the game recorder by clearing all moves and resetting the active node.
+  void reset() {
+    _pgnRoot.children.clear();
+    activeNode = null;
+    lastPositionWithRemove = null;
+  }
+
   /// Appends a new move at the end of the current active line.
   void appendMove(ExtMove move) {
     if (activeNode == null) {
