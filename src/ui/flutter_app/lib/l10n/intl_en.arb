@@ -2912,5 +2912,9 @@
     "plannedFeatures": "This feature is planned for a future release",
     "@plannedFeatures": {
         "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Invalid position",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
     }
 }

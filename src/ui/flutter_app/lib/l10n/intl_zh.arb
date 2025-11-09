@@ -2912,5 +2912,9 @@
     "plannedFeatures": "此功能计划在未来版本中发布",
     "@plannedFeatures": {
         "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "无效的局面",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
     }
 }
