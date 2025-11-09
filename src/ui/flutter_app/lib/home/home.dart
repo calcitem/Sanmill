@@ -29,7 +29,7 @@ import '../generated/intl/l10n.dart';
 import '../main.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
-import '../puzzle/pages/puzzle_list_page.dart';
+import '../puzzle/pages/puzzles_home_page.dart';
 import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
@@ -85,7 +85,7 @@ extension _DrawerScreen on _DrawerIndex {
           key: const Key("setup_position"),
         );
       case _DrawerIndex.puzzles:
-        return const PuzzleListPage();
+        return const PuzzlesHomePage();
       case _DrawerIndex.statistics:
         return const StatisticsPage();
       case _DrawerIndex.generalSettings:
