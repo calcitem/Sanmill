@@ -52,7 +52,7 @@ enum _DrawerIndex {
   aiVsAi,
   humanVsLAN,
   setupPosition,
-  puzzle,
+  puzzles,
   statistics,
   settingsGroup,
   generalSettings,
@@ -84,7 +84,7 @@ extension _DrawerScreen on _DrawerIndex {
           GameMode.setupPosition,
           key: const Key("setup_position"),
         );
-      case _DrawerIndex.puzzle:
+      case _DrawerIndex.puzzles:
         return const PuzzleListPage();
       case _DrawerIndex.statistics:
         return const StatisticsPage();
@@ -458,8 +458,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         ),
       // Puzzle item
       CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_puzzle'),
-        itemValue: _DrawerIndex.puzzle,
+        key: const Key('drawer_item_puzzles'),
+        itemValue: _DrawerIndex.puzzles,
         itemTitle: S.of(context).puzzles,
         itemIcon: const Icon(FluentIcons.puzzle_piece_24_regular),
         currentSelectedValue: _drawerIndex,
