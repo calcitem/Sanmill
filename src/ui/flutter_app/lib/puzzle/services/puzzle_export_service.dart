@@ -191,6 +191,275 @@ class PuzzleExportService {
       return null;
     }
   }
+
+  // ==================== CONTRIBUTION FEATURES ====================
+
+  /// Export puzzle in standardized contribution format
+  ///
+  /// This format is designed for submitting puzzles to the Sanmill project
+  /// for inclusion in the built-in puzzle collection.
+  /// See PUZZLE_CONTRIBUTION_GUIDE.md for details.
+  static String exportForContribution(PuzzleInfo puzzle) {
+    final Map<String, dynamic> exportData = <String, dynamic>{
+      'version': '1.0',
+      'puzzle': _puzzleToContributionMap(puzzle),
+    };
+
+    return const JsonEncoder.withIndent('  ').convert(exportData);
+  }
+
+  /// Export multiple puzzles in contribution format
+  static String exportMultipleForContribution(List<PuzzleInfo> puzzles) {
+    final Map<String, dynamic> exportData = <String, dynamic>{
+      'version': '1.0',
+      'puzzles': puzzles.map(_puzzleToContributionMap).toList(),
+    };
+
+    return const JsonEncoder.withIndent('  ').convert(exportData);
+  }
+
+  /// Convert puzzle to contribution map
+  static Map<String, dynamic> _puzzleToContributionMap(PuzzleInfo puzzle) {
+    final Map<String, dynamic> map = <String, dynamic>{
+      'id': puzzle.id,
+      'title': puzzle.title,
+      'description': puzzle.description,
+      'fen': puzzle.fen,
+      'solution': puzzle.solution,
+      'category': _categoryToString(puzzle.category),
+      'difficulty': _difficultyToString(puzzle.difficulty),
+      'ruleVariantId': puzzle.ruleVariantId,
+      'createdAt': puzzle.createdAt.toIso8601String(),
+    };
+
+    // Add optional fields if present
+    if (puzzle.tags.isNotEmpty) {
+      map['tags'] = puzzle.tags;
+    }
+
+    if (puzzle.author != null && puzzle.author!.isNotEmpty) {
+      map['author'] = puzzle.author;
+    }
+
+    if (puzzle.source != null && puzzle.source!.isNotEmpty) {
+      map['source'] = puzzle.source;
+    }
+
+    if (puzzle.rating != null) {
+      map['rating'] = puzzle.rating;
+    }
+
+    // Add metadata for quality assessment
+    map['metadata'] = <String, dynamic>{
+      'timesAttempted': puzzle.timesAttempted,
+      'timesSolved': puzzle.timesSolved,
+      'successRate': puzzle.timesAttempted > 0
+          ? (puzzle.timesSolved / puzzle.timesAttempted * 100).round()
+          : 0,
+      'averageTime': puzzle.averageSolveTime,
+    };
+
+    return map;
+  }
+
+  /// Share puzzle for contribution
+  ///
+  /// Exports puzzle in contribution format and opens share dialog
+  static Future<bool> shareForContribution(PuzzleInfo puzzle) async {
+    try {
+      // Validate before export
+      final String? validationError = validateForContribution(puzzle);
+      if (validationError != null) {
+        return false;
+      }
+
+      // Generate filename
+      final String filename = _generateContributionFilename(
+        puzzle.author ?? 'contributor',
+        puzzle.title,
+      );
+
+      // Get temporary directory
+      final Directory tempDir = await getTemporaryDirectory();
+      final String filePath = '${tempDir.path}/$filename';
+
+      // Write JSON to file
+      final File file = File(filePath);
+      final String jsonContent = exportForContribution(puzzle);
+      await file.writeAsString(jsonContent);
+
+      // Share the file
+      final ShareResult result = await Share.shareXFiles(
+        <XFile>[XFile(filePath)],
+        subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
+        text: 'Puzzle contribution for Sanmill.\n\n'
+            'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+      );
+
+      return result.status == ShareResultStatus.success;
+    } catch (e) {
+      print('Error sharing puzzle for contribution: $e');
+      return false;
+    }
+  }
+
+  /// Share multiple puzzles for contribution
+  static Future<bool> shareMultipleForContribution(
+    List<PuzzleInfo> puzzles,
+  ) async {
+    try {
+      // Validate all puzzles
+      for (final PuzzleInfo puzzle in puzzles) {
+        final String? validationError = validateForContribution(puzzle);
+        if (validationError != null) {
+          return false;
+        }
+      }
+
+      // Generate filename
+      final String filename = 'sanmill_puzzles_${puzzles.length}.json';
+
+      // Get temporary directory
+      final Directory tempDir = await getTemporaryDirectory();
+      final String filePath = '${tempDir.path}/$filename';
+
+      // Write JSON to file
+      final File file = File(filePath);
+      final String jsonContent = exportMultipleForContribution(puzzles);
+      await file.writeAsString(jsonContent);
+
+      // Share the file
+      final ShareResult result = await Share.shareXFiles(
+        <XFile>[XFile(filePath)],
+        subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
+        text: 'Puzzle contributions for Sanmill.\n\n'
+            'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+      );
+
+      return result.status == ShareResultStatus.success;
+    } catch (e) {
+      print('Error sharing puzzles for contribution: $e');
+      return false;
+    }
+  }
+
+  /// Validate puzzle for contribution
+  ///
+  /// Returns null if valid, error message if invalid
+  static String? validateForContribution(PuzzleInfo puzzle) {
+    // Check required fields
+    if (puzzle.title.trim().isEmpty) {
+      return 'Puzzle must have a title';
+    }
+
+    if (puzzle.description.trim().isEmpty) {
+      return 'Puzzle must have a description';
+    }
+
+    if (puzzle.fen.trim().isEmpty) {
+      return 'Puzzle must have a valid FEN position';
+    }
+
+    if (puzzle.solution.isEmpty) {
+      return 'Puzzle must have a solution';
+    }
+
+    // Check title length
+    if (puzzle.title.length < 5) {
+      return 'Title too short (minimum 5 characters)';
+    }
+
+    if (puzzle.title.length > 100) {
+      return 'Title too long (maximum 100 characters)';
+    }
+
+    // Check description length
+    if (puzzle.description.length < 10) {
+      return 'Description too short (minimum 10 characters)';
+    }
+
+    if (puzzle.description.length > 500) {
+      return 'Description too long (maximum 500 characters)';
+    }
+
+    // Check for attribution
+    if (puzzle.author == null || puzzle.author!.trim().isEmpty) {
+      return 'Please add your name as author before contributing';
+    }
+
+    // All checks passed
+    return null;
+  }
+
+  /// Generate standardized contribution filename
+  ///
+  /// Format: author_puzzlename.json
+  /// Example: john_windmill_trap.json
+  static String _generateContributionFilename(String author, String title) {
+    // Clean author name
+    final String cleanAuthor = author
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]'), '_')
+        .replaceAll(RegExp(r'_+'), '_')
+        .replaceAll(RegExp(r'^_|_$'), '');
+
+    // Clean puzzle title
+    final String cleanTitle = title
+        .toLowerCase()
+        .replaceAll(RegExp(r'[^a-z0-9]'), '_')
+        .replaceAll(RegExp(r'_+'), '_')
+        .replaceAll(RegExp(r'^_|_$'), '');
+
+    // Limit length
+    final String shortAuthor =
+        cleanAuthor.length > 15 ? cleanAuthor.substring(0, 15) : cleanAuthor;
+    final String shortTitle =
+        cleanTitle.length > 30 ? cleanTitle.substring(0, 30) : cleanTitle;
+
+    return '${shortAuthor}_$shortTitle.json';
+  }
+
+  /// Convert category enum to string
+  static String _categoryToString(PuzzleCategory category) {
+    switch (category) {
+      case PuzzleCategory.opening:
+        return 'opening';
+      case PuzzleCategory.middleGame:
+        return 'middle_game';
+      case PuzzleCategory.endgame:
+        return 'endgame';
+      case PuzzleCategory.millFormation:
+        return 'mill_formation';
+      case PuzzleCategory.defense:
+        return 'defense';
+      case PuzzleCategory.sacrifice:
+        return 'sacrifice';
+      case PuzzleCategory.combination:
+        return 'combination';
+      case PuzzleCategory.zugzwang:
+        return 'zugzwang';
+      case PuzzleCategory.mixed:
+        return 'mixed';
+    }
+  }
+
+  /// Convert difficulty enum to string
+  static String _difficultyToString(PuzzleDifficulty difficulty) {
+    switch (difficulty) {
+      case PuzzleDifficulty.beginner:
+        return 'beginner';
+      case PuzzleDifficulty.easy:
+        return 'easy';
+      case PuzzleDifficulty.medium:
+        return 'medium';
+      case PuzzleDifficulty.hard:
+        return 'hard';
+      case PuzzleDifficulty.expert:
+        return 'expert';
+      case PuzzleDifficulty.master:
+        return 'master';
+    }
+  }
 }
 
 /// Result of an import operation
