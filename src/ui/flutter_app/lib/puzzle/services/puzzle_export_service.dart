@@ -34,11 +34,14 @@ class PuzzleExportService {
         'puzzles': puzzles.map((PuzzleInfo p) => p.toJson()).toList(),
       };
 
-      final String jsonString = const JsonEncoder.withIndent('  ').convert(exportData);
+      final String jsonString = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(exportData);
 
       // Get temporary directory
       final Directory tempDir = await getTemporaryDirectory();
-      final String defaultFileName = fileName ??
+      final String defaultFileName =
+          fileName ??
           'sanmill_puzzles_${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
       final File file = File('${tempDir.path}/$defaultFileName');
 
@@ -85,24 +88,17 @@ class PuzzleExportService {
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>[fileExtension, 'json'],
-        allowMultiple: false,
       );
 
       if (result == null || result.files.isEmpty) {
-        return ImportResult(
-          success: false,
-          errorMessage: 'No file selected',
-        );
+        return ImportResult(success: false, errorMessage: 'No file selected');
       }
 
       final PlatformFile pickedFile = result.files.first;
       final String? filePath = pickedFile.path;
 
       if (filePath == null) {
-        return ImportResult(
-          success: false,
-          errorMessage: 'Invalid file path',
-        );
+        return ImportResult(success: false, errorMessage: 'Invalid file path');
       }
 
       return await importPuzzlesFromFile(filePath);
@@ -142,7 +138,8 @@ class PuzzleExportService {
       if (fileVersion > exportVersion) {
         return ImportResult(
           success: false,
-          errorMessage: 'File version ($fileVersion) is newer than supported version ($exportVersion)',
+          errorMessage:
+              'File version ($fileVersion) is newer than supported version ($exportVersion)',
         );
       }
 
@@ -284,7 +281,8 @@ class PuzzleExportService {
       final ShareResult result = await Share.shareXFiles(
         <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
-        text: 'Puzzle contribution for Sanmill.\n\n'
+        text:
+            'Puzzle contribution for Sanmill.\n\n'
             'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
       );
 
@@ -324,7 +322,8 @@ class PuzzleExportService {
       final ShareResult result = await Share.shareXFiles(
         <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
-        text: 'Puzzle contributions for Sanmill.\n\n'
+        text:
+            'Puzzle contributions for Sanmill.\n\n'
             'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
       );
 
@@ -403,10 +402,12 @@ class PuzzleExportService {
         .replaceAll(RegExp(r'^_|_$'), '');
 
     // Limit length
-    final String shortAuthor =
-        cleanAuthor.length > 15 ? cleanAuthor.substring(0, 15) : cleanAuthor;
-    final String shortTitle =
-        cleanTitle.length > 30 ? cleanTitle.substring(0, 30) : cleanTitle;
+    final String shortAuthor = cleanAuthor.length > 15
+        ? cleanAuthor.substring(0, 15)
+        : cleanAuthor;
+    final String shortTitle = cleanTitle.length > 30
+        ? cleanTitle.substring(0, 30)
+        : cleanTitle;
 
     return '${shortAuthor}_$shortTitle.json';
   }

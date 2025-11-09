@@ -2896,5 +2896,21 @@
     "edit": "编辑",
     "@edit": {
         "description": "Edit button"
+    },
+    "save": "保存",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "无自定义谜题",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "创建您自己的谜题来练习特定局面",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "此功能计划在未来版本中发布",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
     }
 }

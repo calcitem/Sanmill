@@ -90,7 +90,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             ),
             // Multi-select button
             IconButton(
-              icon: const Icon(FluentIcons.multiselect_24_regular),
+              icon: const Icon(FluentIcons.checkbox_checked_24_regular),
               onPressed: _toggleMultiSelectMode,
               tooltip: s.puzzleSelect,
             ),
@@ -106,40 +106,48 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             ),
       body: ValueListenableBuilder<PuzzleSettings>(
         valueListenable: _puzzleManager.settingsNotifier,
-        builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
-          final List<PuzzleInfo> customPuzzles = _puzzleManager.getCustomPuzzles();
+        builder:
+            (BuildContext context, PuzzleSettings settings, Widget? child) {
+              final List<PuzzleInfo> customPuzzles = _puzzleManager
+                  .getCustomPuzzles();
 
-          if (customPuzzles.isEmpty) {
-            return _buildEmptyState(s);
-          }
+              if (customPuzzles.isEmpty) {
+                return _buildEmptyState(s);
+              }
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(8.0),
-            itemCount: customPuzzles.length,
-            itemBuilder: (BuildContext context, int index) {
-              final PuzzleInfo puzzle = customPuzzles[index];
-              final PuzzleProgress? progress = settings.getProgress(puzzle.id);
-              final bool isSelected = _selectedPuzzleIds.contains(puzzle.id);
+              return ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: customPuzzles.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final PuzzleInfo puzzle = customPuzzles[index];
+                  final PuzzleProgress? progress = settings.getProgress(
+                    puzzle.id,
+                  );
+                  final bool isSelected = _selectedPuzzleIds.contains(
+                    puzzle.id,
+                  );
 
-              return PuzzleCard(
-                puzzle: puzzle,
-                progress: progress,
-                onTap: _isMultiSelectMode
-                    ? () => _togglePuzzleSelection(puzzle.id)
-                    : () => _openPuzzle(puzzle),
-                onLongPress: _isMultiSelectMode
-                    ? null
-                    : () {
-                        _toggleMultiSelectMode();
-                        _togglePuzzleSelection(puzzle.id);
-                      },
-                isSelected: _isMultiSelectMode ? isSelected : null,
-                showCustomBadge: true,
-                onEdit: !_isMultiSelectMode ? () => _editPuzzle(puzzle) : null,
+                  return PuzzleCard(
+                    puzzle: puzzle,
+                    progress: progress,
+                    onTap: _isMultiSelectMode
+                        ? () => _togglePuzzleSelection(puzzle.id)
+                        : () => _openPuzzle(puzzle),
+                    onLongPress: _isMultiSelectMode
+                        ? null
+                        : () {
+                            _toggleMultiSelectMode();
+                            _togglePuzzleSelection(puzzle.id);
+                          },
+                    isSelected: _isMultiSelectMode ? isSelected : null,
+                    showCustomBadge: true,
+                    onEdit: !_isMultiSelectMode
+                        ? () => _editPuzzle(puzzle)
+                        : null,
+                  );
+                },
               );
             },
-          );
-        },
       ),
     );
   }
@@ -219,20 +227,26 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   }
 
   Future<void> _exportSelectedPuzzles() async {
-    if (_selectedPuzzleIds.isEmpty) return;
+    if (_selectedPuzzleIds.isEmpty) {
+      return;
+    }
 
     final List<PuzzleInfo> puzzlesToExport = _selectedPuzzleIds
         .map((String id) => _puzzleManager.getPuzzleById(id))
         .whereType<PuzzleInfo>()
         .toList();
 
-    if (puzzlesToExport.isEmpty) return;
+    if (puzzlesToExport.isEmpty) {
+      return;
+    }
 
     final bool success = await _puzzleManager.exportAndSharePuzzles(
       puzzlesToExport,
     );
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -254,7 +268,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   }
 
   Future<void> _deleteSelectedPuzzles() async {
-    if (_selectedPuzzleIds.isEmpty) return;
+    if (_selectedPuzzleIds.isEmpty) {
+      return;
+    }
 
     // Confirm deletion
     final bool? confirmed = await showDialog<bool>(
@@ -263,9 +279,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
         final S s = S.of(context);
         return AlertDialog(
           title: Text(s.confirm),
-          content: Text(
-            s.puzzleDeleteConfirm(_selectedPuzzleIds.length),
-          ),
+          content: Text(s.puzzleDeleteConfirm(_selectedPuzzleIds.length)),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
@@ -281,13 +295,17 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       },
     );
 
-    if (confirmed != true) return;
+    if (confirmed != true) {
+      return;
+    }
 
     final int deletedCount = _puzzleManager.deletePuzzles(
       _selectedPuzzleIds.toList(),
     );
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -305,7 +323,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   Future<void> _importPuzzles() async {
     final ImportResult result = await _puzzleManager.importPuzzles();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -336,7 +356,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       ),
     );
 
-    if (created == true) {
+    if (created ?? false) {
       setState(() {});
     }
   }
@@ -344,13 +364,12 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   Future<void> _editPuzzle(PuzzleInfo puzzle) async {
     final bool? updated = await Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(
-        builder: (BuildContext context) => PuzzleCreationPage(
-          puzzleToEdit: puzzle,
-        ),
+        builder: (BuildContext context) =>
+            PuzzleCreationPage(puzzleToEdit: puzzle),
       ),
     );
 
-    if (updated == true) {
+    if (updated ?? false) {
       setState(() {});
     }
   }
@@ -364,14 +383,18 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   }
 
   Future<void> _contributeSelectedPuzzles() async {
-    if (_selectedPuzzleIds.isEmpty) return;
+    if (_selectedPuzzleIds.isEmpty) {
+      return;
+    }
 
     final List<PuzzleInfo> puzzlesToContribute = _selectedPuzzleIds
         .map((String id) => _puzzleManager.getPuzzleById(id))
         .whereType<PuzzleInfo>()
         .toList();
 
-    if (puzzlesToContribute.isEmpty) return;
+    if (puzzlesToContribute.isEmpty) {
+      return;
+    }
 
     // Validate puzzles before contribution
     final List<String> invalidPuzzles = <String>[];
@@ -401,7 +424,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                   ...invalidPuzzles.map(
                     (String error) => Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text('• $error'),
+                      child: Text(error),
                     ),
                   ),
                 ],
@@ -467,14 +490,22 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       },
     );
 
-    if (confirmed != true) return;
+    if (confirmed != true) {
+      return;
+    }
 
     // Export puzzles in contribution format
     final bool success = puzzlesToContribute.length == 1
-        ? await PuzzleExportService.shareForContribution(puzzlesToContribute.first)
-        : await PuzzleExportService.shareMultipleForContribution(puzzlesToContribute);
+        ? await PuzzleExportService.shareForContribution(
+            puzzlesToContribute.first,
+          )
+        : await PuzzleExportService.shareMultipleForContribution(
+            puzzlesToContribute,
+          );
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -560,10 +591,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.blue.shade200),
                   ),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Row(
+                      Row(
                         children: <Widget>[
                           Icon(
                             FluentIcons.document_24_regular,
@@ -580,8 +611,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6),
-                      const Text(
+                      SizedBox(height: 6),
+                      Text(
                         'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
                         style: TextStyle(fontSize: 13),
                       ),
@@ -594,11 +625,26 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
                 const SizedBox(height: 6),
-                const Text('✓ Clear, unique solution', style: TextStyle(fontSize: 13)),
-                const Text('✓ Complete metadata (title, description, etc.)', style: TextStyle(fontSize: 13)),
-                const Text('✓ Author attribution', style: TextStyle(fontSize: 13)),
-                const Text('✓ Accurate difficulty rating', style: TextStyle(fontSize: 13)),
-                const Text('✓ Instructive or entertaining', style: TextStyle(fontSize: 13)),
+                const Text(
+                  '✓ Clear, unique solution',
+                  style: TextStyle(fontSize: 13),
+                ),
+                const Text(
+                  '✓ Complete metadata (title, description, etc.)',
+                  style: TextStyle(fontSize: 13),
+                ),
+                const Text(
+                  '✓ Author attribution',
+                  style: TextStyle(fontSize: 13),
+                ),
+                const Text(
+                  '✓ Accurate difficulty rating',
+                  style: TextStyle(fontSize: 13),
+                ),
+                const Text(
+                  '✓ Instructive or entertaining',
+                  style: TextStyle(fontSize: 13),
+                ),
               ],
             ),
           ),
@@ -647,10 +693,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                title,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
+              Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
               Text(
                 description,
                 style: const TextStyle(fontSize: 13, color: Colors.black87),

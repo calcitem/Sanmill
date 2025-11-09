@@ -1,5 +1,6 @@
 .project
 gradle-wrapper.jar
+/.kotlin
 /.gradle
 /.settings
 /captures/

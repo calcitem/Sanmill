@@ -60,9 +60,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   /// Build setup/intro screen
   Widget _buildSetupScreen(S s) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.puzzleRush),
-      ),
+      appBar: AppBar(title: Text(s.puzzleRush)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -71,7 +69,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
             // Header card
             Card(
               elevation: 4,
-              color: Colors.red.withOpacity(0.1),
+              color: Colors.red.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -84,7 +82,8 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
                     const SizedBox(height: 16),
                     Text(
                       s.puzzleRush,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                           ),
@@ -111,13 +110,22 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
                     Text(
                       s.puzzleRushRules,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 12),
-                    _buildRuleItem(s.puzzleRushRule1, FluentIcons.timer_24_regular),
-                    _buildRuleItem(s.puzzleRushRule2, FluentIcons.heart_24_regular),
-                    _buildRuleItem(s.puzzleRushRule3, FluentIcons.trophy_24_regular),
+                    _buildRuleItem(
+                      s.puzzleRushRule1,
+                      FluentIcons.timer_24_regular,
+                    ),
+                    _buildRuleItem(
+                      s.puzzleRushRule2,
+                      FluentIcons.heart_24_regular,
+                    ),
+                    _buildRuleItem(
+                      s.puzzleRushRule3,
+                      FluentIcons.trophy_24_regular,
+                    ),
                   ],
                 ),
               ),
@@ -134,8 +142,8 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
                     Text(
                       s.puzzleDifficulty,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Wrap(
@@ -252,9 +260,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     final bool outOfLives = _livesRemaining <= 0;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.puzzleRushResults),
-      ),
+      appBar: AppBar(title: Text(s.puzzleRushResults)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -273,11 +279,11 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
                 timeUp
                     ? s.puzzleRushTimeUp
                     : outOfLives
-                        ? s.puzzleRushOutOfLives
-                        : s.puzzleRushComplete,
+                    ? s.puzzleRushOutOfLives
+                    : s.puzzleRushComplete,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
@@ -378,10 +384,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16),
-        ),
+        Text(label, style: const TextStyle(fontSize: 16)),
         Text(
           value,
           style: TextStyle(
@@ -402,7 +405,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   int _calculateAccuracy() {
     final int total = _solvedCount + _failedCount;
-    if (total == 0) return 0;
+    if (total == 0) {
+      return 0;
+    }
     return ((_solvedCount / total) * 100).round();
   }
 
@@ -455,7 +460,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   void _onPuzzleSolved() {
     // Don't process if time is up
-    if (_remainingSeconds <= 0) return;
+    if (_remainingSeconds <= 0) {
+      return;
+    }
 
     setState(() {
       _solvedCount++;
@@ -465,7 +472,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   void _onPuzzleFailed() {
     // Don't process if time is up or already out of lives
-    if (_remainingSeconds <= 0 || _livesRemaining <= 0) return;
+    if (_remainingSeconds <= 0 || _livesRemaining <= 0) {
+      return;
+    }
 
     setState(() {
       _failedCount++;

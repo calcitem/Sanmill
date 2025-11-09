@@ -54,6 +54,11 @@ enum PuzzleCategory {
     }
   }
 
+  /// Returns a localized display name using context (convenience method)
+  String displayName(BuildContext context) {
+    return getDisplayName(S.of, context);
+  }
+
   /// Returns an icon for this category
   IconData get icon {
     switch (this) {
@@ -68,11 +73,11 @@ enum PuzzleCategory {
       case PuzzleCategory.findBestMove:
         return FluentIcons.search_24_filled;
       case PuzzleCategory.endgame:
-        return FluentIcons.chess_24_filled;
+        return FluentIcons.board_24_filled;
       case PuzzleCategory.opening:
         return FluentIcons.book_24_filled;
       case PuzzleCategory.mixed:
-        return FluentIcons.mix_24_filled;
+        return FluentIcons.grid_24_filled;
     }
   }
 }

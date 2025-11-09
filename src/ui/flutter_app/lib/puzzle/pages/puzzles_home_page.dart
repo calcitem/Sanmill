@@ -9,7 +9,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
-import '../../shared/themes/app_theme.dart';
+import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import 'custom_puzzles_page.dart';
 import 'daily_puzzle_page.dart';
@@ -163,9 +163,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               children: <Widget>[
                 Text(
                   s.yourProgress,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -193,13 +193,16 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                 ),
                 const SizedBox(height: 12),
                 LinearProgressIndicator(
-                  value: stats['completionPercentage'] / 100,
+                  value:
+                      ((stats['completionPercentage'] as num?)?.toDouble() ??
+                          0.0) /
+                      100,
                   backgroundColor: Colors.grey[800],
                   valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '${stats['completionPercentage'].toStringAsFixed(1)}% ${s.completed}',
+                  '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}% ${s.completed}',
                   style: Theme.of(context).textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),
@@ -212,7 +215,12 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   }
 
   /// Build a single stat item
-  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+  Widget _buildStatItem(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Column(
       children: <Widget>[
         Icon(icon, color: color, size: 32),
@@ -227,10 +235,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[400],
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.grey[400]),
           textAlign: TextAlign.center,
         ),
       ],
@@ -248,7 +253,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   }) {
     return Card(
       elevation: 4,
-      color: color.withOpacity(0.1),
+      color: color.withValues(alpha: 0.1),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -259,7 +264,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 40, color: color),
@@ -272,9 +277,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: color,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: color,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -314,7 +319,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 36, color: color),
@@ -322,9 +327,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               const SizedBox(height: 12),
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 4),
@@ -345,9 +350,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   /// Navigate to a page
   void _navigateTo(Widget page) {
     Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => page,
-      ),
+      MaterialPageRoute<void>(builder: (BuildContext context) => page),
     );
   }
 
@@ -367,19 +370,19 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
             children: <Widget>[
               _buildStatRow(
                 s.totalPuzzles,
-                stats['totalPuzzles'].toString(),
+                (stats['totalPuzzles'] as int? ?? 0).toString(),
               ),
               _buildStatRow(
                 s.completed,
-                stats['completedPuzzles'].toString(),
+                (stats['completedPuzzles'] as int? ?? 0).toString(),
               ),
               _buildStatRow(
                 s.totalStars,
-                stats['totalStars'].toString(),
+                (stats['totalStars'] as int? ?? 0).toString(),
               ),
               _buildStatRow(
                 s.completionPercentage,
-                '${stats['completionPercentage'].toStringAsFixed(1)}%',
+                '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}%',
               ),
             ],
           ),
@@ -401,10 +404,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(label),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );

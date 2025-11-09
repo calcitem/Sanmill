@@ -19,9 +19,7 @@ class PuzzleBattlePage extends StatelessWidget {
     final S s = S.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.puzzleBattle),
-      ),
+      appBar: AppBar(title: Text(s.puzzleBattle)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -37,8 +35,8 @@ class PuzzleBattlePage extends StatelessWidget {
               Text(
                 s.comingSoon,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
@@ -56,9 +54,8 @@ class PuzzleBattlePage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         s.plannedFeatures,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 12),
                       _buildFeatureItem(s.puzzleBattleFeature1),

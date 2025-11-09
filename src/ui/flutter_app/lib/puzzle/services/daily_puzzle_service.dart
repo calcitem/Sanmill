@@ -5,9 +5,6 @@
 //
 // Service for managing daily puzzle rotation and streak tracking
 
-import 'package:flutter/foundation.dart';
-
-import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/puzzle_models.dart';
 import 'puzzle_manager.dart';
@@ -42,7 +39,7 @@ class DailyPuzzleService {
   static const String _tag = "[DailyPuzzleService]";
 
   /// Epoch date for day number calculation (January 1, 2025)
-  static final DateTime _epochDate = DateTime(2025, 1, 1);
+  static final DateTime _epochDate = DateTime(2025, 1);
 
   /// Get today's puzzle information
   DailyPuzzleInfo getTodaysPuzzle() {
@@ -106,16 +103,15 @@ class DailyPuzzleService {
   DailyPuzzleStats _getStats() {
     // TODO: Load from database
     // For now, return default stats
-    return DailyPuzzleStats(
-      completedDates: <String>[],
-      longestStreak: 0,
-    );
+    return DailyPuzzleStats(completedDates: <String>[], longestStreak: 0);
   }
 
   /// Save puzzle statistics
   void _saveStats(DailyPuzzleStats stats) {
     // TODO: Save to database
-    logger.i("$_tag Saved daily puzzle stats: ${stats.completedDates.length} completed");
+    logger.i(
+      "$_tag Saved daily puzzle stats: ${stats.completedDates.length} completed",
+    );
   }
 
   /// Calculate current streak
@@ -156,10 +152,7 @@ class DailyPuzzleService {
 
 /// Statistics for daily puzzles
 class DailyPuzzleStats {
-  DailyPuzzleStats({
-    required this.completedDates,
-    required this.longestStreak,
-  });
+  DailyPuzzleStats({required this.completedDates, required this.longestStreak});
 
   List<String> completedDates;
   int longestStreak;

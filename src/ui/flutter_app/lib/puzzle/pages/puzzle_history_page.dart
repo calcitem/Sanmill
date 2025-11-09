@@ -32,14 +32,19 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    final List<PuzzleAttemptResult> history = _ratingService.getAttemptHistory();
+    final List<PuzzleAttemptResult> history = _ratingService
+        .getAttemptHistory();
 
     // Apply filters
     List<PuzzleAttemptResult> filteredHistory = history;
     if (_showSuccessOnly) {
-      filteredHistory = history.where((PuzzleAttemptResult r) => r.success).toList();
+      filteredHistory = history
+          .where((PuzzleAttemptResult r) => r.success)
+          .toList();
     } else if (_showFailedOnly) {
-      filteredHistory = history.where((PuzzleAttemptResult r) => !r.success).toList();
+      filteredHistory = history
+          .where((PuzzleAttemptResult r) => !r.success)
+          .toList();
     }
 
     return Scaffold(
@@ -78,7 +83,10 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
                 value: 'success',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.checkmark_circle_24_regular, color: Colors.green),
+                    const Icon(
+                      FluentIcons.checkmark_circle_24_regular,
+                      color: Colors.green,
+                    ),
                     const SizedBox(width: 12),
                     Text(s.puzzleHistorySuccess),
                   ],
@@ -88,7 +96,10 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
                 value: 'failed',
                 child: Row(
                   children: <Widget>[
-                    const Icon(FluentIcons.dismiss_circle_24_regular, color: Colors.red),
+                    const Icon(
+                      FluentIcons.dismiss_circle_24_regular,
+                      color: Colors.red,
+                    ),
                     const SizedBox(width: 12),
                     Text(s.puzzleHistoryFailed),
                   ],
@@ -105,7 +116,9 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
               itemCount: filteredHistory.length,
               itemBuilder: (BuildContext context, int index) {
                 final PuzzleAttemptResult attempt = filteredHistory[index];
-                final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(attempt.puzzleId);
+                final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(
+                  attempt.puzzleId,
+                );
                 return _buildHistoryCard(attempt, puzzle, s);
               },
             ),
@@ -138,7 +151,11 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
     );
   }
 
-  Widget _buildHistoryCard(PuzzleAttemptResult attempt, PuzzleInfo? puzzle, S s) {
+  Widget _buildHistoryCard(
+    PuzzleAttemptResult attempt,
+    PuzzleInfo? puzzle,
+    S s,
+  ) {
     final bool success = attempt.success;
     final Color resultColor = success ? Colors.green : Colors.red;
     final IconData resultIcon = success
@@ -172,14 +189,19 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: (attempt.ratingChange! >= 0 ? Colors.green : Colors.red)
-                          .withOpacity(0.2),
+                      color:
+                          (attempt.ratingChange! >= 0
+                                  ? Colors.green
+                                  : Colors.red)
+                              .withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       '${attempt.ratingChange! >= 0 ? '+' : ''}${attempt.ratingChange}',
                       style: TextStyle(
-                        color: attempt.ratingChange! >= 0 ? Colors.green : Colors.red,
+                        color: attempt.ratingChange! >= 0
+                            ? Colors.green
+                            : Colors.red,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -218,9 +240,9 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
             // Timestamp
             Text(
               _formatTimestamp(attempt.timestamp),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.grey),
             ),
           ],
         ),
@@ -234,13 +256,7 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
       children: <Widget>[
         Icon(icon, size: 16, color: color),
         const SizedBox(width: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: color,
-          ),
-        ),
+        Text(label, style: TextStyle(fontSize: 12, color: color)),
       ],
     );
   }

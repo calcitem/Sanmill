@@ -9,7 +9,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
-import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_export_service.dart';
 import '../services/puzzle_manager.dart';
@@ -123,7 +122,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
             ),
             // Multi-select button
             IconButton(
-              icon: const Icon(FluentIcons.multiselect_24_regular),
+              icon: const Icon(FluentIcons.checkbox_checked_24_regular),
               onPressed: _toggleMultiSelectMode,
               tooltip: s.puzzleSelect,
             ),
@@ -149,66 +148,74 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
             ),
       body: ValueListenableBuilder<PuzzleSettings>(
         valueListenable: _puzzleManager.settingsNotifier,
-        builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
-          final List<PuzzleInfo> puzzles = _filteredPuzzles;
+        builder:
+            (BuildContext context, PuzzleSettings settings, Widget? child) {
+              final List<PuzzleInfo> puzzles = _filteredPuzzles;
 
-          if (puzzles.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              if (puzzles.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(
+                        FluentIcons.puzzle_piece_24_regular,
+                        size: 64,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        s.noPuzzlesAvailable,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return Column(
                 children: <Widget>[
-                  const Icon(Icons.puzzle, size: 64, color: Colors.grey),
-                  const SizedBox(height: 16),
-                  Text(
-                    s.noPuzzlesAvailable,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  // Filter chips
+                  if (_selectedDifficulty != null || _selectedCategory != null)
+                    _buildFilterChips(s),
+
+                  // Puzzle list
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: puzzles.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final PuzzleInfo puzzle = puzzles[index];
+                        final PuzzleProgress? progress = settings.getProgress(
+                          puzzle.id,
+                        );
+                        final bool isSelected = _selectedPuzzleIds.contains(
+                          puzzle.id,
+                        );
+
+                        return PuzzleCard(
+                          puzzle: puzzle,
+                          progress: progress,
+                          onTap: _isMultiSelectMode
+                              ? () => _togglePuzzleSelection(puzzle.id)
+                              : () => _openPuzzle(puzzle),
+                          onLongPress: _isMultiSelectMode
+                              ? null
+                              : () {
+                                  _toggleMultiSelectMode();
+                                  _togglePuzzleSelection(puzzle.id);
+                                },
+                          isSelected: _isMultiSelectMode ? isSelected : null,
+                          showCustomBadge: puzzle.isCustom,
+                          onEdit: puzzle.isCustom && !_isMultiSelectMode
+                              ? () => _editPuzzle(puzzle)
+                              : null,
+                        );
+                      },
+                    ),
                   ),
                 ],
-              ),
-            );
-          }
-
-          return Column(
-            children: <Widget>[
-              // Filter chips
-              if (_selectedDifficulty != null || _selectedCategory != null)
-                _buildFilterChips(s),
-
-              // Puzzle list
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: puzzles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final PuzzleInfo puzzle = puzzles[index];
-                    final PuzzleProgress? progress =
-                        settings.getProgress(puzzle.id);
-                    final bool isSelected = _selectedPuzzleIds.contains(puzzle.id);
-
-                    return PuzzleCard(
-                      puzzle: puzzle,
-                      progress: progress,
-                      onTap: _isMultiSelectMode
-                          ? () => _togglePuzzleSelection(puzzle.id)
-                          : () => _openPuzzle(puzzle),
-                      onLongPress: _isMultiSelectMode
-                          ? null
-                          : () {
-                              _toggleMultiSelectMode();
-                              _togglePuzzleSelection(puzzle.id);
-                            },
-                      isSelected: _isMultiSelectMode ? isSelected : null,
-                      showCustomBadge: puzzle.isCustom,
-                      onEdit: puzzle.isCustom && !_isMultiSelectMode
-                          ? () => _editPuzzle(puzzle)
-                          : null,
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
+              );
+            },
       ),
     );
   }
@@ -247,7 +254,10 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(s.difficulty, style: Theme.of(context).textTheme.titleSmall),
+                Text(
+                  s.difficulty,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
                 ...PuzzleDifficulty.values.map(
                   (PuzzleDifficulty d) => RadioListTile<PuzzleDifficulty>(
                     title: Text(d.getDisplayName(S.of, context)),
@@ -311,19 +321,19 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
             children: <Widget>[
               _buildStatRow(
                 s.totalPuzzles,
-                stats['totalPuzzles'].toString(),
+                (stats['totalPuzzles'] as int? ?? 0).toString(),
               ),
               _buildStatRow(
                 s.completed,
-                stats['completedPuzzles'].toString(),
+                (stats['completedPuzzles'] as int? ?? 0).toString(),
               ),
               _buildStatRow(
                 s.totalStars,
-                stats['totalStars'].toString(),
+                (stats['totalStars'] as int? ?? 0).toString(),
               ),
               _buildStatRow(
                 s.completionPercentage,
-                '${stats['completionPercentage'].toStringAsFixed(1)}%',
+                '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}%',
               ),
             ],
           ),
@@ -345,10 +355,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(label),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -380,20 +387,26 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
 
   /// Export selected puzzles
   Future<void> _exportSelectedPuzzles() async {
-    if (_selectedPuzzleIds.isEmpty) return;
+    if (_selectedPuzzleIds.isEmpty) {
+      return;
+    }
 
     final List<PuzzleInfo> puzzlesToExport = _selectedPuzzleIds
         .map((String id) => _puzzleManager.getPuzzleById(id))
         .whereType<PuzzleInfo>()
         .toList();
 
-    if (puzzlesToExport.isEmpty) return;
+    if (puzzlesToExport.isEmpty) {
+      return;
+    }
 
     final bool success = await _puzzleManager.exportAndSharePuzzles(
       puzzlesToExport,
     );
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -416,15 +429,15 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
 
   /// Delete selected puzzles
   Future<void> _deleteSelectedPuzzles() async {
-    if (_selectedPuzzleIds.isEmpty) return;
+    if (_selectedPuzzleIds.isEmpty) {
+      return;
+    }
 
     // Filter to only custom puzzles
-    final List<String> customPuzzleIds = _selectedPuzzleIds
-        .where((String id) {
-          final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(id);
-          return puzzle != null && puzzle.isCustom;
-        })
-        .toList();
+    final List<String> customPuzzleIds = _selectedPuzzleIds.where((String id) {
+      final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(id);
+      return puzzle != null && puzzle.isCustom;
+    }).toList();
 
     if (customPuzzleIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -460,11 +473,15 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       },
     );
 
-    if (confirmed != true) return;
+    if (confirmed != true) {
+      return;
+    }
 
     final int deletedCount = _puzzleManager.deletePuzzles(customPuzzleIds);
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -483,7 +500,9 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   Future<void> _importPuzzles() async {
     final ImportResult result = await _puzzleManager.importPuzzles();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -514,7 +533,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       ),
     );
 
-    if (created == true) {
+    if (created ?? false) {
       setState(() {});
     }
   }
@@ -523,13 +542,12 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   Future<void> _editPuzzle(PuzzleInfo puzzle) async {
     final bool? updated = await Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(
-        builder: (BuildContext context) => PuzzleCreationPage(
-          puzzleToEdit: puzzle,
-        ),
+        builder: (BuildContext context) =>
+            PuzzleCreationPage(puzzleToEdit: puzzle),
       ),
     );
 
-    if (updated == true) {
+    if (updated ?? false) {
       setState(() {});
     }
   }

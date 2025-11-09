@@ -25,6 +25,21 @@ class RuleVariant {
     required this.ruleHash,
   });
 
+  /// Create a RuleVariant from RuleSettings
+  factory RuleVariant.fromRuleSettings(RuleSettings settings) {
+    final String hash = _calculateRuleHash(settings);
+    final String id = _generateVariantId(settings);
+    final String name = _generateVariantName(settings);
+    final String description = _generateVariantDescription(settings);
+
+    return RuleVariant(
+      id: id,
+      name: name,
+      description: description,
+      ruleHash: hash,
+    );
+  }
+
   /// Unique identifier for this variant (e.g., "standard_9mm", "twelve_mens_morris")
   @HiveField(0)
   final String id;
@@ -42,21 +57,6 @@ class RuleVariant {
   @HiveField(3)
   final String ruleHash;
 
-  /// Create a RuleVariant from RuleSettings
-  factory RuleVariant.fromRuleSettings(RuleSettings settings) {
-    final String hash = _calculateRuleHash(settings);
-    final String id = _generateVariantId(settings);
-    final String name = _generateVariantName(settings);
-    final String description = _generateVariantDescription(settings);
-
-    return RuleVariant(
-      id: id,
-      name: name,
-      description: description,
-      ruleHash: hash,
-    );
-  }
-
   /// Calculate a hash from rule settings using versioned schema
   ///
   /// This hash is calculated using a versioned schema to ensure stability.
@@ -65,7 +65,8 @@ class RuleVariant {
   ///
   /// This prevents puzzle loss when upgrading the app with new rule features.
   static String _calculateRuleHash(RuleSettings settings) {
-    const VersionedRuleHashCalculator calculator = VersionedRuleHashCalculator();
+    const VersionedRuleHashCalculator calculator =
+        VersionedRuleHashCalculator();
 
     // Use latest schema version for new puzzles
     // Old puzzles will be automatically migrated via RuleMigrationManager
@@ -98,9 +99,9 @@ class RuleVariant {
   /// Generate a display name for the variant
   static String _generateVariantName(RuleSettings settings) {
     if (settings.isLikelyNineMensMorris()) {
-      return 'Nine Men\'s Morris';
+      return "Nine Men's Morris";
     } else if (settings.isLikelyTwelveMensMorris()) {
-      return 'Twelve Men\'s Morris';
+      return "Twelve Men's Morris";
     } else if (settings.piecesCount == 12 &&
         !settings.hasDiagonalLines &&
         settings.oneTimeUseMill) {
@@ -166,38 +167,33 @@ class RuleVariant {
 /// Predefined rule variants
 class PredefinedVariants {
   /// Standard Nine Men's Morris
-  static RuleVariant get nineMensMorris => RuleVariant.fromRuleSettings(
-        const RuleSettings(),
-      );
+  static RuleVariant get nineMensMorris =>
+      RuleVariant.fromRuleSettings(const RuleSettings());
 
   /// Twelve Men's Morris
-  static RuleVariant get twelveMensMorris => RuleVariant.fromRuleSettings(
-        const TwelveMensMorrisRuleSettings(),
-      );
+  static RuleVariant get twelveMensMorris =>
+      RuleVariant.fromRuleSettings(const TwelveMensMorrisRuleSettings());
 
   /// Russian Mill (One-time Mill)
-  static RuleVariant get russianMill => RuleVariant.fromRuleSettings(
-        const OneTimeMillRuleSettings(),
-      );
+  static RuleVariant get russianMill =>
+      RuleVariant.fromRuleSettings(const OneTimeMillRuleSettings());
 
   /// Morabaraba
-  static RuleVariant get morabaraba => RuleVariant.fromRuleSettings(
-        const MorabarabaRuleSettings(),
-      );
+  static RuleVariant get morabaraba =>
+      RuleVariant.fromRuleSettings(const MorabarabaRuleSettings());
 
   /// Cham Gonu
-  static RuleVariant get chamGonu => RuleVariant.fromRuleSettings(
-        const ChamGonuRuleSettings(),
-      );
+  static RuleVariant get chamGonu =>
+      RuleVariant.fromRuleSettings(const ChamGonuRuleSettings());
 
   /// Get all predefined variants
   static List<RuleVariant> get all => <RuleVariant>[
-        nineMensMorris,
-        twelveMensMorris,
-        russianMill,
-        morabaraba,
-        chamGonu,
-      ];
+    nineMensMorris,
+    twelveMensMorris,
+    russianMill,
+    morabaraba,
+    chamGonu,
+  ];
 
   /// Get variant by ID
   static RuleVariant? getById(String id) {

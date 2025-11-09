@@ -2896,5 +2896,21 @@
     "edit": "Edit",
     "@edit": {
         "description": "Edit button"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "No Custom Puzzles",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "This feature is planned for a future release",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
     }
 }

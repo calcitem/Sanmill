@@ -56,73 +56,66 @@ class PuzzleCard extends StatelessWidget {
                 children: <Widget>[
                   // Selection indicator (if in multi-select mode)
                   if (showSelection) ...<Widget>[
-                    Checkbox(
-                      value: selected,
-                      onChanged: (_) => onTap?.call(),
-                    ),
+                    Checkbox(value: selected, onChanged: (_) => onTap?.call()),
                     const SizedBox(width: 8),
                   ],
-              // Category icon
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: _getDifficultyColor().withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  puzzle.category.icon,
-                  color: _getDifficultyColor(),
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 12),
-
-              // Puzzle info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // Title
-                    Text(
-                      puzzle.title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                  // Category icon
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: _getDifficultyColor().withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    const SizedBox(height: 4),
-
-                    // Description
-                    Text(
-                      puzzle.description,
-                      style: Theme.of(context).textTheme.bodySmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    child: Icon(
+                      puzzle.category.icon,
+                      color: _getDifficultyColor(),
+                      size: 28,
                     ),
-                    const SizedBox(height: 4),
+                  ),
+                  const SizedBox(width: 12),
 
-                    // Difficulty and category badges
-                    Wrap(
-                      spacing: 4,
+                  // Puzzle info
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _buildBadge(
-                          puzzle.difficulty.getDisplayName(S.of, context),
-                          _getDifficultyColor(),
+                        // Title
+                        Text(
+                          puzzle.title,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        _buildBadge(
-                          puzzle.category.getDisplayName(S.of, context),
-                          Colors.blue,
+                        const SizedBox(height: 4),
+
+                        // Description
+                        Text(
+                          puzzle.description,
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        if (showCustomBadge)
-                          _buildBadge(
-                            s.puzzleCustom,
-                            Colors.purple,
-                          ),
+                        const SizedBox(height: 4),
+
+                        // Difficulty and category badges
+                        Wrap(
+                          spacing: 4,
+                          children: <Widget>[
+                            _buildBadge(
+                              puzzle.difficulty.getDisplayName(S.of, context),
+                              _getDifficultyColor(),
+                            ),
+                            _buildBadge(
+                              puzzle.category.getDisplayName(S.of, context),
+                              Colors.blue,
+                            ),
+                            if (showCustomBadge)
+                              _buildBadge(s.puzzleCustom, Colors.purple),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
 
                   // Progress indicator
                   if (!showSelection)
@@ -157,10 +150,7 @@ class PuzzleCard extends StatelessWidget {
                 top: 4,
                 right: 4,
                 child: IconButton(
-                  icon: const Icon(
-                    FluentIcons.edit_24_regular,
-                    size: 20,
-                  ),
+                  icon: const Icon(FluentIcons.edit_24_regular, size: 20),
                   onPressed: onEdit,
                   tooltip: s.edit,
                   padding: const EdgeInsets.all(4),

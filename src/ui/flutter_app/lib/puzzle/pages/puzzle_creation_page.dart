@@ -6,8 +6,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
-import '../../game_page/services/controller.dart';
-import '../../game_page/services/engine/engine.dart';
+import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -16,10 +15,7 @@ import '../services/puzzle_manager.dart';
 
 /// Page for creating custom puzzles
 class PuzzleCreationPage extends StatefulWidget {
-  const PuzzleCreationPage({
-    super.key,
-    this.puzzleToEdit,
-  });
+  const PuzzleCreationPage({super.key, this.puzzleToEdit});
 
   /// If provided, edit this puzzle instead of creating a new one
   final PuzzleInfo? puzzleToEdit;
@@ -82,7 +78,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
   /// Capture the current board position as the puzzle starting position
   void _capturePosition() {
     final GameController controller = GameController();
-    final String fen = controller.position.fen;
+    final String fen = controller.position.fen ?? '';
 
     setState(() {
       _capturedPosition = fen;
@@ -111,7 +107,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     }
 
     final GameController controller = GameController();
-    _moveCountBeforeRecording = controller.recorder.movesMainLine.length;
+    _moveCountBeforeRecording = controller.gameRecorder.mainlineMoves.length;
 
     setState(() {
       _isRecordingSolution = true;
@@ -131,7 +127,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
   /// Stop recording solution moves
   void _stopRecordingSolution() {
     final GameController controller = GameController();
-    final List<ExtMove> allMoves = controller.recorder.movesMainLine;
+    final List<ExtMove> allMoves = controller.gameRecorder.mainlineMoves;
 
     // Extract moves recorded during solution recording
     final List<String> recordedMoves = <String>[];
@@ -153,7 +149,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       ),
     );
 
-    logger.i("$_tag Stopped recording, captured ${_solutionMoves.length} moves");
+    logger.i(
+      "$_tag Stopped recording, captured ${_solutionMoves.length} moves",
+    );
   }
 
   /// Clear recorded solution moves
@@ -190,10 +188,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     final String? error = _validatePuzzle();
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(error), backgroundColor: Colors.red),
       );
       return;
     }
@@ -238,7 +233,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
     if (success) {
       logger.i("$_tag Puzzle saved: ${puzzle.title}");
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -253,7 +250,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
       Navigator.of(context).pop(true);
     } else {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -269,9 +268,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _isEditing
-              ? S.of(context).puzzleEdit
-              : S.of(context).puzzleCreateNew,
+          _isEditing ? S.of(context).puzzleEdit : S.of(context).puzzleCreateNew,
         ),
         actions: <Widget>[
           IconButton(
@@ -308,7 +305,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
   Widget _buildInstructionsCard() {
     return Card(
-      color: AppTheme.puzzleCardColor,
+      color: AppTheme.cardColor,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -330,10 +327,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             const SizedBox(height: 8),
             Text(
               S.of(context).puzzleCreationSteps,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[300],
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey[300]),
             ),
           ],
         ),
@@ -350,10 +344,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
           children: <Widget>[
             Text(
               S.of(context).puzzleSetupPosition,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
             if (_capturedPosition != null) ...<Widget>[
@@ -396,10 +387,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
           children: <Widget>[
             Text(
               S.of(context).puzzleRecordSolution,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
             if (_solutionMoves.isNotEmpty) ...<Widget>[
@@ -411,7 +399,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               Wrap(
                 spacing: 4,
                 runSpacing: 4,
-                children: _solutionMoves.asMap().entries.map((MapEntry<int, String> entry) {
+                children: _solutionMoves.asMap().entries.map((
+                  MapEntry<int, String> entry,
+                ) {
                   return Chip(
                     label: Text(
                       '${entry.key + 1}. ${entry.value}',
@@ -439,7 +429,10 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     ),
                     child: Row(
                       children: <Widget>[
-                        const Icon(FluentIcons.record_24_regular, color: Colors.white),
+                        const Icon(
+                          FluentIcons.record_24_regular,
+                          color: Colors.white,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           S.of(context).puzzleRecording,
@@ -495,10 +488,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
           children: <Widget>[
             Text(
               S.of(context).puzzleDetails,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 16),
 
@@ -508,7 +498,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               decoration: InputDecoration(
                 labelText: S.of(context).puzzleTitle,
                 border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.text_24_regular),
+                prefixIcon: const Icon(FluentIcons.textbox_24_regular),
               ),
             ),
             const SizedBox(height: 12),
@@ -527,7 +517,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
             // Category
             DropdownButtonFormField<PuzzleCategory>(
-              value: _selectedCategory,
+              initialValue: _selectedCategory,
               decoration: InputDecoration(
                 labelText: S.of(context).puzzleCategory,
                 border: const OutlineInputBorder(),
@@ -551,7 +541,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
             // Difficulty
             DropdownButtonFormField<PuzzleDifficulty>(
-              value: _selectedDifficulty,
+              initialValue: _selectedDifficulty,
               decoration: InputDecoration(
                 labelText: S.of(context).puzzleDifficulty,
                 border: const OutlineInputBorder(),
@@ -577,7 +567,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             TextField(
               controller: _hintController,
               decoration: InputDecoration(
-                labelText: '${S.of(context).puzzleHint} (${S.of(context).optional})',
+                labelText:
+                    '${S.of(context).puzzleHint} (${S.of(context).optional})',
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(FluentIcons.lightbulb_24_regular),
               ),
@@ -589,7 +580,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             TextField(
               controller: _tagsController,
               decoration: InputDecoration(
-                labelText: '${S.of(context).puzzleTags} (${S.of(context).optional})',
+                labelText:
+                    '${S.of(context).puzzleTags} (${S.of(context).optional})',
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(FluentIcons.tag_24_regular),
                 hintText: S.of(context).puzzleTagsHint,
@@ -601,7 +593,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             TextField(
               controller: _authorController,
               decoration: InputDecoration(
-                labelText: '${S.of(context).puzzleAuthor} (${S.of(context).optional})',
+                labelText:
+                    '${S.of(context).puzzleAuthor} (${S.of(context).optional})',
                 border: const OutlineInputBorder(),
                 prefixIcon: const Icon(FluentIcons.person_24_regular),
               ),

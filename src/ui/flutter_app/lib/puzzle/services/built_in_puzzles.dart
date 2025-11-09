@@ -30,12 +30,14 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.formMill,
       difficulty: PuzzleDifficulty.beginner,
       // White has two pieces in a row, needs one more to form a mill
-      initialPosition: 'OO*****/*******/******* w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
+      initialPosition:
+          'OO*****/*******/******* w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['c1'], // Complete the mill
       ],
       optimalMoveCount: 1,
-      hint: 'Look for two pieces in a row. Place your piece to complete the line.',
+      hint:
+          'Look for two pieces in a row. Place your piece to complete the line.',
       tags: <String>['beginner', 'mill', 'placement'],
     ),
     PuzzleInfo(
@@ -45,7 +47,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.formMill,
       difficulty: PuzzleDifficulty.beginner,
       // White needs to complete a vertical mill
-      initialPosition: 'O******/*******/O****** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
+      initialPosition:
+          'O******/*******/O****** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['a4'], // Complete vertical mill
       ],
@@ -62,7 +65,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.formMill,
       difficulty: PuzzleDifficulty.easy,
       // Position allowing double mill setup
-      initialPosition: 'O*O**@@/O*O**@@/******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 1',
+      initialPosition:
+          'O*O**@@/O*O**@@/******* w p p 4 5 4 5 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['b1', 'd2'], // Create two mill threats
       ],
@@ -77,7 +81,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.capturePieces,
       difficulty: PuzzleDifficulty.easy,
       // Position where forming a mill leads to capture
-      initialPosition: 'OO***@@/*******/@****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1',
+      initialPosition:
+          'OO***@@/*******/@****** w p p 3 6 3 6 0 0 0 0 0 0 0 0 1',
       solutionMoves: <List<String>>[
         <String>['c1', 'xf1'], // Form mill then remove
       ],
@@ -94,7 +99,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.winGame,
       difficulty: PuzzleDifficulty.medium,
       // Moving phase with winning combination
-      initialPosition: 'O@O****/O@O****/******* w m s 3 0 3 0 0 0 0 0 0 0 0 0 5',
+      initialPosition:
+          'O@O****/O@O****/******* w m s 3 0 3 0 0 0 0 0 0 0 0 0 5',
       solutionMoves: <List<String>>[
         <String>['a1-d1', 'd1-d2'], // Winning moves
       ],
@@ -109,7 +115,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.winGame,
       difficulty: PuzzleDifficulty.medium,
       // Complex mid-game position
-      initialPosition: '*O@**O@/*O@**O@/******* w m s 4 0 4 0 0 0 0 0 0 0 0 0 6',
+      initialPosition:
+          '*O@**O@/*O@**O@/******* w m s 4 0 4 0 0 0 0 0 0 0 0 0 6',
       solutionMoves: <List<String>>[
         <String>['b1-a1', 'b2-b1'], // Force winning position
       ],
@@ -126,12 +133,13 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.defend,
       difficulty: PuzzleDifficulty.hard,
       // Defensive scenario
-      initialPosition: 'O@O*@*@/O@O*@*@/******* w m s 4 0 5 0 0 0 0 0 0 0 0 0 7',
+      initialPosition:
+          'O@O*@*@/O@O*@*@/******* w m s 4 0 5 0 0 0 0 0 0 0 0 0 7',
       solutionMoves: <List<String>>[
         <String>['a1-d1'], // Block opponent's threat
       ],
       optimalMoveCount: 1,
-      hint: 'Block the opponent\'s mill formation path.',
+      hint: "Block the opponent's mill formation path.",
       tags: <String>['hard', 'defense', 'tactics'],
     ),
     PuzzleInfo(
@@ -141,7 +149,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.endgame,
       difficulty: PuzzleDifficulty.hard,
       // Three pieces each - flying phase
-      initialPosition: 'O**@***/O**@***/O**@*** w m s 3 0 3 0 0 0 0 0 0 0 0 0 10',
+      initialPosition:
+          'O**@***/O**@***/O**@*** w m s 3 0 3 0 0 0 0 0 0 0 0 0 10',
       solutionMoves: <List<String>>[
         <String>['a1-c1', 'c1-c2'], // Flying to win
       ],
@@ -158,7 +167,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.opening,
       difficulty: PuzzleDifficulty.expert,
       // Opening position with strategic potential
-      initialPosition: 'O*O*@@*/O******/******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 3',
+      initialPosition:
+          'O*O*@@*/O******/******* w p p 3 6 3 6 0 0 0 0 0 0 0 0 3',
       solutionMoves: <List<String>>[
         <String>['b1', 'd1'], // Create multiple threats
       ],
@@ -173,7 +183,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.findBestMove,
       difficulty: PuzzleDifficulty.expert,
       // Critical position with one correct solution
-      initialPosition: 'OO@@**@/*O@@**@/******* w m s 4 0 5 0 0 0 0 0 0 0 0 0 8',
+      initialPosition:
+          'OO@@**@/*O@@**@/******* w m s 4 0 5 0 0 0 0 0 0 0 0 0 8',
       solutionMoves: <List<String>>[
         <String>['a1-a4', 'b2-b1'], // Precise sequence
       ],
@@ -190,7 +201,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.mixed,
       difficulty: PuzzleDifficulty.master,
       // Extremely complex position
-      initialPosition: 'O@O@*@@/OO@@*@@/@****** w m s 5 0 6 0 0 0 0 0 0 0 0 0 12',
+      initialPosition:
+          'O@O@*@@/OO@@*@@/@****** w m s 5 0 6 0 0 0 0 0 0 0 0 0 12',
       solutionMoves: <List<String>>[
         <String>['a1-a7'], // Complex winning move
       ],
@@ -205,7 +217,8 @@ List<PuzzleInfo> getBuiltInPuzzles() {
       category: PuzzleCategory.endgame,
       difficulty: PuzzleDifficulty.master,
       // Perfect play required
-      initialPosition: 'O**@***/O**@***/***@*** w m s 2 0 3 0 0 0 0 0 0 0 0 0 15',
+      initialPosition:
+          'O**@***/O**@***/***@*** w m s 2 0 3 0 0 0 0 0 0 0 0 0 15',
       solutionMoves: <List<String>>[
         <String>['a1-c1', 'a2-c2'], // Perfect technique
       ],

@@ -44,6 +44,24 @@ enum PuzzleDifficulty {
     }
   }
 
+  /// Returns a localized display name using context (convenience method)
+  String displayName(BuildContext context) {
+    return getDisplayName(S.of, context);
+  }
+
+  /// Returns an icon for this difficulty
+  IconData get icon {
+    switch (this) {
+      case PuzzleDifficulty.beginner:
+      case PuzzleDifficulty.easy:
+      case PuzzleDifficulty.medium:
+      case PuzzleDifficulty.hard:
+      case PuzzleDifficulty.expert:
+      case PuzzleDifficulty.master:
+        return FluentIcons.star_24_regular;
+    }
+  }
+
   /// Returns the star rating threshold for this difficulty
   /// (moves over optimal to still get 3 stars)
   int get starThreshold {

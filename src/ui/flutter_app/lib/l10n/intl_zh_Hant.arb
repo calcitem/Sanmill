@@ -2146,5 +2146,21 @@
     "highlightCapturablePieces": "高亮可吃掉的棋子",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
+    },
+    "save": "儲存",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "無自訂謎題",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "建立您自己的謎題來練習特定局面",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "此功能計劃在未來版本中發布",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
     }
 }

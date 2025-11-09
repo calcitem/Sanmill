@@ -19,6 +19,24 @@ class PuzzleProgress {
     this.completionDate,
   });
 
+  /// Create from JSON
+  factory PuzzleProgress.fromJson(Map<String, dynamic> json) {
+    return PuzzleProgress(
+      puzzleId: json['puzzleId'] as String,
+      completed: json['completed'] as bool? ?? false,
+      stars: json['stars'] as int? ?? 0,
+      bestMoveCount: json['bestMoveCount'] as int?,
+      attempts: json['attempts'] as int? ?? 0,
+      hintsUsed: json['hintsUsed'] as int? ?? 0,
+      lastAttemptDate: json['lastAttemptDate'] != null
+          ? DateTime.parse(json['lastAttemptDate'] as String)
+          : null,
+      completionDate: json['completionDate'] != null
+          ? DateTime.parse(json['completionDate'] as String)
+          : null,
+    );
+  }
+
   /// Puzzle ID this progress belongs to
   @HiveField(0)
   final String puzzleId;
@@ -114,23 +132,5 @@ class PuzzleProgress {
       'lastAttemptDate': lastAttemptDate?.toIso8601String(),
       'completionDate': completionDate?.toIso8601String(),
     };
-  }
-
-  /// Create from JSON
-  factory PuzzleProgress.fromJson(Map<String, dynamic> json) {
-    return PuzzleProgress(
-      puzzleId: json['puzzleId'] as String,
-      completed: json['completed'] as bool? ?? false,
-      stars: json['stars'] as int? ?? 0,
-      bestMoveCount: json['bestMoveCount'] as int?,
-      attempts: json['attempts'] as int? ?? 0,
-      hintsUsed: json['hintsUsed'] as int? ?? 0,
-      lastAttemptDate: json['lastAttemptDate'] != null
-          ? DateTime.parse(json['lastAttemptDate'] as String)
-          : null,
-      completionDate: json['completionDate'] != null
-          ? DateTime.parse(json['completionDate'] as String)
-          : null,
-    );
   }
 }
