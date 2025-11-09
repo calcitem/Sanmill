@@ -2344,7 +2344,7 @@
     "@puzzleImport": {
         "description": "Import puzzles from file"
     },
-    "puzzleExportSuccess": "成功导出 {count} 个谜题",
+    "puzzleExportSuccess": "{count,plural, other{成功导出 {count} 个谜题}}",
     "@puzzleExportSuccess": {
         "description": "Puzzle export success message",
         "placeholders": {
@@ -2357,7 +2357,7 @@
     "@puzzleExportFailed": {
         "description": "Puzzle export failure message"
     },
-    "puzzleImportSuccess": "成功导入 {count} 个谜题",
+    "puzzleImportSuccess": "{count,plural, other{成功导入 {count} 个谜题}}",
     "@puzzleImportSuccess": {
         "description": "Puzzle import success message",
         "placeholders": {
@@ -2370,7 +2370,7 @@
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
-    "puzzleDeleteConfirm": "删除 {count} 个谜题？",
+    "puzzleDeleteConfirm": "{count,plural, other{删除 {count} 个谜题？}}",
     "@puzzleDeleteConfirm": {
         "description": "Confirm deletion of puzzles",
         "placeholders": {
@@ -2379,7 +2379,7 @@
             }
         }
     },
-    "puzzleDeleted": "已删除 {count} 个谜题",
+    "puzzleDeleted": "{count,plural, other{已删除 {count} 个谜题}}",
     "@puzzleDeleted": {
         "description": "Puzzles deleted message",
         "placeholders": {
@@ -2440,7 +2440,7 @@
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
-    "puzzleRecordingStopped": "已录制 {count} 步",
+    "puzzleRecordingStopped": "{count,plural, other{已录制 {count} 步}}",
     "@puzzleRecordingStopped": {
         "description": "Recording stopped message",
         "placeholders": {
@@ -2449,7 +2449,7 @@
             }
         }
     },
-    "puzzleSolutionMoves": "解答：{count} 步",
+    "puzzleSolutionMoves": "{count,plural, other{解答：{count} 步}}",
     "@puzzleSolutionMoves": {
         "description": "Number of solution moves",
         "placeholders": {
