@@ -178,7 +178,10 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   /// Build active rush screen
   Widget _buildRushScreen(S s) {
-    if (_currentPuzzleIndex >= _rushPuzzles.length || _livesRemaining <= 0) {
+    // Check if rush should end (time up, out of lives, or no puzzles)
+    if (_remainingSeconds <= 0 ||
+        _livesRemaining <= 0 ||
+        _currentPuzzleIndex >= _rushPuzzles.length) {
       return _buildResultsScreen(s);
     }
 
@@ -435,16 +438,25 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_remainingSeconds <= 0) {
+        timer.cancel();
+        // Trigger rebuild to show results screen
+        if (mounted) {
+          setState(() {});
+        }
+        return;
+      }
+
       setState(() {
         _remainingSeconds--;
-        if (_remainingSeconds <= 0) {
-          timer.cancel();
-        }
       });
     });
   }
 
   void _onPuzzleSolved() {
+    // Don't process if time is up
+    if (_remainingSeconds <= 0) return;
+
     setState(() {
       _solvedCount++;
       _currentPuzzleIndex++;
@@ -452,6 +464,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   void _onPuzzleFailed() {
+    // Don't process if time is up or already out of lives
+    if (_remainingSeconds <= 0 || _livesRemaining <= 0) return;
+
     setState(() {
       _failedCount++;
       _livesRemaining--;

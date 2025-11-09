@@ -430,6 +430,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _onPuzzleSolved() {
+    // Don't process if already failed
+    if (_failed) return;
+
     setState(() {
       _currentStreak++;
       if (_currentStreak > _bestStreak) {
@@ -440,6 +443,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _onPuzzleFailed() {
+    // Don't process if already failed
+    if (_failed) return;
+
     setState(() {
       _failed = true;
       _elapsedTime = DateTime.now().difference(_startTime!);
@@ -456,7 +462,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
         return AlertDialog(
           title: Text(s.confirm),
           content: Text(s.puzzleStreakQuitConfirm),
-          actions: <Widget>[\
+          actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(s.cancel),
