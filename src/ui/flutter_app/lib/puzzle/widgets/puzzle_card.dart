@@ -5,6 +5,7 @@
 //
 // Widget representing a puzzle card in the list
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
@@ -16,29 +17,51 @@ class PuzzleCard extends StatelessWidget {
     required this.puzzle,
     this.progress,
     this.onTap,
+    this.onLongPress,
+    this.isSelected,
+    this.showCustomBadge = false,
+    this.onEdit,
     super.key,
   });
 
   final PuzzleInfo puzzle;
   final PuzzleProgress? progress;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final bool? isSelected;
+  final bool showCustomBadge;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
     final bool isCompleted = progress?.completed ?? false;
     final int stars = progress?.stars ?? 0;
+    final bool showSelection = isSelected != null;
+    final bool selected = isSelected ?? false;
 
     return Card(
-      elevation: 2,
+      elevation: selected ? 8 : 2,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      color: selected ? Colors.blue.withOpacity(0.1) : null,
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            children: <Widget>[
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: <Widget>[
+                  // Selection indicator (if in multi-select mode)
+                  if (showSelection) ...<Widget>[
+                    Checkbox(
+                      value: selected,
+                      onChanged: (_) => onTap?.call(),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
               // Category icon
               Container(
                 width: 48,
@@ -90,36 +113,61 @@ class PuzzleCard extends StatelessWidget {
                           puzzle.category.getDisplayName(S.of, context),
                           Colors.blue,
                         ),
+                        if (showCustomBadge)
+                          _buildBadge(
+                            s.puzzleCustom,
+                            Colors.purple,
+                          ),
                       ],
                     ),
                   ],
                 ),
               ),
 
-              // Progress indicator
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  if (isCompleted)
-                    Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                      size: 32,
-                    )
-                  else
-                    Icon(
-                      Icons.radio_button_unchecked,
-                      color: Colors.grey,
-                      size: 32,
-                    ),
-                  const SizedBox(height: 4),
+                  // Progress indicator
+                  if (!showSelection)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        if (isCompleted)
+                          const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 32,
+                          )
+                        else
+                          const Icon(
+                            Icons.radio_button_unchecked,
+                            color: Colors.grey,
+                            size: 32,
+                          ),
+                        const SizedBox(height: 4),
 
-                  // Stars
-                  if (isCompleted) _buildStars(stars),
+                        // Stars
+                        if (isCompleted) _buildStars(stars),
+                      ],
+                    ),
                 ],
               ),
-            ],
-          ),
+            ),
+
+            // Edit button for custom puzzles (top-right corner)
+            if (onEdit != null && !showSelection)
+              Positioned(
+                top: 4,
+                right: 4,
+                child: IconButton(
+                  icon: const Icon(
+                    FluentIcons.edit_24_regular,
+                    size: 20,
+                  ),
+                  onPressed: onEdit,
+                  tooltip: s.edit,
+                  padding: const EdgeInsets.all(4),
+                  constraints: const BoxConstraints(),
+                ),
+              ),
+          ],
         ),
       ),
     );

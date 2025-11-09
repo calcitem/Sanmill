@@ -19,7 +19,11 @@ class PuzzleInfo extends HiveObject {
     required this.optimalMoveCount,
     this.hint,
     this.tags = const <String>[],
-  });
+    this.isCustom = false,
+    this.author,
+    DateTime? createdDate,
+    this.version = 1,
+  }) : createdDate = createdDate ?? DateTime.now();
 
   /// Unique identifier for the puzzle
   @HiveField(0)
@@ -62,6 +66,22 @@ class PuzzleInfo extends HiveObject {
   @HiveField(9)
   final List<String> tags;
 
+  /// Whether this is a user-created custom puzzle
+  @HiveField(10)
+  final bool isCustom;
+
+  /// Author name (for custom puzzles)
+  @HiveField(11)
+  final String? author;
+
+  /// Creation date
+  @HiveField(12)
+  final DateTime createdDate;
+
+  /// Puzzle format version for compatibility
+  @HiveField(13)
+  final int version;
+
   /// Creates a copy with updated fields
   PuzzleInfo copyWith({
     String? id,
@@ -74,6 +94,10 @@ class PuzzleInfo extends HiveObject {
     int? optimalMoveCount,
     String? hint,
     List<String>? tags,
+    bool? isCustom,
+    String? author,
+    DateTime? createdDate,
+    int? version,
   }) {
     return PuzzleInfo(
       id: id ?? this.id,
@@ -86,6 +110,10 @@ class PuzzleInfo extends HiveObject {
       optimalMoveCount: optimalMoveCount ?? this.optimalMoveCount,
       hint: hint ?? this.hint,
       tags: tags ?? this.tags,
+      isCustom: isCustom ?? this.isCustom,
+      author: author ?? this.author,
+      createdDate: createdDate ?? this.createdDate,
+      version: version ?? this.version,
     );
   }
 
@@ -102,6 +130,10 @@ class PuzzleInfo extends HiveObject {
       'optimalMoveCount': optimalMoveCount,
       'hint': hint,
       'tags': tags,
+      'isCustom': isCustom,
+      'author': author,
+      'createdDate': createdDate.toIso8601String(),
+      'version': version,
     };
   }
 
@@ -128,6 +160,12 @@ class PuzzleInfo extends HiveObject {
               ?.map((dynamic e) => e as String)
               .toList() ??
           const <String>[],
+      isCustom: json['isCustom'] as bool? ?? false,
+      author: json['author'] as String?,
+      createdDate: json['createdDate'] != null
+          ? DateTime.parse(json['createdDate'] as String)
+          : DateTime.now(),
+      version: json['version'] as int? ?? 1,
     );
   }
 }
