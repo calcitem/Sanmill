@@ -73,7 +73,7 @@ jobs:
       - name: Install dependencies
         run: bash -x ./flutter-init.sh
 
-      # Build APK and AAB
+      # Build APK and AAB for release (release branch uploads AAB to Play Store)
       - name: Build APK and AAB
         run: |
           cd src/ui/flutter_app

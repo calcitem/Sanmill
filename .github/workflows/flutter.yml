@@ -56,8 +56,8 @@ jobs:
         run: bash -x ./flutter-init.sh
 
 
-      # Build
-      - name: Build apk
+      # Build APK and AAB for testing (build branch does NOT upload to Play Store)
+      - name: Build APK and AAB
         run: cd src/ui/flutter_app; rm android/app/build.gradle; mv android/app/build.gradle_github android/app/build.gradle; flutter build apk -v; flutter build appbundle -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -65,16 +65,16 @@ jobs:
           ALIAS: ${{ secrets.ALIAS }}
           KEY_PATH: key.jks
 
-      # Archive apk
-      - name: Archive apk
+      # Archive APK for download
+      - name: Archive APK
         uses: actions/upload-artifact@v4
         with:
-          name: sanmill-flutter-apk-release
+          name: sanmill-flutter-apk-build
           path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
 
-      # Archive aab
-      - name: Archive aab
+      # Archive AAB for download (NOT uploaded to Play Store on build branch)
+      - name: Archive AAB
         uses: actions/upload-artifact@v4
         with:
-          name: sanmill-flutter-aab-release
+          name: sanmill-flutter-aab-build
           path: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
