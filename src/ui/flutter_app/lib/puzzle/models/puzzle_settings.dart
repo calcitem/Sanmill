@@ -16,6 +16,30 @@ class PuzzleSettings {
     this.soundEnabled = true,
   });
 
+  /// Create from JSON
+  factory PuzzleSettings.fromJson(Map<String, dynamic> json) {
+    return PuzzleSettings(
+      allPuzzles:
+          (json['allPuzzles'] as List<dynamic>?)
+              ?.map(
+                (dynamic e) => PuzzleInfo.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const <PuzzleInfo>[],
+      progressMap:
+          (json['progressMap'] as Map<String, dynamic>?)?.map(
+            (String k, dynamic v) => MapEntry<String, PuzzleProgress>(
+              k,
+              PuzzleProgress.fromJson(v as Map<String, dynamic>),
+            ),
+          ) ??
+          const <String, PuzzleProgress>{},
+      showHints: json['showHints'] as bool? ?? true,
+      autoShowSolution: json['autoShowSolution'] as bool? ?? false,
+      soundEnabled: json['soundEnabled'] as bool? ?? true,
+    );
+  }
+
   /// All available puzzles
   @HiveField(0)
   final List<PuzzleInfo> allPuzzles;
@@ -60,8 +84,9 @@ class PuzzleSettings {
 
   /// Update progress for a specific puzzle
   PuzzleSettings updateProgress(PuzzleProgress progress) {
-    final Map<String, PuzzleProgress> newMap =
-        Map<String, PuzzleProgress>.from(progressMap);
+    final Map<String, PuzzleProgress> newMap = Map<String, PuzzleProgress>.from(
+      progressMap,
+    );
     newMap[progress.puzzleId] = progress;
     return copyWith(progressMap: newMap);
   }
@@ -81,7 +106,9 @@ class PuzzleSettings {
 
   /// Get completion percentage
   double get completionPercentage {
-    if (allPuzzles.isEmpty) return 0.0;
+    if (allPuzzles.isEmpty) {
+      return 0.0;
+    }
     return (totalCompleted / allPuzzles.length) * 100;
   }
 
@@ -89,32 +116,13 @@ class PuzzleSettings {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'allPuzzles': allPuzzles.map((PuzzleInfo p) => p.toJson()).toList(),
-      'progressMap': progressMap
-          .map((String k, PuzzleProgress v) => MapEntry<String, dynamic>(k, v.toJson())),
+      'progressMap': progressMap.map(
+        (String k, PuzzleProgress v) =>
+            MapEntry<String, dynamic>(k, v.toJson()),
+      ),
       'showHints': showHints,
       'autoShowSolution': autoShowSolution,
       'soundEnabled': soundEnabled,
     };
-  }
-
-  /// Create from JSON
-  factory PuzzleSettings.fromJson(Map<String, dynamic> json) {
-    return PuzzleSettings(
-      allPuzzles: (json['allPuzzles'] as List<dynamic>?)
-              ?.map((dynamic e) =>
-                  PuzzleInfo.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <PuzzleInfo>[],
-      progressMap: (json['progressMap'] as Map<String, dynamic>?)?.map(
-            (String k, dynamic v) => MapEntry<String, PuzzleProgress>(
-              k,
-              PuzzleProgress.fromJson(v as Map<String, dynamic>),
-            ),
-          ) ??
-          const <String, PuzzleProgress>{},
-      showHints: json['showHints'] as bool? ?? true,
-      autoShowSolution: json['autoShowSolution'] as bool? ?? false,
-      soundEnabled: json['soundEnabled'] as bool? ?? true,
-    );
   }
 }

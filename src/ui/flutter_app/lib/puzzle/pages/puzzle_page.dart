@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../game_page/services/controller/game_controller.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
@@ -71,8 +70,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
     controller.gameInstance.gameMode = GameMode.puzzle;
 
     // Load the initial position from FEN
-    final bool loaded =
-        controller.position.setFen(widget.puzzle.initialPosition);
+    final bool loaded = controller.position.setFen(
+      widget.puzzle.initialPosition,
+    );
     if (!loaded) {
       logger.e(
         '[PuzzlePage] Failed to load puzzle position: '
@@ -175,11 +175,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              _buildStatChip(
-                s.moves,
-                _moveCount.toString(),
-                Icons.swap_horiz,
-              ),
+              _buildStatChip(s.moves, _moveCount.toString(), Icons.swap_horiz),
               _buildStatChip(
                 s.optimal,
                 widget.puzzle.optimalMoveCount.toString(),
@@ -206,16 +202,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              label,
-              style: const TextStyle(fontSize: 10),
-            ),
+            Text(label, style: const TextStyle(fontSize: 10)),
             Text(
               value,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
           ],
         ),
@@ -274,8 +264,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   void _checkSolution({bool autoCheck = false}) {
     final GameController controller = GameController();
-    final ValidationFeedback feedback =
-        _validator.validateSolution(controller.position);
+    final ValidationFeedback feedback = _validator.validateSolution(
+      controller.position,
+    );
 
     if (feedback.result == ValidationResult.correct) {
       _onPuzzleSolved(feedback);
@@ -370,9 +361,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final PuzzleHint? hint = _hintService.getNextHint(_moveCount);
 
     if (hint == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No more hints available')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('No more hints available')));
       return;
     }
 
@@ -455,10 +446,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
 /// Wrapper widget for GamePage that monitors move completion
 class _PuzzleGameBoard extends StatefulWidget {
-  const _PuzzleGameBoard({
-    required this.puzzle,
-    required this.onMoveCompleted,
-  });
+  const _PuzzleGameBoard({required this.puzzle, required this.onMoveCompleted});
 
   final PuzzleInfo puzzle;
   final VoidCallback onMoveCompleted;
@@ -510,9 +498,6 @@ class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
   @override
   Widget build(BuildContext context) {
     // Use GamePage with puzzle mode
-    return GamePage(
-      GameMode.puzzle,
-      key: const Key('puzzle_game'),
-    );
+    return GamePage(GameMode.puzzle, key: const Key('puzzle_game'));
   }
 }

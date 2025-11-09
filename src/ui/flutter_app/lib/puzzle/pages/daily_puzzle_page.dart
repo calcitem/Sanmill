@@ -35,9 +35,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
     if (puzzle == null) {
       return Scaffold(
         appBar: AppBar(title: Text(s.dailyPuzzle)),
-        body: Center(
-          child: Text(s.noPuzzlesAvailable),
-        ),
+        body: Center(child: Text(s.noPuzzlesAvailable)),
       );
     }
 
@@ -114,7 +112,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                         ),
                       ],
                     ),
-                    if (dailyInfo.longestStreak > dailyInfo.currentStreak) ...<Widget>[
+                    if (dailyInfo.longestStreak >
+                        dailyInfo.currentStreak) ...<Widget>[
                       const SizedBox(height: 8),
                       Text(
                         s.dailyPuzzleBestStreak(dailyInfo.longestStreak),
@@ -220,7 +219,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
             // Hint: How to improve streak
             if (!isCompleted)
               Card(
-                color: Colors.blue.withOpacity(0.1),
+                color: Colors.blue.withValues(alpha: 0.1),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
@@ -249,8 +248,18 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
   /// Format date for display
   String _formatDate(DateTime date) {
     final List<String> months = <String>[
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
@@ -275,14 +284,16 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
 
   /// Start the puzzle
   void _startPuzzle(PuzzleInfo puzzle) {
-    Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => PuzzlePage(puzzle: puzzle),
-      ),
-    ).then((_) {
-      // Refresh the page when returning
-      setState(() {});
-    });
+    Navigator.of(context)
+        .push<void>(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => PuzzlePage(puzzle: puzzle),
+          ),
+        )
+        .then((_) {
+          // Refresh the page when returning
+          setState(() {});
+        });
   }
 
   /// Show streak information dialog
@@ -342,7 +353,12 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
     );
   }
 
-  Widget _buildStreakRow(String label, String value, IconData icon, Color color) {
+  Widget _buildStreakRow(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -355,10 +371,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
         ),
         Text(
           value,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: color),
         ),
       ],
     );

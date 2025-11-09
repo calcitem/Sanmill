@@ -5,15 +5,11 @@
 //
 // Hive type adapters for puzzle models
 
-library puzzle_adapters;
-
-import 'dart:convert' as convert;
+library;
 
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import 'puzzle_models.dart';
-
-part 'puzzle_adapters.g.dart';
 
 /// Type ids reserved for puzzle-related Hive adapters.
 const int puzzleInfoTypeId = 30;

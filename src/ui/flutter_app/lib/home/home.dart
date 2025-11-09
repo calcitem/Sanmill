@@ -161,6 +161,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.setupPosition:
         logger.i('Switching to Setup Position');
         break;
+      case _DrawerIndex.puzzles:
+        logger.i('Switching to Puzzles');
+        break;
       case _DrawerIndex.statistics:
         logger.i('Switching to Statistics');
         break;
@@ -286,6 +289,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.humanVsLAN:
       case _DrawerIndex.setupPosition:
         return true;
+      case _DrawerIndex.puzzles:
       case _DrawerIndex.statistics:
       case _DrawerIndex.settingsGroup:
       case _DrawerIndex.generalSettings:

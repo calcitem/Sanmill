@@ -223,9 +223,13 @@ class EloRatingService {
           // Setup position mode ratings not tracked
           logger.i("$_logTag Setup position mode, not updating stats");
           break;
+        case GameMode.puzzle:
+          // Puzzle mode has its own tracking system
+          logger.i("$_logTag Puzzle mode, not updating general stats");
+          break;
         case GameMode.testViaLAN:
-          // LAN games don't update stats
-          logger.i("$_logTag Test via LAN game, not updating stats");
+          // Test mode doesn't track stats
+          logger.i("$_logTag Test via LAN mode, not updating stats");
           break;
       }
     } catch (e) {

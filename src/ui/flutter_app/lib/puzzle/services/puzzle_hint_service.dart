@@ -51,17 +51,16 @@ class PuzzleHintService {
   /// Get the next hint
   /// Hints are progressive: textual -> next move -> show solution
   PuzzleHint? getNextHint(int currentMoveIndex) {
-    logger.i("$_tag Getting hint (level $_currentHintLevel) for puzzle ${puzzle.id}");
+    logger.i(
+      "$_tag Getting hint (level $_currentHintLevel) for puzzle ${puzzle.id}",
+    );
 
     if (_currentHintLevel == 0) {
       // First hint: provide textual hint if available
       _currentHintLevel++;
       _hintsGiven++;
       if (puzzle.hint != null && puzzle.hint!.isNotEmpty) {
-        return PuzzleHint(
-          type: HintType.textual,
-          content: puzzle.hint!,
-        );
+        return PuzzleHint(type: HintType.textual, content: puzzle.hint!);
       }
       // If no textual hint, fall through to next level
     }
@@ -103,10 +102,7 @@ class PuzzleHintService {
     switch (type) {
       case HintType.textual:
         if (puzzle.hint != null && puzzle.hint!.isNotEmpty) {
-          return PuzzleHint(
-            type: HintType.textual,
-            content: puzzle.hint!,
-          );
+          return PuzzleHint(type: HintType.textual, content: puzzle.hint!);
         }
         return null;
 

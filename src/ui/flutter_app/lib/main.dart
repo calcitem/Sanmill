@@ -25,6 +25,7 @@ import 'game_page/services/mill.dart';
 import 'game_page/services/painters/painters.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
+import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
 import 'shared/services/environment_config.dart';
@@ -35,7 +36,6 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
-import 'puzzle/services/puzzle_manager.dart';
 
 part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';

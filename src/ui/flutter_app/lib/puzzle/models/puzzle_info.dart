@@ -24,8 +24,46 @@ class PuzzleInfo extends HiveObject {
     DateTime? createdDate,
     this.version = 1,
     this.rating,
-    this.ruleVariantId = 'standard_9mm', // Default to standard Nine Men's Morris
+    this.ruleVariantId =
+        'standard_9mm', // Default to standard Nine Men's Morris
   }) : createdDate = createdDate ?? DateTime.now();
+
+  /// Create from JSON
+  factory PuzzleInfo.fromJson(Map<String, dynamic> json) {
+    return PuzzleInfo(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      category: PuzzleCategory.values.firstWhere(
+        (PuzzleCategory e) => e.name == json['category'],
+      ),
+      difficulty: PuzzleDifficulty.values.firstWhere(
+        (PuzzleDifficulty e) => e.name == json['difficulty'],
+      ),
+      initialPosition: json['initialPosition'] as String,
+      solutionMoves: (json['solutionMoves'] as List<dynamic>)
+          .map(
+            (dynamic e) =>
+                (e as List<dynamic>).map((dynamic m) => m as String).toList(),
+          )
+          .toList(),
+      optimalMoveCount: json['optimalMoveCount'] as int,
+      hint: json['hint'] as String?,
+      tags:
+          (json['tags'] as List<dynamic>?)
+              ?.map((dynamic e) => e as String)
+              .toList() ??
+          const <String>[],
+      isCustom: json['isCustom'] as bool? ?? false,
+      author: json['author'] as String?,
+      createdDate: json['createdDate'] != null
+          ? DateTime.parse(json['createdDate'] as String)
+          : DateTime.now(),
+      version: json['version'] as int? ?? 1,
+      rating: json['rating'] as int?,
+      ruleVariantId: json['ruleVariantId'] as String? ?? 'standard_9mm',
+    );
+  }
 
   /// Unique identifier for the puzzle
   @HiveField(0)
@@ -153,39 +191,5 @@ class PuzzleInfo extends HiveObject {
       'rating': rating,
       'ruleVariantId': ruleVariantId,
     };
-  }
-
-  /// Create from JSON
-  factory PuzzleInfo.fromJson(Map<String, dynamic> json) {
-    return PuzzleInfo(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      category: PuzzleCategory.values.firstWhere(
-        (PuzzleCategory e) => e.name == json['category'],
-      ),
-      difficulty: PuzzleDifficulty.values.firstWhere(
-        (PuzzleDifficulty e) => e.name == json['difficulty'],
-      ),
-      initialPosition: json['initialPosition'] as String,
-      solutionMoves: (json['solutionMoves'] as List<dynamic>)
-          .map((dynamic e) =>
-              (e as List<dynamic>).map((dynamic m) => m as String).toList())
-          .toList(),
-      optimalMoveCount: json['optimalMoveCount'] as int,
-      hint: json['hint'] as String?,
-      tags: (json['tags'] as List<dynamic>?)
-              ?.map((dynamic e) => e as String)
-              .toList() ??
-          const <String>[],
-      isCustom: json['isCustom'] as bool? ?? false,
-      author: json['author'] as String?,
-      createdDate: json['createdDate'] != null
-          ? DateTime.parse(json['createdDate'] as String)
-          : DateTime.now(),
-      version: json['version'] as int? ?? 1,
-      rating: json['rating'] as int?,
-      ruleVariantId: json['ruleVariantId'] as String? ?? 'standard_9mm',
-    );
   }
 }

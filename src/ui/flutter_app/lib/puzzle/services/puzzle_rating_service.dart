@@ -7,8 +7,8 @@
 
 import 'dart:math';
 
-import '../models/puzzle_models.dart';
 import '../../shared/services/logger.dart';
+import '../models/puzzle_models.dart';
 
 /// User's puzzle rating and statistics
 class PuzzleRating {
@@ -130,7 +130,9 @@ class PuzzleRatingService {
 
     _saveAttemptResult(result);
 
-    logger.i("$_tag Rating updated: $oldRating -> ${userRating.rating} (${ratingChange >= 0 ? '+' : ''}$ratingChange)");
+    logger.i(
+      "$_tag Rating updated: $oldRating -> ${userRating.rating} (${ratingChange >= 0 ? '+' : ''}$ratingChange)",
+    );
 
     return result;
   }
@@ -149,7 +151,8 @@ class PuzzleRatingService {
         : _kFactorNormal;
 
     // Expected score based on rating difference
-    final double expectedScore = 1.0 / (1.0 + pow(10.0, (puzzleRating - userRating.rating) / 400.0));
+    final double expectedScore =
+        1.0 / (1.0 + pow(10.0, (puzzleRating - userRating.rating) / 400.0));
 
     // Actual score (1 for success, 0 for failure)
     final double actualScore = success ? 1.0 : 0.0;
@@ -218,15 +221,22 @@ class PuzzleRatingService {
     final List<PuzzleAttemptResult> history = getAttemptHistory();
 
     final int totalAttempts = history.length;
-    final int successCount = history.where((PuzzleAttemptResult r) => r.success).length;
-    final double successRate = totalAttempts > 0 ? (successCount / totalAttempts) * 100 : 0.0;
+    final int successCount = history
+        .where((PuzzleAttemptResult r) => r.success)
+        .length;
+    final double successRate = totalAttempts > 0
+        ? (successCount / totalAttempts) * 100
+        : 0.0;
 
     // Calculate average solve time (successful puzzles only)
-    final List<PuzzleAttemptResult> successful = history.where((PuzzleAttemptResult r) => r.success).toList();
+    final List<PuzzleAttemptResult> successful = history
+        .where((PuzzleAttemptResult r) => r.success)
+        .toList();
     final Duration avgTime = successful.isEmpty
         ? Duration.zero
         : Duration(
-            seconds: successful
+            seconds:
+                successful
                     .map((PuzzleAttemptResult r) => r.timeSpent.inSeconds)
                     .reduce((int a, int b) => a + b) ~/
                 successful.length,

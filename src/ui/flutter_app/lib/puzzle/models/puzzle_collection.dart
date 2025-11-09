@@ -6,18 +6,13 @@
 // Puzzle collection management - groups puzzles by rule variant
 
 import 'puzzle_models.dart';
-import 'rule_schema_version.dart';
-import 'rule_variant.dart';
 
 /// A collection of puzzles for a specific rule variant
 ///
 /// This groups puzzles that are designed for the same rule set.
 /// Puzzles within a collection can be sorted by difficulty, category, rating, etc.
 class PuzzleCollection {
-  PuzzleCollection({
-    required this.variant,
-    required this.puzzles,
-  });
+  PuzzleCollection({required this.variant, required this.puzzles});
 
   /// The rule variant for this collection
   final RuleVariant variant;
@@ -27,9 +22,7 @@ class PuzzleCollection {
 
   /// Get puzzles filtered by difficulty
   List<PuzzleInfo> getPuzzlesByDifficulty(PuzzleDifficulty difficulty) {
-    return puzzles
-        .where((PuzzleInfo p) => p.difficulty == difficulty)
-        .toList();
+    return puzzles.where((PuzzleInfo p) => p.difficulty == difficulty).toList();
   }
 
   /// Get puzzles filtered by category
@@ -40,8 +33,12 @@ class PuzzleCollection {
   /// Get puzzles filtered by rating range
   List<PuzzleInfo> getPuzzlesByRatingRange(int minRating, int maxRating) {
     return puzzles
-        .where((PuzzleInfo p) =>
-            p.rating != null && p.rating! >= minRating && p.rating! <= maxRating)
+        .where(
+          (PuzzleInfo p) =>
+              p.rating != null &&
+              p.rating! >= minRating &&
+              p.rating! <= maxRating,
+        )
         .toList();
   }
 
@@ -58,13 +55,18 @@ class PuzzleCollection {
   /// Get puzzles sorted by difficulty (easiest first)
   List<PuzzleInfo> getSortedByDifficulty() {
     final List<PuzzleInfo> sorted = List<PuzzleInfo>.from(puzzles);
-    sorted.sort((PuzzleInfo a, PuzzleInfo b) => a.difficulty.index.compareTo(b.difficulty.index));
+    sorted.sort(
+      (PuzzleInfo a, PuzzleInfo b) =>
+          a.difficulty.index.compareTo(b.difficulty.index),
+    );
     return sorted;
   }
 
   /// Get puzzles sorted by rating (lowest first)
   List<PuzzleInfo> getSortedByRating() {
-    final List<PuzzleInfo> sorted = puzzles.where((PuzzleInfo p) => p.rating != null).toList();
+    final List<PuzzleInfo> sorted = puzzles
+        .where((PuzzleInfo p) => p.rating != null)
+        .toList();
     sorted.sort((PuzzleInfo a, PuzzleInfo b) => a.rating!.compareTo(b.rating!));
     return sorted;
   }
@@ -84,7 +86,9 @@ class PuzzleCollection {
   Map<PuzzleDifficulty, int> _countByDifficulty() {
     final Map<PuzzleDifficulty, int> counts = <PuzzleDifficulty, int>{};
     for (final PuzzleDifficulty diff in PuzzleDifficulty.values) {
-      counts[diff] = puzzles.where((PuzzleInfo p) => p.difficulty == diff).length;
+      counts[diff] = puzzles
+          .where((PuzzleInfo p) => p.difficulty == diff)
+          .length;
     }
     return counts;
   }
@@ -98,10 +102,17 @@ class PuzzleCollection {
   }
 
   double? _calculateAverageRating() {
-    final List<PuzzleInfo> rated = puzzles.where((PuzzleInfo p) => p.rating != null).toList();
-    if (rated.isEmpty) return null;
+    final List<PuzzleInfo> rated = puzzles
+        .where((PuzzleInfo p) => p.rating != null)
+        .toList();
+    if (rated.isEmpty) {
+      return null;
+    }
 
-    final int sum = rated.fold<int>(0, (int sum, PuzzleInfo p) => sum + p.rating!);
+    final int sum = rated.fold<int>(
+      0,
+      (int sum, PuzzleInfo p) => sum + p.rating!,
+    );
     return sum / rated.length;
   }
 }
@@ -132,7 +143,8 @@ class PuzzleCollectionManager {
   }
 
   final List<PuzzleInfo> _allPuzzles;
-  final Map<String, PuzzleCollection> _collections = <String, PuzzleCollection>{};
+  final Map<String, PuzzleCollection> _collections =
+      <String, PuzzleCollection>{};
 
   /// Build collections grouped by rule variant
   ///
@@ -141,7 +153,8 @@ class PuzzleCollectionManager {
     _collections.clear();
 
     // Group puzzles by rule variant ID (with migration support)
-    final Map<String, List<PuzzleInfo>> groupedPuzzles = <String, List<PuzzleInfo>>{};
+    final Map<String, List<PuzzleInfo>> groupedPuzzles =
+        <String, List<PuzzleInfo>>{};
     for (final PuzzleInfo puzzle in _allPuzzles) {
       // Get the current variant ID (may be migrated from old hash)
       final String variantId = _getMigratedVariantId(puzzle.ruleVariantId);
@@ -150,7 +163,8 @@ class PuzzleCollectionManager {
     }
 
     // Create collections
-    for (final MapEntry<String, List<PuzzleInfo>> entry in groupedPuzzles.entries) {
+    for (final MapEntry<String, List<PuzzleInfo>> entry
+        in groupedPuzzles.entries) {
       final String variantId = entry.key;
       final List<PuzzleInfo> puzzles = entry.value;
 
@@ -170,7 +184,7 @@ class PuzzleCollectionManager {
   /// This ensures old puzzles are still accessible after schema changes
   String _getMigratedVariantId(String originalId) {
     // Check if this ID needs migration
-    final RuleMigrationManager migrationManager = const RuleMigrationManager();
+    const RuleMigrationManager migrationManager = RuleMigrationManager();
 
     if (migrationManager.needsMigration(originalId)) {
       final String? migratedId = migrationManager.migrate(originalId);

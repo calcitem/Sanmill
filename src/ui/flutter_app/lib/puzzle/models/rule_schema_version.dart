@@ -28,10 +28,7 @@ enum RuleSchemaVersion {
 
 /// Rule schema defines which parameters are included in hash calculation
 class RuleSchema {
-  const RuleSchema({
-    required this.version,
-    required this.parameters,
-  });
+  const RuleSchema({required this.version, required this.parameters});
 
   /// Schema version
   final RuleSchemaVersion version;
@@ -136,7 +133,7 @@ class VersionedRuleHashCalculator {
 
   /// Calculate hash using latest schema version
   String calculateLatestHash(RuleSettings settings) {
-    return calculateHash(settings, version: RuleSchemaVersion.v1);
+    return calculateHash(settings);
   }
 
   /// Calculate hash with a specific schema

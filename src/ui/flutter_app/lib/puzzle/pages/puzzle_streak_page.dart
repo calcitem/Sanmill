@@ -33,8 +33,6 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   bool _failed = false;
 
   // Stopwatch for tracking time
-  DateTime? _startTime;
-  Duration _elapsedTime = Duration.zero;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +50,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   /// Build setup/intro screen
   Widget _buildSetupScreen(S s) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.puzzleStreak),
-      ),
+      appBar: AppBar(title: Text(s.puzzleStreak)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -76,7 +72,8 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                     const SizedBox(height: 16),
                     Text(
                       s.puzzleStreak,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.purple,
                           ),
@@ -103,13 +100,22 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                     Text(
                       s.puzzleStreakRules,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 12),
-                    _buildRuleItem(s.puzzleStreakRule1, FluentIcons.target_24_regular),
-                    _buildRuleItem(s.puzzleStreakRule2, FluentIcons.dismiss_circle_24_regular),
-                    _buildRuleItem(s.puzzleStreakRule3, FluentIcons.trophy_24_regular),
+                    _buildRuleItem(
+                      s.puzzleStreakRule1,
+                      FluentIcons.target_24_regular,
+                    ),
+                    _buildRuleItem(
+                      s.puzzleStreakRule2,
+                      FluentIcons.dismiss_circle_24_regular,
+                    ),
+                    _buildRuleItem(
+                      s.puzzleStreakRule3,
+                      FluentIcons.trophy_24_regular,
+                    ),
                   ],
                 ),
               ),
@@ -223,11 +229,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   ],
                 ),
                 // Divider
-                Container(
-                  height: 60,
-                  width: 1,
-                  color: Colors.grey,
-                ),
+                Container(height: 60, width: 1, color: Colors.grey),
                 // Best streak
                 Column(
                   children: <Widget>[
@@ -273,9 +275,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     final bool newRecord = _currentStreak > _bestStreak;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.puzzleStreakResults),
-      ),
+      appBar: AppBar(title: Text(s.puzzleStreakResults)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -293,8 +293,8 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
               Text(
                 newRecord ? s.puzzleStreakNewRecord : s.puzzleStreakEnded,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
@@ -416,7 +416,6 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       _currentPuzzleIndex = 0;
       _currentStreak = 0;
       _failed = false;
-      _startTime = DateTime.now();
     });
   }
 
@@ -431,7 +430,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
   void _onPuzzleSolved() {
     // Don't process if already failed
-    if (_failed) return;
+    if (_failed) {
+      return;
+    }
 
     setState(() {
       _currentStreak++;
@@ -444,11 +445,12 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
   void _onPuzzleFailed() {
     // Don't process if already failed
-    if (_failed) return;
+    if (_failed) {
+      return;
+    }
 
     setState(() {
       _failed = true;
-      _elapsedTime = DateTime.now().difference(_startTime!);
     });
 
     // TODO: Save streak result to database

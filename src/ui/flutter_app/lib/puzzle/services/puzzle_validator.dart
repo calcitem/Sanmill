@@ -99,7 +99,6 @@ class PuzzleValidator {
     return ValidationFeedback(
       result: ValidationResult.correct,
       message: "Correct! You found an alternative solution!",
-      isOptimal: false,
       moveCount: _playerMoves.length,
     );
   }

@@ -322,8 +322,8 @@ class PiecePainter extends CustomPainter {
     if (DB().displaySettings.isCapturablePiecesHighlightShown &&
         GameController().gameInstance.gameMode != GameMode.setupPosition &&
         GameController().position.action == Act.remove) {
-      final List<int> capturablePieces =
-          GameController().position.getCapturablePieces();
+      final List<int> capturablePieces = GameController().position
+          .getCapturablePieces();
 
       paint.color = DB().colorSettings.capturablePieceHighlightColor;
       paint.style = PaintingStyle.stroke;

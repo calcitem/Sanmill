@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../models/puzzle_models.dart';
-import '../services/puzzle_manager.dart';
 import '../services/puzzle_rating_service.dart';
 
 /// Advanced statistics page for puzzles
@@ -23,7 +22,6 @@ class PuzzleStatsPage extends StatefulWidget {
 
 class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
   final PuzzleRatingService _ratingService = PuzzleRatingService();
-  final PuzzleManager _puzzleManager = PuzzleManager();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +30,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     final PuzzleRating rating = _ratingService.getUserRating();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(s.puzzleStatistics),
-      ),
+      appBar: AppBar(title: Text(s.puzzleStatistics)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -153,9 +149,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsPerformance,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Row(
@@ -232,13 +228,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
               color: color,
             ),
           ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
-          ),
+          Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
         ],
       ),
     );
@@ -246,13 +236,14 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
 
   Widget _buildDifficultyStatsCard(S s) {
     // TODO: Calculate actual stats from history
-    final List<MapEntry<PuzzleDifficulty, double>> difficultyStats = <MapEntry<PuzzleDifficulty, double>>[
-      MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.beginner, 85.0),
-      MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.easy, 75.0),
-      MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.medium, 60.0),
-      MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.hard, 45.0),
-      MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.expert, 30.0),
-      MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.master, 15.0),
+    final List<MapEntry<PuzzleDifficulty, double>>
+    difficultyStats = <MapEntry<PuzzleDifficulty, double>>[
+      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.beginner, 85.0),
+      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.easy, 75.0),
+      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.medium, 60.0),
+      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.hard, 45.0),
+      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.expert, 30.0),
+      const MapEntry<PuzzleDifficulty, double>(PuzzleDifficulty.master, 15.0),
     ];
 
     return Card(
@@ -263,9 +254,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsByDifficulty,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ...difficultyStats.map((MapEntry<PuzzleDifficulty, double> entry) {
@@ -286,12 +277,16 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
 
   Widget _buildCategoryStatsCard(S s) {
     // TODO: Calculate actual stats from history
-    final List<MapEntry<PuzzleCategory, double>> categoryStats = <MapEntry<PuzzleCategory, double>>[
-      MapEntry<PuzzleCategory, double>(PuzzleCategory.formMill, 70.0),
-      MapEntry<PuzzleCategory, double>(PuzzleCategory.capturePieces, 65.0),
-      MapEntry<PuzzleCategory, double>(PuzzleCategory.winGame, 55.0),
-      MapEntry<PuzzleCategory, double>(PuzzleCategory.defend, 50.0),
-    ];
+    final List<MapEntry<PuzzleCategory, double>> categoryStats =
+        <MapEntry<PuzzleCategory, double>>[
+          const MapEntry<PuzzleCategory, double>(PuzzleCategory.formMill, 70.0),
+          const MapEntry<PuzzleCategory, double>(
+            PuzzleCategory.capturePieces,
+            65.0,
+          ),
+          const MapEntry<PuzzleCategory, double>(PuzzleCategory.winGame, 55.0),
+          const MapEntry<PuzzleCategory, double>(PuzzleCategory.defend, 50.0),
+        ];
 
     return Card(
       child: Padding(
@@ -301,9 +296,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsByCategory,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ...categoryStats.map((MapEntry<PuzzleCategory, double> entry) {
@@ -332,10 +327,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             Text(label),
             Text(
               '${percentage.toStringAsFixed(0)}%',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, color: color),
             ),
           ],
         ),
@@ -361,9 +353,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsRecentActivity,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             if (recentAttempts.isEmpty)
@@ -372,9 +364,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     s.puzzleStatsNoActivity,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
                   ),
                 ),
               )
@@ -427,10 +419,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         Text(
           label,

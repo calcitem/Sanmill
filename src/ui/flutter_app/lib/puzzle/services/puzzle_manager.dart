@@ -43,8 +43,9 @@ class PuzzleManager {
   Future<void> loadBuiltInPuzzles() async {
     logger.i("$_tag Loading built-in puzzles");
     final List<PuzzleInfo> builtInPuzzles = _getBuiltInPuzzles();
-    final PuzzleSettings newSettings =
-        settingsNotifier.value.copyWith(allPuzzles: builtInPuzzles);
+    final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
+      allPuzzles: builtInPuzzles,
+    );
     _saveSettings(newSettings);
   }
 
@@ -70,8 +71,9 @@ class PuzzleManager {
   /// Get a specific puzzle by ID
   PuzzleInfo? getPuzzleById(String id) {
     try {
-      return settingsNotifier.value.allPuzzles
-          .firstWhere((PuzzleInfo p) => p.id == id);
+      return settingsNotifier.value.allPuzzles.firstWhere(
+        (PuzzleInfo p) => p.id == id,
+      );
     } catch (e) {
       logger.w("$_tag Puzzle with id $id not found");
       return null;
@@ -86,8 +88,9 @@ class PuzzleManager {
   /// Update progress for a puzzle
   void updateProgress(PuzzleProgress progress) {
     logger.i("$_tag Updating progress for puzzle ${progress.puzzleId}");
-    final PuzzleSettings newSettings =
-        settingsNotifier.value.updateProgress(progress);
+    final PuzzleSettings newSettings = settingsNotifier.value.updateProgress(
+      progress,
+    );
     _saveSettings(newSettings);
   }
 
@@ -101,7 +104,8 @@ class PuzzleManager {
   }) {
     final PuzzleProgress? currentProgress = getProgress(puzzleId);
     final int attempts = (currentProgress?.attempts ?? 0) + 1;
-    final int totalHintsUsed = (currentProgress?.hintsUsed ?? 0) + (hintsUsed ? 1 : 0);
+    final int totalHintsUsed =
+        (currentProgress?.hintsUsed ?? 0) + (hintsUsed ? 1 : 0);
 
     final int stars = PuzzleProgress.calculateStars(
       moveCount: moveCount,
@@ -110,7 +114,8 @@ class PuzzleManager {
       hintsUsed: hintsUsed,
     );
 
-    final bool isNewBest = currentProgress == null ||
+    final bool isNewBest =
+        currentProgress == null ||
         currentProgress.bestMoveCount == null ||
         moveCount < currentProgress.bestMoveCount!;
 
@@ -122,7 +127,7 @@ class PuzzleManager {
           : (currentProgress?.stars ?? 0),
       bestMoveCount: isNewBest
           ? moveCount
-          : (currentProgress?.bestMoveCount ?? moveCount),
+          : (currentProgress.bestMoveCount ?? moveCount),
       attempts: attempts,
       hintsUsed: totalHintsUsed,
       lastAttemptDate: DateTime.now(),
@@ -137,7 +142,8 @@ class PuzzleManager {
   void recordAttempt(String puzzleId, {bool hintUsed = false}) {
     final PuzzleProgress? currentProgress = getProgress(puzzleId);
     final int attempts = (currentProgress?.attempts ?? 0) + 1;
-    final int hintsUsed = (currentProgress?.hintsUsed ?? 0) + (hintUsed ? 1 : 0);
+    final int hintsUsed =
+        (currentProgress?.hintsUsed ?? 0) + (hintUsed ? 1 : 0);
 
     final PuzzleProgress newProgress = PuzzleProgress(
       puzzleId: puzzleId,
@@ -156,21 +162,16 @@ class PuzzleManager {
   /// Reset progress for a specific puzzle
   void resetProgress(String puzzleId) {
     logger.i("$_tag Resetting progress for puzzle $puzzleId");
-    final PuzzleProgress newProgress = PuzzleProgress(
-      puzzleId: puzzleId,
-      completed: false,
-      stars: 0,
-      attempts: 0,
-      hintsUsed: 0,
-    );
+    final PuzzleProgress newProgress = PuzzleProgress(puzzleId: puzzleId);
     updateProgress(newProgress);
   }
 
   /// Reset all puzzle progress
   void resetAllProgress() {
     logger.i("$_tag Resetting all puzzle progress");
-    final PuzzleSettings newSettings =
-        settingsNotifier.value.copyWith(progressMap: <String, PuzzleProgress>{});
+    final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
+      progressMap: <String, PuzzleProgress>{},
+    );
     _saveSettings(newSettings);
   }
 
@@ -193,7 +194,8 @@ class PuzzleManager {
   }) {
     final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
       showHints: showHints ?? settingsNotifier.value.showHints,
-      autoShowSolution: autoShowSolution ?? settingsNotifier.value.autoShowSolution,
+      autoShowSolution:
+          autoShowSolution ?? settingsNotifier.value.autoShowSolution,
       soundEnabled: soundEnabled ?? settingsNotifier.value.soundEnabled,
     );
     _saveSettings(newSettings);
@@ -220,8 +222,9 @@ class PuzzleManager {
     }
 
     logger.i("$_tag Adding custom puzzle: ${puzzle.title}");
-    final List<PuzzleInfo> updatedPuzzles = List<PuzzleInfo>.from(settingsNotifier.value.allPuzzles)
-      ..add(puzzle);
+    final List<PuzzleInfo> updatedPuzzles = List<PuzzleInfo>.from(
+      settingsNotifier.value.allPuzzles,
+    )..add(puzzle);
 
     final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
       allPuzzles: updatedPuzzles,
@@ -285,9 +288,12 @@ class PuzzleManager {
 
   /// Export puzzles to a file and share
   /// Returns true if successful
-  Future<bool> exportAndSharePuzzles(List<PuzzleInfo> puzzles, {String? fileName}) async {
+  Future<bool> exportAndSharePuzzles(
+    List<PuzzleInfo> puzzles, {
+    String? fileName,
+  }) async {
     logger.i("$_tag Exporting ${puzzles.length} puzzles");
-    return await PuzzleExportService.sharePuzzles(puzzles, fileName: fileName);
+    return PuzzleExportService.sharePuzzles(puzzles, fileName: fileName);
   }
 
   /// Import puzzles from a file
@@ -312,7 +318,9 @@ class PuzzleManager {
         }
       }
 
-      logger.i("$_tag Imported $addedCount puzzles, skipped $skippedCount duplicates");
+      logger.i(
+        "$_tag Imported $addedCount puzzles, skipped $skippedCount duplicates",
+      );
     }
 
     return result;
