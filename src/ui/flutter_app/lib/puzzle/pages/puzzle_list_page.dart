@@ -157,10 +157,10 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         FluentIcons.puzzle_piece_24_regular,
                         size: 64,
-                        color: Colors.grey,
+                        color: Colors.grey[400],
                       ),
                       const SizedBox(height: 16),
                       Text(

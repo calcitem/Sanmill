@@ -130,10 +130,10 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Icon(
+          Icon(
             FluentIcons.history_24_regular,
             size: 80,
-            color: Colors.grey,
+            color: Colors.grey[400],
           ),
           const SizedBox(height: 16),
           Text(
@@ -242,7 +242,7 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
               _formatTimestamp(attempt.timestamp),
               style: Theme.of(
                 context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+              ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
             ),
           ],
         ),

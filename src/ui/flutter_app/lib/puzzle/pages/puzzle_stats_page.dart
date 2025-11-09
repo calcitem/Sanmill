@@ -115,7 +115,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   '${rating.gamesPlayed}',
                   FluentIcons.games_24_regular,
                 ),
-                Container(width: 1, height: 40, color: Colors.grey),
+                Container(width: 1, height: 40, color: Colors.grey[700]),
                 _buildStatItem(
                   s.puzzleStatsDeviation,
                   '±${rating.ratingDeviation.round()}',
@@ -220,7 +220,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
               color: color,
             ),
           ),
-          Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+          Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[400])),
         ],
       ),
     );
@@ -251,7 +251,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                     s.puzzleStatsNoActivity,
                     style: Theme.of(
                       context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
                   ),
                 ),
               )
@@ -308,7 +308,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
         ),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey[400],
+              ),
           textAlign: TextAlign.center,
         ),
       ],
