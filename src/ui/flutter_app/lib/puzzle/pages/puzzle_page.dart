@@ -70,6 +70,16 @@ class _PuzzlePageState extends State<PuzzlePage> {
     controller.reset(force: true);
     controller.gameInstance.gameMode = GameMode.puzzle;
 
+    // Validate FEN format before loading
+    final Position tempPosition = Position();
+    if (!tempPosition.validateFen(widget.puzzle.initialPosition)) {
+      logger.e(
+        '[PuzzlePage] Invalid FEN format: ${widget.puzzle.initialPosition}',
+      );
+      _showFenErrorDialog();
+      return;
+    }
+
     // Load the initial position from FEN
     final bool loaded = controller.position.setFen(
       widget.puzzle.initialPosition,
@@ -79,6 +89,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
         '[PuzzlePage] Failed to load puzzle position: '
         '${widget.puzzle.initialPosition}',
       );
+      _showFenErrorDialog();
+      return;
     }
 
     // Store the starting position for exports and history
@@ -93,6 +105,42 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _lastRecordedMoveIndex = -1;
     _validator.reset();
     _hintService.reset();
+  }
+
+  /// Show error dialog when FEN validation fails
+  void _showFenErrorDialog() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Row(
+            children: <Widget>[
+              Icon(Icons.error, color: Colors.red),
+              SizedBox(width: 8),
+              Text('Invalid Puzzle'),
+            ],
+          ),
+          content: const Text(
+            'This puzzle has an invalid position format and cannot be loaded. '
+            'Please contact the puzzle author or try a different puzzle.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Back to List'),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   @override

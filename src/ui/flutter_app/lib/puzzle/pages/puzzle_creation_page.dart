@@ -80,6 +80,33 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     final GameController controller = GameController();
     final String fen = controller.position.fen ?? '';
 
+    // Validate FEN format before capturing
+    if (fen.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzleInvalidPosition),
+          backgroundColor: Colors.red,
+        ),
+      );
+      logger.e("$_tag Cannot capture empty FEN position");
+      return;
+    }
+
+    // Create a temporary position to validate the FEN
+    final Position tempPosition = Position();
+    final bool isValid = tempPosition.validateFen(fen);
+
+    if (!isValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid position format. Please check the game board.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      logger.e("$_tag Failed to validate FEN: $fen");
+      return;
+    }
+
     setState(() {
       _capturedPosition = fen;
     });
@@ -174,6 +201,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
     if (_capturedPosition == null) {
       return S.of(context).puzzlePositionRequired;
+    }
+
+    // Validate FEN format before saving
+    final Position tempPosition = Position();
+    if (!tempPosition.validateFen(_capturedPosition!)) {
+      return 'Invalid position format. Please recapture the position.';
     }
 
     if (_solutionMoves.isEmpty) {
