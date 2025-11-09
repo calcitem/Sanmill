@@ -49,7 +49,8 @@ class PuzzleExportService {
 
       return file.path;
     } catch (e) {
-      print('Error exporting puzzles: $e');
+      // Log error but don't expose details to production
+      assert(false, 'Error exporting puzzles: $e');
       return null;
     }
   }
@@ -67,7 +68,7 @@ class PuzzleExportService {
       }
 
       final XFile xFile = XFile(filePath);
-      final ShareResult result = await Share.shareXFiles(
+      final ShareResult result = await SharePlus.instance.shareXFiles(
         <XFile>[xFile],
         subject: 'Sanmill Puzzles (${puzzles.length})',
         text: 'Check out these ${puzzles.length} Sanmill puzzles!',
@@ -75,7 +76,8 @@ class PuzzleExportService {
 
       return result.status == ShareResultStatus.success;
     } catch (e) {
-      print('Error sharing puzzles: $e');
+      // Log error but don't expose details to production
+      assert(false, 'Error sharing puzzles: $e');
       return false;
     }
   }
@@ -184,7 +186,8 @@ class PuzzleExportService {
           jsonDecode(jsonString) as Map<String, dynamic>;
       return PuzzleInfo.fromJson(json);
     } catch (e) {
-      print('Error importing puzzle from string: $e');
+      // Log error but don't expose details to production
+      assert(false, 'Error importing puzzle from string: $e');
       return null;
     }
   }
@@ -278,7 +281,7 @@ class PuzzleExportService {
       await file.writeAsString(jsonContent);
 
       // Share the file
-      final ShareResult result = await Share.shareXFiles(
+      final ShareResult result = await SharePlus.instance.shareXFiles(
         <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
         text:
@@ -288,7 +291,8 @@ class PuzzleExportService {
 
       return result.status == ShareResultStatus.success;
     } catch (e) {
-      print('Error sharing puzzle for contribution: $e');
+      // Log error but don't expose details to production
+      assert(false, 'Error sharing puzzle for contribution: $e');
       return false;
     }
   }
@@ -319,7 +323,7 @@ class PuzzleExportService {
       await file.writeAsString(jsonContent);
 
       // Share the file
-      final ShareResult result = await Share.shareXFiles(
+      final ShareResult result = await SharePlus.instance.shareXFiles(
         <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
         text:
@@ -329,7 +333,8 @@ class PuzzleExportService {
 
       return result.status == ShareResultStatus.success;
     } catch (e) {
-      print('Error sharing puzzles for contribution: $e');
+      // Log error but don't expose details to production
+      assert(false, 'Error sharing puzzles for contribution: $e');
       return false;
     }
   }
