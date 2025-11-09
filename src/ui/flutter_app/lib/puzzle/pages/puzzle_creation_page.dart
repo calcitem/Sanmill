@@ -99,7 +99,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     if (!isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Invalid position format. Please check the game board.'),
+          content: Text(
+            'Invalid position format. Please check the game board.',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -414,11 +416,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Tip: You\'ll navigate between this page and the game board. Your progress is saved!',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.orange[200],
-                      ),
+                      "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+                      style: TextStyle(fontSize: 12, color: Colors.orange[200]),
                     ),
                   ),
                 ],
@@ -450,11 +449,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             ),
             child: Center(
               child: isCompleted
-                  ? const Icon(
-                      Icons.check,
-                      size: 16,
-                      color: Colors.white,
-                    )
+                  ? const Icon(Icons.check, size: 16, color: Colors.white)
                   : Text(
                       number,
                       style: const TextStyle(
@@ -480,10 +475,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 ),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[400],
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                 ),
               ],
             ),
@@ -527,10 +519,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     Expanded(
                       child: Text(
                         'Go back and set up the puzzle starting position on the game board, then return here to capture it',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.blue[100],
-                        ),
+                        style: TextStyle(fontSize: 13, color: Colors.blue[100]),
                       ),
                     ),
                   ],
@@ -638,10 +627,22 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    _buildInstructionStep('1', 'Capture the starting position first'),
-                    _buildInstructionStep('2', 'Click "Start Recording" button below'),
-                    _buildInstructionStep('3', 'Go back and play the solution moves on the game board'),
-                    _buildInstructionStep('4', 'Return here and click "Stop Recording"'),
+                    _buildInstructionStep(
+                      '1',
+                      'Capture the starting position first',
+                    ),
+                    _buildInstructionStep(
+                      '2',
+                      'Click "Start Recording" button below',
+                    ),
+                    _buildInstructionStep(
+                      '3',
+                      'Go back and play the solution moves on the game board',
+                    ),
+                    _buildInstructionStep(
+                      '4',
+                      'Return here and click "Stop Recording"',
+                    ),
                   ],
                 ),
               ),
@@ -789,7 +790,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
           Container(
             width: 20,
             height: 20,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blue,
               shape: BoxShape.circle,
             ),
@@ -805,12 +806,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             ),
           ),
           const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 13),
-            ),
-          ),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 13))),
         ],
       ),
     );

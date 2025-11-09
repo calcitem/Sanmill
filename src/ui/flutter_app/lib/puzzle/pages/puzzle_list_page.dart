@@ -91,10 +91,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                 s.puzzleSelectedCount(_selectedPuzzleIds.length),
                 style: AppTheme.appBarTheme.titleTextStyle,
               )
-            : Text(
-                s.puzzles,
-                style: AppTheme.appBarTheme.titleTextStyle,
-              ),
+            : Text(s.puzzles, style: AppTheme.appBarTheme.titleTextStyle),
         leading: _isMultiSelectMode
             ? IconButton(
                 icon: const Icon(Icons.close),
@@ -284,7 +281,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                         value: _selectedDifficulties.contains(d),
                         onChanged: (bool? checked) {
                           setState(() {
-                            if (checked == true) {
+                            if (checked ?? false) {
                               _selectedDifficulties.add(d);
                             } else {
                               _selectedDifficulties.remove(d);
@@ -305,7 +302,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                         value: _selectedCategories.contains(c),
                         onChanged: (bool? checked) {
                           setState(() {
-                            if (checked == true) {
+                            if (checked ?? false) {
                               _selectedCategories.add(c);
                             } else {
                               _selectedCategories.remove(c);
