@@ -23,6 +23,7 @@ class PuzzleInfo extends HiveObject {
     this.author,
     DateTime? createdDate,
     this.version = 1,
+    this.rating,
   }) : createdDate = createdDate ?? DateTime.now();
 
   /// Unique identifier for the puzzle
@@ -82,6 +83,10 @@ class PuzzleInfo extends HiveObject {
   @HiveField(13)
   final int version;
 
+  /// Puzzle rating (ELO-based, optional)
+  @HiveField(14)
+  final int? rating;
+
   /// Creates a copy with updated fields
   PuzzleInfo copyWith({
     String? id,
@@ -98,6 +103,7 @@ class PuzzleInfo extends HiveObject {
     String? author,
     DateTime? createdDate,
     int? version,
+    int? rating,
   }) {
     return PuzzleInfo(
       id: id ?? this.id,
@@ -114,6 +120,7 @@ class PuzzleInfo extends HiveObject {
       author: author ?? this.author,
       createdDate: createdDate ?? this.createdDate,
       version: version ?? this.version,
+      rating: rating ?? this.rating,
     );
   }
 
@@ -134,6 +141,7 @@ class PuzzleInfo extends HiveObject {
       'author': author,
       'createdDate': createdDate.toIso8601String(),
       'version': version,
+      'rating': rating,
     };
   }
 
@@ -166,6 +174,7 @@ class PuzzleInfo extends HiveObject {
           ? DateTime.parse(json['createdDate'] as String)
           : DateTime.now(),
       version: json['version'] as int? ?? 1,
+      rating: json['rating'] as int?,
     );
   }
 }
