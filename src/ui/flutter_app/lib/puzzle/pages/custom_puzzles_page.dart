@@ -43,10 +43,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                 s.puzzleSelectedCount(_selectedPuzzleIds.length),
                 style: AppTheme.appBarTheme.titleTextStyle,
               )
-            : Text(
-                s.customPuzzles,
-                style: AppTheme.appBarTheme.titleTextStyle,
-              ),
+            : Text(s.customPuzzles, style: AppTheme.appBarTheme.titleTextStyle),
         leading: _isMultiSelectMode
             ? IconButton(
                 icon: const Icon(FluentIcons.dismiss_24_regular),

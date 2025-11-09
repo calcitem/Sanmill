@@ -7,6 +7,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
+import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -123,6 +124,16 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     logger.i("$_tag Captured position: $fen");
   }
 
+  /// Open the game board with the given mode and return when user goes back.
+  /// This keeps the creation page on the stack so state is preserved.
+  Future<void> _openGameBoard(GameMode mode) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => GamePage(mode),
+      ),
+    );
+  }
+
   /// Start recording solution moves
   void _startRecordingSolution() {
     if (_capturedPosition == null) {
@@ -151,16 +162,19 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       return;
     }
 
+    // Ensure we are in Human vs Human so AI will not interfere while recording.
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
+
     // Reset the game recorder to clear all previous moves
     controller.gameRecorder.reset();
-    controller.gameRecorder.setupPosition = _capturedPosition!;
+    controller.gameRecorder.setupPosition = _capturedPosition;
 
     // Refresh UI elements
     controller.headerIconsNotifier.showIcons();
     controller.boardSemanticsNotifier.updateSemantics();
 
-    // Start recording from move 0
-    _moveCountBeforeRecording = 0;
+    // Start recording from the current tail (more robust than assuming 0)
+    _moveCountBeforeRecording = controller.gameRecorder.mainlineMoves.length;
 
     setState(() {
       _isRecordingSolution = true;
@@ -597,6 +611,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 ],
               ),
             const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: () => _openGameBoard(GameMode.setupPosition),
+              icon: const Icon(FluentIcons.window_new_24_regular),
+              label: Text(S.of(context).puzzleOpenBoardSetup),
+            ),
+            const SizedBox(height: 8),
             ElevatedButton.icon(
               onPressed: _capturePosition,
               icon: const Icon(FluentIcons.camera_24_regular),
@@ -661,7 +681,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     ),
                     _buildInstructionStep(
                       '3',
-                      'Go back (press ← button) to the game board and play your solution moves',
+                      S.of(context).puzzleRecordingHintUseButton,
                     ),
                     _buildInstructionStep(
                       '4',
@@ -712,7 +732,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '→ Go back (press ← button) and play your solution moves',
+                      '→ ${S.of(context).puzzleRecordingHintUseButton}',
                       style: TextStyle(
                         color: Colors.green[100],
                         fontSize: 13,
@@ -781,14 +801,25 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               ),
             const SizedBox(height: 12),
             if (_isRecordingSolution)
-              ElevatedButton.icon(
-                onPressed: _stopRecordingSolution,
-                icon: const Icon(FluentIcons.stop_24_regular),
-                label: Text(S.of(context).puzzleStopRecording),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red[700],
-                  minimumSize: const Size(double.infinity, 48),
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  OutlinedButton.icon(
+                    onPressed: () => _openGameBoard(GameMode.humanVsHuman),
+                    icon: const Icon(FluentIcons.window_new_24_regular),
+                    label: Text(S.of(context).puzzleOpenBoardPlay),
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton.icon(
+                    onPressed: _stopRecordingSolution,
+                    icon: const Icon(FluentIcons.stop_24_regular),
+                    label: Text(S.of(context).puzzleStopRecording),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red[700],
+                      minimumSize: const Size(double.infinity, 48),
+                    ),
+                  ),
+                ],
               )
             else
               Wrap(

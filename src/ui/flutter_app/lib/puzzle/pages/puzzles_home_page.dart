@@ -38,10 +38,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.puzzles,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzles, style: AppTheme.appBarTheme.titleTextStyle),
         actions: <Widget>[
           // Statistics overview
           IconButton(
