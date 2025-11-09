@@ -308,13 +308,17 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     return Card(
       color: AppTheme.cardColor,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
               children: <Widget>[
-                const Icon(FluentIcons.info_24_regular, size: 20),
+                Icon(
+                  FluentIcons.lightbulb_24_regular,
+                  size: 24,
+                  color: Colors.amber[300],
+                ),
                 const SizedBox(width: 8),
                 Text(
                   S.of(context).puzzleCreationInstructions,
@@ -325,13 +329,133 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Text(
-              S.of(context).puzzleCreationSteps,
-              style: TextStyle(fontSize: 14, color: Colors.grey[300]),
+              'Puzzle Creation Workflow:',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue[200],
+              ),
+            ),
+            const SizedBox(height: 8),
+            _buildWorkflowStep(
+              '1',
+              'Setup Position',
+              'Go to game board, set up starting position, return and capture',
+              _capturedPosition != null,
+            ),
+            _buildWorkflowStep(
+              '2',
+              'Record Solution',
+              'Start recording, go back to board, play solution moves, return and stop',
+              _solutionMoves.isNotEmpty,
+            ),
+            _buildWorkflowStep(
+              '3',
+              'Add Details',
+              'Fill in title, description, category, difficulty, and tags',
+              false,
+            ),
+            _buildWorkflowStep(
+              '4',
+              'Save Puzzle',
+              'Click the save button in the top-right corner',
+              false,
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    FluentIcons.info_24_regular,
+                    size: 16,
+                    color: Colors.orange[300],
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Tip: You\'ll navigate between this page and the game board. Your progress is saved!',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.orange[200],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildWorkflowStep(
+    String number,
+    String title,
+    String description,
+    bool isCompleted,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: isCompleted ? Colors.green : Colors.blue,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: isCompleted
+                  ? const Icon(
+                      Icons.check,
+                      size: 16,
+                      color: Colors.white,
+                    )
+                  : Text(
+                      number,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: isCompleted ? Colors.green[300] : Colors.white,
+                  ),
+                ),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[400],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -348,24 +472,83 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
-            if (_capturedPosition != null) ...<Widget>[
-              Text(
-                S.of(context).puzzlePositionCaptured,
-                style: TextStyle(color: Colors.green[300], fontSize: 14),
+
+            // Instructions for position capture
+            if (_capturedPosition == null)
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.info_24_regular,
+                      size: 20,
+                      color: Colors.blue[300],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Go back and set up the puzzle starting position on the game board, then return here to capture it',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.blue[100],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 4),
-              SelectableText(
-                _capturedPosition!,
-                style: TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 12,
-                  color: Colors.grey[400],
+
+            if (_capturedPosition != null) ...<Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(
+                    FluentIcons.checkmark_circle_24_filled,
+                    color: Colors.green[300],
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    S.of(context).puzzlePositionCaptured,
+                    style: TextStyle(color: Colors.green[300], fontSize: 14),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: SelectableText(
+                  _capturedPosition!,
+                  style: TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 11,
+                    color: Colors.grey[300],
+                  ),
                 ),
               ),
             ] else
-              Text(
-                S.of(context).puzzleNoPositionCaptured,
-                style: TextStyle(color: Colors.grey[400], fontSize: 14),
+              Row(
+                children: <Widget>[
+                  Icon(
+                    FluentIcons.warning_24_regular,
+                    color: Colors.grey[400],
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    S.of(context).puzzleNoPositionCaptured,
+                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                  ),
+                ],
               ),
             const SizedBox(height: 12),
             ElevatedButton.icon(
@@ -391,12 +574,114 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
-            if (_solutionMoves.isNotEmpty) ...<Widget>[
-              Text(
-                S.of(context).puzzleSolutionMoves(_solutionMoves.length),
-                style: TextStyle(color: Colors.green[300], fontSize: 14),
+
+            // Instructions for solution recording
+            if (!_isRecordingSolution && _solutionMoves.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          FluentIcons.info_24_regular,
+                          size: 20,
+                          color: Colors.blue[300],
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'How to Record Solution:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue[300],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInstructionStep('1', 'Capture the starting position first'),
+                    _buildInstructionStep('2', 'Click "Start Recording" button below'),
+                    _buildInstructionStep('3', 'Go back and play the solution moves on the game board'),
+                    _buildInstructionStep('4', 'Return here and click "Stop Recording"'),
+                  ],
+                ),
               ),
-              const SizedBox(height: 4),
+
+            // Recording in progress instructions
+            if (_isRecordingSolution)
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.green.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.green),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          FluentIcons.record_24_filled,
+                          color: Colors.red[400],
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          S.of(context).puzzleRecording,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '→ Go back (press ← button) and play solution moves on the board',
+                      style: TextStyle(
+                        color: Colors.green[100],
+                        fontSize: 13,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '→ Return here when finished and click "Stop Recording"',
+                      style: TextStyle(
+                        color: Colors.green[100],
+                        fontSize: 13,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            const SizedBox(height: 8),
+            if (_solutionMoves.isNotEmpty) ...<Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(
+                    FluentIcons.checkmark_circle_24_filled,
+                    color: Colors.green[300],
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    S.of(context).puzzleSolutionMoves(_solutionMoves.length),
+                    style: TextStyle(color: Colors.green[300], fontSize: 14),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
               Wrap(
                 spacing: 4,
                 runSpacing: 4,
@@ -412,49 +697,31 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                   );
                 }).toList(),
               ),
-            ] else
-              Text(
-                S.of(context).puzzleNoSolutionRecorded,
-                style: TextStyle(color: Colors.grey[400], fontSize: 14),
+            ] else if (!_isRecordingSolution)
+              Row(
+                children: <Widget>[
+                  Icon(
+                    FluentIcons.warning_24_regular,
+                    color: Colors.grey[400],
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    S.of(context).puzzleNoSolutionRecorded,
+                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                  ),
+                ],
               ),
             const SizedBox(height: 12),
             if (_isRecordingSolution)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.green[700],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(
-                          FluentIcons.record_24_regular,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          S.of(context).puzzleRecording,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton.icon(
-                    onPressed: _stopRecordingSolution,
-                    icon: const Icon(FluentIcons.stop_24_regular),
-                    label: Text(S.of(context).puzzleStopRecording),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red[700],
-                    ),
-                  ),
-                ],
+              ElevatedButton.icon(
+                onPressed: _stopRecordingSolution,
+                icon: const Icon(FluentIcons.stop_24_regular),
+                label: Text(S.of(context).puzzleStopRecording),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red[700],
+                  minimumSize: const Size(double.infinity, 48),
+                ),
               )
             else
               Wrap(
@@ -476,6 +743,42 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInstructionStep(String number, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                number,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 13),
+            ),
+          ),
+        ],
       ),
     );
   }
