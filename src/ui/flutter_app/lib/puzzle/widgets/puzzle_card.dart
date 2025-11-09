@@ -139,17 +139,26 @@ class PuzzleCard extends StatelessWidget {
               ),
             ),
 
-            // Edit button for custom puzzles (top-right corner)
+            // Edit button for custom puzzles (bottom-left corner to avoid overlap)
             if (onEdit != null && !showSelection)
               Positioned(
-                top: 4,
-                right: 4,
-                child: IconButton(
-                  icon: const Icon(FluentIcons.edit_24_regular, size: 20),
-                  onPressed: onEdit,
-                  tooltip: s.edit,
-                  padding: const EdgeInsets.all(4),
-                  constraints: const BoxConstraints(),
+                bottom: 8,
+                left: 8,
+                child: Material(
+                  color: Colors.blue.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  child: InkWell(
+                    onTap: onEdit,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Icon(
+                        FluentIcons.edit_24_regular,
+                        size: 20,
+                        color: Colors.blue[300],
+                      ),
+                    ),
+                  ),
                 ),
               ),
           ],
