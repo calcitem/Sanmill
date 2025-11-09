@@ -23,5 +23,6 @@ part 'puzzle_settings.dart';
 export 'puzzle_adapters.dart';
 
 // Export rule variant and collection models
+export 'rule_schema_version.dart';
 export 'rule_variant.dart';
 export 'puzzle_collection.dart';

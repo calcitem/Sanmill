@@ -5,12 +5,10 @@
 //
 // Rule variant identification and management for puzzles
 
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 import '../../rule_settings/models/rule_settings.dart';
+import 'rule_schema_version.dart';
 
 /// Rule variant identifier for puzzles
 ///
@@ -57,71 +55,19 @@ class RuleVariant {
     );
   }
 
-  /// Calculate a hash from rule settings
+  /// Calculate a hash from rule settings using versioned schema
   ///
-  /// This hash includes all gameplay-affecting parameters.
-  /// Changes to cosmetic settings (like timeouts) don't affect the hash.
+  /// This hash is calculated using a versioned schema to ensure stability.
+  /// When new rule parameters are added, the schema version is incremented
+  /// and old hashes can be automatically migrated to new ones.
+  ///
+  /// This prevents puzzle loss when upgrading the app with new rule features.
   static String _calculateRuleHash(RuleSettings settings) {
-    // Create a map of critical rule parameters
-    // These are the parameters that fundamentally affect puzzle solving
-    final Map<String, dynamic> criticalParams = <String, dynamic>{
-      'piecesCount': settings.piecesCount,
-      'flyPieceCount': settings.flyPieceCount,
-      'piecesAtLeastCount': settings.piecesAtLeastCount,
-      'hasDiagonalLines': settings.hasDiagonalLines,
-      'mayMoveInPlacingPhase': settings.mayMoveInPlacingPhase,
-      'isDefenderMoveFirst': settings.isDefenderMoveFirst,
-      'mayRemoveMultiple': settings.mayRemoveMultiple,
-      'mayRemoveFromMillsAlways': settings.mayRemoveFromMillsAlways,
-      'boardFullAction': settings.boardFullAction?.index,
-      'stalemateAction': settings.stalemateAction?.index,
-      'mayFly': settings.mayFly,
-      'nMoveRule': settings.nMoveRule,
-      'endgameNMoveRule': settings.endgameNMoveRule,
-      'threefoldRepetitionRule': settings.threefoldRepetitionRule,
-      'millFormationActionInPlacingPhase':
-          settings.millFormationActionInPlacingPhase?.index,
-      'restrictRepeatedMillsFormation': settings.restrictRepeatedMillsFormation,
-      'oneTimeUseMill': settings.oneTimeUseMill,
-      'enableCustodianCapture': settings.enableCustodianCapture,
-      'custodianCaptureOnSquareEdges': settings.custodianCaptureOnSquareEdges,
-      'custodianCaptureOnCrossLines': settings.custodianCaptureOnCrossLines,
-      'custodianCaptureOnDiagonalLines':
-          settings.custodianCaptureOnDiagonalLines,
-      'custodianCaptureInPlacingPhase': settings.custodianCaptureInPlacingPhase,
-      'custodianCaptureInMovingPhase': settings.custodianCaptureInMovingPhase,
-      'custodianCaptureOnlyWhenOwnPiecesLeq3':
-          settings.custodianCaptureOnlyWhenOwnPiecesLeq3,
-      'enableInterventionCapture': settings.enableInterventionCapture,
-      'interventionCaptureOnSquareEdges':
-          settings.interventionCaptureOnSquareEdges,
-      'interventionCaptureOnCrossLines':
-          settings.interventionCaptureOnCrossLines,
-      'interventionCaptureOnDiagonalLines':
-          settings.interventionCaptureOnDiagonalLines,
-      'interventionCaptureInPlacingPhase':
-          settings.interventionCaptureInPlacingPhase,
-      'interventionCaptureInMovingPhase':
-          settings.interventionCaptureInMovingPhase,
-      'interventionCaptureOnlyWhenOwnPiecesLeq3':
-          settings.interventionCaptureOnlyWhenOwnPiecesLeq3,
-      'enableLeapCapture': settings.enableLeapCapture,
-      'leapCaptureOnSquareEdges': settings.leapCaptureOnSquareEdges,
-      'leapCaptureOnCrossLines': settings.leapCaptureOnCrossLines,
-      'leapCaptureOnDiagonalLines': settings.leapCaptureOnDiagonalLines,
-      'leapCaptureInPlacingPhase': settings.leapCaptureInPlacingPhase,
-      'leapCaptureInMovingPhase': settings.leapCaptureInMovingPhase,
-      'leapCaptureOnlyWhenOwnPiecesLeq3':
-          settings.leapCaptureOnlyWhenOwnPiecesLeq3,
-      'stopPlacingWhenTwoEmptySquares': settings.stopPlacingWhenTwoEmptySquares,
-    };
+    const VersionedRuleHashCalculator calculator = VersionedRuleHashCalculator();
 
-    // Convert to JSON and calculate MD5 hash
-    final String jsonString = jsonEncode(criticalParams);
-    final List<int> bytes = utf8.encode(jsonString);
-    final Digest digest = md5.convert(bytes);
-
-    return digest.toString();
+    // Use latest schema version for new puzzles
+    // Old puzzles will be automatically migrated via RuleMigrationManager
+    return calculator.calculateLatestHash(settings);
   }
 
   /// Generate a human-readable variant ID

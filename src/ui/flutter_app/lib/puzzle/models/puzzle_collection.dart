@@ -6,6 +6,7 @@
 // Puzzle collection management - groups puzzles by rule variant
 
 import 'puzzle_models.dart';
+import 'rule_schema_version.dart';
 import 'rule_variant.dart';
 
 /// A collection of puzzles for a specific rule variant
@@ -134,13 +135,18 @@ class PuzzleCollectionManager {
   final Map<String, PuzzleCollection> _collections = <String, PuzzleCollection>{};
 
   /// Build collections grouped by rule variant
+  ///
+  /// Automatically handles migration of old variant IDs to new ones
   void _buildCollections() {
     _collections.clear();
 
-    // Group puzzles by rule variant ID
+    // Group puzzles by rule variant ID (with migration support)
     final Map<String, List<PuzzleInfo>> groupedPuzzles = <String, List<PuzzleInfo>>{};
     for (final PuzzleInfo puzzle in _allPuzzles) {
-      groupedPuzzles.putIfAbsent(puzzle.ruleVariantId, () => <PuzzleInfo>[]).add(puzzle);
+      // Get the current variant ID (may be migrated from old hash)
+      final String variantId = _getMigratedVariantId(puzzle.ruleVariantId);
+
+      groupedPuzzles.putIfAbsent(variantId, () => <PuzzleInfo>[]).add(puzzle);
     }
 
     // Create collections
@@ -157,6 +163,23 @@ class PuzzleCollectionManager {
         );
       }
     }
+  }
+
+  /// Get migrated variant ID if migration is needed
+  ///
+  /// This ensures old puzzles are still accessible after schema changes
+  String _getMigratedVariantId(String originalId) {
+    // Check if this ID needs migration
+    final RuleMigrationManager migrationManager = const RuleMigrationManager();
+
+    if (migrationManager.needsMigration(originalId)) {
+      final String? migratedId = migrationManager.migrate(originalId);
+      if (migratedId != null) {
+        return migratedId;
+      }
+    }
+
+    return originalId;
   }
 
   /// Get collection for a specific rule variant
