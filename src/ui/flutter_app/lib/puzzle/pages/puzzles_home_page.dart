@@ -14,8 +14,11 @@ import '../services/puzzle_manager.dart';
 import 'custom_puzzles_page.dart';
 import 'daily_puzzle_page.dart';
 import 'puzzle_battle_page.dart';
+import 'puzzle_history_page.dart';
 import 'puzzle_list_page.dart';
 import 'puzzle_rush_page.dart';
+import 'puzzle_stats_page.dart';
+import 'puzzle_streak_page.dart';
 
 /// Main hub page for all puzzle-related features
 class PuzzlesHomePage extends StatefulWidget {
@@ -91,13 +94,22 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   color: Colors.red,
                   onTap: () => _navigateTo(const PuzzleRushPage()),
                 ),
+                // Puzzle Streak
+                _buildModeCard(
+                  s,
+                  title: s.puzzleStreak,
+                  description: s.puzzleStreakDesc,
+                  icon: FluentIcons.flash_24_filled,
+                  color: Colors.purple,
+                  onTap: () => _navigateTo(const PuzzleStreakPage()),
+                ),
                 // Puzzle Battle
                 _buildModeCard(
                   s,
                   title: s.puzzleBattle,
                   description: s.puzzleBattleDesc,
                   icon: FluentIcons.people_24_regular,
-                  color: Colors.purple,
+                  color: Colors.deepPurple,
                   onTap: () => _navigateTo(const PuzzleBattlePage()),
                 ),
                 // Custom Puzzles
@@ -108,6 +120,24 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   icon: FluentIcons.edit_24_regular,
                   color: Colors.green,
                   onTap: () => _navigateTo(const CustomPuzzlesPage()),
+                ),
+                // History
+                _buildModeCard(
+                  s,
+                  title: s.puzzleHistory,
+                  description: s.puzzleHistoryDesc,
+                  icon: FluentIcons.history_24_regular,
+                  color: Colors.teal,
+                  onTap: () => _navigateTo(const PuzzleHistoryPage()),
+                ),
+                // Statistics
+                _buildModeCard(
+                  s,
+                  title: s.puzzleStatistics,
+                  description: s.puzzleStatisticsDesc,
+                  icon: FluentIcons.chart_multiple_24_regular,
+                  color: Colors.indigo,
+                  onTap: () => _navigateTo(const PuzzleStatsPage()),
                 ),
               ],
             ),

@@ -2735,5 +2735,166 @@
     "puzzleCreate": "创建谜题",
     "@puzzleCreate": {
         "description": "Create puzzle button"
+    },
+    "puzzleStreak": "连续解谜",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "连续解谜，不能犯错",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "你能连续解决多少谜题？",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "规则",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 尽可能多地解决谜题",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ 一次错误即结束",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 打破个人记录",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "开始连续挑战",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "当前",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "最佳",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "连续挑战结果",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "连续挑战结束",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "新记录！",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "最终分数",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "再试一次",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "确定要退出吗？您的连续记录将丢失。",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "历史记录",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "查看谜题尝试记录",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "暂无谜题历史",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "开始解谜以在此查看历史记录",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "仅成功",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "仅失败",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "未知谜题",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "提示",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "查看详细分析",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "您的谜题等级",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "临时等级（还需 {gamesLeft} 局）",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "已玩局数",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "偏差",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "表现概览",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "成功率",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "平均时间",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "已解决",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "失败",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "各难度成功率",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "各类别成功率",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "近期活动",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "暂无近期活动",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "编辑",
+    "@edit": {
+        "description": "Edit button"
     }
 }
