@@ -2533,5 +2533,207 @@
     "optional": "optional",
     "@optional": {
         "description": "Optional field indicator"
+    },
+    "yourProgress": "Your Progress",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Quit",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "All",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Coming Soon",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Daily Puzzle",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Streak",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "day streak",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "days",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Start Daily Puzzle",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Current Streak",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Longest Streak",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total Completed",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "All Puzzles",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Browse all available puzzles",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Solve puzzles against the clock",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Rules",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximize your score!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Start Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rush Results",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Time's Up!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Out of Lives",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush Complete!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Solved",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Failed",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Accuracy",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Play Again",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puzzle Battle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Compete with other players",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Coming Soon!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Rating system",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Custom Puzzles",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Create and manage your puzzles",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Create Puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
     }
 }

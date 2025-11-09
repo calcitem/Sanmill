@@ -20,9 +20,16 @@ import '../services/puzzle_validator.dart';
 
 /// Page for solving a specific puzzle
 class PuzzlePage extends StatefulWidget {
-  const PuzzlePage({required this.puzzle, super.key});
+  const PuzzlePage({
+    required this.puzzle,
+    this.onSolved,
+    this.onFailed,
+    super.key,
+  });
 
   final PuzzleInfo puzzle;
+  final VoidCallback? onSolved;
+  final VoidCallback? onFailed;
 
   @override
   State<PuzzlePage> createState() => _PuzzlePageState();
