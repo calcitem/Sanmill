@@ -35,6 +35,7 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
+import 'puzzle/services/puzzle_manager.dart';
 
 part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
@@ -55,6 +56,9 @@ Future<void> main() async {
 
   // Initialize ELO service
   EloRatingService();
+
+  // Initialize Puzzle Manager
+  await PuzzleManager().init();
 
   // Initialize Screenshot service (if not in test mode)
   if (!EnvironmentConfig.test) {
