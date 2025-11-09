@@ -46,4 +46,3 @@ lib/generated_plugin_registrant.dart
 sanmill_settings.json
 .run/
 *.g.*
-!lib/puzzle/models/puzzle_adapters.g.dart
