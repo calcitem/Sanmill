@@ -542,18 +542,25 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Row(
+          title: Row(
             children: <Widget>[
-              Icon(FluentIcons.info_24_regular, color: Colors.blue),
-              SizedBox(width: 12),
-              Text('How to Contribute Puzzles'),
+              const Icon(FluentIcons.info_24_regular, color: Colors.blue),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'How to Contribute Puzzles',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
             ],
           ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
                 const Text(
                   'Help make Sanmill better by contributing your puzzles!',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -595,30 +602,33 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.blue.shade200),
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Icon(
+                          const Icon(
                             FluentIcons.document_24_regular,
                             size: 16,
                             color: Colors.blue,
                           ),
-                          SizedBox(width: 6),
-                          Text(
-                            'Full Documentation',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              'Full Documentation',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue.shade700,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       Text(
                         'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
-                        style: TextStyle(fontSize: 13),
+                        style: TextStyle(fontSize: 13, color: Colors.blue.shade900),
+                        softWrap: true,
                       ),
                     ],
                   ),
@@ -652,20 +662,21 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
               ],
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _toggleMultiSelectMode();
-              },
-              child: const Text('Start Contributing'),
-            ),
-          ],
-        );
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _toggleMultiSelectMode();
+            },
+            child: const Text('Start Contributing'),
+          ),
+        ],
+      );
       },
     );
   }
