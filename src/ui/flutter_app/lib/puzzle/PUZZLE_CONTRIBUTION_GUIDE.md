@@ -96,10 +96,11 @@ Fill in all required fields:
 |-------|-------------|---------|
 | **Title** | Short, descriptive name | "The Windmill Combination" |
 | **Description** | What to accomplish | "White to play and force a win in 5 moves" |
-| **FEN** | Position in FEN notation | See FEN section below |
-| **Solution** | Correct move sequence | "d1-d2 f7-d7 d2-f2 ..." |
-| **Category** | Tactical theme | `PuzzleCategory.endgame` |
-| **Difficulty** | Challenge level | `PuzzleDifficulty.hard` |
+| **Initial Position** | Position notation | See Position Format below |
+| **Solution Moves** | Correct move sequences | `[["d1-d2", "f7-d7", "d2-f2"]]` |
+| **Optimal Move Count** | Minimum moves to solve | `3` |
+| **Category** | Tactical theme | `formMill`, `winGame`, etc. |
+| **Difficulty** | Challenge level | `beginner`, `easy`, `medium`, etc. |
 | **Rule Variant ID** | Which rules apply | `standard_9mm` |
 | **Author** | Your name/username | "YourName" |
 
@@ -116,19 +117,18 @@ Fill in all required fields:
 
 Choose the category that best fits your puzzle:
 
-- **Opening**: Tactics in the placement phase (first 9/12 moves)
-- **Middle Game**: Tactics during the main playing phase
-- **Endgame**: Positions with few pieces remaining
-- **Mill Formation**: Puzzles focused on creating mills
-- **Defense**: Defensive techniques and blocking tactics
-- **Sacrifice**: Puzzles involving piece sacrifices
-- **Combination**: Multi-move tactical sequences
-- **Zugzwang**: Positions where any move worsens the position
-- **Mixed**: Doesn't fit other categories
+- **formMill**: Form a mill in N moves
+- **capturePieces**: Capture N pieces
+- **winGame**: Win the game in N moves
+- **defend**: Defend against opponent's threats
+- **findBestMove**: Find the best move in a complex position
+- **endgame**: Endgame puzzles with few pieces remaining
+- **opening**: Opening phase tactics (placement phase)
+- **mixed**: Mixed/combined tactics that don't fit other categories
 
-## FEN Notation
+## Position Format
 
-FEN (Forsyth-Edwards Notation) describes the board position.
+The initial position describes the board state using a specialized notation.
 
 ### Standard Format
 
@@ -398,15 +398,19 @@ Before submitting, verify:
 {
   "version": "1.0",
   "puzzle": {
+    "id": "custom_basic_mill_trap_001",
     "title": "Basic Mill Trap",
     "description": "White to play and form a mill, winning a piece",
-    "fen": "**O****X*******O*X*O* w p 4 7 0 []",
-    "solution": ["a4-d4"],
-    "category": "mill_formation",
+    "initialPosition": "**O****X*******O*X*O* w p 4 7 0 []",
+    "solutionMoves": [["a4-d4"]],
+    "optimalMoveCount": 1,
+    "category": "formMill",
     "difficulty": "easy",
     "ruleVariantId": "standard_9mm",
     "author": "JohnDoe",
-    "tags": ["mill", "beginner_friendly"]
+    "tags": ["mill", "beginner_friendly"],
+    "version": 1,
+    "createdDate": "2025-01-15T10:30:00Z"
   }
 }
 ```
@@ -417,17 +421,21 @@ Before submitting, verify:
 {
   "version": "1.0",
   "puzzle": {
-    "title": "Zugzwang Masterpiece",
+    "id": "custom_endgame_masterpiece_001",
+    "title": "Endgame Masterpiece",
     "description": "White to play and win despite material equality",
-    "fen": "O***X***O***X***O***X*** w m 45 0 6 []",
-    "solution": ["a1-a4", "d1-a1", "a4-a1", "d7-d4", "a1-d1"],
+    "initialPosition": "O***X***O***X***O***X*** w m 45 0 6 []",
+    "solutionMoves": [["a1-a4", "d1-a1", "a4-a1", "d7-d4", "a1-d1"]],
+    "optimalMoveCount": 5,
     "category": "endgame",
     "difficulty": "expert",
     "ruleVariantId": "standard_9mm",
     "author": "JohnDoe",
-    "source": "European Championship 2024",
-    "tags": ["zugzwang", "opposition", "endgame_study"],
-    "rating": 2200
+    "hint": "Look for forcing moves that restrict opponent options",
+    "tags": ["endgame_study", "forced_moves"],
+    "rating": 2200,
+    "version": 1,
+    "createdDate": "2025-01-15T10:30:00Z"
   }
 }
 ```

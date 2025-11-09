@@ -224,12 +224,14 @@ class PuzzleExportService {
       'id': puzzle.id,
       'title': puzzle.title,
       'description': puzzle.description,
-      'fen': puzzle.fen,
-      'solution': puzzle.solution,
-      'category': _categoryToString(puzzle.category),
-      'difficulty': _difficultyToString(puzzle.difficulty),
+      'initialPosition': puzzle.initialPosition,
+      'solutionMoves': puzzle.solutionMoves,
+      'optimalMoveCount': puzzle.optimalMoveCount,
+      'category': puzzle.category.name,
+      'difficulty': puzzle.difficulty.name,
       'ruleVariantId': puzzle.ruleVariantId,
-      'createdAt': puzzle.createdAt.toIso8601String(),
+      'createdDate': puzzle.createdDate.toIso8601String(),
+      'version': puzzle.version,
     };
 
     // Add optional fields if present
@@ -241,23 +243,13 @@ class PuzzleExportService {
       map['author'] = puzzle.author;
     }
 
-    if (puzzle.source != null && puzzle.source!.isNotEmpty) {
-      map['source'] = puzzle.source;
+    if (puzzle.hint != null && puzzle.hint!.isNotEmpty) {
+      map['hint'] = puzzle.hint;
     }
 
     if (puzzle.rating != null) {
       map['rating'] = puzzle.rating;
     }
-
-    // Add metadata for quality assessment
-    map['metadata'] = <String, dynamic>{
-      'timesAttempted': puzzle.timesAttempted,
-      'timesSolved': puzzle.timesSolved,
-      'successRate': puzzle.timesAttempted > 0
-          ? (puzzle.timesSolved / puzzle.timesAttempted * 100).round()
-          : 0,
-      'averageTime': puzzle.averageSolveTime,
-    };
 
     return map;
   }
@@ -356,11 +348,11 @@ class PuzzleExportService {
       return 'Puzzle must have a description';
     }
 
-    if (puzzle.fen.trim().isEmpty) {
-      return 'Puzzle must have a valid FEN position';
+    if (puzzle.initialPosition.trim().isEmpty) {
+      return 'Puzzle must have a valid position';
     }
 
-    if (puzzle.solution.isEmpty) {
+    if (puzzle.solutionMoves.isEmpty) {
       return 'Puzzle must have a solution';
     }
 
@@ -417,48 +409,6 @@ class PuzzleExportService {
         cleanTitle.length > 30 ? cleanTitle.substring(0, 30) : cleanTitle;
 
     return '${shortAuthor}_$shortTitle.json';
-  }
-
-  /// Convert category enum to string
-  static String _categoryToString(PuzzleCategory category) {
-    switch (category) {
-      case PuzzleCategory.opening:
-        return 'opening';
-      case PuzzleCategory.middleGame:
-        return 'middle_game';
-      case PuzzleCategory.endgame:
-        return 'endgame';
-      case PuzzleCategory.millFormation:
-        return 'mill_formation';
-      case PuzzleCategory.defense:
-        return 'defense';
-      case PuzzleCategory.sacrifice:
-        return 'sacrifice';
-      case PuzzleCategory.combination:
-        return 'combination';
-      case PuzzleCategory.zugzwang:
-        return 'zugzwang';
-      case PuzzleCategory.mixed:
-        return 'mixed';
-    }
-  }
-
-  /// Convert difficulty enum to string
-  static String _difficultyToString(PuzzleDifficulty difficulty) {
-    switch (difficulty) {
-      case PuzzleDifficulty.beginner:
-        return 'beginner';
-      case PuzzleDifficulty.easy:
-        return 'easy';
-      case PuzzleDifficulty.medium:
-        return 'medium';
-      case PuzzleDifficulty.hard:
-        return 'hard';
-      case PuzzleDifficulty.expert:
-        return 'expert';
-      case PuzzleDifficulty.master:
-        return 'master';
-    }
   }
 }
 
