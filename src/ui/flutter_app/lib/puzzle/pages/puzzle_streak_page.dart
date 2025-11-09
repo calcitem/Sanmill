@@ -59,7 +59,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
             // Header card
             Card(
               elevation: 4,
-              color: Colors.purple.withOpacity(0.1),
+              color: Colors.purple.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -125,7 +125,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
             // Best streak card
             if (_bestStreak > 0)
               Card(
-                color: Colors.amber.withOpacity(0.1),
+                color: Colors.amber.withValues(alpha: 0.1),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
@@ -201,7 +201,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
           // Stats bar
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: Colors.purple.withOpacity(0.2),
+            color: Colors.purple.withValues(alpha: 0.2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -339,7 +339,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.amber.withOpacity(0.2),
+                            color: Colors.amber.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(

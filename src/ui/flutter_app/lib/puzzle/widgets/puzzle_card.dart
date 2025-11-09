@@ -43,7 +43,7 @@ class PuzzleCard extends StatelessWidget {
     return Card(
       elevation: selected ? 8 : 2,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      color: selected ? Colors.blue.withOpacity(0.1) : null,
+      color: selected ? Colors.blue.withValues(alpha: 0.1) : null,
       child: InkWell(
         onTap: onTap,
         onLongPress: onLongPress,
@@ -64,7 +64,7 @@ class PuzzleCard extends StatelessWidget {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: _getDifficultyColor().withOpacity(0.2),
+                      color: _getDifficultyColor().withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -167,7 +167,7 @@ class PuzzleCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(

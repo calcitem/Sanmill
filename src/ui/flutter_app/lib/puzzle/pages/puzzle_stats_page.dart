@@ -63,7 +63,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
   Widget _buildRatingCard(PuzzleRating rating, S s) {
     return Card(
       elevation: 4,
-      color: Colors.blue.withOpacity(0.1),
+      color: Colors.blue.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -89,7 +89,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.2),
+                  color: Colors.orange.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -212,7 +212,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
