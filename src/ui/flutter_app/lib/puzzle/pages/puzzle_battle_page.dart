@@ -29,7 +29,7 @@ class PuzzleBattlePage extends StatelessWidget {
               Icon(
                 FluentIcons.people_24_regular,
                 size: 80,
-                color: Colors.purple.withOpacity(0.6),
+                color: Colors.purple.withValues(alpha: 0.6),
               ),
               const SizedBox(height: 24),
               Text(
@@ -46,7 +46,7 @@ class PuzzleBattlePage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Card(
-                color: Colors.purple.withOpacity(0.1),
+                color: Colors.purple.withValues(alpha: 0.1),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(

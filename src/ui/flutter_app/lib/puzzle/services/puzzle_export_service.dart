@@ -68,7 +68,7 @@ class PuzzleExportService {
       }
 
       final XFile xFile = XFile(filePath);
-      final ShareResult result = await SharePlus.instance.shareXFiles(
+      final ShareResult result = await Share.shareXFiles(
         <XFile>[xFile],
         subject: 'Sanmill Puzzles (${puzzles.length})',
         text: 'Check out these ${puzzles.length} Sanmill puzzles!',
@@ -281,7 +281,7 @@ class PuzzleExportService {
       await file.writeAsString(jsonContent);
 
       // Share the file
-      final ShareResult result = await SharePlus.instance.shareXFiles(
+      final ShareResult result = await Share.shareXFiles(
         <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
         text:
@@ -323,7 +323,7 @@ class PuzzleExportService {
       await file.writeAsString(jsonContent);
 
       // Share the file
-      final ShareResult result = await SharePlus.instance.shareXFiles(
+      final ShareResult result = await Share.shareXFiles(
         <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
         text:

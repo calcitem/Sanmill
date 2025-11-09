@@ -39,7 +39,7 @@ class DailyPuzzleService {
   static const String _tag = "[DailyPuzzleService]";
 
   /// Epoch date for day number calculation (January 1, 2025)
-  static final DateTime _epochDate = DateTime(2025, 1);
+  static final DateTime _epochDate = DateTime(2025);
 
   /// Get today's puzzle information
   DailyPuzzleInfo getTodaysPuzzle() {
