@@ -14,7 +14,6 @@ import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
 import 'custom_puzzles_page.dart';
 import 'daily_puzzle_page.dart';
-import 'puzzle_battle_page.dart';
 import 'puzzle_history_page.dart';
 import 'puzzle_list_page.dart';
 import 'puzzle_rush_page.dart';
@@ -103,15 +102,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   icon: FluentIcons.flash_24_filled,
                   color: Colors.purple,
                   onTap: () => _navigateTo(const PuzzleStreakPage()),
-                ),
-                // Puzzle Battle
-                _buildModeCard(
-                  s,
-                  title: s.puzzleBattle,
-                  description: s.puzzleBattleDesc,
-                  icon: FluentIcons.people_24_regular,
-                  color: Colors.deepPurple,
-                  onTap: () => _navigateTo(const PuzzleBattlePage()),
                 ),
                 // Custom Puzzles
                 _buildModeCard(
