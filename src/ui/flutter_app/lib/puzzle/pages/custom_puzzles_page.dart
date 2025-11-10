@@ -544,7 +544,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
         return AlertDialog(
           title: Row(
             children: <Widget>[
-              const Icon(FluentIcons.info_24_regular, color: Colors.blue),
+              Icon(
+            FluentIcons.info_24_regular,
+            color: Theme.of(context).colorScheme.primary, // Use primary color
+          ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -607,10 +610,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          const Icon(
+                          Icon(
                             FluentIcons.document_24_regular,
                             size: 16,
-                            color: Colors.blue,
+                            color: Theme.of(context).colorScheme.primary, // Use primary color
                           ),
                           const SizedBox(width: 6),
                           Expanded(
@@ -618,7 +621,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                               'Full Documentation',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue.shade700,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           ),
@@ -627,7 +630,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                       const SizedBox(height: 6),
                       Text(
                         'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
-                        style: TextStyle(fontSize: 13, color: Colors.blue.shade900),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                        ),
                         softWrap: true,
                       ),
                     ],
@@ -689,7 +695,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.primary, // Use primary color
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
