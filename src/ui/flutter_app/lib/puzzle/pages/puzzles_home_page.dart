@@ -74,7 +74,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               crossAxisSpacing: 16,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: 1.1,
+              childAspectRatio: 0.95, // Adjusted to provide more vertical space
               children: <Widget>[
                 // All Puzzles
                 _buildModeCard(
@@ -305,33 +305,43 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0), // Reduced padding from 16 to 12
           child: Column(
+            mainAxisSize: MainAxisSize.min, // Use min size to prevent overflow
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // Icon container
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10), // Reduced from 12
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, size: 36, color: color),
+                child: Icon(icon, size: 32, color: color), // Reduced from 36
               ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              const SizedBox(height: 8), // Reduced from 12
+              // Title text with flexible sizing
+              Flexible(
+                child: Text(
+                  title,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                  maxLines: 2, // Allow wrapping for long titles
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const SizedBox(height: 4),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodySmall,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              // Description text with flexible sizing
+              Flexible(
+                child: Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
