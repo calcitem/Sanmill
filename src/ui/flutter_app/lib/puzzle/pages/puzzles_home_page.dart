@@ -48,13 +48,13 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0), // Reduced from 16 to 12
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // Header with overall stats
             _buildStatsCard(s),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12), // Reduced from 24 to 12
 
             // Daily Puzzle - Featured
             _buildFeaturedCard(
@@ -65,16 +65,16 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               color: Theme.of(context).colorScheme.primary, // Use primary color
               onTap: () => _navigateTo(const DailyPuzzlePage()),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12), // Reduced from 16 to 12
 
             // Grid of puzzle modes
             GridView.count(
               crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+              mainAxisSpacing: 12, // Reduced from 16 to 12
+              crossAxisSpacing: 12, // Reduced from 16 to 12
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: 0.95, // Adjusted to provide more vertical space
+              childAspectRatio: 1.0, // Adjusted for more compact cards
               children: <Widget>[
                 // All Puzzles
                 _buildModeCard(
@@ -138,7 +138,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
     );
   }
 
-  /// Build overall statistics card
+  /// Build overall statistics card (compact version)
   Widget _buildStatsCard(S s) {
     return ValueListenableBuilder<PuzzleSettings>(
       valueListenable: _puzzleManager.settingsNotifier,
@@ -148,7 +148,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         return Card(
           elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12.0), // Reduced from 16 to 12
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -156,9 +156,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   s.yourProgress,
                   style: Theme.of(
                     context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold), // Changed from titleLarge to titleMedium
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12), // Reduced from 16 to 12
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -182,7 +182,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8), // Reduced from 12 to 8
                 LinearProgressIndicator(
                   value:
                       ((stats['completionPercentage'] as num?)?.toDouble() ??
@@ -193,7 +193,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                     Theme.of(context).colorScheme.primary, // Use primary green
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6), // Reduced from 8 to 6
                 Text(
                   '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}% ${s.completed}',
                   style: Theme.of(context).textTheme.bodySmall,
@@ -207,7 +207,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
     );
   }
 
-  /// Build a single stat item
+  /// Build a single stat item (compact version)
   Widget _buildStatItem(
     String label,
     String value,
@@ -216,26 +216,26 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   ) {
     return Column(
       children: <Widget>[
-        Icon(icon, color: color, size: 32),
-        const SizedBox(height: 8),
+        Icon(icon, color: color, size: 28), // Reduced from 32 to 28
+        const SizedBox(height: 6), // Reduced from 8 to 6
         Text(
           value,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20, // Reduced from 24 to 20
             fontWeight: FontWeight.bold,
             color: color,
           ),
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+          style: TextStyle(fontSize: 11, color: Colors.grey[400]), // Reduced from 12 to 11
           textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
-  /// Build featured daily puzzle card
+  /// Build featured daily puzzle card (compact version)
   Widget _buildFeaturedCard(
     S s, {
     required String title,
@@ -251,38 +251,40 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(14.0), // Reduced from 20 to 14
           child: Row(
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12), // Reduced from 16 to 12
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, size: 40, color: color),
+                child: Icon(icon, size: 32, color: color), // Reduced from 40 to 32
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12), // Reduced from 16 to 12
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith( // Changed from titleLarge to titleMedium
                         fontWeight: FontWeight.bold,
                         color: color,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2), // Reduced from 4 to 2
                     Text(
                       subtitle,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodySmall, // Changed from bodyMedium to bodySmall
+                      maxLines: 1, // Limit to 1 line for compactness
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              Icon(FluentIcons.chevron_right_24_regular, color: color),
+              Icon(FluentIcons.chevron_right_24_regular, color: color, size: 20), // Added size: 20
             ],
           ),
         ),
@@ -290,7 +292,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
     );
   }
 
-  /// Build puzzle mode card
+  /// Build puzzle mode card (compact version)
   Widget _buildModeCard(
     S s, {
     required String title,
@@ -305,39 +307,39 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12.0), // Reduced padding from 16 to 12
+          padding: const EdgeInsets.all(10.0), // Reduced from 12 to 10
           child: Column(
             mainAxisSize: MainAxisSize.min, // Use min size to prevent overflow
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Icon container
               Container(
-                padding: const EdgeInsets.all(10), // Reduced from 12
+                padding: const EdgeInsets.all(8), // Reduced from 10 to 8
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, size: 32, color: color), // Reduced from 36
+                child: Icon(icon, size: 28, color: color), // Reduced from 32 to 28
               ),
-              const SizedBox(height: 8), // Reduced from 12
+              const SizedBox(height: 6), // Reduced from 8 to 6
               // Title text with flexible sizing
               Flexible(
                 child: Text(
                   title,
                   style: Theme.of(
                     context,
-                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold), // Changed from titleMedium to titleSmall
                   textAlign: TextAlign.center,
                   maxLines: 2, // Allow wrapping for long titles
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 3), // Reduced from 4 to 3
               // Description text with flexible sizing
               Flexible(
                 child: Text(
                   description,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 11), // Reduced font size
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
