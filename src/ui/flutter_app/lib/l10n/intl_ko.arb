@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "제거 가능한 말 강조",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "실행 취소",
+    "@undo": {},
+    "reset": "재설정",
+    "@reset": {},
+    "allPuzzlesCompleted": "모든 퍼즐 완료!",
+    "@allPuzzlesCompleted": {}
 }

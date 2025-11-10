@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "पकड़े जा सकने वाले मोहरों को हाइलाइट करें",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "पूर्ववत करें",
+    "@undo": {},
+    "reset": "रीसेट करें",
+    "@reset": {},
+    "allPuzzlesCompleted": "सभी पहेलियाँ पूर्ण!",
+    "@allPuzzlesCompleted": {}
 }

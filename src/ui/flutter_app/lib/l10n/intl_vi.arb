@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Làm nổi bật quân cờ có thể bắt",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Hoàn tác",
+    "@undo": {},
+    "reset": "Đặt lại",
+    "@reset": {},
+    "allPuzzlesCompleted": "Tất cả câu đố đã hoàn thành!",
+    "@allPuzzlesCompleted": {}
 }

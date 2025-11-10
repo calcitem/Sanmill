@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "የሚያዙ ቁርጥራጮችን አድምቅ",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "መልስ",
+    "@undo": {},
+    "reset": "እንደገና አስጀምር",
+    "@reset": {},
+    "allPuzzlesCompleted": "ሁሉም እንቆቅልሾች ተጠናቀቁ!",
+    "@allPuzzlesCompleted": {}
 }

@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "ဖမ်းနိုင်သော ကျောက်တုံးများကို မီးမောင်းထိုး",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "နောက်ပြန်ပြန်ပြင်",
+    "@undo": {},
+    "reset": "ပြန်လည်သတ်မှတ်",
+    "@reset": {},
+    "allPuzzlesCompleted": "ပဟေဠိအားလုံးပြီးစီးပါပြီ!",
+    "@allPuzzlesCompleted": {}
 }

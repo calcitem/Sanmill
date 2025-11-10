@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "הדגש כלים הניתנים להסרה",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "בטל",
+    "@undo": {},
+    "reset": "איפוס",
+    "@reset": {},
+    "allPuzzlesCompleted": "כל החידות הושלמו!",
+    "@allPuzzlesCompleted": {}
 }

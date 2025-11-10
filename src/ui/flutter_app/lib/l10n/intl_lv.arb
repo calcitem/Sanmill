@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Izcelt noņemamās figūras",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Atsaukt",
+    "@undo": {},
+    "reset": "Atiestatīt",
+    "@reset": {},
+    "allPuzzlesCompleted": "Visi mīklas pabeigti!",
+    "@allPuzzlesCompleted": {}
 }

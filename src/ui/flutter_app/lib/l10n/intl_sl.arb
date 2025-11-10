@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Označi odvzemljive figure",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Razveljavi",
+    "@undo": {},
+    "reset": "Ponastavi",
+    "@reset": {},
+    "allPuzzlesCompleted": "Vse uganke rešene!",
+    "@allPuzzlesCompleted": {}
 }

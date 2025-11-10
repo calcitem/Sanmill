@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Подчертай уловими фигури",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Отмяна",
+    "@undo": {},
+    "reset": "Нулиране",
+    "@reset": {},
+    "allPuzzlesCompleted": "Всички пъзели завършени!",
+    "@allPuzzlesCompleted": {}
 }
