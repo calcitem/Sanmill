@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Ressalta peces capturables",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Desfer",
+    "@undo": {},
+    "reset": "Restablir",
+    "@reset": {},
+    "allPuzzlesCompleted": "Tots els trencaclosques completats!",
+    "@allPuzzlesCompleted": {}
 }

@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Истакни фигури што можат да се земат",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Врати",
+    "@undo": {},
+    "reset": "Ресетирај",
+    "@reset": {},
+    "allPuzzlesCompleted": "Сите сложувалки завршени!",
+    "@allPuzzlesCompleted": {}
 }

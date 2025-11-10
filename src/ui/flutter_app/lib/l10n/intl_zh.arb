@@ -2928,5 +2928,17 @@
     "puzzleRecordingHintUseButton": "请点击下方按钮打开棋盘，走完解答后按返回回到本页。",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "undo": "撤销",
+    "@undo": {
+        "description": "Undo last move"
+    },
+    "reset": "重置",
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
+    "allPuzzlesCompleted": "所有谜题已完成！",
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
     }
 }

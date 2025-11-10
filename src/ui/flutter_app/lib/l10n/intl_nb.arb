@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Uthev brikker som kan fjernes",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Angre",
+    "@undo": {},
+    "reset": "Tilbakestill",
+    "@reset": {},
+    "allPuzzlesCompleted": "Alle gåter fullført!",
+    "@allPuzzlesCompleted": {}
 }

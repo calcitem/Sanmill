@@ -437,7 +437,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (candidates.isEmpty) {
       // All puzzles solved! Show message and go back
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).allPuzzlesCompleted ?? 'All puzzles completed!')),
+        SnackBar(content: Text(S.of(context).allPuzzlesCompleted)),
       );
       Navigator.of(context).pop();
       return;
@@ -500,14 +500,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
-  void _undoMove() {
+  void _undoMove() async {
     final GameController controller = GameController();
     if (controller.gameRecorder.mainlineMoves.isEmpty) {
       return;
     }
 
-    // Take back the last move
-    controller.takeBack();
+    // Take back the last move using HistoryNavigator
+    await HistoryNavigator.takeBack(context, pop: false);
 
     // Update state
     setState(() {

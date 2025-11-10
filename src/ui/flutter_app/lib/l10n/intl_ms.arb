@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Sorot buah yang boleh diambil",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Buat asal",
+    "@undo": {},
+    "reset": "Set semula",
+    "@reset": {},
+    "allPuzzlesCompleted": "Semua teka-teki selesai!",
+    "@allPuzzlesCompleted": {}
 }

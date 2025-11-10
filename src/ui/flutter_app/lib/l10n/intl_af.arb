@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Lig vanbare stukke uit",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Ontdoen",
+    "@undo": {},
+    "reset": "Herstel",
+    "@reset": {},
+    "allPuzzlesCompleted": "Alle raaisels voltooi!",
+    "@allPuzzlesCompleted": {}
 }

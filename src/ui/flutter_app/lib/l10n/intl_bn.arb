@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "ধরা যায় এমন গুটি হাইলাইট করুন",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "পূর্বাবস্থা",
+    "@undo": {},
+    "reset": "পুনরায় সেট করুন",
+    "@reset": {},
+    "allPuzzlesCompleted": "সমস্ত ধাঁধা সম্পন্ন!",
+    "@allPuzzlesCompleted": {}
 }

@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Zvýrazniť odoberateľné kamene",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Späť",
+    "@undo": {},
+    "reset": "Resetovať",
+    "@reset": {},
+    "allPuzzlesCompleted": "Všetky hádanky dokončené!",
+    "@allPuzzlesCompleted": {}
 }

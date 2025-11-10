@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "கைப்பற்றக்கூடிய காய்களை முன்னிலைப்படுத்து",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "செயல்தவிர்",
+    "@undo": {},
+    "reset": "மீட்டமை",
+    "@reset": {},
+    "allPuzzlesCompleted": "அனைத்து புதிர்களும் முடிந்தன!",
+    "@allPuzzlesCompleted": {}
 }

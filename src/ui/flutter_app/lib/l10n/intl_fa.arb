@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "برجسته‌سازی مهره‌های قابل حذف",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "بازگردانی",
+    "@undo": {},
+    "reset": "بازنشانی",
+    "@reset": {},
+    "allPuzzlesCompleted": "تمام پازل‌ها تکمیل شدند!",
+    "@allPuzzlesCompleted": {}
 }

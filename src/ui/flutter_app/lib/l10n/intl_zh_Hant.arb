@@ -2162,5 +2162,11 @@
     "plannedFeatures": "此功能計劃在未來版本中發布",
     "@plannedFeatures": {
         "description": "Message for features under development"
-    }
+    },
+    "undo": "撤銷",
+    "@undo": {},
+    "reset": "重置",
+    "@reset": {},
+    "allPuzzlesCompleted": "所有謎題已完成！",
+    "@allPuzzlesCompleted": {}
 }

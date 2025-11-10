@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Destacar peças capturáveis",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Desfazer",
+    "@undo": {},
+    "reset": "Redefinir",
+    "@reset": {},
+    "allPuzzlesCompleted": "Todos os quebra-cabeças concluídos!",
+    "@allPuzzlesCompleted": {}
 }

@@ -2146,5 +2146,11 @@
     "highlightCapturablePieces": "Angazia vipande vinavyoweza kuchukuliwa",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "undo": "Tendua",
+    "@undo": {},
+    "reset": "Weka upya",
+    "@reset": {},
+    "allPuzzlesCompleted": "Fumbo zote zimekamilika!",
+    "@allPuzzlesCompleted": {}
 }

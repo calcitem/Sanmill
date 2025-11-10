@@ -2928,5 +2928,17 @@
     "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "undo": "Undo",
+    "@undo": {
+        "description": "Undo last move"
+    },
+    "reset": "Reset",
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
+    "allPuzzlesCompleted": "All puzzles completed!",
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
     }
 }
