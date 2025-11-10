@@ -56,6 +56,17 @@ class PuzzleValidator {
     logger.t("$_tag Move added: $move (total: $_currentMoveIndex moves)");
   }
 
+  /// Undo the last move
+  void undoLastMove() {
+    if (_playerMoves.isNotEmpty) {
+      final String removedMove = _playerMoves.removeLast();
+      if (_currentMoveIndex > 0) {
+        _currentMoveIndex--;
+      }
+      logger.t("$_tag Move undone: $removedMove (remaining: $_currentMoveIndex moves)");
+    }
+  }
+
   /// Get current move count
   int get moveCount => _playerMoves.length;
 

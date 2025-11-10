@@ -43,6 +43,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _hintsUsed = false;
   int _lastRecordedMoveIndex = -1;
 
+  bool get _canUndo => _moveCount > 0;
+
   @override
   void initState() {
     super.initState();
@@ -175,16 +177,24 @@ class _PuzzlePageState extends State<PuzzlePage> {
             style: AppTheme.appBarTheme.titleTextStyle,
           ),
           actions: <Widget>[
+            // Undo button
+            IconButton(
+              icon: const Icon(Icons.undo),
+              onPressed: _canUndo ? _undoMove : null,
+              tooltip: s.undo,
+            ),
             // Hint button
             if (DB().puzzleSettings.showHints && _hintService.hasHints)
               IconButton(
                 icon: const Icon(Icons.lightbulb_outline),
                 onPressed: _showHint,
+                tooltip: s.hint,
               ),
             // Reset button
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _resetPuzzle,
+              tooltip: s.reset,
             ),
           ],
         ),
@@ -270,14 +280,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: <Widget>[
-          Expanded(
-            child: ElevatedButton.icon(
-              onPressed: _checkSolution,
-              icon: const Icon(Icons.check_circle),
-              label: Text(s.checkSolution),
-            ),
-          ),
-          const SizedBox(width: 8),
+          // Give up button
           Expanded(
             child: OutlinedButton.icon(
               onPressed: _giveUp,
@@ -401,11 +404,58 @@ class _PuzzlePageState extends State<PuzzlePage> {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
+            _loadNextPuzzle();
+          },
+          child: Text(s.next),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
           child: Text(s.backToList),
         ),
       ],
+    );
+  }
+
+  void _loadNextPuzzle() {
+    // Get a random unsolved puzzle from the same category or difficulty
+    final List<PuzzleInfo> allPuzzles = _puzzleManager.getAllPuzzles();
+    final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
+
+    // Filter for unsolved puzzles, preferring same category or difficulty
+    final List<PuzzleInfo> candidates = allPuzzles.where((PuzzleInfo p) {
+      final PuzzleProgress? progress = settings.getProgress(p.id);
+      return progress == null || !progress.completed;
+    }).toList();
+
+    if (candidates.isEmpty) {
+      // All puzzles solved! Show message and go back
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).allPuzzlesCompleted ?? 'All puzzles completed!')),
+      );
+      Navigator.of(context).pop();
+      return;
+    }
+
+    // Prefer puzzles from same category
+    List<PuzzleInfo> sameCategoryPuzzles = candidates
+        .where((PuzzleInfo p) => p.category == widget.puzzle.category && p.id != widget.puzzle.id)
+        .toList();
+
+    PuzzleInfo nextPuzzle;
+    if (sameCategoryPuzzles.isNotEmpty) {
+      nextPuzzle = sameCategoryPuzzles.first;
+    } else {
+      nextPuzzle = candidates.first;
+    }
+
+    // Replace current page with new puzzle
+    Navigator.of(context).pushReplacement<void, void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => PuzzlePage(puzzle: nextPuzzle),
+      ),
     );
   }
 
@@ -446,6 +496,25 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
+  void _undoMove() {
+    final GameController controller = GameController();
+    if (controller.gameRecorder.mainlineMoves.isEmpty) {
+      return;
+    }
+
+    // Take back the last move
+    controller.takeBack();
+
+    // Update state
+    setState(() {
+      if (_moveCount > 0) {
+        _moveCount--;
+        _lastRecordedMoveIndex--;
+        _validator.undoLastMove();
+      }
+    });
+  }
+
   void _resetPuzzle() {
     setState(() {
       _initializePuzzle();
@@ -461,18 +530,62 @@ class _PuzzlePageState extends State<PuzzlePage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(s.giveUp),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Row(
           children: <Widget>[
+            const Icon(Icons.info_outline, color: Colors.orange),
+            const SizedBox(width: 8),
             Text(s.solution),
-            const SizedBox(height: 8),
-            Text(
-              widget.puzzle.solutionMoves.first.join(' → '),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
           ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Optimal solution (${widget.puzzle.solutionMoves.first.length} moves):',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              // Show solution as numbered list
+              ...widget.puzzle.solutionMoves.first.asMap().entries.map(
+                (MapEntry<int, String> entry) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withValues(alpha: 0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${entry.key + 1}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          entry.value,
+                          style: const TextStyle(
+                            fontFamily: 'monospace',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         actions: <Widget>[
           TextButton(
