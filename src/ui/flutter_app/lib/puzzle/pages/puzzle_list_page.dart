@@ -251,6 +251,18 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
               deleteIcon: const Icon(Icons.close, size: 18),
             ),
           ),
+          // Clear all filters chip
+          if (_selectedDifficulties.isNotEmpty || _selectedCategories.isNotEmpty)
+            ActionChip(
+              label: Text(s.clearFilter),
+              avatar: const Icon(Icons.clear_all, size: 18),
+              onPressed: () {
+                setState(() {
+                  _selectedDifficulties.clear();
+                  _selectedCategories.clear();
+                });
+              },
+            ),
         ],
       ),
     );
