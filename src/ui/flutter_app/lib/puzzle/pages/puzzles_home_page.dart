@@ -62,7 +62,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               title: s.dailyPuzzle,
               subtitle: s.dailyPuzzleDesc,
               icon: FluentIcons.calendar_star_24_regular,
-              color: Colors.orange,
+              color: Theme.of(context).colorScheme.primary, // Use primary color
               onTap: () => _navigateTo(const DailyPuzzlePage()),
             ),
             const SizedBox(height: 16),
@@ -82,7 +82,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.allPuzzles,
                   description: s.allPuzzlesDesc,
                   icon: FluentIcons.puzzle_piece_24_regular,
-                  color: Colors.blue,
+                  color: Theme.of(context).colorScheme.primary, // Use primary green
                   onTap: () => _navigateTo(const PuzzleListPage()),
                 ),
                 // Puzzle Rush
@@ -91,7 +91,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.puzzleRush,
                   description: s.puzzleRushDesc,
                   icon: FluentIcons.flash_24_regular,
-                  color: Colors.red,
+                  color: Colors.deepOrange, // Keep energetic orange for "rush" mode
                   onTap: () => _navigateTo(const PuzzleRushPage()),
                 ),
                 // Puzzle Streak
@@ -100,7 +100,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.puzzleStreak,
                   description: s.puzzleStreakDesc,
                   icon: FluentIcons.flash_24_filled,
-                  color: Colors.purple,
+                  color: Theme.of(context).colorScheme.primaryContainer, // Darker green shade
                   onTap: () => _navigateTo(const PuzzleStreakPage()),
                 ),
                 // Custom Puzzles
@@ -109,7 +109,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.customPuzzles,
                   description: s.customPuzzlesDesc,
                   icon: FluentIcons.edit_24_regular,
-                  color: Colors.green,
+                  color: Colors.lightGreen, // Lighter green variant
                   onTap: () => _navigateTo(const CustomPuzzlesPage()),
                 ),
                 // History
@@ -118,7 +118,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.puzzleHistory,
                   description: s.puzzleHistoryDesc,
                   icon: FluentIcons.history_24_regular,
-                  color: Colors.teal,
+                  color: Colors.teal, // Teal stays as complementary color
                   onTap: () => _navigateTo(const PuzzleHistoryPage()),
                 ),
                 // Statistics
@@ -127,7 +127,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.puzzleStatistics,
                   description: s.puzzleStatisticsDesc,
                   icon: FluentIcons.chart_multiple_24_regular,
-                  color: Colors.indigo,
+                  color: Colors.blueGrey, // Neutral grey-blue for stats
                   onTap: () => _navigateTo(const PuzzleStatsPage()),
                 ),
               ],
@@ -166,19 +166,19 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                       s.totalPuzzles,
                       stats['totalPuzzles'].toString(),
                       FluentIcons.puzzle_piece_24_regular,
-                      Colors.blue,
+                      Theme.of(context).colorScheme.primary, // Use primary green
                     ),
                     _buildStatItem(
                       s.completed,
                       stats['completedPuzzles'].toString(),
                       FluentIcons.checkmark_circle_24_regular,
-                      Colors.green,
+                      Colors.lightGreen, // Lighter green for completed
                     ),
                     _buildStatItem(
                       s.totalStars,
                       stats['totalStars'].toString(),
                       FluentIcons.star_24_regular,
-                      Colors.amber,
+                      Colors.amber, // Keep amber for stars
                     ),
                   ],
                 ),
@@ -189,7 +189,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                           0.0) /
                       100,
                   backgroundColor: Colors.grey[800],
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).colorScheme.primary, // Use primary green
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(

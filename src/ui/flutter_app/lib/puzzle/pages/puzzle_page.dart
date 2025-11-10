@@ -222,7 +222,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Widget _buildInfoPanel(S s) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1), // Use theme color
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -365,7 +365,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
     return AlertDialog(
       title: Row(
         children: <Widget>[
-          const Icon(Icons.emoji_events, color: Colors.amber, size: 32),
+          Icon(
+            Icons.emoji_events,
+            color: Theme.of(context).colorScheme.primary, // Use primary green
+            size: 32,
+          ),
           const SizedBox(width: 8),
           Text(s.puzzleSolved),
         ],
@@ -380,7 +384,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               3,
               (int index) => Icon(
                 index < stars ? Icons.star : Icons.star_border,
-                color: Colors.amber,
+                color: Colors.amber, // Keep amber for stars
                 size: 40,
               ),
             ),
@@ -532,7 +536,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
       builder: (BuildContext context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            const Icon(Icons.info_outline, color: Colors.orange),
+            Icon(
+              Icons.info_outline,
+              color: Theme.of(context).colorScheme.primary, // Use primary color
+            ),
             const SizedBox(width: 8),
             Text(s.solution),
           ],
@@ -558,7 +565,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                           width: 24,
                           height: 24,
                           decoration: BoxDecoration(
-                            color: Colors.blue.withValues(alpha: 0.2),
+                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2), // Use primary color
                             shape: BoxShape.circle,
                           ),
                           child: Center(
