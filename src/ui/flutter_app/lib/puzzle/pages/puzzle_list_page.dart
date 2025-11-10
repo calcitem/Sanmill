@@ -121,9 +121,9 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                 tooltip: s.delete,
               ),
           ] else ...<Widget>[
-            // Import button
+            // Import button (open file to import puzzles)
             IconButton(
-              icon: const Icon(FluentIcons.arrow_download_24_regular),
+              icon: const Icon(FluentIcons.folder_open_24_regular),
               onPressed: _importPuzzles,
               tooltip: s.puzzleImport,
             ),
