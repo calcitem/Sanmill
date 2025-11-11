@@ -379,15 +379,20 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   Widget _buildStatItem(String value, IconData icon, Color color) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Icon(icon, color: color, size: 20),
         const SizedBox(width: 4),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: color,
+        // Add flexible text to prevent overflow
+        Flexible(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
@@ -398,7 +403,16 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(label, style: const TextStyle(fontSize: 16)),
+        // Wrap label in Expanded to prevent overflow
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 16),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(width: 8),
         Text(
           value,
           style: TextStyle(

@@ -320,7 +320,13 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
             children: <Widget>[
               const Icon(FluentIcons.trophy_24_regular, color: Colors.orange),
               const SizedBox(width: 8),
-              Text(s.dailyPuzzleStreak),
+              // Wrap text in Expanded to prevent overflow on small screens
+              Expanded(
+                child: Text(
+                  s.dailyPuzzleStreak,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           content: Column(
