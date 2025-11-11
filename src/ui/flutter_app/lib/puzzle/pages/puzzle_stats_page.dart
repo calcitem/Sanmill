@@ -325,27 +325,26 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
   }
 
   Widget _buildStatItem(String label, String value, IconData icon) {
-    return Flexible(
-      child: Column(
-        children: <Widget>[
-          Icon(icon, color: Colors.blue, size: 24),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            label,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+    // Return Column directly - the calling code wraps this in Flexible
+    return Column(
+      children: <Widget>[
+        Icon(icon, color: Colors.blue, size: 24),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          label,
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 
