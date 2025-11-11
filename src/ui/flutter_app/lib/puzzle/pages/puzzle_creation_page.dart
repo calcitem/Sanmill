@@ -387,88 +387,236 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     return Card(
       color: AppTheme.cardColor,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.all(12.0), // Reduced padding
+        child: Row(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Icon(
-                  FluentIcons.lightbulb_24_regular,
-                  size: 24,
-                  color: Colors.amber[300],
+            Icon(
+              FluentIcons.lightbulb_24_regular,
+              size: 20,
+              color: Colors.amber[300],
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                S.of(context).puzzleCreationInstructions,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  S.of(context).puzzleCreationInstructions,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Puzzle Creation Workflow:',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue[200],
               ),
             ),
-            const SizedBox(height: 8),
-            _buildWorkflowStep(
-              '1',
-              'Setup Position',
-              'Open board (setup or play moves), create starting position, return and capture',
-              _capturedPosition != null,
-            ),
-            _buildWorkflowStep(
-              '2',
-              'Record Solution',
-              'Click Start Recording (board resets to start position), go back, play moves, return and stop',
-              _solutionMoves.isNotEmpty,
-            ),
-            _buildWorkflowStep(
-              '3',
-              'Add Details',
-              'Fill in title, description, category, difficulty, and tags',
-              false,
-            ),
-            _buildWorkflowStep(
-              '4',
-              'Save Puzzle',
-              'Click the save button in the top-right corner',
-              false,
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.orange.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+            // Help icon button to show detailed workflow
+            IconButton(
+              icon: Icon(
+                FluentIcons.question_circle_24_regular,
+                color: Colors.blue[300],
+                size: 24,
               ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    FluentIcons.info_24_regular,
-                    size: 16,
-                    color: Colors.orange[300],
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      "Tip: You'll navigate between this page and the game board. Your progress is saved!",
-                      style: TextStyle(fontSize: 12, color: Colors.orange[200]),
-                    ),
-                  ),
-                ],
-              ),
+              onPressed: _showWorkflowHelp,
+              tooltip: 'Show detailed workflow',
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  /// Show detailed workflow help dialog
+  void _showWorkflowHelp() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            Icon(
+              FluentIcons.lightbulb_24_filled,
+              color: Colors.amber[300],
+            ),
+            const SizedBox(width: 8),
+            const Text('Puzzle Creation Workflow'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildWorkflowStep(
+                '1',
+                'Setup Position',
+                'Open board (setup or play moves), create starting position, return and capture',
+                _capturedPosition != null,
+              ),
+              _buildWorkflowStep(
+                '2',
+                'Record Solution',
+                'Click Start Recording (board resets to start position), go back, play moves, return and stop',
+                _solutionMoves.isNotEmpty,
+              ),
+              _buildWorkflowStep(
+                '3',
+                'Add Details',
+                'Fill in title, description, category, difficulty, and tags',
+                false,
+              ),
+              _buildWorkflowStep(
+                '4',
+                'Save Puzzle',
+                'Click the save button in the top-right corner',
+                false,
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.info_24_regular,
+                      size: 16,
+                      color: Colors.orange[300],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+                        style: TextStyle(fontSize: 12, color: Colors.orange[200]),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Show position capture help dialog
+  void _showPositionCaptureHelp() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            Icon(
+              FluentIcons.info_24_filled,
+              color: Colors.blue[300],
+            ),
+            const SizedBox(width: 8),
+            const Text('Position Capture Help'),
+          ],
+        ),
+        content: const SingleChildScrollView(
+          child: Text(
+            'How to capture the puzzle starting position:\n\n'
+            '1. Click "Open Board (Setup Position)" to manually place pieces, '
+            'OR click "Open Board (Play Moves)" to reach the position by making moves\n\n'
+            '2. Arrange the board to your desired puzzle starting position\n\n'
+            '3. Press the back button to return to this page\n\n'
+            '4. Click "Capture Position" button to save the current board state\n\n'
+            'The captured position will be used as the starting point for your puzzle.',
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Show solution recording help dialog
+  void _showSolutionRecordingHelp() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            Icon(
+              FluentIcons.info_24_filled,
+              color: Colors.blue[300],
+            ),
+            const SizedBox(width: 8),
+            const Text('Solution Recording Help'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'How to record the solution moves:',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              const SizedBox(height: 12),
+              _buildInstructionStep(
+                '1',
+                'Capture the starting position first',
+              ),
+              _buildInstructionStep(
+                '2',
+                'Click "Start Recording" button (this resets the board to your captured position)',
+              ),
+              _buildInstructionStep(
+                '3',
+                S.of(context).puzzleRecordingHintUseButton,
+              ),
+              _buildInstructionStep(
+                '4',
+                'Return here and click "Stop Recording"',
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.info_24_regular,
+                      size: 16,
+                      color: Colors.orange[300],
+                    ),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Text(
+                        'Tip: The board will automatically reset to your captured position when you start recording.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
@@ -536,39 +684,30 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              S.of(context).puzzleSetupPosition,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            // Section title with help icon
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    S.of(context).puzzleSetupPosition,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                // Help icon for position capture instructions
+                IconButton(
+                  icon: Icon(
+                    FluentIcons.question_circle_24_regular,
+                    color: Colors.blue[300],
+                    size: 20,
+                  ),
+                  onPressed: _showPositionCaptureHelp,
+                  tooltip: 'Show position capture help',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
-
-            // Instructions for position capture
-            if (_capturedPosition == null)
-              Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FluentIcons.info_24_regular,
-                      size: 20,
-                      color: Colors.blue[300],
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Open the board (setup mode to place pieces, or play mode to make moves), create the puzzle starting position, then return here to capture it',
-                        style: TextStyle(fontSize: 13, color: Colors.blue[100]),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
             if (_capturedPosition != null) ...<Widget>[
               Row(
@@ -650,117 +789,57 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              S.of(context).puzzleRecordSolution,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            // Section title with help icon
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    S.of(context).puzzleRecordSolution,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                // Help icon for solution recording instructions
+                IconButton(
+                  icon: Icon(
+                    FluentIcons.question_circle_24_regular,
+                    color: Colors.blue[300],
+                    size: 20,
+                  ),
+                  onPressed: _showSolutionRecordingHelp,
+                  tooltip: 'Show solution recording help',
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
 
-            // Instructions for solution recording
-            if (!_isRecordingSolution && _solutionMoves.isEmpty)
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          FluentIcons.info_24_regular,
-                          size: 20,
-                          color: Colors.blue[300],
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'How to Record Solution:',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue[300],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInstructionStep(
-                      '1',
-                      'Capture the starting position first',
-                    ),
-                    _buildInstructionStep(
-                      '2',
-                      'Click "Start Recording" button (this resets the board to your captured position)',
-                    ),
-                    _buildInstructionStep(
-                      '3',
-                      S.of(context).puzzleRecordingHintUseButton,
-                    ),
-                    _buildInstructionStep(
-                      '4',
-                      'Return here and click "Stop Recording"',
-                    ),
-                  ],
-                ),
-              ),
-
-            // Recording in progress instructions
+            // Recording in progress indicator (compact)
             if (_isRecordingSolution)
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(8),
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
                   color: Colors.green.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.green),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          FluentIcons.record_24_filled,
-                          color: Colors.red[400],
-                          size: 20,
+                    Icon(
+                      FluentIcons.record_24_filled,
+                      color: Colors.red[400],
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        S.of(context).puzzleRecording,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          S.of(context).puzzleRecording,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '→ The board has been reset to your starting position',
-                      style: TextStyle(
-                        color: Colors.green[100],
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '→ ${S.of(context).puzzleRecordingHintUseButton}',
-                      style: TextStyle(
-                        color: Colors.green[100],
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '→ Return here when finished and click "Stop Recording"',
-                      style: TextStyle(
-                        color: Colors.green[100],
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
                       ),
                     ),
                   ],
