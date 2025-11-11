@@ -33,10 +33,8 @@ class PuzzleManager {
     final PuzzleSettings settings = DB().puzzleSettings;
     settingsNotifier.value = settings;
 
-    // If no puzzles exist, load the built-in collection
-    if (settings.allPuzzles.isEmpty) {
-      await loadBuiltInPuzzles();
-    }
+    // Built-in puzzles have been removed - users should create or import their own
+    logger.i("$_tag Ready - no built-in puzzles available");
   }
 
   /// Load built-in puzzles from assets/predefined collection
