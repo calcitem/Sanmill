@@ -164,13 +164,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
               _buildBackground(),
               // Game board widget.
               _buildGameBoard(context, widget.controller),
-              // Drawer icon in the top-left corner.
+              // Drawer icon or back button in the top-left corner.
               Align(
                 key: const Key('game_page_drawer_icon_align'),
                 alignment: AlignmentDirectional.topStart,
                 child: SafeArea(
-                  child:
-                      CustomDrawerIcon.of(context)?.drawerIcon ?? const SizedBox.shrink(),
+                  child: _buildTopLeftButton(context),
                 ),
               ),
               // Analysis button in the top-right corner
@@ -403,6 +402,42 @@ class _GamePageInnerState extends State<_GamePageInner> {
         );
       },
     );
+  }
+
+  /// Build top-left button: either drawer icon or back button
+  /// Shows back button when:
+  /// 1. No CustomDrawerIcon is available (e.g., pushed from another page)
+  /// 2. Navigator can pop (there's a previous route to return to)
+  Widget _buildTopLeftButton(BuildContext context) {
+    final Widget? drawerIcon = CustomDrawerIcon.of(context)?.drawerIcon;
+
+    // If drawer icon exists, use it
+    if (drawerIcon != null) {
+      return drawerIcon;
+    }
+
+    // Otherwise, show back button if we can pop
+    if (Navigator.canPop(context)) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          color: Colors.black.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(8),
+          child: IconButton(
+            key: const Key('game_page_back_button'),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            tooltip: S.of(context).back,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
+      );
+    }
+
+    // No drawer and can't pop, show nothing
+    return const SizedBox.shrink();
   }
 
   // Calculates the toolbar height based on display settings.
