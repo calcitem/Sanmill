@@ -2152,5 +2152,7 @@
     "reset": "மீட்டமை",
     "@reset": {},
     "allPuzzlesCompleted": "அனைத்து புதிர்களும் முடிந்தன!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "பின்செல்",
+    "@back": {}
 }

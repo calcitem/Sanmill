@@ -2152,5 +2152,7 @@
     "reset": "دوبارہ ترتیب دیں",
     "@reset": {},
     "allPuzzlesCompleted": "تمام پہیلیاں مکمل!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "واپس",
+    "@back": {}
 }

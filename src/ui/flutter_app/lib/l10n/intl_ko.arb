@@ -2152,5 +2152,7 @@
     "reset": "재설정",
     "@reset": {},
     "allPuzzlesCompleted": "모든 퍼즐 완료!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "뒤로",
+    "@back": {}
 }

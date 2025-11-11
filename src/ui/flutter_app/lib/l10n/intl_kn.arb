@@ -2152,5 +2152,7 @@
     "reset": "ಮರುಹೊಂದಿಸಿ",
     "@reset": {},
     "allPuzzlesCompleted": "ಎಲ್ಲಾ ಒಗಟುಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ಹಿಂತಿರುಗಿ",
+    "@back": {}
 }

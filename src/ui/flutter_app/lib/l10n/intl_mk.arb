@@ -2152,5 +2152,7 @@
     "reset": "Ресетирај",
     "@reset": {},
     "allPuzzlesCompleted": "Сите сложувалки завршени!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Назад",
+    "@back": {}
 }

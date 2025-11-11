@@ -2152,5 +2152,7 @@
     "reset": "Ripristina",
     "@reset": {},
     "allPuzzlesCompleted": "Tutti i puzzle completati!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Indietro",
+    "@back": {}
 }

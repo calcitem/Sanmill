@@ -2152,5 +2152,7 @@
     "reset": "Скінуць",
     "@reset": {},
     "allPuzzlesCompleted": "Усе галаваломкі завершаны!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Назад",
+    "@back": {}
 }

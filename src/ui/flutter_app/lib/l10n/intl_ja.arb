@@ -2152,5 +2152,7 @@
     "reset": "リセット",
     "@reset": {},
     "allPuzzlesCompleted": "すべてのパズルが完了しました！",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "戻る",
+    "@back": {}
 }

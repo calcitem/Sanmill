@@ -2152,5 +2152,7 @@
     "reset": "Нулиране",
     "@reset": {},
     "allPuzzlesCompleted": "Всички пъзели завършени!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Назад",
+    "@back": {}
 }

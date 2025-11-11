@@ -2152,5 +2152,7 @@
     "reset": "रीसेट करें",
     "@reset": {},
     "allPuzzlesCompleted": "सभी पहेलियाँ पूर्ण!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "वापस",
+    "@back": {}
 }

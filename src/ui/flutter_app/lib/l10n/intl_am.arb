@@ -2152,5 +2152,7 @@
     "reset": "እንደገና አስጀምር",
     "@reset": {},
     "allPuzzlesCompleted": "ሁሉም እንቆቅልሾች ተጠናቀቁ!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ተመለስ",
+    "@back": {}
 }

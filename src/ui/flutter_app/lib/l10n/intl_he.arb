@@ -2152,5 +2152,7 @@
     "reset": "איפוס",
     "@reset": {},
     "allPuzzlesCompleted": "כל החידות הושלמו!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "חזור",
+    "@back": {}
 }

@@ -2152,5 +2152,7 @@
     "reset": "བསྐྱར་སྒྲིག",
     "@reset": {},
     "allPuzzlesCompleted": "རྟོག་ཞིབ་ཚང་མ་ཚར་བ།",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ཕྱིར་ལོག",
+    "@back": {}
 }

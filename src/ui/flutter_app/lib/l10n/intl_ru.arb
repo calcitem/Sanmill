@@ -2152,5 +2152,7 @@
     "reset": "Сброс",
     "@reset": {},
     "allPuzzlesCompleted": "Все головоломки решены!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Назад",
+    "@back": {}
 }

@@ -2152,5 +2152,7 @@
     "reset": "Endurstilla",
     "@reset": {},
     "allPuzzlesCompleted": "Öllum þrautum lokið!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Til baka",
+    "@back": {}
 }

@@ -2152,5 +2152,7 @@
     "reset": "Herstel",
     "@reset": {},
     "allPuzzlesCompleted": "Alle raaisels voltooi!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Terug",
+    "@back": {}
 }

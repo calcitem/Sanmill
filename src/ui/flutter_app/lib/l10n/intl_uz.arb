@@ -2152,5 +2152,7 @@
     "reset": "Qayta o'rnatish",
     "@reset": {},
     "allPuzzlesCompleted": "Barcha jumboqlar yakunlandi!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Orqaga",
+    "@back": {}
 }

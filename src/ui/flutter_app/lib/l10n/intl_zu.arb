@@ -2152,5 +2152,7 @@
     "reset": "Setha kabusha",
     "@reset": {},
     "allPuzzlesCompleted": "Wonke amaphazili aphethiwe!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Emuva",
+    "@back": {}
 }

@@ -2152,5 +2152,7 @@
     "reset": "Rivendos",
     "@reset": {},
     "allPuzzlesCompleted": "Të gjitha enigmat u përfunduan!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Prapa",
+    "@back": {}
 }

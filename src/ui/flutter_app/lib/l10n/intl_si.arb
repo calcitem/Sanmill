@@ -2152,5 +2152,7 @@
     "reset": "යළි පිහිටුවන්න",
     "@reset": {},
     "allPuzzlesCompleted": "සියලුම ප්‍රහේලිකා සම්පූර්ණයි!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ආපසු",
+    "@back": {}
 }

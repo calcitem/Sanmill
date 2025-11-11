@@ -2152,5 +2152,7 @@
     "reset": "Visszaállítás",
     "@reset": {},
     "allPuzzlesCompleted": "Minden rejtvény megoldva!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Vissza",
+    "@back": {}
 }

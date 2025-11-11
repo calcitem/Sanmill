@@ -2152,5 +2152,7 @@
     "reset": "Վերակայել",
     "@reset": {},
     "allPuzzlesCompleted": "Բոլոր հանելուկները լուծված են!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Հետ",
+    "@back": {}
 }

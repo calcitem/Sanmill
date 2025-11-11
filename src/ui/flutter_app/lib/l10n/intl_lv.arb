@@ -2152,5 +2152,7 @@
     "reset": "Atiestatīt",
     "@reset": {},
     "allPuzzlesCompleted": "Visi mīklas pabeigti!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Atpakaļ",
+    "@back": {}
 }

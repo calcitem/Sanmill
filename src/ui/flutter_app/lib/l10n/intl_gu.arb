@@ -2152,5 +2152,7 @@
     "reset": "રીસેટ કરો",
     "@reset": {},
     "allPuzzlesCompleted": "બધા પઝલ પૂર્ણ થયા!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "પાછળ",
+    "@back": {}
 }

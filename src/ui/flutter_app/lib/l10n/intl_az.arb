@@ -2152,5 +2152,7 @@
     "reset": "Sıfırla",
     "@reset": {},
     "allPuzzlesCompleted": "Bütün tapmacalar tamamlandı!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Geri",
+    "@back": {}
 }

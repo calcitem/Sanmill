@@ -2152,5 +2152,7 @@
     "reset": "Đặt lại",
     "@reset": {},
     "allPuzzlesCompleted": "Tất cả câu đố đã hoàn thành!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Quay lại",
+    "@back": {}
 }

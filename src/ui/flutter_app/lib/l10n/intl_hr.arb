@@ -2152,5 +2152,7 @@
     "reset": "Resetiraj",
     "@reset": {},
     "allPuzzlesCompleted": "Sve zagonetke završene!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Natrag",
+    "@back": {}
 }

@@ -2152,5 +2152,7 @@
     "reset": "Nulstil",
     "@reset": {},
     "allPuzzlesCompleted": "Alle puslespil fuldført!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Tilbage",
+    "@back": {}
 }

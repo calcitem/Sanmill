@@ -2152,5 +2152,7 @@
     "reset": "Restablir",
     "@reset": {},
     "allPuzzlesCompleted": "Tots els trencaclosques completats!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Enrere",
+    "@back": {}
 }

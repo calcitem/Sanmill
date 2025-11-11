@@ -2152,5 +2152,7 @@
     "reset": "ပြန်လည်သတ်မှတ်",
     "@reset": {},
     "allPuzzlesCompleted": "ပဟေဠိအားလုံးပြီးစီးပါပြီ!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "နောက်သို့",
+    "@back": {}
 }

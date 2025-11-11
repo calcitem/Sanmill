@@ -2152,5 +2152,7 @@
     "reset": "পুনরায় সেট করুন",
     "@reset": {},
     "allPuzzlesCompleted": "সমস্ত ধাঁধা সম্পন্ন!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ফিরে যান",
+    "@back": {}
 }

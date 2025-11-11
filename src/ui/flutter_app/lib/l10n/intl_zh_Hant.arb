@@ -2168,5 +2168,7 @@
     "reset": "重置",
     "@reset": {},
     "allPuzzlesCompleted": "所有謎題已完成！",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "返回",
+    "@back": {}
 }
