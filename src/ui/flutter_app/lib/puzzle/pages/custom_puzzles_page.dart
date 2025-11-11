@@ -148,6 +148,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     onEdit: !_isMultiSelectMode
                         ? () => _editPuzzle(puzzle)
                         : null,
+                    onDelete: !_isMultiSelectMode
+                        ? () => _deleteSinglePuzzle(puzzle.id)
+                        : null,
                   );
                 },
               );
@@ -322,6 +325,27 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       _isMultiSelectMode = false;
       _selectedPuzzleIds.clear();
     });
+  }
+
+  /// Delete a single puzzle (called from swipe action)
+  void _deleteSinglePuzzle(String puzzleId) {
+    // Delete the puzzle immediately (confirmation already shown in Dismissible)
+    final int deletedCount = _puzzleManager.deletePuzzles(<String>[puzzleId]);
+
+    if (!mounted) {
+      return;
+    }
+
+    if (deletedCount > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzleDeleted(deletedCount)),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+
+    setState(() {});
   }
 
   Future<void> _importPuzzles() async {
