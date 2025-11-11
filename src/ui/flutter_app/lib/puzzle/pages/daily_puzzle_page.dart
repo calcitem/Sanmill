@@ -158,6 +158,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                               Text(
                                 puzzle.title,
                                 style: Theme.of(context).textTheme.titleLarge,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               Text(
                                 puzzle.difficulty.displayName(context),
@@ -165,6 +167,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                   color: _getDifficultyColor(puzzle.difficulty),
                                   fontWeight: FontWeight.bold,
                                 ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
@@ -371,12 +374,20 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(icon, color: color, size: 20),
-            const SizedBox(width: 8),
-            Text(label),
-          ],
+        Expanded(
+          child: Row(
+            children: <Widget>[
+              Icon(icon, color: color, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
         Text(
           value,

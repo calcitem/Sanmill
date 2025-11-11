@@ -260,7 +260,13 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
       children: <Widget>[
         Icon(icon, size: 16, color: color),
         const SizedBox(width: 4),
-        Text(label, style: TextStyle(fontSize: 12, color: color)),
+        Flexible(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 12, color: color),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }
