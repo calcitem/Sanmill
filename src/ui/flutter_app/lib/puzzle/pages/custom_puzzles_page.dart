@@ -557,8 +557,11 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
               ),
             ],
           ),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.9,
+          content: ConstrainedBox(
+            // Use ConstrainedBox instead of fixed width to avoid overflow on small screens
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.85,
+            ),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -635,6 +638,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                           color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
                         ),
                         softWrap: true,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -714,10 +719,17 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
               Text(
                 description,
                 style: const TextStyle(fontSize: 13, color: Colors.black87),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
