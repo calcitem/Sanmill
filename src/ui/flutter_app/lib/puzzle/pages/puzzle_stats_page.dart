@@ -115,16 +115,20 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                _buildStatItem(
-                  s.puzzleStatsGamesPlayed,
-                  '${rating.gamesPlayed}',
-                  FluentIcons.games_24_regular,
+                Flexible(
+                  child: _buildStatItem(
+                    s.puzzleStatsGamesPlayed,
+                    '${rating.gamesPlayed}',
+                    FluentIcons.games_24_regular,
+                  ),
                 ),
                 Container(width: 1, height: 40, color: Colors.grey[700]),
-                _buildStatItem(
-                  s.puzzleStatsDeviation,
-                  '±${rating.ratingDeviation.round()}',
-                  FluentIcons.chart_multiple_24_regular,
+                Flexible(
+                  child: _buildStatItem(
+                    s.puzzleStatsDeviation,
+                    '±${rating.ratingDeviation.round()}',
+                    FluentIcons.chart_multiple_24_regular,
+                  ),
                 ),
               ],
             ),
@@ -153,7 +157,8 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             const SizedBox(height: 16),
             Row(
               children: <Widget>[
-                Expanded(
+                Flexible(
+                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsSuccessRate,
                     '${successRate.toStringAsFixed(1)}%',
@@ -162,7 +167,8 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                Expanded(
+                Flexible(
+                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsAvgTime,
                     _formatAvgTime(avgTime),
@@ -175,7 +181,8 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             const SizedBox(height: 16),
             Row(
               children: <Widget>[
-                Expanded(
+                Flexible(
+                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsSolved,
                     '${stats['successCount']}',
@@ -184,7 +191,8 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                Expanded(
+                Flexible(
+                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsFailed,
                     '${stats['failCount']}',
@@ -293,16 +301,24 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             child: Text(
               _formatTimestamp(attempt.timestamp),
               style: Theme.of(context).textTheme.bodySmall,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          if (attempt.ratingChange != null)
-            Text(
-              '${attempt.ratingChange! >= 0 ? '+' : ''}${attempt.ratingChange}',
-              style: TextStyle(
-                color: attempt.ratingChange! >= 0 ? Colors.green : Colors.red,
-                fontWeight: FontWeight.bold,
+          if (attempt.ratingChange != null) ...<Widget>[
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                '${attempt.ratingChange! >= 0 ? '+' : ''}${attempt.ratingChange}',
+                style: TextStyle(
+                  color: attempt.ratingChange! >= 0 ? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+          ],
         ],
       ),
     );

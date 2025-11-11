@@ -230,6 +230,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
           Text(
             widget.puzzle.description,
             style: Theme.of(context).textTheme.titleMedium,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
 
@@ -237,16 +239,24 @@ class _PuzzlePageState extends State<PuzzlePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              _buildStatChip(s.moves, _moveCount.toString(), Icons.swap_horiz),
-              _buildStatChip(
-                s.optimal,
-                widget.puzzle.optimalMoveCount.toString(),
-                Icons.star,
+              Flexible(
+                child: _buildStatChip(s.moves, _moveCount.toString(), Icons.swap_horiz),
               ),
-              _buildStatChip(
-                s.difficulty,
-                widget.puzzle.difficulty.getDisplayName(S.of, context),
-                Icons.signal_cellular_alt,
+              const SizedBox(width: 4),
+              Flexible(
+                child: _buildStatChip(
+                  s.optimal,
+                  widget.puzzle.optimalMoveCount.toString(),
+                  Icons.star,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: _buildStatChip(
+                  s.difficulty,
+                  widget.puzzle.difficulty.getDisplayName(S.of, context),
+                  Icons.signal_cellular_alt,
+                ),
               ),
             ],
           ),
@@ -261,15 +271,24 @@ class _PuzzlePageState extends State<PuzzlePage> {
       children: <Widget>[
         Icon(icon, size: 16),
         const SizedBox(width: 4),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(label, style: const TextStyle(fontSize: 10)),
-            Text(
-              value,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            ),
-          ],
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                label,
+                style: const TextStyle(fontSize: 10),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                value,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -285,7 +304,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
             child: OutlinedButton.icon(
               onPressed: _giveUp,
               icon: const Icon(Icons.flag),
-              label: Text(s.giveUp),
+              label: Flexible(
+                child: Text(
+                  s.giveUp,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ),
           ),
         ],

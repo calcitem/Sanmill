@@ -403,6 +403,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             // Help icon button to show detailed workflow
@@ -430,15 +432,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       builder: (BuildContext context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            Icon(
-              FluentIcons.lightbulb_24_filled,
-              color: Colors.amber[300],
-            ),
+            Icon(FluentIcons.lightbulb_24_filled, color: Colors.amber[300]),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
             const Expanded(
               child: Text(
                 'Puzzle Creation Workflow',
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -479,9 +479,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 decoration: BoxDecoration(
                   color: Colors.orange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: Colors.orange.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Icon(
                       FluentIcons.info_24_regular,
@@ -492,7 +495,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     Expanded(
                       child: Text(
                         "Tip: You'll navigate between this page and the game board. Your progress is saved!",
-                        style: TextStyle(fontSize: 12, color: Colors.orange[200]),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.orange[200],
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -518,15 +526,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       builder: (BuildContext context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            Icon(
-              FluentIcons.info_24_filled,
-              color: Colors.blue[300],
-            ),
+            Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
             const Expanded(
               child: Text(
                 'Position Capture Help',
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -561,15 +567,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       builder: (BuildContext context) => AlertDialog(
         title: Row(
           children: <Widget>[
-            Icon(
-              FluentIcons.info_24_filled,
-              color: Colors.blue[300],
-            ),
+            Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
             const Expanded(
               child: Text(
                 'Solution Recording Help',
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -585,10 +589,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
               const SizedBox(height: 12),
-              _buildInstructionStep(
-                '1',
-                'Capture the starting position first',
-              ),
+              _buildInstructionStep('1', 'Capture the starting position first'),
               _buildInstructionStep(
                 '2',
                 'Click "Start Recording" button (this resets the board to your captured position)',
@@ -607,9 +608,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 decoration: BoxDecoration(
                   color: Colors.orange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: Colors.orange.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Icon(
                       FluentIcons.info_24_regular,
@@ -621,6 +625,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                       child: Text(
                         'Tip: The board will automatically reset to your captured position when you start recording.',
                         style: TextStyle(fontSize: 12),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -708,7 +714,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 Expanded(
                   child: Text(
                     S.of(context).puzzleSetupPosition,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 // Help icon for position capture instructions
@@ -813,7 +824,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 Expanded(
                   child: Text(
                     S.of(context).puzzleRecordSolution,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 // Help icon for solution recording instructions
