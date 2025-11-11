@@ -2152,5 +2152,7 @@
     "reset": "รีเซ็ต",
     "@reset": {},
     "allPuzzlesCompleted": "ปริศนาทั้งหมดเสร็จสมบูรณ์!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ย้อนกลับ",
+    "@back": {}
 }

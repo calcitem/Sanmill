@@ -2152,5 +2152,7 @@
     "reset": "Resetuj",
     "@reset": {},
     "allPuzzlesCompleted": "Wszystkie łamigłówki ukończone!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Wstecz",
+    "@back": {}
 }

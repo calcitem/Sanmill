@@ -2152,5 +2152,7 @@
     "reset": "Tilbakestill",
     "@reset": {},
     "allPuzzlesCompleted": "Alle gåter fullført!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Tilbake",
+    "@back": {}
 }

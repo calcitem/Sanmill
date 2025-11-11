@@ -2152,5 +2152,7 @@
     "reset": "إعادة تعيين",
     "@reset": {},
     "allPuzzlesCompleted": "اكتملت جميع الألغاز!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "رجوع",
+    "@back": {}
 }

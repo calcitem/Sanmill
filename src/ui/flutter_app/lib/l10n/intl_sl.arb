@@ -2152,5 +2152,7 @@
     "reset": "Ponastavi",
     "@reset": {},
     "allPuzzlesCompleted": "Vse uganke rešene!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Nazaj",
+    "@back": {}
 }

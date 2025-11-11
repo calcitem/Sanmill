@@ -2152,5 +2152,7 @@
     "reset": "Resetten",
     "@reset": {},
     "allPuzzlesCompleted": "Alle puzzels voltooid!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Terug",
+    "@back": {}
 }

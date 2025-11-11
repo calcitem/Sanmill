@@ -2152,5 +2152,7 @@
     "reset": "កំណត់ឡើងវិញ",
     "@reset": {},
     "allPuzzlesCompleted": "ល្បែងផ្គុំរូបភាពទាំងអស់បានបញ្ចប់!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "ត្រឡប់ក្រោយ",
+    "@back": {}
 }

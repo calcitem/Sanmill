@@ -2152,5 +2152,7 @@
     "reset": "Lähtesta",
     "@reset": {},
     "allPuzzlesCompleted": "Kõik mõistatused lahendatud!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Tagasi",
+    "@back": {}
 }

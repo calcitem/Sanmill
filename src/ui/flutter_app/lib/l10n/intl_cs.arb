@@ -2152,5 +2152,7 @@
     "reset": "Resetovat",
     "@reset": {},
     "allPuzzlesCompleted": "Všechny puzzle dokončeny!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Zpět",
+    "@back": {}
 }

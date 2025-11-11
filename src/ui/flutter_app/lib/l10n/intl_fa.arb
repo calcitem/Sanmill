@@ -2152,5 +2152,7 @@
     "reset": "بازنشانی",
     "@reset": {},
     "allPuzzlesCompleted": "تمام پازل‌ها تکمیل شدند!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "بازگشت",
+    "@back": {}
 }

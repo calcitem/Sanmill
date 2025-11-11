@@ -2152,5 +2152,7 @@
     "reset": "Restablecer",
     "@reset": {},
     "allPuzzlesCompleted": "¡Todos los rompecabezas completados!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Atrás",
+    "@back": {}
 }

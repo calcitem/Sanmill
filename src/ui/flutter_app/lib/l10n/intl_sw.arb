@@ -2152,5 +2152,7 @@
     "reset": "Weka upya",
     "@reset": {},
     "allPuzzlesCompleted": "Fumbo zote zimekamilika!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Rudi",
+    "@back": {}
 }

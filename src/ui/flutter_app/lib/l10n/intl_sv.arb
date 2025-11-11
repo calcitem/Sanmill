@@ -2152,5 +2152,7 @@
     "reset": "Återställ",
     "@reset": {},
     "allPuzzlesCompleted": "Alla pussel slutförda!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Tillbaka",
+    "@back": {}
 }

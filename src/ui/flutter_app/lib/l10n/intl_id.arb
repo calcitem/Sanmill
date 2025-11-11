@@ -2152,5 +2152,7 @@
     "reset": "Atur ulang",
     "@reset": {},
     "allPuzzlesCompleted": "Semua teka-teki selesai!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Kembali",
+    "@back": {}
 }

@@ -2940,5 +2940,9 @@
     "allPuzzlesCompleted": "所有谜题已完成！",
     "@allPuzzlesCompleted": {
         "description": "Message shown when all puzzles have been completed"
+    },
+    "back": "返回",
+    "@back": {
+        "description": "Back button tooltip"
     }
 }

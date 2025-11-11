@@ -2152,5 +2152,7 @@
     "reset": "Resetare",
     "@reset": {},
     "allPuzzlesCompleted": "Toate puzzle-urile finalizate!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Înapoi",
+    "@back": {}
 }

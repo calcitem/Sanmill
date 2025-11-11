@@ -2152,5 +2152,7 @@
     "reset": "Επαναφορά",
     "@reset": {},
     "allPuzzlesCompleted": "Όλα τα παζλ ολοκληρώθηκαν!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Πίσω",
+    "@back": {}
 }

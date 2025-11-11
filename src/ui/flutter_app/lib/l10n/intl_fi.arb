@@ -2152,5 +2152,7 @@
     "reset": "Nollaa",
     "@reset": {},
     "allPuzzlesCompleted": "Kaikki palapelit ratkaistu!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Takaisin",
+    "@back": {}
 }

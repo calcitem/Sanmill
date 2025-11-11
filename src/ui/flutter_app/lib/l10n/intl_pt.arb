@@ -2152,5 +2152,7 @@
     "reset": "Redefinir",
     "@reset": {},
     "allPuzzlesCompleted": "Todos os quebra-cabeças concluídos!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Voltar",
+    "@back": {}
 }

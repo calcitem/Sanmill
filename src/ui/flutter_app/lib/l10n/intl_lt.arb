@@ -2152,5 +2152,7 @@
     "reset": "Atstatyti",
     "@reset": {},
     "allPuzzlesCompleted": "Visi dėlionės užbaigti!",
-    "@allPuzzlesCompleted": {}
+    "@allPuzzlesCompleted": {},
+    "back": "Atgal",
+    "@back": {}
 }
