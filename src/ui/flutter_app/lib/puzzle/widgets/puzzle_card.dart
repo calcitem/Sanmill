@@ -77,7 +77,7 @@ class PuzzleCard extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text(s.confirm),
-                  content: Text(s.puzzleDeleteConfirm),
+                  content: Text(s.puzzleDeleteConfirm(1)),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
