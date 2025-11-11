@@ -79,23 +79,31 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              _formatDate(dailyInfo.date),
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              s.dailyPuzzleNumber(dailyInfo.dayNumber),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                _formatDate(dailyInfo.date),
+                                style: Theme.of(context).textTheme.titleMedium,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                s.dailyPuzzleNumber(dailyInfo.dayNumber),
+                                style: Theme.of(context).textTheme.bodySmall,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
+                        const SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 const Icon(
                                   FluentIcons.fire_24_regular,
@@ -116,6 +124,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                             Text(
                               s.dailyPuzzleDayStreak,
                               style: Theme.of(context).textTheme.bodySmall,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -235,6 +245,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const Icon(
                         FluentIcons.lightbulb_24_regular,
@@ -245,6 +256,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                         child: Text(
                           s.dailyPuzzleStreakHint,
                           style: const TextStyle(color: Colors.blue),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -395,9 +408,14 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
             ],
           ),
         ),
-        Text(
-          value,
-          style: TextStyle(fontWeight: FontWeight.bold, color: color),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Text(
+            value,
+            style: TextStyle(fontWeight: FontWeight.bold, color: color),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );

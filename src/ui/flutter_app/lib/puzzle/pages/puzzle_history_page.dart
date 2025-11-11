@@ -215,28 +215,36 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
             ),
             const SizedBox(height: 8),
 
-            // Details row
-            Wrap(
-              spacing: 16,
-              runSpacing: 8,
+            // Details row - Use Row with Flexible instead of Wrap to prevent overflow
+            Row(
               children: <Widget>[
-                _buildDetailChip(
-                  FluentIcons.timer_24_regular,
-                  _formatDuration(attempt.timeSpent),
-                  Colors.blue,
+                Flexible(
+                  child: _buildDetailChip(
+                    FluentIcons.timer_24_regular,
+                    _formatDuration(attempt.timeSpent),
+                    Colors.blue,
+                  ),
                 ),
-                if (attempt.hintsUsed > 0)
-                  _buildDetailChip(
-                    FluentIcons.lightbulb_24_regular,
-                    '${attempt.hintsUsed} ${s.puzzleHistoryHints}',
-                    Colors.orange,
+                if (attempt.hintsUsed > 0) ...<Widget>[
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: _buildDetailChip(
+                      FluentIcons.lightbulb_24_regular,
+                      '${attempt.hintsUsed} ${s.puzzleHistoryHints}',
+                      Colors.orange,
+                    ),
                   ),
-                if (puzzle != null)
-                  _buildDetailChip(
-                    puzzle.difficulty.icon,
-                    puzzle.difficulty.displayName(context),
-                    _getDifficultyColor(puzzle.difficulty),
+                ],
+                if (puzzle != null) ...<Widget>[
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: _buildDetailChip(
+                      puzzle.difficulty.icon,
+                      puzzle.difficulty.displayName(context),
+                      _getDifficultyColor(puzzle.difficulty),
+                    ),
                   ),
+                ],
               ],
             ),
             const SizedBox(height: 8),

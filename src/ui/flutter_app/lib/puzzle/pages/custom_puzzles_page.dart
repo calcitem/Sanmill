@@ -553,6 +553,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                 child: Text(
                   'How to Contribute Puzzles',
                   style: Theme.of(context).textTheme.titleLarge,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -612,6 +614,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Icon(
                             FluentIcons.document_24_regular,
@@ -626,6 +629,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
