@@ -421,7 +421,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Material(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(8),
           child: IconButton(
             key: const Key('game_page_back_button'),
