@@ -5,7 +5,6 @@
 //
 // Widget representing a puzzle card in the list
 
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_page/widgets/mini_board.dart';
@@ -72,7 +71,7 @@ class PuzzleCard extends StatelessWidget {
         confirmDismiss: (DismissDirection direction) async {
           if (direction == DismissDirection.endToStart) {
             // Swipe left shows delete - need confirmation
-            return await showDialog<bool>(
+            return showDialog<bool>(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
