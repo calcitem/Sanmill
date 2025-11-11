@@ -31,10 +31,27 @@ class PuzzleManager {
   Future<void> init() async {
     logger.i("$_tag Initializing PuzzleManager");
     final PuzzleSettings settings = DB().puzzleSettings;
-    settingsNotifier.value = settings;
 
-    // Built-in puzzles have been removed - users should create or import their own
-    logger.i("$_tag Ready - no built-in puzzles available");
+    // Remove all built-in puzzles from stored data
+    final List<PuzzleInfo> customPuzzlesOnly = settings.allPuzzles
+        .where((PuzzleInfo p) => p.isCustom)
+        .toList();
+
+    if (customPuzzlesOnly.length < settings.allPuzzles.length) {
+      logger.i(
+        "$_tag Removed ${settings.allPuzzles.length - customPuzzlesOnly.length} "
+        "built-in puzzles, keeping ${customPuzzlesOnly.length} custom puzzles",
+      );
+      final PuzzleSettings cleanedSettings = settings.copyWith(
+        allPuzzles: customPuzzlesOnly,
+      );
+      settingsNotifier.value = cleanedSettings;
+      _saveSettings(cleanedSettings);
+    } else {
+      settingsNotifier.value = settings;
+    }
+
+    logger.i("$_tag Ready - ${customPuzzlesOnly.length} custom puzzles loaded");
   }
 
   /// Load built-in puzzles from assets/predefined collection
