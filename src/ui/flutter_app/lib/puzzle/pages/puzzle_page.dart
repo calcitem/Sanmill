@@ -371,7 +371,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
             size: 32,
           ),
           const SizedBox(width: 8),
-          Text(s.puzzleSolved),
+          // Wrap text in Expanded to prevent overflow on small screens
+          Expanded(
+            child: Text(
+              s.puzzleSolved,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
       content: Column(
@@ -541,7 +547,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
               color: Theme.of(context).colorScheme.primary, // Use primary color
             ),
             const SizedBox(width: 8),
-            Text(s.solution),
+            // Wrap text in Expanded to prevent overflow on small screens
+            Expanded(
+              child: Text(
+                s.solution,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         content: SingleChildScrollView(

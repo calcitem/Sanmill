@@ -435,7 +435,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               color: Colors.amber[300],
             ),
             const SizedBox(width: 8),
-            const Text('Puzzle Creation Workflow'),
+            // Wrap text in Expanded to prevent overflow on small screens
+            const Expanded(
+              child: Text(
+                'Puzzle Creation Workflow',
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         content: SingleChildScrollView(
@@ -517,7 +523,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               color: Colors.blue[300],
             ),
             const SizedBox(width: 8),
-            const Text('Position Capture Help'),
+            // Wrap text in Expanded to prevent overflow on small screens
+            const Expanded(
+              child: Text(
+                'Position Capture Help',
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         content: const SingleChildScrollView(
@@ -554,7 +566,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               color: Colors.blue[300],
             ),
             const SizedBox(width: 8),
-            const Text('Solution Recording Help'),
+            // Wrap text in Expanded to prevent overflow on small screens
+            const Expanded(
+              child: Text(
+                'Solution Recording Help',
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         content: SingleChildScrollView(

@@ -214,24 +214,30 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
     IconData icon,
     Color color,
   ) {
-    return Column(
-      children: <Widget>[
-        Icon(icon, color: color, size: 28), // Reduced from 32 to 28
-        const SizedBox(height: 6), // Reduced from 8 to 6
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 20, // Reduced from 24 to 20
-            fontWeight: FontWeight.bold,
-            color: color,
+    return Flexible(
+      // Wrap in Flexible to prevent overflow in Row
+      child: Column(
+        children: <Widget>[
+          Icon(icon, color: color, size: 28), // Reduced from 32 to 28
+          const SizedBox(height: 6), // Reduced from 8 to 6
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20, // Reduced from 24 to 20
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
-        ),
-        Text(
-          label,
-          style: TextStyle(fontSize: 11, color: Colors.grey[400]), // Reduced from 12 to 11
-          textAlign: TextAlign.center,
-        ),
-      ],
+          Text(
+            label,
+            style: TextStyle(fontSize: 11, color: Colors.grey[400]), // Reduced from 12 to 11
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 
