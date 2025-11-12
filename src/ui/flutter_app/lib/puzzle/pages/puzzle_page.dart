@@ -149,8 +149,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          return;
+        }
         final bool? shouldPop = await showDialog<bool>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -168,7 +172,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
             ],
           ),
         );
-        return shouldPop ?? false;
+        if (!mounted) {
+          return;
+        }
+        if (shouldPop == true) {
+          Navigator.of(context).pop();
+        }
       },
       child: Scaffold(
         appBar: AppBar(

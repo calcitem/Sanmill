@@ -15,6 +15,7 @@ import '../models/puzzle_models.dart';
 
 /// Service for exporting and importing puzzles
 class PuzzleExportService {
+  const PuzzleExportService._();
   /// Export format version
   static const int exportVersion = 1;
 
@@ -68,9 +69,8 @@ class PuzzleExportService {
         return false;
       }
 
-      final XFile xFile = XFile(filePath);
       final ShareResult result = await Share.shareXFiles(
-        <XFile>[xFile],
+        <XFile>[XFile(filePath)],
         subject: 'Sanmill Puzzles (${puzzles.length})',
         text: 'Check out these ${puzzles.length} Sanmill puzzles!',
       );
@@ -118,14 +118,14 @@ class PuzzleExportService {
     try {
       final File file = File(filePath);
 
-      if (!await file.exists()) {
+      if (!file.existsSync()) {
         return ImportResult(
           success: false,
           errorMessage: 'File does not exist',
         );
       }
 
-      final String jsonString = await file.readAsString();
+      final String jsonString = file.readAsStringSync();
       final Map<String, dynamic> data =
           jsonDecode(jsonString) as Map<String, dynamic>;
 
