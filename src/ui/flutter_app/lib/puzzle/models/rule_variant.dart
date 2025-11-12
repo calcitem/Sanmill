@@ -6,6 +6,7 @@
 // Rule variant identification and management for puzzles
 
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:meta/meta.dart';
 
 import '../../rule_settings/models/rule_settings.dart';
 import 'rule_schema_version.dart';
@@ -16,6 +17,7 @@ part 'rule_variant.g.dart';
 ///
 /// Each variant represents a unique rule configuration that affects gameplay.
 /// Puzzles are grouped by variants to ensure compatibility and fair comparison.
+@immutable
 @HiveType(typeId: 35)
 class RuleVariant {
   const RuleVariant({
@@ -166,6 +168,7 @@ class RuleVariant {
 
 /// Predefined rule variants
 class PredefinedVariants {
+  const PredefinedVariants._();
   /// Standard Nine Men's Morris
   static RuleVariant get nineMensMorris =>
       RuleVariant.fromRuleSettings(const RuleSettings());
