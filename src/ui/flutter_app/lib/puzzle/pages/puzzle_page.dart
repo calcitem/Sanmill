@@ -222,7 +222,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Widget _buildInfoPanel(S s) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1), // Use theme color
+      color: Theme.of(
+        context,
+      ).colorScheme.primaryContainer.withValues(alpha: 0.1), // Use theme color
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -240,7 +242,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Flexible(
-                child: _buildStatChip(s.moves, _moveCount.toString(), Icons.swap_horiz),
+                child: _buildStatChip(
+                  s.moves,
+                  _moveCount.toString(),
+                  Icons.swap_horiz,
+                ),
               ),
               const SizedBox(width: 4),
               Flexible(
@@ -283,7 +289,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
               ),
               Text(
                 value,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -398,10 +407,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           const SizedBox(width: 8),
           // Wrap text in Expanded to prevent overflow on small screens
           Expanded(
-            child: Text(
-              s.puzzleSolved,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: Text(s.puzzleSolved, overflow: TextOverflow.ellipsis),
           ),
         ],
       ),
@@ -475,8 +481,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
 
     // Prefer puzzles from same category
-    List<PuzzleInfo> sameCategoryPuzzles = candidates
-        .where((PuzzleInfo p) => p.category == widget.puzzle.category && p.id != widget.puzzle.id)
+    final List<PuzzleInfo> sameCategoryPuzzles = candidates
+        .where(
+          (PuzzleInfo p) =>
+              p.category == widget.puzzle.category && p.id != widget.puzzle.id,
+        )
         .toList();
 
     PuzzleInfo nextPuzzle;
@@ -531,7 +540,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
-  void _undoMove() async {
+  Future<void> _undoMove() async {
     final GameController controller = GameController();
     if (controller.gameRecorder.mainlineMoves.isEmpty) {
       return;
@@ -573,12 +582,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
             ),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
-            Expanded(
-              child: Text(
-                s.solution,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            Expanded(child: Text(s.solution, overflow: TextOverflow.ellipsis)),
           ],
         ),
         content: SingleChildScrollView(
@@ -592,42 +596,43 @@ class _PuzzlePageState extends State<PuzzlePage> {
               ),
               const SizedBox(height: 12),
               // Show solution as numbered list
-              ...widget.puzzle.solutionMoves.first.asMap().entries.map(
-                (MapEntry<int, String> entry) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2), // Use primary color
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${entry.key + 1}',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
+              ...widget.puzzle.solutionMoves.first.asMap().entries.map((
+                MapEntry<int, String> entry,
+              ) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary
+                              .withValues(alpha: 0.2), // Use primary color
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${entry.key + 1}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        Text(
-                          entry.value,
-                          style: const TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 14,
-                          ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        entry.value,
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 14,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ],
           ),
         ),

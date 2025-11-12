@@ -158,7 +158,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             Row(
               children: <Widget>[
                 Flexible(
-                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsSuccessRate,
                     '${successRate.toStringAsFixed(1)}%',
@@ -168,7 +167,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                 ),
                 const SizedBox(width: 16),
                 Flexible(
-                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsAvgTime,
                     _formatAvgTime(avgTime),
@@ -182,7 +180,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             Row(
               children: <Widget>[
                 Flexible(
-                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsSolved,
                     '${stats['successCount']}',
@@ -192,7 +189,6 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                 ),
                 const SizedBox(width: 16),
                 Flexible(
-                  flex: 1,
                   child: _buildPerformanceTile(
                     s.puzzleStatsFailed,
                     '${stats['failCount']}',

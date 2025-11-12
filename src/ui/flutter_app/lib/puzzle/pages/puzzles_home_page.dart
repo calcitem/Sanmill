@@ -55,7 +55,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
             // Header with overall stats
             _buildStatsCard(s),
             const SizedBox(height: 12), // Reduced from 24 to 12
-
             // Daily Puzzle - Featured
             _buildFeaturedCard(
               s,
@@ -66,7 +65,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               onTap: () => _navigateTo(const DailyPuzzlePage()),
             ),
             const SizedBox(height: 12), // Reduced from 16 to 12
-
             // Grid of puzzle modes
             GridView.count(
               crossAxisCount: 2,
@@ -74,7 +72,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               crossAxisSpacing: 12, // Reduced from 16 to 12
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: 1.0, // Adjusted for more compact cards
               children: <Widget>[
                 // All Puzzles
                 _buildModeCard(
@@ -82,7 +79,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.allPuzzles,
                   description: s.allPuzzlesDesc,
                   icon: FluentIcons.puzzle_piece_24_regular,
-                  color: Theme.of(context).colorScheme.primary, // Use primary green
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primary, // Use primary green
                   onTap: () => _navigateTo(const PuzzleListPage()),
                 ),
                 // Puzzle Rush
@@ -91,7 +90,8 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.puzzleRush,
                   description: s.puzzleRushDesc,
                   icon: FluentIcons.flash_24_regular,
-                  color: Colors.deepOrange, // Keep energetic orange for "rush" mode
+                  color: Colors
+                      .deepOrange, // Keep energetic orange for "rush" mode
                   onTap: () => _navigateTo(const PuzzleRushPage()),
                 ),
                 // Puzzle Streak
@@ -100,7 +100,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   title: s.puzzleStreak,
                   description: s.puzzleStreakDesc,
                   icon: FluentIcons.flash_24_filled,
-                  color: Theme.of(context).colorScheme.primaryContainer, // Darker green shade
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer, // Darker green shade
                   onTap: () => _navigateTo(const PuzzleStreakPage()),
                 ),
                 // Custom Puzzles
@@ -154,9 +156,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               children: <Widget>[
                 Text(
                   s.yourProgress,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold), // Changed from titleLarge to titleMedium
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ), // Changed from titleLarge to titleMedium
                 ),
                 const SizedBox(height: 12), // Reduced from 16 to 12
                 Row(
@@ -166,7 +168,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                       s.totalPuzzles,
                       stats['totalPuzzles'].toString(),
                       FluentIcons.puzzle_piece_24_regular,
-                      Theme.of(context).colorScheme.primary, // Use primary green
+                      Theme.of(
+                        context,
+                      ).colorScheme.primary, // Use primary green
                     ),
                     _buildStatItem(
                       s.completed,
@@ -231,7 +235,10 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
           ),
           Text(
             label,
-            style: TextStyle(fontSize: 11, color: Colors.grey[400]), // Reduced from 12 to 11
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey[400],
+            ), // Reduced from 12 to 11
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -266,7 +273,11 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, size: 32, color: color), // Reduced from 40 to 32
+                child: Icon(
+                  icon,
+                  size: 32,
+                  color: color,
+                ), // Reduced from 40 to 32
               ),
               const SizedBox(width: 12), // Reduced from 16 to 12
               Expanded(
@@ -275,7 +286,8 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   children: <Widget>[
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith( // Changed from titleLarge to titleMedium
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        // Changed from titleLarge to titleMedium
                         fontWeight: FontWeight.bold,
                         color: color,
                       ),
@@ -283,14 +295,20 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                     const SizedBox(height: 2), // Reduced from 4 to 2
                     Text(
                       subtitle,
-                      style: Theme.of(context).textTheme.bodySmall, // Changed from bodyMedium to bodySmall
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall, // Changed from bodyMedium to bodySmall
                       maxLines: 1, // Limit to 1 line for compactness
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              Icon(FluentIcons.chevron_right_24_regular, color: color, size: 20), // Added size: 20
+              Icon(
+                FluentIcons.chevron_right_24_regular,
+                color: color,
+                size: 20,
+              ), // Added size: 20
             ],
           ),
         ),
@@ -325,16 +343,20 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, size: 28, color: color), // Reduced from 32 to 28
+                child: Icon(
+                  icon,
+                  size: 28,
+                  color: color,
+                ), // Reduced from 32 to 28
               ),
               const SizedBox(height: 6), // Reduced from 8 to 6
               // Title text with flexible sizing
               Flexible(
                 child: Text(
                   title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold), // Changed from titleMedium to titleSmall
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ), // Changed from titleMedium to titleSmall
                   textAlign: TextAlign.center,
                   maxLines: 2, // Allow wrapping for long titles
                   overflow: TextOverflow.ellipsis,
@@ -345,7 +367,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               Flexible(
                 child: Text(
                   description,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 11), // Reduced font size
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: 11,
+                  ), // Reduced font size
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
