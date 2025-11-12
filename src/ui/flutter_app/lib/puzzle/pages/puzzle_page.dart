@@ -325,12 +325,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
             child: OutlinedButton.icon(
               onPressed: _giveUp,
               icon: const Icon(Icons.flag),
-              label: Flexible(
-                child: Text(
-                  s.giveUp,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              label: Text(
+                s.giveUp,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
