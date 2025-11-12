@@ -252,7 +252,8 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
             ),
           ),
           // Clear all filters chip
-          if (_selectedDifficulties.isNotEmpty || _selectedCategories.isNotEmpty)
+          if (_selectedDifficulties.isNotEmpty ||
+              _selectedCategories.isNotEmpty)
             ActionChip(
               label: Text(s.clearFilter),
               avatar: const Icon(Icons.clear_all, size: 18),

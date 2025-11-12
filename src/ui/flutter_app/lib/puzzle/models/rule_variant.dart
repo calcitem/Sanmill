@@ -169,6 +169,7 @@ class RuleVariant {
 /// Predefined rule variants
 class PredefinedVariants {
   const PredefinedVariants._();
+
   /// Standard Nine Men's Morris
   static RuleVariant get nineMensMorris =>
       RuleVariant.fromRuleSettings(const RuleSettings());

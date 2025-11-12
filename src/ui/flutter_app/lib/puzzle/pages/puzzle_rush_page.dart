@@ -62,10 +62,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   Widget _buildSetupScreen(S s) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.puzzleRush,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzleRush, style: AppTheme.appBarTheme.titleTextStyle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -203,10 +200,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.puzzleRush,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzleRush, style: AppTheme.appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,

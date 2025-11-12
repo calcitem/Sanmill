@@ -63,7 +63,9 @@ class PuzzleValidator {
       if (_currentMoveIndex > 0) {
         _currentMoveIndex--;
       }
-      logger.t("$_tag Move undone: $removedMove (remaining: $_currentMoveIndex moves)");
+      logger.t(
+        "$_tag Move undone: $removedMove (remaining: $_currentMoveIndex moves)",
+      );
     }
   }
 

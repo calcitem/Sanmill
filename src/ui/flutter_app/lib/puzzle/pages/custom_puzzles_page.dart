@@ -569,9 +569,11 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           title: Row(
             children: <Widget>[
               Icon(
-            FluentIcons.info_24_regular,
-            color: Theme.of(context).colorScheme.primary, // Use primary color
-          ),
+                FluentIcons.info_24_regular,
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary, // Use primary color
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -593,130 +595,134 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                const Text(
-                  'Help make Sanmill better by contributing your puzzles!',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Quick Start:',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                ),
-                const SizedBox(height: 8),
-                _buildInfoStep(
-                  '1',
-                  'Create Quality Puzzles',
-                  'Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.',
-                ),
-                const SizedBox(height: 8),
-                _buildInfoStep(
-                  '2',
-                  'Add Your Name',
-                  'Edit your puzzle and add your name as the author to get credit.',
-                ),
-                const SizedBox(height: 8),
-                _buildInfoStep(
-                  '3',
-                  'Export for Contribution',
-                  'Select your puzzles and tap the upload icon to export in the correct format.',
-                ),
-                const SizedBox(height: 8),
-                _buildInfoStep(
-                  '4',
-                  'Submit',
-                  'Share the exported file via GitHub Pull Request, Issue, or email.',
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.blue.shade200),
+                  const Text(
+                    'Help make Sanmill better by contributing your puzzles!',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(
-                            FluentIcons.document_24_regular,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.primary, // Use primary color
-                          ),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: Text(
-                              'Full Documentation',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Quick Start:',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoStep(
+                    '1',
+                    'Create Quality Puzzles',
+                    'Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.',
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoStep(
+                    '2',
+                    'Add Your Name',
+                    'Edit your puzzle and add your name as the author to get credit.',
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoStep(
+                    '3',
+                    'Export for Contribution',
+                    'Select your puzzles and tap the upload icon to export in the correct format.',
+                  ),
+                  const SizedBox(height: 8),
+                  _buildInfoStep(
+                    '4',
+                    'Submit',
+                    'Share the exported file via GitHub Pull Request, Issue, or email.',
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.blue.shade200),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(
+                              FluentIcons.document_24_regular,
+                              size: 16,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary, // Use primary color
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                'Full Documentation',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
                         ),
-                        softWrap: true,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        Text(
+                          'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.8),
+                          ),
+                          softWrap: true,
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Quality Requirements:',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  '✓ Clear, unique solution',
-                  style: TextStyle(fontSize: 13),
-                ),
-                const Text(
-                  '✓ Complete metadata (title, description, etc.)',
-                  style: TextStyle(fontSize: 13),
-                ),
-                const Text(
-                  '✓ Author attribution',
-                  style: TextStyle(fontSize: 13),
-                ),
-                const Text(
-                  '✓ Accurate difficulty rating',
-                  style: TextStyle(fontSize: 13),
-                ),
-                const Text(
-                  '✓ Instructive or entertaining',
-                  style: TextStyle(fontSize: 13),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Quality Requirements:',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    '✓ Clear, unique solution',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  const Text(
+                    '✓ Complete metadata (title, description, etc.)',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  const Text(
+                    '✓ Author attribution',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  const Text(
+                    '✓ Accurate difficulty rating',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  const Text(
+                    '✓ Instructive or entertaining',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _toggleMultiSelectMode();
-            },
-            child: const Text('Start Contributing'),
-          ),
-        ],
-      );
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _toggleMultiSelectMode();
+              },
+              child: const Text('Start Contributing'),
+            ),
+          ],
+        );
       },
     );
   }

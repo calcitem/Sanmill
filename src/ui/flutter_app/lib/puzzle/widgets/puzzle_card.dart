@@ -51,22 +51,14 @@ class PuzzleCard extends StatelessWidget {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 20.0),
           color: Colors.blue,
-          child: const Icon(
-            Icons.edit,
-            color: Colors.white,
-            size: 30,
-          ),
+          child: const Icon(Icons.edit, color: Colors.white, size: 30),
         ),
         // Secondary background for swipe left (delete) - shows on the right
         secondaryBackground: Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 20.0),
           color: Colors.red,
-          child: const Icon(
-            Icons.delete,
-            color: Colors.white,
-            size: 30,
-          ),
+          child: const Icon(Icons.delete, color: Colors.white, size: 30),
         ),
         confirmDismiss: (DismissDirection direction) async {
           if (direction == DismissDirection.endToStart) {
@@ -106,7 +98,14 @@ class PuzzleCard extends StatelessWidget {
             onDelete?.call();
           }
         },
-        child: _buildCard(context, s, isCompleted, stars, showSelection, selected),
+        child: _buildCard(
+          context,
+          s,
+          isCompleted,
+          stars,
+          showSelection,
+          selected,
+        ),
       );
     }
 
@@ -160,8 +159,9 @@ class PuzzleCard extends StatelessWidget {
                     // Title
                     Text(
                       puzzle.title,
-                      style: Theme.of(context).textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 4),
 

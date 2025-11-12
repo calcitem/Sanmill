@@ -168,9 +168,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
               Align(
                 key: const Key('game_page_drawer_icon_align'),
                 alignment: AlignmentDirectional.topStart,
-                child: SafeArea(
-                  child: _buildTopLeftButton(context),
-                ),
+                child: SafeArea(child: _buildTopLeftButton(context)),
               ),
               // Analysis button in the top-right corner
               if (GameController().gameInstance.gameMode ==
@@ -425,10 +423,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
           borderRadius: BorderRadius.circular(8),
           child: IconButton(
             key: const Key('game_page_back_button'),
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             tooltip: S.of(context).back,
             onPressed: () => Navigator.of(context).pop(),
           ),
