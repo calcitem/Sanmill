@@ -151,7 +151,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (bool didPop) async {
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
         if (didPop) {
           return;
         }
@@ -175,8 +175,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
         if (!mounted) {
           return;
         }
-        if (shouldPop == true) {
-          Navigator.of(context).pop();
+        if (shouldPop ?? false) {
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
         }
       },
       child: Scaffold(
