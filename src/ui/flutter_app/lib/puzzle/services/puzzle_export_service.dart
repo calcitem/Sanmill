@@ -69,10 +69,12 @@ class PuzzleExportService {
         return false;
       }
 
-      final ShareResult result = await Share.shareXFiles(
-        <XFile>[XFile(filePath)],
-        subject: 'Sanmill Puzzles (${puzzles.length})',
-        text: 'Check out these ${puzzles.length} Sanmill puzzles!',
+      final ShareResult result = await SharePlus.instance.share(
+        ShareParams(
+          text: 'Check out these ${puzzles.length} Sanmill puzzles!',
+          subject: 'Sanmill Puzzles (${puzzles.length})',
+          files: <XFile>[XFile(filePath)],
+        ),
       );
 
       return result.status == ShareResultStatus.success;
@@ -301,12 +303,13 @@ class PuzzleExportService {
       await file.writeAsString(jsonContent);
 
       // Share the file
-      final ShareResult result = await Share.shareXFiles(
-        <XFile>[XFile(filePath)],
-        subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
-        text:
-            'Puzzle contribution for Sanmill.\n\n'
-            'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+      final ShareResult result = await SharePlus.instance.share(
+        ShareParams(
+          text: 'Puzzle contribution for Sanmill.\n\n'
+              'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+          subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
+          files: <XFile>[XFile(filePath)],
+        ),
       );
 
       return result.status == ShareResultStatus.success;
@@ -343,12 +346,13 @@ class PuzzleExportService {
       await file.writeAsString(jsonContent);
 
       // Share the file
-      final ShareResult result = await Share.shareXFiles(
-        <XFile>[XFile(filePath)],
-        subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
-        text:
-            'Puzzle contributions for Sanmill.\n\n'
-            'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+      final ShareResult result = await SharePlus.instance.share(
+        ShareParams(
+          text: 'Puzzle contributions for Sanmill.\n\n'
+              'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+          subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
+          files: <XFile>[XFile(filePath)],
+        ),
       );
 
       return result.status == ShareResultStatus.success;
