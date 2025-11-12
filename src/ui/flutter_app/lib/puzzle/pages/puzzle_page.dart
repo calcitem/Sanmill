@@ -173,8 +173,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
           ),
         );
         // Check if user confirmed exit and widget is still mounted
-        if ((shouldPop ?? false) && mounted) {
-          Navigator.of(context).pop();
+        if (shouldPop ?? false) {
+          if (!mounted) {
+            return;
+          }
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         }
       },
       child: Scaffold(
