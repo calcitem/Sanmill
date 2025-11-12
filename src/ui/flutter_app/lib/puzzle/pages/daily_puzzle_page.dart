@@ -51,10 +51,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.dailyPuzzle,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.dailyPuzzle, style: AppTheme.appBarTheme.titleTextStyle),
         actions: <Widget>[
           // Streak info
           IconButton(

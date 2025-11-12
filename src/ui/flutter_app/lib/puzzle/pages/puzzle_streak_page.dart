@@ -52,10 +52,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   Widget _buildSetupScreen(S s) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.puzzleStreak,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzleStreak, style: AppTheme.appBarTheme.titleTextStyle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -196,10 +193,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          s.puzzleStreak,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
+        title: Text(s.puzzleStreak, style: AppTheme.appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,

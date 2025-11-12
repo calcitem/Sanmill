@@ -16,6 +16,7 @@ import '../models/puzzle_models.dart';
 /// Service for exporting and importing puzzles
 class PuzzleExportService {
   const PuzzleExportService._();
+
   /// Export format version
   static const int exportVersion = 1;
 
@@ -305,7 +306,8 @@ class PuzzleExportService {
       // Share the file
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text: 'Puzzle contribution for Sanmill.\n\n'
+          text:
+              'Puzzle contribution for Sanmill.\n\n'
               'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
           subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
           files: <XFile>[XFile(filePath)],
@@ -348,7 +350,8 @@ class PuzzleExportService {
       // Share the file
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text: 'Puzzle contributions for Sanmill.\n\n'
+          text:
+              'Puzzle contributions for Sanmill.\n\n'
               'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
           subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
           files: <XFile>[XFile(filePath)],
