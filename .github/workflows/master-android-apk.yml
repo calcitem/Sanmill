@@ -1,0 +1,68 @@
+name: Android Release Build on Master Merge
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-android:
+    # Build release Android APK when PR is merged to master branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for version generation
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Decode signing key
+        run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+
+      - name: Export environment variables
+        run: export
+
+      - name: Create App version
+        run: |
+          git fetch --tags
+          git tag
+          git log -n1
+          bash -x ./version.sh
+
+      - name: Print Flutter SDK version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: bash -x ./flutter-init.sh
+
+      # Build release Android APK only (no lint check, no AAB, no external uploads)
+      - name: Build release Android APK
+        run: |
+          cd src/ui/flutter_app
+          rm android/app/build.gradle
+          mv android/app/build.gradle_github android/app/build.gradle
+          flutter build apk -v
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_PATH: key.jks
+
+      # Upload release APK as GitHub Actions artifact for download
+      - name: Upload release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sanmill-android-apk-release-master
+          path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
