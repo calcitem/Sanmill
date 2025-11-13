@@ -39,11 +39,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
   late PuzzleValidator _validator;
   late PuzzleHintService _hintService;
   final PuzzleManager _puzzleManager = PuzzleManager();
-  int _moveCount = 0;
+  final ValueNotifier<int> _moveCountNotifier = ValueNotifier<int>(0);
   bool _hintsUsed = false;
   int _lastRecordedMoveIndex = -1;
 
-  bool get _canUndo => _moveCount > 0;
+  bool get _canUndo => _moveCountNotifier.value > 0;
 
   @override
   void initState() {
@@ -61,6 +61,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _hintService = PuzzleHintService(puzzle: widget.puzzle);
       _initializePuzzle();
     }
+  }
+
+  @override
+  void dispose() {
+    _moveCountNotifier.dispose();
+    super.dispose();
   }
 
   void _initializePuzzle() {
@@ -103,7 +109,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     controller.boardSemanticsNotifier.updateSemantics();
 
     // Reset state
-    _moveCount = 0;
+    _moveCountNotifier.value = 0;
     _lastRecordedMoveIndex = -1;
     _validator.reset();
     _hintService.reset();
@@ -212,8 +218,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
         ),
         body: Column(
           children: <Widget>[
-            // Puzzle info panel
-            _buildInfoPanel(s),
+            // Puzzle info panel - only rebuilds when move count changes
+            ValueListenableBuilder<int>(
+              valueListenable: _moveCountNotifier,
+              builder: (BuildContext context, int moveCount, Widget? child) {
+                return _buildInfoPanel(s, moveCount);
+              },
+            ),
 
             // Game board - properly constructed with GameMode
             Expanded(
@@ -231,7 +242,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
-  Widget _buildInfoPanel(S s) {
+  Widget _buildInfoPanel(S s, int moveCount) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       color: Theme.of(
@@ -256,7 +267,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               Flexible(
                 child: _buildStatChip(
                   s.moves,
-                  _moveCount.toString(),
+                  moveCount.toString(),
                   Icons.swap_horiz,
                 ),
               ),
@@ -350,11 +361,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
       final ExtMove latestMove = moves[i];
       _lastRecordedMoveIndex = i;
 
-      setState(() {
-        _moveCount++;
-        // Add move to validator using the move's string representation
-        _validator.addMove(latestMove.move);
-      });
+      // Update move count without rebuilding entire widget tree
+      _moveCountNotifier.value++;
+      // Add move to validator using the move's string representation
+      _validator.addMove(latestMove.move);
     }
 
     // Auto-check after processing the new moves
@@ -383,7 +393,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // Record completion
     _puzzleManager.completePuzzle(
       puzzleId: widget.puzzle.id,
-      moveCount: _moveCount,
+      moveCount: _moveCountNotifier.value,
       difficulty: widget.puzzle.difficulty,
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       hintsUsed: _hintsUsed,
@@ -400,7 +410,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Widget _buildCompletionDialog(ValidationFeedback feedback) {
     final S s = S.of(context);
     final int stars = PuzzleProgress.calculateStars(
-      moveCount: _moveCount,
+      moveCount: _moveCountNotifier.value,
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       difficulty: widget.puzzle.difficulty,
       hintsUsed: _hintsUsed,
@@ -439,7 +449,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           const SizedBox(height: 16),
 
           // Stats
-          Text('${s.moves}: $_moveCount'),
+          Text('${s.moves}: ${_moveCountNotifier.value}'),
           Text('${s.optimal}: ${widget.puzzle.optimalMoveCount}'),
           if (_hintsUsed) Text(s.hintsUsed),
         ],
@@ -514,7 +524,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _showHint() {
-    final PuzzleHint? hint = _hintService.getNextHint(_moveCount);
+    final PuzzleHint? hint = _hintService.getNextHint(_moveCountNotifier.value);
 
     if (hint == null) {
       ScaffoldMessenger.of(
@@ -559,20 +569,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // Take back the last move using HistoryNavigator
     await HistoryNavigator.takeBack(context, pop: false);
 
-    // Update state
-    setState(() {
-      if (_moveCount > 0) {
-        _moveCount--;
-        _lastRecordedMoveIndex--;
-        _validator.undoLastMove();
-      }
-    });
+    // Update state without rebuilding entire widget tree
+    if (_moveCountNotifier.value > 0) {
+      _moveCountNotifier.value--;
+      _lastRecordedMoveIndex--;
+      _validator.undoLastMove();
+    }
   }
 
   void _resetPuzzle() {
+    _initializePuzzle(); // This already resets _moveCountNotifier.value = 0
     setState(() {
-      _initializePuzzle();
-      _moveCount = 0;
       _hintsUsed = false;
     });
     GameController().headerIconsNotifier.showIcons();
