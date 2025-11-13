@@ -2183,10 +2183,6 @@
     "@filter": {
         "description": "Filter"
     },
-    "difficulty": "难度",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
     "category": "分类",
     "@category": {
         "description": "Category"
@@ -2194,10 +2190,6 @@
     "clearFilter": "清除筛选",
     "@clearFilter": {
         "description": "Clear all filters"
-    },
-    "close": "关闭",
-    "@close": {
-        "description": "Close"
     },
     "puzzleStatistics": "谜题统计",
     "@puzzleStatistics": {
@@ -2282,10 +2274,6 @@
     "puzzleProgressWillBeLost": "您的进度将会丢失。确定吗？",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
-    },
-    "exit": "退出",
-    "@exit": {
-        "description": "Exit"
     },
     "moves": "步数",
     "@moves": {

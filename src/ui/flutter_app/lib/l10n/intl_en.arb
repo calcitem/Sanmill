@@ -2183,10 +2183,6 @@
     "@filter": {
         "description": "Filter"
     },
-    "difficulty": "Difficulty",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
     "category": "Category",
     "@category": {
         "description": "Category"
@@ -2194,10 +2190,6 @@
     "clearFilter": "Clear Filter",
     "@clearFilter": {
         "description": "Clear all filters"
-    },
-    "close": "Close",
-    "@close": {
-        "description": "Close"
     },
     "puzzleStatistics": "Puzzle Statistics",
     "@puzzleStatistics": {
@@ -2282,10 +2274,6 @@
     "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
-    },
-    "exit": "Exit",
-    "@exit": {
-        "description": "Exit"
     },
     "moves": "Moves",
     "@moves": {
