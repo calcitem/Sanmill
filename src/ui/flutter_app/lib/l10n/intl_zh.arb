@@ -3032,5 +3032,130 @@
     "puzzleShowSolutionRecordingHelp": "显示解答录制帮助",
     "@puzzleShowSolutionRecordingHelp": {
         "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "没有更多提示了",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "提示",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "最优解（{moves}步）：",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "验证错误",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "向Sanmill贡献谜题",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "接下来会发生什么：",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. 您的谜题将被导出为JSON文件",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. 您可以通过分享对话框分享此文件",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. 谜题将由维护者审核",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. 一旦通过，它们将成为内置谜题！",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "导出以贡献",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "close": "关闭",
+    "@close": {
+        "description": "Close button text"
+    },
+    "startContributing": "开始贡献",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "快速开始：",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "创建高质量谜题",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "确保您的谜题有明确的解答、良好的元数据，并能传授有价值的内容。",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "添加您的名字",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "编辑您的谜题并添加您的名字作为作者以获得署名。",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "导出以贡献",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "选择您的谜题并点击上传图标以正确格式导出。",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "提交",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "通过GitHub Pull Request、Issue或电子邮件分享导出的文件。",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "完整文档",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "查看仓库中的PUZZLE_CONTRIBUTION_GUIDE.md以获取完整说明、质量指南和提交选项。",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "质量要求：",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ 明确、唯一的解答",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ 完整的元数据（标题、描述等）",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ 作者署名",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ 准确的难度评级",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ 有教育意义或娱乐性",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
     }
 }
