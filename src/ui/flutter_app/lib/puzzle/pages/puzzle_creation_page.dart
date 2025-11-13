@@ -105,10 +105,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
     if (!isValid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Invalid position format. Please check the game board.',
-          ),
+        SnackBar(
+          content: Text(S.of(context).puzzleInvalidPositionFormat),
           backgroundColor: Colors.red,
         ),
       );
@@ -159,8 +157,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     final bool loaded = controller.position.setFen(_capturedPosition!);
     if (!loaded) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to load position. Please recapture.'),
+        SnackBar(
+          content: Text(S.of(context).puzzleFailedLoadPosition),
           backgroundColor: Colors.red,
         ),
       );
@@ -252,7 +250,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     // Validate FEN format before saving
     final Position tempPosition = Position();
     if (!tempPosition.validateFen(_capturedPosition!)) {
-      return 'Invalid position format. Please recapture the position.';
+      return S.of(context).puzzleInvalidPositionFormatRecapture;
     }
 
     if (_solutionMoves.isEmpty) {
@@ -415,7 +413,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 size: 24,
               ),
               onPressed: _showWorkflowHelp,
-              tooltip: 'Show detailed workflow',
+              tooltip: S.of(context).puzzleShowDetailedWorkflow,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
@@ -435,9 +433,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             Icon(FluentIcons.lightbulb_24_filled, color: Colors.amber[300]),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
-            const Expanded(
+            Expanded(
               child: Text(
-                'Puzzle Creation Workflow',
+                S.of(context).puzzleCreationWorkflow,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -451,26 +449,26 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             children: <Widget>[
               _buildWorkflowStep(
                 '1',
-                'Setup Position',
-                'Open board (setup or play moves), create starting position, return and capture',
+                S.of(context).puzzleWorkflowStepSetup,
+                S.of(context).puzzleWorkflowStepSetupDesc,
                 _capturedPosition != null,
               ),
               _buildWorkflowStep(
                 '2',
-                'Record Solution',
-                'Click Start Recording (board resets to start position), go back, play moves, return and stop',
+                S.of(context).puzzleWorkflowStepRecord,
+                S.of(context).puzzleWorkflowStepRecordDesc,
                 _solutionMoves.isNotEmpty,
               ),
               _buildWorkflowStep(
                 '3',
-                'Add Details',
-                'Fill in title, description, category, difficulty, and tags',
+                S.of(context).puzzleWorkflowStepDetails,
+                S.of(context).puzzleWorkflowStepDetailsDesc,
                 false,
               ),
               _buildWorkflowStep(
                 '4',
-                'Save Puzzle',
-                'Click the save button in the top-right corner',
+                S.of(context).puzzleWorkflowStepSave,
+                S.of(context).puzzleWorkflowStepSaveDesc,
                 false,
               ),
               const SizedBox(height: 12),
@@ -494,7 +492,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+                        S.of(context).puzzleWorkflowTip,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.orange[200],
@@ -512,7 +510,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(S.of(context).ok),
           ),
         ],
       ),
@@ -529,31 +527,25 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
-            const Expanded(
+            Expanded(
               child: Text(
-                'Position Capture Help',
+                S.of(context).puzzlePositionCaptureHelp,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
         ),
-        content: const SingleChildScrollView(
+        content: SingleChildScrollView(
           child: Text(
-            'How to capture the puzzle starting position:\n\n'
-            '1. Click "Open Board (Setup Position)" to manually place pieces, '
-            'OR click "Open Board (Play Moves)" to reach the position by making moves\n\n'
-            '2. Arrange the board to your desired puzzle starting position\n\n'
-            '3. Press the back button to return to this page\n\n'
-            '4. Click "Capture Position" button to save the current board state\n\n'
-            'The captured position will be used as the starting point for your puzzle.',
-            style: TextStyle(fontSize: 14),
+            S.of(context).puzzlePositionCaptureHelpContent,
+            style: const TextStyle(fontSize: 14),
           ),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(S.of(context).ok),
           ),
         ],
       ),
@@ -570,9 +562,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
             const SizedBox(width: 8),
             // Wrap text in Expanded to prevent overflow on small screens
-            const Expanded(
+            Expanded(
               child: Text(
-                'Solution Recording Help',
+                S.of(context).puzzleSolutionRecordingHelp,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -584,15 +576,15 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'How to record the solution moves:',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              Text(
+                S.of(context).puzzleSolutionRecordingHelpContent,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
               const SizedBox(height: 12),
-              _buildInstructionStep('1', 'Capture the starting position first'),
+              _buildInstructionStep('1', S.of(context).puzzleSolutionStep1),
               _buildInstructionStep(
                 '2',
-                'Click "Start Recording" button (this resets the board to your captured position)',
+                S.of(context).puzzleSolutionStep2,
               ),
               _buildInstructionStep(
                 '3',
@@ -600,7 +592,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
               ),
               _buildInstructionStep(
                 '4',
-                'Return here and click "Stop Recording"',
+                S.of(context).puzzleSolutionStep4,
               ),
               const SizedBox(height: 12),
               Container(
@@ -621,10 +613,10 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                       color: Colors.orange[300],
                     ),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'Tip: The board will automatically reset to your captured position when you start recording.',
-                        style: TextStyle(fontSize: 12),
+                        S.of(context).puzzleSolutionRecordingTip,
+                        style: const TextStyle(fontSize: 12),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -638,7 +630,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(S.of(context).ok),
           ),
         ],
       ),
@@ -730,7 +722,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     size: 20,
                   ),
                   onPressed: _showPositionCaptureHelp,
-                  tooltip: 'Show position capture help',
+                  tooltip: S.of(context).puzzleShowPositionCaptureHelp,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
@@ -840,7 +832,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     size: 20,
                   ),
                   onPressed: _showSolutionRecordingHelp,
-                  tooltip: 'Show solution recording help',
+                  tooltip: S.of(context).puzzleShowSolutionRecordingHelp,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
