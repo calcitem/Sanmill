@@ -2151,6 +2151,22 @@
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
+    "undo": "Undo",
+    "@undo": {
+        "description": "Undo last move"
+    },
+    "reset": "Reset",
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
+    "allPuzzlesCompleted": "All puzzles completed!",
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
+    "back": "Back",
+    "@back": {
+        "description": "Back button tooltip"
+    },
     "puzzles": "Puzzles",
     "@puzzles": {
         "description": "Puzzles menu item"
