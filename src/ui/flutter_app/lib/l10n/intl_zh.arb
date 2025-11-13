@@ -1179,10 +1179,6 @@
     "@capturablePieceHighlightColor": {
         "description": "Capturable piece highlight color"
     },
-    "highlightCapturablePieces": "高亮可吃掉的棋子",
-    "@highlightCapturablePieces": {
-        "description": "Highlight capturable pieces"
-    },
     "algorithm": "算法",
     "@algorithm": {
         "description": "Algorithm"
@@ -2151,6 +2147,26 @@
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "恭喜您在 MCTS 30 级获胜！要切换到 MTD(f) 算法以迎接更大的挑战吗？",
     "@switchToMtdfSuggestion": {},
+    "highlightCapturablePieces": "高亮可吃掉的棋子",
+    "@highlightCapturablePieces": {
+        "description": "Highlight capturable pieces"
+    },
+    "undo": "撤销",
+    "@undo": {
+        "description": "Undo last move"
+    },
+    "reset": "重置",
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
+    "allPuzzlesCompleted": "所有谜题已完成！",
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
+    "back": "返回",
+    "@back": {
+        "description": "Back button tooltip"
+    },
     "puzzles": "谜题练习",
     "@puzzles": {
         "description": "Puzzles menu item"
@@ -2928,21 +2944,5 @@
     "puzzleRecordingHintUseButton": "请点击下方按钮打开棋盘，走完解答后按返回回到本页。",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
-    },
-    "undo": "撤销",
-    "@undo": {
-        "description": "Undo last move"
-    },
-    "reset": "重置",
-    "@reset": {
-        "description": "Reset puzzle to initial state"
-    },
-    "allPuzzlesCompleted": "所有谜题已完成！",
-    "@allPuzzlesCompleted": {
-        "description": "Message shown when all puzzles have been completed"
-    },
-    "back": "返回",
-    "@back": {
-        "description": "Back button tooltip"
     }
 }
