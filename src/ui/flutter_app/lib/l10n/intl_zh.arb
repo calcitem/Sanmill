@@ -2151,11 +2151,11 @@
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "恭喜您在 MCTS 30 级获胜！要切换到 MTD(f) 算法以迎接更大的挑战吗？",
     "@switchToMtdfSuggestion": {},
-    "puzzles": "谜题",
+    "puzzles": "谜题练习",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "谜题",
+    "puzzle": "谜题练习",
     "@puzzle": {
         "description": "Puzzle"
     },
