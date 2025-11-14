@@ -30,20 +30,31 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   // Rush state
   bool _isActive = false;
   Timer? _timer;
-  int _remainingSeconds = 300; // 5 minutes
+  // Use ValueNotifiers to avoid rebuilding the entire widget tree
+  final ValueNotifier<int> _remainingSecondsNotifier = ValueNotifier<int>(300);
   int _currentPuzzleIndex = 0;
   final List<PuzzleInfo> _rushPuzzles = <PuzzleInfo>[];
-  int _solvedCount = 0;
-  int _failedCount = 0;
+  final ValueNotifier<int> _solvedCountNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _failedCountNotifier = ValueNotifier<int>(0);
   final int _maxLives = 3;
-  int _livesRemaining = 3;
+  final ValueNotifier<int> _livesRemainingNotifier = ValueNotifier<int>(3);
 
   // Difficulty selection
   PuzzleDifficulty? _selectedDifficulty;
 
+  // Getters for convenience
+  int get _remainingSeconds => _remainingSecondsNotifier.value;
+  int get _solvedCount => _solvedCountNotifier.value;
+  int get _failedCount => _failedCountNotifier.value;
+  int get _livesRemaining => _livesRemainingNotifier.value;
+
   @override
   void dispose() {
     _timer?.cancel();
+    _remainingSecondsNotifier.dispose();
+    _solvedCountNotifier.dispose();
+    _failedCountNotifier.dispose();
+    _livesRemainingNotifier.dispose();
     super.dispose();
   }
 
@@ -208,45 +219,19 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
       ),
       body: Column(
         children: <Widget>[
-          // Stats bar
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            color: Colors.grey[900],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                // Timer
-                _buildStatItem(
-                  _formatTime(_remainingSeconds),
-                  FluentIcons.timer_24_regular,
-                  Colors.red,
-                ),
-                // Solved count
-                _buildStatItem(
-                  '$_solvedCount',
-                  FluentIcons.checkmark_circle_24_regular,
-                  Colors.green,
-                ),
-                // Lives
-                Row(
-                  children: List<Widget>.generate(
-                    _maxLives,
-                    (int index) => Icon(
-                      index < _livesRemaining
-                          ? FluentIcons.heart_24_filled
-                          : FluentIcons.heart_24_regular,
-                      color: Colors.red,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          // Stats bar - only this part rebuilds when notifiers change
+          _RushStatsBar(
+            remainingSecondsNotifier: _remainingSecondsNotifier,
+            solvedCountNotifier: _solvedCountNotifier,
+            livesRemainingNotifier: _livesRemainingNotifier,
+            maxLives: _maxLives,
           ),
 
-          // Puzzle
+          // Puzzle - this won't rebuild when timer ticks
           Expanded(
             child: PuzzlePage(
+              // Use key to preserve state when puzzle changes
+              key: ValueKey<String>(currentPuzzle.id),
               puzzle: currentPuzzle,
               onSolved: _onPuzzleSolved,
               onFailed: _onPuzzleFailed,
@@ -371,28 +356,6 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     );
   }
 
-  Widget _buildStatItem(String value, IconData icon, Color color) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(icon, color: color, size: 20),
-        const SizedBox(width: 4),
-        // Add flexible text to prevent overflow
-        Flexible(
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildResultRow(String label, String value, Color color) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -417,12 +380,6 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
         ),
       ],
     );
-  }
-
-  String _formatTime(int seconds) {
-    final int minutes = seconds ~/ 60;
-    final int secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
   }
 
   int _calculateAccuracy() {
@@ -454,18 +411,20 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
       _rushPuzzles.addAll(puzzles);
       _isActive = true;
       _currentPuzzleIndex = 0;
-      _solvedCount = 0;
-      _failedCount = 0;
-      _livesRemaining = _maxLives;
-      _remainingSeconds = 300;
     });
+
+    // Reset notifiers without triggering full page rebuild
+    _solvedCountNotifier.value = 0;
+    _failedCountNotifier.value = 0;
+    _livesRemainingNotifier.value = _maxLives;
+    _remainingSecondsNotifier.value = 300;
 
     _startTimer();
   }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_remainingSeconds <= 0) {
+      if (_remainingSecondsNotifier.value <= 0) {
         timer.cancel();
         // Trigger rebuild to show results screen
         if (mounted) {
@@ -474,9 +433,8 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
         return;
       }
 
-      setState(() {
-        _remainingSeconds--;
-      });
+      // Update only the timer notifier - this won't rebuild the entire page
+      _remainingSecondsNotifier.value--;
     });
   }
 
@@ -487,9 +445,10 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     }
 
     setState(() {
-      _solvedCount++;
       _currentPuzzleIndex++;
     });
+    // Update notifiers separately to avoid unnecessary rebuilds
+    _solvedCountNotifier.value++;
   }
 
   void _onPuzzleFailed() {
@@ -498,13 +457,19 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
       return;
     }
 
-    setState(() {
-      _failedCount++;
-      _livesRemaining--;
-      if (_livesRemaining > 0) {
+    // Update notifiers first
+    _failedCountNotifier.value++;
+    _livesRemainingNotifier.value--;
+
+    // Then update state if needed to show next puzzle
+    if (_livesRemaining > 0) {
+      setState(() {
         _currentPuzzleIndex++;
-      }
-    });
+      });
+    } else {
+      // Trigger rebuild to show results screen
+      setState(() {});
+    }
   }
 
   void _confirmQuit() {
@@ -539,5 +504,102 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
       _isActive = false;
     });
     _startRush();
+  }
+}
+
+/// Separate widget for stats bar that rebuilds independently
+/// This prevents the entire page (including the game board) from rebuilding every second
+class _RushStatsBar extends StatelessWidget {
+  const _RushStatsBar({
+    required this.remainingSecondsNotifier,
+    required this.solvedCountNotifier,
+    required this.livesRemainingNotifier,
+    required this.maxLives,
+  });
+
+  final ValueNotifier<int> remainingSecondsNotifier;
+  final ValueNotifier<int> solvedCountNotifier;
+  final ValueNotifier<int> livesRemainingNotifier;
+  final int maxLives;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      color: Colors.grey[900],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          // Timer - rebuilds only when timer notifier changes
+          ValueListenableBuilder<int>(
+            valueListenable: remainingSecondsNotifier,
+            builder: (BuildContext context, int remainingSeconds, Widget? child) {
+              return _buildStatItem(
+                _formatTime(remainingSeconds),
+                FluentIcons.timer_24_regular,
+                Colors.red,
+              );
+            },
+          ),
+          // Solved count - rebuilds only when solved count changes
+          ValueListenableBuilder<int>(
+            valueListenable: solvedCountNotifier,
+            builder: (BuildContext context, int solvedCount, Widget? child) {
+              return _buildStatItem(
+                '$solvedCount',
+                FluentIcons.checkmark_circle_24_regular,
+                Colors.green,
+              );
+            },
+          ),
+          // Lives - rebuilds only when lives change
+          ValueListenableBuilder<int>(
+            valueListenable: livesRemainingNotifier,
+            builder: (BuildContext context, int livesRemaining, Widget? child) {
+              return Row(
+                children: List<Widget>.generate(
+                  maxLives,
+                  (int index) => Icon(
+                    index < livesRemaining
+                        ? FluentIcons.heart_24_filled
+                        : FluentIcons.heart_24_regular,
+                    color: Colors.red,
+                    size: 20,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String value, IconData icon, Color color) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(icon, color: color, size: 20),
+        const SizedBox(width: 4),
+        // Add flexible text to prevent overflow
+        Flexible(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _formatTime(int seconds) {
+    final int minutes = seconds ~/ 60;
+    final int secs = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
   }
 }
