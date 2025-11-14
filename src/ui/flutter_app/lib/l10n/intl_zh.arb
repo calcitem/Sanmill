@@ -3157,5 +3157,123 @@
     "qualityReqInstructive": "✓ 有教育意义或娱乐性",
     "@qualityReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "下一步：{move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "完整解答：{solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "注意这些位置",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "无可用解答",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "继续努力！目标尚未达成。",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "完美！以最优步数解决！",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "正确！（{count} 步，最优：{optimal}）",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "正确！你找到了另一种解法！",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "刚刚",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "january": "一月",
+    "@january": {
+        "description": "Month name"
+    },
+    "february": "二月",
+    "@february": {
+        "description": "Month name"
+    },
+    "march": "三月",
+    "@march": {
+        "description": "Month name"
+    },
+    "april": "四月",
+    "@april": {
+        "description": "Month name"
+    },
+    "may": "五月",
+    "@may": {
+        "description": "Month name"
+    },
+    "june": "六月",
+    "@june": {
+        "description": "Month name"
+    },
+    "july": "七月",
+    "@july": {
+        "description": "Month name"
+    },
+    "august": "八月",
+    "@august": {
+        "description": "Month name"
+    },
+    "september": "九月",
+    "@september": {
+        "description": "Month name"
+    },
+    "october": "十月",
+    "@october": {
+        "description": "Month name"
+    },
+    "november": "十一月",
+    "@november": {
+        "description": "Month name"
+    },
+    "december": "十二月",
+    "@december": {
+        "description": "Month name"
+    },
+    "invalidPuzzle": "无效谜题",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "此谜题的位置格式无效，无法加载。请联系谜题作者或尝试其他谜题。",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "继续尝试！",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
     }
 }
