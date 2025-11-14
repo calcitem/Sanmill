@@ -2997,7 +2997,7 @@
     "@puzzlePositionCaptureHelp": {
         "description": "Title for position capture help dialog"
     },
-    "puzzlePositionCaptureHelpContent": "如何捕获谜题起始局面：\n\n1. 点击"打开棋盘（摆局）"手动摆放棋子，或点击"打开棋盘（走子）"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 点击"捕获局面"按钮保存当前棋盘状态\n\n捕获的局面将作为您谜题的起始点。",
+    "puzzlePositionCaptureHelpContent": "如何捕获谜题起始局面：\n\n1. 点击\"打开棋盘（摆局）\"手动摆放棋子，或点击\"打开棋盘（走子）\"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 点击\"捕获局面\"按钮保存当前棋盘状态\n\n捕获的局面将作为您谜题的起始点。",
     "@puzzlePositionCaptureHelpContent": {
         "description": "Help content for capturing puzzle starting position"
     },
@@ -3013,11 +3013,11 @@
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "点击"开始录制"按钮（这会将棋盘重置到您捕获的局面）",
+    "puzzleSolutionStep2": "点击\"开始录制\"按钮（这会将棋盘重置到您捕获的局面）",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
-    "puzzleSolutionStep4": "返回本页并点击"停止录制"",
+    "puzzleSolutionStep4": "返回本页并点击\"停止录制\"",
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
