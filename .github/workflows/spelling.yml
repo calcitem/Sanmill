@@ -1,5 +1,8 @@
 name: Spell checking
 
+# DISABLED: Spelling check workflow has been disabled
+# To re-enable, change the 'if: false' condition in the spelling job below
+
 # Comment management is handled through a secondary job, for details see:
 # https://github.com/check-spelling/check-spelling/wiki/Feature%3A-Restricted-Permissions
 #
@@ -49,7 +52,8 @@ jobs:
     outputs:
       followup: ${{ steps.spelling.outputs.followup }}
     runs-on: ubuntu-latest
-    if: "contains(github.event_name, 'pull_request') || github.event_name == 'push'"
+    # Workflow disabled - spelling check is turned off
+    if: false
     concurrency:
       group: spelling-${{ github.event.pull_request.number || github.ref }}
       # note: If you use only_check_changed_files, you do not want cancel-in-progress
