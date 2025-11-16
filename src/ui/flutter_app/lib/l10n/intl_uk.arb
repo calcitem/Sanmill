@@ -2139,7 +2139,7 @@
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Вітаємо з перемогою на рівні 30 MCTS! Бажаєте перейти на алгоритм MTD(f) для більшої складності?",
     "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "Колір підсвічування фігур, які можна взяти",
+    "capturablePieceHighlightColor": "Колір виділення фігури, яку можна захопити",
     "@capturablePieceHighlightColor": {
         "description": "Capturable piece highlight color"
     },
