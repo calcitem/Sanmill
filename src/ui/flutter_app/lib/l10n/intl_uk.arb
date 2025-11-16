@@ -2159,4 +2159,20 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Налаштування моделі, мови та поведінки",
     "@voiceAssistantSettingsDescription": {}
+    "puzzles": "Головоломки",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Головоломка",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "Немає доступних головоломок",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "puzzleStatistics": "Статистика головоломок",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    }
 }
