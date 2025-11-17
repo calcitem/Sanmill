@@ -179,7 +179,9 @@ class _VoiceAssistantSettingsPageState
     );
 
     if (selectedType != null && selectedType != settings.modelType) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       final bool hasModel = await _service.changeModelType(
         selectedType,
         context,

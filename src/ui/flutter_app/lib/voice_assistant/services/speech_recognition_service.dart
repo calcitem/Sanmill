@@ -7,6 +7,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:whisper_ggml/src/models/whisper_result.dart';
 import 'package:whisper_ggml/whisper_ggml.dart';
 
 import '../../shared/services/logger.dart';
