@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "සියලුම ප්‍රහේලිකා සම්පූර්ණයි!",
     "@allPuzzlesCompleted": {},
     "back": "ආපසු",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "හඬ සහායක සැකසීම්",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "ආකෘතිය, භාෂාව සහ හැසිරීම වින්‍යාස කරන්න",
+    "@voiceAssistantSettingsDescription": {}
 }

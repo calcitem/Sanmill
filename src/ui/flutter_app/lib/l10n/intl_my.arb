@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "ပဟေဠိအားလုံးပြီးစီးပါပြီ!",
     "@allPuzzlesCompleted": {},
     "back": "နောက်သို့",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "အသံအကူအညီ ဆက်တင်များ",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "မော်ဒယ်၊ ဘာသာစကားနှင့် အပြုအမူကို စီစဉ်သတ်မှတ်ပါ",
+    "@voiceAssistantSettingsDescription": {}
 }

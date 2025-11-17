@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "اكتملت جميع الألغاز!",
     "@allPuzzlesCompleted": {},
     "back": "رجوع",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "إعدادات المساعد الصوتي",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "تكوين النموذج واللغة والسلوك",
+    "@voiceAssistantSettingsDescription": {}
 }

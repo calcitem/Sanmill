@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Tous les puzzles terminés !",
     "@allPuzzlesCompleted": {},
     "back": "Retour",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Paramètres de l'assistant vocal",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Configurer le modèle, la langue et le comportement",
+    "@voiceAssistantSettingsDescription": {}
 }

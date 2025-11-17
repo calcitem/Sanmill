@@ -36,6 +36,7 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
+import 'voice_assistant/services/voice_assistant_service.dart';
 
 part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
@@ -63,6 +64,11 @@ Future<void> main() async {
   // Initialize Screenshot service (if not in test mode)
   if (!EnvironmentConfig.test) {
     await ScreenshotService.instance.init();
+  }
+
+  // Initialize voice assistant service if enabled
+  if (DB().voiceAssistantSettings.enabled) {
+    await VoiceAssistantService().initialize();
   }
 
   _initUI();

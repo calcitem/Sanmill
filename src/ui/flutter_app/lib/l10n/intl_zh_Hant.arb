@@ -2146,5 +2146,9 @@
     "highlightCapturablePieces": "高亮可吃掉的棋子",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
-    }
+    },
+    "voiceAssistantSettings": "語音助手設定",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "配置模型、語言和行為",
+    "@voiceAssistantSettingsDescription": {}
 }

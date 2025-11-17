@@ -3408,6 +3408,14 @@
     "@voiceAssistantEnabledDescription": {
         "description": "Description for voice assistant enable toggle"
     },
+    "voiceAssistantSettings": "语音助手设置",
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
+    "voiceAssistantSettingsDescription": "配置模型、语言和行为",
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
     "voiceAssistantGeneral": "常规",
     "@voiceAssistantGeneral": {
         "description": "General settings section"

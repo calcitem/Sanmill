@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Все головоломки решены!",
     "@allPuzzlesCompleted": {},
     "back": "Назад",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Настройки голосового помощника",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Настройка модели, языка и поведения",
+    "@voiceAssistantSettingsDescription": {}
 }

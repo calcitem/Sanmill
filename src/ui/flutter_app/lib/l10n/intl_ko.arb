@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "모든 퍼즐 완료!",
     "@allPuzzlesCompleted": {},
     "back": "뒤로",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "음성 도우미 설정",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "모델, 언어 및 동작 구성",
+    "@voiceAssistantSettingsDescription": {}
 }

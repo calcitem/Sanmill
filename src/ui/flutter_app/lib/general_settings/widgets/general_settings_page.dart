@@ -25,6 +25,8 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../voice_assistant/models/voice_assistant_settings.dart';
+import '../../voice_assistant/services/voice_assistant_service.dart';
+import '../../voice_assistant/widgets/voice_assistant_settings_page.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
@@ -247,12 +249,20 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   // Enable or disable voice assistant
-  void _setVoiceAssistantEnabled(bool value) {
-    final VoiceAssistantSettings voiceAssistantSettings =
-        DB().voiceAssistantSettings;
-    DB().voiceAssistantSettings = voiceAssistantSettings.copyWith(
-      enabled: value,
-    );
+  Future<void> _setVoiceAssistantEnabled(bool value) async {
+    if (value) {
+      // When enabling, use the service to properly initialize
+      final bool success = await VoiceAssistantService().enable(context);
+      if (!success) {
+        // If initialization failed, revert the switch
+        // The switch will update based on the database value
+        logger.w("$_logTag Failed to enable voice assistant");
+        return;
+      }
+    } else {
+      // When disabling, use the service to properly clean up
+      await VoiceAssistantService().disable();
+    }
 
     logger.t("$_logTag voiceAssistantEnabled: $value");
   }
@@ -615,6 +625,24 @@ class GeneralSettingsPage extends StatelessWidget {
                 titleString: S.of(context).voiceAssistantEnabled,
                 subtitleString: S.of(context).voiceAssistantEnabledDescription,
               ),
+              // Navigation to voice assistant detailed settings
+              if (voiceAssistantSettings.enabled)
+                SettingsListTile(
+                  key: const Key(
+                    'general_settings_page_settings_card_accessibility_voice_assistant_settings',
+                  ),
+                  titleString: S.of(context).voiceAssistantSettings,
+                  subtitleString: S.of(context).voiceAssistantSettingsDescription,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            const VoiceAssistantSettingsPage(),
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         // TODO: Fix iOS bug

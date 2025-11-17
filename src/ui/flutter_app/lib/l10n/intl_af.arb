@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Alle raaisels voltooi!",
     "@allPuzzlesCompleted": {},
     "back": "Terug",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Stemassistent Instellings",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Stel model, taal en gedrag op",
+    "@voiceAssistantSettingsDescription": {}
 }

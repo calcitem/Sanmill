@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "རྟོག་ཞིབ་ཚང་མ་ཚར་བ།",
     "@allPuzzlesCompleted": {},
     "back": "ཕྱིར་ལོག",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "སྐད་སྒྲའི་རོགས་པའི་སྒྲིག་འགོད།",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "དཔེ་གཞི་དང་སྐད་ཡིག་དང་སྤྱོད་ལམ་སྒྲིག་འགོད་བྱེད།",
+    "@voiceAssistantSettingsDescription": {}
 }

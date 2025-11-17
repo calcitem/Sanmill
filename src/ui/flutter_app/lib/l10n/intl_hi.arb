@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "सभी पहेलियाँ पूर्ण!",
     "@allPuzzlesCompleted": {},
     "back": "वापस",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "वॉयस असिस्टेंट सेटिंग्स",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "मॉडल, भाषा और व्यवहार को कॉन्फ़िगर करें",
+    "@voiceAssistantSettingsDescription": {}
 }

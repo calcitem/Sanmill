@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Fumbo zote zimekamilika!",
     "@allPuzzlesCompleted": {},
     "back": "Rudi",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Mipangilio ya Msaidizi wa Sauti",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Sanidi muundo, lugha na tabia",
+    "@voiceAssistantSettingsDescription": {}
 }

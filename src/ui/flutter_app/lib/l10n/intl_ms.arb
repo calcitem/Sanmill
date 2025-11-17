@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Semua teka-teki selesai!",
     "@allPuzzlesCompleted": {},
     "back": "Kembali",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Tetapan Pembantu Suara",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurasikan model, bahasa dan tingkah laku",
+    "@voiceAssistantSettingsDescription": {}
 }

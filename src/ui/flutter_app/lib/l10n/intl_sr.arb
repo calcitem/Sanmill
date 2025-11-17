@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Све слагалице завршене!",
     "@allPuzzlesCompleted": {},
     "back": "Назад",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Подешавања гласовног асистента",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Конфигуришите модел, језик и понашање",
+    "@voiceAssistantSettingsDescription": {}
 }

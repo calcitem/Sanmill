@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Visi mīklas pabeigti!",
     "@allPuzzlesCompleted": {},
     "back": "Atpakaļ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Balss asistenta iestatījumi",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurēt modeli, valodu un uzvedību",
+    "@voiceAssistantSettingsDescription": {}
 }

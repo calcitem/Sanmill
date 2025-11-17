@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Alle gåter fullført!",
     "@allPuzzlesCompleted": {},
     "back": "Tilbake",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Stemmeassistent-innstillinger",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurer modell, språk og oppførsel",
+    "@voiceAssistantSettingsDescription": {}
 }

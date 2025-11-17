@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Tất cả câu đố đã hoàn thành!",
     "@allPuzzlesCompleted": {},
     "back": "Quay lại",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Cài đặt trợ lý giọng nói",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Cấu hình mô hình, ngôn ngữ và hành vi",
+    "@voiceAssistantSettingsDescription": {}
 }

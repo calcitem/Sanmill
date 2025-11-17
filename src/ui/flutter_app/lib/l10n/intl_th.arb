@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "ปริศนาทั้งหมดเสร็จสมบูรณ์!",
     "@allPuzzlesCompleted": {},
     "back": "ย้อนกลับ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "การตั้งค่าผู้ช่วยเสียง",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "กำหนดค่าโมเดล ภาษา และพฤติกรรม",
+    "@voiceAssistantSettingsDescription": {}
 }

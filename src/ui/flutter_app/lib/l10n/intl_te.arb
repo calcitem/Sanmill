@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "అన్ని పజిల్స్ పూర్తయ్యాయి!",
     "@allPuzzlesCompleted": {},
     "back": "వెనుకకు",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "వాయిస్ అసిస్టెంట్ సెట్టింగ్‌లు",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "మోడల్, భాష మరియు ప్రవర్తనను కాన్ఫిగర్ చేయండి",
+    "@voiceAssistantSettingsDescription": {}
 }
