@@ -24,6 +24,7 @@ import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../../voice_assistant/models/voice_assistant_settings.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
@@ -247,8 +248,11 @@ class GeneralSettingsPage extends StatelessWidget {
 
   // Enable or disable voice assistant
   void _setVoiceAssistantEnabled(bool value) {
-    final voiceAssistantSettings = DB().voiceAssistantSettings;
-    DB().voiceAssistantSettings = voiceAssistantSettings.copyWith(enabled: value);
+    final VoiceAssistantSettings voiceAssistantSettings =
+        DB().voiceAssistantSettings;
+    DB().voiceAssistantSettings = voiceAssistantSettings.copyWith(
+      enabled: value,
+    );
 
     logger.t("$_logTag voiceAssistantEnabled: $value");
   }
@@ -323,7 +327,8 @@ class GeneralSettingsPage extends StatelessWidget {
     )!;
 
     // Get voice assistant settings for accessibility section
-    final voiceAssistantSettings = DB().voiceAssistantSettings;
+    final VoiceAssistantSettings voiceAssistantSettings =
+        DB().voiceAssistantSettings;
 
     final String perfectDatabaseDescription = S
         .of(context)
