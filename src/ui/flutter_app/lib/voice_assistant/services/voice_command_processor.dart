@@ -268,7 +268,6 @@ class VoiceCommandProcessor {
   /// Execute move command
   VoiceCommandResult _executeMoveCommand(String from, String to, S loc) {
     try {
-      final GameController controller = GameController();
       // Note: Actual move execution requires accessing the board state
       // and converting position notation to board indices
       // This is a placeholder for the actual implementation

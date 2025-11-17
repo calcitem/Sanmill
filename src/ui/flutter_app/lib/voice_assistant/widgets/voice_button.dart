@@ -64,8 +64,8 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
               builder: (BuildContext context, Widget? child) {
                 return Icon(
                   Icons.mic,
-                  color: Colors.white.withOpacity(
-                    0.5 + (_animationController.value * 0.5),
+                  color: Colors.white.withValues(
+                    alpha: 0.5 + (_animationController.value * 0.5),
                   ),
                 );
               },
@@ -92,23 +92,20 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
         if (result != null) {
           // Show result message
           final String message =
-              result.message ?? _getDefaultMessage(result.type, result.success, loc);
+              result.message ??
+              _getDefaultMessage(result.type, result.success, loc);
           SnackBarService.showRootSnackBar(
             message,
             duration: const Duration(seconds: 2),
           );
         } else {
           // No result
-          SnackBarService.showRootSnackBar(
-            loc.voiceAssistantNoSpeechDetected,
-          );
+          SnackBarService.showRootSnackBar(loc.voiceAssistantNoSpeechDetected);
         }
       }
     } catch (e) {
       if (mounted) {
-        SnackBarService.showRootSnackBar(
-          loc.voiceAssistantError,
-        );
+        SnackBarService.showRootSnackBar(loc.voiceAssistantError);
       }
     } finally {
       if (mounted) {
@@ -119,11 +116,7 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
     }
   }
 
-  String _getDefaultMessage(
-    VoiceCommandType type,
-    bool success,
-    S loc,
-  ) {
+  String _getDefaultMessage(VoiceCommandType type, bool success, S loc) {
     if (success) {
       switch (type) {
         case VoiceCommandType.move:
@@ -172,10 +165,7 @@ class _VoiceAssistantIconButtonState extends State<VoiceAssistantIconButton> {
     }
 
     return IconButton(
-      icon: Icon(
-        Icons.mic,
-        color: _isListening ? Colors.red : null,
-      ),
+      icon: Icon(Icons.mic, color: _isListening ? Colors.red : null),
       onPressed: _isListening ? null : _onPressed,
       tooltip: S.of(context).voiceAssistant,
     );

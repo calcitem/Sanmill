@@ -4,14 +4,13 @@
 // speech_recognition_service.dart
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:whisper_ggml/src/models/whisper_result.dart';
 import 'package:whisper_ggml/whisper_ggml.dart';
 
 import '../../shared/services/logger.dart';
-import '../models/voice_assistant_settings.dart';
 
 /// Service to handle speech recognition using Whisper
 class SpeechRecognitionService {
@@ -38,8 +37,9 @@ class SpeechRecognitionService {
   final ValueNotifier<String?> recognitionResult = ValueNotifier<String?>(null);
 
   /// Recognition status notifier
-  final ValueNotifier<String> recognitionStatus =
-      ValueNotifier<String>('Ready');
+  final ValueNotifier<String> recognitionStatus = ValueNotifier<String>(
+    'Ready',
+  );
 
   /// Initialize the Whisper model
   ///
@@ -76,8 +76,11 @@ class SpeechRecognitionService {
       logger.i('Speech recognition initialized successfully');
       return true;
     } catch (e, stackTrace) {
-      logger.e('Failed to initialize speech recognition',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to initialize speech recognition',
+        error: e,
+        stackTrace: stackTrace,
+      );
       recognitionStatus.value = 'Initialization failed';
       _isInitialized = false;
       return false;
@@ -97,8 +100,11 @@ class SpeechRecognitionService {
 
       return granted;
     } catch (e, stackTrace) {
-      logger.e('Failed to request microphone permission',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to request microphone permission',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return false;
     }
   }
@@ -189,7 +195,7 @@ class SpeechRecognitionService {
       recognitionStatus.value = 'Transcribing...';
       logger.i('Transcribing audio from file: $audioPath');
 
-      final WhisperTranscribeResult? result = await _whisper!.transcribe(
+      final TranscribeResult? result = await _whisper!.transcribe(
         model: _model,
         audioPath: audioPath,
         lang: _language,
@@ -207,8 +213,11 @@ class SpeechRecognitionService {
         return null;
       }
     } catch (e, stackTrace) {
-      logger.e('Failed to transcribe audio file',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to transcribe audio file',
+        error: e,
+        stackTrace: stackTrace,
+      );
       recognitionStatus.value = 'Transcription failed';
       return null;
     }
@@ -228,8 +237,11 @@ class SpeechRecognitionService {
       recognitionStatus.value = 'Disposed';
       logger.i('Speech recognition service disposed');
     } catch (e, stackTrace) {
-      logger.e('Failed to dispose speech recognition service',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to dispose speech recognition service',
+        error: e,
+        stackTrace: stackTrace,
+      );
     }
   }
 }
