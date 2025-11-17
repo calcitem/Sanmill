@@ -3275,5 +3275,225 @@
     "keepTrying": "Keep trying!",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
+    },
+    "voiceAssistant": "Voice Assistant",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantGeneral": "General",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "Model Settings",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "Model Management",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "Model Type",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "Language",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "Show Voice Button",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "Continuous Listening",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "Download Model",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "Delete Model",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "Model Information",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "Downloaded",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "Downloading...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "Model Size",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "Model Path",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "Select Model Type",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "Select Language",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "Listening...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantError": "Voice assistant error",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceCommandSuccess": "Command executed successfully",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "Failed to execute command",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "Unknown command",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "Move executed",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "Failed to execute move",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "Piece placed",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "Failed to place piece",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "Piece removed",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "Undo executed",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "Failed to undo",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "Redo executed",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "Failed to redo",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "Game restarted",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "Failed to restart game",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "Settings updated",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "Failed to update settings",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "Help displayed",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "Sound enabled",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "Sound disabled",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "Vibration enabled",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "Vibration disabled",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
     }
 }

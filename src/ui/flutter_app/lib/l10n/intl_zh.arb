@@ -3275,5 +3275,225 @@
     "keepTrying": "继续尝试！",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
+    },
+    "voiceAssistant": "语音助手",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "启用语音助手",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantGeneral": "常规",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "模型设置",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "模型管理",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "模型类型",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "语言",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "自动检测语言",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "显示语音按钮",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "连续监听",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "下载模型",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "删除模型",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "模型信息",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "已下载",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "未下载",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "下载中...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "语音助手需要语言模型才能正常工作。这将下载选定的模型。",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "模型下载成功",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "模型下载失败",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "模型已成功删除",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "删除模型失败",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "确定要删除已下载的模型吗？",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "模型大小",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "模型路径",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "选择模型类型",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "选择语言",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "语言已更改。请下载新语言的模型。",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "启用语音助手失败",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "正在监听...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "未检测到语音",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantError": "语音助手错误",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceCommandSuccess": "命令执行成功",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "命令执行失败",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "未知命令",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "移动已执行",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "移动执行失败",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "棋子已放置",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "放置棋子失败",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "棋子已移除",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "移除棋子失败",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "撤销已执行",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "撤销失败",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "重做已执行",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "重做失败",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "游戏已重新开始",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "重新开始游戏失败",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "AI 正在思考...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "请求 AI 移动失败",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "设置已更新",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "更新设置失败",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "帮助已显示",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "声音已启用",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "声音已禁用",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "震动已启用",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "震动已禁用",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
     }
 }
