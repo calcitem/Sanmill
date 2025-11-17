@@ -1103,6 +1103,18 @@
     "@close": {
         "description": "Close"
     },
+    "download": "下载",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "状态",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "未知",
+    "@unknown": {
+        "description": "Unknown value"
+    },
     "whitePiece": "白棋",
     "@whitePiece": {
         "description": "White piece"
@@ -3082,10 +3094,6 @@
     "@exportForContribution": {
         "description": "Button text for exporting puzzles for contribution"
     },
-    "close": "关闭",
-    "@close": {
-        "description": "Close button text"
-    },
     "startContributing": "开始贡献",
     "@startContributing": {
         "description": "Button text to start contributing puzzles"
@@ -3275,6 +3283,118 @@
     "keepTrying": "继续尝试！",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "示例",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "voiceCommandsHelp": "语音命令帮助",
+    "@voiceCommandsHelp": {
+        "description": "Voice commands help page title"
+    },
+    "voiceCommandsHelpIntro": "使用语音控制游戏！以下是您可以使用的语音命令。",
+    "@voiceCommandsHelpIntro": {
+        "description": "Voice commands help introduction"
+    },
+    "voiceCommandsGameControl": "游戏控制",
+    "@voiceCommandsGameControl": {
+        "description": "Game control commands section"
+    },
+    "voiceCommandsMoveControl": "移动命令",
+    "@voiceCommandsMoveControl": {
+        "description": "Move commands section"
+    },
+    "voiceCommandsSettings": "设置命令",
+    "@voiceCommandsSettings": {
+        "description": "Settings commands section"
+    },
+    "voiceCommandsTips": "提示",
+    "@voiceCommandsTips": {
+        "description": "Tips section"
+    },
+    "voiceCommandsUndo": "撤销移动",
+    "@voiceCommandsUndo": {
+        "description": "Undo command title"
+    },
+    "voiceCommandsUndoDesc": "撤销上一步移动",
+    "@voiceCommandsUndoDesc": {
+        "description": "Undo command description"
+    },
+    "voiceCommandsRedo": "重做移动",
+    "@voiceCommandsRedo": {
+        "description": "Redo command title"
+    },
+    "voiceCommandsRedoDesc": "重做之前撤销的移动",
+    "@voiceCommandsRedoDesc": {
+        "description": "Redo command description"
+    },
+    "voiceCommandsRestart": "重新开始游戏",
+    "@voiceCommandsRestart": {
+        "description": "Restart command title"
+    },
+    "voiceCommandsRestartDesc": "开始新游戏",
+    "@voiceCommandsRestartDesc": {
+        "description": "Restart command description"
+    },
+    "voiceCommandsAiMove": "请求 AI 移动",
+    "@voiceCommandsAiMove": {
+        "description": "AI move command title"
+    },
+    "voiceCommandsAiMoveDesc": "请求 AI 进行移动",
+    "@voiceCommandsAiMoveDesc": {
+        "description": "AI move command description"
+    },
+    "voiceCommandsMovePiece": "移动棋子",
+    "@voiceCommandsMovePiece": {
+        "description": "Move piece command title"
+    },
+    "voiceCommandsMovePieceDesc": "将棋子从一个位置移动到另一个位置",
+    "@voiceCommandsMovePieceDesc": {
+        "description": "Move piece command description"
+    },
+    "voiceCommandsPlacePiece": "放置棋子",
+    "@voiceCommandsPlacePiece": {
+        "description": "Place piece command title"
+    },
+    "voiceCommandsPlacePieceDesc": "在棋盘上放置棋子",
+    "@voiceCommandsPlacePieceDesc": {
+        "description": "Place piece command description"
+    },
+    "voiceCommandsRemovePiece": "移除棋子",
+    "@voiceCommandsRemovePiece": {
+        "description": "Remove piece command title"
+    },
+    "voiceCommandsRemovePieceDesc": "移除对手的棋子",
+    "@voiceCommandsRemovePieceDesc": {
+        "description": "Remove piece command description"
+    },
+    "voiceCommandsToggleSound": "切换声音",
+    "@voiceCommandsToggleSound": {
+        "description": "Toggle sound command title"
+    },
+    "voiceCommandsToggleSoundDesc": "打开或关闭声音",
+    "@voiceCommandsToggleSoundDesc": {
+        "description": "Toggle sound command description"
+    },
+    "voiceCommandsToggleVibration": "切换震动",
+    "@voiceCommandsToggleVibration": {
+        "description": "Toggle vibration command title"
+    },
+    "voiceCommandsToggleVibrationDesc": "打开或关闭震动",
+    "@voiceCommandsToggleVibrationDesc": {
+        "description": "Toggle vibration command description"
+    },
+    "voiceCommandsTip1": "清晰地说话，保持适中的语速以获得最佳识别效果",
+    "@voiceCommandsTip1": {
+        "description": "Voice command tip 1"
+    },
+    "voiceCommandsTip2": "等待监听指示器出现后再说话",
+    "@voiceCommandsTip2": {
+        "description": "Voice command tip 2"
+    },
+    "voiceCommandsTip3": "命令适用于您选择的语言",
+    "@voiceCommandsTip3": {
+        "description": "Voice command tip 3"
     },
     "voiceAssistant": "语音助手",
     "@voiceAssistant": {

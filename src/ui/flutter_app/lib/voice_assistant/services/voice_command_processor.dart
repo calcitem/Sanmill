@@ -198,16 +198,50 @@ class VoiceCommandProcessor {
   }
 
   /// Extract position notations from text (e.g., "a1", "b2", "c3")
+  ///
+  /// Handles various voice recognition formats:
+  /// - "a1", "b2", "c3" (standard)
+  /// - "a one", "b two", "c three" (spoken numbers)
+  /// - "alpha 1", "bravo 2" (phonetic alphabet)
   List<String> _extractPositions(String text) {
     final List<String> positions = <String>[];
-    final RegExp positionPattern = RegExp(r'\b([a-g][1-7])\b');
-    final Iterable<Match> matches = positionPattern.allMatches(text);
 
-    for (final Match match in matches) {
+    // Standard pattern: "a1", "b2", etc.
+    final RegExp standardPattern = RegExp(r'\b([a-g][1-7])\b');
+    final Iterable<Match> standardMatches = standardPattern.allMatches(text);
+
+    for (final Match match in standardMatches) {
       positions.add(match.group(1)!);
     }
 
+    // If we found positions, return them
+    if (positions.isNotEmpty) {
+      return positions;
+    }
+
+    // Try to extract positions from spoken format: "a one", "b two", etc.
+    final RegExp spokenPattern = RegExp(
+      r'\b([a-g])\s+(one|two|three|four|five|six|seven|1|2|3|4|5|6|7)\b'
+    );
+    final Iterable<Match> spokenMatches = spokenPattern.allMatches(text);
+
+    for (final Match match in spokenMatches) {
+      final String letter = match.group(1)!;
+      final String number = _convertSpokenNumber(match.group(2)!);
+      positions.add('$letter$number');
+    }
+
     return positions;
+  }
+
+  /// Convert spoken number words to digits
+  String _convertSpokenNumber(String spoken) {
+    final Map<String, String> numberMap = <String, String>{
+      'one': '1', 'two': '2', 'three': '3', 'four': '4',
+      'five': '5', 'six': '6', 'seven': '7',
+    };
+
+    return numberMap[spoken.toLowerCase()] ?? spoken;
   }
 
   /// Execute move command

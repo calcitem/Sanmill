@@ -59,12 +59,14 @@ class ModelDownloader {
     return modelFile.exists();
   }
 
-  /// Download a Whisper model
+  /// Download a Whisper model with retry support
   ///
   /// Returns the path to the downloaded model file on success, or null on failure
+  /// Automatically retries up to 3 times on network failures
   Future<String?> downloadModel({
     required WhisperModelType modelType,
     required String language,
+    int maxRetries = 3,
   }) async {
     if (_isDownloading) {
       logger.w('Download already in progress');
@@ -72,23 +74,65 @@ class ModelDownloader {
     }
 
     _isDownloading = true;
+    int retryCount = 0;
+
+    while (retryCount < maxRetries) {
+      try {
+        final String? result = await _attemptDownload(modelType, language);
+        if (result != null) {
+          return result;
+        }
+        // If result is null but no exception, it's a server error, retry
+        retryCount++;
+        if (retryCount < maxRetries) {
+          final int delaySeconds = retryCount * 2; // Exponential backoff: 2s, 4s, 6s
+          downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
+          logger.w('Download failed, retrying in $delaySeconds seconds (attempt ${retryCount + 1}/$maxRetries)');
+          await Future<void>.delayed(Duration(seconds: delaySeconds));
+        }
+      } catch (e, stackTrace) {
+        logger.e('Download attempt ${retryCount + 1} failed', error: e, stackTrace: stackTrace);
+        retryCount++;
+        if (retryCount < maxRetries) {
+          final int delaySeconds = retryCount * 2;
+          downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
+          await Future<void>.delayed(Duration(seconds: delaySeconds));
+        } else {
+          downloadStatus.value = 'Download failed after $maxRetries attempts: $e';
+          _isDownloading = false;
+          return null;
+        }
+      }
+    }
+
+    _isDownloading = false;
+    downloadStatus.value = 'Download failed after $maxRetries attempts';
+    return null;
+  }
+
+  /// Internal method to attempt a single download
+  Future<String?> _attemptDownload(
+    WhisperModelType modelType,
+    String language,
+  ) async {
     downloadProgress.value = 0.0;
     downloadStatus.value = 'Starting download...';
 
+    final String downloadUrl = modelType.getDownloadUrl(language);
+    final String modelPath = await getModelPath(modelType, language);
+    final File modelFile = File(modelPath);
+
+    logger.i('Downloading model from: $downloadUrl');
+    logger.i('Saving to: $modelPath');
+
+    final http.Client client = http.Client();
     try {
-      final String downloadUrl = modelType.getDownloadUrl(language);
-      final String modelPath = await getModelPath(modelType, language);
-      final File modelFile = File(modelPath);
-
-      logger.i('Downloading model from: $downloadUrl');
-      logger.i('Saving to: $modelPath');
-
-      final http.Client client = http.Client();
       final http.Request request = http.Request('GET', Uri.parse(downloadUrl));
       final http.StreamedResponse response = await client.send(request);
 
       if (response.statusCode != 200) {
-        throw Exception('Failed to download model: HTTP ${response.statusCode}');
+        logger.e('Failed to download model: HTTP ${response.statusCode}');
+        return null;
       }
 
       final int? contentLength = response.contentLength;
@@ -119,12 +163,8 @@ class ModelDownloader {
       logger.i('Model downloaded successfully to: $modelPath');
 
       return modelPath;
-    } catch (e, stackTrace) {
-      logger.e('Failed to download model', error: e, stackTrace: stackTrace);
-      downloadStatus.value = 'Download failed: $e';
-      return null;
     } finally {
-      _isDownloading = false;
+      client.close();
     }
   }
 

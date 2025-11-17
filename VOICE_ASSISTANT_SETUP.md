@@ -16,6 +16,9 @@ The voice assistant feature uses the `whisper_ggml` package to provide speech re
 - **Multi-language Support**: Works with multiple languages (English, Chinese, German, Spanish, French, Japanese, Korean, Russian)
 - **On-demand Model Download**: Models are downloaded only when needed, not bundled with the app
 - **Model Selection**: Users can choose between different model sizes (Tiny ~75MB, Base ~142MB, Small ~466MB, Medium ~1.5GB)
+- **Intelligent Command Recognition**: Handles various voice input formats including spoken numbers ("a one" → "a1")
+- **Automatic Retry**: Network failures are automatically retried with exponential backoff
+- **Built-in Help**: Interactive help page showing all available voice commands
 
 ## Setup Instructions
 
@@ -114,13 +117,14 @@ lib/voice_assistant/
 │   ├── voice_assistant_settings.dart      # Settings model
 │   └── voice_assistant_settings.g.dart    # Generated code
 ├── services/
-│   ├── model_downloader.dart              # Model download service
+│   ├── model_downloader.dart              # Model download service (with retry logic)
 │   ├── speech_recognition_service.dart    # Speech-to-text service
 │   ├── voice_assistant_service.dart       # Main service coordinator
-│   └── voice_command_processor.dart       # Command parsing and execution
+│   └── voice_command_processor.dart       # Command parsing and execution (enhanced)
 └── widgets/
     ├── voice_assistant_settings_page.dart # Settings UI
     ├── voice_button.dart                  # Voice control buttons
+    ├── voice_commands_help_page.dart      # Interactive help page
     └── dialogs/
         ├── download_model_dialog.dart     # Download dialog
         └── model_info_dialog.dart         # Model info dialog
@@ -142,6 +146,30 @@ Localization strings have been added to:
 
 All other language files should be updated using the ARB translation updater skill.
 
+## Recent Improvements
+
+### Enhanced Voice Command Recognition
+- Added support for spoken number formats (e.g., "a one" is recognized as "a1")
+- Improved position extraction logic for better accuracy
+- More flexible command matching
+
+### Robust Network Handling
+- Automatic retry mechanism with exponential backoff (up to 3 attempts)
+- Better error messages during download failures
+- Proper HTTP client cleanup to prevent resource leaks
+
+### User Experience
+- Added interactive help page showing all available commands with examples
+- Fixed duplicate localization keys
+- Added missing common localization strings (download, status, unknown)
+- Comprehensive localization for English and Chinese
+
+### Code Quality
+- All code comments in English
+- Improved error handling throughout
+- Better logging for debugging
+- Enhanced documentation
+
 ## Notes
 
 - Model files are downloaded to the app's documents directory
@@ -149,3 +177,4 @@ All other language files should be updated using the ARB translation updater ski
 - The Tiny model is recommended for most users (good balance of size and accuracy)
 - Internet connection is required for initial model download
 - Microphone permission is required for voice recognition
+- Use the built-in help page to learn all available voice commands
