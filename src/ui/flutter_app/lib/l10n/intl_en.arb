@@ -3404,6 +3404,10 @@
     "@voiceAssistantEnabled": {
         "description": "Enable voice assistant toggle"
     },
+    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantGeneral": "General",
     "@voiceAssistantGeneral": {
         "description": "General settings section"

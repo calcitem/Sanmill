@@ -3404,6 +3404,10 @@
     "@voiceAssistantEnabled": {
         "description": "Enable voice assistant toggle"
     },
+    "voiceAssistantEnabledDescription": "允许应用接收语音指令",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantGeneral": "常规",
     "@voiceAssistantGeneral": {
         "description": "General settings section"
