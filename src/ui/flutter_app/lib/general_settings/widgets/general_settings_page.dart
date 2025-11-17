@@ -245,6 +245,14 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag screenReaderSupport: $value");
   }
 
+  // Enable or disable voice assistant
+  void _setVoiceAssistantEnabled(bool value) {
+    final voiceAssistantSettings = DB().voiceAssistantSettings;
+    DB().voiceAssistantSettings = voiceAssistantSettings.copyWith(enabled: value);
+
+    logger.t("$_logTag voiceAssistantEnabled: $value");
+  }
+
   void _setGameScreenRecorderSupport(
     GeneralSettings generalSettings,
     bool value,
@@ -313,6 +321,9 @@ class GeneralSettingsPage extends StatelessWidget {
       DB.generalSettingsKey,
       defaultValue: const GeneralSettings(),
     )!;
+
+    // Get voice assistant settings for accessibility section
+    final voiceAssistantSettings = DB().voiceAssistantSettings;
 
     final String perfectDatabaseDescription = S
         .of(context)
@@ -587,6 +598,17 @@ class GeneralSettingsPage extends StatelessWidget {
                   );
                 },
                 titleString: S.of(context).screenReaderSupport,
+              ),
+              SettingsListTile.switchTile(
+                key: const Key(
+                  'general_settings_page_settings_card_accessibility_voice_assistant',
+                ),
+                value: voiceAssistantSettings.enabled,
+                onChanged: (bool val) {
+                  _setVoiceAssistantEnabled(val);
+                },
+                titleString: S.of(context).voiceAssistantEnabled,
+                subtitleString: S.of(context).voiceAssistantEnabledDescription,
               ),
             ],
           ),
