@@ -179,6 +179,7 @@ class _VoiceAssistantSettingsPageState
     );
 
     if (selectedType != null && selectedType != settings.modelType) {
+      if (!mounted) return;
       final bool hasModel = await _service.changeModelType(
         selectedType,
         context,
@@ -249,7 +250,7 @@ class _VoiceAssistantSettingsPageState
       builder: (BuildContext context) => const _DownloadModelDialog(),
     );
 
-    if (confirmed ?? false) {
+    if ((confirmed ?? false) && mounted) {
       showDialog<void>(
         context: context,
         barrierDismissible: false,

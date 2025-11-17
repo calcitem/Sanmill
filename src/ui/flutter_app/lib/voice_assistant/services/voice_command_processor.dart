@@ -70,7 +70,7 @@ class VoiceCommandProcessor {
     }
 
     // Check for control commands
-    final VoiceCommandResult? controlResult = _processControlCommand(
+    final VoiceCommandResult? controlResult = await _processControlCommand(
       normalizedText,
       loc,
       context,
@@ -137,11 +137,11 @@ class VoiceCommandProcessor {
   }
 
   /// Process control commands (undo, redo, restart, etc.)
-  VoiceCommandResult? _processControlCommand(
+  Future<VoiceCommandResult?> _processControlCommand(
     String text,
     S loc,
     BuildContext context,
-  ) {
+  ) async {
     // Undo command
     if (text.contains('undo') ||
         text.contains('back') ||
@@ -349,10 +349,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute undo command
-  VoiceCommandResult _executeUndoCommand(S loc, BuildContext context) {
+  Future<VoiceCommandResult> _executeUndoCommand(S loc, BuildContext context) async {
     try {
       // Use HistoryNavigator to undo the last move
-      HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
+      await HistoryNavigator.takeBack(context, pop: false);
 
       return VoiceCommandResult(
         type: VoiceCommandType.undo,
@@ -374,10 +374,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute redo command
-  VoiceCommandResult _executeRedoCommand(S loc, BuildContext context) {
+  Future<VoiceCommandResult> _executeRedoCommand(S loc, BuildContext context) async {
     try {
       // Use HistoryNavigator to redo the last move
-      HistoryNavigator.doEachMove(HistoryNavMode.stepForward, 1);
+      await HistoryNavigator.stepForward(context, pop: false);
 
       return VoiceCommandResult(
         type: VoiceCommandType.redo,
