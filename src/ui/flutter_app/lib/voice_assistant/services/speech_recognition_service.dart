@@ -22,9 +22,11 @@ class SpeechRecognitionService {
   static final SpeechRecognitionService _instance =
       SpeechRecognitionService._internal();
 
-  WhisperGgml? _whisper;
+  WhisperController? _whisper;
   bool _isInitialized = false;
   bool _isListening = false;
+  String _language = 'en';
+  WhisperModel _model = WhisperModel.base;
 
   /// Whether the service is initialized
   bool get isInitialized => _isInitialized;
@@ -41,7 +43,7 @@ class SpeechRecognitionService {
 
   /// Initialize the Whisper model
   ///
-  /// [modelPath] - Path to the downloaded model file
+  /// [modelPath] - Path to the downloaded model file (not used with WhisperController)
   /// [language] - Language code (e.g., 'en', 'zh')
   Future<bool> initialize(String modelPath, String language) async {
     if (_isInitialized) {
@@ -52,18 +54,22 @@ class SpeechRecognitionService {
     try {
       recognitionStatus.value = 'Initializing...';
 
-      // Check if model file exists
-      final File modelFile = File(modelPath);
-      if (!await modelFile.exists()) {
-        throw Exception('Model file not found: $modelPath');
-      }
+      // Initialize WhisperController
+      _whisper = WhisperController();
+      _language = language;
 
-      // Initialize Whisper
-      _whisper = WhisperGgml();
-      await _whisper!.init(
-        modelPath: modelPath,
-        language: language,
-      );
+      // Determine model type from path (e.g., "base", "small", "medium", "large")
+      if (modelPath.contains('tiny')) {
+        _model = WhisperModel.tiny;
+      } else if (modelPath.contains('small')) {
+        _model = WhisperModel.small;
+      } else if (modelPath.contains('medium')) {
+        _model = WhisperModel.medium;
+      } else if (modelPath.contains('large')) {
+        _model = WhisperModel.large;
+      } else {
+        _model = WhisperModel.base;
+      }
 
       _isInitialized = true;
       recognitionStatus.value = 'Ready';
@@ -106,6 +112,8 @@ class SpeechRecognitionService {
   /// Start listening for voice input
   ///
   /// Returns the recognized text or null on failure
+  /// Note: whisper_ggml doesn't support direct microphone input, so this method
+  /// would require recording audio to a temporary file first
   Future<String?> startListening({
     Duration maxDuration = const Duration(seconds: 10),
   }) async {
@@ -135,21 +143,12 @@ class SpeechRecognitionService {
 
       logger.i('Starting voice recognition');
 
-      // Start recording and transcription
-      final String? result = await _whisper!.transcribeFromMicrophone(
-        maxDuration: maxDuration.inSeconds,
-      );
+      // TODO: Implement audio recording to temp file
+      // For now, return placeholder since whisper_ggml requires a file path
+      logger.w('Direct microphone transcription not yet implemented');
+      recognitionStatus.value = 'Not implemented';
 
-      if (result != null && result.isNotEmpty) {
-        recognitionResult.value = result;
-        recognitionStatus.value = 'Recognition complete';
-        logger.i('Recognition result: $result');
-      } else {
-        recognitionStatus.value = 'No speech detected';
-        logger.w('No speech detected or empty result');
-      }
-
-      return result;
+      return null;
     } catch (e, stackTrace) {
       logger.e('Failed to recognize speech', error: e, stackTrace: stackTrace);
       recognitionStatus.value = 'Recognition failed';
@@ -190,18 +189,23 @@ class SpeechRecognitionService {
       recognitionStatus.value = 'Transcribing...';
       logger.i('Transcribing audio from file: $audioPath');
 
-      final String? result = await _whisper!.transcribeFromFile(audioPath);
+      final WhisperTranscribeResult? result = await _whisper!.transcribe(
+        model: _model,
+        audioPath: audioPath,
+        lang: _language,
+      );
 
-      if (result != null && result.isNotEmpty) {
-        recognitionResult.value = result;
+      if (result != null && result.transcription.text.isNotEmpty) {
+        final String transcribedText = result.transcription.text;
+        recognitionResult.value = transcribedText;
         recognitionStatus.value = 'Transcription complete';
-        logger.i('Transcription result: $result');
+        logger.i('Transcription result: $transcribedText');
+        return transcribedText;
       } else {
         recognitionStatus.value = 'No speech detected';
         logger.w('Empty transcription result');
+        return null;
       }
-
-      return result;
     } catch (e, stackTrace) {
       logger.e('Failed to transcribe audio file',
           error: e, stackTrace: stackTrace);
@@ -217,7 +221,7 @@ class SpeechRecognitionService {
     }
 
     try {
-      await _whisper?.dispose();
+      // WhisperController doesn't have a dispose method
       _whisper = null;
       _isInitialized = false;
       _isListening = false;

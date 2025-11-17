@@ -73,8 +73,7 @@ class _DownloadProgressDialogState extends State<_DownloadProgressDialog> {
         Navigator.pop(context);
 
         // Show result message
-        SnackBarService.showMessage(
-          context,
+        SnackBarService.showRootSnackBar(
           success
               ? S.of(context).voiceAssistantModelDownloadSuccess
               : S.of(context).voiceAssistantModelDownloadFailed,
