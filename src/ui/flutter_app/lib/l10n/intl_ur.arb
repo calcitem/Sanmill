@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "تمام پہیلیاں مکمل!",
     "@allPuzzlesCompleted": {},
     "back": "واپس",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "وائس اسسٹنٹ کی ترتیبات",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "ماڈل، زبان اور رویہ کو ترتیب دیں",
+    "@voiceAssistantSettingsDescription": {}
 }

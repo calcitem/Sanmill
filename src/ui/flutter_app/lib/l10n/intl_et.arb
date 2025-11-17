@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Kõik mõistatused lahendatud!",
     "@allPuzzlesCompleted": {},
     "back": "Tagasi",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Häälassistendi seaded",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigureeri mudel, keel ja käitumine",
+    "@voiceAssistantSettingsDescription": {}
 }

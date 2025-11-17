@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "બધા પઝલ પૂર્ણ થયા!",
     "@allPuzzlesCompleted": {},
     "back": "પાછળ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "વૉઇસ સહાયક સેટિંગ્સ",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "મૉડેલ, ભાષા અને વર્તન ગોઠવો",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Alle puzzels voltooid!",
     "@allPuzzlesCompleted": {},
     "back": "Terug",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Spraakassistent-instellingen",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Configureer model, taal en gedrag",
+    "@voiceAssistantSettingsDescription": {}
 }

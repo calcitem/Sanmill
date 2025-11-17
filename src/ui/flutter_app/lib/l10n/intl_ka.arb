@@ -1,4 +1,8 @@
 {
     "back": "უკან",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "ხმოვანი ასისტენტის პარამეტრები",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "მოდელის, ენის და ქცევის კონფიგურაცია",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "அனைத்து புதிர்களும் முடிந்தன!",
     "@allPuzzlesCompleted": {},
     "back": "பின்செல்",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "குரல் உதவியாளர் அமைப்புகள்",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "மாதிரி, மொழி மற்றும் நடத்தையை உள்ளமை",
+    "@voiceAssistantSettingsDescription": {}
 }

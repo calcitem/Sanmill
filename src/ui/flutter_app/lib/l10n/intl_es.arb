@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "¡Todos los rompecabezas completados!",
     "@allPuzzlesCompleted": {},
     "back": "Atrás",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Configuración del asistente de voz",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Configurar modelo, idioma y comportamiento",
+    "@voiceAssistantSettingsDescription": {}
 }

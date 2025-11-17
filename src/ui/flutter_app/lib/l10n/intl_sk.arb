@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Všetky hádanky dokončené!",
     "@allPuzzlesCompleted": {},
     "back": "Späť",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Nastavenia hlasového asistenta",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurácia modelu, jazyka a správania",
+    "@voiceAssistantSettingsDescription": {}
 }

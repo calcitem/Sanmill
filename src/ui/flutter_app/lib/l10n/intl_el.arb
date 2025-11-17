@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Όλα τα παζλ ολοκληρώθηκαν!",
     "@allPuzzlesCompleted": {},
     "back": "Πίσω",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Ρυθμίσεις φωνητικού βοηθού",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Διαμόρφωση μοντέλου, γλώσσας και συμπεριφοράς",
+    "@voiceAssistantSettingsDescription": {}
 }

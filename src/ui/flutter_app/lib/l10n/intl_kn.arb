@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "ಎಲ್ಲಾ ಒಗಟುಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ!",
     "@allPuzzlesCompleted": {},
     "back": "ಹಿಂತಿರುಗಿ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "ಧ್ವನಿ ಸಹಾಯಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "ಮಾದರಿ, ಭಾಷೆ ಮತ್ತು ನಡವಳಿಕೆಯನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ",
+    "@voiceAssistantSettingsDescription": {}
 }

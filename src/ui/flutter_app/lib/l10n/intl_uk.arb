@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Усі головоломки завершено!",
     "@allPuzzlesCompleted": {},
     "back": "Назад",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Налаштування голосового помічника",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Налаштування моделі, мови та поведінки",
+    "@voiceAssistantSettingsDescription": {}
 }

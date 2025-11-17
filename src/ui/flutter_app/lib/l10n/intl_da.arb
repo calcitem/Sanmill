@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Alle puslespil fuldført!",
     "@allPuzzlesCompleted": {},
     "back": "Tilbage",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Taleassistent-indstillinger",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurer model, sprog og adfærd",
+    "@voiceAssistantSettingsDescription": {}
 }

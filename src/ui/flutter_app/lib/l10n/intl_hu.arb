@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Minden rejtvény megoldva!",
     "@allPuzzlesCompleted": {},
     "back": "Vissza",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Hangasszisztens beállításai",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Modell, nyelv és viselkedés beállítása",
+    "@voiceAssistantSettingsDescription": {}
 }

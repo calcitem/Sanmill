@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Wszystkie łamigłówki ukończone!",
     "@allPuzzlesCompleted": {},
     "back": "Wstecz",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Ustawienia asystenta głosowego",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfiguruj model, język i zachowanie",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Všechny puzzle dokončeny!",
     "@allPuzzlesCompleted": {},
     "back": "Zpět",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Nastavení hlasového asistenta",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurace modelu, jazyka a chování",
+    "@voiceAssistantSettingsDescription": {}
 }

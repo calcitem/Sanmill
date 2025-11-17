@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Բոլոր հանելուկները լուծված են!",
     "@allPuzzlesCompleted": {},
     "back": "Հետ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Ձայնային օգնականի կարգավորումներ",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Կարգավորել մոդելը, լեզուն և վարքագիծը",
+    "@voiceAssistantSettingsDescription": {}
 }

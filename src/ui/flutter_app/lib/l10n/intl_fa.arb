@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "تمام پازل‌ها تکمیل شدند!",
     "@allPuzzlesCompleted": {},
     "back": "بازگشت",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "تنظیمات دستیار صوتی",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "پیکربندی مدل، زبان و رفتار",
+    "@voiceAssistantSettingsDescription": {}
 }

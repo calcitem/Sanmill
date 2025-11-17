@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "ሁሉም እንቆቅልሾች ተጠናቀቁ!",
     "@allPuzzlesCompleted": {},
     "back": "ተመለስ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "የድምጽ ረዳት ቅንብሮች",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "ሞዴል፣ ቋንቋ እና ባህሪ ያዋቅሩ",
+    "@voiceAssistantSettingsDescription": {}
 }

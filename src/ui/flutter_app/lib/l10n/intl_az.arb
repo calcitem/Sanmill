@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Bütün tapmacalar tamamlandı!",
     "@allPuzzlesCompleted": {},
     "back": "Geri",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Səs Köməkçisi Parametrləri",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Model, dil və davranışı konfiqurasiya edin",
+    "@voiceAssistantSettingsDescription": {}
 }

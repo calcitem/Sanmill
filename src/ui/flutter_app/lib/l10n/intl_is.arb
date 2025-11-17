@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Öllum þrautum lokið!",
     "@allPuzzlesCompleted": {},
     "back": "Til baka",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Stillingar raddaðstoðar",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Stilla líkan, tungumál og hegðun",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Усе галаваломкі завершаны!",
     "@allPuzzlesCompleted": {},
     "back": "Назад",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Налады галасавога памочніка",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Наладзіць мадэль, мову і паводзіны",
+    "@voiceAssistantSettingsDescription": {}
 }

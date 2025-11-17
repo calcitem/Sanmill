@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Toate puzzle-urile finalizate!",
     "@allPuzzlesCompleted": {},
     "back": "Înapoi",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Setări asistent vocal",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Configurați modelul, limba și comportamentul",
+    "@voiceAssistantSettingsDescription": {}
 }

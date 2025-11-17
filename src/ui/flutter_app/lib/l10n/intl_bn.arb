@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "সমস্ত ধাঁধা সম্পন্ন!",
     "@allPuzzlesCompleted": {},
     "back": "ফিরে যান",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "ভয়েস সহায়ক সেটিংস",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "মডেল, ভাষা এবং আচরণ কনফিগার করুন",
+    "@voiceAssistantSettingsDescription": {}
 }

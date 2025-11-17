@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Të gjitha enigmat u përfunduan!",
     "@allPuzzlesCompleted": {},
     "back": "Prapa",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Cilësimet e asistentit zëror",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfiguroni modelin, gjuhën dhe sjelljen",
+    "@voiceAssistantSettingsDescription": {}
 }

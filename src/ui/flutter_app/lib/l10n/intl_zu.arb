@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Wonke amaphazili aphethiwe!",
     "@allPuzzlesCompleted": {},
     "back": "Emuva",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Izilungiselelo Zomsizi Wezwi",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Lungisa imodeli, ulimi nokuziphatha",
+    "@voiceAssistantSettingsDescription": {}
 }

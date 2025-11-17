@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Tüm bulmacalar tamamlandı!",
     "@allPuzzlesCompleted": {},
     "back": "Geri",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Sesli Asistan Ayarları",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Model, dil ve davranışı yapılandır",
+    "@voiceAssistantSettingsDescription": {}
 }

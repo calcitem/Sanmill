@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "すべてのパズルが完了しました！",
     "@allPuzzlesCompleted": {},
     "back": "戻る",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "音声アシスタント設定",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "モデル、言語、動作を設定",
+    "@voiceAssistantSettingsDescription": {}
 }

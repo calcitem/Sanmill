@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Tots els trencaclosques completats!",
     "@allPuzzlesCompleted": {},
     "back": "Enrere",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Configuració de l'assistent de veu",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Configura el model, l'idioma i el comportament",
+    "@voiceAssistantSettingsDescription": {}
 }

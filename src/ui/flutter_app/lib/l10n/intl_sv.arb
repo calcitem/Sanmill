@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Alla pussel slutförda!",
     "@allPuzzlesCompleted": {},
     "back": "Tillbaka",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Röstassistentinställningar",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurera modell, språk och beteende",
+    "@voiceAssistantSettingsDescription": {}
 }

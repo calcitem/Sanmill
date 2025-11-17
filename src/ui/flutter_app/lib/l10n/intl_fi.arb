@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Kaikki palapelit ratkaistu!",
     "@allPuzzlesCompleted": {},
     "back": "Takaisin",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Ääniassistentin asetukset",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Määritä malli, kieli ja toiminta",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "ល្បែងផ្គុំរូបភាពទាំងអស់បានបញ្ចប់!",
     "@allPuzzlesCompleted": {},
     "back": "ត្រឡប់ក្រោយ",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "ការកំណត់ជំនួយការសម្លេង",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "កំណត់រចនាសម្ព័ន្ធគំរូ ភាសា និងឥរិយាបថ",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Barcha jumboqlar yakunlandi!",
     "@allPuzzlesCompleted": {},
     "back": "Orqaga",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Ovozli yordamchi sozlamalari",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Model, til va xatti-harakatni sozlash",
+    "@voiceAssistantSettingsDescription": {}
 }

@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Sve zagonetke završene!",
     "@allPuzzlesCompleted": {},
     "back": "Nazad",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Postavke glasovnog asistenta",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigurirajte model, jezik i ponašanje",
+    "@voiceAssistantSettingsDescription": {}
 }

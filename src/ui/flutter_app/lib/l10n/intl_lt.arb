@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "Visi dėlionės užbaigti!",
     "@allPuzzlesCompleted": {},
     "back": "Atgal",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "Balso asistento nustatymai",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "Konfigūruoti modelį, kalbą ir elgseną",
+    "@voiceAssistantSettingsDescription": {}
 }

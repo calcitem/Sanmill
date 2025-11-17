@@ -2154,5 +2154,9 @@
     "allPuzzlesCompleted": "כל החידות הושלמו!",
     "@allPuzzlesCompleted": {},
     "back": "חזור",
-    "@back": {}
+    "@back": {},
+    "voiceAssistantSettings": "הגדרות עוזר קולי",
+    "@voiceAssistantSettings": {},
+    "voiceAssistantSettingsDescription": "הגדר מודל, שפה והתנהגות",
+    "@voiceAssistantSettingsDescription": {}
 }
