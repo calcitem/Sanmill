@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import '../../custom_drawer/custom_drawer.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
-import '../../shared/services/logger.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
@@ -44,7 +43,7 @@ class _VoiceAssistantSettingsPageState
       ),
       body: ValueListenableBuilder<Object>(
         valueListenable: DB().listenVoiceAssistantSettings,
-        builder: (BuildContext context, Object _, Widget? __) {
+        builder: (BuildContext context, Object _, Widget? _) {
           final VoiceAssistantSettings settings = DB().voiceAssistantSettings;
 
           return ListView(
@@ -63,16 +62,18 @@ class _VoiceAssistantSettingsPageState
                       titleString: loc.voiceAssistantShowButton,
                       value: settings.showVoiceButton,
                       onChanged: (bool value) {
-                        DB().voiceAssistantSettings =
-                            settings.copyWith(showVoiceButton: value);
+                        DB().voiceAssistantSettings = settings.copyWith(
+                          showVoiceButton: value,
+                        );
                       },
                     ),
                     SettingsListTile.switchTile(
                       titleString: loc.voiceAssistantContinuousListening,
                       value: settings.continuousListening,
                       onChanged: (bool value) {
-                        DB().voiceAssistantSettings =
-                            settings.copyWith(continuousListening: value);
+                        DB().voiceAssistantSettings = settings.copyWith(
+                          continuousListening: value,
+                        );
                       },
                     ),
                   ],
@@ -98,8 +99,9 @@ class _VoiceAssistantSettingsPageState
                       titleString: loc.voiceAssistantAutoDetectLanguage,
                       value: settings.autoDetectLanguage,
                       onChanged: (bool value) {
-                        DB().voiceAssistantSettings =
-                            settings.copyWith(autoDetectLanguage: value);
+                        DB().voiceAssistantSettings = settings.copyWith(
+                          autoDetectLanguage: value,
+                        );
                       },
                     ),
                   ],
@@ -183,9 +185,7 @@ class _VoiceAssistantSettingsPageState
       );
 
       if (!hasModel && mounted) {
-        SnackBarService.showRootSnackBar(
-          loc.voiceAssistantModelNotDownloaded,
-        );
+        SnackBarService.showRootSnackBar(loc.voiceAssistantModelNotDownloaded);
       }
     }
   }
@@ -237,9 +237,7 @@ class _VoiceAssistantSettingsPageState
       );
 
       if (mounted) {
-        SnackBarService.showRootSnackBar(
-          loc.voiceAssistantLanguageChanged,
-        );
+        SnackBarService.showRootSnackBar(loc.voiceAssistantLanguageChanged);
       }
     }
   }
@@ -251,13 +249,12 @@ class _VoiceAssistantSettingsPageState
       builder: (BuildContext context) => const _DownloadModelDialog(),
     );
 
-    if (confirmed == true && mounted) {
+    if (confirmed ?? false) {
       showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => _DownloadProgressDialog(
-          service: _service,
-        ),
+        builder: (BuildContext context) =>
+            _DownloadProgressDialog(service: _service),
       );
     }
   }
@@ -285,7 +282,7 @@ class _VoiceAssistantSettingsPageState
       },
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       final bool success = await _service.deleteModel();
       if (mounted) {
         SnackBarService.showRootSnackBar(

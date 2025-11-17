@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
@@ -60,22 +61,29 @@ class VoiceCommandProcessor {
     final S loc = S.of(context);
 
     // Check for move commands (e.g., "move a1 to b2", "place on a1")
-    final VoiceCommandResult? moveResult =
-        _processMoveCommand(normalizedText, loc);
+    final VoiceCommandResult? moveResult = _processMoveCommand(
+      normalizedText,
+      loc,
+    );
     if (moveResult != null) {
       return moveResult;
     }
 
     // Check for control commands
-    final VoiceCommandResult? controlResult =
-        _processControlCommand(normalizedText, loc, context);
+    final VoiceCommandResult? controlResult = _processControlCommand(
+      normalizedText,
+      loc,
+      context,
+    );
     if (controlResult != null) {
       return controlResult;
     }
 
     // Check for settings commands
-    final VoiceCommandResult? settingsResult =
-        _processSettingsCommand(normalizedText, loc);
+    final VoiceCommandResult? settingsResult = _processSettingsCommand(
+      normalizedText,
+      loc,
+    );
     if (settingsResult != null) {
       return settingsResult;
     }
@@ -172,7 +180,9 @@ class VoiceCommandProcessor {
   VoiceCommandResult? _processSettingsCommand(String text, S loc) {
     // Sound toggle
     if (text.contains('sound') || text.contains('音效')) {
-      if (text.contains('on') || text.contains('enable') || text.contains('开启')) {
+      if (text.contains('on') ||
+          text.contains('enable') ||
+          text.contains('开启')) {
         return _toggleSound(true, loc);
       } else if (text.contains('off') ||
           text.contains('disable') ||
@@ -187,7 +197,9 @@ class VoiceCommandProcessor {
     if (text.contains('vibration') ||
         text.contains('vibrate') ||
         text.contains('震动')) {
-      if (text.contains('on') || text.contains('enable') || text.contains('开启')) {
+      if (text.contains('on') ||
+          text.contains('enable') ||
+          text.contains('开启')) {
         return _toggleVibration(true, loc);
       } else if (text.contains('off') ||
           text.contains('disable') ||
@@ -225,7 +237,7 @@ class VoiceCommandProcessor {
 
     // Try to extract positions from spoken format: "a one", "b two", etc.
     final RegExp spokenPattern = RegExp(
-      r'\b([a-g])\s+(one|two|three|four|five|six|seven|1|2|3|4|5|6|7)\b'
+      r'\b([a-g])\s+(one|two|three|four|five|six|seven|1|2|3|4|5|6|7)\b',
     );
     final Iterable<Match> spokenMatches = spokenPattern.allMatches(text);
 
@@ -241,8 +253,13 @@ class VoiceCommandProcessor {
   /// Convert spoken number words to digits
   String _convertSpokenNumber(String spoken) {
     final Map<String, String> numberMap = <String, String>{
-      'one': '1', 'two': '2', 'three': '3', 'four': '4',
-      'five': '5', 'six': '6', 'seven': '7',
+      'one': '1',
+      'two': '2',
+      'three': '3',
+      'four': '4',
+      'five': '5',
+      'six': '6',
+      'seven': '7',
     };
 
     return numberMap[spoken.toLowerCase()] ?? spoken;
@@ -267,8 +284,11 @@ class VoiceCommandProcessor {
         data: <String, String>{'from': from, 'to': to},
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute move command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute move command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.move,
         success: false,
@@ -290,8 +310,11 @@ class VoiceCommandProcessor {
         data: <String, String>{'position': position},
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute place command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute place command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.move,
         success: false,
@@ -313,8 +336,11 @@ class VoiceCommandProcessor {
         data: <String, String>{'position': position},
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute remove command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute remove command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.move,
         success: false,
@@ -335,8 +361,11 @@ class VoiceCommandProcessor {
         message: loc.voiceCommandUndoSuccess,
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute undo command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute undo command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.undo,
         success: false,
@@ -357,8 +386,11 @@ class VoiceCommandProcessor {
         message: loc.voiceCommandRedoSuccess,
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute redo command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute redo command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.redo,
         success: false,
@@ -390,8 +422,11 @@ class VoiceCommandProcessor {
         message: loc.voiceCommandRestartSuccess,
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute restart command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute restart command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.restart,
         success: false,
@@ -412,8 +447,11 @@ class VoiceCommandProcessor {
         message: loc.voiceCommandAiMoveSuccess,
       );
     } catch (e, stackTrace) {
-      logger.e('Failed to execute AI move command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to execute AI move command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return VoiceCommandResult(
         type: VoiceCommandType.aiMove,
         success: false,
@@ -428,7 +466,9 @@ class VoiceCommandProcessor {
       final bool currentState = DB().generalSettings.toneEnabled;
       final bool newState = enable ?? !currentState;
 
-      DB().generalSettings = DB().generalSettings.copyWith(toneEnabled: newState);
+      DB().generalSettings = DB().generalSettings.copyWith(
+        toneEnabled: newState,
+      );
 
       return VoiceCommandResult(
         type: VoiceCommandType.settings,
@@ -451,14 +491,16 @@ class VoiceCommandProcessor {
       final bool currentState = DB().generalSettings.vibrationEnabled;
       final bool newState = enable ?? !currentState;
 
-      DB().generalSettings =
-          DB().generalSettings.copyWith(vibrationEnabled: newState);
+      DB().generalSettings = DB().generalSettings.copyWith(
+        vibrationEnabled: newState,
+      );
 
       return VoiceCommandResult(
         type: VoiceCommandType.settings,
         success: true,
-        message:
-            newState ? loc.voiceCommandVibrationOn : loc.voiceCommandVibrationOff,
+        message: newState
+            ? loc.voiceCommandVibrationOn
+            : loc.voiceCommandVibrationOff,
       );
     } catch (e, stackTrace) {
       logger.e('Failed to toggle vibration', error: e, stackTrace: stackTrace);
