@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/voice_assistant_settings.dart';
@@ -105,7 +106,8 @@ class VoiceAssistantService {
     }
 
     // Update settings
-    DB().voiceAssistantSettings = currentSettings.copyWith(enabled: true);
+    DB().voiceAssistantSettings =
+        DB().voiceAssistantSettings.copyWith(enabled: true);
 
     return true;
   }
@@ -238,27 +240,101 @@ class VoiceAssistantService {
   /// Show download confirmation dialog
   Future<bool?> _showDownloadDialog(BuildContext context) async {
     final VoiceAssistantSettings currentSettings = settings;
-    final String modelName = currentSettings.modelType.name;
+    final S loc = S.of(context);
+    final String localeLanguage = Localizations.localeOf(context).languageCode;
+    final List<Map<String, String>> languages = <Map<String, String>>[
+      <String, String>{'code': localeLanguage, 'name': localeLanguage},
+      <String, String>{'code': 'en', 'name': 'English'},
+      <String, String>{'code': 'zh', 'name': '中文'},
+      <String, String>{'code': 'de', 'name': 'Deutsch'},
+      <String, String>{'code': 'es', 'name': 'Español'},
+      <String, String>{'code': 'fr', 'name': 'Français'},
+      <String, String>{'code': 'ja', 'name': '日本語'},
+      <String, String>{'code': 'ko', 'name': '한국어'},
+      <String, String>{'code': 'ru', 'name': 'Русский'},
+    ];
+
+    final Set<String> seenCodes = <String>{};
+    final List<Map<String, String>> uniqueLanguages = languages
+        .where((Map<String, String> lang) => seenCodes.add(lang['code']!))
+        .toList();
+
+    String selectedLanguage = currentSettings.autoDetectLanguage
+        ? localeLanguage
+        : currentSettings.language;
+
+    if (!uniqueLanguages
+        .any((Map<String, String> lang) => lang['code'] == selectedLanguage)) {
+      uniqueLanguages.insert(
+        0,
+        <String, String>{
+          'code': selectedLanguage,
+          'name': selectedLanguage,
+        },
+      );
+    }
 
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Download Voice Model'),
-          content: Text(
-            'Voice assistant requires a language model to function. '
-            'Would you like to download the $modelName model?',
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Download'),
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (BuildContext context, void Function(void Function()) setState) {
+            final String modelName = currentSettings.modelType.name;
+            return AlertDialog(
+              title: Text(loc.voiceAssistantDownloadModel),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text('${loc.voiceAssistantDownloadModelMessage}\n'),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('${loc.model}: $modelName'),
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(loc.voiceAssistantSelectLanguage),
+                    subtitle: DropdownButton<String>(
+                      value: selectedLanguage,
+                      isExpanded: true,
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          setState(() {
+                            selectedLanguage = value;
+                          });
+                        }
+                      },
+                      items: uniqueLanguages
+                          .map(
+                            (Map<String, String> lang) => DropdownMenuItem<String>(
+                              value: lang['code'],
+                              child: Text('${lang['name']} (${lang['code']})'),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(loc.cancel),
+                ),
+                TextButton(
+                  onPressed: () {
+                    DB().voiceAssistantSettings =
+                        DB().voiceAssistantSettings.copyWith(
+                      language: selectedLanguage,
+                      modelDownloaded: false,
+                      modelPath: '',
+                    );
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text(loc.download),
+                ),
+              ],
+            );
+          },
         );
       },
     );
