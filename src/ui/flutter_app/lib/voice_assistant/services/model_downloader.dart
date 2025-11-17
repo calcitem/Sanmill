@@ -76,38 +76,40 @@ class ModelDownloader {
     _isDownloading = true;
     int retryCount = 0;
 
-    while (retryCount < maxRetries) {
-      try {
-        final String? result = await _attemptDownload(modelType, language);
-        if (result != null) {
-          return result;
-        }
-        // If result is null but no exception, it's a server error, retry
-        retryCount++;
-        if (retryCount < maxRetries) {
-          final int delaySeconds = retryCount * 2; // Exponential backoff: 2s, 4s, 6s
-          downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
-          logger.w('Download failed, retrying in $delaySeconds seconds (attempt ${retryCount + 1}/$maxRetries)');
-          await Future<void>.delayed(Duration(seconds: delaySeconds));
-        }
-      } catch (e, stackTrace) {
-        logger.e('Download attempt ${retryCount + 1} failed', error: e, stackTrace: stackTrace);
-        retryCount++;
-        if (retryCount < maxRetries) {
-          final int delaySeconds = retryCount * 2;
-          downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
-          await Future<void>.delayed(Duration(seconds: delaySeconds));
-        } else {
-          downloadStatus.value = 'Download failed after $maxRetries attempts: $e';
-          _isDownloading = false;
-          return null;
+    try {
+      while (retryCount < maxRetries) {
+        try {
+          final String? result = await _attemptDownload(modelType, language);
+          if (result != null) {
+            return result;
+          }
+          // If result is null but no exception, it's a server error, retry
+          retryCount++;
+          if (retryCount < maxRetries) {
+            final int delaySeconds = retryCount * 2; // Exponential backoff: 2s, 4s, 6s
+            downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
+            logger.w('Download failed, retrying in $delaySeconds seconds (attempt ${retryCount + 1}/$maxRetries)');
+            await Future<void>.delayed(Duration(seconds: delaySeconds));
+          }
+        } catch (e, stackTrace) {
+          logger.e('Download attempt ${retryCount + 1} failed', error: e, stackTrace: stackTrace);
+          retryCount++;
+          if (retryCount < maxRetries) {
+            final int delaySeconds = retryCount * 2;
+            downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
+            await Future<void>.delayed(Duration(seconds: delaySeconds));
+          } else {
+            downloadStatus.value = 'Download failed after $maxRetries attempts: $e';
+            return null;
+          }
         }
       }
-    }
 
-    _isDownloading = false;
-    downloadStatus.value = 'Download failed after $maxRetries attempts';
-    return null;
+      downloadStatus.value = 'Download failed after $maxRetries attempts';
+      return null;
+    } finally {
+      _isDownloading = false;
+    }
   }
 
   /// Internal method to attempt a single download
@@ -126,6 +128,8 @@ class ModelDownloader {
     logger.i('Saving to: $modelPath');
 
     final http.Client client = http.Client();
+    IOSink? sink;
+    bool completed = false;
     try {
       final http.Request request = http.Request('GET', Uri.parse(downloadUrl));
       final http.StreamedResponse response = await client.send(request);
@@ -140,11 +144,11 @@ class ModelDownloader {
         logger.w('Content-Length not provided by server');
       }
 
-      final List<int> bytes = <int>[];
+      sink = modelFile.openWrite();
       int downloadedBytes = 0;
 
       await for (final List<int> chunk in response.stream) {
-        bytes.addAll(chunk);
+        sink.add(chunk);
         downloadedBytes += chunk.length;
 
         if (contentLength != null) {
@@ -156,7 +160,10 @@ class ModelDownloader {
       }
 
       downloadStatus.value = 'Writing file...';
-      await modelFile.writeAsBytes(bytes);
+      await sink.flush();
+      await sink.close();
+      sink = null;
+      completed = true;
 
       downloadProgress.value = 1.0;
       downloadStatus.value = 'Download complete';
@@ -165,6 +172,12 @@ class ModelDownloader {
       return modelPath;
     } finally {
       client.close();
+      if (sink != null) {
+        await sink.close();
+      }
+      if (!completed && await modelFile.exists()) {
+        await modelFile.delete();
+      }
     }
   }
 
