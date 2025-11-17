@@ -38,8 +38,8 @@ class ModelDownloader {
     final String modelsPath = '${appDir.path}/whisper_models';
     final Directory modelsDir = Directory(modelsPath);
 
-    if (!await modelsDir.exists()) {
-      await modelsDir.create(recursive: true);
+    if (!modelsDir.existsSync()) {
+      modelsDir.createSync(recursive: true);
     }
 
     return modelsPath;
@@ -56,7 +56,7 @@ class ModelDownloader {
   Future<bool> isModelDownloaded(WhisperModelType modelType, String language) async {
     final String modelPath = await getModelPath(modelType, language);
     final File modelFile = File(modelPath);
-    return modelFile.exists();
+    return modelFile.existsSync();
   }
 
   /// Download a Whisper model with retry support
@@ -175,8 +175,8 @@ class ModelDownloader {
       if (sink != null) {
         await sink.close();
       }
-      if (!completed && await modelFile.exists()) {
-        await modelFile.delete();
+      if (!completed && modelFile.existsSync()) {
+        modelFile.deleteSync();
       }
     }
   }
@@ -187,8 +187,8 @@ class ModelDownloader {
       final String modelPath = await getModelPath(modelType, language);
       final File modelFile = File(modelPath);
 
-      if (await modelFile.exists()) {
-        await modelFile.delete();
+      if (modelFile.existsSync()) {
+        modelFile.deleteSync();
         logger.i('Model deleted: $modelPath');
         return true;
       }
@@ -206,8 +206,8 @@ class ModelDownloader {
       final String modelPath = await getModelPath(modelType, language);
       final File modelFile = File(modelPath);
 
-      if (await modelFile.exists()) {
-        return await modelFile.length();
+      if (modelFile.existsSync()) {
+        return modelFile.lengthSync();
       }
 
       return null;

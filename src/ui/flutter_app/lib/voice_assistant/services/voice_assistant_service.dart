@@ -93,6 +93,7 @@ class VoiceAssistantService {
       }
 
       // Download model
+      // ignore: use_build_context_synchronously
       final bool downloadSuccess = await downloadModel(context);
       if (!downloadSuccess) {
         return false;
@@ -219,6 +220,7 @@ class VoiceAssistantService {
       }
 
       // Process command
+      // ignore: use_build_context_synchronously
       final VoiceCommandResult result =
           await _commandProcessor.processCommand(recognizedText, context);
 
