@@ -68,7 +68,7 @@ class VoiceCommandProcessor {
 
     // Check for control commands
     final VoiceCommandResult? controlResult =
-        _processControlCommand(normalizedText, loc);
+        _processControlCommand(normalizedText, loc, context);
     if (controlResult != null) {
       return controlResult;
     }
@@ -129,20 +129,24 @@ class VoiceCommandProcessor {
   }
 
   /// Process control commands (undo, redo, restart, etc.)
-  VoiceCommandResult? _processControlCommand(String text, S loc) {
+  VoiceCommandResult? _processControlCommand(
+    String text,
+    S loc,
+    BuildContext context,
+  ) {
     // Undo command
     if (text.contains('undo') ||
         text.contains('back') ||
         text.contains('取消') ||
         text.contains('撤销')) {
-      return _executeUndoCommand(loc);
+      return _executeUndoCommand(loc, context);
     }
 
     // Redo command
     if (text.contains('redo') ||
         text.contains('forward') ||
         text.contains('重做')) {
-      return _executeRedoCommand(loc);
+      return _executeRedoCommand(loc, context);
     }
 
     // Restart command
@@ -150,7 +154,7 @@ class VoiceCommandProcessor {
         text.contains('new game') ||
         text.contains('重新开始') ||
         text.contains('新游戏')) {
-      return _executeRestartCommand(loc);
+      return _executeRestartCommand(loc, context);
     }
 
     // AI move command
@@ -158,7 +162,7 @@ class VoiceCommandProcessor {
         text.contains('computer move') ||
         text.contains('ai走') ||
         text.contains('电脑走')) {
-      return _executeAiMoveCommand(loc);
+      return _executeAiMoveCommand(loc, context);
     }
 
     return null;
@@ -320,10 +324,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute undo command
-  VoiceCommandResult _executeUndoCommand(S loc) {
+  VoiceCommandResult _executeUndoCommand(S loc, BuildContext context) {
     try {
-      final GameController controller = GameController();
-      controller.undo();
+      // Use HistoryNavigator to undo the last move
+      HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
 
       return VoiceCommandResult(
         type: VoiceCommandType.undo,
@@ -342,10 +346,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute redo command
-  VoiceCommandResult _executeRedoCommand(S loc) {
+  VoiceCommandResult _executeRedoCommand(S loc, BuildContext context) {
     try {
-      final GameController controller = GameController();
-      controller.redo();
+      // Use HistoryNavigator to redo the last move
+      HistoryNavigator.doEachMove(HistoryNavMode.stepForward, 1);
 
       return VoiceCommandResult(
         type: VoiceCommandType.redo,
@@ -364,10 +368,21 @@ class VoiceCommandProcessor {
   }
 
   /// Execute restart command
-  VoiceCommandResult _executeRestartCommand(S loc) {
+  VoiceCommandResult _executeRestartCommand(S loc, BuildContext context) {
     try {
       final GameController controller = GameController();
-      controller.restart();
+
+      // Reset the game (similar to showRestartGameAlertDialog)
+      if (controller.isEngineRunning == false) {
+        controller.reset(force: true);
+        controller.headerTipNotifier.showTip(loc.gameStarted);
+        controller.headerIconsNotifier.showIcons();
+
+        // If AI should move first, trigger engine
+        if (controller.gameInstance.isAiSideToMove) {
+          controller.engineToGo(context, isMoveNow: false);
+        }
+      }
 
       return VoiceCommandResult(
         type: VoiceCommandType.restart,
@@ -386,10 +401,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute AI move command
-  VoiceCommandResult _executeAiMoveCommand(S loc) {
+  VoiceCommandResult _executeAiMoveCommand(S loc, BuildContext context) {
     try {
       final GameController controller = GameController();
-      controller.engineToGo();
+      controller.engineToGo(context, isMoveNow: false);
 
       return VoiceCommandResult(
         type: VoiceCommandType.aiMove,

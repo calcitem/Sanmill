@@ -53,13 +53,13 @@ class _VoiceAssistantSettingsPageState
               SettingsCard(
                 title: Text(loc.voiceAssistantGeneral),
                 children: <Widget>[
-                  SettingsSwitchListTile(
+                  SettingsListTile.switchTile(
                     titleString: loc.voiceAssistantEnabled,
                     value: settings.enabled,
                     onChanged: (bool value) => _toggleVoiceAssistant(value),
                   ),
                   if (settings.enabled) ...<Widget>[
-                    SettingsSwitchListTile(
+                    SettingsListTile.switchTile(
                       titleString: loc.voiceAssistantShowButton,
                       value: settings.showVoiceButton,
                       onChanged: (bool value) {
@@ -67,7 +67,7 @@ class _VoiceAssistantSettingsPageState
                             settings.copyWith(showVoiceButton: value);
                       },
                     ),
-                    SettingsSwitchListTile(
+                    SettingsListTile.switchTile(
                       titleString: loc.voiceAssistantContinuousListening,
                       value: settings.continuousListening,
                       onChanged: (bool value) {
@@ -94,7 +94,7 @@ class _VoiceAssistantSettingsPageState
                       subtitleString: settings.language,
                       onTap: () => _showLanguageDialog(),
                     ),
-                    SettingsSwitchListTile(
+                    SettingsListTile.switchTile(
                       titleString: loc.voiceAssistantAutoDetectLanguage,
                       value: settings.autoDetectLanguage,
                       onChanged: (bool value) {
@@ -115,20 +115,15 @@ class _VoiceAssistantSettingsPageState
                       subtitleString: settings.modelDownloaded
                           ? loc.voiceAssistantModelDownloaded
                           : loc.voiceAssistantModelNotDownloaded,
-                      trailing: settings.modelDownloaded
-                          ? const Icon(Icons.check_circle, color: Colors.green)
-                          : const Icon(Icons.download),
                       onTap: () => _downloadModel(),
                     ),
                     if (settings.modelDownloaded)
                       SettingsListTile(
                         titleString: loc.voiceAssistantDeleteModel,
-                        trailing: const Icon(Icons.delete, color: Colors.red),
                         onTap: () => _deleteModel(),
                       ),
                     SettingsListTile(
                       titleString: loc.voiceAssistantModelInfo,
-                      trailing: const Icon(Icons.info_outline),
                       onTap: () => _showModelInfo(),
                     ),
                   ],
@@ -146,8 +141,7 @@ class _VoiceAssistantSettingsPageState
       // Enable voice assistant
       final bool success = await _service.enable(context);
       if (!success && mounted) {
-        SnackBarService.showMessage(
-          context,
+        SnackBarService.showRootSnackBar(
           S.of(context).voiceAssistantEnableFailed,
         );
       }
@@ -189,8 +183,7 @@ class _VoiceAssistantSettingsPageState
       );
 
       if (!hasModel && mounted) {
-        SnackBarService.showMessage(
-          context,
+        SnackBarService.showRootSnackBar(
           loc.voiceAssistantModelNotDownloaded,
         );
       }
@@ -244,8 +237,7 @@ class _VoiceAssistantSettingsPageState
       );
 
       if (mounted) {
-        SnackBarService.showMessage(
-          context,
+        SnackBarService.showRootSnackBar(
           loc.voiceAssistantLanguageChanged,
         );
       }
@@ -296,8 +288,7 @@ class _VoiceAssistantSettingsPageState
     if (confirmed == true) {
       final bool success = await _service.deleteModel();
       if (mounted) {
-        SnackBarService.showMessage(
-          context,
+        SnackBarService.showRootSnackBar(
           success
               ? loc.voiceAssistantModelDeleted
               : loc.voiceAssistantDeleteFailed,

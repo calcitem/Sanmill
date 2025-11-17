@@ -82,7 +82,7 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
     final S loc = S.of(context);
 
     // Show listening snackbar
-    SnackBarService.showMessage(context, loc.voiceAssistantListening);
+    SnackBarService.showRootSnackBar(loc.voiceAssistantListening);
 
     try {
       // Start listening
@@ -93,23 +93,20 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
           // Show result message
           final String message =
               result.message ?? _getDefaultMessage(result.type, result.success, loc);
-          SnackBarService.showMessage(
-            context,
+          SnackBarService.showRootSnackBar(
             message,
             duration: const Duration(seconds: 2),
           );
         } else {
           // No result
-          SnackBarService.showMessage(
-            context,
+          SnackBarService.showRootSnackBar(
             loc.voiceAssistantNoSpeechDetected,
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        SnackBarService.showMessage(
-          context,
+        SnackBarService.showRootSnackBar(
           loc.voiceAssistantError,
         );
       }
@@ -196,11 +193,11 @@ class _VoiceAssistantIconButtonState extends State<VoiceAssistantIconButton> {
 
       if (mounted && result != null) {
         final String message = result.message ?? loc.voiceCommandSuccess;
-        SnackBarService.showMessage(context, message);
+        SnackBarService.showRootSnackBar(message);
       }
     } catch (e) {
       if (mounted) {
-        SnackBarService.showMessage(context, loc.voiceAssistantError);
+        SnackBarService.showRootSnackBar(loc.voiceAssistantError);
       }
     } finally {
       if (mounted) {
