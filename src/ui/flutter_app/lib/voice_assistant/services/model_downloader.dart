@@ -269,4 +269,69 @@ class ModelDownloader {
       return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
     }
   }
+
+  /// Check and clean up incomplete downloads on app startup
+  ///
+  /// This method checks if there are incomplete downloads from previous sessions
+  /// and removes them. A download is considered incomplete if:
+  /// 1. downloadProgress is between 0.0 and 1.0 (indicating download was in progress)
+  /// 2. The model file exists but modelDownloaded is false
+  ///
+  /// Returns true if incomplete downloads were found and cleaned up
+  Future<bool> checkAndCleanIncompleteDownloads() async {
+    try {
+      final VoiceAssistantSettings currentSettings =
+          DB().voiceAssistantSettings;
+
+      // Check if there was a download in progress (progress between 0.0 and 1.0)
+      final bool wasDownloading =
+          currentSettings.downloadProgress >= 0.0 &&
+          currentSettings.downloadProgress < 1.0;
+
+      // Check if model is marked as not downloaded but file exists
+      final String modelPath = await getModelPath(
+        currentSettings.modelType,
+        currentSettings.language,
+      );
+      final File modelFile = File(modelPath);
+      final bool hasIncompleteFile =
+          modelFile.existsSync() && !currentSettings.modelDownloaded;
+
+      if (wasDownloading || hasIncompleteFile) {
+        logger.i(
+          'Detected incomplete download from previous session, cleaning up...',
+        );
+
+        // Delete the incomplete file if it exists
+        if (modelFile.existsSync()) {
+          modelFile.deleteSync();
+          logger.i('Deleted incomplete model file: $modelPath');
+        }
+
+        // Reset download progress and model downloaded status
+        DB().voiceAssistantSettings = currentSettings.copyWith(
+          downloadProgress: -1.0,
+          modelDownloaded: false,
+          modelPath: '',
+          enabled: false, // Ensure switch is off for incomplete downloads
+        );
+
+        // Reset in-memory progress notifier
+        downloadProgress.value = -1.0;
+        downloadStatus.value = '';
+
+        logger.i('Incomplete download cleaned up successfully');
+        return true;
+      }
+
+      return false;
+    } catch (e, stackTrace) {
+      logger.e(
+        'Failed to check/clean incomplete downloads',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      return false;
+    }
+  }
 }
