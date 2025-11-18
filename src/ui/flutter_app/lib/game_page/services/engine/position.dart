@@ -900,7 +900,6 @@ class Position {
       case MoveType.draw:
         return false; // TODO
       case MoveType.none:
-        // ignore: only_throw_errors
         throw const EngineNoBestMove();
     }
 

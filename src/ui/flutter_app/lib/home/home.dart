@@ -97,8 +97,7 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.howToPlay:
         return const HowToPlayScreen();
       case _DrawerIndex.feedback:
-        // ignore: only_throw_errors
-        throw ErrorDescription(
+        throw StateError(
           "Feedback screen is not a widget and should be called separately",
         );
       case _DrawerIndex.about:

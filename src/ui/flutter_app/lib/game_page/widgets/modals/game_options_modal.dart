@@ -18,7 +18,6 @@ import '../../services/mill.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
 
-// ignore: unused_element
 class GameOptionsModal extends StatelessWidget {
   const GameOptionsModal({super.key, required this.onTriggerScreenshot});
 

@@ -726,7 +726,9 @@ Future<int> _captureSetupPositionViaNavigation(
 
     // 2. Find and Tap the "Setup Position" Drawer Item's InkWell
     final BuildContext context = tester.element(find.byType(MaterialApp));
-    // ignore: use_build_context_synchronously
+    if (!context.mounted) {
+      throw StateError('Context is no longer mounted');
+    }
     final String setupPositionText = S.of(context).setupPosition;
     debugPrint('Looking for drawer item text: "$setupPositionText"');
     final Finder textFinder = find.text(setupPositionText);
