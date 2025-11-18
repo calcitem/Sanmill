@@ -249,7 +249,10 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   // Enable or disable voice assistant
-  Future<void> _setVoiceAssistantEnabled(bool value) async {
+  Future<void> _setVoiceAssistantEnabled(
+    BuildContext context,
+    bool value,
+  ) async {
     if (value) {
       // When enabling, use the service to properly initialize
       final bool success = await VoiceAssistantService().enable(context);
@@ -620,7 +623,7 @@ class GeneralSettingsPage extends StatelessWidget {
                 ),
                 value: voiceAssistantSettings.enabled,
                 onChanged: (bool val) {
-                  _setVoiceAssistantEnabled(val);
+                  _setVoiceAssistantEnabled(context, val);
                 },
                 titleString: S.of(context).voiceAssistantEnabled,
                 subtitleString: S.of(context).voiceAssistantEnabledDescription,
@@ -632,7 +635,9 @@ class GeneralSettingsPage extends StatelessWidget {
                     'general_settings_page_settings_card_accessibility_voice_assistant_settings',
                   ),
                   titleString: S.of(context).voiceAssistantSettings,
-                  subtitleString: S.of(context).voiceAssistantSettingsDescription,
+                  subtitleString: S
+                      .of(context)
+                      .voiceAssistantSettingsDescription,
                   onTap: () {
                     Navigator.push(
                       context,
