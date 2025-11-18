@@ -533,13 +533,14 @@ class _RushStatsBar extends StatelessWidget {
           // Timer - rebuilds only when timer notifier changes
           ValueListenableBuilder<int>(
             valueListenable: remainingSecondsNotifier,
-            builder: (BuildContext context, int remainingSeconds, Widget? child) {
-              return _buildStatItem(
-                _formatTime(remainingSeconds),
-                FluentIcons.timer_24_regular,
-                Colors.red,
-              );
-            },
+            builder:
+                (BuildContext context, int remainingSeconds, Widget? child) {
+                  return _buildStatItem(
+                    _formatTime(remainingSeconds),
+                    FluentIcons.timer_24_regular,
+                    Colors.red,
+                  );
+                },
           ),
           // Solved count - rebuilds only when solved count changes
           ValueListenableBuilder<int>(

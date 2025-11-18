@@ -71,8 +71,11 @@ class VoiceAssistantService {
 
       return success;
     } catch (e, stackTrace) {
-      logger.e('Failed to initialize voice assistant',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to initialize voice assistant',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return false;
     }
   }
@@ -105,8 +108,10 @@ class VoiceAssistantService {
       if (!context.mounted) {
         return false;
       }
-      final bool? shouldRedownload = await _showRedownloadConfirmDialog(context);
-      if (shouldRedownload == true) {
+      final bool? shouldRedownload = await _showRedownloadConfirmDialog(
+        context,
+      );
+      if (shouldRedownload ?? false) {
         // User wants to re-download, delete old model first
         await deleteModel();
 
@@ -127,8 +132,9 @@ class VoiceAssistantService {
     }
 
     // Update settings
-    DB().voiceAssistantSettings =
-        DB().voiceAssistantSettings.copyWith(enabled: true);
+    DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+      enabled: true,
+    );
 
     return true;
   }
@@ -243,15 +249,19 @@ class VoiceAssistantService {
       if (!context.mounted) {
         return null;
       }
-      final VoiceCommandResult result =
-          await _commandProcessor.processCommand(recognizedText, context);
+      final VoiceCommandResult result = await _commandProcessor.processCommand(
+        recognizedText,
+        context,
+      );
 
-      logger.i(
-          'Command processed: ${result.type}, success: ${result.success}');
+      logger.i('Command processed: ${result.type}, success: ${result.success}');
       return result;
     } catch (e, stackTrace) {
-      logger.e('Failed to process voice command',
-          error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to process voice command',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }
@@ -312,78 +322,81 @@ class VoiceAssistantService {
         ? localeLanguage
         : currentSettings.language;
 
-    if (!uniqueLanguages
-        .any((Map<String, String> lang) => lang['code'] == selectedLanguage)) {
-      uniqueLanguages.insert(
-        0,
-        <String, String>{
-          'code': selectedLanguage,
-          'name': selectedLanguage,
-        },
-      );
+    if (!uniqueLanguages.any(
+      (Map<String, String> lang) => lang['code'] == selectedLanguage,
+    )) {
+      uniqueLanguages.insert(0, <String, String>{
+        'code': selectedLanguage,
+        'name': selectedLanguage,
+      });
     }
 
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
-            final String modelName = currentSettings.modelType.name;
-            return AlertDialog(
-              title: Text(loc.voiceAssistantDownloadModel),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('${loc.voiceAssistantDownloadModelMessage}\n'),
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text('${loc.model}: $modelName'),
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+                final String modelName = currentSettings.modelType.name;
+                return AlertDialog(
+                  title: Text(loc.voiceAssistantDownloadModel),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text('${loc.voiceAssistantDownloadModelMessage}\n'),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text('${loc.model}: $modelName'),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(loc.voiceAssistantSelectLanguage),
+                        subtitle: DropdownButton<String>(
+                          value: selectedLanguage,
+                          isExpanded: true,
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              setState(() {
+                                selectedLanguage = value;
+                              });
+                            }
+                          },
+                          items: uniqueLanguages
+                              .map(
+                                (Map<String, String> lang) =>
+                                    DropdownMenuItem<String>(
+                                      value: lang['code'],
+                                      child: Text(
+                                        '${lang['name']} (${lang['code']})',
+                                      ),
+                                    ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ],
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(loc.voiceAssistantSelectLanguage),
-                    subtitle: DropdownButton<String>(
-                      value: selectedLanguage,
-                      isExpanded: true,
-                      onChanged: (String? value) {
-                        if (value != null) {
-                          setState(() {
-                            selectedLanguage = value;
-                          });
-                        }
-                      },
-                      items: uniqueLanguages
-                          .map(
-                            (Map<String, String> lang) => DropdownMenuItem<String>(
-                              value: lang['code'],
-                              child: Text('${lang['name']} (${lang['code']})'),
-                            ),
-                          )
-                          .toList(),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text(loc.cancel),
                     ),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(loc.cancel),
-                ),
-                TextButton(
-                  onPressed: () {
-                    DB().voiceAssistantSettings =
-                        DB().voiceAssistantSettings.copyWith(
-                      language: selectedLanguage,
-                      modelDownloaded: false,
-                      modelPath: '',
-                    );
-                    Navigator.of(context).pop(true);
-                  },
-                  child: Text(loc.download),
-                ),
-              ],
-            );
-          },
+                    TextButton(
+                      onPressed: () {
+                        DB().voiceAssistantSettings = DB()
+                            .voiceAssistantSettings
+                            .copyWith(
+                              language: selectedLanguage,
+                              modelDownloaded: false,
+                              modelPath: '',
+                            );
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text(loc.download),
+                    ),
+                  ],
+                );
+              },
         );
       },
     );

@@ -412,9 +412,9 @@ class Database {
 
   /// Listens to changes inside the VoiceAssistantSettings Box
   ValueListenable<Box<VoiceAssistantSettings>>
-      get listenVoiceAssistantSettings => _voiceAssistantSettingsBox.listenable(
-            keys: <String>[voiceAssistantSettingsKey],
-          );
+  get listenVoiceAssistantSettings => _voiceAssistantSettingsBox.listenable(
+    keys: <String>[voiceAssistantSettingsKey],
+  );
 
   /// Saves the given [settings] to the VoiceAssistantSettings Box
   set voiceAssistantSettings(VoiceAssistantSettings settings) =>

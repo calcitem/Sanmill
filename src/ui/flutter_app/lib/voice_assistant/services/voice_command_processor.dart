@@ -349,7 +349,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute undo command
-  Future<VoiceCommandResult> _executeUndoCommand(S loc, BuildContext context) async {
+  Future<VoiceCommandResult> _executeUndoCommand(
+    S loc,
+    BuildContext context,
+  ) async {
     try {
       // Use HistoryNavigator to undo the last move
       await HistoryNavigator.takeBack(context, pop: false);
@@ -374,7 +377,10 @@ class VoiceCommandProcessor {
   }
 
   /// Execute redo command
-  Future<VoiceCommandResult> _executeRedoCommand(S loc, BuildContext context) async {
+  Future<VoiceCommandResult> _executeRedoCommand(
+    S loc,
+    BuildContext context,
+  ) async {
     try {
       // Use HistoryNavigator to redo the last move
       await HistoryNavigator.stepForward(context, pop: false);

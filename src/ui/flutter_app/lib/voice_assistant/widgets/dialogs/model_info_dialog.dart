@@ -34,10 +34,7 @@ class _ModelInfoDialog extends StatelessWidget {
                   settings.modelType.name,
                 ),
                 const SizedBox(height: 8),
-                _buildInfoRow(
-                  loc.language,
-                  settings.language,
-                ),
+                _buildInfoRow(loc.language, settings.language),
                 const SizedBox(height: 8),
                 _buildInfoRow(
                   loc.status,
@@ -73,17 +70,9 @@ class _ModelInfoDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         if (label.isNotEmpty) ...<Widget>[
-          Text(
-            '$label: ',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
-        Expanded(
-          child: Text(
-            value,
-            style: const TextStyle(fontSize: 14),
-          ),
-        ),
+        Expanded(child: Text(value, style: const TextStyle(fontSize: 14))),
       ],
     );
   }

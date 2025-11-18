@@ -106,7 +106,9 @@ class Engine {
     if (isThinking is bool) {
       return isThinking;
     } else {
-      throw StateError("Invalid platform response. Expected a value of type bool");
+      throw StateError(
+        "Invalid platform response. Expected a value of type bool",
+      );
     }
   }
 

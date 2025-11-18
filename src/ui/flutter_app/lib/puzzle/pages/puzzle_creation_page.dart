@@ -578,22 +578,19 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             children: <Widget>[
               Text(
                 S.of(context).puzzleSolutionRecordingHelpContent,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
               ),
               const SizedBox(height: 12),
               _buildInstructionStep('1', S.of(context).puzzleSolutionStep1),
-              _buildInstructionStep(
-                '2',
-                S.of(context).puzzleSolutionStep2,
-              ),
+              _buildInstructionStep('2', S.of(context).puzzleSolutionStep2),
               _buildInstructionStep(
                 '3',
                 S.of(context).puzzleRecordingHintUseButton,
               ),
-              _buildInstructionStep(
-                '4',
-                S.of(context).puzzleSolutionStep4,
-              ),
+              _buildInstructionStep('4', S.of(context).puzzleSolutionStep4),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(8),

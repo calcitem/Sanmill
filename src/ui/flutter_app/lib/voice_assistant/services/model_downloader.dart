@@ -47,14 +47,20 @@ class ModelDownloader {
   }
 
   /// Get the full path for a model file
-  Future<String> getModelPath(WhisperModelType modelType, String language) async {
+  Future<String> getModelPath(
+    WhisperModelType modelType,
+    String language,
+  ) async {
     final String modelsDir = await getModelsDirectory();
     final String fileName = modelType.fileName;
     return '$modelsDir/$language-$fileName';
   }
 
   /// Check if a model file exists
-  Future<bool> isModelDownloaded(WhisperModelType modelType, String language) async {
+  Future<bool> isModelDownloaded(
+    WhisperModelType modelType,
+    String language,
+  ) async {
     final String modelPath = await getModelPath(modelType, language);
     final File modelFile = File(modelPath);
     return modelFile.existsSync();
@@ -87,20 +93,30 @@ class ModelDownloader {
           // If result is null but no exception, it's a server error, retry
           retryCount++;
           if (retryCount < maxRetries) {
-            final int delaySeconds = retryCount * 2; // Exponential backoff: 2s, 4s, 6s
-            downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
-            logger.w('Download failed, retrying in $delaySeconds seconds (attempt ${retryCount + 1}/$maxRetries)');
+            final int delaySeconds =
+                retryCount * 2; // Exponential backoff: 2s, 4s, 6s
+            downloadStatus.value =
+                'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
+            logger.w(
+              'Download failed, retrying in $delaySeconds seconds (attempt ${retryCount + 1}/$maxRetries)',
+            );
             await Future<void>.delayed(Duration(seconds: delaySeconds));
           }
         } catch (e, stackTrace) {
-          logger.e('Download attempt ${retryCount + 1} failed', error: e, stackTrace: stackTrace);
+          logger.e(
+            'Download attempt ${retryCount + 1} failed',
+            error: e,
+            stackTrace: stackTrace,
+          );
           retryCount++;
           if (retryCount < maxRetries) {
             final int delaySeconds = retryCount * 2;
-            downloadStatus.value = 'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
+            downloadStatus.value =
+                'Retrying in $delaySeconds seconds... (${retryCount + 1}/$maxRetries)';
             await Future<void>.delayed(Duration(seconds: delaySeconds));
           } else {
-            downloadStatus.value = 'Download failed after $maxRetries attempts: $e';
+            downloadStatus.value =
+                'Download failed after $maxRetries attempts: $e';
             return null;
           }
         }
@@ -156,9 +172,12 @@ class ModelDownloader {
         if (contentLength != null) {
           final double progress = downloadedBytes / contentLength;
           downloadProgress.value = progress;
-          downloadStatus.value = 'Downloading: ${(progress * 100).toStringAsFixed(1)}%';
+          downloadStatus.value =
+              'Downloading: ${(progress * 100).toStringAsFixed(1)}%';
           _updateDatabaseProgress(progress);
-          logger.i('Download progress: ${(progress * 100).toStringAsFixed(1)}%');
+          logger.i(
+            'Download progress: ${(progress * 100).toStringAsFixed(1)}%',
+          );
         }
       }
 
@@ -192,7 +211,8 @@ class ModelDownloader {
   /// Update download progress in database for persistence
   void _updateDatabaseProgress(double progress) {
     try {
-      final VoiceAssistantSettings currentSettings = DB().voiceAssistantSettings;
+      final VoiceAssistantSettings currentSettings =
+          DB().voiceAssistantSettings;
       DB().voiceAssistantSettings = currentSettings.copyWith(
         downloadProgress: progress,
       );

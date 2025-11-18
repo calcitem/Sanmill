@@ -47,9 +47,7 @@ class VoiceCommandsHelpPage extends StatelessWidget {
           _buildCommandCard(
             context,
             title: loc.voiceCommandsRedo,
-            examples: isEnglish
-                ? <String>['redo', 'forward']
-                : <String>['重做'],
+            examples: isEnglish ? <String>['redo', 'forward'] : <String>['重做'],
             description: loc.voiceCommandsRedoDesc,
           ),
           _buildCommandCard(
@@ -128,11 +126,7 @@ class VoiceCommandsHelpPage extends StatelessWidget {
             icon: Icons.volume_up,
             tip: loc.voiceCommandsTip1,
           ),
-          _buildTipCard(
-            context,
-            icon: Icons.mic,
-            tip: loc.voiceCommandsTip2,
-          ),
+          _buildTipCard(context, icon: Icons.mic, tip: loc.voiceCommandsTip2),
           _buildTipCard(
             context,
             icon: Icons.language,
@@ -148,10 +142,7 @@ class VoiceCommandsHelpPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -171,26 +162,17 @@ class VoiceCommandsHelpPage extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               description,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[700],
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
             ),
             const SizedBox(height: 12),
             Text(
               S.of(context).examples,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 4),
             Wrap(
@@ -223,10 +205,7 @@ class VoiceCommandsHelpPage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: Icon(icon, color: Colors.blue),
-        title: Text(
-          tip,
-          style: const TextStyle(fontSize: 14),
-        ),
+        title: Text(tip, style: const TextStyle(fontSize: 14)),
       ),
     );
   }

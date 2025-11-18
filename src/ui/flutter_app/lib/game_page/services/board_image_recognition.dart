@@ -277,9 +277,7 @@ class BoardImageRecognitionService {
         height: processImage.height,
       );
 
-      lastDebugInfo = lastDebugInfo.copyWith(
-        processedImage: resizedImageCopy,
-      );
+      lastDebugInfo = lastDebugInfo.copyWith(processedImage: resizedImageCopy);
 
       // Pre-process image to enhance features - now using static parameters
       processImage = _enhanceImageForProcessing(
@@ -294,9 +292,7 @@ class BoardImageRecognitionService {
         height: processImage.height,
       );
 
-      lastDebugInfo = lastDebugInfo.copyWith(
-        processedImage: enhancedImageCopy,
-      );
+      lastDebugInfo = lastDebugInfo.copyWith(processedImage: enhancedImageCopy);
 
       // Analyze image characteristics to calibrate detection thresholds - using static parameters
       final ImageCharacteristics characteristics = _analyzeImageCharacteristics(
@@ -311,9 +307,7 @@ class BoardImageRecognitionService {
       );
 
       // Update debug info
-      lastDebugInfo = lastDebugInfo.copyWith(
-        characteristics: characteristics,
-      );
+      lastDebugInfo = lastDebugInfo.copyWith(characteristics: characteristics);
 
       // For very low contrast images, apply additional contrast enhancement
       if (!characteristics.isHighContrast &&

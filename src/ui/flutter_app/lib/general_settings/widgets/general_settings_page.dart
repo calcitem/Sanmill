@@ -630,12 +630,13 @@ class GeneralSettingsPage extends StatelessWidget {
                       'general_settings_page_settings_card_accessibility_voice_assistant',
                     ),
                     titleString: S.of(context).voiceAssistantEnabled,
-                    subtitleString: S.of(context).voiceAssistantEnabledDescription,
+                    subtitleString: S
+                        .of(context)
+                        .voiceAssistantEnabledDescription,
                     // Show progress indicator when downloading, otherwise show switch
                     trailing: isDownloading
                         ? VoiceModelDownloadProgressIndicator(
                             progress: progress,
-                            size: 48.0,
                           )
                         : Switch(
                             value: voiceAssistantSettings.enabled,

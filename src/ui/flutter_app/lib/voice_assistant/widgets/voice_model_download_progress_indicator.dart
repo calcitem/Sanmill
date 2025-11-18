@@ -37,9 +37,7 @@ class VoiceModelDownloadProgressIndicator extends StatelessWidget {
             child: CircularProgressIndicator(
               value: progress,
               backgroundColor: colorScheme.surfaceContainerHighest,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                colorScheme.primary,
-              ),
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
               strokeWidth: 3.0,
             ),
           ),

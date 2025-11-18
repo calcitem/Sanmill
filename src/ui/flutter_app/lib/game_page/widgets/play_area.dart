@@ -707,8 +707,7 @@ class PlayAreaState extends State<PlayArea> {
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.puzzle)
+                      GameController().gameInstance.gameMode != GameMode.puzzle)
                     GamePageToolbar(
                       key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
@@ -723,8 +722,7 @@ class PlayAreaState extends State<PlayArea> {
                   // Analysis toolbar if enabled
                   // Hide in puzzle mode to keep the interface clean
                   if (DB().displaySettings.isAnalysisToolbarShown &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.puzzle)
+                      GameController().gameInstance.gameMode != GameMode.puzzle)
                     GamePageToolbar(
                       key: const Key('play_area_analysis_toolbar_bottom'),
                       backgroundColor:
@@ -740,8 +738,7 @@ class PlayAreaState extends State<PlayArea> {
                   // Hide in puzzle mode to keep the interface clean
                   if (GameController().gameInstance.gameMode !=
                           GameMode.setupPosition &&
-                      GameController().gameInstance.gameMode !=
-                          GameMode.puzzle)
+                      GameController().gameInstance.gameMode != GameMode.puzzle)
                     GamePageToolbar(
                       key: const Key('play_area_main_toolbar_bottom'),
                       backgroundColor:
