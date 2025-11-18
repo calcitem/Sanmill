@@ -28,7 +28,8 @@ class SpeechRecognitionService {
   bool _isInitialized = false;
   bool _isListening = false;
   String _language = 'en';
-  WhisperModel _model = WhisperModel.base;
+  String _modelPath = ''; // Store the model file path
+  WhisperModel _model = WhisperModel.tiny; // Model type
 
   /// Whether the service is initialized
   bool get isInitialized => _isInitialized;
@@ -46,7 +47,7 @@ class SpeechRecognitionService {
 
   /// Initialize the Whisper model
   ///
-  /// [modelPath] - Path to the downloaded model file (not used with WhisperController)
+  /// [modelPath] - Path to the downloaded model file
   /// [language] - Language code (e.g., 'en', 'zh')
   Future<bool> initialize(String modelPath, String language) async {
     if (_isInitialized) {
@@ -57,11 +58,20 @@ class SpeechRecognitionService {
     try {
       recognitionStatus.value = 'Initializing...';
 
+      // Check if model file exists
+      final File modelFile = File(modelPath);
+      if (!modelFile.existsSync()) {
+        logger.e('Model file does not exist: $modelPath');
+        recognitionStatus.value = 'Model file not found';
+        return false;
+      }
+
       // Initialize WhisperController
       _whisper = WhisperController();
       _language = language;
+      _modelPath = modelPath; // Save the model path
 
-      // Determine model type from path (e.g., "base", "small", "medium", "large")
+      // Determine model type from path
       if (modelPath.contains('tiny')) {
         _model = WhisperModel.tiny;
       } else if (modelPath.contains('small')) {
@@ -74,9 +84,31 @@ class SpeechRecognitionService {
         _model = WhisperModel.base;
       }
 
+      // Get the path where whisper_ggml expects the model to be
+      final String whisperManagedPath = await _whisper!.getPath(_model);
+      logger.i('Whisper managed model path: $whisperManagedPath');
+
+      // Copy our downloaded model to whisper's expected location
+      final File ourModel = File(modelPath);
+      final File whisperModel = File(whisperManagedPath);
+
+      if (!whisperModel.existsSync()) {
+        // Create parent directory if needed
+        final Directory parentDir = whisperModel.parent;
+        if (!parentDir.existsSync()) {
+          parentDir.createSync(recursive: true);
+        }
+
+        // Copy our model to whisper's expected location
+        await ourModel.copy(whisperManagedPath);
+        logger.i('Copied model to whisper managed path');
+      }
+
       _isInitialized = true;
       recognitionStatus.value = 'Ready';
-      logger.i('Speech recognition initialized successfully');
+      logger.i(
+        'Speech recognition initialized successfully with model: $modelPath',
+      );
       return true;
     } catch (e, stackTrace) {
       logger.e(
@@ -154,6 +186,7 @@ class SpeechRecognitionService {
 
       // Get temporary directory for audio file
       final Directory tempDir = await getTemporaryDirectory();
+      // Use M4A format (AAC) as shown in official example
       tempAudioPath =
           '${tempDir.path}/voice_recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
@@ -164,13 +197,8 @@ class SpeechRecognitionService {
         return null;
       }
 
-      // Start recording
-      await _audioRecorder.start(
-        const RecordConfig(
-          sampleRate: 16000, // Whisper works well with 16kHz
-        ),
-        path: tempAudioPath,
-      );
+      // Start recording with default config (as shown in official example)
+      await _audioRecorder.start(const RecordConfig(), path: tempAudioPath);
 
       logger.i('Recording audio to: $tempAudioPath');
       recognitionStatus.value = 'Recording...';
@@ -234,7 +262,7 @@ class SpeechRecognitionService {
 
   /// Transcribe audio from a file
   ///
-  /// [audioPath] - Path to the audio file (WAV, MP3, etc.)
+  /// [audioPath] - Path to the audio file (WAV format recommended)
   Future<String?> transcribeFromFile(String audioPath) async {
     if (!_isInitialized) {
       logger.e('Speech recognition not initialized');
@@ -245,7 +273,41 @@ class SpeechRecognitionService {
     try {
       recognitionStatus.value = 'Transcribing...';
       logger.i('Transcribing audio from file: $audioPath');
+      logger.i('Using model: $_modelPath');
 
+      // Check if audio file exists
+      final File audioFile = File(audioPath);
+      if (!audioFile.existsSync()) {
+        logger.e('Audio file does not exist: $audioPath');
+        recognitionStatus.value = 'Audio file not found';
+        return null;
+      }
+
+      // Check audio file size to ensure it has content
+      final int audioSize = audioFile.lengthSync();
+      logger.i('Audio file size: ${audioSize / 1024} KB');
+
+      if (audioSize < 1024) {
+        // Audio file is too small (less than 1KB), likely no speech
+        logger.w('Audio file is too small, likely no speech recorded');
+        recognitionStatus.value = 'No speech detected';
+        return null;
+      }
+
+      // Check model file size to ensure it's valid
+      final File modelFile = File(_modelPath);
+      final int modelSize = modelFile.lengthSync();
+      logger.i('Model file size: ${modelSize / (1024 * 1024)} MB');
+
+      if (modelSize < 1024 * 1024) {
+        // Model file is too small (less than 1MB), likely corrupted
+        logger.e('Model file appears to be corrupted or incomplete');
+        recognitionStatus.value = 'Model file corrupted';
+        return null;
+      }
+
+      // Transcribe using Whisper model
+      // Note: whisper_ggml.transcribe() expects model enum and manages model files internally
       // TranscribeResult is not exported through whisper_ggml public API
       // ignore: always_specify_types
       final result = await _whisper!.transcribe(
@@ -291,8 +353,9 @@ class SpeechRecognitionService {
       // Dispose audio recorder
       await _audioRecorder.dispose();
 
-      // WhisperController doesn't have a dispose method
+      // Clear WhisperController reference
       _whisper = null;
+
       _isInitialized = false;
       _isListening = false;
       recognitionStatus.value = 'Disposed';
