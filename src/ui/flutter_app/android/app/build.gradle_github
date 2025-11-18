@@ -1,3 +1,5 @@
+import org.gradle.api.GradleException
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
