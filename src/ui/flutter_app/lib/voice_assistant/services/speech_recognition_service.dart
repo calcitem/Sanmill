@@ -7,7 +7,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:whisper_ggml/src/models/whisper_result.dart';
 import 'package:whisper_ggml/whisper_ggml.dart';
 
 import '../../shared/services/logger.dart';
@@ -195,7 +194,9 @@ class SpeechRecognitionService {
       recognitionStatus.value = 'Transcribing...';
       logger.i('Transcribing audio from file: $audioPath');
 
-      final TranscribeResult? result = await _whisper!.transcribe(
+      // TranscribeResult is not exported through whisper_ggml public API
+      // ignore: always_specify_types
+      final result = await _whisper!.transcribe(
         model: _model,
         audioPath: audioPath,
         lang: _language,

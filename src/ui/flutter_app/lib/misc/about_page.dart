@@ -144,7 +144,7 @@ class AboutPage extends StatelessWidget {
         body: ListView.separated(
           key: const Key('about_page_listview'),
           itemBuilder: (_, int index) => settingsItems[index],
-          separatorBuilder: (_, __) => const Divider(),
+          separatorBuilder: (_, _) => const Divider(),
           itemCount: settingsItems.length,
         ),
       ),

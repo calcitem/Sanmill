@@ -38,7 +38,7 @@ class StatisticsPage extends StatelessWidget {
         body: ValueListenableBuilder<dynamic>(
           key: const Key('statistics_page_value_listenable_builder'),
           valueListenable: DB().listenStatsSettings,
-          builder: (BuildContext context, _, __) {
+          builder: (BuildContext context, _, _) {
             final StatsSettings settings = DB().statsSettings;
             return SettingsList(
               key: const Key('statistics_page_settings_list'),
