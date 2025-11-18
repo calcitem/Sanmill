@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.Delete
+
 allprojects {
     repositories {
         // Using Aliyun's public mirror which includes several repositories, including JCenter.
