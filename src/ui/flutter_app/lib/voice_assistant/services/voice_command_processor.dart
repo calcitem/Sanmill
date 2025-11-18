@@ -30,12 +30,14 @@ class VoiceCommandResult {
     required this.success,
     this.message,
     this.data,
+    this.recognizedText,
   });
 
   final VoiceCommandType type;
   final bool success;
   final String? message;
   final Map<String, dynamic>? data;
+  final String? recognizedText; // Original recognized text for debugging
 }
 
 /// Service to process voice commands and execute game actions
@@ -55,8 +57,9 @@ class VoiceCommandProcessor {
     String text,
     BuildContext context,
   ) async {
+    final String originalText = text; // Save original text for debugging
     final String normalizedText = _normalizeText(text);
-    logger.i('Processing voice command: $normalizedText');
+    logger.i('Processing voice command: $normalizedText (original: $originalText)');
 
     final S loc = S.of(context);
 
@@ -64,6 +67,7 @@ class VoiceCommandProcessor {
     final VoiceCommandResult? moveResult = _processMoveCommand(
       normalizedText,
       loc,
+      originalText,
     );
     if (moveResult != null) {
       return moveResult;
@@ -74,6 +78,7 @@ class VoiceCommandProcessor {
       normalizedText,
       loc,
       context,
+      originalText,
     );
     if (controlResult != null) {
       return controlResult;
@@ -83,6 +88,7 @@ class VoiceCommandProcessor {
     final VoiceCommandResult? settingsResult = _processSettingsCommand(
       normalizedText,
       loc,
+      originalText,
     );
     if (settingsResult != null) {
       return settingsResult;
@@ -94,6 +100,7 @@ class VoiceCommandProcessor {
       type: VoiceCommandType.unknown,
       success: false,
       message: loc.voiceCommandUnknown,
+      recognizedText: originalText,
     );
   }
 
@@ -103,7 +110,7 @@ class VoiceCommandProcessor {
   }
 
   /// Process move commands
-  VoiceCommandResult? _processMoveCommand(String text, S loc) {
+  VoiceCommandResult? _processMoveCommand(String text, S loc, String originalText) {
     // Pattern: "move [position] to [position]"
     // Pattern: "place on [position]"
     // Pattern: "[position] to [position]"
@@ -141,6 +148,7 @@ class VoiceCommandProcessor {
     String text,
     S loc,
     BuildContext context,
+    String originalText,
   ) async {
     // Undo command
     if (text.contains('undo') ||
@@ -177,7 +185,7 @@ class VoiceCommandProcessor {
   }
 
   /// Process settings commands
-  VoiceCommandResult? _processSettingsCommand(String text, S loc) {
+  VoiceCommandResult? _processSettingsCommand(String text, S loc, String originalText) {
     // Sound toggle
     if (text.contains('sound') || text.contains('音效')) {
       if (text.contains('on') ||

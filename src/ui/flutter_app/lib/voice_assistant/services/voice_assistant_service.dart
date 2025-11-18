@@ -299,6 +299,9 @@ class VoiceAssistantService {
         return null;
       }
 
+      // Log the recognized text for debugging
+      logger.i('Recognized text: "$recognizedText"');
+
       // Process command
       if (!context.mounted) {
         return null;
@@ -308,8 +311,17 @@ class VoiceAssistantService {
         context,
       );
 
+      // Add recognized text to result for UI display
+      final VoiceCommandResult resultWithText = VoiceCommandResult(
+        type: result.type,
+        success: result.success,
+        message: result.message,
+        data: result.data,
+        recognizedText: recognizedText, // Add original recognized text
+      );
+
       logger.i('Command processed: ${result.type}, success: ${result.success}');
-      return result;
+      return resultWithText;
     } catch (e, stackTrace) {
       logger.e(
         'Failed to process voice command',

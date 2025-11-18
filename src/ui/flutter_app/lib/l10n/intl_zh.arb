@@ -3528,6 +3528,14 @@
     "@voiceAssistantNoSpeechDetected": {
         "description": "No speech detected message"
     },
+    "voiceAssistantRecognizedText": "识别文本",
+    "@voiceAssistantRecognizedText": {
+        "description": "Recognized text label"
+    },
+    "voiceAssistantResult": "执行结果",
+    "@voiceAssistantResult": {
+        "description": "Command execution result label"
+    },
     "voiceAssistantError": "语音助手错误",
     "@voiceAssistantError": {
         "description": "Generic error message"

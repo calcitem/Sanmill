@@ -104,13 +104,17 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
 
       if (mounted) {
         if (result != null) {
-          // Show result message
+          // Show result with recognized text for debugging
           final String message =
               result.message ??
               _getDefaultMessage(result.type, result.success, loc);
-          SnackBarService.showRootSnackBar(
-            message,
-            duration: const Duration(seconds: 2),
+          
+          // Show dialog with recognized text and result
+          _showResultDialog(
+            context,
+            recognizedText: result.recognizedText ?? loc.voiceAssistantNoSpeechDetected,
+            message: message,
+            success: result.success,
           );
         } else {
           // No result
@@ -128,6 +132,60 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
         });
       }
     }
+  }
+
+  /// Show result dialog with recognized text
+  void _showResultDialog(
+    BuildContext context, {
+    required String recognizedText,
+    required String message,
+    required bool success,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: <Widget>[
+              Icon(
+                success ? Icons.check_circle : Icons.error,
+                color: success ? Colors.green : Colors.orange,
+              ),
+              const SizedBox(width: 8),
+              Text(S.of(context).voiceAssistant),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                '识别文本 / Recognized Text:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                recognizedText,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                '执行结果 / Result:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 4),
+              Text(message),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).ok),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   String _getDefaultMessage(VoiceCommandType type, bool success, S loc) {
