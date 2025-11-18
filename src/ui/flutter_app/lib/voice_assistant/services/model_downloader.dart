@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/voice_assistant_settings.dart';
 
@@ -119,6 +120,7 @@ class ModelDownloader {
   ) async {
     downloadProgress.value = 0.0;
     downloadStatus.value = 'Starting download...';
+    _updateDatabaseProgress(0.0);
 
     final String downloadUrl = modelType.getDownloadUrl(language);
     final String modelPath = await getModelPath(modelType, language);
@@ -155,6 +157,7 @@ class ModelDownloader {
           final double progress = downloadedBytes / contentLength;
           downloadProgress.value = progress;
           downloadStatus.value = 'Downloading: ${(progress * 100).toStringAsFixed(1)}%';
+          _updateDatabaseProgress(progress);
           logger.i('Download progress: ${(progress * 100).toStringAsFixed(1)}%');
         }
       }
@@ -167,6 +170,7 @@ class ModelDownloader {
 
       downloadProgress.value = 1.0;
       downloadStatus.value = 'Download complete';
+      _updateDatabaseProgress(-1.0); // Reset progress
       logger.i('Model downloaded successfully to: $modelPath');
 
       return modelPath;
@@ -178,6 +182,22 @@ class ModelDownloader {
       if (!completed && modelFile.existsSync()) {
         modelFile.deleteSync();
       }
+      // Reset progress on failure
+      if (!completed) {
+        _updateDatabaseProgress(-1.0);
+      }
+    }
+  }
+
+  /// Update download progress in database for persistence
+  void _updateDatabaseProgress(double progress) {
+    try {
+      final VoiceAssistantSettings currentSettings = DB().voiceAssistantSettings;
+      DB().voiceAssistantSettings = currentSettings.copyWith(
+        downloadProgress: progress,
+      );
+    } catch (e) {
+      logger.w('Failed to update download progress in database', error: e);
     }
   }
 

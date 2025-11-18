@@ -3532,6 +3532,14 @@
     "@voiceAssistantError": {
         "description": "Generic error message"
     },
+    "voiceAssistantRedownloadModel": "Re-download Model",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
     "voiceCommandSuccess": "Command executed successfully",
     "@voiceCommandSuccess": {
         "description": "Command success message"

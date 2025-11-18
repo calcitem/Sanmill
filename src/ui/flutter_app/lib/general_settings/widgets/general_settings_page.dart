@@ -25,8 +25,10 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../voice_assistant/models/voice_assistant_settings.dart';
+import '../../voice_assistant/services/model_downloader.dart';
 import '../../voice_assistant/services/voice_assistant_service.dart';
 import '../../voice_assistant/widgets/voice_assistant_settings_page.dart';
+import '../../voice_assistant/widgets/voice_model_download_progress_indicator.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
@@ -617,16 +619,41 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).screenReaderSupport,
               ),
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_accessibility_voice_assistant',
-                ),
-                value: voiceAssistantSettings.enabled,
-                onChanged: (bool val) {
-                  _setVoiceAssistantEnabled(context, val);
+              // Voice assistant switch with download progress indicator
+              ValueListenableBuilder<double>(
+                valueListenable: ModelDownloader().downloadProgress,
+                builder: (BuildContext context, double progress, Widget? child) {
+                  final bool isDownloading = progress >= 0.0 && progress < 1.0;
+
+                  return SettingsListTile(
+                    key: const Key(
+                      'general_settings_page_settings_card_accessibility_voice_assistant',
+                    ),
+                    titleString: S.of(context).voiceAssistantEnabled,
+                    subtitleString: S.of(context).voiceAssistantEnabledDescription,
+                    // Show progress indicator when downloading, otherwise show switch
+                    trailing: isDownloading
+                        ? VoiceModelDownloadProgressIndicator(
+                            progress: progress,
+                            size: 48.0,
+                          )
+                        : Switch(
+                            value: voiceAssistantSettings.enabled,
+                            onChanged: (bool val) {
+                              _setVoiceAssistantEnabled(context, val);
+                            },
+                          ),
+                    // Disable tap when downloading
+                    onTap: isDownloading
+                        ? null
+                        : () {
+                            _setVoiceAssistantEnabled(
+                              context,
+                              !voiceAssistantSettings.enabled,
+                            );
+                          },
+                  );
                 },
-                titleString: S.of(context).voiceAssistantEnabled,
-                subtitleString: S.of(context).voiceAssistantEnabledDescription,
               ),
               // Navigation to voice assistant detailed settings
               if (voiceAssistantSettings.enabled)

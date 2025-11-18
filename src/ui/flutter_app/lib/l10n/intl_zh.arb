@@ -3532,6 +3532,14 @@
     "@voiceAssistantError": {
         "description": "Generic error message"
     },
+    "voiceAssistantRedownloadModel": "重新下载模型",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "已经下载了一个语音模型。是否要重新下载并覆盖它？",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
     "voiceCommandSuccess": "命令执行成功",
     "@voiceCommandSuccess": {
         "description": "Command success message"

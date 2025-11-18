@@ -80,6 +80,7 @@ class VoiceAssistantSettings {
     this.autoDetectLanguage = false,
     this.showVoiceButton = true,
     this.continuousListening = false,
+    this.downloadProgress = -1.0,
   });
 
   /// Encodes a Json style map into a [VoiceAssistantSettings] object
@@ -117,6 +118,10 @@ class VoiceAssistantSettings {
   /// Enable continuous listening mode
   @HiveField(7, defaultValue: false)
   final bool continuousListening;
+
+  /// Download progress (0.0 to 1.0), -1.0 means no download in progress
+  @HiveField(8, defaultValue: -1.0)
+  final double downloadProgress;
 
   /// Decodes a Json from a [VoiceAssistantSettings] object
   Map<String, dynamic> toJson() => _$VoiceAssistantSettingsToJson(this);
