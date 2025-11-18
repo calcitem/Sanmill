@@ -194,7 +194,7 @@ class SpeechRecognitionService {
       recognitionStatus.value = 'Transcribing...';
       logger.i('Transcribing audio from file: $audioPath');
 
-      final TranscribeResult? result = await _whisper!.transcribe(
+      final result = await _whisper!.transcribe(
         model: _model,
         audioPath: audioPath,
         lang: _language,
