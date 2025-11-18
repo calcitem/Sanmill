@@ -66,6 +66,9 @@ Future<void> main() async {
     await ScreenshotService.instance.init();
   }
 
+  // Check and clean up incomplete voice model downloads from previous sessions
+  await VoiceAssistantService().modelDownloader.checkAndCleanIncompleteDownloads();
+
   // Initialize voice assistant service if enabled
   if (DB().voiceAssistantSettings.enabled) {
     await VoiceAssistantService().initialize();

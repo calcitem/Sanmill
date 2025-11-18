@@ -111,7 +111,14 @@ class VoiceAssistantService {
       final bool? shouldRedownload = await _showRedownloadConfirmDialog(
         context,
       );
-      if (shouldRedownload ?? false) {
+
+      // If user cancelled the dialog (returns null), abort the operation
+      if (shouldRedownload == null) {
+        logger.i('User cancelled re-download dialog');
+        return false;
+      }
+
+      if (shouldRedownload) {
         // User wants to re-download, delete old model first
         await deleteModel();
 
@@ -123,6 +130,7 @@ class VoiceAssistantService {
           return false;
         }
       }
+      // If shouldRedownload is false, continue with existing model
     }
 
     // Initialize speech recognition
