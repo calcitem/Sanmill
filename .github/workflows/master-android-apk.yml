@@ -21,6 +21,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
       - name: Decode signing key
         run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
         env:
