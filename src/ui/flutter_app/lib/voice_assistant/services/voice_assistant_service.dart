@@ -100,6 +100,24 @@ class VoiceAssistantService {
       if (!downloadSuccess) {
         return false;
       }
+    } else {
+      // Model is already downloaded, ask if user wants to re-download
+      if (!context.mounted) {
+        return false;
+      }
+      final bool? shouldRedownload = await _showRedownloadConfirmDialog(context);
+      if (shouldRedownload == true) {
+        // User wants to re-download, delete old model first
+        await deleteModel();
+
+        if (!context.mounted) {
+          return false;
+        }
+        final bool downloadSuccess = await downloadModel(context);
+        if (!downloadSuccess) {
+          return false;
+        }
+      }
     }
 
     // Initialize speech recognition
@@ -241,6 +259,31 @@ class VoiceAssistantService {
   /// Stop listening
   Future<void> stopListening() async {
     await _speechRecognition.stopListening();
+  }
+
+  /// Show re-download confirmation dialog
+  Future<bool?> _showRedownloadConfirmDialog(BuildContext context) async {
+    final S loc = S.of(context);
+
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(loc.voiceAssistantRedownloadModel),
+          content: Text(loc.voiceAssistantRedownloadModelMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(loc.no),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(loc.yes),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Show download confirmation dialog
