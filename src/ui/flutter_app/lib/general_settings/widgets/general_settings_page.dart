@@ -625,14 +625,18 @@ class GeneralSettingsPage extends StatelessWidget {
                 builder: (BuildContext context, double progress, Widget? child) {
                   final bool isDownloading = progress >= 0.0 && progress < 1.0;
 
-                  return SettingsListTile(
+                  return ListTile(
                     key: const Key(
                       'general_settings_page_settings_card_accessibility_voice_assistant',
                     ),
-                    titleString: S.of(context).voiceAssistantEnabled,
-                    subtitleString: S
-                        .of(context)
-                        .voiceAssistantEnabledDescription,
+                    title: Text(
+                      S.of(context).voiceAssistantEnabled,
+                      style: AppTheme.listTileTitleStyle,
+                    ),
+                    subtitle: Text(
+                      S.of(context).voiceAssistantEnabledDescription,
+                      style: AppTheme.listTileSubtitleStyle,
+                    ),
                     // Show progress indicator when downloading, otherwise show switch
                     trailing: isDownloading
                         ? VoiceModelDownloadProgressIndicator(
