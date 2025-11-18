@@ -103,6 +103,26 @@ class VoiceAssistantService {
       if (!downloadSuccess) {
         return false;
       }
+
+      // Model downloaded successfully, enable it first before initialization
+      // because initialize() checks if enabled is true
+      DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+        enabled: true,
+      );
+
+      // Initialize speech recognition
+      final bool initSuccess = await initialize();
+      if (!initSuccess) {
+        logger.e('Failed to initialize after download');
+        // Rollback: disable voice assistant if initialization failed
+        DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+          enabled: false,
+        );
+        return false;
+      }
+
+      logger.i('Voice assistant enabled successfully after download');
+      return true;
     } else {
       // Model is already downloaded, ask if user wants to re-download
       if (!context.mounted) {
@@ -129,22 +149,48 @@ class VoiceAssistantService {
         if (!downloadSuccess) {
           return false;
         }
+
+        // Model re-downloaded successfully, enable it first before initialization
+        // because initialize() checks if enabled is true
+        DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+          enabled: true,
+        );
+
+        // Initialize speech recognition
+        final bool initSuccess = await initialize();
+        if (!initSuccess) {
+          logger.e('Failed to initialize after re-download');
+          // Rollback: disable voice assistant if initialization failed
+          DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+            enabled: false,
+          );
+          return false;
+        }
+
+        logger.i('Voice assistant enabled successfully after re-download');
+        return true;
+      } else {
+        // User chose not to re-download, use existing model
+        // Enable it first before initialization because initialize() checks if enabled is true
+        DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+          enabled: true,
+        );
+
+        // Initialize speech recognition with existing model
+        final bool initSuccess = await initialize();
+        if (!initSuccess) {
+          logger.e('Failed to initialize with existing model');
+          // Rollback: disable voice assistant if initialization failed
+          DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
+            enabled: false,
+          );
+          return false;
+        }
+
+        logger.i('Voice assistant enabled successfully with existing model');
+        return true;
       }
-      // If shouldRedownload is false, continue with existing model
     }
-
-    // Initialize speech recognition
-    final bool initSuccess = await initialize();
-    if (!initSuccess) {
-      return false;
-    }
-
-    // Update settings
-    DB().voiceAssistantSettings = DB().voiceAssistantSettings.copyWith(
-      enabled: true,
-    );
-
-    return true;
   }
 
   /// Disable voice assistant

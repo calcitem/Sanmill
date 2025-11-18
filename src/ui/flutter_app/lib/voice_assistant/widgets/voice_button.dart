@@ -4,6 +4,7 @@
 // voice_button.dart
 
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -43,34 +44,47 @@ class _VoiceAssistantButtonState extends State<VoiceAssistantButton>
 
   @override
   Widget build(BuildContext context) {
-    final VoiceAssistantSettings settings = DB().voiceAssistantSettings;
+    // Use ValueListenableBuilder to rebuild when settings change
+    return ValueListenableBuilder<Box<VoiceAssistantSettings>>(
+      valueListenable: DB().listenVoiceAssistantSettings,
+      builder: (
+        BuildContext context,
+        Box<VoiceAssistantSettings> box,
+        Widget? child,
+      ) {
+        final VoiceAssistantSettings settings = box.get(
+          DB.voiceAssistantSettingsKey,
+          defaultValue: const VoiceAssistantSettings(),
+        )!;
 
-    // Don't show button if voice assistant is disabled or button is hidden
-    if (!settings.enabled || !settings.showVoiceButton) {
-      return const SizedBox.shrink();
-    }
+        // Don't show button if voice assistant is disabled or button is hidden
+        if (!settings.enabled || !settings.showVoiceButton) {
+          return const SizedBox.shrink();
+        }
 
-    // Don't show button if not ready
-    if (!_service.isReady) {
-      return const SizedBox.shrink();
-    }
+        // Don't show button if not ready
+        if (!_service.isReady) {
+          return const SizedBox.shrink();
+        }
 
-    return FloatingActionButton(
-      onPressed: _isListening ? null : _onPressed,
-      backgroundColor: _isListening ? Colors.red : Colors.blue,
-      child: _isListening
-          ? AnimatedBuilder(
-              animation: _animationController,
-              builder: (BuildContext context, Widget? child) {
-                return Icon(
-                  Icons.mic,
-                  color: Colors.white.withValues(
-                    alpha: 0.5 + (_animationController.value * 0.5),
-                  ),
-                );
-              },
-            )
-          : const Icon(Icons.mic, color: Colors.white),
+        return FloatingActionButton(
+          onPressed: _isListening ? null : _onPressed,
+          backgroundColor: _isListening ? Colors.red : Colors.blue,
+          child: _isListening
+              ? AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (BuildContext context, Widget? child) {
+                    return Icon(
+                      Icons.mic,
+                      color: Colors.white.withValues(
+                        alpha: 0.5 + (_animationController.value * 0.5),
+                      ),
+                    );
+                  },
+                )
+              : const Icon(Icons.mic, color: Colors.white),
+        );
+      },
     );
   }
 

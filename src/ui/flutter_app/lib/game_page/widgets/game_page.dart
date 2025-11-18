@@ -34,6 +34,7 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/model/stats_settings.dart';
+import '../../voice_assistant/widgets/voice_button.dart';
 import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
@@ -142,6 +143,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final Widget baseContent = Scaffold(
       key: const Key('game_page_scaffold'),
       resizeToAvoidBottomInset: false,
+      // Add voice assistant floating action button
+      floatingActionButton: const VoiceAssistantButton(),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           // Calculate board dimensions and game board rectangle.

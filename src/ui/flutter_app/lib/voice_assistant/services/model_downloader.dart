@@ -21,8 +21,8 @@ class ModelDownloader {
 
   static final ModelDownloader _instance = ModelDownloader._internal();
 
-  /// Download progress notifier (0.0 to 1.0)
-  final ValueNotifier<double> downloadProgress = ValueNotifier<double>(0.0);
+  /// Download progress notifier (0.0 to 1.0, -1.0 means no download)
+  final ValueNotifier<double> downloadProgress = ValueNotifier<double>(-1.0);
 
   /// Download status message
   final ValueNotifier<String> downloadStatus = ValueNotifier<String>('');
@@ -187,9 +187,10 @@ class ModelDownloader {
       sink = null;
       completed = true;
 
-      downloadProgress.value = 1.0;
+      // Reset progress to hide progress indicator
+      downloadProgress.value = -1.0;
       downloadStatus.value = 'Download complete';
-      _updateDatabaseProgress(-1.0); // Reset progress
+      _updateDatabaseProgress(-1.0); // Reset progress in database
       logger.i('Model downloaded successfully to: $modelPath');
 
       return modelPath;
@@ -308,7 +309,7 @@ class ModelDownloader {
           logger.i('Deleted incomplete model file: $modelPath');
         }
 
-        // Reset download progress and model downloaded status
+        // Reset download progress and model downloaded status in database
         DB().voiceAssistantSettings = currentSettings.copyWith(
           downloadProgress: -1.0,
           modelDownloaded: false,
@@ -316,7 +317,7 @@ class ModelDownloader {
           enabled: false, // Ensure switch is off for incomplete downloads
         );
 
-        // Reset in-memory progress notifier
+        // Reset in-memory progress notifier to hide progress indicator
         downloadProgress.value = -1.0;
         downloadStatus.value = '';
 
@@ -324,6 +325,12 @@ class ModelDownloader {
         return true;
       }
 
+      // No incomplete downloads found, ensure in-memory progress is reset
+      // This is important to handle cases where database was already clean
+      // but in-memory value might have stale data
+      downloadProgress.value = -1.0;
+      downloadStatus.value = '';
+      
       return false;
     } catch (e, stackTrace) {
       logger.e(
@@ -331,6 +338,9 @@ class ModelDownloader {
         error: e,
         stackTrace: stackTrace,
       );
+      // On error, ensure progress is reset to avoid showing stale progress
+      downloadProgress.value = -1.0;
+      downloadStatus.value = '';
       return false;
     }
   }

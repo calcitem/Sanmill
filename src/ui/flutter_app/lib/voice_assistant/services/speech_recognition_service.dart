@@ -4,9 +4,12 @@
 // speech_recognition_service.dart
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 import 'package:whisper_ggml/whisper_ggml.dart';
 
 import '../../shared/services/logger.dart';
@@ -21,6 +24,7 @@ class SpeechRecognitionService {
       SpeechRecognitionService._internal();
 
   WhisperController? _whisper;
+  final AudioRecorder _audioRecorder = AudioRecorder();
   bool _isInitialized = false;
   bool _isListening = false;
   String _language = 'en';
@@ -117,8 +121,7 @@ class SpeechRecognitionService {
   /// Start listening for voice input
   ///
   /// Returns the recognized text or null on failure
-  /// Note: whisper_ggml doesn't support direct microphone input, so this method
-  /// would require recording audio to a temporary file first
+  /// Records audio to a temporary file, then transcribes it using Whisper
   Future<String?> startListening({
     Duration maxDuration = const Duration(seconds: 10),
   }) async {
@@ -141,6 +144,7 @@ class SpeechRecognitionService {
       }
     }
 
+    String? tempAudioPath;
     try {
       _isListening = true;
       recognitionStatus.value = 'Listening...';
@@ -148,18 +152,66 @@ class SpeechRecognitionService {
 
       logger.i('Starting voice recognition');
 
-      // TODO: Implement audio recording to temp file
-      // For now, return placeholder since whisper_ggml requires a file path
-      logger.w('Direct microphone transcription not yet implemented');
-      recognitionStatus.value = 'Not implemented';
+      // Get temporary directory for audio file
+      final Directory tempDir = await getTemporaryDirectory();
+      tempAudioPath =
+          '${tempDir.path}/voice_recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-      return null;
+      // Check if recorder has permission
+      if (!await _audioRecorder.hasPermission()) {
+        logger.w('Audio recorder permission check failed');
+        recognitionStatus.value = 'Microphone permission denied';
+        return null;
+      }
+
+      // Start recording
+      await _audioRecorder.start(
+        const RecordConfig(
+          sampleRate: 16000, // Whisper works well with 16kHz
+        ),
+        path: tempAudioPath,
+      );
+
+      logger.i('Recording audio to: $tempAudioPath');
+      recognitionStatus.value = 'Recording...';
+
+      // Wait for max duration
+      await Future<void>.delayed(maxDuration);
+
+      // Stop recording
+      final String? recordedPath = await _audioRecorder.stop();
+      logger.i('Recording stopped, file: $recordedPath');
+
+      if (recordedPath == null || !File(recordedPath).existsSync()) {
+        logger.w('No audio recorded');
+        recognitionStatus.value = 'No audio recorded';
+        return null;
+      }
+
+      // Transcribe the recorded audio
+      recognitionStatus.value = 'Transcribing...';
+      final String? transcription = await transcribeFromFile(recordedPath);
+
+      return transcription;
     } catch (e, stackTrace) {
       logger.e('Failed to recognize speech', error: e, stackTrace: stackTrace);
       recognitionStatus.value = 'Recognition failed';
       return null;
     } finally {
       _isListening = false;
+
+      // Clean up temporary audio file
+      if (tempAudioPath != null) {
+        try {
+          final File tempFile = File(tempAudioPath);
+          if (tempFile.existsSync()) {
+            tempFile.deleteSync();
+            logger.i('Temporary audio file deleted: $tempAudioPath');
+          }
+        } catch (e) {
+          logger.w('Failed to delete temporary audio file', error: e);
+        }
+      }
     }
   }
 
@@ -170,8 +222,8 @@ class SpeechRecognitionService {
     }
 
     try {
-      // Note: whisper_ggml transcribeFromMicrophone is blocking,
-      // so we can't stop it mid-recording in the current implementation
+      // Stop audio recording
+      await _audioRecorder.stop();
       _isListening = false;
       recognitionStatus.value = 'Stopped';
       logger.i('Stopped listening');
@@ -231,6 +283,14 @@ class SpeechRecognitionService {
     }
 
     try {
+      // Stop any ongoing recording
+      if (_isListening) {
+        await _audioRecorder.stop();
+      }
+
+      // Dispose audio recorder
+      await _audioRecorder.dispose();
+
       // WhisperController doesn't have a dispose method
       _whisper = null;
       _isInitialized = false;
