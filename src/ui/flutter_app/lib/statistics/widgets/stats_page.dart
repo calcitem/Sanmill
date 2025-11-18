@@ -38,8 +38,7 @@ class StatisticsPage extends StatelessWidget {
         body: ValueListenableBuilder<dynamic>(
           key: const Key('statistics_page_value_listenable_builder'),
           valueListenable: DB().listenStatsSettings,
-          builder: (BuildContext context, _, _) {
-            // ignore: unnecessary_underscores
+          builder: (BuildContext context, dynamic value, Widget? child) {
             final StatsSettings settings = DB().statsSettings;
             return SettingsList(
               key: const Key('statistics_page_settings_list'),

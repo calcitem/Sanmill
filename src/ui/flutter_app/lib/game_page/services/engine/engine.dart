@@ -106,8 +106,8 @@ class Engine {
     if (isThinking is bool) {
       return isThinking;
     } else {
-      // ignore: only_throw_errors
-      throw "Invalid platform response. Expected a value of type bool";
+      throw Exception(
+          "Invalid platform response. Expected a value of type bool");
     }
   }
 
@@ -163,7 +163,6 @@ class Engine {
       _isSearchCancelled = false;
       final String? fen = _getPositionFen();
       if (fen == null) {
-        // ignore: only_throw_errors
         throw const EngineNoBestMove();
       }
       await _send(fen);
@@ -176,7 +175,6 @@ class Engine {
     if (!moveNow) {
       fen = GameController().position.fen;
       if (fen == null) {
-        // ignore: only_throw_errors
         throw const EngineNoBestMove();
       }
 
@@ -245,7 +243,6 @@ class Engine {
         // FEN not found in predefined map: proceed with engine search
         fen = _getPositionFen();
         if (fen == null) {
-          // ignore: only_throw_errors
           throw const EngineNoBestMove();
         }
         await _send(fen);
@@ -278,7 +275,6 @@ class Engine {
     }
 
     if (response == null) {
-      // ignore: only_throw_errors
       throw const EngineTimeOut();
     }
 
@@ -303,7 +299,6 @@ class Engine {
       // Guard: engine may reply with "bestmove none" when a search is aborted
       // or during debug fallbacks. Treat it as no-best-move and recover.
       if (best.toLowerCase() == 'none') {
-        // ignore: only_throw_errors
         throw const EngineNoBestMove();
       }
 
@@ -337,11 +332,9 @@ class Engine {
     }
 
     if (response.contains("nobestmove")) {
-      // ignore: only_throw_errors
       throw const EngineNoBestMove();
     }
 
-    // ignore: only_throw_errors
     throw const EngineTimeOut();
   }
 

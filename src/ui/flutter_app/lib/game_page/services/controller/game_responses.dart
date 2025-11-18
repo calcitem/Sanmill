@@ -6,7 +6,7 @@
 part of '../mill.dart';
 
 /// Custom response we can catch without affecting other thrown exceptions.
-abstract class GameResponse {}
+abstract class GameResponse implements Exception {}
 
 class GameResponseOK implements GameResponse {
   const GameResponseOK();

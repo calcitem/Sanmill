@@ -118,12 +118,12 @@ class BoardImageRecognitionService {
       30.0; // Threshold for matching configured piece colors
 
   // Store the last detected board points and image processing dimensions
-  static List<BoardPoint> _lastDetectedPoints = <BoardPoint>[];
+  static List<BoardPoint> lastDetectedPoints = <BoardPoint>[];
   static int _processedImageWidth = 0;
   static int _processedImageHeight = 0;
 
   // Add storage for debug information
-  static BoardRecognitionDebugInfo _lastDebugInfo = BoardRecognitionDebugInfo();
+  static BoardRecognitionDebugInfo lastDebugInfo = BoardRecognitionDebugInfo();
 
   // Add mutable parameters that can be adjusted at runtime
   /// Contrast enhancement factor used during image processing
@@ -198,18 +198,10 @@ class BoardImageRecognitionService {
     logger.i("Recognition parameters updated");
   }
 
-  // Getter method for the last detected board points
-  // ignore: unnecessary_getters_setters
-  static List<BoardPoint> get lastDetectedPoints => _lastDetectedPoints;
-
   // Expose processed image dimensions
   static int get processedImageWidth => _processedImageWidth;
 
   static int get processedImageHeight => _processedImageHeight;
-
-  // Expose debug information
-  // ignore: unnecessary_getters_setters
-  static BoardRecognitionDebugInfo get lastDebugInfo => _lastDebugInfo;
 
   // More sensitive color detection thresholds
   static const int _whiteBrightnessThresholdBase = 170;
@@ -260,7 +252,7 @@ class BoardImageRecognitionService {
         height: decodedImage.height,
       );
 
-      _lastDebugInfo = BoardRecognitionDebugInfo(
+      lastDebugInfo =BoardRecognitionDebugInfo(
         originalImage: originalImageCopy,
       );
 
@@ -285,7 +277,7 @@ class BoardImageRecognitionService {
         height: processImage.height,
       );
 
-      _lastDebugInfo = _lastDebugInfo.copyWith(
+      lastDebugInfo =lastDebugInfo.copyWith(
         processedImage: resizedImageCopy,
       );
 
@@ -302,7 +294,7 @@ class BoardImageRecognitionService {
         height: processImage.height,
       );
 
-      _lastDebugInfo = _lastDebugInfo.copyWith(
+      lastDebugInfo =lastDebugInfo.copyWith(
         processedImage: enhancedImageCopy,
       );
 
@@ -319,7 +311,7 @@ class BoardImageRecognitionService {
       );
 
       // Update debug info
-      _lastDebugInfo = _lastDebugInfo.copyWith(
+      lastDebugInfo =lastDebugInfo.copyWith(
         characteristics: characteristics,
       );
 
@@ -339,7 +331,7 @@ class BoardImageRecognitionService {
           height: processImage.height,
         );
 
-        _lastDebugInfo = _lastDebugInfo.copyWith(
+        lastDebugInfo =lastDebugInfo.copyWith(
           processedImage: enhancedContrastImageCopy,
         );
       }
@@ -388,7 +380,7 @@ class BoardImageRecognitionService {
         );
 
         // Update debug info to reflect fallback
-        _lastDebugInfo = _lastDebugInfo.copyWith(boardRect: finalBoardRect);
+        lastDebugInfo =lastDebugInfo.copyWith(boardRect: finalBoardRect);
       } else {
         // finalBoardRect is the valid, sufficiently large rectangle detected earlier
         logger.i("Board bounding box found and validated: $finalBoardRect");
@@ -404,10 +396,10 @@ class BoardImageRecognitionService {
       ); // Use finalBoardRect here
 
       // Save detected board points
-      _lastDetectedPoints = boardPoints;
+      lastDetectedPoints = boardPoints;
 
       // Update debug info with board points
-      _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: boardPoints);
+      lastDebugInfo =lastDebugInfo.copyWith(boardPoints: boardPoints);
 
       // Estimate the board color for piece detection using the final rectangle
       final Rgb boardColor = _estimateBoardColor(
@@ -416,7 +408,7 @@ class BoardImageRecognitionService {
       ); // Use finalBoardRect
 
       // Update debug info with board color
-      _lastDebugInfo = _lastDebugInfo.copyWith(boardColor: boardColor);
+      lastDebugInfo =lastDebugInfo.copyWith(boardColor: boardColor);
 
       // First pass: scan points to determine dominant colors and thresholds
       // Use unprocessed image for more accurate color profile
@@ -430,7 +422,7 @@ class BoardImageRecognitionService {
       );
 
       // Update debug info with color profile
-      _lastDebugInfo = _lastDebugInfo.copyWith(colorProfile: colorProfile);
+      lastDebugInfo =lastDebugInfo.copyWith(colorProfile: colorProfile);
 
       // Second pass: use refined thresholds to accurately classify each point
       // Use unprocessed image for actual piece detection
@@ -1564,7 +1556,7 @@ class BoardImageRecognitionService {
       finalSize,
       finalSize,
     );
-    _lastDebugInfo = _lastDebugInfo.copyWith(boardRect: boardRect);
+    lastDebugInfo =lastDebugInfo.copyWith(boardRect: boardRect);
 
     // Generate standard board grid based on detected rectangle
     _generateStandardBoardGrid(boardRect, imgSrc);
@@ -1574,8 +1566,8 @@ class BoardImageRecognitionService {
       imgSrc,
       boardRect,
     );
-    _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: refinedPoints);
-    _lastDetectedPoints = refinedPoints;
+    lastDebugInfo =lastDebugInfo.copyWith(boardPoints: refinedPoints);
+    lastDetectedPoints = refinedPoints;
 
     return boardRect;
   }
@@ -1596,8 +1588,8 @@ class BoardImageRecognitionService {
         imgSrc,
         colorSettingsResult,
       );
-      _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: refinedPoints);
-      _lastDetectedPoints = refinedPoints;
+      lastDebugInfo =lastDebugInfo.copyWith(boardPoints: refinedPoints);
+      lastDetectedPoints = refinedPoints;
 
       return colorSettingsResult;
     }
@@ -1657,7 +1649,7 @@ class BoardImageRecognitionService {
     mask = _dilate(mask, 3); // Stub - returns original
 
     // Update debug info with the mask after potential morphology
-    _lastDebugInfo = _lastDebugInfo.copyWith(boardMask: mask);
+    lastDebugInfo =lastDebugInfo.copyWith(boardMask: mask);
 
     // 4. Find the largest connected component using Breadth-First Search (BFS)
     final List<List<int>> labels = List<List<int>>.generate(
@@ -1801,7 +1793,7 @@ class BoardImageRecognitionService {
       finalSize,
       finalSize,
     );
-    _lastDebugInfo = _lastDebugInfo.copyWith(boardRect: boardRect);
+    lastDebugInfo =lastDebugInfo.copyWith(boardRect: boardRect);
 
     // Generate the standard grid mask based on this rectangle
     _generateStandardBoardGrid(boardRect, imgSrc);
@@ -1811,8 +1803,8 @@ class BoardImageRecognitionService {
       imgSrc,
       boardRect,
     );
-    _lastDebugInfo = _lastDebugInfo.copyWith(boardPoints: refinedPoints);
-    _lastDetectedPoints = refinedPoints;
+    lastDebugInfo =lastDebugInfo.copyWith(boardPoints: refinedPoints);
+    lastDetectedPoints = refinedPoints;
 
     return boardRect;
   }
@@ -2017,7 +2009,7 @@ class BoardImageRecognitionService {
     }
 
     // Update debug info with the generated grid mask
-    _lastDebugInfo = _lastDebugInfo.copyWith(boardMask: gridMask);
+    lastDebugInfo =lastDebugInfo.copyWith(boardMask: gridMask);
   }
 
   // === Public wrapper methods & setters added for external access ===
@@ -2093,14 +2085,6 @@ class BoardImageRecognitionService {
 
   /// Expose `_rgbFromColor` as a public helper.
   static Rgb rgbFromColor(Color color) => _rgbFromColor(color);
-
-  /// Setter to allow external overwriting of debug info (used by debug screens).
-  static set lastDebugInfo(BoardRecognitionDebugInfo info) =>
-      _lastDebugInfo = info;
-
-  /// Setter to allow external overwriting of last detected points (used by debug screens).
-  static set lastDetectedPoints(List<BoardPoint> points) =>
-      _lastDetectedPoints = points;
   // === End of public wrappers ===
 }
 

@@ -143,10 +143,10 @@ class AboutPage extends StatelessWidget {
         ),
         body: ListView.separated(
           key: const Key('about_page_listview'),
-          itemBuilder: (_, int index) => settingsItems[index],
-          // ignore: unnecessary_underscores
-          separatorBuilder: (_, __) =>
-              const Divider(), // ignore: unnecessary_underscores
+          itemBuilder: (BuildContext context, int index) =>
+              settingsItems[index],
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
           itemCount: settingsItems.length,
         ),
       ),
