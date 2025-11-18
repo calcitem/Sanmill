@@ -194,14 +194,16 @@ class SpeechRecognitionService {
       recognitionStatus.value = 'Transcribing...';
       logger.i('Transcribing audio from file: $audioPath');
 
-      final dynamic result = await _whisper!.transcribe(
+      // ignore: always_specify_types
+      // TranscribeResult is not exported through whisper_ggml public API
+      final result = await _whisper!.transcribe(
         model: _model,
         audioPath: audioPath,
         lang: _language,
       );
 
-      if (result != null && result.transcription.text.isNotEmpty) {
-        final String transcribedText = result.transcription.text;
+      if (result != null && (result.transcription.text as String).isNotEmpty) {
+        final String transcribedText = result.transcription.text as String;
         recognitionResult.value = transcribedText;
         recognitionStatus.value = 'Transcription complete';
         logger.i('Transcription result: $transcribedText');
