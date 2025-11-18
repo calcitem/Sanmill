@@ -29,6 +29,21 @@ subprojects {
                     compileSdk 31
                 }
             }
+
+            // Force all plugins to use official NDK r29 version
+            String pluginNdkVersion = project.android.ndkVersion
+            if (pluginNdkVersion != null && pluginNdkVersion != "29.0.14206865") {
+                project.logger.warn(
+                        "Warning: Overriding ndkVersion in Flutter plugin: "
+                                + project.name
+                                + " from "
+                                + pluginNdkVersion
+                                + " to 29.0.14206865 (official NDK r29)."
+                )
+                project.android {
+                    ndkVersion "29.0.14206865"
+                }
+            }
         }
     }
 
