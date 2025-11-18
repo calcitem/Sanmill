@@ -73,7 +73,7 @@ class EngineResponseSkip implements EngineResponse {
   const EngineResponseSkip();
 }
 
-class EngineNoBestMove implements EngineResponse {
+class EngineNoBestMove implements EngineResponse, Exception {
   const EngineNoBestMove();
 }
 
@@ -81,7 +81,7 @@ class EngineGameIsOver implements EngineResponse {
   const EngineGameIsOver();
 }
 
-class EngineTimeOut implements EngineResponse {
+class EngineTimeOut implements EngineResponse, Exception {
   const EngineTimeOut();
 }
 

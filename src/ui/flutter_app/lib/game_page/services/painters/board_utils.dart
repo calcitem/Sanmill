@@ -158,8 +158,7 @@ double offsetFromInt(int point, Size size) =>
 
 /// List of points on the board.
 const List<Offset> points = <Offset>[
-  // ignore: use_named_constants
-  Offset(0, 0), // 0
+  Offset.zero, // 0
   Offset(0, 3), // 1
   Offset(0, 6), // 2
   Offset(1, 1), // 3
