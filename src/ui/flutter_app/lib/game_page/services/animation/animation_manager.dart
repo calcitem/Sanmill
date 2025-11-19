@@ -13,6 +13,8 @@ class AnimationManager {
     _initPlaceAnimation();
     _initMoveAnimation();
     _initRemoveAnimation();
+    _initPickUpAnimation();
+    _initPutDownAnimation();
   }
 
   final TickerProvider vsync;
@@ -41,6 +43,22 @@ class AnimationManager {
   AnimationController get removeAnimationController =>
       _removeAnimationController;
   Animation<double> get removeAnimation => _removeAnimation;
+
+  // Pick-up Animation (piece lift effect when selecting)
+  late final AnimationController _pickUpAnimationController;
+  late final Animation<double> _pickUpAnimation;
+
+  AnimationController get pickUpAnimationController =>
+      _pickUpAnimationController;
+  Animation<double> get pickUpAnimation => _pickUpAnimation;
+
+  // Put-down Animation (piece drop effect when placing)
+  late final AnimationController _putDownAnimationController;
+  late final Animation<double> _putDownAnimation;
+
+  AnimationController get putDownAnimationController =>
+      _putDownAnimationController;
+  Animation<double> get putDownAnimation => _putDownAnimation;
 
   // Initialize Place Animation
   void _initPlaceAnimation() {
@@ -93,12 +111,46 @@ class AnimationManager {
     );
   }
 
+  // Initialize Pick-up Animation
+  // Uses easeOutBack curve for a slight overshoot effect when lifting
+  void _initPickUpAnimation() {
+    _pickUpAnimationController = AnimationController(
+      vsync: vsync,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _pickUpAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _pickUpAnimationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
+  }
+
+  // Initialize Put-down Animation
+  // Uses elasticOut curve for a bouncing landing effect
+  void _initPutDownAnimation() {
+    _putDownAnimationController = AnimationController(
+      vsync: vsync,
+      duration: const Duration(milliseconds: 400),
+    );
+
+    _putDownAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _putDownAnimationController,
+        curve: Curves.elasticOut,
+      ),
+    );
+  }
+
   // Properly dispose of the animation controllers
   void dispose() {
     _isDisposed = true; // Mark as disposed
     _placeAnimationController.dispose();
     _moveAnimationController.dispose();
     _removeAnimationController.dispose();
+    _pickUpAnimationController.dispose();
+    _putDownAnimationController.dispose();
   }
 
   // Reset Place Animation if not disposed
@@ -158,6 +210,14 @@ class AnimationManager {
 
     if (allowAnimations) {
       resetPlaceAnimation();
+
+      // Trigger put-down animation when place animation completes
+      _placeAnimationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          animatePutDown();
+        }
+      });
+
       forwardPlaceAnimation();
     }
   }
@@ -171,6 +231,14 @@ class AnimationManager {
 
     if (allowAnimations) {
       resetMoveAnimation();
+
+      // Trigger put-down animation when move animation completes
+      _moveAnimationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          animatePutDown();
+        }
+      });
+
       forwardMoveAnimation();
     }
   }
@@ -195,6 +263,62 @@ class AnimationManager {
       });
 
       forwardRemoveAnimation();
+    }
+  }
+
+  // Reset Pick-up Animation if not disposed
+  void resetPickUpAnimation() {
+    if (!_isDisposed) {
+      _pickUpAnimationController.reset();
+    }
+  }
+
+  // Start Pick-up Animation if not disposed
+  void forwardPickUpAnimation() {
+    if (!_isDisposed) {
+      _pickUpAnimationController.forward();
+    }
+  }
+
+  // Reset Put-down Animation if not disposed
+  void resetPutDownAnimation() {
+    if (!_isDisposed) {
+      _putDownAnimationController.reset();
+    }
+  }
+
+  // Start Put-down Animation if not disposed
+  void forwardPutDownAnimation() {
+    if (!_isDisposed) {
+      _putDownAnimationController.forward();
+    }
+  }
+
+  // Handle Pick-up Animation with proper disposal check
+  // This animates the piece lifting effect when selected
+  void animatePickUp() {
+    if ( /* GameController().isDisposed == true || */ _isDisposed) {
+      // Avoid animation when GameController or AnimationManager is disposed
+      return;
+    }
+
+    if (allowAnimations) {
+      resetPickUpAnimation();
+      forwardPickUpAnimation();
+    }
+  }
+
+  // Handle Put-down Animation with proper disposal check
+  // This animates the piece landing effect when placed
+  void animatePutDown() {
+    if ( /* GameController().isDisposed == true || */ _isDisposed) {
+      // Avoid animation when GameController or AnimationManager is disposed
+      return;
+    }
+
+    if (allowAnimations) {
+      resetPutDownAnimation();
+      forwardPutDownAnimation();
     }
   }
 }

@@ -313,6 +313,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
             animationManager.placeAnimationController,
             animationManager.moveAnimationController,
             animationManager.removeAnimationController,
+            animationManager.pickUpAnimationController,
+            animationManager.putDownAnimationController,
           ]),
           builder: (_, Widget? child) {
             return FutureBuilder<GameImages>(
@@ -349,6 +351,10 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                                 animationManager.moveAnimation.value,
                             removeAnimationValue:
                                 animationManager.removeAnimation.value,
+                            pickUpAnimationValue:
+                                animationManager.pickUpAnimation.value,
+                            putDownAnimationValue:
+                                animationManager.putDownAnimation.value,
                             pieceImages: <PieceColor, ui.Image?>{
                               PieceColor.white: gameImages?.whitePieceImage,
                               PieceColor.black: gameImages?.blackPieceImage,

@@ -1988,6 +1988,9 @@ class Position {
     action = Act.place;
     GameController().gameInstance.blurIndex = squareToIndex[sq];
 
+    // Trigger pick-up animation when piece is selected
+    GameController().animationManager.animatePickUp();
+
     // Set square number
     selectedPieceNumber = sqAttrList[sq].placedPieceNumber;
 
