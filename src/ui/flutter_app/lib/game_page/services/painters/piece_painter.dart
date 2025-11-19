@@ -55,6 +55,15 @@ class PiecePainter extends CustomPainter {
       };
     }
 
+    // Check if piece pick-up animation is disabled in settings
+    if (!DB().displaySettings.isPiecePickUpAnimationEnabled) {
+      return <String, double>{
+        'scale': scale,
+        'shadowBlur': shadowBlur,
+        'lift': lift,
+      };
+    }
+
     // If animation duration is 0 (instant move), do not apply any scale/lift effects
     // This respects the user setting for "No animation"
     if (DB().displaySettings.animationDuration == 0) {

@@ -2163,6 +2163,10 @@
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
+    "enablePiecePickUpAnimation": "Enable piece pick-up animation",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
     "undo": "Undo",
     "@undo": {
         "description": "Undo last move"

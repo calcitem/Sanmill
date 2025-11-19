@@ -2163,6 +2163,10 @@
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
+    "enablePiecePickUpAnimation": "启用棋子拿起动画",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
     "undo": "撤销",
     "@undo": {
         "description": "Undo last move"

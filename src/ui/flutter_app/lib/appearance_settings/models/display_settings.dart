@@ -94,6 +94,7 @@ class DisplaySettings {
     this.boardInnerRingSize = 1.0,
     this.boardShadowEnabled = false,
     this.isCapturablePiecesHighlightShown = false,
+    this.isPiecePickUpAnimationEnabled = true,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -243,6 +244,10 @@ class DisplaySettings {
   /// Whether to highlight capturable pieces when opponent can capture
   @HiveField(43, defaultValue: false)
   final bool isCapturablePiecesHighlightShown;
+
+  /// Whether to show piece pick-up and drop animations
+  @HiveField(44, defaultValue: true)
+  final bool isPiecePickUpAnimationEnabled;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

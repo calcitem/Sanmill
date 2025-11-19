@@ -848,6 +848,15 @@ class AppearanceSettingsPage extends StatelessWidget {
               .copyWith(isCapturablePiecesHighlightShown: val),
           titleString: S.of(context).highlightCapturablePieces,
         ),
+        SettingsListTile.switchTile(
+          key: const Key(
+            'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
+          ),
+          value: displaySettings.isPiecePickUpAnimationEnabled,
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isPiecePickUpAnimationEnabled: val),
+          titleString: S.of(context).enablePiecePickUpAnimation,
+        ),
         SettingsListTile(
           key: const Key(
             'display_settings_card_piece_width_settings_list_tile',
