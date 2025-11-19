@@ -985,9 +985,12 @@ class Position {
         } else {
           // Select piece
           if (_currentSquare[us] == s) {
+            // Deselecting the currently selected piece
             _currentSquare[us] = 0;
             selectedPieceNumber = 0;
             GameController().gameInstance.focusIndex = null;
+            // Reverse the pick-up animation to animate piece going back down
+            GameController().animationManager.reversePickUp();
             SoundManager().playTone(Sound.mill);
           } else {
             _currentSquare[us] = s;
