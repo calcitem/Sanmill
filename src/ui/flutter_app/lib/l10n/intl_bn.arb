@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "ঠিক আছে",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} সরাতে।",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "প্লেয়ারের 1 জয়!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "আমদানি করা যাবে না {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "চল এবং নিয়ম মেলে না।",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "ত্রুটি: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "উইন রেট",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} টুকরা সংখ্যা তিনের কম।",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} পদত্যাগ.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} যাওয়ার কোন উপায় নেই।",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "বোর্ড পূর্ণ, এবং {player} যাওয়ার কোন উপায় নেই।",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "সময় শেষ, {player} হারিয়ে গেছে।",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "চলমান পর্যায়ে, শেষের নির্দিষ্ট সংখ্যাটিতে কোনও টুকরো সরানো হয়নি।",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "কঠিন স্তর চ্যালেঞ্জ? নতুন লেভেল হবে লেভেল {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "তুমি হেরেছ!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "সংস্করণ: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "ধন্যবাদ",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "বিকল্পগুলি",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "বাছাই করুন {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "তথ্য",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " এবং ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "গ্রহণ করুন",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} হাতে: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "বোর্ডে {player}: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "উপরে থেকে বোর্ড অফসেট",
     "@boardTop": {
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "পাশ সরানোর জন্য: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "প্লেয়ার",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "শেষ পদক্ষেপ: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "সরান",
+    "@move": {
+        "description": "Move"
     },
     "selected": "নির্বাচিত",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} মুভস}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "লোড ব্যর্থ হয়েছে.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} টুকরা}} সরাতে হবে৷",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "স্থাপন ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "স্থাপন পর্বে স্থাপিত টুকরা গণনা.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "বর্তমান প্লেয়ারটি {count} টুকরা রেখেছে।",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "ফেজ স্থাপন না, এটি পরিবর্তন করতে পারবেন না.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "বন। জংগল",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "ডেস্কটপ ছবি",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "অবৈধ অবস্থান।",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIF শেয়ার করুন",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "পিক্সেল অনুপাত",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "সময়কাল",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "গেম স্ক্রিন রেকর্ডার",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "আগে",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "পরবর্তী",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "এড়িয়ে যান",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "বুঝেছি",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "আপনি নিয়ম সেটিংসে গেমের নিয়ম পরিবর্তন করতে পারেন।",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "পিকারে মান পরিবর্তন করতে আপনি মাউস হুইল ব্যবহার করতে পারেন।",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI চিন্তার সময় 0 এ সেট করা মানে চিন্তা করার জন্য কোন সময়সীমা নেই।",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) হল আলফা-বিটা অনুসন্ধান অ্যালগরিদমের একটি পরিবর্তিত রূপ যার লক্ষ্য হল মধ্যবর্তী অনুসন্ধান ফলাফল পুনরায় ব্যবহার করে এবং অনুসন্ধানের স্থান সংকুচিত করার জন্য একটি ভাল প্রাথমিক অনুমান ব্যবহার করে দক্ষতা উন্নত করা।",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "অনুগ্রহ করে সচেতন থাকুন যে AI চিন্তার সময় সমন্বয় সম্পূর্ণরূপে সুনির্দিষ্ট নাও হতে পারে। প্রকৃত চিন্তার সময় কম হতে পারে যখন অসুবিধার মাত্রা কম মানের সেট করা হয় এবং সময় ফুরিয়ে গেলে AI মধ্য-চিন্তা করার সময় দীর্ঘ হতে পারে।",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "আপনি যদি অসুবিধার স্তরটি উচ্চ সেট করেন কিন্তু AI চিন্তার সময় না বাড়ান, তবে চিন্তার সময় সীমাবদ্ধতার কারণে প্রকৃত অসুবিধা স্তরটি কম মানের মধ্যে সীমাবদ্ধ হতে পারে। প্রকৃত মান মেশিনের কর্মক্ষমতা উপর ভিত্তি করে পরিবর্তিত হতে পারে.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (প্রিন্সিপাল ভেরিয়েশন সার্চ) হল একটি সার্চ অ্যালগরিদম যা একটি প্রদত্ত অবস্থানে সেরা পদক্ষেপ খুঁজে বের করতে পারে। এটি আলফা-বিটা অ্যালগরিদমের একটি বর্ধিতকরণ এবং এটি নিশ্চিত করতে নাল বা শূন্য উইন্ডো অনুসন্ধানগুলি ব্যবহার করে যে মূল পরিবর্তন থেকে একটি পদক্ষেপ ইতিমধ্যে নিরাপদ স্কোরের চেয়ে খারাপ বা খারাপ নয়। PVS সবচেয়ে প্রতিশ্রুতিবদ্ধ পদক্ষেপগুলিতে ফোকাস করে এবং সাবঅপ্টিমাল শাখাগুলির অপ্রয়োজনীয় অনুসন্ধানগুলি এড়িয়ে যায়, যা অনুসন্ধানের কার্যকারিতা উন্নত করতে সহায়তা করে।",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "আলফা-বিটা অ্যালগরিদম হল একটি সার্চ অ্যালগরিদম যা সর্বোত্তম পদক্ষেপ খুঁজে পেতে পারে৷ এটি মিনিম্যাক্স নীতি এবং দুটি মান, আলফা এবং বিটা ব্যবহার করে, অনুসন্ধান গাছকে ছাঁটাই করতে এবং দক্ষতা বাড়াতে। আলফা ন্যূনতম স্কোর প্রতিনিধিত্ব করে যে কম্পিউটারটি নিশ্চিত যে এটি পেতে পারে, যখন বিটা তার প্রতিপক্ষের সর্বোচ্চ স্কোরের প্রতিনিধিত্ব করে। অ্যালগরিদম কম্পিউটারকে একটি গেমে স্মার্ট, দক্ষ সিদ্ধান্ত নিতে সাহায্য করে।",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "মানুষের অভিজ্ঞতা অনুযায়ী জেতার চেষ্টা করলে হেরে যাবে। পরিবর্তে, আপনার লক্ষ্য হিসাবে একটি ড্র করার লক্ষ্য রাখুন এবং খেলা হারানো এড়ান। আপনার প্রতিপক্ষকে পর্যবেক্ষণ করুন এবং তাদের এমন একটি অবস্থানে আলতোভাবে প্রলুব্ধ করুন যেখানে তারা ভুল করতে পারে। যখন তারা দুর্বলতা দেখায়, সুযোগটি কাজে লাগান এবং মৃদুভাবে জয়ের জন্য চাপ দিন। এই ভাবে, আপনি খেলা জিততে পারেন.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "এই খেলায়, প্রথম খেলোয়াড়ের তুলনায় দ্বিতীয় খেলোয়াড়ের পক্ষে জেতা সহজ।",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "প্যাসিভ বিকল্পটি সক্রিয় করার ফলে AI শিথিল হবে যখন পজিশনে সুবিধা থাকবে, আক্রমণাত্মকভাবে যত তাড়াতাড়ি সম্ভব জেতার চেষ্টা করার পরিবর্তে।",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "এই বিকল্পটি সক্ষম করা গেমটির এলোমেলোতা এবং মজা বাড়ায় এবং এটিকে নিষ্ক্রিয় করে AI কে হারানোর উপায়গুলি অধ্যয়ন করতে সহায়তা করতে পারে৷",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "যদি AI তার টুকরোগুলির গতিশীলতা বিবেচনা করে, তবে এটি শুধুমাত্র প্রতিপক্ষের টুকরাগুলিকে যত তাড়াতাড়ি সম্ভব ক্যাপচার করার লক্ষ্য রাখবে না, তবে প্রতিপক্ষের গতিবিধিকে অবরুদ্ধ করা এবং তাদের একই কাজ করা থেকে বাধা দেওয়ার কথাও বিবেচনা করবে।",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "বোর্ড পূর্ণ হলে",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "স্থাপন পর্বের শেষে, চলন্ত পর্ব শুরু হওয়ার আগে, বোর্ডটি টুকরো টুকরো হলে ক্রিয়াটি অনুসরণ করে।",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "যে খেলোয়াড় চলমান পর্বে প্রথমে চলে যায় সে প্রতিপক্ষের একটি টুকরো সরিয়ে দেয়।",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "উভয় পক্ষই ড্র করতে রাজি।",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "আপনার প্রতিপক্ষের একটি টুকরা নিন.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "প্রথম খেলোয়াড় খেলা হারায়।",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "প্রথম এবং দ্বিতীয় খেলোয়াড়রা প্রতিপক্ষের একটি টুকরো সরিয়ে দেয়।",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "দ্বিতীয় এবং প্রথম খেলোয়াড়রা প্রতিপক্ষের একটি টুকরো সরিয়ে দেয়।",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "এখন উড়ন্ত পর্বে প্রবেশ করেছে, প্রতিপক্ষের টুকরো বোর্ডের যে কোনও খালি পয়েন্টে লাফ দিতে পারে। আপনি \"নিয়ম সেটিংস\" এ উড়ন্ত নিয়মটি বন্ধ করতে পারেন।",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "যখন অচলাবস্থা",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "কোন ক্রিয়াটি অনুসরণ করে যখন কোন অংশ সরানো যায় না?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "একটি অচলাবস্থা হার সঙ্গে শেষ.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "সরানোর জন্য পাশ পরিবর্তন করুন।",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "প্রতিপক্ষের একটি টুকরা সরান এবং পরবর্তী পদক্ষেপ করুন।",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "একটি অচলাবস্থা ড্র সঙ্গে শেষ.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "প্রতিপক্ষের একটি টুকরো সরান এবং সরানোর জন্য পাশ পরিবর্তন করুন।",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "এআই প্রতিক্রিয়া বিলম্বের সময়",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "এআই বর্তমানে একটি বিলম্বিত প্রতিক্রিয়া পর্যায়ে রয়েছে। এগিয়ে যাওয়ার আগে অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন।",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "আপনি একটি অসংলগ্ন টুকরা অপসারণ করতে পারবেন না.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "অচলাবস্থা হলে, মিল গঠন নির্বিশেষে, আপনার সংলগ্ন প্রতিপক্ষের টুকরা সরানো যেতে পারে।",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS হল একটি শিক্ষানবিস-বান্ধব অ্যালগরিদম যা সিমুলেশনের মাধ্যমে বিভিন্ন চাল অন্বেষণ এবং মূল্যায়ন করে সিদ্ধান্ত নেয়।",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "গোল্ডেন জেড",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "বন কাঠ",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "অন্ধকার রহস্য",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "মধ্যরাত নীল",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "সবুজ বনভূমি",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "সবুজ তৃণভূমি",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "পাথুরে পথ",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "প্যাস্টেল গোলাপী",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "ফিরোজা সাগর",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "ভায়োলেট ড্রিম",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "পুদিনা চকোলেট",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "আকাশী নীল",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "কৌতুকপূর্ণ বাগান",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "রেট্রোগ্রেড অ্যানালাইসিস অ্যালগরিদম বিভিন্ন স্টার্ট পজিশন থেকে একটি এন্ডগেম ডাটাবেস তৈরি করতে বহু-মূল্যবান রেট্রোগ্রেড বিশ্লেষণ ব্যবহার করে, তারপর গেমপ্লে অপ্টিমাইজ করতে এই ডাটাবেসটি প্রয়োগ করে। এই পদ্ধতিটি আল্ট্রা-স্ট্রং সমাধানের বিভাগে পড়ে।",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "আপনি কি এই অ্যালগরিদমের জন্য ব্যবহারকারীর নির্দেশিকা দেখতে চান?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "অবস্থানগত সুবিধা নির্দেশক দেখান",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "নিখুঁত ডাটাবেস ব্যবহার করুন",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "অত্যাধুনিক অ্যালগরিদমের মাধ্যমে তৈরি একটি ত্রুটিহীন গেম ডাটাবেস ব্যবহার করতে এই বিকল্পটি সক্ষম করুন৷ এই বৈশিষ্ট্যটি সর্বোত্তম পদক্ষেপের পরামর্শ দেওয়ার জন্য ওপেনিং এবং এন্ডগেম উভয় কৌশলকে সংহত করে। যারা গেমপ্লেতে সর্বোচ্চ স্তরের নির্ভুলতা খোঁজেন তাদের জন্য এটি পছন্দের পছন্দ। সূক্ষ্ম কম্পিউটেশনাল কৌশলগুলির মাধ্যমে তৈরি করা হয়েছে, ডাটাবেসটি প্রায় নিখুঁত গেম সমাধান দেওয়ার জন্য ডিজাইন করা হয়েছে।\n\nদ্রষ্টব্য: AI ডাটাবেস অ্যাক্সেস করতে ব্যর্থ হলে, এটি গেমপ্লে সিদ্ধান্তের জন্য প্রচলিত অ্যালগরিদমগুলিতে পরিণত হবে। ডাটাবেস উপলব্ধ হলে, 'কঠিন স্তর' কার্যত অপরাজেয় হয়ে ওঠে এবং 'এআই থিংকিং টাইম' একটি মারাত্মক হ্রাস অনুভব করে। 'AI এর প্লেস্টাইল' বিকল্পগুলির মধ্যে অনেক সেটিংস ওভাররাইড করা হবে, কারণ ডাটাবেসের ফলাফলগুলি সর্বোচ্চ অগ্রাধিকার দেয়৷\n\nকিভাবে এই ত্রুটিহীন ডাটাবেসের সবচেয়ে বেশি ব্যবহার করা যায় তার নির্দেশনার জন্য, এখানে ক্লিক করুন।",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "ব্যাকগ্রাউন্ড ইমেজ",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "যখন 'নিখুঁত ডাটাবেস ব্যবহার করুন' বিকল্পটি সক্রিয় না থাকে, তখন 'র্যান্ডম' সেটিং এআইকে সরানো নির্বাচনের জন্য কোনো অ্যালগরিদম ব্যবহার না করে এলোমেলোভাবে টুকরো টুকরো করে দেয়। এটি সাধারণত উল্লেখযোগ্যভাবে দুর্বল গেমপ্লে পরিণত হয়। বিপরীতভাবে, যখন 'নিখুঁত ডেটাবেস ব্যবহার করুন' সক্ষম করা হয়, তখন AI একচেটিয়াভাবে সিদ্ধান্ত নেওয়ার জন্য 'পারফেক্ট ডেটাবেস'-এর উপর নির্ভর করে, এটিকে ঐতিহ্যগত AI অ্যালগরিদমের সাথে মিশ্রিত করার পরিবর্তে। এই মোডে, AI এর চালগুলি সম্পূর্ণরূপে ডাটাবেসের বিষয়বস্তুর উপর ভিত্তি করে, রিয়েল-টাইম গণনা বা অনুসন্ধান অ্যালগরিদমের উপর নির্ভরতা পরিহার করে।",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "প্রতিপক্ষের হাত থেকে ঘুঁটি সরান; তারপর প্রতিপক্ষের পালা রাখার।",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "প্লেসিং ফেজের সময় মিল তৈরি করার সময়",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "বোর্ড থেকে প্রতিপক্ষের ঘুঁটি সরান।",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "বোর্ড থেকে প্রতিপক্ষের ঘুঁটি সরান; তারপর প্রতিপক্ষের পালা রাখার।",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "প্রতিপক্ষ বোর্ড থেকে নিজের ঘুঁটি সরিয়ে ফেলে।",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "আপনি ব্যবস্থা নেওয়ার পরিবর্তে, প্রতিপক্ষ নিজের ঘুঁটি বোর্ড থেকে বেছে নেয় এবং সরিয়ে ফেলে, কার্যকরভাবে এমন একটি পদক্ষেপ নেয় যা তাদের নিজেদের জন্য ক্ষতিকর।",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "প্রতিপক্ষের হাত থেকে ঘুঁটি সরান; তারপর আপনার পালা চলার।",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "প্রতিপক্ষের হাত থেকে ঘুঁটি সরিয়ে দিন। যদি, মাল্টি-রিমুভ সেটিং অনুযায়ী, একাধিক ঘুঁটি সরাতে হয় এবং প্রতিপক্ষের হাতে আর কোনো ঘুঁটি না থাকে, বোর্ড থেকে প্রতিপক্ষের ঘুঁটি সরাতে থাকুন। তারপর আপনার পালা চলার। আপনি যদি মিল তৈরি করা চালিয়ে যান, আপনি প্রতিপক্ষের ঘুঁটিগুলি সরিয়ে যেতে পারেন।",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "প্রতিপক্ষের হাত থেকে ঘুঁটি সরিয়ে দিন। যদি, মাল্টি-রিমুভ সেটিং অনুযায়ী, একাধিক ঘুঁটি সরাতে হয় এবং প্রতিপক্ষের হাতে আর কোনো ঘুঁটি না থাকে, বোর্ড থেকে প্রতিপক্ষের ঘুঁটিগুলি সরাতে থাকুন। তারপর প্রতিপক্ষের পালা চলার।",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "ঘুঁটি মার্ক করুন এবং অপসারণে বিলম্ব করুন।",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "প্লেসিং ফেজের সময়, সরানো যাবে এমন ঘুঁটিগুলি চিহ্নিত করা হয়, এবং উভয় খেলোয়াড়ের জন্য, এই পয়েন্টগুলিতে কোনও নতুন ঘুঁটি স্থাপন করা যায় না। চলন্ত ফেজে প্রবেশ করার পরে, এই চিহ্নিত ঘুঁটিগুলি একসাথে সরানো হয়, এবং খেলোয়াড়রা তাদের ঘুঁটিগুলি এই এখন-খালি পয়েন্টে সরাতে পারে।",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "স্থাপন পর্যায়ে মিল গঠনের সময় গৃহীত হতে পারে এমন ক্রিয়াকলাপ।",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "চিহ্নিত",
-    "@marked": {},
-    "menu": "মেনু",
-    "@menu": {},
-    "monochrome": "মনোক্রোম",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "আপনি সাধারণ সেটিংসের অ্যাক্সেসিবিলিটি কনফিগারেশনে স্ক্রিন রিডার সাপোর্ট চালু করতে পারেন।",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "টুকরোগুলিতে সংখ্যা প্রদর্শন",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "চিত্র সংরক্ষণ করুন",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "বিশ্লেষণ টুলবার দেখান",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "বিশ্লেষণ টুলবারের পটভূমি রঙ",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "বিশ্লেষণ টুলবারের আইকন রঙ",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "পরিবর্তিত।",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "পরিবর্তন করা যায় না।",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "ঘোরানো",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "হর. ফ্লি.",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "ভার্ট. ফ্লি.",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "আইও ফ্লিপ",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "স্বচ্ছ ক্যানভাস",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "পুনরাবৃত্ত মিলস গঠন সীমিত করুন",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "একটি মিল থেকে অন্য মিলে সরানো একটি টুকরো পরবর্তী পালায় আবার মিল গঠনের জন্য অবিলম্বে মূল বিন্দুতে ফিরতে পারে না। প্রথমে অন্য একটি চাল প্রয়োজন।",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "একবারের জন্য ব্যবহার মিল",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "প্রতিটি মিল একবারই প্রতিদ্বন্দ্বীর একটি অংশ সরিয়ে ফেলতে পারে। আপনি এটি আবার গঠন করতে পারেন, তবে এটি অতিরিক্ত অপসারণের জন্য ব্যবহার করা যাবে না।",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "আপনি যে বর্তমান নিয়মগুলি সেট করেছেন তাদের কোনও উপযুক্ত নিখুঁত ডেটাবেস নেই। নিখুঁত ডেটাবেস সম্পর্কে আরও তথ্যের জন্য, এখানে ক্লিক করুন।",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "পথ আটকে দেওয়ায় মনোনিবেশ করুন",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "মিল তৈরি করার পরিবর্তে প্রতিপক্ষের গতিকে বাধা দেওয়ার উপর অগ্রাধিকার দিন। মিল সম্পূর্ণ করার মাধ্যমে টুকরোগুলি অপসারণের উপর মনোযোগ দেওয়ার পরিবর্তে, AI প্রতিপক্ষকে আটকে রাখার চেষ্টা করে, তাদের অক্ষম করে রাখে এবং আক্রমণাত্মক খেলার পরিবর্তে দীর্ঘমেয়াদী কৌশলে বিজয় নিশ্চিত করে। এই কৌশলটি প্রতিপক্ষের মিলগুলিকে সক্রিয়ভাবে ব্লক করে না।",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "ছবি টুকরা",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "রঙের সেটিংস আমদানি করুন",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "রঙের সেটিংস রপ্তানি করুন",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "আমদানি",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "রপ্তানি",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "দয়া করে প্রথমে JSON ফরম্যাটের সেটিংসগুলো ক্লিপবোর্ডে কপি করুন।",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "ক্লিপবোর্ডে কপি করা হয়েছে।",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "আমদানি করা হয়েছে।",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "বোর্ডের চিত্র",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "শরতের পাতা",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "কিংবদন্তি জমি",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "ভিনিয়েট প্রভাব",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "বোর্ডের পটভূমি চিত্র সেট করা হলে টুলবার সম্পূর্ণ স্বচ্ছ করতে চান?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "গেমে ভাইব্রেশন সক্ষম করুন",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "সাউন্ড থিম",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "বল",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "তরল",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "কাঠ",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "ঘুঁটি স্থাপনের অ্যানিমেশন প্রভাব",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "ঘুঁটি অপসারণের অ্যানিমেশন প্রভাব",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "টুলবার নীচে দেখান",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "বোর্ডের কোণের ব্যাসার্ধ",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "ওপেনিং বুক ব্যবহার করুন",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "বর্তমান",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
-    "morabaraba": "মোরাবারাবা",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "দুজ",
-    "@dooz": {},
-    "chamGonu": "চামগোনু",
-    "@chamGonu": {},
-    "zhiQi": "ঝি চি",
-    "@zhiQi": {},
-    "chengSanQi": "চেং সান চি",
-    "@chengSanQi": {},
-    "mulMulan": "মুল-মুলান",
-    "@mulMulan": {},
-    "nerenchi": "নেরেনচি",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "নিয়ম সেট",
-    "@ruleSet": {},
-    "laskerMorris": "লাস্কার মরিস",
-    "@laskerMorris": {},
+    "@ruleSet": {
+        "description": ""
+    },
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "একবারের মিল",
-    "@oneTimeMill": {},
-    "daSanQi": "দা সান চি",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "প্রাথমিক খেলার সময় পেশাদার মানব প্লেয়ারদের দ্বারা প্রায়শই ব্যবহৃত ওপেনিং চালগুলি এআই ব্যবহার করতে দিন। দ্রষ্টব্য: এই বৈশিষ্ট্য বর্তমানে কেবল নির্দিষ্ট নিয়ম সেটগুলির জন্য উপলব্ধ।",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "সুবিধার গ্রাফ দেখান",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "কৃত্রিম বুদ্ধিমত্তা চাল দেওয়ার পরেই কেবল অ্যাডভান্টেজ গ্রাফ আঁকা হবে। মানব খেলোয়াড় চাল দিলে এটি আঁকা হবে না।",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "সমস্ত ঘুটি স্থাপন না হওয়া পর্যন্ত সরানো নিষ্ক্রিয় করুন। খেলোয়াড়রা মিলের সংখ্যার ভিত্তিতে ঘুটি সরিয়ে থাকে।",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "সমস্ত ঘুটি স্থাপন না হওয়া পর্যন্ত সরানো নিষ্ক্রিয় করুন। খেলোয়াড়রা মিলের সংখ্যার ভিত্তিতে ঘুটি সরিয়ে থাকে: যদি সংখ্যাগুলি সমান হয়, উভয়েই একই সংখ্যক ঘুটি সরায়; যদি একজনের বেশি থাকে, তিনি অতিরিক্ত একটি ঘুটি সরিয়ে এক ঘুটির পার্থক্য বজায় রাখেন। যদি কেবল একজন মিল তৈরি করে, তিনি দুটি ঘুটি সরাবেন এবং অন্যজন একটি ঘুটি সরাবে। যদি কেউই মিল তৈরি করতে না পারে, উভয়েই একটি করে ঘুটি সরাবে।",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "এল ফিলজা",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "আপনার ঘুঁটিগুলির একটি নির্বাচন করুন।",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "এটা আপনার পালা নয়।",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "টীকা টুলবারের পটভূমির রঙ",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "টীকা টুলবারের আইকনের রঙ",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "টীকা টুলবার দেখান",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "টীকা মোডে প্রবেশ করুন",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "আপনি কি নিশ্চিত যে আপনি সব টীকা মুছে ফেলতে চান?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM প্রম্পট ক্লিপবোর্ডে অনুলিপি করা হয়েছে।",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "সংযোগ প্রত্যাখ্যান করা হয়েছে, সার্ভারটি হয়তো বন্ধ আছে।",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "আবিষ্কার সফল, সংযোগের অপেক্ষায়...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "কোনো LAN সংযোগ নেই",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "স্ক্রিনশট নিন",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "প্রতিপক্ষের সাথে সংযোগ বিচ্ছিন্ন।",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "পিছনে নেওয়ার অনুরোধ",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "দেখানোর মতো কিছু নেই।",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "হোস্টিং বন্ধ করুন",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "পিয়ার দ্বারা সংযোগ পুনরায় সেট করা হয়েছে।",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "হার্টবিট টাইমআউটের কারণে সংযোগ হারিয়ে গেছে। অনুগ্রহ করে পুনরায় সংযোগ করুন।",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "হোস্টিং শুরু করুন",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "পুনরায় শুরু করার অনুরোধ প্রত্যাখ্যান করা হয়েছে।",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN প্রতিপক্ষের সাথে সংযুক্ত নয়।",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM প্রম্পট",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "খেলা পুনরায় শুরু হয়েছে।",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "পিছনে নেওয়া প্রত্যাখ্যান করা হয়েছে।",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "আপনি কি নিশ্চিত যে আপনি এই খেলা থেকে পদত্যাগ করতে চান?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "প্রতিপক্ষ পদত্যাগ করেছে। আপনি জিতেছেন!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "সব টীকা মুছে ফেলুন",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "সংযুক্ত, প্রতিপক্ষের চালের জন্য অপেক্ষা করছে...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "নেটওয়ার্ক স্থিতি: সংযোগ বিচ্ছিন্ন",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "পিছনে নেওয়ার অনুরোধ প্রতিপক্ষকে পাঠানো হয়েছে।",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "প্রতিপক্ষ হয়তো খেলা ছেড়ে চলে গেছে",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "হোস্টের সাথে সফলভাবে সংযুক্ত।",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "সংযোগ হারিয়ে গেছে: হার্টবিট টাইমআউট",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "কোনো হোস্ট আবিষ্কৃত হয়নি।",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "পদত্যাগ নিশ্চিত করুন",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "খেলা হোস্টিং শুরু হয়েছে, খেলোয়াড়দের যোগদানের অপেক্ষায়...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "সংযোগের সময় শেষ, নেটওয়ার্ক সংযোগ অস্থির।",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "কোনো LLM প্রম্পট উপলব্ধ নেই।",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "আপনি পদত্যাগ করেছেন। খেলা শেষ।",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "সার্ভার IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "মুছে ফেলা নিশ্চিত করুন",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "প্রতিপক্ষের পালা।",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "একটি ক্লায়েন্ট সংযোগের অপেক্ষায়...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "পিছনে নেওয়ার অনুরোধ প্রত্যাখ্যান করা হয়েছে বা ব্যর্থ হয়েছে।",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "টেক্সট যোগ করুন",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "টীকা মোড থেকে বের হন",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "আপনার টীকা টাইপ করুন",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "পুনরায় সংযোগের চেষ্টা করছে...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "পুনরায় শুরু করার অনুরোধ পাঠানো হয়েছে। প্রতিপক্ষের প্রতিক্রিয়ার অপেক্ষায়...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "সার্ভার বন্ধ আছে।",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "পুনরায় শুরু করার অনুরোধ",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "যখন এটা আপনার পালা নয় তখন পিছনে নেওয়ার অনুরোধ করতে পারবেন না।",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "পিছনে নেওয়া গ্রহণ করা হয়েছে।",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "স্থানীয় নেটওয়ার্ক সেটিংস",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "সফলভাবে পুনরায় সংযুক্ত!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "গ্যালারিতে ছবি সংরক্ষণ করতে ব্যর্থ হয়েছে।",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "প্রতিপক্ষ খেলা পুনরায় শুরু করার অনুরোধ করেছে। আপনি কি গ্রহণ করেন?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "আপনার পালা।",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "পুনরায় সংযোগ করতে অক্ষম, অনুগ্রহ করে খেলা পুনরায় শুরু করুন।",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "হোস্ট",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "যোগদান",
-    "@join": {},
-    "port": "পোর্ট",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "অবৈধ IP ঠিকানা।",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "অবৈধ পোর্ট।",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "সংযোগ করছে: প্রচেষ্টা {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "সংযোগ করতে ব্যর্থ: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "ত্রুটি: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "হোস্টিং শুরু করতে ব্যর্থ: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "ত্রুটি: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "হোস্ট আবিষ্কৃত: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "বন্ধ করুন",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "আবিষ্কার করুন",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "সংযোগ করুন",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "ক্লায়েন্ট সংযুক্ত: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "আবিষ্কার করছে: {seconds} সেকেন্ড",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "পুনরায় সংযোগ করছে ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "সংযুক্ত",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "মুছে ফেলুন",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "প্রাচীন মিশর",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "গথিক বরফ",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "ধানের ক্ষেত",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "চীনা পোর্সেলিন",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "মরুভূমির সন্ধ্যা",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "নির্ভুল কারুশিল্প",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "লোকজ সূচিকর্ম",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "কার্পেথিয়ান ঐতিহ্য",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "সাম্রাজ্যিক মহিমা",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "বোহেমিয়ান ক্রিস্টাল",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "সাভানার সূর্যোদয়",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "সামঞ্জস্য ভারসাম্য",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "দারুচিনি মশলা",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "আনাতোলিয়ান মোজাইক",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "কার্নিভালের আত্মা",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "কাস্টম",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "মসলা বাজার",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "ড্রয়ার দেখতে সোয়াইপ করুন",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "স্ক্রীনশটে গেম তথ্য দেখান",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "মানুষের চালের সময়সীমা",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "মানুষের চালের জন্য কোন সময়সীমা নেই",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "মানুষ খেলোয়াড়ের জন্য টাইমআউট হার প্রয়োগ করা হবে",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "বোর্ড সনাক্ত করা হচ্ছে...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "আপনি যেকোনো মডেলের নাম লিখতে পারেন",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "বোর্ডের অবস্থা প্রয়োগ করা হয়েছে। FEN ক্লিপবোর্ডে অনুলিপি করা হয়েছে।",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "পরামর্শ: বোর্ডের একটি আরও স্পষ্ট ছবি তুলতে চেষ্টা করুন",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM প্রম্পট টেমপ্লেট",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "কোনো বৈধ বোর্ড সনাক্ত করা যায়নি",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "অ্যালবাম থেকে ছবি নির্বাচন করা হচ্ছে...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "প্রম্পট টেমপ্লেট কনফিগার করুন",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM বিশ্লেষণের জন্য প্রম্পট টেমপ্লেট সম্পাদনা করুন",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "সনাক্তকৃত বোর্ড থেকে FEN তৈরি করা যায়নি",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "বর্তমান ভাষায় আউটপুট",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "সাধারণ Base URLs",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "সাধারণ মডেল দেখুন",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "সনাক্তকরণ প্যারামিটার আপডেট হয়েছে",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "সাদা খেলোয়াড়ের চাল",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "ডিফল্ট মানে রিসেট করুন",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "ছবি তোলা",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "সনাক্তকৃত বোর্ড অবস্থা প্রয়োগ করা যায়নি",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM প্রম্পট সামগ্রী",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM কনফিগার করা হয়নি। অনুগ্রহ করে আপনার সেটিংস পরীক্ষা করুন।",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "প্রোভাইডার, মডেল, API Key এবং Base URL সেট করুন",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM কনফিগারেশন",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM প্রোভাইডার কনফিগার করুন",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM প্রম্পট টেমপ্লেট হেডার",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "চিত্রে কোনো গুটি সনাক্ত করা যায়নি। দয়া করে পুনরায় চেষ্টা করুন।",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "ছবি থেকে বোর্ড সনাক্ত করুন",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "টিপস দেখুন",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "বোর্ডে প্রয়োগ করুন",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "বোর্ড এলাকা সামঞ্জস্য করুন",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "সাধারণ URLs দেখুন",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "রঙ বিশ্লেষণ ব্যর্থ!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "গেম বোর্ডের ছবি বিশ্লেষণ করা হচ্ছে...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "অ্যালবাম থেকে নির্বাচন করুন",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "কোনও বোর্ড বিন্দু শনাক্ত করা যায়নি!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "ফাঁকা রাখলে ডিফল্ট টেমপ্লেট ব্যবহার করা হবে",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM কনফিগারেশন",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "আপনি কি নিশ্চিত যে প্রম্পট টেমপ্লেটগুলো ডিফল্ট মানে পুনরায় সেট করতে চান?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM প্রম্পট টেমপ্লেট ফুটার",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "উত্তর লোড হচ্ছে...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "এই ফলাফল বোর্ডে প্রয়োগ করুন",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "ছবি তোলা হচ্ছে...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "সনাক্তকরণের জন্য গেম বোর্ডের একটি ছবি নির্বাচন করুন",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "সনাক্তকরণের ফলাফল",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "চালগুলো বিশ্লেষণ করুন এবং অন্তর্দৃষ্টি প্রদান করুন।",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key পান",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "সম্পূর্ণ সনাক্তকরণ প্রক্রিয়া সম্পন্ন করা যায়নি",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "বোর্ড সনাক্তকরণের ফলাফল",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLM-কে জিজ্ঞাসা করুন",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "বোর্ড সনাক্তকরণ ব্যর্থ হয়েছে!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "কোনও বোর্ড বিন্দু শনাক্ত করা যায়নি, গুটি সনাক্ত করা সম্ভব নয়!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FEN অনুলিপি করুন",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "সাধারণভাবে ব্যবহৃত মডেল",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (ঐচ্ছিক)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "কোনও ছবি নির্বাচিত হয়নি",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "কালো খেলোয়াড়ের চাল",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "বড় ভাষা মডেল",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "প্রদানকারী",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "বেস URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "মডেল",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "তাপমাত্রা",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "কমান্ড গৃহীত! এআই প্রক্রিয়াকরণ করছে...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "গভীর চিন্তা চলছে, অনুগ্রহ করে অপেক্ষা করুন...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "শীঘ্রই উপস্থাপন করা হবে...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "সনাক্তকরণের পরামিতি",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "সনাক্তকরণের সঠিকতা বাড়াতে পরামিতি সমন্বয় করুন",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "পরামিতি সংরক্ষণ করুন",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "ছবি সনাক্তকরণ শুরু করা যাচ্ছে না: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "ত্রুটি: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "ছবি সনাক্তকরণ ব্যর্থ: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "ত্রুটি: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "{whiteCount} টি সাদা ও {blackCount} টি কালো ঘুটি সহ অবস্থান প্রয়োগ করা হয়েছে",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN ক্লিপবোর্ডে কপি করা হয়েছে)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "সনাক্তকরণ ব্যর্থ: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "ত্রুটি: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "আমার রেটিং",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "খেলা হয়েছে",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "জয়",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "পরাজয়",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "ড্র",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "সর্বশেষ আপডেট",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "ফরম্যাট:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "পরিসংখ্যান রিসেট করুন",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "ড্র রেট",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "পরাজয়ের হার",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "এআই পরিসংখ্যান",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "পরিসংখ্যান সক্রিয় করুন",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "সক্রিয় করা হলে, খেলার ফলাফল পরিসংখ্যানে রেকর্ড করা হবে। তবে, টেক-ব্যাক জড়িত গেমগুলি রেকর্ড করা হবে না। নিষ্ক্রিয় করা হলে, পরিসংখ্যান সংগ্রহ সাময়িকভাবে বন্ধ হয়ে যায়।",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "এটি সমস্ত খেলার পরিসংখ্যান রিসেট করবে। এই ক্রিয়াটি আর ফেরানো যাবে না।",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "বোর্ডের অভ্যন্তরীণ বৃত্তের আকার",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "বোর্ডের ছায়া",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "ফাঁদ সচেতনতা",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "বিশ্লেষণের সময় মোটা বৃত্ত ও তীর দিয়ে ফাঁদের চালগুলো হাইলাইট করুন।",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "ফাঁদ রয়েছে। ফাঁদের চাল: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "ফ্ল্যাঙ্কিং ক্যাপচার",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "এটি ক্যাপচারের জন্য আপনার দু'জনের মধ্যে আপনার প্রতিপক্ষের টুকরোগুলির মধ্যে একটিকে সংযুক্ত করুন।",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "ফ্ল্যাঙ্কিং ক্যাপচারের অনুমতি দিন",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "হস্তক্ষেপ ক্যাপচার",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "উভয়কে ক্যাপচার করতে আপনার প্রতিপক্ষের দুটি টুকরোগুলির মধ্যে খালি পয়েন্টে যান।",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "হস্তক্ষেপ ক্যাপচারের অনুমতি দিন",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "জাম্প ক্যাপচার",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "একটি সংলগ্ন প্রতিপক্ষের টুকরোটি খালি পয়েন্টের বাইরে লাফিয়ে ক্যাপচার করুন।",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "জাম্প ক্যাপচারের অনুমতি দিন",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "প্রযোজ্য লাইন",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "স্কোয়ারের প্রান্ত বরাবর",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "বর্গক্ষেত্র পেরিয়ে অরথোগোনাল লাইন বরাবর",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "স্কোয়ারটি অতিক্রমকারী তির্যক রেখা বরাবর",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "মৃত্যুদন্ডের পর্যায়গুলি",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "অবশিষ্ট টুকরা উপর ভিত্তি করে চলন্ত পর্যায়ে প্রাপ্যতা",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "কোন বিধিনিষেধ",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "আপনার যখন তিন বা তার চেয়ে কম টুকরো থাকে তখন উপলব্ধ",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "শুধুমাত্র দুটি খালি বর্গক্ষেত্র অবশিষ্ট থাকলে স্থাপন বন্ধ করুন",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "সক্রিয় থাকলে, বোর্ডে শুধুমাত্র ২টি খালি জায়গা থাকলে স্থাপন পর্ব শেষ হয় এবং চলন পর্ব শুরু হয়, হাতে থাকা টুকরা নির্বিশেষে। এই নিয়মটি শুধুমাত্র ১২-টুকরা গেমের জন্য প্রযোজ্য।",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "আপনি শুধুমাত্র আপনার চাল দেওয়ার পরপরই ফিরিয়ে নেওয়ার অনুরোধ করতে পারেন।",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "আপনি যদি আরও বড় চ্যালেঞ্জ চান, আমরা \"{setting}\" বিকল্পটি সক্ষম করার এবং নির্দেশিত হিসাবে আপনার ডিভাইসে সম্পূর্ণ ডাটাবেস ডাউনলোড করার পরামর্শ দিই।",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "আপনি কি এখন গেমের নিয়ম কনফিগার করতে চান?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "অ্যালগরিদম পরামর্শ",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "আপনি লেভেল ১-এ পরপর কয়েকটি গেম হেরেছেন। অসুবিধা কমাতে সহজ MCTS অ্যালগরিদমে পরিবর্তন করতে চান?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS লেভেল ৩০-এ জেতার জন্য অভিনন্দন! আরও বড় চ্যালেঞ্জের জন্য MTD(f) অ্যালগরিদমে পরিবর্তন করতে চান?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "ধরা যায় এমন গুটি হাইলাইট করুন",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "সরান",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {

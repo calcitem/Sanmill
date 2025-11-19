@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} เพื่อย้าย",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "ผู้เล่น 1 ชนะ!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "ไม่สามารถนำเข้า {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "การเคลื่อนไหวและกฎไม่ตรงกัน",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "ผิดพลาด: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "อัตราการชนะ",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} จำนวนชิ้นน้อยกว่าสาม",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player}ลาออก",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} ไม่มีทางไป",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "กระดานเต็มและ {player} ไม่มีทางไป",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "เวลาหมดลง {player} หายไป",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "ในระยะเคลื่อนที่ ไม่มีชิ้นส่วนใดถูกลบออกในจำนวนการเคลื่อนไหวเฉพาะครั้งล่าสุด",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "ท้าทายระดับที่ยากขึ้น? ระดับใหม่จะเป็นระดับ {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "คุณแพ้!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "รุ่น: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "ขอบคุณ",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "เลือก {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "ข้อมูล",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " และ ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "ยอมรับ",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} ในมือ: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} บนเรือ: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "คณะกรรมการชดเชยจากด้านบน",
     "@boardTop": {
@@ -1103,7 +1048,7 @@
     "@close": {
         "description": "Close"
     },
-    "download": "Download",
+    "download": "ดาวน์โหลด",
     "@download": {
         "description": "Download button text"
     },
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "ด้านที่จะย้าย: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "ผู้เล่น",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "ย้ายล่าสุด: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "ย้าย",
+    "@move": {
+        "description": "Move"
     },
     "selected": "เลือกแล้ว",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} ย้าย}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "โหลดไม่สำเร็จ",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} ชิ้น}} จําเป็นต้องเอาออก",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "วาง ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "วางนับชิ้นในขั้นตอนการวาง",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "ผู้เล่นปัจจุบันได้วาง {count} ชิ้น",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "ไม่วางเฟสเปลี่ยนไม่ได้",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "ป่า",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "รูปภาพเดสก์ท็อป",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "ตำแหน่งไม่ถูกต้อง",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "แบ่งปัน GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "อัตราส่วนพิกเซล",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "ระยะเวลา",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "เครื่องบันทึกหน้าจอเกม",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "ก่อนหน้า",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "ต่อไป",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "ข้าม",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "เข้าใจแล้ว",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "คุณสามารถแก้ไขกฎของเกมได้ในการตั้งค่ากฎ",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "คุณสามารถใช้วงล้อของเมาส์เพื่อเปลี่ยนค่าในตัวเลือก",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI ตั้งค่าเวลาคิดเป็น 0 หมายความว่าไม่มีเวลาจำกัดสำหรับการคิด",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) เป็นรูปแบบที่แก้ไขแล้วของอัลกอริทึมการค้นหาอัลฟ่าเบต้า ซึ่งมีจุดมุ่งหมายเพื่อปรับปรุงประสิทธิภาพโดยการใช้ผลการค้นหาระดับกลางซ้ำ และใช้การคาดเดาเริ่มต้นที่ดีเพื่อจำกัดพื้นที่การค้นหาให้แคบลง",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "โปรดทราบว่าการปรับเวลาคิดของ AI อาจไม่แม่นยำทั้งหมด เวลาในการคิดจริงอาจสั้นลงเมื่อระดับความยากถูกตั้งค่าให้ต่ำลง และอาจนานขึ้นเมื่อ AI อยู่ระหว่างกลางเมื่อหมดเวลา",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "หากคุณตั้งระดับความยากไว้สูงแต่ไม่ได้เพิ่มเวลาคิดของ AI ระดับความยากจริงอาจถูกจำกัดให้มีค่าน้อยลงเนื่องจากข้อจำกัดของเวลาในการคิด ค่าจริงอาจแตกต่างกันไปตามประสิทธิภาพของเครื่อง",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) เป็นอัลกอริธึมการค้นหาเพื่อค้นหาการเคลื่อนไหวที่ดีที่สุดในตำแหน่งที่กำหนด เป็นการปรับปรุงอัลกอริทึมอัลฟาเบต้าและใช้การค้นหาหน้าต่าง null หรือศูนย์เพื่อยืนยันว่าการย้ายนั้นแย่กว่าหรือไม่แย่กว่าคะแนนที่ปลอดภัยอยู่แล้วจากรูปแบบหลัก PVS มุ่งเน้นไปที่การเคลื่อนไหวที่มีแนวโน้มมากที่สุดและหลีกเลี่ยงการค้นหาสาขาที่ไม่เหมาะสมโดยไม่จำเป็น ซึ่งช่วยปรับปรุงประสิทธิภาพของการค้นหา",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "อัลกอริทึมอัลฟ่าเบต้าเป็นอัลกอริทึมการค้นหาเพื่อค้นหาการเคลื่อนไหวที่ดีที่สุด ใช้หลักการ minimax และค่าสองค่าคือ alpha และ beta เพื่อตัดแผนผังการค้นหาและเพิ่มประสิทธิภาพ อัลฟ่าแสดงถึงคะแนนขั้นต่ำที่คอมพิวเตอร์มั่นใจว่าจะได้ ในขณะที่เบต้าแสดงถึงคะแนนสูงสุดที่ฝ่ายตรงข้ามทำได้ อัลกอริทึมช่วยให้คอมพิวเตอร์ตัดสินใจอย่างชาญฉลาดและมีประสิทธิภาพในเกม",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "ตามประสบการณ์ของมนุษย์ ถ้าคุณพยายามที่จะชนะ คุณจะแพ้ ให้มุ่งไปที่ผลเสมอเป็นเป้าหมายของคุณและหลีกเลี่ยงการแพ้ในเกม สังเกตคู่ต่อสู้ของคุณและค่อย ๆ หลอกล่อพวกเขาไปยังตำแหน่งที่พวกเขาอาจทำผิดพลาดได้ เมื่อพวกเขาแสดงความอ่อนแอ ให้ฉวยโอกาสและผลักดันอย่างนุ่มนวลเพื่อชัยชนะ ด้วยวิธีนี้คุณสามารถชนะเกมได้",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "ในเกมนี้ผู้เล่นคนที่สองจะชนะได้ง่ายกว่าเมื่อเทียบกับผู้เล่นคนแรก",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "การเปิดใช้งานตัวเลือกแบบพาสซีฟจะทำให้ AI ผ่อนคลายเมื่อมีข้อได้เปรียบในตำแหน่ง แทนที่จะพยายามอย่างแข็งขันเพื่อเอาชนะให้เร็วที่สุด",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "การเปิดใช้งานตัวเลือกนี้จะเพิ่มความสุ่มและความสนุกของเกม ในขณะที่การปิดใช้งานจะช่วยให้ศึกษาวิธีเอาชนะ AI ได้",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "หาก AI คำนึงถึงความคล่องตัวของชิ้นส่วน มันจะไม่เพียงมุ่งจับชิ้นส่วนของฝ่ายตรงข้ามโดยเร็วที่สุด แต่ยังพิจารณาปิดกั้นการเคลื่อนไหวของฝ่ายตรงข้ามและป้องกันไม่ให้พวกเขาทำเช่นเดียวกัน",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "เมื่อกระดานเต็ม",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "ในตอนท้ายของขั้นตอนการวาง ก่อนที่ขั้นตอนการเคลื่อนไหวจะเริ่มต้นขึ้น การดำเนินการจะตามมาหากกระดานเต็มไปด้วยชิ้นส่วน",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "ผู้เล่นที่เคลื่อนไหวก่อนในระยะเคลื่อนที่จะถอดชิ้นส่วนของฝ่ายตรงข้ามออกหนึ่งชิ้น",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "ทั้งสองฝ่ายตกลงที่จะเสมอกัน",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "รับชิ้นส่วนของฝ่ายตรงข้ามหนึ่งชิ้น",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "ผู้เล่นคนแรกแพ้ในเกม",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "ผู้เล่นคนแรกและคนที่สองถอดชิ้นส่วนของฝ่ายตรงข้ามออก",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "ผู้เล่นคนที่สองและคนแรกถอดชิ้นส่วนของฝ่ายตรงข้ามออก",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "ตอนนี้เข้าสู่ช่วงการบิน ชิ้นส่วนของฝ่ายตรงข้ามสามารถข้ามไปยังจุดที่ว่างบนกระดานได้ คุณสามารถปิดกฎการบินได้ใน \"การตั้งค่ากฎ\"",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "เมื่อจนมุม",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "การดำเนินการใดที่ตามมาเมื่อไม่สามารถเคลื่อนย้ายชิ้นส่วนได้",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "จบลงด้วยการสูญเสียทางตัน",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "เปลี่ยนด้านที่จะย้าย",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "นำชิ้นส่วนของคู่ต่อสู้ออกหนึ่งชิ้นแล้วทำการเคลื่อนไหวต่อไป",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "จบลงด้วยการเสมอกัน",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "นำชิ้นส่วนของฝ่ายตรงข้ามออกหนึ่งชิ้นและเปลี่ยนด้านที่จะย้าย",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "เวลาตอบสนองของ AI ล่าช้า",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "ขณะนี้ AI อยู่ในช่วงการตอบสนองที่ล่าช้า โปรดรอสักครู่ก่อนดำเนินการต่อ",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "คุณไม่สามารถลบชิ้นส่วนที่ไม่ติดกันได้",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "หากจนมุม ชิ้นส่วนของฝ่ายตรงข้ามที่อยู่ติดกับคุณจะถูกลบออกได้ โดยไม่คำนึงถึงรูปแบบโรงสี",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS เป็นอัลกอริทึมที่เป็นมิตรกับผู้เริ่มต้นซึ่งทำการตัดสินใจโดยการสำรวจและประเมินการเคลื่อนไหวต่างๆ ผ่านการจำลองสถานการณ์",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "หยกทองคำ",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "ไม้ป่า",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "ความลึกลับดำมืด",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "มิดไนท์บลู",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "ป่าเขียว",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "ทุ่งหญ้าสีเขียว",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "เส้นทางหิน",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "สีชมพูพาสเทล",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "ทะเลสีฟ้าคราม",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "ไวโอเล็ตดรีม",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "มิ้นท์ชอคโกแลต",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "ท้องฟ้าสีคราม",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "สวนขี้เล่น",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "อัลกอริธึมการวิเคราะห์ถอยหลังเข้าคลองใช้การวิเคราะห์ถอยหลังเข้าคลองแบบหลายค่าเพื่อสร้างฐานข้อมูลตอนจบเกมจากตำแหน่งเริ่มต้นที่แตกต่างกัน จากนั้นใช้ฐานข้อมูลนี้เพื่อเพิ่มประสิทธิภาพการเล่นเกม วิธีการนี้จัดอยู่ในประเภทของโซลูชันที่แข็งแกร่งเป็นพิเศษ",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "คุณต้องการดูคู่มือผู้ใช้สำหรับอัลกอริทึมนี้หรือไม่?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "แสดงตัวบ่งชี้ความได้เปรียบเชิงตำแหน่ง",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "ใช้ฐานข้อมูลที่สมบูรณ์แบบ",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "เปิดใช้งานตัวเลือกนี้เพื่อใช้ฐานข้อมูลเกมที่สมบูรณ์แบบซึ่งสร้างผ่านอัลกอริธึมที่ล้ำสมัย ฟีเจอร์นี้ผสมผสานทั้งกลยุทธ์การเปิดและจบเกมเพื่อแนะนำการเคลื่อนไหวที่เหมาะสมที่สุด นี่คือตัวเลือกที่ดีสำหรับผู้เล่นที่แสวงหาความแม่นยำสูงสุดในการเล่นเกม ฐานข้อมูลถูกสร้างขึ้นด้วยเทคนิคการคำนวณที่พิถีพิถัน ออกแบบมาเพื่อนำเสนอโซลูชั่นเกมที่เกือบจะสมบูรณ์แบบ\n\nหมายเหตุ: หาก AI ไม่สามารถเข้าถึงฐานข้อมูล AI จะหันไปใช้อัลกอริธึมแบบเดิมในการตัดสินใจในการเล่นเกม เมื่อฐานข้อมูลพร้อมใช้งาน 'ระดับความยาก' แทบจะไม่มีใครเทียบได้ และ 'เวลาในการคิดของ AI' จะลดลงอย่างมาก การตั้งค่าหลายอย่างภายในตัวเลือก 'สไตล์การเล่นของ AI' จะถูกแทนที่ เนื่องจากผลลัพธ์ของฐานข้อมูลมีความสำคัญสูงสุด\n\nหากต้องการคำแนะนำในการใช้ประโยชน์สูงสุดจากฐานข้อมูลอันไร้ที่ตินี้ คลิกที่นี่",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "ภาพพื้นหลัง",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "เมื่อไม่ได้เปิดใช้งานตัวเลือก 'ใช้ฐานข้อมูลที่สมบูรณ์แบบ' การตั้งค่า 'สุ่ม' จะทำให้ AI ย้ายชิ้นส่วนแบบสุ่มโดยไม่ต้องใช้อัลกอริธึมใด ๆ ในการเลือกการเคลื่อนไหว โดยทั่วไปแล้วจะส่งผลให้การเล่นเกมอ่อนแอลงอย่างมาก ในทางกลับกัน เมื่อเปิดใช้งาน 'ใช้ฐานข้อมูลที่สมบูรณ์แบบ' AI จะใช้ 'ฐานข้อมูลที่สมบูรณ์แบบ' ในการตัดสินใจโดยเฉพาะ แทนที่จะผสมกับอัลกอริธึม AI แบบดั้งเดิม ในโหมดนี้ การเคลื่อนไหวของ AI จะขึ้นอยู่กับเนื้อหาของฐานข้อมูลทั้งหมด โดยหลีกเลี่ยงการพึ่งพาการคำนวณแบบเรียลไทม์หรืออัลกอริธึมการค้นหา",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "นำชิ้นส่วนของคู่ต่อสู้ออกจากมือของพวกเขา จากนั้นถึงตาของฝ่ายตรงข้ามในการวาง",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "เมื่อสร้างโรงสี (mills) ระหว่างเฟสการวาง",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "นำชิ้นส่วนของคู่ต่อสู้ออกจากกระดาน",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "นำชิ้นส่วนของคู่ต่อสู้ออกจากกระดาน จากนั้นถึงตาของฝ่ายตรงข้ามในการวาง",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "คู่ต่อสู้เอาชิ้นส่วนของตัวเองออกจากกระดาน",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "แทนที่คุณจะดำเนินการ ฝ่ายตรงข้ามจะเลือกและนำชิ้นส่วนของตนเองออกจากกระดาน ซึ่งเป็นการกระทำที่เป็นอันตรายต่อตัวพวกเขาเอง",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "นำชิ้นส่วนของคู่ต่อสู้ออกจากมือของพวกเขา จากนั้นตาของคุณที่จะเคลื่อนไหว",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "นำชิ้นส่วนออกจากมือของคู่ต่อสู้ หากตามการตั้งค่าการนำออกหลายๆ ชิ้น มีการนำชิ้นส่วนหลายชิ้นออก และฝ่ายตรงข้ามไม่มีชิ้นส่วนเหลืออยู่ในมือ ให้นำชิ้นส่วนของฝ่ายตรงข้ามออกจากกระดานต่อไป จากนั้นจะถึงตาของคุณเคลื่อนที่ หากคุณยังคงสร้างโรงสีต่อไป คุณอาจลบชิ้นส่วนของคู่ต่อสู้ต่อไปได้",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "นำชิ้นส่วนออกจากมือของคู่ต่อสู้ หากตามการตั้งค่าการนำออกหลายชิ้น มีการนำชิ้นส่วนหลายชิ้นออก และฝ่ายตรงข้ามไม่มีชิ้นส่วนเหลืออยู่ในมือ ให้นำชิ้นส่วนของฝ่ายตรงข้ามออกจากกระดานต่อไป จากนั้นจะถึงตาคู่ต่อสู้ในการเคลื่อนที่",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "ทำเครื่องหมายและหน่วงการนำชิ้นส่วนออก",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "ในระหว่างขั้นตอนการวาง ชิ้นส่วนที่จะลบออกจะถูกทำเครื่องหมาย และสำหรับผู้เล่นทั้งสอง จะไม่มีการวางชิ้นส่วนใหม่ในจุดเหล่านี้ เมื่อเข้าสู่เฟสการเคลื่อนที่ ชิ้นส่วนที่ทำเครื่องหมายไว้เหล่านี้จะถูกลบออกทั้งหมด และผู้เล่นสามารถย้ายชิ้นส่วนของตนไปยังจุดที่ว่างเหล่านี้ได้",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "การกระทำที่สามารถทำได้เมื่อกำลังจัดวางโรงสีในช่วงขั้นตอนการวาง.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "ทำเครื่องหมาย",
-    "@marked": {},
-    "menu": "เมนู",
-    "@menu": {},
-    "monochrome": "โมโนโครม",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "คุณสามารถเปิดใช้งานการสนับสนุนตัวอ่านหน้าจอในการตั้งค่าการเข้าถึงในการตั้งค่าทั่วไป。",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "แสดงตัวเลขบนชิ้นส่วน",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "บันทึกภาพ",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "แสดงแถบเครื่องมือการวิเคราะห์",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือการวิเคราะห์",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "สีไอคอนของแถบเครื่องมือการวิเคราะห์",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "ผ่านการแปลง",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "ไม่สามารถแปลง",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "หมุน",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "พล.นอ.",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "พล.ต.",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO พลิก",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "ผืนผ้าใส",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "จำกัดการสร้างโรงสีซ้ำ",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "ชิ้นส่วนที่ถูกย้ายจากโรงสีหนึ่งไปอีกโรงสีหนึ่งไม่สามารถกลับไปยังจุดเดิมทันทีในตาถัดไปเพื่อสร้างโรงสีอีกครั้งได้ จำเป็นต้องมีการเคลื่อนไหวที่แตกต่างกันก่อน.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "โรงสีใช้ครั้งเดียว",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "โรงสีแต่ละแห่งสามารถลบชิ้นส่วนของฝ่ายตรงข้ามได้เพียงครั้งเดียวเท่านั้น คุณสามารถสร้างมันขึ้นมาใหม่ได้ แต่ไม่สามารถใช้สำหรับการลบเพิ่มเติมได้",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "กฎปัจจุบันที่คุณตั้งไว้ไม่มีฐานข้อมูลที่สมบูรณ์แบบที่เกี่ยวข้อง สำหรับข้อมูลเพิ่มเติมเกี่ยวกับฐานข้อมูลที่สมบูรณ์แบบโปรดคลิกที่นี่",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "โฟกัสที่การบล็อกเส้นทาง",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "ให้ความสำคัญกับการขัดขวางการเคลื่อนไหวของฝ่ายตรงข้ามมากกว่าการสร้างมิลล์ แทนที่จะมุ่งเน้นไปที่การลบชิ้นส่วนด้วยการทำมิลล์ให้สมบูรณ์ AI ตั้งใจที่จะดักฝ่ายตรงข้าม ทำให้พวกเขาไม่สามารถเคลื่อนไหวได้และรักษาชัยชนะผ่านการสึกหรอมากกว่าการเล่นอย่างดุเดือด กลยุทธ์นี้ไม่ได้ขัดขวางมิลล์ของฝ่ายตรงข้ามอย่างแข็งขัน",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "รูปหมาก",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "นำเข้าการตั้งค่าสี",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "ส่งออกการตั้งค่าสี",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "นำเข้า",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "ส่งออก",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "โปรดคัดลอกการตั้งค่ารูปแบบ JSON ไปยังคลิปบอร์ดก่อน",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "นำเข้าแล้ว",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "ภาพกระดาน",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "ใบไม้ร่วง",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "ดินแดนในตำนาน",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "เอฟเฟกต์ขอบมืด",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "คุณต้องการให้แถบเครื่องมือโปร่งใสเต็มที่เมื่อกำหนดภาพพื้นหลังของกระดานแล้วหรือไม่?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "เปิดใช้งานการสั่นในเกม",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "ธีมเสียง",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "ลูกบอล",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "ของเหลว",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "ไม้",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "เอฟเฟกต์แอนิเมชันการวางตัวหมาก",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "เอฟเฟกต์แอนิเมชันการลบตัวหมาก",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "แสดงแถบเครื่องมือที่ด้านล่าง",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "รัศมีมุมของบอร์ด",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "ใช้หนังสือเปิด",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "ปัจจุบัน",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "เกมมอริสเก้าช่อง",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "เกมมอริสสิบสองช่อง",
-    "@twelveMensMorris": {},
-    "morabaraba": "โมราบาราบา",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "ดูซ",
-    "@dooz": {},
-    "chamGonu": "ชัมโกนู",
-    "@chamGonu": {},
-    "zhiQi": "จื๋อฉี",
-    "@zhiQi": {},
-    "chengSanQi": "เฉิงซานฉี",
-    "@chengSanQi": {},
-    "mulMulan": "มูล-มูลัน",
-    "@mulMulan": {},
-    "nerenchi": "เนเรนจิ",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "ชุดกฎ",
-    "@ruleSet": {},
-    "laskerMorris": "ลาสเกอร์ มอริส",
-    "@laskerMorris": {},
+    "@ruleSet": {
+        "description": ""
+    },
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "เมลนิตซา",
-    "@oneTimeMill": {},
-    "daSanQi": "ต้าซานฉี",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "ให้ AI ใช้การเดินเปิดที่มักถูกใช้โดยนักเล่นมืออาชีพในช่วงต้นเกม หมายเหตุ: คุณสมบัตินี้มีให้บริการในปัจจุบันสำหรับชุดกฎเฉพาะเท่านั้น",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "แสดงกราฟความได้เปรียบ",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "กราฟแสดงความได้เปรียบจะถูกวาดเฉพาะหลังจากที่ AI เดินหมากเท่านั้น จะไม่ถูกวาดเมื่อผู้เล่นมนุษย์เดินหมาก",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "ปิดใช้งานการนำออกจนกว่าจะวางหมากทั้งหมด ผู้เล่นจะนำหมากออกตามจำนวนมิลล์ที่สร้างได้",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "ปิดใช้งานการนำออกจนกว่าจะวางหมากทั้งหมด ผู้เล่นจะนำหมากออกตามจำนวนมิลล์: ถ้าจำนวนเท่ากัน ผู้เล่นทั้งสองฝ่ายจะนำหมากออกในจำนวนเท่ากัน หากฝ่ายใดมีมากกว่า จะนำหมากออกเพิ่มอีกหนึ่งตัวเพื่อคงความต่างไว้ที่หนึ่งตัว หากมีเพียงฝ่ายเดียวที่สร้างมิลล์ เขาจะนำหมากออกสองตัว ส่วนอีกฝ่ายนำออกหนึ่งตัว หากไม่มีใครสร้างมิลล์ ผู้เล่นทั้งสองจะนำออกคนละหนึ่งตัว",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "เอล ฟิลจะ",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "เลือกตัวหมากของคุณ 1 ตัว",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "ยังไม่ถึงตาคุณ",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "สีพื้นหลังแถบเครื่องมือหมายเหตุ",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "สีไอคอนแถบเครื่องมือหมายเหตุ",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "แสดงแถบเครื่องมือหมายเหตุ",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "เข้าสู่โหมดหมายเหตุ",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "คุณแน่ใจหรือไม่ว่าต้องการลบหมายเหตุทั้งหมด?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "คัดลอกข้อความ LLM ไปยังคลิปบอร์ดแล้ว",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "การเชื่อมต่อถูกปฏิเสธ เซิร์ฟเวอร์อาจหยุดทำงาน",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "ค้นพบสำเร็จ กำลังรอการเชื่อมต่อ...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "ไม่มีการเชื่อมต่อ LAN",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "ถ่ายภาพหน้าจอ",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "ตัดการเชื่อมต่อจากคู่ต่อสู้แล้ว",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "คำขอถอยกลับ",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "ไม่มีข้อมูลแสดง",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "หยุดโฮสต์",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "การเชื่อมต่อถูกรีเซ็ตโดยอีกฝ่าย",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "การเชื่อมต่อขาดเนื่องจากหมดเวลา กรุณาเชื่อมต่อใหม่",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "เริ่มโฮสต์",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "ปฏิเสธคำขอเริ่มเกมใหม่",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "ไม่ได้เชื่อมต่อกับคู่ต่อสู้ผ่าน LAN",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "ข้อความ LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "เริ่มเกมใหม่แล้ว",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "ปฏิเสธการถอยกลับ",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "คุณแน่ใจหรือไม่ว่าต้องการยอมแพ้เกมนี้?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "คู่ต่อสู้ยอมแพ้ คุณชนะ!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "ล้างหมายเหตุทั้งหมด",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "เชื่อมต่อแล้ว กำลังรอการเคลื่อนของคู่ต่อสู้...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "สถานะเครือข่าย: ถูกตัดการเชื่อมต่อ",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "ส่งคำขอถอยกลับไปยังคู่ต่อสู้แล้ว",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "คู่ต่อสู้อาจออกจากเกมแล้ว",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "เชื่อมต่อกับโฮสต์สำเร็จ",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "การเชื่อมต่อขาด: หมดเวลา",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "ไม่พบโฮสต์",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "ยืนยันการยอมแพ้",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "เริ่มโฮสต์เกมแล้ว กำลังรอผู้เล่นเข้าร่วม...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "การเชื่อมต่อหมดเวลา สัญญาณเครือข่ายไม่เสถียร",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "ไม่มีข้อความ LLM",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "คุณยอมแพ้ เกมจบแล้ว",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "ไอพีเซิร์ฟเวอร์",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "ยืนยันการล้าง",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "ตาของคู่ต่อสู้",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "กำลังรอการเชื่อมต่อจากไคลเอ็นต์...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "คำขอถอยกลับถูกปฏิเสธหรือล้มเหลว",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "เพิ่มข้อความ",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "ออกจากโหมดหมายเหตุ",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "พิมพ์หมายเหตุของคุณ",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "กำลังพยายามเชื่อมต่อใหม่...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "ส่งคำขอเริ่มเกมใหม่แล้ว กำลังรอคำตอบจากคู่ต่อสู้...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "เซิร์ฟเวอร์หยุดทำงานแล้ว",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "คำขอเริ่มเกมใหม่",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "ไม่สามารถขอถอยกลับเมื่อไม่ใช่ตาคุณ",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "รับคำขอถอยกลับแล้ว",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "การตั้งค่าเครือข่ายท้องถิ่น",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "เชื่อมต่อใหม่สำเร็จ!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "บันทึกรูปภาพไม่สำเร็จ",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "คู่ต่อสู้ขอเริ่มเกมใหม่ คุณยอมรับหรือไม่?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "ตาคุณแล้ว",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "เชื่อมต่อใหม่ไม่สำเร็จ กรุณาเริ่มเกมใหม่",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "โฮสต์",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "เข้าร่วม",
-    "@join": {},
-    "port": "พอร์ต",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "ที่อยู่ไอพีไม่ถูกต้อง",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "พอร์ตไม่ถูกต้อง",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "กำลังเชื่อมต่อ: ความพยายามที่ {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "เชื่อมต่อล้มเหลว: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "ผิดพลาด: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "เริ่มโฮสต์ล้มเหลว: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "ผิดพลาด: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "พบโฮสต์: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "หยุด",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "ค้นหา",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "เชื่อมต่อ",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "เชื่อมต่อไคลเอ็นต์: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "กำลังค้นหา: {seconds} วินาที",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "กำลังเชื่อมต่อใหม่ ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "เชื่อมต่อแล้ว",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "ลบ",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "อียิปต์โบราณ",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "น้ำแข็งโกธิก",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "นาข้าว",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "เครื่องเคลือบจีน",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "ค่ำคืนในทะเลทราย",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "งานฝีมือที่แม่นยำ",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "งานปักผ้าพื้นบ้าน",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "มรดกคาร์พาเทียน",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "ความยิ่งใหญ่แห่งจักรวรรดิ",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "คริสตัลโบฮีเมียน",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "พระอาทิตย์ขึ้นในสะวันนา",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "ความกลมกลืนและสมดุล",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "เครื่องเทศอบเชย",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "โมเสกอนาโตเลียน",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "จิตวิญญาณแห่งคาร์นิวัล",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "กำหนดเอง",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "ตลาดเครื่องเทศ",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "ปัดเพื่อเปิดลิ้นชัก",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "แสดงข้อมูลเกมบนภาพหน้าจอ",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "จำกัดเวลาของมนุษย์",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "ไม่มีการจำกัดเวลาสำหรับการเคลื่อนไหวของมนุษย์",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "การแพ้เนื่องจากหมดเวลาจะถูกนำไปใช้กับผู้เล่นที่เป็นมนุษย์",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "กำลังระบุกระดานเกม...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "คุณสามารถใส่ชื่อโมเดลใดก็ได้.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "ตำแหน่งกระดานถูกนำไปใช้แล้ว FEN ถูกคัดลอกไปยังคลิปบอร์ด.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "คำแนะนำ: ลองถ่ายภาพกระดานให้ชัดขึ้น.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "เทมเพลตพรอมต์ LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "ไม่พบกระดานเกมที่ถูกต้อง.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "กำลังเลือกภาพจากอัลบั้ม...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "ตั้งค่าเทมเพลตพรอมต์",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "แก้ไขเทมเพลตพรอมต์สำหรับการวิเคราะห์ LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "ไม่สามารถสร้าง FEN จากกระดานที่ตรวจจับได้.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "ผลลัพธ์ในภาษาปัจจุบัน",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "URL พื้นฐานทั่วไป",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "ดูโมเดลทั่วไป",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "อัปเดตพารามิเตอร์การจดจำแล้ว.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "ตาของขาว",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "รีเซ็ตไปที่ค่าเริ่มต้น",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "ถ่ายภาพ",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "ไม่สามารถใช้ตำแหน่งกระดานที่ตรวจจับได้.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "เนื้อหาพรอมต์ LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "ยังไม่ได้ตั้งค่า LLM โปรดตรวจสอบการตั้งค่าของคุณ.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "ตั้งค่าผู้ให้บริการ, โมเดล, API Key และ Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "การกำหนดค่า LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "ตั้งค่า LLM provider",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "ส่วนหัวเทมเพลตพรอมต์ LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "ไม่พบชิ้นส่วนใดๆ ในภาพ โปรดลองอีกครั้ง.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "จดจำกระดานจากภาพ",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "ดูเคล็ดลับ",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "นำไปใช้กับกระดาน",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "ปรับพื้นที่กระดาน",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "ดู URL ทั่วไป",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "การวิเคราะห์สีล้มเหลว!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "กำลังวิเคราะห์ภาพกระดานเกม...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "เลือกจากอัลบั้ม",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "ไม่พบจุดบนกระดาน!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "หากปล่อยว่าง จะใช้เทมเพลตเริ่มต้น",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "การกำหนดค่า LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตเทมเพลตพรอมต์กลับเป็นค่าเริ่มต้น?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "ท้ายเทมเพลตพรอมต์ LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "กำลังโหลดการตอบกลับ...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "ใช้ผลลัพธ์นี้กับกระดาน",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "กำลังถ่ายภาพ...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "โปรดเลือกภาพกระดานเกมสำหรับการระบุ",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "ผลลัพธ์การระบุ",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "วิเคราะห์การเดินและให้ข้อมูลเชิงลึก",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "รับ API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "กระบวนการจดจำทั้งหมดไม่สำเร็จ.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "ผลการจดจำกระดานเกม",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "ถาม LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "ตรวจจับกระดานล้มเหลว!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "ไม่พบจุดบนกระดาน จึงไม่สามารถระบุชิ้นได้!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "คัดลอก FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "โมเดลที่ใช้งานบ่อย",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (ไม่บังคับ)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "ยังไม่ได้เลือกรูปภาพ",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "ตาของดำ",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "โมเดลภาษาใหญ่",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "ผู้ให้บริการ",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "URL ฐาน",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "โมเดล",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "อุณหภูมิ",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "ได้รับคำสั่งแล้ว! AI กำลังประมวลผล...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "กำลังคิดอย่างลึกซึ้ง โปรดรอ...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "กำลังจะแสดงในไม่ช้า...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "พารามิเตอร์การจดจำ",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "ปรับพารามิเตอร์เพื่อเพิ่มความแม่นยำในการจดจำ",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "บันทึกพารามิเตอร์",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "ไม่สามารถเริ่มการจดจำภาพได้: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "ผิดพลาด: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "การจดจำภาพล้มเหลว: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "ผิดพลาด: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "ใช้ตำแหน่งโดยมีตัวหมากขาว {whiteCount} ตัว และดำ {blackCount} ตัว",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(คัดลอก FEN ไปยังคลิปบอร์ดแล้ว)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "การจดจำล้มเหลว: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "ผิดพลาด: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "อันดับของฉัน",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "เกมที่เล่น",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "ชนะ",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "แพ้",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "เสมอ",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "อัปเดตล่าสุด",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "รูปแบบ:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "รีเซ็ตสถิติ",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "อัตราเสมอ",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "อัตราแพ้",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "สถิติ AI",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "เปิดใช้งานสถิติ",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "เมื่อเปิดใช้งาน ผลการแข่งขันจะถูกบันทึกในสถิติ อย่างไรก็ตาม เกมที่เกี่ยวข้องกับการย้อนกลับจะไม่ถูกบันทึก เมื่อปิดใช้งาน การเก็บสถิติจะหยุดชั่วคราว",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "การดำเนินการนี้จะรีเซ็ตสถิติเกมทั้งหมด การดำเนินการนี้ไม่สามารถยกเลิกได้",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "ขนาดวงแหวนด้านในของกระดาน",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "เงาของกระดาน",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "การตรวจจับกับดัก",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "ไฮไลต์หมากกับดักด้วยวงกลมและลูกศรหนาระหว่างการวิเคราะห์.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "มีกับดักอยู่ การเดินหมากกับดัก: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "การจับขนาบ",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "แนบชิ้นส่วนหนึ่งของคู่ต่อสู้ระหว่างสองของคุณเป็นเส้นตรงเพื่อจับมัน",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "อนุญาตให้จับขนาบ",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "การจับภาพการแทรกแซง",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "ย้ายเข้าไปในจุดว่างระหว่างสองชิ้นของคู่ต่อสู้ของคุณเพื่อจับพวกมันทั้งคู่",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "อนุญาตให้จับภาพการแทรกแซง",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "กระโดดจับ",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "จับภาพด้วยการกระโดดข้ามชิ้นส่วนของคู่ต่อสู้ที่อยู่ติดกันเข้าไปในจุดว่างที่อยู่ไกลออกไป",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "อนุญาตให้กระโดดกระโดด",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "สายที่ใช้งานได้",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "ตามขอบของจัตุรัส",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "ตามแนว orthogonal ข้ามสี่เหลี่ยมจัตุรัส",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "ตามแนวเส้นทแยงมุมข้ามสี่เหลี่ยมจัตุรัส",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "ขั้นตอนการดำเนินการ",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "ความพร้อมใช้งานในระหว่างขั้นตอนการเคลื่อนไหวตามชิ้นส่วนที่เหลืออยู่",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "ไม่มีข้อ จำกัด",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "มีให้เมื่อคุณมีสามชิ้นหรือน้อยกว่า",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "หยุดการวางเมื่อเหลือเพียงสองช่องว่าง",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "เมื่อเปิดใช้งาน ขั้นตอนการวางจะสิ้นสุดและขั้นตอนการเคลื่อนย้ายจะเริ่มต้นเมื่อกระดานมีพื้นที่ว่างเพียง 2 ช่อง โดยไม่คำนึงถึงหมากที่อยู่ในมือ กฎนี้ใช้กับเกมหมาก 12 ตัวเท่านั้น",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "คุณสามารถขอเดินกลับได้ทันทีหลังจากเดินของคุณเท่านั้น",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "หากคุณต้องการความท้าทายที่มากขึ้น เราขอแนะนำให้เปิดใช้งานตัวเลือก \"{setting}\" และดาวน์โหลดฐานข้อมูลที่สมบูรณ์ไปยังอุปกรณ์ของคุณตามที่ระบุ",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "คุณต้องการกำหนดค่ากฎของเกมตอนนี้หรือไม่?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "คำแนะนำอัลกอริทึม",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "คุณแพ้เกมหลายเกมติดต่อกันในระดับ 1 คุณต้องการเปลี่ยนไปใช้อัลกอริทึม MCTS ที่ง่ายกว่าเพื่อลดความยากหรือไม่?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "ขอแสดงความยินดีกับการชนะในระดับ 30 ของ MCTS! คุณต้องการเปลี่ยนไปใช้อัลกอริทึม MTD(f) เพื่อความท้าทายที่มากขึ้นหรือไม่?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "เน้นหมากที่จับได้",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2179,7 +2748,7 @@
     "@back": {
         "description": "Back button tooltip"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "ปริศนา",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "ย้าย",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {
@@ -3220,7 +3728,7 @@
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "january": "January",
+    "january": "มกราคม",
     "@january": {
         "description": "Month name"
     },

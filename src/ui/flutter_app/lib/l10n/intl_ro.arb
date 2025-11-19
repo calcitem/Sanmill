@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} pentru a muta.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "Jucătorul 1 câștigă!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "Nu se poate importa {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Mișcările și regulile nu se potrivesc.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Eroare: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "Rata de câștig",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} numărul de piese este mai mic de trei.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} a demisionat.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} nu are cum să meargă.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Placa este plină și {player} nu are nicio cale de rezolvat.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Timpul a trecut, {player} pierdut.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "În timpul ultimelor N mișcări nicio piesă nu a fost înlăturată.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Provocare la nivel mai greu? Noul nivel va fi nivelul {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Ai pierdut!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Versiune: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Mulțumiri",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "Alege {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "Info",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " și ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Acceptare",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} în mână: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} la bord: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "Tablă compensată de sus",
     "@boardTop": {
@@ -1103,7 +1048,7 @@
     "@close": {
         "description": "Close"
     },
-    "download": "Download",
+    "download": "Descarcă",
     "@download": {
         "description": "Download button text"
     },
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "Partea de mișcare: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "jucător",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Ultima mișcare: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Mutare",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Selectat",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Mișcare}=1{{count} Mișcare}other{{count} Mișcări}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Încărcarea nu a reușit.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piesă}other{{count} piese}} trebuie eliminate.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Plasat ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Număr de piese plasate în faza de plasare.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "Jucătorul actual a plasat piese {count}.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "Faza nu se plasează, nu o pot schimba.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "pădure",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Imagine de pe desktop",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Poziție nevalidă.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "Distribuie GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Raportul pixelilor",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Durată",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "Recorder ecran joc",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Anterior",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Următorul",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Ocolire",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Am înţeles",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Puteți modifica regulile jocului în setările regulilor.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "Puteți folosi rotița mouse-ului pentru a modifica valoarea din selector.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "Timpul de gândire AI setat la 0 înseamnă că nu există limită de timp pentru gândire.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) este o formă modificată a algoritmului de căutare alfa-beta care urmărește să îmbunătățească eficiența prin reutilizarea rezultatelor de căutare intermediare și folosind o estimare inițială bună pentru a restrânge spațiul de căutare.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Vă rugăm să rețineți că ajustarea timpului de gândire AI poate să nu fie complet precisă. Timpul real de gândire poate fi mai scurt atunci când nivelul de dificultate este setat la o valoare mai mică și poate fi mai lung atunci când IA este la mijlocul gândirii când timpul expiră.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Dacă setați nivelul de dificultate ridicat, dar nu creșteți timpul de gândire AI, nivelul de dificultate real poate fi limitat la o valoare mai mică din cauza constrângerii timpului de gândire. Valoarea reală poate varia în funcție de performanța mașinii.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) este un algoritm de căutare pentru a găsi cea mai bună mișcare într-o anumită poziție. Este o îmbunătățire a algoritmului alfa-beta și utilizează căutări în fereastră nulă sau zero pentru a confirma că o mișcare este mai proastă sau nu mai proastă decât un scor deja sigur din variația principală. PVS se concentrează pe cele mai promițătoare mișcări și evită căutările inutile ale filialelor suboptime, ceea ce ajută la îmbunătățirea eficienței căutării.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "Algoritmul alfa-beta este un algoritm de căutare pentru a găsi cea mai bună mișcare. Utilizează principiul minimax și două valori, alfa și beta, pentru a tăia arborele de căutare și a crește eficiența. Alpha reprezintă scorul minim pe care computerul este sigur că îl poate obține, în timp ce beta reprezintă scorul maxim pe care îl poate obține adversarul său. Algoritmul ajută computerul să ia decizii inteligente și eficiente într-un joc.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Conform experienței umane, dacă încerci să câștigi, vei pierde. În schimb, ținește ca obiectiv o egalitate și evită pierderea jocului. Observați-vă adversarul și atrageți-l ușor într-o poziție în care ar putea face greșeli. Când arată slăbiciune, profită de ocazie și împinge ușor pentru victorie. În acest fel, poți câștiga jocul.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "În acest joc, este mai ușor pentru al doilea jucător să câștige în comparație cu primul jucător.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Activarea opțiunii pasive va determina AI să se relaxeze atunci când are un avantaj în poziție, mai degrabă decât să încerce agresiv să câștige cât mai repede posibil.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Activarea acestei opțiuni crește aleatorietatea și distracția jocului, în timp ce dezactivarea acestuia poate ajuta la studiul modalităților de a învinge AI.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Dacă AI ia în considerare mobilitatea pieselor sale, nu va urmări doar să captureze piesele adversarului cât mai repede posibil, ci va lua în considerare și blocarea mișcărilor adversarului și împiedicarea acestuia să facă același lucru.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Când tabla este plină",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "La sfârșitul fazei de plasare, înainte de începerea fazei de mișcare, urmează acțiunea dacă tabla este plină de piese.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Jucătorul care se mișcă primul în faza de mișcare îndepărtează una dintre piesele adversarului.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Ambele părți sunt de acord cu o remiză.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Luați una dintre piesele adversarului dvs.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Primul jucător pierde jocul.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Primul și al doilea jucător scot una dintre piesele adversarului.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Al doilea și primul jucător scot una dintre piesele adversarului.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Intrate acum în faza de zbor, piesele adversarului pot sări în orice punct gol de pe tablă. Puteți dezactiva regula de zbor în „Setări reguli”.",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Când în impas",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Ce acțiune urmează când nicio piesă nu poate fi mutată?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Încheiați cu o pierdere în impas pentru partea care este blocată.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Schimbați partea pentru a muta.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Scoateți una dintre piesele adversarului și faceți următoarea mișcare.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Încheiați cu o remiză în impas.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Scoateți una dintre piesele adversarului și schimbați partea pentru a muta.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "Timp de întârziere a răspunsului AI",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI se află în prezent într-o fază de răspuns întârziat. Vă rugăm să așteptați puțin înainte de a continua.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Nu puteți elimina o piesă neadiacentă.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "Dacă sunt în impas, piesele adversarului adiacente ale tale pot fi eliminate, indiferent de formarea morii.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS este un algoritm prietenos pentru începători care ia decizii prin explorarea și evaluarea diferitelor mișcări prin simulări.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "Jad auriu",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "Wood Wood",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "Mister întunecat",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Albastru miez de noapte",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "Pădure verde",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "Lunca Verde",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "Calea pietroasă",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Roz pastel",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "Marea Turcoaz",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Violet Vis",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "Ciocolata cu menta",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Cer albastru",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "Grădina jucăușă",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "Algoritmul de analiză retrogradă utilizează analiza retrogradă cu mai multe valori pentru a construi o bază de date finală din diferite poziții de început, apoi aplică această bază de date pentru a optimiza jocul. Această abordare se încadrează în categoria soluțiilor Ultra-Strong.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Doriți să vedeți ghidul utilizatorului pentru acest algoritm?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Afișați indicatorul de avantaj pozițional",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Utilizați baza de date perfectă",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Activați această opțiune pentru a folosi o bază de date de joc fără cusur, generată prin algoritmi de ultimă generație. Această funcție integrează atât strategiile de deschidere, cât și cele de final pentru a sugera mutări optime. Este alegerea preferată pentru jucătorii care caută cel mai înalt nivel de precizie în joc. Creată prin tehnici de calcul meticuloase, baza de date este concepută pentru a oferi soluții de joc aproape perfecte.\n\nNotă: Dacă inteligența artificială nu poate accesa baza de date, va recurge la algoritmi convenționali pentru deciziile de joc. Când baza de date este disponibilă, 'Nivelul de dificultate' devine practic de neînvins, iar 'Timpul de gândire al AI' experimentează o reducere drastică. Multe setări în opțiunile 'Stilul de joc al AI' vor fi suprascrise, deoarece rezultatele bazei de date au cea mai mare prioritate.\n\nPentru îndrumări despre cum să beneficiați la maximum de această bază de date fără cusur, faceți clic aici.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Imagine de fundal",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "Când opțiunea 'Folosirea bazei de date perfecte' nu este activată, setarea 'Aleator' determină AI-ul să mute piesele în mod aleatoriu fără a utiliza algoritmi pentru selecția mișcărilor. Acest lucru duce, de obicei, la un joc semnificativ mai slab. În schimb, când este activată 'Folosirea bazei de date perfecte', AI-ul se bazează exclusiv pe 'Baza de Date Perfectă' pentru a lua decizii, în loc să o combine cu algoritmii tradiționali AI. În acest mod, mișcările AI-ului sunt bazate în întregime pe conținutul bazei de date, evitând dependența de calculele în timp real sau algoritmii de căutare.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Eliminați piesa(ele) adversarului din mâna acestuia; apoi este rândul adversarului să plaseze.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Când se formează mori în faza de plasare",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Eliminați piesa(ele) adversarului de pe tablă.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Eliminați piesa(ele) adversarului de pe tablă; apoi este rândul adversarului să plaseze.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "Adversarul își elimină propria piesă(ele) de pe tablă.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "În loc să acționați dumneavoastră, adversarul alege și elimină propria piesă(ele) de pe tablă, luând efectiv o acțiune care îi este dăunătoare.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Eliminați piesa(ele) adversarului din mâna acestuia; apoi este rândul dumneavoastră să vă mutați.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Eliminați piesa(ele) din mâna adversarului. Dacă, conform setării de Eliminare Multiplă, trebuie eliminate mai multe piese și adversarul nu are piese rămase în mână, continuați să eliminați piesele adversarului de pe tablă. Apoi, este rândul dumneavoastră să vă mutați. Dacă continuați să formați mori, puteți continua să eliminați piesele adversarului.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Eliminați piesa(ele) din mâna adversarului. Dacă, conform setării de Eliminare Multiplă, trebuie eliminate mai multe piese și adversarul nu are piese rămase în mână, continuați să eliminați piesele adversarului de pe tablă. Apoi, este rândul adversarului să se mute.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Marcați și întârziați eliminarea pieselor.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "În faza de plasare, piesele ce urmează să fie eliminate sunt marcate, și pentru ambii jucători, nu se pot plasa piese noi pe aceste puncte. La intrarea în faza de mișcare, aceste piese marcate sunt eliminate în totalitate, și jucătorii pot apoi să-și mute piesele pe aceste puncte acum goale.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Acțiunile care pot fi luate în timpul formării morilor în faza de plasare.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Marcat",
-    "@marked": {},
-    "menu": "Meniu",
-    "@menu": {},
-    "monochrome": "Monocrom",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "Puteți activa suportul pentru cititorul de ecran în configurațiile de accesibilitate din Setările generale.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Afișează numerele pe piese",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Salvați imaginea",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Afișează bara de instrumente de analiză",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Culoarea de fundal a barei de instrumente de analiză",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Culoarea pictogramei barei de instrumente de analiză",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "Transformed.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "Nu se poate transforma.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Rotire",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "Oglin. O",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "Oglin. V",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "Oglin. I/E",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "Pânză Transparentă",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Restricționează formarea repetată a morilor",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "O piesă mutată de la un moară la alta nu poate reveni imediat la punctul original în următoarea tură pentru a forma din nou o moară. Mai întâi este necesară o mutare diferită.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Moară de unică folosință",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Fiecare moară poate elimina o piesă a adversarului o singură dată. O poți reforma din nou, dar nu poate fi folosită pentru eliminări suplimentare.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Regulile actuale pe care le-ați setat nu au o bază de date perfectă corespunzătoare. Pentru mai multe informații despre baza de date perfectă, faceți clic aici.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "Concentrează-te pe blocarea căilor",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "În anumite faze ale jocului, prioritizează blocarea mișcării adversarului în detrimentul formării de moare. În loc să se concentreze pe eliminarea pieselor prin completarea de moare, AI-ul își propune să-l prindă pe adversar în aceste faze, făcându-l incapabil să se miște și asigurând o victorie prin epuizare, mai degrabă decât prin joc agresiv. Această strategie specifică fazei nu blochează activ moarele adversarului.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Imagine piesă",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Importați setările de culoare",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Exportați setările de culoare",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Importați",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Exportați",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Vă rugăm să copiați mai întâi setările formatului JSON în clipboard.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Copiat în clipboard.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Importat.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Imagine tablă",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Frunzele de Toamnă",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Tărâm Legendar",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Efect de vinietă",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Ați dori să faceți bara de instrumente complet transparentă când este setată o imagine de fundal pentru tablă?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "Activează vibrația în joc",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Tema sunetului",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "Bila",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Lichid",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Lemn",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Efect de animație la plasarea piesei",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Efect de animație la eliminarea piesei",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Afișează bara de instrumente în partea de jos",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Raza colțului tablei",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Utilizați cartea de deschidere",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Curent",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Țintar",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Set de reguli",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "Moara de o singură dată",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "Permiteți IA să utilizeze mișcările de deschidere utilizate frecvent de jucătorii umani profesioniști în timpul jocului timpuriu. Notă: Această funcție este disponibilă în prezent doar pentru seturi de reguli specifice.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Afișează graficul avantajului",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Graficul de avantaj va fi desenat doar după ce IA face o mutare. Nu va fi desenat când jucătorul uman face o mutare.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Dezactivați îndepărtarea până când toate piesele sunt plasate. Jucătorii îndepărtează piesele pe baza numărului de mori formate.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Dezactivați îndepărtarea până când toate piesele sunt plasate. Jucătorii îndepărtează piesele pe baza numărului de mori: dacă este egal, ambii îndepărtează același număr de piese; dacă unul are mai multe, îndepărtează o piesă în plus, menținând o diferență de o piesă. Dacă doar unul formează o moară, acesta îndepărtează două piese, iar celălalt îndepărtează una. Dacă niciunul nu formează o moară, ambii îndepărtează câte o piesă.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Selectează una dintre piesele tale.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Nu este rândul tău.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Culoarea de fundal pentru bara de instrumente de adnotare",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Culoarea pictogramei din bara de instrumente de adnotare",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Afișează bara de instrumente de adnotare",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Intră în modul de adnotare",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Ești sigur că vrei să ștergi toate adnotările?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "Prompt LLM copiat în clipboard.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Conexiune refuzată, serverul poate fi oprit.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Descoperire reușită, așteptând conexiunea...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "Nicio conexiune LAN",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Fă o captură de ecran",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Deconectat de la adversar.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Cerere de anulare a mutării",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Nimic de afișat.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Oprește găzduirea",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Conexiunea a fost resetată de partea opusă.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Conexiunea s-a pierdut din cauza expirării semnalului. Vă rugăm să vă reconectați.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Începe găzduirea",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Cererea de repornire a fost respinsă.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "Nu ești conectat la un adversar LAN.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "Prompt LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "Jocul a fost repornit.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Cererea de anulare a mutării a fost respinsă.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Ești sigur că vrei să renunți la acest joc?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "Adversarul a renunțat. Ai câștigat!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Șterge toate adnotările",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Conectat, așteaptă mutarea adversarului...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Stare rețea: Deconectată",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Cerere de anulare a mutării trimisă adversarului.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "Este posibil ca adversarul să fi părăsit jocul",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Conectat cu succes la gazdă.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Conexiune pierdută: timp de așteptare pentru semnal depășit",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Nicio gazdă descoperită.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Confirmă renunțarea",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "Joc găzduit, așteptăm jucători să se alăture...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Conexiunea a expirat, conexiunea de rețea este instabilă.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "Nu există niciun prompt LLM disponibil.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Ai renunțat. Joc încheiat.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "IP Server",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Confirmă ștergerea",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Este rândul adversarului.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "Se așteaptă o conexiune de la client...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Cererea de anulare a mutării a fost respinsă sau a eșuat.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Adaugă text",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Ieși din modul de adnotare",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Tastați adnotarea dvs.",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Se încearcă reconectarea...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Cerere de repornire trimisă. Se așteaptă răspunsul adversarului...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Serverul este oprit.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Cerere de repornire",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Nu poți solicita anularea mutării când nu e rândul tău.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Cererea de anulare a fost acceptată.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Setări rețea locală",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Reconectare reușită!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Nu s-a reușit salvarea imaginii în Galerie.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "Adversarul a cerut repornirea jocului. Accepți?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Este rândul tău.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Nu se poate reconecta, vă rugăm să reporniți jocul.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Gazdă",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Alătură-te",
-    "@join": {},
+    "@join": {
+        "description": ""
+    },
     "port": "Port",
-    "@port": {},
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Adresă IP invalidă.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Port invalid.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Se conectează: Încercarea {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Nu s-a reușit conectarea: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Eroare: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Nu s-a reușit pornirea găzduirii: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Eroare: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Gazdă descoperită: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "Oprește",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Descoperă",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Conectează",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Client conectat: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Se descoperă: {seconds} s",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Se reconectează ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Conectat",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "Șterge",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "Egiptul Antic",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Gheață Gotică",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Câmp de Orez",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "Porțelan Chinezesc",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Amurgul Deșertului",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Meșteșug de Precizie",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Broderie Populară",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Moștenirea Carpaților",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Grandoare Imperială",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "Cristal Bohemian",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Răsăritul Savanei",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Armonie și Echilibru",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Condiment de Scorțișoară",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "Mozaic Anatolian",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Spiritul Carnavalului",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Personalizat",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Piața de condimente",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Glisează pentru a dezvălui sertarul",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "Afișează informații despre joc în capturile de ecran",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Limită de timp umană",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Fără limită de timp pentru mișcările umane",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "Pierderea prin expirarea timpului va fi aplicată jucătorului uman",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "Identificând tabla de joc...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Poți introduce orice nume de model.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Poziția tablei aplicată. FEN copiat în clipboard.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Sugestie: încearcă să faci o fotografie mai clară a tablei.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "Șablon de prompt LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Nu a fost detectată nicio tablă validă.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Selectare imagine din album...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Configurează șablonul de prompt",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "Editează șablonul de prompt pentru analiza LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "Nu s-a putut genera FEN din tabla recunoscută.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Ieșire în limba curentă",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "URL-uri Base comune",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Vezi modelele comune",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Parametrii de recunoaștere au fost actualizați.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Mutarea albului",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Resetează la valorile implicite",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Ședință foto",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Nu s-a putut aplica poziția recunoscută a tablei.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "Conținutul promptului LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM nu este configurat. Verifică setările.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Setează furnizorul, modelul, API Key și Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "Configurare LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "Configurează furnizorul LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "Antet șablon prompt LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Nicio piesă nu a fost recunoscută în imagine. Încearcă din nou.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Recunoaște tabla din imagine",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Vezi sfaturi",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Aplică pe tablă",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Ajustează zona tablei",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Vezi URL-uri comune",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Analiza culorilor a eșuat!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "Se analizează imaginea tablei...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Selectează din album",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Niciun punct pe tablă detectat!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Dacă este lăsat gol, se va folosi șablonul implicit",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "Configurare LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Ești sigur că vrei să resetezi șabloanele de prompt la valorile implicite?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "Subsol șablon prompt LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Se încarcă răspunsul...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Aplică acest rezultat pe tablă",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Se face fotografia...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Te rugăm să selectezi o imagine a tablei de joc pentru identificare",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Rezultatele identificării",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Analizează mutările și oferă perspective.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "Obține API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "Întregul proces de recunoaștere nu s-a putut finaliza.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Rezultatul recunoașterii tablei",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "Întreabă LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Detecția tablei a eșuat!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Niciun punct pe tablă detectat, nu se poate identifica piesa!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "Copiază FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Modele utilizate frecvent",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (opțional)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Nicio imagine selectată",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Mutarea negrului",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Model lingvistic mare",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Furnizor",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "URL de bază",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Model",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Temperatură",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Comanda primită! IA procesează...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Se desfășoară gândire profundă, vă rugăm să așteptați...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "Va fi prezentat în curând...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Parametri de recunoaștere",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Ajustați parametrii pentru a îmbunătăți acuratețea recunoașterii",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Salvează parametrii",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Nu se poate porni recunoașterea imaginii: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Eroare: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Recunoașterea imaginii a eșuat: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Eroare: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Poziție aplicată cu {whiteCount} piese albe și {blackCount} piese negre",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN copiat în clipboard)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Recunoașterea a eșuat: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Eroare: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "Ratingul meu",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "Jocuri jucate",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "Victorii",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Înfrângeri",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Remize",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Ultima actualizare",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Format:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Resetați statisticile",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Rată remize",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Rată înfrângeri",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Statistici IA",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Activați statisticile",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Când este activat, rezultatele jocurilor vor fi înregistrate în statistici. Cu toate acestea, jocurile care implică retrageri de mutări nu vor fi înregistrate. Când este dezactivat, colectarea statisticilor este întreruptă.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "Aceasta va reseta toate statisticile jocului. Această acțiune nu poate fi anulată.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Dimensiunea inelului interior al tablei",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Umbra tablei",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Detectare capcane",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Evidențiază mutările-capcană cu cercuri și săgeți îngroșate în timpul analizei.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Există o capcană. Mutări-capcană: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Captura flancând",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Închideți una dintre piesele adversarului între două dintre ale voastre într -o linie dreaptă pentru a o captura.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Permiteți captarea flancare",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Captura de intervenție",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Mutați -vă în punctul gol dintre două dintre piesele adversarului dvs. pentru a le surprinde pe amândouă.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Permiteți captarea intervenției",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Salt Capture",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Capturați sărind peste piesa adversarului adiacent în punctul gol de dincolo.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Permiteți captarea saltului",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Linii aplicabile",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "De -a lungul marginilor pieței",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "De -a lungul liniilor ortogonale care traversează piața",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "De -a lungul liniilor diagonale care traversează pătratul",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Faze de execuție",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Disponibilitate în faza de mișcare pe baza pieselor rămase",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Fără restricție",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Disponibil când aveți trei sau mai puține piese",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Opriți plasarea când rămân doar două pătrate goale",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Când este activată, faza de plasare se termină și faza de mișcare începe când tabla are doar 2 spații goale rămase, indiferent de piesele din mână. Această regulă se aplică doar jocurilor cu 12 piese.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Puteți solicita revenirea doar imediat după mutarea dvs.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Dacă doriți o provocare mai mare, vă sugerăm să activați opțiunea \"{setting}\" și să descărcați baza de date completă pe dispozitivul dvs. conform instrucțiunilor.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "Doriți să configurați regulile jocului acum?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "Sugestie algoritm",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Ați pierdut mai multe jocuri la rând la nivelul 1. Doriți să treceți la algoritmul MCTS mai ușor pentru a reduce dificultatea?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "Felicitări pentru victoria de la nivelul 30 MCTS! Doriți să treceți la algoritmul MTD(f) pentru o provocare mai mare?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "Evidențiază piesele care pot fi capturate",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2179,7 +2748,7 @@
     "@back": {
         "description": "Back button tooltip"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "Puzzle-uri",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Mutare",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {
@@ -3220,7 +3728,7 @@
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "january": "January",
+    "january": "Ianuarie",
     "@january": {
         "description": "Month name"
     },

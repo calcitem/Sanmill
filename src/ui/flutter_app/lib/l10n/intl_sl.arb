@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "V REDU",
+    "ok": "V redu",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} za premikanje.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "Igralec 1 zmaga!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "{invalidMove} ni mogoče uvoziti",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Poteze in pravila se ne ujemajo.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Napaka: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "Stopnja zmage",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} število kosov je manjše od treh.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} odstopi.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} nima poti.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Plošča je polna in {player} nima poti.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Čas je mimo, {player} izgubljen.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "V fazi premikanja v zadnjem določenem številu potez ni bila odstranjena nobena figura.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Izzvati težjo stopnjo? Nova raven bo raven {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Izgubili ste!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Različica: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Hvala",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "Izberite {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "Info",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " in . ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Sprejmite",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} v roki: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} na krovu: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "Odmik deske od vrha",
     "@boardTop": {
@@ -1103,7 +1048,7 @@
     "@close": {
         "description": "Close"
     },
-    "download": "Download",
+    "download": "Prenesi",
     "@download": {
         "description": "Download button text"
     },
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "Stran za premikanje: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "igralec",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Zadnja poteza: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Premik",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Izbrano",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Premakni}=1{{count} Premakni}other{{count} Premiki}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Nalaganje ni uspelo.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} kos}other{{count} kosov}} je treba odstraniti.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Postav. ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Štetje postavljenih kosov v fazi postavljanja.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "{count, plural, =0{Trenutni igralec ni postavil nobene figure.} =1{Trenutni igralec je postavil eno figuro.} =2{Trenutni igralec je postavil dve figuri.} few{Trenutni igralec je postavil {count} figure.} other{Trenutni igralec je postavil {count} figur.}}",
     "@hasPlacedPieceCount": {
-        "description": "Message describing how many pieces the current player has placed, with support for Slovenian pluralization.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed by the player.",
-                "example": "3"
-            }
-        }
+        "description": "Message describing how many pieces the current player has placed, with support for Slovenian pluralization."
     },
     "notPlacingPhase": "Če ne postavite faze, je ne morete spremeniti.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Gozd",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Slika namizja",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Neveljaven položaj.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "Delite GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Razmerje slikovnih pik",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Trajanje",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "Snemalnik zaslona v igri",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Prejšnja",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Naslednji",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Preskoči",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Razumem",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Pravila igre lahko spremenite v nastavitvah pravil.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "Za spreminjanje vrednosti v izbirniku lahko uporabite kolesce miške.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "Čas razmišljanja AI, nastavljen na 0, pomeni, da za razmišljanje ni časovne omejitve.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) je spremenjena oblika iskalnega algoritma alfa-beta, katerega namen je izboljšati učinkovitost s ponovno uporabo vmesnih rezultatov iskanja in uporabo dobrega začetnega ugibanja za zožitev iskalnega prostora.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Zavedajte se, da prilagoditev časa razmišljanja AI morda ni povsem natančna. Dejanski čas razmišljanja je lahko krajši, če je težavnostna stopnja nastavljena na nižjo vrednost, in je lahko daljši, ko je AI sredi razmišljanja, ko se čas izteče.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Če nastavite visoko težavnostno stopnjo, vendar ne povečate časa za razmišljanje AI, je lahko dejanska težavnostna stopnja omejena na nižjo vrednost zaradi časovne omejitve razmišljanja. Dejanska vrednost se lahko razlikuje glede na delovanje stroja.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) je iskalni algoritem za iskanje najboljše poteze v danem položaju. Je izboljšava algoritma alfa-beta in uporablja ničelna ali ničelna iskanja po oknu za potrditev, da je poteza slabša ali ne slabša od že varnega rezultata iz glavne različice. PVS se osredotoča na najbolj obetavne poteze in se izogiba nepotrebnemu iskanju neoptimalnih vej, kar pomaga izboljšati učinkovitost iskanja.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "Algoritem alfa-beta je iskalni algoritem za iskanje najboljše poteze. Uporablja načelo minimax in dve vrednosti, alfa in beta, za zmanjšanje iskalnega drevesa in povečanje učinkovitosti. Alfa predstavlja najmanjši rezultat, za katerega je računalnik prepričan, da ga lahko dobi, medtem ko beta predstavlja največji rezultat, ki ga lahko doseže nasprotnik. Algoritem pomaga računalniku sprejemati pametne in učinkovite odločitve v igri.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Glede na človeške izkušnje, če poskušate zmagati, boste izgubili. Namesto tega si za cilj prizadevajte za remi in se izogibajte izgubi igre. Opazujte svojega nasprotnika in ga nežno zvabite v položaj, kjer lahko naredi napako. Ko pokažejo šibkost, izkoristite priložnost in nežno pritiskajte na zmago. Na ta način lahko zmagate v igri.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "V tej igri drugi igralec lažje zmaga kot prvi igralec.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Če omogočite pasivno možnost, se bo AI sprostil, ko ima prednost v položaju, namesto da bi agresivno poskušal čim hitreje zmagati.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Če omogočite to možnost, povečate naključnost in zabavnost igre, medtem ko jo onemogočite, lahko pomaga pri preučevanju načinov, kako premagati AI.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Če umetna inteligenca upošteva mobilnost svojih figur, si ne bo prizadeval le čim hitreje zajeti nasprotnikove figure, ampak bo razmislil tudi o blokiranju nasprotnikovih gibov in preprečitvi, da bi storil isto.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Ko je tabla polna",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "Na koncu faze postavljanja, preden se začne faza premikanja, sledi akcija, če je plošča polna kosov.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Igralec, ki se prvi premakne v fazi premikanja, odstrani eno od nasprotnikovih figur.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Obe strani se strinjata z remijem.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Vzemite eno od nasprotnikovih figur.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Prvi igralec izgubi igro.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Prvi in drugi igralec odstranita eno od nasprotnikovih figur.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Drugi in prvi igralec odstranita eno od nasprotnikovih figur.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Ko ste vstopili v fazo letenja, lahko nasprotnikove figure skočijo na katero koli prazno točko na plošči. Pravilo letenja lahko izklopite v \"Nastavitve pravila\".",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Ob zastoju",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Kakšno dejanje sledi, ko ni mogoče premakniti nobene figure?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Končajte z izgubo na pat poziciji.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Za premikanje spremenite stran.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Odstranite eno od nasprotnikovih figur in naredite naslednjo potezo.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Konec z neodločenim izidom.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Odstranite eno od nasprotnikovih figur in spremenite stran za premikanje.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "Čas zakasnitve odziva AI",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI je trenutno v fazi zakasnjenega odziva. Počakajte nekaj časa, preden nadaljujete.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Nesosednjega kosa ne morete odstraniti.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "Če je pat položaj, se lahko nasprotnikove figure, ki mejijo na vaše, odstranijo, ne glede na sestavo mlina.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS je začetnikom prijazen algoritem, ki sprejema odločitve z raziskovanjem in vrednotenjem različnih potez s pomočjo simulacij.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "Zlati žad",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "Forest Wood",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "Temna skrivnost",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Polnočno modra",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "Zeleni gozd",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "Zeleni travnik",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "Kamnita pot",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Pastelno roza",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "Turkizno morje",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Vijolične sanje",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "Mint čokolada",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Modro nebo",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "Igrivi vrt",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "Algoritem retrogradne analize uporablja večvrednostno retrogradno analizo, da iz različnih začetnih položajev zgradi zbirko podatkov o končni igri, nato pa to zbirko podatkov uporabi za optimizacijo igranja. Ta pristop spada v kategorijo ultra-močnih rešitev.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Ali si želite ogledati uporabniški priročnik za ta algoritem?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Uporabite popolno bazo podatkov",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Omogočite to možnost, če želite uporabljati brezhibno zbirko podatkov o igrah, ustvarjeno z najsodobnejšimi algoritmi. Ta funkcija združuje uvodne in končne strategije za predlaganje optimalnih potez. To je najprimernejša izbira za igralce, ki iščejo najvišjo stopnjo natančnosti igranja. Baza podatkov, ustvarjena z natančnimi računalniškimi tehnikami, je zasnovana tako, da ponuja skoraj popolne rešitve za igre.\n\nOpomba: če AI ne uspe dostopati do baze podatkov, se bo za odločitve glede igranja obrnil na običajne algoritme. Ko je zbirka podatkov na voljo, postane 'Stopnja težavnosti' praktično nepremagljiva, 'Čas za razmišljanje AI' pa se drastično skrajša. Veliko nastavitev v možnostih 'AI's play style' bo preglasenih, saj imajo rezultati baze podatkov najvišjo prednost.\n\nZa navodila o tem, kako kar najbolje izkoristiti to brezhibno bazo podatkov, kliknite tukaj.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Ozadna slika",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "Ko možnost »Uporabi popolno bazo podatkov« ni omogočena, nastavitev »Naključno« povzroči, da umetna inteligenca premakne kose naključno brez uporabe algoritmov za izbiro potez. To običajno povzroči občutno šibkejše igranje. Nasprotno, ko je omogočena možnost »Uporabi popolno bazo podatkov«, se umetna inteligenca za sprejemanje odločitev zanaša izključno na »popolno bazo podatkov«, namesto da bi jo mešala s tradicionalnimi algoritmi umetne inteligence. V tem načinu poteze umetne inteligence v celoti temeljijo na vsebini baze podatkov, pri čemer se izogibajo zanašanju na izračune v realnem času ali algoritme iskanja.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Odstrani nasprotnikovo/nasprotničine figure iz roke; nato je na vrsti nasprotnik/nasprotnica, da postavi figuro.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Pri oblikovanju mlinov med fazo postavljanja",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Odstrani nasprotnikovo/nasprotničine figure s plošče.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Odstrani nasprotnikovo/nasprotničine figure s plošče; nato je na vrsti nasprotnik/nasprotnica, da postavi figuro.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "Nasprotnik/nasprotnica odstrani lastne figure s plošče.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "Namesto, da bi vi ukrepali, nasprotnik/nasprotnica izbere in odstrani svoje figure s plošče, tako da učinkovito izvede dejanje, ki je škodljivo zase.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Odstrani nasprotnikovo/nasprotničine figure iz roke; nato je tvoja poteza.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Odstrani figure iz nasprotnikove roke. Če naj bi bilo v skladu z nastavitvijo Multi-remove odstranjenih več figur, nasprotniku/nasprotnici pa v roki ni ostalo več figur, nadaljuj z odstranjevanjem nasprotnikovih figur s plošče. Nato je tvoja poteza. Če še naprej oblikuješ mline, lahko še naprej odstranjuješ nasprotnikove figure.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Odstrani figure iz nasprotnikove roke. Če naj bi bilo v skladu z nastavitvijo Multi-remove odstranjenih več figur, nasprotniku/nasprotnici pa v roki ni ostalo več figur, nadaljuj z odstranjevanjem nasprotnikovih figur s plošče. Nato je nasprotnikova poteza.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Označi in prestavi odstranjevanje figur.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "Med fazo postavljanja se figure, ki jih je treba odstraniti, označijo, na te točke pa noben igralec ne more postaviti novih figur. Ko se začne faza premikanja, se te označene figure vse odstranijo, in igralci lahko nato svoje figure premikajo na te zdaj prazne točke.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Dejanja, ki jih je mogoče sprejeti med oblikovanjem mlinov v fazi postavljanja.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Označeno",
-    "@marked": {},
-    "menu": "Meni",
-    "@menu": {},
-    "monochrome": "Monokromatsko",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "V splošnih nastavitvah lahko v nastavitvah dostopnosti omogočite podporo za bralnik zaslona.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Prikaži številke na figurah",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Shrani sliko",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Prikaži orodno vrstico za analizo",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Barva ozadja orodne vrstice za analizo",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Barva ikone orodne vrstice za analizo",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "Pretvorjeno.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "Ni mogoče pretvoriti.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Zavrti",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H. Obr.",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V. Obr.",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "N/Z Obr.",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "Prosojno Platno",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Omeji ponavljajoče se oblikovanje mlinov",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "Figura, premaknjena iz enega mlina v drugega, se ne more takoj vrniti na izhodiščno točko v naslednjem potezu, da bi znova oblikovala mlin. Najprej je potrebna druga poteza.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Mlin za enkratno uporabo",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Vsak mlin lahko odstrani nasprotnikovo figuro samo enkrat. Lahko jo znova spremenite, vendar je ni mogoče uporabiti za dodatne odstranitve.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Trenutna pravila, ki ste jih nastavili, nimajo ustrezne popolne zbirke podatkov. Za več informacij o popolni zbirki podatkov kliknite tukaj.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "Osredotočite se na blokiranje poti",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "Dajte prednost blokiranju premikov nasprotnika pred oblikovanjem mlinov. Namesto da bi se osredotočili na odstranjevanje figur z dokončanjem mlinov, AI poskuša nasprotnika ujeti v past, ga narediti nesposobnega za premikanje in zagotoviti zmago z izčrpanjem namesto z agresivno igro. Ta strategija ne blokira aktivno nasprotnikovih mlinov.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Slika figure",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Uvozi nastavitve barv",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Izvozi nastavitve barv",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Uvozi",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Izvozi",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Najprej kopirajte nastavitve formata JSON v odložišče.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Kopirano v odložišče.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Uvoženo.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Slika plošče",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Jesensko Listje",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Legendarna Zemlja",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Učinek vinjete",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Ali želite, da je orodni vrstica popolnoma prosojna, ko je nastavljena slika ozadja plošče?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "Omogoči vibracije v igri",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Zvočna tema",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "Krogla",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Tekočina",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Les",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Animacijski učinek pri postavitvi figure",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Animacijski učinek pri odstranitvi figure",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Pokaži orodno vrstico na dnu",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Polmer vogala plošče",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Uporabite knjigo odpiranja",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Trenutni",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Pravilnik",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "Dovolite AI, da uporablja odpiralne poteze, ki jih pogosto uporabljajo profesionalni človeški igralci v zgodnji fazi igre. Opomba: Ta funkcija je trenutno na voljo samo za določene komplete pravil.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Prikaži graf prednosti",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Graf prednosti bo narisan le po tem, ko bo AI naredil potezo. Ne bo narisan, ko potezo naredi človeški igralec.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Onemogočite odstranjevanje, dokler niso vse figure postavljene. Igralci odstranjujejo figure glede na število mlinov.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Onemogočite odstranjevanje, dokler niso vse figure postavljene. Igralci odstranjujejo figure glede na število mlinov: če je število enako, oba odstranita enako število figur; če ima eden več, odstrani eno figuro več in ohrani razliko ene figure. Če mlin ustvari samo eden, ta odstrani dve figuri, drugi pa eno. Če nihče ne ustvari mlina, oba odstranita po eno figuro.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Izberi eno od svojih figur.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Ni tvoja poteza.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Barva ozadja orodne vrstice za opombe",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Barva ikon orodne vrstice za opombe",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Prikaži orodno vrstico za opombe",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Vstopi v način opomb",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Ali si prepričan, da želiš počistiti vse opombe?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM poziv je kopiran v odložišče.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Povezava zavrnjena, strežnik je morda izklopljen.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Odkritje uspešno, čakam na povezavo...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "Ni LAN povezave",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Posnemi zaslonsko sliko",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Prekinjena povezava z nasprotnikom.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Zahteva za preklic poteze",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Ni ničesar za prikaz.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Ustavi gostovanje",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Povezava je bila ponastavljena s strani nasprotnika.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Povezava izgubljena zaradi prekinitve srčnega utripa. Prosimo, ponovno se poveži.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Začni gostovanje",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Zahteva za ponovni zagon zavrnjena.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "Ni povezave z nasprotnikom prek LAN-a.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM poziv",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "Igra je bila ponastavljena.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Zahteva za preklic poteze je zavrnjena.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Ali si prepričan, da želiš odstopiti od te igre?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "Nasprotnik je odstopil. Zmagal si!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Počisti vse opombe",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Povezano, čakam na potezo nasprotnika...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Stanje omrežja: Prekinjeno",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Zahteva za preklic poteze je poslana nasprotniku.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "Nasprotnik je morda zapustil igro",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Uspešno si se povezal z gostiteljem.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Povezava izgubljena: prekoračen čas srčnega utripa",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Gostitelj ni bil odkrit.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Potrdi odstop",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "Začel si gostovanje igre, čakam, da se igralci pridružijo...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Časovna omejitev povezave, omrežna povezava je nestabilna.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "Ni na voljo LLM poziva.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Odstopil si. Igra je končana.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "IP strežnika",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Potrdi čiščenje",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Poteza nasprotnika.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "Čakam na povezavo odjemalca...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Zahteva za preklic poteze je bila zavrnjena ali ni uspela.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Dodaj besedilo",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Izhod iz načina opomb",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Vnesi svojo opombo",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Poskušam se ponovno povezati...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Zahteva za ponovni zagon je poslana. Čakam na odgovor nasprotnika...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Strežnik je ustavljen.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Zahteva za ponovni zagon",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Ne moreš zahtevati preklica poteze, ko ni tvoja poteza.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Zahteva za preklic poteze sprejeta.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Nastavitve lokalnega omrežja",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Uspešno si se ponovno povezal!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Slike ni bilo mogoče shraniti v galerijo.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "Nasprotnik je zahteval ponovni zagon igre. Ali sprejemaš?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Tvoja poteza.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Ni uspelo ponovno povezati, prosim, ponovno zaženi igro.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Gostitelj",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Pridruži se",
-    "@join": {},
-    "port": "Vrata",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Neveljaven IP naslov.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Neveljavna vrata.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Povezujem: Poskus {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Povezovanje ni uspelo: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Napaka: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Gostovanje ni uspelo: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Napaka: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Gostitelj odkrit: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "Ustavi",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Odkrij",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Poveži",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Odjemalec povezan: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Odkrij: {seconds} s",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Ponovno povezovanje ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Povezan",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "Izbriši",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "Stari Egipt",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Gotski Led",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Riževo Polje",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "Kitajski Porcelan",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Puščavski Somrak",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Natančno Obrtništvo",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Ljudsko Vezenje",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Karpatska Dediščina",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Cesarska Veličastnost",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "Češki Kristal",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Savanski Sončni Vzhod",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Harmonija in Ravnovesje",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Cimetova Začimba",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "Anatolski Mozaik",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Karnevalski Duh",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Po meri",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Tržnica začimb",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Podrsajte, da prikažete predal",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "Prikaži informacije o igri na posnetkih zaslona",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Časovna omejitev za človeka",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Brez časovne omejitve za človeške poteze",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "Izguba zaradi časovne omejitve bo uporabljena za človeškega igralca",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "Prepoznava igralne plošče...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Lahko vnesete poljubno ime modela.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Položaj plošče je bil uporabljen. FEN je kopiran v odložišče.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Predlog: poskusite posneti bolj jasno sliko plošče.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "Predloga poziva LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Ni bilo zaznane nobene veljavne plošče.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Izbira slike iz albuma...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Konfiguriraj predlogo poziva",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "Uredi predlogo poziva za analizo LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "Ni uspelo ustvariti FEN iz prepoznane plošče.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Izhod v trenutnem jeziku",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "Pogoste osnovne URL-je",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Ogled pogostih modelov",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Parametri prepoznavanja posodobljeni.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Poteza belih",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Ponastavi na privzete nastavitve",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Fotografiranje",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Ni uspelo uporabiti prepoznanega položaja plošče.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "Vsebina poziva LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM ni konfiguriran. Prosimo, preverite nastavitve.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Nastavite ponudnika, model, API ključ in osnovni URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "Konfiguracija LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "Konfiguriraj ponudnika LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "Glava predloge poziva LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Na sliki niso bile prepoznane nobene figure. Poskusite znova.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Prepoznaj ploščo iz slike",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Ogled nasvetov",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Uporabi na ploščo",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Prilagodi območje plošče",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Ogled pogostih URL-jev",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Analiza barv ni uspela!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "Analiza slike igralne plošče...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Izberi iz albuma",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Ni zaznane nobene točke plošče!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Če pustite prazno, bo uporabljena privzeta predloga",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "Konfiguracija LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Ali ste prepričani, da želite ponastaviti predloge pozivov na privzete vrednosti?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "Noga predloge poziva LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Nalaganje odziva...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Uporabi ta rezultat na ploščo",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Slikanje...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Prosimo, izberite sliko igralne plošče za prepoznavo",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Rezultati prepoznavanja",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Analizirajte poteze in podajte vpoglede.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "Pridobi API ključ",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "Celoten postopek prepoznavanja se ni uspel dokončati.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Rezultat prepoznavanja plošče",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "Vprašajte LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Zaznavanje plošče ni uspelo!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Ni zaznane nobene točke plošče, ni mogoče prepoznati figure!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "Kopiraj FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Pogosto uporabljeni modeli",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API ključ (neobvezno)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Nobena slika ni izbrana",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Poteza črnih",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Velik jezikovni model",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Ponudnik",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "Osnovni URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Model",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Temperatura",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Ukaz prejet! UI obdeluje...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Poteka globoko razmišljanje, prosimo počakajte...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "Kmalu bo predstavljeno...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Parametri prepoznavanja",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Prilagodite parametre za izboljšanje natančnosti prepoznavanja",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Shrani parametre",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Ni mogoče zagnati prepoznavanja slike: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Napaka: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Prepoznavanje slike ni uspelo: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Napaka: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Uporabljen položaj z {whiteCount} belimi in {blackCount} črnimi figurami",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN kopiran v odložišče)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Prepoznavanje ni uspelo: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Napaka: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "Moja ocena",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "Odigrane igre",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "Zmage",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Porazi",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Neodločeno",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Nazadnje posodobljeno",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Format:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Ponastavi statistiko",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Stopnja neodločenih izidov",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Stopnja porazov",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Statistika UI",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Omogoči statistiko",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Ko je omogočeno, se bodo rezultati iger beležili v statistiki. Vendar pa se igre, ki vključujejo vračanje potez, ne bodo beležile. Ko je onemogočeno, je zbiranje statistike začasno ustavljeno.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "S tem boste ponastavili vso statistiko igre. Tega dejanja ni mogoče razveljaviti.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Velikost notranjega obroča deske",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Senca plošče",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Zaznavanje pasti",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Med analizo poudari poteze pasti z odebeljenimi krogi in puščicami.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Past obstaja. Poteze pasti: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Zajemanje boka",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Eden od nasprotnikovih kosov med dvema od vaših priložite v ravni črti, da jo zajamete.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Dovoli zajemanje boka",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Zajem intervencije",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Premaknite se v prazno točko med dvema nasprotnikovim kosom, da ju zajamete oba.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Dovoli zajem intervencije",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Zajem skoka",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Ujemite tako, da skočite čez sosednji nasprotnikov kos v prazno točko onkraj.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Dovoli zajem skoka",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Veljavne vrstice",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "Ob robovih trga",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "Vzdolž ortogonalnih linij, ki prečkajo kvadrat",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "Vzdolž diagonalnih linij, ki prečkajo kvadrat",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Faze izvajanja",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Razpoložljivost v fazi gibanja na podlagi preostalih kosov",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Brez omejitve",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Na voljo, ko imate tri ali manj kosov",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Prenehajte s postavljanjem, ko ostaneta le dva prazna kvadrata",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Ko je omogočeno, se faza postavljanja konča in faza premikanja se začne, ko ima plošča samo še 2 prosti mesti, ne glede na figure v roki. To pravilo velja samo za igre z 12 figurami.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Vrnitev lahko zahtevate samo takoj po vaši potezi.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Če želite večji izziv, predlagamo, da omogočite možnost \"{setting}\" in prenesete celotno bazo podatkov na svojo napravo, kot je navedeno.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "Ali želite zdaj konfigurirati pravila igre?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "Predlog algoritma",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Izgubili ste več iger zapored na ravni 1. Želite preklopiti na lažji algoritem MCTS za zmanjšanje težavnosti?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "Čestitke za zmago na ravni 30 MCTS! Želite preklopiti na algoritem MTD(f) za večji izziv?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "Označi odvzemljive figure",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2179,7 +2748,7 @@
     "@back": {
         "description": "Back button tooltip"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "Uganke",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Premik",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {
@@ -3220,7 +3728,7 @@
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "january": "January",
+    "january": "Januar",
     "@january": {
         "description": "Month name"
     },

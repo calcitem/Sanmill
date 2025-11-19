@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "យល់ព្រម",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "ដល់វេន {player} លេង។",
     "@tipToMove": {
-        "description": "The tip that the given player is to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": "The tip that the given player is to move."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "អ្នកលេង 1 ឈ្នះ!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "មិនអាចនាំចូល {invalidMove} បានទេ",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "ចលនា និងច្បាប់មិនត្រូវគ្នាទេ។",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "កំហុស៖ {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "អត្រាឈ្នះ",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "ចំនួនកូនអុករបស់ {player} តិចជាងបី។",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player lost because they had less than three pieces left."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} បានលះបង់។",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player resigned."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} គ្មាន​ទឹក​ដើរ។",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "ក្តារពេញហើយ ហើយ {player} គ្មានផ្លូវដើរទេ។",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go because the board is full."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "អស់ម៉ោងហើយ {player} ចាញ់។",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "ក្នុងដំណាក់កាលផ្លាស់ទី គ្មានកូនអុកណាមួយត្រូវបានដកចេញក្នុងចំនួនចលនាជាក់លាក់ចុងក្រោយ។",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "ប្រកួតប្រជែងកម្រិតពិបាកជាងនេះ? កម្រិតថ្មីនឹងជាកម្រិត {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "អ្នកចាញ់!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "កំណែ៖ {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "សូមអរគុណ",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "ជម្រើស",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "ជ្រើសរើស {element}",
     "@pick": {
-        "description": "Used in the color picker.",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Used in the color picker."
     },
     "info": "ព័ត៌មាន",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " និង ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "ទទួលយក",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} នៅក្នុងដៃ៖ {count}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has in his hand."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} នៅលើក្តារ៖ {count}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has on the board"
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "គម្លាតក្តារពីខាងលើ",
     "@boardTop": {
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "វេនផ្លាស់ទី៖ {player}",
     "@sideToMove": {
-        "description": "The player whose turn it is.",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "The player whose turn it is."
+    },
+    "player": "អ្នកលេង",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "ចលនាចុងក្រោយ៖ {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "ផ្លាស់ទី",
+    "@move": {
+        "description": "Move"
     },
     "selected": "បានជ្រើសរើស",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{ចលនា}=1{{count} ចលនា}other{{count} ចលនា}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "ការផ្ទុកបរាជ័យ។",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{កូនអុក}=1{{count} កូនអុក}other{{count} កូនអុក}} ត្រូវការដកចេញ។",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "បានដាក់ ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "ចំនួនកូនអុកដែលបានដាក់ក្នុងដំណាក់កាលដាក់។",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "អ្នកលេងបច្ចុប្បន្នបានដាក់ {count} កូនអុក។",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "មិនមែនដំណាក់កាលដាក់ទេ មិនអាចផ្លាស់ប្តូរវាបានទេ។",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "ព្រៃ",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "រូបភាពផ្ទៃតុ",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "ទីតាំងមិនត្រឹមត្រូវ។",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "ចែករំលែក GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "សមាមាត្រភីកសែល",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "រយៈពេល",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "កម្មវិធីថតអេក្រង់ហ្គេម",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "មុន",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "បន្ទាប់",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "រំលង",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "យល់ហើយ",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "អ្នកអាចកែប្រែច្បាប់នៃហ្គេមនៅក្នុងការកំណត់ច្បាប់។",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "អ្នកអាចប្រើកង់កណ្ដុរដើម្បីកែតម្រូវតម្លៃនៅក្នុងកម្មវិធីជ្រើសរើស។",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "ពេលវេលាគិតរបស់ AI កំណត់ទៅ 0 មានន័យថាមិនមានដែនកំណត់ពេលវេលាសម្រាប់ការគិត។",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) គឺជាទម្រង់កែប្រែនៃក្បួនដោះស្រាយស្វែងរក alpha-beta ដែលមានគោលបំណងកែលម្អប្រសិទ្ធភាពដោយការប្រើឡើងវិញនូវលទ្ធផលស្វែងរកកម្រិតមធ្យម និងប្រើការទស្សន៍ទាយដំបូងដ៏ល្អដើម្បីបង្រួមទំហំស្វែងរក។",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "សូមជ្រាបថាការកែតម្រូវពេលវេលាគិតរបស់ AI ប្រហែលជាមិនជាក់លាក់ទាំងស្រុងទេ។ ពេលវេលាគិតជាក់ស្តែងអាចខ្លីជាងនៅពេលកម្រិតលំបាកត្រូវបានកំណត់ទៅតម្លៃទាបជាង ហើយអាចយូរជាងនៅពេល AI កំពុងគិតនៅពេលពេលវេលាអស់។",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "ប្រសិនបើអ្នកកំណត់កម្រិតលំបាកខ្ពស់ ប៉ុន្តែមិនបង្កើនពេលវេលាគិតរបស់ AI ទេ កម្រិតលំបាកជាក់ស្តែងអាចត្រូវបានកំណត់ត្រឹមកម្រិតទាបជាងដោយសារតែការដាក់កម្រិតពេលវេលាគិត។ តម្លៃជាក់ស្តែងអាចប្រែប្រួលអាស្រ័យលើដំណើរការរបស់ម៉ាស៊ីន។",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) គឺជាក្បួនដោះស្រាយស្វែងរកដើម្បីស្វែងរកចលនាល្អបំផុតនៅក្នុងទីតាំងដែលបានផ្តល់ឱ្យ។ វាគឺជាការបង្កើនប្រសិទ្ធភាពនៃក្បួនដោះស្រាយ alpha-beta ហើយប្រើការស្វែងរកបង្អួច null ឬសូន្យដើម្បីបញ្ជាក់ថាចលនាមួយគឺអាក្រក់ជាង ឬមិនអាក្រក់ជាងពិន្ទុដែលមានសុវត្ថិភាពរួចហើយពីបំរែបំរួលចម្បង។ PVS ផ្តោតលើចលនាដែលមានសក្តានុពលបំផុត និងជៀសវាងការស្វែងរកសាខាដែលមិនល្អប្រសើរដែលមិនចាំបាច់ ដែលជួយកែលម្អប្រសិទ្ធភាពនៃការស្វែងរក។",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "ក្បួនដោះស្រាយ alpha-beta គឺជាក្បួនដោះស្រាយស្វែងរកដើម្បីស្វែងរកចលនាល្អបំផុត។ វាប្រើគោលការណ៍ minimax និងតម្លៃពីរគឺ alpha និង beta ដើម្បីកាត់បន្ថយមែកធាងស្វែងរក និងបង្កើនប្រសិទ្ធភាព។ Alpha តំណាងឱ្យពិន្ទុអប្បបរមាដែលកុំព្យូទ័រប្រាកដថាវាអាចទទួលបាន ខណៈពេលដែល beta តំណាងឱ្យពិន្ទុអតិបរមាដែលគូប្រកួតរបស់វាអាចទទួលបាន។ ក្បួនដោះស្រាយជួយកុំព្យូទ័រធ្វើការសម្រេចចិត្តឆ្លាតវៃ និងមានប្រសិទ្ធភាពក្នុងហ្គេម។",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "យោងតាមបទពិសោធន៍របស់មនុស្ស ប្រសិនបើអ្នកព្យាយាមឈ្នះ អ្នកនឹងចាញ់។ ផ្ទុយទៅវិញ ចូរមានគោលដៅស្មើជាគោលដៅរបស់អ្នក ហើយជៀសវាងការចាញ់ហ្គេម។ សង្កេតមើលគូប្រកួតរបស់អ្នក ហើយទាក់ទាញពួកគេដោយថ្នមៗទៅកាន់ទីតាំងដែលពួកគេអាចធ្វើខុស។ នៅពេលពួកគេបង្ហាញភាពទន់ខ្សោយ ចាប់យកឱកាស ហើយជំរុញថ្នមៗដើម្បីឈ្នះ។ តាមវិធីនេះ អ្នកអាចឈ្នះហ្គេម។",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "នៅក្នុងហ្គេមនេះ វាមានភាពងាយស្រួលសម្រាប់អ្នកលេងទីពីរក្នុងការឈ្នះ បើប្រៀបធៀបទៅនឹងអ្នកលេងទីមួយ។",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "ការបើកជម្រើសអសកម្មនឹងធ្វើឱ្យ AI បន្ធូរអារម្មណ៍នៅពេលវាមានគុណសម្បត្តិក្នុងទីតាំង ជាជាងព្យាយាមឈ្នះឱ្យបានលឿនតាមដែលអាចធ្វើទៅបាន។",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "ការបើកជម្រើសនេះបង្កើនភាពចៃដន្យ និងភាពសប្បាយរីករាយនៃហ្គេម ខណៈពេលដែលការបិទវាអាចជួយសិក្សាពីវិធីដើម្បីយកឈ្នះ AI ។",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "ប្រសិនបើ AI ពិចារណាលើការចល័តកូនអុករបស់វា វានឹងមិនត្រឹមតែមានគោលបំណងចាប់យកកូនអុករបស់គូប្រកួតឱ្យបានលឿនតាមដែលអាចធ្វើទៅបានប៉ុណ្ណោះទេ ប៉ុន្តែថែមទាំងពិចារណាលើការរារាំងចលនារបស់គូប្រកួត និងរារាំងពួកគេមិនឱ្យធ្វើដូចគ្នា។",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "នៅពេលក្តារពេញ",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "នៅចុងបញ្ចប់នៃដំណាក់កាលដាក់ មុនពេលដំណាក់កាលផ្លាស់ទីចាប់ផ្តើម សកម្មភាពនឹងកើតឡើងប្រសិនបើក្តារពេញដោយកូនអុក។",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "អ្នកលេងដែលផ្លាស់ទីមុនគេក្នុងដំណាក់កាលផ្លាស់ទី ដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "ភាគីទាំងពីរយល់ព្រមស្មើគ្នា។",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "យកកូនអុកមួយរបស់គូប្រកួតអ្នក។",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "អ្នកលេងទីមួយចាញ់ហ្គេម។",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "អ្នកលេងទីមួយ និងទីពីរដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "អ្នកលេងទីពីរ និងទីមួយដកកូនអុកមួយរបស់គូប្រកួតចេញ។",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "ឥឡូវនេះបានចូលដល់ដំណាក់កាលហោះហើយ កូនអុករបស់គូប្រកួតអាចលោតទៅចំណុចទទេណាមួយនៅលើក្តារ។ អ្នកអាចបិទច្បាប់ហោះនៅក្នុង \"ការកំណត់ច្បាប់\"។",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "នៅពេលជាប់គាំង",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "តើសកម្មភាពអ្វីកើតឡើងនៅពេលគ្មានកូនអុកណាមួយអាចផ្លាស់ទីបាន?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "បញ្ចប់ដោយការចាញ់ដោយជាប់គាំងសម្រាប់ភាគីដែលត្រូវបានរារាំង។",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "ប្តូរវេនផ្លាស់ទី។",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "ដកកូនអុកមួយរបស់គូប្រកួតចេញ ហើយធ្វើចលនាបន្ទាប់។",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "បញ្ចប់ដោយស្មើដោយជាប់គាំង។",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "ដកកូនអុកមួយរបស់គូប្រកួតចេញ ហើយប្តូរវេនផ្លាស់ទី។",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "ពេលវេលាពន្យារការឆ្លើយតបរបស់ AI",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI បច្ចុប្បន្នកំពុងស្ថិតក្នុងដំណាក់កាលឆ្លើយតបយឺត។ សូមរង់ចាំមួយភ្លែតមុននឹងបន្ត។",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "អ្នកមិនអាចដកកូនអុកដែលមិនជាប់គ្នាបានទេ។",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "ក្នុងស្ថានភាពជាប់គាំង អ្នកអាចដកកូនអុករបស់គូប្រកួតដែលនៅជាប់នឹងរបស់អ្នក ដោយមិនគិតពីការបង្កើតមីល។",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS គឺជាក្បួនដោះស្រាយដែលងាយស្រួលសម្រាប់អ្នកចាប់ផ្តើមដំបូង ដែលធ្វើការសម្រេចចិត្តដោយការរុករក និងវាយតម្លៃចលនាផ្សេងៗតាមរយៈការក្លែងធ្វើ។",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "ត្បូងថ្មមាស",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "ឈើព្រៃ",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "អាថ៌កំបាំងងងឹត",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "ខៀវពាក់កណ្តាលអធ្រាត្រ",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "ព្រៃបៃតង",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "វាលស្មៅបៃតង",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "ផ្លូវថ្ម",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "ផ្កាឈូកស្រាល",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "សមុទ្រមុជទឹក",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "សុបិនពណ៌ស្វាយ",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "សូកូឡាជីអង្កាម",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "ខៀវមេឃ",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "សួនច្បាររីករាយ",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "ក្បួនដោះស្រាយការវិភាគថយក្រោយប្រើការវិភាគថយក្រោយពហុតម្លៃដើម្បីបង្កើតមូលដ្ឋានទិន្នន័យចុងហ្គេមពីទីតាំងចាប់ផ្តើមផ្សេងៗ បន្ទាប់មកអនុវត្តមូលដ្ឋានទិន្នន័យនេះដើម្បីបង្កើនប្រសិទ្ធភាពការលេងហ្គេម។ វិធីសាស្រ្តនេះស្ថិតនៅក្រោមប្រភេទនៃដំណោះស្រាយ Ultra-Strong ។",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "តើអ្នកចង់មើលមគ្គុទ្ទេសក៍អ្នកប្រើសម្រាប់ក្បួនដោះស្រាយនេះទេ?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "បង្ហាញសូចនាករគុណសម្បត្តិទីតាំង",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "ប្រើមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "បើកជម្រើសនេះដើម្បីប្រើមូលដ្ឋានទិន្នន័យហ្គេមដែលគ្មានកំហុស ដែលបង្កើតឡើងតាមរយៈក្បួនដោះស្រាយទំនើប។ មុខងារនេះរួមបញ្ចូលទាំងយុទ្ធសាស្ត្របើក និងចុងហ្គេម ដើម្បីណែនាំចលនាដ៏ល្អប្រសើរ។ នេះគឺជាជម្រើសដែលពេញចិត្តសម្រាប់អ្នកលេងដែលស្វែងរកកម្រិតភាពជាក់លាក់ខ្ពស់បំផុតក្នុងការលេងហ្គេម។ បង្កើតឡើងតាមរយៈបច្ចេកទេសគណនាដ៏ល្អិតល្អន់ មូលដ្ឋានទិន្នន័យត្រូវបានរចនាឡើងដើម្បីផ្តល់នូវដំណោះស្រាយហ្គេមដែលជិតល្អឥតខ្ចោះ។\n\nចំណាំ៖ ប្រសិនបើ AI បរាជ័យក្នុងការចូលប្រើមូលដ្ឋានទិន្នន័យ វានឹងងាកទៅរកក្បួនដោះស្រាយធម្មតាសម្រាប់ការសម្រេចចិត្តលេងហ្គេម។ នៅពេលមូលដ្ឋានទិន្នន័យមាន 'កម្រិតលំបាក' ក្លាយជាស្ទើរតែមិនអាចយកឈ្នះបាន ហើយ 'ពេលវេលាគិតរបស់ AI' ជួបប្រទះនឹងការកាត់បន្ថយយ៉ាងខ្លាំង។ ការកំណត់ជាច្រើននៅក្នុងជម្រើស 'របៀបលេងរបស់ AI' នឹងត្រូវបានបដិសេធ ដោយសារលទ្ធផលមូលដ្ឋានទិន្នន័យមានអាទិភាពខ្ពស់បំផុត។\n\nសម្រាប់ការណែនាំអំពីរបៀបប្រើប្រាស់មូលដ្ឋានទិន្នន័យដែលគ្មានកំហុសនេះឱ្យបានច្រើនបំផុត សូមចុចទីនេះ។",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "រូបភាពផ្ទៃខាងក្រោយ",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "នៅពេលជម្រើស 'ប្រើមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ' មិនត្រូវបានបើក ការកំណត់ 'ចៃដន្យ' បណ្តាលឱ្យ AI ផ្លាស់ទីកូនអុកដោយចៃដន្យដោយមិនប្រើក្បួនដោះស្រាយណាមួយសម្រាប់ការជ្រើសរើសចលនា។ ជាធម្មតាវានាំឱ្យការលេងហ្គេមខ្សោយជាងមុន។ ផ្ទុយទៅវិញ នៅពេល 'ប្រើមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ' ត្រូវបានបើក AI ពឹងផ្អែកទាំងស្រុងលើ 'មូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ' សម្រាប់ការសម្រេចចិត្ត ជំនួសឱ្យការលាយវាជាមួយក្បួនដោះស្រាយ AI បែបបុរាណ។ នៅក្នុងរបៀបនេះ ចលនារបស់ AI គឺផ្អែកទាំងស្រុងលើខ្លឹមសារនៃមូលដ្ឋានទិន្នន័យ ដោយជៀសវាងការពឹងផ្អែកលើការគណនាតាមពេលវេលាជាក់ស្តែង ឬក្បួនដោះស្រាយស្វែងរក។",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "ដកកូនអុករបស់គូប្រកួតចេញពីដៃរបស់ពួកគេ បន្ទាប់មកវាជាវេនរបស់គូប្រកួតដើម្បីដាក់។",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "នៅពេលបង្កើតមីលក្នុងដំណាក់កាលដាក់",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "ដកកូនអុករបស់គូប្រកួតចេញពីក្តារ។",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "ដកកូនអុករបស់គូប្រកួតចេញពីក្តារ បន្ទាប់មកវាជាវេនរបស់គូប្រកួតដើម្បីដាក់។",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "គូប្រកួតដកកូនអុករបស់ខ្លួនចេញពីក្តារ។",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "ជំនួសឱ្យអ្នកចាត់វិធានការ គូប្រកួតជ្រើសរើស និងដកកូនអុករបស់ខ្លួនចេញពីក្តារ ដែលមានប្រសិទ្ធភាពជាសកម្មភាពដែលបង្កគ្រោះថ្នាក់ដល់ខ្លួនឯង។",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "ដកកូនអុករបស់គូប្រកួតចេញពីដៃរបស់ពួកគេ បន្ទាប់មកវាជាវេនរបស់អ្នកដើម្បីផ្លាស់ទី។",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "ដកកូនអុកចេញពីដៃរបស់គូប្រកួត។ ប្រសិនបើ យោងតាមការកំណត់ Multi-remove កូនអុកច្រើនត្រូវដកចេញ ហើយគូប្រកួតគ្មានកូនអុកនៅសល់ក្នុងដៃ បន្តដកកូនអុករបស់គូប្រកួតចេញពីក្តារ។ បន្ទាប់មក វាជាវេនរបស់អ្នកដើម្បីផ្លាស់ទី។ ប្រសិនបើអ្នកបន្តបង្កើតមីល អ្នកអាចបន្តដកកូនអុករបស់គូប្រកួតចេញ។",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ដកកូនអុកចេញពីដៃរបស់គូប្រកួត។ ប្រសិនបើ យោងតាមការកំណត់ Multi-remove កូនអុកច្រើនត្រូវដកចេញ ហើយគូប្រកួតគ្មានកូនអុកនៅសល់ក្នុងដៃ បន្តដកកូនអុករបស់គូប្រកួតចេញពីក្តារ។ បន្ទាប់មក វាជាវេនរបស់គូប្រកួតដើម្បីផ្លាស់ទី។",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "សម្គាល់ និងពន្យារពេលដកកូនអុកចេញ។",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "ក្នុងអំឡុងពេលដំណាក់កាលដាក់ កូនអុកដែលត្រូវដកចេញត្រូវបានសម្គាល់ ហើយសម្រាប់អ្នកលេងទាំងពីរ គ្មានកូនអុកថ្មីណាមួយអាចត្រូវបានដាក់នៅលើចំណុចទាំងនេះទេ។ នៅពេលចូលដល់ដំណាក់កាលផ្លាស់ទី កូនអុកដែលបានសម្គាល់ទាំងនេះត្រូវបានដកចេញទាំងអស់គ្នា ហើយអ្នកលេងបន្ទាប់មកអាចផ្លាស់ទីកូនអុករបស់ពួកគេទៅចំណុចដែលទទេឥឡូវនេះ។",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "សកម្មភាពដែលអាចធ្វើបាននៅពេលបង្កើតមីលក្នុងដំណាក់កាលដាក់។",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "បានសម្គាល់",
-    "@marked": {},
-    "menu": "ម៉ឺនុយ",
-    "@menu": {},
-    "monochrome": "សខ្មៅ",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "អ្នកអាចបើកកុងតាក់ការគាំទ្រកម្មវិធីអានអេក្រង់នៅក្នុងការកំណត់រចនាសម្ព័ន្ធភាពងាយស្រួលក្នុងការកំណត់ទូទៅ។",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "បង្ហាញលេខនៅលើកូនអុក",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "រក្សាទុករូបភាព",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "បង្ហាញរបារឧបករណ៍វិភាគ",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "ពណ៌ផ្ទៃខាងក្រោយរបារឧបករណ៍វិភាគ",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "ពណ៌រូបតំណាងរបារឧបករណ៍វិភាគ",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "បានផ្លាស់ប្តូរ។",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "មិនអាចផ្លាស់ប្តូរបានទេ។",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "បង្វិល",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "ត្រឡប់ផ្ដេក",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "ត្រឡប់បញ្ឈរ",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "ត្រឡប់ក្នុងក្រៅ",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "ផ្ទាំងក្រណាត់ថ្លា",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "ដាក់កម្រិតការបង្កើតមីលម្តងហើយម្តងទៀត",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "កូនអុកដែលផ្លាស់ទីពីមីលមួយដើម្បីបង្កើតមីលមួយទៀត មិនអាចត្រឡប់ទៅចំណុចដើមវិញភ្លាមៗនៅវេនបន្ទាប់ដើម្បីបង្កើតមីលម្តងទៀតទេ។ ចលនាផ្សេងគ្នាគឺចាំបាច់ជាមុនសិន។",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "មីលប្រើម្តង",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "មីលនីមួយៗអាចដកកូនអុករបស់គូប្រកួតចេញបានតែម្តងគត់។ អ្នកអាចបង្កើតវាឡើងវិញបាន ប៉ុន្តែវាមិនអាចប្រើសម្រាប់ការដកចេញបន្ថែមទៀតទេ។",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "ច្បាប់បច្ចុប្បន្នដែលអ្នកបានកំណត់មិនមានមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះដែលត្រូវគ្នាទេ។ សម្រាប់ព័ត៌មានបន្ថែមអំពីមូលដ្ឋានទិន្នន័យល្អឥតខ្ចោះ សូមចុចទីនេះ។",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "ផ្តោតលើការរារាំងផ្លូវ",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "ក្នុងដំណាក់កាលជាក់លាក់នៃហ្គេម ត្រូវផ្តល់អាទិភាពដល់ការរារាំងចលនារបស់គូប្រកួត លើសពីការបង្កើតមីល។ ជំនួសឱ្យការផ្តោតលើការដកកូនអុកចេញដោយការបំពេញមីល AI មានគោលបំណងចាប់គូប្រកួតក្នុងដំណាក់កាលទាំងនេះ ធ្វើឱ្យពួកគេមិនអាចផ្លាស់ទីបាន និងធានាបាននូវជ័យជម្នះតាមរយៈការធ្វើឱ្យចុះខ្សោយ ជាជាងការលេងបែបឈ្លានពាន។ យុទ្ធសាស្ត្រជាក់លាក់តាមដំណាក់កាលនេះមិនរារាំងមីលរបស់គូប្រកួតយ៉ាងសកម្មទេ។",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "រូបភាពកូនអុក",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "នាំចូលការកំណត់ពណ៌",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "នាំចេញការកំណត់ពណ៌",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "នាំចូល",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "នាំចេញ",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "សូមចម្លងការកំណត់ទម្រង់ JSON ទៅឃ្លីបបតជាមុនសិន។",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "បានចម្លងទៅឃ្លីបបត។",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "បាននាំចូល។",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "រូបភាពក្តារ",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "ស្លឹកឈើជ្រុះ",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "ទឹកដីរឿងព្រេងនិទាន",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "បែបផែនគែមងងឹត",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "តើអ្នកចង់ធ្វើឱ្យរបារឧបករណ៍ថ្លាទាំងស្រុងនៅពេលរូបភាពផ្ទៃខាងក្រោយក្តារត្រូវបានកំណត់ទេ?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "បើករំញ័រក្នុងហ្គេម",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "ស្បែកសំឡេង",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "បាល់",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "រាវ",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "ឈើ",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "បែបផែនចលនាដាក់កូនអុក",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "បែបផែនចលនាដកកូនអុក",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "បង្ហាញរបារឧបករណ៍នៅខាងក្រោម",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "កាំជ្រុងក្តារ",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "ប្រើក្បួនបើកឆាក",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "បច្ចុប្បន្ន",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "សំណុំច្បាប់",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "អនុញ្ញាតឱ្យ AI ប្រើក្បួនបើកឆាកដែលត្រូវបានប្រើជាទូទៅដោយអ្នកលេងមនុស្សអាជីពក្នុងអំឡុងពេលដើមហ្គេម។ ចំណាំ៖ មុខងារនេះបច្ចុប្បន្នមានសម្រាប់តែសំណុំច្បាប់ជាក់លាក់ប៉ុណ្ណោះ។",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "បង្ហាញក្រាហ្វគុណសម្បត្តិ",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "ក្រាហ្វគុណសម្បត្តិនឹងត្រូវបានគូរបន្ទាប់ពី AI ធ្វើចលនាប៉ុណ្ណោះ។ វានឹងមិនត្រូវបានគូរនៅពេលអ្នកលេងមនុស្សធ្វើចលនាទេ។",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "បិទការដកចេញរហូតដល់កូនអុកទាំងអស់ត្រូវបានដាក់ បន្ទាប់មកដកកូនអុកចេញដោយផ្អែកលើចំនួនមីល។",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "បិទការដកចេញរហូតដល់កូនអុកទាំងអស់ត្រូវបានដាក់ បន្ទាប់មកដកកូនអុកចេញដោយផ្អែកលើចំនួនមីល៖ ប្រសិនបើពួកវាស្មើគ្នា ទាំងពីរដកចំនួនដូចគ្នា ប្រសិនបើមួយមានច្រើនជាង ពួកគេដកមួយបន្ថែម រក្សាភាពខុសគ្នាមួយកូនអុក។ ប្រសិនបើមានតែមួយបង្កើតមីល ពួកគេដកកូនអុកពីរ ហើយមួយទៀតដកមួយ។ ប្រសិនបើគ្មាននរណាម្នាក់បង្កើតមីល ទាំងពីរដកកូនអុកមួយរបស់ខ្លួន។",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "ជ្រើសរើសកូនអុកមួយរបស់អ្នក។",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "វាមិនមែនជាវេនរបស់អ្នកទេ។",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "ពណ៌ផ្ទៃខាងក្រោយរបារឧបករណ៍ចំណារពន្យល់",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "ពណ៌រូបតំណាងរបារឧបករណ៍ចំណារពន្យល់",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "បង្ហាញរបារឧបករណ៍ចំណារពន្យល់",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "ចូលរបៀបចំណារពន្យល់",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "តើអ្នកប្រាកដថាចង់លុបចំណារពន្យល់ទាំងអស់ទេ?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "ប្រអប់បញ្ចូល LLM ត្រូវបានចម្លងទៅឃ្លីបបត។",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "ការតភ្ជាប់ត្រូវបានបដិសេធ ម៉ាស៊ីនមេអាចនឹងធ្លាក់។",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "ការរកឃើញជោគជ័យ កំពុងរង់ចាំការតភ្ជាប់...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "គ្មានការតភ្ជាប់ LAN",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "ថតរូបអេក្រង់",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "បានផ្តាច់ចេញពីគូប្រកួត។",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "សំណើដកថយ",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "គ្មានអ្វីត្រូវបង្ហាញទេ។",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "បញ្ឈប់ការបង្ហោះ",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "ការតភ្ជាប់ត្រូវបានកំណត់ឡើងវិញដោយ peer ។",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "ការតភ្ជាប់បានបាត់បង់ដោយសារតែការអស់ពេល heartbeat ។ សូមតភ្ជាប់ឡើងវិញ។",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "ចាប់ផ្តើមបង្ហោះ",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "សំណើចាប់ផ្តើមឡើងវិញត្រូវបានបដិសេធ។",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "មិនបានតភ្ជាប់ទៅគូប្រកួត LAN ទេ។",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "ប្រអប់បញ្ចូល LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "ហ្គេមបានចាប់ផ្តើមឡើងវិញ។",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "ការដកថយត្រូវបានបដិសេធ។",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "តើអ្នកប្រាកដថាចង់ចុះចាញ់ហ្គេមនេះទេ?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "គូប្រកួតបានលះបង់។ អ្នកឈ្នះ!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "លុបចំណារពន្យល់ទាំងអស់",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "បានតភ្ជាប់ កំពុងរង់ចាំចលនារបស់គូប្រកួត...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "ស្ថានភាពបណ្តាញ៖ បានផ្តាច់",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "សំណើដកថយត្រូវបានផ្ញើទៅគូប្រកួត។",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "គូប្រកួតអាចនឹងបានចាកចេញពីហ្គេម",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "បានតភ្ជាប់ទៅម៉ាស៊ីនមេដោយជោគជ័យ។",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "ការតភ្ជាប់បានបាត់បង់៖ ការអស់ពេល heartbeat",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "រកមិនឃើញម៉ាស៊ីនមេទេ។",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "បញ្ជាក់ការលះបង់",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "បានចាប់ផ្តើមបង្ហោះហ្គេម កំពុងរង់ចាំអ្នកលេងចូលរួម...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "ការតភ្ជាប់អស់ពេល ការតភ្ជាប់បណ្តាញមិនស្ថិតស្ថេរ។",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "គ្មានប្រអប់បញ្ចូល LLM ទេ។",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "អ្នកបានលះបង់។ ចប់ហ្គេម។",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "IP ម៉ាស៊ីនមេ",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "បញ្ជាក់ការលុប",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "វេនរបស់គូប្រកួត។",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "កំពុងរង់ចាំការតភ្ជាប់ម៉ាស៊ីនភ្ញៀវ...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "សំណើដកថយត្រូវបានបដិសេធ ឬបរាជ័យ។",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "បន្ថែមអត្ថបទ",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "ចាកចេញពីរបៀបចំណារពន្យល់",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "វាយចំណារពន្យល់របស់អ្នក",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "កំពុងព្យាយាមតភ្ជាប់ឡើងវិញ...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "សំណើចាប់ផ្តើមឡើងវិញត្រូវបានផ្ញើ។ កំពុងរង់ចាំការឆ្លើយតបរបស់គូប្រកួត...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "ម៉ាស៊ីនមេត្រូវបានបញ្ឈប់។",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "សំណើចាប់ផ្តើមឡើងវិញ",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "មិនអាចស្នើសុំដកថយនៅពេលវាមិនមែនជាវេនរបស់អ្នកទេ។",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "ការដកថយត្រូវបានទទួលយក។",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "ការកំណត់បណ្តាញមូលដ្ឋាន",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "បានតភ្ជាប់ឡើងវិញដោយជោគជ័យ!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "បរាជ័យក្នុងការរក្សាទុករូបភាពទៅវិចិត្រសាល។",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "គូប្រកួតបានស្នើសុំចាប់ផ្តើមហ្គេមឡើងវិញ។ តើអ្នកយល់ព្រមទេ?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "វេន​របស់​អ្នក។",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "មិនអាចតភ្ជាប់ឡើងវិញបានទេ សូមចាប់ផ្តើមហ្គេមឡើងវិញ។",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "ម៉ាស៊ីនមេ",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "ចូលរួម",
-    "@join": {},
-    "port": "ច្រក",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "អាសយដ្ឋាន IP មិនត្រឹមត្រូវ។",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "ច្រកមិនត្រឹមត្រូវ។",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "កំពុងតភ្ជាប់៖ ព្យាយាម {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "មិនអាចតភ្ជាប់បានទេ៖ {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "កំហុស៖ {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "មិនអាចចាប់ផ្តើមបង្ហោះបានទេ៖ {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "កំហុស៖ {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "បានរកឃើញម៉ាស៊ីនមេ៖ {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "បញ្ឈប់",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "រកឃើញ",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "តភ្ជាប់",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "ម៉ាស៊ីនភ្ញៀវបានភ្ជាប់៖ {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "កំពុងរកឃើញ៖ {seconds} វិនាទី",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "កំពុងតភ្ជាប់ឡើងវិញ ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "បានតភ្ជាប់",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "លុប",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "អេហ្ស៊ីបបុរាណ",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "ទឹកកកហ្គោធិក",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "វាលស្រែ",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "ប៉សឺឡែនចិន",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "សន្ធិយាវាលខ្សាច់",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "សិប្បកម្មជាក់លាក់",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "សិល្បៈកាត់តែងដៃប្រពៃណី",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "អាថ៌កំបាំងបាយ័ន",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "ភាពអស្ចារ្យរបស់អធិរាជ",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "គ្រីស្តាល់",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "ព្រះអាទិត្យរះ Savanna",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "តុល្យភាពសុខដុម",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "គ្រឿងទេសឈើអែម",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "ម៉ូសាយអាណាតូលី",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "ស្មារតីពិធីបុណ្យ",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "ផ្ទាល់ខ្លួន",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "ផ្សារគ្រឿងទេស",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "អូសដើម្បីបង្ហាញម៉ឺនុយ",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "បង្ហាញព័ត៌មានហ្គេមនៅលើរូបថតអេក្រង់",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "ដែនកំណត់ពេលវេលារបស់មនុស្ស",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "គ្មានដែនកំណត់ពេលវេលាសម្រាប់ការដើររបស់មនុស្សទេ",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "ការចាញ់ដោយអស់ពេលនឹងត្រូវបានអនុវត្តសម្រាប់អ្នកលេងជាមនុស្ស",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "កំពុងស្គាល់ផ្ទាំងហ្គេម…",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "អ្នកអាចបញ្ចូលឈ្មោះម៉ូឌែលណាមួយ។",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "ទីតាំងផ្ទាំងបានអនុវត្ត។ FEN បានចម្លងទៅ clipboard។",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "យោបល់៖ សូមព្យាយាមយករូបថតដែលច្បាស់ជាងនៃផ្ទាំង។",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "គំរូសំណើ LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "មិនមានផ្ទាំងត្រឹមត្រូវណាមួយត្រូវបានរកឃើញទេ។",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "កំពុងជ្រើសរូបភាពពីអាល់ប៊ុម…",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "កំណត់រចនាសម្ព័ន្ធគំរូសំណើ",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "កែប្រែគំរូសំណើសម្រាប់វិភាគ LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "បរាជ័យក្នុងការបង្កើត FEN ពីផ្ទាំងដែលបានស្គាល់។",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "លទ្ធផលក្នុងភាសាបច្ចុប្បន្ន",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "URL មូលដ្ឋានទូទៅ",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "មើលម៉ូឌែលទូទៅ",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "ប៉ារ៉ាម៉ែត្រស្គាល់បានកែប្រែ។",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "ជំហានអ្នកលេងពណ៌ស",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "កំណត់ឡើងវិញទៅតម្លៃលំនាំដើម",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "ថតរូប",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "បរាជ័យក្នុងការអនុវត្តទីតាំងផ្ទាំងដែលបានស្គាល់។",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "មាតិការនៃសំណើ LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM មិនបានកំណត់ឡើយ។ សូមពិនិត្យការកំណត់របស់អ្នក។",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "កំណត់អ្នកផ្ដល់សេវា ម៉ូឌែល API Key និង Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "ការកំណត់របស់ LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "កំណត់អ្នកផ្ដល់សេវា LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "ក្បាលគំរូសំណើ LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "មិនមានឯកតា(pieces)ណាមួយត្រូវបានស្គាល់នៅក្នុងរូបភាពទេ។ សូមព្យាយាមម្តងទៀត។",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "ស្គាល់ផ្ទាំងពីរូបភាព",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "មើលគន្លឹះ",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "អនុវត្តទៅផ្ទាំង",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "សម្រួលទំហំផ្ទាំង",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "មើល URL ទូទៅ",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "វិភាគពណ៌បរាជ័យ!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "កំពុងវិភាគរូបភាពផ្ទាំងហ្គេម…",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "ជ្រើសពីអាល់ប៊ុម",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "មិនរកឃើញចំណុចផ្ទាំងទេ!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "បើទុកទទេ គំរូលំនាំដើមនឹងត្រូវបានប្រើ",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "ការកំណត់របស់ LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "តើអ្នកប្រាកដថាចង់កំណត់គំរូសំណើឡើងវិញទៅតម្លៃលំនាំដើមឬទេ?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "ជើងគំរូសំណើ LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "កំពុងផ្ទុកចម្លើយ…",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "អនុវត្តលទ្ធផលនេះទៅផ្ទាំង",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "កំពុងថតរូប…",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "សូមជ្រើសរូបភាពផ្ទាំងហ្គេមសម្រាប់ស្គាល់",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "លទ្ធផលការស្គាល់",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "វិភាគចលនា និងផ្តល់ទស្សនៈ។",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "ទទួលបាន API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "ដំណើរការស្គាល់ទាំងមូលបរាជ័យក្នុងការបញ្ចប់។",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "លទ្ធផលស្គាល់ផ្ទាំង",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "សួរទៅកាន់ LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "ការរកឃើញផ្ទាំងបរាជ័យ!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "មិនឃើញចំណុចផ្ទាំងទេ មិនអាចស្គាល់ធាតុហ្គេមបានទេ!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "ចម្លង FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "ម៉ូឌែលដែលប្រើទូទៅ",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (ជាជម្រើស)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "មិនមានរូបភាពជ្រើសរើស",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "ជំហានអ្នកលេងពណ៌ខ្មៅ",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "ម៉ូឌែលភាសធំ",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "អ្នកផ្តល់សេវា",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "URL គោល",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "ម៉ូឌែល",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "សីតុណ្ហភាព",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "បញ្ជាបានទទួល! បញ្ញាសិប្បនិម្មិតកំពុងដំណើរការ...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "កំពុងគិតជ្រៅ សូមរង់ចាំ...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "នឹងបង្ហាញក្នុងពេលឆាប់ៗនេះ...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "ប៉ារ៉ាម៉ែត្រការទទួលស្គាល់",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "កែតំរូវប៉ារ៉ាម៉ែត្រដើម្បីបង្កើនភាពត្រឹមត្រូវនៃការទទួលស្គាល់",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "រក្សាទុកប៉ារ៉ាម៉ែត្រ",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "មិនអាចចាប់ផ្តើមការទទួលស្គាល់រូបភាពបានទេ៖ {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "កំហុស៖ {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "ការទទួលស្គាល់រូបភាពបរាជ័យ៖ {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "កំហុស៖ {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "បានអនុវត្តស្ថានភាពដែលមានដុំស {whiteCount} និងដុំខ្មៅ {blackCount}",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN ត្រូវបានចម្លងទៅក្តារតម្រៀប)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "ការទទួលស្គាល់បរាជ័យ៖ {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "កំហុស៖ {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "ការវាយតម្លៃរបស់ខ្ញុំ",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "ហ្គេមបានលេង",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "ឈ្នះ",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "ចាញ់",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "ស្មើ",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "បានធ្វើបច្ចុប្បន្នភាពចុងក្រោយ",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "ទ្រង់ទ្រាយ៖",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "កំណត់ស្ថិតិឡើងវិញ",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "អត្រាស្មើ",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "អត្រាចាញ់",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "ស្ថិតិ AI",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "បើកស្ថិតិ",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "នៅពេលបើក លទ្ធផលហ្គេមនឹងត្រូវបានកត់ត្រាក្នុងស្ថិតិ។ ទោះយ៉ាងណាក៏ដោយ ហ្គេមដែលពាក់ព័ន្ធនឹងការដកថយនឹងមិនត្រូវបានកត់ត្រាទេ។ នៅពេលបិទ ការប្រមូលស្ថិតិត្រូវបានផ្អាក។",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "វានឹងកំណត់ស្ថិតិហ្គេមទាំងអស់ឡើងវិញ។ សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "ទំហំរង្វង់ខាងក្នុងបន្ទះ",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "ស្រមោលផ្ទាំង",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "រកឃើញអន្ទាក់",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "រំលេចចលនាអន្ទាក់ដោយរង្វង់ និងព្រួញដ៏ដិត ក្នុងអំឡុងការវិភាគ.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "មានអន្ទាក់។ ចលនាអន្ទាក់: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "ការចាប់យក",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "ព័ទ្ធជុំវិញបំណែករបស់គូប្រជែងរបស់អ្នកមួយរវាងពីររបស់អ្នកក្នុងបន្ទាត់ត្រង់ដើម្បីចាប់យកវា។",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "អនុញ្ញាតឱ្យការចាប់យកអណ្តូង",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "ការចាប់យកអន្តរាគមន៍",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "ផ្លាស់ទីទៅចំណុចទទេរវាងបំណែករបស់គូប្រជែងពីររបស់អ្នកដើម្បីចាប់យកពួកគេទាំងពីរ។",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "អនុញ្ញាតឱ្យការចាប់អន្តរាគមន៍អន្តរាគមន៍",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "លោតលោត",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "ចាប់យកដោយលោតលើបំណែករបស់គូប្រជែងដែលនៅជាប់នឹងចំនុចទទេលើស។",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "អនុញ្ញាតឱ្យលោតលោត",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "បន្ទាត់ដែលអាចអនុវត្តបាន",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "នៅតាមគែមការ៉េ",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "នៅតាមបណ្តោយបន្ទាត់អ័ក្សអ័រអ័រឆ្លងកាត់ការេ",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "តាមទ្រនុងអង្កត់ទ្រូងឆ្លងកាត់ការ៉េ",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "ដំណាក់កាលប្រតិបត្តិ",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "ភាពអាចរកបានក្នុងដំណាក់កាលផ្លាស់ប្តូរផ្អែកលើបំណែកដែលនៅសល់",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "គ្មានការដាក់កម្រិត",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "មាននៅពេលអ្នកមានបំណែកបីឬតិចជាងនេះ",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "បញ្ឈប់ការដាក់នៅពេលដែលមានតែការ៉េទទេពីរប៉ុណ្ណោះនៅសល់",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "នៅពេលបើក ដំណាក់កាលដាក់បញ្ចប់ ហើយដំណាក់កាលផ្លាស់ទីចាប់ផ្តើមនៅពេលដែលក្តារមានតែកន្លែងទទេ ២ នៅសល់ ដោយមិនគិតពីបំណែកនៅក្នុងដៃ។ ច្បាប់នេះអនុវត្តតែសម្រាប់ហ្គេមបំណែក ១២ ប៉ុណ្ណោះ។",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "អ្នកអាចស្នើសុំការដកត្រលប់វិញបានតែភ្លាមៗបន្ទាប់ពីការផ្លាស់ទីរបស់អ្នក។",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "ប្រសិនបើអ្នកចង់បានការប្រជែងកាន់តែធំ យើងសូមណែនាំឱ្យបើកជម្រើស \"{setting}\" ហើយទាញយកមូលដ្ឋានទិន្នន័យពេញលេញទៅក្នុងឧបករណ៍របស់អ្នកតាមការណែនាំ។",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "តើអ្នកចង់កំណត់រចនាសម្ព័ន្ធច្បាប់ហ្គេមឥឡូវនេះទេ?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "ដំបូន្មាន​ក្បួន​ដោះស្រាយ",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "អ្នកបានចាញ់ហ្គេមជាបន្តបន្ទាប់នៅកម្រិត ១។ តើអ្នកចង់ប្តូរទៅក្បួនដោះស្រាយ MCTS ដែលងាយស្រួលជាងដើម្បីបន្ថយការលំបាកទេ?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "សូមអបអរសាទរដែលបានឈ្នះនៅកម្រិត ៣០ របស់ MCTS! តើអ្នកចង់ប្តូរទៅក្បួនដោះស្រាយ MTD(f) ដើម្បីបញ្ហាប្រឈមកាន់តែធំទេ?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "រំលេចធ្វើបន្លិចដែលអាចចាប់បាន",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "ផ្លាស់ទី",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {

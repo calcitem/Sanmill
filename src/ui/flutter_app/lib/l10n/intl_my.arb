@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "အိုကေ",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player}ကစားသည့်အခါကိုလှမ်းဆန်။",
     "@tipToMove": {
-        "description": "The tip that the given player is to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": "The tip that the given player is to move."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "ကစားသမား ၁ မြင်သွားပြီ!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "{invalidMove} ကို မတင်သွင်းနိုင်ပါ",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "ရွေ့လျားမှုနှင့် စည်းမျဉ်းများသည် မကိုက်ညီပါ။",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "အမှား- {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "အနိုင်ရရှိမှုရာခိုင်နှုန်း",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} အပိုင်းအရေအတွက်သည် သုံးခုထက်နည်းသည်။",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player lost because they had less than three pieces left."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} နှုတ်ထွက်ခဲ့သည်။",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player resigned."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} သွားစရာလမ်းမရှိ။",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "ဘုတ်အပြည့်ရှိပြီး {player} သွားစရာလမ်းမရှိ။",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go because the board is full."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "အချိန်ကုန်သွားပါပြီ၊ {player} ဆုံးရှုံးသွားပါပြီ။",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "ရွေ့လျားမှုအဆင့်တွင်၊ နောက်ဆုံးသတ်မှတ်ထားသော ရွေ့လျားမှုအရေအတွက်တွင် မည်သည့်အပိုင်းကိုမျှ ဖယ်ရှားမထားပါ။",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "အကြီးအကြယ်ပိုများသော အဆင့်ကို ဖန်တီးမလား? အသစ်တစ်ခုမှာ အဆင့် {level} ဖြစ်ပါလိမ့်မည်!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "သင်ရှုံးသည်!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "ဗားရှင်း- {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "ကျေးဇူးပါ",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "ရွေးချယ်",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "{element} ကို ရွေးပါ",
     "@pick": {
-        "description": "Used in the color picker.",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Used in the color picker."
     },
     "info": "အခ. အလ.",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " နှင့် ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "လက်ခံပါတယ်",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "လက်ထဲတွင် {player}- {count}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has in his hand."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "သင်္ဘောပေါ်ရှိ {player}- {count}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has on the board"
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "ဘုတ်ပေါ်ကနေ နှိမ်တယ်",
     "@boardTop": {
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "ရွှေ့ရန် ဘေးဘက်- {player}",
     "@sideToMove": {
-        "description": "The player whose turn it is.",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "The player whose turn it is."
+    },
+    "player": "ကစားသမား",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "နောက်ဆုံးရွှေ့ခြင်း- {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "ရွှေ့ပါ။",
+    "@move": {
+        "description": "Move"
     },
     "selected": "ရွေးချယ်ခဲ့သည်",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{ရွေ့မည်}=1{{count} ရွေ့မည်}other{{count} ရွေ့မည်}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "တင်ရန် မအောင်မြင်ပါ။",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count} ပိုင်း ဖယ်ရှားရန် လိုအပ်သည်。",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "နေရာ ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "နေရာယူသည့်အဆင့်တွင် အပိုင်းအစများကို ထည့်တွက်ပါ။",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "လက်ရှိကစားသမားသည် {count} အပိုင်းများကို ထားရှိထားပါသည်။",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "အဆင့်မသတ်မှတ်ဘဲ ပြောင်းလို့မရပါဘူး။",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "သစ်တော",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "ဒက်စတော့ပုံ",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "တည်နေရာမမှန်ကန်။",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIF ကိုမျှဝေပါ",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Pixel အချိုး",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "သင်တန်းကာလ",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "ဂိမ်းစခရင်အသံဖမ်းစက်",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "အရင်",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "နောက်တစ်ခု",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "ကျော်သွားပါ။",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "နားလည်ပြီ",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "စည်းကမ်းဆက်တင်များတွင် သင်သည် ဂိမ်း၏စည်းမျဉ်းများကို ပြင်ဆင်နိုင်သည်။",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "ရွေးသည့်ကိရိယာရှိတန်ဖိုးကို ပြောင်းလဲရန် မောက်စ်ဘီးကို သင်သုံးနိုင်သည်။",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI Thinking time ကို 0 ဟု သတ်မှတ်သည် ဆိုသည်မှာ တွေးတောရန် အချိန် ကန့်သတ်ချက် မရှိပါ။",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) သည် အလယ်အလတ်ရှာဖွေမှုရလဒ်များကို ပြန်လည်အသုံးပြုကာ ရှာဖွေမှုနေရာကို ကျဉ်းစေရန် ကောင်းမွန်သော ကနဦးမှန်းဆချက်အား အသုံးပြုခြင်းဖြင့် ထိရောက်မှုတိုးတက်စေရန် ရည်ရွယ်သည့် အယ်လ်ဖာဘီတာရှာဖွေမှု အယ်လဂိုရီသမ်၏ မွမ်းမံထားသောပုံစံတစ်ခုဖြစ်သည်။",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "AI တွေးခေါ်ချိန်ချိန်ညှိမှုသည် လုံးဝတိကျမည်မဟုတ်ကြောင်း ကျေးဇူးပြု၍ သတိပြုပါ။ အခက်အခဲအဆင့်ကို နိမ့်သောတန်ဖိုးအဖြစ် သတ်မှတ်သောအခါတွင် အမှန်တကယ် တွေးခေါ်ချိန်သည် တိုတောင်းနိုင်ပြီး အချိန်ကုန်သွားသောအခါတွင် AI သည် အတွေးအလယ်တွင် ပိုရှည်နိုင်သည်။",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "အခက်အခဲအဆင့်ကို မြင့်မားစွာသတ်မှတ်ထားသော်လည်း AI တွေးခေါ်ချိန်ကို မတိုးမြှင့်ပါက၊ တွေးခေါ်ချိန်ကန့်သတ်ချက်ကြောင့် အမှန်တကယ်အခက်အခဲအဆင့်သည် နည်းပါးသောတန်ဖိုးအဖြစ် ကန့်သတ်ထားနိုင်သည်။ စက်၏စွမ်းဆောင်ရည်ပေါ်မူတည်၍ အမှန်တကယ်တန်ဖိုးသည် ကွဲပြားနိုင်သည်။",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) သည် ပေးထားသည့် အနေအထားတွင် အကောင်းဆုံး ရွေ့လျားမှုကို ရှာဖွေရန် ရှာဖွေမှု အယ်လဂိုရီသမ် တစ်ခု ဖြစ်သည်။ ၎င်းသည် အယ်လ်ဖာ-ဘီတာ အယ်လဂိုရီသမ်ကို မြှင့်တင်ထားပြီး ပြောင်းရွှေ့မှုတစ်ခုသည် အဓိကကွဲလွဲချက်မှ ဘေးကင်းပြီးသားရမှတ်ထက် ပိုဆိုးသည် သို့မဟုတ် မဆိုးကြောင်း အတည်ပြုရန် null သို့မဟုတ် သုည window ရှာဖွေမှုများကို အသုံးပြုသည်။ PVS သည် အလားအလာ အကောင်းဆုံး လှုပ်ရှားမှုများကို အာရုံစိုက်ပြီး ရှာဖွေမှု၏ ထိရောက်မှုကို မြှင့်တင်ပေးသည့် မလိုအပ်သော အကိုင်းအခက်များကို မလိုအပ်သော ရှာဖွေမှုများကို ရှောင်ရှားသည်။",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "အယ်လ်ဖာဘီတာ အယ်လဂိုရီသမ်သည် အကောင်းဆုံး ရွေ့လျားမှုကို ရှာဖွေရန် ရှာဖွေမှု အယ်လဂိုရီသမ်တစ်ခု ဖြစ်သည်။ ၎င်းသည် ရှာဖွေမှုအပင်ကို ဖြတ်တောက်ပြီး ထိရောက်မှုတိုးမြင့်ရန် minimax နိယာမနှင့် တန်ဖိုးနှစ်ခုဖြစ်သည့် အယ်လ်ဖာနှင့် ဘီတာတို့ကို အသုံးပြုသည်။ Alpha သည် ကွန်ပြူတာမှ ရရှိနိုင်သည့် အနိမ့်ဆုံးရမှတ်ကို ကိုယ်စားပြုပြီး ဘီတာသည် ၎င်း၏ပြိုင်ဘက်ရနိုင်သော အများဆုံးရမှတ်ကို ကိုယ်စားပြုသည်။ algorithm သည် ဂိမ်းတစ်ခုတွင် ကွန်ပျူတာကို ထက်မြက်ပြီး ထိရောက်သော ဆုံးဖြတ်ချက်များချနိုင်ရန် ကူညီပေးသည်။",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "လူ့အတွေ့အကြုံအရ အနိုင်ယူဖို့ ကြိုးစားရင် ရှုံးလိမ့်မယ်။ ယင်းအစား၊ သင့်ပန်းတိုင်အဖြစ် သရေတစ်မှတ်ရရှိရန် ရည်မှန်းပြီး ဂိမ်းကို မရှုံးစေပါ။ မင်းရဲ့ပြိုင်ဘက်ကို စောင့်ကြည့်ပြီး အမှားလုပ်မိနိုင်တဲ့ အနေအထားတစ်ခုဆီ ညင်သာစွာ ဆွဲဆောင်ပါ။ အားနည်းချက်တွေပြတဲ့အခါ အခွင့်အလမ်းကို ဆုပ်ကိုင်ပြီး အနိုင်ရဖို့ ညင်သာစွာ တွန်းအားပေးပါ။ ဤနည်းဖြင့် သင်သည် ဂိမ်းကို အနိုင်ယူနိုင်သည်။",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "ဤဂိမ်းတွင် ပထမကစားသမားနှင့် နှိုင်းယှဉ်ပါက ဒုတိယကစားသမားသည် အနိုင်ရရန် ပိုမိုလွယ်ကူသည်။",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Passive option ကိုဖွင့်ထားခြင်းဖြင့် AI သည် တတ်နိုင်သမျှမြန်မြန်အနိုင်ရရန် ပြင်းပြင်းထန်ထန်ကြိုးစားခြင်းထက် ရာထူးတွင် အားသာချက်တစ်ခုရှိနေသောအခါ အနားယူစေမည်ဖြစ်သည်။",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "ဤရွေးချယ်မှုကို ဖွင့်ထားခြင်းဖြင့် ၎င်းသည် AI ကို အနိုင်ယူရန် နည်းလမ်းများကို လေ့လာရာတွင် အထောက်အကူဖြစ်စေချိန်တွင် ဂိမ်း၏ ကျပန်းနှင့် ပျော်ရွှင်မှုကို တိုးစေသည်။",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "AI သည် ၎င်း၏ အစိတ်အပိုင်းများ၏ ရွေ့လျားနိုင်မှုကို ထည့်သွင်းစဉ်းစားပါက၊ ၎င်းသည် ပြိုင်ဘက်၏ အစိတ်အပိုင်းများကို တတ်နိုင်သမျှ အမြန်ဖမ်းယူရန် ရည်ရွယ်ရုံသာမက ပြိုင်ဘက်၏ လှုပ်ရှားမှုများကို ပိတ်ဆို့ကာ ၎င်းတို့ကို တားဆီးရန်လည်း ထည့်သွင်းစဉ်းစားမည်ဖြစ်သည်။",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "ဘုတ်ပြားပြည့်သောအခါ",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "နေရာချခြင်းအဆင့်၏အဆုံးတွင်၊ ရွေ့လျားသည့်အဆင့်မစတင်မီ၊ ဘုတ်ပြားသည် အပိုင်းအစများပြည့်နေပါက လုပ်ဆောင်မှုနောက်ဆက်တွဲဖြစ်သည်။",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "ရွေ့လျားသည့်အဆင့်တွင် ပထမရွေ့လျားသောကစားသမားသည် ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ရှားသည်။",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "သရေကျဖို့ နှစ်ဖက်သဘောတူတယ်။",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "သင်၏ပြိုင်ဘက်၏အပိုင်းအစများကိုယူပါ။",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "ပထမကစားသမားက ဂိမ်းကိုရှုံးတယ်။",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "ပထမနှင့် ဒုတိယကစားသမားများသည် ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ထုတ်သည်။",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "ဒုတိယနှင့် ပထမကစားသမားများသည် ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ထုတ်သည်။",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "ယခု ပျံသန်းခြင်းအဆင့်သို့ ရောက်ရှိလာပြီး ပြိုင်ဘက်၏ အစိတ်အပိုင်းများသည် ဘုတ်ပေါ်ရှိ မည်သည့်နေရာမဆို လွတ်သွားနိုင်သည်။ \"စည်းကမ်းဆက်တင်များ\" တွင် ပျံသန်းမှုစည်းမျဉ်းကို သင်ပိတ်နိုင်သည်။",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "ရှေ့မတိုးနောက်မဆုတ်ဖြစ်တဲ့အခါ",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "မည်သည့်အရာမျှ မရွေ့နိုင်သောအခါတွင် မည်သို့လုပ်ဆောင်ရမည်နည်း။",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "ပိတ်ဆို့ထားသောဘက်ခြမ်းအတွက် ရှေ့မတိုးနောက်မဆုတ် ဆုံးရှုံးမှုဖြင့် အဆုံးသတ်ပါ။",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "ရွှေ့ရန် ဘေးကို ပြောင်းပါ။",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ရှားပြီး နောက်တစ်ဆင့်ကို ရွှေ့ပါ။",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "ရှေ့မတိုးနောက်မဆုတ်သာ သရေဖြင့် အဆုံးသတ်ပါ။",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "ပြိုင်ဘက်၏အပိုင်းအစများကို ဖယ်ရှားပြီး ရွှေ့ရန် ဘေးဘက်သို့ ပြောင်းပါ။",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI တုံ့ပြန်မှုနှောင့်နှေးချိန်",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI သည် လက်ရှိတွင် နှောင့်နှေးသော တုံ့ပြန်မှုအဆင့်တွင် ရှိနေသည်။ ဆက်လက်မလုပ်ဆောင်မီ ခဏစောင့်ပါ။",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "မကပ်နေသောအပိုင်းကို ဖယ်ရှား၍မရပါ။",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "ရှေ့မတိုးသာမယာဖြစ်လျှင် ကြိတ်ဖွဲ့စည်းပုံမခွဲခြားဘဲ သင့်အနီးရှိ ပြိုင်ဘက်၏အပိုင်းများကို ဖယ်ရှားနိုင်သည်။",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS သည် မတူညီသောရွေ့လျားမှုများကို သရုပ်ဖော်မှုများမှတစ်ဆင့် စူးစမ်းအကဲဖြတ်ခြင်းဖြင့် ဆုံးဖြတ်ချက်များချပေးသည့် အစပြုသူများအတွက် အဆင်ပြေသော အယ်လဂိုရီသမ်တစ်ခုဖြစ်သည်။",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "ရွှေကျောက်စိမ်း",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "သစ်တောသစ်",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "နက်နဲသောအရာ",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "သန်းခေါင်ယံပြာ",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "စိမ်းလန်းသောသစ်တော",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "မြက်ခင်းစိမ်းစိမ်း",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "Stony လမ်း",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Pastel ပန်းရောင်",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "Turquoise ပင်လယ်",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "ခရမ်းရောင်အိပ်မက်",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "မင်းတျချောကလက်",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "ကောင်းကင်ပြာ",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "ကစားစရာဥယျာဉ်",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "Retrograde ခွဲခြမ်းစိတ်ဖြာမှု algorithm သည် မတူညီသော start positions များမှ endgame database တစ်ခုကို တည်ဆောက်ရန်အတွက် တန်ဖိုးများစွာရှိသော retrograde ခွဲခြမ်းစိတ်ဖြာမှုကို အသုံးပြုပြီး ဂိမ်းကစားခြင်းကို ပိုကောင်းအောင်ပြုလုပ်ရန် ဤဒေတာဘေ့စ်ကို အသုံးပြုပါသည်။ ဤချဉ်းကပ်မှုသည် အလွန်ပြင်းထန်သော ဖြေရှင်းနည်းများ အမျိုးအစားအောက်တွင် ရှိသည်။",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "ဤအယ်လဂိုရီသမ်အတွက် အသုံးပြုသူလမ်းညွှန်ကို သင်ကြည့်ရှုလိုပါသလား။",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "အနေအထားအရ အားသာချက်ညွှန်ပြချက်ကို ပြပါ",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "ပြီးပြည့်စုံသောဒေတာဘေ့စ်ကိုသုံးပါ။",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "နောက်ဆုံးပေါ် အယ်လဂိုရီသမ်များမှတစ်ဆင့် ထုတ်လုပ်ထားသော ချို့ယွင်းချက်မရှိသော ဂိမ်းဒေတာဘေ့စ်ကို အသုံးပြုရန် ဤရွေးချယ်မှုကို ဖွင့်ပါ။ ဤအင်္ဂါရပ်သည် အကောင်းဆုံးလှုပ်ရှားမှုများကို အကြံပြုရန်အတွက် အဖွင့်နှင့် ဂိမ်းဗျူဟာများ နှစ်ခုလုံးကို ပေါင်းစပ်ထားသည်။ ဤသည်မှာ ဂိမ်းကစားရာတွင် တိကျမှုအမြင့်ဆုံးအဆင့်ကို ရှာဖွေသော ကစားသမားများအတွက် ဦးစားပေးရွေးချယ်မှုဖြစ်သည်။ စေ့စပ်သေချာသော တွက်ချက်နည်းစနစ်များဖြင့် ဖန်တီးထားသည့် ဒေတာဘေ့စ်သည် ပြီးပြည့်စုံလုနီးပါးရှိသော ဂိမ်းဖြေရှင်းချက်များကို ပေးဆောင်ရန် ဒီဇိုင်းထုတ်ထားသည်။\n\nမှတ်ချက်- AI သည် ဒေတာဘေ့စ်သို့ ဝင်ရောက်ရန် ပျက်ကွက်ပါက၊ ၎င်းသည် ဂိမ်းကစားခြင်းဆိုင်ရာ ဆုံးဖြတ်ချက်များအတွက် သမားရိုးကျ algorithms အဖြစ် ပြောင်းလဲသွားမည်ဖြစ်သည်။ ဒေတာဘေ့စ်ကို ရရှိနိုင်သောအခါ 'ခက်ခဲမှုအဆင့်' သည် အနိုင်ယူ၍မရနိုင်လောက်အောင် ဖြစ်လာပြီး 'AI Thinking Time' သည် သိသိသာသာ လျော့ပါးသွားပါသည်။ ဒေတာဘေ့စ်ရလဒ်များသည် အမြင့်ဆုံးဦးစားပေးဖြစ်သောကြောင့် 'AI's play style' ရွေးစရာများအတွင်းရှိ ဆက်တင်အများအပြားကို လွှမ်းမိုးသွားပါမည်။\n\nဤအပြစ်အနာအဆာကင်းသောဒေတာဘေ့စ်ကို မည်ကဲ့သို့အသုံးပြုနည်းလမ်းညွှန်ချက်အတွက် ဤနေရာကိုနှိပ်ပါ။",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "နောက်ခံပုံရိပ်",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "'ပြီးပြည့်စုံသောဒေတာဘေ့စ်ကိုအသုံးပြုပါ' ရွေးချယ်ခွင့်ကို ဖွင့်မထားသောအခါ၊ 'ကျပန်း' ဆက်တင်သည် AI သည် ရွှေ့ရန်ရွေးချယ်မှုအတွက် မည်သည့် algorithms ကိုမျှမသုံးဘဲ အပိုင်းများကို ကျပန်းရွှေ့စေသည်။ ၎င်းသည် ပုံမှန်အားဖြင့် သိသိသာသာ အားနည်းသော ဂိမ်းကစားခြင်းကို ဖြစ်ပေါ်စေသည်။ အပြန်အလှန်အားဖြင့် 'ပြီးပြည့်စုံသောဒေတာဘေ့စ်ကိုအသုံးပြုရန်' ကိုဖွင့်ထားသောအခါ၊ AI သည် ရိုးရာ AI အယ်လဂိုရီသမ်များနှင့် ရောနှောမည့်အစား ဆုံးဖြတ်ချက်များချရန်အတွက် 'ပြီးပြည့်စုံသောဒေတာဘေ့စ်' ပေါ်တွင် သီးသန့်မှီခိုနေပါသည်။ ဤမုဒ်တွင်၊ AI ၏ ရွေ့လျားမှုသည် ဒေတာဘေ့စ်၏ အကြောင်းအရာပေါ်တွင် လုံးလုံးလျားလျား အခြေခံထားပြီး အချိန်နှင့်တပြေးညီ တွက်ချက်မှုများ သို့မဟုတ် ရှာဖွေမှု အယ်လဂိုရီသမ်များအပေါ် မှီခိုမှုကို ရှောင်ဖယ်ထားသည်။",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို သူတို့၏ လက်ထဲမှ ဖယ်ရှားပါ။ ထို့နောက် ပြိုင်ဘက်၏ အလှည့်ကျ ခုန်ရန် အလှည့်ဖြစ်သည်။",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "တည်ဆောက်ခြင်း အဆင့်တွင် ကြိတ်များကို ပုံဖော်ခြင်းအခါ",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "ဘုတ်အဖွဲ့မှ ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို ဖယ်ရှားပါ။",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "ဘုတ်အဖွဲ့မှ ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို ဖယ်ရှားပါ။ ထို့နောက် ပြိုင်ဘက်၏ အလှည့်ကျ ခုန်ရန် အလှည့်ဖြစ်သည်။",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "ပြိုင်ဘက်သည် ဘုတ်အဖွဲ့မှ သူတို့၏အရာဝတ္ထု(များ)ကို ဖယ်ရှားသည်။",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "သင့်မှ လှုပ်ရှားမှု မယူပဲ၊ ပြိုင်ဘက်သည် သူတို့၏အရာဝတ္ထု(များ)ကို ရွေးချယ်ပြီး ဘုတ်အဖွဲ့မှ ဖယ်ရှားသည်၊ ထို့ဖြင့် သူတို့အား အန္တရာယ်ဖြစ်စေသည့် လှုပ်ရှားမှုကို ယူသည်။",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို သူတို့၏ လက်ထဲမှ ဖယ်ရှားပါ။ ထို့နောက် သင့်အလှည့်ကျ ရွေ့လျားရန် အလှည့်ဖြစ်သည်။",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "ပြိုင်ဘက်၏ လက်ထဲမှ အရာဝတ္ထု(များ)ကို ဖယ်ရှားပါ။ Multi-remove ဆက်တင်အရ၊ အရာဝတ္ထု အများကြီးကို ဖယ်ရှားရန်ရှိပြီး ပြိုင်ဘက်တွင် လက်ထဲတွင် အရာဝတ္ထု မရှိလျှင်၊ ဘုတ်အဖွဲ့မှ ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို ဆက်လက် ဖယ်ရှားပါ။ ထို့နောက် သင့်အလှည့်ကျ ရွေ့လျားရန် အလှည့်ဖြစ်သည်။ သင် ကြိတ်များကို ဆက်လက် ပုံဖော်ပါက၊ ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို ဖယ်ရှားနိုင်သည်။",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ပြိုင်ဘက်၏ လက်ထဲမှ အရာဝတ္ထု(များ)ကို ဖယ်ရှားပါ။ Multi-remove ဆက်တင်အရ၊ အရာဝတ္ထု အများကြီးကို ဖယ်ရှားရန်ရှိပြီး ပြိုင်ဘက်တွင် လက်ထဲတွင် အရာဝတ္ထု မရှိလျှင်၊ ဘုတ်အဖွဲ့မှ ပြိုင်ဘက်၏ အရာဝတ္ထု(များ)ကို ဆက်လက် ဖယ်ရှားပါ။ ထို့နောက် ပြိုင်ဘက်၏ အလှည့်ကျ ရွေ့လျားရန် အလှည့်ဖြစ်သည်။",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "အရာဝတ္ထုများကို မှတ်သားပြီး ဖယ်ရှားခြင်းကို နောက်ဆုတ်ပါ။",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "တည်ဆောက်ခြင်း အဆင့်တွင်၊ ဖယ်ရှားရမည့် အရာဝတ္ထုများကို မှတ်သားပြီး၊ အားလုံးသော ကစားသမားများအတွက် ထိုနေရာများတွင် အသစ်တစ်ခုမှ ထားရှိခွင့်မရှိပါ။ ရွေ့လျားခြင်း အဆင့်သို့ ဝင်ရောက်သည့်အခါ၊ ထိုမှတ်သားထားသည့် အရာဝတ္ထုများကို အားလုံးဖယ်ရှားပြီး၊ ကစားသမားများသည် ယခုဗလာနေရာများသို့ သူတို့၏ အရာဝတ္ထုများကို ရွေ့လျားနိုင်သည်။",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "အဆင့်တွင်ကစားပွဲအတွင်း၌အတူတကွတည်ဆောက်ကြသည့်အခါယူဆောင်နိုင်သောလုပ်ဆောင်ချက်များ။",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "မှတ်သားထားသည်",
-    "@marked": {},
-    "menu": "မီနူး",
-    "@menu": {},
-    "monochrome": "တစ်ရောင်",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "သင့်သည် အထွေထွေဆက်တင်များ၏ ရရှိနိုင်ချက်ပြုလုပ်မှုများတွင် စကရင်ဖတ်သူပံ့ပိုးမှုကို ဖွင့်နိုင်သည်။",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "အစိတ်အပိုင်းများပေါ်တွင်နံပါတ်များပြသည်",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "ဓာတ်ပုံ သိမ်းဆည်းပါ",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲ",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲနောက်ပိုင်းအရောင်အဝယ်",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲအင်္ဂါအရောင်",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "အပြောင်းအလဲပြုလုပ်လျှင်",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "မဆုံးအပြောင်းအလဲပြုပြီးပါးစပ်ပါးသောက်ကျသွားပါပြီ",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "တွင်ရှိတည်ရှိခြင်း",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H Flip",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V Flip",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO Flip",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "ကြည်လင်ကန်ဗတ်",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "ထပ်ခါထပ်ခါ အလုပ်ရုံဖွဲ့စည်းခြင်းကို ကန့်သတ်ပါ",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "တစ်ခုမှ တစ်ခုသို့ ရွှေ့ပြီး မီးလုံးတစ်ခု ပြန်ဖွဲ့ဖို့ ရှေ့ရပ်နေရာသို့ နောက်တစ်ခါတွင် ချက်ချင်း မပြန်လာနိုင်ပါ။ အရင်ဆုံး ကြားရှိ ရွှေ့ချက်ကို လိုအပ်သည်။",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "တစ်ကြိမ်သုံးအကြိမ်",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "တစ်ကြိမ်သုံးတိုင်းပြိုင်ဘက်၏အပိုင်းတစ်ခုကိုတစ်ကြိမ်သာဖယ်ရှားနိုင်သည်။ သင်ပြန်လည်ဖွဲ့စည်းနိုင်ပါသည်၊ သို့သော်ထပ်မံဖယ်ရှားရန်အတွက်အသုံးမပြုနိုင်ပါ။",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "သင်အပ်နှံထားသည့် လက်ရှိစည်းကမ်းများသည် သင့်လျော်သော ပြည့်စုံသော ဒေတာဘေ့စ မရှိပါ။ ပြည့်စုံသော ဒေတာဘေ့စအကြောင်း ပိုမိုသိရှိလိုပါက ဤနေရာကိုနှိပ်ပါ။",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "ပိတ်ဆို့သောလမ်းများပေါ်တွင်အာရုံစိုက်ပါ",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "မီးခိုးသုံးတည်ဆောက်ခြင်းကို ဦးစားမပေးဘဲ ပြိုင်ဘက်ရဲ့ လှုပ်ရှားမှုကို တားဆီးဖို့ ဦးစားပေးပါ။ AI က မီးခိုးသုံးတွေ ပြီးမြောက်စေခြင်းအားဖြင့် အပိုင်းတွေကို ဖယ်ရှားရန် အာရုံစိုက်ခြင်းမပြုဘဲ ပြိုင်ဘက်ကို ပိတ်မိအောင် ကြိုးပမ်းပါတယ်၊ သို့ဖြစ်ပြီး ပြိုင်ဘက်ကို ရွေ့လျားနိုင်စွမ်းမရှိစေပြီး တိုက်ခိုက်စစ်မဟုတ်ဘဲ ပင်ပန်းခြင်းဖြင့် အနိုင်ရရှိစေပါတယ်။ ဤနည်းဗျူဟာ ပြိုင်ဘက်ရဲ့ မီးခိုးသုံးတွေကို တက်ကြွစွာ မတားဆီးပါ။",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "တရားသူကြီးဓါတ်ပုံ",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "အရောင်ချိန်ညှိချက်များကိုတင်သွင်းပါ",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "အရောင်ချိန်ညှိချက်များကိုပို့ပါ",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "တင်သွင်းသည်",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "တင်ပို့သည်",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "ကျေးဇူးပြု၍ JSON ဖော်မတ်ချိန်ညှိချက်များကို clipboard သို့ အရင်ဆုံး ကူးယူပါ။",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Clipboard သို့ ကူးယူပြီး။",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "တင်သွင်းပြီး။",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "ဘုတ်ပြားပုံ",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "ဆောင်းဦးတစ်ပိုင်း",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "ဒဏ္ဍာရီ မြေ",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "ဗီညာ အထိအရောက်",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "ဘုတ်နောက်ခံပုံသတ်မှတ်ထားသောအခါ ကိရိယာဘားကို အပြည့်အဝ ထင်ရှားပြတ်သားအောင် ပြုလုပ်လိုပါသလား?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "ဂိမ်းတွင် တုန်ခါမှု ဖွင့်ပါ",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "အသံအကြောင်းအရာ",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "ဘောလုံး",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "ရည်",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "သစ်သား",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "သားကိုထားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "သားကိုဖယ်ရှားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "ကိရိယာဘားကို အောက်ဆုံးတွင် ပြပါ",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "ဘုတ်အနားရိုးကျော်လွန်အချင်း",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "ဖွင့်စာအုပ်ကိုသုံးပါ",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "လက်ရှိ",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "စည်းမျဉ်းအစုံ",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "AI ကို ကစားပွဲအစမှာ ကစားသမားများက မကြာခဏသုံးစွဲတဲ့ဖွင့်ပွဲကို သုံးစွဲခွင့်ပြုပါ။ မှတ်ချက် - ယခုလိုင်းပေါ်ရှိ ဤအင်္ဂါရပ်သည် သတ်မှတ်ထားသော စည်းမျဉ်းစုံများအတွက်သာ ရရှိနိုင်သည်။",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "အားသာချက်ဂრაფပြပါ",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "အကြွင်းမဲ့ကောင်းမွန်မှုဇယားသည် AI မှ ခလုတ်ပြုလုပ်ပြီးနောက်တွင်သာ ဆွဲရန်ရှိသည်။ လူကစားသမားမှ ခလုတ်ပြုလုပ်သည့်အခါတွင် ဆွဲမည်မဟုတ်ပါ။",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "တစ်ခုချင်းစီကို တစ်လှည့်ချင်း ထည့်ပြီးဆုံးသည်တိုင် နှုတ်ယူခြင်းကို ပိတ်ထားပါ။ လူသည် မယ်လ့်အရေအတွက်အလိုက် ယူထုတ်ကြသည်။",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "တစ်ခုချင်းစီကို တစ်လှည့်ချင်း ထည့်ပြီးဆုံးသည်တိုင် နှုတ်ယူခြင်းကို ပိတ်ထားပါ။ လူသည် မယ်လ့်အရေအတွက်အလိုက် ယူထုတ်ကြသည်- အရေအတွက်တူသည်ဆိုလျှင် နှစ်ယောက်စလုံး တူညီသည့်အရေအတွက်ယူထုတ်မည်။ တစ်ယောက်မှာပိုရှိလျှင် တစ်လုံး ပိုယူထုတ်ပြီး တစ်လုံးခြားနေသည့် အခြေအနေကို ထားရှိမည်။ တစ်ယောက်ဘဲ မယ်လ့်ဖွဲ့ရာမယ်လ့်ဖြစ်သွားလျှင် ငါးလုံးနှစ်လုံးယူထုတ်ပြီး တစ်ယောက်ကတော့ တစ်လုံးသာယူထုတ်မည်။ တစ်ယောက်အနေနဲ့ မယ်လ့်မဖြစ်လျှင် နှစ်ယောက်စလုံးမှ တစ်လုံးစီယူထုတ်မည်။",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "အယ်ဖီလ်ဂျာ",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "သင့်ဂုတ်တစ်ခုကိုရွေးပါ။",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "မင်းရဲ့အလှည့်မဟုတ်ပါ။",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "မှတ်စုတန်းအရောင်",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "အိုင်ကွန်အရောင်",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "မှတ်စုတန်းပြပါ",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "မှတ်စုမုဒ်သို့ဝင်ပါ",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "မှတ်စုအားလုံးဖျက်မှာသေချာလား?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM စာသားကိုကလစ်ဘုတ်သို့ကူးယူပြီး။",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "ချိတ်ဆက်မှုကိုငြင်းပယ်လိုက်ပါသည်၊ ဆာဗာပိတ်ထားနိုင်သည်။",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "ရှာဖွေတွေ့ရှိပြီး၊ ချိတ်ဆက်မှုစောင့်ဆိုင်းနေသည်...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "LAN ချိတ်ဆက်မှုမရှိ",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "စခရင်ရှော့ရိုက်ပါ",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "ပြိုင်ဘက်နှင့်ချိတ်ဆက်မှုဖြတ်လိုက်ပြီ။",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "ပြန်လည်ရယူမှုတောင်းဆိုချက်",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "ပြသစရာမရှိပါ။",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "အိမ်ရှင်လုပ်ခြင်းရပ်ပါ",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "အခြားအသုံးပြုသူမှချိတ်ဆက်မှုပြန်လည်စတင်သည်။",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "နှလုံးခုန်အချိန်ကုန်သွားပါသည်။ ကျေးဇူးပြု၍ပြန်ချိတ်ပါ။",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "အိမ်ရှင်စတင်ပါ",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "ပြန်စခိုင်းမှုကိုငြင်းပယ်လိုက်ပြီ။",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN ပြိုင်ဘက်နှင့်မချိတ်ဆက်ထားပါ။",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM စာသား",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "ဂိမ်းပြန်စပြီး။",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "ပြန်လည်ရယူမှုငြင်းပယ်ခံရသည်။",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "ဂိမ်းမှထွက်မှာသေချာလား?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "ပြိုင်ဘက်ထွက်သွားပြီ။ သင်နိုင်ပြီ!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "မှတ်စုအားလုံးဖျက်ပါ",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "ချိတ်ဆက်ပြီး၊ ပြိုင်ဘက်လှုပ်ရှားမှုစောင့်နေသည်...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "နက်ဝက်အခြေအနေ: ချိတ်ဆက်မှုပြတ်",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "ပြန်လည်ရယူမှုတောင်းဆိုချက်ပြိုင်ဘက်ထံပို့ပြီး။",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "ပြိုင်ဘက်ဂိမ်းမှထွက်သွားနိုင်သည်",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "အိမ်ရှင်နှင့်အောင်မြင်စွာချိတ်ဆက်ပြီး။",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "ချိတ်ဆက်မှုပြတ်: နှလုံးခုန်အချိန်ကုန်",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "အိမ်ရှင်မတွေ့ပါ။",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "ထွက်ခွာမှုအတည်ပြုပါ",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "အိမ်ရှင်စတင်ပြီး ကစားသမားများစောင့်ဆိုင်းနေသည်...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "ချိတ်ဆက်မှုအချိန်ကုန်၊ နက်ဝက်မတည်ငြိမ်။",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "LLM စာသားမရှိပါ။",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "သင်ထွက်သွားပြီ။ ဂိမ်းပြီးပြီ။",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "ဆာဗာလိပ်စာ",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "ဖျက်မှုအတည်ပြုပါ",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "ပြိုင်ဘက်အလှည့်။",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "ကလိုင်းယင့်ချိတ်ဆက်မှုစောင့်ဆိုင်းနေသည်...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "ပြန်လည်ရယူမှုတောင်းဆိုချက်ငြင်းခံရသို့မဟုတ်မအောင်မြင်။",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "စာသားထည့်ပါ",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "မှတ်စုမုဒ်မှထွက်ပါ",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "မှတ်စုရိုက်ထည့်ပါ",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "ပြန်ချိတ်ဆက်ရန်ကြိုးစားနေသည်...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "ပြန်စခိုင်းမှုပို့ပြီး ပြိုင်ဘက်အကြောင်းပြန်စောင့်နေသည်...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "ဆာဗာပိတ်ထားပြီ။",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "ပြန်စခိုင်းမှု",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "သင့်အလှည့်မဟုတ်လျှင် ပြန်လည်ရယူမှုမတောင်းဆိုနိုင်။",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "ပြန်လည်ရယူမှုလက်ခံပြီး။",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "ဒေသိယနက်ဝက်ချိန်ညှိချက်များ",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "ပြန်ချိတ်ဆက်အောင်မြင်ပြီး!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "ဓာတ်ပုံသိမ်းဆည်းရန်မအောင်မြင်။",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "ပြိုင်ဘက်ဂိမ်းပြန်စဖို့တောင်းဆို။ လက်ခံမလား?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "သင့်အလှည့်။",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "ပြန်ချိတ်ဆက်မရ၊ ဂိမ်းပြန်စပါ။",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "အိမ်ရှင်",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "ပါဝင်သည်",
-    "@join": {},
-    "port": "ပို့",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "မမှန်ကန်သောလိပ်စာ။",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "မမှန်ကန်သောပို့။",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "ချိတ်ဆက်နေသည်: {attempt}/{maxAttempt} ကြိုးစားမှု",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "ချိတ်ဆက်မရ: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "အမှား- {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "အိမ်ရှင်စတင်မရ: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "အမှား- {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "အိမ်ရှင်တွေ့ရှိ: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "ရပ်",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "ရှာဖွေသည်",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "ချိတ်ဆက်သည်",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "ကလိုင်းယင့်ချိတ်ဆက်: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "ရှာဖွေနေသည်: {seconds} စက္ကန့်",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "ပြန်ချိတ်ဆက်နေသည် ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "ချိတ်ဆက်ပြီး",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "ဖျက်",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "ရှေးဟောင်းအီဂျစ်",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "ဂိုသစ်ရေခဲ",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "စပါးခင်း",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "တရုတ်ကြွေထည်",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "သဲကန္တာရညနေဝင်ချိန်",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "တိကျသောလက်မှုပညာ",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "ရိုးရာပန်းထိုး",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "ကာပါသီယန်အမွေအနှစ်",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "ဧကရာဇ်ခမ်းနားမှု",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "ဘိုဟီးမီးယန်းပုံဆောင်ခဲ",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "ဆာဗားနားနေထွက်ချိန်",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "သဟဇာတနှင့်ဟန်ချက်",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "သစ်ကြံ့ပင်း အမွှေးအကြိုင်",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "အနာတိုလီယန်မိုဆိုင်း",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "ကာနီဗယ်စိတ်ဓာတ်",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "စိတ်ကြိုက်",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "အမွှေးအကြိုင်ဈေး",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "ဧဖ်ဖွင့်ရန် လွှဲဆွဲပါ",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "ဂိမ်းအချက်အလက်များကို စခရင်ရှော့တွင် ပြပါ",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "လူ၏အချိန်ကန့်သတ်ချက်",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "လူ့လှုပ်ရှားမှုများအတွက် အချိန်ကန့်သတ်ချက်မရှိပါ။",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "လူသားကစားသမားအတွက် အချိန်ကုန်ဆုံးရှုံးမှု ကျင့်သုံးပါမည်။",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "ဂိမ်းဘုတ် ဖော်ထုတ်နေသည်...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "မည်သည့်မော်ဒယ်နာမည်မဆို ထည့်နိုင်သည်။",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "ဘုတ်အနေအထားတင်ပြီး။ FEN ကို ကလစ်ဘုတ်သို့ ကူးယူပြီး။",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "အကြံပြုချက် – ဘုတ်ကို ပိုရှင်းကောက်သော ဓါတ်ပုံတစ်ပုံ ရိုက်ကြည့်ပါ။",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM အမိန့်ပုံစံ",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "သင့်လျော်သော ဘုတ်မတွေ့ပါ။",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "အယ်လ်ဘမ်မှ ပုံရွေးနေသည်...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "အမိန့်ပုံစံ ကို သတ်မှတ်ပါ",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM ကြည့်စစ်မှုပေးရန် အမိန့်ပုံစံကို ပြင်ဆင်ပါ",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "ဖော်ထုတ်ထားသည့် ဘုတ်မှ FEN ထုတ်မရပါ။",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "လက်ရှိဘာသာစကားဖြင့် ထုတ်လွှင့်ခြင်း",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "နှစ်သက်အသုံးများသော Base URL များ",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "နှစ်သက်အသုံးများသော မော်ဒယ်များ ကြည့်ရှုရန်",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "အသိအမှတ်ပြု ပုဂ္ဂိုလ်ဉာဏ် အချက်အလက်များ ပြင်ဆင်ပြီး။",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "အဖြူရဲ့လှည့်",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "သတ်မှတ်ค่ျပန်စစ်ပါ",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "ဓါတ်ပုံရိုက်ခြင်း",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "ဖော်ထုတ်ထားသည့် ဘုတ်အနေအထား အသုံးမပြုနိုင်ပါ။",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM အမိန့်အား ပါဝင်မှု",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM မတပ်ဆင်ထားပါ။ သတ်မှတ်ချက်များ စစ်ဆေးပါ။",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "ပံ့ပိုးသူ၊ မော်ဒယ်၊ API Key နှင့် Base URL သတ်မှတ်ပါ",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM ဆက်တင်များ",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM ပံ့ပိုးသူ ကို သတ်မှတ်ပါ",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM အမိန့်ပုံစံ ခေါင်းစီး",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "ပုံတွင် အပိုင်းကဏ္ဍမတွေ့ပါ။ ထပ်မံစမ်းကြည့်ပါ။",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "ပုံမှ ဂိမ်းဘုတ်ကို ဖော်ထုတ်ရန်",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "အကြံပြုချက်များ ကြည့်ရန်",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "ဘုတ်တွင်အသုံးပြုရန်",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "ဘုတ်နေရာကို ကိုက်ညီအောင် ပြင်ဆင်ရန်",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "နှစ်သက်အသုံးများသော URLs ကြည့်ရန်",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "အရောင်ခွဲခြမ်းစိတ်ဖြာမှု မအောင်မြင်ပါ!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "ဂိမ်းဘုတ် ပုံကို ခွဲခြမ်းစစ်ဆေးနေသည်...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "အယ်လ်ဘမ်မှ ရွေးပါ",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "ဘုတ်အမှတ် မတွေ့ပါ!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "လှည့်မည်ဆိုပါက၊ ပုံစံ မထည့်လျှင် ပုံစံ မူရင်းအသုံးမည်။",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM ဆက်တင်",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "အမိန့်ပုံစံများကို မူရင်းတန်ဖိုးသို့ ပြန်သတ်မှတ်မှာ မရေးမလား?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM အမိန့်ပုံစံ ခြစ်စည်း",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "ဖြေကြားချက် ဒေါင်းလုပ်နေသည်...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "ဤရလဒ်ကို ဘုတ်တွင် သုံးရန်",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "ဓါတ်ပုံ ရိုက်ယူနေသည်...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "ဖော်ထုတ်ရန် ဂိမ်းဘုတ် ပုံ ရွေးပါ",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "ဖော်ထုတ်မှု ရလဒ်များ",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "လှည့်များကို ခွဲခြမ်းစစ်ဆေးပြီး အတွေးအမြင် ပေးပါ။",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key ရယူရန်",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "ဖော်ထုတ်ခြင်း လုပ်ငန်းစဉ် အားလုံး မအောင်မြင်ပါ။",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "ဘုတ်ဖော်ထုတ်မှု ရလဒ်",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLM ကို မေးမည်",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "ဘုတ် ဖော်ထုတ်ခြင်း မအောင်မြင်ပါ!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "ဘုတ်အမှတ် မတွေ့၊ အစိတ်အပိုင်း မသိနိုင်ပါ!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FEN ကူးရန်",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "နှစ်သက်အသုံးများသော မော်ဒယ်များ",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (ပ.optional)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "ပုံ မရွေးထားပါ",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "အမည်းရဲ့လှည့်",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "အကြီးစားဘာသာစကားမော်ဒယ်",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "ပံ့ပိုးသူ",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "အခြေခံ URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "မော်ဒယ်",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "အပူချိန်",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "အမိန့်ရရှိပြီ! AI သည် ဆက်လက်လုပ်ဆောင်နေသည်...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "နက်ရှိုင်းစွာ စဉ်းစားဆဲဖြစ်သဖြင့် ခဏစောင့်ပါ...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "မကြာမီ တင်ပြမည်...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "အသိမှတ်ပြုအချက်အလက်များ",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "အသိမှတ်ပြုမှုတိကျမှန်ကန်မှု တိုးမြှင့်ရန် ပါရာမီတာများကို ပြင်ဆင်ပါ",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "ပါရာမီတာများကို သိမ်းဆည်းပါ",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "ပုံအတိအကျသိမြင်ခြင်းကို စတင်နိုင်ခြင်းမရှိပါ: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "အမှား- {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "ပုံအတိအကျသိမြင်ခြင်း မအောင်မြင်ပါ: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "အမှား- {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "{whiteCount} ဖြူ နှင့် {blackCount} မဲ အလုံးများ ပါဝင်သည့် တည်နေရာကို အသုံးပြုပြီးပါပြီ",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN ကို ကလစ်ဘုတ်သို့ ကူးထည့်ပြီးပါပြီ)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "အသိမှတ်ပြုမှု မအောင်မြင်ပါ: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "အမှား- {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "ကျွန်ုပ်၏အဆင့်သတ်မှတ်ချက်",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "ကစားခဲ့သည့်ဂိမ်းများ",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "နိုင်ပွဲ",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "ရှုံးပွဲ",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "သရေပွဲ",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "နောက်ဆုံးအပ်ဒိတ်လုပ်ထားသည်",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "ပုံစံ:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "စာရင်းအင်းများ ပြန်လည်သတ်မှတ်ရန်",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "သရေပွဲနှုန်း",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "ရှုံးပွဲနှုန်း",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "AI စာရင်းအင်းများ",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "စာရင်းအင်းများ ဖွင့်ပါ",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "ဖွင့်ထားသည့်အခါ ဂိမ်းရလဒ်များကို စာရင်းအင်းများတွင် မှတ်တမ်းတင်မည်ဖြစ်သည်။ သို့သော် နောက်ပြန်ဆုတ်ခြင်းပါဝင်သည့် ဂိမ်းများကို မှတ်တမ်းတင်မည်မဟုတ်ပါ။ ပိတ်ထားသည့်အခါ စာရင်းအင်းများစုဆောင်းခြင်းကို ခေတ္တရပ်ထားသည်။",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "၎င်းသည် ဂိမ်းစာရင်းအင်းအားလုံးကို ပြန်လည်သတ်မှတ်မည်ဖြစ်သည်။ ဤလုပ်ဆောင်ချက်ကို ပြန်မပြင်နိုင်ပါ။",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "ဘုတ်အတွင်းကွင်းအရွယ်အစား",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "ဘုတ်အရိပ်",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "လှောင်ချောက် အသိအမြင်",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "ခွဲခြမ်းလေ့လာစဉ် လှောင်ချောက် လှုပ်ရှားမှုများကို စက်ဝိုင်းနှင့် မြားများကို ထင်ရှားအောင် ပြပါ.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "လှောင်ချောက် ရှိနေသည်။ လှောင်ချောက် လှုပ်ရှားမှုများ: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "ဝိုင်းဖမ်းယူ",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "သင်၏ပြိုင်ဘက်နှစ် ဦး အကြားသင်၏ပြိုင်ဘက်နှစ် ဦး အနေဖြင့်၎င်းကိုဖမ်းယူရန်ဖြောင့်သောမျဉ်းကြောင်းတစ်ခုအကြားသင်၏ပြိုင်ဘက်တစ် ဦး ကိုပူးတွဲပါ။",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "ဝိုင်းဖမ်းယူမှုကို ခွင့်ပြုပါ",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "ဝင်ရောက်စွက်ဖက်မှုဖမ်းယူခြင်း",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "နှစ်ခုစလုံးကိုဖမ်းယူရန်သင်၏ပြိုင်ဘက်၏အပိုင်းပိုင်းနှစ်ခုအကြားအချည်းနှီးသောအချက်သို့ရွှေ့ပါ။",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "ဝင်ရောက်စွက်ဖက်မှုဖမ်းယူခွင့်ပြုပါ",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "ခုန်ဖမ်းယူ",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "တစ် ဦး ကပ်လျက်ပြိုင်ဘက်တစ် ဦး ၏အပိုင်းအစအပေါ်ကျော်လွန်သောအချည်းနှီးသောအချက်များအပေါ်ခုန်ခြင်းဖြင့်ဖမ်းယူခြင်းဖြင့်ဖမ်းယူ။",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "ခုန်ဖမ်းယူခွင့်ပြုပါ",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "သက်ဆိုင်သောလိုင်းများ",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "စတုရန်းရဲ့အနားတလျှောက်",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "စတုရန်းကိုဖြတ်ကျော် orthogonal လိုင်းများတလျှောက်",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "ထောင့်ဖြတ်လိုင်းများတလျှောက်မှာစတုရန်းဖြတ်ကူး",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Execution အဆင့်",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "ကျန်ရှိသောအပိုင်းအစများအပေါ်အခြေခံပြီးရွေ့လျားအဆင့်တွင်ရရှိနိုင်",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "ကန့်သတ်ချက်မရှိပါ",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "သင့်တွင်သုံးခုသို့မဟုတ်နည်းပါးလာအပိုင်းပိုင်းရှိသည့်အခါရရှိနိုင်ပါသည်",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "ဗလာနေရာ နှစ်ခုသာ ကျန်တော့လျှင် ထည့်ခြင်း ရပ်ရန်",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "ဖွင့်ထားလျှင် ဘုတ်ပေါ်တွင် ဗလာနေရာ 2 ခုသာ ကျန်ရှိတော့သောအခါ ထားသည့်အဆင့် ပြီးဆုံးပြီး ရွှေ့သည့်အဆင့် စတင်သည်။ လက်၌ရှိသော အကွက်များ မည်မျှပင်ရှိစေကာမူ။ ဤစည်းမျဉ်းသည် 12-အကွက် ဂိမ်းများအတွက်သာ သက်ရောက်ပါသည်။",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "သင်သည် သင်၏ရွှေ့လျားမှုအပြီးတွင်သာ ပြန်ယူခြင်းကို တောင်းဆိုနိုင်သည်။",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "သင်သည် ပိုမိုကြီးမားသော စိန်ခေါ်မှုကို လိုချင်ပါက၊ \"{setting}\" ရွေးချယ်မှုကို ဖွင့်ပြီး လမ်းညွှန်ချက်အတိုင်း သင့်စက်ပစ္စည်းသို့ ပြည့်စုံသော ဒေတာဘေ့စ်ကို ဒေါင်းလုပ်လုပ်ရန် ကျွန်ုပ်တို့ အကြံပြုပါသည်။",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "ဂိမ်းစည်းမျဉ်းများကို ယခု စီစဉ်သတ်မှတ်လိုပါသလား?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "အယ်လဂိုရီသမ် အကြံပြုချက်",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "သင်သည် အဆင့် ၁ တွင် ဂိမ်းများစွာကို ဆက်တိုက်ရှုံးနေပါသည်။ အခက်အခဲလျှော့ချရန် ပိုလွယ်ကူသော MCTS အယ်လဂိုရီသမ်သို့ ပြောင်းလိုပါသလား?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS အဆင့် ၃၀ တွင် အနိုင်ရသည့်အတွက် ဂုဏ်ယူပါသည်! ပိုမိုစိန်ခေါ်မှုရှိရန် MTD(f) အယ်လဂိုရီသမ်သို့ ပြောင်းလိုပါသလား?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "ဖမ်းနိုင်သော ကျောက်တုံးများကို မီးမောင်းထိုး",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "ရွှေ့ပါ။",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {

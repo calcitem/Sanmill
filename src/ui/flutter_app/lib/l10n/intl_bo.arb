@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "ཆོག",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} སྤོ་འགུལ་བྱེད་རོགས།",
     "@tipToMove": {
-        "description": "The tip that the given player is to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": "The tip that the given player is to move."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "རྩེད་འགྲན་པ་ 1 རྒྱལ་ཁ་ཐོབ་པ།",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "ནང་འདྲེན་བྱེད་མི་ཐུབ། {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "སྤོ་ཐབས་དང་སྒྲིག་གཞི་མི་མཐུན་པ།",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "ནོར་འཁྲུལ། {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "རྒྱལ་ཁའི་བརྒྱ་ཆ།",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} རྡེལ་གྲངས་གསུམ་ལས་ཉུང་།",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player lost because they had less than three pieces left."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} བསྐྱུར་བ།",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player resigned."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} འགྲོ་ས་མེད།",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "རྩེད་པང་ཁེངས་ཟིན་པ་དང་། {player} འགྲོ་ས་མེད།",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go because the board is full."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "དུས་ཚོད་རྫོགས་སོ། {player} ཕམ་པ།",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "སྤོ་འགུལ་དུས་རིམ་ཁྲོད། རྡེལ་གང་ཡང་འདས་པའི་གཏན་འཁེལ་གྲངས་ཀའི་སྤོ་འགུལ་ནང་བསུབས་མེད།",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "དཀའ་ཚད་མཐོ་བའི་རིམ་པར་འགྲན་སློང་བྱེད་པ། རིམ་པ་གསར་པ་ནི་ {level} རིམ་པ་ཡིན།",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "ཁྱོད་ཕམ་པ།",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "ཐོན་རིམ། {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "ཐུགས་རྗེ་ཆེ།",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "གདམ་ག།",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "{element} འདེམས་པ།",
     "@pick": {
-        "description": "Used in the color picker.",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Used in the color picker."
     },
     "info": "གནས་ཚུལ།",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " དང་ ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "མོས་མཐུན།",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} ལག་ཏུ་ཡོད་པ། {count}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has in his hand."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} རྩེད་པང་ཐོག་ཡོད་པ། {count}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has on the board"
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "རྩེད་པང་གི་སྟེང་ནས་བར་ཐག",
     "@boardTop": {
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "འགུལ་དགོས་པའི་ཕྱོགས། {player}",
     "@sideToMove": {
-        "description": "The player whose turn it is.",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "The player whose turn it is."
+    },
+    "player": "རྩེད་འགྲན་པ།",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "མཐའ་མའི་སྤོ་འགུལ། {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "སྤོ་འགུལ།",
+    "@move": {
+        "description": "Move"
     },
     "selected": "འདེམས་ཟིན།",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{འགུལ}=1{{count} འགུལ}other{{count} འགུལ}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "མངོན་འཇུག་ཕམ་པ།",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} བསུབ་དགོས་པ།",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "འཇོག་ཚར། ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "འཇོག་རིམ་ནང་རྡེལ་གྱི་འཇོག་གྲངས་བསྡོམས་རྩིས།",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "ད་ལྟའི་རྩེད་འགྲན་པས་རྡེལ་ {count} འཇོག་ཚར།",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "འཇོག་རིམ་མ་ཡིན་པས། དེ་བརྗེ་མི་ཆོག",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "ནགས་ཚལ།",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "ཌེག་སཀོབ་བརྙན་རིས།",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "ནུས་མེད་གནས་ས།",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIF མཉམ་སྤྱོད།",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "པིག་སེལ་གྱི་བསྡུར་ཚད།",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "ཡུན་ཚད།",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "རྩེད་མོ་གསལ་སྟོན་པར་རྒྱག་བྱེད་མཁན།",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "སྔོན་མ།",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "རྗེས་མ།",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "མཆོང་རྒྱུག",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "ཤེས་རྟོགས་བྱུང་།",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "ཁྱོད་ཀྱིས་སྒྲིག་གཞི་སྒྲིག་འཛུགས་ནང་རྩེད་མོའི་སྒྲིག་གཞི་ལེགས་བཅོས་བྱེད་ཆོག",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "འདེམས་ཆས་ནང་གི་རིན་ཐང་བརྗེ་ཆོག་པའི་ཆེད་དུ་ཙི་གུའི་འཁོར་ལོ་བེད་སྤྱོད་བྱེད་ཆོག",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI བསམ་བློའི་དུས་ཚོད་ 0 ལ་སྒྲིག་འཛུགས་བྱས་པ་ནི་བསམ་བློའི་དུས་ཚོད་ལ་ཚོད་འཛིན་མེད་པ་མཚོན།",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) ནི་ཨལ་ཕ་བེ་ཊ་འཚོལ་ཞིབ་རྩིས་གཞིའི་བསྒྱུར་བཅོས་བྱས་པའི་རྣམ་པ་ཞིག་རེད་།",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "AI བསམ་བློ་གཏོང་བའི་དུས་ཚོད་བསྒྱུར་བཅོས་དེ་ཡོངས་སུ་གཏན་འཁེལ་མིན་པ་ཤེས་དགོས། དཀའ་ངལ་གྱི་ཚད་གཞི་དེ་རིན་ཐང་དམའ་རུ་གཏོང་སྐབས་བསམ་བློ་གཏོང་བའི་དུས་ཚོད་ངོ་མ་དེ་ཐུང་བ་དང་།",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "གལ་ཏེ་ཁྱེད་ཀྱིས་དཀའ་ངལ་གྱི་ཚད་གཞི་མཐོ་པོ་བཟོས་ཡོད་ཀྱང་AI བསམ་བློ་གཏོང་བའི་དུས་ཚོད་འཕར་མ་བྱེད་ན། བསམ་བློ་གཏོང་བའི་དུས་ཚོད་ཀྱི་ཚད་གཞི་ལས་དཀའ་ངལ་གྱི་ཚད་གཞི་ངོ་མ་དེ་རིན་ཐང་དམའ་བར་ཚད་བཀག་བྱེད་སྲིད། རིན་ཐང་ངོ་མ་དེ་འཕྲུལ་ཆས་ཀྱི་བྱེད་ནུས་ལ་གཞིགས་ནས་མི་འདྲ་བ་ཆགས་སྲིད།",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) ནི་གནས་ཡུལ་གཅིག་གི་ནང་ལ་འགུལ་སྐྱོད་ཡག་ཤོས་འཚོལ་བའི་འཚོལ་ཞིབ་རྩིས་གཞི་ཞིག་ཡིན། དེ་ནི་ཨལ་ཕ་བེ་ཊ་རྩིས་གཞིའི་ཡར་རྒྱས་ཤིག་ཡིན་པ་དང་། སྒེའུ་ཁུང་ཀླད་ཀོར་གྱི་འཚོལ་ཞིབ་བེད་སྤྱད་དེ་འགུལ་སྐྱོད་དེ་འགྱུར་བ་གཙོ་བོ་ནས་བདེ་འཇགས་ལྡན་པའི་གྲངས་ཀ་ལས་ངན་པའམ་ཡང་ན་སྡུག་པོ་མེད་པ་གཏན་འཁེལ་བྱེད། མཐོ་རིམ་སློབ་གྲྭའི་ནང་སློབ་སྦྱོང་བྱེད་བཞིན་པའི་སློབ་མ་ཚོས་སློབ་སྦྱོང་བྱེད་པའི་སྐབས་སུ། མཐོ་རིམ་སློབ་གྲྭའི་སློབ་མ་ཚོས་སློབ་སྦྱོང་བྱེད་པའི་སྐབས་སུ།",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "ཨལ་ཕ་བྷེ་ཊ་རྩིས་གཞི་ནི་གཡོ་འགུལ་ཡག་ཤོས་འཚོལ་བའི་འཚོལ་ཞིབ་རྩིས་གཞི་ཞིག་ཡིན། དེས་འཚོལ་ཞིབ་ཤིང་སྡོང་གཅོད་པ་དང་ནུས་པ་ཆེ་རུ་གཏོང་བར་ཆུང་ཤོས་ཀྱི་གཞི་རྩ་དང་རིན་ཐང་གཉིས་སྟེ་ཨལ་ཕ་དང་བེ་ཊ་བེད་སྤྱོད་བྱེད་ཀྱི་ཡོད། གློག་ཀླད་ལ་ཐོབ་ཐུབ་པའི་གྲངས་ཀ་ཆུང་ཤོས་དེ་ཨལ་ཕ་ཡིས་མཚོན་པ་དང་། བེ་ཊ་ཡིས་ཁ་གཏད་ལ་ཐོབ་ཐུབ་པའི་གྲངས་ཀ་ཆེ་ཤོས་དེ་མཚོན་གྱི་ཡོད། རྩིས་གཞི་དེས་གློག་ཀླད་ལ་རྩེད་མོའི་ནང་ཐག་གཅོད་ཡག་པོ་དང་ཕན་ནུས་ལྡན་པ་བཟོ་བར་ཕན་ཐོགས།",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "འགྲོ་བ་མིའི་ཉམས་མྱོང་ལྟར་ན་རྒྱལ་ཁ་ཐོབ་པར་འབད་བརྩོན་བྱས་ན། དེ་ལས་ལྡོག་སྟེ་ཁྱེད་རང་གི་དམིགས་ཡུལ་དུ་འདྲ་མཉམ་ཡོང་རྒྱུ་དེ་དམིགས་ནས་རྩེད་མོ་ཕམ་རྒྱུ་ལས་གཡོལ་དགོས། ཁྱེད་རང་གི་ཁ་གཏད་ལ་དོ་སྣང་བྱས་ནས་ཁོ་ཚོས་ནོར་འཁྲུལ་བཟོ་སྲིད་པའི་གནས་བབ་ལ་དལ་བུས་ངང་ནས་བསླུ་བྲིད་གཏོང་དགོས། ཁོང་ཚོས་ཞན་ཆ་སྟོན་དུས་གོ་སྐབས་དམ་འཛིན་བྱས་ནས་རྒྱལ་ཁ་ཐོབ་པར་དལ་བུས་ངང་སྐུལ་འདེད་གཏོང་དགོས། དེ་ལྟར་བྱས་ན་རྒྱལ་ཁ་ཐོབ་ཐུབ།",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "རྩེད་མོ་འདིའི་ནང་དུ་རྩེད་མོ་བ་དང་པོ་དང་བསྡུར་ན་རྩེད་མོ་བ་གཉིས་པ་ལ་རྒྱལ་ཁ་ཐོབ་སླ་བ་རེད།",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "གདམ་ག་མེད་པའི་གདམ་ག་དེ་ལག་བསྟར་བྱེད་པ་དེས་མིས་བཟོས་རིག་ནུས་ལ་གནས་བབ་དེའི་ནང་ཁེ་ཕན་ཡོད་པའི་སྐབས་ལ་ལྷོད་པོ་ཆགས་རྒྱུ་ལས་གང་མགྱོགས་རྒྱལ་ཁ་ཐོབ་པར་དྲག་ཤུགས་ཀྱིས་འབད་བརྩོན་བྱེད་པ་ལས་ལྷག་པར་དུ་བདེ་འཇགས་ཡོང་བར་བྱེད།",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "གདམ་ཁ་འདི་ལག་བསྟར་བྱེད་པ་དེས་རྩེད་མོའི་གང་བྱུང་དང་སྤྲོ་སྣང་ཆེ་རུ་གཏོང་བ་དང་།",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "གལ་ཏེ་མིས་བཟོས་རིག་ནུས་དེས་ཁོང་གི་ཕྲེང་བའི་འགུལ་སྐྱོད་ལ་བསམ་གཞིག་བྱས་ན། དེས་ཁ་གཏད་ཀྱི་ཕྲེང་བ་དེ་གང་མགྱོགས་འཛིན་ཐུབ་པའི་དམིགས་ཡུལ་བྱེད་པ་མ་ཟད།",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "རྩེད་པང་ཁེངས་པའི་སྐབས།",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "འཇོག་རིམ་མཇུག་སྒྲིལ་སྐབས། སྤོ་འགུལ་དུས་རིམ་འགོ་མ་ཚུགས་གོང་། རྩེད་པང་ཁེངས་ཚེ་གཤམ་གྱི་བྱ་སྤྱོད་སྤེལ།",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "སྤོ་འགུལ་དུས་རིམ་ནང་སྔོན་ལ་འགུལ་མཁན་གྱིས་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་བསུབ།",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "ཕྱོགས་གཉིས་ཀྱིས་གྲུབ་འབྲས་མཉམ་པར་མོས་མཐུན།",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "ཁྱེད་ཀྱི་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་ལེན།",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "རྩེད་འགྲན་པ་དང་པོས་རྩེད་མོ་ཕམ།",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "རྩེད་འགྲན་པ་དང་པོ་དང་གཉིས་པས་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་རེ་རེ་བསུབ།",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "རྩེད་འགྲན་པ་གཉིས་པ་དང་དང་པོས་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་རེ་རེ་བསུབ།",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "ད་ལྟ་འཕུར་རིམ་དུ་ཞུགས་པ་ཡིན། ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་རྣམས་རྩེད་པང་ཐོག་གི་སྟོང་ས་གང་རུང་དུ་མཆོང་ཐུབ། ཁྱོད་ཀྱིས་“སྒྲིག་སྲོལ་གཞི་སྒྲིག་”ནང་འཕུར་སྒྲིག་སྲོལ་སྒོ་རྒྱག་ཆོག",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "འགུལ་མེད་སྐབས།",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "རྡེལ་གང་ཡང་སྤོ་འགུལ་མི་ཐུབ་པའི་སྐབས་གཤམ་གྱི་བྱ་སྤྱོད་གང་སྤེལ།",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "འགུལ་མེད་ཕམ་ཁ་ཞིག་གིས་འགོག་རྐྱེན་ཐེབས་པའི་ཕྱོགས་མཇུག་བསྡུ།",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "སྤོ་འགུལ་ཕྱོགས་བརྗེ།",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་བསུབ་པ་དང་འགུལ་རྗེས་མ་སྤེལ།",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "འགུལ་མེད་གྲུབ་འབྲས་མཉམ་པས་མཇུག་བསྡུ།",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་བསུབ་པ་དང་སྤོ་འགུལ་ཕྱོགས་བརྗེ།",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI ཡི་ཡ་ལན་འགོར་འགྱངས་དུས་ཚོད།",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI ད་ལྟ་ཡ་ལན་འགོར་འགྱངས་དུས་རིམ་དུ་གནས། ဆက်လုပ်སྔོན་ལ་ཏོག་ཙམ་བསྒུག་རོགས།",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "ཁྱོད་ཀྱིས་མཐའ་འཁོར་མིན་པའི་རྡེལ་བསུབ་མི་ཆོག",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "གལ་ཏེ་ལམ་ལྷོང་མེད་ན། ཁྱེད་ཀྱི་ཉེ་འགྲམ་གྱི་ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་ཚོ་སྒྲིག་གཞི་གསུམ་ལ་མ་ལྟོས་པར་བཏོན་ཐུབ།",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS ནི་གསར་འགོ་རྩེད་མཁན་ལ་འཚམ་པའི་གཅིག་རྩིས་རྒྱུ་རྩལ་ཡིན་ཞིང་། འདྲ་སྐུའི་བརྒྱུད་ནས་སྤོ་འགུལ་སྣ་ཚོགས་ལ་འཚོལ་ཞིབ་དང་གདེང་འཇོག་བྱས་ཏེ་ཐག་གཅོད་གཏོང་།",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "གསེར་མདོག་བྱུ་རུ།",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "ནགས་ཚལ་ཤིང་ནགས།",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "མུན་ནག་གི་གསང་བ།",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "ནམ་ཕྱེད་མཚན་མོའི་སྔོན་པོ།",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "ལྗང་མདོག་ནགས་ཚལ།",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "ལྗང་མདོག་རྩྭ་ཐང་།",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "རྡོ་ལམ་ཁྲ་ཁྲ།",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "སྐྱ་མདོག་སོབ་སོབ།",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "གཡུ་མདོག་རྒྱ་མཚོ།",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "སྨུག་སྤྲིན་གྱི་རྨི་ལམ།",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "བོང་སྒྲོག་ཏོག་སྙོལ།",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "ནམ་མཁའི་སྔོན་པོ།",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "རྩེད་འཇོའི་ལྡུམ་ར།",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "ཕྱིར་ལོག་དབྱེ་ཞིབ་རྩིས་གཞི་དེས་འགོ་འཛུགས་གནས་ཡུལ་མི་འདྲ་བ་ནས་མཇུག་མཐའི་རྩེད་མོའི་གནས་སྡུད་གཞི་གྲངས་བཟོ་བར་རིན་ཐང་སྣ་ཚོགས་ཀྱི་ཕྱིར་ལོག་དབྱེ་ཞིབ་བཀོལ་སྤྱོད་བྱེད་ཀྱི་ཡོད། ཐབས་ལམ་འདི་ཧ་ཅང་ཤུགས་ཆེ་བའི་ཐབས་ཤེས་ཀྱི་སྡེ་ཚན་འོག་ལ་ཚུད་ཡོད།",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "ཁྱེད་རང་རྩིས་གཞི་འདིའི་སྤྱོད་མཁན་གྱི་ལམ་སྟོན་ལ་ལྟ་འདོད་དམ།",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "གོ་གནས་ཀྱི་དགེ་མཚན་སྟོན་པ།",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "གྲངས་མཛོད་ཡང་དག་པ་བེད་སྤྱོད་བྱེད་པ།",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "གདམ་ཁ་འདི་ཁ་ཕྱེ་ནས་རྩེད་མོའི་གནས་སྡུད་གཞི་གྲངས་ཡག་ཤོས་ཤིག་བེད་སྤྱོད་གཏོང་དགོས། ཁྱད་ཆོས་འདིས་རྩེད་མོའི་ཁ་ཕྱེ་བ་དང་མཇུག་སྒྲིལ་གྱི་ཐབས་ཤེས་མཉམ་དུ་བསྡུས་ནས་འགུལ་སྐྱོད་ཡག་ཤོས་བསྟན་པ་དང་། རྩེད་མོའི་ནང་དུ་གཏན་ཚིགས་མཐོ་ཤོས་འཚོལ་མཁན་གྱི་རྩེད་མོ་བ་ཚོའི་འདམ་ག་དང་པོ་ཡིན། གནས་སྡུད་གཞི་གྲངས་དེ་རྩེད་མོའི་ཐབས་ཤེས་ཡག་ཤོས་མཁོ་སྤྲོད་བྱེད་པའི་ཆེད་དུ་བཟོས་པའི་རྩིས་འཁོར་ལག་རྩལ་ཚད་ལྡན་བརྒྱུད་ནས་བཟོས་ཡོད།\n\nགལ་ཏེ་འཕྲུལ་ཆས་ལ་གནས་སྡུད་གཞི་གྲངས་ལ་འཛུལ་ཐུབ་ཀྱི་མེད་ན། སྲོལ་རྒྱུན་གྱི་རྩིས་གཞི་དེ་ཚོ་རྩེད་མོའི་ཐག་གཅོད་བྱེད་པར་བསྒྱུར་རྒྱུ་རེད། གནས་སྡུད་གཞི་གྲངས་ཡོད་པའི་སྐབས་དཀའ་ངལ་གྱི་ཚད་གཞི་དེ་དངོས་གནས་ཧ་ཅང་མཐོ་པོ་ཆགས་ནས་འཕྲུལ་ཆས་ཀྱི་བསམ་བློ་གཏོང་བའི་དུས་ཚོད་ཧ་ཅང་ཉུང་དུ་ཕྱིན་ཡོད། འཕྲུལ་ཆས་ཀྱི་མདའ་རྩེད་རྣམ་པའི་གདམ་ཁའི་སྒྲིག་སྟངས་མང་པོ་ཡང་བརྗེ་སྒྱུར་བྱེད་ཀྱི་ཡོད། རྒྱུ་མཚན་ནི་གནས་སྡུད་གཞི་གྲངས་ཀྱི་གྲུབ་འབྲས་ལ་གཙོ་གནད་ཆེ་ཤོས་ཡོད།\n\nགཞི་གྲངས་མཛོད་འདི་བེད་སྤྱོད་གཏོང་སྟངས་ཤེས་འདོད་ན། འདིར་སྣུན་རོགས།",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "རྒྱབ་ལྗོངས་པར་རིས།",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "གཞི་གྲངས་མཛོད་ཡང་དག་པ་བེད་སྤྱོད་བྱེད་ གདམ་ཁ་འདི་ལྕོགས་ཅན་མེད་པའི་སྐབས་ གང་བྱུང་སྒྲིག་སྟངས་ཀྱིས་འཕྲུལ་ཆས་ཀྱིས་སྤོ་བཤུད་འདེམས་སྒྲུག་རྩིས་གཞི་གང་རུང་བཀོལ་སྤྱོད་མ་བྱེད་པར་གང་བྱུང་དུ་ཆ་ཤས་སྤོ་བཤུད་བྱེད། འདིས་རྒྱུན་དུ་རྩེད་མོའི་རྣམ་པ་མངོན་གསལ་དོད་པོས་ཞན་དུ་བཏང་བ་རེད། དེ་ལས་ལྡོག་སྟེ། གནས་སྡུད་གཞི་གྲངས་ཡང་དག་པ་བེད་སྤྱོད་གཏོང་སྐབས་མིས་བཟོས་རིག་སྟོབས་ཀྱིས་གནས་ཚུལ་གཞི་གྲངས་ཡང་དག་པ་ལ་བརྟེན་ནས་ཐག་གཅོད་བྱེད་ཀྱི་ཡོད། ཐབས་ལམ་འདིའི་ནང་མིས་བཟོས་རིག་སྟོབས་ཀྱི་བྱ་སྤྱོད་དེ་ཚོ་གནས་སྡུད་གཞི་གྲངས་ཀྱི་ནང་དོན་ལ་གཞི་བཅོལ་ནས་དུས་ཚོད་ངོ་མའི་རྩིས་རྒྱག་དང་འཚོལ་ཞིབ་ཀྱི་རྩིས་གཞི་ལ་རག་ལུས་པ་སྔོན་འགོག་བྱེད་ཀྱི་ཡོད།",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "ཁ་གཏད་ཀྱི་ལག་ནས་ཆ་ཤས་དེ་བཏོན་དགོས། དེ་ནས་ཁ་གཏད་ཀྱི་དུས་ཚོད་རེད།",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "འཇོག་པའི་སྐབས་སུ་འཕྲུལ་འཁོར་བཟོ་སྐབས།",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་དགོས།",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་དགོས། དེ་ནས་ཁ་གཏད་ཀྱི་དུས་ཚོད་རེད།",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "ཁ་གཏད་དེས་ཁོ་རང་གི་ཆ་ཤས་དེ་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་ཀྱི་ཡོད།",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "ཁྱེད་རང་གིས་བྱ་སྤྱོད་སྤེལ་བའི་ཚབ་ཏུ། ཁ་གཏད་དེས་ཁོ་རང་གི་ཆ་ཤས་འདེམས་ནས་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་པ་དེས་ཁོ་རང་ལ་གནོད་སྐྱོན་གཏོང་བའི་བྱ་སྤྱོད་དེ་ཕན་ནུས་ལྡན་པའི་སྒོ་ནས་སྤེལ་གྱི་ཡོད།",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "ཁ་གཏད་ཀྱི་ལག་ནས་ཆ་ཤས་དེ་བཏོན་ནས་དེ་ནས་ཁྱེད་རང་འགུལ་སྐྱོད་བྱེད་པའི་དུས་ཚོད་རེད།",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "ཁ་གཏད་ཀྱི་ལག་ནས་དུམ་བུ་བཏོན་དགོས། གལ་ཏེ་སྣ་མང་བཏོན་པའི་སྒྲིག་སྟངས་ལྟར་ན། ཆ་ཤས་མང་པོ་བཏོན་དགོས་པ་དང་ཁ་གཏད་ཀྱི་ལག་ཏུ་ཆ་ཤས་གང་ཡང་མ་ལྷག་ན། དེ་ནས་ཁྱེད་རང་འགུལ་སྐྱོད་བྱེད་པའི་དུས་ཚོད་རེད། གལ་ཏེ་ཁྱེད་ཀྱིས་མུ་མཐུད་དུ་འཕྲུལ་ཁང་བཟོས་ན། ཁྱེད་ཀྱིས་ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་དག་མུ་མཐུད་དུ་མེད་པར་བཟོ་སྲིད།",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ཁ་གཏད་ཀྱི་ལག་ནས་དུམ་བུ་བཏོན་དགོས། གལ་ཏེ་སྣ་མང་བཏོན་པའི་སྒྲིག་སྟངས་ལྟར་ན། ཆ་ཤས་མང་པོ་བཏོན་དགོས་པ་དང་ཁ་གཏད་ཀྱི་ལག་ཏུ་ཆ་ཤས་གང་ཡང་མ་ལྷག་ན། དེ་ནས་ཁ་གཏད་གཡོ་འགུལ་བྱེད་པའི་དུས་ཚོད་རེད།",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "རྟགས་བཀོད་ནས་དུམ་བུ་མེད་པར་བཟོ་རྒྱུ་ཕྱིར་འགྱངས།",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "བཀོད་སྒྲིག་བྱེད་པའི་སྐབས་སུ་བཏོན་དགོས་པའི་དངོས་པོ་དེ་དག་ལ་རྟགས་བཀོད་ཡོད། རྩེད་མོ་བ་གཉིས་ཀའི་ཆེད་དུ་དངོས་པོ་གསར་པ་གང་ཡང་ས་ཚིགས་དེ་དག་ལ་འཇོག་མི་ཐུབ། འགུལ་སྐྱོད་ཀྱི་དུས་རིམ་ལ་འཛུལ་སྐབས་རྟགས་བཀོད་པའི་དངོས་པོ་དེ་དག་ཡོངས་སུ་མེད་པར་བཟོས་པ་དང་། དེ་ནས་རྩེད་མོ་བ་ཚོས་ཁོང་ཚོའི་དངོས་པོ་དེ་དག་ད་ལྟ་སྟོང་པའི་ས་ཚིགས་དེ་དག་ལ་སྤོ་ཐུབ།",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "བཙུགས་པའི་སྐབས་སུ་འཕྲུལ་ཁང་བཟོ་སྐབས་བྱེད་ཐུབ་པའི་བྱ་སྤྱོད།",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "རྟགས་བཀོད་ཟིན་པ།",
-    "@marked": {},
-    "menu": "དཀར་ཆག",
-    "@menu": {},
-    "monochrome": "གཅིག་མདོག",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "ཁྱོད་ཀྱིས་སྤྱིར་བཏང་སྒྲིག་འཛུགས་ཀྱི་སྤྱོད་སྒོ་གསར་སྒྲིག ནང་འཆར་ཤེལ་ཀློག་ཆས་ལ་རྒྱབ་སྐྱོར་སྒོ་འབྱེད་ཆོག་པ།",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "རྡེལ་ཐོག་ཨང་གྲངས་སྟོན།",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "པར་རིས་ཉར་ཚགས།",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "དབྱེ་ཞིབ་ལག་ཆས་ཚང་སྟོན།",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "དབྱེ་ཞིབ་ལག་ཆས་ཚང་གི་རྒྱབ་ལྗོངས་ཚོས།",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "དབྱེ་ཞིབ་ལག་ཆས་ཚང་གི་རིས་རྟགས་ཚོས།",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "བཟོ་བཅོས་ཟིན་པ།",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "བཟོ་བཅོས་བྱེད་མི་ཐུབ།",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "སྐོར་འཁོར།",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H ཕྱོགས།",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V ཕྱོགས།",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO ཕྱོགས།",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "དྭངས་གསལ་རི་མོ།",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "བསྐྱར་ཟློས་གསུམ་གྱི་ཆགས་ཚུལ་ལ་ཚོད་འཛིན་བྱེད།",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "རྡེལ་གཅིག་ གསུམ གཅིག་ནས་སྤོས་ཏེ་ གསུམ གཞན་ཞིག་གྲུབ་པ་ཡིན་ཚེ། སྐོར་རྗེས་མའི་སྐབས་སུ་དེ་མ་ཐག་ཏུ་ཐོག་མའི་ས་ཚིགས་སུ་ལོག་ནས་ཡང་བསྐྱར་ གསུམ གྲུབ་པ་བཟོ་མི་ཆོག སྤོ་འགུལ་མི་འདྲ་བ་གཅིག་བྱེད་དགོས་པ་རེད།",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "ཐེངས་གཅིག་བེད་སྤྱོད་ mill",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "རེ་གཟིགས་སྡུད་ལ་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་མ་གཏོགས་བསུབ་མི་ཆོག ཁྱོད་ཀྱིས་ཡང་བསྐྱར་བཟོ་ཐུབ། ཡིན་ནའང་དེ་ལ་གྲངས་མཐའ་མེད་རྡེའུ་བསུབ་ཏུ་བེད་སྤྱོད་མི་ཆོག।",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "ཁྱེད་ཀྱིས་གཏན་འབེབས་བྱས་པའི་ད་ལྟའི་ཁྲིམས་ལུགས་ལ་གནས་སྡུད་གཞི་གྲངས་ཡང་དག་པ་ཞིག་མེད། གཞི་གྲངས་མཛོད་ཀྱི་སྐོར་ལ་གནས་ཚུལ་མང་པོ་ཤེས་འདོད་ན། འདིར་སྣུན་རོགས།",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "འགུལ་སྐྱོད་བཀག་འགོག་ལ་དམིགས་འཛུགས་བྱེད་པ།",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "ཁྲོམ་གྲལ་བཟོ་བ་ལས་ཕ་རོལ་པོའི་འགུལ་སྐྱོད་བཀག་འགོག་བྱེད་པར་གཙོ་འདོན་བྱེད་པ། ཁྲོམ་གྲལ་བཟོས་ནས་རྡེའུ་ཕྱིར་འདོན་བྱེད་པར་དམིགས་འཛུགས་བྱེད་པའི་ཚབ་ཏུ། རིག་ནུས་ལྡན་པའི་འཕྲུལ་འཁོར་གྱིས་ཕ་རོལ་པོར་འཛིན་བཟུང་བྱེད་པ་དང་། དེ་ལ་བརྟེན་ནས་ཁོང་ཚོར་འགུལ་སྐྱོད་བྱེད་པའི་ནུས་པ་མེད་པ་བཟོས་ནས་བརྩེ་སེམས་ལྡན་པའི་རྩེད་མོའི་ཐོག་ནས་རྒྱལ་ཁ་ཐོབ་པར་བྱེད། བྱ་ཐབས་འདིས་ཕ་རོལ་པོའི་ཁྲོམ་གྲལ་བཀག་འགོག་བྱེད་པར་ཐད་ཀར་མི་དམིགས།।",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "ཆོ་གོག་པོང་།",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "ཚོན་གཞིའི་སྒྲིག་སྟངས་ནང་འདྲེན་བྱོས།",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "ཚོན་གཞིའི་སྒྲིག་སྟངས་ཕྱིར་འདྲེན་བྱོས།",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "ནང་འདྲེན་བྱོས།",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "ཕྱིར་འདྲེན་བྱོས།",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "གཞི་སྒྲིག་ཀྱི་ཚོན་གྱི་གྲངས་སྒྲིག JSON དངོས་གཞིའི་སྒྲིག་སྟངས་ལག་ཆས་ནང་བརྡར་གནང་།",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "ལག་ཆས་ནང་བརྡར་ཡོད།",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "ནང་འདྲེན་ཡོད།",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "བར་སྟོད་གྱི་རི་མོ།",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "དགུ་ཟླ་ཤིང་རིན",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "གཏེར་མོ་རི་མོ",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "བི་ནེཊ་ཨེཕེགཊ།",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "གནས་སྟངས་སྒྲིག་གསར་བར་མཉམ་མཐུད་མཐོང་མཁན་གྱི་གྲུབ་སྒྲིག་སྒྲིག་གསར་བར་བསྒྱུར་བ་གྱིས་ཁྱོད་ལ་ཡོད་པས?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "རྩིས་སྒྲིག་བྱས་ཟིན་པ།",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "སྒྲ་རྒྱུགས་ཀྱི་རྟེན་",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "ནག",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "འཕེལ་བ",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "འབྲུག",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "ཆ་འཇུག་རིག་བཟོ་བའི་བསྒྱུར་བཅོས",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "ཆ་སུབ་རིག་བཟོ་བའི་བསྒྱུར་བཅོས",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "ལྕགས་སྒྲོན་སྤྱིར་བཤད་འོག་ཕྱོགས་སྟོན།",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "གོ་རིམ་གྱི་གཡོན་ཚད།",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "འགོ་འཛུགས་ཡིག་ཆ་ལ་བཀོལ་པ།",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "ད་ལྟ།",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "མི་དགུའི་མོར་རིས།",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "སྐྱེས་པ་བཅུ་གཉིས།",
-    "@twelveMensMorris": {},
-    "morabaraba": "མོ་ར་བ་ར་བ།",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "དུཛ",
-    "@dooz": {},
-    "chamGonu": "ཆམ་གོ་ནུ། ",
-    "@chamGonu": {},
-    "zhiQi": "ཅི་ཅི།",
-    "@zhiQi": {},
-    "chengSanQi": "ཆེན་སམ་ཅི།",
-    "@chengSanQi": {},
-    "mulMulan": "མུལ་མུ་ལན།",
-    "@mulMulan": {},
-    "nerenchi": "ནེ་རེན་ཅི།",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "ཚད་བཟུམ།",
-    "@ruleSet": {},
-    "laskerMorris": "ལས་ཀར་མོ་རིས།",
-    "@laskerMorris": {},
+    "@ruleSet": {
+        "description": ""
+    },
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "གཅིག་ཐར་རྒྱུ་འགེལ།",
-    "@oneTimeMill": {},
-    "daSanQi": "ད་སམ་ཅི།",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "རླུང་མཐུད་དཔར་ཆས་གཞི་ཁྲིད་དོན་ཐོག་ནས་མི་སྐྱོན་པའི་རེའུ་མིག་པ་སྔོན་ལམ་སྤྱིར་བཏང་གི་སྒྲིག་བརྒྱུད་དང་འབྲེལ་བཞིན་རྒྱུ་མཚན་འདི་ད་ལྟ་བུ་ཚད་ལྷག་མཐའ་གཞི་ཁྲིད་རྣམ་པ་རྣམས་ལ་རྩིས་ཐོག་མིན།",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "ངོས་ཕན་རི་མོ་སྟོན།",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "དཔེ་དོན་གྲངས་ཀྱི་རི་མོ་ནི AI གིས་འགོ་བཙུགས་རྗེས་ཙམ་བྲི་བཏུབ་པར་འགྲུབ། མིའི་རྩོམ་པ་བྱེད་དུས་ནི རི་མོ་བྲི་མི་ཐུབ།",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "དབྱེ་མི་གཉིས་ཀྱིས་གང་འདོགས་བཞིན་དུ་གཞི་བཙོད་མི་རུང་། སྤོ་བའི་ལག་ཁྱེད་ཀྱིས་མི་འདོགས་བརྗེད་རིས་གྱི་དོན་ལ་གཞི་བཙོད་བྱེད་པ་ཡིན་པས།",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "དབྱེ་མི་གཉིས་ཀྱིས་གང་འདོགས་བཞིན་དུ་གཞི་བཙོད་མི་རུང་། སྤོ་བའི་ལག་ཁྱེད་ཀྱིས་མི་འདོགས་བརྗེད་རིས་གྱི་དོན་ལ་གཞི་བཙོད་བྱེད་པ་ཡིན་པས། གང་གི་གར་གཅིག་གིས་ཨང་ཚད་མཐོ་དང་མཐུན་པ་ཡིན་ན་མཉམ་དུ་ཨང་གྲངས་གཅིག་ཏུ་གཞི་བཙོད་བྱེད་དགོས། གང་གི་གར་གཅིག་གིས་བརྡ་སྤྲོད་མི་ལས་མང་བ་ཚུགས་ན་ཁྱེད་ཀྱིས་དགུན་འདྲེན་ཞིག་གཅིག་ཤོམ་སོ། གང་གི་གར་གཅིག་གིས་མི་འདོགས་ཡོད་ན་ཁྱེད་ཀྱིས་གཉིས་པ་གཉིས་སུ་གཞི་བཙོད་པ་ཞིག་བྱུང་། གང་གི་གར་ཁོ་ན་གིས་མི་འདོགས་སྒྲིག་དགོས་ན་ཁྱེད་ཀྱིས་གཅིག་གྱི་ཚིག་ཆ་གཞི་བཙོད་མི།",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "ཨེལ་ཧིལ་ཇ་",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "ཁྱོད་ཀྱི་རྩེ་ཆས་གཅིག་གདམ་ཐོག་རོགས་གནང་།",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "ཁྱེད་ཀྱི་བདག་པོ་མིན།",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "བརྗོད་གཞི་སྒྲོམ་གྱི་རྒྱབ་ལྗོངས་ཚོས།",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "བརྗོད་གཞི་སྒྲོམ་གྱི་རིས་རྟགས་ཚོས།",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "བརྗོད་གཞི་སྒྲོམ་སྟོན་པ།",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "བརྗོད་གཞི་རྣམ་པ་ནང་འཛུལ།",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "ཁྱེད་ཀྱིས་བརྗོད་གཞི་ཡོངས་རྫོགས་བསུབ་འདོད་དམ།",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM བརྡ་སྐུལ་གྱི་སྦྱར་གནས་ནང་བཀོད་པ།",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "འབྲེལ་མཐུད་མི་ཆོག་པ། ཞབས་ཞུ་ཆས་ལས་མེད་པ་ཡིན་འདུག",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "མཐོང་རྒྱུ་ལེགས་གྲུབ། འབྲེལ་མཐུད་བསྒུག་པ།...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "LAN འབྲེལ་མཐུད་མེད།",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "དཔར་རིས་ལེན་པ།",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "མགྲོན་པོ་དང་འབྲེལ་མཐུད་བཅད་པ།",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "སླར་འཛུད་ཞུ་བ།",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "སྟོན་རྒྱུ་མེད།",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "ཞབས་ཞུ་མཛད་པ་མཚམས་འཇོག",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "མགྲོན་པོས་འབྲེལ་མཐུད་སླར་གསོ་བྱས་པ།",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "སྙིང་སྤྱོད་སྐར་ཆ་མཚམས་འཇོག་པས་འབྲེལ་མཐུད་བརླག་པ། ཡང་བསྐྱར་འབྲེལ་མཐུད་བྱོས།",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "ཞབས་ཞུ་མཛད་པ་འགོ་འཛུགས།",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "སླར་འགོ་ཞུ་བ་མི་ཆོག་པ།",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN མགྲོན་པོ་དང་འབྲེལ་མཐུད་མེད།",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM བརྡ་སྐུལ།",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "རྩེད་མོ་སླར་འགོ་བཙུགས་པ།",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "སླར་འཛུད་མི་ཆོག་པ།",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "ཁྱེད་ཀྱིས་རྩེད་མོ་འདི་བཀོད་འདོད་དམ།",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "མགྲོན་པོས་བཀོད་པ། ཁྱེད་རྒྱལ་ལོ།",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "བརྗོད་གཞི་ཡོངས་རྫོགས་བསུབ་པ།",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "འབྲེལ་མཐུད་བྱས་པ། མགྲོན་པོའི་སྤོ་བཤུད་བསྒུག་པ།...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "དྲ་རྒྱའི་གནས་ཚུལ། འབྲེལ་མཐུད་བཅད་པ།",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "སླར་འཛུད་ཞུ་བ་མགྲོན་པོ་ལ་སྐུར་བ།",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "མགྲོན་པོས་རྩེད་མོ་ལས་ཕྱིར་ལོག་པ་ཡིན་འདུག",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "ཞབས་ཞུ་ཆས་ལ་ལེགས་འགྲུབ་འབྲེལ་མཐུད་བྱས་པ།",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "འབྲེལ་མཐུད་བརླག་པ། སྙིང་སྤྱོད་སྐར་ཆ་མཚམས་འཇོག",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "ཞབས་ཞུ་ཆས་མཐོང་རྒྱུ་མེད།",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "བཀོད་པ་ངོས་ལེན།",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "རྩེད་མོ་ཞབས་ཞུ་མཛད་པ་འགོ་འཛུགས་པ། རྩེད་མོ་པ་ཚུ་ནང་འཛུལ་བསྒུག་པ།...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "འབྲེལ་མཐུད་སྐར་ཆ་མཚམས་འཇོག དྲ་རྒྱའི་འབྲེལ་མཐུད་མི་བརྟན་པ།",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "LLM བརྡ་སྐུལ་མེད།",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "ཁྱེད་ཀྱིས་བཀོད་པ། རྩེད་མོ་མཇུག་སྒྲིལ།",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "ཞབས་ཞུ་ཆས་ཀྱི IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "བསུབ་པ་ངོས་ལེན།",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "མགྲོན་པོའི་བདག་པོ།",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "ཞབས་ཞུ་ཆས་ཀྱི་འབྲེལ་མཐུད་བསྒུག་པ།...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "སླར་འཛུད་ཞུ་བ་མི་ཆོག་པ་ཡང་ན་ཕམ་པ།",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "ཡིག་རྐྱང་ཁ་སྣོན།",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "བརྗོད་གཞི་རྣམ་པ་ལས་ཕྱིར་འབུད།",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "ཁྱེད་ཀྱི་བརྗོད་གཞི་བྲིས།",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "ཡང་བསྐྱར་འབྲེལ་མཐུད་བྱེད་བཞིན་པ།...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "སླར་འགོ་ཞུ་བ་སྐུར་བ། མགྲོན་པོའི་ལན་གསལ་བསྒུག་པ།...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "ཞབས་ཞུ་ཆས་མཚམས་འཇོག་པ།",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "སླར་འགོ་ཞུ་བ།",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "ཁྱེད་ཀྱི་བདག་པོ་མིན་པའི་སྐབས་སུ་སླར་འཛུད་ཞུ་མི་ཆོག",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "སླར་འཛུད་ཆོག་པ།",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "ཉེ་འདབས་དྲ་རྒྱའི་སྒྲིག་འགོད།",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "ཡང་བསྐྱར་འབྲེལ་མཐུད་ལེགས་གྲུབ།",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "དཔར་རིས་དཔེ་མཛོད་ནང་ཉར་མི་ཐུབ་པ།",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "མགྲོན་པོས་རྩེད་མོ་སླར་འགོ་ཞུ་བ་བྱས་པ། ཁྱེད་ཀྱིས་ཆོག་གམ།",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "ཁྱེད་ཀྱི་བདག་པོ།",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "ཡང་བསྐྱར་འབྲེལ་མཐུད་མི་ཐུབ། རྩེད་མོ་སླར་འགོ་བཙུགས་རོགས།",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "ཞབས་ཞུ་ཆས།",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "ནང་འཛུལ།",
-    "@join": {},
-    "port": "འདྲེད་སྒོ།",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "ནུས་མེད IP ཁ་བྱང་།",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "ནུས་མེད་འདྲེད་སྒོ།",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "འབྲེལ་མཐུད་བྱེད་བཞིན་པ། ཚོད་ལྟ། {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "འབྲེལ་མཐུད་མི་ཐུབ་པ། {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "ནོར་འཁྲུལ། {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "ཞབས་ཞུ་མཛད་པ་འགོ་འཛུགས་མི་ཐུབ་པ། {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "ནོར་འཁྲུལ། {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "ཞབས་ཞུ་ཆས་མཐོང་རྒྱུ། {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "མཚམས་འཇོག",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "མཐོང་རྒྱུ།",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "འབྲེལ་མཐུད།",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "ཞབས་ཞུ་ཆས་འབྲེལ་཮ཐུད་བྱས་པ། {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "མཐོང་རྒྱུ་བྱེད་བཞིན་པ། {seconds} སྐར་ཆ།",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "ཡང་བསྐྱར་འབྲེལ་཮ཐུད་བྱེད་བཞིན་པ། ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "འབྲེལ་཮ཐུད་བྱས་པ།",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "བསུབ་པ།",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "ཨི་ཇིབཏ་ནང་དུས་རབས།",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "གོ་ཐིག་གངས།",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "འབྲུ་ས་ཞིང་།",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "རྒྱ་ནག་གི་རྫ་རྫུན།",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "བྱེ་ཐང་གི་སྙིང་སྟོད།",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "བྱང་ཆུབ་སྒྱུ་རྩལ།",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "མི་དམངས་ཀྱི་འབུར་འབུར།",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "ཀར་པ་ཐི་ཡན་གྱི་སྲོལ་རྒྱུད།",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "རྒྱལ་པོའི་མངའ་ཐང་།",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "བོ་ཧེ་མི་ཡན་གྱི་ཤེལ་སྒོ།",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "ས་ཝན་ནའི་ཉི་ཤར།",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "མཐུན་པའི་སྙོམས་པ།",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "ཤིང་ཚེར་གྱི་སྦྱོར་བ།",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "ཨ་ན་ཏོ་ལི་ཡན་གྱི་མོ་སེའི་ཀ།",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "ཀར་ནི་ཝལ་གྱི་སེམས་ཉིད།",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "རང་བཟོས་",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "སྣུམ་ཉོ་བའི་བོད་ཀྱི་གསར་འགྱུར།",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "ཁ་ཤོག་བཀྲམ་ནས་ཤོག་བཤུད་བྱོས།",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "གནས་ཚུལ་གྱི་གྲོགས་མཐུད་སྐོར་ཁ་བྱང་ལ་མངོན་འཁོད་བྱེད།",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "མིའི་འགུལ་སྐྱོད་དུས་ཚོད་ཚད་བཀག",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "མིའི་འགུལ་སྐྱོད་ལ་དུས་ཚོད་ཚད་བཀག་མེད།",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "མིའི་རྩེད་མོ་བར་དུས་ཚོད་འདས་ན་ཕམ་ཁ་བརྩི་རྒྱུ་རེད།",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "གདོང་ལེན་བྱེད་གི་ཡིན…",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "ཁྱེད་རང་གིས་གཞི་མེད་པའི་མོ་ཌེལ་མིང་གནང་རོགས་པ།",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "ས་ཁབ་འདི་རིས་མཐུད་བྱེད་ཡིན། FEN ང་ལག་ལེན་ཀླི་པར་ཕྱི་བཞག་ཡིན།",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "ཞུ་བ།: གདོང་ལ་རོགས་པོ་གྱི་ཡྙན་ཚིག་འཇོག་ཉོན།",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM སྐུལ་བཤད་རིས་ཆ།",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "བདེན་པའི་ས་ཁབ་མེད།",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "ཨིག་མི་བརྙན་ལས་ཡྙན་ཚིག་གདངས་གཏོང་གི་ཡིན…",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "སྐུལ་བཤད་རིས་ཆ་གསར་བཟོ།",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM བསྡུ་རིས་ཀྱིས་སྐུལ་བཤད་རིས་ཆ་གསར་བཟོ།",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "སྟོང་གདོང་ལས FEN བཟོ་མི་བཞག་ཡིན།",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "ད་ལོན་སྐད་ཡིག་ནང་འགྲུབ།",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "མཐོང་གཏོགས་གྲིགས་པའི Base URLs",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "མཐོང་གཏོགས་གྲིགས་པའི་མོ་ཌེལ་མིང་ལྟ་བུ།",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "བརྒྱབ་གནང་ཁྲིད་སྟོང་བསྡུས་ཡོད།",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "དཀྱིལ་དཀར་གི་འགུས་པ།",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "སྔོན་རིམ་ལ་གཏོང་བཞག།",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "ཡྙན་ཚིག་ཐབས་བཟོ།",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "སྟོང་གདོང་གིས་ས་ཁབ་རིས་མཐུད་བྱེད་མི་བཞག།",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM སྐུལ་བཤད་ཐིག་ཡིག།",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM གཏོང་སྤྲོད་མི་བཟོ་ཡིན། ཁྱེད་རང་གི་སྒྲིག་སྒྲིག་ཚད་ལྟ་བཤེར་རོགས།",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "provider, model, API Key དང Base URL གཏོང་རོགས།",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM སྒྲིག་སྒྲིག།",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM provider གཏོང་རོགས།",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM སྐུལ་བཤད་རིས་ཆའི་མགོ་འགྱུར།",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "ཡྙན་ཚིག་ནང་རྡོག་མི་བཙུགས། ལོག་གཏོང་རོགས།",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "ཡྙན་ཚིག་ནས་གདོང་ལེན་བྱེད།",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "བསམ་ཚུལ་ལྟ།",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "ས་ཁབ་ལ་རིས་མཐུད།",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "ས་ཁབ་ཁ་སྐྱང་བྱེད།",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "མཐོང་གཏོགས་གྲིགས་པའི URLs ལྟ།",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "གར་བསྡུ་རིས་མི་བཞག།!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "ས་ཁབ་ཡྙན་ཚིག་བསྡུ་རིས་གཏོང་གི་ཡིན…",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "ཨིག་མི་བརྙན་ལས་གདངས།",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "གདོང་ཐག་ཚལ་མེད།!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "གང་གིས་གདོང་མེད་སྣུམ་ན་, སྔོན་རིམ་རིས་ཆ་གཏོགས་གྲུབ།",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM སྒྲིག་སྒྲིག།",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "སྐུལ་བཤད་རིས་ཆ་སྔོན་རིམ་ལ་གཏོང་གི་རེད་པས།",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM སྐུལ་བཤད་རིས་ཆའི་མཚན་དོན།",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "ལན་གཏོང་གི་ཡིན…",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "གཏེར་འདི་ས་ཁབ་ལ་རིས་མཐུད།",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "ཡྙན་ཚིག་ཐབས་བཞག་གི་ཡིན…",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "འཕུར་གདོང་ལྡེབ་ཡྙན་ཚིག་བཀོད་གཏོང་རོགས།",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "གདོང་ལེན་བྱེད་གྲུབ་འབྱོར།",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "འགུས་པའི་ལམ་བསྡུ་རིས་བྱེད་དང་དོན་གསུམ་གནང་རོགས།",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key ལེན་རོགས།",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "སྟོང་གདོང་གནང་བའི་ཆོས་ལ་བརྒྱབ་སྲུང་མི་ཡིན།",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "ས་ཁབ་གདོང་གནང་བའི་འབྱོར།",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLM ལ་འདོན་གནང་རོགས།",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "ས་ཁབ་གཏོང་མི་འབྱུག།!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "གདོང་ཐག་ཚལ་མེད་དུས་རྡོག་མ་བརྒྱབ།!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FEN མཐར་ཕྱི་བཞག།",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "མཐོང་གཏོགས་གྲིགས་པའི་མོ་ཌེལ་མིང་འདེམས་པ།",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (དེ་ལ་འཇིགས་མེད)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "ཡྙན་ཚིག་བཀོད་མ་ཡིན།",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "དཀྱིལ་ནུབ་གི་འགུས་པ།",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "ཆེན་པོའི་སྐད་ཡིག་མཛོད",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "བྱིན་སྤྲོད་པ་",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "གཞི་རྟགས URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "དཔེ་གཞི",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "སྤུ་དེབ",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "བཀོད་འདོད་བྱས་ཡོད! AI འགྲོ་སྒྲིག་བྱེད་པར་འཁོད...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "ཞིབ་འཆད་འདུག གནང་བ་ལོག་ནས་གསོལ...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "མགོན་མཐུད་དུས་ལྟར་བསྟན་རྒྱུ...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "ངེས་འཛིན་གཞི་ཁུངས།",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "ངེས་འཛིན་ཡང་དག་པ་ལེགས་པར་བཟོ་ནས་གཞི་ཁུངས་བསྒྱུར་བཅོས།",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "གཞི་ཁུངས་ཉར་ཚགས།",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "པར་ངེས་འཛིན་འགོ་བཙུགས་ཐུབ་མེད་: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "ནོར་འཁྲུལ། {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "པར་ངེས་འཛིན་ཕན་ཚུན་བྱས་མ་ཐུབ་: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "ནོར་འཁྲུལ། {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "དཀར {whiteCount} དང་ ནག {blackCount} སྡོམ་ལ་གཞི་རིམ་བཙུགས་ཡོད།",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN ངོས་དེབ་ལ་འདྲ་བཤུས་ཡོད།)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "ངེས་འཛིན་ཕན་ཚུན་བྱས་མ་ཐུབ་: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "ནོར་འཁྲུལ། {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "ངའི་ ደረጃརྟགས།",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "རྩེད་ཡོད་པའི་རྩེད་ཐེངས།",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "རྒྱལ་ཁ།",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "ཕམ་པ།",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "འདྲ་འདྲ།",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "ཆེས་གསར་དུ་བསྐྱར་བཅོས་བྱས་པ།",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "རྣམ་བཞག:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "བསྡོམས་རྩིས་སླར་སྒྲིག་བྱེད་པ།",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "འདྲ་འདྲའི་བརྒྱ་ཆ།",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "ཕམ་པའི་བརྒྱ་ཆ།",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "AI བསྡོམས་རྩིས།",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "བསྡོམས་རྩིས་འགོ་འཛུགས་པ།",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "འགོ་བཙུགས་ན་རྩེད་འབྲས་བསྡོམས་རྩིས་ནང་བཀོད་འཇུག་བྱེད་རྒྱུ་རེད། འོན་ཀྱང་ཕྱིར་འཐེན་བྱས་པའི་རྩེད་མོ་རྣམས་བཀོད་འཇུག་མི་བྱེད། གལ་ཏེ་སྤྱོད་མཚམས་བཞག་ན་བསྡོམས་རྩིས་བསྡུ་རུབ་བྱེད་མཚམས་འཇོག་རྒྱུ་རེད།",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "འདིས་རྩེད་མོའི་བསྡོམས་རྩིས་ཡོད་ཚད་སླར་སྒྲིག་བྱེད་རྒྱུ་རེད། བྱ་སྤྱོད་འདི་ཕྱིར་འཐེན་བྱེད་མི་ཐུབ།",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "སྒོ་སྦེལ་ནང་འཁོར་ཚད",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "ཤོག་སྒོར་གྱི་གནམ་གྲིབ་",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Trap awareness",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Highlight trap moves with bold circles and arrows during analysis.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Trap exists. Trap moves: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "བར་ཐག་འཛིན་བཟུང་།",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "ཁྱེད་རང་གི་ཁ་གཏད་ཀྱི་ཆ་ཤས་གཅིག་ཁྱེད་རང་གི་ཐིག་ཐད་ཀའི་ནང་དུ་བཀག་ནས་དེ་འཛིན་དགོས།",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "ཕྱོགས་གཅིག་ནས་འཛིན་བཟུང་བྱེད་དུ་འཇུག་པ།",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "བར་འདུམ་འཛིན་བཟུང་།",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "ཁྱེད་རང་གི་ཁ་གཏད་ཀྱི་ཆ་ཤས་གཉིས་ཀྱི་བར་གྱི་སྟོང་ཆ་དེ་ལ་སྤོ་ནས་དེ་གཉིས་ཀ་འཛིན་ཐུབ།",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "བར་འདུམ་བཀག་ཉར་བྱེད་ཆོག་པ།",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "མཆོང་རྒྱག་གི་འཛིན་བཟུང་།",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "ཉེ་འགྲམ་གྱི་ཁ་གཏད་ཅིག་གི་སྟེང་ནས་མཆོངས་ནས་དེ་ལས་ལྷག་པའི་སྟོང་ཆ་དེ་ལ་མཆོངས་ནས་འཛིན་བཟུང་བྱས།",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "མཆོང་སྐྱོད་ལ་འཛིན་བཟུང་བྱེད་དུ་འཇུག་པ།",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "བཀོལ་སྤྱོད་བྱེད་ཐུབ་པའི་གྲལ་ཐིག་།",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "ཐང་ཆེན་གྱི་མཐའ་མཚམས།",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "གྲུ་བཞི་བརྒལ་བའི་ཐིག་ལམ་བརྒྱུད་དེ།",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "གྲུ་བཞི་བརྒལ་བའི་ཟུར་ཐིག་བརྒྱུད་ནས།",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "ལག་བསྟར་དུས་རིམ།",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "ལྷག་མའི་དངོས་པོ་ལ་བརྟེན་ནས་འགུལ་སྐྱོད་བྱེད་པའི་དུས་རིམ་གྱི་སྐབས་སུ་ཡོད་ཚད།",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "བཀག་སྡོམ་མེད་པ།",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "ཁྱེད་ལ་ཆ་ཤས་གསུམ་ཡང་ན་ཉུང་བའི་སྐབས་སུ་ཐོབ་ཐུབ།",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "སྟོང་པའི་གྲུ་བཞི་གཉིས་ལས་མེད་པའི་སྐབས་གཞག་པ་མཚམས་འཇོག",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "སྤྱོད་པའི་སྐབས། གཞོང་པང་ལ་སྟོང་གནས་༢་ལས་མེད་པའི་སྐབས་གཞག་པའི་རིམ་པ་མཇུག་སྒྲིལ་ཞིང་སྐྱོད་པའི་རིམ་པ་འགོ་འཛུགས་པ་རེད། ལག་ཏུ་ཡོད་པའི་སྐྱེད་ཆ་ཁག་ལ་མ་ལྟོས་པར། འདི་ནི་སྐྱེད་ཆ་༡༢་པའི་རྩེད་མོ་ལ་མ་གཏོགས་འཇོག་མི་ཐུབ།",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "ཁྱེད་ཀྱིས་ཁྱེད་རང་གི་འགུལ་སྐྱོད་བྱས་རྗེས་མ་ཐག་ཏུ་ཕྱིར་འཐེན་ཞུ་རྒྱུ་བྱེད་ཐུབ།",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "ཁྱེད་ཀྱིས་དཀའ་ཚད་མཐོ་བ་དགོས་ན། ང་ཚོས་ \"{setting}\" འདེམས་ཚན་སྤྱོད་རུང་བཟོ་རྒྱུ་དང༌། བརྡ་སྟོན་བཞིན་ཁྱེད་ཀྱི་སྒྲིག་ཆས་ལ་གཞི་གྲངས་མཛོད་ཆ་ཚང་ཕབ་ལེན་བྱེད་པར་འདེམས་འོས་བྱེད།",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "ད་ལྟ་རྩེད་མོའི་ཁྲིམས་སྒྲིག་འགོད་བྱེད་དགོས་སམ།",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "རྩིས་ལས་བསམ་འཆར།",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "ཁྱེད་ཀྱིས་རིམ་པ་ ༡ ནང་མུ་མཐུད་རྩེད་མོ་མང་པོ་ཕམ་ཟིན། དཀའ་ངལ་ཉུང་སྒྲིལ་བྱེད་པའི་ཆེད་དུ་སྟབས་བདེ་བའི་ MCTS རྩིས་ལས་ལ་བརྗེ་རྒྱུ་ཡིན་ནམ།",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS རིམ་པ་ ༣༠ ནང་རྒྱལ་བ་ཐོབ་པར་བཀྲ་ཤིས་བདེ་ལེགས། དཀའ་ངལ་ཆེ་བའི་ཆེད་དུ་ MTD(f) རྩིས་ལས་ལ་བརྗེ་རྒྱུ་ཡིན་ནམ།",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "འཛིན་ཐུབ་པའི་རྩེད་ཆས་གསལ་བཏོན།",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "སྤོ་འགུལ།",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {

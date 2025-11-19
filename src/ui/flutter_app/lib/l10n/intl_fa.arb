@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "خوب",
+    "ok": "تأیید",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "نوبت حرکت {player}",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "بازیکن ۱ برنده است!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "نمی‌تواند {invalidMove} را وارد کند.",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "حرکات و قوانین با هم مطابقت ندارند.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "خطا: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "درصد برد",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "تعداد مهره‌های {player} کمتر از سه است",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} استعفا داد.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} راهی برای رفتن ندارد.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "تخته پر است و {player} راهی برای رفتن ندارد.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "زمان تمام شد، {player} باخت.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "در مرحله حرکت کردن ، هیچ مهره‌ای در آخرین تعداد حرکت خاص حذف نشده است.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "سطح سخت تر را به چالش بکشید؟ سطح جدید سطح {level} خواهد بود!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "شما باختید!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "نسخه: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "با تشکر",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "انتخاب {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "اطلاعات",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " و ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "پذیرفتن",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} در دست: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} روی تخته: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "فاصله تخته بازی از بالا",
     "@boardTop": {
@@ -1103,7 +1048,7 @@
     "@close": {
         "description": "Close"
     },
-    "download": "Download",
+    "download": "دانلود",
     "@download": {
         "description": "Download button text"
     },
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "نوبت حرکت: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "بازیکن",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "آخرین حرکت: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "حرکت",
+    "@move": {
+        "description": "Move"
     },
     "selected": "انتخاب شد",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{حرکت}=1{{count} حرکت}other{{count} حرکت می کند}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "بارگیری انجام نشد.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{مهره}=1{{count} مهره}other{{count} مهره}} باید حذف شود.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "قرار داده شده ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "تعداد مهره‌ها قرار داده شده در مرحله قرار دادن.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "بازیکن فعلی {count} مهره‌ها را قرار داده است.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "مرحله جای‌گذاری نیست، نمی‌توان آن را تغییر داد.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "جنگل",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "تصویر دسکتاپ",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "موقعیت نامعتبر",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIF را به اشتراک بگذارید",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "نسبت پیکسل",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "مدت زمان",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "ضبط کننده صفحه بازی",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "قبلی",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "بعد",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "پرش کنید",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "فهمیدم",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "می توانید قوانین بازی را در تنظیمات قوانین تغییر دهید.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "می توانید از چرخ ماوس برای تغییر مقدار در انتخابگر استفاده کنید.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "زمان تفکر هوش مصنوعی روی 0 تنظیم شده است به این معنی که محدودیت زمانی برای فکر کردن وجود ندارد.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) شکل اصلاح شده ای از الگوریتم جستجوی آلفا-بتا است که هدف آن بهبود کارایی با استفاده مجدد از نتایج جستجوی میانی و استفاده از حدس اولیه خوب برای محدود کردن فضای جستجو است.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "لطفاً توجه داشته باشید که تنظیم زمان تفکر هوش مصنوعی ممکن است کاملاً دقیق نباشد. زمانی که سطح دشواری روی مقدار کمتری تنظیم می‌شود، ممکن است زمان واقعی فکر کوتاه‌تر باشد و وقتی زمان تمام می‌شود، ممکن است زمانی طولانی‌تر شود.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "اگر سطح دشواری را بالا تنظیم کنید اما زمان تفکر هوش مصنوعی را افزایش ندهید، سطح دشواری واقعی ممکن است به مقدار کمتری به دلیل محدودیت زمان تفکر محدود شود. مقدار واقعی ممکن است بر اساس عملکرد دستگاه متفاوت باشد.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (جستجوی تغییرات اصلی) یک الگوریتم جستجو برای یافتن بهترین حرکت در یک موقعیت خاص است. این یک بهبود یافته از الگوریتم آلفا-بتا است و از جستجوهای پنجره صفر یا تهی برای تأیید اینکه یک حرکت بدتر یا بدتر از نمره ایمن قبلی از تغییرات اصلی است استفاده می کند. PVS روی امیدوارکننده‌ترین حرکت‌ها تمرکز می‌کند و از جستجوهای غیرضروری در شاخه‌های غیربهینه اجتناب می‌کند، که به بهبود کارایی جستجو کمک می‌کند.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "الگوریتم آلفا بتا یک الگوریتم جستجو برای یافتن بهترین حرکت است. از اصل minimax و دو مقدار آلفا و بتا برای هرس درخت جستجو و افزایش کارایی استفاده می کند. آلفا نشان دهنده حداقل امتیازی است که رایانه مطمئن است می تواند کسب کند، در حالی که بتا نشان دهنده حداکثر امتیازی است که حریف می تواند کسب کند. این الگوریتم به رایانه کمک می کند تا تصمیمات هوشمندانه و کارآمد را در یک بازی بگیرد.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "با توجه به تجربه بشر، اگر برای بردن تلاش کنید، بازنده خواهید شد. در عوض، تساوی را هدف خود قرار دهید و از باختن بازی اجتناب کنید. حریف خود را مشاهده کنید و به آرامی آنها را در موقعیتی قرار دهید که ممکن است اشتباه کنند. وقتی ضعف نشان می دهند، فرصت را غنیمت شمرده و به آرامی برای پیروزی فشار بیاورید. به این ترتیب می توانید برنده بازی شوید.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "در این بازی برنده شدن بازیکن دوم نسبت به بازیکن اول راحت تر است.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "فعال کردن گزینه Passive باعث می‌شود هوش مصنوعی زمانی که در موقعیت مزیتی دارد، به جای تلاش تهاجمی برای برنده شدن در سریع‌ترین زمان ممکن، آرام شود.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "فعال کردن این گزینه تصادفی بودن و سرگرمی بازی را افزایش می دهد در حالی که غیرفعال کردن آن می تواند به مطالعه راه های شکست هوش مصنوعی کمک کند.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "اگر هوش مصنوعی تحرک مهره های خود را در نظر بگیرد، نه تنها به دنبال گرفتن مهره های حریف در سریع ترین زمان ممکن است، بلکه به فکر جلوگیری از حرکات حریف و جلوگیری از انجام همین کار خواهد بود.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "وقتی تخته پر شد",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "در پایان مرحله قرار دادن، قبل از شروع فاز حرکت، اگر تخته پر از مهره باشد، عمل انجام می شود.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "بازیکنی که در مرحله حرکت اول حرکت می کند یکی از مهره‌های حریف را برمی دارد.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "هر دو طرف موافق تساوی هستند.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "یکی از مهره‌های حریف را بردارید.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "بازیکن اول بازی را می بازد.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "بازیکن اول و دوم یکی از مهره‌های حریف را برمی دارند.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "بازیکنان دوم و اول یکی از مهره‌های حریف را برمی دارند.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "حالا که وارد فاز پرواز شده، مهره‌های حریف می توانند به هر نقطه خالی روی تخته بپرند. می توانید قانون پرواز را در \"تنظیمات قانون\" خاموش کنید.",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "وقتی بن بست",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "وقتی هیچ مهره‌ای قابل جابجایی نباشد چه عملی انجام می شود؟",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "با یک باخت در بن بست برای طرفی که مسدود شده است پایان دهید.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "سمت را برای حرکت تغییر دهید.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "یکی از مهره‌های حریف را بردارید و حرکت بعدی را انجام دهید.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "با تساوی بن بست پایان دهید.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "یکی از مهره‌های حریف را بردارید و طرف را برای حرکت تغییر دهید.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "زمان تاخیر پاسخ هوش مصنوعی",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "هوش مصنوعی در حال حاضر در مرحله پاسخ تاخیری قرار دارد. لطفاً قبل از ادامه مدتی صبر کنید.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "شما نمی توانید یک مهره غیر مجاور را بردارید.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "در صورت بن بست، مهره‌های حریف در مجاورت مهره شما بدون توجه به شکل گیری آسیاب می توانند حذف شوند.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS یک الگوریتم مبتدی دوست است که با کاوش و ارزیابی حرکات مختلف از طریق شبیه سازی، تصمیم می گیرد.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "یشم طلایی",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "جنگل چوب",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "رمز و راز تاریک",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "آبی نیمه شب",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "جنگل سبز",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "سبزه زار",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "مسیر سنگی",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "صورتی پاستلی",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "دریای فیروزه",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "رویای بنفش",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "شکلات نعنا",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "آبی آسمانی",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "باغ بازیگوش",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "الگوریتم تحلیل رتروگراد از تحلیل رتروگراد چند ارزشی برای ساخت یک پایگاه داده پایان بازی از موقعیت های مختلف شروع استفاده می کند، سپس این پایگاه داده را برای بهینه سازی گیم پلی اعمال می کند. این رویکرد در دسته راه حل های فوق العاده قوی قرار می گیرد.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "آیا می خواهید راهنمای کاربر این الگوریتم را مشاهده کنید؟",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "نشانگر مزیت موقعیتی را نشان دهید",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "با استفاده از پایگاه داده کامل",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "این گزینه را فعال کنید تا از یک پایگاه داده بازی بی‌عیب و نقص که توسط الگوریتم‌های پیشرفته ایجاد شده است، استفاده کنید. این ویژگی استراتژی‌های ابتدایی و پایانی بازی را یکپارچه می‌کند تا حرکات بهینه را پیشنهاد دهد. این گزینه برای بازیکنانی که به دنبال بالاترین سطح دقت در بازی هستند، انتخاب اول است. این پایگاه داده توسط تکنیک‌های محاسباتی دقیق ایجاد شده و به منظور ارائه راه‌حل‌های تقریباً کامل برای بازی طراحی شده است.\n\nتوجه: در صورتی که هوش مصنوعی نتواند به پایگاه داده دسترسی پیدا کند، از الگوریتم‌های سنتی برای تصمیم‌گیری در بازی استفاده خواهد کرد. هنگامی که پایگاه داده در دسترس است، 'سطح دشواری' تقریباً ناپشتیبانی‌پذیر می‌شود و 'زمان تفکر هوش مصنوعی' به طور قابل توجهی کاهش می‌یابد. تنظیمات زیادی در گزینه‌های 'سبک بازی هوش مصنوعی' نیز دور زده خواهند شد، زیرا نتایج پایگاه داده بالاترین اولویت را دارند.\n\nبرای راهنمایی در مورد چگونگی بهره‌برداری بهینه از این پایگاه داده بی‌عیب و نقص، اینجا کلیک کنید.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "تصویر پس‌زمینه",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "زمانی که گزینه 'استفاده از پایگاه داده کامل' فعال نیست، تنظیم 'تصادفی' باعث می‌شود که هوش مصنوعی قطعات را بدون استفاده از هیچ الگوریتمی برای انتخاب حرکت، به طور تصادفی جابجا کند. این معمولاً منجر به بازی ضعیف‌تر می‌شود. در مقابل، زمانی که گزینه 'استفاده از پایگاه داده کامل' فعال است، هوش مصنوعی صرفاً برای تصمیم‌گیری به 'پایگاه داده کامل' متکی است، به جای ترکیب آن با الگوریتم‌های سنتی هوش مصنوعی. در این حالت، حرکات هوش مصنوعی کاملاً بر اساس محتوای پایگاه داده است و از تکیه بر محاسبات زمان واقعی یا الگوریتم‌های جستجو خودداری می‌کند.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "مهره(های) حریف را از دستشان بردارید؛ سپس نوبت حریف برای قرار دادن است.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "هنگام تشکیل دوز در مرحله قرار دادن",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "مهره(های) حریف را از صفحه بردارید.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "مهره(های) حریف را از صفحه بردارید؛ سپس نوبت حریف برای قرار دادن است.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "حریف مهره(های) خود را از صفحه برمی‌دارد.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "به جای اینکه شما اقدام کنید، حریف مهره(های) خود را از صفحه انتخاب کرده و برمی‌دارد، که این اقدام به طور مؤثری به ضرر خودش است.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "مهره(های) حریف را از دستشان بردارید؛ سپس نوبت شما برای حرکت است.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "مهره(ها) را از دست حریف بردارید. اگر طبق تنظیمات حذف چندگانه، قرار است چندین مهره برداشته شود و حریف هیچ مهره‌ای در دست نداشته باشد، ادامه دهید تا مهره‌های حریف را از صفحه بردارید. سپس نوبت شما برای حرکت است. اگر به تشکیل دوز ادامه دهید، می‌توانید مهره‌های حریف را برداشتن ادامه دهید.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "مهره(ها) را از دست حریف بردارید. اگر طبق تنظیمات حذف چندگانه، قرار است چندین مهره برداشته شود و حریف هیچ مهره‌ای در دست نداشته باشد، ادامه دهید تا مهره‌های حریف را از صفحه بردارید. سپس نوبت حریف برای حرکت است.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "مهره‌ها را علامت‌گذاری کرده و تاخیر در برداشتن آن‌ها ایجاد کنید.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "در مرحله قرار دادن، مهره‌هایی که قرار است برداشته شوند علامت‌گذاری می‌شوند و برای هر دو بازیکن، امکان قرار دادن مهره‌های جدید در این نقاط وجود ندارد. هنگام ورود به مرحله حرکت، این مهره‌های علامت‌دار به طور کامل برداشته می‌شوند و بازیکنان سپس می‌توانند مهره‌های خود را به این نقاط اکنون خالی حرکت دهند.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "اقداماتی که هنگام تشکیل دوزها در فاز قرار دادن می‌توان انجام داد.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "علامت‌گذاری شده",
-    "@marked": {},
-    "menu": "منو",
-    "@menu": {},
-    "monochrome": "تک‌رنگ",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "شما می‌توانید پشتیبانی از خواننده صفحه را در تنظیمات دسترس‌پذیری در تنظیمات عمومی فعال کنید.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "نمایش اعداد روی مهره‌ها",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "تصویر را ذخیره کنید",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "نمایش نوار ابزار تحلیل",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "رنگ پس زمینه نوار ابزار تحلیل",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "رنگ آیکون نوار ابزار تحلیل",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "تبدیل شد.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "نمی‌توان تبدیل کرد.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "چرخش",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "افقی فلیپ",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "عمودی فلیپ",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO فلیپ",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "بوم شفاف",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "محدود کردن تشکیل دوزهای تکراری",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "یک مهره که از یک دوز به دوز دیگر منتقل شده است نمی‌تواند بلافاصله به نقطه اصلی در دور بعدی بازگردد تا دوباره دوز تشکیل دهد. ابتدا نیاز به حرکتی متفاوت است.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "دوز یک‌بار مصرف",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "هر دوز فقط یک بار می‌تواند مهره‌ای از حریف را حذف کند. شما می‌توانید دوباره آن را بازسازی کنید، اما نمی‌توان از آن برای حذف‌های اضافی استفاده کرد.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "قوانین فعلی که تنظیم کرده‌اید، پایگاه داده کاملی ندارند. برای کسب اطلاعات بیشتر در مورد پایگاه داده کامل، لطفاً اینجا کلیک کنید.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "تمرکز بر روی مسدود کردن مسیرها",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "در مراحل خاصی از بازی، به جای تشکیل دوز، اولویت به مسدود کردن حرکت حریف دهید. به جای تمرکز بر حذف مهره‌ها با تکدوز دوز، هوش مصنوعی هدف دارد که در این مراحل حریف را به دام بیندازد، او را ناتوان از حرکت کند و از طریق فرسایش به جای بازی تهاجمی، پیروزی را تضمین کند. این استراتژی که مختص به مراحلی خاص است، به‌طور فعال دوز‌های حریف را مسدود نمی‌کند.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "تصویر مهره",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "وارد کردن تنظیمات رنگ",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "صادر کردن تنظیمات رنگ",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "وارد کردن",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "صادر کردن",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "لطفاً ابتدا تنظیمات قالب JSON را به کلیپ بورد کپی کنید.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "به کلیپ بورد کپی شد.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "وارد شد.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "تصویر تخته",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "برگ‌های پاییزی",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "سرزمین افسانه‌ای",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "افکت وینیت",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "آیا می‌خواهید نوار ابزار کاملاً شفاف شود وقتی تصویر پس‌زمینه‌ی تخته تنظیم شده است؟",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "فعال کردن لرزش در بازی",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "تم صدا",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "توپ",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "مایع",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "چوب",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "اثر انیمیشن قرار دادن مهره",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "اثر انیمیشن حذف مهره",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "نمایش نوار ابزار در پایین",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "شعاع گوشه تخته",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "از کتاب افتتاحیه استفاده کنید",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "فعلی",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "موریس نه مردانه",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "موریس دوازده مرد",
-    "@twelveMensMorris": {},
-    "morabaraba": "مورابارابا",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "دوز",
-    "@dooz": {},
-    "chamGonu": "چامگونو",
-    "@chamGonu": {},
-    "zhiQi": "ژیه چی",
-    "@zhiQi": {},
-    "chengSanQi": "چنگ سان چی",
-    "@chengSanQi": {},
-    "mulMulan": "مول-مولان",
-    "@mulMulan": {},
-    "nerenchi": "نرنچی",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "مجموعه قوانین",
-    "@ruleSet": {},
-    "laskerMorris": "لاسکر موریس",
-    "@laskerMorris": {},
+    "@ruleSet": {
+        "description": ""
+    },
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "ملنیتسا",
-    "@oneTimeMill": {},
-    "daSanQi": "دا سان چی",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "به هوش مصنوعی اجازه دهید از حرکات افتتاحیه که به طور معمول توسط بازیکنان حرفه‌ای انسانی در ابتدای بازی استفاده می‌شود، استفاده کند. توجه: این ویژگی در حال حاضر فقط برای مجموعه‌های قوانین خاص در دسترس است.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "نمودار مزیت را نشان دهید",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "نمودار برتری تنها پس از انجام حرکت توسط هوش مصنوعی رسم می‌شود. هنگامی که بازیکن انسانی حرکت می‌کند، رسم نخواهد شد.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "حذف مهره‌ها را تا زمانی که همه قرار داده شوند غیرفعال کنید. بازیکنان بر اساس تعداد دوز مهره‌ها را حذف می‌کنند.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "حذف مهره‌ها را تا زمانی که همه قرار داده شوند غیرفعال کنید. بازیکنان بر اساس تعداد دوز مهره‌ها را حذف می‌کنند: اگر تعداد مساوی باشد، هر دو به همان میزان مهره حذف می‌کنند؛ اگر یکی تعداد بیشتری داشته باشد، یک مهره اضافه حذف کرده و اختلاف را در یک مهره نگه می‌دارد. اگر فقط یکی دوز تشکیل دهد، دو مهره حذف می‌کند و دیگری یک مهره را حذف می‌کند. اگر هیچ‌کدام دوز تشکیل ندهند، هر دو یک مهره حذف می‌کنند.",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "الفلجة",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "یکی از مهره‌های خود را انتخاب کنید.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "نوبت شما نیست.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "رنگ پس‌زمینهٔ نوار ابزار حاشیه‌نویسی",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "رنگ آیکن نوار ابزار حاشیه‌نویسی",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "نمایش نوار ابزار حاشیه‌نویسی",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "ورود به حالت حاشیه‌نویسی",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "آیا مطمئن هستید که می‌خواهید همهٔ حاشیه‌نویسی‌ها را پاک کنید؟",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "پیام LLM در کلیپ‌بورد کپی شد.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "اتصال رد شد، ممکن است سرور خاموش باشد.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "جستجو موفقیت‌آمیز بود، در انتظار اتصال...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "هیچ ارتباط LAN وجود ندارد",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "گرفتن اسکرین‌شات",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "ارتباط با حریف قطع شد.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "درخواست بازگرداندن حرکت",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "چیزی برای نمایش وجود ندارد.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "توقف میزبانی",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "اتصال توسط طرف مقابل بازنشانی شد.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "اتصال به دلیل پایان زمان ضربان از دست رفت. لطفاً دوباره متصل شوید.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "شروع میزبانی",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "درخواست راه‌اندازی مجدد رد شد.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "به حریف در شبکه محلی متصل نیستید.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "پیام LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "بازی مجدداً آغاز شد.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "درخواست بازگرداندن حرکت رد شد.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "آیا مطمئن هستید می‌خواهید از این بازی کناره‌گیری کنید؟",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "حریف کناره‌گیری کرد. شما برنده‌اید!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "پاک کردن همهٔ حاشیه‌نویسی‌ها",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "متصل شد، در انتظار حرکت حریف...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "وضعیت شبکه: قطع",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "درخواست بازگرداندن حرکت به حریف ارسال شد.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "ممکن است حریف بازی را ترک کرده باشد",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "با موفقیت به میزبان متصل شد.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "اتصال از دست رفت: پایان زمان ضربان",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "هیچ میزبانی یافت نشد.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "تأیید کناره‌گیری",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "میزبانی بازی آغاز شد، در انتظار پیوستن بازیکنان...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "اتصال منقضی شد، اتصال شبکه ناپایدار است.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "هیچ پیام LLM در دسترس نیست.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "شما کناره‌گیری کردید. بازی پایان یافت.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "آی‌پی سرور",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "تأیید پاک کردن",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "نوبت حریف است.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "در انتظار اتصال مشتری...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "درخواست بازگرداندن حرکت رد شد یا ناموفق بود.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "افزودن متن",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "خروج از حالت حاشیه‌نویسی",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "حاشیه‌نویسی خود را بنویسید",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "در حال تلاش برای اتصال مجدد...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "درخواست راه‌اندازی مجدد ارسال شد. در انتظار پاسخ حریف...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "سرور متوقف شده است.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "درخواست راه‌اندازی مجدد",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "نمی‌توانید هنگامی که نوبت شما نیست درخواست بازگرداندن حرکت کنید.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "درخواست بازگرداندن حرکت پذیرفته شد.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "تنظیمات شبکه محلی",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "با موفقیت مجدداً متصل شدید!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "ذخیره تصویر در گالری ناموفق بود.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "حریف درخواست راه‌اندازی مجدد بازی را دارد. آیا می‌پذیرید؟",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "نوبت شماست.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "امکان اتصال مجدد وجود ندارد، لطفاً بازی را دوباره شروع کنید.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "میزبان",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "پیوستن",
-    "@join": {},
-    "port": "پورت",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "آدرس آی‌پی نامعتبر است.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "پورت نامعتبر است.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "در حال اتصال: تلاش {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "اتصال ناموفق: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "خطا: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "شروع میزبانی ناموفق بود: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "خطا: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "میزبان شناسایی شد: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "توقف",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "جستجو",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "اتصال",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "مشتری متصل شد: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "در حال جستجو: {seconds} ثانیه",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "در حال اتصال مجدد ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "متصل",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "حذف",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "ایران باستان",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "یخچال خشتی",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "شالیزار گیلان",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "چینی پرسلان",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "غروب کویر",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "ظرافت قلمزنی",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "سوزن‌دوزی بلوچی",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "میراث هندوکش",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "عظمت امپراتوری",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "بلور اصفهان",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "طلوع خراسان",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "اعتدال و توازن",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "عطر زعفران",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "کاشی‌کاری ایرانی",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "شور نوروز",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "سفارشی",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "بازار ادویه کابل",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "برای نمایش کشو بکشید",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "نمایش اطلاعات بازی در اسکرین‌شات‌ها",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "محدودیت زمانی حرکت انسان",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "محدودیت زمانی برای حرکات انسان وجود ندارد",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "باخت به دلیل اتمام زمان برای بازیکن انسانی اعمال خواهد شد",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "در حال شناسایی صفحهٔ بازی...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "می‌توانید هر نام مدلی را وارد کنید.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "وضعیت صفحه اعمال شد. FEN در کلیپ‌بورد کپی شد.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "پیشنهاد: سعی کنید عکس واضح‌تری از صفحه بازی بگیرید.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "قالب پرامپت LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "هیچ صفحه معتبری شناسایی نشد.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "در حال انتخاب تصویر از آلبوم...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "پیکربندی قالب پرامپت",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "ویرایش قالب پرامپت برای تحلیل LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "ایجاد FEN از صفحه شناسایی‌شده ناموفق بود.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "خروجی به زبان فعلی",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "Base URLهای رایج",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "مشاهده مدل‌های متداول",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "پارامترهای شناسایی به‌روز شد.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "نوبت سفید",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "بازنشانی به مقادیر پیش‌فرض",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "عکسبرداری",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "اعمال وضعیت شناسایی‌شده صفحه ناموفق بود.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "محتوای پرامپت LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM پیکربندی نشده است. لطفاً تنظیمات خود را بررسی کنید.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "تنظیم ارائه‌دهنده، مدل، API Key و Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "پیکربندی LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "پیکربندی ارائه‌دهنده LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "هدر قالب پرامپت LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "هیچ مهره‌ای در تصویر شناسایی نشد. لطفاً دوباره تلاش کنید.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "شناسایی صفحه از تصویر",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "مشاهده نکات",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "اعمال به صفحه",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "تنظیم ناحیه صفحه",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "مشاهده URLهای متداول",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "تحلیل رنگ ناموفق بود!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "در حال تجزیه و تحلیل تصویر صفحه بازی...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "انتخاب از آلبوم",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "هیچ نقطه‌ای از صفحه شناسایی نشد!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "اگر خالی رها شود، قالب پیش‌فرض استفاده می‌شود",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "پیکربندی LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "آیا مطمئن هستید که می‌خواهید قالب‌های پرامپت را به مقادیر پیش‌فرض بازنشانی کنید؟",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "فوتر قالب پرامپت LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "در حال بارگذاری پاسخ...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "اعمال این نتیجه به صفحه",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "در حال عکسبرداری...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "لطفاً یک تصویر از صفحه بازی برای شناسایی انتخاب کنید",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "نتایج شناسایی",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "حرکات را تحلیل کرده و دیدگاه ارائه دهید.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "دریافت API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "کل فرآیند شناسایی تکمیل نشد.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "نتیجه شناسایی صفحه",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "پرسش از LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "شناسایی صفحه ناموفق بود!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "هیچ نقطه‌ای از صفحه شناسایی نشد، قادر به شناسایی مهره نیست!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "کپی FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "مدل‌های متداول",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (اختیاری)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "هیچ تصویری انتخاب نشده است",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "نوبت سیاه",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "مدل زبانی بزرگ",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "ارائه‌دهنده",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "نشانی پایه",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "مدل",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "دما",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "دستور دریافت شد! هوش مصنوعی در حال پردازش است...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "تفکر عمیق در حال انجام است، لطفاً صبر کنید...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "به زودی ارائه می‌شود...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "پارامترهای تشخیص",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "پارامترها را برای بهبود دقت تشخیص تنظیم کنید",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "ذخیره پارامترها",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "شروع تشخیص تصویر ممکن نیست: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "خطا: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "تشخیص تصویر ناموفق بود: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "خطا: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "وضعیت اعمال‌شده با {whiteCount} مهره سفید و {blackCount} مهره سیاه",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(‏FEN در کلیپ‌بورد کپی شد)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "تشخیص ناموفق بود: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "خطا: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "امتیاز من",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "بازی‌های انجام شده",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "بردها",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "باخت‌ها",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "مساوی‌ها",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "آخرین به‌روزرسانی",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "قالب:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "بازنشانی آمار",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "نرخ مساوی",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "نرخ باخت",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "آمار هوش مصنوعی",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "فعال کردن آمار",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "در صورت فعال بودن، نتایج بازی در آمار ثبت می‌شود. با این حال، بازی‌هایی که شامل بازپس‌گیری حرکت هستند، ثبت نخواهند شد. در صورت غیرفعال بودن، جمع‌آوری آمار متوقف می‌شود.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "این کار تمام آمار بازی را بازنشانی می‌کند. این عمل قابل لغو نیست.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "اندازه حلقه داخلی صفحه",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "سایه صفحه",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "تشخیص تله",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "در طول تحلیل، حرکات تله را با دایره‌ها و پیکان‌های پررنگ برجسته کن.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "تله وجود دارد. حرکات تله: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "دستگیری در کنار هم",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "یکی از قطعات حریف خود را بین دو مورد از شما در یک خط مستقیم محصور کنید تا آن را ضبط کنید.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "اجازه ضبط پهلو را دهید",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "ضبط مداخله",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "به نقطه خالی بین دو قطعه حریف خود بروید تا هر دو آنها را ضبط کنید.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "اجازه مداخله را اجازه دهید",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "ضبط پرش",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "با پریدن از روی قطعه حریف مجاور به نقطه خالی فراتر از آن ، ضبط کنید.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "اجازه دادن به پرش را اجازه دهید",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "خطوط قابل اجرا",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "در امتداد لبه های میدان",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "در امتداد خطوط متعامد که از میدان عبور می کنند",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "در امتداد خطوط مورب که از مربع عبور می کنند",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "مراحل اعدام",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "در دسترس بودن در مرحله متحرک بر اساس قطعات باقی مانده",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "بدون محدودیت",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "در صورت داشتن سه یا کمتر قطعه موجود است",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "توقف قرار دادن وقتی فقط دو مربع خالی باقی می‌ماند",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "وقتی فعال باشد، مرحله قرار دادن به پایان می‌رسد و مرحله حرکت زمانی شروع می‌شود که صفحه فقط ۲ فضای خالی داشته باشد، صرف نظر از مهره‌های موجود در دست. این قانون فقط برای بازی‌های ۱۲ مهره‌ای اعمال می‌شود.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "شما فقط می‌توانید بلافاصله پس از حرکت خود درخواست بازگشت دهید.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "اگر می‌خواهید چالش بیشتری داشته باشید، پیشنهاد می‌کنیم گزینه \"{setting}\" را فعال کنید و پایگاه داده کامل را همانطور که دستور داده شده به دستگاه خود دانلود کنید.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "آیا می‌خواهید اکنون قوانین بازی را پیکربندی کنید؟",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "پیشنهاد الگوریتم",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "شما چندین بازی پشت سر هم را در سطح 1 باخته‌اید. آیا می‌خواهید برای کاهش سختی به الگوریتم ساده‌تر MCTS تغییر دهید؟",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "تبریک به شما برای برد در سطح 30 MCTS! آیا می‌خواهید برای چالش بیشتر به الگوریتم MTD(f) تغییر دهید؟",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "برجسته‌سازی مهره‌های قابل حذف",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2179,7 +2748,7 @@
     "@back": {
         "description": "Back button tooltip"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "پازل‌ها",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "حرکت",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {
@@ -3220,7 +3728,7 @@
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "january": "January",
+    "january": "ژانویه",
     "@january": {
         "description": "Month name"
     },

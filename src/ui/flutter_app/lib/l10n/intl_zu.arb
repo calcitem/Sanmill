@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "KULUNGILE",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} ukuhambisa.",
     "@tipToMove": {
-        "description": "The tip that the given player is to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": "The tip that the given player is to move."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "Umdlali ongu-1 uyawina!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "Ayikwazi ukungenisa {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Ukunyakaza nemithetho akufani.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Iphutha: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "Win Rate",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} isibalo socezu singaphansi kokuthathu.",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player lost because they had less than three pieces left."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} ushiye phansi umsebenzi.",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player resigned."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} ayinayo indlela yokuhamba.",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Ibhodi ligcwele, futhi i-{player} ayinayo indlela yokuhamba.",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go because the board is full."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Isikhathi siphelile, i-{player} ilahlekile.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "Esigabeni esinyakazayo, akukho siqeshana esisusiwe enanini elithile lokugcina leminyakazo.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Inselele ileveli enzima? Ileveli entsha izoba ileveli {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Uyehlulwa!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Inguqulo: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Ngiyabonga",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "Izinketho",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "Khetha {element}",
     "@pick": {
-        "description": "Used in the color picker.",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Used in the color picker."
     },
     "info": "Ulwazi",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " futhi ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Yamukela",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} esandleni: {count}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has in his hand."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} ebhodini: {count}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has on the board"
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "I-offset yebhodi ukusuka phezulu",
     "@boardTop": {
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "Uhlangothi oluzosuswa: {player}",
     "@sideToMove": {
-        "description": "The player whose turn it is.",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "The player whose turn it is."
+    },
+    "player": "umdlali",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Umnyakazo wokugcina: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Hambisa",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Ikhethiwe",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Move}=1{{count} Hambisa}other{{count} Ukuhamba}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Ukulayisha kwehlulekile.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} ucezu}other{{count} izingcezu}} kudingeka zisuswe.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Kubekwe ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Isibalo sezingcezu esibekwe esigabeni sokubeka.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "Umdlali wamanje ubeke {count} izingcezu.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "Ayibeki isigaba, ayikwazi ukusishintsha.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Ihlathi",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Isithombe sedeskithophu",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Indawo engavumelekile.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "Yabelana nge-GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Isilinganiso sephikseli",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Ubude besikhathi",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "Irekhoda yesikrini segeyimu",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Ngaphambilini",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Olandelayo",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Yeqa",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Ngiyitholile",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Ungashintsha imithetho yomdlalo kuzilungiselelo zokubusa.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "Ungasebenzisa isondo legundane ukuze ushintshe inani kusikhi.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "Isikhathi sokucabanga se-AI sibekwe ku-0 sisho ukuthi asikho isikhathi sokucabanga.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "I-MTD(f) iwuhlobo olulungisiwe lwe-alpha-beta yokusesha i-algorithm ehlose ukuthuthukisa ukusebenza kahle ngokusebenzisa kabusha imiphumela yosesho emaphakathi nokusebenzisa ukuqagela kokuqala okuhle ukuze unciphise isikhala sosesho.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Sicela uqaphele ukuthi ukulungiswa kwesikhathi sokucabanga kwe-AI kungase kungabi nembayo ngokuphelele. Isikhathi sangempela sokucabanga singase sibe sifushane lapho ileveli yobunzima isethelwe kunani eliphansi futhi ingaba yinde uma i-AI imaphakathi nomcabango lapho isikhathi siphela.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Uma usetha izinga lobunzima phezulu kodwa ungakhulisi isikhathi sokucabanga se-AI, izinga lobunzima langempela lingase likhawulelwe kunani eliphansi ngenxa yesithiyo sesikhathi sokucabanga. Inani langempela lingahluka ngokusekelwe ekusebenzeni komshini.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "I-PVS (I-Principal Variation Search) iyi-algorithm yokusesha yokuthola umnyakazo ongcono kakhulu endaweni ethile. Kuwukuthuthukiswa kwe-algorithm ye-alpha-beta futhi kusebenzisa ukusesha kwewindi okungenalutho noma okuyiziro ukuze kuqinisekiswe ukuthi ukuthutha kubi noma akukubi kakhulu kunomphumela osuvele uphephile kusukela kokuhluka okuyinhloko. I-PVS igxile ekunyakazeni okuthembisa kakhulu futhi igwema ukusesha okungadingekile kwamagatsha angaphansi, okusiza ukuthuthukisa ukusebenza kahle kosesho.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "I-alpha-beta algorithm iyi-algorithm yokusesha ukuze uthole umnyakazo ohamba phambili. Isebenzisa isimiso se-minimax namanani amabili, i-alpha ne-beta, ukuthena isihlahla sokusesha nokwandisa ukusebenza kahle. I-Alpha imele amaphuzu amancane ikhompuyutha eqinisekile ukuthi ingawathola, kuyilapho i-beta imele amaphuzu aphezulu angatholwa isitha sayo. I-algorithm isiza ikhompuyutha ukwenza izinqumo ezihlakaniphile, ezisebenzayo emdlalweni.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Ngokusho kokuhlangenwe nakho kwabantu, uma uzama ukunqoba, uzolahlekelwa. Esikhundleni salokho, hlose ukudweba njengomgomo wakho futhi ugweme ukulahlekelwa umdlalo. Bheka umphikisi wakho futhi umyenge ngobumnene endaweni lapho engenza khona amaphutha. Lapho bebonisa ubuthakathaka, bamba ithuba bese ucindezela ngobumnene ukunqoba. Ngale ndlela, ungakwazi ukunqoba umdlalo.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "Kulo mdlalo kulula ukuthi umdlali wesibili awine uma kuqhathaniswa nowokuqala.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Ukunika amandla inketho ye-Passive kuzobangela i-AI ukuthi ikhululeke uma inenzuzo endaweni, kunokuzama ukuwina ngokushesha okukhulu.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Ukunika amandla le nketho kukhulisa ukungahleleki nobumnandi begeyimu ngenkathi uyikhubaza kungasiza izindlela zokufunda zokushaya i-AI.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Uma i-AI icabangela ukuhamba kwezingcezu zayo, ngeke nje ihlose ukuthwebula izingcezu zombangi ngokushesha okukhulu, kodwa futhi icabange ukuvimba umnyakazo wesitha nokubavimbela ekwenzeni okufanayo.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Lapho ibhodi ligcwele",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "Ekupheleni kwesigaba sokubeka, ngaphambi kokuba isigaba esinyakazayo siqale, isenzo silandela uma ibhodi ligcwele izingcezu.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Umdlali ohamba kuqala esigabeni esinyakazayo ususa ingxenye eyodwa kwezimbangi.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Zombili izinhlangothi zivumelana ngokulingana.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Thatha enye yezingcezu zombangi wakho.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Umdlali wokuqala uhlulwa umdlalo.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Umdlali wokuqala nowesibili basusa izingcezu zesitha.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Umdlali wesibili nowokuqala basusa izingcezu zesitha.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Manje sekungene isigaba sokundiza, izingcezu zomphikisi zingagxumela kunoma iyiphi indawo engenalutho ebhodini. Ungakwazi ukuvala umthetho endizayo kokuthi \"Izilungiselelo Zomthetho\".",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Lapho i-stalemate",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Isiphi isenzo esilandelayo lapho ucezu lungasuswa?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Phelisa ngokulahlekelwa okumile ohlangothini oluvinjiwe.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Shintsha uhlangothi ukuze uhambise.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Susa eyodwa yezingcezu zombangi bese wenza umnyakazo olandelayo.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Qeda ngokulingana okumile.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Susa eyodwa yezingcezu zombangi bese ushintsha uhlangothi ukuze uhambise.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "Isikhathi sokulibaziseka kwempendulo ye-AI",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "I-AI okwamanje isesigabeni sokuphendula esibambezelekile. Sicela ulinde isikhashana ngaphambi kokuthi uqhubeke.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Awukwazi ukususa ucezu olungasondelene.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "Uma kumile, izingcezu zombangi ezincikene nezakho zingasuswa, kungakhathaliseki ukuthi ukwakheka kwesigayo.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "I-MCTS iyi-algorithm elungele abaqalayo eyenza izinqumo ngokuhlola nokuhlola ukunyakaza okuhlukile ngokulingisa.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "I-Golden Jade",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "Ihlathi Lezinkuni",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "Imfihlakalo Emnyama",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Ubusuku obuluhlaza",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "Ihlathi Eliluhlaza",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "I-Green Meadow",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "I-Stony Path",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "I-Pastel Pink",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "I-Turquoise Sea",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Iphupho le-Violet",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "I-Mint Chocolate",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Isibhakabhaka Esiluhlaza",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "Ingadi Edlalwayo",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "I-algorithm ye-Retrograde Analysis isebenzisa ukuhlaziya okunenani eliningi lokubuyisela emuva ukuze kwakhiwe isizindalwazi somdlalo wokugcina kusuka ezindaweni ezihlukene zokuqala, bese isebenzisa le sizindalwazi ukuze kulungiselelwe ukudlala umdlalo. Le ndlela ingena ngaphansi kwesigaba sezixazululo ze-Ultra-Strong.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Ungathanda ukubuka umhlahlandlela womsebenzisi wale algorithm?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Bonisa inkomba yenzuzo yendawo",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Sebenzisa i-database ephelele",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Nika amandla le nketho ukuze usebenzise isizindalwazi segeyimu esingenasici esikhiqizwe ngama-algorithms asezingeni eliphezulu. Lesi sici sihlanganisa kokubili amasu okuvula nawokuqeda ukuphakamisa umnyakazo olungile. Lokhu ukukhetha okuncanyelwayo kwabadlali abafuna ileveli ephezulu yokunemba ekudlalweni kwegeyimu. Idalwe ngamasu ekhompyutha ahlakaniphile, isizindalwazi siklanyelwe ukunikeza izixazululo zegeyimu ezicishe ziphelele.\n\nQaphela: Uma i-AI ihluleka ukufinyelela kusizindalwazi, izophendukela kuma-algorithms avamile ezinqumweni zokudlala umdlalo. Uma isizindalwazi sitholakala, 'Izinga Lobunzima' licishe lingehluleki, futhi 'Isikhathi Sokucabanga Se-AI' sithola ukuncipha okukhulu. Izilungiselelo eziningi ezingaphakathi kwezinketho ze-'AI's play style' zizokhishwa, njengoba imiphumela yesizindalwazi ibambe phezulu kakhulu.\n\nUkuze uthole umhlahlandlela wokuthi ungayisebenzisa kanjani ngokugcwele le database engenasici, chofoza lapha.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Isithombe semva",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "Uma inketho ethi 'Sebenzisa isizindalwazi esiphelele' ingavunyelwe, ukulungiselelwa 'okungahleliwe' kubangela i-AI ukuthi ihambise izingcezu ngokungahleliwe ngaphandle kokusebenzisa noma yimaphi ama-algorithms ekukhetheni ukunyakaza. Lokhu ngokuvamile kuholela ekudlalweni kwegeyimu okubuthakathaka kakhulu. Ngokuphambene, lapho 'Sebenzisa idatha egciniwe ephelele' inikwe amandla, i-AI incike ngokukhethekile 'Kusizindalwazi Esiphelele' ukuze senze izinqumo, esikhundleni sokuyihlanganisa nama-algorithms endabuko e-AI. Kule modi, ukunyakaza kwe-AI kusekelwe ngokuphelele kokuqukethwe kusizindalwazi, kugwenywa ukuthembela ekubaleni kwesikhathi sangempela noma ama-algorithm okusesha.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Susa ingcezu (izingcezu) zomphikisi esandleni sakhe; bese kuba yithuba lomphikisi lokubeka.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Lapho wakha ama-mills ngesikhathi sokubeka",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Susa ingcezu (izingcezu) zomphikisi ebhodini.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Susa ingcezu (izingcezu) zomphikisi ebhodini; bese kuba yithuba lomphikisi lokubeka.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "Umphikisi ususa ingcezu yakhe (izingcezu) ebhodini.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "Esikhundleni sokuba nguwe othatha isinyathelo, umphikisi ukhetha futhi asuse ingcezu yakhe (izingcezu) ebhodini, ngaleyo kwalokho enza isenzo esilimazayo kuye.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Susa ingcezu  (izingcezu) zomphikisi esandleni sakhe; bese kuba lithuba lakho lokuhamba.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Susa ingcezu (izingcezu) esandleni somphikisi. Uma, ngokuvumelana nokusetha kokususwa okuningi, izinhlayiya eziningi kufanele zisuswe futhi umphikisi engasekho nezingcezu esandleni, qhubeka ususa izingcezu zomphikisi ebhodini. Khona-ke, yithuba lakho lokuhamba. Uma uqhubeka wakha ama-mill, ungaqhubeka ususa izingcezu zomphikisi.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Susa ingcezu (izingcezu) esandleni somphikisi. Uma, ngokuvumelana nokusetha kokususwa okuningi, izinhlayiya eziningi kufanele zisuswe futhi umphikisi engasekho nezingcezu esandleni, qhubeka ususa izingcezu zomphikisi ebhodini. Khona-ke, kuba yithuba lomphikisi.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Maka bese unqanda ukususa izingcezu.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "Ngesikhathi sokubeka, izingcezu ezizosuswa ziyophawulwa, futhi kokubili abadlali, akukho zingcezu ezintsha ezingabekwa kula maphuzu. Lapho ungena esigabeni sokuhambisa, lezi zingcezu ezimakiwe ziyasuswa ngokuphelele, futhi abadlali bangakwazi ukuhambisa izingcezu zabo kula maphuzu manje angenalutho.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Izinyathelo ezingathathwa lapho kwenziwa amakhaya ngesikhathi sesigaba sokubeka.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Uphawulwe",
-    "@marked": {},
-    "menu": "Imenyu",
-    "@menu": {},
-    "monochrome": "I-Monochrome",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "Ungavula ukusekelwa kwesikrini esifundi ku-General Settings kuzilungiselelo zokufinyelela.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Khombisa izinombolo kumaphuzu",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Hlela Isithombe",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Khombisa iziqu zokusekela ukuhlaziywa",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Umbala wesikali sesibhakabhakhi seziqu zokusekela ukuhlaziywa",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Umbala wesithonjana seziqu zokusekela ukuhlaziywa",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "Ihlanganiswe.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "Ngikwazi ukungahlukaniswa.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Hlela",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H Ibhlophu",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V Ibhlophu",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO Ibhlophu",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "I-Canvas Esobala",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Khawulela Ukwakheka Kabusha Kwezimbokodo",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "Ucezu oluhambile kusukela kolunye usimende ukuya kolunye alukwazi ukubuyela ngokushesha endaweni yoqobo kujike elilandelayo ukwakha usimende futhi. Kuqala kudingeka enye inyakazo.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Isigayo sokusetshenziswa kanye",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Isigayo ngasinye singasusa isiqeshana somphikisi kanye kuphela. Ungasiphinda futhi, kodwa ngeke usisebenzisele ukususa okwengeziwe.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Imithetho yamanje osuyimiselile ayinayo i-database ephelele ehambisanayo. Ukuthola imininingwane engaphezulu mayelana ne-database ephelele, sicela uchofoze lapha.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "Gxila ekuvinjweni kwemizila",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "Nikeza phambili ekuphazamiseni ukuhamba kwesitha kunezindleko zokwakha amamili. Esikhundleni sokugxila ekuqedeni izingcezu ngokugcwalisa amamili, i-AI ihlose ukuheha isitha, ukwenza bahluleke ukunyakaza kanye nokuqinisekisa ukunqoba ngokusebenzisa ukufaka engcupheni kunokudlala ngonya. Leli su alivaleli amamili esitha ngendlela ephambili.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Isithombe somkhandi",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Ngenisa izilungiselelo zombala",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Thumela izilungiselelo zombala",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Ngenisa",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Thumela",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Sicela ukopishe izilungiselelo zefomethi ye-JSON ku-clipboard kuqala.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Ikhopishwe ku-clipboard.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Kungenisiwe.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Isithombe sebhodi",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Amacembe Ekwindla",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Izwe Elidumile",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Umphumela we-vignette",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Ungathanda ukwenza ibha yamathuluzi ifanekane ngokuphelele uma isithombe sangemuva sebhodi sisethwe?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "Vumela ukuzamazama emdlalweni",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Itimu yomculo",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "Ibhola",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Uchwepheshe",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Izinkuni",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Umphumela we-animation wokubeka ucezu",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Umphumela we-animation wokususa ucezu",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Khombisa ibha yamathuluzi ezansi",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Iradiusi yekona yebhodi",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Sebenzisa incwadi yokuvula",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Okwamanje",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Isethi yemithetho",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "Vumela i-AI ukuthi isebenzise ukuvula amanyathelo ajwayele ukusetshenziswa ngabadlali abaqeqeshiwe abantu ekuqaleni komdlalo. Qaphela: Lesi sici sitholakala okwamanje kumasethi womthetho athize kuphela.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Khombisa ishadi lezinzuzo",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Ishadi lezinzuzo lizodwetshwa kuphela emva kokuthi i-AI yenze umnyakazo. Alizukudwetshwa uma umdlali womuntu enza umnyakazo.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Misa ukususwa kuze kufakwe wonke amaphinikhodi. Abadlali basusa amaphinikhodi ngokuya ngenani lama-Umlabalaba.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Misa ukususwa kuze kufakwe wonke amaphinikhodi. Abadlali basusa amaphinikhodi ngokuya ngenani lama-Umlabalaba: uma elilinganayo, bobabili basusa inani elifanayo lamaphinikhodi; uma omunye eningi, ususa elilodwa elengeziwe, egcina umehluko owodwa. Uma oyedwa enza i-Umlabalaba, ususa amaphinikhodi amabili, omunye asuse elilodwa. Uma bengakwenzi kokubili i-Umlabalaba, bobabili basusa elilodwa.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Khetha esinye sezicezu zakho.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Akulona ithuba lakho.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Umbala wengemuva yethulbha yezichasiselo",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Umbala we-icon yethulbha yezichasiselo",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Khombisa ithulbha yezichasiselo",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Ngena kumodi yezichasiselo",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Uqinisekile ukuthi ufuna ukusula zonke izichasiselo?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "Isikhuthazo se-LLM sikopishiwe ekubhodini lokunamathisela.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Ukuxhumana kunqatshelwe, isiphakeli kungenzeka siphansi.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Ukuthola kuphumelele, kulindelwe ukuxhumana...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "Akukho ukuxhumana kwe-LAN",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Thatha isithombe-skrini",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Unqanyuliwe kumbangi.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Isicelo Sokubuyisela Emuva",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Akukho okumele kuboniswe.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Yeka ukubamba",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Ukuxhumana kuqalwe kabusha ngontanga.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Ukuxhumana kulahlekile ngenxa yesikhathi sokushaya kwenhliziyo siphelile. Sicela uxhumane kabusha.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Qala ukubamba",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Isicelo sokuqala kabusha sinqatshelwe.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "Akuxhunyiwe kumbangi we-LAN.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "Isikhuthazo se-LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "Umdlalo uqalwe kabusha.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Ukubuyisela emuva kunqatshelwe.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Uqinisekile ukuthi ufuna ukuyeka lo mdlalo?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "Umbangi uyekile. Uwine!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Sula zonke izichasiselo",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Uxhunyiwe, ulindele umnyakazo wombangi...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Isimo senethiwekhi: Unqanyuliwe",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Isicelo sokubuyisela emuva sithunyelwe kumbangi.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "Umbangi kungenzeka ushiye umdlalo",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Uxhunyiwe kumbambi ngempumelelo.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Ukuxhumana kulahlekile: isikhathi sokushaya kwenhliziyo siphelile",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Akukho mbambi otholiwe.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Qinisekisa ukuyeka",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "Iqale ukubamba umdlalo, ilindele abadlali ukuthi bajoyine...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Ukuxhumana kuphelelwe yisikhathi, ukuxhumana kwenethiwekhi akuzinzile.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "Asikho isikhuthazo se-LLM esitholakalayo.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Uyekile. Umdlalo uphelile.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "IP yesiphakeli",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Qinisekisa ukusula",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Ithuba lombangi.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "Ilindele ukuxhumana kweklayenti...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Isicelo sokubuyisela emuva sinqatshelwe noma sihlulekile.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Nezela umbhalo",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Phuma kumodi yezichasiselo",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Thayipha isichasiselo sakho",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Izama ukuxhuma kabusha...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Isicelo sokuqala kabusha sithunyelwe. Ilindele impendulo yombangi...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Isiphakeli simisiwe.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Isicelo sokuqala kabusha",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Awukwazi ukucela ukubuyisela emuva uma kungesona ithuba lakho.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Ukubuyisela emuva kwamukelwe.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Izilungiselelo zenethiwekhi yendawo",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Uxhunyiwe kabusha ngempumelelo!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Kuhlulekile ukugcina isithombe kugalari.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "Umbangi ucele ukuqala kabusha umdlalo. Uyamukela?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Ithuba lakho.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Akukwazeki ukuxhuma kabusha, sicela uqale kabusha umdlalo.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Umbambi",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Joyina",
-    "@join": {},
-    "port": "Ichweba",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Ikheli le-IP elingavumelekile.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Ichweba elingavumelekile.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Ukuxhuma: Umzamo {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Kuhlulekile ukuxhuma: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Iphutha: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Kuhlulekile ukuqala ukubamba: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Iphutha: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Umbambi utholiwe: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "Yeka",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Thola",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Xhuma",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Iklayenti lixhunyiwe: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Ukuthola: {seconds} s",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Ukuxhuma kabusha ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Uxhunyiwe",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "Susa",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "I-Egypt Yasendulo",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Iqhwa le-Gothic",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Insimu Yelayisi",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "I-Porcelain YaseShayina",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Ukuhwalala Kwasogwadule",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Umsebenzi Wokucophelela",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Ukufekethiswa Kwesintu",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Ifa LaseCarpathian",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Ubukhazikhazi Bombuso",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "I-Bohemian Crystal",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Ukuphuma Kwelanga eSavanna",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Ukuvumelana Nokulinganisela",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Isinongo Sesinamoni",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "I-Mosaic Yase-Anatolian",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Umoya Womkhosi",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Isiko",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Imakethe yezinongo",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Swipe ukuze uveze iDrawer",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "Bonisa imininingwane yomdlalo ezithombeni zesikrini",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Umkhawulo wesikhathi somuntu",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Awukho umkhawulo wesikhathi ekunyakazeni komuntu",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "Ukulahlekelwa ngenxa yokuphelelwa isikhathi kuzosetshenziswa kumdlali ongumuntu",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "Kutholwa ibhodi lomdlalo...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Ungafaka noma yiliphi igama lemodeli.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Isikhundla sebhodi lomdlalo sisebenzisiwe. FEN ikhophiwe ebhodini lokunamathisela.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Isiphakamiso: zama ukuthatha isithombe esicacile sebhodi lomdlalo.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "Ithemplethi ye-prompt ye-LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Akukho bhodi elivumelekileyo elitholakele.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Kukhethwa isithombe ku-albhamu...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Lungisa ithemplethi ye-prompt",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "Hlela ithemplethi ye-prompt yokuhlaziywa kwe-LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "Kwehlulekile ukukhiqiza i-FEN ebhodini elitholiwe.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Khipha ngolimi lwamanje",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "Ama-Base URL ajwayelekile",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Buka amamodeli ajwayelekile",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Amapharamitha wokuhlonza abuyekezwe.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Ukuhamba komhlophe",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Setha kabusha kuzilungiselelo ezenzakalelayo",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Ukuthatha izithombe",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Kwehlulekile ukusebenzisa isikhundla sebhodi elimaziwe.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "Okuqukethwe kwe-prompt ye-LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "I-LLM ayikalungiswa. Sicela uhlole izilungiselelo zakho.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Setha umphakeli, imodeli, API Key, ne-Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "Ukulungiselelwa kwe-LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "Lungisa umphakeli we-LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "Isihloko sethemplethi ye-prompt ye-LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Akukho maqhekeza womdlalo atholakele esithombeni. Sicela uzame futhi.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Hlonza ibhodi lomdlalo esithombeni",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Buka amathiphu",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Faka ebhodini lomdlalo",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Lungisa indawo yebhodi lomdlalo",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Buka ama-URL ajwayelekile",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Ukuhlaziya imibala kwehlulekile!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "Kuhlaziywa isithombe sebhodi lomdlalo...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Khetha ku-albhamu",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Akukho iphuzu lebhodi elitholakele!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Uma kushiywe kungagcwaliswanga, ithemplethi ezenzakalelayo izosetshenziswa",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "Ukulungiselelwa kwe-LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Uqinisekile ukuthi ufuna ukusetha kabusha amathempulethi we-prompt kwamanani ezenzakalelayo?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "Isiphetho sethemplethi ye-prompt ye-LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Kulayishwa impendulo...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Faka le miphumela ebhodini lomdlalo",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Kuthathwa isithombe...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Sicela ukhethe isithombe sebhodi lomdlalo ukuze lihlonzwe",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Imiphumela yokuhlonza",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Hlaziya izinyathelo bese unikeza ukuqonda.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "Thola i-API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "Yonke inqubo yokuhlonza yehlulekile ukuqeda.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Umphumela wokuhlonza ibhodi",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "Buza i-LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Ukutholwa kwebhodi kwehlulekile!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Akukho iphuzu lebhodi litholakale, awukwazi ukuhlonza iqhekeza!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "Kopisha i-FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Amamodeli asetshenziswa kakhulu",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (uyazikhethela)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Akukho isithombe esikhethiwe",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Ukuhamba komnyama",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Imodeli Yolimi Enkulu",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Umhlinzeki",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "I-URL Eyisisekelo",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Imodeli",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Izinga lokushisa",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Umyalo utholiwe! AI iyacubungula...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Ukucabanga okujulile kuqhubeka, sicela ulinde...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "Kuzokwethulwa maduze...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Amapharamitha okuqashelwa",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Lungisa amapharamitha ukuze uthuthukise ukunemba kokuqashelwa",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Gcina amapharamitha",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Ayikwazanga ukuqala ukuqashelwa kwesithombe: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Iphutha: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Ukuqashelwa kwesithombe kwehlulekile: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Iphutha: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Isimo esisetshenzisiwe sinezingcezu ezimhlophe ezingu-{whiteCount} nezimnyama ezingu-{blackCount}",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN ikopishiwe ebhodi lokunamathisela)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Ukuqashelwa kwehlulekile: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Iphutha: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "Isilinganiso sami",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "Imidlalo edlaliwe",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "Ukunqoba",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Ukwehlulwa",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Ukudonsa",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Kubuyekezwe okokugcina",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Ifomethi:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Setha kabusha izibalo",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Izinga lokudonsa",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Izinga lokulahlekelwa",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Izibalo ze-AI",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Nika amandla izibalo",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Uma kunikwe amandla, imiphumela yomdlalo izorekhodwa ezibalweni. Nokho, imidlalo ehilela ukubuyisela emuva ngeke irekhodwe. Uma kukhutshaziwe, ukuqoqwa kwezibalo kuyamiswa.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "Lokhu kuzosetha kabusha zonke izibalo zomdlalo. Lesi senzo asinakuhlehliswa.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Usayizi wendandatho yangaphakathi yebhodi",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Umthunzi webhodi",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Ukuqaphela ugibe",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Gqamisa ukuhamba kogibe ngama-siyingi aminyene nemicibisholo ngesikhathi sokuhlaziywa.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Kukhona ugibe. Ukuhamba kogibe: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Ukubanjwa kwe-Flanking",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Faka ingxenye eyodwa yezingcezu zomphikisi wakho phakathi kwayo ezimbili zakho emugqeni oqondile ukuze uzithwebule.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Vumela ukuthathwa kwe-Flanking",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Ukungenelela kokungenelela",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Hambisa endaweni engenalutho phakathi kwezingcezu zabaphikisi zakho ukuze ubabambe bobabili.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Vumela ukungenelela kokungenela",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Eqanjwa",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Capture ngokugxuma ngaphezulu kwesiqeshana somphikisi oseduze kube yindawo engenalutho.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Vumela Ukuqanjwa Kwe-TUSH",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Imigqa esebenzayo",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "Ngasemiphethweni yesikwele",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "Emigqeni ye-orthogonal ewela isikwele",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "Emigqeni ye-diagonal ewela isikwele",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Izigaba Zokubulawa",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Ukutholakala ngesikhathi sesigaba esihambayo esekwe izingcezu ezisele",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Akukho mkhawulo",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Kuyatholakala lapho unezingcezu ezintathu noma ezimbalwa",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Misa ukubeka uma kusele amaskwele amabili kuphela angenalutho",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Uma kunikwe amandla, isigaba sokubeka siyaphela futhi isigaba sokuhambisa siyaqala uma ibhodi linazo kuphela izindawo ezingenalutho ezingu-2 ezisele, kungakhathaliseki izingcezu esandleni. Lo mthetho usebenza kuphela emidlalweni yezingcezu eziyi-12.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Ungacela ukubuyisela nje ngemva kokunyakaza kwakho.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Uma ufuna inselelo enkulu, siphakamisa ukuthi unike amandla inketho \"{setting}\" futhi ulayishe phansi idatha egcwele eshelini sakho njengoba kukhombisiwe.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "Ingabe ufuna ukulungiselela imithetho yomdlalo manje?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "Isiphakamiso se-Algorithm",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Ulahlekelwe imidlalo eminingana ngokulandelana ku-Level 1. Ungathanda ukushintshela ku-algorithm ye-MCTS elula kakhulu ukuze unciphise ubunzima?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "Siyakuhalalisela ngokuwina ku-MCTS Level 30! Ungathanda ukushintshela ku-algorithm ye-MTD(f) yinselelo enkulu?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "Gcizelela izingxenye ezingathathwa",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Hambisa",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {

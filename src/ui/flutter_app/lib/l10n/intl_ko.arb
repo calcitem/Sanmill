@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} 의 말 이동 차례입니다.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "플레이어 1 승리!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "{invalidMove} 으로 게임을 불러올 수 없습니다.",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "불러온 게임이 현재 규칙과 맞지 않습니다.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "오류: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "승률",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player}의 말 수가 3개 미만입니다.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player}가 기권했습니다.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} 의 말이 어디로도 갈 수 없습니다.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "판이 가득 차서 {player} 의 말이 어디로도 갈 수 없습니다.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "시간이 초과되어 {player}가 졌습니다.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "이동 단계에서 지정된 연속된 수의 움직임 동안 아무 말도 제거되지 않았으므로, 규정에 따라 무승부로 판정됩니다.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "더 어려운 레벨에 도전하시겠습니까? 새로운 레벨은 {level} 레벨입니다!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "당신의 패배입니다!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Version: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "도움을 준 사람들",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "{element} 선택",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "정보",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " \"및\" ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "동의하기",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player}의 손에: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} 보드 위에: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "보드 상단으로부터의 오프셋",
     "@boardTop": {
@@ -1103,15 +1048,15 @@
     "@close": {
         "description": "Close"
     },
-    "download": "Download",
+    "download": "다운로드",
     "@download": {
         "description": "Download button text"
     },
-    "status": "Status",
+    "status": "상태",
     "@status": {
         "description": "Status label"
     },
-    "unknown": "Unknown",
+    "unknown": "알 수 없음",
     "@unknown": {
         "description": "Unknown value"
     },
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "이동할 차례: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "플레이어",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "마지막 이동: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "이동",
+    "@move": {
+        "description": "Move"
     },
     "selected": "선택됨",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{이동 없음}=1{{count} 이동}other{{count} 이동}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "불러오기 실패.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count}개의 말}other{{count}개의 말}}을 제거해야 합니다.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "배치됨({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "놓기 단계에서 놓인 말의 수입니다.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "현재 플레이어가 놓은 말의 수: {count}",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "말 놓기 단계가 아니므로 변경할 수 없습니다.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "숲",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "데스크탑 이미지",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "유효하지 않은 위치입니다.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIF 공유하기",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "픽셀 비율",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "지속 시간",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "게임 화면 녹화기",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "이전",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "다음",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "건너뛰기",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "이해했습니다",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "규칙 설정에서 게임 규칙을 수정할 수 있습니다.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "선택기에서 마우스 휠로 값을 변경할 수 있습니다.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI 생각 시간을 0으로 설정하면 생각할 시간 제한이 없습니다.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f)는 중간 검색 결과를 재사용하고 좋은 초기 추정을 사용하여 검색 범위를 좁힘으로써 효율성을 향상시키려는 알파-베타 검색 알고리즘의 변형입니다.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "AI 사고 시간 조정이 완전히 정확하지 않을 수 있음을 유의하십시오. 실제 생각하는 시간은 난이도가 낮은 값으로 설정되어 있을 때 더 짧을 수 있고 시간이 다 되어 AI가 중간 생각일 때 더 길어질 수 있습니다.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "난이도를 높게 설정했지만 AI 생각 시간을 늘리지 않으면 생각 시간 제약으로 인해 실제 난이도가 더 낮은 값으로 제한될 수 있습니다. 실제 값은 기계의 성능에 따라 다를 수 있습니다.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) 는 주어진 위치에서 최상의 움직임을 찾는 검색 알고리즘입니다. 이것은 알파-베타 알고리즘의 향상이며 null 또는 0 창 검색을 사용하여 이동이 기본 변동에서 이미 안전한 점수보다 더 나쁜지 또는 나쁘지 않은지 확인합니다. PVS는 가장 유망한 움직임에 집중하고 최적이 아닌 분기의 불필요한 검색을 피하여 검색의 효율성을 향상시킵니다.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "Alpha-beta 알고리즘은 최상의 움직임을 찾는 검색 알고리즘입니다. 검색 트리를 가지치기하고 효율성을 높이기 위해 minimax 원리와 두 값(alpha와 beta)을 사용합니다. Alpha는 컴퓨터가 얻을 수 있다고 확신하는 최소 점수를 나타내고, beta는 상대방이 얻을 수 있는 최대 점수를 나타냅니다. 이 알고리즘은 컴퓨터가 게임에서 현명하고 효율적인 결정을 내리는 데 도움이 됩니다.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "인간의 경험에 따르면 이기려고 하면 지게 됩니다. 대신 무승부를 목표로 삼고 게임에서 지지 않도록 하십시오. 상대방을 관찰하고 실수할 수 있는 위치로 부드럽게 유인합니다. 그들이 약점을 보일 때 기회를 잡고 부드럽게 승리를 위해 밀어붙입니다. 이런 식으로 게임에서 이길 수 있습니다.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "이 게임에서 선수에 비해 후수가 승리하기가 더 쉽습니다.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "패시브 옵션을 활성화하면 AI가 유리한 위치에 있을 때 서두르기보다는 여유를 가지게 됩니다.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "이 옵션을 활성화하면 게임의 임의성과 재미가 증가하지만, 비활성화하면 AI를 이기는 방법을 연구하는 데 도움이 됩니다.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "AI가 자신의 말의 이동성을 고려하면 상대 말을 빠르게 잡으려고만 하는 것이 아니라 상대의 움직임을 차단하고 상대가 같은 것을 하는 것을 방지하는 것도 고려합니다.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "보드가 가득 차 있을 때",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "말 놓기 단계가 끝나고 이동 단계가 시작되기 전에 보드가 말로 가득 차 있다면, 다음 단계가 이어집니다.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "이동 단계에서 먼저 움직이는 플레이어가 상대의 말 하나를 제거합니다.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "양쪽 모두 무승부에 동의합니다.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "상대방의 말 하나를 가져옵니다.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "첫 번째 플레이어가 게임에서 졌습니다.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "선수와 후수 모두 상대방의 말 하나를 제거합니다.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "후수와 선수 모두 상대방의 말 하나를 제거합니다.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "비행 단계에 접어들어 상대방의 말은 보드 어디든 빈 자리로 점프할 수 있습니다. \"규칙 설정\"에서 비행 규칙을 비활성화할 수 있습니다.",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "교착 상태일 때",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "말을 움직일 수 없을 때 어떤 조치가 이어지나요?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "막힌 쪽은 교착 상태로 인해 패배로 끝납니다.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "이동할 면을 변경합니다.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "상대방의 말 하나를 제거하고 다음 수를 둡니다.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "무승부로 끝납니다.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "상대방의 말 하나를 제거한 다음 상대방이 계속해서 말을 움직입니다.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI 응답 지연 시간",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI가 현재 응답 지연 단계에 있으니, 진행하기 전에 잠시 기다려 주십시오.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "인접하지 않은 말은 제거할 수 없습니다.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "교착 상태일 경우, 곤 형성 여부와 상관없이 당신의 말과 인접한 상대 말을 제거할 수 있습니다.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS는 시뮬레이션을 통해 다양한 수를 탐색하고 평가하여 결정을 내리는 초보자에게 친화적인 알고리즘입니다.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "골든 제이드",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "포레스트 우드",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "다크 미스테리",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "자정 블루",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "초록 숲",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "녹색 초원",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "돌길",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "파스텔 핑크",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "터키석 바다",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "바이올렛 드림",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "민트 초콜릿",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "하늘색",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "장난기 많은 정원",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "역행 분석 알고리즘은 다중 값 역행 분석을 사용하여 다양한 시작 위치에서 최종 게임 데이터베이스를 구축한 다음 이 데이터베이스를 적용하여 게임 플레이를 최적화합니다. 이 접근 방식은 울트라 스트롱 솔루션 범주에 속합니다.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "이 알고리즘의 사용자 가이드를 보시겠습니까?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "위치 우위 지시기 보기",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "완벽한 데이터베이스 사용",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "이 옵션을 활성화하면 첨단 알고리즘을 통해 생성된 결점 없는 게임 데이터베이스를 사용할 수 있습니다. 이 기능은 개빈과 엔드게임 전략을 통합하여 최적의 수를 제안합니다. 게임플레이에서 최고 수준의 정확성을 추구하는 플레이어에게 이상적인 선택입니다. 세밀한 계산 기술을 통해 생성된 이 데이터베이스는 거의 완벽한 게임 솔루션을 제공하도록 설계되었습니다.\n\n주의: AI가 데이터베이스에 액세스하지 못할 경우, 게임플레이 결정을 위해 기존 알고리즘을 사용하게 됩니다. 데이터베이스가 사용 가능할 때 '난이도 레벨'은 사실상 이길 수 없는 수준이 되며, 'AI 생각 시간'은 크게 줄어듭니다. 'AI의 플레이 스타일' 옵션 내의 많은 설정이 데이터베이스 결과가 가장 높은 우선순위를 가지기 때문에 덮어쓰여집니다.\n\n이 완벽한 데이터베이스를 최대한 활용하는 방법에 대한 지침은 여기를 클릭하십시오.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "배경 이미지",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "‘완벽한 데이터베이스 사용’ 옵션이 활성화되지 않았을 때, ‘랜덤’ 설정은 AI가 이동 선택 알고리즘을 사용하지 않고 임의로 말을 움직이게 합니다. 이는 일반적으로 훨씬 약한 게임 플레이를 초래합니다. 반대로 ‘완벽한 데이터베이스 사용’이 활성화되면 AI는 전통적인 AI 알고리즘과 혼합하는 대신 오로지 ‘완벽한 데이터베이스’에만 의존하여 결정을 내립니다. 이 모드에서 AI의 움직임은 데이터베이스의 내용에 전적으로 기반을 두고 있으며, 실시간 계산이나 검색 알고리즘에 의존하지 않습니다.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "상대의 말을 손에서 제거한 후, 상대의 차례로 넘어갑니다.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "배치 단계에서 참고누를 형성할 때",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "보드에서 상대의 말을 제거합니다.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "보드에서 상대의 말을 제거한 후, 상대의 차례로 넘어갑니다.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "상대는 보드에서 자신의 말을 제거합니다.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "당신이 조치를 취하는 대신, 상대는 보드에서 자신의 말을 선택하여 제거함으로써 스스로에게 불리한 조치를 취합니다.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "상대의 말을 손에서 제거한 후, 당신의 차례로 넘어갑니다.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "상대의 손에서 말을 제거합니다. Multi-remove 설정에 따라 여러 말을 제거해야 하고 상대가 손에 남은 말이 없다면, 계속해서 보드에서 상대의 말을 제거합니다. 그 후, 당신의 차례로 넘어갑니다. 참고누를 계속 형성한다면, 계속해서 상대의 말을 제거할 수 있습니다.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "상대의 손에서 말을 제거합니다. Multi-remove 설정에 따라 여러 말을 제거해야 하고 상대가 손에 남은 말이 없다면, 계속해서 보드에서 상대의 말을 제거합니다. 그 후, 상대의 차례로 넘어갑니다.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "말을 표시하고 제거를 지연합니다.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "배치 단계에서 제거될 말은 표시되며, 두 플레이어 모두 이러한 점에 새로운 말을 놓을 수 없습니다. 이동 단계로 들어가면 이 표시된 말은 모두 함께 제거되며, 플레이어는 그 후 이제 비어 있는 점으로 말을 이동할 수 있습니다.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "배치 단계에서 참고누를 형성할 때 취할 수 있는 조치들.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "표시됨",
-    "@marked": {},
+    "@marked": {
+        "description": ""
+    },
     "menu": "메뉴",
-    "@menu": {},
-    "monochrome": "흑백의 세계",
-    "@monochrome": {},
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "단색",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "일반 설정의 접근성 구성에서 화면 읽기 지원을 켤 수 있습니다。",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "조각에 숫자 표시",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "이미지 저장",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "분석 툴바 표시",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "분석 툴바 배경색",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "분석 툴바 아이콘 색상",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "변환되었습니다.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "변환할 수 없습니다.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "회전",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "상하",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "좌우",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "내외",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "투명 캔버스",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "반복적인 참고누 형성 제한",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "한 참고누에서 다른 참고누를 형성하기 위해 움직인 말은 다음 턴에서 원래 지점으로 즉시 돌아와 다시 참고누를 형성할 수 없습니다. 먼저 다른 움직임이 필요합니다.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "일회용 참고누",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "각 참고누는 상대의 조각을 한 번만 제거할 수 있습니다. 다시 형성할 수 있지만 추가 제거에는 사용할 수 없습니다.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "설정한 현재 규칙에 해당하는 완벽한 데이터베이스가 없습니다. 완벽한 데이터베이스에 대한 자세한 정보는 여기를 클릭하십시오.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "차단 경로에 집중",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "게임의 특정 단계에서는 참고누를 형성하는 것보다 상대방의 움직임을 방해하는 것을 우선시합니다. 참고누를 완성하여 조각을 제거하는 데 집중하는 대신, 이 단계에서 AI는 상대를 함정에 빠뜨리고 움직이지 못하게 하여 공격적인 플레이보다는 소모전을 통해 승리를 확보하는 것을 목표로 합니다. 이 단계별 전략은 상대의 참고누를 적극적으로 막지 않습니다.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "체스 말 이미지",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "색상 설정 가져오기",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "색상 설정 내보내기",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "가져오기",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "내보내기",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "먼저 JSON 형식 설정을 클립보드에 복사하십시오.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "클립보드에 복사되었습니다.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "가져왔습니다.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "보드 이미지",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "가을 잎",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "전설의 땅",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "비네팅 효과",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "보드 배경 이미지가 설정되었을 때 도구 모음을 완전히 투명하게 만들겠습니까?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "게임에서 진동 활성화",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "사운드 테마",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "공",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "액체",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "목재",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "말 놓기 애니메이션 효과",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "말 제거 애니메이션 효과",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "도구 모음을 아래에 표시",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "보드 코너 반지름",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "오프닝 북 사용",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "현재의",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "나인 멘스 모리스",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "트웰브 멘스 모리스",
-    "@twelveMensMorris": {},
-    "morabaraba": "모라바라바",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "두즈",
-    "@dooz": {},
-    "chamGonu": "참고누",
-    "@chamGonu": {},
-    "zhiQi": "직치",
-    "@zhiQi": {},
-    "chengSanQi": "성삼치",
-    "@chengSanQi": {},
-    "mulMulan": "물뮬란",
-    "@mulMulan": {},
-    "nerenchi": "네렌치",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "규칙 세트",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "라스커 모리스",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "원타임 밀",
-    "@oneTimeMill": {},
-    "daSanQi": "다삼치",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "인공지능이 초기 게임에서 전문적인 인간 플레이어가 흔히 사용하는 오프닝 무브를 사용하도록 허용합니다. 참고: 이 기능은 현재 특정 규칙 세트에서만 사용 가능합니다.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "이점 그래프 표시",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "장점 그래프는 AI가 수를 둔 후에만 그려집니다. 인간 플레이어가 수를 둘 때는 그려지지 않습니다.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "모든 말을 배치할 때까지 제거를 비활성화하십시오. 플레이어는 참고누 개수에 따라 말을 제거합니다.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "모든 말을 배치할 때까지 제거를 비활성화하십시오. 플레이어는 참고누 개수에 따라 말을 제거합니다. 개수가 같다면, 두 플레이어 모두 동일한 수의 말을 제거합니다. 한 쪽이 더 많다면, 한 말을 추가로 제거하여 말의 차이를 하나로 유지합니다. 한 플레이어만 참고누를 만들었다면, 그 플레이어는 두 말을 제거하고 다른 쪽은 한 말을 제거합니다. 둘 다 참고누를 만들지 못했다면, 둘 다 한 말을 제거합니다.",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "엘 필자",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "당신의 말 중 하나를 선택하세요.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "당신의 차례가 아닙니다.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "주석 도구 모음 배경색",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "주석 도구 모음 아이콘 색상",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "주석 도구 모음 표시",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "주석 모드로 들어가기",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "모든 주석을 삭제하시겠습니까?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM 프롬프트가 클립보드에 복사되었습니다.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "연결이 거부되었습니다. 서버가 다운되었을 수 있습니다.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "검색 성공, 연결 대기 중...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "LAN 연결 없음",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "스크린샷 찍기",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "상대와의 연결이 끊어졌습니다.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "되돌리기 요청",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "표시할 내용이 없습니다.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "호스팅 중지",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "연결이 상대방에 의해 초기화되었습니다.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "하트비트 시간 초과로 연결이 끊어졌습니다. 다시 연결해주세요.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "호스팅 시작",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "재시작 요청이 거부되었습니다.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN 상대와 연결되지 않았습니다.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM 프롬프트",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "게임이 재시작되었습니다.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "되돌리기 요청이 거부되었습니다.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "이 게임에서 기권하시겠습니까?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "상대가 기권했습니다. 당신이 이겼습니다!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "모든 주석 삭제",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "연결됨, 상대의 수를 기다리는 중...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "네트워크 상태: 연결 끊김",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "되돌리기 요청을 상대에게 보냈습니다.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "상대가 게임을 나갔을 수 있습니다.",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "호스트에 성공적으로 연결되었습니다.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "연결 끊김: 하트비트 시간 초과",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "검색된 호스트 없음.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "기권 확인",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "게임 호스팅 시작, 플레이어 참여 대기 중...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "연결 시간이 초과되었습니다. 네트워크 연결이 불안정합니다.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "사용 가능한 LLM 프롬프트 없음.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "당신이 기권했습니다. 게임 오버.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "서버 IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "삭제 확인",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "상대의 차례입니다.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "클라이언트 연결 대기 중...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "되돌리기 요청이 거부되었거나 실패했습니다.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "텍스트 추가",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "주석 모드 종료",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "주석 입력",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "다시 연결 시도 중...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "재시작 요청 보냄. 상대의 응답 대기 중...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "서버가 중지되었습니다.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "재시작 요청",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "당신의 차례가 아닐 때는 되돌리기를 요청할 수 없습니다.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "되돌리기 요청이 승인되었습니다.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "로컬 네트워크 설정",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "성공적으로 다시 연결되었습니다!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "이미지를 갤러리에 저장하는 데 실패했습니다.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "상대가 게임 재시작을 요청했습니다. 수락하시겠습니까?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "당신의 차례입니다.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "다시 연결할 수 없습니다. 게임을 재시작해주세요.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "호스트",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "참여",
-    "@join": {},
+    "@join": {
+        "description": ""
+    },
     "port": "포트",
-    "@port": {},
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "잘못된 IP 주소입니다.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "잘못된 포트입니다.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "연결 중: 시도 {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "연결 실패: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "오류: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "호스팅 시작 실패: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "오류: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "호스트 발견: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "포트",
+    "@port": {
+        "description": ""
     },
     "stop": "중지",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "검색",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "연결",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "클라이언트 연결됨: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "검색 중: {seconds}초",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "다시 연결 중 ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "연결됨",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "삭제",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "고구려의 신비",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "설경의 고딕",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "벼밭의 파도",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "청자의 운치",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "모래언덕의 황혼",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "금세공의 정교",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "민화 자수",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "백두산의 숨결",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "왕실의 위용",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "조선 수정",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "초원의 햇살",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "음양의 조화",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "계피 향기",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "모란 모자이크",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "풍물 흥",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "관습",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "향신료 마을",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "서랍을 표시하려면 스와이프하세요",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "스크린샷에 게임 정보 표시",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "사람 시간 제한",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "사람의 이동에는 시간 제한이 없습니다",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "사람 플레이어에게 시간 초과 패배가 적용됩니다",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "보드를 식별하는 중…",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "원하는 모델 이름을 입력할 수 있습니다.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "보드 위치가 적용되었습니다. FEN이 클립보드에 복사되었습니다.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "제안: 보드의 더 선명한 사진을 찍어 보세요.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM 프롬프트 템플릿",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "유효한 보드가 감지되지 않았습니다.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "앨범에서 이미지 선택 중…",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "프롬프트 템플릿 구성",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM 분석용 프롬프트 템플릿 수정",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "인식된 보드에서 FEN 생성에 실패했습니다.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "현재 언어로 출력",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "자주 사용하는 Base URL",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "자주 사용하는 모델 보기",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "인식 매개변수가 업데이트되었습니다.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "백의 차례",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "기본값으로 재설정",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "사진 촬영",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "인식된 보드 위치 적용에 실패했습니다.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM 프롬프트 내용",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM이 구성되지 않았습니다. 설정을 확인하세요.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "공급자, 모델, API Key 및 Base URL 설정",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM 구성",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM 공급자 구성",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM 프롬프트 템플릿 헤더",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "이미지에서 말을 인식하지 못했습니다. 다시 시도하세요.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "이미지에서 보드 인식",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "팁 보기",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "보드에 적용",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "보드 영역 조정",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "자주 사용하는 URL 보기",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "색상 분석 실패!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "게임 보드 이미지를 분석 중…",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "앨범에서 선택",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "보드 포인트를 감지하지 못했습니다!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "비워두면 기본 템플릿이 사용됩니다",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM 구성",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "프롬프트 템플릿을 기본값으로 재설정하시겠습니까?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM 프롬프트 템플릿 푸터",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "응답을 불러오는 중…",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "이 결과를 보드에 적용",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "사진을 찍는 중…",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "식별할 게임 보드 이미지를 선택하세요",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "식별 결과",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "수들을 분석하고 인사이트를 제공하세요.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key 받기",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "전체 인식 프로세스를 완료하지 못했습니다.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "보드 인식 결과",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLM에 문의",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "보드 감지에 실패했습니다!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "보드 포인트를 감지하지 못해 말을 식별할 수 없습니다!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FEN 복사",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "자주 사용하는 모델",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key(선택 사항)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "선택된 이미지가 없습니다",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "흑의 차례",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "대규모 언어 모델",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "제공자",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "기본 URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "모델",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "온도",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "명령을 받았습니다! AI가 처리 중...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "심층 사고 진행 중입니다. 잠시만 기다려주세요...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "곧 표시됩니다...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "인식 매개변수",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "인식 정확도를 높이려면 매개변수를 조정하세요",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "매개변수 저장",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "이미지 인식을 시작할 수 없습니다: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "오류: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "이미지 인식이 실패했습니다: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "오류: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "{whiteCount}개의 흰 돌과 {blackCount}개의 검은 돌이 있는 위치를 적용했습니다",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN이 클립보드에 복사됨)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "인식 실패: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "오류: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "내 평점",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "플레이한 게임",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "승리",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "패배",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "무승부",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "마지막 업데이트",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "형식:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "통계 초기화",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "무승부율",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "패배율",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "AI 통계",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "통계 사용",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "활성화하면 게임 결과가 통계에 기록됩니다. 단, 무르기가 포함된 게임은 기록되지 않습니다. 비활성화하면 통계 수집이 일시 중지됩니다.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "이렇게 하면 모든 게임 통계가 초기화됩니다. 이 작업은 취소할 수 없습니다.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "보드 내부 링 크기",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "보드 그림자",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "함정 감지",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "분석 중 굵은 원과 화살표로 함정 수를 강조 표시합니다.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "함정이 있습니다. 함정 수: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "측면 캡처",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "상대방의 작품 중 하나를 둘 사이의 조각 중 하나를 직선으로 동봉하여 캡처하십시오.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "측면 캡처를 허용하십시오",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "중재 캡처",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "상대방의 두 조각 사이의 빈 지점으로 이동하여 둘 다 포착하십시오.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "중재 캡처를 허용하십시오",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "점프 캡처",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "인접한 상대의 조각을 빈 지점 너머로 점프하여 캡처하십시오.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "점프 캡처를 허용하십시오",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "해당 라인",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "광장의 가장자리를 따라",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "정사각형을 가로 지르는 직교 라인을 따라",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "정사각형을 가로 지르는 대각선을 따라",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "실행 단계",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "남은 조각을 기준으로 이동 단계에서 가용성",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "제한이 없습니다",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "3 개 이하의 조각이있을 때 사용할 수 있습니다",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "빈 칸이 두 개만 남았을 때 배치 중지",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "활성화하면 보드에 빈 공간이 2개만 남았을 때 배치 단계가 종료되고 이동 단계가 시작됩니다. 손에 있는 말 개수와 관계없이 적용됩니다. 이 규칙은 12개 말 게임에만 적용됩니다.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "당신의 수를 둔 직후에만 무르기를 요청할 수 있습니다.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "더 큰 도전을 원하시면 \"{setting}\" 옵션을 활성화하고 안내에 따라 완전한 데이터베이스를 기기에 다운로드하는 것이 좋습니다.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "지금 게임 규칙을 구성하시겠습니까?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "알고리즘 제안",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "레벨 1에서 여러 게임을 연속으로 졌습니다. 난이도를 낮추기 위해 더 쉬운 MCTS 알고리즘으로 전환하시겠습니까?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS 레벨 30에서 승리하신 것을 축하드립니다! 더 큰 도전을 위해 MTD(f) 알고리즘으로 전환하시겠습니까?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "제거 가능한 말 강조",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2179,1228 +2748,1167 @@
     "@back": {
         "description": "Back button tooltip"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "퍼즐",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "퍼즐",
     "@puzzle": {
         "description": "Puzzle"
     },
-    "noPuzzlesAvailable": "No puzzles available",
+    "noPuzzlesAvailable": "사용 가능한 퍼즐 없음",
     "@noPuzzlesAvailable": {
         "description": "Message when no puzzles are available"
     },
-    "filter": "Filter",
+    "filter": "필터",
     "@filter": {
         "description": "Filter"
     },
-    "category": "Category",
+    "category": "카테고리",
     "@category": {
         "description": "Category"
     },
-    "clearFilter": "Clear Filter",
+    "clearFilter": "필터 지우기",
     "@clearFilter": {
         "description": "Clear all filters"
     },
-    "puzzleStatistics": "Puzzle Statistics",
+    "puzzleStatistics": "퍼즐 통계",
     "@puzzleStatistics": {
         "description": "Puzzle statistics"
     },
-    "totalPuzzles": "Total Puzzles",
+    "totalPuzzles": "총 퍼즐",
     "@totalPuzzles": {
         "description": "Total puzzles"
     },
-    "completed": "Completed",
+    "completed": "완료됨",
     "@completed": {
         "description": "Completed"
     },
-    "totalStars": "Total Stars",
+    "totalStars": "총 별",
     "@totalStars": {
         "description": "Total stars earned"
     },
-    "completionPercentage": "Completion",
+    "completionPercentage": "완료율",
     "@completionPercentage": {
         "description": "Completion percentage"
     },
-    "puzzleDifficultyBeginner": "Beginner",
+    "puzzleDifficultyBeginner": "초보자",
     "@puzzleDifficultyBeginner": {
         "description": "Beginner difficulty"
     },
-    "puzzleDifficultyEasy": "Easy",
+    "puzzleDifficultyEasy": "쉬움",
     "@puzzleDifficultyEasy": {
         "description": "Easy difficulty"
     },
-    "puzzleDifficultyMedium": "Medium",
+    "puzzleDifficultyMedium": "보통",
     "@puzzleDifficultyMedium": {
         "description": "Medium difficulty"
     },
-    "puzzleDifficultyHard": "Hard",
+    "puzzleDifficultyHard": "어려움",
     "@puzzleDifficultyHard": {
         "description": "Hard difficulty"
     },
-    "puzzleDifficultyExpert": "Expert",
+    "puzzleDifficultyExpert": "전문가",
     "@puzzleDifficultyExpert": {
         "description": "Expert difficulty"
     },
-    "puzzleDifficultyMaster": "Master",
+    "puzzleDifficultyMaster": "마스터",
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "밀 만들기",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "puzzleCategoryCapturePieces": "말 잡기",
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
-    "puzzleCategoryWinGame": "Win Game",
+    "puzzleCategoryWinGame": "게임 이기기",
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
-    "puzzleCategoryDefend": "Defend",
+    "puzzleCategoryDefend": "방어",
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "Find Best Move",
+    "puzzleCategoryFindBestMove": "최선의 수 찾기",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
-    "puzzleCategoryEndgame": "Endgame",
+    "puzzleCategoryEndgame": "엔드게임",
     "@puzzleCategoryEndgame": {
         "description": "Endgame category"
     },
-    "puzzleCategoryOpening": "Opening",
+    "puzzleCategoryOpening": "오프닝",
     "@puzzleCategoryOpening": {
         "description": "Opening category"
     },
-    "puzzleCategoryMixed": "Mixed",
+    "puzzleCategoryMixed": "혼합",
     "@puzzleCategoryMixed": {
         "description": "Mixed tactics category"
     },
-    "exitPuzzle": "Exit Puzzle?",
+    "exitPuzzle": "퍼즐을 종료하시겠습니까?",
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
-    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "puzzleProgressWillBeLost": "진행 상황이 손실됩니다. 확실합니까?",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
     },
-    "moves": "Moves",
+    "moves": "수",
     "@moves": {
         "description": "Number of moves"
     },
-    "optimal": "Optimal",
+    "optimal": "최적",
     "@optimal": {
         "description": "Optimal move count"
     },
-    "checkSolution": "Check Solution",
+    "checkSolution": "해답 확인",
     "@checkSolution": {
         "description": "Check if solution is correct"
     },
-    "giveUp": "Give Up",
+    "giveUp": "포기",
     "@giveUp": {
         "description": "Give up on puzzle"
     },
-    "puzzleSolved": "Puzzle Solved!",
+    "puzzleSolved": "퍼즐 해결!",
     "@puzzleSolved": {
         "description": "Puzzle completion message"
     },
-    "hintsUsed": "Hints Used",
+    "hintsUsed": "사용한 힌트",
     "@hintsUsed": {
         "description": "Hints were used"
     },
-    "tryAgain": "Try Again",
+    "tryAgain": "다시 시도",
     "@tryAgain": {
         "description": "Try the puzzle again"
     },
-    "backToList": "Back to List",
+    "backToList": "목록으로 돌아가기",
     "@backToList": {
         "description": "Go back to puzzle list"
     },
-    "solution": "Solution",
+    "solution": "해답",
     "@solution": {
         "description": "Puzzle solution"
     },
-    "puzzleCreateNew": "Create New Puzzle",
+    "puzzleCreateNew": "새 퍼즐 만들기",
     "@puzzleCreateNew": {
         "description": "Create a new custom puzzle"
     },
-    "puzzleEdit": "Edit Puzzle",
+    "puzzleEdit": "퍼즐 편집",
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
-    "puzzleCustom": "Custom",
+    "puzzleCustom": "사용자 정의",
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
-    "puzzleSelect": "Select Puzzles",
+    "puzzleSelect": "퍼즐 선택",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"
     },
-    "puzzleSelectedCount": "{count} Selected",
+    "puzzleSelectedCount": "{count}개 선택됨",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
-    "puzzleSelectAll": "Select All",
+    "puzzleSelectAll": "모두 선택",
     "@puzzleSelectAll": {
         "description": "Select all puzzles"
     },
-    "puzzleExport": "Export",
+    "puzzleExport": "내보내기",
     "@puzzleExport": {
         "description": "Export selected puzzles"
     },
-    "puzzleImport": "Import",
+    "puzzleImport": "가져오기",
     "@puzzleImport": {
         "description": "Import puzzles from file"
     },
-    "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
+    "puzzleExportSuccess": "{count,plural, =1{{count}개 퍼즐을 성공적으로 내보냈습니다}other{{count}개 퍼즐을 성공적으로 내보냈습니다}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
-    "puzzleExportFailed": "Failed to export puzzles",
+    "puzzleExportFailed": "퍼즐 내보내기 실패",
     "@puzzleExportFailed": {
         "description": "Puzzle export failure message"
     },
-    "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
+    "puzzleImportSuccess": "{count,plural, =1{{count}개 퍼즐을 성공적으로 가져왔습니다}other{{count}개 퍼즐을 성공적으로 가져왔습니다}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
-    "puzzleImportFailed": "Failed to import puzzles",
+    "puzzleImportFailed": "퍼즐 가져오기 실패",
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
-    "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
+    "puzzleDeleteConfirm": "{count,plural, =1{{count}개 퍼즐을 삭제하시겠습니까?}other{{count}개 퍼즐을 삭제하시겠습니까?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
-    "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
+    "puzzleDeleted": "{count,plural, =1{{count}개 퍼즐을 삭제했습니다}other{{count}개 퍼즐을 삭제했습니다}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
-    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "puzzleCannotDeleteBuiltIn": "내장 퍼즐은 삭제할 수 없습니다",
     "@puzzleCannotDeleteBuiltIn": {
         "description": "Error when trying to delete built-in puzzles"
     },
-    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "puzzleCreationInstructions": "퍼즐 만드는 방법",
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
-    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "puzzleCreationSteps": "1. 보드 위치 설정\n2. 위치 캡처\n3. 해답 수순 기록\n4. 퍼즐 세부 정보 입력\n5. 저장",
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
-    "puzzleSetupPosition": "Setup Position",
+    "puzzleSetupPosition": "위치 설정",
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleCapturePosition": "Capture Position",
+    "puzzleCapturePosition": "위치 캡처",
     "@puzzleCapturePosition": {
         "description": "Capture current board position"
     },
-    "puzzlePositionCaptured": "Position captured successfully",
+    "puzzlePositionCaptured": "위치 캡처 성공",
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
-    "puzzleNoPositionCaptured": "No position captured yet",
+    "puzzleNoPositionCaptured": "캡처된 위치 없음",
     "@puzzleNoPositionCaptured": {
         "description": "No position captured message"
     },
-    "puzzleCapturePositionFirst": "Please capture a position first",
+    "puzzleCapturePositionFirst": "먼저 위치를 캡처하세요",
     "@puzzleCapturePositionFirst": {
         "description": "Error when trying to record without position"
     },
-    "puzzleRecordSolution": "Record Solution",
+    "puzzleRecordSolution": "해답 기록",
     "@puzzleRecordSolution": {
         "description": "Record solution moves section"
     },
-    "puzzleStartRecording": "Start Recording",
+    "puzzleStartRecording": "기록 시작",
     "@puzzleStartRecording": {
         "description": "Start recording solution moves"
     },
-    "puzzleStopRecording": "Stop Recording",
+    "puzzleStopRecording": "기록 중지",
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
-    "puzzleRecording": "Recording...",
+    "puzzleRecording": "기록 중...",
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
-    "puzzleRecordingStarted": "Started recording solution moves",
+    "puzzleRecordingStarted": "해답 수순 기록 시작",
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
-    "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
+    "puzzleRecordingStopped": "{count,plural, =1{{count}수를 기록했습니다}other{{count}수를 기록했습니다}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
-    "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
+    "puzzleSolutionMoves": "{count,plural, =1{해답: {count}수}other{해답: {count}수}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
-    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "puzzleNoSolutionRecorded": "기록된 해답 없음",
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Clear Solution",
+    "puzzleClearSolution": "해답 지우기",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
-    "puzzleDetails": "Puzzle Details",
+    "puzzleDetails": "퍼즐 세부 정보",
     "@puzzleDetails": {
         "description": "Puzzle details section"
     },
-    "puzzleTitle": "Title",
+    "puzzleTitle": "제목",
     "@puzzleTitle": {
         "description": "Puzzle title field"
     },
-    "puzzleDescription": "Description",
+    "puzzleDescription": "설명",
     "@puzzleDescription": {
         "description": "Puzzle description field"
     },
-    "puzzleCategory": "Category",
+    "puzzleCategory": "카테고리",
     "@puzzleCategory": {
         "description": "Puzzle category field"
     },
-    "puzzleDifficulty": "Difficulty",
+    "puzzleDifficulty": "난이도",
     "@puzzleDifficulty": {
         "description": "Puzzle difficulty field"
     },
-    "puzzleHint": "Hint",
+    "puzzleHint": "힌트",
     "@puzzleHint": {
         "description": "Puzzle hint field"
     },
-    "puzzleTags": "Tags",
+    "puzzleTags": "태그",
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "Separate tags with commas",
+    "puzzleTagsHint": "태그를 쉼표로 구분",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
-    "puzzleAuthor": "Author",
+    "puzzleAuthor": "작성자",
     "@puzzleAuthor": {
         "description": "Puzzle author field"
     },
-    "puzzleTitleRequired": "Title is required",
+    "puzzleTitleRequired": "제목은 필수입니다",
     "@puzzleTitleRequired": {
         "description": "Title required error"
     },
-    "puzzleDescriptionRequired": "Description is required",
+    "puzzleDescriptionRequired": "설명은 필수입니다",
     "@puzzleDescriptionRequired": {
         "description": "Description required error"
     },
-    "puzzlePositionRequired": "Position is required",
+    "puzzlePositionRequired": "위치는 필수입니다",
     "@puzzlePositionRequired": {
         "description": "Position required error"
     },
-    "puzzleSolutionRequired": "Solution is required",
+    "puzzleSolutionRequired": "해답은 필수입니다",
     "@puzzleSolutionRequired": {
         "description": "Solution required error"
     },
-    "puzzleCreated": "Puzzle created successfully",
+    "puzzleCreated": "퍼즐 생성 성공",
     "@puzzleCreated": {
         "description": "Puzzle created message"
     },
-    "puzzleUpdated": "Puzzle updated successfully",
+    "puzzleUpdated": "퍼즐 업데이트 성공",
     "@puzzleUpdated": {
         "description": "Puzzle updated message"
     },
-    "puzzleSaveFailed": "Failed to save puzzle",
+    "puzzleSaveFailed": "퍼즐 저장 실패",
     "@puzzleSaveFailed": {
         "description": "Puzzle save failed message"
     },
-    "optional": "optional",
+    "optional": "선택 사항",
     "@optional": {
         "description": "Optional field indicator"
     },
-    "yourProgress": "Your Progress",
+    "yourProgress": "내 진행 상황",
     "@yourProgress": {
         "description": "Your progress header"
     },
-    "quit": "Quit",
+    "quit": "종료",
     "@quit": {
         "description": "Quit button"
     },
-    "all": "All",
+    "all": "전체",
     "@all": {
         "description": "All option in filters"
     },
-    "comingSoon": "Coming Soon",
+    "comingSoon": "곧 출시",
     "@comingSoon": {
         "description": "Coming soon message"
     },
-    "dailyPuzzle": "Daily Puzzle",
+    "dailyPuzzle": "오늘의 퍼즐",
     "@dailyPuzzle": {
         "description": "Daily puzzle feature name"
     },
-    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "dailyPuzzleDesc": "매일 새로운 퍼즐 풀기",
     "@dailyPuzzleDesc": {
         "description": "Daily puzzle description"
     },
-    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "dailyPuzzleNumber": "{dayNumber}일차",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "연속",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
-    "dailyPuzzleDayStreak": "day streak",
+    "dailyPuzzleDayStreak": "일 연속",
     "@dailyPuzzleDayStreak": {
         "description": "Day streak suffix"
     },
-    "dailyPuzzleDays": "days",
+    "dailyPuzzleDays": "일",
     "@dailyPuzzleDays": {
         "description": "Days label"
     },
-    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "dailyPuzzleBestStreak": "최고: {longestStreak}일",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
-    "dailyPuzzleStart": "Start Daily Puzzle",
+    "dailyPuzzleStart": "오늘의 퍼즐 시작",
     "@dailyPuzzleStart": {
         "description": "Start daily puzzle button"
     },
-    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "dailyPuzzleStreakHint": "매일 퍼즐을 완료하여 연속 기록을 쌓으세요!",
     "@dailyPuzzleStreakHint": {
         "description": "Streak hint message"
     },
-    "dailyPuzzleCurrentStreak": "Current Streak",
+    "dailyPuzzleCurrentStreak": "현재 연속",
     "@dailyPuzzleCurrentStreak": {
         "description": "Current streak label"
     },
-    "dailyPuzzleLongestStreak": "Longest Streak",
+    "dailyPuzzleLongestStreak": "최장 연속",
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "Total Completed",
+    "dailyPuzzleTotalCompleted": "총 완료",
     "@dailyPuzzleTotalCompleted": {
         "description": "Total completed puzzles label"
     },
-    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "dailyPuzzleStreakInfo": "연속 기록을 유지하려면 매일 퍼즐을 푸세요. 하루를 놓치면 초기화됩니다!",
     "@dailyPuzzleStreakInfo": {
         "description": "Streak info message"
     },
-    "allPuzzles": "All Puzzles",
+    "allPuzzles": "모든 퍼즐",
     "@allPuzzles": {
         "description": "All puzzles mode name"
     },
-    "allPuzzlesDesc": "Browse all available puzzles",
+    "allPuzzlesDesc": "사용 가능한 모든 퍼즐 찾아보기",
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "퍼즐 러시",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
-    "puzzleRushDesc": "Solve puzzles against the clock",
+    "puzzleRushDesc": "시간과 싸우며 퍼즐 풀기",
     "@puzzleRushDesc": {
         "description": "Puzzle rush mode description"
     },
-    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "puzzleRushTagline": "5분 안에 최대한 많은 퍼즐을 풀어보세요!",
     "@puzzleRushTagline": {
         "description": "Puzzle rush tagline"
     },
-    "puzzleRushRules": "Rules",
+    "puzzleRushRules": "규칙",
     "@puzzleRushRules": {
         "description": "Puzzle rush rules header"
     },
-    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "puzzleRushRule1": "⏱️ 5분 타이머",
     "@puzzleRushRule1": {
         "description": "Puzzle rush rule 1"
     },
-    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "puzzleRushRule2": "❤️ 3개의 생명 - 실수당 1개 손실",
     "@puzzleRushRule2": {
         "description": "Puzzle rush rule 2"
     },
-    "puzzleRushRule3": "🏆 Maximize your score!",
+    "puzzleRushRule3": "🏆 점수 최대화!",
     "@puzzleRushRule3": {
         "description": "Puzzle rush rule 3"
     },
-    "puzzleRushStart": "Start Rush",
+    "puzzleRushStart": "러시 시작",
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
-    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "puzzleRushQuitConfirm": "러시를 종료하시겠습니까? 진행 상황이 손실됩니다.",
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
-    "puzzleRushResults": "Rush Results",
+    "puzzleRushResults": "러시 결과",
     "@puzzleRushResults": {
         "description": "Puzzle rush results header"
     },
-    "puzzleRushTimeUp": "Time's Up!",
+    "puzzleRushTimeUp": "시간 종료!",
     "@puzzleRushTimeUp": {
         "description": "Time up message"
     },
-    "puzzleRushOutOfLives": "Out of Lives",
+    "puzzleRushOutOfLives": "생명 소진",
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "러시 완료!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
-    "puzzleRushSolved": "Solved",
+    "puzzleRushSolved": "해결",
     "@puzzleRushSolved": {
         "description": "Puzzles solved label"
     },
-    "puzzleRushFailed": "Failed",
+    "puzzleRushFailed": "실패",
     "@puzzleRushFailed": {
         "description": "Puzzles failed label"
     },
-    "puzzleRushAccuracy": "Accuracy",
+    "puzzleRushAccuracy": "정확도",
     "@puzzleRushAccuracy": {
         "description": "Accuracy label"
     },
-    "puzzleRushPlayAgain": "Play Again",
+    "puzzleRushPlayAgain": "다시 플레이",
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "퍼즐 배틀",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
-    "puzzleBattleDesc": "Compete with other players",
+    "puzzleBattleDesc": "다른 플레이어와 경쟁",
     "@puzzleBattleDesc": {
         "description": "Puzzle battle mode description"
     },
-    "puzzleBattleComingSoon": "Coming Soon!",
+    "puzzleBattleComingSoon": "곧 출시!",
     "@puzzleBattleComingSoon": {
         "description": "Puzzle battle coming soon message"
     },
-    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "puzzleBattleStayTuned": "이 기능은 현재 개발 중입니다. 기대해 주세요!",
     "@puzzleBattleStayTuned": {
         "description": "Puzzle battle stay tuned message"
     },
-    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "puzzleBattleFeature1": "⚔️ 1대1 레이스",
     "@puzzleBattleFeature1": {
         "description": "Puzzle battle feature 1"
     },
-    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "puzzleBattleFeature2": "🎯 실시간 상대 매칭",
     "@puzzleBattleFeature2": {
         "description": "Puzzle battle feature 2"
     },
-    "puzzleBattleFeature3": "📊 Rating system",
+    "puzzleBattleFeature3": "📊 등급 시스템",
     "@puzzleBattleFeature3": {
         "description": "Puzzle battle feature 3"
     },
-    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "puzzleBattleFeature4": "🏆 리더보드",
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "Custom Puzzles",
+    "customPuzzles": "사용자 정의 퍼즐",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
-    "customPuzzlesDesc": "Create and manage your puzzles",
+    "customPuzzlesDesc": "퍼즐 생성 및 관리",
     "@customPuzzlesDesc": {
         "description": "Custom puzzles mode description"
     },
-    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "puzzleMultiSelectMode": "다중 선택 모드",
     "@puzzleMultiSelectMode": {
         "description": "Multi-select mode label"
     },
-    "puzzleCreate": "Create Puzzle",
+    "puzzleCreate": "퍼즐 생성",
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "퍼즐 연속 기록",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
-    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "puzzleStreakDesc": "실수 없이 연속으로 풀기",
     "@puzzleStreakDesc": {
         "description": "Puzzle streak mode description"
     },
-    "puzzleStreakTagline": "How many can you solve in a row?",
+    "puzzleStreakTagline": "몇 개를 연속으로 풀 수 있나요?",
     "@puzzleStreakTagline": {
         "description": "Puzzle streak tagline"
     },
-    "puzzleStreakRules": "Rules",
+    "puzzleStreakRules": "규칙",
     "@puzzleStreakRules": {
         "description": "Puzzle streak rules header"
     },
-    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "puzzleStreakRule1": "🎯 가능한 한 많은 퍼즐 풀기",
     "@puzzleStreakRule1": {
         "description": "Puzzle streak rule 1"
     },
-    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "puzzleStreakRule2": "❌ 한 번의 실수로 종료",
     "@puzzleStreakRule2": {
         "description": "Puzzle streak rule 2"
     },
-    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "puzzleStreakRule3": "🏆 개인 기록 경신",
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "연속 기록 시작",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
-    "puzzleStreakCurrent": "Current",
+    "puzzleStreakCurrent": "현재",
     "@puzzleStreakCurrent": {
         "description": "Current streak label"
     },
-    "puzzleStreakBest": "Best",
+    "puzzleStreakBest": "최고",
     "@puzzleStreakBest": {
         "description": "Best streak label"
     },
-    "puzzleStreakResults": "Streak Results",
+    "puzzleStreakResults": "연속 기록 결과",
     "@puzzleStreakResults": {
         "description": "Streak results header"
     },
-    "puzzleStreakEnded": "Streak Ended",
+    "puzzleStreakEnded": "연속 기록 종료",
     "@puzzleStreakEnded": {
         "description": "Streak ended message"
     },
-    "puzzleStreakNewRecord": "New Record!",
+    "puzzleStreakNewRecord": "신기록!",
     "@puzzleStreakNewRecord": {
         "description": "New record message"
     },
-    "puzzleStreakFinalScore": "Final Score",
+    "puzzleStreakFinalScore": "최종 점수",
     "@puzzleStreakFinalScore": {
         "description": "Final score label"
     },
-    "puzzleStreakTryAgain": "Try Again",
+    "puzzleStreakTryAgain": "다시 시도",
     "@puzzleStreakTryAgain": {
         "description": "Try again button"
     },
-    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "puzzleStreakQuitConfirm": "종료하시겠습니까? 연속 기록이 손실됩니다.",
     "@puzzleStreakQuitConfirm": {
         "description": "Quit streak confirmation"
     },
-    "puzzleHistory": "History",
+    "puzzleHistory": "기록",
     "@puzzleHistory": {
         "description": "Puzzle history page name"
     },
-    "puzzleHistoryDesc": "View your puzzle attempts",
+    "puzzleHistoryDesc": "퍼즐 시도 기록 보기",
     "@puzzleHistoryDesc": {
         "description": "Puzzle history description"
     },
-    "puzzleHistoryEmpty": "No Puzzle History",
+    "puzzleHistoryEmpty": "퍼즐 기록 없음",
     "@puzzleHistoryEmpty": {
         "description": "Empty history message"
     },
-    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "puzzleHistoryEmptyHint": "퍼즐을 풀기 시작하면 여기에 기록이 표시됩니다",
     "@puzzleHistoryEmptyHint": {
         "description": "Empty history hint"
     },
-    "puzzleHistorySuccess": "Success Only",
+    "puzzleHistorySuccess": "성공만",
     "@puzzleHistorySuccess": {
         "description": "Success filter"
     },
-    "puzzleHistoryFailed": "Failed Only",
+    "puzzleHistoryFailed": "실패만",
     "@puzzleHistoryFailed": {
         "description": "Failed filter"
     },
-    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "puzzleHistoryUnknown": "알 수 없는 퍼즐",
     "@puzzleHistoryUnknown": {
         "description": "Unknown puzzle label"
     },
-    "puzzleHistoryHints": "hints",
+    "puzzleHistoryHints": "힌트",
     "@puzzleHistoryHints": {
         "description": "Hints label"
     },
-    "puzzleStatisticsDesc": "View detailed analytics",
+    "puzzleStatisticsDesc": "상세 분석 보기",
     "@puzzleStatisticsDesc": {
         "description": "Statistics page description"
     },
-    "puzzleStatsRating": "Your Puzzle Rating",
+    "puzzleStatsRating": "내 퍼즐 등급",
     "@puzzleStatsRating": {
         "description": "Puzzle rating header"
     },
-    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "puzzleStatsProvisional": "잠정 (남은 게임 {gamesLeft}개)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
-    "puzzleStatsGamesPlayed": "Games Played",
+    "puzzleStatsGamesPlayed": "플레이한 게임",
     "@puzzleStatsGamesPlayed": {
         "description": "Games played label"
     },
-    "puzzleStatsDeviation": "Deviation",
+    "puzzleStatsDeviation": "편차",
     "@puzzleStatsDeviation": {
         "description": "Rating deviation label"
     },
-    "puzzleStatsPerformance": "Performance Overview",
+    "puzzleStatsPerformance": "성과 개요",
     "@puzzleStatsPerformance": {
         "description": "Performance overview header"
     },
-    "puzzleStatsSuccessRate": "Success Rate",
+    "puzzleStatsSuccessRate": "성공률",
     "@puzzleStatsSuccessRate": {
         "description": "Success rate label"
     },
-    "puzzleStatsAvgTime": "Avg. Time",
+    "puzzleStatsAvgTime": "평균 시간",
     "@puzzleStatsAvgTime": {
         "description": "Average time label"
     },
-    "puzzleStatsSolved": "Solved",
+    "puzzleStatsSolved": "해결",
     "@puzzleStatsSolved": {
         "description": "Solved count label"
     },
-    "puzzleStatsFailed": "Failed",
+    "puzzleStatsFailed": "실패",
     "@puzzleStatsFailed": {
         "description": "Failed count label"
     },
-    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "puzzleStatsByDifficulty": "난이도별 성공",
     "@puzzleStatsByDifficulty": {
         "description": "Success by difficulty header"
     },
-    "puzzleStatsByCategory": "Success by Category",
+    "puzzleStatsByCategory": "카테고리별 성공",
     "@puzzleStatsByCategory": {
         "description": "Success by category header"
     },
-    "puzzleStatsRecentActivity": "Recent Activity",
+    "puzzleStatsRecentActivity": "최근 활동",
     "@puzzleStatsRecentActivity": {
         "description": "Recent activity header"
     },
-    "puzzleStatsNoActivity": "No recent activity",
+    "puzzleStatsNoActivity": "최근 활동 없음",
     "@puzzleStatsNoActivity": {
         "description": "No activity message"
     },
-    "edit": "Edit",
+    "edit": "편집",
     "@edit": {
         "description": "Edit button"
     },
-    "save": "Save",
+    "save": "저장",
     "@save": {
         "description": "Save button"
     },
-    "noCustomPuzzles": "No Custom Puzzles",
+    "noCustomPuzzles": "사용자 정의 퍼즐 없음",
     "@noCustomPuzzles": {
         "description": "Message when there are no custom puzzles"
     },
-    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "noCustomPuzzlesHint": "특정 위치를 연습하기 위해 나만의 퍼즐을 만드세요",
     "@noCustomPuzzlesHint": {
         "description": "Hint message for creating custom puzzles"
     },
-    "plannedFeatures": "This feature is planned for a future release",
+    "plannedFeatures": "이 기능은 향후 릴리스에서 제공될 예정입니다",
     "@plannedFeatures": {
         "description": "Message for features under development"
     },
-    "puzzleInvalidPosition": "Invalid position",
+    "puzzleInvalidPosition": "잘못된 위치",
     "@puzzleInvalidPosition": {
         "description": "Error message when puzzle position is invalid"
     },
-    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "puzzleOpenBoardSetup": "보드 열기 (위치 설정)",
     "@puzzleOpenBoardSetup": {
         "description": "Open the game board in Setup Position mode to arrange the starting position."
     },
-    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "puzzleOpenBoardPlay": "보드 열기 (수 두기)",
     "@puzzleOpenBoardPlay": {
         "description": "Open the game board to play the solution moves while recording."
     },
-    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "puzzleRecordingHintUseButton": "아래 버튼을 사용하여 보드를 열고 뒤로 버튼을 눌러 돌아오세요.",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
     },
-    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "puzzleInvalidPositionFormat": "잘못된 위치 형식입니다. 게임 보드를 확인하세요.",
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "puzzleFailedLoadPosition": "위치 로드 실패. 다시 캡처하세요.",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "puzzleInvalidPositionFormatRecapture": "잘못된 위치 형식입니다. 위치를 다시 캡처하세요.",
     "@puzzleInvalidPositionFormatRecapture": {
         "description": "Error message when position format is invalid and needs recapture"
     },
-    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "puzzleShowDetailedWorkflow": "자세한 작업 흐름 표시",
     "@puzzleShowDetailedWorkflow": {
         "description": "Tooltip for showing detailed workflow"
     },
-    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "puzzleCreationWorkflow": "퍼즐 생성 작업 흐름",
     "@puzzleCreationWorkflow": {
         "description": "Title for puzzle creation workflow dialog"
     },
-    "puzzleWorkflowStepSetup": "Setup Position",
+    "puzzleWorkflowStepSetup": "위치 설정",
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "Open board (setup or play moves), create starting position, return and capture",
+    "puzzleWorkflowStepSetupDesc": "보드 열기 (설정 또는 수 두기), 시작 위치 만들기, 돌아와서 캡처",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
-    "puzzleWorkflowStepRecord": "Record Solution",
+    "puzzleWorkflowStepRecord": "해답 기록",
     "@puzzleWorkflowStepRecord": {
         "description": "Workflow step: record solution"
     },
-    "puzzleWorkflowStepRecordDesc": "Click Start Recording (board resets to start position), go back, play moves, return and stop",
+    "puzzleWorkflowStepRecordDesc": "기록 시작 클릭 (보드가 시작 위치로 리셋됨), 돌아가서 수를 두고, 돌아와서 중지",
     "@puzzleWorkflowStepRecordDesc": {
         "description": "Description for record solution workflow step"
     },
-    "puzzleWorkflowStepDetails": "Add Details",
+    "puzzleWorkflowStepDetails": "세부 정보 추가",
     "@puzzleWorkflowStepDetails": {
         "description": "Workflow step: add details"
     },
-    "puzzleWorkflowStepDetailsDesc": "Fill in title, description, category, difficulty, and tags",
+    "puzzleWorkflowStepDetailsDesc": "제목, 설명, 카테고리, 난이도, 태그 입력",
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "Save Puzzle",
+    "puzzleWorkflowStepSave": "퍼즐 저장",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
-    "puzzleWorkflowStepSaveDesc": "Click the save button in the top-right corner",
+    "puzzleWorkflowStepSaveDesc": "오른쪽 상단의 저장 버튼 클릭",
     "@puzzleWorkflowStepSaveDesc": {
         "description": "Description for save puzzle workflow step"
     },
-    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "puzzleWorkflowTip": "팁: 이 페이지와 게임 보드 사이를 이동하게 됩니다. 진행 상황은 저장됩니다!",
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "puzzlePositionCaptureHelp": "Position Capture Help",
+    "puzzlePositionCaptureHelp": "위치 캡처 도움말",
     "@puzzlePositionCaptureHelp": {
         "description": "Title for position capture help dialog"
     },
-    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
+    "puzzlePositionCaptureHelpContent": "퍼즐 시작 위치를 캡처하는 방법:\n\n1. '보드 열기 (위치 설정)'을 클릭하여 수동으로 말을 배치하거나, '보드 열기 (수 두기)'를 클릭하여 수를 두어 위치에 도달\n\n2. 퍼즐의 원하는 시작 위치로 보드 배치\n\n3. 뒤로 버튼을 눌러 이 페이지로 돌아오기\n\n4. '위치 캡처' 버튼을 클릭하여 현재 보드 상태 저장\n\n캡처된 위치가 퍼즐의 시작점으로 사용됩니다.",
     "@puzzlePositionCaptureHelpContent": {
         "description": "Help content for capturing puzzle starting position"
     },
-    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "puzzleSolutionRecordingHelp": "해답 기록 도움말",
     "@puzzleSolutionRecordingHelp": {
         "description": "Title for solution recording help dialog"
     },
-    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "puzzleSolutionRecordingHelpContent": "해답 수순을 기록하는 방법:",
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "Capture the starting position first",
+    "puzzleSolutionStep1": "먼저 시작 위치 캡처",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "puzzleSolutionStep2": "'기록 시작' 버튼 클릭 (보드가 캡처한 위치로 리셋됨)",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
-    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "puzzleSolutionStep4": "여기로 돌아와서 '기록 중지' 클릭",
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "puzzleSolutionRecordingTip": "팁: 기록을 시작하면 보드가 자동으로 캡처한 위치로 리셋됩니다.",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleShowPositionCaptureHelp": "Show position capture help",
+    "puzzleShowPositionCaptureHelp": "위치 캡처 도움말 표시",
     "@puzzleShowPositionCaptureHelp": {
         "description": "Tooltip for position capture help button"
     },
-    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "puzzleShowSolutionRecordingHelp": "해답 기록 도움말 표시",
     "@puzzleShowSolutionRecordingHelp": {
         "description": "Tooltip for solution recording help button"
     },
-    "noMoreHintsAvailable": "No more hints available",
+    "noMoreHintsAvailable": "더 이상 사용 가능한 힌트 없음",
     "@noMoreHintsAvailable": {
         "description": "Message when no more hints are available"
     },
-    "hintDialogTitle": "Hint",
+    "hintDialogTitle": "힌트",
     "@hintDialogTitle": {
         "description": "Title for hint dialog"
     },
-    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "optimalSolutionWithMoves": "최적 해답 ({moves}수):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
     },
-    "validationErrors": "Validation Errors",
+    "moves": "수",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "검증 오류",
     "@validationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "contributePuzzlesToSanmill": "Sanmill에 퍼즐 기여",
     "@contributePuzzlesToSanmill": {
         "description": "Title for contribute puzzles dialog"
     },
-    "whatHappensNext": "What happens next:",
+    "whatHappensNext": "다음 단계:",
     "@whatHappensNext": {
         "description": "Label for what happens next section"
     },
-    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "contributionStep1": "1. 퍼즐이 JSON 파일로 내보내집니다",
     "@contributionStep1": {
         "description": "Step 1 in contribution process"
     },
-    "contributionStep2": "2. You can share this file via the share dialog",
+    "contributionStep2": "2. 공유 대화상자를 통해 이 파일을 공유할 수 있습니다",
     "@contributionStep2": {
         "description": "Step 2 in contribution process"
     },
-    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "contributionStep4": "4. 퍼즐이 관리자에 의해 검토됩니다",
     "@contributionStep4": {
         "description": "Step 4 in contribution process"
     },
-    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "contributionStep5": "5. 승인되면 내장 퍼즐이 됩니다!",
     "@contributionStep5": {
         "description": "Step 5 in contribution process"
     },
-    "exportForContribution": "Export for Contribution",
+    "exportForContribution": "기여용 내보내기",
     "@exportForContribution": {
         "description": "Button text for exporting puzzles for contribution"
     },
-    "startContributing": "Start Contributing",
+    "startContributing": "기여 시작",
     "@startContributing": {
         "description": "Button text to start contributing puzzles"
     },
-    "quickStart": "Quick Start:",
+    "quickStart": "빠른 시작:",
     "@quickStart": {
         "description": "Label for quick start section"
     },
-    "createQualityPuzzles": "Create Quality Puzzles",
+    "createQualityPuzzles": "고품질 퍼즐 만들기",
     "@createQualityPuzzles": {
         "description": "Title for creating quality puzzles step"
     },
-    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "createQualityPuzzlesDesc": "퍼즐에 명확한 해답, 좋은 메타데이터가 있고 가치 있는 것을 가르치는지 확인하세요.",
     "@createQualityPuzzlesDesc": {
         "description": "Description for creating quality puzzles"
     },
-    "addYourName": "Add Your Name",
+    "addYourName": "이름 추가",
     "@addYourName": {
         "description": "Title for adding author name step"
     },
-    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "addYourNameDesc": "퍼즐을 편집하고 작성자로 이름을 추가하여 크레딧을 받으세요.",
     "@addYourNameDesc": {
         "description": "Description for adding author name"
     },
-    "exportForContributionStep": "Export for Contribution",
+    "exportForContributionStep": "기여용 내보내기",
     "@exportForContributionStep": {
         "description": "Title for export step"
     },
-    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "exportForContributionStepDesc": "퍼즐을 선택하고 업로드 아이콘을 눌러 올바른 형식으로 내보내기.",
     "@exportForContributionStepDesc": {
         "description": "Description for export step"
     },
-    "submitStep": "Submit",
+    "submitStep": "제출",
     "@submitStep": {
         "description": "Title for submit step"
     },
-    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "submitStepDesc": "GitHub Pull Request, Issue 또는 이메일을 통해 내보낸 파일 공유.",
     "@submitStepDesc": {
         "description": "Description for submit step"
     },
-    "fullDocumentation": "Full Documentation",
+    "fullDocumentation": "전체 문서",
     "@fullDocumentation": {
         "description": "Label for full documentation link"
     },
-    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "fullDocumentationDesc": "전체 지침, 품질 지침 및 제출 옵션은 저장소의 PUZZLE_CONTRIBUTION_GUIDE.md를 참조하세요.",
     "@fullDocumentationDesc": {
         "description": "Description for full documentation"
     },
-    "qualityRequirements": "Quality Requirements:",
+    "qualityRequirements": "품질 요구사항:",
     "@qualityRequirements": {
         "description": "Label for quality requirements section"
     },
-    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "qualityReqClearSolution": "✓ 명확하고 고유한 해답",
     "@qualityReqClearSolution": {
         "description": "Quality requirement: clear solution"
     },
-    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "qualityReqCompleteMetadata": "✓ 완전한 메타데이터 (제목, 설명 등)",
     "@qualityReqCompleteMetadata": {
         "description": "Quality requirement: complete metadata"
     },
-    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "qualityReqAuthorAttribution": "✓ 작성자 표시",
     "@qualityReqAuthorAttribution": {
         "description": "Quality requirement: author attribution"
     },
-    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "qualityReqAccurateDifficulty": "✓ 정확한 난이도 평가",
     "@qualityReqAccurateDifficulty": {
         "description": "Quality requirement: accurate difficulty"
     },
-    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "qualityReqInstructive": "✓ 교육적이거나 재미있음",
     "@qualityReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
     },
-    "nextMoveHint": "Next move: {move}",
+    "nextMoveHint": "다음 수: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
     },
-    "completeSolutionHint": "Complete solution: {solution}",
+    "move": "이동",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "전체 해답: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
     },
-    "payAttentionToPositions": "Pay attention to these positions",
+    "solution": "해답",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "이 위치들에 주의하세요",
     "@payAttentionToPositions": {
         "description": "Hint to focus on specific board positions"
     },
-    "noSolutionAvailable": "No solution available",
+    "noSolutionAvailable": "사용 가능한 해답 없음",
     "@noSolutionAvailable": {
         "description": "Message when no solution is available for a puzzle"
     },
-    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "keepGoingObjectiveNotAchieved": "계속하세요! 목표가 아직 달성되지 않았습니다.",
     "@keepGoingObjectiveNotAchieved": {
         "description": "Feedback message when puzzle objective is not yet met"
     },
-    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "perfectSolvedOptimal": "완벽! 최적의 수로 해결!",
     "@perfectSolvedOptimal": {
         "description": "Success message when puzzle is solved optimally"
     },
-    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "correctMovesOptimal": "정답! ({count}수, 최적: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
     },
-    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "optimal": "최적",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "정답! 대안 해답을 찾았습니다!",
     "@correctAlternativeSolution": {
         "description": "Success message for finding an alternative solution"
     },
-    "justNow": "Just now",
+    "justNow": "방금",
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "january": "January",
+    "january": "1월",
     "@january": {
         "description": "Month name"
     },
-    "february": "February",
+    "february": "2월",
     "@february": {
         "description": "Month name"
     },
-    "march": "March",
+    "march": "3월",
     "@march": {
         "description": "Month name"
     },
-    "april": "April",
+    "april": "4월",
     "@april": {
         "description": "Month name"
     },
-    "may": "May",
+    "may": "5월",
     "@may": {
         "description": "Month name"
     },
-    "june": "June",
+    "june": "6월",
     "@june": {
         "description": "Month name"
     },
-    "july": "July",
+    "july": "7월",
     "@july": {
         "description": "Month name"
     },
-    "august": "August",
+    "august": "8월",
     "@august": {
         "description": "Month name"
     },
-    "september": "September",
+    "september": "9월",
     "@september": {
         "description": "Month name"
     },
-    "october": "October",
+    "october": "10월",
     "@october": {
         "description": "Month name"
     },
-    "november": "November",
+    "november": "11월",
     "@november": {
         "description": "Month name"
     },
-    "december": "December",
+    "december": "12월",
     "@december": {
         "description": "Month name"
     },
-    "invalidPuzzle": "Invalid Puzzle",
+    "invalidPuzzle": "잘못된 퍼즐",
     "@invalidPuzzle": {
         "description": "Title for invalid puzzle error"
     },
-    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "invalidPuzzleMessage": "이 퍼즐은 잘못된 위치 형식으로 로드할 수 없습니다. 퍼즐 작성자에게 문의하거나 다른 퍼즐을 시도하세요.",
     "@invalidPuzzleMessage": {
         "description": "Error message for invalid puzzle format"
     },
-    "keepTrying": "Keep trying!",
+    "keepTrying": "계속 시도하세요!",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
     },
-    "examples": "Examples",
+    "examples": "예제",
     "@examples": {
         "description": "Examples label"
     },
-    "voiceCommandsHelp": "Voice Commands Help",
+    "voiceCommandsHelp": "음성 명령 도움말",
     "@voiceCommandsHelp": {
         "description": "Voice commands help page title"
     },
-    "voiceCommandsHelpIntro": "Use your voice to control the game! Below are the available voice commands you can use.",
+    "voiceCommandsHelpIntro": "음성으로 게임을 제어하세요! 사용 가능한 음성 명령은 다음과 같습니다.",
     "@voiceCommandsHelpIntro": {
         "description": "Voice commands help introduction"
     },
-    "voiceCommandsGameControl": "Game Control",
+    "voiceCommandsGameControl": "게임 제어",
     "@voiceCommandsGameControl": {
         "description": "Game control commands section"
     },
-    "voiceCommandsMoveControl": "Move Commands",
+    "voiceCommandsMoveControl": "이동 명령",
     "@voiceCommandsMoveControl": {
         "description": "Move commands section"
     },
-    "voiceCommandsSettings": "Settings Commands",
+    "voiceCommandsSettings": "설정 명령",
     "@voiceCommandsSettings": {
         "description": "Settings commands section"
     },
-    "voiceCommandsTips": "Tips",
+    "voiceCommandsTips": "팁",
     "@voiceCommandsTips": {
         "description": "Tips section"
     },
-    "voiceCommandsUndo": "Undo Move",
+    "voiceCommandsUndo": "수 되돌리기",
     "@voiceCommandsUndo": {
         "description": "Undo command title"
     },
-    "voiceCommandsUndoDesc": "Undo the last move",
+    "voiceCommandsUndoDesc": "마지막 수 되돌리기",
     "@voiceCommandsUndoDesc": {
         "description": "Undo command description"
     },
-    "voiceCommandsRedo": "Redo Move",
+    "voiceCommandsRedo": "수 다시하기",
     "@voiceCommandsRedo": {
         "description": "Redo command title"
     },
-    "voiceCommandsRedoDesc": "Redo the previously undone move",
+    "voiceCommandsRedoDesc": "이전에 되돌린 수 다시하기",
     "@voiceCommandsRedoDesc": {
         "description": "Redo command description"
     },
-    "voiceCommandsRestart": "Restart Game",
+    "voiceCommandsRestart": "게임 재시작",
     "@voiceCommandsRestart": {
         "description": "Restart command title"
     },
-    "voiceCommandsRestartDesc": "Start a new game",
+    "voiceCommandsRestartDesc": "새 게임 시작",
     "@voiceCommandsRestartDesc": {
         "description": "Restart command description"
     },
-    "voiceCommandsAiMove": "Request AI Move",
+    "voiceCommandsAiMove": "AI 수 요청",
     "@voiceCommandsAiMove": {
         "description": "AI move command title"
     },
-    "voiceCommandsAiMoveDesc": "Request the AI to make a move",
+    "voiceCommandsAiMoveDesc": "AI에게 수를 두도록 요청",
     "@voiceCommandsAiMoveDesc": {
         "description": "AI move command description"
     },
-    "voiceCommandsMovePiece": "Move Piece",
+    "voiceCommandsMovePiece": "말 이동",
     "@voiceCommandsMovePiece": {
         "description": "Move piece command title"
     },
-    "voiceCommandsMovePieceDesc": "Move a piece from one position to another",
+    "voiceCommandsMovePieceDesc": "말을 한 위치에서 다른 위치로 이동",
     "@voiceCommandsMovePieceDesc": {
         "description": "Move piece command description"
     },
-    "voiceCommandsPlacePiece": "Place Piece",
+    "voiceCommandsPlacePiece": "말 놓기",
     "@voiceCommandsPlacePiece": {
         "description": "Place piece command title"
     },
-    "voiceCommandsPlacePieceDesc": "Place a piece on the board",
+    "voiceCommandsPlacePieceDesc": "보드에 말 놓기",
     "@voiceCommandsPlacePieceDesc": {
         "description": "Place piece command description"
     },
-    "voiceCommandsRemovePiece": "Remove Piece",
+    "voiceCommandsRemovePiece": "말 제거",
     "@voiceCommandsRemovePiece": {
         "description": "Remove piece command title"
     },
-    "voiceCommandsRemovePieceDesc": "Remove an opponent's piece",
+    "voiceCommandsRemovePieceDesc": "상대 말 제거",
     "@voiceCommandsRemovePieceDesc": {
         "description": "Remove piece command description"
     },
-    "voiceCommandsToggleSound": "Toggle Sound",
+    "voiceCommandsToggleSound": "사운드 전환",
     "@voiceCommandsToggleSound": {
         "description": "Toggle sound command title"
     },
-    "voiceCommandsToggleSoundDesc": "Turn sound on or off",
+    "voiceCommandsToggleSoundDesc": "사운드 켜기/끄기",
     "@voiceCommandsToggleSoundDesc": {
         "description": "Toggle sound command description"
     },
-    "voiceCommandsToggleVibration": "Toggle Vibration",
+    "voiceCommandsToggleVibration": "진동 전환",
     "@voiceCommandsToggleVibration": {
         "description": "Toggle vibration command title"
     },
-    "voiceCommandsToggleVibrationDesc": "Turn vibration on or off",
+    "voiceCommandsToggleVibrationDesc": "진동 켜기/끄기",
     "@voiceCommandsToggleVibrationDesc": {
         "description": "Toggle vibration command description"
     },
-    "voiceCommandsTip1": "Speak clearly and at a moderate pace for best recognition",
+    "voiceCommandsTip1": "최상의 인식을 위해 명확하고 적당한 속도로 말하세요",
     "@voiceCommandsTip1": {
         "description": "Voice command tip 1"
     },
-    "voiceCommandsTip2": "Wait for the listening indicator before speaking",
+    "voiceCommandsTip2": "말하기 전에 듣기 표시기를 기다리세요",
     "@voiceCommandsTip2": {
         "description": "Voice command tip 2"
     },
-    "voiceCommandsTip3": "Commands work in your selected language",
+    "voiceCommandsTip3": "명령은 선택한 언어로 작동합니다",
     "@voiceCommandsTip3": {
         "description": "Voice command tip 3"
     },
-    "voiceAssistant": "Voice Assistant",
+    "voiceAssistant": "음성 도우미",
     "@voiceAssistant": {
         "description": "Voice assistant feature name"
     },
-    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "voiceAssistantEnabled": "음성 도우미 활성화",
     "@voiceAssistantEnabled": {
         "description": "Enable voice assistant toggle"
     },
-    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "voiceAssistantEnabledDescription": "앱이 음성 명령을 받을 수 있도록 허용",
     "@voiceAssistantEnabledDescription": {
         "description": "Description for voice assistant enable toggle"
     },
@@ -3412,231 +3920,231 @@
     "@voiceAssistantSettingsDescription": {
         "description": "Voice assistant settings description"
     },
-    "voiceAssistantGeneral": "General",
+    "voiceAssistantGeneral": "일반",
     "@voiceAssistantGeneral": {
         "description": "General settings section"
     },
-    "voiceAssistantModel": "Model Settings",
+    "voiceAssistantModel": "모델 설정",
     "@voiceAssistantModel": {
         "description": "Model settings section"
     },
-    "voiceAssistantModelManagement": "Model Management",
+    "voiceAssistantModelManagement": "모델 관리",
     "@voiceAssistantModelManagement": {
         "description": "Model management section"
     },
-    "voiceAssistantModelType": "Model Type",
+    "voiceAssistantModelType": "모델 유형",
     "@voiceAssistantModelType": {
         "description": "Model type setting"
     },
-    "voiceAssistantLanguage": "Language",
+    "voiceAssistantLanguage": "언어",
     "@voiceAssistantLanguage": {
         "description": "Language setting"
     },
-    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "voiceAssistantAutoDetectLanguage": "언어 자동 감지",
     "@voiceAssistantAutoDetectLanguage": {
         "description": "Auto-detect language toggle"
     },
-    "voiceAssistantShowButton": "Show Voice Button",
+    "voiceAssistantShowButton": "음성 버튼 표시",
     "@voiceAssistantShowButton": {
         "description": "Show voice button toggle"
     },
-    "voiceAssistantContinuousListening": "Continuous Listening",
+    "voiceAssistantContinuousListening": "지속적 듣기",
     "@voiceAssistantContinuousListening": {
         "description": "Continuous listening mode toggle"
     },
-    "voiceAssistantDownloadModel": "Download Model",
+    "voiceAssistantDownloadModel": "모델 다운로드",
     "@voiceAssistantDownloadModel": {
         "description": "Download model button"
     },
-    "voiceAssistantDeleteModel": "Delete Model",
+    "voiceAssistantDeleteModel": "모델 삭제",
     "@voiceAssistantDeleteModel": {
         "description": "Delete model button"
     },
-    "voiceAssistantModelInfo": "Model Information",
+    "voiceAssistantModelInfo": "모델 정보",
     "@voiceAssistantModelInfo": {
         "description": "Model information button"
     },
-    "voiceAssistantModelDownloaded": "Downloaded",
+    "voiceAssistantModelDownloaded": "다운로드됨",
     "@voiceAssistantModelDownloaded": {
         "description": "Model downloaded status"
     },
-    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "voiceAssistantModelNotDownloaded": "다운로드 안 됨",
     "@voiceAssistantModelNotDownloaded": {
         "description": "Model not downloaded status"
     },
-    "voiceAssistantDownloading": "Downloading...",
+    "voiceAssistantDownloading": "다운로드 중...",
     "@voiceAssistantDownloading": {
         "description": "Downloading progress message"
     },
-    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "voiceAssistantDownloadModelMessage": "음성 도우미가 작동하려면 언어 모델이 필요합니다. 선택한 모델을 다운로드합니다.",
     "@voiceAssistantDownloadModelMessage": {
         "description": "Download confirmation message"
     },
-    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "voiceAssistantModelDownloadSuccess": "모델 다운로드 성공",
     "@voiceAssistantModelDownloadSuccess": {
         "description": "Download success message"
     },
-    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "voiceAssistantModelDownloadFailed": "모델 다운로드 실패",
     "@voiceAssistantModelDownloadFailed": {
         "description": "Download failed message"
     },
-    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "voiceAssistantModelDeleted": "모델 삭제 성공",
     "@voiceAssistantModelDeleted": {
         "description": "Model deleted message"
     },
-    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "voiceAssistantDeleteFailed": "삭제 실패",
     "@voiceAssistantDeleteFailed": {
         "description": "Delete failed message"
     },
-    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "voiceAssistantDeleteModelConfirm": "다운로드한 모델을 삭제하시겠습니까?",
     "@voiceAssistantDeleteModelConfirm": {
         "description": "Delete confirmation message"
     },
-    "voiceAssistantModelSize": "Model Size",
+    "voiceAssistantModelSize": "모델 크기",
     "@voiceAssistantModelSize": {
         "description": "Model size label"
     },
-    "voiceAssistantModelPath": "Model Path",
+    "voiceAssistantModelPath": "모델 경로",
     "@voiceAssistantModelPath": {
         "description": "Model path label"
     },
-    "voiceAssistantSelectModelType": "Select Model Type",
+    "voiceAssistantSelectModelType": "모델 유형 선택",
     "@voiceAssistantSelectModelType": {
         "description": "Model type selection dialog title"
     },
-    "voiceAssistantSelectLanguage": "Select Language",
+    "voiceAssistantSelectLanguage": "언어 선택",
     "@voiceAssistantSelectLanguage": {
         "description": "Language selection dialog title"
     },
-    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "voiceAssistantLanguageChanged": "언어가 변경되었습니다. 새 언어용 모델을 다운로드하세요.",
     "@voiceAssistantLanguageChanged": {
         "description": "Language changed message"
     },
-    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "voiceAssistantEnableFailed": "음성 도우미 활성화 실패",
     "@voiceAssistantEnableFailed": {
         "description": "Enable failed message"
     },
-    "voiceAssistantListening": "Listening...",
+    "voiceAssistantListening": "듣는 중...",
     "@voiceAssistantListening": {
         "description": "Listening status message"
     },
-    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "voiceAssistantNoSpeechDetected": "음성 감지 안 됨",
     "@voiceAssistantNoSpeechDetected": {
         "description": "No speech detected message"
     },
-    "voiceAssistantRecognizedText": "Recognized Text",
+    "voiceAssistantRecognizedText": "인식된 텍스트",
     "@voiceAssistantRecognizedText": {
         "description": "Recognized text label"
     },
-    "voiceAssistantResult": "Result",
+    "voiceAssistantResult": "결과",
     "@voiceAssistantResult": {
         "description": "Command execution result label"
     },
-    "voiceAssistantError": "Voice assistant error",
+    "voiceAssistantError": "음성 도우미 오류",
     "@voiceAssistantError": {
         "description": "Generic error message"
     },
-    "voiceAssistantRedownloadModel": "Re-download Model",
+    "voiceAssistantRedownloadModel": "모델 재다운로드",
     "@voiceAssistantRedownloadModel": {
         "description": "Title for re-download confirmation dialog"
     },
-    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "voiceAssistantRedownloadModelMessage": "음성 모델이 이미 다운로드되어 있습니다. 재다운로드하고 덮어쓰시겠습니까?",
     "@voiceAssistantRedownloadModelMessage": {
         "description": "Message for re-download confirmation dialog"
     },
-    "voiceCommandSuccess": "Command executed successfully",
+    "voiceCommandSuccess": "명령 실행 성공",
     "@voiceCommandSuccess": {
         "description": "Command success message"
     },
-    "voiceCommandFailed": "Failed to execute command",
+    "voiceCommandFailed": "명령 실행 실패",
     "@voiceCommandFailed": {
         "description": "Command failed message"
     },
-    "voiceCommandUnknown": "Unknown command",
+    "voiceCommandUnknown": "알 수 없는 명령",
     "@voiceCommandUnknown": {
         "description": "Unknown command message"
     },
-    "voiceCommandMoveSuccess": "Move executed",
+    "voiceCommandMoveSuccess": "이동 실행됨",
     "@voiceCommandMoveSuccess": {
         "description": "Move command success"
     },
-    "voiceCommandMoveFailed": "Failed to execute move",
+    "voiceCommandMoveFailed": "이동 실행 실패",
     "@voiceCommandMoveFailed": {
         "description": "Move command failed"
     },
-    "voiceCommandPlaceSuccess": "Piece placed",
+    "voiceCommandPlaceSuccess": "말이 놓였습니다",
     "@voiceCommandPlaceSuccess": {
         "description": "Place command success"
     },
-    "voiceCommandPlaceFailed": "Failed to place piece",
+    "voiceCommandPlaceFailed": "말 놓기 실패",
     "@voiceCommandPlaceFailed": {
         "description": "Place command failed"
     },
-    "voiceCommandRemoveSuccess": "Piece removed",
+    "voiceCommandRemoveSuccess": "말이 제거되었습니다",
     "@voiceCommandRemoveSuccess": {
         "description": "Remove command success"
     },
-    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "voiceCommandRemoveFailed": "말 제거 실패",
     "@voiceCommandRemoveFailed": {
         "description": "Remove command failed"
     },
-    "voiceCommandUndoSuccess": "Undo executed",
+    "voiceCommandUndoSuccess": "되돌리기 실행됨",
     "@voiceCommandUndoSuccess": {
         "description": "Undo command success"
     },
-    "voiceCommandUndoFailed": "Failed to undo",
+    "voiceCommandUndoFailed": "되돌리기 실패",
     "@voiceCommandUndoFailed": {
         "description": "Undo command failed"
     },
-    "voiceCommandRedoSuccess": "Redo executed",
+    "voiceCommandRedoSuccess": "다시하기 실행됨",
     "@voiceCommandRedoSuccess": {
         "description": "Redo command success"
     },
-    "voiceCommandRedoFailed": "Failed to redo",
+    "voiceCommandRedoFailed": "다시하기 실패",
     "@voiceCommandRedoFailed": {
         "description": "Redo command failed"
     },
-    "voiceCommandRestartSuccess": "Game restarted",
+    "voiceCommandRestartSuccess": "게임 재시작됨",
     "@voiceCommandRestartSuccess": {
         "description": "Restart command success"
     },
-    "voiceCommandRestartFailed": "Failed to restart game",
+    "voiceCommandRestartFailed": "게임 재시작 실패",
     "@voiceCommandRestartFailed": {
         "description": "Restart command failed"
     },
-    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "voiceCommandAiMoveSuccess": "AI가 생각 중...",
     "@voiceCommandAiMoveSuccess": {
         "description": "AI move command success"
     },
-    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "voiceCommandAiMoveFailed": "AI 수 요청 실패",
     "@voiceCommandAiMoveFailed": {
         "description": "AI move command failed"
     },
-    "voiceCommandSettingsSuccess": "Settings updated",
+    "voiceCommandSettingsSuccess": "설정 업데이트됨",
     "@voiceCommandSettingsSuccess": {
         "description": "Settings command success"
     },
-    "voiceCommandSettingsFailed": "Failed to update settings",
+    "voiceCommandSettingsFailed": "설정 업데이트 실패",
     "@voiceCommandSettingsFailed": {
         "description": "Settings command failed"
     },
-    "voiceCommandHelpSuccess": "Help displayed",
+    "voiceCommandHelpSuccess": "도움말 표시됨",
     "@voiceCommandHelpSuccess": {
         "description": "Help command success"
     },
-    "voiceCommandSoundOn": "Sound enabled",
+    "voiceCommandSoundOn": "사운드 활성화됨",
     "@voiceCommandSoundOn": {
         "description": "Sound on message"
     },
-    "voiceCommandSoundOff": "Sound disabled",
+    "voiceCommandSoundOff": "사운드 비활성화됨",
     "@voiceCommandSoundOff": {
         "description": "Sound off message"
     },
-    "voiceCommandVibrationOn": "Vibration enabled",
+    "voiceCommandVibrationOn": "진동 활성화됨",
     "@voiceCommandVibrationOn": {
         "description": "Vibration on message"
     },
-    "voiceCommandVibrationOff": "Vibration disabled",
+    "voiceCommandVibrationOff": "진동 비활성화됨",
     "@voiceCommandVibrationOff": {
         "description": "Vibration off message"
     }

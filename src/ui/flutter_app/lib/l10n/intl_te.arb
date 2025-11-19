@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "అలాగే",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} తరలించడానికి.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "ప్లేయర్ 1 విజయాలు!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "దిగుమతి చేయడం సాధ్యపడదు {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "కదలికలు మరియు నియమాలు సరిపోలడం లేదు.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "లోపం: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "విన్ రేట్",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} ముక్కల సంఖ్య మూడు కంటే తక్కువ.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} రాజీనామా.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} వెళ్ళడానికి మార్గం లేదు.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "బోర్డు నిండింది మరియు {player} వెళ్ళడానికి మార్గం లేదు.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "సమయం ముగిసింది, {player} కోల్పోయింది.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "కదిలే దశలో, చివరి నిర్దిష్ట సంఖ్యలో కదలికలలో ఏ భాగాన్ని తొలగించలేదు.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "కఠినమైన స్థాయిని సవాలు చేయాలా? కొత్త స్థాయి స్థాయి {level} ఉంటుంది!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "మీరు కోల్పోతారు!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "వెర్షన్: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "ధన్యవాదాలు",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "ఎంపికలు",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "{element} ఎంచుకోండి",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "సమ",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " మరియు ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "అంగీకరించు",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "చేతిలో {player}: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} బోర్డులో: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "ఎగువ నుండి బోర్డు ఆఫ్‌సెట్",
     "@boardTop": {
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "తరలించడానికి వైపు: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "ప్లేయర్",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "చివరి తరలింపు: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "కదలిక",
+    "@move": {
+        "description": "Move"
     },
     "selected": "ఎంపిక చేయబడింది",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} కదలికలు}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "లోడ్ విఫలమైంది.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} ముక్క}other{{count} ముక్కలు}} తీసివేయాలి.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "ఉంచబ. ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "ఉంచే దశలో ముక్కల సంఖ్యను ఉంచారు.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "ప్రస్తుత ఆటగాడు {count} ముక్కలను ఉంచాడు.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "దశను ఉంచడం లేదు, దానిని మార్చలేరు.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "అడవి",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "డెస్క్‌టాప్ చిత్రం",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "చెల్లని స్థానం.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIFని షేర్ చేయండి",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "పిక్సెల్ నిష్పత్తి",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "వ్యవధి",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "గేమ్ స్క్రీన్ రికార్డర్",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "మునుపటి",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "తరువాత",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "దాటవేయి",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "దొరికింది",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "మీరు రూల్ సెట్టింగ్‌లలో గేమ్ నియమాలను సవరించవచ్చు.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "పికర్‌లో విలువను మార్చడానికి మీరు మౌస్ వీల్‌ని ఉపయోగించవచ్చు.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI ఆలోచించే సమయం 0కి సెట్ చేయబడింది అంటే ఆలోచించడానికి సమయ పరిమితి లేదు.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) అనేది ఆల్ఫా-బీటా శోధన అల్గోరిథం యొక్క సవరించిన రూపం, ఇది ఇంటర్మీడియట్ శోధన ఫలితాలను తిరిగి ఉపయోగించడం ద్వారా మరియు శోధన స్థలాన్ని తగ్గించడానికి మంచి ప్రారంభ అంచనాను ఉపయోగించడం ద్వారా సామర్థ్యాన్ని మెరుగుపరచడం లక్ష్యంగా పెట్టుకుంది.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "AI థింకింగ్ టైమ్ అడ్జస్ట్‌మెంట్ పూర్తిగా ఖచ్చితంగా ఉండకపోవచ్చని దయచేసి గుర్తుంచుకోండి. క్లిష్టత స్థాయిని తక్కువ విలువకు సెట్ చేసినప్పుడు వాస్తవ ఆలోచనా సమయం తక్కువగా ఉండవచ్చు మరియు సమయం ముగిసినప్పుడు AI మధ్యలో ఆలోచించినప్పుడు ఎక్కువ సమయం ఉండవచ్చు.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "మీరు క్లిష్టత స్థాయిని ఎక్కువగా సెట్ చేసి, AI ఆలోచించే సమయాన్ని పెంచకపోతే, ఆలోచన సమయ పరిమితి కారణంగా అసలు కష్ట స్థాయి తక్కువ విలువకు పరిమితం కావచ్చు. యంత్రం యొక్క పనితీరు ఆధారంగా వాస్తవ విలువ మారవచ్చు.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (ప్రిన్సిపల్ వేరియేషన్ సెర్చ్) అనేది ఇచ్చిన స్థానంలో అత్యుత్తమ కదలికను కనుగొనే శోధన అల్గారిథమ్. ఇది ఆల్ఫా-బీటా అల్గోరిథం యొక్క మెరుగుదల మరియు ప్రధాన వైవిధ్యం నుండి ఇప్పటికే సురక్షితమైన స్కోర్ కంటే కదలిక అధ్వాన్నంగా లేదా అధ్వాన్నంగా ఉందని నిర్ధారించడానికి శూన్య లేదా సున్నా విండో శోధనలను ఉపయోగిస్తుంది. PVS అత్యంత ఆశాజనకమైన కదలికలపై దృష్టి పెడుతుంది మరియు సబ్‌ప్టిమల్ శాఖల యొక్క అనవసర శోధనలను నివారిస్తుంది, ఇది శోధన సామర్థ్యాన్ని మెరుగుపరచడంలో సహాయపడుతుంది.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "ఆల్ఫా-బీటా అల్గోరిథం అనేది ఉత్తమ కదలికను కనుగొనడానికి ఒక శోధన అల్గారిథమ్. శోధన చెట్టును కత్తిరించడానికి మరియు సామర్థ్యాన్ని పెంచడానికి ఇది మినిమాక్స్ సూత్రాన్ని మరియు ఆల్ఫా మరియు బీటా అనే రెండు విలువలను ఉపయోగిస్తుంది. ఆల్ఫా అనేది కంప్యూటర్ ఖచ్చితంగా పొందగల కనీస స్కోర్‌ను సూచిస్తుంది, అయితే బీటా దాని ప్రత్యర్థి పొందగలిగే గరిష్ట స్కోర్‌ను సూచిస్తుంది. గేమ్‌లో స్మార్ట్, సమర్థవంతమైన నిర్ణయాలు తీసుకోవడంలో అల్గోరిథం కంప్యూటర్‌కు సహాయపడుతుంది.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "మానవ అనుభవం ప్రకారం, మీరు గెలవాలని ప్రయత్నిస్తే, మీరు ఓడిపోతారు. బదులుగా, మీ లక్ష్యం డ్రాగా లక్ష్యంగా చేసుకోండి మరియు గేమ్‌ను కోల్పోకుండా ఉండండి. మీ ప్రత్యర్థిని గమనించండి మరియు వారు తప్పులు చేసే స్థితికి సున్నితంగా వారిని ఆకర్షించండి. వారు బలహీనతను చూపినప్పుడు, అవకాశాన్ని ఉపయోగించుకోండి మరియు విజయం కోసం సున్నితంగా ముందుకు సాగండి. ఈ విధంగా, మీరు గేమ్ గెలవవచ్చు.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "ఈ గేమ్‌లో, మొదటి ఆటగాడితో పోలిస్తే రెండవ ఆటగాడు గెలవడం సులభం.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "నిష్క్రియ ఎంపికను ప్రారంభించడం వలన AIకి వీలైనంత త్వరగా గెలవడానికి దూకుడుగా ప్రయత్నించడం కంటే, ఆ స్థానంలో ప్రయోజనం ఉన్నప్పుడు విశ్రాంతిని పొందుతుంది.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "ఈ ఎంపికను ప్రారంభించడం వలన ఆట యొక్క యాదృచ్ఛికత మరియు వినోదం పెరుగుతుంది, అయితే దానిని నిలిపివేయడం AIని అధిగమించే మార్గాలను అధ్యయనం చేయడంలో సహాయపడుతుంది.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "AI దాని ముక్కల చలనశీలతను పరిగణనలోకి తీసుకుంటే, అది ప్రత్యర్థి ముక్కలను వీలైనంత త్వరగా పట్టుకోవడమే కాకుండా, ప్రత్యర్థి కదలికలను అడ్డుకోవడం మరియు అదే పని చేయకుండా నిరోధించడాన్ని కూడా పరిగణలోకి తీసుకుంటుంది.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "బోర్డు నిండినప్పుడు",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "ప్లేసింగ్ దశ ముగింపులో, కదిలే దశ ప్రారంభమయ్యే ముందు, బోర్డు పూర్తిగా ముక్కలతో ఉంటే చర్య అనుసరిస్తుంది.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "కదిలే దశలో ముందుగా కదిలే ఆటగాడు ప్రత్యర్థి పావుల్లో ఒకదాన్ని తొలగిస్తాడు.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "ఇరుపక్షాలు డ్రాకు అంగీకరించాయి.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "మీ ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసుకోండి.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "మొదటి ఆటగాడు ఆటను కోల్పోతాడు.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "మొదటి మరియు రెండవ ఆటగాళ్ళు ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేస్తారు.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "రెండవ మరియు మొదటి ఆటగాళ్ళు ప్రత్యర్థి ముక్కలలో ఒకదాన్ని తీసివేస్తారు.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "ఇప్పుడు ఎగిరే దశలోకి ప్రవేశించింది, ప్రత్యర్థి పావులు బోర్డ్‌లోని ఏదైనా ఖాళీ పాయింట్‌కి వెళ్లవచ్చు. మీరు \"రూల్ సెట్టింగ్‌లు\"లో ఫ్లయింగ్ నియమాన్ని ఆఫ్ చేయవచ్చు.",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "ప్రతిష్టంభన ఏర్పడినప్పుడు",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "ఏ భాగాన్ని తరలించలేనప్పుడు ఏ చర్య అనుసరిస్తుంది?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "ప్రతిష్టంభన నష్టంతో ముగించండి.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "తరలించడానికి వైపు మార్చండి.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తదుపరి కదలికను చేయండి.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "ప్రతిష్టంభన డ్రాతో ముగించండి.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తరలించడానికి వైపు మార్చండి.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI ప్రతిస్పందన ఆలస్యం సమయం",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI ప్రస్తుతం ఆలస్యం ప్రతిస్పందన దశలో ఉంది. దయచేసి కొనసాగడానికి ముందు కొంతసేపు వేచి ఉండండి.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "మీరు పక్కనే లేని భాగాన్ని తీసివేయలేరు.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "ప్రతిష్టంభన ఏర్పడితే, మిల్లు నిర్మాణంతో సంబంధం లేకుండా మీ పక్కనే ఉన్న ప్రత్యర్థి ముక్కలను తీసివేయవచ్చు.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS అనేది అనుభవశూన్యుడు-స్నేహపూర్వక అల్గోరిథం, ఇది అనుకరణల ద్వారా విభిన్న కదలికలను విశ్లేషించడం మరియు మూల్యాంకనం చేయడం ద్వారా నిర్ణయాలు తీసుకుంటుంది.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "గోల్డెన్ జేడ్",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "ఫారెస్ట్ వుడ్",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "డార్క్ మిస్టరీ",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "మిడ్నైట్ బ్లూ",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "గ్రీన్ ఫారెస్ట్",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "గ్రీన్ మేడో",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "రాతి మార్గం",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "పాస్టెల్ పింక్",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "టర్కోయిస్ సముద్రం",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "వైలెట్ డ్రీం",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "మింట్ చాక్లెట్",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "లేత నీలి రంగు",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "ఉల్లాసభరితమైన గార్డెన్",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "వివిధ ప్రారంభ స్థానాల నుండి ముగింపు గేమ్ డేటాబేస్‌ను రూపొందించడానికి రెట్రోగ్రేడ్ విశ్లేషణ అల్గోరిథం బహుళ-విలువైన రెట్రోగ్రేడ్ విశ్లేషణను ఉపయోగిస్తుంది, ఆపై గేమ్‌ప్లేను ఆప్టిమైజ్ చేయడానికి ఈ డేటాబేస్‌ను వర్తింపజేస్తుంది. ఈ విధానం అల్ట్రా-స్ట్రాంగ్ సొల్యూషన్స్ విభాగంలోకి వస్తుంది.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "మీరు ఈ అల్గారిథమ్ కోసం యూజర్ గైడ్‌ని వీక్షించాలనుకుంటున్నారా?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "స్థాన ప్రయోజన సూచికను చూపు",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "ఖచ్చితమైన డేటాబేస్ ఉపయోగించండి",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "అత్యాధునిక అల్గారిథమ్‌ల ద్వారా రూపొందించబడిన దోషరహిత గేమ్ డేటాబేస్‌ను ఉపయోగించడానికి ఈ ఎంపికను ప్రారంభించండి. ఈ ఫీచర్ సరైన కదలికలను సూచించడానికి ప్రారంభ మరియు ముగింపు గేమ్ వ్యూహాలను రెండింటినీ అనుసంధానిస్తుంది. గేమ్‌ప్లేలో అత్యున్నత స్థాయి ఖచ్చితత్వాన్ని కోరుకునే ఆటగాళ్లకు ఇది ప్రాధాన్య ఎంపిక. ఖచ్చితమైన గణన పద్ధతుల ద్వారా సృష్టించబడిన, డేటాబేస్ దాదాపు ఖచ్చితమైన గేమ్ పరిష్కారాలను అందించడానికి రూపొందించబడింది.\n\nగమనిక: డేటాబేస్‌ను యాక్సెస్ చేయడంలో AI విఫలమైతే, గేమ్‌ప్లే నిర్ణయాల కోసం ఇది సంప్రదాయ అల్గారిథమ్‌లను ఆశ్రయిస్తుంది. డేటాబేస్ అందుబాటులో ఉన్నప్పుడు, 'డిఫికల్టీ లెవెల్' అనేది వాస్తవంగా అజేయంగా మారుతుంది మరియు 'AI థింకింగ్ టైమ్' తీవ్ర తగ్గింపును అనుభవిస్తుంది. డేటాబేస్ ఫలితాలకు అత్యధిక ప్రాధాన్యత ఉన్నందున 'AI'స్ ప్లేస్టైల్' ఎంపికలలోని అనేక సెట్టింగ్‌లు భర్తీ చేయబడతాయి.\n\nఈ దోషరహిత డేటాబేస్‌ను ఎలా ఉపయోగించాలో మార్గదర్శకత్వం కోసం, ఇక్కడ క్లిక్ చేయండి.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "నేపథ్య చిత్రం",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "'పర్ఫెక్ట్ డేటాబేస్ ఉపయోగించండి' ఎంపిక ప్రారంభించబడనప్పుడు, 'ర్యాండమ్' సెట్టింగ్ తరలింపు ఎంపిక కోసం ఎటువంటి అల్గారిథమ్‌లను ఉపయోగించకుండా AI యాదృచ్ఛికంగా ముక్కలను తరలించేలా చేస్తుంది. ఇది సాధారణంగా గణనీయంగా బలహీనమైన గేమ్‌ప్లేకు దారి తీస్తుంది. దీనికి విరుద్ధంగా, 'పర్ఫెక్ట్ డేటాబేస్‌ని ఉపయోగించండి' ప్రారంభించబడినప్పుడు, AI సంప్రదాయ AI అల్గారిథమ్‌లతో కలపడానికి బదులుగా నిర్ణయాలు తీసుకోవడానికి 'పర్ఫెక్ట్ డేటాబేస్'పై ప్రత్యేకంగా ఆధారపడుతుంది. ఈ మోడ్‌లో, AI యొక్క కదలికలు పూర్తిగా డేటాబేస్ కంటెంట్‌పై ఆధారపడి ఉంటాయి, నిజ-సమయ గణనలు లేదా శోధన అల్గారిథమ్‌లపై ఆధారపడకుండా ఉంటాయి.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "ప్రత్యర్థి పావు(ల)ను వారి చేతి నుండి తొలగించండి; అప్పుడు పావును ఉంచడం ప్రత్యర్థి వంతు.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "ప్లేసింగ్ దశలో మిల్లులను రూపొందించేటప్పుడు",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "ప్రత్యర్థి పావు(ల)ను బోర్డు నుండి తీసివేయండి.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "ప్రత్యర్థి పావు(ల)ను బోర్డు నుండి తీసివేయండి; అప్పుడు పావును ఉంచడం ప్రత్యర్థి వంతు.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "ప్రత్యర్థి తన సొంత పావు(ల)ను బోర్డు నుండి తొలగిస్తాడు.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "మీరు చర్య తీసుకునే బదులు, ప్రత్యర్థి తన సొంత పావు(ల)ను బోర్డ్ నుండి ఎంచుకుని తొలగిస్తాడు, ఇది వారికి హానికరమైన చర్యను సమర్థవంతంగా తీసుకుంటుంది.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "ప్రత్యర్థి పావు(ల)ను వారి చేతి నుండి తొలగించండి; అప్పుడు మీరు కదిలే వంతు.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "ప్రత్యర్థి చేతి నుండి పావు(లు) తొలగించండి. మల్టీ-రిమూవ్ సెట్టింగ్ ప్రకారం, బహుళ పావులను తీసివేయాలంటే, ప్రత్యర్థి దగ్గర చేతిలో పావులు లేకపోతే, బోర్డు నుండి ప్రత్యర్థి పావులను తొలగించడం కొనసాగించండి. అప్పుడు, ఇది మీరు కదిలే వంతు. మీరు మిల్లులను ఏర్పరచడం కొనసాగిస్తే, మీరు ప్రత్యర్థి పావులను తొలగించడం కొనసాగించవచ్చు.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ప్రత్యర్థి చేతి నుండి పావు(లు) తొలగించండి. మల్టీ-రిమూవ్ సెట్టింగ్ ప్రకారం, బహుళ పావులను తీసివేయాలంటే మరియు ప్రత్యర్థికి చేతిలో పావులు లేకపోతే, బోర్డు నుండి ప్రత్యర్థి పావులను తీసివేయడం కొనసాగించండి. అప్పుడు, ప్రత్యర్థి కదిలే వంతు.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "పావులను తొలగించడాన్ని గుర్తించండి మరియు ఆలస్యం చేయండి.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "ప్లేసింగ్ దశలో, తొలగించాల్సిన పావులను గుర్తించబడతాయి మరియు ఇద్దరు ఆటగాళ్ల కోసం, ఈ పాయింట్లలో కొత్త పావులను ఉంచలేరు. కదిలే దశలోకి ప్రవేశించిన తర్వాత, ఈ గుర్తించబడిన పావులు పూర్తిగా తీసివేయబడతాయి మరియు ఆటగాళ్ళు తమ పావులను ఈ ఖాళీ పాయింట్లకు తరలించవచ్చు.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "ప్లేసింగ్ దశలో ఆటగాళ్ళు మిల్లులను ఏర్పరిచినప్పుడు చేపట్టగల చర్యలు.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "గుర్తించబడింది",
-    "@marked": {},
-    "menu": "మెనూ",
-    "@menu": {},
-    "monochrome": "మోనోక్రోమ్",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "మీరు జనరల్ సెట్టింగ్స్‌లో యాక్సెసిబిలిటీ కాన్ఫిగరేషన్‌లో స్క్రీన్ రీడర్ సపోర్ట్ స్విచ్‌ను ఆన్ చేయవచ్చు.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "ముక్కలపై సంఖ్యలను చూపించు",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "చిత్రాన్ని భద్రపరచండి",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "విశ్లేషణ టూల్‌బార్ ప్రదర్శించు",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "విశ్లేషణ టూల్‌బార్ నేపథ్యం రంగు",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "విశ్లేషణ టూల్‌బార్ చిహ్నం రంగు",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "పరివర్తితం.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "పరివర్తన చేయలేము.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "పరిసరాలను తిరిగించు",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H Flip",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V Flip",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO Flip",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "పారదర్శక క్యాన్వాస్",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "పునరావృత మిల్లుల ఏర్పాటును నిషేధించండి",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "ఒక గిరాటం నుండి మరొకటిని ఏర్పరచడానికి తరలించబడిన ముక్క తదుపరి వంతున వెంటనే అసలు పాయింట్ కు తిరిగి మరలా గిరాటం ఏర్పరచలేదు. ముందుగా వేరొక కదలిక అవసరం.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "ఒకసారి ఉపయోగించే మిల్",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "ప్రతి మిల్ ఒక సారి మాత్రమే ప్రత్యర్థి ముక్కను తొలగిస్తుంది. మీరు దాన్ని మళ్ళీ రూపకల్పన చేయవచ్చు, కానీ అదనపు తొలగింపులకు ఉపయోగించబడదు.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "మీరు సెట్ చేసిన ప్రస్తుత నిబంధనలకు అనుగుణంగా ఖచ్చితమైన డేటాబేస్ లేదు. ఖచ్చితమైన డేటాబేస్ గురించి మరింత సమాచారం కోసం ఇక్కడ క్లిక్ చేయండి.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "అడ్డంకుల మార్గాలపై దృష్టి పెట్టండి",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "మిల్లులు ఏర్పరచడం కంటే ప్రత్యర్థి యొక్క కదలికలను అడ్డుకోవడానికి ప్రాధాన్యత ఇవ్వండి. మిల్లులు పూర్తి చేయడం ద్వారా ముక్కలను తొలగించడం మీద దృష్టి పెట్టడం బదులు, AI ప్రత్యర్థిని ఉంచడానికి ప్రయత్నిస్తుంది, వారిని కదలకుండా చేసి, ఆగ్రహపు ఆటకు బదులుగా క్షీణత ద్వారా విజయం సాధించడానికి లక్ష్యం చేస్తుంది. ఈ వ్యూహం ప్రత్యర్థి యొక్క మిల్లులను చురుకుగా అడ్డుకోదు.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "చదరంగపు ముక్క చిత్రం",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "రంగు సెట్టింగ్‌లను దిగుమతి చేయండి",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "రంగు సెట్టింగ్‌లను ఎగుమతి చేయండి",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "దిగుమతి",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "ఎగుమతి",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "దయచేసి ముందుగా JSON ఫార్మాట్ సెట్టింగ్‌లను క్లిప్‌బోర్డ్‌కి కాపీ చేయండి.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "క్లిప్‌బోర్డ్‌కి కాపీ చేయబడింది.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "ఆయాతించబడింది.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "బోర్డ్ చిత్రం",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "శరదృతువు ఆకులు",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "పౌరాణిక భూమి",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "వినియట్ ప్రభావం",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "బోర్డు నేపథ్య చిత్రాన్ని సెట్ చేసినప్పుడు టూల్‌బార్‌ను పూర్తిగా పారదర్శకంగా చేయాలనుకుంటున్నారా?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "గేమ్‌లో వైబ్రేషన్‌ని ప్రారంభించండి",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "శబ్ద థీమ్",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "బంతి",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "ద్రవం",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "మొక్క",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "గేమ్ భాగాన్ని ఉంచే యానిమేషన్ ప్రభావం",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "గేమ్ భాగాన్ని తొలగించే యానిమేషన్ ప్రభావం",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "క్రింద టూల్‌బార్ చూపించు",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "బోర్డు మూల వ్యాసార్ధం",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "ఓపెనింగ్ బుక్ వాడండి",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "ప్రస్తుత",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "నియమాల సెట్",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "ప్రారంభ ఆటలో వృత్తిపరమైన మానవ ఆటగాళ్లు సాధారణంగా ఉపయోగించే ఓపెనింగ్ మూవ్స్‌ను AI వాడనివ్వండి. గమనిక: ఈ ఫీచర్ ప్రస్తుతం కొన్ని నియమాల సెట్ల కోసం మాత్రమే అందుబాటులో ఉంది.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "ఆధిక్యత గ్రాఫ్‌ను చూపించు",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "AI పోన్ చేసిన తర్వాత మాత్రమే ప్రయోజన గ్రాఫ్ వేయబడుతుంది. మానవ ఆటగాడు పోన్ చేసినప్పుడు ఇది వేయబడదు.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "అన్నీ ఏర్పాటు అయ్యే వరకు తీసివేతను నిలిపివుంచండి. ఆటగాళ్లు మిల్ ల సంఖ్య ఆధారంగా ముక్కలను తీసివేస్తారు.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "అన్నీ ఏర్పాటు అయ్యే వరకు తీసివేతను నిలిపివుంచండి. ఆటగాళ్లు మిల్ ల సంఖ్య ఆధారంగా ముక్కలను తీసివేస్తారు: సమానంగా ఉంటే, ఇద్దరూ ఒకే సంఖ్యలో ముక్కలను తీసివేస్తారు; ఒకరి దగ్గర ఎక్కువ ఉంటే, అతను ఒక అదనపు ముక్కను తీసివేసి ఒక్క ముక్క తేడాను కొనసాగిస్తాడు. ఒక ఆటగాడు మాత్రమే మిల్ ను రూపొందిస్తే, అతను రెండు ముక్కలను తీసివేస్తాడు, మరోవాడు ఒక ముక్కను తీసివేస్తాడు. ఇద్దరూ మిల్ ను రూపొందించలేకపోతే, ఇద్దరూ ఒక్క ముక్కను తీసివేస్తారు.",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "ఎల్ ఫిల్జా",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "నీ వర్గాల్లో ఒకటిని ఎంచుకో.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "మీ సారి కాదు.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "వ్యాఖ్యాన టూల్‌బార్ నేపథ్య రంగు",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "వ్యాఖ్యాన టూల్‌బార్ చిహ్నం రంగు",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "వ్యాఖ్యాన టూల్‌బార్ చూపించు",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "వ్యాఖ్యాన మోడ్‌లో ప్రవేశించండి",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "మీరు అన్ని వ్యాఖ్యానాలను తొలగించాలని ఖచ్చితంగా అనుకుంటున్నారా?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM ప్రాంప్ట్ క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "కనెక్షన్ నిరాకరించబడింది, సర్వర్ డౌన్‌లో ఉండవచ్చు.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "అన్వేషణ విజయవంతం, కనెక్షన్ కోసం ఎదురు చూస్తోంది...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "LAN కనెక్షన్ లేదు",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "స్క్రీన్‌షాట్ తీసుకోండి",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "ప్రతిస్పర్థి నుండి డిస్‌కనెక్ట్ అయింది.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "చలనం రద్దు అభ్యర్థన",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "చూపించడానికి ఏమీ లేదు.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "హోస్టింగ్ ఆపండి",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "కనెక్షన్ పియర్ ద్వారా రీసెట్ చేయబడింది.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "హార్ట్‌బీట్ టైమౌట్ కారణంగా కనెక్షన్ కోల్పోయింది. దయచేసి మళ్లీ కనెక్ట్ అవ్వండి.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "హోస్టింగ్ ప్రారంభించండి",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "రీస్టార్ట్ అభ్యర్థన నిరాకరించబడింది.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN ప్రత్యర్థితో కనెక్ట్ కాలేదు.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM ప్రాంప్ట్",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "గేమ్ మళ్లీ ప్రారంభించబడింది.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "చలనం రద్దు నిరాకరించబడింది.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "మీరు ఈ గేమ్ నుండి రాజీనామా చేయాలని నిజంగా అనుకుంటున్నారా?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "ప్రతిస్పర్థి రాజీనామా చేసాడు. మీరు గెలిచారు!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "అన్ని వ్యాఖ్యానాలను తొలగించండి",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "కనెక్ట్ అయింది, ప్రత్యర్థి యొక్క చలనం కోసం ఎదురు చూస్తోంది...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "నెట్‌వర్క్ స్థితి: కనెక్ట్ కాలేదు.",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "ప్రతిస్పర్థికి చలనం రద్దు అభ్యర్థన పంపబడింది.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "ప్రతిస్పర్థి గేమ్ నుండి బయలుదేరి ఉండవచ్చు.",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "హోస్ట్‌తో విజయవంతంగా కనెక్ట్ అయింది.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "కనెక్షన్ కోల్పోయింది: హార్ట్‌బీట్ టైమౌట్",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "ఎలాంటి హోస్ట్ కనుగొనబడలేదు.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "రాజీనామాను నిర్ధారించండి",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "గేమ్ హోస్ట్ చేయడం ప్రారంభించబడింది, ఆటగాళ్లు చేరుకోవడం కోసం ఎదురు చూస్తోంది...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "కనెక్షన్ టైమౌట్ అయింది, నెట్‌వర్క్ స్థిరంగా లేదు.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "LLM ప్రాంప్ట్ అందుబాటులో లేదు.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "మీరు రాజీనామా చేసారు. గేమ్ ముగిసింది.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "సర్వర్ IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "తొలగింపును నిర్ధారించండి",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "ప్రతిస్పర్థి సారి.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "క్లయింట్ కనెక్షన్ కోసం ఎదురు చూస్తోంది...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "చలనం రద్దు అభ్యర్థన నిరాకరించబడింది లేదా విఫలమైంది.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "టెక్స్ట్ జోడించండి",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "వ్యాఖ్యాన మోడ్ నుండి బయటకు రండి",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "మీ వ్యాఖ్యానాన్ని టైప్ చేయండి",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "మళ్లీ కనెక్ట్ అవ్వడానికి ప్రయత్నిస్తోంది...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "రీస్టార్ట్ అభ్యర్థన పంపబడింది. ప్రత్యర్థి యొక్క ప్రతిస్పందన కోసం ఎదురు చూస్తోంది...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "సర్వర్ ఆపబడింది.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "రీస్టార్ట్ అభ్యర్థన",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "మీ సారి కానప్పుడు చలనం రద్దు అభ్యర్థన చేయలేరు.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "చలనం రద్దు ఆమోదించబడింది.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "స్థానిక నెట్‌వర్క్ సెట్టింగ్స్",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "విజయవంతంగా మళ్లీ కనెక్ట్ అయ్యారు!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "గ్యాలరీకి చిత్రం సేవ్ చేయడంలో విఫలమైంది.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "ప్రతిస్పర్థి గేమ్ మళ్లీ ప్రారంభించాలనే అభ్యర్థన చేశాడు. మీరు అంగీకరిస్తారా?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "మీ సారి.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "మళ్లీ కనెక్ట్ కావడం సాధ్యపడలేదు, దయచేసి గేమ్‌ను మళ్లీ ప్రారంభించండి.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "హోస్ట్",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "చేరండి",
-    "@join": {},
-    "port": "పోర్ట్",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "చెల్లని IP చిరునామా.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "చెల్లని పోర్ట్.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "కనెక్ట్ అవుతున్నది: ప్రయత్నం {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "కనెక్ట్ అవడంలో విఫలమైంది: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "లోపం: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "హోస్టింగ్ ప్రారంభించడంలో విఫలమైంది: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "లోపం: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "హోస్ట్ కనుగొనబడింది: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "ఆపు",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "కనుగొనండి",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "కనెక్ట్ అవ్వండి",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "క్లయింట్ కనెక్ట్ అయింది: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "కనుగొనడం: {seconds} సెకన్లు",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "మళ్లీ కనెక్ట్ అవుతోంది ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "కనెక్ట్ అయింది.",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "తొలగించండి",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "పురాతన ఈజిప్ట్",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "గోతిక్ ఐస్",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "వరి పొలం",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "చైనీస్ పోర్సెలిన్",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "ఎడారి సంధ్య",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "నిఖార్సైన హస్తకళ",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "సాంప్రదాయ ఎంబ్రాయిడరీ",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "కార్పాతియన్ వారసత్వం",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "సామ్రాజ్య వైభవం",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "బోహీమియన్ క్రిస్టల్",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "సవన్నా సూర్యోదయం",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "సామరస్య సమతుల్యత",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "దాల్చిన చెక్క మసాలా",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "అనాటోలియన్ మొజాయిక్",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "కార్నివల్ స్ఫూర్తి",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "ఆచారం",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "మసాలా మార్కెట్",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "డ్రాయర్ చూపించడానికి స్వైప్ చేయండి",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "స్క్రీన్‌షాట్‌లలో గేమ్ సమాచారం చూపించు",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "మానవ సమయ పరిమితి",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "మానవ కదలికలకు సమయ పరిమితి లేదు",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "మానవ ఆటగాడికి సమయం ముగిసిపోతే ఓటమి వర్తిస్తుంది",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "బోర్డును గుర్తిస్తోంది...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "మీరు ఏదైనా మోడల్ పేరును నమోదు చేయవచ్చు.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "బోర్డు స్థానం వర్తించబడింది. FEN క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "సూచన: బోర్డు యొక్క స్పష్టమైన చిత్రం తీసుకోవడానికి ప్రయత్నించండి.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM ప్రాంప్ట్ నమూనా",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "చెల్లుబాటు అయ్యే బోర్డు కనుగొనబడలేదు.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "అల్బమ్ నుండి చిత్రం ఎంచుకుంటోంది...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "ప్రాంప్ట్ నమూనాను సెట్ చేయండి",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM విశ్లేషణ కోసం ప్రాంప్ట్ నమూనాను సవరించండి",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "గుర్తించిన బోర్డు నుంచి FEN సృష్టించడంలో విఫలం.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "ప్రస్తుత భాషలో అవుట్పుట్",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "సాధారణ Base URLలు",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "సాధారణ మోడళ్లను చూడండి",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "గుర్తింపు పరామితులు నవీకరించబడ్డాయి.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "తెల్లవారి బారి",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "డిఫాల్ట్‌లను పునఃస్థాపించండి",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "ఫోటో షూట్",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "గుర్తించిన బోర్డు స్థానాన్ని వర్తింపజేయడంలో విఫలం.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM ప్రాంప్ట్ విషయము",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM కాన్ఫిగర్ చేయబడలేదు. దయచేసి మీ సెట్టింగులను తనిఖీ చేయండి.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "ప్రొవైడర్, మోడల్, API Key, మరియు Base URL సెట్ చేయండి.",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM కాన్ఫిగరేషన్",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM provider ను కాన్ఫిగర్ చేయండి",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM ప్రాంప్ట్ టెంప్లేట్ శీర్షిక",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "చిత్రంలో ఏ భాగాలు గుర్తించబడలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "చిత్రం నుండి బోర్డును గుర్తించండి",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "సలహాలు చూడండి",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "బోర్డు పై వర్తించండి",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "బోర్డు ప్రాంతాన్ని సర్దుబాటు చేయండి",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "సాధారణ URLలు చూడండి",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "రంగుల విశ్లేషణ విఫలమైంది!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "ఆట బోర్డు చిత్రాన్ని విశ్లేషిస్తోంది...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "అల్బమ్ నుంచి ఎంచుకోండి",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "బోర్డు బిందువు కనుగొనబడలేదు!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "ఖాళీగా వదిలివేస్తే, డిఫాల్ట్ నమూనా ఉపయోగించబడుతుంది",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM కాన్ఫిగరేషన్",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "మీరు నిజంగా ప్రాంప్ట్ నమూనాలను డిఫాల్ట్ విలువలకు రీసెట్ చేయాలనుకుంటున్నారా?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM ప్రాంప్ట్ టెంప్లేట్ ఫుటర్",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "సమాధానం లోడ్ అవుతోంది...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "ఈ ఫలితాన్ని బోర్డుకు వర్తించండి",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "చిత్రం తీసుకుంటోంది...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "దయచేసి గుర్తించడానికి ఆట బోర్డు చిత్రాన్ని ఎంచుకోండి",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "గుర్తింపు ఫలితాలు",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "చలనాలను విశ్లేషించి, అవగాహన అందించండి.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key పొందండి",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "మొత్తం గుర్తింపు ప్రక్రియ పూర్తి కాలేదు.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "బోర్డు గుర్తింపు ఫలితం",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLMను అడగండి",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "బోర్డు గుర్తింపు విఫలమైంది!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "బోర్డు బిందువు కనుగొనబడలేదు, కాబట్టి ముక్కను గుర్తించలేము!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FENను కాపీ చేయండి",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "సాధారణంగా ఉపయోగించే మోడళ్లు",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (ఐచ్చిక)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "ఏ చిత్రం ఎంచుకోబడలేదు",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "నలుపువారి బారి",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "పెద్ద భాషా మోడల్",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "సరఫరాదారు",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "బేస్ URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "మోడల్",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "ఉష్ణోగ్రత",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "ఆదేశం స్వీకరించబడింది! AI ప్రాసెస్ అవుతోంది...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "లోతైన ఆలోచన జరుగుతోంది, దయచేసి వేచి ఉండండి...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "త్వరిగా ప్రదర్శించబడుతుంది...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "గుర్తింపు పరామితులు",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "గుర్తింపు ఖచ్చితత్వాన్ని మెరుగుపర్చేందుకు పరామితులను సర్దుబాటు చేయండి",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "పరామితులను సేవ్ చేయండి",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "చిత్ర గుర్తింపును ప్రారంభించలేకపోయాం: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "లోపం: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "చిత్ర గుర్తింపు విఫలమైంది: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "లోపం: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "{whiteCount} తెల్ల మరియు {blackCount} నలుపు ముక్కలతో దరఖాస్తు చేసిన స్థానం",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN క్లిప్‌బోర్డుకు కాపీ చేయబడింది)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "గుర్తింపు విఫలమైంది: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "లోపం: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "నా రేటింగ్",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "ఆడిన ఆటలు",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "గెలుపులు",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "ఓటములు",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "డ్రాలు",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "చివరిగా నవీకరించబడింది",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "ఫార్మాట్:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "గణాంకాలను రీసెట్ చేయండి",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "డ్రా రేటు",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "ఓటమి రేటు",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "AI గణాంకాలు",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "గణాంకాలను ప్రారంభించండి",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "ప్రారంభించినప్పుడు, ఆట ఫలితాలు గణాంకాలలో రికార్డ్ చేయబడతాయి. అయితే, టేక్-బ్యాక్‌లను కలిగి ఉన్న ఆటలు రికార్డ్ చేయబడవు. నిలిపివేసినప్పుడు, గణాంకాల సేకరణ పాజ్ చేయబడుతుంది.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "ఇది అన్ని ఆట గణాంకాలను రీసెట్ చేస్తుంది. ఈ చర్యను రద్దు చేయడం సాధ్యం కాదు.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "బోర్డు లోపలి రింగ్ పరిమాణం",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "బోర్డు నీడ",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "ఉచ్చు గుర్తింపు",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "విశ్లేషణ సమయంలో మందమైన వృత్తాలు మరియు బాణాలతో ఉచ్చు కదలికలను హైలైట్ చేయండి.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "ఉచ్చు ఉంది. ఉచ్చు కదలికలు: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "లాంకింగ్ క్యాప్చర్",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "మీ ప్రత్యర్థి ముక్కలలో ఒకదాన్ని మీ రెండింటి మధ్య సరళ రేఖలో పట్టుకోవటానికి ఒకదాన్ని నొక్కిచెప్పండి.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "పార్శ్వ సంగ్రహాన్ని అనుమతించండి",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "ఇంటర్వెన్షన్ క్యాప్చర్",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "మీ ప్రత్యర్థి రెండు ముక్కల మధ్య ఖాళీ బిందువులోకి వెళ్లండి.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "జోక్యం సంగ్రహాన్ని అనుమతించండి",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "జంప్ క్యాప్చర్",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "ప్రక్కనే ఉన్న ప్రత్యర్థి ముక్కను మించిన ఖాళీ బిందువులోకి దూకడం ద్వారా పట్టుకోండి.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "జంప్ క్యాప్చర్ అనుమతించండి",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "వర్తించే పంక్తులు",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "చదరపు అంచుల వెంట",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "చదరపు దాటి ఆర్తోగోనల్ మార్గాల్లో",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "వికర్ణ రేఖల వెంట చదరపు దాటుతుంది",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "అమలు దశలు",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "మిగిలిన ముక్కల ఆధారంగా కదిలే దశలో లభ్యత",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "పరిమితి లేదు",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "మీకు మూడు లేదా అంతకంటే తక్కువ ముక్కలు ఉన్నప్పుడు లభిస్తుంది",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "రెండు ఖాళీ చతురస్రాలు మాత్రమే మిగిలినప్పుడు ఉంచడం ఆపండి",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "ప్రారంభించినప్పుడు, బోర్డ్‌లో కేవలం 2 ఖాళీ స్థలాలు మిగిలినప్పుడు ఉంచే దశ ముగుస్తుంది మరియు కదిలించే దశ ప్రారంభమవుతుంది, చేతిలో ముక్కలు ఉన్నా లేకపోయినా. ఈ నియమం 12-ముక్కల ఆటలకు మాత్రమే వర్తిస్తుంది.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "మీ తరలింపు తర్వాత వెంటనే మాత్రమే మీరు వెనుకకు తీసుకోవడాన్ని అభ్యర్థించవచ్చు.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "మీరు మరింత పెద్ద సవాలును కోరుకుంటే, \"{setting}\" ఎంపికను ప్రారంభించి, సూచించిన విధంగా మీ పరికరానికి పూర్తి డేటాబేస్‌ను డౌన్‌లోడ్ చేయమని మేము సూచిస్తున్నాము.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "మీరు ఇప్పుడు ఆట నియమాలను కాన్ఫిగర్ చేయాలనుకుంటున్నారా?",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "అల్గోరిథం సూచన",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "మీరు లెవల్ 1 లో వరుసగా అనేక ఆటలను ఓడిపోయారు. కష్టాన్ని తగ్గించడానికి సులభమైన MCTS అల్గోరిథంకు మారాలనుకుంటున్నారా?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS లెవల్ 30 లో గెలిచినందుకు అభినందనలు! మరింత సవాలు కోసం MTD(f) అల్గోరిథంకు మారాలనుకుంటున్నారా?",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "తీయగల ముక్కలను హైలైట్ చేయండి",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2341,12 +2910,7 @@
     },
     "puzzleSelectedCount": "{count} Selected",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
     "puzzleSelectAll": "Select All",
     "@puzzleSelectAll": {
@@ -2362,12 +2926,7 @@
     },
     "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
     "puzzleExportFailed": "Failed to export puzzles",
     "@puzzleExportFailed": {
@@ -2375,12 +2934,7 @@
     },
     "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
     "puzzleImportFailed": "Failed to import puzzles",
     "@puzzleImportFailed": {
@@ -2388,21 +2942,11 @@
     },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
     "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
     "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
     "@puzzleCannotDeleteBuiltIn": {
@@ -2458,21 +3002,11 @@
     },
     "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
     "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
     "puzzleNoSolutionRecorded": "No solution recorded yet",
     "@puzzleNoSolutionRecorded": {
@@ -2576,12 +3110,7 @@
     },
     "dailyPuzzleNumber": "Day #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
     "dailyPuzzleStreak": "Streak",
     "@dailyPuzzleStreak": {
@@ -2597,12 +3126,7 @@
     },
     "dailyPuzzleBestStreak": "Best: {longestStreak} days",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
     "dailyPuzzleStart": "Start Daily Puzzle",
     "@dailyPuzzleStart": {
@@ -2858,12 +3382,7 @@
     },
     "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
     "puzzleStatsGamesPlayed": "Games Played",
     "@puzzleStatsGamesPlayed": {
@@ -3051,12 +3570,11 @@
     },
     "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
     },
     "validationErrors": "Validation Errors",
     "@validationErrors": {
@@ -3164,23 +3682,19 @@
     },
     "nextMoveHint": "Next move: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "కదలిక",
+    "@move": {
+        "description": "Move"
     },
     "completeSolutionHint": "Complete solution: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
     },
     "payAttentionToPositions": "Pay attention to these positions",
     "@payAttentionToPositions": {
@@ -3200,17 +3714,11 @@
     },
     "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
     },
     "correctAlternativeSolution": "Correct! You found an alternative solution!",
     "@correctAlternativeSolution": {

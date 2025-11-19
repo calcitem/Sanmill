@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "حسنا",
+    "ok": "حسنًا",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "دور {player}.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "اللاعب ١ يفوز!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "لا يمكن استيراد {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "النقلات والقواعد غير متطابقة.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "خطأ: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "معدل الفوز",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "خسر {player} لأن عدد قطعه أقل من ثلاثة.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "استسلم {player}.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} ليس لديه نقلات ممكنة.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "اللوحة ممتلئة، و{player} ليس لديه نقلات ممكنة.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "انتهى الوقت، خسر {player}.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "في مرحلة الحركة ، لم تتم إزالة أي قطعة في آخر عدد محدد من الحركات.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "تحدي مستوى أصعب؟ المستوى الجديد سيكون المستوى {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "لقد خسرت!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "الإصدار: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "شكرا",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "الخيارات",
+    "options": "خيارات",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "اختر {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "معلومات",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " و ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "قبول",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player}: قطع غير موضوعة: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player}: قطع على اللوحة: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "إزاحة اللوحة من الأعلى",
     "@boardTop": {
@@ -1103,15 +1048,15 @@
     "@close": {
         "description": "Close"
     },
-    "download": "Download",
+    "download": "تحميل",
     "@download": {
         "description": "Download button text"
     },
-    "status": "Status",
+    "status": "الحالة",
     "@status": {
         "description": "Status label"
     },
-    "unknown": "Unknown",
+    "unknown": "غير معروف",
     "@unknown": {
         "description": "Unknown value"
     },
@@ -1145,23 +1090,19 @@
     },
     "sideToMove": "دور اللاعب: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "لاعب",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "آخر حركة: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "الحركة",
+    "@move": {
+        "description": "Move"
     },
     "selected": "المحدد",
     "@selected": {
@@ -1241,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{0 نقلات}=1{1 نقلة}other{{count} نقلات}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "فشل التحميل.",
     "@loadFailed": {
@@ -1300,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{0 قطعة}=1{1 قطعة}two{{count} قطعتان}few{{count} قطع}many{{count} قطعة}other{{count} قطع}} تحتاج إلى إزالة.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "تم وضعه ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "عدد القطع الموضوعة في مرحلة الوضع.",
     "@placedPieceCount": {
@@ -1326,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "{count, plural, =0{لم يضع اللاعب الحالي أي قطعة} =1{وضع اللاعب الحالي قطعة واحدة} other{وضع اللاعب الحالي {count} قطعة}}",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "ليست مرحلة الوضع، لا يمكن تغييرها.",
     "@notPlacingPhase": {
@@ -1364,786 +1277,1436 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "غابة",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "صورة سطح المكتب",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "وضع غير صالح.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "مشاركة صورة متحركة",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "نسبة البكسل",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "المدة",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "مسجل شاشة اللعبة",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "السابق",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "التالي",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "تخطي",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "مفهوم",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "يمكنك تعديل قواعد اللعبة في إعدادات القواعد.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "يمكنك استخدام عجلة الماوس لتغيير القيمة في المنتقي.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "ضبط وقت التفكير بالذكاء الاصطناعي على ٠ يعني أنه لا يوجد حد زمني للتفكير.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD (f) هو شكل معدل من خوارزمية بحث alpha-beta التي تهدف إلى تحسين الكفاءة عن طريق إعادة استخدام نتائج البحث الوسيطة واستخدام تخمين أولي جيد لتضييق مساحة البحث.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "يرجى الانتباه إلى أن تعديل وقت تفكير الذكاء الاصطناعي قد لا يكون دقيقًا تمامًا. قد يكون وقت التفكير الفعلي أقصر عندما يتم تعيين مستوى الصعوبة على قيمة أقل وقد يكون أطول عندما يكون الذكاء الاصطناعي في منتصف التفكير عندما ينفد الوقت.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "إذا قمت بتعيين مستوى الصعوبة عالياً ولكنك لم تقم بزيادة وقت التفكير في الذكاء الاصطناعي ، فقد يكون مستوى الصعوبة الفعلي مقيدًا بقيمة أقل بسبب ضيق وقت التفكير. قد تختلف القيمة الفعلية بناءً على أداء الجهاز.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (بحث التباين الرئيسي) عبارة عن خوارزمية بحث للعثور على أفضل حركة في موضع معين. إنه تحسين لخوارزمية ألفا بيتا ويستخدم عمليات بحث نافذة خالية أو صفرية لتأكيد أن الخطوة أسوأ أو ليست أسوأ من النتيجة الآمنة بالفعل من الاختلاف الرئيسي. يركز PVS على الحركات الواعدة ويتجنب عمليات البحث غير الضرورية للفروع دون المستوى الأمثل ، مما يساعد على تحسين كفاءة البحث.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "خوارزمية ألفا-بيتا هي خوارزمية بحث تُستخدم لإيجاد الحركة المثلى في الألعاب. تعتمد على مبدأ minimax وتستخدم قيمتين، ألفا و بيتا، لتقليم شجرة البحث، مما يقلل بشكل كبير من عدد العُقد التي تحتاج إلى تقييم ويزيد من كفاءة البحث.\nألفا: تمثل الحد الأدنى للنتيجة المؤكدة التي يمكن للطرف الذي يسعى لتعظيم النتيجة تحقيقها حتى الآن خلال البحث.\nبيتا: تمثل الحد الأعلى للنتيجة المؤكدة التي يمكن للطرف الذي يسعى لتقليل النتيجة تحقيقها حتى الآن خلال البحث.\nتساعد هذه الخوارزمية الكمبيوتر أو أي لاعب يستخدمها على اتخاذ قرارات لعب أكثر ذكاءً وفعالية من خلال استكشاف عدد أقل من الاحتمالات الممكنة.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "وفقًا للتجربة البشرية ، إذا حاولت الفوز ، فسوف تخسر. بدلاً من ذلك ، استهدف أن يكون التعادل هدفك وتجنب خسارة اللعبة. راقب خصمك وجذبه برفق إلى وضع قد يخطئ فيه. عندما يظهرون ضعفًا ، اغتنم الفرصة وادفع برفق لتحقيق الفوز. بهذه الطريقة ، يمكنك الفوز باللعبة.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "في هذه اللعبة، من الأسهل على اللاعب الثاني الفوز مقارنةً باللاعب الأول.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "سيؤدي تمكين الخيار السلبي إلى استرخاء الذكاء الاصطناعي عندما يكون لديه ميزة في المركز ، بدلاً من محاولة الفوز بقوة في أسرع وقت ممكن.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "يؤدي تمكين هذا الخيار إلى زيادة عشوائية اللعبة ومتعتها بينما يمكن أن يساعد تعطيلها في دراسة طرق التغلب على الذكاء الاصطناعي.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "إذا أخذ الذكاء الاصطناعي في الاعتبار إمكانية تحريك قطعه ، فلن يهدف فقط إلى التقاط قطع الخصم بأسرع ما يمكن ، ولكن أيضًا يفكر في منع تحركات الخصم ومنعهم من فعل الشيء نفسه.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "عندما تكون اللوحة ممتلئة",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "في نهاية مرحلة الوضع ، قبل أن تبدأ مرحلة الحركة ، يتبع الإجراء إذا كانت اللوحة ممتلئة بالقطع.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "اللاعب الذي يتحرك أولاً في مرحلة الحركة يزيل إحدى قطع الخصم.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "يتفق الطرفان على التعادل.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "خذ إحدى قطع خصمك.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "اللاعب الأول يخسر اللعبة.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "يقوم اللاعبان الأول والثاني بإزالة إحدى قطع الخصم.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "يقوم اللاعبان الثاني والأول بإزالة إحدى قطع الخصم.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "دخلت الآن مرحلة الطيران ، يمكن لقطع الخصم القفز إلى أي نقطة فارغة على اللوحة. يمكنك إيقاف تشغيل قاعدة الطيران في \"إعدادات القاعدة\".",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "عند الجمود",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "ما هو العمل الذي يتبع عندما لا يمكن تحريك أي قطعة؟",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "إنهاء بخسارة بسبب الجمود للجانب الذي تم حظره.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "تغيير الطرف الذي يتحرك.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "قم بإزالة إحدى قطع الخصم وقم بالحركة التالية.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "الانتهاء بتعادل بسبب الجمود.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "قم بإزالة إحدى قطع الخصم وقم بتغيير الجانب المراد تحريكه.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "وقت تأخير استجابة الذكاء الاصطناعي",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "يمر الذكاء الاصطناعي حاليًا بمرحلة استجابة متأخرة. يرجى الانتظار لبعض الوقت قبل المتابعة.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "لا يمكنك إزالة قطعة غير مجاورة.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "في حالة الجمود، يمكن إزالة قطع الخصم المجاورة لقطعك، بغض النظر عن تشكيل الطاحونة.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS هي خوارزمية صديقة للمبتدئين تتخذ القرارات من خلال استكشاف وتقييم الحركات المختلفة من خلال عمليات المحاكاة.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "اليشم الذهبي",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "خشب الغابة",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "لغز غامق",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "منتصف الليل الأزرق",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "غابة خضراء",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "المرج الأخضر",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "ممر حجري",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "الباستيل الوردي",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "بحر الفيروز",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "الحلم البنفسجي",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "شوكولاتة النعناع",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "السماء الزرقاء",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "حديقة مرحة",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "تستخدم خوارزمية التحليل الرجعي تحليلًا رجعيًا متعدد القيم لبناء قاعدة بيانات نهاية اللعبة من مواقع بدء مختلفة ، ثم تطبق قاعدة البيانات هذه لتحسين طريقة اللعب. يندرج هذا النهج ضمن فئة الحلول فائقة القوة.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "هل ترغب في عرض دليل المستخدم لهذه الخوارزمية؟",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "أظهر مؤشر الميزة الموضعية",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "استخدام قاعدة بيانات مثالية",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "قم بتمكين هذا الخيار لاستخدام قاعدة بيانات ألعاب خالية من العيوب تم إنشاؤها من خلال خوارزميات متطورة. تدمج هذه الميزة استراتيجيات الافتتاح ونهاية اللعبة لاقتراح التحركات المثالية. هذا هو الخيار المفضل للاعبين الذين يبحثون عن أعلى مستوى من الدقة في اللعب. تم إنشاء قاعدة البيانات من خلال تقنيات حسابية دقيقة، وهي مصممة لتقديم حلول ألعاب شبه مثالية.\n\nملحوظة: إذا فشل الذكاء الاصطناعي في الوصول إلى قاعدة البيانات، فسوف يلجأ إلى الخوارزميات التقليدية لاتخاذ قرارات اللعب. عندما تكون قاعدة البيانات متاحة، يصبح \"مستوى الصعوبة\" لا يمكن التغلب عليه فعليًا، ويشهد \"وقت تفكير الذكاء الاصطناعي\" انخفاضًا كبيرًا. سيتم تجاوز العديد من الإعدادات ضمن خيارات \"AI's play style\"، حيث أن نتائج قاعدة البيانات لها الأولوية القصوى.\n\nللحصول على إرشادات حول كيفية تحقيق أقصى استفادة من قاعدة البيانات الخالية من العيوب، انقر هنا.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "صورة الخلفية",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "عندما لا يتم تفعيل خيار \"استخدام قاعدة البيانات المثالية\"، يؤدي إعداد \"العشوائية\" إلى قيام الذكاء الاصطناعي بتحريك القطع بشكل عشوائي دون استخدام أي خوارزميات لاختيار الحركات. هذا يؤدي عادةً إلى ضعف كبير في أسلوب اللعب. على النقيض من ذلك، عند تفعيل خيار \"استخدام قاعدة البيانات المثالية\"، يعتمد الذكاء الاصطناعي حصريًا على \"قاعدة البيانات المثالية\" لاتخاذ القرارات، بدلاً من دمجها مع خوارزميات الذكاء الاصطناعي التقليدية. في هذا الوضع، تعتمد حركات الذكاء الاصطناعي بالكامل على محتوى قاعدة البيانات، متجنبة الاعتماد على الحسابات الفورية أو خوارزميات البحث.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "قم بإزالة قطع الخصم من يده؛ ثم حان دور الخصم للوضع.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "عند تشكيل الطواحين أثناء مرحلة الوضع",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "قم بإزالة قطع الخصم من اللوحة.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "قم بإزالة قطع الخصم من اللوحة؛ ثم حان دور الخصم للوضع.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "يزيل الخصم قطعه الخاصة من اللوحة.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "بدلاً من اتخاذك للإجراء، يختار الخصم ويزيل قطعه الخاصة من اللوحة، مما يؤدي فعليًا إلى اتخاذ إجراء يضر بنفسه.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "قم بإزالة قطع الخصم من يده؛ ثم حان دورك للتحرك.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "قم بإزالة القطع من يد الخصم. إذا كان يجب إزالة قطع متعددة وفقًا لإعداد الإزالة المتعددة ولم يتبق لدى الخصم أي قطع في يده، فاستمر في إزالة قطع الخصم من اللوحة. ثم حان دورك للتحرك. إذا استمررت في تشكيل الطواحين، فيمكنك الاستمرار في إزالة قطع الخصم.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "قم بإزالة القطع من يد الخصم. إذا كان يجب إزالة قطع متعددة وفقًا لإعداد الإزالة المتعددة ولم يتبق لدى الخصم أي قطع في يده، فاستمر في إزالة قطع الخصم من اللوحة. ثم حان دور الخصم للتحرك.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "ضع علامة على القطع وتأخير إزالتها.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "أثناء مرحلة الوضع، يتم وضع علامة على القطع المراد إزالتها، وبالنسبة لكلا اللاعبين، لا يمكن وضع قطع جديدة على هذه النقاط. عند الدخول في مرحلة التحرك، يتم إزالة هذه القطع المعلمة معًا، ويمكن للاعبين بعد ذلك تحريك قطعهم إلى هذه النقاط الفارغة الآن.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "الإجراءات التي يمكن اتخاذها عند تشكيل المطاحن خلال مرحلة الوضع.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "مُعلَم",
-    "@marked": {},
+    "@marked": {
+        "description": ""
+    },
     "menu": "القائمة",
-    "@menu": {},
+    "@menu": {
+        "description": ""
+    },
     "monochrome": "أحادي اللون",
-    "@monochrome": {},
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "يمكنك تفعيل دعم قارئ الشاشة في إعدادات الوصول في الإعدادات العامة.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "عرض الأرقام على القطع",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "حفظ الصورة",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "إظهار شريط أدوات التحليل",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "لون خلفية شريط أدوات التحليل",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "لون أيقونة شريط أدوات التحليل",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "تم التحويل.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "لا يمكن التحويل.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "دوران",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "أفقي",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "عمودي",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO فليب",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "قماش شفاف",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "تقييد تشكيل الطواحين المتكررة",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "لا يمكن للقطعة التي تحركت من طاحونة إلى أخرى أن تعود فورًا إلى النقطة الأصلية في الدور التالي لتكوين طاحونة مرة أخرى. يتطلب الأمر حركة مختلفة أولاً.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "مطحنة للاستخدام مرة واحدة",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "يمكن لكل مطحنة إزالة قطعة واحدة فقط من خصمك. يمكنك إعادة تشكيلها مرة أخرى، ولكن لا يمكن استخدامها لعمليات إزالة إضافية.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "القواعد الحالية التي قمت بتعيينها ليس لها قاعدة بيانات مثالية مقابلة. لمزيد من المعلومات حول قاعدة البيانات المثالية، يرجى النقر هنا.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "ركز على مسارات الحظر",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "خلال مراحل محددة من اللعبة، قدِّم الأولوية لإعاقة حركة الخصم على تشكيل الطواحين. بدلاً من التركيز على إزالة القطع عبر إكمال الطواحين، تهدف الذكاء الاصطناعي إلى محاصرة الخصم خلال هذه المراحل، مما يجعله غير قادر على التحرك وضمان الفوز من خلال الإنهاك بدلاً من اللعب العدواني. هذه الاستراتيجية المحددة بالمرحلة لا تعيق طواحين الخصم بنشاط.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "صورة القطعة",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "استيراد إعدادات الألوان",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "تصدير إعدادات الألوان",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "استيراد",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "تصدير",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "يرجى نسخ إعدادات تنسيق JSON إلى الحافظة أولاً.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "تم النسخ إلى الحافظة.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "تم الاستيراد.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "صورة اللوحة",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "أوراق الخريف",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "الأرض الأسطورية",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "تأثير التظليل",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "هل تود جعل شريط الأدوات شفافًا بالكامل عندما يتم تعيين صورة خلفية للوحة؟",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "تمكين الاهتزاز في اللعبة",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "سمة الصوت",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "كرة",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "سائل",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "خشب",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "تأثير تحريك وضع القطعة",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "تأثير تحريك إزالة القطعة",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "عرض شريط الأدوات في الأسفل",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "نصف قُطر زوايا اللوح",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "استخدم كتاب الافتتاح",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "الحالي",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "أم التسع",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "أم الاثني عشر",
-    "@twelveMensMorris": {},
-    "morabaraba": "مورابارابا",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "دوز",
-    "@dooz": {},
-    "chamGonu": "تشامغونو",
-    "@chamGonu": {},
-    "zhiQi": "جي تشي",
-    "@zhiQi": {},
-    "chengSanQi": "تشينغ سان تشي",
-    "@chengSanQi": {},
-    "mulMulan": "مول-مولان",
-    "@mulMulan": {},
-    "nerenchi": "نيرينشي",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "مجموعة القواعد",
-    "@ruleSet": {},
-    "laskerMorris": "لاسكر موريس",
-    "@laskerMorris": {},
+    "@ruleSet": {
+        "description": ""
+    },
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "مطحنة المرة الواحدة",
-    "@oneTimeMill": {},
-    "daSanQi": "دا سان تشي",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "دع الذكاء الاصطناعي يستخدم الافتتاحيات التي يستخدمها اللاعبون المحترفون في بداية اللعبة. ملاحظة: هذه الخاصية متاحة حاليًا لمجموعات قواعد محددة فقط.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "إظهار الرسم البياني للأفضلية",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "سيُرسَم مخططُ الأفضلية فقط بعد أن يُجري الذكاءُ الاصطناعيُّ حركةً، ولن يُرسم عندما يُجري اللاعبُ البشريُّ حركةً.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "ممنوع الإزالة حتى يتم الانتهاء من وضع جميع القطع، ثم يقوم اللاعبون بإزالة القطع وفقًا لعدد الطواحين المُشكَّلة.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "ممنوع الإزالة حتى يتم الانتهاء من وضع جميع القطع، ثم يقوم اللاعبون بإزالة القطع وفقًا لعدد الطواحين المُشكَّلة: إذا تساوى العدد، يزيل كلاهما العدد نفسه؛ وإذا كان أحدهما يمتلك عددًا أكبر من الطواحين، فإنه يزيل قطعة إضافية واحدة مع الحفاظ على فارق قطعة واحدة. إذا قام أحد اللاعبين فقط بتشكيل طواحين، فإنه يزيل قطعتين بينما يزيل الآخر واحدة. أما إذا لم يشكل أيٌّ منهما طواحين، فيزيل كلٌّ منهما قطعة واحدة من قطعه الخاصة.",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "الفلجة",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "اختر إحدى قطعك.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "ليس دورك.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "لون خلفية شريط أدوات التعليقات",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "لون أيقونات شريط أدوات التعليقات",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "عرض شريط أدوات التعليقات",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "دخول وضع التعليق",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "هل أنت متأكد من رغبتك في مسح جميع التعليقات؟",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "تم نسخ مطالبة LLM إلى الحافظة.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "تم رفض الاتصال، ربما يكون الخادم متوقفاً.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "تم الاكتشاف بنجاح، في انتظار الاتصال...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "لا يوجد اتصال بالشبكة المحلية",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "التقاط لقطة شاشة",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "تم قطع الاتصال من الخصم.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "طلب التراجع",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "لا يوجد ما يمكن عرضه.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "إيقاف الاستضافة",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "تم إعادة تعيين الاتصال من الطرف الآخر.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "انقطع الاتصال بسبب انتهاء مهلة نبض القلب. يرجى إعادة الاتصال.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "بدء الاستضافة",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "تم رفض طلب إعادة التشغيل.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "غير متصل بالخصم على الشبكة المحلية.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "تعليمات LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "تم إعادة تشغيل اللعبة.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "تم رفض طلب التراجع.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "هل أنت متأكد أنك تريد الاستسلام في هذه اللعبة؟",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "استسلم الخصم. أنت الفائز!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "مسح جميع التعليقات",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "متصل، في انتظار حركة الخصم...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "حالة الشبكة: غير متصل",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "تم إرسال طلب التراجع إلى الخصم.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "قد يكون الخصم قد غادر اللعبة",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "تم الاتصال بالمضيف بنجاح.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "انقطع الاتصال: انتهاء مهلة نبض القلب",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "لم يتم اكتشاف أي خادم.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "تأكيد الاستسلام",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "تم بدء استضافة اللعبة، في انتظار انضمام اللاعبين...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "انتهت مهلة الاتصال، الشبكة غير مستقرة.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "لا توجد تعليمات LLM متاحة.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "لقد استسلمت. انتهت اللعبة.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "عنوان IP للخادم",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "تأكيد المسح",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "دور الخصم.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "في انتظار اتصال العميل...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "تم رفض طلب التراجع أو فشل.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "إضافة نص",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "الخروج من وضع التعليق",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "اكتب تعليقك",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "محاولة إعادة الاتصال...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "تم إرسال طلب إعادة التشغيل. في انتظار رد الخصم...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "الخادم متوقف.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "طلب إعادة التشغيل",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "لا يمكنك طلب التراجع عندما لا يكون دورك.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "تم قبول طلب التراجع.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "إعدادات الشبكة المحلية",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "تم إعادة الاتصال بنجاح!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "فشل في حفظ الصورة في المعرض.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "طلب الخصم إعادة تشغيل اللعبة. هل تقبل؟",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "دورك.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "غير قادر على إعادة الاتصال، يرجى إعادة تشغيل اللعبة.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "المضيف",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "انضم",
-    "@join": {},
+    "@join": {
+        "description": ""
+    },
     "port": "المنفذ",
-    "@port": {},
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "عنوان IP غير صالح.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "المنفذ غير صالح.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "جارٍ الاتصال: المحاولة {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "فشل الاتصال: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "خطأ: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "فشل في بدء الاستضافة: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "خطأ: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "تم اكتشاف المضيف: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "المنفذ",
+    "@port": {
+        "description": ""
     },
     "stop": "إيقاف",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "اكتشاف",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "اتصل",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "تم الاتصال بالعميل: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "جارٍ الاكتشاف: {seconds} ثوانٍ",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "إعادة الاتصال ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "متصل",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "حذف",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "عبق الفراعنة",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "ثلوج الأطلس",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "حقول النيل",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "البورسلان الصيني",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "غسق الصحراء",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "إتقان الصنعة",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "التطريز التراثي",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "تراث الحجاز",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "مجد الخلافة",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "زجاج دمشق",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "شروق الواحة",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "تناغم وتوازن",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "أريج القرفة",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "الفسيفساء الأندلسية",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "روح المهرجان",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "مخصص",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "سوق البهارات",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "اسحب للكشف عن الدرج",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "عرض معلومات اللعبة على لقطات الشاشة",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "حد الوقت للحركة البشرية",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "لا يوجد حد زمني للحركات البشرية",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "سيتم تطبيق خسارة المهلة للاعب البشري",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "جارٍ التعرف على لوحة اللعب...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "يمكنك إدخال أي اسم نموذج.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "تم تطبيق وضعية لوحة اللعب. تم نسخ FEN إلى الحافظة.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "اقتراح: حاول التقاط صورة أوضح للوحة اللعب.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "قالب تعليمات LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "لم يتم الكشف عن لوحة لعب صالحة.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "جارٍ اختيار صورة من الألبوم...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "تكوين قالب الموجه",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "تحرير قالب الموجه لتحليل LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "فشل في إنشاء FEN من لوحة اللعب المعترف بها.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "الإخراج باللغة الحالية",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "عناوين Base URL الشائعة",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "عرض النماذج الشائعة",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "تم تحديث معلمات التعرف.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "دور الأبيض",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "إعادة الضبط إلى القيم الافتراضية",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "التقاط صورة",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "فشل في تطبيق وضعية لوحة اللعب المعترف بها.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "محتوى موجه LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "لم يتم تكوين LLM. يُرجى التحقق من الإعدادات.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "تعيين المزود، النموذج، API Key وBase URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "تكوين LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "تكوين مزود LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "رأس قالب موجه LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "لم يتم التعرف على أي قطع في الصورة. يرجى المحاولة مرة أخرى.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "التعرف على لوحة اللعب من الصورة",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "عرض النصائح",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "تطبيق على لوحة اللعب",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "ضبط منطقة لوحة اللعب",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "عرض عناوين URL الشائعة",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "فشل تحليل الألوان!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "جاري تحليل صورة لوحة اللعب...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "اختر من الألبوم",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "لم يتم الكشف عن أي نقطة على لوحة اللعب!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "إذا تُرك فارغًا، سيُستخدم القالب الافتراضي",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "إعدادات LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "هل أنت متأكد من رغبتك في إعادة قوالب التعليمات إلى القيم الافتراضية؟",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "تذييل قالب موجه LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "جارٍ تحميل الاستجابة...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "تطبيق هذه النتيجة على لوحة اللعب",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "جارٍ التقاط صورة...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "يرجى اختيار صورة لوحة اللعب للتعرف عليها",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "نتائج التعرف",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "حلل الحركات وقدّم رؤى.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "الحصول على API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "لم تكتمل عملية التعرف بالكامل.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "نتيجة التعرف على لوحة اللعب",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "اسأل LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "فشل اكتشاف لوحة اللعب!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "لم يتم الكشف عن أي نقطة على لوحة اللعب، لا يمكن تحديد القطعة!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "نسخ FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "النماذج المستخدمة بشكل شائع",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (اختياري)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "لم يتم اختيار صورة",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "دور الأسود",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "نموذج لغوي ضخم",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "المزوّد",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "عنوان URL الأساسي",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "النموذج",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "درجة الحرارة",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "تم استلام الأمر! يجري معالجة الذكاء الاصطناعي...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "تفكير عميق جارٍ، يرجى الانتظار...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "سيتم العرض قريبًا...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "معلمات التعرّف",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "اضبط المعلمات لتحسين دقة التعرّف",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "حفظ المعلمات",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "تعذّر بدء التعرّف على الصورة: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "خطأ: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "فشل التعرّف على الصورة: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "خطأ: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "تم تطبيق الوضع مع {whiteCount} قطعة بيضاء و{blackCount} قطعة سوداء",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(تم نسخ FEN إلى الحافظة)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "فشل التعرّف: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "خطأ: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "تقييمي",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "الألعاب التي تم لعبها",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "انتصارات",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "خسائر",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "تعادلات",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "آخر تحديث",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "التنسيق:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "إعادة تعيين الإحصائيات",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "معدل التعادل",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "معدل الخسارة",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "إحصائيات الذكاء الاصطناعي",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "تمكين الإحصائيات",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "عند التمكين، سيتم تسجيل نتائج اللعبة في الإحصائيات. ومع ذلك، لن يتم تسجيل الألعاب التي تتضمن عمليات تراجع. عند التعطيل، يتم إيقاف جمع الإحصائيات مؤقتًا.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "سيؤدي هذا إلى إعادة تعيين جميع إحصائيات اللعبة. لا يمكن التراجع عن هذا الإجراء.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "حجم الحلقة الداخلية للوحة",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "ظل اللوحة",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "الوعي بالفخاخ",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "تسليط الضوء على نقلات الفخ بدوائر وسهام عريضة أثناء التحليل.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "يوجد فخ. نقلات الفخ: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "الالتقاط المرافئ",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "أرفق إحدى قطع خصمك بين اثنين منك في خط مستقيم لالتقاطها.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "السماح بالقبض على الإحالة",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "التقاط التدخل",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "انتقل إلى النقطة الفارغة بين قطعتين من خصمك لالتقاطهما على حد سواء.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "السماح بالتقاط التدخل",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "القفز",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "التقاط عن طريق القفز فوق قطعة الخصم المجاورة في النقطة الفارغة إلى ما بعد.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "السماح بالتقاط القفز",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "الخطوط المعمول بها",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "على طول حواف المربع",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "على طول الخطوط المتعامدة التي تعبر المربع",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "على طول الخطوط القطرية التي تعبر المربع",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "مراحل التنفيذ",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "توافر خلال المرحلة المتحركة بناءً على القطع المتبقية",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "لا تقييد",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "متاح عندما يكون لديك ثلاث قطع أو أقل",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "توقف عن الوضع عندما يتبقى مربعان فارغان فقط",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "عند التمكين، تنتهي مرحلة الوضع وتبدأ مرحلة التحريك عندما يتبقى في اللوحة مساحتان فارغتان فقط، بغض النظر عن القطع في اليد. تنطبق هذه القاعدة فقط على ألعاب 12 قطعة.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "يمكنك طلب التراجع فقط مباشرة بعد حركتك.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "إذا كنت تريد تحديًا أكبر، نقترح تفعيل خيار \"{setting}\" وتنزيل قاعدة البيانات الكاملة إلى جهازك كما هو موضح.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "هل ترغب في تكوين قواعد اللعبة الآن؟",
     "@configureRulesPrompt": {
@@ -2154,11 +2717,17 @@
         "description": "Button text for configuring rules"
     },
     "algorithmSuggestionTitle": "اقتراح الخوارزمية",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "لقد خسرت عدة ألعاب متتالية في المستوى 1. هل ترغب في التبديل إلى خوارزمية MCTS الأسهل لتقليل الصعوبة؟",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "تهانينا على الفوز في المستوى 30 من MCTS! هل ترغب في التبديل إلى خوارزمية MTD(f) لتحدٍ أكبر؟",
-    "@switchToMtdfSuggestion": {},
+    "@switchToMtdfSuggestion": {
+        "description": ""
+    },
     "highlightCapturablePieces": "تمييز القطع القابلة للأسر",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
@@ -2179,1228 +2748,1167 @@
     "@back": {
         "description": "Back button tooltip"
     },
-    "puzzles": "Puzzles",
+    "puzzles": "الألغاز",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "Puzzle",
+    "puzzle": "لغز",
     "@puzzle": {
         "description": "Puzzle"
     },
-    "noPuzzlesAvailable": "No puzzles available",
+    "noPuzzlesAvailable": "لا توجد ألغاز متاحة",
     "@noPuzzlesAvailable": {
         "description": "Message when no puzzles are available"
     },
-    "filter": "Filter",
+    "filter": "تصفية",
     "@filter": {
         "description": "Filter"
     },
-    "category": "Category",
+    "category": "الفئة",
     "@category": {
         "description": "Category"
     },
-    "clearFilter": "Clear Filter",
+    "clearFilter": "مسح التصفية",
     "@clearFilter": {
         "description": "Clear all filters"
     },
-    "puzzleStatistics": "Puzzle Statistics",
+    "puzzleStatistics": "إحصائيات الألغاز",
     "@puzzleStatistics": {
         "description": "Puzzle statistics"
     },
-    "totalPuzzles": "Total Puzzles",
+    "totalPuzzles": "إجمالي الألغاز",
     "@totalPuzzles": {
         "description": "Total puzzles"
     },
-    "completed": "Completed",
+    "completed": "مكتمل",
     "@completed": {
         "description": "Completed"
     },
-    "totalStars": "Total Stars",
+    "totalStars": "إجمالي النجوم",
     "@totalStars": {
         "description": "Total stars earned"
     },
-    "completionPercentage": "Completion",
+    "completionPercentage": "الإكمال",
     "@completionPercentage": {
         "description": "Completion percentage"
     },
-    "puzzleDifficultyBeginner": "Beginner",
+    "puzzleDifficultyBeginner": "مبتدئ",
     "@puzzleDifficultyBeginner": {
         "description": "Beginner difficulty"
     },
-    "puzzleDifficultyEasy": "Easy",
+    "puzzleDifficultyEasy": "سهل",
     "@puzzleDifficultyEasy": {
         "description": "Easy difficulty"
     },
-    "puzzleDifficultyMedium": "Medium",
+    "puzzleDifficultyMedium": "متوسط",
     "@puzzleDifficultyMedium": {
         "description": "Medium difficulty"
     },
-    "puzzleDifficultyHard": "Hard",
+    "puzzleDifficultyHard": "صعب",
     "@puzzleDifficultyHard": {
         "description": "Hard difficulty"
     },
-    "puzzleDifficultyExpert": "Expert",
+    "puzzleDifficultyExpert": "خبير",
     "@puzzleDifficultyExpert": {
         "description": "Expert difficulty"
     },
-    "puzzleDifficultyMaster": "Master",
+    "puzzleDifficultyMaster": "ماهر",
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "تشكيل الطاحونة",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "puzzleCategoryCapturePieces": "التقاط القطع",
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
-    "puzzleCategoryWinGame": "Win Game",
+    "puzzleCategoryWinGame": "الفوز باللعبة",
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
-    "puzzleCategoryDefend": "Defend",
+    "puzzleCategoryDefend": "الدفاع",
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "Find Best Move",
+    "puzzleCategoryFindBestMove": "إيجاد أفضل حركة",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
-    "puzzleCategoryEndgame": "Endgame",
+    "puzzleCategoryEndgame": "نهاية اللعبة",
     "@puzzleCategoryEndgame": {
         "description": "Endgame category"
     },
-    "puzzleCategoryOpening": "Opening",
+    "puzzleCategoryOpening": "الافتتاح",
     "@puzzleCategoryOpening": {
         "description": "Opening category"
     },
-    "puzzleCategoryMixed": "Mixed",
+    "puzzleCategoryMixed": "مختلط",
     "@puzzleCategoryMixed": {
         "description": "Mixed tactics category"
     },
-    "exitPuzzle": "Exit Puzzle?",
+    "exitPuzzle": "الخروج من اللغز؟",
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
-    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "puzzleProgressWillBeLost": "سيتم فقدان تقدمك. هل أنت متأكد؟",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
     },
-    "moves": "Moves",
+    "moves": "الحركات",
     "@moves": {
         "description": "Number of moves"
     },
-    "optimal": "Optimal",
+    "optimal": "الأمثل",
     "@optimal": {
         "description": "Optimal move count"
     },
-    "checkSolution": "Check Solution",
+    "checkSolution": "التحقق من الحل",
     "@checkSolution": {
         "description": "Check if solution is correct"
     },
-    "giveUp": "Give Up",
+    "giveUp": "الاستسلام",
     "@giveUp": {
         "description": "Give up on puzzle"
     },
-    "puzzleSolved": "Puzzle Solved!",
+    "puzzleSolved": "تم حل اللغز!",
     "@puzzleSolved": {
         "description": "Puzzle completion message"
     },
-    "hintsUsed": "Hints Used",
+    "hintsUsed": "التلميحات المستخدمة",
     "@hintsUsed": {
         "description": "Hints were used"
     },
-    "tryAgain": "Try Again",
+    "tryAgain": "حاول مرة أخرى",
     "@tryAgain": {
         "description": "Try the puzzle again"
     },
-    "backToList": "Back to List",
+    "backToList": "العودة إلى القائمة",
     "@backToList": {
         "description": "Go back to puzzle list"
     },
-    "solution": "Solution",
+    "solution": "الحل",
     "@solution": {
         "description": "Puzzle solution"
     },
-    "puzzleCreateNew": "Create New Puzzle",
+    "puzzleCreateNew": "إنشاء لغز جديد",
     "@puzzleCreateNew": {
         "description": "Create a new custom puzzle"
     },
-    "puzzleEdit": "Edit Puzzle",
+    "puzzleEdit": "تحرير اللغز",
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
-    "puzzleCustom": "Custom",
+    "puzzleCustom": "مخصص",
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
-    "puzzleSelect": "Select Puzzles",
+    "puzzleSelect": "تحديد الألغاز",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"
     },
-    "puzzleSelectedCount": "{count} Selected",
+    "puzzleSelectedCount": "تم تحديد {count}",
     "@puzzleSelectedCount": {
-        "description": "Number of selected puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of selected puzzles"
     },
-    "puzzleSelectAll": "Select All",
+    "puzzleSelectAll": "تحديد الكل",
     "@puzzleSelectAll": {
         "description": "Select all puzzles"
     },
-    "puzzleExport": "Export",
+    "puzzleExport": "تصدير",
     "@puzzleExport": {
         "description": "Export selected puzzles"
     },
-    "puzzleImport": "Import",
+    "puzzleImport": "استيراد",
     "@puzzleImport": {
         "description": "Import puzzles from file"
     },
-    "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
+    "puzzleExportSuccess": "{count,plural, =1{تم تصدير {count} لغز بنجاح}other{تم تصدير {count} لغز بنجاح}}",
     "@puzzleExportSuccess": {
-        "description": "Puzzle export success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle export success message"
     },
-    "puzzleExportFailed": "Failed to export puzzles",
+    "puzzleExportFailed": "فشل تصدير الألغاز",
     "@puzzleExportFailed": {
         "description": "Puzzle export failure message"
     },
-    "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
+    "puzzleImportSuccess": "{count,plural, =1{تم استيراد {count} لغز بنجاح}other{تم استيراد {count} لغز بنجاح}}",
     "@puzzleImportSuccess": {
-        "description": "Puzzle import success message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzle import success message"
     },
-    "puzzleImportFailed": "Failed to import puzzles",
+    "puzzleImportFailed": "فشل استيراد الألغاز",
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
-    "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
+    "puzzleDeleteConfirm": "{count,plural, =1{حذف {count} لغز؟}other{حذف {count} لغز؟}}",
     "@puzzleDeleteConfirm": {
-        "description": "Confirm deletion of puzzles",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Confirm deletion of puzzles"
     },
-    "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
+    "puzzleDeleted": "{count,plural, =1{تم حذف {count} لغز}other{تم حذف {count} لغز}}",
     "@puzzleDeleted": {
-        "description": "Puzzles deleted message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Puzzles deleted message"
     },
-    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "puzzleCannotDeleteBuiltIn": "لا يمكن حذف الألغاز المدمجة",
     "@puzzleCannotDeleteBuiltIn": {
         "description": "Error when trying to delete built-in puzzles"
     },
-    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "puzzleCreationInstructions": "كيفية إنشاء لغز",
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
-    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "puzzleCreationSteps": "1. إعداد موضع اللوحة\n2. التقاط الموضع\n3. تسجيل حركات الحل\n4. ملء تفاصيل اللغز\n5. حفظ",
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
-    "puzzleSetupPosition": "Setup Position",
+    "puzzleSetupPosition": "إعداد الموضع",
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleCapturePosition": "Capture Position",
+    "puzzleCapturePosition": "التقاط الموضع",
     "@puzzleCapturePosition": {
         "description": "Capture current board position"
     },
-    "puzzlePositionCaptured": "Position captured successfully",
+    "puzzlePositionCaptured": "تم التقاط الموضع بنجاح",
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
-    "puzzleNoPositionCaptured": "No position captured yet",
+    "puzzleNoPositionCaptured": "لم يتم التقاط أي موضع",
     "@puzzleNoPositionCaptured": {
         "description": "No position captured message"
     },
-    "puzzleCapturePositionFirst": "Please capture a position first",
+    "puzzleCapturePositionFirst": "يرجى التقاط موضع أولاً",
     "@puzzleCapturePositionFirst": {
         "description": "Error when trying to record without position"
     },
-    "puzzleRecordSolution": "Record Solution",
+    "puzzleRecordSolution": "تسجيل الحل",
     "@puzzleRecordSolution": {
         "description": "Record solution moves section"
     },
-    "puzzleStartRecording": "Start Recording",
+    "puzzleStartRecording": "بدء التسجيل",
     "@puzzleStartRecording": {
         "description": "Start recording solution moves"
     },
-    "puzzleStopRecording": "Stop Recording",
+    "puzzleStopRecording": "إيقاف التسجيل",
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
-    "puzzleRecording": "Recording...",
+    "puzzleRecording": "جارٍ التسجيل...",
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
-    "puzzleRecordingStarted": "Started recording solution moves",
+    "puzzleRecordingStarted": "تم بدء تسجيل حركات الحل",
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
-    "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
+    "puzzleRecordingStopped": "{count,plural, =1{تم تسجيل {count} حركة}other{تم تسجيل {count} حركة}}",
     "@puzzleRecordingStopped": {
-        "description": "Recording stopped message",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Recording stopped message"
     },
-    "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
+    "puzzleSolutionMoves": "{count,plural, =1{الحل: {count} حركة}other{الحل: {count} حركة}}",
     "@puzzleSolutionMoves": {
-        "description": "Number of solution moves",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
+        "description": "Number of solution moves"
     },
-    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "puzzleNoSolutionRecorded": "لم يتم تسجيل أي حل",
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Clear Solution",
+    "puzzleClearSolution": "مسح الحل",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
-    "puzzleDetails": "Puzzle Details",
+    "puzzleDetails": "تفاصيل اللغز",
     "@puzzleDetails": {
         "description": "Puzzle details section"
     },
-    "puzzleTitle": "Title",
+    "puzzleTitle": "العنوان",
     "@puzzleTitle": {
         "description": "Puzzle title field"
     },
-    "puzzleDescription": "Description",
+    "puzzleDescription": "الوصف",
     "@puzzleDescription": {
         "description": "Puzzle description field"
     },
-    "puzzleCategory": "Category",
+    "puzzleCategory": "الفئة",
     "@puzzleCategory": {
         "description": "Puzzle category field"
     },
-    "puzzleDifficulty": "Difficulty",
+    "puzzleDifficulty": "الصعوبة",
     "@puzzleDifficulty": {
         "description": "Puzzle difficulty field"
     },
-    "puzzleHint": "Hint",
+    "puzzleHint": "تلميح",
     "@puzzleHint": {
         "description": "Puzzle hint field"
     },
-    "puzzleTags": "Tags",
+    "puzzleTags": "الوسوم",
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "Separate tags with commas",
+    "puzzleTagsHint": "افصل الوسوم بفواصل",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
-    "puzzleAuthor": "Author",
+    "puzzleAuthor": "المؤلف",
     "@puzzleAuthor": {
         "description": "Puzzle author field"
     },
-    "puzzleTitleRequired": "Title is required",
+    "puzzleTitleRequired": "العنوان مطلوب",
     "@puzzleTitleRequired": {
         "description": "Title required error"
     },
-    "puzzleDescriptionRequired": "Description is required",
+    "puzzleDescriptionRequired": "الوصف مطلوب",
     "@puzzleDescriptionRequired": {
         "description": "Description required error"
     },
-    "puzzlePositionRequired": "Position is required",
+    "puzzlePositionRequired": "الموضع مطلوب",
     "@puzzlePositionRequired": {
         "description": "Position required error"
     },
-    "puzzleSolutionRequired": "Solution is required",
+    "puzzleSolutionRequired": "الحل مطلوب",
     "@puzzleSolutionRequired": {
         "description": "Solution required error"
     },
-    "puzzleCreated": "Puzzle created successfully",
+    "puzzleCreated": "تم إنشاء اللغز بنجاح",
     "@puzzleCreated": {
         "description": "Puzzle created message"
     },
-    "puzzleUpdated": "Puzzle updated successfully",
+    "puzzleUpdated": "تم تحديث اللغز بنجاح",
     "@puzzleUpdated": {
         "description": "Puzzle updated message"
     },
-    "puzzleSaveFailed": "Failed to save puzzle",
+    "puzzleSaveFailed": "فشل حفظ اللغز",
     "@puzzleSaveFailed": {
         "description": "Puzzle save failed message"
     },
-    "optional": "optional",
+    "optional": "اختياري",
     "@optional": {
         "description": "Optional field indicator"
     },
-    "yourProgress": "Your Progress",
+    "yourProgress": "تقدمك",
     "@yourProgress": {
         "description": "Your progress header"
     },
-    "quit": "Quit",
+    "quit": "إنهاء",
     "@quit": {
         "description": "Quit button"
     },
-    "all": "All",
+    "all": "الكل",
     "@all": {
         "description": "All option in filters"
     },
-    "comingSoon": "Coming Soon",
+    "comingSoon": "قريبًا",
     "@comingSoon": {
         "description": "Coming soon message"
     },
-    "dailyPuzzle": "Daily Puzzle",
+    "dailyPuzzle": "اللغز اليومي",
     "@dailyPuzzle": {
         "description": "Daily puzzle feature name"
     },
-    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "dailyPuzzleDesc": "حل لغز جديد كل يوم",
     "@dailyPuzzleDesc": {
         "description": "Daily puzzle description"
     },
-    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "dailyPuzzleNumber": "اليوم #{dayNumber}",
     "@dailyPuzzleNumber": {
-        "description": "Daily puzzle day number",
-        "placeholders": {
-            "dayNumber": {
-                "type": "int"
-            }
-        }
+        "description": "Daily puzzle day number"
     },
-    "dailyPuzzleStreak": "Streak",
+    "dailyPuzzleStreak": "السلسلة",
     "@dailyPuzzleStreak": {
         "description": "Daily puzzle streak label"
     },
-    "dailyPuzzleDayStreak": "day streak",
+    "dailyPuzzleDayStreak": "سلسلة أيام",
     "@dailyPuzzleDayStreak": {
         "description": "Day streak suffix"
     },
-    "dailyPuzzleDays": "days",
+    "dailyPuzzleDays": "أيام",
     "@dailyPuzzleDays": {
         "description": "Days label"
     },
-    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "dailyPuzzleBestStreak": "الأفضل: {longestStreak} يوم",
     "@dailyPuzzleBestStreak": {
-        "description": "Best streak display",
-        "placeholders": {
-            "longestStreak": {
-                "type": "int"
-            }
-        }
+        "description": "Best streak display"
     },
-    "dailyPuzzleStart": "Start Daily Puzzle",
+    "dailyPuzzleStart": "بدء اللغز اليومي",
     "@dailyPuzzleStart": {
         "description": "Start daily puzzle button"
     },
-    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "dailyPuzzleStreakHint": "أكمل الألغاز اليومية لبناء سلسلتك!",
     "@dailyPuzzleStreakHint": {
         "description": "Streak hint message"
     },
-    "dailyPuzzleCurrentStreak": "Current Streak",
+    "dailyPuzzleCurrentStreak": "السلسلة الحالية",
     "@dailyPuzzleCurrentStreak": {
         "description": "Current streak label"
     },
-    "dailyPuzzleLongestStreak": "Longest Streak",
+    "dailyPuzzleLongestStreak": "أطول سلسلة",
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "Total Completed",
+    "dailyPuzzleTotalCompleted": "الإجمالي المكتمل",
     "@dailyPuzzleTotalCompleted": {
         "description": "Total completed puzzles label"
     },
-    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "dailyPuzzleStreakInfo": "حل الألغاز كل يوم للحفاظ على سلسلتك. تفويت يوم سيعيد تعيينها!",
     "@dailyPuzzleStreakInfo": {
         "description": "Streak info message"
     },
-    "allPuzzles": "All Puzzles",
+    "allPuzzles": "جميع الألغاز",
     "@allPuzzles": {
         "description": "All puzzles mode name"
     },
-    "allPuzzlesDesc": "Browse all available puzzles",
+    "allPuzzlesDesc": "تصفح جميع الألغاز المتاحة",
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "Puzzle Rush",
+    "puzzleRush": "اندفاع الألغاز",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
-    "puzzleRushDesc": "Solve puzzles against the clock",
+    "puzzleRushDesc": "حل الألغاز ضد الساعة",
     "@puzzleRushDesc": {
         "description": "Puzzle rush mode description"
     },
-    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "puzzleRushTagline": "حل أكبر عدد ممكن من الألغاز في 5 دقائق!",
     "@puzzleRushTagline": {
         "description": "Puzzle rush tagline"
     },
-    "puzzleRushRules": "Rules",
+    "puzzleRushRules": "القواعد",
     "@puzzleRushRules": {
         "description": "Puzzle rush rules header"
     },
-    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "puzzleRushRule1": "⏱️ 5 دقائق على الساعة",
     "@puzzleRushRule1": {
         "description": "Puzzle rush rule 1"
     },
-    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "puzzleRushRule2": "❤️ 3 أرواح - تخسر 1 لكل خطأ",
     "@puzzleRushRule2": {
         "description": "Puzzle rush rule 2"
     },
-    "puzzleRushRule3": "🏆 Maximize your score!",
+    "puzzleRushRule3": "🏆 عظم نتيجتك!",
     "@puzzleRushRule3": {
         "description": "Puzzle rush rule 3"
     },
-    "puzzleRushStart": "Start Rush",
+    "puzzleRushStart": "بدء الاندفاع",
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
-    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "puzzleRushQuitConfirm": "هل أنت متأكد من رغبتك في إنهاء الاندفاع؟ سيتم فقدان تقدمك.",
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
-    "puzzleRushResults": "Rush Results",
+    "puzzleRushResults": "نتائج الاندفاع",
     "@puzzleRushResults": {
         "description": "Puzzle rush results header"
     },
-    "puzzleRushTimeUp": "Time's Up!",
+    "puzzleRushTimeUp": "انتهى الوقت!",
     "@puzzleRushTimeUp": {
         "description": "Time up message"
     },
-    "puzzleRushOutOfLives": "Out of Lives",
+    "puzzleRushOutOfLives": "نفدت الأرواح",
     "@puzzleRushOutOfLives": {
         "description": "Out of lives message"
     },
-    "puzzleRushComplete": "Rush Complete!",
+    "puzzleRushComplete": "اكتمل الاندفاع!",
     "@puzzleRushComplete": {
         "description": "Rush complete message"
     },
-    "puzzleRushSolved": "Solved",
+    "puzzleRushSolved": "تم الحل",
     "@puzzleRushSolved": {
         "description": "Puzzles solved label"
     },
-    "puzzleRushFailed": "Failed",
+    "puzzleRushFailed": "فشل",
     "@puzzleRushFailed": {
         "description": "Puzzles failed label"
     },
-    "puzzleRushAccuracy": "Accuracy",
+    "puzzleRushAccuracy": "الدقة",
     "@puzzleRushAccuracy": {
         "description": "Accuracy label"
     },
-    "puzzleRushPlayAgain": "Play Again",
+    "puzzleRushPlayAgain": "العب مرة أخرى",
     "@puzzleRushPlayAgain": {
         "description": "Play again button"
     },
-    "puzzleBattle": "Puzzle Battle",
+    "puzzleBattle": "معركة الألغاز",
     "@puzzleBattle": {
         "description": "Puzzle battle mode name"
     },
-    "puzzleBattleDesc": "Compete with other players",
+    "puzzleBattleDesc": "تنافس مع لاعبين آخرين",
     "@puzzleBattleDesc": {
         "description": "Puzzle battle mode description"
     },
-    "puzzleBattleComingSoon": "Coming Soon!",
+    "puzzleBattleComingSoon": "قريبًا!",
     "@puzzleBattleComingSoon": {
         "description": "Puzzle battle coming soon message"
     },
-    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "puzzleBattleStayTuned": "هذه الميزة قيد التطوير حاليًا. ترقب!",
     "@puzzleBattleStayTuned": {
         "description": "Puzzle battle stay tuned message"
     },
-    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "puzzleBattleFeature1": "⚔️ سباقات 1 ضد 1",
     "@puzzleBattleFeature1": {
         "description": "Puzzle battle feature 1"
     },
-    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "puzzleBattleFeature2": "🎯 مطابقة الخصم المباشر",
     "@puzzleBattleFeature2": {
         "description": "Puzzle battle feature 2"
     },
-    "puzzleBattleFeature3": "📊 Rating system",
+    "puzzleBattleFeature3": "📊 نظام التقييم",
     "@puzzleBattleFeature3": {
         "description": "Puzzle battle feature 3"
     },
-    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "puzzleBattleFeature4": "🏆 لوحات المتصدرين",
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "Custom Puzzles",
+    "customPuzzles": "الألغاز المخصصة",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
-    "customPuzzlesDesc": "Create and manage your puzzles",
+    "customPuzzlesDesc": "أنشئ وأدر ألغازك",
     "@customPuzzlesDesc": {
         "description": "Custom puzzles mode description"
     },
-    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "puzzleMultiSelectMode": "وضع التحديد المتعدد",
     "@puzzleMultiSelectMode": {
         "description": "Multi-select mode label"
     },
-    "puzzleCreate": "Create Puzzle",
+    "puzzleCreate": "إنشاء لغز",
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "سلسلة الألغاز",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
-    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "puzzleStreakDesc": "حل متتالي بدون أخطاء",
     "@puzzleStreakDesc": {
         "description": "Puzzle streak mode description"
     },
-    "puzzleStreakTagline": "How many can you solve in a row?",
+    "puzzleStreakTagline": "كم عددًا يمكنك حله على التوالي؟",
     "@puzzleStreakTagline": {
         "description": "Puzzle streak tagline"
     },
-    "puzzleStreakRules": "Rules",
+    "puzzleStreakRules": "القواعد",
     "@puzzleStreakRules": {
         "description": "Puzzle streak rules header"
     },
-    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "puzzleStreakRule1": "🎯 حل أكبر عدد ممكن من الألغاز",
     "@puzzleStreakRule1": {
         "description": "Puzzle streak rule 1"
     },
-    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "puzzleStreakRule2": "❌ خطأ واحد وانتهى الأمر",
     "@puzzleStreakRule2": {
         "description": "Puzzle streak rule 2"
     },
-    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "puzzleStreakRule3": "🏆 تغلب على رقمك القياسي الشخصي",
     "@puzzleStreakRule3": {
         "description": "Puzzle streak rule 3"
     },
-    "puzzleStreakStart": "Start Streak",
+    "puzzleStreakStart": "بدء السلسلة",
     "@puzzleStreakStart": {
         "description": "Start puzzle streak button"
     },
-    "puzzleStreakCurrent": "Current",
+    "puzzleStreakCurrent": "الحالية",
     "@puzzleStreakCurrent": {
         "description": "Current streak label"
     },
-    "puzzleStreakBest": "Best",
+    "puzzleStreakBest": "الأفضل",
     "@puzzleStreakBest": {
         "description": "Best streak label"
     },
-    "puzzleStreakResults": "Streak Results",
+    "puzzleStreakResults": "نتائج السلسلة",
     "@puzzleStreakResults": {
         "description": "Streak results header"
     },
-    "puzzleStreakEnded": "Streak Ended",
+    "puzzleStreakEnded": "انتهت السلسلة",
     "@puzzleStreakEnded": {
         "description": "Streak ended message"
     },
-    "puzzleStreakNewRecord": "New Record!",
+    "puzzleStreakNewRecord": "رقم قياسي جديد!",
     "@puzzleStreakNewRecord": {
         "description": "New record message"
     },
-    "puzzleStreakFinalScore": "Final Score",
+    "puzzleStreakFinalScore": "النتيجة النهائية",
     "@puzzleStreakFinalScore": {
         "description": "Final score label"
     },
-    "puzzleStreakTryAgain": "Try Again",
+    "puzzleStreakTryAgain": "حاول مرة أخرى",
     "@puzzleStreakTryAgain": {
         "description": "Try again button"
     },
-    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "puzzleStreakQuitConfirm": "هل أنت متأكد من رغبتك في الإنهاء؟ ستفقد سلسلتك.",
     "@puzzleStreakQuitConfirm": {
         "description": "Quit streak confirmation"
     },
-    "puzzleHistory": "History",
+    "puzzleHistory": "السجل",
     "@puzzleHistory": {
         "description": "Puzzle history page name"
     },
-    "puzzleHistoryDesc": "View your puzzle attempts",
+    "puzzleHistoryDesc": "عرض محاولات الألغاز الخاصة بك",
     "@puzzleHistoryDesc": {
         "description": "Puzzle history description"
     },
-    "puzzleHistoryEmpty": "No Puzzle History",
+    "puzzleHistoryEmpty": "لا يوجد سجل ألغاز",
     "@puzzleHistoryEmpty": {
         "description": "Empty history message"
     },
-    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "puzzleHistoryEmptyHint": "ابدأ بحل الألغاز لرؤية سجلك هنا",
     "@puzzleHistoryEmptyHint": {
         "description": "Empty history hint"
     },
-    "puzzleHistorySuccess": "Success Only",
+    "puzzleHistorySuccess": "النجاحات فقط",
     "@puzzleHistorySuccess": {
         "description": "Success filter"
     },
-    "puzzleHistoryFailed": "Failed Only",
+    "puzzleHistoryFailed": "الإخفاقات فقط",
     "@puzzleHistoryFailed": {
         "description": "Failed filter"
     },
-    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "puzzleHistoryUnknown": "لغز غير معروف",
     "@puzzleHistoryUnknown": {
         "description": "Unknown puzzle label"
     },
-    "puzzleHistoryHints": "hints",
+    "puzzleHistoryHints": "تلميحات",
     "@puzzleHistoryHints": {
         "description": "Hints label"
     },
-    "puzzleStatisticsDesc": "View detailed analytics",
+    "puzzleStatisticsDesc": "عرض التحليلات التفصيلية",
     "@puzzleStatisticsDesc": {
         "description": "Statistics page description"
     },
-    "puzzleStatsRating": "Your Puzzle Rating",
+    "puzzleStatsRating": "تقييم ألغازك",
     "@puzzleStatsRating": {
         "description": "Puzzle rating header"
     },
-    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "puzzleStatsProvisional": "مؤقت (تبقى {gamesLeft} ألعاب)",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
-        "placeholders": {
-            "gamesLeft": {
-                "type": "int"
-            }
-        }
+        "description": "Provisional rating message"
     },
-    "puzzleStatsGamesPlayed": "Games Played",
+    "puzzleStatsGamesPlayed": "الألعاب التي تم لعبها",
     "@puzzleStatsGamesPlayed": {
         "description": "Games played label"
     },
-    "puzzleStatsDeviation": "Deviation",
+    "puzzleStatsDeviation": "الانحراف",
     "@puzzleStatsDeviation": {
         "description": "Rating deviation label"
     },
-    "puzzleStatsPerformance": "Performance Overview",
+    "puzzleStatsPerformance": "نظرة عامة على الأداء",
     "@puzzleStatsPerformance": {
         "description": "Performance overview header"
     },
-    "puzzleStatsSuccessRate": "Success Rate",
+    "puzzleStatsSuccessRate": "معدل النجاح",
     "@puzzleStatsSuccessRate": {
         "description": "Success rate label"
     },
-    "puzzleStatsAvgTime": "Avg. Time",
+    "puzzleStatsAvgTime": "متوسط الوقت",
     "@puzzleStatsAvgTime": {
         "description": "Average time label"
     },
-    "puzzleStatsSolved": "Solved",
+    "puzzleStatsSolved": "تم الحل",
     "@puzzleStatsSolved": {
         "description": "Solved count label"
     },
-    "puzzleStatsFailed": "Failed",
+    "puzzleStatsFailed": "فشل",
     "@puzzleStatsFailed": {
         "description": "Failed count label"
     },
-    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "puzzleStatsByDifficulty": "النجاح حسب الصعوبة",
     "@puzzleStatsByDifficulty": {
         "description": "Success by difficulty header"
     },
-    "puzzleStatsByCategory": "Success by Category",
+    "puzzleStatsByCategory": "النجاح حسب الفئة",
     "@puzzleStatsByCategory": {
         "description": "Success by category header"
     },
-    "puzzleStatsRecentActivity": "Recent Activity",
+    "puzzleStatsRecentActivity": "النشاط الأخير",
     "@puzzleStatsRecentActivity": {
         "description": "Recent activity header"
     },
-    "puzzleStatsNoActivity": "No recent activity",
+    "puzzleStatsNoActivity": "لا يوجد نشاط حديث",
     "@puzzleStatsNoActivity": {
         "description": "No activity message"
     },
-    "edit": "Edit",
+    "edit": "تحرير",
     "@edit": {
         "description": "Edit button"
     },
-    "save": "Save",
+    "save": "حفظ",
     "@save": {
         "description": "Save button"
     },
-    "noCustomPuzzles": "No Custom Puzzles",
+    "noCustomPuzzles": "لا توجد ألغاز مخصصة",
     "@noCustomPuzzles": {
         "description": "Message when there are no custom puzzles"
     },
-    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "noCustomPuzzlesHint": "أنشئ ألغازك الخاصة لممارسة مواضع محددة",
     "@noCustomPuzzlesHint": {
         "description": "Hint message for creating custom puzzles"
     },
-    "plannedFeatures": "This feature is planned for a future release",
+    "plannedFeatures": "هذه الميزة مخططة لإصدار مستقبلي",
     "@plannedFeatures": {
         "description": "Message for features under development"
     },
-    "puzzleInvalidPosition": "Invalid position",
+    "puzzleInvalidPosition": "موضع غير صالح",
     "@puzzleInvalidPosition": {
         "description": "Error message when puzzle position is invalid"
     },
-    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "puzzleOpenBoardSetup": "فتح اللوحة (إعداد الموضع)",
     "@puzzleOpenBoardSetup": {
         "description": "Open the game board in Setup Position mode to arrange the starting position."
     },
-    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "puzzleOpenBoardPlay": "فتح اللوحة (لعب الحركات)",
     "@puzzleOpenBoardPlay": {
         "description": "Open the game board to play the solution moves while recording."
     },
-    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "puzzleRecordingHintUseButton": "استخدم الزر أدناه لفتح اللوحة، ثم اضغط على زر الرجوع للعودة.",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
     },
-    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "puzzleInvalidPositionFormat": "تنسيق موضع غير صالح. يرجى التحقق من لوحة اللعبة.",
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "puzzleFailedLoadPosition": "فشل تحميل الموضع. يرجى إعادة الالتقاط.",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "puzzleInvalidPositionFormatRecapture": "تنسيق موضع غير صالح. يرجى إعادة التقاط الموضع.",
     "@puzzleInvalidPositionFormatRecapture": {
         "description": "Error message when position format is invalid and needs recapture"
     },
-    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "puzzleShowDetailedWorkflow": "عرض سير العمل التفصيلي",
     "@puzzleShowDetailedWorkflow": {
         "description": "Tooltip for showing detailed workflow"
     },
-    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "puzzleCreationWorkflow": "سير عمل إنشاء اللغز",
     "@puzzleCreationWorkflow": {
         "description": "Title for puzzle creation workflow dialog"
     },
-    "puzzleWorkflowStepSetup": "Setup Position",
+    "puzzleWorkflowStepSetup": "إعداد الموضع",
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "Open board (setup or play moves), create starting position, return and capture",
+    "puzzleWorkflowStepSetupDesc": "فتح اللوحة (إعداد أو لعب حركات)، إنشاء موضع البداية، العودة والالتقاط",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
-    "puzzleWorkflowStepRecord": "Record Solution",
+    "puzzleWorkflowStepRecord": "تسجيل الحل",
     "@puzzleWorkflowStepRecord": {
         "description": "Workflow step: record solution"
     },
-    "puzzleWorkflowStepRecordDesc": "Click Start Recording (board resets to start position), go back, play moves, return and stop",
+    "puzzleWorkflowStepRecordDesc": "انقر فوق بدء التسجيل (إعادة تعيين اللوحة إلى موضع البداية)، عد، العب الحركات، عد وأوقف",
     "@puzzleWorkflowStepRecordDesc": {
         "description": "Description for record solution workflow step"
     },
-    "puzzleWorkflowStepDetails": "Add Details",
+    "puzzleWorkflowStepDetails": "إضافة التفاصيل",
     "@puzzleWorkflowStepDetails": {
         "description": "Workflow step: add details"
     },
-    "puzzleWorkflowStepDetailsDesc": "Fill in title, description, category, difficulty, and tags",
+    "puzzleWorkflowStepDetailsDesc": "املأ العنوان والوصف والفئة والصعوبة والوسوم",
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "Save Puzzle",
+    "puzzleWorkflowStepSave": "حفظ اللغز",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
-    "puzzleWorkflowStepSaveDesc": "Click the save button in the top-right corner",
+    "puzzleWorkflowStepSaveDesc": "انقر فوق زر الحفظ في الزاوية العلوية اليمنى",
     "@puzzleWorkflowStepSaveDesc": {
         "description": "Description for save puzzle workflow step"
     },
-    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "puzzleWorkflowTip": "نصيحة: ستتنقل بين هذه الصفحة ولوحة اللعبة. يتم حفظ تقدمك!",
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "puzzlePositionCaptureHelp": "Position Capture Help",
+    "puzzlePositionCaptureHelp": "مساعدة التقاط الموضع",
     "@puzzlePositionCaptureHelp": {
         "description": "Title for position capture help dialog"
     },
-    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
+    "puzzlePositionCaptureHelpContent": "كيفية التقاط موضع بداية اللغز:\n\n1. انقر فوق \"فتح اللوحة (إعداد الموضع)\" لوضع القطع يدويًا، أو انقر فوق \"فتح اللوحة (لعب الحركات)\" للوصول إلى الموضع عن طريق لعب الحركات\n\n2. رتب اللوحة إلى موضع بداية اللغز المطلوب\n\n3. اضغط على زر الرجوع للعودة إلى هذه الصفحة\n\n4. انقر فوق زر \"التقاط الموضع\" لحفظ حالة اللوحة الحالية\n\nسيتم استخدام الموضع الملتقط كنقطة بداية للغزك.",
     "@puzzlePositionCaptureHelpContent": {
         "description": "Help content for capturing puzzle starting position"
     },
-    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "puzzleSolutionRecordingHelp": "مساعدة تسجيل الحل",
     "@puzzleSolutionRecordingHelp": {
         "description": "Title for solution recording help dialog"
     },
-    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "puzzleSolutionRecordingHelpContent": "كيفية تسجيل حركات الحل:",
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "Capture the starting position first",
+    "puzzleSolutionStep1": "التقط موضع البداية أولاً",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "puzzleSolutionStep2": "انقر فوق زر \"بدء التسجيل\" (سيؤدي هذا إلى إعادة تعيين اللوحة إلى موضعك الملتقط)",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
-    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "puzzleSolutionStep4": "عد هنا وانقر فوق \"إيقاف التسجيل\"",
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "puzzleSolutionRecordingTip": "نصيحة: ستتم إعادة تعيين اللوحة تلقائيًا إلى موضعك الملتقط عند بدء التسجيل.",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleShowPositionCaptureHelp": "Show position capture help",
+    "puzzleShowPositionCaptureHelp": "عرض مساعدة التقاط الموضع",
     "@puzzleShowPositionCaptureHelp": {
         "description": "Tooltip for position capture help button"
     },
-    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "puzzleShowSolutionRecordingHelp": "عرض مساعدة تسجيل الحل",
     "@puzzleShowSolutionRecordingHelp": {
         "description": "Tooltip for solution recording help button"
     },
-    "noMoreHintsAvailable": "No more hints available",
+    "noMoreHintsAvailable": "لا مزيد من التلميحات المتاحة",
     "@noMoreHintsAvailable": {
         "description": "Message when no more hints are available"
     },
-    "hintDialogTitle": "Hint",
+    "hintDialogTitle": "تلميح",
     "@hintDialogTitle": {
         "description": "Title for hint dialog"
     },
-    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "optimalSolutionWithMoves": "الحل الأمثل ({moves} حركة):",
     "@optimalSolutionWithMoves": {
-        "description": "Label showing optimal solution with number of moves",
-        "placeholders": {
-            "moves": {
-                "type": "int"
-            }
-        }
+        "description": "Label showing optimal solution with number of moves"
     },
-    "validationErrors": "Validation Errors",
+    "moves": "الحركات",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "أخطاء التحقق",
     "@validationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "contributePuzzlesToSanmill": "المساهمة بالألغاز في Sanmill",
     "@contributePuzzlesToSanmill": {
         "description": "Title for contribute puzzles dialog"
     },
-    "whatHappensNext": "What happens next:",
+    "whatHappensNext": "ما يحدث بعد ذلك:",
     "@whatHappensNext": {
         "description": "Label for what happens next section"
     },
-    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "contributionStep1": "1. سيتم تصدير ألغازك إلى ملف JSON",
     "@contributionStep1": {
         "description": "Step 1 in contribution process"
     },
-    "contributionStep2": "2. You can share this file via the share dialog",
+    "contributionStep2": "2. يمكنك مشاركة هذا الملف عبر مربع حوار المشاركة",
     "@contributionStep2": {
         "description": "Step 2 in contribution process"
     },
-    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "contributionStep4": "4. سيتم مراجعة الألغاز من قبل المشرفين",
     "@contributionStep4": {
         "description": "Step 4 in contribution process"
     },
-    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "contributionStep5": "5. بمجرد الموافقة، تصبح ألغازًا مدمجة!",
     "@contributionStep5": {
         "description": "Step 5 in contribution process"
     },
-    "exportForContribution": "Export for Contribution",
+    "exportForContribution": "التصدير للمساهمة",
     "@exportForContribution": {
         "description": "Button text for exporting puzzles for contribution"
     },
-    "startContributing": "Start Contributing",
+    "startContributing": "بدء المساهمة",
     "@startContributing": {
         "description": "Button text to start contributing puzzles"
     },
-    "quickStart": "Quick Start:",
+    "quickStart": "بداية سريعة:",
     "@quickStart": {
         "description": "Label for quick start section"
     },
-    "createQualityPuzzles": "Create Quality Puzzles",
+    "createQualityPuzzles": "إنشاء ألغاز عالية الجودة",
     "@createQualityPuzzles": {
         "description": "Title for creating quality puzzles step"
     },
-    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "createQualityPuzzlesDesc": "تأكد من أن لغزك له حل واضح وبيانات وصفية جيدة ويعلم شيئًا ذا قيمة.",
     "@createQualityPuzzlesDesc": {
         "description": "Description for creating quality puzzles"
     },
-    "addYourName": "Add Your Name",
+    "addYourName": "أضف اسمك",
     "@addYourName": {
         "description": "Title for adding author name step"
     },
-    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "addYourNameDesc": "حرر لغزك وأضف اسمك كمؤلف للحصول على الائتمان.",
     "@addYourNameDesc": {
         "description": "Description for adding author name"
     },
-    "exportForContributionStep": "Export for Contribution",
+    "exportForContributionStep": "التصدير للمساهمة",
     "@exportForContributionStep": {
         "description": "Title for export step"
     },
-    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "exportForContributionStepDesc": "حدد ألغازك واضغط على أيقونة التحميل للتصدير بالتنسيق الصحيح.",
     "@exportForContributionStepDesc": {
         "description": "Description for export step"
     },
-    "submitStep": "Submit",
+    "submitStep": "إرسال",
     "@submitStep": {
         "description": "Title for submit step"
     },
-    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "submitStepDesc": "شارك الملف المُصدَّر عبر طلب سحب GitHub أو مشكلة أو بريد إلكتروني.",
     "@submitStepDesc": {
         "description": "Description for submit step"
     },
-    "fullDocumentation": "Full Documentation",
+    "fullDocumentation": "الوثائق الكاملة",
     "@fullDocumentation": {
         "description": "Label for full documentation link"
     },
-    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "fullDocumentationDesc": "راجع PUZZLE_CONTRIBUTION_GUIDE.md في المستودع للحصول على التعليمات الكاملة وإرشادات الجودة وخيارات الإرسال.",
     "@fullDocumentationDesc": {
         "description": "Description for full documentation"
     },
-    "qualityRequirements": "Quality Requirements:",
+    "qualityRequirements": "متطلبات الجودة:",
     "@qualityRequirements": {
         "description": "Label for quality requirements section"
     },
-    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "qualityReqClearSolution": "✓ حل واضح وفريد",
     "@qualityReqClearSolution": {
         "description": "Quality requirement: clear solution"
     },
-    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "qualityReqCompleteMetadata": "✓ بيانات وصفية كاملة (العنوان والوصف وما إلى ذلك)",
     "@qualityReqCompleteMetadata": {
         "description": "Quality requirement: complete metadata"
     },
-    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "qualityReqAuthorAttribution": "✓ نسبة المؤلف",
     "@qualityReqAuthorAttribution": {
         "description": "Quality requirement: author attribution"
     },
-    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "qualityReqAccurateDifficulty": "✓ تقييم دقيق للصعوبة",
     "@qualityReqAccurateDifficulty": {
         "description": "Quality requirement: accurate difficulty"
     },
-    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "qualityReqInstructive": "✓ تعليمي أو ترفيهي",
     "@qualityReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
     },
-    "nextMoveHint": "Next move: {move}",
+    "nextMoveHint": "الحركة التالية: {move}",
     "@nextMoveHint": {
-        "description": "Hint showing the next move in a puzzle",
-        "placeholders": {
-            "move": {
-                "description": "The next move notation",
-                "example": "a1-b2"
-            }
-        }
+        "description": "Hint showing the next move in a puzzle"
     },
-    "completeSolutionHint": "Complete solution: {solution}",
+    "move": "الحركة",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "الحل الكامل: {solution}",
     "@completeSolutionHint": {
-        "description": "Hint showing the complete puzzle solution",
-        "placeholders": {
-            "solution": {
-                "description": "The complete solution sequence",
-                "example": "a1-b2 → c3-d4"
-            }
-        }
+        "description": "Hint showing the complete puzzle solution"
     },
-    "payAttentionToPositions": "Pay attention to these positions",
+    "solution": "الحل",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "انتبه لهذه المواضع",
     "@payAttentionToPositions": {
         "description": "Hint to focus on specific board positions"
     },
-    "noSolutionAvailable": "No solution available",
+    "noSolutionAvailable": "لا يوجد حل متاح",
     "@noSolutionAvailable": {
         "description": "Message when no solution is available for a puzzle"
     },
-    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "keepGoingObjectiveNotAchieved": "استمر! لم يتم تحقيق الهدف بعد.",
     "@keepGoingObjectiveNotAchieved": {
         "description": "Feedback message when puzzle objective is not yet met"
     },
-    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "perfectSolvedOptimal": "مثالي! تم الحل في حركات مثلى!",
     "@perfectSolvedOptimal": {
         "description": "Success message when puzzle is solved optimally"
     },
-    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "correctMovesOptimal": "صحيح! ({count} حركة، الأمثل: {optimal})",
     "@correctMovesOptimal": {
-        "description": "Success message showing move count vs optimal",
-        "placeholders": {
-            "count": {
-                "description": "Number of moves taken",
-                "example": "5"
-            },
-            "optimal": {
-                "description": "Optimal number of moves",
-                "example": "3"
-            }
-        }
+        "description": "Success message showing move count vs optimal"
     },
-    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "optimal": "الأمثل",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "صحيح! لقد وجدت حلاً بديلاً!",
     "@correctAlternativeSolution": {
         "description": "Success message for finding an alternative solution"
     },
-    "justNow": "Just now",
+    "justNow": "الآن",
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
-    "january": "January",
+    "january": "يناير",
     "@january": {
         "description": "Month name"
     },
-    "february": "February",
+    "february": "فبراير",
     "@february": {
         "description": "Month name"
     },
-    "march": "March",
+    "march": "مارس",
     "@march": {
         "description": "Month name"
     },
-    "april": "April",
+    "april": "أبريل",
     "@april": {
         "description": "Month name"
     },
-    "may": "May",
+    "may": "مايو",
     "@may": {
         "description": "Month name"
     },
-    "june": "June",
+    "june": "يونيو",
     "@june": {
         "description": "Month name"
     },
-    "july": "July",
+    "july": "يوليو",
     "@july": {
         "description": "Month name"
     },
-    "august": "August",
+    "august": "أغسطس",
     "@august": {
         "description": "Month name"
     },
-    "september": "September",
+    "september": "سبتمبر",
     "@september": {
         "description": "Month name"
     },
-    "october": "October",
+    "october": "أكتوبر",
     "@october": {
         "description": "Month name"
     },
-    "november": "November",
+    "november": "نوفمبر",
     "@november": {
         "description": "Month name"
     },
-    "december": "December",
+    "december": "ديسمبر",
     "@december": {
         "description": "Month name"
     },
-    "invalidPuzzle": "Invalid Puzzle",
+    "invalidPuzzle": "لغز غير صالح",
     "@invalidPuzzle": {
         "description": "Title for invalid puzzle error"
     },
-    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "invalidPuzzleMessage": "هذا اللغز له تنسيق موضع غير صالح ولا يمكن تحميله. يرجى الاتصال بمؤلف اللغز أو محاولة لغز مختلف.",
     "@invalidPuzzleMessage": {
         "description": "Error message for invalid puzzle format"
     },
-    "keepTrying": "Keep trying!",
+    "keepTrying": "استمر في المحاولة!",
     "@keepTrying": {
         "description": "Encouragement message to continue attempting puzzle"
     },
-    "examples": "Examples",
+    "examples": "أمثلة",
     "@examples": {
         "description": "Examples label"
     },
-    "voiceCommandsHelp": "Voice Commands Help",
+    "voiceCommandsHelp": "مساعدة أوامر الصوت",
     "@voiceCommandsHelp": {
         "description": "Voice commands help page title"
     },
-    "voiceCommandsHelpIntro": "Use your voice to control the game! Below are the available voice commands you can use.",
+    "voiceCommandsHelpIntro": "استخدم صوتك للتحكم في اللعبة! فيما يلي أوامر الصوت المتاحة.",
     "@voiceCommandsHelpIntro": {
         "description": "Voice commands help introduction"
     },
-    "voiceCommandsGameControl": "Game Control",
+    "voiceCommandsGameControl": "التحكم في اللعبة",
     "@voiceCommandsGameControl": {
         "description": "Game control commands section"
     },
-    "voiceCommandsMoveControl": "Move Commands",
+    "voiceCommandsMoveControl": "أوامر الحركة",
     "@voiceCommandsMoveControl": {
         "description": "Move commands section"
     },
-    "voiceCommandsSettings": "Settings Commands",
+    "voiceCommandsSettings": "أوامر الإعدادات",
     "@voiceCommandsSettings": {
         "description": "Settings commands section"
     },
-    "voiceCommandsTips": "Tips",
+    "voiceCommandsTips": "نصائح",
     "@voiceCommandsTips": {
         "description": "Tips section"
     },
-    "voiceCommandsUndo": "Undo Move",
+    "voiceCommandsUndo": "التراجع عن الحركة",
     "@voiceCommandsUndo": {
         "description": "Undo command title"
     },
-    "voiceCommandsUndoDesc": "Undo the last move",
+    "voiceCommandsUndoDesc": "التراجع عن الحركة الأخيرة",
     "@voiceCommandsUndoDesc": {
         "description": "Undo command description"
     },
-    "voiceCommandsRedo": "Redo Move",
+    "voiceCommandsRedo": "إعادة الحركة",
     "@voiceCommandsRedo": {
         "description": "Redo command title"
     },
-    "voiceCommandsRedoDesc": "Redo the previously undone move",
+    "voiceCommandsRedoDesc": "إعادة الحركة التي تم التراجع عنها مسبقًا",
     "@voiceCommandsRedoDesc": {
         "description": "Redo command description"
     },
-    "voiceCommandsRestart": "Restart Game",
+    "voiceCommandsRestart": "إعادة تشغيل اللعبة",
     "@voiceCommandsRestart": {
         "description": "Restart command title"
     },
-    "voiceCommandsRestartDesc": "Start a new game",
+    "voiceCommandsRestartDesc": "بدء لعبة جديدة",
     "@voiceCommandsRestartDesc": {
         "description": "Restart command description"
     },
-    "voiceCommandsAiMove": "Request AI Move",
+    "voiceCommandsAiMove": "طلب حركة الذكاء الاصطناعي",
     "@voiceCommandsAiMove": {
         "description": "AI move command title"
     },
-    "voiceCommandsAiMoveDesc": "Request the AI to make a move",
+    "voiceCommandsAiMoveDesc": "طلب من الذكاء الاصطناعي القيام بحركة",
     "@voiceCommandsAiMoveDesc": {
         "description": "AI move command description"
     },
-    "voiceCommandsMovePiece": "Move Piece",
+    "voiceCommandsMovePiece": "نقل القطعة",
     "@voiceCommandsMovePiece": {
         "description": "Move piece command title"
     },
-    "voiceCommandsMovePieceDesc": "Move a piece from one position to another",
+    "voiceCommandsMovePieceDesc": "نقل قطعة من موضع إلى آخر",
     "@voiceCommandsMovePieceDesc": {
         "description": "Move piece command description"
     },
-    "voiceCommandsPlacePiece": "Place Piece",
+    "voiceCommandsPlacePiece": "وضع القطعة",
     "@voiceCommandsPlacePiece": {
         "description": "Place piece command title"
     },
-    "voiceCommandsPlacePieceDesc": "Place a piece on the board",
+    "voiceCommandsPlacePieceDesc": "وضع قطعة على اللوحة",
     "@voiceCommandsPlacePieceDesc": {
         "description": "Place piece command description"
     },
-    "voiceCommandsRemovePiece": "Remove Piece",
+    "voiceCommandsRemovePiece": "إزالة القطعة",
     "@voiceCommandsRemovePiece": {
         "description": "Remove piece command title"
     },
-    "voiceCommandsRemovePieceDesc": "Remove an opponent's piece",
+    "voiceCommandsRemovePieceDesc": "إزالة قطعة الخصم",
     "@voiceCommandsRemovePieceDesc": {
         "description": "Remove piece command description"
     },
-    "voiceCommandsToggleSound": "Toggle Sound",
+    "voiceCommandsToggleSound": "تبديل الصوت",
     "@voiceCommandsToggleSound": {
         "description": "Toggle sound command title"
     },
-    "voiceCommandsToggleSoundDesc": "Turn sound on or off",
+    "voiceCommandsToggleSoundDesc": "تشغيل أو إيقاف الصوت",
     "@voiceCommandsToggleSoundDesc": {
         "description": "Toggle sound command description"
     },
-    "voiceCommandsToggleVibration": "Toggle Vibration",
+    "voiceCommandsToggleVibration": "تبديل الاهتزاز",
     "@voiceCommandsToggleVibration": {
         "description": "Toggle vibration command title"
     },
-    "voiceCommandsToggleVibrationDesc": "Turn vibration on or off",
+    "voiceCommandsToggleVibrationDesc": "تشغيل أو إيقاف الاهتزاز",
     "@voiceCommandsToggleVibrationDesc": {
         "description": "Toggle vibration command description"
     },
-    "voiceCommandsTip1": "Speak clearly and at a moderate pace for best recognition",
+    "voiceCommandsTip1": "تحدث بوضوح وبوتيرة معتدلة للحصول على أفضل تعرف",
     "@voiceCommandsTip1": {
         "description": "Voice command tip 1"
     },
-    "voiceCommandsTip2": "Wait for the listening indicator before speaking",
+    "voiceCommandsTip2": "انتظر مؤشر الاستماع قبل التحدث",
     "@voiceCommandsTip2": {
         "description": "Voice command tip 2"
     },
-    "voiceCommandsTip3": "Commands work in your selected language",
+    "voiceCommandsTip3": "الأوامر تعمل باللغة المحددة",
     "@voiceCommandsTip3": {
         "description": "Voice command tip 3"
     },
-    "voiceAssistant": "Voice Assistant",
+    "voiceAssistant": "المساعد الصوتي",
     "@voiceAssistant": {
         "description": "Voice assistant feature name"
     },
-    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "voiceAssistantEnabled": "تمكين المساعد الصوتي",
     "@voiceAssistantEnabled": {
         "description": "Enable voice assistant toggle"
     },
-    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "voiceAssistantEnabledDescription": "السماح للتطبيق بتلقي أوامر صوتية",
     "@voiceAssistantEnabledDescription": {
         "description": "Description for voice assistant enable toggle"
     },
@@ -3412,231 +3920,231 @@
     "@voiceAssistantSettingsDescription": {
         "description": "Voice assistant settings description"
     },
-    "voiceAssistantGeneral": "General",
+    "voiceAssistantGeneral": "عام",
     "@voiceAssistantGeneral": {
         "description": "General settings section"
     },
-    "voiceAssistantModel": "Model Settings",
+    "voiceAssistantModel": "إعدادات النموذج",
     "@voiceAssistantModel": {
         "description": "Model settings section"
     },
-    "voiceAssistantModelManagement": "Model Management",
+    "voiceAssistantModelManagement": "إدارة النموذج",
     "@voiceAssistantModelManagement": {
         "description": "Model management section"
     },
-    "voiceAssistantModelType": "Model Type",
+    "voiceAssistantModelType": "نوع النموذج",
     "@voiceAssistantModelType": {
         "description": "Model type setting"
     },
-    "voiceAssistantLanguage": "Language",
+    "voiceAssistantLanguage": "اللغة",
     "@voiceAssistantLanguage": {
         "description": "Language setting"
     },
-    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "voiceAssistantAutoDetectLanguage": "اكتشاف اللغة تلقائيًا",
     "@voiceAssistantAutoDetectLanguage": {
         "description": "Auto-detect language toggle"
     },
-    "voiceAssistantShowButton": "Show Voice Button",
+    "voiceAssistantShowButton": "إظهار زر الصوت",
     "@voiceAssistantShowButton": {
         "description": "Show voice button toggle"
     },
-    "voiceAssistantContinuousListening": "Continuous Listening",
+    "voiceAssistantContinuousListening": "الاستماع المستمر",
     "@voiceAssistantContinuousListening": {
         "description": "Continuous listening mode toggle"
     },
-    "voiceAssistantDownloadModel": "Download Model",
+    "voiceAssistantDownloadModel": "تحميل النموذج",
     "@voiceAssistantDownloadModel": {
         "description": "Download model button"
     },
-    "voiceAssistantDeleteModel": "Delete Model",
+    "voiceAssistantDeleteModel": "حذف النموذج",
     "@voiceAssistantDeleteModel": {
         "description": "Delete model button"
     },
-    "voiceAssistantModelInfo": "Model Information",
+    "voiceAssistantModelInfo": "معلومات النموذج",
     "@voiceAssistantModelInfo": {
         "description": "Model information button"
     },
-    "voiceAssistantModelDownloaded": "Downloaded",
+    "voiceAssistantModelDownloaded": "تم التحميل",
     "@voiceAssistantModelDownloaded": {
         "description": "Model downloaded status"
     },
-    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "voiceAssistantModelNotDownloaded": "لم يتم التحميل",
     "@voiceAssistantModelNotDownloaded": {
         "description": "Model not downloaded status"
     },
-    "voiceAssistantDownloading": "Downloading...",
+    "voiceAssistantDownloading": "جارٍ التحميل...",
     "@voiceAssistantDownloading": {
         "description": "Downloading progress message"
     },
-    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "voiceAssistantDownloadModelMessage": "يتطلب المساعد الصوتي نموذج لغة ليعمل. سيؤدي هذا إلى تحميل النموذج المحدد.",
     "@voiceAssistantDownloadModelMessage": {
         "description": "Download confirmation message"
     },
-    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "voiceAssistantModelDownloadSuccess": "تم تحميل النموذج بنجاح",
     "@voiceAssistantModelDownloadSuccess": {
         "description": "Download success message"
     },
-    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "voiceAssistantModelDownloadFailed": "فشل تحميل النموذج",
     "@voiceAssistantModelDownloadFailed": {
         "description": "Download failed message"
     },
-    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "voiceAssistantModelDeleted": "تم حذف النموذج بنجاح",
     "@voiceAssistantModelDeleted": {
         "description": "Model deleted message"
     },
-    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "voiceAssistantDeleteFailed": "فشل الحذف",
     "@voiceAssistantDeleteFailed": {
         "description": "Delete failed message"
     },
-    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "voiceAssistantDeleteModelConfirm": "هل أنت متأكد من رغبتك في حذف النموذج الذي تم تحميله؟",
     "@voiceAssistantDeleteModelConfirm": {
         "description": "Delete confirmation message"
     },
-    "voiceAssistantModelSize": "Model Size",
+    "voiceAssistantModelSize": "حجم النموذج",
     "@voiceAssistantModelSize": {
         "description": "Model size label"
     },
-    "voiceAssistantModelPath": "Model Path",
+    "voiceAssistantModelPath": "مسار النموذج",
     "@voiceAssistantModelPath": {
         "description": "Model path label"
     },
-    "voiceAssistantSelectModelType": "Select Model Type",
+    "voiceAssistantSelectModelType": "تحديد نوع النموذج",
     "@voiceAssistantSelectModelType": {
         "description": "Model type selection dialog title"
     },
-    "voiceAssistantSelectLanguage": "Select Language",
+    "voiceAssistantSelectLanguage": "تحديد اللغة",
     "@voiceAssistantSelectLanguage": {
         "description": "Language selection dialog title"
     },
-    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "voiceAssistantLanguageChanged": "تم تغيير اللغة. يرجى تحميل النموذج للغة الجديدة.",
     "@voiceAssistantLanguageChanged": {
         "description": "Language changed message"
     },
-    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "voiceAssistantEnableFailed": "فشل تمكين المساعد الصوتي",
     "@voiceAssistantEnableFailed": {
         "description": "Enable failed message"
     },
-    "voiceAssistantListening": "Listening...",
+    "voiceAssistantListening": "جارٍ الاستماع...",
     "@voiceAssistantListening": {
         "description": "Listening status message"
     },
-    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "voiceAssistantNoSpeechDetected": "لم يتم اكتشاف كلام",
     "@voiceAssistantNoSpeechDetected": {
         "description": "No speech detected message"
     },
-    "voiceAssistantRecognizedText": "Recognized Text",
+    "voiceAssistantRecognizedText": "النص المعترف به",
     "@voiceAssistantRecognizedText": {
         "description": "Recognized text label"
     },
-    "voiceAssistantResult": "Result",
+    "voiceAssistantResult": "النتيجة",
     "@voiceAssistantResult": {
         "description": "Command execution result label"
     },
-    "voiceAssistantError": "Voice assistant error",
+    "voiceAssistantError": "خطأ في المساعد الصوتي",
     "@voiceAssistantError": {
         "description": "Generic error message"
     },
-    "voiceAssistantRedownloadModel": "Re-download Model",
+    "voiceAssistantRedownloadModel": "إعادة تحميل النموذج",
     "@voiceAssistantRedownloadModel": {
         "description": "Title for re-download confirmation dialog"
     },
-    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "voiceAssistantRedownloadModelMessage": "تم تحميل نموذج صوتي بالفعل. هل تريد إعادة تحميله والكتابة فوقه؟",
     "@voiceAssistantRedownloadModelMessage": {
         "description": "Message for re-download confirmation dialog"
     },
-    "voiceCommandSuccess": "Command executed successfully",
+    "voiceCommandSuccess": "تم تنفيذ الأمر بنجاح",
     "@voiceCommandSuccess": {
         "description": "Command success message"
     },
-    "voiceCommandFailed": "Failed to execute command",
+    "voiceCommandFailed": "فشل تنفيذ الأمر",
     "@voiceCommandFailed": {
         "description": "Command failed message"
     },
-    "voiceCommandUnknown": "Unknown command",
+    "voiceCommandUnknown": "أمر غير معروف",
     "@voiceCommandUnknown": {
         "description": "Unknown command message"
     },
-    "voiceCommandMoveSuccess": "Move executed",
+    "voiceCommandMoveSuccess": "تم تنفيذ الحركة",
     "@voiceCommandMoveSuccess": {
         "description": "Move command success"
     },
-    "voiceCommandMoveFailed": "Failed to execute move",
+    "voiceCommandMoveFailed": "فشل تنفيذ الحركة",
     "@voiceCommandMoveFailed": {
         "description": "Move command failed"
     },
-    "voiceCommandPlaceSuccess": "Piece placed",
+    "voiceCommandPlaceSuccess": "تم وضع القطعة",
     "@voiceCommandPlaceSuccess": {
         "description": "Place command success"
     },
-    "voiceCommandPlaceFailed": "Failed to place piece",
+    "voiceCommandPlaceFailed": "فشل وضع القطعة",
     "@voiceCommandPlaceFailed": {
         "description": "Place command failed"
     },
-    "voiceCommandRemoveSuccess": "Piece removed",
+    "voiceCommandRemoveSuccess": "تمت إزالة القطعة",
     "@voiceCommandRemoveSuccess": {
         "description": "Remove command success"
     },
-    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "voiceCommandRemoveFailed": "فشلت إزالة القطعة",
     "@voiceCommandRemoveFailed": {
         "description": "Remove command failed"
     },
-    "voiceCommandUndoSuccess": "Undo executed",
+    "voiceCommandUndoSuccess": "تم التراجع",
     "@voiceCommandUndoSuccess": {
         "description": "Undo command success"
     },
-    "voiceCommandUndoFailed": "Failed to undo",
+    "voiceCommandUndoFailed": "فشل التراجع",
     "@voiceCommandUndoFailed": {
         "description": "Undo command failed"
     },
-    "voiceCommandRedoSuccess": "Redo executed",
+    "voiceCommandRedoSuccess": "تمت الإعادة",
     "@voiceCommandRedoSuccess": {
         "description": "Redo command success"
     },
-    "voiceCommandRedoFailed": "Failed to redo",
+    "voiceCommandRedoFailed": "فشلت الإعادة",
     "@voiceCommandRedoFailed": {
         "description": "Redo command failed"
     },
-    "voiceCommandRestartSuccess": "Game restarted",
+    "voiceCommandRestartSuccess": "تمت إعادة تشغيل اللعبة",
     "@voiceCommandRestartSuccess": {
         "description": "Restart command success"
     },
-    "voiceCommandRestartFailed": "Failed to restart game",
+    "voiceCommandRestartFailed": "فشلت إعادة تشغيل اللعبة",
     "@voiceCommandRestartFailed": {
         "description": "Restart command failed"
     },
-    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "voiceCommandAiMoveSuccess": "الذكاء الاصطناعي يفكر...",
     "@voiceCommandAiMoveSuccess": {
         "description": "AI move command success"
     },
-    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "voiceCommandAiMoveFailed": "فشل طلب حركة الذكاء الاصطناعي",
     "@voiceCommandAiMoveFailed": {
         "description": "AI move command failed"
     },
-    "voiceCommandSettingsSuccess": "Settings updated",
+    "voiceCommandSettingsSuccess": "تم تحديث الإعدادات",
     "@voiceCommandSettingsSuccess": {
         "description": "Settings command success"
     },
-    "voiceCommandSettingsFailed": "Failed to update settings",
+    "voiceCommandSettingsFailed": "فشل تحديث الإعدادات",
     "@voiceCommandSettingsFailed": {
         "description": "Settings command failed"
     },
-    "voiceCommandHelpSuccess": "Help displayed",
+    "voiceCommandHelpSuccess": "تم عرض المساعدة",
     "@voiceCommandHelpSuccess": {
         "description": "Help command success"
     },
-    "voiceCommandSoundOn": "Sound enabled",
+    "voiceCommandSoundOn": "تم تمكين الصوت",
     "@voiceCommandSoundOn": {
         "description": "Sound on message"
     },
-    "voiceCommandSoundOff": "Sound disabled",
+    "voiceCommandSoundOff": "تم تعطيل الصوت",
     "@voiceCommandSoundOff": {
         "description": "Sound off message"
     },
-    "voiceCommandVibrationOn": "Vibration enabled",
+    "voiceCommandVibrationOn": "تم تمكين الاهتزاز",
     "@voiceCommandVibrationOn": {
         "description": "Vibration on message"
     },
-    "voiceCommandVibrationOff": "Vibration disabled",
+    "voiceCommandVibrationOff": "تم تعطيل الاهتزاز",
     "@voiceCommandVibrationOff": {
         "description": "Vibration off message"
     }
