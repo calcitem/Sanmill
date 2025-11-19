@@ -989,6 +989,7 @@ class Position {
             _currentSquare[us] = 0;
             selectedPieceNumber = 0;
             GameController().gameInstance.focusIndex = null;
+            GameController().gameInstance.blurIndex = null;
             // Reverse the pick-up animation to animate piece going back down
             GameController().animationManager.reversePickUp();
             SoundManager().playTone(Sound.mill);
