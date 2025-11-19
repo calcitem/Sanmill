@@ -39,31 +39,26 @@ class PiecePainter extends CustomPainter {
     double scale = 1.0;
     double shadowBlur = 2.0;
 
-    // Pick-up effect: piece at blur position (being picked up)
-    if (blurIndex != null && index == blurIndex && pickUpAnimationValue < 1.0) {
-      // Scale up from 1.0 to 1.15
-      scale = 1.0 + (pickUpAnimationValue * 0.15);
-      // Shadow blur increases from 2 to 8
-      shadowBlur = 2.0 + (pickUpAnimationValue * 6.0);
-    }
+    // Determine if this is the selected piece (at blur position during moves)
+    final bool isSelectedPiece = blurIndex != null && index == blurIndex;
 
-    // Put-down effect: piece at focus position (being placed)
-    // Only apply during placing phase (no blur) or after move completes
-    if (focusIndex != null && index == focusIndex && putDownAnimationValue < 1.0) {
-      // For placing a new piece
-      if (blurIndex == null && placeAnimationValue >= 1.0) {
-        // Scale down from 1.15 to 1.0
-        scale = 1.15 - (putDownAnimationValue * 0.15);
-        // Shadow blur decreases from 8 to 2
-        shadowBlur = 8.0 - (putDownAnimationValue * 6.0);
-      }
-      // For moving a piece (after it arrives at destination)
-      else if (blurIndex != null && moveAnimationValue >= 1.0) {
-        // Scale down from 1.15 to 1.0
-        scale = 1.15 - (putDownAnimationValue * 0.15);
-        // Shadow blur decreases from 8 to 2
-        shadowBlur = 8.0 - (putDownAnimationValue * 6.0);
-      }
+    // Determine if put-down animation should be active for this piece
+    final bool isPuttingDown = focusIndex != null &&
+                               index == focusIndex &&
+                               putDownAnimationValue < 1.0;
+
+    if (isPuttingDown) {
+      // Put-down effect: piece at focus position landing after place/move
+      // Scale down from 1.15 to 1.0 (reverse of pick-up)
+      final double putDownProgress = putDownAnimationValue;
+      scale = 1.15 - (putDownProgress * 0.15);
+      shadowBlur = 8.0 - (putDownProgress * 6.0);
+    } else if (isSelectedPiece) {
+      // Pick-up effect: piece at blur position (selected for movement)
+      // Scale up from 1.0 to 1.15, then stay at 1.15 while selected
+      final double pickUpProgress = pickUpAnimationValue.clamp(0.0, 1.0);
+      scale = 1.0 + (pickUpProgress * 0.15);
+      shadowBlur = 2.0 + (pickUpProgress * 6.0);
     }
 
     return <String, double>{'scale': scale, 'shadowBlur': shadowBlur};

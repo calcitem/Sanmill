@@ -15,6 +15,7 @@ class AnimationManager {
     _initRemoveAnimation();
     _initPickUpAnimation();
     _initPutDownAnimation();
+    _setupStatusListeners();
   }
 
   final TickerProvider vsync;
@@ -143,6 +144,43 @@ class AnimationManager {
     );
   }
 
+  // Setup status listeners once during initialization to avoid memory leaks
+  void _setupStatusListeners() {
+    // Trigger put-down animation after place animation completes
+    _placeAnimationController.addStatusListener(_onPlaceAnimationStatus);
+
+    // Trigger put-down animation after move animation completes
+    _moveAnimationController.addStatusListener(_onMoveAnimationStatus);
+
+    // Clean up indices after remove animation completes
+    _removeAnimationController.addStatusListener(_onRemoveAnimationStatus);
+  }
+
+  // Handler for place animation status changes
+  void _onPlaceAnimationStatus(AnimationStatus status) {
+    // Note: Put-down animation is not triggered for place animation
+    // because pieces placed from hand don't need a landing bounce effect.
+    // Only moved pieces (which were picked up) get the bounce effect.
+  }
+
+  // Handler for move animation status changes
+  void _onMoveAnimationStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && !_isDisposed) {
+      // Trigger put-down animation when piece arrives at destination
+      animatePutDown();
+    }
+  }
+
+  // Handler for remove animation status changes
+  void _onRemoveAnimationStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && !_isDisposed) {
+      GameController().gameInstance.removeIndex = null;
+      // Reset move animation indices after custodian capture removal
+      GameController().gameInstance.focusIndex = null;
+      GameController().gameInstance.blurIndex = null;
+    }
+  }
+
   // Properly dispose of the animation controllers
   void dispose() {
     _isDisposed = true; // Mark as disposed
@@ -210,15 +248,8 @@ class AnimationManager {
 
     if (allowAnimations) {
       resetPlaceAnimation();
-
-      // Trigger put-down animation when place animation completes
-      _placeAnimationController.addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
-          animatePutDown();
-        }
-      });
-
       forwardPlaceAnimation();
+      // Note: Put-down animation is triggered automatically via status listener
     }
   }
 
@@ -231,15 +262,8 @@ class AnimationManager {
 
     if (allowAnimations) {
       resetMoveAnimation();
-
-      // Trigger put-down animation when move animation completes
-      _moveAnimationController.addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
-          animatePutDown();
-        }
-      });
-
       forwardMoveAnimation();
+      // Note: Put-down animation is triggered automatically via status listener
     }
   }
 
@@ -252,17 +276,8 @@ class AnimationManager {
 
     if (allowAnimations) {
       resetRemoveAnimation();
-
-      _removeAnimationController.addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
-          GameController().gameInstance.removeIndex = null;
-          // Reset move animation indices after custodian capture removal
-          GameController().gameInstance.focusIndex = null;
-          GameController().gameInstance.blurIndex = null;
-        }
-      });
-
       forwardRemoveAnimation();
+      // Note: Index cleanup is handled automatically via status listener
     }
   }
 
@@ -305,6 +320,19 @@ class AnimationManager {
     if (allowAnimations) {
       resetPickUpAnimation();
       forwardPickUpAnimation();
+    }
+  }
+
+  // Reverse the pick-up animation (animate piece going back down)
+  // Called when a piece is deselected without being placed
+  void reversePickUp() {
+    if ( /* GameController().isDisposed == true || */ _isDisposed) {
+      // Avoid animation when GameController or AnimationManager is disposed
+      return;
+    }
+
+    if (allowAnimations && _pickUpAnimationController.status != AnimationStatus.dismissed) {
+      _pickUpAnimationController.reverse();
     }
   }
 
