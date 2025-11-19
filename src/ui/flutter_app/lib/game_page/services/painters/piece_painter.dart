@@ -14,6 +14,8 @@ class PiecePainter extends CustomPainter {
     required this.placeAnimationValue,
     required this.moveAnimationValue,
     required this.removeAnimationValue,
+    required this.pickUpAnimationValue,
+    required this.putDownAnimationValue,
     required this.pieceImages,
     required this.placeEffectAnimation,
     required this.removeEffectAnimation,
@@ -22,12 +24,50 @@ class PiecePainter extends CustomPainter {
   final double placeAnimationValue;
   final double moveAnimationValue;
   final double removeAnimationValue;
+  final double pickUpAnimationValue;
+  final double putDownAnimationValue;
 
   final Map<PieceColor, ui.Image?>? pieceImages;
 
   // Animation instances for place and remove effects.
   final PieceEffectAnimation placeEffectAnimation;
   final PieceEffectAnimation removeEffectAnimation;
+
+  /// Calculate the scale and shadow properties for a piece based on animation state
+  /// Returns a map with 'scale' and 'shadowBlur' keys
+  Map<String, double> _calculatePieceEffects(int index, int? focusIndex, int? blurIndex) {
+    double scale = 1.0;
+    double shadowBlur = 2.0;
+
+    // Pick-up effect: piece at blur position (being picked up)
+    if (blurIndex != null && index == blurIndex && pickUpAnimationValue < 1.0) {
+      // Scale up from 1.0 to 1.15
+      scale = 1.0 + (pickUpAnimationValue * 0.15);
+      // Shadow blur increases from 2 to 8
+      shadowBlur = 2.0 + (pickUpAnimationValue * 6.0);
+    }
+
+    // Put-down effect: piece at focus position (being placed)
+    // Only apply during placing phase (no blur) or after move completes
+    if (focusIndex != null && index == focusIndex && putDownAnimationValue < 1.0) {
+      // For placing a new piece
+      if (blurIndex == null && placeAnimationValue >= 1.0) {
+        // Scale down from 1.15 to 1.0
+        scale = 1.15 - (putDownAnimationValue * 0.15);
+        // Shadow blur decreases from 8 to 2
+        shadowBlur = 8.0 - (putDownAnimationValue * 6.0);
+      }
+      // For moving a piece (after it arrives at destination)
+      else if (blurIndex != null && moveAnimationValue >= 1.0) {
+        // Scale down from 1.15 to 1.0
+        scale = 1.15 - (putDownAnimationValue * 0.15);
+        // Shadow blur decreases from 8 to 2
+        shadowBlur = 8.0 - (putDownAnimationValue * 6.0);
+      }
+    }
+
+    return <String, double>{'scale': scale, 'shadowBlur': shadowBlur};
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -159,12 +199,23 @@ class PiecePainter extends CustomPainter {
     // Draw shadows for normal pieces.
     for (final Piece piece in normalPiecesToDraw) {
       if (piece.image == null) {
+        final Map<String, double> effects = _calculatePieceEffects(
+          piece.index,
+          focusIndex,
+          blurIndex,
+        );
+        final double scale = effects['scale']!;
+        final double shadowBlur = effects['shadowBlur']!;
+
         canvas.drawShadow(
           Path()..addOval(
-            Rect.fromCircle(center: piece.pos, radius: piece.diameter / 2),
+            Rect.fromCircle(
+              center: piece.pos,
+              radius: (piece.diameter / 2) * scale,
+            ),
           ),
           Colors.black,
-          2,
+          shadowBlur,
           true,
         );
       }
@@ -173,12 +224,23 @@ class PiecePainter extends CustomPainter {
     // Draw shadows for moving pieces.
     for (final Piece piece in movingPiecesToDraw) {
       if (piece.image == null) {
+        final Map<String, double> effects = _calculatePieceEffects(
+          piece.index,
+          focusIndex,
+          blurIndex,
+        );
+        final double scale = effects['scale']!;
+        final double shadowBlur = effects['shadowBlur']!;
+
         canvas.drawShadow(
           Path()..addOval(
-            Rect.fromCircle(center: piece.pos, radius: piece.diameter / 2),
+            Rect.fromCircle(
+              center: piece.pos,
+              radius: (piece.diameter / 2) * scale,
+            ),
           ),
           Colors.black,
-          2,
+          shadowBlur,
           true,
         );
       }
@@ -194,7 +256,15 @@ class PiecePainter extends CustomPainter {
 
       const double opacity = 1.0;
 
-      final double pieceRadius = piece.diameter / 2;
+      // Calculate animation effects for this piece
+      final Map<String, double> effects = _calculatePieceEffects(
+        piece.index,
+        focusIndex,
+        blurIndex,
+      );
+      final double scale = effects['scale']!;
+
+      final double pieceRadius = (piece.diameter / 2) * scale;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
       if (piece.image != null) {
@@ -259,7 +329,15 @@ class PiecePainter extends CustomPainter {
 
       const double opacity = 1.0;
 
-      final double pieceRadius = piece.diameter / 2;
+      // Calculate animation effects for this piece
+      final Map<String, double> effects = _calculatePieceEffects(
+        piece.index,
+        focusIndex,
+        blurIndex,
+      );
+      final double scale = effects['scale']!;
+
+      final double pieceRadius = (piece.diameter / 2) * scale;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
       if (piece.image != null) {
@@ -374,5 +452,7 @@ class PiecePainter extends CustomPainter {
   bool shouldRepaint(PiecePainter oldDelegate) =>
       placeAnimationValue != oldDelegate.placeAnimationValue ||
       moveAnimationValue != oldDelegate.moveAnimationValue ||
-      removeAnimationValue != oldDelegate.removeAnimationValue;
+      removeAnimationValue != oldDelegate.removeAnimationValue ||
+      pickUpAnimationValue != oldDelegate.pickUpAnimationValue ||
+      putDownAnimationValue != oldDelegate.putDownAnimationValue;
 }
