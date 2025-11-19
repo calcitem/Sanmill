@@ -16,6 +16,7 @@ class PiecePainter extends CustomPainter {
     required this.removeAnimationValue,
     required this.pickUpAnimationValue,
     required this.putDownAnimationValue,
+    required this.isPutDownAnimating,
     required this.pieceImages,
     required this.placeEffectAnimation,
     required this.removeEffectAnimation,
@@ -26,6 +27,7 @@ class PiecePainter extends CustomPainter {
   final double removeAnimationValue;
   final double pickUpAnimationValue;
   final double putDownAnimationValue;
+  final bool isPutDownAnimating;
 
   final Map<PieceColor, ui.Image?>? pieceImages;
 
@@ -34,34 +36,72 @@ class PiecePainter extends CustomPainter {
   final PieceEffectAnimation removeEffectAnimation;
 
   /// Calculate the scale and shadow properties for a piece based on animation state
-  /// Returns a map with 'scale' and 'shadowBlur' keys
-  Map<String, double> _calculatePieceEffects(int index, int? focusIndex, int? blurIndex) {
+  /// Returns a map with 'scale', 'shadowBlur' and 'lift' keys
+  Map<String, double> _calculatePieceEffects(
+    int index,
+    int? focusIndex,
+    int? blurIndex,
+  ) {
     double scale = 1.0;
     double shadowBlur = 2.0;
+    double lift = 0.0;
+
+    // Pick-up and Put-down animations are only for Moving phase
+    if (GameController().position.phase != Phase.moving) {
+      return <String, double>{
+        'scale': scale,
+        'shadowBlur': shadowBlur,
+        'lift': lift,
+      };
+    }
+
+    // If animation duration is 0 (instant move), do not apply any scale/lift effects
+    // This respects the user setting for "No animation"
+    if (DB().displaySettings.animationDuration == 0) {
+      return <String, double>{
+        'scale': scale,
+        'shadowBlur': shadowBlur,
+        'lift': lift,
+      };
+    }
 
     // Determine if this is the selected piece (at blur position during moves)
-    final bool isSelectedPiece = blurIndex != null && index == blurIndex;
+    final bool isSelectedPiece =
+        (blurIndex != null && index == blurIndex) ||
+        (blurIndex != null &&
+            focusIndex != null &&
+            index == focusIndex &&
+            moveAnimationValue < 1.0);
 
     // Determine if put-down animation should be active for this piece
-    final bool isPuttingDown = focusIndex != null &&
-                               index == focusIndex &&
-                               putDownAnimationValue < 1.0;
+    final bool isPuttingDown =
+        isPutDownAnimating && focusIndex != null && index == focusIndex;
 
     if (isPuttingDown) {
       // Put-down effect: piece at focus position landing after place/move
-      // Scale down from 1.15 to 1.0 (reverse of pick-up)
+      // Scale down from 1.1 to 1.0 (reverse of pick-up)
       final double putDownProgress = putDownAnimationValue;
-      scale = 1.15 - (putDownProgress * 0.15);
-      shadowBlur = 8.0 - (putDownProgress * 6.0);
+      scale = 1.1 - (putDownProgress * 0.1);
+      // Reduced shadow blur range for a tighter, closer-to-ground feel
+      shadowBlur = 6.0 - (putDownProgress * 4.0);
+      // Reduced lift height to 6.0 for a more realistic, less floaty appearance
+      lift = 6.0 - (putDownProgress * 6.0);
     } else if (isSelectedPiece) {
       // Pick-up effect: piece at blur position (selected for movement)
-      // Scale up from 1.0 to 1.15, then stay at 1.15 while selected
+      // Scale up from 1.0 to 1.1, then stay at 1.1 while selected
       final double pickUpProgress = pickUpAnimationValue.clamp(0.0, 1.0);
-      scale = 1.0 + (pickUpProgress * 0.15);
-      shadowBlur = 2.0 + (pickUpProgress * 6.0);
+      scale = 1.0 + (pickUpProgress * 0.1);
+      // Reduced shadow blur range
+      shadowBlur = 2.0 + (pickUpProgress * 4.0);
+      // Reduced lift height to 6.0
+      lift = pickUpProgress * 6.0;
     }
 
-    return <String, double>{'scale': scale, 'shadowBlur': shadowBlur};
+    return <String, double>{
+      'scale': scale,
+      'shadowBlur': shadowBlur,
+      'lift': lift,
+    };
   }
 
   @override
@@ -258,14 +298,17 @@ class PiecePainter extends CustomPainter {
         blurIndex,
       );
       final double scale = effects['scale']!;
+      final double lift = effects['lift']!;
 
       final double pieceRadius = (piece.diameter / 2) * scale;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
+      final Offset drawPos = piece.pos - Offset(0, lift);
+
       if (piece.image != null) {
         paintImage(
           canvas: canvas,
-          rect: Rect.fromCircle(center: piece.pos, radius: pieceInnerRadius),
+          rect: Rect.fromCircle(center: drawPos, radius: pieceInnerRadius),
           image: piece.image!,
           fit: BoxFit.cover,
         );
@@ -280,12 +323,12 @@ class PiecePainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
         }
 
-        canvas.drawCircle(piece.pos, pieceRadius, paint);
+        canvas.drawCircle(drawPos, pieceRadius, paint);
 
         // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
         paint.color = piece.pieceColor.mainColor.withValues(alpha: opacity);
-        canvas.drawCircle(piece.pos, pieceInnerRadius, paint);
+        canvas.drawCircle(drawPos, pieceInnerRadius, paint);
       }
 
       // Draw numbers on pieces if enabled.
@@ -310,8 +353,8 @@ class PiecePainter extends CustomPainter {
 
         // Calculate offset for centering the text.
         final Offset textOffset = Offset(
-          piece.pos.dx - textPainter.width / 2,
-          piece.pos.dy - textPainter.height / 2,
+          drawPos.dx - textPainter.width / 2,
+          drawPos.dy - textPainter.height / 2,
         );
 
         textPainter.paint(canvas, textOffset);
@@ -331,14 +374,17 @@ class PiecePainter extends CustomPainter {
         blurIndex,
       );
       final double scale = effects['scale']!;
+      final double lift = effects['lift']!;
 
       final double pieceRadius = (piece.diameter / 2) * scale;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
+      final Offset drawPos = piece.pos - Offset(0, lift);
+
       if (piece.image != null) {
         paintImage(
           canvas: canvas,
-          rect: Rect.fromCircle(center: piece.pos, radius: pieceInnerRadius),
+          rect: Rect.fromCircle(center: drawPos, radius: pieceInnerRadius),
           image: piece.image!,
           fit: BoxFit.cover,
         );
@@ -353,12 +399,12 @@ class PiecePainter extends CustomPainter {
           paint.style = PaintingStyle.fill;
         }
 
-        canvas.drawCircle(piece.pos, pieceRadius, paint);
+        canvas.drawCircle(drawPos, pieceRadius, paint);
 
         // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
         paint.color = piece.pieceColor.mainColor.withValues(alpha: opacity);
-        canvas.drawCircle(piece.pos, pieceInnerRadius, paint);
+        canvas.drawCircle(drawPos, pieceInnerRadius, paint);
       }
 
       // Draw numbers on pieces if enabled.
@@ -383,8 +429,8 @@ class PiecePainter extends CustomPainter {
 
         // Calculate offset for centering the text.
         final Offset textOffset = Offset(
-          piece.pos.dx - textPainter.width / 2,
-          piece.pos.dy - textPainter.height / 2,
+          drawPos.dx - textPainter.width / 2,
+          drawPos.dy - textPainter.height / 2,
         );
 
         textPainter.paint(canvas, textOffset);
@@ -418,25 +464,45 @@ class PiecePainter extends CustomPainter {
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
-      // If the piece is moving, use the interpolated position for highlight.
-      final Offset focusPos = movingPos ?? pointFromIndex(focusIndex, size);
+      // Calculate lift and scale for the focus piece to ensure the ring follows the piece and matches size
+      final Map<String, double> effects = _calculatePieceEffects(
+        focusIndex,
+        focusIndex,
+        blurIndex,
+      );
+      final double lift = effects['lift']!;
+      final double scale = effects['scale']!;
 
-      canvas.drawCircle(focusPos, pieceWidth / 2, paint);
+      // If the piece is moving, use the interpolated position for highlight.
+      final Offset focusPos =
+          (movingPos ?? pointFromIndex(focusIndex, size)) - Offset(0, lift);
+
+      // Scale the highlight circle radius to match the piece scale
+      canvas.drawCircle(focusPos, (pieceWidth / 2) * scale, paint);
     }
 
     if (blurIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      if (kDebugMode) {
-        if (blurPositionColor == Colors.transparent) {
-          throw Exception('Blur position color is transparent');
-        }
+      // Calculate lift for the blur piece
+      final Map<String, double> effects = _calculatePieceEffects(
+        blurIndex,
+        focusIndex,
+        blurIndex,
+      );
+      final double lift = effects['lift']!;
+
+      // If color is transparent, use a fallback color to avoid crashing
+      if (blurPositionColor == Colors.transparent) {
+        paint.color = Colors.grey.withValues(alpha: 0.5); // Fallback color
+      } else {
+        paint.color = blurPositionColor;
       }
-      paint.color = blurPositionColor;
+
       paint.style = PaintingStyle.fill;
 
-      // Blur remains at the original position.
+      // Blur remains at the original position but follows lift
       canvas.drawCircle(
-        pointFromIndex(blurIndex, size),
+        pointFromIndex(blurIndex, size) - Offset(0, lift),
         pieceWidth / 2 * 0.8,
         paint,
       );
@@ -449,5 +515,6 @@ class PiecePainter extends CustomPainter {
       moveAnimationValue != oldDelegate.moveAnimationValue ||
       removeAnimationValue != oldDelegate.removeAnimationValue ||
       pickUpAnimationValue != oldDelegate.pickUpAnimationValue ||
-      putDownAnimationValue != oldDelegate.putDownAnimationValue;
+      putDownAnimationValue != oldDelegate.putDownAnimationValue ||
+      isPutDownAnimating != oldDelegate.isPutDownAnimating;
 }

@@ -355,6 +355,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                                 animationManager.pickUpAnimation.value,
                             putDownAnimationValue:
                                 animationManager.putDownAnimation.value,
+                            isPutDownAnimating: animationManager
+                                .putDownAnimationController.isAnimating,
                             pieceImages: <PieceColor, ui.Image?>{
                               PieceColor.white: gameImages?.whitePieceImage,
                               PieceColor.black: gameImages?.blackPieceImage,

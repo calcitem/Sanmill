@@ -80,11 +80,28 @@ class AnimationManager {
 
   // Initialize Move Animation
   void _initMoveAnimation() {
+    final double totalDuration = DB().displaySettings.animationDuration * 1000;
+
+    // Calculate pick-up and put-down durations to subtract from total
+    final int pickUpDuration = (totalDuration * 0.2).toInt().clamp(100, 300);
+    final int putDownDuration = (totalDuration * 0.2).toInt().clamp(100, 300);
+
+    // Calculate move duration: Total - PickUp - PutDown
+    // Ensure it has a reasonable minimum value (e.g., 40% of total or at least 100ms)
+    // if the total duration is very short.
+    int moveDuration = (totalDuration - pickUpDuration - putDownDuration)
+        .toInt();
+
+    if (moveDuration < totalDuration * 0.4) {
+      moveDuration = (totalDuration * 0.4).toInt();
+    }
+    if (totalDuration > 0 && moveDuration < 50) {
+      moveDuration = 50; // Minimum 50ms for move if total > 0
+    }
+
     _moveAnimationController = AnimationController(
       vsync: vsync,
-      duration: Duration(
-        milliseconds: (DB().displaySettings.animationDuration * 1000).toInt(),
-      ),
+      duration: Duration(milliseconds: moveDuration),
     );
 
     _moveAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -113,33 +130,43 @@ class AnimationManager {
   }
 
   // Initialize Pick-up Animation
-  // Uses easeOutBack curve for a slight overshoot effect when lifting
+  // Uses easeOutCubic curve for a smooth lifting effect
   void _initPickUpAnimation() {
+    final double totalDuration = DB().displaySettings.animationDuration * 1000;
+
+    // Calculate pick-up duration (approx 15-20% of total, clamped)
+    final int pickUpDuration = (totalDuration * 0.2).toInt().clamp(100, 300);
+
     _pickUpAnimationController = AnimationController(
       vsync: vsync,
-      duration: const Duration(milliseconds: 300),
+      duration: Duration(milliseconds: pickUpDuration),
     );
 
     _pickUpAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _pickUpAnimationController,
-        curve: Curves.easeOutBack,
+        curve: Curves.easeOutCubic,
       ),
     );
   }
 
   // Initialize Put-down Animation
-  // Uses elasticOut curve for a bouncing landing effect
+  // Uses easeOutCubic curve for a smooth landing effect
   void _initPutDownAnimation() {
+    final double totalDuration = DB().displaySettings.animationDuration * 1000;
+
+    // Calculate put-down duration (approx 15-20% of total, clamped)
+    final int putDownDuration = (totalDuration * 0.2).toInt().clamp(100, 300);
+
     _putDownAnimationController = AnimationController(
       vsync: vsync,
-      duration: const Duration(milliseconds: 400),
+      duration: Duration(milliseconds: putDownDuration),
     );
 
     _putDownAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _putDownAnimationController,
-        curve: Curves.elasticOut,
+        curve: Curves.easeOutCubic,
       ),
     );
   }
@@ -331,7 +358,8 @@ class AnimationManager {
       return;
     }
 
-    if (allowAnimations && _pickUpAnimationController.status != AnimationStatus.dismissed) {
+    if (allowAnimations &&
+        _pickUpAnimationController.status != AnimationStatus.dismissed) {
       _pickUpAnimationController.reverse();
     }
   }
