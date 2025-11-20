@@ -515,11 +515,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 ),
               ),
             ],
-          ),
-        );
-      },
-      ),
-    );
+          );
   }
 }
 
