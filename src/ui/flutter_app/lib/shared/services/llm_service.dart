@@ -95,6 +95,70 @@ class LlmService {
     }
   }
 
+  /// Returns a stream of string chunks with a custom system prompt
+  /// This allows for context-aware prompts without needing BuildContext
+  Stream<String> generateResponseWithCustomPrompt({
+    required String systemPrompt,
+    required String userPrompt,
+  }) async* {
+    final GeneralSettings settings = DB().generalSettings;
+
+    // Check if LLM is configured
+    if (!isLlmConfigured()) {
+      yield 'LLM is not configured. Please check your settings.';
+      return;
+    }
+
+    try {
+      switch (settings.llmProvider) {
+        case LlmProvider.openai:
+          // Use OpenAI API
+          final String response = await _callOpenAI(
+            apiKey: settings.llmApiKey,
+            baseUrl: settings.llmBaseUrl.isNotEmpty
+                ? settings.llmBaseUrl
+                : 'https://api.openai.com/v1',
+            model: settings.llmModel,
+            systemPrompt: systemPrompt,
+            userPrompt: userPrompt,
+            temperature: settings.llmTemperature,
+          );
+
+          yield response;
+          break;
+
+        case LlmProvider.google:
+          // Use Google Generative AI API
+          final String response = await _callGoogleAI(
+            apiKey: settings.llmApiKey,
+            model: settings.llmModel,
+            systemPrompt: systemPrompt,
+            userPrompt: userPrompt,
+            temperature: settings.llmTemperature,
+          );
+
+          yield response;
+          break;
+
+        case LlmProvider.ollama:
+          // Use Ollama API
+          final String response = await _callOllama(
+            baseUrl: settings.llmBaseUrl,
+            model: settings.llmModel,
+            systemPrompt: systemPrompt,
+            userPrompt: userPrompt,
+            temperature: settings.llmTemperature,
+          );
+
+          yield response;
+          break;
+      }
+    } catch (e) {
+      logger.e('Error generating LLM response with custom prompt: $e');
+      yield 'Error: $e';
+    }
+  }
+
   /// Call OpenAI API
   Future<String> _callOpenAI({
     required String apiKey,

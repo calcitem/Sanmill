@@ -1034,7 +1034,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
   /// Determine if the AI chat button should be visible
   /// Shows when the game board is active (not in setup mode)
   bool _shouldShowAiChatButton() {
-    final GameMode mode = GameController().gameInstance.gameMode;
+    final GameController controller = GameController();
+    // Only show button if controller is ready and not in setup/puzzle mode
+    if (!controller.isControllerReady || controller.isDisposed) {
+      return false;
+    }
+    final GameMode mode = controller.gameInstance.gameMode;
     return mode == GameMode.humanVsAi ||
         mode == GameMode.humanVsHuman ||
         mode == GameMode.aiVsAi;
