@@ -24,11 +24,12 @@ import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
-import '../../voice_assistant/models/voice_assistant_settings.dart';
-import '../../voice_assistant/services/model_downloader.dart';
-import '../../voice_assistant/services/voice_assistant_service.dart';
-import '../../voice_assistant/widgets/voice_assistant_settings_page.dart';
-import '../../voice_assistant/widgets/voice_model_download_progress_indicator.dart';
+// Voice assistant functionality disabled
+// import '../../voice_assistant/models/voice_assistant_settings.dart';
+// import '../../voice_assistant/services/model_downloader.dart';
+// import '../../voice_assistant/services/voice_assistant_service.dart';
+// import '../../voice_assistant/widgets/voice_assistant_settings_page.dart';
+// import '../../voice_assistant/widgets/voice_model_download_progress_indicator.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
@@ -250,27 +251,28 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag screenReaderSupport: $value");
   }
 
-  // Enable or disable voice assistant
-  Future<void> _setVoiceAssistantEnabled(
-    BuildContext context,
-    bool value,
-  ) async {
-    if (value) {
-      // When enabling, use the service to properly initialize
-      final bool success = await VoiceAssistantService().enable(context);
-      if (!success) {
-        // If initialization failed, revert the switch
-        // The switch will update based on the database value
-        logger.w("$_logTag Failed to enable voice assistant");
-        return;
-      }
-    } else {
-      // When disabling, use the service to properly clean up
-      await VoiceAssistantService().disable();
-    }
-
-    logger.t("$_logTag voiceAssistantEnabled: $value");
-  }
+  // Voice assistant functionality disabled
+  // // Enable or disable voice assistant
+  // Future<void> _setVoiceAssistantEnabled(
+  //   BuildContext context,
+  //   bool value,
+  // ) async {
+  //   if (value) {
+  //     // When enabling, use the service to properly initialize
+  //     final bool success = await VoiceAssistantService().enable(context);
+  //     if (!success) {
+  //       // If initialization failed, revert the switch
+  //       // The switch will update based on the database value
+  //       logger.w("$_logTag Failed to enable voice assistant");
+  //       return;
+  //     }
+  //   } else {
+  //     // When disabling, use the service to properly clean up
+  //     await VoiceAssistantService().disable();
+  //   }
+  //
+  //   logger.t("$_logTag voiceAssistantEnabled: $value");
+  // }
 
   void _setGameScreenRecorderSupport(
     GeneralSettings generalSettings,
@@ -617,98 +619,99 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).screenReaderSupport,
               ),
+              // Voice assistant functionality disabled
               // Voice assistant switch with download progress indicator
               // Uses nested ValueListenableBuilders to react to both download progress
               // and settings changes
-              ValueListenableBuilder<Box<VoiceAssistantSettings>>(
-                valueListenable: DB().listenVoiceAssistantSettings,
-                builder:
-                    (
-                      BuildContext context,
-                      Box<VoiceAssistantSettings> voiceBox,
-                      Widget? child,
-                    ) {
-                      final VoiceAssistantSettings currentVoiceSettings =
-                          voiceBox.get(
-                            DB.voiceAssistantSettingsKey,
-                            defaultValue: const VoiceAssistantSettings(),
-                          )!;
-
-                      return ValueListenableBuilder<double>(
-                        valueListenable: ModelDownloader().downloadProgress,
-                        builder: (BuildContext context, double progress, Widget? child) {
-                          final bool isDownloading =
-                              progress >= 0.0 && progress < 1.0;
-
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                key: const Key(
-                                  'general_settings_page_settings_card_accessibility_voice_assistant',
-                                ),
-                                title: Text(
-                                  S.of(context).voiceAssistantEnabled,
-                                  style: AppTheme.listTileTitleStyle,
-                                ),
-                                subtitle: Text(
-                                  S
-                                      .of(context)
-                                      .voiceAssistantEnabledDescription,
-                                  style: AppTheme.listTileSubtitleStyle,
-                                ),
-                                // Show progress indicator when downloading, otherwise show switch
-                                trailing: isDownloading
-                                    ? VoiceModelDownloadProgressIndicator(
-                                        progress: progress,
-                                      )
-                                    : Switch(
-                                        value: currentVoiceSettings.enabled,
-                                        onChanged: (bool val) {
-                                          _setVoiceAssistantEnabled(
-                                            context,
-                                            val,
-                                          );
-                                        },
-                                      ),
-                                // Disable tap when downloading
-                                onTap: isDownloading
-                                    ? null
-                                    : () {
-                                        _setVoiceAssistantEnabled(
-                                          context,
-                                          !currentVoiceSettings.enabled,
-                                        );
-                                      },
-                              ),
-                              // Navigation to voice assistant detailed settings
-                              if (currentVoiceSettings.enabled)
-                                SettingsListTile(
-                                  key: const Key(
-                                    'general_settings_page_settings_card_accessibility_voice_assistant_settings',
-                                  ),
-                                  titleString: S
-                                      .of(context)
-                                      .voiceAssistantSettings,
-                                  subtitleString: S
-                                      .of(context)
-                                      .voiceAssistantSettingsDescription,
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute<void>(
-                                        builder: (BuildContext context) =>
-                                            const VoiceAssistantSettingsPage(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-              ),
+              // ValueListenableBuilder<Box<VoiceAssistantSettings>>(
+              //   valueListenable: DB().listenVoiceAssistantSettings,
+              //   builder:
+              //       (
+              //         BuildContext context,
+              //         Box<VoiceAssistantSettings> voiceBox,
+              //         Widget? child,
+              //       ) {
+              //         final VoiceAssistantSettings currentVoiceSettings =
+              //             voiceBox.get(
+              //               DB.voiceAssistantSettingsKey,
+              //               defaultValue: const VoiceAssistantSettings(),
+              //             )!;
+              //
+              //         return ValueListenableBuilder<double>(
+              //           valueListenable: ModelDownloader().downloadProgress,
+              //           builder: (BuildContext context, double progress, Widget? child) {
+              //             final bool isDownloading =
+              //                 progress >= 0.0 && progress < 1.0;
+              //
+              //             return Column(
+              //               mainAxisSize: MainAxisSize.min,
+              //               children: <Widget>[
+              //                 ListTile(
+              //                   key: const Key(
+              //                     'general_settings_page_settings_card_accessibility_voice_assistant',
+              //                   ),
+              //                   title: Text(
+              //                     S.of(context).voiceAssistantEnabled,
+              //                     style: AppTheme.listTileTitleStyle,
+              //                   ),
+              //                   subtitle: Text(
+              //                     S
+              //                         .of(context)
+              //                         .voiceAssistantEnabledDescription,
+              //                     style: AppTheme.listTileSubtitleStyle,
+              //                   ),
+              //                   // Show progress indicator when downloading, otherwise show switch
+              //                   trailing: isDownloading
+              //                       ? VoiceModelDownloadProgressIndicator(
+              //                           progress: progress,
+              //                         )
+              //                       : Switch(
+              //                           value: currentVoiceSettings.enabled,
+              //                           onChanged: (bool val) {
+              //                             _setVoiceAssistantEnabled(
+              //                               context,
+              //                               val,
+              //                             );
+              //                           },
+              //                         ),
+              //                   // Disable tap when downloading
+              //                   onTap: isDownloading
+              //                       ? null
+              //                       : () {
+              //                           _setVoiceAssistantEnabled(
+              //                             context,
+              //                             !currentVoiceSettings.enabled,
+              //                           );
+              //                         },
+              //                 ),
+              //                 // Navigation to voice assistant detailed settings
+              //                 if (currentVoiceSettings.enabled)
+              //                   SettingsListTile(
+              //                     key: const Key(
+              //                       'general_settings_page_settings_card_accessibility_voice_assistant_settings',
+              //                     ),
+              //                     titleString: S
+              //                         .of(context)
+              //                         .voiceAssistantSettings,
+              //                     subtitleString: S
+              //                         .of(context)
+              //                         .voiceAssistantSettingsDescription,
+              //                     onTap: () {
+              //                       Navigator.push(
+              //                         context,
+              //                         MaterialPageRoute<void>(
+              //                           builder: (BuildContext context) =>
+              //                               const VoiceAssistantSettingsPage(),
+              //                         ),
+              //                       );
+              //                     },
+              //                   ),
+              //               ],
+              //             );
+              //           },
+              //         );
+              //       },
+              // ),
             ],
           ),
         // TODO: Fix iOS bug
