@@ -16,7 +16,13 @@
 
 import 'package:sanmill/shared/models/chat_message.dart';
 
-/// Manages chat session state, token limits, and auto-reset functionality
+/// Manages chat session state with intelligent token-aware context management
+///
+/// Features:
+/// - Sliding window context to manage token limits
+/// - Approximate token counting for cost optimization
+/// - Auto-reset on game changes
+/// - Conversation history extraction
 class ChatSessionManager {
   /// Singleton instance
   static final ChatSessionManager _instance = ChatSessionManager._internal();
@@ -30,13 +36,19 @@ class ChatSessionManager {
   String? _currentGameId;
 
   /// Maximum number of messages to keep in context window
-  /// Helps manage token limits (approximately 4000 tokens with overhead)
+  /// Optimized for ~4000 token context limit (average ~400 tokens per exchange)
   static const int _maxContextMessages = 10;
+
+  /// Estimated tokens per message (rough average for sliding window calculation)
+  static const int _avgTokensPerMessage = 200;
+
+  /// Maximum total tokens to maintain in context (conservative limit)
+  static const int _maxContextTokens = 3500;
 
   /// Get all messages in the current session
   List<ChatMessage> get messages => List<ChatMessage>.unmodifiable(_messages);
 
-  /// Add a message to the session
+  /// Add a message to the session with intelligent context management
   void addMessage(ChatMessage message) {
     _messages.add(message);
     _trimContextWindow();
@@ -83,10 +95,18 @@ class ChatSessionManager {
     return false;
   }
 
-  /// Trim context window to manage token limits using sliding window
-  /// Keeps welcome message + most recent messages within limit
+  /// Trim context window using intelligent sliding window with token awareness
+  /// Keeps welcome message + most recent messages within token budget
   void _trimContextWindow() {
-    if (_messages.length <= _maxContextMessages) {
+    if (_messages.length <= 2) {
+      return; // Keep at least welcome + 1 exchange
+    }
+
+    // Calculate approximate token usage
+    final int estimatedTokens = _estimateTotalTokens();
+
+    // If under budget and message count OK, no trimming needed
+    if (estimatedTokens <= _maxContextTokens && _messages.length <= _maxContextMessages) {
       return;
     }
 
@@ -94,10 +114,16 @@ class ChatSessionManager {
     final ChatMessage? welcomeMessage = _messages.isNotEmpty ? _messages.first : null;
     final List<ChatMessage> recentMessages = _messages.skip(1).toList();
 
-    // Keep only the most recent messages
-    final int excessCount = recentMessages.length - (_maxContextMessages - 1);
-    if (excessCount > 0) {
+    // Trim by message count
+    if (recentMessages.length > (_maxContextMessages - 1)) {
+      final int excessCount = recentMessages.length - (_maxContextMessages - 1);
       recentMessages.removeRange(0, excessCount);
+    }
+
+    // Additional token-based trimming if still over budget
+    while (recentMessages.length > 2 && _estimateTokensForMessages(recentMessages) > _maxContextTokens) {
+      // Remove oldest non-welcome messages first (FIFO)
+      recentMessages.removeAt(0);
     }
 
     // Rebuild messages list
@@ -108,8 +134,33 @@ class ChatSessionManager {
     _messages.addAll(recentMessages);
   }
 
+  /// Estimate total tokens in current context
+  /// Uses simplified token estimation: ~4 chars per token (rough approximation)
+  int _estimateTotalTokens() {
+    return _estimateTokensForMessages(_messages);
+  }
+
+  /// Estimate tokens for a list of messages
+  /// More accurate estimation considering message structure
+  int _estimateTokensForMessages(List<ChatMessage> messageList) {
+    int totalChars = 0;
+
+    for (final ChatMessage msg in messageList) {
+      // Count content characters
+      totalChars += msg.content.length;
+
+      // Add overhead for role markers and formatting (~20 chars per message)
+      totalChars += 20;
+    }
+
+    // Convert chars to tokens (rough estimate: 4 chars ≈ 1 token)
+    // This is conservative for English text; actual ratio varies by content
+    return (totalChars / 4).ceil();
+  }
+
   /// Get conversation history as formatted string for context injection
   /// Excludes the welcome message and formats for LLM consumption
+  /// Intelligently limits based on token budget
   String getConversationHistory() {
     if (_messages.length <= 1) {
       return '';
@@ -118,18 +169,48 @@ class ChatSessionManager {
     final StringBuffer buffer = StringBuffer();
     buffer.writeln('RECENT CONVERSATION:');
 
-    // Skip welcome message (index 0) and get up to last 6 messages for context
+    // Skip welcome message (index 0) and get recent messages
+    // Limit to last 6 messages (3 exchanges) to conserve tokens
     final int startIndex = _messages.length > 7 ? _messages.length - 6 : 1;
+    int includedMessages = 0;
+
     for (int i = startIndex; i < _messages.length; i++) {
       final ChatMessage msg = _messages[i];
       if (msg.isStreaming) continue; // Skip incomplete messages
 
       final String role = msg.isUser ? 'User' : 'Assistant';
-      buffer.writeln('$role: ${msg.content}');
+      final String truncatedContent = _truncateIfNeeded(msg.content, 300);
+      buffer.writeln('$role: $truncatedContent');
+      includedMessages++;
+    }
+
+    // Return empty if no messages were included
+    if (includedMessages == 0) {
+      return '';
     }
 
     return buffer.toString();
   }
+
+  /// Truncate message content if too long to save tokens
+  String _truncateIfNeeded(String content, int maxLength) {
+    if (content.length <= maxLength) {
+      return content;
+    }
+    return '${content.substring(0, maxLength)}... [truncated]';
+  }
+
+  /// Get current token usage estimate for monitoring
+  int get estimatedTokenUsage => _estimateTotalTokens();
+
+  /// Get token budget remaining
+  int get tokenBudgetRemaining {
+    final int used = estimatedTokenUsage;
+    return _maxContextTokens - used;
+  }
+
+  /// Check if context is approaching token limit (>80% usage)
+  bool get isNearTokenLimit => estimatedTokenUsage > (_maxContextTokens * 0.8);
 
   /// Get number of messages in current session
   int get messageCount => _messages.length;
@@ -139,4 +220,15 @@ class ChatSessionManager {
 
   /// Get current game ID
   String? get currentGameId => _currentGameId;
+
+  /// Get statistics for debugging/monitoring
+  Map<String, dynamic> getSessionStats() {
+    return <String, dynamic>{
+      'messageCount': messageCount,
+      'estimatedTokens': estimatedTokenUsage,
+      'tokenBudgetRemaining': tokenBudgetRemaining,
+      'isNearLimit': isNearTokenLimit,
+      'gameId': _currentGameId,
+    };
+  }
 }

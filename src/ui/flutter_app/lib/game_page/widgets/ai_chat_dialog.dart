@@ -298,8 +298,43 @@ class _AiChatDialogState extends State<AiChatDialog> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final double keyboardHeight = mediaQuery.viewInsets.bottom;
+    final Orientation orientation = mediaQuery.orientation;
+    final Size screenSize = mediaQuery.size;
 
+    // Detect landscape mode
+    final bool isLandscape = orientation == Orientation.landscape;
+
+    // Adaptive layout based on orientation
+    if (isLandscape) {
+      // Landscape: Side panel layout (right side)
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: keyboardHeight),
+          child: Container(
+            width: screenSize.width * 0.4, // 40% of screen width in landscape
+            height: screenSize.height,
+            decoration: BoxDecoration(
+              color: colorScheme.surface.withOpacity(0.95),
+              borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 15,
+                  spreadRadius: 2,
+                  offset: const Offset(-3, 0),
+                ),
+              ],
+            ),
+            child: _buildChatContent(colorScheme, textTheme, isLandscape: true),
+          ),
+        ),
+      );
+    }
+
+    // Portrait: Bottom sheet layout (default)
     return Padding(
       // Add padding for keyboard avoidance
       padding: EdgeInsets.only(bottom: keyboardHeight),
@@ -323,41 +358,70 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 ),
               ],
             ),
-          child: Column(
-            children: <Widget>[
-              // Handle bar
-              Container(
-                margin: const EdgeInsets.only(top: 8, bottom: 4),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: colorScheme.onSurfaceVariant.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
+            child: _buildChatContent(colorScheme, textTheme, isLandscape: false),
+          );
+        },
+      ),
+    );
+  }
 
-              // Header
+  /// Build the chat content UI (reusable for both portrait and landscape)
+  Widget _buildChatContent(ColorScheme colorScheme, TextTheme textTheme, {required bool isLandscape}) {
+    return Column(
+            children: <Widget>[
+              // Handle bar (only in portrait mode)
+              if (!isLandscape)
+                Container(
+                  margin: const EdgeInsets.only(top: 8, bottom: 4),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: colorScheme.onSurfaceVariant.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+
+              // Header (compact in landscape)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isLandscape ? 12 : 16,
+                  vertical: isLandscape ? 8 : 12,
+                ),
                 child: Row(
                   children: <Widget>[
                     Icon(
                       Icons.smart_toy,
                       color: colorScheme.primary,
-                      size: 28,
+                      size: isLandscape ? 24 : 28,
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: isLandscape ? 8 : 12),
                     Expanded(
-                      child: Text(
-                        S.current.aiChatTitle,
-                        style: textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onSurface,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            S.current.aiChatTitle,
+                            style: (isLandscape ? textTheme.titleMedium : textTheme.titleLarge)?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                          // Token usage indicator (when near limit)
+                          if (_chatService.sessionManager.isNearTokenLimit)
+                            Text(
+                              '⚠️ ${_chatService.sessionManager.tokenBudgetRemaining} tokens left',
+                              style: textTheme.bodySmall?.copyWith(
+                                color: colorScheme.error,
+                                fontSize: 10,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
+                      iconSize: isLandscape ? 20 : 24,
                       onPressed: () => Navigator.of(context).pop(),
                       tooltip: S.current.close,
                     ),
@@ -367,11 +431,11 @@ class _AiChatDialogState extends State<AiChatDialog> {
 
               const Divider(height: 1),
 
-              // Messages list
+              // Messages list (compact padding in landscape)
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(isLandscape ? 12 : 16),
                   itemCount: _chatService.sessionManager.messages.length,
                   itemBuilder: (BuildContext context, int index) {
                     final ChatMessage message = _chatService.sessionManager.messages[index];
@@ -379,6 +443,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                       message: message,
                       colorScheme: colorScheme,
                       textTheme: textTheme,
+                      isCompact: isLandscape,
                     );
                   },
                 ),
@@ -386,9 +451,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
 
               const Divider(height: 1),
 
-              // Input area
+              // Input area (compact in landscape)
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(isLandscape ? 12 : 16),
                 child: SafeArea(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -464,11 +529,13 @@ class _MessageBubble extends StatelessWidget {
     required this.message,
     required this.colorScheme,
     required this.textTheme,
+    this.isCompact = false,
   });
 
   final ChatMessage message;
   final ColorScheme colorScheme;
   final TextTheme textTheme;
+  final bool isCompact;
 
   @override
   Widget build(BuildContext context) {
@@ -481,7 +548,7 @@ class _MessageBubble extends StatelessWidget {
         : colorScheme.onSurface;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: isCompact ? 12 : 16),
       child: Row(
         mainAxisAlignment:
             isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -490,7 +557,7 @@ class _MessageBubble extends StatelessWidget {
           if (!isUser) ...<Widget>[
             CircleAvatar(
               backgroundColor: colorScheme.primary,
-              radius: 16,
+              radius: isCompact ? 14 : 16,
               child: Icon(
                 Icons.smart_toy,
                 size: 18,
@@ -501,12 +568,15 @@ class _MessageBubble extends StatelessWidget {
           ],
           Flexible(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(
+                horizontal: isCompact ? 12 : 16,
+                vertical: isCompact ? 10 : 12,
+              ),
               decoration: BoxDecoration(
                 color: backgroundColor,
-                borderRadius: BorderRadius.circular(16).copyWith(
-                  topLeft: isUser ? const Radius.circular(16) : Radius.zero,
-                  topRight: isUser ? Radius.zero : const Radius.circular(16),
+                borderRadius: BorderRadius.circular(isCompact ? 12 : 16).copyWith(
+                  topLeft: isUser ? Radius.circular(isCompact ? 12 : 16) : Radius.zero,
+                  topRight: isUser ? Radius.zero : Radius.circular(isCompact ? 12 : 16),
                 ),
               ),
               child: Column(
@@ -516,11 +586,12 @@ class _MessageBubble extends StatelessWidget {
                     MarkdownBody(
                       data: message.content,
                       styleSheet: MarkdownStyleSheet(
-                        p: textTheme.bodyMedium?.copyWith(color: textColor),
+                        p: (isCompact ? textTheme.bodySmall : textTheme.bodyMedium)?.copyWith(color: textColor),
                         code: textTheme.bodySmall?.copyWith(
                           fontFamily: 'monospace',
                           backgroundColor: colorScheme.surface,
                           color: colorScheme.onSurface,
+                          fontSize: isCompact ? 11 : null,
                         ),
                         codeblockDecoration: BoxDecoration(
                           color: colorScheme.surface,
@@ -531,7 +602,7 @@ class _MessageBubble extends StatelessWidget {
                   else
                     Text(
                       message.content,
-                      style: textTheme.bodyMedium?.copyWith(color: textColor),
+                      style: (isCompact ? textTheme.bodySmall : textTheme.bodyMedium)?.copyWith(color: textColor),
                     ),
                   if (message.isStreaming) ...<Widget>[
                     const SizedBox(height: 4),
