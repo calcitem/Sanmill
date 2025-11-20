@@ -38,7 +38,6 @@ import '../../statistics/model/stats_settings.dart';
 // import '../../voice_assistant/widgets/voice_button.dart';
 import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
-import 'ai_chat_dialog.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
 import '../services/board_image_recognition.dart';
@@ -47,6 +46,7 @@ import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
 import '../services/player_timer.dart';
 import '../widgets/board_recognition_debug_view.dart';
+import 'ai_chat_dialog.dart';
 import 'challenge_confetti.dart';
 import 'moves_list_page.dart';
 import 'play_area.dart';
@@ -257,7 +257,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   child: SafeArea(
                     child: Padding(
                       padding: EdgeInsets.only(
-                        top: GameController().gameInstance.gameMode ==
+                        top:
+                            GameController().gameInstance.gameMode ==
                                 GameMode.humanVsHuman
                             ? 64.0 // Position below analysis button
                             : 8.0,

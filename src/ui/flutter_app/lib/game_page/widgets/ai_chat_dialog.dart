@@ -350,13 +350,13 @@ class _AiChatDialogState extends State<AiChatDialog> {
             width: screenSize.width * 0.4, // 40% of screen width in landscape
             height: screenSize.height,
             decoration: BoxDecoration(
-              color: colorScheme.surface.withOpacity(0.95),
+              color: colorScheme.surface.withValues(alpha: 0.95),
               borderRadius: const BorderRadius.horizontal(
                 left: Radius.circular(20),
               ),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 15,
                   spreadRadius: 2,
                   offset: const Offset(-3, 0),
@@ -382,13 +382,13 @@ class _AiChatDialogState extends State<AiChatDialog> {
           return Container(
             decoration: BoxDecoration(
               // Semi-transparent background with blur effect
-              color: colorScheme.surface.withOpacity(0.95),
+              color: colorScheme.surface.withValues(alpha: 0.95),
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
               ),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 15,
                   spreadRadius: 2,
                   offset: const Offset(0, -3),
@@ -421,7 +421,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: colorScheme.onSurfaceVariant.withOpacity(0.4),
+              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -532,7 +532,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 const SizedBox(width: 8),
                 Material(
                   color: _isSending
-                      ? colorScheme.primary.withOpacity(0.5)
+                      ? colorScheme.primary.withValues(alpha: 0.5)
                       : colorScheme.primary,
                   borderRadius: BorderRadius.circular(24),
                   child: InkWell(
