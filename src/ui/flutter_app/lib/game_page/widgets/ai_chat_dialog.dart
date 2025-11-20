@@ -49,15 +49,20 @@ class _AiChatDialogState extends State<AiChatDialog> {
   int _retryCount = 0;
   static const int _maxRetries = 3;
 
+  bool _isInitialized = false;
+
   @override
   void initState() {
     super.initState();
-    // Initialize session with welcome message if empty
-    if (_chatService.sessionManager.isEmpty) {
+  }
+
+  void _initializeWelcomeMessage(BuildContext context) {
+    if (!_isInitialized && _chatService.sessionManager.isEmpty) {
+      _isInitialized = true;
       _chatService.sessionManager.addMessage(
         ChatMessage(
           id: _uuid.v4(),
-          content: S.current.aiChatWelcomeMessage,
+          content: S.of(context).aiChatWelcomeMessage,
           isUser: false,
           timestamp: DateTime.now(),
         ),
@@ -224,17 +229,19 @@ class _AiChatDialogState extends State<AiChatDialog> {
                   );
 
               if (currentMessage != null) {
-                final String errorMessage = _retryCount >= _maxRetries
-                    ? '${S.current.aiChatErrorMessage}\n(Failed after $_maxRetries retries)'
-                    : S.current.aiChatErrorMessage;
+                if (mounted) {
+                  final String errorMessage = _retryCount >= _maxRetries
+                      ? '${S.of(context).aiChatErrorMessage}\n(Failed after $_maxRetries retries)'
+                      : S.of(context).aiChatErrorMessage;
 
-                _chatService.sessionManager.updateMessage(
-                  aiMessageId,
-                  currentMessage.copyWith(
-                    content: errorMessage,
-                    isStreaming: false,
-                  ),
-                );
+                  _chatService.sessionManager.updateMessage(
+                    aiMessageId,
+                    currentMessage.copyWith(
+                      content: errorMessage,
+                      isStreaming: false,
+                    ),
+                  );
+                }
               }
               _isSending = false;
               _retryCount = 0;
@@ -257,7 +264,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
           _chatService.sessionManager.updateMessage(
             aiMessageId,
             currentMessage.copyWith(
-              content: S.current.aiChatErrorMessage,
+              content: S.of(context).aiChatErrorMessage,
               isStreaming: false,
             ),
           );
@@ -282,9 +289,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
   void _showConfigurationError() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(S.current.aiChatNotConfigured),
+        content: Text(S.of(context).aiChatNotConfigured),
         action: SnackBarAction(
-          label: S.current.settings,
+          label: S.of(context).settings,
           onPressed: () {
             Navigator.of(context).pop();
             // Navigate to settings would be handled by the app
@@ -296,6 +303,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize welcome message on first build
+    _initializeWelcomeMessage(context);
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -405,7 +415,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      S.current.aiChatTitle,
+                      S.of(context).aiChatTitle,
                       style: (isLandscape ? textTheme.titleMedium : textTheme.titleLarge)?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onSurface,
@@ -427,7 +437,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 icon: const Icon(Icons.close),
                 iconSize: isLandscape ? 20 : 24,
                 onPressed: () => Navigator.of(context).pop(),
-                tooltip: S.current.close,
+                tooltip: S.of(context).close,
               ),
             ],
           ),
@@ -466,7 +476,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                   child: TextField(
                     controller: _messageController,
                     decoration: InputDecoration(
-                      hintText: S.current.aiChatInputHint,
+                      hintText: S.of(context).aiChatInputHint,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),
