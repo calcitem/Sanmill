@@ -86,7 +86,8 @@ class AiChatService {
       final StringBuffer prompt = StringBuffer();
 
       prompt.writeln(
-        '''You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
+        '''
+You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
 
 CURRENT GAME STATE:
 - FEN Position: $fen
@@ -309,9 +310,11 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
       }
 
       // Stalemate and board full actions
-      if (rules.stalemateAction != StalemateAction.endWithStalemateLoss) {
+      final StalemateAction? stalemateAction = rules.stalemateAction;
+      if (stalemateAction != null &&
+          stalemateAction != StalemateAction.endWithStalemateLoss) {
         buffer.writeln(
-          '- Stalemate action: ${_getStalemateActionDescription(rules.stalemateAction)}',
+          '- Stalemate action: ${_getStalemateActionDescription(stalemateAction)}',
         );
       }
 
@@ -341,7 +344,7 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
   ChatSessionManager get sessionManager => _sessionManager;
 
   /// Send a chat message and get streaming response
-  /// Returns a Stream<String> of response chunks for typewriter effect
+  /// Returns a `Stream<String>` of response chunks for typewriter effect
   Stream<String> sendMessage(String userMessage) async* {
     final String systemPrompt = _generateSystemPrompt();
 
