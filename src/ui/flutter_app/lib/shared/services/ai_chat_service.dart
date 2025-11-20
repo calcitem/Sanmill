@@ -15,11 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:sanmill/game_page/services/controller/game_controller.dart';
+import 'package:sanmill/game_page/services/controller/game_recorder.dart';
 import 'package:sanmill/game_page/services/engine/position.dart';
 import 'package:sanmill/game_page/services/engine/types.dart';
+import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/services/chat_session_manager.dart';
 import 'package:sanmill/shared/services/llm_service.dart';
 
 /// AI chat assistant service for discussing game strategy and positions
+/// Features deep game integration with move history, variant rules, and context management
 class AiChatService {
   /// Singleton instance
   static final AiChatService _instance = AiChatService._internal();
@@ -27,8 +33,10 @@ class AiChatService {
   AiChatService._internal();
 
   final LlmService _llmService = LlmService();
+  final ChatSessionManager _sessionManager = ChatSessionManager();
 
-  /// Generate a system prompt that includes the current board state
+  /// Generate a comprehensive system prompt with deep game integration
+  /// Includes board state, move history, variant rules, and conversation context
   String _generateSystemPrompt() {
     try {
       final GameController controller = GameController();
@@ -41,12 +49,17 @@ class AiChatService {
       final Position position = controller.position;
       final String? fen = position.fen;
 
+      // Check if game has changed and auto-reset session if needed
+      if (_sessionManager.checkAndResetIfGameChanged(fen)) {
+        // Session was reset due to new game
+      }
+
       // If FEN is not available, fall back to default prompt
       if (fen == null || fen.isEmpty) {
         return _getDefaultSystemPrompt();
       }
 
-      // Get game state information
+      // Get current game state
       final String sideToMove = position.sideToMove == PieceColor.white
           ? "White"
           : "Black";
@@ -58,30 +71,77 @@ class AiChatService {
       final int blackPiecesOnBoard = position.pieceOnBoardCount[PieceColor.black] ?? 0;
       final int blackPiecesInHand = position.pieceInHandCount[PieceColor.black] ?? 0;
 
-    return '''You are an expert Nine Men's Morris (Mill) game assistant. Help the player analyze positions, suggest strategies, and answer questions about the game.
+      // Get move history
+      final String moveHistory = _getMoveHistory(controller.gameRecorder);
+
+      // Get active variant rules
+      final String variantRules = _getVariantRulesDescription();
+
+      // Get recent conversation history for context continuity
+      final String conversationHistory = _sessionManager.getConversationHistory();
+
+      // Build comprehensive system prompt
+      final StringBuffer prompt = StringBuffer();
+
+      prompt.writeln('''You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
 
 CURRENT GAME STATE:
 - FEN Position: $fen
 - Side to Move: $sideToMove
 - Game Phase: $phase
 - Current Action: $action
-- White Pieces: $whitePiecesOnBoard on board, $whitePiecesInHand in hand
-- Black Pieces: $blackPiecesOnBoard on board, $blackPiecesInHand in hand
+- White: $whitePiecesOnBoard on board, $whitePiecesInHand in hand
+- Black: $blackPiecesOnBoard on board, $blackPiecesInHand in hand''');
 
-NINE MEN'S MORRIS RULES:
-1. The game has three phases: Placing (9 pieces each), Moving, and Flying (when down to 3 pieces)
-2. A "mill" is formed when three pieces are in a row (horizontally or vertically)
-3. Forming a mill allows you to remove an opponent's piece
-4. The goal is to reduce the opponent to 2 pieces or block all their moves
+      // Add move history if available
+      if (moveHistory.isNotEmpty) {
+        prompt.writeln('\n$moveHistory');
+      }
 
-When analyzing positions:
-- Consider the current board position shown in the FEN string
-- Evaluate piece placement and potential mills
-- Suggest strategic moves based on the current phase
-- Explain the reasoning behind your suggestions
-- Be concise but informative
+      // Add variant-specific rules
+      if (variantRules.isNotEmpty) {
+        prompt.writeln('\n$variantRules');
+      }
 
-Provide helpful, context-aware advice based on the current game state.''';
+      // Add conversation history for context
+      if (conversationHistory.isNotEmpty) {
+        prompt.writeln('\n$conversationHistory');
+      }
+
+      prompt.writeln('''
+STRATEGIC ANALYSIS GUIDELINES:
+1. Board Position Analysis:
+   - Identify formed mills and potential mill formations
+   - Evaluate piece distribution and control of key positions
+   - Assess blocking and mobility advantages
+
+2. Phase-Specific Strategy:
+   - Placing Phase: Focus on building mill potential, controlling corners/centers
+   - Moving Phase: Emphasize mill formation, piece mobility, opponent restriction
+   - Flying Phase (3 pieces): Exploit mobility advantage, create unstoppable threats
+
+3. Tactical Considerations:
+   - Count potential mills for each side
+   - Identify forced sequences and threats
+   - Evaluate endgame winning chances
+   - Consider rule-specific tactics based on active variant
+
+4. Move Recommendations:
+   - Provide specific move suggestions with square notation (e.g., "d5-d4")
+   - Explain the strategic reasoning behind suggestions
+   - Consider both offensive (mill formation) and defensive (blocking) moves
+   - Adapt advice to the current rule variant
+
+RESPONSE STYLE:
+- Be concise yet informative (2-4 paragraphs max unless asked for detail)
+- Use clear, strategic language
+- Reference specific board positions when relevant
+- Provide actionable advice based on current game state
+- Use Markdown formatting for clarity (bold, lists, etc.)
+
+Provide expert, context-aware advice to help the player improve their position.''');
+
+      return prompt.toString();
     } catch (e) {
       // If any error occurs while accessing game state, fall back to default prompt
       return _getDefaultSystemPrompt();
@@ -123,6 +183,144 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
         return "Remove an opponent's piece (mill formed)";
     }
   }
+
+  /// Get move history from game recorder
+  /// Returns formatted move history string or empty if no history
+  String _getMoveHistory(GameRecorder recorder) {
+    try {
+      final List<ExtMove> moves = recorder.mainlineMoves;
+
+      if (moves.isEmpty) {
+        return '';
+      }
+
+      final StringBuffer buffer = StringBuffer();
+      buffer.writeln('\nMOVE HISTORY:');
+
+      // Show last 10 moves to avoid token bloat
+      final int startIndex = moves.length > 10 ? moves.length - 10 : 0;
+
+      for (int i = startIndex; i < moves.length; i++) {
+        final ExtMove move = moves[i];
+        final int moveNumber = i + 1;
+
+        // Format move notation
+        buffer.writeln('$moveNumber. ${_formatMove(move)}');
+      }
+
+      if (startIndex > 0) {
+        buffer.writeln('(Showing last ${moves.length - startIndex} of ${moves.length} moves)');
+      }
+
+      return buffer.toString();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /// Format a move for display
+  String _formatMove(ExtMove move) {
+    try {
+      // Basic move formatting - can be enhanced with more detail
+      return move.notation ?? move.move.toString();
+    } catch (e) {
+      return move.move.toString();
+    }
+  }
+
+  /// Get description of active variant rules
+  /// Returns formatted rules string highlighting deviations from standard Nine Men's Morris
+  String _getVariantRulesDescription() {
+    try {
+      final RuleSettings rules = DB().ruleSettings;
+      final StringBuffer buffer = StringBuffer();
+
+      // Detect variant type
+      final bool isStandard = rules.piecesCount == 9 &&
+                             !rules.hasDiagonalLines &&
+                             !rules.mayMoveInPlacingPhase;
+
+      if (isStandard &&
+          !rules.enableCustodianCapture &&
+          !rules.enableInterventionCapture &&
+          !rules.enableLeapCapture) {
+        return ''; // Standard Nine Men's Morris, no special rules needed
+      }
+
+      buffer.writeln('\nACTIVE VARIANT RULES:');
+
+      // Variant identification
+      if (rules.piecesCount == 12) {
+        buffer.writeln('- Variant: Twelve Men\'s Morris (12 pieces per player)');
+      } else if (rules.piecesCount == 6) {
+        buffer.writeln('- Variant: Six Men\'s Morris (6 pieces per player)');
+      } else if (rules.hasDiagonalLines) {
+        buffer.writeln('- Variant: Morabaraba (with diagonal lines)');
+      }
+
+      // Special rules
+      if (rules.mayMoveInPlacingPhase) {
+        buffer.writeln('- Players can move pieces during placing phase');
+      }
+
+      if (rules.mayRemoveMultiple) {
+        buffer.writeln('- Multiple pieces can be removed in one turn');
+      }
+
+      if (rules.mayRemoveFromMillsAlways) {
+        buffer.writeln('- Pieces in mills can always be removed');
+      }
+
+      if (!rules.mayFly) {
+        buffer.writeln('- Flying is disabled (pieces cannot move anywhere when down to 3)');
+      }
+
+      if (rules.flyPieceCount != 3) {
+        buffer.writeln('- Flying enabled at ${rules.flyPieceCount} pieces (not standard 3)');
+      }
+
+      // Capture variants
+      if (rules.enableCustodianCapture) {
+        buffer.writeln('- Custodian capture enabled (sandwich opponent pieces)');
+      }
+
+      if (rules.enableInterventionCapture) {
+        buffer.writeln('- Intervention capture enabled');
+      }
+
+      if (rules.enableLeapCapture) {
+        buffer.writeln('- Leap capture enabled (jump over pieces)');
+      }
+
+      // Stalemate and board full actions
+      if (rules.stalemateAction != StalemateAction.endWithStalemateLoss) {
+        buffer.writeln('- Stalemate action: ${_getStalemateActionDescription(rules.stalemateAction)}');
+      }
+
+      return buffer.toString();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /// Get human-readable stalemate action description
+  String _getStalemateActionDescription(StalemateAction action) {
+    switch (action) {
+      case StalemateAction.endWithStalemateLoss:
+        return 'Loss for player with no moves';
+      case StalemateAction.changeSideToMove:
+        return 'Change side to move';
+      case StalemateAction.removeOpponentsPieceAndMakeNextMove:
+        return 'Remove opponent piece and continue';
+      case StalemateAction.removeOpponentsPieceAndChangeSideToMove:
+        return 'Remove opponent piece and change turn';
+      case StalemateAction.endWithStalemateDraw:
+        return 'Draw';
+    }
+  }
+
+  /// Get session manager for external access (e.g., dialog)
+  ChatSessionManager get sessionManager => _sessionManager;
 
   /// Send a chat message and get streaming response
   /// Returns a Stream<String> of response chunks for typewriter effect
