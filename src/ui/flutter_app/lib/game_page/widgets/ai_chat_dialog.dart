@@ -82,6 +82,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
       return;
     }
 
+    // Cancel any existing stream subscription to prevent overlapping requests
+    await _streamSubscription?.cancel();
+
     // Add user message
     final ChatMessage userMessage = ChatMessage(
       id: _uuid.v4(),
@@ -120,6 +123,8 @@ class _AiChatDialogState extends State<AiChatDialog> {
 
       _streamSubscription = _chatService.sendMessage(message).listen(
         (String chunk) {
+          if (!mounted) return;
+
           fullResponse.write(chunk);
 
           setState(() {
@@ -135,6 +140,8 @@ class _AiChatDialogState extends State<AiChatDialog> {
           _scrollToBottom();
         },
         onDone: () {
+          if (!mounted) return;
+
           setState(() {
             // Mark streaming as complete
             final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
@@ -147,6 +154,8 @@ class _AiChatDialogState extends State<AiChatDialog> {
           });
         },
         onError: (Object error) {
+          if (!mounted) return;
+
           setState(() {
             // Update message with error
             final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
@@ -161,6 +170,8 @@ class _AiChatDialogState extends State<AiChatDialog> {
         },
       );
     } catch (e) {
+      if (!mounted) return;
+
       setState(() {
         final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
         if (index != -1) {

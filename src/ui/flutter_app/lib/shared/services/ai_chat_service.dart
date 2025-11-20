@@ -30,26 +30,33 @@ class AiChatService {
 
   /// Generate a system prompt that includes the current board state
   String _generateSystemPrompt() {
-    final GameController controller = GameController();
+    try {
+      final GameController controller = GameController();
 
-    if (!controller.isControllerReady) {
-      return _getDefaultSystemPrompt();
-    }
+      // Safety check: ensure controller is ready and not disposed
+      if (!controller.isControllerReady || controller.isDisposed) {
+        return _getDefaultSystemPrompt();
+      }
 
-    final Position position = controller.position;
-    final String? fen = position.fen;
+      final Position position = controller.position;
+      final String? fen = position.fen;
 
-    // Get game state information
-    final String sideToMove = position.sideToMove == PieceColor.white
-        ? "White"
-        : "Black";
-    final String phase = _getPhaseDescription(position.phase);
-    final String action = _getActionDescription(position.action);
+      // If FEN is not available, fall back to default prompt
+      if (fen == null || fen.isEmpty) {
+        return _getDefaultSystemPrompt();
+      }
 
-    final int whitePiecesOnBoard = position.pieceOnBoardCount[PieceColor.white] ?? 0;
-    final int whitePiecesInHand = position.pieceInHandCount[PieceColor.white] ?? 0;
-    final int blackPiecesOnBoard = position.pieceOnBoardCount[PieceColor.black] ?? 0;
-    final int blackPiecesInHand = position.pieceInHandCount[PieceColor.black] ?? 0;
+      // Get game state information
+      final String sideToMove = position.sideToMove == PieceColor.white
+          ? "White"
+          : "Black";
+      final String phase = _getPhaseDescription(position.phase);
+      final String action = _getActionDescription(position.action);
+
+      final int whitePiecesOnBoard = position.pieceOnBoardCount[PieceColor.white] ?? 0;
+      final int whitePiecesInHand = position.pieceInHandCount[PieceColor.white] ?? 0;
+      final int blackPiecesOnBoard = position.pieceOnBoardCount[PieceColor.black] ?? 0;
+      final int blackPiecesInHand = position.pieceInHandCount[PieceColor.black] ?? 0;
 
     return '''You are an expert Nine Men's Morris (Mill) game assistant. Help the player analyze positions, suggest strategies, and answer questions about the game.
 
@@ -75,6 +82,10 @@ When analyzing positions:
 - Be concise but informative
 
 Provide helpful, context-aware advice based on the current game state.''';
+    } catch (e) {
+      // If any error occurs while accessing game state, fall back to default prompt
+      return _getDefaultSystemPrompt();
+    }
   }
 
   String _getDefaultSystemPrompt() {
@@ -117,12 +128,11 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
   /// Returns a Stream<String> of response chunks for typewriter effect
   Stream<String> sendMessage(String userMessage) async* {
     final String systemPrompt = _generateSystemPrompt();
-    final String fullContext = "$systemPrompt\n\nUser: $userMessage";
 
-    // Use the existing LLM service to generate streaming response
-    await for (final String chunk in _llmService.generateResponse(
-      userMessage,
-      context: systemPrompt,
+    // Use the LLM service with custom system prompt for context-aware responses
+    await for (final String chunk in _llmService.generateResponseWithCustomPrompt(
+      systemPrompt: systemPrompt,
+      userPrompt: userMessage,
     )) {
       yield chunk;
     }
