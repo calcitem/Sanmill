@@ -366,156 +366,160 @@ class _AiChatDialogState extends State<AiChatDialog> {
   }
 
   /// Build the chat content UI (reusable for both portrait and landscape)
-  Widget _buildChatContent(ColorScheme colorScheme, TextTheme textTheme, {required bool isLandscape}) {
+  Widget _buildChatContent(
+    ColorScheme colorScheme,
+    TextTheme textTheme, {
+    required bool isLandscape,
+  }) {
     return Column(
-            children: <Widget>[
-              // Handle bar (only in portrait mode)
-              if (!isLandscape)
-                Container(
-                  margin: const EdgeInsets.only(top: 8, bottom: 4),
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: colorScheme.onSurfaceVariant.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
+      children: <Widget>[
+        // Handle bar (only in portrait mode)
+        if (!isLandscape)
+          Container(
+            margin: const EdgeInsets.only(top: 8, bottom: 4),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: colorScheme.onSurfaceVariant.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
 
-              // Header (compact in landscape)
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isLandscape ? 12 : 16,
-                  vertical: isLandscape ? 8 : 12,
-                ),
-                child: Row(
+        // Header (compact in landscape)
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isLandscape ? 12 : 16,
+            vertical: isLandscape ? 8 : 12,
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.smart_toy,
+                color: colorScheme.primary,
+                size: isLandscape ? 24 : 28,
+              ),
+              SizedBox(width: isLandscape ? 8 : 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(
-                      Icons.smart_toy,
-                      color: colorScheme.primary,
-                      size: isLandscape ? 24 : 28,
-                    ),
-                    SizedBox(width: isLandscape ? 8 : 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            S.current.aiChatTitle,
-                            style: (isLandscape ? textTheme.titleMedium : textTheme.titleLarge)?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: colorScheme.onSurface,
-                            ),
-                          ),
-                          // Token usage indicator (when near limit)
-                          if (_chatService.sessionManager.isNearTokenLimit)
-                            Text(
-                              '⚠️ ${_chatService.sessionManager.tokenBudgetRemaining} tokens left',
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.error,
-                                fontSize: 10,
-                              ),
-                            ),
-                        ],
+                    Text(
+                      S.current.aiChatTitle,
+                      style: (isLandscape ? textTheme.titleMedium : textTheme.titleLarge)?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurface,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      iconSize: isLandscape ? 20 : 24,
-                      onPressed: () => Navigator.of(context).pop(),
-                      tooltip: S.current.close,
-                    ),
+                    // Token usage indicator (when near limit)
+                    if (_chatService.sessionManager.isNearTokenLimit)
+                      Text(
+                        '⚠️ ${_chatService.sessionManager.tokenBudgetRemaining} tokens left',
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.error,
+                          fontSize: 10,
+                        ),
+                      ),
                   ],
                 ),
               ),
-
-              const Divider(height: 1),
-
-              // Messages list (compact padding in landscape)
-              Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  padding: EdgeInsets.all(isLandscape ? 12 : 16),
-                  itemCount: _chatService.sessionManager.messages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final ChatMessage message = _chatService.sessionManager.messages[index];
-                    return _MessageBubble(
-                      message: message,
-                      colorScheme: colorScheme,
-                      textTheme: textTheme,
-                      isCompact: isLandscape,
-                    );
-                  },
-                ),
-              ),
-
-              const Divider(height: 1),
-
-              // Input area (compact in landscape)
-              Container(
-                padding: EdgeInsets.all(isLandscape ? 12 : 16),
-                child: SafeArea(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          controller: _messageController,
-                          decoration: InputDecoration(
-                            hintText: S.current.aiChatInputHint,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 12,
-                            ),
-                            filled: true,
-                            fillColor: colorScheme.surfaceContainerHighest,
-                          ),
-                          maxLines: null,
-                          textCapitalization: TextCapitalization.sentences,
-                          enabled: !_isSending,
-                          onSubmitted: (_) => _sendMessage(),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Material(
-                        color: _isSending
-                            ? colorScheme.primary.withOpacity(0.5)
-                            : colorScheme.primary,
-                        borderRadius: BorderRadius.circular(24),
-                        child: InkWell(
-                          onTap: _isSending ? null : _sendMessage,
-                          borderRadius: BorderRadius.circular(24),
-                          child: Container(
-                            width: 48,
-                            height: 48,
-                            alignment: Alignment.center,
-                            child: _isSending
-                                ? SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        colorScheme.onPrimary,
-                                      ),
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.send,
-                                    color: colorScheme.onPrimary,
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                iconSize: isLandscape ? 20 : 24,
+                onPressed: () => Navigator.of(context).pop(),
+                tooltip: S.current.close,
               ),
             ],
-          );
+          ),
+        ),
+
+        const Divider(height: 1),
+
+        // Messages list (compact padding in landscape)
+        Expanded(
+          child: ListView.builder(
+            controller: _scrollController,
+            padding: EdgeInsets.all(isLandscape ? 12 : 16),
+            itemCount: _chatService.sessionManager.messages.length,
+            itemBuilder: (BuildContext context, int index) {
+              final ChatMessage message = _chatService.sessionManager.messages[index];
+              return _MessageBubble(
+                message: message,
+                colorScheme: colorScheme,
+                textTheme: textTheme,
+                isCompact: isLandscape,
+              );
+            },
+          ),
+        ),
+
+        const Divider(height: 1),
+
+        // Input area (compact in landscape)
+        Container(
+          padding: EdgeInsets.all(isLandscape ? 12 : 16),
+          child: SafeArea(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: S.current.aiChatInputHint,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
+                      filled: true,
+                      fillColor: colorScheme.surfaceContainerHighest,
+                    ),
+                    maxLines: null,
+                    textCapitalization: TextCapitalization.sentences,
+                    enabled: !_isSending,
+                    onSubmitted: (_) => _sendMessage(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Material(
+                  color: _isSending
+                      ? colorScheme.primary.withOpacity(0.5)
+                      : colorScheme.primary,
+                  borderRadius: BorderRadius.circular(24),
+                  child: InkWell(
+                    onTap: _isSending ? null : _sendMessage,
+                    borderRadius: BorderRadius.circular(24),
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      alignment: Alignment.center,
+                      child: _isSending
+                          ? SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  colorScheme.onPrimary,
+                                ),
+                              ),
+                            )
+                          : Icon(
+                              Icons.send,
+                              color: colorScheme.onPrimary,
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
