@@ -18,10 +18,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/shared/models/chat_message.dart';
-import 'package:sanmill/shared/services/ai_chat_service.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../generated/intl/l10n.dart';
+import '../../shared/models/chat_message.dart';
+import '../../shared/services/ai_chat_service.dart';
 
 /// AI Chat Assistant Dialog
 ///
@@ -131,74 +132,30 @@ class _AiChatDialogState extends State<AiChatDialog> {
   }
 
   /// Stream response with automatic retry on network errors
-  Future<void> _streamResponseWithRetry(String message, String aiMessageId) async {
+  Future<void> _streamResponseWithRetry(
+    String message,
+    String aiMessageId,
+  ) async {
     try {
       final StringBuffer fullResponse = StringBuffer();
       bool hasReceivedData = false;
 
-      _streamSubscription = _chatService.sendMessage(message).listen(
-        (String chunk) {
-          if (!mounted) return;
+      _streamSubscription = _chatService
+          .sendMessage(message)
+          .listen(
+            (String chunk) {
+              if (!mounted) {
+                return;
+              }
 
-          hasReceivedData = true;
-          fullResponse.write(chunk);
+              hasReceivedData = true;
+              fullResponse.write(chunk);
 
-          setState(() {
-            // Update the AI message in session
-            final ChatMessage? currentMessage = _chatService.sessionManager.messages
-                .cast<ChatMessage?>()
-                .firstWhere(
-                  (ChatMessage? m) => m?.id == aiMessageId,
-                  orElse: () => null,
-                );
-
-            if (currentMessage != null) {
-              _chatService.sessionManager.updateMessage(
-                aiMessageId,
-                currentMessage.copyWith(content: fullResponse.toString()),
-              );
-            }
-          });
-
-          _scrollToBottom();
-        },
-        onDone: () {
-          if (!mounted) return;
-
-          setState(() {
-            // Mark streaming as complete in session
-            final ChatMessage? currentMessage = _chatService.sessionManager.messages
-                .cast<ChatMessage?>()
-                .firstWhere(
-                  (ChatMessage? m) => m?.id == aiMessageId,
-                  orElse: () => null,
-                );
-
-            if (currentMessage != null) {
-              _chatService.sessionManager.updateMessage(
-                aiMessageId,
-                currentMessage.copyWith(isStreaming: false),
-              );
-            }
-            _isSending = false;
-            _retryCount = 0; // Reset on success
-          });
-        },
-        onError: (Object error) async {
-          if (!mounted) return;
-
-          // Retry logic for network errors
-          if (_retryCount < _maxRetries && !hasReceivedData) {
-            _retryCount++;
-
-            // Exponential backoff: 1s, 2s, 4s
-            final int delaySeconds = 1 << (_retryCount - 1);
-            await Future<void>.delayed(Duration(seconds: delaySeconds));
-
-            if (mounted) {
               setState(() {
-                // Update message to show retry attempt
-                final ChatMessage? currentMessage = _chatService.sessionManager.messages
+                // Update the AI message in session
+                final ChatMessage? currentMessage = _chatService
+                    .sessionManager
+                    .messages
                     .cast<ChatMessage?>()
                     .firstWhere(
                       (ChatMessage? m) => m?.id == aiMessageId,
@@ -208,49 +165,115 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 if (currentMessage != null) {
                   _chatService.sessionManager.updateMessage(
                     aiMessageId,
-                    currentMessage.copyWith(
-                      content: 'Retrying... (attempt $_retryCount/$_maxRetries)',
-                    ),
+                    currentMessage.copyWith(content: fullResponse.toString()),
                   );
                 }
               });
 
-              // Retry the request
-              await _streamResponseWithRetry(message, aiMessageId);
-            }
-          } else {
-            // Max retries reached or partial data received
-            setState(() {
-              final ChatMessage? currentMessage = _chatService.sessionManager.messages
-                  .cast<ChatMessage?>()
-                  .firstWhere(
-                    (ChatMessage? m) => m?.id == aiMessageId,
-                    orElse: () => null,
-                  );
+              _scrollToBottom();
+            },
+            onDone: () {
+              if (!mounted) {
+                return;
+              }
 
-              if (currentMessage != null) {
-                if (mounted) {
-                  final String errorMessage = _retryCount >= _maxRetries
-                      ? '${S.of(context).aiChatErrorMessage}\n(Failed after $_maxRetries retries)'
-                      : S.of(context).aiChatErrorMessage;
+              setState(() {
+                // Mark streaming as complete in session
+                final ChatMessage? currentMessage = _chatService
+                    .sessionManager
+                    .messages
+                    .cast<ChatMessage?>()
+                    .firstWhere(
+                      (ChatMessage? m) => m?.id == aiMessageId,
+                      orElse: () => null,
+                    );
 
+                if (currentMessage != null) {
                   _chatService.sessionManager.updateMessage(
                     aiMessageId,
-                    currentMessage.copyWith(
-                      content: errorMessage,
-                      isStreaming: false,
-                    ),
+                    currentMessage.copyWith(isStreaming: false),
                   );
                 }
+                _isSending = false;
+                _retryCount = 0; // Reset on success
+              });
+            },
+            onError: (Object error) async {
+              if (!mounted) {
+                return;
               }
-              _isSending = false;
-              _retryCount = 0;
-            });
-          }
-        },
-      );
+
+              // Retry logic for network errors
+              if (_retryCount < _maxRetries && !hasReceivedData) {
+                _retryCount++;
+
+                // Exponential backoff: 1s, 2s, 4s
+                final int delaySeconds = 1 << (_retryCount - 1);
+                await Future<void>.delayed(Duration(seconds: delaySeconds));
+
+                if (mounted) {
+                  setState(() {
+                    // Update message to show retry attempt
+                    final ChatMessage? currentMessage = _chatService
+                        .sessionManager
+                        .messages
+                        .cast<ChatMessage?>()
+                        .firstWhere(
+                          (ChatMessage? m) => m?.id == aiMessageId,
+                          orElse: () => null,
+                        );
+
+                    if (currentMessage != null) {
+                      _chatService.sessionManager.updateMessage(
+                        aiMessageId,
+                        currentMessage.copyWith(
+                          content:
+                              'Retrying... (attempt $_retryCount/$_maxRetries)',
+                        ),
+                      );
+                    }
+                  });
+
+                  // Retry the request
+                  await _streamResponseWithRetry(message, aiMessageId);
+                }
+              } else {
+                // Max retries reached or partial data received
+                setState(() {
+                  final ChatMessage? currentMessage = _chatService
+                      .sessionManager
+                      .messages
+                      .cast<ChatMessage?>()
+                      .firstWhere(
+                        (ChatMessage? m) => m?.id == aiMessageId,
+                        orElse: () => null,
+                      );
+
+                  if (currentMessage != null) {
+                    if (mounted) {
+                      final String errorMessage = _retryCount >= _maxRetries
+                          ? '${S.of(context).aiChatErrorMessage}\n(Failed after $_maxRetries retries)'
+                          : S.of(context).aiChatErrorMessage;
+
+                      _chatService.sessionManager.updateMessage(
+                        aiMessageId,
+                        currentMessage.copyWith(
+                          content: errorMessage,
+                          isStreaming: false,
+                        ),
+                      );
+                    }
+                  }
+                  _isSending = false;
+                  _retryCount = 0;
+                });
+              }
+            },
+          );
     } catch (e) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       setState(() {
         final ChatMessage? currentMessage = _chatService.sessionManager.messages
@@ -328,7 +351,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
             height: screenSize.height,
             decoration: BoxDecoration(
               color: colorScheme.surface.withOpacity(0.95),
-              borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(20),
+              ),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -358,7 +383,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
             decoration: BoxDecoration(
               // Semi-transparent background with blur effect
               color: colorScheme.surface.withOpacity(0.95),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -368,7 +395,11 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 ),
               ],
             ),
-            child: _buildChatContent(colorScheme, textTheme, isLandscape: false),
+            child: _buildChatContent(
+              colorScheme,
+              textTheme,
+              isLandscape: false,
+            ),
           );
         },
       ),
@@ -416,10 +447,14 @@ class _AiChatDialogState extends State<AiChatDialog> {
                   children: <Widget>[
                     Text(
                       S.of(context).aiChatTitle,
-                      style: (isLandscape ? textTheme.titleMedium : textTheme.titleLarge)?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurface,
-                      ),
+                      style:
+                          (isLandscape
+                                  ? textTheme.titleMedium
+                                  : textTheme.titleLarge)
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
                     ),
                     // Token usage indicator (when near limit)
                     if (_chatService.sessionManager.isNearTokenLimit)
@@ -452,7 +487,8 @@ class _AiChatDialogState extends State<AiChatDialog> {
             padding: EdgeInsets.all(isLandscape ? 12 : 16),
             itemCount: _chatService.sessionManager.messages.length,
             itemBuilder: (BuildContext context, int index) {
-              final ChatMessage message = _chatService.sessionManager.messages[index];
+              final ChatMessage message =
+                  _chatService.sessionManager.messages[index];
               return _MessageBubble(
                 message: message,
                 colorScheme: colorScheme,
@@ -517,10 +553,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
                                 ),
                               ),
                             )
-                          : Icon(
-                              Icons.send,
-                              color: colorScheme.onPrimary,
-                            ),
+                          : Icon(Icons.send, color: colorScheme.onPrimary),
                     ),
                   ),
                 ),
@@ -560,8 +593,9 @@ class _MessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: isCompact ? 12 : 16),
       child: Row(
-        mainAxisAlignment:
-            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (!isUser) ...<Widget>[
@@ -584,10 +618,15 @@ class _MessageBubble extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: backgroundColor,
-                borderRadius: BorderRadius.circular(isCompact ? 12 : 16).copyWith(
-                  topLeft: isUser ? Radius.circular(isCompact ? 12 : 16) : Radius.zero,
-                  topRight: isUser ? Radius.zero : Radius.circular(isCompact ? 12 : 16),
-                ),
+                borderRadius: BorderRadius.circular(isCompact ? 12 : 16)
+                    .copyWith(
+                      topLeft: isUser
+                          ? Radius.circular(isCompact ? 12 : 16)
+                          : Radius.zero,
+                      topRight: isUser
+                          ? Radius.zero
+                          : Radius.circular(isCompact ? 12 : 16),
+                    ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -596,7 +635,11 @@ class _MessageBubble extends StatelessWidget {
                     MarkdownBody(
                       data: message.content,
                       styleSheet: MarkdownStyleSheet(
-                        p: (isCompact ? textTheme.bodySmall : textTheme.bodyMedium)?.copyWith(color: textColor),
+                        p:
+                            (isCompact
+                                    ? textTheme.bodySmall
+                                    : textTheme.bodyMedium)
+                                ?.copyWith(color: textColor),
                         code: textTheme.bodySmall?.copyWith(
                           fontFamily: 'monospace',
                           backgroundColor: colorScheme.surface,
@@ -612,7 +655,11 @@ class _MessageBubble extends StatelessWidget {
                   else
                     Text(
                       message.content,
-                      style: (isCompact ? textTheme.bodySmall : textTheme.bodyMedium)?.copyWith(color: textColor),
+                      style:
+                          (isCompact
+                                  ? textTheme.bodySmall
+                                  : textTheme.bodyMedium)
+                              ?.copyWith(color: textColor),
                     ),
                   if (message.isStreaming) ...<Widget>[
                     const SizedBox(height: 4),

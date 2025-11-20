@@ -14,23 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import 'package:sanmill/game_page/services/controller/game_controller.dart';
-import 'package:sanmill/game_page/services/controller/game_recorder.dart';
-import 'package:sanmill/game_page/services/engine/position.dart';
-import 'package:sanmill/game_page/services/engine/types.dart';
-import 'package:sanmill/game_page/services/mill.dart';
-import 'package:sanmill/rule_settings/models/rule_settings.dart';
-import 'package:sanmill/shared/database/database.dart';
-import 'package:sanmill/shared/services/chat_session_manager.dart';
-import 'package:sanmill/shared/services/llm_service.dart';
+import '../../game_page/services/mill.dart';
+import '../../rule_settings/models/rule_settings.dart';
+import '../database/database.dart';
+import 'chat_session_manager.dart';
+import 'llm_service.dart';
 
 /// AI chat assistant service for discussing game strategy and positions
 /// Features deep game integration with move history, variant rules, and context management
 class AiChatService {
-  /// Singleton instance
-  static final AiChatService _instance = AiChatService._internal();
   factory AiChatService() => _instance;
   AiChatService._internal();
+
+  /// Singleton instance
+  static final AiChatService _instance = AiChatService._internal();
 
   final LlmService _llmService = LlmService();
   final ChatSessionManager _sessionManager = ChatSessionManager();
@@ -66,10 +63,14 @@ class AiChatService {
       final String phase = _getPhaseDescription(position.phase);
       final String action = _getActionDescription(position.action);
 
-      final int whitePiecesOnBoard = position.pieceOnBoardCount[PieceColor.white] ?? 0;
-      final int whitePiecesInHand = position.pieceInHandCount[PieceColor.white] ?? 0;
-      final int blackPiecesOnBoard = position.pieceOnBoardCount[PieceColor.black] ?? 0;
-      final int blackPiecesInHand = position.pieceInHandCount[PieceColor.black] ?? 0;
+      final int whitePiecesOnBoard =
+          position.pieceOnBoardCount[PieceColor.white] ?? 0;
+      final int whitePiecesInHand =
+          position.pieceInHandCount[PieceColor.white] ?? 0;
+      final int blackPiecesOnBoard =
+          position.pieceOnBoardCount[PieceColor.black] ?? 0;
+      final int blackPiecesInHand =
+          position.pieceInHandCount[PieceColor.black] ?? 0;
 
       // Get move history
       final String moveHistory = _getMoveHistory(controller.gameRecorder);
@@ -78,12 +79,14 @@ class AiChatService {
       final String variantRules = _getVariantRulesDescription();
 
       // Get recent conversation history for context continuity
-      final String conversationHistory = _sessionManager.getConversationHistory();
+      final String conversationHistory = _sessionManager
+          .getConversationHistory();
 
       // Build comprehensive system prompt
       final StringBuffer prompt = StringBuffer();
 
-      prompt.writeln('''You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
+      prompt.writeln(
+        '''You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
 
 CURRENT GAME STATE:
 - FEN Position: $fen
@@ -91,7 +94,8 @@ CURRENT GAME STATE:
 - Game Phase: $phase
 - Current Action: $action
 - White: $whitePiecesOnBoard on board, $whitePiecesInHand in hand
-- Black: $blackPiecesOnBoard on board, $blackPiecesInHand in hand''');
+- Black: $blackPiecesOnBoard on board, $blackPiecesInHand in hand''',
+      );
 
       // Add move history if available
       if (moveHistory.isNotEmpty) {
@@ -108,7 +112,8 @@ CURRENT GAME STATE:
         prompt.writeln('\n$conversationHistory');
       }
 
-      prompt.writeln('''
+      prompt.writeln(
+        '''
 STRATEGIC ANALYSIS GUIDELINES:
 1. Board Position Analysis:
    - Identify formed mills and potential mill formations
@@ -139,7 +144,8 @@ RESPONSE STYLE:
 - Provide actionable advice based on current game state
 - Use Markdown formatting for clarity (bold, lists, etc.)
 
-Provide expert, context-aware advice to help the player improve their position.''');
+Provide expert, context-aware advice to help the player improve their position.''',
+      );
 
       return prompt.toString();
     } catch (e) {
@@ -149,7 +155,8 @@ Provide expert, context-aware advice to help the player improve their position.'
   }
 
   String _getDefaultSystemPrompt() {
-    return '''You are an expert Nine Men's Morris (Mill) game assistant. Help players learn strategies, understand rules, and improve their gameplay.
+    return '''
+You are an expert Nine Men's Morris (Mill) game assistant. Help players learn strategies, understand rules, and improve their gameplay.
 
 NINE MEN'S MORRIS RULES:
 1. The game has three phases: Placing (9 pieces each), Moving, and Flying (when down to 3 pieces)
@@ -209,7 +216,9 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
       }
 
       if (startIndex > 0) {
-        buffer.writeln('(Showing last ${moves.length - startIndex} of ${moves.length} moves)');
+        buffer.writeln(
+          '(Showing last ${moves.length - startIndex} of ${moves.length} moves)',
+        );
       }
 
       return buffer.toString();
@@ -222,9 +231,9 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
   String _formatMove(ExtMove move) {
     try {
       // Basic move formatting - can be enhanced with more detail
-      return move.notation ?? move.move.toString();
+      return move.notation;
     } catch (e) {
-      return move.move.toString();
+      return move.move;
     }
   }
 
@@ -236,9 +245,10 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
       final StringBuffer buffer = StringBuffer();
 
       // Detect variant type
-      final bool isStandard = rules.piecesCount == 9 &&
-                             !rules.hasDiagonalLines &&
-                             !rules.mayMoveInPlacingPhase;
+      final bool isStandard =
+          rules.piecesCount == 9 &&
+          !rules.hasDiagonalLines &&
+          !rules.mayMoveInPlacingPhase;
 
       if (isStandard &&
           !rules.enableCustodianCapture &&
@@ -251,9 +261,9 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
 
       // Variant identification
       if (rules.piecesCount == 12) {
-        buffer.writeln('- Variant: Twelve Men\'s Morris (12 pieces per player)');
+        buffer.writeln("- Variant: Twelve Men's Morris (12 pieces per player)");
       } else if (rules.piecesCount == 6) {
-        buffer.writeln('- Variant: Six Men\'s Morris (6 pieces per player)');
+        buffer.writeln("- Variant: Six Men's Morris (6 pieces per player)");
       } else if (rules.hasDiagonalLines) {
         buffer.writeln('- Variant: Morabaraba (with diagonal lines)');
       }
@@ -272,16 +282,22 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
       }
 
       if (!rules.mayFly) {
-        buffer.writeln('- Flying is disabled (pieces cannot move anywhere when down to 3)');
+        buffer.writeln(
+          '- Flying is disabled (pieces cannot move anywhere when down to 3)',
+        );
       }
 
       if (rules.flyPieceCount != 3) {
-        buffer.writeln('- Flying enabled at ${rules.flyPieceCount} pieces (not standard 3)');
+        buffer.writeln(
+          '- Flying enabled at ${rules.flyPieceCount} pieces (not standard 3)',
+        );
       }
 
       // Capture variants
       if (rules.enableCustodianCapture) {
-        buffer.writeln('- Custodian capture enabled (sandwich opponent pieces)');
+        buffer.writeln(
+          '- Custodian capture enabled (sandwich opponent pieces)',
+        );
       }
 
       if (rules.enableInterventionCapture) {
@@ -294,7 +310,9 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
 
       // Stalemate and board full actions
       if (rules.stalemateAction != StalemateAction.endWithStalemateLoss) {
-        buffer.writeln('- Stalemate action: ${_getStalemateActionDescription(rules.stalemateAction)}');
+        buffer.writeln(
+          '- Stalemate action: ${_getStalemateActionDescription(rules.stalemateAction)}',
+        );
       }
 
       return buffer.toString();
@@ -328,10 +346,11 @@ Provide helpful advice about Nine Men's Morris strategy and tactics.''';
     final String systemPrompt = _generateSystemPrompt();
 
     // Use the LLM service with custom system prompt for context-aware responses
-    await for (final String chunk in _llmService.generateResponseWithCustomPrompt(
-      systemPrompt: systemPrompt,
-      userPrompt: userMessage,
-    )) {
+    await for (final String chunk
+        in _llmService.generateResponseWithCustomPrompt(
+          systemPrompt: systemPrompt,
+          userPrompt: userMessage,
+        )) {
       yield chunk;
     }
   }

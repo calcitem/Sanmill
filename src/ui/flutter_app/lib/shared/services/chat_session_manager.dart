@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import 'package:sanmill/shared/models/chat_message.dart';
+import '../models/chat_message.dart';
 
 /// Manages chat session state with intelligent token-aware context management
 ///
@@ -24,10 +24,11 @@ import 'package:sanmill/shared/models/chat_message.dart';
 /// - Auto-reset on game changes
 /// - Conversation history extraction
 class ChatSessionManager {
-  /// Singleton instance
-  static final ChatSessionManager _instance = ChatSessionManager._internal();
   factory ChatSessionManager() => _instance;
   ChatSessionManager._internal();
+
+  /// Singleton instance
+  static final ChatSessionManager _instance = ChatSessionManager._internal();
 
   /// Chat message history for the current session
   final List<ChatMessage> _messages = <ChatMessage>[];
@@ -38,9 +39,6 @@ class ChatSessionManager {
   /// Maximum number of messages to keep in context window
   /// Optimized for ~4000 token context limit (average ~400 tokens per exchange)
   static const int _maxContextMessages = 10;
-
-  /// Estimated tokens per message (rough average for sliding window calculation)
-  static const int _avgTokensPerMessage = 200;
 
   /// Maximum total tokens to maintain in context (conservative limit)
   static const int _maxContextTokens = 3500;
@@ -56,7 +54,9 @@ class ChatSessionManager {
 
   /// Update an existing message (for streaming updates)
   void updateMessage(String messageId, ChatMessage updatedMessage) {
-    final int index = _messages.indexWhere((ChatMessage m) => m.id == messageId);
+    final int index = _messages.indexWhere(
+      (ChatMessage m) => m.id == messageId,
+    );
     if (index != -1) {
       _messages[index] = updatedMessage;
     }
@@ -88,9 +88,7 @@ class ChatSessionManager {
     }
 
     // Set initial game ID
-    if (_currentGameId == null) {
-      _currentGameId = newGameId;
-    }
+    _currentGameId ??= newGameId;
 
     return false;
   }
@@ -106,12 +104,15 @@ class ChatSessionManager {
     final int estimatedTokens = _estimateTotalTokens();
 
     // If under budget and message count OK, no trimming needed
-    if (estimatedTokens <= _maxContextTokens && _messages.length <= _maxContextMessages) {
+    if (estimatedTokens <= _maxContextTokens &&
+        _messages.length <= _maxContextMessages) {
       return;
     }
 
     // Keep the first message (welcome message) and most recent messages
-    final ChatMessage? welcomeMessage = _messages.isNotEmpty ? _messages.first : null;
+    final ChatMessage? welcomeMessage = _messages.isNotEmpty
+        ? _messages.first
+        : null;
     final List<ChatMessage> recentMessages = _messages.skip(1).toList();
 
     // Trim by message count
@@ -121,7 +122,8 @@ class ChatSessionManager {
     }
 
     // Additional token-based trimming if still over budget
-    while (recentMessages.length > 2 && _estimateTokensForMessages(recentMessages) > _maxContextTokens) {
+    while (recentMessages.length > 2 &&
+        _estimateTokensForMessages(recentMessages) > _maxContextTokens) {
       // Remove oldest non-welcome messages first (FIFO)
       recentMessages.removeAt(0);
     }
@@ -176,7 +178,9 @@ class ChatSessionManager {
 
     for (int i = startIndex; i < _messages.length; i++) {
       final ChatMessage msg = _messages[i];
-      if (msg.isStreaming) continue; // Skip incomplete messages
+      if (msg.isStreaming) {
+        continue; // Skip incomplete messages
+      }
 
       final String role = msg.isUser ? 'User' : 'Assistant';
       final String truncatedContent = _truncateIfNeeded(msg.content, 300);

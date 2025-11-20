@@ -16,6 +16,14 @@
 
 /// Chat message model for AI chat assistant
 class ChatMessage {
+  const ChatMessage({
+    required this.id,
+    required this.content,
+    required this.isUser,
+    required this.timestamp,
+    this.isStreaming = false,
+  });
+
   /// Unique identifier for the message
   final String id;
 
@@ -30,14 +38,6 @@ class ChatMessage {
 
   /// Whether the message is currently streaming (being received)
   final bool isStreaming;
-
-  const ChatMessage({
-    required this.id,
-    required this.content,
-    required this.isUser,
-    required this.timestamp,
-    this.isStreaming = false,
-  });
 
   /// Create a copy of this message with updated fields
   ChatMessage copyWith({
