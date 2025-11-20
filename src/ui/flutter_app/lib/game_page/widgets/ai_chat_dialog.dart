@@ -42,24 +42,27 @@ class _AiChatDialogState extends State<AiChatDialog> {
   final AiChatService _chatService = AiChatService();
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final List<ChatMessage> _messages = <ChatMessage>[];
   final Uuid _uuid = const Uuid();
 
   bool _isSending = false;
   StreamSubscription<String>? _streamSubscription;
+  int _retryCount = 0;
+  static const int _maxRetries = 3;
 
   @override
   void initState() {
     super.initState();
-    // Add welcome message
-    _messages.add(
-      ChatMessage(
-        id: _uuid.v4(),
-        content: S.current.aiChatWelcomeMessage,
-        isUser: false,
-        timestamp: DateTime.now(),
-      ),
-    );
+    // Initialize session with welcome message if empty
+    if (_chatService.sessionManager.isEmpty) {
+      _chatService.sessionManager.addMessage(
+        ChatMessage(
+          id: _uuid.v4(),
+          content: S.current.aiChatWelcomeMessage,
+          isUser: false,
+          timestamp: DateTime.now(),
+        ),
+      );
+    }
   }
 
   @override
@@ -85,7 +88,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
     // Cancel any existing stream subscription to prevent overlapping requests
     await _streamSubscription?.cancel();
 
-    // Add user message
+    // Add user message to session
     final ChatMessage userMessage = ChatMessage(
       id: _uuid.v4(),
       content: message,
@@ -94,8 +97,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
     );
 
     setState(() {
-      _messages.add(userMessage);
+      _chatService.sessionManager.addMessage(userMessage);
       _isSending = true;
+      _retryCount = 0; // Reset retry counter
     });
 
     _messageController.clear();
@@ -112,27 +116,41 @@ class _AiChatDialogState extends State<AiChatDialog> {
     );
 
     setState(() {
-      _messages.add(aiMessage);
+      _chatService.sessionManager.addMessage(aiMessage);
     });
 
     _scrollToBottom();
 
-    // Stream the response
+    // Stream the response with retry logic
+    await _streamResponseWithRetry(message, aiMessageId);
+  }
+
+  /// Stream response with automatic retry on network errors
+  Future<void> _streamResponseWithRetry(String message, String aiMessageId) async {
     try {
       final StringBuffer fullResponse = StringBuffer();
+      bool hasReceivedData = false;
 
       _streamSubscription = _chatService.sendMessage(message).listen(
         (String chunk) {
           if (!mounted) return;
 
+          hasReceivedData = true;
           fullResponse.write(chunk);
 
           setState(() {
-            // Find and update the AI message
-            final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
-            if (index != -1) {
-              _messages[index] = _messages[index].copyWith(
-                content: fullResponse.toString(),
+            // Update the AI message in session
+            final ChatMessage? currentMessage = _chatService.sessionManager.messages
+                .cast<ChatMessage?>()
+                .firstWhere(
+                  (ChatMessage? m) => m?.id == aiMessageId,
+                  orElse: () => null,
+                );
+
+            if (currentMessage != null) {
+              _chatService.sessionManager.updateMessage(
+                aiMessageId,
+                currentMessage.copyWith(content: fullResponse.toString()),
               );
             }
           });
@@ -143,41 +161,105 @@ class _AiChatDialogState extends State<AiChatDialog> {
           if (!mounted) return;
 
           setState(() {
-            // Mark streaming as complete
-            final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
-            if (index != -1) {
-              _messages[index] = _messages[index].copyWith(
-                isStreaming: false,
+            // Mark streaming as complete in session
+            final ChatMessage? currentMessage = _chatService.sessionManager.messages
+                .cast<ChatMessage?>()
+                .firstWhere(
+                  (ChatMessage? m) => m?.id == aiMessageId,
+                  orElse: () => null,
+                );
+
+            if (currentMessage != null) {
+              _chatService.sessionManager.updateMessage(
+                aiMessageId,
+                currentMessage.copyWith(isStreaming: false),
               );
             }
             _isSending = false;
+            _retryCount = 0; // Reset on success
           });
         },
-        onError: (Object error) {
+        onError: (Object error) async {
           if (!mounted) return;
 
-          setState(() {
-            // Update message with error
-            final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
-            if (index != -1) {
-              _messages[index] = _messages[index].copyWith(
-                content: S.current.aiChatErrorMessage,
-                isStreaming: false,
-              );
+          // Retry logic for network errors
+          if (_retryCount < _maxRetries && !hasReceivedData) {
+            _retryCount++;
+
+            // Exponential backoff: 1s, 2s, 4s
+            final int delaySeconds = 1 << (_retryCount - 1);
+            await Future<void>.delayed(Duration(seconds: delaySeconds));
+
+            if (mounted) {
+              setState(() {
+                // Update message to show retry attempt
+                final ChatMessage? currentMessage = _chatService.sessionManager.messages
+                    .cast<ChatMessage?>()
+                    .firstWhere(
+                      (ChatMessage? m) => m?.id == aiMessageId,
+                      orElse: () => null,
+                    );
+
+                if (currentMessage != null) {
+                  _chatService.sessionManager.updateMessage(
+                    aiMessageId,
+                    currentMessage.copyWith(
+                      content: 'Retrying... (attempt $_retryCount/$_maxRetries)',
+                    ),
+                  );
+                }
+              });
+
+              // Retry the request
+              await _streamResponseWithRetry(message, aiMessageId);
             }
-            _isSending = false;
-          });
+          } else {
+            // Max retries reached or partial data received
+            setState(() {
+              final ChatMessage? currentMessage = _chatService.sessionManager.messages
+                  .cast<ChatMessage?>()
+                  .firstWhere(
+                    (ChatMessage? m) => m?.id == aiMessageId,
+                    orElse: () => null,
+                  );
+
+              if (currentMessage != null) {
+                final String errorMessage = _retryCount >= _maxRetries
+                    ? '${S.current.aiChatErrorMessage}\n(Failed after $_maxRetries retries)'
+                    : S.current.aiChatErrorMessage;
+
+                _chatService.sessionManager.updateMessage(
+                  aiMessageId,
+                  currentMessage.copyWith(
+                    content: errorMessage,
+                    isStreaming: false,
+                  ),
+                );
+              }
+              _isSending = false;
+              _retryCount = 0;
+            });
+          }
         },
       );
     } catch (e) {
       if (!mounted) return;
 
       setState(() {
-        final int index = _messages.indexWhere((ChatMessage m) => m.id == aiMessageId);
-        if (index != -1) {
-          _messages[index] = _messages[index].copyWith(
-            content: S.current.aiChatErrorMessage,
-            isStreaming: false,
+        final ChatMessage? currentMessage = _chatService.sessionManager.messages
+            .cast<ChatMessage?>()
+            .firstWhere(
+              (ChatMessage? m) => m?.id == aiMessageId,
+              orElse: () => null,
+            );
+
+        if (currentMessage != null) {
+          _chatService.sessionManager.updateMessage(
+            aiMessageId,
+            currentMessage.copyWith(
+              content: S.current.aiChatErrorMessage,
+              isStreaming: false,
+            ),
           );
         }
         _isSending = false;
@@ -216,25 +298,31 @@ class _AiChatDialogState extends State<AiChatDialog> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-    return DraggableScrollableSheet(
-      initialChildSize: 0.7,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      expand: false,
-      builder: (BuildContext context, ScrollController scrollController) {
-        return Container(
-          decoration: BoxDecoration(
-            color: colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, -2),
-              ),
-            ],
-          ),
+    return Padding(
+      // Add padding for keyboard avoidance
+      padding: EdgeInsets.only(bottom: keyboardHeight),
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Container(
+            decoration: BoxDecoration(
+              // Semi-transparent background with blur effect
+              color: colorScheme.surface.withOpacity(0.95),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 15,
+                  spreadRadius: 2,
+                  offset: const Offset(0, -3),
+                ),
+              ],
+            ),
           child: Column(
             children: <Widget>[
               // Handle bar
@@ -284,9 +372,9 @@ class _AiChatDialogState extends State<AiChatDialog> {
                 child: ListView.builder(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(16),
-                  itemCount: _messages.length,
+                  itemCount: _chatService.sessionManager.messages.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final ChatMessage message = _messages[index];
+                    final ChatMessage message = _chatService.sessionManager.messages[index];
                     return _MessageBubble(
                       message: message,
                       colorScheme: colorScheme,
@@ -365,6 +453,7 @@ class _AiChatDialogState extends State<AiChatDialog> {
           ),
         );
       },
+      ),
     );
   }
 }
