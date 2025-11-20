@@ -37,6 +37,7 @@ import '../../statistics/model/stats_settings.dart';
 import '../../voice_assistant/widgets/voice_button.dart';
 import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
+import 'ai_chat_dialog.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
 import '../services/board_image_recognition.dart';
@@ -242,6 +243,35 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                   _recognizeBoardFromImage(context),
                             ),
                           ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              // AI Chat Assistant button in the top-right corner (shown when game board is active)
+              if (_shouldShowAiChatButton())
+                Align(
+                  key: const Key('game_page_ai_chat_button_align'),
+                  alignment: AlignmentDirectional.topEnd,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: GameController().gameInstance.gameMode ==
+                                GameMode.humanVsHuman
+                            ? 64.0 // Position below analysis button
+                            : 8.0,
+                        right: 8.0,
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: IconButton(
+                          key: const Key('game_page_ai_chat_button'),
+                          icon: const Icon(
+                            FluentIcons.chat_24_regular,
+                            color: Colors.white,
+                          ),
+                          tooltip: S.of(context).aiChatButtonTooltip,
+                          onPressed: () => _showAiChatDialog(context),
                         ),
                       ),
                     ),
@@ -999,5 +1029,24 @@ class _GamePageInnerState extends State<_GamePageInner> {
       logger.e("Error applying recognized board state: $e");
       messenger?.showSnackBarClear(strings.recognitionFailed(e.toString()));
     }
+  }
+
+  /// Determine if the AI chat button should be visible
+  /// Shows when the game board is active (not in setup mode)
+  bool _shouldShowAiChatButton() {
+    final GameMode mode = GameController().gameInstance.gameMode;
+    return mode == GameMode.humanVsAi ||
+        mode == GameMode.humanVsHuman ||
+        mode == GameMode.aiVsAi;
+  }
+
+  /// Show the AI chat assistant dialog
+  void _showAiChatDialog(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) => const AiChatDialog(),
+    );
   }
 }

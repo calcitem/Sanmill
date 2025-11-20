@@ -3647,5 +3647,29 @@
     "voiceCommandVibrationOff": "Vibration disabled",
     "@voiceCommandVibrationOff": {
         "description": "Vibration off message"
+    },
+    "aiChatTitle": "AI Assistant",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "Hello! I'm your Mill game assistant. Ask me about strategies, positions, or any questions about the current game.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "Ask about the game...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "Sorry, I encountered an error. Please try again.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI assistant is not configured. Please configure LLM settings first.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "Chat with AI Assistant",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
     }
 }

@@ -29,6 +29,7 @@ dependencies:
   flutter_email_sender: 8.0.0
   flutter_localizations:
     sdk: flutter
+  flutter_markdown: 0.7.6
   flutter_platform_alert: 0.8.0
   flutter_picker: 2.1.0
   flutter_sharing_intent: 1.1.1

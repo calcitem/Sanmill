@@ -3647,5 +3647,29 @@
     "voiceCommandVibrationOff": "震动已禁用",
     "@voiceCommandVibrationOff": {
         "description": "Vibration off message"
+    },
+    "aiChatTitle": "AI 助手",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "您好！我是您的直棋游戏助手。请向我询问有关策略、局面或当前游戏的任何问题。",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "询问有关游戏的问题...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "抱歉，遇到错误。请重试。",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI 助手未配置。请先配置 LLM 设置。",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "与 AI 助手聊天",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
     }
 }
