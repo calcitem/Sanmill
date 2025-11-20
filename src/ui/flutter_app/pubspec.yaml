@@ -59,8 +59,9 @@ dependencies:
   vibration: 3.1.4
   url_launcher: 6.3.2
   uuid: 4.5.1
-  whisper_ggml: 1.7.0
-  record: 6.1.2
+  # Voice assistant plugins removed - voice assistant functionality disabled
+  # whisper_ggml: 1.7.0
+  # record: 6.1.2
 
 dev_dependencies:
   analyzer: 8.2.0

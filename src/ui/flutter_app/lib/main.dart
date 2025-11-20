@@ -36,7 +36,8 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
-import 'voice_assistant/services/voice_assistant_service.dart';
+// Voice assistant functionality disabled
+// import 'voice_assistant/services/voice_assistant_service.dart';
 
 part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
@@ -66,13 +67,14 @@ Future<void> main() async {
     await ScreenshotService.instance.init();
   }
 
+  // Voice assistant functionality disabled
   // Check and clean up incomplete voice model downloads from previous sessions
-  await VoiceAssistantService().modelDownloader.checkAndCleanIncompleteDownloads();
+  // await VoiceAssistantService().modelDownloader.checkAndCleanIncompleteDownloads();
 
   // Initialize voice assistant service if enabled
-  if (DB().voiceAssistantSettings.enabled) {
-    await VoiceAssistantService().initialize();
-  }
+  // if (DB().voiceAssistantSettings.enabled) {
+  //   await VoiceAssistantService().initialize();
+  // }
 
   _initUI();
 

@@ -19,7 +19,8 @@ import '../../general_settings/models/general_settings.dart';
 import '../../puzzle/models/puzzle_models.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../statistics/model/stats_settings.dart';
-import '../../voice_assistant/models/voice_assistant_settings.dart';
+// Voice assistant functionality disabled
+// import '../../voice_assistant/models/voice_assistant_settings.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
@@ -105,14 +106,15 @@ class Database {
   /// Key at which the [_puzzleSettingsBox] will be saved
   static const String _puzzleSettingsBoxName = "puzzleSettings";
 
-  /// [VoiceAssistantSettings] Box reference
-  static late final Box<VoiceAssistantSettings> _voiceAssistantSettingsBox;
+  // Voice assistant functionality disabled
+  // /// [VoiceAssistantSettings] Box reference
+  // static late final Box<VoiceAssistantSettings> _voiceAssistantSettingsBox;
 
-  /// Key at which the [VoiceAssistantSettings] will be saved in the [_voiceAssistantSettingsBox]
-  static const String voiceAssistantSettingsKey = "settings";
+  // /// Key at which the [VoiceAssistantSettings] will be saved in the [_voiceAssistantSettingsBox]
+  // static const String voiceAssistantSettingsKey = "settings";
 
-  /// Key at which the [_voiceAssistantSettingsBox] will be saved
-  static const String _voiceAssistantSettingsBoxName = "voiceAssistantSettings";
+  // /// Key at which the [_voiceAssistantSettingsBox] will be saved
+  // static const String _voiceAssistantSettingsBoxName = "voiceAssistantSettings";
 
   /// Initializes the local database
   static Future<void> init() async {
@@ -125,7 +127,8 @@ class Database {
     await _initCustomThemes();
     await _initStatsSettings();
     await _initPuzzleSettings();
-    await _initVoiceAssistantSettings();
+    // Voice assistant functionality disabled
+    // await _initVoiceAssistantSettings();
 
     if (await _DatabaseMigration.migrate() == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
@@ -141,7 +144,8 @@ class Database {
     await _customThemesBox.delete(customThemesKey);
     await _statsSettingsBox.delete(statsSettingsKey);
     await _puzzleSettingsBox.delete(puzzleSettingsKey);
-    await _voiceAssistantSettingsBox.delete(voiceAssistantSettingsKey);
+    // Voice assistant functionality disabled
+    // await _voiceAssistantSettingsBox.delete(voiceAssistantSettingsKey);
   }
 
   /// GeneralSettings
@@ -397,31 +401,32 @@ class Database {
   PuzzleSettings get puzzleSettings =>
       _puzzleSettingsBox.get(puzzleSettingsKey) ?? const PuzzleSettings();
 
-  /// VoiceAssistantSettings
+  // Voice assistant functionality disabled
+  // /// VoiceAssistantSettings
 
-  /// Initializes the [VoiceAssistantSettings] reference
-  static Future<void> _initVoiceAssistantSettings() async {
-    Hive.registerAdapter<WhisperModelType>(WhisperModelTypeAdapter());
-    Hive.registerAdapter<VoiceAssistantSettings>(
-      VoiceAssistantSettingsAdapter(),
-    );
-    _voiceAssistantSettingsBox = await Hive.openBox<VoiceAssistantSettings>(
-      _voiceAssistantSettingsBoxName,
-    );
-  }
+  // /// Initializes the [VoiceAssistantSettings] reference
+  // static Future<void> _initVoiceAssistantSettings() async {
+  //   Hive.registerAdapter<WhisperModelType>(WhisperModelTypeAdapter());
+  //   Hive.registerAdapter<VoiceAssistantSettings>(
+  //     VoiceAssistantSettingsAdapter(),
+  //   );
+  //   _voiceAssistantSettingsBox = await Hive.openBox<VoiceAssistantSettings>(
+  //     _voiceAssistantSettingsBoxName,
+  //   );
+  // }
 
-  /// Listens to changes inside the VoiceAssistantSettings Box
-  ValueListenable<Box<VoiceAssistantSettings>>
-  get listenVoiceAssistantSettings => _voiceAssistantSettingsBox.listenable(
-    keys: <String>[voiceAssistantSettingsKey],
-  );
+  // /// Listens to changes inside the VoiceAssistantSettings Box
+  // ValueListenable<Box<VoiceAssistantSettings>>
+  // get listenVoiceAssistantSettings => _voiceAssistantSettingsBox.listenable(
+  //   keys: <String>[voiceAssistantSettingsKey],
+  // );
 
-  /// Saves the given [settings] to the VoiceAssistantSettings Box
-  set voiceAssistantSettings(VoiceAssistantSettings settings) =>
-      _voiceAssistantSettingsBox.put(voiceAssistantSettingsKey, settings);
+  // /// Saves the given [settings] to the VoiceAssistantSettings Box
+  // set voiceAssistantSettings(VoiceAssistantSettings settings) =>
+  //     _voiceAssistantSettingsBox.put(voiceAssistantSettingsKey, settings);
 
-  /// Gets the stored [VoiceAssistantSettings] or returns a default value
-  VoiceAssistantSettings get voiceAssistantSettings =>
-      _voiceAssistantSettingsBox.get(voiceAssistantSettingsKey) ??
-      const VoiceAssistantSettings();
+  // /// Gets the stored [VoiceAssistantSettings] or returns a default value
+  // VoiceAssistantSettings get voiceAssistantSettings =>
+  //     _voiceAssistantSettingsBox.get(voiceAssistantSettingsKey) ??
+  //     const VoiceAssistantSettings();
 }
