@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} liikumiseks.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "Mängija 1 võidab!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "Ei saa importida {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Liigutused ja reeglid ei vasta.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Viga: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "Võitmise määr",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} tükkide arv on väiksem kui kolm.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} loobuda.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player}-l pole enam teed.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Tahvel on täis ja {player}-l pole enam teed.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Aeg on möödas, {player} kadunud.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "Liikumisfaasis ei ole viimase kindla arvu käikude jooksul ühtegi tükki eemaldatud.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Kas väljakutse raskem tase? Uueks tasemeks on {level} tase!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Sa kaotad!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Versioon: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Tänu",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "Valige {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "Info",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " ja ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Nõustun",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} käes: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} pardal: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "Laua nihkumine ülevalt alla",
     "@boardTop": {
@@ -1103,6 +1048,18 @@
     "@close": {
         "description": "Close"
     },
+    "download": "Laadi alla",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+        "description": "Unknown value"
+    },
     "whitePiece": "Valge tükk",
     "@whitePiece": {
         "description": "White piece"
@@ -1133,23 +1090,19 @@
     },
     "sideToMove": "Liigutatav külg: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "mängija",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Viimane käik: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Liikumine",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Valitud",
     "@selected": {
@@ -1174,6 +1127,10 @@
     "pieceHighlightColor": "Tükk esiletõstetud värv",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "capturablePieceHighlightColor": "Hõivatavate malenuputeesiletõstmise värv",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
     },
     "algorithm": "Algoritm",
     "@algorithm": {
@@ -1225,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Move}=1{{count} Teisalda}other{{count} Liigutused}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Laadimine ebaõnnestus.",
     "@loadFailed": {
@@ -1284,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} tükki}} tuleb eemaldada.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Paigut. ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Paigutatud tükkide arv paigutusfaasis.",
     "@placedPieceCount": {
@@ -1310,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "Praegune mängija on asetanud {count} nuppe.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "Ei pane faasi, ei saa seda muuta.",
     "@notPlacingPhase": {
@@ -1348,815 +1277,2875 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Mets",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Töölaua pilt",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Kehtetu positsioon.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "Jagage GIF-i",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Pikslite suhe",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Kestus",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "Mängu ekraani salvestaja",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Eelmine",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Edasi",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Vahele jätma",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Sain aru",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Mängu reegleid saate muuta reeglite seadetes.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "Väärtuse muutmiseks valijas saate kasutada hiire ratast.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI Kui mõtlemisaeg on seatud väärtusele 0, siis mõtlemisel pole ajalimiiti.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Pange tähele, et AI mõtlemisaja reguleerimine ei pruugi olla täiesti täpne. Tegelik mõtlemisaeg võib olla lühem, kui raskusaste on seatud madalamale väärtusele, ja võib olla pikem, kui AI on keskmise mõtteviisiga, kui aeg otsa saab.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Kui seate raskusastme kõrgeks, kuid ei suurenda tehisintellekti mõtlemisaega, võib tegelik raskusaste piirduda mõtlemisaja piirangu tõttu madalama väärtusega. Tegelik väärtus võib olenevalt masina jõudlusest erineda.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) on otsingualgoritm, mis võimaldab leida antud positsioonil parima käigu. See on alfa-beeta-algoritmi täiustus ja kasutab null- või nullaknaotsingut, et kinnitada, kas käik on halvem või mitte halvem kui peamise variatsiooni juba ohutu skoor. PVS keskendub kõige paljutõotavamatele käikudele ja väldib ebavajalikke otsinguid suboptimaalsetest harudest, mis aitab parandada otsingu efektiivsust.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "Alfa-beeta algoritm on otsingualgoritm parima käigu leidmiseks. See kasutab otsingupuu kärpimiseks ja tõhususe suurendamiseks minimaxi põhimõtet ja kahte väärtust, alfa ja beeta. Alfa esindab minimaalset punktisummat, milleni arvuti on kindel, et ta saab, samas kui beeta esindab maksimaalset punktisummat, mille vastane võib saada. Algoritm aitab arvutil teha mängus nutikaid ja tõhusaid otsuseid.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Inimkogemuse järgi, kui üritad võita, siis kaotad. Selle asemel seadke oma eesmärgiks viik ja vältige mängu kaotamist. Jälgige oma vastast ja meelitage ta õrnalt asendisse, kus nad võivad vigu teha. Kui nad näitavad nõrkust, kasutage võimalust ja suruge õrnalt võidu poole. Sel viisil võite mängu võita.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "Selles mängus on teisel mängijal lihtsam võita võrreldes esimese mängijaga.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Suvandi Passiivne lubamine paneb tehisintellekti lõõgastuma, kui tal on positsioonil eelis, selle asemel, et püüda agressiivselt võita võimalikult kiiresti.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Selle valiku lubamine suurendab mängu juhuslikkust ja lõbusust, samas kui selle keelamine võib aidata uurida viise, kuidas AI-d ületada.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Kui tehisintellekt arvestab oma nuppude liikuvust, ei ole selle eesmärk mitte ainult vastase nuppude võimalikult kiire tabamine, vaid kaalub ka vastase liikumiste blokeerimist ja takistamist neil sama tegemast.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Kui laud on täis",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "Paigutamisfaasi lõpus, enne liikumisfaasi algust, järgneb tegevus, kui laud on tükke täis.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Mängija, kes liigub liikumise faasis esimesena, eemaldab ühe vastase nupu.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Mõlemad pooled nõustuvad viigiga.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Võtke üks vastase nuppe.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Esimene mängija kaotab mängu.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Esimene ja teine mängija eemaldavad ühe vastase nupu.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Teine ja esimene mängija eemaldavad ühe vastase nupu.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Nüüd lendamisfaasi sisenedes võivad vastase nupud hüpata suvalisse tühja punkti laual. Lennureegli saate välja lülitada jaotises \"Reegli seaded\".",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Kui ummikseisus",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Mis toiming järgneb, kui ühtegi tükki ei saa liigutada?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Lõpeta ummikkaotusega.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Muutke liikumiseks külge.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Eemaldage üks vastase nuppudest ja tehke järgmine käik.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Lõpeta ummikseisuga.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Eemaldage üks vastase nupp ja muutke liikumiseks külge.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI reageerimise viivitusaeg",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI on praegu viivitatud reageerimise faasis. Enne jätkamist oodake veidi.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Te ei saa eemaldada mittekülgnevat tükki.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "Kui ummikseisus on, saab sinu omadega külgnevad vastase nupud eemaldada, olenemata veski moodustamisest.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS on algajasõbralik algoritm, mis teeb otsuseid simulatsioonide abil erinevaid käike uurides ja hinnates.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "Kuldne Jade",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "Metsa puit",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "Tume müsteerium",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Kesköösinine",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "Roheline mets",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "Roheline heinamaa",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "Kivi tee",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Pastelne roosa",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "Türkiissinine meri",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Violetne unistus",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "Mündi šokolaad",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Taevasinine",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "Mänguline aed",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "Retrograadse analüüsi algoritm kasutab mitme väärtusega retrograadset analüüsi, et luua erinevatest alguspositsioonidest lõppmängu andmebaas, seejärel rakendab see andmebaas mängu optimeerimiseks. See lähenemisviis kuulub ülitugevate lahenduste kategooriasse.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Kas soovite vaadata selle algoritmi kasutusjuhendit?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Näita positsioonieelise indikaatorit",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Kasutage täiuslikku andmebaasi",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Lubage see suvand, et kasutada tipptasemel algoritmide abil loodud veatut mängude andmebaasi. See funktsioon integreerib nii mängu ava- kui ka lõpustrateegiad, et soovitada optimaalseid käike. See on eelistatud valik mängijatele, kes otsivad mängus kõrgeimat täpsust. Põhjalike arvutustehnikate abil loodud andmebaas on loodud pakkuma peaaegu täiuslikke mängulahendusi.\n\nMärkus. Kui AI-l ei õnnestu andmebaasile juurde pääseda, kasutab see mänguotsuste tegemiseks tavalisi algoritme. Kui andmebaas on saadaval, muutub raskusaste peaaegu ületamatuks ja AI mõtlemisaeg väheneb drastiliselt. Paljud AI's play style'i valikute sätted tühistatakse, kuna andmebaasi tulemused on kõige olulisemad.\n\nJuhiste saamiseks selle veatu andmebaasi maksimaalse kasutamise kohta klõpsake siin.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Taustapilt",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "Kui suvand \"Kasuta täiuslikku andmebaasi\" pole lubatud, paneb seade \"Juhuslik\" AI-l tükke juhuslikult liigutama, kasutamata käiguvalikuks mingeid algoritme. Selle tulemuseks on tavaliselt oluliselt nõrgem mäng. Ja vastupidi, kui „Kasuta täiuslikku andmebaasi” on lubatud, tugineb AI otsuste tegemisel eranditult „Täiuslikule andmebaasile”, selle asemel, et seda traditsiooniliste AI-algoritmidega segada. Selles režiimis põhinevad AI käigud täielikult andmebaasi sisul, vältides reaalajas arvutusi või otsingualgoritme.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Eemalda vastase käest nupp (nupud); siis on vastase kord paigutada.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Paigutusfaasis veskite moodustamisel",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Eemalda vastase nupp (nupud) laualt.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Eemalda vastase nupp (nupud) laualt; siis on vastase kord paigutada.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "Vastane eemaldab enda nupu (nupud) laualt.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "Selle asemel, et sina midagi ette võtaksid, valib vastane oma nupu (nupud) tahvlilt ja eemaldab selle, tehes sisuliselt endale kahjuliku käigu.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Eemalda vastase käest nupp (nupud); siis on sinu kord käia.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Eemalda nupp (nupud) vastase käest. Kui vastavalt Multi-remove seadele tuleb eemaldada mitu nuppu ja vastasel pole enam käes nuppe, jätka vastase nuppude eemaldamist laualt. Siis on sinu kord käia. Kui jätkad veskite moodustamist, võid jätkata vastase nuppude eemaldamist.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Eemalda nupp (nupud) vastase käest. Kui vastavalt Multi-remove seadele tuleb eemaldada mitu nuppu ja vastasel pole enam käes nuppe, jätka vastase nuppude eemaldamist laualt. Siis on vastase kord käia.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Märgi ja viivita nuppude eemaldamisega.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "Paigutusfaasi ajal märgitakse eemaldatavad nupud ära ja mõlemad mängijad ei saa nendele punktidele uusi nuppe paigutada. Liikumisfaasi sisenedes eemaldatakse need märgitud nupud täielikult ja seejärel saavad mängijad oma nuppe nendele nüüd tühjadele punktidele liigutada.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Tegevused, mida saab võtta veskite moodustamisel paigutamise faasis.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Märgitud",
-    "@marked": {},
-    "menu": "Menüü",
-    "@menu": {},
-    "monochrome": "Monokroomne",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "Ekraanilugeja tuge saate sisse lülitada Üldseadete all Otsipääsetavuse seadetes.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Näita numbreid nuppudel",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Salvesta pilt",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Kuva analüüsiriistariba",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Analüüsiriistariba taustavärv",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Analüüsiriistariba ikooni värv",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "Transformeeritud.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "Ei saa transformeerida.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Pööra",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H Pööre",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V Pööre",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO Pööre",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "Läbipaistev Lõuend",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Piira korduvat veskite moodustamist",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "Nupp, mis on liigutatud ühest veskist teise, ei saa järgmisel käigul kohe algpunkti tagasi minna, et uuesti veskit moodustada. Esiteks on vajalik teistsugune liigutus.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Ühekordne kasutus veski",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Iga veski saab eemaldada ainult ühe vastase tüki. Saate selle uuesti kujundada, kuid seda ei saa kasutada täiendavate eemaldamiste jaoks.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Praegustel seadistatud reeglitel puudub vastav ideaalne andmebaas. Täiusliku andmebaasi kohta lisateabe saamiseks klõpsake siin.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "Keskendu teede blokeerimisele",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "Prioriteerige vastase liikumise takistamist, mitte veskite moodustamist. Selle asemel, et keskenduda veskite täitmisega tükkide eemaldamisele, püüab tehisintellekt vastast lõksu püüda, takistades neil liikumist ja tagades võidu kurnamise, mitte agressiivse mänguga. See strateegia ei blokeeri aktiivselt vastase veskeid.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Maletüki pilt",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Impordi värviseaded",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Ekspordi värviseaded",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Impordi",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Ekspordi",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Palun kopeerige kõigepealt JSON-vormingu sätted lõikelauale.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Kopeeritud lõikelauale.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Imporditud.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Laua pilt",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Sügise lehed",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Legendaarne Maa",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Vinjett-efekt",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Kas soovite tööriistariba täiesti läbipaistvaks muuta, kui laudade taustapilt on seatud?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "Luba vibratsioon mängus",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Heliteema",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "Pall",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Vedelik",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Puit",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Nupu paigutamise animatsiooni efekt",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Nupu eemaldamise animatsiooni efekt",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Kuva tööriistariba all",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Laua nurga raadius",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Kasuta avamisraamatut",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Praegune",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Reeglistik",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "Lubage AI-l kasutada avakäike, mida kasutavad tavaliselt professionaalsed inimmängijad varajases mängus. Märkus: See funktsioon on hetkel saadaval ainult teatud reeglistike jaoks.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Kuva eelise graafik",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Eelisgraafik joonistatakse ainult pärast seda, kui tehisintellekt on käigu teinud. Seda ei joonistata, kui käigu teeb inimmängija.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Keela eemaldamine, kuni kõik nupud on paigutatud. Mängijad eemaldavad nuppe vastavalt veskite arvule.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Keela eemaldamine, kuni kõik nupud on paigutatud. Mängijad eemaldavad nuppe vastavalt veskite arvule: kui arv on võrdne, eemaldavad mõlemad sama palju; kui ühel on rohkem, eemaldab ta ühe nupu lisaks, hoides vahet ühe nupu jagu. Kui veski moodustab ainult üks mängija, eemaldab ta kaks nuppu, teine aga ühe. Kui kumbki ei moodusta veskit, eemaldavad mõlemad ühe nupu.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Vali üks oma nuppudest.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Pole sinu käik.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Kommentaaritööriista taustavärv",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Kommentaaritööriista ikoonivärv",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Kuva kommentaaritööriist",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Lülitu kommentaarirežiimi",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Kas oled kindel, et soovid kõik kommentaarid kustutada?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM päring kopeeritud lõikelauale.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Ühendus keelduti, server võib olla maas.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Avastamine õnnestus, ootab ühendust...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "Ühtegi LAN-ühendust pole.",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Võta ekraanipilt",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Ühendus vastasega katkestatud.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Tagasivõtmise taotlus",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Pole midagi näidata.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Peata hostimine",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Ühendus lähtestati teise osapoole poolt.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Ühendus kadus heartbeat aja ületuse tõttu. Palun ühendu uuesti.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Alusta hostimist",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Taaskäivitamise taotlus lükati tagasi.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "Ei ole ühendatud LAN-vastasega.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM päring",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "Mäng taaskäivitatud.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Tagasivõtmist lükati tagasi.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Kas oled kindel, et soovid sellest mängust loobuda?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "Vastane loobus. Sa võidad!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Kustuta kõik kommentaarid",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Ühendatud, ootab vastase käiku...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Võrguseisund: Ühendus puudub",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Tagasivõtmise taotlus saadetud vastasele.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "Vastane võib olla mängust lahkunud.",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Ühendus hostiga õnnestus.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Ühendus kadus: heartbeat aegumisaeg.",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Hosti ei leitud.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Kinnita loobumine",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "Mängu hostimine alustatud, ootab mängijate liitumist...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Ühendus aegus, võrguühendus on ebastabiilne.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "LLM päringut pole saadaval.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Loobusid. Mäng läbi.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "Serveri IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Kinnita kustutamine",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Vastase käik.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "Ootab kliendi ühendust...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Tagasivõtmise taotlus lükati tagasi või see ebaõnnestus.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Lisa tekst",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Välju kommentaarirežiimist",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Kirjuta oma kommentaar",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Üritab uuesti ühendada...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Taaskäivitamise taotlus saadetud. Ootab vastase vastust...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Server on peatatud.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Taaskäivitamise taotlus",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Tagasivõtmise taotlust ei saa esitada, kui pole sinu käik.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Tagasivõtmine aktsepteeritud.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Kohaliku võrgu seaded",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Ühendus taastati edukalt!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Pildi salvestamine galerii ebaõnnestus.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "Vastane palus mängu taaskäivitamist. Kas nõustud?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Sinu käik.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Ühendust ei õnnestunud taastada, palun alusta mäng uuesti.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Host",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Liitu",
-    "@join": {},
+    "@join": {
+        "description": ""
+    },
     "port": "Port",
-    "@port": {},
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Vigane IP-aadress.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Vigane port.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Ühendamine: katse {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Ühendamine ebaõnnestus: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Viga: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Hostimise alustamine ebaõnnestus: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Viga: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Host leitud: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "Peata",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Avasta",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Ühenda",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Klient ühendas: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Avastamine: {seconds} s",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Üritab uuesti ühendada ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Ühendatud",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "Kustuta",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "Vana-Egiptus",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Gooti Jää",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Riisipõld",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "Hiina Portselan",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Kõrbe Hämarik",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Täpsus Käsitöö",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Rahvakirjandus",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Karpaatide Pärand",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Keiserlik Suursugusus",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "Böömimaa Kristall",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Savanni Päikesetõus",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Harmoonia Tasakaal",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Kaneeli Vürts",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "Anatoolia Mosaiik",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Karnevali Vaim",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Kohandatud",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Vürtsiturg",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Pühkige, et avada sahtel",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "Kuva mänguteave ekraanipiltidel",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Inimkäigu ajalimiit",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Inimkäikudel ajalimiiti pole",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "Inimmängija puhul rakendatakse ajaületamise kaotust",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "Mängulaua tuvastamine...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Saate sisestada mis tahes mudeli nime.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Laua asukoht rakendatud. FEN on lõikelauale kopeeritud.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Soovitus: proovige teha mängulauast selgemat pilti.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM-päringu mall",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Kehtivat mängulauda ei tuvastatud.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Valin pilti albumist...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Päringu malli seadistamine",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "Redigeeri päringu malli LLM-analüüsiks",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "FEN-i genereerimine tuvastatud mängulauast nurjus.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Väljund praeguses keeles",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "Levinud Base URL-id",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Vaata levinud mudeleid",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Tuvastamisparameetrid uuendatud.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Valge käik",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Lähtesta vaikeväärtustele",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Pildistamine",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Tuvastatud mängulaua asukohta ei õnnestunud rakendada.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM päringu sisu",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM pole seadistatud. Palun kontrollige oma sätteid.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Määra teenusepakkuja, mudel, API Key ja Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM konfiguratsioon",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "Seadista LLM-pakkuja",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM päringu malli päis",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Ühtegi nuppu pildil ei tuvastatud. Palun proovige uuesti.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Tuvasta mängulaud pildilt",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Vaata näpunäiteid",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Rakenda mängulauale",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Kohanda mängulaua piirkonda",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Vaata levinud URL-e",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Värvianalüüs nurjus!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "Analüüsin mängulaua pilti...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Vali albumist",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Mängulaua punkti ei tuvastatud!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Kui jätta tühjaks, kasutatakse vaikemalli",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM konfiguratsioon",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Kas olete kindel, et soovite päringumallid lähtestada vaikeväärtustele?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM päringu malli jalus",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Laen vastust...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Rakenda see tulemus mängulauale",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Pildistamine...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Palun valige mängulaua pilt tuvastamiseks",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Tuvastamise tulemused",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Analüüsi käike ja anna ülevaade.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "Hangi API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "Tervet tuvastusprotsessi ei õnnestunud lõpule viia.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Mängulaua tuvastamise tulemus",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "Küsi LLM-ilt",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Mängulaua tuvastamine nurjus!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Mängulaua punkti ei tuvastatud, nuppu ei saa tuvastada!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "Kopeeri FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Levinud mudelid",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (valikuline)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Ühtegi pilti valitud pole.",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Musta käik",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Suur keelemudel",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Pakkuja",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "Baas-URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Mudel",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Temperatuur",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Käsk kätte saadud! AI töötleb...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Sügav mõtlemine käib, palun oota...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "Peatselt esitletakse...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Tuvastusparameetrid",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Kohanda parameetreid, et parandada tuvastuse täpsust",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Salvesta parameetrid",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Pildi tuvastust ei saa käivitada: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Viga: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Pildituvastus ebaõnnestus: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Viga: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Rakendatud seisuga {whiteCount} valget ja {blackCount} musta nuppu",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN kopeeriti lõikelauale)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Tuvastus ebaõnnestus: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Viga: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "Minu reiting",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "Mängitud mängud",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "Võidud",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Kaotused",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Viigid",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Viimati uuendatud",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Formaat:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Lähtesta statistika",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Viikide määr",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Kaotuste määr",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Tehisintellekti statistika",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Luba statistika",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Kui see on lubatud, salvestatakse mängutulemused statistikasse. Tagasivõtmisi sisaldavaid mänge aga ei salvestata. Kui see on keelatud, peatatakse statistika kogumine.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "See lähtestab kogu mängustatistika. Seda toimingut ei saa tagasi võtta.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Laua sisemise rõnga suurus",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Laua vari",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Lõksude tuvastamine",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Tõsta analüüsi ajal lõksukäigud esile paksude ringide ja nooltega.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Lõks on olemas. Lõksukäigud: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Külgnev tabamine",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Lisage üks teie vastase tükki kahe teie vahel sirgjooneliselt, et see jäädvustada.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Luba külgneval jäädvustamisel",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Sekkumisvõitlus",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Liikuge tühja punkti kahe oma vastase tüki vahel, et neid mõlemad jäädvustada.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Luba sekkumise püüdmine",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Hüppamine",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Jäädvustage, hüpates üle külgneva vastase tüki tühja punkti kaugemale.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Luba hüppe jäädvustamine",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Kohaldatavad read",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "Mööda väljaku servi",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "Mööda ruudu ületavaid ortogonaalseid jooni",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "Mööda ruudu ületavat diagonaaljooni",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Täitmisfaasid",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Saadavus liikuva etapi ajal, mis põhineb ülejäänud tükkidel",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Piiranguid pole",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Saadaval, kui teil on kolm või vähem tükki",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Lõpeta paigutamine, kui jääb ainult kaks tühja ruutu",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Kui see on lubatud, lõpeb paigutamise faas ja algab liikumise faas, kui laual on ainult 2 tühja kohta, olenemata käes olevatest nuuppudest. See reegel kehtib ainult 12-nupuga mängude puhul.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Saate tagasivõtmist taotleda ainult kohe pärast oma käiku.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Kui soovite suuremat väljakutset, soovitame lubada valiku \"{setting}\" ja laadida täielik andmebaas oma seadmesse vastavalt juhistele.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "Kas soovite nüüd mängureegleid konfigureerida?",
-    "@configureRulesPrompt": {},
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
     "configureRules": "Konfigureeri reeglid",
-    "@configureRules": {},
+    "@configureRules": {
+        "description": "Button text for configuring rules"
+    },
     "algorithmSuggestionTitle": "Algoritmi ettepanek",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Olete kaotanud mitu mängu järjest tasemel 1. Kas soovite lihtsama MCTS-algoritmi kasutamisele üle minna, et raskusastet vähendada?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "Palju õnne võidu puhul MCTS tasemel 30! Kas soovite suurema väljakutse saamiseks MTD(f)-algoritmile üle minna?",
-    "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "Hõivatavate malenuputeesiletõstmise värv",
-    "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
+    "@switchToMtdfSuggestion": {
+        "description": ""
     },
     "highlightCapturablePieces": "Tõsta esile hõivatavad malenupud",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
     "undo": "Võta tagasi",
-    "@undo": {},
+    "@undo": {
+        "description": "Undo last move"
+    },
     "reset": "Lähtesta",
-    "@reset": {},
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
     "allPuzzlesCompleted": "Kõik mõistatused lahendatud!",
-    "@allPuzzlesCompleted": {},
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
     "back": "Tagasi",
-    "@back": {},
+    "@back": {
+        "description": "Back button tooltip"
+    },
+    "puzzles": "Mõistatused",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Puzzle",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "No puzzles available",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filter",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Category",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Clear Filter",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Puzzle Statistics",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Total Puzzles",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Completed",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total Stars",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Completion",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Beginner",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Easy",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Medium",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Hard",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Expert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Master",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Win Game",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Defend",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Find Best Move",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Endgame",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Opening",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Mixed",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Exit Puzzle?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Check Solution",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Give Up",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Puzzle Solved!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Hints Used",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Try Again",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Back to List",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Create New Puzzle",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Edit Puzzle",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Custom",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "Select Puzzles",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Selected",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles"
+    },
+    "puzzleSelectAll": "Select All",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Export",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Import",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message"
+    },
+    "puzzleExportFailed": "Failed to export puzzles",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message"
+    },
+    "puzzleImportFailed": "Failed to import puzzles",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles"
+    },
+    "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message"
+    },
+    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Setup Position",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "Capture Position",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "Position captured successfully",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "No position captured yet",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "Please capture a position first",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Record Solution",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Start Recording",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Stop Recording",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Recording...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Started recording solution moves",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message"
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves"
+    },
+    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Clear Solution",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "Puzzle Details",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Title",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Description",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Category",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Difficulty",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Hint",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tags",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separate tags with commas",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Author",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "Title is required",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Description is required",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Position is required",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Solution is required",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puzzle created successfully",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puzzle updated successfully",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Failed to save puzzle",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "optional",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Your Progress",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Quit",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "All",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Coming Soon",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Daily Puzzle",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number"
+    },
+    "dailyPuzzleStreak": "Streak",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "day streak",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "days",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display"
+    },
+    "dailyPuzzleStart": "Start Daily Puzzle",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Current Streak",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Longest Streak",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total Completed",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "All Puzzles",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Browse all available puzzles",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Solve puzzles against the clock",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Rules",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximize your score!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Start Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rush Results",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Time's Up!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Out of Lives",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush Complete!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Solved",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Failed",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Accuracy",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Play Again",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puzzle Battle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Compete with other players",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Coming Soon!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Rating system",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Custom Puzzles",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Create and manage your puzzles",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Create Puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "How many can you solve in a row?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Rules",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Start Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Current",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Best",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Streak Results",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Streak Ended",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "New Record!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Final Score",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Try Again",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "History",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "View your puzzle attempts",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "No Puzzle History",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Success Only",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Failed Only",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "hints",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "View detailed analytics",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Your Puzzle Rating",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message"
+    },
+    "puzzleStatsGamesPlayed": "Games Played",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Deviation",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Performance Overview",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Success Rate",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Avg. Time",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Solved",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Failed",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Success by Category",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Recent Activity",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "No recent activity",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "No Custom Puzzles",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "This feature is planned for a future release",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Invalid position",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs recapture"
+    },
+    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Setup Position",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Open board (setup or play moves), create starting position, return and capture",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Record Solution",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Click Start Recording (board resets to start position), go back, play moves, return and stop",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Add Details",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Fill in title, description, category, difficulty, and tags",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Save Puzzle",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Click the save button in the top-right corner",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionCaptureHelp": "Position Capture Help",
+    "@puzzlePositionCaptureHelp": {
+        "description": "Title for position capture help dialog"
+    },
+    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
+    "@puzzlePositionCaptureHelpContent": {
+        "description": "Help content for capturing puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Capture the starting position first",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleShowPositionCaptureHelp": "Show position capture help",
+    "@puzzleShowPositionCaptureHelp": {
+        "description": "Tooltip for position capture help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "No more hints available",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Hint",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "Validation Errors",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "What happens next:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. You can share this file via the share dialog",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Export for Contribution",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Start Contributing",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Quick Start:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Create Quality Puzzles",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Add Your Name",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Export for Contribution",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Submit",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Full Documentation",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Quality Requirements:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Next move: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Liikumine",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "Complete solution: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "Pay attention to these positions",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "No solution available",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Just now",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "january": "Jaanuar",
+    "@january": {
+        "description": "Month name"
+    },
+    "february": "February",
+    "@february": {
+        "description": "Month name"
+    },
+    "march": "March",
+    "@march": {
+        "description": "Month name"
+    },
+    "april": "April",
+    "@april": {
+        "description": "Month name"
+    },
+    "may": "May",
+    "@may": {
+        "description": "Month name"
+    },
+    "june": "June",
+    "@june": {
+        "description": "Month name"
+    },
+    "july": "July",
+    "@july": {
+        "description": "Month name"
+    },
+    "august": "August",
+    "@august": {
+        "description": "Month name"
+    },
+    "september": "September",
+    "@september": {
+        "description": "Month name"
+    },
+    "october": "October",
+    "@october": {
+        "description": "Month name"
+    },
+    "november": "November",
+    "@november": {
+        "description": "Month name"
+    },
+    "december": "December",
+    "@december": {
+        "description": "Month name"
+    },
+    "invalidPuzzle": "Invalid Puzzle",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Keep trying!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Examples",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "voiceCommandsHelp": "Voice Commands Help",
+    "@voiceCommandsHelp": {
+        "description": "Voice commands help page title"
+    },
+    "voiceCommandsHelpIntro": "Use your voice to control the game! Below are the available voice commands you can use.",
+    "@voiceCommandsHelpIntro": {
+        "description": "Voice commands help introduction"
+    },
+    "voiceCommandsGameControl": "Game Control",
+    "@voiceCommandsGameControl": {
+        "description": "Game control commands section"
+    },
+    "voiceCommandsMoveControl": "Move Commands",
+    "@voiceCommandsMoveControl": {
+        "description": "Move commands section"
+    },
+    "voiceCommandsSettings": "Settings Commands",
+    "@voiceCommandsSettings": {
+        "description": "Settings commands section"
+    },
+    "voiceCommandsTips": "Tips",
+    "@voiceCommandsTips": {
+        "description": "Tips section"
+    },
+    "voiceCommandsUndo": "Undo Move",
+    "@voiceCommandsUndo": {
+        "description": "Undo command title"
+    },
+    "voiceCommandsUndoDesc": "Undo the last move",
+    "@voiceCommandsUndoDesc": {
+        "description": "Undo command description"
+    },
+    "voiceCommandsRedo": "Redo Move",
+    "@voiceCommandsRedo": {
+        "description": "Redo command title"
+    },
+    "voiceCommandsRedoDesc": "Redo the previously undone move",
+    "@voiceCommandsRedoDesc": {
+        "description": "Redo command description"
+    },
+    "voiceCommandsRestart": "Restart Game",
+    "@voiceCommandsRestart": {
+        "description": "Restart command title"
+    },
+    "voiceCommandsRestartDesc": "Start a new game",
+    "@voiceCommandsRestartDesc": {
+        "description": "Restart command description"
+    },
+    "voiceCommandsAiMove": "Request AI Move",
+    "@voiceCommandsAiMove": {
+        "description": "AI move command title"
+    },
+    "voiceCommandsAiMoveDesc": "Request the AI to make a move",
+    "@voiceCommandsAiMoveDesc": {
+        "description": "AI move command description"
+    },
+    "voiceCommandsMovePiece": "Move Piece",
+    "@voiceCommandsMovePiece": {
+        "description": "Move piece command title"
+    },
+    "voiceCommandsMovePieceDesc": "Move a piece from one position to another",
+    "@voiceCommandsMovePieceDesc": {
+        "description": "Move piece command description"
+    },
+    "voiceCommandsPlacePiece": "Place Piece",
+    "@voiceCommandsPlacePiece": {
+        "description": "Place piece command title"
+    },
+    "voiceCommandsPlacePieceDesc": "Place a piece on the board",
+    "@voiceCommandsPlacePieceDesc": {
+        "description": "Place piece command description"
+    },
+    "voiceCommandsRemovePiece": "Remove Piece",
+    "@voiceCommandsRemovePiece": {
+        "description": "Remove piece command title"
+    },
+    "voiceCommandsRemovePieceDesc": "Remove an opponent's piece",
+    "@voiceCommandsRemovePieceDesc": {
+        "description": "Remove piece command description"
+    },
+    "voiceCommandsToggleSound": "Toggle Sound",
+    "@voiceCommandsToggleSound": {
+        "description": "Toggle sound command title"
+    },
+    "voiceCommandsToggleSoundDesc": "Turn sound on or off",
+    "@voiceCommandsToggleSoundDesc": {
+        "description": "Toggle sound command description"
+    },
+    "voiceCommandsToggleVibration": "Toggle Vibration",
+    "@voiceCommandsToggleVibration": {
+        "description": "Toggle vibration command title"
+    },
+    "voiceCommandsToggleVibrationDesc": "Turn vibration on or off",
+    "@voiceCommandsToggleVibrationDesc": {
+        "description": "Toggle vibration command description"
+    },
+    "voiceCommandsTip1": "Speak clearly and at a moderate pace for best recognition",
+    "@voiceCommandsTip1": {
+        "description": "Voice command tip 1"
+    },
+    "voiceCommandsTip2": "Wait for the listening indicator before speaking",
+    "@voiceCommandsTip2": {
+        "description": "Voice command tip 2"
+    },
+    "voiceCommandsTip3": "Commands work in your selected language",
+    "@voiceCommandsTip3": {
+        "description": "Voice command tip 3"
+    },
+    "voiceAssistant": "Voice Assistant",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantSettings": "Häälassistendi seaded",
-    "@voiceAssistantSettings": {},
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
     "voiceAssistantSettingsDescription": "Konfigureeri mudel, keel ja käitumine",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "voiceAssistantGeneral": "General",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "Model Settings",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "Model Management",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "Model Type",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "Language",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "Show Voice Button",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "Continuous Listening",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "Download Model",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "Delete Model",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "Model Information",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "Downloaded",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "Downloading...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "Model Size",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "Model Path",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "Select Model Type",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "Select Language",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "Listening...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantRecognizedText": "Recognized Text",
+    "@voiceAssistantRecognizedText": {
+        "description": "Recognized text label"
+    },
+    "voiceAssistantResult": "Result",
+    "@voiceAssistantResult": {
+        "description": "Command execution result label"
+    },
+    "voiceAssistantError": "Voice assistant error",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceAssistantRedownloadModel": "Re-download Model",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
+    "voiceCommandSuccess": "Command executed successfully",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "Failed to execute command",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "Unknown command",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "Move executed",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "Failed to execute move",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "Piece placed",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "Failed to place piece",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "Piece removed",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "Undo executed",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "Failed to undo",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "Redo executed",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "Failed to redo",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "Game restarted",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "Failed to restart game",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "Settings updated",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "Failed to update settings",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "Help displayed",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "Sound enabled",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "Sound disabled",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "Vibration enabled",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "Vibration disabled",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
+    }
 }

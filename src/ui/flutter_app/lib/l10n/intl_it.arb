@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} per muoversi.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "Il giocatore 1 vince!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "Impossibile importare {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Le mosse e le regole non corrispondono.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Errore: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "Tasso di vittoria",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} il conteggio dei pezzi è inferiore a tre.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} si è arreso.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} non ha mosse disponibili.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Il tabellone è pieno e {player} non ha modo di andare.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Il tempo è finito, {player} ha perso.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "Nella fase di movimento, nessun pezzo è stato rimosso nell'ultimo numero specifico di mosse.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Sfida livello più difficile? Il nuovo livello sarà il livello {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Hai perso!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Versione: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Grazie",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "Scegli {element}",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "Info",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " e ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Accetta",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} in mano: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} a bordo: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "Sfalsamento della tavola dall'alto",
     "@boardTop": {
@@ -1103,6 +1048,18 @@
     "@close": {
         "description": "Close"
     },
+    "download": "Scarica",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Stato",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Sconosciuto",
+    "@unknown": {
+        "description": "Unknown value"
+    },
     "whitePiece": "pezzo bianco",
     "@whitePiece": {
         "description": "White piece"
@@ -1133,23 +1090,19 @@
     },
     "sideToMove": "Lato da spostare: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "giocatore",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Ultima mossa: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Spostare",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Selezionato",
     "@selected": {
@@ -1174,6 +1127,10 @@
     "pieceHighlightColor": "Colore evidenziazione pezzo",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "capturablePieceHighlightColor": "Colore di evidenziazione dei pezzi catturabili",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
     },
     "algorithm": "Algoritmo",
     "@algorithm": {
@@ -1225,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{movimento}=1{{count} movimento}other{{count} movimenti}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Caricamento non riuscito.",
     "@loadFailed": {
@@ -1284,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} devono essere rimossi.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Posiz. ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Conteggio pezzi piazzati nella fase di piazzamento.",
     "@placedPieceCount": {
@@ -1310,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "Il giocatore attuale ha piazzato {count}.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "Non posizionare la fase, non può cambiarla.",
     "@notPlacingPhase": {
@@ -1348,815 +1277,2875 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "foresta",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Immagine del desktop",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Posizione non valida.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "Condividi GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Rapporto pixel",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Durata",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "Registratore dello schermo di gioco",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Precedente",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Prossimo",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Saltare",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Fatto",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Puoi modificare le regole del gioco nelle impostazioni delle regole.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "È possibile utilizzare la rotellina del mouse per modificare il valore nel selettore.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "Tempo di pensiero AI impostato su 0 significa che non c'è limite di tempo per pensare.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) è una forma modificata dell'algoritmo di ricerca alfa-beta che mira a migliorare l'efficienza riutilizzando i risultati di ricerca intermedi e utilizzando una buona ipotesi iniziale per restringere lo spazio di ricerca.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Tieni presente che la regolazione del tempo di pensiero dell'IA potrebbe non essere del tutto precisa. Il tempo di pensiero effettivo può essere più breve quando il livello di difficoltà è impostato su un valore inferiore e può essere più lungo quando l'IA è a metà pensiero allo scadere del tempo.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Se si imposta il livello di difficoltà alto ma non si aumenta il tempo di riflessione dell'IA, il livello di difficoltà effettivo potrebbe essere limitato a un valore inferiore a causa del vincolo del tempo di riflessione. Il valore effettivo può variare in base alle prestazioni della macchina.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) è un algoritmo di ricerca per trovare la mossa migliore in una data posizione. È un miglioramento dell'algoritmo alfa-beta e utilizza ricerche di finestre nulle o nulle per confermare che una mossa è peggiore o non peggiore di un punteggio già sicuro dalla variazione principale. PVS si concentra sulle mosse più promettenti ed evita ricerche non necessarie di rami non ottimali, il che aiuta a migliorare l'efficienza della ricerca.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "L'algoritmo alpha-beta è un algoritmo di ricerca per trovare la mossa migliore. Utilizza il principio minimax e due valori, alfa e beta, per sfoltire l'albero di ricerca e aumentare l'efficienza. Alpha rappresenta il punteggio minimo che il computer è sicuro di poter ottenere, mentre beta rappresenta il punteggio massimo che il suo avversario può ottenere. L'algoritmo aiuta il computer a prendere decisioni intelligenti ed efficienti in un gioco.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Secondo l'esperienza umana, se provi a vincere, perderai. Punta invece al pareggio come obiettivo ed evita di perdere la partita. Osserva il tuo avversario e attiralo delicatamente in una posizione in cui potrebbe commettere errori. Quando mostrano debolezza, cogli l'opportunità e spingi delicatamente per la vittoria. In questo modo, puoi vincere la partita.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "In questo gioco, è più facile vincere per il secondo giocatore rispetto al primo giocatore.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Abilitando l'opzione Passiva, l'IA si rilasserà quando ha un vantaggio nella posizione, piuttosto che tentare aggressivamente di vincere il più rapidamente possibile.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Abilitare questa opzione aumenta la casualità e il divertimento del gioco mentre disabilitarla può aiutare a studiare modi per battere l'IA.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Se l'IA considera la mobilità dei suoi pezzi, non mirerà solo a catturare i pezzi dell'avversario il più rapidamente possibile, ma considererà anche di bloccare i movimenti dell'avversario e impedire loro di fare lo stesso.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Quando il tabellone è pieno",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "Alla fine della fase di piazzamento, prima che inizi la fase di spostamento, l'azione segue se la scacchiera è piena di pezzi.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Il giocatore che muove per primo nella fase di movimento rimuove uno dei pezzi dell'avversario.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Entrambe le parti accettano un pareggio.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Prendi uno dei pezzi del tuo avversario.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Il primo giocatore perde la partita.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Il primo e il secondo giocatore rimuovono uno dei pezzi dell'avversario.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Il secondo e il primo giocatore rimuovono uno dei pezzi dell'avversario.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Entrati ora nella fase di volo, i pezzi dell'avversario possono saltare in qualsiasi punto vuoto della scacchiera. Puoi disattivare la regola di volo nelle \"Impostazioni regole\".",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Quando stallo",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Quale azione segue quando nessun pezzo può essere mosso?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Termina con una perdita di stallo.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Cambia il lato per muoverti.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Rimuovi uno dei pezzi dell'avversario e fai la mossa successiva.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Termina con un pareggio di stallo.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Rimuovi uno dei pezzi dell'avversario e cambia il lato da muovere.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "Tempo di ritardo della risposta AI",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI è attualmente in una fase di risposta ritardata. Si prega di attendere un po' prima di procedere.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Non puoi rimuovere un pezzo non adiacente.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "In caso di stallo, i pezzi dell'avversario adiacenti ai tuoi possono essere rimossi, indipendentemente dalla formazione del mulino.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS è un algoritmo adatto ai principianti che prende decisioni esplorando e valutando diverse mosse attraverso simulazioni.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "Giada d'oro",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "Legno della foresta",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "Mistero oscuro",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Blu notte",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "Foresta verde",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "Prato Verde",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "Sentiero pietroso",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Rosa pastello",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "Mare Turchese",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Sogno Viola",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "Cioccolato alla menta",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Cielo blu",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "Giardino giocoso",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "L'algoritmo di analisi retrograda utilizza l'analisi retrograda multivalore per creare un database finale da diverse posizioni di partenza, quindi applica questo database per ottimizzare il gioco. Questo approccio rientra nella categoria delle soluzioni Ultra-Strong.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Vuoi visualizzare la guida per l'utente di questo algoritmo?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Mostra l'indicatore del vantaggio di posizione",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Utilizza il database perfetto",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Abilita questa opzione per utilizzare un database di giochi impeccabile generato tramite algoritmi all'avanguardia. Questa funzionalità integra sia le strategie di apertura che quelle di fine gioco per suggerire le mosse ottimali. Questa è la scelta preferita per i giocatori che cercano il massimo livello di precisione nel gioco. Creato attraverso meticolose tecniche computazionali, il database è progettato per offrire soluzioni di gioco quasi perfette.\n\nNota: se l'IA non riesce ad accedere al database, si rivolgerà ad algoritmi convenzionali per le decisioni di gioco. Quando il database è disponibile, il \"Livello di difficoltà\" diventa praticamente imbattibile e il \"Tempo di riflessione dell'IA\" subisce una drastica riduzione. Molte impostazioni all'interno delle opzioni \"Stile di gioco dell'IA\" verranno sovrascritte, poiché i risultati del database hanno la massima priorità.\n\nPer indicazioni su come sfruttare al meglio questo database impeccabile, fare clic qui.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Immagine di sfondo",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "Quando l'opzione \"Usa database perfetto\" non è abilitata, l'impostazione \"Casuale\" fa sì che l'IA sposti i pezzi in modo casuale senza utilizzare alcun algoritmo per la selezione delle mosse. Ciò in genere si traduce in un gameplay significativamente più debole. Al contrario, quando è abilitato \"Utilizza database perfetto\", l'intelligenza artificiale si affida esclusivamente al \"database perfetto\" per prendere decisioni, invece di fonderlo con gli algoritmi IA tradizionali. In questa modalità, le mosse dell'IA sono interamente basate sul contenuto del database, evitando di fare affidamento su calcoli in tempo reale o algoritmi di ricerca.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Rimuovi la pedina (o le pedine) dell'avversario dalla sua mano; poi è il turno dell'avversario di piazzare.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Quando si formano mulini durante la fase di piazzamento",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Rimuovi la pedina (o le pedine) dell'avversario dalla plancia.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Rimuovi la pedina (o le pedine) dell'avversario dalla plancia; poi è il turno dell'avversario di piazzare.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "L'avversario rimuove la sua pedina (o le sue pedine) dalla plancia.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "Invece di farti agire, l'avversario sceglie e rimuove la propria pedina (o le proprie pedine) dalla plancia, compiendo effettivamente un'azione che è dannosa per se stesso.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Rimuovi la pedina (o le pedine) dell'avversario dalla sua mano; poi è il tuo turno di muovere.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Rimuovi la pedina (o le pedine) dalla mano dell'avversario. Se, in base all'impostazione di rimozione multipla, è necessario rimuovere più pedine e l'avversario non ha più pedine in mano, continua a rimuovere le pedine dell'avversario dalla plancia. Poi è il tuo turno di muovere. Se continui a formare mulini, puoi continuare a rimuovere le pedine dell'avversario.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Rimuovi la pedina (o le pedine) dalla mano dell'avversario. Se, in base all'impostazione di rimozione multipla, è necessario rimuovere più pedine e l'avversario non ha più pedine in mano, continua a rimuovere le pedine dell'avversario dalla plancia. Poi è il turno dell'avversario di muovere.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Contrassegna e ritarda la rimozione delle pedine.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "Durante la fase di piazzamento, le pedine da rimuovere vengono contrassegnate e, per entrambi i giocatori, nessun nuovo pezzo può essere piazzato su questi punti. All'inizio della fase di movimento, queste pedine contrassegnate vengono rimosse completamente e i giocatori possono quindi spostare le loro pedine su questi punti ora vuoti.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Le azioni che possono essere intraprese durante la formazione dei mulini nella fase di posizionamento.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Contrassegnato",
-    "@marked": {},
+    "@marked": {
+        "description": ""
+    },
     "menu": "Menu",
-    "@menu": {},
+    "@menu": {
+        "description": ""
+    },
     "monochrome": "Monocromatico",
-    "@monochrome": {},
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "Puoi attivare il supporto per il lettore di schermo nelle impostazioni di Accessibilità nelle Impostazioni generali.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Mostra numeri sui pezzi",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Salva immagine",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Mostra barra degli strumenti di analisi",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Colore di sfondo della barra degli strumenti di analisi",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Colore dell'icona della barra degli strumenti di analisi",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "Trasformato.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "Impossibile trasformare.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Ruota",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "Cap. O.",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "Cap. V.",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "Cap. I/E",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "Tela Trasparente",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Limita la formazione ripetuta di mulini",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "Un pezzo spostato da un mulino per formarne un altro non può immediatamente ritornare al punto originale nel turno successivo per formare di nuovo un mulino. È richiesta prima una mossa diversa.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Mulino monouso",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Ogni mulino può rimuovere un pezzo dell'avversario una sola volta. Puoi riformarlo di nuovo, ma non può essere utilizzato per rimozioni aggiuntive.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Le regole attuali che hai impostato non hanno un database perfetto corrispondente. Per ulteriori informazioni sul database perfetto, clicca qui.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "Concentrati sul bloccare i percorsi",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "Dai priorità all'ostruzione dei movimenti dell'avversario piuttosto che alla formazione dei mulini. Invece di concentrarsi sulla rimozione dei pezzi completando i mulini, l'IA mira a intrappolare l'avversario, rendendolo incapace di muoversi e garantendo una vittoria per logoramento piuttosto che per gioco aggressivo. Questa strategia non blocca attivamente i mulini dell'avversario.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Immagine del pezzo",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Importa impostazioni colore",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Esporta impostazioni colore",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Importa",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Esporta",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Si prega di copiare prima le impostazioni del formato JSON negli appunti.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Copiato negli appunti.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Importato.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Immagine della tavola",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Foglie d'Autunno",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Terra Leggendaria",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Effetto vignettatura",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Vuoi rendere la barra degli strumenti completamente trasparente quando viene impostata un'immagine di sfondo della tavola?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "Attiva la vibrazione nel gioco",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Tema del suono",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "Palla",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Liquido",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Legno",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Effetto animazione di posizionamento pezzo",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Effetto animazione di rimozione pezzo",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Mostra la barra degli strumenti in basso",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Raggio dell'angolo della tavola",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Usa libro di apertura",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Corrente",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Insieme di regole",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "Consenti all'IA di utilizzare mosse di apertura comunemente impiegate dai giocatori umani professionisti durante le prime fasi del gioco. Nota: questa funzione è attualmente disponibile solo per specifici insiemi di regole.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Mostra grafico del vantaggio",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Il grafico del vantaggio verrà disegnato solo dopo che l'IA effettua una mossa. Non verrà disegnato quando il giocatore umano effettua una mossa.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Disabilita la rimozione finché tutti i pezzi non sono posizionati. I giocatori rimuovono i pezzi in base al numero di mulini formati.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Disabilita la rimozione finché tutti i pezzi non sono posizionati. I giocatori rimuovono i pezzi in base al numero di mulini: se il numero è uguale, entrambi rimuovono lo stesso numero di pezzi; se uno ne ha di più, rimuove un pezzo in più, mantenendo la differenza di un solo pezzo. Se solo uno forma un mulino, rimuove due pezzi mentre l'altro ne rimuove uno. Se nessuno forma un mulino, entrambi rimuovono un pezzo.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Seleziona uno dei tuoi pezzi.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Non è il tuo turno.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Colore di sfondo della barra degli strumenti di annotazione",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Colore delle icone della barra degli strumenti di annotazione",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Mostra la barra degli strumenti di annotazione",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Entra in modalità annotazione",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Sei sicuro di voler cancellare tutte le annotazioni?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "Prompt LLM copiato negli appunti.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Connessione rifiutata, il server potrebbe essere inattivo.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Rilevamento riuscito, in attesa di connessione...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "Nessuna connessione LAN",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Cattura screenshot",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Disconnesso dall'avversario.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Richiesta di ritiro mossa",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Niente da mostrare.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Interrompi hosting",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Connessione resettata dal peer.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Connessione persa a causa del timeout dell'heartbeat. Riconnettiti.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Avvia hosting",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Richiesta di riavvio respinta.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "Non connesso all'avversario LAN.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "Prompt LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "Gioco riavviato.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Ritiro mossa respinto.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Sei sicuro di voler abbandonare questa partita?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "L'avversario ha abbandonato. Hai vinto!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Cancella tutte le annotazioni",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Connesso, in attesa della mossa dell'avversario...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Stato della rete: Disconnesso",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Richiesta di ritiro mossa inviata all'avversario.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "L'avversario potrebbe aver lasciato la partita",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Connesso all'host con successo.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Connessione persa: timeout dell'heartbeat",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Nessun host rilevato.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Conferma abbandono",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "Avviato hosting del gioco, in attesa che i giocatori si uniscano...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Connessione scaduta, connessione di rete instabile.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "Nessun prompt LLM disponibile.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Hai abbandonato. Partita terminata.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "IP del server",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Conferma cancellazione",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Turno dell'avversario.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "In attesa di una connessione client...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Richiesta di ritiro mossa respinta o fallita.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Aggiungi testo",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Esci dalla modalità annotazione",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Digita la tua annotazione",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Tentativo di riconnessione...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Richiesta di riavvio inviata. In attesa della risposta dell'avversario...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Il server è fermo.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Richiesta di riavvio",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Non puoi richiedere un ritiro mossa quando non è il tuo turno.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Ritiro mossa accettato.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Impostazioni di rete locale",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Riconnesso con successo!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Impossibile salvare l'immagine nella galleria.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "L'avversario ha richiesto di riavviare la partita. Accetti?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Il tuo turno.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Impossibile riconnettersi, riavvia il gioco.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Host",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Unisciti",
-    "@join": {},
+    "@join": {
+        "description": ""
+    },
     "port": "Porta",
-    "@port": {},
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Indirizzo IP non valido.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Porta non valida.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Connessione: Tentativo {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Connessione fallita: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Errore: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Avvio hosting fallito: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Errore: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Host rilevato: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Porta",
+    "@port": {
+        "description": ""
     },
     "stop": "Ferma",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Rileva",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Connetti",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Client connesso: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Rilevamento: {seconds} s",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Riconnessione ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Connesso",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "Elimina",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "Antico Egitto",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Ghiaccio Gotico",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Campo di Riso",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "Porcellana Cinese",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Tramonto del Deserto",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Artigianato di Precisione",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Ricamo Folkloristico",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Eredità dei Carpazi",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Grandezza Imperiale",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "Cristallo Boemo",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Alba nella Savana",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Armonia ed Equilibrio",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Spezia di Cannella",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "Mosaico Anatolico",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Spirito del Carnevale",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Costume",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Mercato delle spezie",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Scorri per mostrare il cassetto",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "Mostra le informazioni di gioco negli screenshot",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Limite di tempo umano",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Nessun limite di tempo per le mosse umane",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "La sconfitta per timeout verrà applicata al giocatore umano",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "Identificazione del tabellone...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Puoi inserire qualsiasi nome di modello.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Posizione del tabellone applicata. FEN copiata negli appunti.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Suggerimento: prova a scattare una foto più nitida del tabellone.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "Modello di prompt LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Nessun tabellone valido rilevato.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Selezione immagine dall’album...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Configura modello di prompt",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "Modifica il modello di prompt per l’analisi LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "Impossibile generare la FEN dal tabellone riconosciuto.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Output nella lingua corrente",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "URL di base comuni",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Visualizza modelli comuni",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Parametri di riconoscimento aggiornati.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Mossa del Bianco",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Reimposta ai valori predefiniti",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Scatto fotografico",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Impossibile applicare la posizione del tabellone riconosciuta.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "Contenuto del prompt LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM non configurato. Controlla le impostazioni.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Imposta provider, modello, API Key e Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "Configurazione LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "Configura provider LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "Intestazione modello di prompt LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Nessun pezzo riconosciuto nell’immagine. Riprova.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Riconosci tabellone dall’immagine",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Visualizza suggerimenti",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Applica al tabellone",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Regola area del tabellone",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Visualizza URL comuni",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Analisi del colore fallita!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "Analisi dell’immagine del tabellone in corso...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Seleziona dall’album",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Nessun punto del tabellone rilevato!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Se lasciato vuoto, verrà utilizzato il modello predefinito",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "Configurazione LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Sei sicuro di voler reimpostare i modelli di prompt ai valori predefiniti?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "Piè di pagina modello di prompt LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Caricamento della risposta...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Applica questo risultato al tabellone",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Scatto foto in corso...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Seleziona un’immagine del tabellone da identificare",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Risultati dell’identificazione",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Analizza le mosse e fornisci approfondimenti.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "Ottieni API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "L’intero processo di riconoscimento non è riuscito a completarsi.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Risultato del riconoscimento del tabellone",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "Chiedi all’LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Rilevamento del tabellone fallito!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Nessun punto del tabellone rilevato, impossibile identificare il pezzo!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "Copia FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Modelli più comuni",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (opzionale)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Nessuna immagine selezionata",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Mossa del Nero",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Grande Modello Linguistico",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Fornitore",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "URL di base",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Modello",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Temperatura",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Comando ricevuto! L'IA sta elaborando...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Elaborazione profonda in corso, attendere prego...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "In arrivo a breve...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Parametri di riconoscimento",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Regola i parametri per migliorare la precisione del riconoscimento",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Salva parametri",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Impossibile avviare il riconoscimento delle immagini: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Errore: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Riconoscimento delle immagini non riuscito: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Errore: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Posizione applicata con {whiteCount} pedine bianche e {blackCount} pedine nere",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN copiato negli appunti)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Riconoscimento non riuscito: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Errore: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "La mia valutazione",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "Partite giocate",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "Vittorie",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Sconfitte",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Pareggi",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Ultimo aggiornamento",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Formato:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Reimposta statistiche",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Tasso di pareggio",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Tasso di sconfitta",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Statistiche IA",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Abilita statistiche",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Se abilitato, i risultati delle partite verranno registrati nelle statistiche. Tuttavia, le partite che comportano l'annullamento di mosse non verranno registrate. Se disabilitato, la raccolta delle statistiche viene sospesa.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "Questo reimposterà tutte le statistiche di gioco. Questa azione non può essere annullata.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Dimensione dell'anello interno della tavola",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Ombra del tavoliere",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Rilevamento trappole",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Evidenzia le mosse trappola con cerchi e frecce in grassetto durante l'analisi.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Esiste una trappola. Mosse trappola: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Cattura fiancheggiata",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Allega uno dei pezzi del tuo avversario tra due dei tuoi in linea retta per catturarlo.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Consenti la cattura di fianco",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Cattura di intervento",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Spostati nel punto vuoto tra due dei pezzi del tuo avversario per catturarli entrambi.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Consentire l'acquisizione di interventi",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Saltare la cattura",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Cattura saltando sopra il pezzo di un avversario adiacente nel punto vuoto oltre.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Consenti la cattura del salto",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Linee applicabili",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "Lungo i bordi della piazza",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "Lungo le linee ortogonali che attraversano il quadrato",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "Lungo le linee diagonali che attraversano il quadrato",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Fasi di esecuzione",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Disponibilità durante la fase mobile in base ai pezzi rimanenti",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Nessuna restrizione",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Disponibile quando hai tre o meno pezzi",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Interrompi il posizionamento quando rimangono solo due quadrati vuoti",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Quando abilitato, la fase di posizionamento termina e la fase di movimento inizia quando la scacchiera ha solo 2 spazi vuoti rimasti, indipendentemente dai pezzi in mano. Questa regola si applica solo ai giochi a 12 pezzi.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Puoi richiedere un'annullamento solo immediatamente dopo la tua mossa.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Se desideri una sfida maggiore, ti suggeriamo di attivare l'opzione \"{setting}\" e di scaricare il database completo sul tuo dispositivo come indicato.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "Vuoi configurare le regole del gioco ora?",
-    "@configureRulesPrompt": {},
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
     "configureRules": "Configura regole",
-    "@configureRules": {},
+    "@configureRules": {
+        "description": "Button text for configuring rules"
+    },
     "algorithmSuggestionTitle": "Suggerimento algoritmo",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Hai perso diverse partite di fila al livello 1. Vuoi passare all'algoritmo MCTS più semplice per ridurre la difficoltà?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "Congratulazioni per la vittoria al livello 30 di MCTS! Vuoi passare all'algoritmo MTD(f) per una sfida maggiore?",
-    "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "Colore di evidenziazione dei pezzi catturabili",
-    "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
+    "@switchToMtdfSuggestion": {
+        "description": ""
     },
     "highlightCapturablePieces": "Evidenzia pezzi catturabili",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
     "undo": "Annulla",
-    "@undo": {},
+    "@undo": {
+        "description": "Undo last move"
+    },
     "reset": "Ripristina",
-    "@reset": {},
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
     "allPuzzlesCompleted": "Tutti i puzzle completati!",
-    "@allPuzzlesCompleted": {},
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
     "back": "Indietro",
-    "@back": {},
+    "@back": {
+        "description": "Back button tooltip"
+    },
+    "puzzles": "Enigmi",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Enigma",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "Nessun enigma disponibile",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filtra",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Categoria",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Cancella filtro",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Statistiche enigmi",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Enigmi totali",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Completati",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Stelle totali",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Completamento",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Principiante",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Facile",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Medio",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Difficile",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Esperto",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Maestro",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Forma Tris",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Cattura Pedine",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Vinci Partita",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Difendi",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Trova Mossa Migliore",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Finale",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Apertura",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Misto",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Uscire dall'enigma?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Il tuo progresso andrà perso. Sei sicuro?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Mosse",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Ottimale",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Verifica soluzione",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Arrenditi",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Enigma risolto!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Indizi usati",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Riprova",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Torna alla lista",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Soluzione",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Crea nuovo enigma",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Modifica enigma",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Personalizzato",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "Seleziona enigmi",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} selezionato/i",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles"
+    },
+    "puzzleSelectAll": "Seleziona tutto",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Esporta",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Importa",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Esportato {count} enigma con successo}other{Esportati {count} enigmi con successo}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message"
+    },
+    "puzzleExportFailed": "Esportazione enigmi fallita",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Importato {count} enigma con successo}other{Importati {count} enigmi con successo}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message"
+    },
+    "puzzleImportFailed": "Importazione enigmi fallita",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Eliminare {count} enigma?}other{Eliminare {count} enigmi?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles"
+    },
+    "puzzleDeleted": "{count,plural, =1{Eliminato {count} enigma}other{Eliminati {count} enigmi}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message"
+    },
+    "puzzleCannotDeleteBuiltIn": "Impossibile eliminare enigmi integrati",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "Come creare un enigma",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Imposta la posizione della scacchiera\n2. Cattura la posizione\n3. Registra le mosse della soluzione\n4. Compila i dettagli dell'enigma\n5. Salva",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Imposta posizione",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "Cattura posizione",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "Posizione catturata con successo",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "Nessuna posizione catturata",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "Per favore cattura prima una posizione",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Registra soluzione",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Inizia registrazione",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Ferma registrazione",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Registrazione...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Registrazione mosse soluzione iniziata",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Registrata {count} mossa}other{Registrate {count} mosse}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message"
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Soluzione: {count} mossa}other{Soluzione: {count} mosse}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves"
+    },
+    "puzzleNoSolutionRecorded": "Nessuna soluzione registrata",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Cancella soluzione",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "Dettagli enigma",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Titolo",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Descrizione",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Categoria",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Difficoltà",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Indizio",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tag",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separa i tag con virgole",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Autore",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "Il titolo è obbligatorio",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "La descrizione è obbligatoria",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "La posizione è obbligatoria",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "La soluzione è obbligatoria",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Enigma creato con successo",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Enigma aggiornato con successo",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Salvataggio enigma fallito",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "opzionale",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Il tuo progresso",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Esci",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Tutto",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Prossimamente",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Enigma giornaliero",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Risolvi un nuovo enigma ogni giorno",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Giorno #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number"
+    },
+    "dailyPuzzleStreak": "Serie",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "giorni di serie",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "giorni",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Migliore: {longestStreak} giorni",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display"
+    },
+    "dailyPuzzleStart": "Inizia enigma giornaliero",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Completa enigmi giornalieri per costruire la tua serie!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Serie attuale",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Serie più lunga",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Totale completato",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Risolvi enigmi ogni giorno per mantenere la tua serie. Saltare un giorno la resetterà!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "Tutti gli enigmi",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Sfoglia tutti gli enigmi disponibili",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Corsa enigmi",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Risolvi enigmi contro il tempo",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Risolvi quanti più enigmi possibile in 5 minuti!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Regole",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minuti al cronometro",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 vite - 1 persa per errore",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Massimizza il tuo punteggio!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Inizia corsa",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Sei sicuro di voler uscire dalla corsa? Il tuo progresso andrà perso.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Risultati corsa",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Tempo scaduto!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Vite esaurite",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Corsa completata!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Risolti",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Falliti",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Precisione",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Gioca ancora",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Battaglia enigmi",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Compete con altri giocatori",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Prossimamente!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Questa funzione è in fase di sviluppo. Resta sintonizzato!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ Gare 1v1",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Matchmaking in diretta",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Sistema di rating",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Classifiche",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Enigmi personalizzati",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Crea e gestisci i tuoi enigmi",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Modalità multi-selezione",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Crea enigma",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Serie enigmi",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Risolvi consecutivamente senza errori",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "Quanti ne puoi risolvere di fila?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Regole",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Risolvi quanti più enigmi possibile",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ Un errore e finisce",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Batti il tuo record personale",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Inizia serie",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Attuale",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Migliore",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Risultati serie",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Serie terminata",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "Nuovo record!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Punteggio finale",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Riprova",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Sei sicuro di voler uscire? La tua serie andrà persa.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "Cronologia",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "Visualizza i tuoi tentativi di enigmi",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "Nessuna cronologia enigmi",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Inizia a risolvere enigmi per vedere la tua cronologia qui",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Solo successi",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Solo fallimenti",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Enigma sconosciuto",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "indizi",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "Visualizza analisi dettagliate",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Il tuo rating enigmi",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provvisorio ({gamesLeft} partite mancanti)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message"
+    },
+    "puzzleStatsGamesPlayed": "Partite giocate",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Deviazione",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Panoramica prestazioni",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Tasso di successo",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Tempo medio",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Risolti",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Falliti",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Successo per difficoltà",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Successo per categoria",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Attività recente",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Nessuna attività recente",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Modifica",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Salva",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "Nessun enigma personalizzato",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Crea i tuoi enigmi per praticare posizioni specifiche",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "Questa funzione è pianificata per una versione futura",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Posizione non valida",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Apri scacchiera (Imposta posizione)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Apri scacchiera (Gioca mosse)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Usa il pulsante qui sotto per aprire la scacchiera, poi premi Indietro per tornare.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Formato posizione non valido. Controlla la scacchiera di gioco.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Caricamento posizione fallito. Ricattura.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Formato posizione non valido. Ricattura la posizione.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs recapture"
+    },
+    "puzzleShowDetailedWorkflow": "Mostra flusso di lavoro dettagliato",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Flusso di lavoro creazione enigma",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Imposta posizione",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Apri scacchiera (imposta o gioca mosse), crea posizione iniziale, torna e cattura",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Registra soluzione",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Clicca Inizia registrazione (la scacchiera si resetta alla posizione iniziale), torna, gioca mosse, torna e ferma",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Aggiungi dettagli",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Compila titolo, descrizione, categoria, difficoltà e tag",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Salva enigma",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Clicca il pulsante salva in alto a destra",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Suggerimento: Navigherai tra questa pagina e la scacchiera. Il tuo progresso viene salvato!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionCaptureHelp": "Aiuto cattura posizione",
+    "@puzzlePositionCaptureHelp": {
+        "description": "Title for position capture help dialog"
+    },
+    "puzzlePositionCaptureHelpContent": "Come catturare la posizione iniziale dell'enigma:\n\n1. Clicca \"Apri scacchiera (Imposta posizione)\" per posizionare manualmente le pedine, OPPURE clicca \"Apri scacchiera (Gioca mosse)\" per raggiungere la posizione giocando mosse\n\n2. Organizza la scacchiera nella posizione iniziale desiderata per il tuo enigma\n\n3. Premi il pulsante indietro per tornare a questa pagina\n\n4. Clicca il pulsante \"Cattura posizione\" per salvare lo stato attuale della scacchiera\n\nLa posizione catturata verrà utilizzata come punto di partenza per il tuo enigma.",
+    "@puzzlePositionCaptureHelpContent": {
+        "description": "Help content for capturing puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Aiuto registrazione soluzione",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "Come registrare le mosse della soluzione:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Cattura prima la posizione iniziale",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Clicca il pulsante \"Inizia registrazione\" (questo resetta la scacchiera alla tua posizione catturata)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Torna qui e clicca \"Ferma registrazione\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Suggerimento: La scacchiera si resetterà automaticamente alla tua posizione catturata quando inizi la registrazione.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleShowPositionCaptureHelp": "Mostra aiuto cattura posizione",
+    "@puzzleShowPositionCaptureHelp": {
+        "description": "Tooltip for position capture help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Mostra aiuto registrazione soluzione",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "Nessun altro indizio disponibile",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Indizio",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Soluzione ottimale ({moves} mosse):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Mosse",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "Errori di validazione",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Contribuisci enigmi a Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "Cosa succede dopo:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. I tuoi enigmi verranno esportati in un file JSON",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. Puoi condividere questo file tramite la finestra di condivisione",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Gli enigmi verranno revisionati dai manutentori",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Una volta approvati, diventano enigmi integrati!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Esporta per contribuzione",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Inizia a contribuire",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Avvio rapido:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Crea enigmi di qualità",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Assicurati che il tuo enigma abbia una soluzione chiara, buoni metadati e insegni qualcosa di prezioso.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Aggiungi il tuo nome",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Modifica il tuo enigma e aggiungi il tuo nome come autore per ottenere credito.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Esporta per contribuzione",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Seleziona i tuoi enigmi e tocca l'icona di caricamento per esportare nel formato corretto.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Invia",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Condividi il file esportato tramite GitHub Pull Request, Issue o email.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Documentazione completa",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "Vedi PUZZLE_CONTRIBUTION_GUIDE.md nel repository per istruzioni complete, linee guida sulla qualità e opzioni di invio.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Requisiti di qualità:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Soluzione chiara e unica",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Metadati completi (titolo, descrizione, ecc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Attribuzione autore",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Valutazione difficoltà accurata",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Istruttivo o divertente",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Prossima mossa: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Spostare",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "Soluzione completa: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Soluzione",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "Fai attenzione a queste posizioni",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "Nessuna soluzione disponibile",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Continua! L'obiettivo non è stato ancora raggiunto.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfetto! Risolto con mosse ottimali!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Corretto! ({count} mosse, ottimale: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Ottimale",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "Corretto! Hai trovato una soluzione alternativa!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Proprio ora",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "january": "Gennaio",
+    "@january": {
+        "description": "Month name"
+    },
+    "february": "Febbraio",
+    "@february": {
+        "description": "Month name"
+    },
+    "march": "Marzo",
+    "@march": {
+        "description": "Month name"
+    },
+    "april": "Aprile",
+    "@april": {
+        "description": "Month name"
+    },
+    "may": "Maggio",
+    "@may": {
+        "description": "Month name"
+    },
+    "june": "Giugno",
+    "@june": {
+        "description": "Month name"
+    },
+    "july": "Luglio",
+    "@july": {
+        "description": "Month name"
+    },
+    "august": "Agosto",
+    "@august": {
+        "description": "Month name"
+    },
+    "september": "Settembre",
+    "@september": {
+        "description": "Month name"
+    },
+    "october": "Ottobre",
+    "@october": {
+        "description": "Month name"
+    },
+    "november": "Novembre",
+    "@november": {
+        "description": "Month name"
+    },
+    "december": "Dicembre",
+    "@december": {
+        "description": "Month name"
+    },
+    "invalidPuzzle": "Enigma non valido",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "Questo enigma ha un formato di posizione non valido e non può essere caricato. Contatta l'autore dell'enigma o prova un enigma diverso.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Continua a provare!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Esempi",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "voiceCommandsHelp": "Aiuto comandi vocali",
+    "@voiceCommandsHelp": {
+        "description": "Voice commands help page title"
+    },
+    "voiceCommandsHelpIntro": "Usa la tua voce per controllare il gioco! Di seguito i comandi vocali disponibili.",
+    "@voiceCommandsHelpIntro": {
+        "description": "Voice commands help introduction"
+    },
+    "voiceCommandsGameControl": "Controllo del gioco",
+    "@voiceCommandsGameControl": {
+        "description": "Game control commands section"
+    },
+    "voiceCommandsMoveControl": "Comandi di movimento",
+    "@voiceCommandsMoveControl": {
+        "description": "Move commands section"
+    },
+    "voiceCommandsSettings": "Comandi impostazioni",
+    "@voiceCommandsSettings": {
+        "description": "Settings commands section"
+    },
+    "voiceCommandsTips": "Suggerimenti",
+    "@voiceCommandsTips": {
+        "description": "Tips section"
+    },
+    "voiceCommandsUndo": "Annulla mossa",
+    "@voiceCommandsUndo": {
+        "description": "Undo command title"
+    },
+    "voiceCommandsUndoDesc": "Annulla l'ultima mossa",
+    "@voiceCommandsUndoDesc": {
+        "description": "Undo command description"
+    },
+    "voiceCommandsRedo": "Ripeti mossa",
+    "@voiceCommandsRedo": {
+        "description": "Redo command title"
+    },
+    "voiceCommandsRedoDesc": "Ripeti la mossa precedentemente annullata",
+    "@voiceCommandsRedoDesc": {
+        "description": "Redo command description"
+    },
+    "voiceCommandsRestart": "Riavvia partita",
+    "@voiceCommandsRestart": {
+        "description": "Restart command title"
+    },
+    "voiceCommandsRestartDesc": "Inizia una nuova partita",
+    "@voiceCommandsRestartDesc": {
+        "description": "Restart command description"
+    },
+    "voiceCommandsAiMove": "Richiedi mossa IA",
+    "@voiceCommandsAiMove": {
+        "description": "AI move command title"
+    },
+    "voiceCommandsAiMoveDesc": "Richiedi all'IA di fare una mossa",
+    "@voiceCommandsAiMoveDesc": {
+        "description": "AI move command description"
+    },
+    "voiceCommandsMovePiece": "Muovi pedina",
+    "@voiceCommandsMovePiece": {
+        "description": "Move piece command title"
+    },
+    "voiceCommandsMovePieceDesc": "Muovi una pedina da una posizione a un'altra",
+    "@voiceCommandsMovePieceDesc": {
+        "description": "Move piece command description"
+    },
+    "voiceCommandsPlacePiece": "Posiziona pedina",
+    "@voiceCommandsPlacePiece": {
+        "description": "Place piece command title"
+    },
+    "voiceCommandsPlacePieceDesc": "Posiziona una pedina sulla scacchiera",
+    "@voiceCommandsPlacePieceDesc": {
+        "description": "Place piece command description"
+    },
+    "voiceCommandsRemovePiece": "Rimuovi pedina",
+    "@voiceCommandsRemovePiece": {
+        "description": "Remove piece command title"
+    },
+    "voiceCommandsRemovePieceDesc": "Rimuovi una pedina avversaria",
+    "@voiceCommandsRemovePieceDesc": {
+        "description": "Remove piece command description"
+    },
+    "voiceCommandsToggleSound": "Attiva/disattiva audio",
+    "@voiceCommandsToggleSound": {
+        "description": "Toggle sound command title"
+    },
+    "voiceCommandsToggleSoundDesc": "Attiva o disattiva l'audio",
+    "@voiceCommandsToggleSoundDesc": {
+        "description": "Toggle sound command description"
+    },
+    "voiceCommandsToggleVibration": "Attiva/disattiva vibrazione",
+    "@voiceCommandsToggleVibration": {
+        "description": "Toggle vibration command title"
+    },
+    "voiceCommandsToggleVibrationDesc": "Attiva o disattiva la vibrazione",
+    "@voiceCommandsToggleVibrationDesc": {
+        "description": "Toggle vibration command description"
+    },
+    "voiceCommandsTip1": "Parla chiaramente e a ritmo moderato per un migliore riconoscimento",
+    "@voiceCommandsTip1": {
+        "description": "Voice command tip 1"
+    },
+    "voiceCommandsTip2": "Attendi l'indicatore di ascolto prima di parlare",
+    "@voiceCommandsTip2": {
+        "description": "Voice command tip 2"
+    },
+    "voiceCommandsTip3": "I comandi funzionano nella lingua selezionata",
+    "@voiceCommandsTip3": {
+        "description": "Voice command tip 3"
+    },
+    "voiceAssistant": "Assistente vocale",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "Abilita assistente vocale",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantEnabledDescription": "Consenti all'app di ricevere comandi vocali",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantSettings": "Impostazioni assistente vocale",
-    "@voiceAssistantSettings": {},
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
     "voiceAssistantSettingsDescription": "Configura modello, lingua e comportamento",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "voiceAssistantGeneral": "Generale",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "Impostazioni modello",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "Gestione modello",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "Tipo di modello",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "Lingua",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "Rileva automaticamente lingua",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "Mostra pulsante vocale",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "Ascolto continuo",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "Scarica modello",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "Elimina modello",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "Informazioni modello",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "Scaricato",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "Non scaricato",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "Scaricamento...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "L'assistente vocale richiede un modello linguistico per funzionare. Questo scaricherà il modello selezionato.",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "Modello scaricato con successo",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "Scaricamento modello fallito",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "Modello eliminato con successo",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "Eliminazione fallita",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "Sei sicuro di voler eliminare il modello scaricato?",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "Dimensione modello",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "Percorso modello",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "Seleziona tipo di modello",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "Seleziona lingua",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "Lingua cambiata. Scarica il modello per la nuova lingua.",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "Abilitazione assistente vocale fallita",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "In ascolto...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "Nessun parlato rilevato",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantRecognizedText": "Testo riconosciuto",
+    "@voiceAssistantRecognizedText": {
+        "description": "Recognized text label"
+    },
+    "voiceAssistantResult": "Risultato",
+    "@voiceAssistantResult": {
+        "description": "Command execution result label"
+    },
+    "voiceAssistantError": "Errore assistente vocale",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceAssistantRedownloadModel": "Riscarica modello",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "Un modello vocale è già scaricato. Vuoi riscaricare e sovrascrivere?",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
+    "voiceCommandSuccess": "Comando eseguito con successo",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "Esecuzione comando fallita",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "Comando sconosciuto",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "Movimento eseguito",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "Esecuzione movimento fallita",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "Pedina posizionata",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "Posizionamento pedina fallito",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "Pedina rimossa",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "Rimozione pedina fallita",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "Annullamento eseguito",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "Annullamento fallito",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "Ripeti eseguito",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "Ripeti fallito",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "Partita riavviata",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "Riavvio partita fallito",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "L'IA sta pensando...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "Richiesta mossa IA fallita",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "Impostazioni aggiornate",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "Aggiornamento impostazioni fallito",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "Aiuto visualizzato",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "Audio abilitato",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "Audio disabilitato",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "Vibrazione abilitata",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "Vibrazione disabilitata",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
+    }
 }

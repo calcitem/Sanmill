@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "Ok",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} để di chuyển.",
     "@tipToMove": {
-        "description": "The tip that the given player is to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": "The tip that the given player is to move."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "Người chơi 1 thắng!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "Không thể nhập {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Di chuyển và các quy tắc không phù hợp.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Lỗi: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "Tỉ lệ chiến thắng",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} số mảnh ít hơn ba.",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player lost because they had less than three pieces left."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} từ chức.",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player resigned."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} không còn cách nào để đi.",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Bảng đã đầy và {player} không còn cách nào để tiếp tục.",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go because the board is full."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Thời gian đã hết, {player} đã mất.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "Trong giai đoạn di chuyển, không có quân cờ nào bị loại bỏ trong số lần di chuyển cụ thể cuối cùng.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Thử thách cấp độ khó hơn? Cấp độ mới sẽ là cấp độ {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Bạn đã thua!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Phiên bản: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Cảm ơn",
     "@thanks": {
@@ -635,13 +598,7 @@
     },
     "pick": "Chọn {element}",
     "@pick": {
-        "description": "Used in the color picker.",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Used in the color picker."
     },
     "info": "Thông tin",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " Và ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Chấp nhận",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} trong tay: {count}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has in his hand."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} trên tàu: {count}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has on the board"
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "Bảng bù đắp từ trên xuống",
     "@boardTop": {
@@ -1103,6 +1048,18 @@
     "@close": {
         "description": "Close"
     },
+    "download": "Tải xuống",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+        "description": "Unknown value"
+    },
     "whitePiece": "mảnh trắng",
     "@whitePiece": {
         "description": "White piece"
@@ -1133,23 +1090,19 @@
     },
     "sideToMove": "Bên để di chuyển: {player}",
     "@sideToMove": {
-        "description": "The player whose turn it is.",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "The player whose turn it is."
+    },
+    "player": "người chơi",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Chiêu cuối: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Di chuyển",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Đã chọn",
     "@selected": {
@@ -1174,6 +1127,10 @@
     "pieceHighlightColor": "Màu nổi bật của mảnh",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "capturablePieceHighlightColor": "Màu làm nổi bật quân cờ có thể bắt",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
     },
     "algorithm": "thuật toán",
     "@algorithm": {
@@ -1225,14 +1182,7 @@
     },
     "moveNumber": "{count,plural, =0{Di chuyển}=1{{count} Di chuyển}other{{count} Di chuyển}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Tải không thành công.",
     "@loadFailed": {
@@ -1284,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} mảnh}other{{count} mảnh}} cần xóa.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Đã đặt ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Số mảnh được đặt trong giai đoạn đặt.",
     "@placedPieceCount": {
@@ -1310,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "Người chơi hiện tại đã đặt quân cờ {count}.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "Không đặt pha, không thể thay đổi nó.",
     "@notPlacingPhase": {
@@ -1348,815 +1277,2875 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "Rừng",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Hình ảnh máy tính để bàn",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Vị trí không hợp lệ.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "Chia sẻ ảnh GIF",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Tỷ lệ pixel",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Khoảng thời gian",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "Trình ghi màn hình trò chơi",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Trước",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Kế tiếp",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Nhảy",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Hiểu rồi",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Bạn có thể sửa đổi các quy tắc của trò chơi trong cài đặt quy tắc.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "Bạn có thể sử dụng con lăn chuột để thay đổi giá trị trong bộ chọn.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "Thời gian suy nghĩ AI được đặt thành 0 có nghĩa là không có giới hạn thời gian suy nghĩ.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) là một dạng đã sửa đổi của thuật toán tìm kiếm alpha-beta nhằm nâng cao hiệu quả bằng cách sử dụng lại các kết quả tìm kiếm trung gian và sử dụng dự đoán ban đầu tốt để thu hẹp không gian tìm kiếm.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Xin lưu ý rằng việc điều chỉnh thời gian suy nghĩ của AI có thể không hoàn toàn chính xác. Thời gian suy nghĩ thực tế có thể ngắn hơn khi mức độ khó được đặt ở giá trị thấp hơn và có thể dài hơn khi AI đang suy nghĩ giữa chừng khi hết thời gian.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Nếu bạn đặt độ khó cao nhưng không tăng thời gian suy nghĩ của AI, thì độ khó thực tế có thể bị giới hạn ở giá trị thấp hơn do hạn chế về thời gian suy nghĩ. Giá trị thực tế có thể thay đổi dựa trên hiệu suất của máy.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) là một thuật toán tìm kiếm để tìm ra nước đi tốt nhất ở một vị trí nhất định. Nó là một cải tiến của thuật toán alpha-beta và sử dụng các tìm kiếm cửa sổ null hoặc zero để xác nhận rằng một nước đi tệ hơn hoặc không tệ hơn một điểm đã an toàn từ biến thể chính. PVS tập trung vào các động thái hứa hẹn nhất và tránh các tìm kiếm không cần thiết của các nhánh dưới mức tối ưu, giúp cải thiện hiệu quả của việc tìm kiếm.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "Thuật toán alpha-beta là thuật toán tìm kiếm để tìm nước đi tốt nhất. Nó sử dụng nguyên tắc minimax và hai giá trị, alpha và beta, để cắt bớt cây tìm kiếm và tăng hiệu quả. Alpha đại diện cho số điểm tối thiểu mà máy tính chắc chắn có thể đạt được, trong khi beta đại diện cho số điểm tối đa mà đối thủ của nó có thể đạt được. Thuật toán giúp máy tính đưa ra quyết định thông minh, hiệu quả trong trò chơi.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Theo kinh nghiệm của loài người, nếu bạn cố gắng giành chiến thắng, bạn sẽ thua. Thay vào đó, hãy nhắm đến một trận hòa làm mục tiêu của bạn và tránh thua trò chơi. Quan sát đối thủ của bạn và nhẹ nhàng dụ họ vào vị trí mà họ có thể phạm sai lầm. Khi họ tỏ ra yếu kém, hãy nắm bắt cơ hội và nhẹ nhàng thúc đẩy để giành chiến thắng. Bằng cách này, bạn có thể giành chiến thắng trong trò chơi.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "Trong trò chơi này, người chơi thứ hai sẽ dễ thắng hơn người chơi thứ nhất.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Kích hoạt tùy chọn Bị động sẽ khiến AI thư giãn khi có lợi thế ở vị trí đó, thay vì tích cực cố gắng giành chiến thắng càng nhanh càng tốt.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Kích hoạt tùy chọn này làm tăng tính ngẫu nhiên và thú vị của trò chơi trong khi tắt tùy chọn này có thể giúp nghiên cứu các cách đánh bại AI.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Nếu AI xem xét tính cơ động của các quân cờ của mình, nó sẽ không chỉ nhằm mục đích bắt quân của đối thủ càng nhanh càng tốt mà còn xem xét việc chặn các chuyển động của đối thủ và ngăn họ làm điều tương tự.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Khi bảng đầy",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "Khi kết thúc giai đoạn đặt, trước khi giai đoạn di chuyển bắt đầu, hành động sẽ tiếp theo nếu bàn cờ đầy quân cờ.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Người chơi đi trước trong giai đoạn di chuyển sẽ loại bỏ một trong các quân của đối phương.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Cả hai bên đồng ý hòa.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Lấy một trong những mảnh của đối thủ của bạn.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Người chơi đầu tiên thua trò chơi.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Người chơi thứ nhất và thứ hai loại bỏ một trong các quân cờ của đối phương.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Người chơi thứ hai và thứ nhất loại bỏ một trong các quân cờ của đối phương.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Bây giờ đã bước vào giai đoạn bay, các quân cờ của đối phương có thể nhảy đến bất kỳ điểm trống nào trên bàn cờ. Bạn có thể tắt quy tắc bay trong \"Cài đặt quy tắc\".",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Khi bế tắc",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Hành động nào tiếp theo khi không thể di chuyển quân nào?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Kết thúc với một trận thua bế tắc cho bên bị chặn.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Thay đổi bên để di chuyển.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Loại bỏ một trong các quân cờ của đối thủ và thực hiện nước đi tiếp theo.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Kết thúc với một trận hòa bế tắc.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Loại bỏ một trong các quân cờ của đối thủ và đổi bên để di chuyển.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "Thời gian trễ phản hồi AI",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI hiện đang trong giai đoạn phản hồi chậm. Vui lòng đợi một lúc trước khi tiếp tục.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Bạn không thể loại bỏ một phần không liền kề.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "Nếu bế tắc, các quân của đối thủ liền kề với quân của bạn có thể bị loại bỏ, bất kể đội hình của nhà máy.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS là một thuật toán thân thiện với người mới bắt đầu đưa ra quyết định bằng cách khám phá và đánh giá các nước đi khác nhau thông qua mô phỏng.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "Ngọc vàng",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "Gỗ rừng",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "bí ẩn đen tối",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Màu xanh nửa đêm",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "rừng xanh",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "Đồng cỏ xanh",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "con đường đá",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Màu hồng nhạt",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "biển xanh ngọc",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Giấc mơ màu tím",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "Sôcôla bạc hà",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Trời xanh",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "Khu vườn vui tươi",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "Thuật toán Phân tích ngược dòng sử dụng phân tích ngược dòng đa giá trị để xây dựng cơ sở dữ liệu kết thúc trò chơi từ các vị trí bắt đầu khác nhau, sau đó áp dụng cơ sở dữ liệu này để tối ưu hóa lối chơi. Cách tiếp cận này thuộc danh mục Giải pháp siêu mạnh.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Bạn có muốn xem hướng dẫn sử dụng thuật toán này không?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Hiển thị chỉ báo lợi thế vị trí",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Sử dụng cơ sở dữ liệu hoàn hảo",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Kích hoạt tùy chọn này để sử dụng cơ sở dữ liệu trò chơi không có khuyết điểm, được tạo ra thông qua các thuật toán tiên tiến. Tính năng này kết hợp cả chiến lược mở đầu và kết thúc trò chơi để đề xuất các bước đi tối ưu. Đây là lựa chọn ưa thích cho những người chơi muốn đạt độ chính xác cao nhất trong trò chơi. Được tạo ra thông qua các kỹ thuật tính toán tỉ mỉ, cơ sở dữ liệu được thiết kế để cung cấp các giải pháp trò chơi gần như hoàn hảo.\n\nLưu ý: Nếu AI không thể truy cập cơ sở dữ liệu, nó sẽ chuyển sang các thuật toán truyền thống để ra quyết định trong trò chơi. Khi cơ sở dữ liệu có sẵn, \"Mức độ khó\" trở nên hầu như không thể đánh bại, và \"Thời gian suy nghĩ của AI\" sẽ giảm mạnh. Nhiều cài đặt trong tùy chọn 'Phong cách chơi của AI' cũng sẽ bị ghi đè, vì kết quả từ cơ sở dữ liệu có ưu tiên cao nhất.\n\nĐể được hướng dẫn về cách tận dụng tối đa cơ sở dữ liệu hoàn hảo này, vui lòng nhấp vào đây.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Hình nền",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "Khi tùy chọn 'Sử dụng cơ sở dữ liệu hoàn hảo' không được kích hoạt, thiết lập 'Ngẫu nhiên' khiến AI di chuyển các quân cờ một cách ngẫu nhiên mà không sử dụng bất kỳ thuật toán nào để lựa chọn nước đi. Điều này thường dẫn đến lối chơi yếu hơn đáng kể. Ngược lại, khi kích hoạt 'Sử dụng cơ sở dữ liệu hoàn hảo', AI hoàn toàn dựa vào 'Cơ sở dữ liệu hoàn hảo' để đưa ra quyết định, thay vì kết hợp nó với các thuật toán AI truyền thống. Trong chế độ này, các nước đi của AI hoàn toàn dựa vào nội dung của cơ sở dữ liệu, tránh phụ thuộc vào các phép tính thời gian thực hoặc thuật toán tìm kiếm.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Loại bỏ quân cờ của đối thủ khỏi tay họ; sau đó đến lượt đối thủ đặt quân.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Khi tạo cối xay gió trong giai đoạn đặt quân",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Loại bỏ quân cờ của đối thủ khỏi bàn cờ.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Loại bỏ quân cờ của đối thủ khỏi bàn cờ; sau đó đến lượt đối thủ đặt quân.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "Đối thủ loại bỏ quân cờ của chính họ khỏi bàn cờ.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "Thay vì bạn thực hiện hành động, đối thủ sẽ chọn và loại bỏ quân cờ của chính họ khỏi bàn cờ, thực hiện một hành động có hại cho chính họ.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Loại bỏ quân cờ của đối thủ khỏi tay họ; sau đó đến lượt bạn di chuyển.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Loại bỏ (các) quân cờ khỏi tay đối thủ. Nếu theo cài đặt loại bỏ nhiều quân, nhiều quân cờ sẽ bị loại bỏ và đối thủ không còn quân cờ trên tay, hãy tiếp tục loại bỏ các quân cờ của đối thủ khỏi bàn cờ. Sau đó, đến lượt bạn di chuyển. Nếu bạn tiếp tục tạo cối xay gió, bạn có thể tiếp tục loại bỏ các quân cờ của đối thủ.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Loại bỏ (các) quân cờ khỏi tay đối thủ. Nếu theo cài đặt loại bỏ nhiều quân, nhiều quân cờ sẽ bị loại bỏ và đối thủ không còn quân cờ trên tay, hãy tiếp tục loại bỏ các quân cờ của đối thủ khỏi bàn cờ. Sau đó, đến lượt đối thủ di chuyển.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Đánh dấu và trì hoãn việc loại bỏ các quân cờ.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "Trong giai đoạn đặt quân, các quân cờ sẽ được loại bỏ sẽ được đánh dấu và cả hai người chơi không thể đặt các quân cờ mới vào các điểm này. Sau khi bước vào giai đoạn di chuyển, các quân cờ được đánh dấu này sẽ bị loại bỏ hoàn toàn và người chơi có thể di chuyển các quân cờ của họ đến các điểm hiện đang trống này.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Các hành động có thể thực hiện khi hình thành cối xay trong giai đoạn đặt cược.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Đã đánh dấu",
-    "@marked": {},
+    "@marked": {
+        "description": ""
+    },
     "menu": "Menu",
-    "@menu": {},
-    "monochrome": "Đen và trắng",
-    "@monochrome": {},
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "Bạn có thể bật hỗ trợ đọc màn hình trong cài đặt Trợ năng trong Cài đặt chung.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Hiển thị số trên các quân cờ",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Lưu hình ảnh",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Hiển thị thanh công cụ phân tích",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Màu nền của thanh công cụ phân tích",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Màu biểu tượng của thanh công cụ phân tích",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "Đã biến đổi.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "Không thể biến đổi.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Xoay",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "H Lật",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "V Lật",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "IO Lật",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "Vải Trong Suốt",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Hạn Chế Tạo Lại Cối Xay",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "Một quân cờ được di chuyển từ cối xay này sang cối xay khác không thể trở lại điểm ban đầu ngay lượt tiếp theo để hình thành một cối xay mới. Đầu tiên cần một nước đi khác.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Cối xay sử dụng một lần",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Mỗi cối xay có thể loại bỏ một mảnh của đối thủ chỉ một lần. Bạn có thể tái tạo nó, nhưng không thể sử dụng để loại bỏ bổ sung.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Các quy tắc hiện tại bạn đã đặt không có cơ sở dữ liệu hoàn hảo tương ứng. Để biết thêm thông tin về cơ sở dữ liệu hoàn hảo, vui lòng nhấp vào đây.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "Tập trung vào việc chặn đường",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "Ưu tiên cản trở di chuyển của đối thủ thay vì tạo thành cối xay. Thay vì tập trung vào việc loại bỏ các quân cờ bằng cách hoàn thành cối xay, AI nhằm bẫy đối thủ, khiến họ không thể di chuyển và đảm bảo chiến thắng thông qua sự kiệt sức thay vì lối chơi hung hăng. Chiến lược này không chủ động chặn các cối xay của đối thủ.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Hình ảnh của quân cờ",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Nhập cài đặt màu",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Xuất cài đặt màu",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Nhập khẩu",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Xuất khẩu",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Vui lòng sao chép các cài đặt định dạng JSON vào bảng tạm trước.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Đã sao chép vào bảng tạm.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Đã nhập.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Hình ảnh bảng",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Lá mùa thu",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Vùng Đất Huyền Thoại",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Hiệu ứng tối góc",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Bạn có muốn làm cho thanh công cụ hoàn toàn trong suốt khi hình nền bảng được thiết lập không?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "Bật rung trong trò chơi",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Chủ đề âm thanh",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "Bóng",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Chất lỏng",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Gỗ",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Hiệu ứng hoạt hình đặt quân cờ",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Hiệu ứng hoạt hình loại bỏ quân cờ",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Hiển thị thanh công cụ ở phía dưới",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Bán kính góc bảng",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Sử dụng sách mở đầu",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Hiện tại",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Duz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
-    "zhiQi": "Trực Kỳ",
-    "@zhiQi": {},
-    "chengSanQi": "Thành Tam Kỳ",
-    "@chengSanQi": {},
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Bộ quy tắc",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "Cối xay một lần",
-    "@oneTimeMill": {},
-    "daSanQi": "Đả Tam Kỳ",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "Cho phép AI sử dụng các nước đi mở đầu thường được sử dụng bởi các cầu thủ chuyên nghiệp trong giai đoạn đầu của trò chơi. Lưu ý: Tính năng này hiện chỉ có sẵn cho các bộ quy tắc cụ thể.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Hiển thị biểu đồ lợi thế",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Biểu đồ lợi thế sẽ chỉ được vẽ sau khi AI thực hiện một nước đi. Nó sẽ không được vẽ khi người chơi là con người thực hiện nước đi.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Vô hiệu hóa việc loại bỏ cho đến khi tất cả các quân cờ được đặt xuống. Người chơi loại bỏ quân cờ dựa trên số lượng cối xay họ hình thành.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Vô hiệu hóa việc loại bỏ cho đến khi tất cả các quân cờ được đặt xuống. Người chơi loại bỏ quân cờ dựa trên số lượng cối xay: nếu bằng nhau, cả hai đều loại bỏ cùng một số lượng quân; nếu một người có nhiều hơn, người đó loại bỏ thêm một quân, giữ chênh lệch ở mức một quân. Nếu chỉ một người tạo được cối xay, người đó loại bỏ hai quân và người còn lại loại bỏ một. Nếu không ai tạo được cối xay, cả hai đều loại bỏ một quân.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Chọn một trong các quân cờ của bạn.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Đến lượt của đối thủ.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Màu nền của thanh công cụ chú thích",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Màu biểu tượng của thanh công cụ chú thích",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Hiển thị thanh công cụ chú thích",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Vào chế độ chú thích",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Bạn có chắc chắn muốn xóa tất cả chú thích không?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "Đã sao chép lời nhắc LLM vào bảng tạm.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Kết nối bị từ chối, máy chủ có thể đang ngừng hoạt động.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Khám phá thành công, đang chờ kết nối...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "Không có kết nối LAN",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Chụp ảnh màn hình",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Đã ngắt kết nối với đối thủ.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Yêu cầu hoàn tác",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Không có gì để hiển thị.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Dừng lưu trữ",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Kết nối bị đặt lại bởi bên kia.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Mất kết nối do hết thời gian heartbeat. Vui lòng kết nối lại.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Bắt đầu lưu trữ",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Yêu cầu khởi động lại bị từ chối.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "Không kết nối với đối thủ LAN.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "Lời nhắc LLM",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "Trò chơi đã được khởi động lại.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Hoàn tác bị từ chối.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Bạn có chắc chắn muốn từ bỏ trò chơi này không?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "Đối thủ đã từ bỏ. Bạn thắng!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Xóa tất cả chú thích",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Đã kết nối, đang chờ nước đi của đối thủ...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Trạng thái mạng: Đã ngắt kết nối",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Yêu cầu hoàn tác đã được gửi đến đối thủ.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "Đối thủ có thể đã rời khỏi trò chơi",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Đã kết nối với máy chủ thành công.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Mất kết nối: hết thời gian heartbeat",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Không tìm thấy máy chủ.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Xác nhận từ bỏ",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "Đã bắt đầu lưu trữ trò chơi, đang chờ người chơi tham gia...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Kết nối hết thời gian, kết nối mạng không ổn định.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "Không có lời nhắc LLM nào.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Bạn đã từ bỏ. Trò chơi kết thúc.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "IP máy chủ",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Xác nhận xóa",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Lượt của đối thủ.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "Đang chờ kết nối từ máy khách...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Yêu cầu hoàn tác đã bị từ chối hoặc thất bại.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Thêm văn bản",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Thoát chế độ chú thích",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Nhập chú thích của bạn",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Đang cố gắng kết nối lại...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Yêu cầu khởi động lại đã được gửi. Đang chờ phản hồi từ đối thủ...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Máy chủ đã dừng.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Yêu cầu khởi động lại",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Không thể yêu cầu hoàn tác khi không phải lượt của bạn.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Hoàn tác được chấp nhận.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Cài đặt mạng cục bộ",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Đã kết nối lại thành công!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Không thể lưu hình ảnh vào Thư viện.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "Đối thủ yêu cầu khởi động lại trò chơi. Bạn có chấp nhận không?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Lượt của bạn.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Không thể kết nối lại, vui lòng khởi động lại trò chơi.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Máy chủ",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Tham gia",
-    "@join": {},
-    "port": "Cổng",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Địa chỉ IP không hợp lệ.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Cổng không hợp lệ.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Đang kết nối: Lần thử {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Kết nối thất bại: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Lỗi: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Không thể bắt đầu lưu trữ: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Lỗi: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Đã tìm thấy máy chủ: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "Dừng",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Khám phá",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Kết nối",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Máy khách đã kết nối: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Đang khám phá: {seconds} giây",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Đang kết nối lại ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Đã kết nối",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "Xóa",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "Ai Cập Cổ Đại",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Băng Gothic",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Ruộng Lúa",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "Đồ Sứ Trung Quốc",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Hoàng Hôn Sa Mạc",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Thủ Công Chính Xác",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Thêu Dân Gian",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Di Sản Carpathian",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Sự Vĩ Đại Đế Quốc",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "Pha Lê Bohemian",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Bình Minh Savanna",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Hòa Hợp và Cân Bằng",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Gia Vị Quế",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "Khảm Anatolian",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Tinh Thần Lễ Hội",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Tùy chỉnh",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Chợ gia vị",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Vuốt để hiển thị ngăn kéo",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "Hiển thị thông tin trò chơi trên ảnh chụp màn hình",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Giới hạn thời gian của con người",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Không giới hạn thời gian cho nước đi của con người",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "Thua do hết giờ sẽ được áp dụng cho người chơi",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "Đang xác định bàn cờ...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Bạn có thể nhập bất kỳ tên mô hình nào.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Vị trí bàn cờ đã được áp dụng. FEN đã được sao chép vào khay nhớ tạm.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Gợi ý: thử chụp hình bàn cờ rõ nét hơn.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "Mẫu prompt LLM",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Không tìm thấy bàn cờ hợp lệ.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Đang chọn hình từ album...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Cấu hình mẫu prompt",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "Chỉnh sửa mẫu prompt cho phân tích LLM",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "Không thể tạo FEN từ bàn cờ đã nhận diện.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Kết quả bằng ngôn ngữ hiện tại",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "Các Base URL thường dùng",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Xem các mô hình thường dùng",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Tham số nhận diện đã được cập nhật.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Nước đi của trắng",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Đặt lại về mặc định",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Chụp ảnh",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Không thể áp dụng vị trí bàn cờ đã nhận diện.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "Nội dung prompt LLM",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "Chưa cấu hình LLM. Vui lòng kiểm tra cài đặt.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Đặt nhà cung cấp, mô hình, API Key và Base URL",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "Cấu hình LLM",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "Cấu hình nhà cung cấp LLM",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "Tiêu đề mẫu prompt LLM",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Không có quân cờ nào được nhận diện trong ảnh. Vui lòng thử lại.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Nhận diện bàn cờ từ ảnh",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Xem mẹo",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Áp dụng lên bàn cờ",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Chỉnh vùng bàn cờ",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Xem các URL thường dùng",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Phân tích màu thất bại!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "Đang phân tích hình ảnh bàn cờ...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Chọn từ album",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Không tìm thấy điểm bàn cờ!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Nếu để trống, mẫu mặc định sẽ được sử dụng",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "Cấu hình LLM",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Bạn có chắc muốn đặt lại các mẫu prompt về giá trị mặc định không?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "Chân trang mẫu prompt LLM",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Đang tải phản hồi...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Áp dụng kết quả này lên bàn cờ",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Đang chụp ảnh...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Vui lòng chọn một ảnh bàn cờ để nhận diện",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Kết quả nhận diện",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Phân tích các nước đi và cung cấp nhận định.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "Lấy API Key",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "Quá trình nhận diện hoàn chỉnh không thể thực hiện.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Kết quả nhận diện bàn cờ",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "Hỏi LLM",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Phát hiện bàn cờ thất bại!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Không tìm thấy điểm bàn cờ, không thể nhận diện quân cờ!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "Sao chép FEN",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Các mô hình thường dùng",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (tùy chọn)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Chưa chọn hình ảnh nào",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Nước đi của đen",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Mô hình Ngôn ngữ Lớn",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Nhà cung cấp",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "URL Cơ sở",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Mô hình",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Nhiệt độ",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Lệnh đã nhận! AI đang xử lý...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Đang suy nghĩ sâu, vui lòng chờ...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "Sẽ trình bày sớm...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Tham số nhận dạng",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Điều chỉnh tham số để nâng cao độ chính xác nhận dạng",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Lưu tham số",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Không thể bắt đầu nhận dạng hình ảnh: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Lỗi: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Nhận dạng hình ảnh thất bại: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Lỗi: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Đã áp dụng thế cờ với {whiteCount} quân trắng và {blackCount} quân đen",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN đã sao chép vào bảng tạm)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Nhận dạng thất bại: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Lỗi: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "Xếp hạng của tôi",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "Số trận đã chơi",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "Thắng",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Thua",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Hòa",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Cập nhật lần cuối",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Định dạng:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Đặt lại thống kê",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Tỷ lệ hòa",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Tỷ lệ thua",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Thống kê AI",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Bật thống kê",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Khi được bật, kết quả trò chơi sẽ được ghi lại trong thống kê. Tuy nhiên, các trò chơi liên quan đến việc đi lại nước cờ sẽ không được ghi lại. Khi bị tắt, việc thu thập thống kê sẽ bị tạm dừng.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "Thao tác này sẽ đặt lại tất cả thống kê trò chơi. Không thể hoàn tác thao tác này.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Kích thước vòng trong của bàn cờ",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Bóng của bàn cờ",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Nhận diện bẫy",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Làm nổi bật các nước đi bẫy bằng vòng tròn và mũi tên đậm trong quá trình phân tích.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Có bẫy. Nước đi bẫy: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Chụp sườn",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Bao quanh một trong những mảnh của đối thủ giữa hai bạn theo một đường thẳng để nắm bắt nó.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Cho phép chụp sườn",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Bắt giữ can thiệp",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Di chuyển vào điểm trống giữa hai mảnh của đối thủ của bạn để bắt cả hai.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Cho phép bắt giữ can thiệp",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Nhảy bắt",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Nắm bắt bằng cách nhảy qua mảnh đối thủ liền kề vào điểm trống bên kia.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Cho phép bắt giữ",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Dòng áp dụng",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "Dọc theo các cạnh của quảng trường",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "Dọc theo các đường trực giao băng qua quảng trường",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "Dọc theo các đường chéo băng qua quảng trường",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Giai đoạn thực thi",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Tính khả dụng trong giai đoạn di chuyển dựa trên các phần còn lại",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Không hạn chế",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Có sẵn khi bạn có ba hoặc ít hơn",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Dừng đặt khi chỉ còn lại hai ô trống",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Khi được bật, giai đoạn đặt quân kết thúc và giai đoạn di chuyển bắt đầu khi bàn cờ chỉ còn 2 ô trống, bất kể số quân trên tay. Quy tắc này chỉ áp dụng cho trò chơi 12 quân.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Bạn chỉ có thể yêu cầu rút lại ngay sau nước đi của bạn.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Nếu bạn muốn có thử thách lớn hơn, chúng tôi khuyên bạn nên bật tùy chọn \"{setting}\" và tải xuống cơ sở dữ liệu hoàn chỉnh vào thiết bị của bạn theo hướng dẫn.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "Bạn có muốn cấu hình quy tắc trò chơi bây giờ không?",
-    "@configureRulesPrompt": {},
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
     "configureRules": "Cấu hình quy tắc",
-    "@configureRules": {},
+    "@configureRules": {
+        "description": "Button text for configuring rules"
+    },
     "algorithmSuggestionTitle": "Đề xuất thuật toán",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Bạn đã thua nhiều ván liên tiếp ở Cấp độ 1. Bạn có muốn chuyển sang thuật toán MCTS dễ hơn để giảm độ khó không?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "Chúc mừng bạn đã chiến thắng ở Cấp độ 30 MCTS! Bạn có muốn chuyển sang thuật toán MTD(f) để thử thách lớn hơn không?",
-    "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "Màu làm nổi bật quân cờ có thể bắt",
-    "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
+    "@switchToMtdfSuggestion": {
+        "description": ""
     },
     "highlightCapturablePieces": "Làm nổi bật quân cờ có thể bắt",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
     "undo": "Hoàn tác",
-    "@undo": {},
+    "@undo": {
+        "description": "Undo last move"
+    },
     "reset": "Đặt lại",
-    "@reset": {},
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
     "allPuzzlesCompleted": "Tất cả câu đố đã hoàn thành!",
-    "@allPuzzlesCompleted": {},
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
     "back": "Quay lại",
-    "@back": {},
+    "@back": {
+        "description": "Back button tooltip"
+    },
+    "puzzles": "Câu đố",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Puzzle",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "No puzzles available",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filter",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Category",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Clear Filter",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Puzzle Statistics",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Total Puzzles",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Completed",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total Stars",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Completion",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Beginner",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Easy",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Medium",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Hard",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Expert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Master",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Win Game",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Defend",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Find Best Move",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Endgame",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Opening",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Mixed",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Exit Puzzle?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Check Solution",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Give Up",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Puzzle Solved!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Hints Used",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Try Again",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Back to List",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Create New Puzzle",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Edit Puzzle",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Custom",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "Select Puzzles",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Selected",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles"
+    },
+    "puzzleSelectAll": "Select All",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Export",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Import",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message"
+    },
+    "puzzleExportFailed": "Failed to export puzzles",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message"
+    },
+    "puzzleImportFailed": "Failed to import puzzles",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles"
+    },
+    "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message"
+    },
+    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Setup Position",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "Capture Position",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "Position captured successfully",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "No position captured yet",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "Please capture a position first",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Record Solution",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Start Recording",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Stop Recording",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Recording...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Started recording solution moves",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message"
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves"
+    },
+    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Clear Solution",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "Puzzle Details",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Title",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Description",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Category",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Difficulty",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Hint",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tags",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separate tags with commas",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Author",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "Title is required",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Description is required",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Position is required",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Solution is required",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puzzle created successfully",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puzzle updated successfully",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Failed to save puzzle",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "optional",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Your Progress",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Quit",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "All",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Coming Soon",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Daily Puzzle",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number"
+    },
+    "dailyPuzzleStreak": "Streak",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "day streak",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "days",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display"
+    },
+    "dailyPuzzleStart": "Start Daily Puzzle",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Current Streak",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Longest Streak",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total Completed",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "All Puzzles",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Browse all available puzzles",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Solve puzzles against the clock",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Rules",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximize your score!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Start Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rush Results",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Time's Up!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Out of Lives",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush Complete!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Solved",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Failed",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Accuracy",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Play Again",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puzzle Battle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Compete with other players",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Coming Soon!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Rating system",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Custom Puzzles",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Create and manage your puzzles",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Create Puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "How many can you solve in a row?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Rules",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Start Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Current",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Best",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Streak Results",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Streak Ended",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "New Record!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Final Score",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Try Again",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "History",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "View your puzzle attempts",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "No Puzzle History",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Success Only",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Failed Only",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "hints",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "View detailed analytics",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Your Puzzle Rating",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message"
+    },
+    "puzzleStatsGamesPlayed": "Games Played",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Deviation",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Performance Overview",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Success Rate",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Avg. Time",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Solved",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Failed",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Success by Category",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Recent Activity",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "No recent activity",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "No Custom Puzzles",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "This feature is planned for a future release",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Invalid position",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs recapture"
+    },
+    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Setup Position",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Open board (setup or play moves), create starting position, return and capture",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Record Solution",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Click Start Recording (board resets to start position), go back, play moves, return and stop",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Add Details",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Fill in title, description, category, difficulty, and tags",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Save Puzzle",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Click the save button in the top-right corner",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionCaptureHelp": "Position Capture Help",
+    "@puzzlePositionCaptureHelp": {
+        "description": "Title for position capture help dialog"
+    },
+    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
+    "@puzzlePositionCaptureHelpContent": {
+        "description": "Help content for capturing puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Capture the starting position first",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleShowPositionCaptureHelp": "Show position capture help",
+    "@puzzleShowPositionCaptureHelp": {
+        "description": "Tooltip for position capture help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "No more hints available",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Hint",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "Validation Errors",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "What happens next:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. You can share this file via the share dialog",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Export for Contribution",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Start Contributing",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Quick Start:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Create Quality Puzzles",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Add Your Name",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Export for Contribution",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Submit",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Full Documentation",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Quality Requirements:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Next move: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Di chuyển",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "Complete solution: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "Pay attention to these positions",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "No solution available",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Just now",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "january": "Tháng Một",
+    "@january": {
+        "description": "Month name"
+    },
+    "february": "February",
+    "@february": {
+        "description": "Month name"
+    },
+    "march": "March",
+    "@march": {
+        "description": "Month name"
+    },
+    "april": "April",
+    "@april": {
+        "description": "Month name"
+    },
+    "may": "May",
+    "@may": {
+        "description": "Month name"
+    },
+    "june": "June",
+    "@june": {
+        "description": "Month name"
+    },
+    "july": "July",
+    "@july": {
+        "description": "Month name"
+    },
+    "august": "August",
+    "@august": {
+        "description": "Month name"
+    },
+    "september": "September",
+    "@september": {
+        "description": "Month name"
+    },
+    "october": "October",
+    "@october": {
+        "description": "Month name"
+    },
+    "november": "November",
+    "@november": {
+        "description": "Month name"
+    },
+    "december": "December",
+    "@december": {
+        "description": "Month name"
+    },
+    "invalidPuzzle": "Invalid Puzzle",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Keep trying!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Examples",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "voiceCommandsHelp": "Voice Commands Help",
+    "@voiceCommandsHelp": {
+        "description": "Voice commands help page title"
+    },
+    "voiceCommandsHelpIntro": "Use your voice to control the game! Below are the available voice commands you can use.",
+    "@voiceCommandsHelpIntro": {
+        "description": "Voice commands help introduction"
+    },
+    "voiceCommandsGameControl": "Game Control",
+    "@voiceCommandsGameControl": {
+        "description": "Game control commands section"
+    },
+    "voiceCommandsMoveControl": "Move Commands",
+    "@voiceCommandsMoveControl": {
+        "description": "Move commands section"
+    },
+    "voiceCommandsSettings": "Settings Commands",
+    "@voiceCommandsSettings": {
+        "description": "Settings commands section"
+    },
+    "voiceCommandsTips": "Tips",
+    "@voiceCommandsTips": {
+        "description": "Tips section"
+    },
+    "voiceCommandsUndo": "Undo Move",
+    "@voiceCommandsUndo": {
+        "description": "Undo command title"
+    },
+    "voiceCommandsUndoDesc": "Undo the last move",
+    "@voiceCommandsUndoDesc": {
+        "description": "Undo command description"
+    },
+    "voiceCommandsRedo": "Redo Move",
+    "@voiceCommandsRedo": {
+        "description": "Redo command title"
+    },
+    "voiceCommandsRedoDesc": "Redo the previously undone move",
+    "@voiceCommandsRedoDesc": {
+        "description": "Redo command description"
+    },
+    "voiceCommandsRestart": "Restart Game",
+    "@voiceCommandsRestart": {
+        "description": "Restart command title"
+    },
+    "voiceCommandsRestartDesc": "Start a new game",
+    "@voiceCommandsRestartDesc": {
+        "description": "Restart command description"
+    },
+    "voiceCommandsAiMove": "Request AI Move",
+    "@voiceCommandsAiMove": {
+        "description": "AI move command title"
+    },
+    "voiceCommandsAiMoveDesc": "Request the AI to make a move",
+    "@voiceCommandsAiMoveDesc": {
+        "description": "AI move command description"
+    },
+    "voiceCommandsMovePiece": "Move Piece",
+    "@voiceCommandsMovePiece": {
+        "description": "Move piece command title"
+    },
+    "voiceCommandsMovePieceDesc": "Move a piece from one position to another",
+    "@voiceCommandsMovePieceDesc": {
+        "description": "Move piece command description"
+    },
+    "voiceCommandsPlacePiece": "Place Piece",
+    "@voiceCommandsPlacePiece": {
+        "description": "Place piece command title"
+    },
+    "voiceCommandsPlacePieceDesc": "Place a piece on the board",
+    "@voiceCommandsPlacePieceDesc": {
+        "description": "Place piece command description"
+    },
+    "voiceCommandsRemovePiece": "Remove Piece",
+    "@voiceCommandsRemovePiece": {
+        "description": "Remove piece command title"
+    },
+    "voiceCommandsRemovePieceDesc": "Remove an opponent's piece",
+    "@voiceCommandsRemovePieceDesc": {
+        "description": "Remove piece command description"
+    },
+    "voiceCommandsToggleSound": "Toggle Sound",
+    "@voiceCommandsToggleSound": {
+        "description": "Toggle sound command title"
+    },
+    "voiceCommandsToggleSoundDesc": "Turn sound on or off",
+    "@voiceCommandsToggleSoundDesc": {
+        "description": "Toggle sound command description"
+    },
+    "voiceCommandsToggleVibration": "Toggle Vibration",
+    "@voiceCommandsToggleVibration": {
+        "description": "Toggle vibration command title"
+    },
+    "voiceCommandsToggleVibrationDesc": "Turn vibration on or off",
+    "@voiceCommandsToggleVibrationDesc": {
+        "description": "Toggle vibration command description"
+    },
+    "voiceCommandsTip1": "Speak clearly and at a moderate pace for best recognition",
+    "@voiceCommandsTip1": {
+        "description": "Voice command tip 1"
+    },
+    "voiceCommandsTip2": "Wait for the listening indicator before speaking",
+    "@voiceCommandsTip2": {
+        "description": "Voice command tip 2"
+    },
+    "voiceCommandsTip3": "Commands work in your selected language",
+    "@voiceCommandsTip3": {
+        "description": "Voice command tip 3"
+    },
+    "voiceAssistant": "Voice Assistant",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantSettings": "Cài đặt trợ lý giọng nói",
-    "@voiceAssistantSettings": {},
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
     "voiceAssistantSettingsDescription": "Cấu hình mô hình, ngôn ngữ và hành vi",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "voiceAssistantGeneral": "General",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "Model Settings",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "Model Management",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "Model Type",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "Language",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "Show Voice Button",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "Continuous Listening",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "Download Model",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "Delete Model",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "Model Information",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "Downloaded",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "Downloading...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "Model Size",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "Model Path",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "Select Model Type",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "Select Language",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "Listening...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantRecognizedText": "Recognized Text",
+    "@voiceAssistantRecognizedText": {
+        "description": "Recognized text label"
+    },
+    "voiceAssistantResult": "Result",
+    "@voiceAssistantResult": {
+        "description": "Command execution result label"
+    },
+    "voiceAssistantError": "Voice assistant error",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceAssistantRedownloadModel": "Re-download Model",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
+    "voiceCommandSuccess": "Command executed successfully",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "Failed to execute command",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "Unknown command",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "Move executed",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "Failed to execute move",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "Piece placed",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "Failed to place piece",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "Piece removed",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "Undo executed",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "Failed to undo",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "Redo executed",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "Failed to redo",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "Game restarted",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "Failed to restart game",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "Settings updated",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "Failed to update settings",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "Help displayed",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "Sound enabled",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "Sound disabled",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "Vibration enabled",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "Vibration disabled",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
+    }
 }

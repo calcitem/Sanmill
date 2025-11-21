@@ -150,13 +150,11 @@
     },
     "tipToMove": "harakat qilish uchun {player}.",
     "@tipToMove": {
-        "description": " to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": " to move."
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "1-o'yinchi g'alaba qozonadi!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "Import qilib boʻlmadi {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "Harakatlar va qoidalar mos kelmaydi.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "Xato: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "G'oliblik darajasi",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} parchalar soni uchtadan kam.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " piece count is less than three."
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} iste'foga chiqish.",
     "@loseReasonResign": {
-        "description": " resign.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": " resign."
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} uchun hech qanday yo'l yo'q.",
     "@loseReasonNoWay": {
-        "description": " is no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": " is no way to go."
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "Doska to‘lgan va {player} ning borishga imkoni yo‘q.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "The board is full, no way to go."
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "Vaqt tugadi, {player} yutqazdi.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "Harakatlanuvchi bosqichda, so'nggi aniq sonli harakatlarda biron bir qism olib tashlanmagan.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "Qattiqroq darajaga duch kelasizmi? Yangi daraja {level} darajasida bo'ladi!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "Yutqazdingiz!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "Versiya: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "Rahmat",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "Variantlar",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "{element} ni tanlang",
     "@pick": {
-        "description": "Pick ",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Pick "
     },
     "info": "Ma'lumot",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " va ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "Qabul qiling",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} qo'lda: {count}",
     "@inHand": {
-        "description": "in hand",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "in hand"
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} bortda: {count}",
     "@onBoard": {
-        "description": "on board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "on board"
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "Kengash tepadan ofset",
     "@boardTop": {
@@ -1103,6 +1048,18 @@
     "@close": {
         "description": "Close"
     },
+    "download": "Download",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+        "description": "Unknown value"
+    },
     "whitePiece": "Oq bo'lak",
     "@whitePiece": {
         "description": "White piece"
@@ -1133,23 +1090,19 @@
     },
     "sideToMove": "Ko'chish uchun tomon: {player}",
     "@sideToMove": {
-        "description": "Side to move",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "Side to move"
+    },
+    "player": "o'yinchi",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "Oxirgi harakat: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "Ko'chirish",
+    "@move": {
+        "description": "Move"
     },
     "selected": "Tanlangan",
     "@selected": {
@@ -1174,6 +1127,10 @@
     "pieceHighlightColor": "Rangni ajratib ko'rsatish",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "capturablePieceHighlightColor": "Olinadigan toshlalni ajratib ko'rsatish rangi",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
     },
     "algorithm": "Algoritm",
     "@algorithm": {
@@ -1225,14 +1182,7 @@
     },
     "moveNumber": "{count, plural, =0{Ko'chirish}=1{{count} Ko'chirish}other{{count} Ko'chirish}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "Yuklanmadi.",
     "@loadFailed": {
@@ -1284,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} dona}other{{count} dona}} olib tashlash kerak.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "Joylasht. ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "Joylashtirish bosqichida joylashtirilgan qismlar soni.",
     "@placedPieceCount": {
@@ -1310,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "Joriy o'yinchi {count} qismlarini joylashtirdi.",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "Fazani joylashtirmaslik, uni o'zgartirish mumkin emas.",
     "@notPlacingPhase": {
@@ -1348,815 +1277,2875 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "O'rmon",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "Ish stoli tasviri",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "Yaroqsiz pozitsiya.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "GIF-ni ulashing",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "Piksel nisbati",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "Davomiyligi",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "O'yin ekran yozuvchisi",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "Oldingi",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "Keyingisi",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "Oʻtkazib yuborish",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "Tushundim",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "Siz o'yin qoidalarini qoida sozlamalarida o'zgartirishingiz mumkin.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "Tanlagichdagi qiymatni o'zgartirish uchun sichqoncha g'ildiragidan foydalanishingiz mumkin.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI Fikrlash vaqti 0 ga o‘rnatilgani fikrlash uchun vaqt chegarasi yo‘qligini anglatadi.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "MTD(f) alfa-beta qidiruv algoritmining o'zgartirilgan shakli bo'lib, qidiruv natijalarini qayta ishlatish va qidiruv maydonini toraytirish uchun yaxshi dastlabki taxminni qo'llash orqali samaradorlikni oshirishga qaratilgan.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "Shuni yodda tutingki, AI fikrlash vaqtini sozlash to'liq aniq bo'lmasligi mumkin. Haqiqiy fikrlash vaqti qiyinchilik darajasi pastroq qiymatga o'rnatilganda qisqaroq bo'lishi mumkin va vaqt tugashi bilan AI o'rtada bo'lganda uzoqroq bo'lishi mumkin.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "Agar siz qiyinchilik darajasini yuqori o'rnatsangiz, lekin AI fikrlash vaqtini oshirmasangiz, fikrlash vaqti cheklanganligi sababli haqiqiy qiyinchilik darajasi pastroq qiymat bilan cheklanishi mumkin. Haqiqiy qiymat mashinaning ishlashiga qarab farq qilishi mumkin.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "PVS (Principal Variation Search) - bu ma'lum bir pozitsiyada eng yaxshi harakatni topish uchun qidiruv algoritmi. Bu alfa-beta algoritmining takomillashtirilgani bo'lib, harakatning asosiy o'zgarishlardan allaqachon xavfsiz balldan yomonroq yoki yomonroq emasligini tasdiqlash uchun null yoki nol oyna qidiruvlaridan foydalanadi. PVS eng istiqbolli harakatlarga e'tibor qaratadi va suboptimal filiallarni keraksiz qidirishdan qochadi, bu esa qidiruv samaradorligini oshirishga yordam beradi.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "Alfa-beta algoritmi eng yaxshi harakatni topish uchun qidiruv algoritmidir. Qidiruv daraxtini kesish va samaradorlikni oshirish uchun u minimax printsipidan va ikkita qiymatdan, alfa va betadan foydalanadi. Alpha kompyuter olishi mumkin bo'lgan minimal ballni, beta esa raqib olishi mumkin bo'lgan maksimal ballni ifodalaydi. Algoritm kompyuterga o'yinda oqilona va samarali qarorlar qabul qilishga yordam beradi.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "Insoniyat tajribasiga ko'ra, g'alaba qozonishga harakat qilsangiz, yutqazasiz. Buning o'rniga durangni maqsad qilib oling va o'yinni yutqazmang. Raqibingizni kuzatib boring va ularni xato qilishlari mumkin bo'lgan joyga muloyimlik bilan jalb qiling. Ular kuchsizligini ko'rsatsa, imkoniyatdan foydalaning va g'alaba uchun muloyimlik bilan turting. Shu tarzda siz o'yinda g'alaba qozonishingiz mumkin.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "Bu o'yinda birinchi o'yinchiga nisbatan ikkinchi o'yinchining g'alaba qozonishi osonroq.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "Passiv opsiyani yoqish AIni imkon qadar tezroq g'alaba qozonishga agressiv harakat qilishdan ko'ra, pozitsiyada ustunlikka ega bo'lganda bo'shashishiga olib keladi.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "Ushbu parametrni yoqish oʻyinning tasodifiyligi va qiziqarliligini oshiradi, uni oʻchirib qoʻyish esa AIni engish yoʻllarini oʻrganishga yordam beradi.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "Agar sun'iy intellekt o'z donalarining harakatchanligini hisobga olsa, u nafaqat raqibning donalarini imkon qadar tezroq qo'lga kiritishni maqsad qilib qo'ymaydi, balki raqibning harakatlarini to'sib qo'yish va ularni xuddi shunday qilishiga yo'l qo'ymaslik haqida ham o'ylaydi.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "Doska to'lganida",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "Joylashtirish bosqichining oxirida, harakatlanish bosqichi boshlanishidan oldin, taxta bo'laklarga to'la bo'lsa, harakat quyidagicha bo'ladi.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "Harakat bosqichida birinchi bo'lib harakat qilgan o'yinchi raqibning donalaridan birini olib tashlaydi.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "Har ikki tomon durangga rozi.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "Raqibingizning donalaridan birini oling.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "Birinchi o'yinchi o'yinni yo'qotadi.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "Birinchi va ikkinchi o'yinchilar raqibning donalaridan birini olib tashlashadi.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "Ikkinchi va birinchi o'yinchilar raqibning donalaridan birini olib tashlashadi.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "Endi uchish bosqichiga kirdi, raqibning donalari doskadagi istalgan bo'sh nuqtaga sakrashi mumkin. \"Qoida sozlamalari\" da uchish qoidasini o'chirib qo'yishingiz mumkin.",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "Turg'unlashganda",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "Hech qanday bo'lakni ko'chirish mumkin bo'lmasa, qanday harakat bajariladi?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "Turg'un yo'qotish bilan yakunlang.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "Harakat qilish uchun tomonni o'zgartiring.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "Raqibning donalaridan birini olib tashlang va keyingi harakatni bajaring.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "Durang durang bilan yakunlang.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "Raqibning donalaridan birini olib tashlang va harakat qilish uchun tomonni o'zgartiring.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI javobni kechiktirish vaqti",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI hozirda kechiktirilgan javob bosqichida. Davom etishdan oldin biroz kuting.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "Siz qo'shni bo'lmagan qismni olib tashlay olmaysiz.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "Agar turg'un bo'lsa, tegirmon shakllanishidan qat'i nazar, raqibning sizning yoningizda joylashgan donalarini olib tashlash mumkin.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS - bu yangi boshlanuvchilar uchun qulay algoritm bo'lib, u simulyatsiyalar orqali turli harakatlarni o'rganish va baholash orqali qaror qabul qiladi.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "Oltin Jade",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "O'rmon yog'ochi",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "Qorong'u sir",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "Yarim tun moviy",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "Yashil o'rmon",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "Yashil o'tloq",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "Toshli yo'l",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "Pastel pushti",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "Turkuaz dengiz",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "Binafsha tush",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "Yalpizli shokolad",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "Moviy osmon",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "O'yin bog'i",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "Retrograd tahlil algoritmi turli boshlang'ich pozitsiyalardan o'yin oxiri ma'lumotlar bazasini yaratish uchun ko'p qiymatli retrograd tahlildan foydalanadi, so'ngra o'yinni optimallashtirish uchun ushbu ma'lumotlar bazasini qo'llaydi. Ushbu yondashuv Ultra-kuchli yechimlar toifasiga kiradi.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "Ushbu algoritm uchun foydalanuvchi qo'llanmasini ko'rishni xohlaysizmi?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "Pozitsiyaviy ustunlik ko'rsatkichini ko'rsatish",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "Mukammal ma'lumotlar bazasidan foydalaning",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "Eng zamonaviy algoritmlar orqali yaratilgan benuqson oʻyin maʼlumotlar bazasidan foydalanish uchun ushbu parametrni yoqing. Bu xususiyat optimal harakatlarni taklif qilish uchun ochilish va yakuniy strategiyalarni birlashtiradi. Bu o'yinda eng yuqori darajadagi aniqlikka intiladigan o'yinchilar uchun afzal qilingan tanlovdir. Puxta hisoblash texnikasi orqali yaratilgan ma'lumotlar bazasi deyarli mukammal o'yin echimlarini taklif qilish uchun mo'ljallangan.\n\nEslatma: Agar AI ma'lumotlar bazasiga kira olmasa, u o'yin qarorlari uchun an'anaviy algoritmlarga murojaat qiladi. Ma'lumotlar bazasi mavjud bo'lganda, \"Qiyinchilik darajasi\" deyarli engib bo'lmaydigan bo'lib qoladi va \"AI fikrlash vaqti\" keskin qisqaradi. \"AI's play style\" opsiyalaridagi ko'plab sozlamalar bekor qilinadi, chunki ma'lumotlar bazasi natijalari eng yuqori ustuvorlikka ega.\n\nUshbu mukammal ma'lumotlar bazasidan qanday foydalanish bo'yicha ko'rsatmalar uchun bu yerni bosing.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "Orqa fon rasmi",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "\"Mukammal ma'lumotlar bazasidan foydalanish\" opsiyasi yoqilmagan bo'lsa, \"Tasodifiy\" sozlamasi sun'iy intellektni harakatni tanlash uchun hech qanday algoritmdan foydalanmasdan qismlarni tasodifiy ko'chirishga olib keladi. Bu, odatda, sezilarli darajada zaif o'yinga olib keladi. Aksincha, “Mukammal ma’lumotlar bazasidan foydalanish” yoqilganda, sun’iy intellekt qarorlar qabul qilish uchun uni an’anaviy AI algoritmlari bilan birlashtirish o‘rniga faqat “Mukammal ma’lumotlar bazasi”ga tayanadi. Ushbu rejimda sun'iy intellektning harakatlari real vaqtda hisob-kitoblar yoki qidiruv algoritmlariga tayanishdan qochib, to'liq ma'lumotlar bazasi tarkibiga asoslanadi.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Raqibning donasini(donalarini) qo'lidan olib tashlang; keyin navbat raqibga donani joylash uchun beriladi.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "Joylashtirish fazasida tegirmonlarni shakllantirishda",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "Raqibning donasini(donalarini) taxtadan olib tashlang.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "Raqibning donasini(donalarini) taxtadan olib tashlang; keyin navbat raqibga donani joylash uchun beriladi.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "Raqib o'z donasini (donalarini) taxtadan olib tashlaydi.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "Siz harakat qilish o'rniga, raqib o'z donasini (donalarini) taxtadan tanlaydi va olib tashlaydi, bu o'ziga zarar yetkazuvchi harakat.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "Raqibning donasini(donalarini) qo'lidan olib tashlang; keyin navbat sizga harakatni amalga oshirish uchun beriladi.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "Raqibning qo'lidan dona(donalar)ni olib tashlang. Agar ko'p dona olib tashlash sozlamasiga ko'ra, bir nechta dona olib tashlanishi kerak bo'lsa va raqibning qo'lida dona qolmasa, raqibning donalarini taxtadan olib tashlashni davom ettiring. Keyin, harakat qilish navbati sizga beriladi. Agar siz tegirmonlarni hosil qilishni davom ettirsangiz, raqibning donalarini olib tashlashingiz mumkin.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Raqibning qo'lidan dona(donalar)ni olib tashlang. Agar ko'p dona olib tashlash sozlamasiga ko'ra, bir nechta dona olib tashlanishi kerak bo'lsa va raqibning qo'lida dona qolmasa, raqibning donalarini taxtadan olib tashlashni davom ettiring. Keyin, navbat raqibga harakatni amalga oshirish uchun beriladi.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "Donalarni olib tashlashni belgilang va kechiktiring.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "Joylashtirish bosqichida olib tashlanadigan donalar belgilanadi va ikkala o'yinchi uchun ham ushbu nuqtalarga yangi donalarni joylashtirish mumkin emas. Harakatlanish bosqichiga kirgandan so'ng, bu belgilangan donalar butunlay olib tashlanadi va o'yinchilar o'z donalarini bu bo'sh joylarga ko'chira oladilar.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "Joylashtirish bosqichida tegirmonlar shakllantirilganda amalga oshirilishi mumkin bo‘lgan harakatlar.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "Белгиланган",
-    "@marked": {},
-    "menu": "Menyu",
-    "@menu": {},
-    "monochrome": "Monoxrom",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "Siz Umumiy sozlamalar ichidagi Yordamchi vositalar sozlamalarida ekran o'quvchisi yordamini yoqishingiz mumkin.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "Dasturxonlarda raqamlarni ko'rsatish",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "Rasmni saqlash",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "Tahlil vositasi panelini ko'rsating",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "Tahlil vositasi panelining orqa fon rangi",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "Tahlil vositasi panelining ikon rangi",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "O'zgartirildi.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "O'zgartirib bo'lmaydi.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "Aylantirish",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "Gor. ayl.",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "Tik ayl.",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "I/T Ayl.",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "Shaffof Kanvas",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "Qayta-qayta Tegirmon Shakllanishini Cheklash",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "Bir tegirmondan boshqasiga ko'chirilgan dona navbatdagi navbatda darhol asl nuqtasiga qaytib, yana tegirmon hosil qila olmaydi. Avval boshqa harakat talab etiladi.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "Bir martalik ishlatiladigan tegirmon",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "Har bir tegirmon raqibning qismini faqat bir marta olib tashlashi mumkin. Siz uni qayta yaratishingiz mumkin, lekin qo'shimcha olib tashlashlar uchun foydalanish mumkin emas.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "Siz o'rnatgan joriy qoidalar mos keladigan mukammal ma'lumotlar bazasiga ega emas. Mukammal ma'lumotlar bazasi haqida ko'proq ma'lumot olish uchun bu yerni bosing.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "To'siq yo'llarni bloklashga e'tibor qarating",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "Tegirmonlarni shakllantirish o'rniga raqibning harakatlarini to'sishga ustunlik bering. Tegirmonlarni to'ldirish orqali bo'laklarni olib tashlashga e'tibor qaratish o'rniga, AI raqibni tuzoqqa tushirishga, ularni harakatsiz qilishga va tajovuzkor o'yin o'rniga charchash orqali g'alabani ta'minlashga harakat qiladi. Ushbu strategiya raqibning tegirmonlarini faol ravishda bloklamaydi.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "Shaxmat rasmi",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "Rang sozlamalarini import qilish",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "Rang sozlamalarini eksport qilish",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "Import qilish",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "Eksport qilish",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "Iltimos, birinchi navbatda JSON formatidagi sozlamalarni buferga nusxalab oling.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "Buferga nusxalandi.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "Import qilindi.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "Taxta tasviri",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "Kuz yaproqlari",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "Afsonaviy Mamlakat",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "Vinyet effekti",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "Taxta fon rasmi belgilanganida asboblar panelini butunlay shaffof qilishni xohlaysizmi?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "O'yinda vibratsiyani yoqing",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "Ovoz mavzusi",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "To'p",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "Suyuqlik",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "Yog'och",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "Figurani joylashtirish animatsion effekti",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "Figurani olib tashlash animatsion effekti",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "Asboblar panelini pastda ko'rsatish",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "Taxta burchak radiusi",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "Ochiq kitobdan foydalaning",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "Hozirgi",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "Nine Men's Morris",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "Twelve Men's Morris",
-    "@twelveMensMorris": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
     "morabaraba": "Morabaraba",
-    "@morabaraba": {},
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "Dooz",
-    "@dooz": {},
+    "@dooz": {
+        "description": ""
+    },
     "chamGonu": "Cham Gonu",
-    "@chamGonu": {},
+    "@chamGonu": {
+        "description": ""
+    },
     "zhiQi": "Zhi Qi",
-    "@zhiQi": {},
+    "@zhiQi": {
+        "description": ""
+    },
     "chengSanQi": "Cheng San Qi",
-    "@chengSanQi": {},
+    "@chengSanQi": {
+        "description": ""
+    },
     "mulMulan": "Mul-Mulan",
-    "@mulMulan": {},
+    "@mulMulan": {
+        "description": ""
+    },
     "nerenchi": "Nerenchi",
-    "@nerenchi": {},
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "Qoidalar to'plami",
-    "@ruleSet": {},
+    "@ruleSet": {
+        "description": ""
+    },
     "laskerMorris": "Lasker Morris",
-    "@laskerMorris": {},
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "One-Time Mill",
-    "@oneTimeMill": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
     "daSanQi": "Da San Qi",
-    "@daSanQi": {},
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "AI-dan o'yinning dastlabki bosqichida professional inson o'yinchilari tomonidan tez-tez ishlatiladigan ochish harakatlaridan foydalanishiga ruxsat bering. Eslatma: Ushbu xususiyat hozircha faqat ma'lum qoida to'plamlari uchun mavjud.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "Afzallik grafikini ko‘rsatish",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "Afzallik grafigi faqat sun’iy intellekt yurish qilgandan keyin chiziladi. Inson o‘yinchisi yurish qilganda chizilmaydi.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "Barcha toshlar joylashtirilgunga qadar olib tashlashni oʻchirib qoʻying. Oʻyinchilar tegirmonlar soniga qarab toshlarni olib tashlaydilar.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "Barcha toshlar joylashtirilgunga qadar olib tashlashni oʻchirib qoʻying. Oʻyinchilar tegirmonlar soniga qarab toshlarni olib tashlaydilar: agar teng bo‘lsa, har ikkisi ham bir xil miqdorda tosh olib tashlaydi; agar bittada ko‘proq bo‘lsa, u bitta qo‘shimcha tosh olib tashlab, bitta tosh farqini saqlab turadi. Agar faqat bitta oʻyinchi tegirmon tuzsa, u ikki toshni olib tashlaydi, ikkinchisi esa bitta toshni olib tashlaydi. Agar hech kim tegirmon tuzmasa, har ikkisi bitta toshdan olib tashlaydi.",
-    "@removalBasedOnMillCounts_Detail": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
     "elfilja": "El Filja",
-    "@elfilja": {},
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "Doskadagi figuralaringizdan birini tanlang.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "Sizning navbingiz emas.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "Izoh panelining fon rangi",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "Izoh panelining ikon rangi",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "Izoh panelini ko'rsatish",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "Izoh rejimiga o'tish",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "Barcha izohlarni o'chirishni xohlaysizmi?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM so'rovi clipbordga nusxalandi.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "Ulanish rad etildi, server ishlamayapti bo'lishi mumkin.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "Qidiruv muvaffaqiyatli yakunlandi, ulanishingizni kutmoqda...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "LAN ulanishi mavjud emas.",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "Skrinshot oling",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "Raqib bilan aloqa uzildi.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "Orqaga qaytarish so'rovi",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "Ko'rsatish uchun hech narsa yo'q.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "Xostingni to'xtatish",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "Ulanish qarshi tomon tomonidan qayta o'rnatildi.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Heartbeat muddati tugashi sababli aloqa uzildi. Iltimos, qayta ulang.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "Xostingni boshlash",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "Qayta ishga tushirish so'rovi rad etildi.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN raqibi bilan ulanmagan.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM so'rovi",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "O'yin qayta boshlandi.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "Qaytarish rad etildi.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "Ushbu o'yindan chekinishni xohlaysizmi?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "Raqib chekinib ketdi. Siz g'alaba qozondingiz!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "Barcha izohlarni o'chirish",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "Ulandi, raqib harakatini kutmoqda...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "Tarmoq holati: Ulanmagan",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "Qaytarish so'rovi raqibga yuborildi.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "Raqib o'yindan chiqib ketgan bo'lishi mumkin.",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "Xostga muvaffaqiyatli ulandi.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "Aloqa uzildi: heartbeat muddati tugadi.",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "Xost topilmadi.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "Chekinishni tasdiqlang",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "O'yin xost qilinmoqda, o'yinchilar qo'shilishini kutmoqda...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "Ulanish muddati tugadi, tarmoq ulanishi barqaror emas.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "LLM so'rovi mavjud emas.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "Siz chekinib ketdingiz. O'yin tugadi.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "Server IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "Tozalashni tasdiqlang",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "Raqibning navbasi.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "Klient ulanishini kutmoqda...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "Qaytarish so'rovi rad etildi yoki muvaffaqiyatsiz tugadi.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "Matn qo'shish",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "Izoh rejimidan chiqish",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "Izohingizni yozing",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "Qayta ulanishga harakat qilinmoqda...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "Qayta ishga tushirish so'rovi yuborildi. Raqib javobini kutmoqda...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "Server to'xtatildi.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "Qayta ishga tushirish so'rovi",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "Sizning navbingiz bo'lmaganda qaytarish so'rovini yuborib bo'lmaydi.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "Qaytarish qabul qilindi.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "Mahalliy tarmoq sozlamalari",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "Qayta ulanish muvaffaqiyatli amalga oshirildi!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "Rasm galereyaga saqlanmadi.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "Raqib o'yinni qayta boshlashni so'radi. Qabul qilasizmi?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "Sizning navbingiz.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "Qayta ulanib bo'lmadi, iltimos, o'yinni qayta boshlang.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "Xost",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "Qo'shilish",
-    "@join": {},
+    "@join": {
+        "description": ""
+    },
     "port": "Port",
-    "@port": {},
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "Noto'g'ri IP manzili.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "Noto'g'ri port.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "Ulanish: {attempt}/{maxAttempt} urinish",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "Ulanish amalga oshmadi: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Xato: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "Xostingni boshlash muvaffaqiyatsiz tugadi: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "Xato: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "Xost topildi: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "To'xtatish",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "Aniqlash",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "Ulanish",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "Klient ulandi: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "Aniqlanmoqda: {seconds} s",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "Qayta ulanmoqda ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "Ulandi",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "O'chirish",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "Qadimgi Misr",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "Gotik Muz",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "Sholi Dalasi",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "Xitoy Porcelani",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "Cho'l Tonggi",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "Aniq Hunarmandchilik",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "Xalq Kashtachilik",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "Karpat Merosi",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "Imperatorlik Ulug'vorlik",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "Bohem Kristali",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "Savanna Quyosh Chiqishi",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "Garmoniya va Muvozanat",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "Dolchin Ziravori",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "Anatoliya Mozaikasi",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "Karnaval Ruhi",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "Odat",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "Ziravorlar bozori",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "Tortmani ko‘rsatish uchun suring",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "O‘yin ma'lumotlarini skrinshotlarda ko‘rsatish",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "Inson uchun vaqt chegarasi",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "Inson harakatlari uchun vaqt chegarasi yo'q",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "Inson o'yinchi uchun vaqt tugashi sababli mag'lubiyat qo'llaniladi",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "O'yin taxtasi aniqlanmoqda...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "Istalgan model nomini kiritishingiz mumkin.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "Taxta holati qo'llandi. FEN clipboard-ga nusxalandi.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "Tavsiya: taxtaning aniqroq suratini olishga harakat qiling.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM prompt shabloni",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "Hech qanday yaroqli taxta aniqlanmadi.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "Albumdan rasm tanlanmoqda...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "Prompt shablonini sozlash",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM tahlili uchun prompt shablonini tahrirlash",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "Aniqlangan taxtadan FEN hosil qilish amalga oshmadi.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "Joriy tilga chiqish",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "Ommabop Base URL-lar",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "Ommabop modellarga qarash",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "Aniqlash parametrlar yangilandi.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "Oq yurishi",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "Standart sozlamalarga qaytarish",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "Rasm olish",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "Aniqlangan taxta holatini qo'llash muvaffaqiyatsiz tugadi.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM prompt mazmuni",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM sozlanmagan. Iltimos, sozlamalarni tekshiring.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "Provider, model, API Key va Base URL ni o'rnating",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM sozlamalari",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM provayderini sozlash",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM prompt shabloni sarlavhasi",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Rasmda hech qanday figuralar aniqlanmadi. Iltimos, qayta urinib ko'ring.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "Rasmdan taxtani aniqlash",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "Maslahatlarni ko'rish",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "Taxtaga qo'llash",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "Taxta hududini sozlash",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "Ommabop URL-larni ko'rish",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "Rang tahlili muvaffaqiyatsiz tugadi!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "O'yin taxtasi rasmini tahlil qilish...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "Albumdan tanlash",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "Hech qanday taxta nuqtasi aniqlanmadi!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "Bo'sh qoldirilsa, standart shablon ishlatiladi",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM sozlamalari",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Siz prompt shablonlarini standart qiymatlarga qaytarishni istaysizmi?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM prompt shabloni pastki qismi",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "Javob yuklanmoqda...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "Ushbu natijani taxtaga qo'llash",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "Rasm olinmoqda...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "Iltimos, aniqlash uchun o'yin taxtasi rasmini tanlang",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "Aniqlash natijalari",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "Yurishlarni tahlil qiling va mulohazalar bering.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key olish",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "Butun aniqlash jarayoni muvaffaqiyatsiz yakunlandi.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "Taxta aniqlash natijasi",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLM ga so'rang",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "Taxta aniqlash muvaffaqiyatsiz!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "Hech qanday taxta nuqtasi aniqlanmadi, figuralarni aniqlab bo'lmadi!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FEN ni nusxalash",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "Ko'p ishlatiladigan modellar",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (ixtiyoriy)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "Hech qanday rasm tanlanmadi",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "Qora yurishi",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "Katta Til Modeli",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "Provayder",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "Asosiy URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "Model",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "Harorat",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "Buyruq qabul qilindi! AI qayta ishlamoqda...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "Chuqur o'ylash jarayonda, iltimos kuting...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "Tez orada taqdim etiladi...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "Taniqlik parametrlari",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "Aniqlikni oshirish uchun parametrlarga tuzatish kiriting",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "Parametrlarni saqlash",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "Rasmni aniqlashni boshlab boʻlmadi: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "Xato: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "Rasmni aniqlash muvaffaqiyatsiz: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "Xato: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "Qoʻllanilgan holat: oq {whiteCount} ta va qora {blackCount} ta tosh",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN buferga nusxa olindi)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "Tanish muvaffaqiyatsiz: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "Xato: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "Mening reytingim",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "O'ynalgan o'yinlar",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "G'alabalar",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "Mag'lubiyatlar",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "Duranglar",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "Oxirgi yangilanish",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "Format:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "Statistikani tiklash",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "Duranglar nisbati",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "Mag'lubiyatlar nisbati",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "Sun'iy intellekt statistikasi",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "Statistikani yoqish",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "Yoqilganda, o'yin natijalari statistikada qayd etiladi. Biroq, orqaga qaytarishlar bilan bog'liq o'yinlar qayd etilmaydi. O'chirilganda, statistika yig'ish to'xtatiladi.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "Bu barcha o'yin statistikasini tiklaydi. Bu amalni bekor qilib bo'lmaydi.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "Taxtaning ichki halqa o'lchami",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "Taxta soyasi",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "Tuzoqni aniqlash",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "Tahlil vaqtida tuzoq yurishlarini qalin doiralar va o‘qlar bilan ajratib ko‘rsating.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "Tuzoq mavjud. Tuzoq yurishlari: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "Qanotli ushlash",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "Raqibning ikkitasi orasidagi bittasini to'g'ri chiziqda ushlang.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "Flankingga ruxsat bering",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "Aralashish",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "Ikkala raqibingizning ikkitasi orasidagi bo'sh joyga o'ting.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "Aralashuvni ushlashga ruxsat berish",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "Sakrash",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "Qo'shni raqibning parchasini bo'sh joyga sakrash orqali ushlang.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "Sakrashga ruxsat berish",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "Qo'llaniladigan chiziqlar",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "Maydon qirralari bo'ylab",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "Maydonni kesib o'tish ortogonal chiziqlari bo'ylab",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "Diagonal chiziqlar maydonni kesib o'tish",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "Bajarish bosqichlari",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "Qolgan bo'laklarga asoslangan harakatlanayotgan davrda mavjudlik",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "Hech qanday cheklov yo'q",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "Uch yoki undan kam bo'lganda mavjud",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "Faqat ikkita bo'sh kvadrat qolganda joylashtirni to'xtating",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "Yoqilganda, doskada faqat 2 bo'sh joy qolganda joylashtirish bosqichi tugaydi va harakat bosqichi boshlanadi, qo'ldagi figuralardan qat'i nazar. Bu qoida faqat 12 figurali o'yinlarga tegishli.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "Siz faqat harakatingizdan keyin darhol qaytarishni so'rashingiz mumkin.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "Agar siz ko'proq qiyinchilik istasangiz, \"{setting}\" parametrini yoqishni va ko'rsatilganidek, to'liq ma'lumotlar bazasini qurilmangizga yuklab olishni tavsiya qilamiz.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "O'yin qoidalarini hozir sozlamoqchimisiz?",
-    "@configureRulesPrompt": {},
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
     "configureRules": "Qoidalarni sozlash",
-    "@configureRules": {},
+    "@configureRules": {
+        "description": "Button text for configuring rules"
+    },
     "algorithmSuggestionTitle": "Algoritm taklifi",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "Siz 1-darajada ketma-ket bir nechta o'yinni yutqazdingiz. Qiyinlikni kamaytirish uchun osonroq MCTS algoritmiga o'tishni xohlaysizmi?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS 30-darajada g'alaba qozonganingiz bilan tabriklаymiz! Katta qiyinchilik uchun MTD(f) algoritmiga o'tishni xohlaysizmi?",
-    "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "Olinadigan toshlalni ajratib ko'rsatish rangi",
-    "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
+    "@switchToMtdfSuggestion": {
+        "description": ""
     },
     "highlightCapturablePieces": "Olinadigan toshlarni ajratib ko'rsatish",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
     "undo": "Bekor qilish",
-    "@undo": {},
+    "@undo": {
+        "description": "Undo last move"
+    },
     "reset": "Qayta o'rnatish",
-    "@reset": {},
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
     "allPuzzlesCompleted": "Barcha jumboqlar yakunlandi!",
-    "@allPuzzlesCompleted": {},
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
     "back": "Orqaga",
-    "@back": {},
+    "@back": {
+        "description": "Back button tooltip"
+    },
+    "puzzles": "Puzzles",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Puzzle",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "No puzzles available",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filter",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Category",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Clear Filter",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Puzzle Statistics",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Total Puzzles",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Completed",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total Stars",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Completion",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Beginner",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Easy",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Medium",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Hard",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Expert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Master",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Win Game",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Defend",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Find Best Move",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Endgame",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Opening",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Mixed",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Exit Puzzle?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Check Solution",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Give Up",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Puzzle Solved!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Hints Used",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Try Again",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Back to List",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Create New Puzzle",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Edit Puzzle",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Custom",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "Select Puzzles",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Selected",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles"
+    },
+    "puzzleSelectAll": "Select All",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Export",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Import",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message"
+    },
+    "puzzleExportFailed": "Failed to export puzzles",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message"
+    },
+    "puzzleImportFailed": "Failed to import puzzles",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles"
+    },
+    "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message"
+    },
+    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Setup Position",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "Capture Position",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "Position captured successfully",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "No position captured yet",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "Please capture a position first",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Record Solution",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Start Recording",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Stop Recording",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Recording...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Started recording solution moves",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message"
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves"
+    },
+    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Clear Solution",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "Puzzle Details",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Title",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Description",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Category",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Difficulty",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Hint",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tags",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separate tags with commas",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Author",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "Title is required",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Description is required",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Position is required",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Solution is required",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puzzle created successfully",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puzzle updated successfully",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Failed to save puzzle",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "optional",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Your Progress",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Quit",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "All",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Coming Soon",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Daily Puzzle",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number"
+    },
+    "dailyPuzzleStreak": "Streak",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "day streak",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "days",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display"
+    },
+    "dailyPuzzleStart": "Start Daily Puzzle",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Current Streak",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Longest Streak",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total Completed",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "All Puzzles",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Browse all available puzzles",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Solve puzzles against the clock",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Rules",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximize your score!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Start Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rush Results",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Time's Up!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Out of Lives",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush Complete!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Solved",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Failed",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Accuracy",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Play Again",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puzzle Battle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Compete with other players",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Coming Soon!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Rating system",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Custom Puzzles",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Create and manage your puzzles",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Create Puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "How many can you solve in a row?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Rules",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Start Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Current",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Best",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Streak Results",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Streak Ended",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "New Record!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Final Score",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Try Again",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "History",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "View your puzzle attempts",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "No Puzzle History",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Success Only",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Failed Only",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "hints",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "View detailed analytics",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Your Puzzle Rating",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message"
+    },
+    "puzzleStatsGamesPlayed": "Games Played",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Deviation",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Performance Overview",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Success Rate",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Avg. Time",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Solved",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Failed",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Success by Category",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Recent Activity",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "No recent activity",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "No Custom Puzzles",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "This feature is planned for a future release",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Invalid position",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs recapture"
+    },
+    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Setup Position",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Open board (setup or play moves), create starting position, return and capture",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Record Solution",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Click Start Recording (board resets to start position), go back, play moves, return and stop",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Add Details",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Fill in title, description, category, difficulty, and tags",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Save Puzzle",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Click the save button in the top-right corner",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionCaptureHelp": "Position Capture Help",
+    "@puzzlePositionCaptureHelp": {
+        "description": "Title for position capture help dialog"
+    },
+    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
+    "@puzzlePositionCaptureHelpContent": {
+        "description": "Help content for capturing puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Capture the starting position first",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleShowPositionCaptureHelp": "Show position capture help",
+    "@puzzleShowPositionCaptureHelp": {
+        "description": "Tooltip for position capture help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "No more hints available",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Hint",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "Validation Errors",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "What happens next:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. You can share this file via the share dialog",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Export for Contribution",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Start Contributing",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Quick Start:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Create Quality Puzzles",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Add Your Name",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Export for Contribution",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Submit",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Full Documentation",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Quality Requirements:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Next move: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "Ko'chirish",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "Complete solution: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "Pay attention to these positions",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "No solution available",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Just now",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "january": "January",
+    "@january": {
+        "description": "Month name"
+    },
+    "february": "February",
+    "@february": {
+        "description": "Month name"
+    },
+    "march": "March",
+    "@march": {
+        "description": "Month name"
+    },
+    "april": "April",
+    "@april": {
+        "description": "Month name"
+    },
+    "may": "May",
+    "@may": {
+        "description": "Month name"
+    },
+    "june": "June",
+    "@june": {
+        "description": "Month name"
+    },
+    "july": "July",
+    "@july": {
+        "description": "Month name"
+    },
+    "august": "August",
+    "@august": {
+        "description": "Month name"
+    },
+    "september": "September",
+    "@september": {
+        "description": "Month name"
+    },
+    "october": "October",
+    "@october": {
+        "description": "Month name"
+    },
+    "november": "November",
+    "@november": {
+        "description": "Month name"
+    },
+    "december": "December",
+    "@december": {
+        "description": "Month name"
+    },
+    "invalidPuzzle": "Invalid Puzzle",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Keep trying!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Examples",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "voiceCommandsHelp": "Voice Commands Help",
+    "@voiceCommandsHelp": {
+        "description": "Voice commands help page title"
+    },
+    "voiceCommandsHelpIntro": "Use your voice to control the game! Below are the available voice commands you can use.",
+    "@voiceCommandsHelpIntro": {
+        "description": "Voice commands help introduction"
+    },
+    "voiceCommandsGameControl": "Game Control",
+    "@voiceCommandsGameControl": {
+        "description": "Game control commands section"
+    },
+    "voiceCommandsMoveControl": "Move Commands",
+    "@voiceCommandsMoveControl": {
+        "description": "Move commands section"
+    },
+    "voiceCommandsSettings": "Settings Commands",
+    "@voiceCommandsSettings": {
+        "description": "Settings commands section"
+    },
+    "voiceCommandsTips": "Tips",
+    "@voiceCommandsTips": {
+        "description": "Tips section"
+    },
+    "voiceCommandsUndo": "Undo Move",
+    "@voiceCommandsUndo": {
+        "description": "Undo command title"
+    },
+    "voiceCommandsUndoDesc": "Undo the last move",
+    "@voiceCommandsUndoDesc": {
+        "description": "Undo command description"
+    },
+    "voiceCommandsRedo": "Redo Move",
+    "@voiceCommandsRedo": {
+        "description": "Redo command title"
+    },
+    "voiceCommandsRedoDesc": "Redo the previously undone move",
+    "@voiceCommandsRedoDesc": {
+        "description": "Redo command description"
+    },
+    "voiceCommandsRestart": "Restart Game",
+    "@voiceCommandsRestart": {
+        "description": "Restart command title"
+    },
+    "voiceCommandsRestartDesc": "Start a new game",
+    "@voiceCommandsRestartDesc": {
+        "description": "Restart command description"
+    },
+    "voiceCommandsAiMove": "Request AI Move",
+    "@voiceCommandsAiMove": {
+        "description": "AI move command title"
+    },
+    "voiceCommandsAiMoveDesc": "Request the AI to make a move",
+    "@voiceCommandsAiMoveDesc": {
+        "description": "AI move command description"
+    },
+    "voiceCommandsMovePiece": "Move Piece",
+    "@voiceCommandsMovePiece": {
+        "description": "Move piece command title"
+    },
+    "voiceCommandsMovePieceDesc": "Move a piece from one position to another",
+    "@voiceCommandsMovePieceDesc": {
+        "description": "Move piece command description"
+    },
+    "voiceCommandsPlacePiece": "Place Piece",
+    "@voiceCommandsPlacePiece": {
+        "description": "Place piece command title"
+    },
+    "voiceCommandsPlacePieceDesc": "Place a piece on the board",
+    "@voiceCommandsPlacePieceDesc": {
+        "description": "Place piece command description"
+    },
+    "voiceCommandsRemovePiece": "Remove Piece",
+    "@voiceCommandsRemovePiece": {
+        "description": "Remove piece command title"
+    },
+    "voiceCommandsRemovePieceDesc": "Remove an opponent's piece",
+    "@voiceCommandsRemovePieceDesc": {
+        "description": "Remove piece command description"
+    },
+    "voiceCommandsToggleSound": "Toggle Sound",
+    "@voiceCommandsToggleSound": {
+        "description": "Toggle sound command title"
+    },
+    "voiceCommandsToggleSoundDesc": "Turn sound on or off",
+    "@voiceCommandsToggleSoundDesc": {
+        "description": "Toggle sound command description"
+    },
+    "voiceCommandsToggleVibration": "Toggle Vibration",
+    "@voiceCommandsToggleVibration": {
+        "description": "Toggle vibration command title"
+    },
+    "voiceCommandsToggleVibrationDesc": "Turn vibration on or off",
+    "@voiceCommandsToggleVibrationDesc": {
+        "description": "Toggle vibration command description"
+    },
+    "voiceCommandsTip1": "Speak clearly and at a moderate pace for best recognition",
+    "@voiceCommandsTip1": {
+        "description": "Voice command tip 1"
+    },
+    "voiceCommandsTip2": "Wait for the listening indicator before speaking",
+    "@voiceCommandsTip2": {
+        "description": "Voice command tip 2"
+    },
+    "voiceCommandsTip3": "Commands work in your selected language",
+    "@voiceCommandsTip3": {
+        "description": "Voice command tip 3"
+    },
+    "voiceAssistant": "Voice Assistant",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantSettings": "Ovozli yordamchi sozlamalari",
-    "@voiceAssistantSettings": {},
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
     "voiceAssistantSettingsDescription": "Model, til va xatti-harakatni sozlash",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "voiceAssistantGeneral": "General",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "Model Settings",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "Model Management",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "Model Type",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "Language",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "Show Voice Button",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "Continuous Listening",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "Download Model",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "Delete Model",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "Model Information",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "Downloaded",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "Downloading...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "Model Size",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "Model Path",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "Select Model Type",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "Select Language",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "Listening...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantRecognizedText": "Recognized Text",
+    "@voiceAssistantRecognizedText": {
+        "description": "Recognized text label"
+    },
+    "voiceAssistantResult": "Result",
+    "@voiceAssistantResult": {
+        "description": "Command execution result label"
+    },
+    "voiceAssistantError": "Voice assistant error",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceAssistantRedownloadModel": "Re-download Model",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
+    "voiceCommandSuccess": "Command executed successfully",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "Failed to execute command",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "Unknown command",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "Move executed",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "Failed to execute move",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "Piece placed",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "Failed to place piece",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "Piece removed",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "Undo executed",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "Failed to undo",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "Redo executed",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "Failed to redo",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "Game restarted",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "Failed to restart game",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "Settings updated",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "Failed to update settings",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "Help displayed",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "Sound enabled",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "Sound disabled",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "Vibration enabled",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "Vibration disabled",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
+    }
 }

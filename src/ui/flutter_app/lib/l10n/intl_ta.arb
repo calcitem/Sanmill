@@ -60,7 +60,7 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "சரி",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
@@ -150,13 +150,11 @@
     },
     "tipToMove": "{player} நகர்த்த.",
     "@tipToMove": {
-        "description": "The tip that the given player is to move.",
-        "placeholders": {
-            "player": {
-                "description": "The player whose turn it is.",
-                "example": "Player 1"
-            }
-        }
+        "description": "The tip that the given player is to move."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "whiteWin": "வீரன் 1 வெற்றி!",
     "@whiteWin": {
@@ -196,13 +194,7 @@
     },
     "cannotImport": "{invalidMove}ஐ இறக்குமதி செய்யமுடியாது",
     "@cannotImport": {
-        "description": "Cannot import",
-        "placeholders": {
-            "invalidMove": {
-                "description": "Invalid move",
-                "example": "x1-y2"
-            }
-        }
+        "description": "Cannot import"
     },
     "movesAndRulesNotMatch": "நகர்வுகள் மற்றும் விதிகள் பொருந்தவில்லை.",
     "@movesAndRulesNotMatch": {
@@ -230,13 +222,7 @@
     },
     "error": "பிழை: {message}",
     "@error": {
-        "description": "Error",
-        "placeholders": {
-            "message": {
-                "description": "The Error message",
-                "example": "Unknown error"
-            }
-        }
+        "description": "Error"
     },
     "winRate": "வெற்றி விகிதம்",
     "@winRate": {
@@ -256,53 +242,43 @@
     },
     "loseReasonlessThanThree": "{player} துண்டு எண்ணிக்கை மூன்றுக்கும் குறைவானது.",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player lost because they had less than three pieces left."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "loseReasonResign": "{player} விலகினார்.",
     "@loseReasonResign": {
-        "description": "Indicate that the player resigned.",
-        "placeholders": {
-            "player": {
-                "description": "The player who resigned",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player resigned."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "loseReasonNoWay": "{player} செல்ல வழி இல்லை.",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "loseReasonBoardIsFull": "பலகை நிரம்பியுள்ளது, மற்றும் {player} க்கு செல்ல வழி இல்லை.",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Indicate that the player has no way to go because the board is full."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "loseReasonTimeOver": "நேரம் முடிந்துவிட்டது, {player} இழந்தார்.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
-        "placeholders": {
-            "player": {
-                "description": "The player who lost",
-                "example": "Player 1"
-            }
-        }
+        "description": "Time Over"
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "drawReasonRule50": "நகரும் கட்டத்தில், கடைசி குறிப்பிட்ட எண்ணிக்கையிலான நகர்வுகளில் எந்த பகுதியும் அகற்றப்படவில்லை.",
     "@drawReasonRule50": {
@@ -330,14 +306,7 @@
     },
     "challengeHarderLevel": "கடினமான நிலையை அறைகூவல் செய்யவா? புதிய நிலை {level} நிலையாக இருக்கும்!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
-        "placeholders": {
-            "level": {
-                "description": "The new level",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "Challenge harder level?"
     },
     "youLose": "நீங்கள் இழக்கிறீர்கள்!",
     "@youLose": {
@@ -353,13 +322,7 @@
     },
     "version": "பதிப்பு: {versionNumber}",
     "@version": {
-        "description": "Version",
-        "placeholders": {
-            "versionNumber": {
-                "description": "The current version",
-                "example": "1.1.38"
-            }
-        }
+        "description": "Version"
     },
     "thanks": "நன்றி",
     "@thanks": {
@@ -369,7 +332,7 @@
     "@settings": {
         "description": "Settings"
     },
-    "options": "விருப்பங்கள்",
+    "options": "Options",
     "@options": {
         "description": "Options"
     },
@@ -635,13 +598,7 @@
     },
     "pick": "{element} ஐத் தேர்ந்தெடுங்கள்",
     "@pick": {
-        "description": "Used in the color picker.",
-        "placeholders": {
-            "element": {
-                "description": "The element to pick the color for.",
-                "example": "Background color"
-            }
-        }
+        "description": "Used in the color picker."
     },
     "info": "தகவல்",
     "@info": {
@@ -720,7 +677,9 @@
         "description": "Privacy Policy Detail 2"
     },
     "and": " மற்றும் ",
-    "@and": {},
+    "@and": {
+        "description": ""
+    },
     "accept": "ஏற்றுக்கொள்",
     "@accept": {
         "description": "Accept"
@@ -855,33 +814,19 @@
     },
     "inHand": "{player} கையில்: {count}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "Player 1"
-            },
-            "count": {
-                "description": "The count of pieces in hand",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has in his hand."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "onBoard": "{player} போர்டில்: {count}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
-        "placeholders": {
-            "player": {
-                "description": "The specified player",
-                "example": "White"
-            },
-            "count": {
-                "description": "The count of pieces on board",
-                "type": "int",
-                "example": "5"
-            }
-        }
+        "description": "The pieces a player has on the board"
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "boardTop": "போர்டு மேலே இருந்து ஆஃப்செட்",
     "@boardTop": {
@@ -1103,6 +1048,18 @@
     "@close": {
         "description": "Close"
     },
+    "download": "Download",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+        "description": "Unknown value"
+    },
     "whitePiece": "வெள்ளை துண்டு",
     "@whitePiece": {
         "description": "White piece"
@@ -1133,23 +1090,19 @@
     },
     "sideToMove": "நகர்த்த வேண்டிய பக்க: {player}",
     "@sideToMove": {
-        "description": "The player whose turn it is.",
-        "placeholders": {
-            "player": {
-                "description": "The player to move",
-                "example": "Player 1"
-            }
-        }
+        "description": "The player whose turn it is."
+    },
+    "player": "வீரர்",
+    "@player": {
+        "description": "player"
     },
     "lastMove": "கடைசி நடவடிக்கை: {move}",
     "@lastMove": {
-        "description": "Last move",
-        "placeholders": {
-            "move": {
-                "description": "The last move",
-                "example": "d2-d3"
-            }
-        }
+        "description": "Last move"
+    },
+    "move": "நகர்த்து",
+    "@move": {
+        "description": "Move"
     },
     "selected": "தேர்ந்தெடுக்கப்பட்டது",
     "@selected": {
@@ -1174,6 +1127,10 @@
     "pieceHighlightColor": "துண்டு சிறப்பம்சமாக வண்ணம்",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
+    },
+    "capturablePieceHighlightColor": "கைப்பற்றக்கூடிய காய்களின் முன்னிலைப்படுத்தும் நிறம்",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
     },
     "algorithm": "படிமுறை",
     "@algorithm": {
@@ -1225,14 +1182,7 @@
     },
     "moveNumber": "{count, plural, =0{Move}=1{{count} நகர்த்து} other{{count} நகர்வுகள்}}",
     "@moveNumber": {
-        "description": "Moves to take back",
-        "placeholders": {
-            "count": {
-                "description": "Number of Moves",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Moves to take back"
     },
     "loadFailed": "சுமை தோல்வியடைந்தது.",
     "@loadFailed": {
@@ -1284,25 +1234,11 @@
     },
     "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} துண்டு} other{{count} துண்டுகள்}} அகற்ற வேண்டும்.",
     "@pieceCountNeedToRemove": {
-        "description": "Pieces need to remove.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Pieces need to remove."
     },
     "placedCount": "வைக்கப்பட்டது ({count})",
     "@placedCount": {
-        "description": "Placed N pieces. Used in setup position toolbar.",
-        "placeholders": {
-            "count": {
-                "description": "Number of pieces placed.",
-                "type": "int",
-                "example": "3"
-            }
-        }
+        "description": "Placed N pieces. Used in setup position toolbar."
     },
     "placedPieceCount": "வைக்கப்பட்ட கட்டத்தில் துண்டு எண்ணிக்கை.",
     "@placedPieceCount": {
@@ -1310,14 +1246,7 @@
     },
     "hasPlacedPieceCount": "{count, plural, =0{தற்போதைய வீரர் எந்தத் துண்டுகளையும் வைக்கவில்லை.} =1{தற்போதைய வீரர் ஒரு துண்டை வைத்துள்ளார்.} other{தற்போதைய வீரர் {count} துண்டுகளை வைத்துள்ளார்.}}",
     "@hasPlacedPieceCount": {
-        "description": "The current player has placed {count} pieces.",
-        "placeholders": {
-            "count": {
-                "type": "int",
-                "description": "Number of pieces placed.",
-                "example": "3"
-            }
-        }
+        "description": "The current player has placed {count} pieces."
     },
     "notPlacingPhase": "கட்டத்தை வைக்காமல், அதை மாற்ற முடியாது.",
     "@notPlacingPhase": {
@@ -1348,815 +1277,2875 @@
         "description": "Exit and reopen app for settings to take effect."
     },
     "forest": "காடு",
-    "@forest": {},
+    "@forest": {
+        "description": ""
+    },
     "desktopImage": "டெச்க்டாப் படம்",
-    "@desktopImage": {},
+    "@desktopImage": {
+        "description": ""
+    },
     "invalidPosition": "தவறான நிலை.",
-    "@invalidPosition": {},
+    "@invalidPosition": {
+        "description": ""
+    },
     "shareGIF": "பகிர்வு gif",
-    "@shareGIF": {},
+    "@shareGIF": {
+        "description": ""
+    },
     "pixelRatio": "படப்புள்ளி விகிதம்",
-    "@pixelRatio": {},
+    "@pixelRatio": {
+        "description": ""
+    },
     "duration": "காலம்",
-    "@duration": {},
+    "@duration": {
+        "description": ""
+    },
     "gameScreenRecorder": "கேம் திரை ரெக்கார்டர்",
-    "@gameScreenRecorder": {},
+    "@gameScreenRecorder": {
+        "description": ""
+    },
     "previous": "முந்தைய",
-    "@previous": {},
+    "@previous": {
+        "description": ""
+    },
     "next": "அடுத்தது",
-    "@next": {},
+    "@next": {
+        "description": ""
+    },
     "skip": "தவிர்",
-    "@skip": {},
+    "@skip": {
+        "description": ""
+    },
     "gotIt": "கிடைத்தது",
-    "@gotIt": {},
+    "@gotIt": {
+        "description": ""
+    },
     "youCanModifyRules": "விதி அமைப்புகளில் விளையாட்டின் விதிகளை நீங்கள் மாற்றலாம்.",
-    "@youCanModifyRules": {},
+    "@youCanModifyRules": {
+        "description": ""
+    },
     "youCanUseMouseWheelInPicker": "பிக்கரில் உள்ள மதிப்பை சரிசெய்ய நீங்கள் சுட்டி சக்கரத்தைப் பயன்படுத்தலாம்.",
-    "@youCanUseMouseWheelInPicker": {},
+    "@youCanUseMouseWheelInPicker": {
+        "description": ""
+    },
     "noTimeLimitForThinking": "AI சிந்தனை நேரம் 0 என அமைக்கப்பட்டால், சிந்திக்க நேர வரம்பு இல்லை.",
-    "@noTimeLimitForThinking": {},
+    "@noTimeLimitForThinking": {
+        "description": ""
+    },
     "whatIsMtdf": "எம்டிடி (எஃப்) என்பது ஆல்பா-பீட்டா தேடல் வழிமுறையின் மாற்றியமைக்கப்பட்ட வடிவமாகும், இது இடைநிலை தேடல் முடிவுகளை மீண்டும் பயன்படுத்துவதன் மூலமும், தேடல் இடத்தை குறைக்க ஒரு நல்ல ஆரம்ப யூகத்தைப் பயன்படுத்துவதன் மூலமும் செயல்திறனை மேம்படுத்துவதை நோக்கமாகக் கொண்டுள்ளது.",
-    "@whatIsMtdf": {},
+    "@whatIsMtdf": {
+        "description": ""
+    },
     "noteAiThinkingTimeMayNotBePrecise": "AI சிந்தனை நேர சரிசெய்தல் முற்றிலும் துல்லியமாக இருக்காது என்பதை நினைவில் கொள்க. சிரம நிலை குறைந்த மதிப்புக்கு அமைக்கப்படும்போது உண்மையான சிந்தனை நேரம் குறுகியதாக இருக்கலாம், மேலும் நேரம் முடிந்ததும் AI நடுப்பகுதியில் சிந்திக்கும்போது நீண்டதாக இருக்கலாம்.",
-    "@noteAiThinkingTimeMayNotBePrecise": {},
+    "@noteAiThinkingTimeMayNotBePrecise": {
+        "description": ""
+    },
     "noteActualDifficultyLevelMayBeLimited": "நீங்கள் சிரம நிலையை அதிகமாக அமைத்தால், ஆனால் AI சிந்தனை நேரத்தை அதிகரிக்கவில்லை என்றால், உண்மையான சிரம நிலை சிந்தனை நேரக் கட்டுப்பாடு காரணமாக குறைந்த மதிப்புக்கு மட்டுப்படுத்தப்படலாம். இயந்திரத்தின் செயல்திறனின் அடிப்படையில் உண்மையான மதிப்பு மாறுபடலாம்.",
-    "@noteActualDifficultyLevelMayBeLimited": {},
+    "@noteActualDifficultyLevelMayBeLimited": {
+        "description": ""
+    },
     "whatIsPvs": "பி.வி.எச் (முதன்மை மாறுபாடு தேடல்) என்பது கொடுக்கப்பட்ட நிலையில் சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். இது ஆல்பா-பீட்டா வழிமுறையின் விரிவாக்கமாகும், மேலும் ஒரு நடவடிக்கை மோசமானது அல்லது முதன்மை மாறுபாட்டிலிருந்து ஏற்கனவே பாதுகாப்பான மதிப்பெண்ணை விட மோசமானது அல்ல என்பதை உறுதிப்படுத்த சுழிய அல்லது சுழிய சாளர தேடல்களைப் பயன்படுத்துகிறது. பி.வி.எச் மிகவும் நம்பிக்கைக்குரிய நகர்வுகளில் கவனம் செலுத்துகிறது மற்றும் சப்டோப்டிமல் கிளைகளின் தேவையற்ற தேடல்களைத் தவிர்க்கிறது, இது தேடலின் செயல்திறனை மேம்படுத்த உதவுகிறது.",
-    "@whatIsPvs": {},
+    "@whatIsPvs": {
+        "description": ""
+    },
     "whatIsAlphaBeta": "ஆல்பா-பீட்டா வழிமுறை சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். தேடல் மரத்தைக் கத்தரிக்கவும் செயல்திறனை அதிகரிக்கவும் இது மினிமேக்ச் கொள்கை மற்றும் ஆல்பா மற்றும் பீட்டா இரண்டு மதிப்புகளைப் பயன்படுத்துகிறது. ஆல்பா என்பது கணினி பெற முடியும் என்பதில் உறுதியாக இருக்கும் குறைந்தபட்ச மதிப்பெண்ணைக் குறிக்கிறது, அதே நேரத்தில் பீட்டா அதன் எதிரி பெறக்கூடிய அதிகபட்ச மதிப்பெண்ணைக் குறிக்கிறது. ஒரு விளையாட்டில் அறிவுள்ள, திறமையான முடிவுகளை எடுக்கக் கணினி உதவுகிறது.",
-    "@whatIsAlphaBeta": {},
+    "@whatIsAlphaBeta": {
+        "description": ""
+    },
     "drawOnTheHumanExperienceDetail": "மனித அனுபவத்தின்படி, நீங்கள் வெல்ல முயற்சித்தால், நீங்கள் இழப்பீர்கள். அதற்கு பதிலாக, உங்கள் இலக்காக ஒரு டிராவை நோக்கமாகக் கொண்டு, விளையாட்டை இழப்பதைத் தவிர்க்கவும். உங்கள் எதிரியைக் கவனித்து, அவர்கள் தவறுகளைச் செய்யக்கூடிய ஒரு நிலைக்கு மெதுவாக கவர்ந்திழுக்கவும். அவர்கள் பலவீனத்தைக் காட்டும்போது, வாய்ப்பைக் கைப்பற்றி, வெற்றிக்கு மெதுவாகத் தள்ளுங்கள். இந்த வழியில், நீங்கள் விளையாட்டை வெல்லலாம்.",
-    "@drawOnTheHumanExperienceDetail": {},
+    "@drawOnTheHumanExperienceDetail": {
+        "description": ""
+    },
     "firstMoveDetail": "இந்த விளையாட்டில், முதல் வீரருடன் ஒப்பிடும்போது இரண்டாவது வீரர் செய் பெறுவது எளிது.",
-    "@firstMoveDetail": {},
+    "@firstMoveDetail": {
+        "description": ""
+    },
     "passiveDetail": "செயலற்ற விருப்பத்தை செயல்படுத்துவது, ஆக்ரோசமாக வெல்ல முயற்சிப்பதை விட, நிலையில் ஒரு நன்மை இருக்கும்போது AI ஓய்வெடுக்க வழிவகுக்கும்.",
-    "@passiveDetail": {},
+    "@passiveDetail": {
+        "description": ""
+    },
     "moveRandomlyDetail": "இந்த விருப்பத்தை இயக்குவது விளையாட்டின் சீரற்ற தன்மையையும் வேடிக்கையையும் அதிகரிக்கிறது, அதே நேரத்தில் அதை முடக்குவது AI ஐ வெல்ல வழிகளை ஆய்வு செய்ய உதவும்.",
-    "@moveRandomlyDetail": {},
+    "@moveRandomlyDetail": {
+        "description": ""
+    },
     "considerMobilityOfPiecesDetail": "AI அதன் துண்டுகளின் இயக்கத்தை கருத்தில் கொண்டால், அது எதிராளியின் துண்டுகளை விரைவாகப் பிடிப்பதை நோக்கமாகக் கொண்டது மட்டுமல்லாமல், எதிரியின் இயக்கங்களைத் தடுப்பதையும், அவ்வாறே செய்வதிலிருந்து அவற்றைத் தடுப்பதையும் கருத்தில் கொள்ளுங்கள்.",
-    "@considerMobilityOfPiecesDetail": {},
+    "@considerMobilityOfPiecesDetail": {
+        "description": ""
+    },
     "whenBoardIsFull": "பலகை நிரம்பும்போது",
-    "@whenBoardIsFull": {},
+    "@whenBoardIsFull": {
+        "description": ""
+    },
     "whenBoardIsFull_Detail": "வைக்கும் கட்டத்தின் முடிவில், நகரும் கட்டம் தொடங்குவதற்கு முன்பு, பலகை துண்டுகள் நிறைந்திருந்தால் நடவடிக்கை பின்வருமாறு.",
-    "@whenBoardIsFull_Detail": {},
+    "@whenBoardIsFull_Detail": {
+        "description": ""
+    },
     "sideToMoveRemovePiece": "நகரும் கட்டத்தில் முதலில் நகரும் வீரர் எதிராளியின் துண்டுகளில் ஒன்றை நீக்குகிறார்.",
-    "@sideToMoveRemovePiece": {},
+    "@sideToMoveRemovePiece": {
+        "description": ""
+    },
     "agreeToDraw": "இரு தரப்பினரும் ஒரு சமநிலைக்கு ஒப்புக்கொள்கிறார்கள்.",
-    "@agreeToDraw": {},
+    "@agreeToDraw": {
+        "description": ""
+    },
     "takeOpponentsPiece": "உங்கள் எதிரியின் துண்டுகளில் ஒன்றை எடுத்துக் கொள்ளுங்கள்.",
-    "@takeOpponentsPiece": {},
+    "@takeOpponentsPiece": {
+        "description": ""
+    },
     "firstPlayerLose": "முதல் வீரர் விளையாட்டை இழக்கிறார்.",
-    "@firstPlayerLose": {},
+    "@firstPlayerLose": {
+        "description": ""
+    },
     "firstAndSecondPlayerRemovePiece": "முதல் மற்றும் இரண்டாவது வீரர்கள் எதிராளியின் துண்டுகளில் ஒன்றை நீக்குகிறார்கள்.",
-    "@firstAndSecondPlayerRemovePiece": {},
+    "@firstAndSecondPlayerRemovePiece": {
+        "description": ""
+    },
     "secondAndFirstPlayerRemovePiece": "இரண்டாவது மற்றும் முதல் வீரர்கள் எதிராளியின் துண்டுகளில் ஒன்றை அகற்றுகிறார்கள்.",
-    "@secondAndFirstPlayerRemovePiece": {},
+    "@secondAndFirstPlayerRemovePiece": {
+        "description": ""
+    },
     "enteredFlyingPhase": "இப்போது பறக்கும் கட்டத்தில் நுழைந்தது, எதிரியின் துண்டுகள் பலகையில் உள்ள எந்த வெற்று இடத்திற்கும் செல்லலாம். \"விதி அமைப்புகள்\" இல் பறக்கும் விதியை நீங்கள் அணைக்கலாம்.",
-    "@enteredFlyingPhase": {},
+    "@enteredFlyingPhase": {
+        "description": ""
+    },
     "whenStalemate": "முட்டுக்கட்டை போது",
-    "@whenStalemate": {},
+    "@whenStalemate": {
+        "description": ""
+    },
     "whenStalemate_Detail": "எந்தவொரு பகுதியையும் நகர்த்த முடியாதபோது என்ன நடவடிக்கை பின்வருமாறு?",
-    "@whenStalemate_Detail": {},
+    "@whenStalemate_Detail": {
+        "description": ""
+    },
     "endWithStalemateLoss": "தடுக்கப்பட்ட பக்கத்திற்கு ஒரு முட்டுக்கட்டை இழப்புடன் முடிக்கவும்.",
-    "@endWithStalemateLoss": {},
+    "@endWithStalemateLoss": {
+        "description": ""
+    },
     "changeSideToMove": "நகர்த்த பக்கத்தை மாற்றவும்.",
-    "@changeSideToMove": {},
+    "@changeSideToMove": {
+        "description": ""
+    },
     "removeOpponentsPieceAndMakeNextMove": "எதிராளியின் துண்டுகளில் ஒன்றை அகற்றி அடுத்த நகர்வை மேற்கொள்ளுங்கள்.",
-    "@removeOpponentsPieceAndMakeNextMove": {},
+    "@removeOpponentsPieceAndMakeNextMove": {
+        "description": ""
+    },
     "endWithStalemateDraw": "ஒரு முட்டுக்கட்டை டிராவுடன் முடிக்கவும்.",
-    "@endWithStalemateDraw": {},
+    "@endWithStalemateDraw": {
+        "description": ""
+    },
     "removeOpponentsPieceAndChangeSideToMove": "எதிராளியின் துண்டுகளில் ஒன்றை அகற்றி, நகர்த்த பக்கத்தை மாற்றவும்.",
-    "@removeOpponentsPieceAndChangeSideToMove": {},
+    "@removeOpponentsPieceAndChangeSideToMove": {
+        "description": ""
+    },
     "aiResponseDelayTime": "AI மறுமொழி தாமத நேரம்",
-    "@aiResponseDelayTime": {},
+    "@aiResponseDelayTime": {
+        "description": ""
+    },
     "aiIsDelaying": "AI தற்போது தாமதமான மறுமொழி கட்டத்தில் உள்ளது. தொடர்வதற்கு முன் சிறிது நேரம் காத்திருங்கள்.",
-    "@aiIsDelaying": {},
+    "@aiIsDelaying": {
+        "description": ""
+    },
     "tipCanNotRemoveNonadjacent": "நீங்கள் அருகிலுள்ள அல்லாத துண்டுகளை அகற்ற முடியாது.",
-    "@tipCanNotRemoveNonadjacent": {},
+    "@tipCanNotRemoveNonadjacent": {
+        "description": ""
+    },
     "stalemateRemovalRegardlessOfMillFormation": "ஒரு முட்டுக்கட்டைக்கு, ஆலை உருவாவதைப் பொருட்படுத்தாமல், உங்களுடைய அருகிலுள்ள எதிரியின் துண்டுகளை அகற்றலாம்.",
-    "@stalemateRemovalRegardlessOfMillFormation": {},
+    "@stalemateRemovalRegardlessOfMillFormation": {
+        "description": ""
+    },
     "whatIsMcts": "MCTS என்பது ஒரு தொடக்க-நட்பு வழிமுறையாகும், இது உருவகப்படுத்துதல்கள் மூலம் வெவ்வேறு நகர்வுகளை ஆராய்ந்து மதிப்பீடு செய்வதன் மூலம் முடிவுகளை எடுக்கும்.",
-    "@whatIsMcts": {},
+    "@whatIsMcts": {
+        "description": ""
+    },
     "goldenJade": "கோல்டன் சேட்",
-    "@goldenJade": {},
+    "@goldenJade": {
+        "description": ""
+    },
     "forestWood": "வன மரம்",
-    "@forestWood": {},
+    "@forestWood": {
+        "description": ""
+    },
     "darkMystery": "இருண்ட மர்மம்",
-    "@darkMystery": {},
+    "@darkMystery": {
+        "description": ""
+    },
     "midnightBlue": "நள்ளிரவு நீலம்",
-    "@midnightBlue": {},
+    "@midnightBlue": {
+        "description": ""
+    },
     "greenForest": "பசுமை காடு",
-    "@greenForest": {},
+    "@greenForest": {
+        "description": ""
+    },
     "greenMeadow": "பச்சை புல்வெளி",
-    "@greenMeadow": {},
+    "@greenMeadow": {
+        "description": ""
+    },
     "stonyPath": "ச்டோனி பாதை",
-    "@stonyPath": {},
+    "@stonyPath": {
+        "description": ""
+    },
     "pastelPink": "வெளிர் இளஞ்சிவப்பு",
-    "@pastelPink": {},
+    "@pastelPink": {
+        "description": ""
+    },
     "turquoiseSea": "டர்க்கைச் கடல்",
-    "@turquoiseSea": {},
+    "@turquoiseSea": {
+        "description": ""
+    },
     "violetDream": "வயலட் கனவு",
-    "@violetDream": {},
+    "@violetDream": {
+        "description": ""
+    },
     "mintChocolate": "புதினா சாக்லேட்",
-    "@mintChocolate": {},
+    "@mintChocolate": {
+        "description": ""
+    },
     "skyBlue": "வானம் நீலம்",
-    "@skyBlue": {},
+    "@skyBlue": {
+        "description": ""
+    },
     "playfulGarden": "விளையாட்டுத்தனமான தோட்டம்",
-    "@playfulGarden": {},
+    "@playfulGarden": {
+        "description": ""
+    },
     "whatIsRetrogradeAnalysis": "ரெட்ரோகிரேட் பகுப்பாய்வு வழிமுறை வெவ்வேறு தொடக்க நிலைகளிலிருந்து ஒரு எண்ட்கேம் தரவுத்தளத்தை உருவாக்க பல மதிப்புள்ள பிற்போக்கு பகுப்பாய்வைப் பயன்படுத்துகிறது, பின்னர் விளையாட்டை மேம்படுத்த இந்த தரவுத்தளத்தைப் பயன்படுத்துகிறது. இந்த அணுகுமுறை அல்ட்ரா-ச்ட்ராங் தீர்வுகள் வகையின் கீழ் வருகிறது.",
-    "@whatIsRetrogradeAnalysis": {},
+    "@whatIsRetrogradeAnalysis": {
+        "description": ""
+    },
     "viewAlgorithmGuide": "இந்த வழிமுறைக்கான பயனர் வழிகாட்டியைக் காண விரும்புகிறீர்களா?",
-    "@viewAlgorithmGuide": {},
+    "@viewAlgorithmGuide": {
+        "description": ""
+    },
     "showPositionalAdvantageIndicator": "நிலை நன்மை குறிகாட்டியைக் காட்டு",
-    "@showPositionalAdvantageIndicator": {},
+    "@showPositionalAdvantageIndicator": {
+        "description": ""
+    },
     "usePerfectDatabase": "சரியான தரவுத்தளத்தைப் பயன்படுத்தவும்",
-    "@usePerfectDatabase": {},
+    "@usePerfectDatabase": {
+        "description": ""
+    },
     "perfectDatabaseDescription": "அதிநவீன வழிமுறைகள் மூலம் உருவாக்கப்படும் குறைபாடற்ற விளையாட்டு தரவுத்தளத்தைப் பயன்படுத்த இந்த விருப்பத்தை இயக்கவும். இந்த நற்பொருத்தம் உகந்த நகர்வுகளை பரிந்துரைக்க திறப்பு மற்றும் எண்ட்கேம் உத்திகள் இரண்டையும் ஒருங்கிணைக்கிறது. விளையாட்டில் மிக உயர்ந்த அளவிலான துல்லியத்தை நாடும் வீரர்களுக்கு இது விருப்பமான தேர்வாகும். துல்லியமான கணக்கீட்டு நுட்பங்கள் மூலம் உருவாக்கப்பட்டது, தரவுத்தளம் சரியான விளையாட்டு தீர்வுகளை வழங்க வடிவமைக்கப்பட்டுள்ளது.\n\n குறிப்பு: AI தரவுத்தளத்தை அணுகத் தவறினால், அது விளையாட்டு முடிவுகளுக்கான வழக்கமான வழிமுறைகளுக்கு மாறும். தரவுத்தளம் கிடைக்கும்போது, 'சிரம நிலை' கிட்டத்தட்ட வெல்ல முடியாததாகிவிடும், மேலும் 'AI சிந்தனை நேரம்' கடுமையான குறைப்பை அனுபவிக்கிறது. தரவுத்தள முடிவுகள் மிக உயர்ந்த முன்னுரிமையைக் கொண்டிருப்பதால், 'AI இன் பிளே பாணி' விருப்பங்களுக்குள் உள்ள பல அமைப்புகள் மீறப்படும்.\n\n இந்த குறைபாடற்ற தரவுத்தளத்தை எவ்வாறு அதிகம் பயன்படுத்துவது என்பதற்கான வழிகாட்டுதலுக்கு, இங்கே சொடுக்கு செய்க.",
-    "@perfectDatabaseDescription": {},
+    "@perfectDatabaseDescription": {
+        "description": ""
+    },
     "backgroundImage": "பின்னணி படம்",
-    "@backgroundImage": {},
+    "@backgroundImage": {
+        "description": ""
+    },
     "whatIsRandom": "'சரியான தரவுத்தளத்தைப் பயன்படுத்துங்கள்' விருப்பம் இயக்கப்படாதபோது, 'சீரற்ற' அமைப்பு AI ஐ நகர்த்துவதற்கு எந்த வழிமுறைகளையும் பயன்படுத்தாமல் தோராயமாக நகர்த்துவதற்கு காரணமாகிறது. இது பொதுவாக கணிசமாக பலவீனமான விளையாட்டில் விளைகிறது. மாறாக, 'சரியான தரவுத்தளத்தைப் பயன்படுத்துங்கள்' இயக்கப்பட்டால், AI பாரம்பரிய AI வழிமுறைகளுடன் கலப்பதற்கு பதிலாக, முடிவுகளை எடுப்பதற்கான 'சரியான தரவுத்தளத்தை' பிரத்தியேகமாக நம்பியுள்ளது. இந்த பயன்முறையில், AI இன் நகர்வுகள் முற்றிலும் தரவுத்தளத்தின் உள்ளடக்கத்தை அடிப்படையாகக் கொண்டவை, நிகழ்நேர கணக்கீடுகள் அல்லது தேடல் வழிமுறைகளை நம்பியிருப்பதைத் தவிர்க்கிறது.",
-    "@whatIsRandom": {},
+    "@whatIsRandom": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn": "எதிரியின் துண்டு (களை) அவர்களின் கையில் இருந்து அகற்றவும்; பின்னர் அது எதிராளியின் இடத்திற்கு திரும்புவது.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase": "இடும் கட்டத்தின் போது ஆலை உருவாக்கும் போது",
-    "@whenFormingMillsDuringPlacingPhase": {},
+    "@whenFormingMillsDuringPlacingPhase": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard": "போர்டில் இருந்து எதிராளியின் துண்டு (களை) அகற்றவும்.",
-    "@removeOpponentsPieceFromBoard": {},
+    "@removeOpponentsPieceFromBoard": {
+        "description": ""
+    },
     "removeOpponentsPieceFromBoard_Detail": "குழுவிலிருந்து எதிரியின் துண்டு (களை) அகற்றவும்; பின்னர் அது எதிராளியின் இடத்திற்கு திரும்புவது.",
-    "@removeOpponentsPieceFromBoard_Detail": {},
+    "@removeOpponentsPieceFromBoard_Detail": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece": "எதிர்ப்பாளர் தங்கள் சொந்த துண்டு (களை) குழுவிலிருந்து நீக்குகிறார்.",
-    "@opponentRemovesOwnPiece": {},
+    "@opponentRemovesOwnPiece": {
+        "description": ""
+    },
     "opponentRemovesOwnPiece_Detail": "நீங்கள் நடவடிக்கை எடுப்பதற்குப் பதிலாக, எதிர்ப்பாளர் தங்கள் சொந்த பகுதியை (களை) வாரியத்திலிருந்து தேர்ந்தெடுத்து நீக்குகிறார், தங்களுக்கு தீங்கு விளைவிக்கும் ஒரு நடவடிக்கையை திறம்பட எடுத்துக்கொள்கிறார்.",
-    "@opponentRemovesOwnPiece_Detail": {},
+    "@opponentRemovesOwnPiece_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn": "எதிராளியின் துண்டு (களை) அவர்களின் கையில் இருந்து அகற்றவும், பின்னர் அது நகர்வது உங்கள் முறை.",
-    "@removeOpponentsPieceFromHandThenYourTurn": {},
+    "@removeOpponentsPieceFromHandThenYourTurn": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenYourTurn_Detail": "எதிரியின் கையிலிருந்து துண்டு (களை) அகற்றவும். மல்டி-ரெமோவ் அமைப்பின் படி, பல துண்டுகள் அகற்றப்பட வேண்டும் மற்றும் எதிராளிக்கு கையில் எந்த துண்டுகளும் இல்லை என்றால், எதிரியின் துண்டுகளை பலகையில் இருந்து அகற்றவும். பின்னர், நகர்த்துவதற்கான உங்கள் முறை. நீங்கள் தொடர்ந்து ஆலைகளை உருவாக்கினால், எதிராளியின் துண்டுகளை அகற்றலாம்.",
-    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenYourTurn_Detail": {
+        "description": ""
+    },
     "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "எதிரியின் கையிலிருந்து துண்டு (களை) அகற்றவும். மல்டி-ரெமோவ் அமைப்பின் படி, பல துண்டுகள் அகற்றப்பட வேண்டும் மற்றும் எதிராளிக்கு கையில் எந்த துண்டுகளும் இல்லை என்றால், எதிரியின் துண்டுகளை பலகையில் இருந்து அகற்றவும். பின்னர், அது நகர்த்துவதற்கான எதிரியின் முறை.",
-    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+    "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces": "துண்டுகளை அகற்றுவதில் குறிக்கவும் நேரந்தவறுகை.",
-    "@markAndDelayRemovingPieces": {},
+    "@markAndDelayRemovingPieces": {
+        "description": ""
+    },
     "markAndDelayRemovingPieces_Detail": "வைக்கும் கட்டத்தின் போது, அகற்றப்பட வேண்டிய துண்டுகள் குறிக்கப்பட்டுள்ளன, மேலும் இரு வீரர்களுக்கும், இந்த புள்ளிகளில் புதிய துண்டுகள் எதுவும் வைக்க முடியாது. நகரும் கட்டத்தில் நுழைந்ததும், இந்த குறிக்கப்பட்ட துண்டுகள் முழுவதுமாக அகற்றப்படுகின்றன, மேலும் வீரர்கள் தங்கள் துண்டுகளை இப்போது காலியாக உள்ள இந்த புள்ளிகளுக்கு நகர்த்தலாம்.",
-    "@markAndDelayRemovingPieces_Detail": {},
+    "@markAndDelayRemovingPieces_Detail": {
+        "description": ""
+    },
     "whenFormingMillsDuringPlacingPhase_Detail": "இடும் கட்டத்தின் போது ஆலை உருவாக்கும் போது எடுக்கக்கூடிய நடவடிக்கைகள்.",
-    "@whenFormingMillsDuringPlacingPhase_Detail": {},
+    "@whenFormingMillsDuringPlacingPhase_Detail": {
+        "description": ""
+    },
     "marked": "குறிக்கப்பட்டுள்ளது",
-    "@marked": {},
-    "menu": "பட்டியல்",
-    "@menu": {},
-    "monochrome": "ஒரே வண்ணமுடைய",
-    "@monochrome": {},
+    "@marked": {
+        "description": ""
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "monochrome": "Monochrome",
+    "@monochrome": {
+        "description": ""
+    },
     "youCanEnableScreenReaderSupport": "பொது அமைப்புகளில் அணுகல் உள்ளமைவில் திரை ரீடர் உதவி சுவிட்சை நீங்கள் இயக்கலாம்.",
-    "@youCanEnableScreenReaderSupport": {},
+    "@youCanEnableScreenReaderSupport": {
+        "description": ""
+    },
     "showNumbersOnPieces": "துண்டுகளில் எண்களைக் காட்டு",
-    "@showNumbersOnPieces": {},
+    "@showNumbersOnPieces": {
+        "description": ""
+    },
     "saveImage": "படத்தை சேமிக்கவும்",
-    "@saveImage": {},
+    "@saveImage": {
+        "description": ""
+    },
     "isAnalysisToolbarShown": "பகுப்பாய்வு கருவிப்பட்டியைக் காட்டு",
-    "@isAnalysisToolbarShown": {},
+    "@isAnalysisToolbarShown": {
+        "description": ""
+    },
     "analysisToolbarBackgroundColor": "பகுப்பாய்வு கருவிப்பட்டி பின்னணி நிறம்",
-    "@analysisToolbarBackgroundColor": {},
+    "@analysisToolbarBackgroundColor": {
+        "description": ""
+    },
     "analysisToolbarIconColor": "பகுப்பாய்வு கருவிப்பட்டி படவுரு நிறம்",
-    "@analysisToolbarIconColor": {},
+    "@analysisToolbarIconColor": {
+        "description": ""
+    },
     "transformed": "மாற்றப்பட்டது.",
-    "@transformed": {},
+    "@transformed": {
+        "description": ""
+    },
     "cannotTransform": "மாற்ற முடியாது.",
-    "@cannotTransform": {},
+    "@cannotTransform": {
+        "description": ""
+    },
     "rotate": "சுழற்றுங்கள்",
-    "@rotate": {},
+    "@rotate": {
+        "description": ""
+    },
     "horizontalFlip": "எச் ஃபிளிப்",
-    "@horizontalFlip": {},
+    "@horizontalFlip": {
+        "description": ""
+    },
     "verticalFlip": "திருப்பத்தில்",
-    "@verticalFlip": {},
+    "@verticalFlip": {
+        "description": ""
+    },
     "innerOuterFlip": "நான் புரட்டுகிறேன்",
-    "@innerOuterFlip": {},
+    "@innerOuterFlip": {
+        "description": ""
+    },
     "transparentCanvas": "வெளிப்படையான கேன்வாச்",
-    "@transparentCanvas": {},
+    "@transparentCanvas": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation": "மீண்டும் நிகழும் ஆலைகள் உருவாவதைக் கட்டுப்படுத்துங்கள்",
-    "@restrictRepeatedMillsFormation": {},
+    "@restrictRepeatedMillsFormation": {
+        "description": ""
+    },
     "restrictRepeatedMillsFormation_Detail": "ஒரு ஆலையில் இருந்து ஒரு துண்டு இன்னொரு ஆலையை உருவாக்கியது, அடுத்த திருப்பத்தில் அசல் புள்ளிக்கு மீண்டும் ஒரு ஆலை மீண்டும் உருவாக முடியாது. முதலில் வேறுபட்ட நடவடிக்கை தேவை.",
-    "@restrictRepeatedMillsFormation_Detail": {},
+    "@restrictRepeatedMillsFormation_Detail": {
+        "description": ""
+    },
     "oneTimeUseMill": "ஒரு முறை பயன்பாட்டு ஆலை",
-    "@oneTimeUseMill": {},
+    "@oneTimeUseMill": {
+        "description": ""
+    },
     "oneTimeUseMill_Detail": "ஒவ்வொரு ஆலை ஒரு எதிரியின் பகுதியை ஒரு முறை மட்டுமே அகற்ற முடியும். நீங்கள் அதை மீண்டும் சீர்திருத்தலாம், ஆனால் கூடுதல் நீக்குதல்களுக்கு இதைப் பயன்படுத்த முடியாது.",
-    "@oneTimeUseMill_Detail": {},
+    "@oneTimeUseMill_Detail": {
+        "description": ""
+    },
     "currentRulesNoPerfectDatabase": "நீங்கள் அமைத்த தற்போதைய விதிகள் தொடர்புடைய சரியான தரவுத்தளத்தைக் கொண்டிருக்கவில்லை. சரியான தரவுத்தளத்தைப் பற்றிய கூடுதல் தகவலுக்கு, இங்கே சொடுக்கு செய்க.",
-    "@currentRulesNoPerfectDatabase": {},
+    "@currentRulesNoPerfectDatabase": {
+        "description": ""
+    },
     "focusOnBlockingPaths": "பாதைகளைத் தடுப்பதில் கவனம் செலுத்துங்கள்",
-    "@focusOnBlockingPaths": {},
+    "@focusOnBlockingPaths": {
+        "description": ""
+    },
     "focusOnBlockingPaths_Detail": "விளையாட்டின் குறிப்பிட்ட கட்டங்களின் போது, ஆலைகளை உருவாக்குவதில் எதிராளியின் இயக்கத்தைத் தடுக்கிறது. ஆலைகளை முடிப்பதன் மூலம் துண்டுகளை அகற்றுவதில் கவனம் செலுத்துவதற்குப் பதிலாக, இந்த கட்டங்களின் போது எதிராளியை சிக்க வைப்பதை AI நோக்கமாகக் கொண்டுள்ளது, மேலும் அவற்றை நகர்த்த முடியாமல், வன்கவர்வு விளையாட்டைக் காட்டிலும் ஒரு வெற்றியைப் பெறுகிறது. இந்த கட்ட-குறிப்பிட்ட மூலோபாயம் எதிராளியின் ஆலைகளை தீவிரமாகத் தடுக்காது.",
-    "@focusOnBlockingPaths_Detail": {},
+    "@focusOnBlockingPaths_Detail": {
+        "description": ""
+    },
     "pieceImage": "துண்டு படம்",
-    "@pieceImage": {},
+    "@pieceImage": {
+        "description": ""
+    },
     "importColorSettings": "வண்ண அமைப்புகளை இறக்குமதி செய்யுங்கள்",
-    "@importColorSettings": {},
+    "@importColorSettings": {
+        "description": ""
+    },
     "exportColorSettings": "வண்ண அமைப்புகளை ஏற்றுமதி செய்யுங்கள்",
-    "@exportColorSettings": {},
+    "@exportColorSettings": {
+        "description": ""
+    },
     "import": "இறக்குமதி",
-    "@import": {},
+    "@import": {
+        "description": ""
+    },
     "export": "ஏற்றுமதி",
-    "@export": {},
+    "@export": {
+        "description": ""
+    },
     "pleaseCopyJsonToClipboard": "முதலில் சாதொபொகு வடிவமைப்பு அமைப்புகளை இடைநிலைப்பலகைக்கு நகலெடுக்கவும்.",
-    "@pleaseCopyJsonToClipboard": {},
+    "@pleaseCopyJsonToClipboard": {
+        "description": ""
+    },
     "copiedToClipboard": "இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது.",
-    "@copiedToClipboard": {},
+    "@copiedToClipboard": {
+        "description": ""
+    },
     "imported": "இறக்குமதி செய்யப்பட்டது.",
-    "@imported": {},
+    "@imported": {
+        "description": ""
+    },
     "boardImage": "போர்டு படம்",
-    "@boardImage": {},
+    "@boardImage": {
+        "description": ""
+    },
     "autumnLeaves": "இலையுதிர் கால இலைகள்",
-    "@autumnLeaves": {},
+    "@autumnLeaves": {
+        "description": ""
+    },
     "legendaryLand": "புகழ்பெற்ற நிலம்",
-    "@legendaryLand": {},
+    "@legendaryLand": {
+        "description": ""
+    },
     "vignetteEffect": "விக்னெட் விளைவு",
-    "@vignetteEffect": {},
+    "@vignetteEffect": {
+        "description": ""
+    },
     "promptMakeToolbarTransparent": "பலகை பின்னணி படம் அமைக்கப்படும்போது கருவிப்பட்டியை முழுமையாக வெளிப்படையானதாக மாற்ற விரும்புகிறீர்களா?",
-    "@promptMakeToolbarTransparent": {},
+    "@promptMakeToolbarTransparent": {
+        "description": ""
+    },
     "vibration": "விளையாட்டில் அதிர்வுகளை இயக்கவும்",
-    "@vibration": {},
+    "@vibration": {
+        "description": ""
+    },
     "soundTheme": "ஒலி கருப்பொருள்",
-    "@soundTheme": {},
+    "@soundTheme": {
+        "description": ""
+    },
     "ball": "பந்து",
-    "@ball": {},
+    "@ball": {
+        "description": ""
+    },
     "liquid": "திரவ",
-    "@liquid": {},
+    "@liquid": {
+        "description": ""
+    },
     "wood": "மரம்",
-    "@wood": {},
+    "@wood": {
+        "description": ""
+    },
     "placeEffectAnimation": "துண்டு வைக்கும் அனிமேசன் விளைவு",
-    "@placeEffectAnimation": {},
+    "@placeEffectAnimation": {
+        "description": ""
+    },
     "removeEffectAnimation": "துண்டு அகற்றும் அனிமேசன் விளைவு",
-    "@removeEffectAnimation": {},
+    "@removeEffectAnimation": {
+        "description": ""
+    },
     "isToolbarAtBottom": "கருவிப்பட்டியை கீழே காட்டு",
-    "@isToolbarAtBottom": {},
+    "@isToolbarAtBottom": {
+        "description": ""
+    },
     "boardCornerRadius": "போர்டு கார்னர் ஆரம்",
-    "@boardCornerRadius": {},
+    "@boardCornerRadius": {
+        "description": ""
+    },
     "useOpeningBook": "தொடக்க புத்தகத்தைப் பயன்படுத்தவும்",
-    "@useOpeningBook": {},
+    "@useOpeningBook": {
+        "description": ""
+    },
     "currentRule": "மின்னோட்ட்ம், ஓட்டம்",
-    "@currentRule": {},
+    "@currentRule": {
+        "description": ""
+    },
     "nineMensMorris": "ஒன்பது ஆண்கள் மோரிச்",
-    "@nineMensMorris": {},
+    "@nineMensMorris": {
+        "description": ""
+    },
     "twelveMensMorris": "பன்னிரண்டு ஆண்கள் மோரிச்",
-    "@twelveMensMorris": {},
-    "morabaraba": "நகர்வு",
-    "@morabaraba": {},
+    "@twelveMensMorris": {
+        "description": ""
+    },
+    "morabaraba": "Morabaraba",
+    "@morabaraba": {
+        "description": ""
+    },
     "dooz": "டுச்",
-    "@dooz": {},
-    "chamGonu": "சாம்",
-    "@chamGonu": {},
-    "zhiQi": "zh",
-    "@zhiQi": {},
-    "chengSanQi": "செங் சான் கே",
-    "@chengSanQi": {},
-    "mulMulan": "முல்-முலன்",
-    "@mulMulan": {},
-    "nerenchi": "நெரென்ச்",
-    "@nerenchi": {},
+    "@dooz": {
+        "description": ""
+    },
+    "chamGonu": "Cham Gonu",
+    "@chamGonu": {
+        "description": ""
+    },
+    "zhiQi": "Zhi Qi",
+    "@zhiQi": {
+        "description": ""
+    },
+    "chengSanQi": "Cheng San Qi",
+    "@chengSanQi": {
+        "description": ""
+    },
+    "mulMulan": "Mul-Mulan",
+    "@mulMulan": {
+        "description": ""
+    },
+    "nerenchi": "Nerenchi",
+    "@nerenchi": {
+        "description": ""
+    },
     "ruleSet": "விதி தொகுப்பு",
-    "@ruleSet": {},
-    "laskerMorris": "லாச்கர் மோரிச்",
-    "@laskerMorris": {},
+    "@ruleSet": {
+        "description": ""
+    },
+    "laskerMorris": "Lasker Morris",
+    "@laskerMorris": {
+        "description": ""
+    },
     "oneTimeMill": "ஒரு முறை ஆலை",
-    "@oneTimeMill": {},
-    "daSanQi": "டா சான் கி",
-    "@daSanQi": {},
+    "@oneTimeMill": {
+        "description": ""
+    },
+    "daSanQi": "Da San Qi",
+    "@daSanQi": {
+        "description": ""
+    },
     "useOpeningBook_Detail": "ஆரம்ப ஆட்டத்தின் போது தொழில்முறை மனித வீரர்களால் பொதுவாகப் பயன்படுத்தப்படும் திறப்பு நகர்வுகளை AI பயன்படுத்தட்டும். குறிப்பு: இந்த நற்பொருத்தம் தற்போது குறிப்பிட்ட விதி தொகுப்புகளுக்கு மட்டுமே கிடைக்கிறது.",
-    "@useOpeningBook_Detail": {},
+    "@useOpeningBook_Detail": {
+        "description": ""
+    },
     "showAdvantageGraph": "நன்மை வரைபடத்தைக் காட்டு",
-    "@showAdvantageGraph": {},
+    "@showAdvantageGraph": {
+        "description": ""
+    },
     "advantageGraphHint": "AI ஒரு நகர்வு செய்த பின்னரே நன்மை வரைபடம் வரையப்படும். மனித வீரர் ஒரு நகர்வை மேற்கொள்ளும்போது அது வரையப்படாது.",
-    "@advantageGraphHint": {},
+    "@advantageGraphHint": {
+        "description": ""
+    },
     "removalBasedOnMillCounts": "அனைத்து துண்டுகளும் வைக்கப்படும் வரை அகற்றுவதை முடக்கு, பின்னர் ஆலை எண்ணிக்கையின் அடிப்படையில் துண்டுகளை அகற்றவும்.",
-    "@removalBasedOnMillCounts": {},
+    "@removalBasedOnMillCounts": {
+        "description": ""
+    },
     "removalBasedOnMillCounts_Detail": "அனைத்து துண்டுகளும் வைக்கப்படும் வரை அகற்றுவதை முடக்கு, பின்னர் ஆலை எண்ணிக்கையின் அடிப்படையில் துண்டுகளை அகற்றவும்: அவை சமமாக இருந்தால், இரண்டும் ஒரே எண்ணை அகற்றவும்; ஒருவருக்கு இன்னும் அதிகமாக இருந்தால், அவை ஒரு கூடுதல் வித்தியாசத்தை வைத்திருக்கின்றன. ஒரு ஆலைகளை மட்டுமே உருவாக்கினால், அவை இரண்டு துண்டுகளை அகற்றி, மற்றொன்று ஒன்றை நீக்குகிறது. எந்தவொரு ஆலைகளையும் உருவாக்கவில்லை என்றால், இரண்டும் அவற்றின் சொந்த துண்டுகளில் ஒன்றை அகற்றுகின்றன.",
-    "@removalBasedOnMillCounts_Detail": {},
-    "elfilja": "எல் ஃபில்சா",
-    "@elfilja": {},
+    "@removalBasedOnMillCounts_Detail": {
+        "description": ""
+    },
+    "elfilja": "El Filja",
+    "@elfilja": {
+        "description": ""
+    },
     "tipSelectOwnPiece": "உங்கள் துண்டுகளில் ஒன்றைத் தேர்ந்தெடு.",
-    "@tipSelectOwnPiece": {},
+    "@tipSelectOwnPiece": {
+        "description": ""
+    },
     "notYourTurn": "இது உங்கள் முறை அல்ல.",
-    "@notYourTurn": {},
+    "@notYourTurn": {
+        "description": ""
+    },
     "annotationToolbarBackgroundColor": "குறிப்புரை கருவிப்பட்டையின் பின்னணி வண்ணம்",
-    "@annotationToolbarBackgroundColor": {},
+    "@annotationToolbarBackgroundColor": {
+        "description": ""
+    },
     "annotationToolbarIconColor": "குறிப்புரை கருவிப்பட்டை ஐகான் வண்ணம்",
-    "@annotationToolbarIconColor": {},
+    "@annotationToolbarIconColor": {
+        "description": ""
+    },
     "isAnnotationToolbarShown": "சிறுகுறிப்பு கருவிப்பட்டியைக் காட்டு",
-    "@isAnnotationToolbarShown": {},
+    "@isAnnotationToolbarShown": {
+        "description": ""
+    },
     "enterAnnotationMode": "குறிப்புரை பயன்முறைக்கு செல்",
-    "@enterAnnotationMode": {},
+    "@enterAnnotationMode": {
+        "description": ""
+    },
     "areYouSureYouWantToClearAllAnnotations": "அனைத்துக் குறிப்புரைகளையும் நீக்க விரும்புகிறீர்களா?",
-    "@areYouSureYouWantToClearAllAnnotations": {},
+    "@areYouSureYouWantToClearAllAnnotations": {
+        "description": ""
+    },
     "llmPromptCopiedToClipboard": "LLM கோரிக்கை கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது.",
-    "@llmPromptCopiedToClipboard": {},
+    "@llmPromptCopiedToClipboard": {
+        "description": ""
+    },
     "connectionRefusedTheServerMayBeDown": "இணைப்பு மறுக்கப்பட்டது. சர்வர் செயலிழந்திருக்கலாம்.",
-    "@connectionRefusedTheServerMayBeDown": {},
+    "@connectionRefusedTheServerMayBeDown": {
+        "description": ""
+    },
     "discoverySuccessfulAwaitingConnection": "தேடுதல் வெற்றிகரமாக முடிந்தது, இணைப்புக்காகக் காத்திருக்கிறது...",
-    "@discoverySuccessfulAwaitingConnection": {},
+    "@discoverySuccessfulAwaitingConnection": {
+        "description": ""
+    },
     "noLanConnection": "இயற்று வலை இணைப்பு இல்லை",
-    "@noLanConnection": {},
+    "@noLanConnection": {
+        "description": ""
+    },
     "takeScreenshot": "படக்காட்சி எடு",
-    "@takeScreenshot": {},
+    "@takeScreenshot": {
+        "description": ""
+    },
     "disconnectedFromOpponent": "எதிரணியுடன் இணைப்பு துண்டிக்கப்பட்டது.",
-    "@disconnectedFromOpponent": {},
+    "@disconnectedFromOpponent": {
+        "description": ""
+    },
     "takeBackRequest": "மீள எடுத்துக்கொள்ளும் கோரிக்கை",
-    "@takeBackRequest": {},
+    "@takeBackRequest": {
+        "description": ""
+    },
     "nothingToShow": "காண்பிக்க எதுவும் இல்லை.",
-    "@nothingToShow": {},
+    "@nothingToShow": {
+        "description": ""
+    },
     "stopHosting": "பகிர்வை நிறுத்து",
-    "@stopHosting": {},
+    "@stopHosting": {
+        "description": ""
+    },
     "connectionResetByPeer": "இணைப்பு எதிரணி மூலம் மீட்டமைக்கப்பட்டது.",
-    "@connectionResetByPeer": {},
+    "@connectionResetByPeer": {
+        "description": ""
+    },
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "ஹார்ட்பீட் நேரக் கோப்பு மீறப்பட்டதால் இணைப்பு இழக்கப்பட்டது. தயவுசெய்து மீண்டும் இணைக்கவும்.",
-    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+    "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {
+        "description": ""
+    },
     "startHosting": "பகிர்வை துவங்கு",
-    "@startHosting": {},
+    "@startHosting": {
+        "description": ""
+    },
     "restartRequestRejected": "மீண்டும் துவக்க கோரிக்கை நிராகரிக்கப்பட்டது.",
-    "@restartRequestRejected": {},
+    "@restartRequestRejected": {
+        "description": ""
+    },
     "notConnectedToLanOpponent": "LAN எதிரனுடன் இணைக்கப்படவில்லை.",
-    "@notConnectedToLanOpponent": {},
+    "@notConnectedToLanOpponent": {
+        "description": ""
+    },
     "llmPrompt": "LLM கோரிக்கை",
-    "@llmPrompt": {},
+    "@llmPrompt": {
+        "description": ""
+    },
     "gameRestarted": "விளையாட்டு மீண்டும் துவங்கப்பட்டது.",
-    "@gameRestarted": {},
+    "@gameRestarted": {
+        "description": ""
+    },
     "takeBackRejected": "மீள எடுத்துக்கொள்ளும் கோரிக்கை நிராகரிக்கப்பட்டது.",
-    "@takeBackRejected": {},
+    "@takeBackRejected": {
+        "description": ""
+    },
     "areYouSureYouWantToResignThisGame": "இந்த விளையாட்டில் இருந்து விலக விரும்புகிறீர்களா?",
-    "@areYouSureYouWantToResignThisGame": {},
+    "@areYouSureYouWantToResignThisGame": {
+        "description": ""
+    },
     "opponentResignedYouWin": "எதிரணி விலகிவிட்டார். நீங்கள் வெற்றியடைந்துள்ளீர்கள்!",
-    "@opponentResignedYouWin": {},
+    "@opponentResignedYouWin": {
+        "description": ""
+    },
     "clearAllAnnotations": "அனைத்துக் குறிப்புரைகளையும் நீக்கு",
-    "@clearAllAnnotations": {},
+    "@clearAllAnnotations": {
+        "description": ""
+    },
     "connectedWaitingForOpponentSMove": "இணைக்கப்பட்டது, எதிரணியின் அடுத்த இயக்கத்திற்காக காத்திருக்கிறது...",
-    "@connectedWaitingForOpponentSMove": {},
+    "@connectedWaitingForOpponentSMove": {
+        "description": ""
+    },
     "networkStatusDisconnected": "வலையமைப்பின் நிலை: துண்டிக்கப்பட்டது",
-    "@networkStatusDisconnected": {},
+    "@networkStatusDisconnected": {
+        "description": ""
+    },
     "takeBackRequestSentToTheOpponent": "மீள எடுத்துக்கொள்ளும் கோரிக்கை எதிரணிக்கு அனுப்பப்பட்டது.",
-    "@takeBackRequestSentToTheOpponent": {},
+    "@takeBackRequestSentToTheOpponent": {
+        "description": ""
+    },
     "theOpponentMayHaveLeftTheGame": "எதிரணி விளையாட்டை விட்டு வெளியேறியிருக்கலாம்",
-    "@theOpponentMayHaveLeftTheGame": {},
+    "@theOpponentMayHaveLeftTheGame": {
+        "description": ""
+    },
     "connectedToHostSuccessfully": "ஹோஸ்டுடன் வெற்றிகரமாக இணைக்கப்பட்டது.",
-    "@connectedToHostSuccessfully": {},
+    "@connectedToHostSuccessfully": {
+        "description": ""
+    },
     "connectionLostHeartbeatTimeout": "இணைப்பு இழப்பு: ஹார்ட்பீட் நேரக்கோள் மீறப்பட்டது",
-    "@connectionLostHeartbeatTimeout": {},
+    "@connectionLostHeartbeatTimeout": {
+        "description": ""
+    },
     "noHostDiscovered": "ஓர் ஹோஸ்ட் கண்டுபிடிக்கப்படவில்லை.",
-    "@noHostDiscovered": {},
+    "@noHostDiscovered": {
+        "description": ""
+    },
     "confirmResignation": "விலகலை உறுதிப்படுத்து",
-    "@confirmResignation": {},
+    "@confirmResignation": {
+        "description": ""
+    },
     "startedHostingGameWaitingForPlayersToJoin": "விளையாட்டை ஹோஸ்ட் செய்கிறது, அணுகுவோருக்காக காத்திருக்கிறது...",
-    "@startedHostingGameWaitingForPlayersToJoin": {},
+    "@startedHostingGameWaitingForPlayersToJoin": {
+        "description": ""
+    },
     "connectionTimedOutNetworkConnectionUnstable": "இணைப்பு காலாவதியாகியது. வலை இணைப்பு நிலையற்றது.",
-    "@connectionTimedOutNetworkConnectionUnstable": {},
+    "@connectionTimedOutNetworkConnectionUnstable": {
+        "description": ""
+    },
     "noLlmPromptAvailable": "LLM கோரிக்கை எதுவும் இல்லை.",
-    "@noLlmPromptAvailable": {},
+    "@noLlmPromptAvailable": {
+        "description": ""
+    },
     "youResignedGameOver": "நீங்கள் விலகிவிட்டீர்கள். விளையாட்டு முடிந்தது.",
-    "@youResignedGameOver": {},
+    "@youResignedGameOver": {
+        "description": ""
+    },
     "serverIp": "சர்வர் IP",
-    "@serverIp": {},
+    "@serverIp": {
+        "description": ""
+    },
     "confirmClear": "நீக்கத்தை உறுதிப்படுத்து",
-    "@confirmClear": {},
+    "@confirmClear": {
+        "description": ""
+    },
     "opponentSTurn": "எதிரணியின் முறை.",
-    "@opponentSTurn": {},
+    "@opponentSTurn": {
+        "description": ""
+    },
     "waitingAClientConnection": "வாடிக்கையாளர் இணைப்புக்காக காத்திருக்கிறது...",
-    "@waitingAClientConnection": {},
+    "@waitingAClientConnection": {
+        "description": ""
+    },
     "takeBackRequestWasRejectedOrFailed": "மீள எடுத்துக்கொள்ளும் கோரிக்கை நிராகரிக்கப்பட்டது அல்லது தோல்வியடைந்தது.",
-    "@takeBackRequestWasRejectedOrFailed": {},
+    "@takeBackRequestWasRejectedOrFailed": {
+        "description": ""
+    },
     "addText": "உரை சேர்க்கவும்",
-    "@addText": {},
+    "@addText": {
+        "description": ""
+    },
     "exitAnnotationMode": "குறிப்புரை பயன்முறையிலிருந்து வெளியேறவும்",
-    "@exitAnnotationMode": {},
+    "@exitAnnotationMode": {
+        "description": ""
+    },
     "typeYourAnnotation": "உங்கள் குறிப்புரையை உள்ளிடவும்",
-    "@typeYourAnnotation": {},
+    "@typeYourAnnotation": {
+        "description": ""
+    },
     "attemptingToReconnect": "மீண்டும் இணைக்க முயற்சிக்கிறது...",
-    "@attemptingToReconnect": {},
+    "@attemptingToReconnect": {
+        "description": ""
+    },
     "restartRequestSentWaitingForOpponentSResponse": "மீண்டும் துவக்க கோரிக்கை அனுப்பப்பட்டது. எதிரணியின் பதிலுக்காக காத்திருக்கிறது...",
-    "@restartRequestSentWaitingForOpponentSResponse": {},
+    "@restartRequestSentWaitingForOpponentSResponse": {
+        "description": ""
+    },
     "serverIsStopped": "சர்வர் நிறுத்தப்பட்டுவிட்டது.",
-    "@serverIsStopped": {},
+    "@serverIsStopped": {
+        "description": ""
+    },
     "restartRequest": "மீண்டும் துவக்க கோரிக்கை",
-    "@restartRequest": {},
+    "@restartRequest": {
+        "description": ""
+    },
     "cannotRequestATakeBackWhenItSNotYourTurn": "அது உங்கள் முறை அல்லாதபோது மீள எடுத்துக்கொள்ளும் கோரிக்கையை செய்ய முடியாது.",
-    "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+    "@cannotRequestATakeBackWhenItSNotYourTurn": {
+        "description": ""
+    },
     "takeBackAccepted": "மீள எடுத்துக்கொள்ளும் கோரிக்கை ஏற்றுக்கொள்ளப்பட்டது.",
-    "@takeBackAccepted": {},
+    "@takeBackAccepted": {
+        "description": ""
+    },
     "localNetworkSettings": "உள்ளூர் வலையமைப்பு அமைப்புகள்",
-    "@localNetworkSettings": {},
+    "@localNetworkSettings": {
+        "description": ""
+    },
     "reconnectedSuccessfully": "வெற்றிகரமாக மீண்டும் இணைக்கப்பட்டது!",
-    "@reconnectedSuccessfully": {},
+    "@reconnectedSuccessfully": {
+        "description": ""
+    },
     "failedToSaveImageToGallery": "படத்தை கேலரியில் சேமிக்க இயலவில்லை.",
-    "@failedToSaveImageToGallery": {},
+    "@failedToSaveImageToGallery": {
+        "description": ""
+    },
     "opponentRequestedToRestartTheGameDoYouAccept": "எதிரணி விளையாட்டை மீண்டும் துவங்க கோரினார். நீங்கள் ஏற்றுக்கொள்கிறீர்களா?",
-    "@opponentRequestedToRestartTheGameDoYouAccept": {},
+    "@opponentRequestedToRestartTheGameDoYouAccept": {
+        "description": ""
+    },
     "yourTurn": "உங்கள் முறை.",
-    "@yourTurn": {},
+    "@yourTurn": {
+        "description": ""
+    },
     "unableToReconnectPleaseRestartTheGame": "மீண்டும் இணைக்க முடியவில்லை, தயவுசெய்து விளையாட்டை மீண்டும் துவங்கவும்.",
-    "@unableToReconnectPleaseRestartTheGame": {},
+    "@unableToReconnectPleaseRestartTheGame": {
+        "description": ""
+    },
     "host": "ஹோஸ்ட்",
-    "@host": {},
+    "@host": {
+        "description": ""
+    },
     "join": "இணைவது",
-    "@join": {},
-    "port": "போர்்ட்",
-    "@port": {},
+    "@join": {
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
+    },
     "invalidIpAddress": "பின்செயல் அற்ற IP முகவரி.",
-    "@invalidIpAddress": {},
+    "@invalidIpAddress": {
+        "description": ""
+    },
     "invalidPort": "பின்செயல் அற்ற போர்்ட்.",
-    "@invalidPort": {},
+    "@invalidPort": {
+        "description": ""
+    },
     "connectingAttempt": "இணைகிறது: முயற்சி {attempt}/{maxAttempt}",
     "@connectingAttempt": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempt": {}
-        }
+        "description": ""
     },
     "failedToConnect": "இணைப்பில் தோல்வி: {error}",
     "@failedToConnect": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "பிழை: {message}",
+    "@error": {
+        "description": "Error"
     },
     "failedToStartHosting": "பகிர்வை தொடங்குவதில் தோல்வி: {error}",
     "@failedToStartHosting": {
-        "placeholders": {
-            "error": {}
-        }
+        "description": ""
+    },
+    "error": "பிழை: {message}",
+    "@error": {
+        "description": "Error"
     },
     "hostDiscovered": "ஹோஸ்ட் கண்டுபிடிக்கப்பட்டது: {ip}:{port}",
     "@hostDiscovered": {
-        "placeholders": {
-            "ip": {},
-            "port": {}
-        }
+        "description": ""
+    },
+    "port": "Port",
+    "@port": {
+        "description": ""
     },
     "stop": "நிறுத்து",
-    "@stop": {},
+    "@stop": {
+        "description": ""
+    },
     "discover": "தேடு",
-    "@discover": {},
+    "@discover": {
+        "description": ""
+    },
     "connect": "இணை",
-    "@connect": {},
+    "@connect": {
+        "description": ""
+    },
     "clientConnected": "வாடிக்கையாளர் இணைக்கப்பட்டார்: {clientIp}:{clientPort}",
     "@clientConnected": {
-        "placeholders": {
-            "clientIp": {},
-            "clientPort": {}
-        }
+        "description": ""
     },
     "discoveringSeconds": "தேடுகிறது: {seconds} வினாடிகள்",
     "@discoveringSeconds": {
-        "placeholders": {
-            "seconds": {}
-        }
+        "description": ""
     },
     "reconnecting": "மீண்டும் இணைவது ({attempt}/{maxAttempts})",
     "@reconnecting": {
-        "placeholders": {
-            "attempt": {},
-            "maxAttempts": {}
-        }
+        "description": ""
     },
     "connected": "இணைக்கப்பட்டது",
-    "@connected": {},
+    "@connected": {
+        "description": ""
+    },
     "delete": "அழி",
-    "@delete": {},
+    "@delete": {
+        "description": ""
+    },
     "ancientEgypt": "பழங்கால எகிப்து",
-    "@ancientEgypt": {},
+    "@ancientEgypt": {
+        "description": ""
+    },
     "gothicIce": "கோதிக் பனி",
-    "@gothicIce": {},
+    "@gothicIce": {
+        "description": ""
+    },
     "riceField": "நெல் வயல்",
-    "@riceField": {},
+    "@riceField": {
+        "description": ""
+    },
     "chinesePorcelain": "சீன பீங்கான்",
-    "@chinesePorcelain": {},
+    "@chinesePorcelain": {
+        "description": ""
+    },
     "desertDusk": "பாலைவன மாலை",
-    "@desertDusk": {},
+    "@desertDusk": {
+        "description": ""
+    },
     "precisionCraft": "துல்லிய கைவினை",
-    "@precisionCraft": {},
+    "@precisionCraft": {
+        "description": ""
+    },
     "folkEmbroidery": "பாரம்பரிய தையல்",
-    "@folkEmbroidery": {},
+    "@folkEmbroidery": {
+        "description": ""
+    },
     "carpathianHeritage": "கார்பாத்திய பாரம்பரியம்",
-    "@carpathianHeritage": {},
+    "@carpathianHeritage": {
+        "description": ""
+    },
     "imperialGrandeur": "பேரரசு பிரமாண்டம்",
-    "@imperialGrandeur": {},
+    "@imperialGrandeur": {
+        "description": ""
+    },
     "bohemianCrystal": "போஹிமியன் படிகம்",
-    "@bohemianCrystal": {},
+    "@bohemianCrystal": {
+        "description": ""
+    },
     "savannaSunrise": "சவன்னா சூரிய உதயம்",
-    "@savannaSunrise": {},
+    "@savannaSunrise": {
+        "description": ""
+    },
     "harmonyBalance": "நல்லிணக்க சமநிலை",
-    "@harmonyBalance": {},
+    "@harmonyBalance": {
+        "description": ""
+    },
     "cinnamonSpice": "இலவங்கப்பட்டை மசாலா",
-    "@cinnamonSpice": {},
+    "@cinnamonSpice": {
+        "description": ""
+    },
     "anatolianMosaic": "அனடோலியன் மொசைக்",
-    "@anatolianMosaic": {},
+    "@anatolianMosaic": {
+        "description": ""
+    },
     "carnivalSpirit": "கார்னிவல் ஆவி",
-    "@carnivalSpirit": {},
+    "@carnivalSpirit": {
+        "description": ""
+    },
     "custom": "சான்றிதழ்",
-    "@custom": {},
+    "@custom": {
+        "description": ""
+    },
     "spiceMarket": "மஸாலா சந்தை",
-    "@spiceMarket": {},
+    "@spiceMarket": {
+        "description": ""
+    },
     "swipeToRevealTheDrawer": "டிராயரை வெளிக்காட்ட ஸ்வைப் செய்யவும்",
-    "@swipeToRevealTheDrawer": {},
+    "@swipeToRevealTheDrawer": {
+        "description": ""
+    },
     "showGameInfoOnScreenshots": "திரைப்பிடிப்புகளில் விளையாட்டு தகவலைக் காண்பி",
-    "@showGameInfoOnScreenshots": {},
+    "@showGameInfoOnScreenshots": {
+        "description": ""
+    },
     "humanMoveTime": "மனித நேர வரம்பு",
-    "@humanMoveTime": {},
+    "@humanMoveTime": {
+        "description": ""
+    },
     "noTimeLimitForHumanMoves": "மனித நகர்வுகளுக்கு நேர வரம்பு இல்லை",
-    "@noTimeLimitForHumanMoves": {},
+    "@noTimeLimitForHumanMoves": {
+        "description": ""
+    },
     "timeoutLoseWillBeApplied": "மனித வீரருக்கு நேரம் முடிந்து தோற்கடிக்கப்படும்",
-    "@timeoutLoseWillBeApplied": {},
+    "@timeoutLoseWillBeApplied": {
+        "description": ""
+    },
     "identifyingBoard": "பலகையை அடையாளம் காண்கிறது...",
-    "@identifyingBoard": {},
+    "@identifyingBoard": {
+        "description": ""
+    },
     "youCanEnterAnyModelName": "எந்த மாடல் பெயரையும் நீங்கள் சேர்க்கலாம்.",
-    "@youCanEnterAnyModelName": {},
+    "@youCanEnterAnyModelName": {
+        "description": ""
+    },
     "boardPositionAppliedFenCopiedToClipboard": "பலகை நிலை பயன்படுத்தப்பட்டது. FEN கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது.",
-    "@boardPositionAppliedFenCopiedToClipboard": {},
+    "@boardPositionAppliedFenCopiedToClipboard": {
+        "description": ""
+    },
     "suggestionTryTakingAClearerPictureOfTheBoard": "பரிந்துரை: பலகையின் தெளிவான புகைப்படத்தை எடுக்க முயற்சி செய்யவும்.",
-    "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+    "@suggestionTryTakingAClearerPictureOfTheBoard": {
+        "description": ""
+    },
     "llmPromptTemplate": "LLM உந்துதல் வார்ப்புரு",
-    "@llmPromptTemplate": {},
+    "@llmPromptTemplate": {
+        "description": ""
+    },
     "noValidBoardDetected": "செல்லுபடியாக் பலகை கண்டறியப்படவில்லை.",
-    "@noValidBoardDetected": {},
+    "@noValidBoardDetected": {
+        "description": ""
+    },
     "selectingImageFromAlbum": "ஆல்பமில் இருந்து படத்தை தேர்வு செய்கிறது...",
-    "@selectingImageFromAlbum": {},
+    "@selectingImageFromAlbum": {
+        "description": ""
+    },
     "configurePromptTemplate": "உந்துதல் வார்ப்புருவை அமைக்கவும்",
-    "@configurePromptTemplate": {},
+    "@configurePromptTemplate": {
+        "description": ""
+    },
     "editPromptTemplateForLlmAnalysis": "LLM பகுப்பாய்விற்கு உந்துதல் வார்ப்புருவை தொகுக்கவும்",
-    "@editPromptTemplateForLlmAnalysis": {},
+    "@editPromptTemplateForLlmAnalysis": {
+        "description": ""
+    },
     "failedToGenerateFenFromRecognizedBoard": "கண்டறியப்பட்ட பலகையிலிருந்து FEN உற்பத்தி தோல்வியடைந்தது.",
-    "@failedToGenerateFenFromRecognizedBoard": {},
+    "@failedToGenerateFenFromRecognizedBoard": {
+        "description": ""
+    },
     "outputInCurrentLanguage": "தற்போதைய மொழியில் வெளியீடு",
-    "@outputInCurrentLanguage": {},
+    "@outputInCurrentLanguage": {
+        "description": ""
+    },
     "commonBaseUrls": "பொது Base URLகள்",
-    "@commonBaseUrls": {},
+    "@commonBaseUrls": {
+        "description": ""
+    },
     "viewCommonModels": "பொதுவான மாடல்களைப் பார்வையிட",
-    "@viewCommonModels": {},
+    "@viewCommonModels": {
+        "description": ""
+    },
     "recognitionParametersUpdated": "அறிதல் அளவுருக்கள் புதுப்பிக்கப்பட்டன.",
-    "@recognitionParametersUpdated": {},
+    "@recognitionParametersUpdated": {
+        "description": ""
+    },
     "whiteSMove": "வெள்ளையின் அடி",
-    "@whiteSMove": {},
+    "@whiteSMove": {
+        "description": ""
+    },
     "resetToDefaults": "இயல்புவிதிகளுக்கு மீட்டமை",
-    "@resetToDefaults": {},
+    "@resetToDefaults": {
+        "description": ""
+    },
     "photoShoot": "புகைப்பட எடுதல்",
-    "@photoShoot": {},
+    "@photoShoot": {
+        "description": ""
+    },
     "failedToApplyRecognizedBoardPosition": "கண்டறியப்பட்ட பலகை நிலையை செயல்படுத்த தோல்வியடைந்தது.",
-    "@failedToApplyRecognizedBoardPosition": {},
+    "@failedToApplyRecognizedBoardPosition": {
+        "description": ""
+    },
     "llmPromptContent": "LLM உந்துதல் உள்ளடக்கம்",
-    "@llmPromptContent": {},
+    "@llmPromptContent": {
+        "description": ""
+    },
     "llmNotConfiguredPleaseCheckYourSettings": "LLM கட்டமைக்கப்படவில்லை. உங்கள் அமைப்புகளை சரிபார்க்கவும்.",
-    "@llmNotConfiguredPleaseCheckYourSettings": {},
+    "@llmNotConfiguredPleaseCheckYourSettings": {
+        "description": ""
+    },
     "setProviderModelApiKeyAndBaseUrl": "வழங்குபவர், மாடல், API Key மற்றும் Base URL ஐ அமைக்கவும்",
-    "@setProviderModelApiKeyAndBaseUrl": {},
+    "@setProviderModelApiKeyAndBaseUrl": {
+        "description": ""
+    },
     "llmConfiguration": "LLM கட்டமைப்பு",
-    "@llmConfiguration": {},
+    "@llmConfiguration": {
+        "description": ""
+    },
     "configureLlmProvider": "LLM வழங்குபவரை அமைக்கவும்",
-    "@configureLlmProvider": {},
+    "@configureLlmProvider": {
+        "description": ""
+    },
     "llmPromptTemplateHeader": "LLM உந்துதல் வார்ப்புரு தலைப்பு",
-    "@llmPromptTemplateHeader": {},
+    "@llmPromptTemplateHeader": {
+        "description": ""
+    },
     "noPiecesWereRecognizedInTheImagePleaseTryAgain": "படத்தில் எந்த துண்டுகளும் அடையாளமிடப்படவில்லை. மீண்டும் முயற்சிக்கவும்.",
-    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+    "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {
+        "description": ""
+    },
     "recognizeBoardFromImage": "படத்திலிருந்து பலகையை அடையாளம் காண்க",
-    "@recognizeBoardFromImage": {},
+    "@recognizeBoardFromImage": {
+        "description": ""
+    },
     "viewTips": "குறிப்புகளைப் பார்வையிட",
-    "@viewTips": {},
+    "@viewTips": {
+        "description": ""
+    },
     "applyToBoard": "பலகைக்கு பயன்படுத்தவும்",
-    "@applyToBoard": {},
+    "@applyToBoard": {
+        "description": ""
+    },
     "adjustBoardArea": "பலகை பகுதியை சரிசெய்யவும்",
-    "@adjustBoardArea": {},
+    "@adjustBoardArea": {
+        "description": ""
+    },
     "viewCommonUrls": "பொதுவான URLகளைப் பார்வையிட",
-    "@viewCommonUrls": {},
+    "@viewCommonUrls": {
+        "description": ""
+    },
     "colorAnalysisFailed": "நிறம் பகுப்பாய்வு தோல்வியடைந்தது!",
-    "@colorAnalysisFailed": {},
+    "@colorAnalysisFailed": {
+        "description": ""
+    },
     "analyzingGameBoardImage": "விளையாட்டு பலகை படத்தை பகுப்பாய்வு செய்கிறது...",
-    "@analyzingGameBoardImage": {},
+    "@analyzingGameBoardImage": {
+        "description": ""
+    },
     "selectFromAlbum": "ஆல்பமிலிருந்து தேர்வு செய்யவும்",
-    "@selectFromAlbum": {},
+    "@selectFromAlbum": {
+        "description": ""
+    },
     "noBoardPointDetected": "பலகை முனை கண்டறியப்படவில்லை!",
-    "@noBoardPointDetected": {},
+    "@noBoardPointDetected": {
+        "description": ""
+    },
     "ifLeftEmptyDefaultTemplateWillBeUsed": "காலியாக விட்டால் இயல்புநிலை வார்ப்புரு பயன்படுத்தப்படும்",
-    "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+    "@ifLeftEmptyDefaultTemplateWillBeUsed": {
+        "description": ""
+    },
     "llmConfig": "LLM கட்டமைப்பு",
-    "@llmConfig": {},
+    "@llmConfig": {
+        "description": ""
+    },
     "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "உங்கள் உந்துதல் வார்ப்புருகளை இயல்புநிலை மதிப்புகளுக்கு மீட்டமைக்க விரும்புகிறீர்களா?",
-    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+    "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {
+        "description": ""
+    },
     "llmPromptTemplateFooter": "LLM உந்துதல் வார்ப்புரு காலடிக் பகுதி",
-    "@llmPromptTemplateFooter": {},
+    "@llmPromptTemplateFooter": {
+        "description": ""
+    },
     "loadingResponse": "பதில் ஏற்றப்படுகிறது...",
-    "@loadingResponse": {},
+    "@loadingResponse": {
+        "description": ""
+    },
     "applyThisResultToBoard": "இந்த முடிவை பலகைக்கு பயன்படுத்தவும்",
-    "@applyThisResultToBoard": {},
+    "@applyThisResultToBoard": {
+        "description": ""
+    },
     "takingPicture": "படம் எடுக்கப்படுகிறது...",
-    "@takingPicture": {},
+    "@takingPicture": {
+        "description": ""
+    },
     "pleaseSelectAGameBoardImageToIdentify": "அடையாளம் காண விளையாட்டு பலகை படத்தைத் தேர்ந்தெடுக்கவும்",
-    "@pleaseSelectAGameBoardImageToIdentify": {},
+    "@pleaseSelectAGameBoardImageToIdentify": {
+        "description": ""
+    },
     "identificationResults": "அடையாளம் கண்டறிதல் முடிவுகள்",
-    "@identificationResults": {},
+    "@identificationResults": {
+        "description": ""
+    },
     "analyzeTheMovesAndProvideInsights": "நடத்துக்களை பகுப்பாய்வு செய்து ஆழமான பார்வைகள் வழங்கவும்.",
-    "@analyzeTheMovesAndProvideInsights": {},
+    "@analyzeTheMovesAndProvideInsights": {
+        "description": ""
+    },
     "getApiKey": "API Key பெற",
-    "@getApiKey": {},
+    "@getApiKey": {
+        "description": ""
+    },
     "entireRecognitionProcessFailedToComplete": "முழு அறிதல் செயல்முறை நிறைவு பெற முடியவில்லை.",
-    "@entireRecognitionProcessFailedToComplete": {},
+    "@entireRecognitionProcessFailedToComplete": {
+        "description": ""
+    },
     "boardRecognitionResult": "பலகை அறிதல் முடிவு",
-    "@boardRecognitionResult": {},
+    "@boardRecognitionResult": {
+        "description": ""
+    },
     "askLlm": "LLM ஐ கேளுங்கள்",
-    "@askLlm": {},
+    "@askLlm": {
+        "description": ""
+    },
     "boardDetectionFailed": "பலகை கண்டறிதல் தோல்வியடைந்தது!",
-    "@boardDetectionFailed": {},
+    "@boardDetectionFailed": {
+        "description": ""
+    },
     "noBoardPointDetectedCannotIdentifyPiece": "பலகை முனை கண்டறியப்படவில்லை, துண்டை அடையாளம் காண முடியாது!",
-    "@noBoardPointDetectedCannotIdentifyPiece": {},
+    "@noBoardPointDetectedCannotIdentifyPiece": {
+        "description": ""
+    },
     "copyFen": "FEN ஐ நகலெடுக்கவும்",
-    "@copyFen": {},
+    "@copyFen": {
+        "description": ""
+    },
     "commonlyUsedModels": "வழக்கமாக பயன்படுத்தப்படும் மாதிரிகள்",
-    "@commonlyUsedModels": {},
+    "@commonlyUsedModels": {
+        "description": ""
+    },
     "apiKeyOptional": "API Key (விருப்ப)",
-    "@apiKeyOptional": {},
+    "@apiKeyOptional": {
+        "description": ""
+    },
     "noImageSelected": "படம் தேர்வு செய்யப்படவில்லை",
-    "@noImageSelected": {},
+    "@noImageSelected": {
+        "description": ""
+    },
     "blackSMove": "கருப்பு வீரரின் அடி",
-    "@blackSMove": {},
+    "@blackSMove": {
+        "description": ""
+    },
     "llm": "பெரிய மொழி மாதிரி",
-    "@llm": {},
+    "@llm": {
+        "description": ""
+    },
     "llmProvider": "வழங்குநர்",
-    "@llmProvider": {},
+    "@llmProvider": {
+        "description": ""
+    },
     "baseUrl": "அடிப்படை URL",
-    "@baseUrl": {},
+    "@baseUrl": {
+        "description": ""
+    },
     "model": "மாதிரி",
-    "@model": {},
+    "@model": {
+        "description": ""
+    },
     "temperature": "வெப்பநிலை",
-    "@temperature": {},
+    "@temperature": {
+        "description": ""
+    },
     "llmCommandReceivedProcessing": "கட்டளை பெறப்பட்டது! AI செயலாக்குகிறது...",
-    "@llmCommandReceivedProcessing": {},
+    "@llmCommandReceivedProcessing": {
+        "description": ""
+    },
     "llmDeepThinkingWait": "ஆழமான சிந்தனை நடைபெற்று வருகிறது, தயவு செய்து காத்திருக்கவும்...",
-    "@llmDeepThinkingWait": {},
+    "@llmDeepThinkingWait": {
+        "description": ""
+    },
     "llmPresentingSoon": "சமீபத்தில் வழங்கப்படுகிறது...",
-    "@llmPresentingSoon": {},
+    "@llmPresentingSoon": {
+        "description": ""
+    },
     "recognitionParameters": "அறிதல் அளவுருக்கள்",
-    "@recognitionParameters": {},
+    "@recognitionParameters": {
+        "description": ""
+    },
     "adjustParamsDesc": "அறிதல் துல்லியத்தை மேம்படுத்த அளவுருக்களை சரிசெய்க",
-    "@adjustParamsDesc": {},
+    "@adjustParamsDesc": {
+        "description": ""
+    },
     "saveParameters": "அளவுருக்களை சேமிக்கவும்",
-    "@saveParameters": {},
+    "@saveParameters": {
+        "description": ""
+    },
     "unableToStartImageRecognition": "பட அடையாளமாக்கலைத் தொடங்க முடியவில்லை: {error}",
     "@unableToStartImageRecognition": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "File system error"
-            }
-        }
+        "description": ""
+    },
+    "error": "பிழை: {message}",
+    "@error": {
+        "description": "Error"
     },
     "imageRecognitionFailed": "பட அடையாளமாக்கல் தோல்வியுற்றது: {error}",
     "@imageRecognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Could not detect corners"
-            }
-        }
+        "description": ""
+    },
+    "error": "பிழை: {message}",
+    "@error": {
+        "description": "Error"
     },
     "appliedPositionDetails": "{whiteCount} வெள்ளை மற்றும் {blackCount} கருப்பு கற்கள் கொண்ட நிலை பயன்படுத்தப்பட்டது",
     "@appliedPositionDetails": {
-        "placeholders": {
-            "whiteCount": {
-                "type": "int",
-                "example": "9"
-            },
-            "blackCount": {
-                "type": "int",
-                "example": "8"
-            }
-        }
+        "description": ""
     },
     "fenCopiedToClipboard": "(FEN கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது)",
-    "@fenCopiedToClipboard": {},
+    "@fenCopiedToClipboard": {
+        "description": ""
+    },
     "recognitionFailed": "அறிதல் தோல்வியுற்றது: {error}",
     "@recognitionFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String",
-                "example": "Invalid FEN structure"
-            }
-        }
+        "description": ""
+    },
+    "error": "பிழை: {message}",
+    "@error": {
+        "description": "Error"
     },
     "myRating": "எனது மதிப்பீடு",
-    "@myRating": {},
+    "@myRating": {
+        "description": ""
+    },
     "gamesPlayed": "விளையாடிய விளையாட்டுகள்",
-    "@gamesPlayed": {},
+    "@gamesPlayed": {
+        "description": ""
+    },
     "wins": "வெற்றிகள்",
-    "@wins": {},
+    "@wins": {
+        "description": ""
+    },
     "losses": "தோல்விகள்",
-    "@losses": {},
+    "@losses": {
+        "description": ""
+    },
     "draws": "சமன்நிலைகள்",
-    "@draws": {},
+    "@draws": {
+        "description": ""
+    },
     "lastUpdated": "கடைசியாகப் புதுப்பிக்கப்பட்டது",
-    "@lastUpdated": {},
+    "@lastUpdated": {
+        "description": ""
+    },
     "format": "வடிவம்:",
-    "@format": {},
+    "@format": {
+        "description": ""
+    },
     "resetStatistics": "புள்ளிவிவரங்களை மீட்டமை",
-    "@resetStatistics": {},
+    "@resetStatistics": {
+        "description": ""
+    },
     "drawRate": "சமன்நிலை விகிதம்",
-    "@drawRate": {},
+    "@drawRate": {
+        "description": ""
+    },
     "lossRate": "தோல்வி விகிதம்",
-    "@lossRate": {},
+    "@lossRate": {
+        "description": ""
+    },
     "aiStatistics": "AI புள்ளிவிவரங்கள்",
-    "@aiStatistics": {},
+    "@aiStatistics": {
+        "description": ""
+    },
     "enableStatistics": "புள்ளிவிவரங்களை இயக்கு",
-    "@enableStatistics": {},
+    "@enableStatistics": {
+        "description": ""
+    },
     "enableStatistics_Detail": "இயக்கப்பட்டால், விளையாட்டு முடிவுகள் புள்ளிவிவரங்களில் பதிவு செய்யப்படும். இருப்பினும், பின்வாங்கல்களை உள்ளடக்கிய விளையாட்டுகள் பதிவு செய்யப்படாது. முடக்கப்பட்டால், புள்ளிவிவர சேகரிப்பு இடைநிறுத்தப்படும்.",
-    "@enableStatistics_Detail": {},
+    "@enableStatistics_Detail": {
+        "description": ""
+    },
     "thisWillResetAllGameStatistics": "இது அனைத்து விளையாட்டு புள்ளிவிவரங்களையும் மீட்டமைக்கும். இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
-    "@thisWillResetAllGameStatistics": {},
+    "@thisWillResetAllGameStatistics": {
+        "description": ""
+    },
     "boardInnerRingSize": "பலகையின் உள் வளையத்தின் அளவு",
-    "@boardInnerRingSize": {},
+    "@boardInnerRingSize": {
+        "description": ""
+    },
     "boardShadowEnabled": "பலகை நிழல்",
-    "@boardShadowEnabled": {},
+    "@boardShadowEnabled": {
+        "description": ""
+    },
     "trapAwareness": "வலை கண்டறிதல்",
-    "@trapAwareness": {},
+    "@trapAwareness": {
+        "description": ""
+    },
     "trapAwarenessDescription": "பகுப்பாய்வின் போது தடிமனான வட்டங்கள் மற்றும் அம்புகளால் வலையின் நகர்வுகளை வெளிப்படுத்து.",
-    "@trapAwarenessDescription": {},
+    "@trapAwarenessDescription": {
+        "description": ""
+    },
     "trapExists": "வலை உள்ளது. வலை நகர்வுகள்: {trapMoves}",
     "@trapExists": {
-        "placeholders": {
-            "trapMoves": {
-                "type": "String"
-            }
-        }
+        "description": ""
     },
     "custodianCapture": "ஒளிரும் பிடிப்பு",
-    "@custodianCapture": {},
+    "@custodianCapture": {
+        "description": ""
+    },
     "custodianCaptureDescription": "உங்கள் எதிரியின் துண்டுகளில் ஒன்றை உங்களுடைய இரண்டு இடையே ஒரு நேர் கோட்டில் இணைக்கவும்.",
-    "@custodianCaptureDescription": {},
+    "@custodianCaptureDescription": {
+        "description": ""
+    },
     "custodianCaptureEnable": "பக்கவாட்டு பிடிப்பை அனுமதிக்கவும்",
-    "@custodianCaptureEnable": {},
+    "@custodianCaptureEnable": {
+        "description": ""
+    },
     "interventionCapture": "தலையீட்டு பிடிப்பு",
-    "@interventionCapture": {},
+    "@interventionCapture": {
+        "description": ""
+    },
     "interventionCaptureDescription": "இரண்டையும் பிடிக்க உங்கள் எதிரியின் இரண்டு துண்டுகளுக்கு இடையில் வெற்று புள்ளியில் செல்லுங்கள்.",
-    "@interventionCaptureDescription": {},
+    "@interventionCaptureDescription": {
+        "description": ""
+    },
     "interventionCaptureEnable": "தலையீடு பிடிப்பை அனுமதிக்கவும்",
-    "@interventionCaptureEnable": {},
+    "@interventionCaptureEnable": {
+        "description": ""
+    },
     "leapCapture": "ஜம்ப் கேப்சர்",
-    "@leapCapture": {},
+    "@leapCapture": {
+        "description": ""
+    },
     "leapCaptureDescription": "அருகிலுள்ள எதிராளியின் துண்டுக்கு அப்பால் வெற்று புள்ளியில் குதித்து பிடிக்கவும்.",
-    "@leapCaptureDescription": {},
+    "@leapCaptureDescription": {
+        "description": ""
+    },
     "leapCaptureEnable": "ஜம்ப் பிடிப்பை அனுமதிக்கவும்",
-    "@leapCaptureEnable": {},
+    "@leapCaptureEnable": {
+        "description": ""
+    },
     "captureApplicableLines": "பொருந்தக்கூடிய கோடுகள்",
-    "@captureApplicableLines": {},
+    "@captureApplicableLines": {
+        "description": ""
+    },
     "captureSquareEdges": "சதுக்கத்தின் விளிம்புகளுடன்",
-    "@captureSquareEdges": {},
+    "@captureSquareEdges": {
+        "description": ""
+    },
     "captureCrossLines": "சதுரத்தைக் கடக்கும் ஆர்த்தோகனல் கோடுகளுடன்",
-    "@captureCrossLines": {},
+    "@captureCrossLines": {
+        "description": ""
+    },
     "captureDiagonalLines": "சதுரத்தைக் கடக்கும் மூலைவிட்ட கோடுகளுடன்",
-    "@captureDiagonalLines": {},
+    "@captureDiagonalLines": {
+        "description": ""
+    },
     "captureExecutionPhases": "மரணதண்டனை கட்டங்கள்",
-    "@captureExecutionPhases": {},
+    "@captureExecutionPhases": {
+        "description": ""
+    },
     "capturePiecesCondition": "மீதமுள்ள துண்டுகளின் அடிப்படையில் நகரும் கட்டத்தின் போது கிடைக்கும்",
-    "@capturePiecesCondition": {},
+    "@capturePiecesCondition": {
+        "description": ""
+    },
     "capturePiecesConditionUnlimited": "கட்டுப்பாடு இல்லை",
-    "@capturePiecesConditionUnlimited": {},
+    "@capturePiecesConditionUnlimited": {
+        "description": ""
+    },
     "capturePiecesConditionSelfLeqThree": "உங்களிடம் மூன்று அல்லது குறைவான துண்டுகள் இருக்கும்போது கிடைக்கும்",
-    "@capturePiecesConditionSelfLeqThree": {},
+    "@capturePiecesConditionSelfLeqThree": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares": "இரண்டு வெற்று சதுரங்கள் மட்டுமே எஞ்சியிருக்கும்போது வைப்பதை நிறுத்துங்கள்",
-    "@stopPlacingWhenTwoEmptySquares": {},
+    "@stopPlacingWhenTwoEmptySquares": {
+        "description": ""
+    },
     "stopPlacingWhenTwoEmptySquares_Detail": "இயக்கப்பட்டால், பலகையில் 2 வெற்று இடங்கள் மட்டுமே எஞ்சியிருக்கும்போது வைக்கும் கட்டம் முடிவடைந்து நகர்த்தும் கட்டம் தொடங்குகிறது, கையில் உள்ள காய்களைப் பொருட்படுத்தாமல். இந்த விதி 12-காய் விளையாட்டுகளுக்கு மட்டுமே பொருந்தும்.",
-    "@stopPlacingWhenTwoEmptySquares_Detail": {},
+    "@stopPlacingWhenTwoEmptySquares_Detail": {
+        "description": ""
+    },
     "canOnlyRequestTakeBackRightAfterYourMove": "உங்கள் நகர்வுக்கு உடனடியாகப் பிறகு மட்டுமே திரும்பப் பெறுவதை கோரலாம்.",
-    "@canOnlyRequestTakeBackRightAfterYourMove": {},
+    "@canOnlyRequestTakeBackRightAfterYourMove": {
+        "description": ""
+    },
     "perfectDatabaseChallengeHint": "நீங்கள் அதிக சவாலை விரும்பினால், \"{setting}\" விருப்பத்தை இயக்கவும், அறிவுறுத்தப்பட்டபடி உங்கள் சாதனத்தில் முழுமையான தரவுத்தளத்தைப் பதிவிறக்கவும் நாங்கள் பரிந்துரைக்கிறோம்.",
     "@perfectDatabaseChallengeHint": {
-        "description": "Hint to enable perfect database for greater challenge",
-        "placeholders": {
-            "setting": {
-                "description": "The setting name (Use perfect database)",
-                "type": "String"
-            }
-        }
+        "description": "Hint to enable perfect database for greater challenge"
     },
     "configureRulesPrompt": "நீங்கள் இப்போது விளையாட்டு விதிகளை உள்ளமைக்க விரும்புகிறீர்களா?",
-    "@configureRulesPrompt": {},
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
     "configureRules": "விதிகளை உள்ளமைக்கவும்",
-    "@configureRules": {},
+    "@configureRules": {
+        "description": "Button text for configuring rules"
+    },
     "algorithmSuggestionTitle": "அல்காரிதம் பரிந்துரை",
-    "@algorithmSuggestionTitle": {},
+    "@algorithmSuggestionTitle": {
+        "description": ""
+    },
     "switchToMctsSuggestion": "நீங்கள் நிலை 1 இல் தொடர்ச்சியாக பல விளையாட்டுகளை இழந்துள்ளீர்கள். சிரமத்தை குறைக்க எளிதான MCTS அல்காரிதத்திற்கு மாற விரும்புகிறீர்களா?",
-    "@switchToMctsSuggestion": {},
+    "@switchToMctsSuggestion": {
+        "description": ""
+    },
     "switchToMtdfSuggestion": "MCTS நிலை 30 இல் வெற்றி பெற்றதற்கு வாழ்த்துக்கள்! அதிக சவாலுக்கு MTD(f) அல்காரிதத்திற்கு மாற விரும்புகிறீர்களா?",
-    "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "கைப்பற்றக்கூடிய காய்களின் முன்னிலைப்படுத்தும் நிறம்",
-    "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
+    "@switchToMtdfSuggestion": {
+        "description": ""
     },
     "highlightCapturablePieces": "கைப்பற்றக்கூடிய காய்களை முன்னிலைப்படுத்து",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
     "undo": "செயல்தவிர்",
-    "@undo": {},
+    "@undo": {
+        "description": "Undo last move"
+    },
     "reset": "மீட்டமை",
-    "@reset": {},
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
     "allPuzzlesCompleted": "அனைத்து புதிர்களும் முடிந்தன!",
-    "@allPuzzlesCompleted": {},
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
     "back": "பின்செல்",
-    "@back": {},
+    "@back": {
+        "description": "Back button tooltip"
+    },
+    "puzzles": "Puzzles",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Puzzle",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "No puzzles available",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filter",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Category",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Clear Filter",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Puzzle Statistics",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Total Puzzles",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Completed",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total Stars",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Completion",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Beginner",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Easy",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Medium",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Hard",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Expert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Master",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Win Game",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Defend",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Find Best Move",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Endgame",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Opening",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Mixed",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Exit Puzzle?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Check Solution",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Give Up",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Puzzle Solved!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Hints Used",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Try Again",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Back to List",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Create New Puzzle",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Edit Puzzle",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Custom",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleSelect": "Select Puzzles",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Selected",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles"
+    },
+    "puzzleSelectAll": "Select All",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Export",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Import",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Successfully exported {count} puzzle}other{Successfully exported {count} puzzles}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message"
+    },
+    "puzzleExportFailed": "Failed to export puzzles",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Successfully imported {count} puzzle}other{Successfully imported {count} puzzles}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message"
+    },
+    "puzzleImportFailed": "Failed to import puzzles",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles"
+    },
+    "puzzleDeleted": "{count,plural, =1{Deleted {count} puzzle}other{Deleted {count} puzzles}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message"
+    },
+    "puzzleCannotDeleteBuiltIn": "Cannot delete built-in puzzles",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Setup Position",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzleCapturePosition": "Capture Position",
+    "@puzzleCapturePosition": {
+        "description": "Capture current board position"
+    },
+    "puzzlePositionCaptured": "Position captured successfully",
+    "@puzzlePositionCaptured": {
+        "description": "Position captured message"
+    },
+    "puzzleNoPositionCaptured": "No position captured yet",
+    "@puzzleNoPositionCaptured": {
+        "description": "No position captured message"
+    },
+    "puzzleCapturePositionFirst": "Please capture a position first",
+    "@puzzleCapturePositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Record Solution",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Start Recording",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Stop Recording",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Recording...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Started recording solution moves",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Recorded {count} move}other{Recorded {count} moves}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message"
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Solution: {count} move}other{Solution: {count} moves}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves"
+    },
+    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Clear Solution",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleDetails": "Puzzle Details",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Title",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Description",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Category",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Difficulty",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Hint",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tags",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separate tags with commas",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Author",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleTitleRequired": "Title is required",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Description is required",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Position is required",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Solution is required",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puzzle created successfully",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puzzle updated successfully",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Failed to save puzzle",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "optional",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Your Progress",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Quit",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "All",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Coming Soon",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Daily Puzzle",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Solve a new puzzle every day",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number"
+    },
+    "dailyPuzzleStreak": "Streak",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "day streak",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "days",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Best: {longestStreak} days",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display"
+    },
+    "dailyPuzzleStart": "Start Daily Puzzle",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Complete daily puzzles to build your streak!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Current Streak",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Longest Streak",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total Completed",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "All Puzzles",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Browse all available puzzles",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Solve puzzles against the clock",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Solve as many puzzles as you can in 5 minutes!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Rules",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minutes on the clock",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 lives - 1 lost per mistake",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximize your score!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Start Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rush Results",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Time's Up!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Out of Lives",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush Complete!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Solved",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Failed",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Accuracy",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Play Again",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puzzle Battle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Compete with other players",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Coming Soon!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "This feature is currently in development. Stay tuned!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 puzzle races",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Live opponent matching",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Rating system",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Custom Puzzles",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Create and manage your puzzles",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select Mode",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Create Puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "How many can you solve in a row?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Rules",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Solve as many puzzles as possible",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ One mistake and it's over",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Beat your personal record",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Start Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Current",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Best",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Streak Results",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Streak Ended",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "New Record!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Final Score",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Try Again",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "History",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "View your puzzle attempts",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "No Puzzle History",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Start solving puzzles to see your history here",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Success Only",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Failed Only",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "hints",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "View detailed analytics",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Your Puzzle Rating",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message"
+    },
+    "puzzleStatsGamesPlayed": "Games Played",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Deviation",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Performance Overview",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Success Rate",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Avg. Time",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Solved",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Failed",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Success by Category",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Recent Activity",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "No recent activity",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "No Custom Puzzles",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "This feature is planned for a future release",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Invalid position",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Invalid position format. Please check the game board.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs recapture"
+    },
+    "puzzleShowDetailedWorkflow": "Show detailed workflow",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Setup Position",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Open board (setup or play moves), create starting position, return and capture",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Record Solution",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Click Start Recording (board resets to start position), go back, play moves, return and stop",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Add Details",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Fill in title, description, category, difficulty, and tags",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Save Puzzle",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Click the save button in the top-right corner",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Tip: You'll navigate between this page and the game board. Your progress is saved!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionCaptureHelp": "Position Capture Help",
+    "@puzzlePositionCaptureHelp": {
+        "description": "Title for position capture help dialog"
+    },
+    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
+    "@puzzlePositionCaptureHelpContent": {
+        "description": "Help content for capturing puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "How to record the solution moves:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Capture the starting position first",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleShowPositionCaptureHelp": "Show position capture help",
+    "@puzzleShowPositionCaptureHelp": {
+        "description": "Tooltip for position capture help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Show solution recording help",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "No more hints available",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Hint",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Optimal solution ({moves} moves):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves"
+    },
+    "moves": "Moves",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "validationErrors": "Validation Errors",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "What happens next:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Your puzzles will be exported to a JSON file",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. You can share this file via the share dialog",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Puzzles will be reviewed by maintainers",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Once approved, they become built-in puzzles!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Export for Contribution",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Start Contributing",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Quick Start:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Create Quality Puzzles",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Add Your Name",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Edit your puzzle and add your name as the author to get credit.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Export for Contribution",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Select your puzzles and tap the upload icon to export in the correct format.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Submit",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Full Documentation",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Quality Requirements:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Clear, unique solution",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Complete metadata (title, description, etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Author attribution",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Accurate difficulty rating",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Instructive or entertaining",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Next move: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle"
+    },
+    "move": "நகர்த்து",
+    "@move": {
+        "description": "Move"
+    },
+    "completeSolutionHint": "Complete solution: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution"
+    },
+    "solution": "Solution",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "payAttentionToPositions": "Pay attention to these positions",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "No solution available",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Keep going! The objective hasn't been achieved yet.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfect! Solved in optimal moves!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Correct! ({count} moves, optimal: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "correctAlternativeSolution": "Correct! You found an alternative solution!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Just now",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "january": "January",
+    "@january": {
+        "description": "Month name"
+    },
+    "february": "February",
+    "@february": {
+        "description": "Month name"
+    },
+    "march": "March",
+    "@march": {
+        "description": "Month name"
+    },
+    "april": "April",
+    "@april": {
+        "description": "Month name"
+    },
+    "may": "May",
+    "@may": {
+        "description": "Month name"
+    },
+    "june": "June",
+    "@june": {
+        "description": "Month name"
+    },
+    "july": "July",
+    "@july": {
+        "description": "Month name"
+    },
+    "august": "August",
+    "@august": {
+        "description": "Month name"
+    },
+    "september": "September",
+    "@september": {
+        "description": "Month name"
+    },
+    "october": "October",
+    "@october": {
+        "description": "Month name"
+    },
+    "november": "November",
+    "@november": {
+        "description": "Month name"
+    },
+    "december": "December",
+    "@december": {
+        "description": "Month name"
+    },
+    "invalidPuzzle": "Invalid Puzzle",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Keep trying!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Examples",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "voiceCommandsHelp": "Voice Commands Help",
+    "@voiceCommandsHelp": {
+        "description": "Voice commands help page title"
+    },
+    "voiceCommandsHelpIntro": "Use your voice to control the game! Below are the available voice commands you can use.",
+    "@voiceCommandsHelpIntro": {
+        "description": "Voice commands help introduction"
+    },
+    "voiceCommandsGameControl": "Game Control",
+    "@voiceCommandsGameControl": {
+        "description": "Game control commands section"
+    },
+    "voiceCommandsMoveControl": "Move Commands",
+    "@voiceCommandsMoveControl": {
+        "description": "Move commands section"
+    },
+    "voiceCommandsSettings": "Settings Commands",
+    "@voiceCommandsSettings": {
+        "description": "Settings commands section"
+    },
+    "voiceCommandsTips": "Tips",
+    "@voiceCommandsTips": {
+        "description": "Tips section"
+    },
+    "voiceCommandsUndo": "Undo Move",
+    "@voiceCommandsUndo": {
+        "description": "Undo command title"
+    },
+    "voiceCommandsUndoDesc": "Undo the last move",
+    "@voiceCommandsUndoDesc": {
+        "description": "Undo command description"
+    },
+    "voiceCommandsRedo": "Redo Move",
+    "@voiceCommandsRedo": {
+        "description": "Redo command title"
+    },
+    "voiceCommandsRedoDesc": "Redo the previously undone move",
+    "@voiceCommandsRedoDesc": {
+        "description": "Redo command description"
+    },
+    "voiceCommandsRestart": "Restart Game",
+    "@voiceCommandsRestart": {
+        "description": "Restart command title"
+    },
+    "voiceCommandsRestartDesc": "Start a new game",
+    "@voiceCommandsRestartDesc": {
+        "description": "Restart command description"
+    },
+    "voiceCommandsAiMove": "Request AI Move",
+    "@voiceCommandsAiMove": {
+        "description": "AI move command title"
+    },
+    "voiceCommandsAiMoveDesc": "Request the AI to make a move",
+    "@voiceCommandsAiMoveDesc": {
+        "description": "AI move command description"
+    },
+    "voiceCommandsMovePiece": "Move Piece",
+    "@voiceCommandsMovePiece": {
+        "description": "Move piece command title"
+    },
+    "voiceCommandsMovePieceDesc": "Move a piece from one position to another",
+    "@voiceCommandsMovePieceDesc": {
+        "description": "Move piece command description"
+    },
+    "voiceCommandsPlacePiece": "Place Piece",
+    "@voiceCommandsPlacePiece": {
+        "description": "Place piece command title"
+    },
+    "voiceCommandsPlacePieceDesc": "Place a piece on the board",
+    "@voiceCommandsPlacePieceDesc": {
+        "description": "Place piece command description"
+    },
+    "voiceCommandsRemovePiece": "Remove Piece",
+    "@voiceCommandsRemovePiece": {
+        "description": "Remove piece command title"
+    },
+    "voiceCommandsRemovePieceDesc": "Remove an opponent's piece",
+    "@voiceCommandsRemovePieceDesc": {
+        "description": "Remove piece command description"
+    },
+    "voiceCommandsToggleSound": "Toggle Sound",
+    "@voiceCommandsToggleSound": {
+        "description": "Toggle sound command title"
+    },
+    "voiceCommandsToggleSoundDesc": "Turn sound on or off",
+    "@voiceCommandsToggleSoundDesc": {
+        "description": "Toggle sound command description"
+    },
+    "voiceCommandsToggleVibration": "Toggle Vibration",
+    "@voiceCommandsToggleVibration": {
+        "description": "Toggle vibration command title"
+    },
+    "voiceCommandsToggleVibrationDesc": "Turn vibration on or off",
+    "@voiceCommandsToggleVibrationDesc": {
+        "description": "Toggle vibration command description"
+    },
+    "voiceCommandsTip1": "Speak clearly and at a moderate pace for best recognition",
+    "@voiceCommandsTip1": {
+        "description": "Voice command tip 1"
+    },
+    "voiceCommandsTip2": "Wait for the listening indicator before speaking",
+    "@voiceCommandsTip2": {
+        "description": "Voice command tip 2"
+    },
+    "voiceCommandsTip3": "Commands work in your selected language",
+    "@voiceCommandsTip3": {
+        "description": "Voice command tip 3"
+    },
+    "voiceAssistant": "Voice Assistant",
+    "@voiceAssistant": {
+        "description": "Voice assistant feature name"
+    },
+    "voiceAssistantEnabled": "Enable Voice Assistant",
+    "@voiceAssistantEnabled": {
+        "description": "Enable voice assistant toggle"
+    },
+    "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
+    "@voiceAssistantEnabledDescription": {
+        "description": "Description for voice assistant enable toggle"
+    },
     "voiceAssistantSettings": "குரல் உதவியாளர் அமைப்புகள்",
-    "@voiceAssistantSettings": {},
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
     "voiceAssistantSettingsDescription": "மாதிரி, மொழி மற்றும் நடத்தையை உள்ளமை",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "voiceAssistantGeneral": "General",
+    "@voiceAssistantGeneral": {
+        "description": "General settings section"
+    },
+    "voiceAssistantModel": "Model Settings",
+    "@voiceAssistantModel": {
+        "description": "Model settings section"
+    },
+    "voiceAssistantModelManagement": "Model Management",
+    "@voiceAssistantModelManagement": {
+        "description": "Model management section"
+    },
+    "voiceAssistantModelType": "Model Type",
+    "@voiceAssistantModelType": {
+        "description": "Model type setting"
+    },
+    "voiceAssistantLanguage": "Language",
+    "@voiceAssistantLanguage": {
+        "description": "Language setting"
+    },
+    "voiceAssistantAutoDetectLanguage": "Auto-detect Language",
+    "@voiceAssistantAutoDetectLanguage": {
+        "description": "Auto-detect language toggle"
+    },
+    "voiceAssistantShowButton": "Show Voice Button",
+    "@voiceAssistantShowButton": {
+        "description": "Show voice button toggle"
+    },
+    "voiceAssistantContinuousListening": "Continuous Listening",
+    "@voiceAssistantContinuousListening": {
+        "description": "Continuous listening mode toggle"
+    },
+    "voiceAssistantDownloadModel": "Download Model",
+    "@voiceAssistantDownloadModel": {
+        "description": "Download model button"
+    },
+    "voiceAssistantDeleteModel": "Delete Model",
+    "@voiceAssistantDeleteModel": {
+        "description": "Delete model button"
+    },
+    "voiceAssistantModelInfo": "Model Information",
+    "@voiceAssistantModelInfo": {
+        "description": "Model information button"
+    },
+    "voiceAssistantModelDownloaded": "Downloaded",
+    "@voiceAssistantModelDownloaded": {
+        "description": "Model downloaded status"
+    },
+    "voiceAssistantModelNotDownloaded": "Not Downloaded",
+    "@voiceAssistantModelNotDownloaded": {
+        "description": "Model not downloaded status"
+    },
+    "voiceAssistantDownloading": "Downloading...",
+    "@voiceAssistantDownloading": {
+        "description": "Downloading progress message"
+    },
+    "voiceAssistantDownloadModelMessage": "Voice assistant requires a language model to function. This will download the selected model.",
+    "@voiceAssistantDownloadModelMessage": {
+        "description": "Download confirmation message"
+    },
+    "voiceAssistantModelDownloadSuccess": "Model downloaded successfully",
+    "@voiceAssistantModelDownloadSuccess": {
+        "description": "Download success message"
+    },
+    "voiceAssistantModelDownloadFailed": "Failed to download model",
+    "@voiceAssistantModelDownloadFailed": {
+        "description": "Download failed message"
+    },
+    "voiceAssistantModelDeleted": "Model deleted successfully",
+    "@voiceAssistantModelDeleted": {
+        "description": "Model deleted message"
+    },
+    "voiceAssistantDeleteFailed": "Failed to delete model",
+    "@voiceAssistantDeleteFailed": {
+        "description": "Delete failed message"
+    },
+    "voiceAssistantDeleteModelConfirm": "Are you sure you want to delete the downloaded model?",
+    "@voiceAssistantDeleteModelConfirm": {
+        "description": "Delete confirmation message"
+    },
+    "voiceAssistantModelSize": "Model Size",
+    "@voiceAssistantModelSize": {
+        "description": "Model size label"
+    },
+    "voiceAssistantModelPath": "Model Path",
+    "@voiceAssistantModelPath": {
+        "description": "Model path label"
+    },
+    "voiceAssistantSelectModelType": "Select Model Type",
+    "@voiceAssistantSelectModelType": {
+        "description": "Model type selection dialog title"
+    },
+    "voiceAssistantSelectLanguage": "Select Language",
+    "@voiceAssistantSelectLanguage": {
+        "description": "Language selection dialog title"
+    },
+    "voiceAssistantLanguageChanged": "Language changed. Please download the model for the new language.",
+    "@voiceAssistantLanguageChanged": {
+        "description": "Language changed message"
+    },
+    "voiceAssistantEnableFailed": "Failed to enable voice assistant",
+    "@voiceAssistantEnableFailed": {
+        "description": "Enable failed message"
+    },
+    "voiceAssistantListening": "Listening...",
+    "@voiceAssistantListening": {
+        "description": "Listening status message"
+    },
+    "voiceAssistantNoSpeechDetected": "No speech detected",
+    "@voiceAssistantNoSpeechDetected": {
+        "description": "No speech detected message"
+    },
+    "voiceAssistantRecognizedText": "Recognized Text",
+    "@voiceAssistantRecognizedText": {
+        "description": "Recognized text label"
+    },
+    "voiceAssistantResult": "Result",
+    "@voiceAssistantResult": {
+        "description": "Command execution result label"
+    },
+    "voiceAssistantError": "Voice assistant error",
+    "@voiceAssistantError": {
+        "description": "Generic error message"
+    },
+    "voiceAssistantRedownloadModel": "Re-download Model",
+    "@voiceAssistantRedownloadModel": {
+        "description": "Title for re-download confirmation dialog"
+    },
+    "voiceAssistantRedownloadModelMessage": "A voice model is already downloaded. Do you want to re-download and overwrite it?",
+    "@voiceAssistantRedownloadModelMessage": {
+        "description": "Message for re-download confirmation dialog"
+    },
+    "voiceCommandSuccess": "Command executed successfully",
+    "@voiceCommandSuccess": {
+        "description": "Command success message"
+    },
+    "voiceCommandFailed": "Failed to execute command",
+    "@voiceCommandFailed": {
+        "description": "Command failed message"
+    },
+    "voiceCommandUnknown": "Unknown command",
+    "@voiceCommandUnknown": {
+        "description": "Unknown command message"
+    },
+    "voiceCommandMoveSuccess": "Move executed",
+    "@voiceCommandMoveSuccess": {
+        "description": "Move command success"
+    },
+    "voiceCommandMoveFailed": "Failed to execute move",
+    "@voiceCommandMoveFailed": {
+        "description": "Move command failed"
+    },
+    "voiceCommandPlaceSuccess": "Piece placed",
+    "@voiceCommandPlaceSuccess": {
+        "description": "Place command success"
+    },
+    "voiceCommandPlaceFailed": "Failed to place piece",
+    "@voiceCommandPlaceFailed": {
+        "description": "Place command failed"
+    },
+    "voiceCommandRemoveSuccess": "Piece removed",
+    "@voiceCommandRemoveSuccess": {
+        "description": "Remove command success"
+    },
+    "voiceCommandRemoveFailed": "Failed to remove piece",
+    "@voiceCommandRemoveFailed": {
+        "description": "Remove command failed"
+    },
+    "voiceCommandUndoSuccess": "Undo executed",
+    "@voiceCommandUndoSuccess": {
+        "description": "Undo command success"
+    },
+    "voiceCommandUndoFailed": "Failed to undo",
+    "@voiceCommandUndoFailed": {
+        "description": "Undo command failed"
+    },
+    "voiceCommandRedoSuccess": "Redo executed",
+    "@voiceCommandRedoSuccess": {
+        "description": "Redo command success"
+    },
+    "voiceCommandRedoFailed": "Failed to redo",
+    "@voiceCommandRedoFailed": {
+        "description": "Redo command failed"
+    },
+    "voiceCommandRestartSuccess": "Game restarted",
+    "@voiceCommandRestartSuccess": {
+        "description": "Restart command success"
+    },
+    "voiceCommandRestartFailed": "Failed to restart game",
+    "@voiceCommandRestartFailed": {
+        "description": "Restart command failed"
+    },
+    "voiceCommandAiMoveSuccess": "AI is thinking...",
+    "@voiceCommandAiMoveSuccess": {
+        "description": "AI move command success"
+    },
+    "voiceCommandAiMoveFailed": "Failed to request AI move",
+    "@voiceCommandAiMoveFailed": {
+        "description": "AI move command failed"
+    },
+    "voiceCommandSettingsSuccess": "Settings updated",
+    "@voiceCommandSettingsSuccess": {
+        "description": "Settings command success"
+    },
+    "voiceCommandSettingsFailed": "Failed to update settings",
+    "@voiceCommandSettingsFailed": {
+        "description": "Settings command failed"
+    },
+    "voiceCommandHelpSuccess": "Help displayed",
+    "@voiceCommandHelpSuccess": {
+        "description": "Help command success"
+    },
+    "voiceCommandSoundOn": "Sound enabled",
+    "@voiceCommandSoundOn": {
+        "description": "Sound on message"
+    },
+    "voiceCommandSoundOff": "Sound disabled",
+    "@voiceCommandSoundOff": {
+        "description": "Sound off message"
+    },
+    "voiceCommandVibrationOn": "Vibration enabled",
+    "@voiceCommandVibrationOn": {
+        "description": "Vibration on message"
+    },
+    "voiceCommandVibrationOff": "Vibration disabled",
+    "@voiceCommandVibrationOff": {
+        "description": "Vibration off message"
+    }
 }
