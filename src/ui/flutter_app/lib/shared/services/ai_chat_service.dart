@@ -16,6 +16,7 @@
 
 import '../../game_page/services/mill.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../config/prompt_defaults.dart';
 import '../database/database.dart';
 import 'chat_session_manager.dart';
 import 'llm_service.dart';
@@ -34,6 +35,7 @@ class AiChatService {
 
   /// Generate a comprehensive system prompt with deep game integration
   /// Includes board state, move history, variant rules, and conversation context
+  /// Incorporates user-configured LLM prompts for enhanced strategic understanding
   String _generateSystemPrompt() {
     try {
       final GameController controller = GameController();
@@ -55,6 +57,9 @@ class AiChatService {
       if (fen == null || fen.isEmpty) {
         return _getDefaultSystemPrompt();
       }
+
+      // Get user-configured prompts (or defaults)
+      final String strategicKnowledge = _getStrategicKnowledgePrompt();
 
       // Get current game state
       final String sideToMove = position.sideToMove == PieceColor.white
@@ -85,10 +90,13 @@ class AiChatService {
       // Build comprehensive system prompt
       final StringBuffer prompt = StringBuffer();
 
+      // Start with strategic knowledge (user-configured or default)
+      prompt.writeln(strategicKnowledge);
+      prompt.writeln('\n---\n');
+
+      // Add current game state
       prompt.writeln(
         '''
-You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
-
 CURRENT GAME STATE:
 - FEN Position: $fen
 - Side to Move: $sideToMove
@@ -113,45 +121,68 @@ CURRENT GAME STATE:
         prompt.writeln('\n$conversationHistory');
       }
 
+      // Add AI chat assistant specific instructions
       prompt.writeln(
         '''
-STRATEGIC ANALYSIS GUIDELINES:
+
+---
+
+AI CHAT ASSISTANT ROLE:
+You are an expert Nine Men's Morris assistant providing context-aware strategic advice. Use the strategic knowledge and board reference above to analyze the current position and provide high-quality answers.
+
+RESPONSE GUIDELINES:
 1. Board Position Analysis:
-   - Identify formed mills and potential mill formations
-   - Evaluate piece distribution and control of key positions
-   - Assess blocking and mobility advantages
+   - Use the board reference to identify key positions and their connectivity
+   - Analyze formed mills and potential mill formations using the mill combinations list
+   - Evaluate piece distribution on cross points (d6, f4, d2, b4) vs corners
+   - Assess mobility using the adjacency information provided
 
-2. Phase-Specific Strategy:
-   - Placing Phase: Focus on building mill potential, controlling corners/centers
-   - Moving Phase: Emphasize mill formation, piece mobility, opponent restriction
-   - Flying Phase (3 pieces): Exploit mobility advantage, create unstoppable threats
+2. Strategic Recommendations:
+   - Apply the strategic concepts (double mills, running mills, forks, etc.)
+   - Consider phase-specific priorities from the strategic knowledge
+   - Provide specific move suggestions with square notation (e.g., "d5-d4")
+   - Explain reasoning using the evaluation criteria (material, mobility, mill threats)
+   - Reference specific lines and positions from the board reference
 
-3. Tactical Considerations:
-   - Count potential mills for each side
-   - Identify forced sequences and threats
-   - Evaluate endgame winning chances
+3. Tactical Analysis:
+   - Identify immediate threats and defensive needs
+   - Count potential mills using the mill combinations reference
+   - Suggest concrete alternatives when multiple good moves exist
    - Consider rule-specific tactics based on active variant
 
-4. Move Recommendations:
-   - Provide specific move suggestions with square notation (e.g., "d5-d4")
-   - Explain the strategic reasoning behind suggestions
-   - Consider both offensive (mill formation) and defensive (blocking) moves
-   - Adapt advice to the current rule variant
+4. Response Style:
+   - Be concise yet informative (2-4 paragraphs max unless asked for detail)
+   - Use clear, strategic language from the expert reference
+   - Reference specific board positions by notation (e.g., "the d6 cross point")
+   - Use Markdown formatting for clarity (bold, lists, etc.)
+   - Provide actionable, accurate advice grounded in the position
 
-RESPONSE STYLE:
-- Be concise yet informative (2-4 paragraphs max unless asked for detail)
-- Use clear, strategic language
-- Reference specific board positions when relevant
-- Provide actionable advice based on current game state
-- Use Markdown formatting for clarity (bold, lists, etc.)
-
-Provide expert, context-aware advice to help the player improve their position.''',
+Apply the strategic knowledge, board reference, and analysis framework to provide expert guidance.''',
       );
 
       return prompt.toString();
     } catch (e) {
       // If any error occurs while accessing game state, fall back to default prompt
       return _getDefaultSystemPrompt();
+    }
+  }
+
+  /// Get strategic knowledge prompt from user configuration or defaults
+  /// Returns the LLM prompt header which contains comprehensive strategic knowledge
+  String _getStrategicKnowledgePrompt() {
+    try {
+      final String configuredHeader = DB().generalSettings.llmPromptHeader;
+
+      // If user has configured a custom prompt, use it
+      if (configuredHeader.isNotEmpty) {
+        return configuredHeader;
+      }
+
+      // Otherwise use the default strategic knowledge
+      return PromptDefaults.llmPromptHeader;
+    } catch (e) {
+      // Fall back to default if any error occurs
+      return PromptDefaults.llmPromptHeader;
     }
   }
 
