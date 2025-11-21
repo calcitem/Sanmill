@@ -3671,5 +3671,21 @@
     "aiChatButtonTooltip": "Chat with AI Assistant",
     "@aiChatButtonTooltip": {
         "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "Clear chat history",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "Clear Chat History?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "This will delete all messages and start a new conversation. This action cannot be undone.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "Chat history cleared",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
     }
 }

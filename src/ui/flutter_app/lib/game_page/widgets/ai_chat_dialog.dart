@@ -324,6 +324,49 @@ class _AiChatDialogState extends State<AiChatDialog> {
     );
   }
 
+  Future<void> _showClearHistoryDialog() async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).aiChatClearHistoryConfirm),
+          content: Text(S.of(context).aiChatClearHistoryMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(S.of(context).ok),
+            ),
+          ],
+        );
+      },
+    );
+
+    if ((confirmed ?? false) && mounted) {
+      _clearHistory();
+    }
+  }
+
+  void _clearHistory() {
+    setState(() {
+      _chatService.sessionManager.clearSession();
+      _isInitialized = false; // Reset to allow welcome message to be shown again
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).aiChatCleared),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+
+    // Re-initialize welcome message
+    _initializeWelcomeMessage(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     // Initialize welcome message on first build
@@ -467,6 +510,12 @@ class _AiChatDialogState extends State<AiChatDialog> {
                       ),
                   ],
                 ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete_sweep),
+                iconSize: isLandscape ? 20 : 24,
+                onPressed: _isSending ? null : _showClearHistoryDialog,
+                tooltip: S.of(context).aiChatClearHistory,
               ),
               IconButton(
                 icon: const Icon(Icons.close),
