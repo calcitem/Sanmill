@@ -3671,5 +3671,21 @@
     "aiChatButtonTooltip": "与 AI 助手聊天",
     "@aiChatButtonTooltip": {
         "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "清除聊天记录",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "清除聊天记录？",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "这将删除所有消息并开始新对话。此操作无法撤消。",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "聊天记录已清除",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
     }
 }
