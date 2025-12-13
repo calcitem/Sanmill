@@ -401,6 +401,133 @@ class AppTheme {
   static const Color lightBackgroundColor = UIColors.papayaWhip;
   static const Color listTileSubtitleColor = UIColors.cocoaBean60;
 
+  /// Returns whether Settings/Config pages should use an accessible dark UI.
+  ///
+  /// This is intentionally *not* tied to system dark mode. It only activates
+  /// when the user selects the built-in Dark or Midnight Blue color theme.
+  static bool shouldUseDarkSettingsUi(ColorSettings colors) {
+    // Check for known dark themes that we explicitly want to support with dark UI
+    if (_looksLikeBuiltInDarkTheme(colors) ||
+        _looksLikeBuiltInMidnightBlueTheme(colors) ||
+        _looksLikeDarkMysteryTheme(colors)) {
+      return true;
+    }
+
+    // Strict heuristic for custom or other themes:
+    // We only enable dark settings UI if the theme is significantly dark.
+    // Using a threshold of 0.17 excludes "colorful dark" themes like the default Spruce (0.29),
+    // Autumn Leaves (0.26), etc., but would include very dark themes.
+    // We check both background and drawer to ensure a consistent dark look.
+    return _isDarkColor(colors.darkBackgroundColor) &&
+        _isDarkColor(colors.drawerColor);
+  }
+
+  static bool _looksLikeBuiltInDarkTheme(ColorSettings colors) {
+    return colors.darkBackgroundColor == Colors.black &&
+        colors.boardBackgroundColor == Colors.black &&
+        colors.drawerColor == Colors.black;
+  }
+
+  static bool _looksLikeBuiltInMidnightBlueTheme(ColorSettings colors) {
+    return colors.boardBackgroundColor == const Color(0xFF162447) &&
+        colors.darkBackgroundColor == const Color(0xFF1f4068) &&
+        colors.drawerColor == const Color(0xFF1f4068);
+  }
+
+  static bool _looksLikeDarkMysteryTheme(ColorSettings colors) {
+    return colors.darkBackgroundColor == const Color(0xFF0F0F0F) &&
+        colors.drawerColor == const Color(0xFF0F0F0F);
+  }
+
+  // Helper function to determine if a color is dark
+  static bool _isDarkColor(Color color) {
+    return color.computeLuminance() < 0.17;
+  }
+
+  /// Theme used for Settings/Config pages when [shouldUseDarkSettingsUi] is true.
+  ///
+  /// Design goals:
+  /// - High contrast text for accessibility.
+  /// - Low-glare dark surfaces (avoid pure black blocks).
+  /// - Familiar accent color (keep primary green).
+  static ThemeData buildAccessibleSettingsDarkTheme(ColorSettings colors) {
+    final bool isMidnightBlue = _looksLikeBuiltInMidnightBlueTheme(colors);
+
+    final Color scaffoldBackground = isMidnightBlue
+        ? const Color(0xFF0B1220) // Deep navy, low glare
+        : const Color(0xFF121212); // Material dark baseline, low glare
+
+    final Color surface = isMidnightBlue
+        ? const Color(0xFF111C2F) // Slightly lighter navy for app bars
+        : const Color(0xFF1A1A1A);
+
+    final Color cardSurface = isMidnightBlue
+        ? const Color(0xFF16233C) // Distinct from background for readability
+        : const Color(0xFF222222);
+
+    const Color onSurface = Color(0xFFECECEC);
+    const Color onSurfaceVariant = Color(0xFFB9B9B9);
+
+    final ColorScheme scheme =
+        ColorScheme.fromSeed(
+          seedColor: _appPrimaryColor,
+          brightness: Brightness.dark,
+        ).copyWith(
+          surface: surface,
+          onSurface: onSurface,
+          surfaceContainerHighest: cardSurface,
+          onSurfaceVariant: onSurfaceVariant,
+          outline: onSurface.withValues(alpha: 0.14),
+        );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorScheme: scheme,
+      scaffoldBackgroundColor: scaffoldBackground,
+      appBarTheme: AppBarTheme(
+        backgroundColor: surface,
+        foregroundColor: onSurface,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: onSurface),
+        titleTextStyle: const TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          color: onSurface,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        color: cardSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 0,
+      ),
+      dividerTheme: DividerThemeData(
+        indent: 16,
+        endIndent: 16,
+        space: 1.0,
+        thickness: 1.0,
+        color: onSurface.withValues(alpha: 0.12),
+      ),
+      listTileTheme: const ListTileThemeData(
+        iconColor: onSurfaceVariant,
+        textColor: onSurface,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: cardSurface,
+        titleTextStyle: const TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          color: onSurface,
+        ),
+        contentTextStyle: const TextStyle(
+          fontSize: 16.0,
+          color: onSurfaceVariant,
+        ),
+      ),
+    );
+  }
+
   /// Help page
   static const Color helpTextColor = UIColors.burlyWood;
 
