@@ -903,42 +903,64 @@ class AppearanceSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlockSemantics(
-      key: const Key('appearance_settings_page_block_semantics'),
-      child: Scaffold(
-        key: const Key('appearance_settings_page_scaffold'),
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppTheme.lightBackgroundColor,
-        appBar: AppBar(
-          key: const Key('appearance_settings_page_appbar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(
-            S.of(context).appearance,
-            key: const Key('appearance_settings_page_appbar_title'),
-            style: AppTheme.appBarTheme.titleTextStyle,
-          ),
-        ),
-        body: SettingsList(
-          key: const Key('appearance_settings_page_settings_list'),
-          children: <Widget>[
-            ValueListenableBuilder<Box<DisplaySettings>>(
-              key: const Key(
-                'appearance_settings_page_display_settings_value_listenable_builder',
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        final Widget page = BlockSemantics(
+          key: const Key('appearance_settings_page_block_semantics'),
+          child: Scaffold(
+            key: const Key('appearance_settings_page_scaffold'),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: useDarkSettingsUi
+                ? settingsTheme.scaffoldBackgroundColor
+                : AppTheme.lightBackgroundColor,
+            appBar: AppBar(
+              key: const Key('appearance_settings_page_appbar'),
+              leading: CustomDrawerIcon.of(context)?.drawerIcon,
+              title: Text(
+                S.of(context).appearance,
+                key: const Key('appearance_settings_page_appbar_title'),
+                style: useDarkSettingsUi
+                    ? null
+                    : AppTheme.appBarTheme.titleTextStyle,
               ),
-              valueListenable: DB().listenDisplaySettings,
-              builder: _buildDisplaySettings,
             ),
-            if (Constants.isSmallScreen(context) == false)
-              ValueListenableBuilder<Box<ColorSettings>>(
-                key: const Key(
-                  'appearance_settings_page_color_settings_value_listenable_builder',
+            body: SettingsList(
+              key: const Key('appearance_settings_page_settings_list'),
+              children: <Widget>[
+                ValueListenableBuilder<Box<DisplaySettings>>(
+                  key: const Key(
+                    'appearance_settings_page_display_settings_value_listenable_builder',
+                  ),
+                  valueListenable: DB().listenDisplaySettings,
+                  builder: _buildDisplaySettings,
                 ),
-                valueListenable: DB().listenColorSettings,
-                builder: _buildColorSettings,
-              ),
-          ],
-        ),
-      ),
+                if (Constants.isSmallScreen(context) == false)
+                  ValueListenableBuilder<Box<ColorSettings>>(
+                    key: const Key(
+                      'appearance_settings_page_color_settings_value_listenable_builder',
+                    ),
+                    valueListenable: DB().listenColorSettings,
+                    builder: _buildColorSettings,
+                  ),
+              ],
+            ),
+          ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 }

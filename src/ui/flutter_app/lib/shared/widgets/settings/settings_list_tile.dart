@@ -62,14 +62,25 @@ class SettingsListTile extends StatelessWidget {
   final ValueChanged<Color>? _colorCallback;
   final VoidCallback? _standardCallback;
 
-  Widget get title => Text(titleString, style: AppTheme.listTileTitleStyle);
-
-  Widget? get subTitle => subtitleString != null
-      ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
-      : null;
-
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    final TextStyle titleStyle = isDark
+        ? theme.textTheme.bodyLarge!.copyWith(color: theme.colorScheme.onSurface)
+        : AppTheme.listTileTitleStyle;
+
+    final TextStyle subtitleStyle = isDark
+        ? theme.textTheme.bodyMedium!.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          )
+        : AppTheme.listTileSubtitleStyle;
+
+    final Widget title = Text(titleString, style: titleStyle);
+    final Widget? subTitle =
+        subtitleString != null ? Text(subtitleString!, style: subtitleStyle) : null;
+
     switch (_type) {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
@@ -87,15 +98,15 @@ class SettingsListTile extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 trailingString!,
-                style: AppTheme.listTileSubtitleStyle,
+                style: subtitleStyle,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           );
         } else {
-          trailing = const Icon(
+          trailing = Icon(
             FluentIcons.chevron_right_24_regular,
-            color: AppTheme.listTileSubtitleColor,
+            color: isDark ? theme.colorScheme.onSurfaceVariant : AppTheme.listTileSubtitleColor,
           );
         }
 

@@ -14,9 +14,13 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final TextStyle textStyle = theme.textTheme.titleLarge!.apply(
-      color: AppTheme.settingsHeaderTextColor,
-    );
+    final bool isDark = theme.brightness == Brightness.dark;
+    final TextStyle textStyle = isDark
+        ? theme.textTheme.titleLarge!.copyWith(
+            color: theme.colorScheme.onSurface,
+            fontWeight: FontWeight.w700,
+          )
+        : theme.textTheme.titleLarge!.apply(color: AppTheme.settingsHeaderTextColor);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +43,11 @@ class SettingsCard extends StatelessWidget {
                       : Column(
                           children: <Widget>[
                             children[i],
-                            const Divider(color: AppTheme.listItemDividerColor),
+                            Divider(
+                              color: isDark
+                                  ? theme.colorScheme.onSurface.withValues(alpha: 0.12)
+                                  : AppTheme.listItemDividerColor,
+                            ),
                           ],
                         ),
               ],
