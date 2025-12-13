@@ -1,5 +1,4 @@
 #!/bin/bash
-/
 
 # Get current branch name
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -12,6 +11,21 @@ if [ "$CURRENT_BRANCH" != "master" ] && [ "$CURRENT_BRANCH" != "stable" ]; then
 fi
 
 echo "Current branch: $CURRENT_BRANCH"
+
+# Check if the latest tag follows vX.Y.Z format
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+if [ -z "$LATEST_TAG" ]; then
+  echo "Warning: No tags found in the repository."
+else
+  echo "Latest tag: $LATEST_TAG"
+  # Check if tag matches vX.Y.Z format (X, Y, Z are digits)
+  if ! echo "$LATEST_TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "Error: The latest tag '$LATEST_TAG' does not follow the vX.Y.Z format."
+    echo "Expected format: vX.Y.Z (e.g., v1.2.3)"
+    exit 1
+  fi
+  echo "Tag format check passed: $LATEST_TAG follows vX.Y.Z format"
+fi
 
 YAML_FILE=src/ui/flutter_app/pubspec.yaml
 SNAP_YAML_FILE=snap/snapcraft.yaml
