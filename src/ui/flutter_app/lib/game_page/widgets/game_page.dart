@@ -31,6 +31,7 @@ import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
+import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../pages/board_recognition_debug_page.dart';
