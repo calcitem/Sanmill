@@ -1228,19 +1228,19 @@ static void print_overall(const ThreadStats &a, const ThreadStats &b)
     double tradAsWhiteWinRate = ta ? (100.0 * a.tradWins.load() / ta) : 0.0;
     double tradAsWhiteDrawRate = ta ? (100.0 * a.draws.load() / ta) : 0.0;
     std::cout << "Traditional AI as WHITE: " << a.tradWins.load() << "W "
-              << a.perfectWins.load() << "L " << a.draws.load() << "D"
-              << " | " << ta << " games | WinRate:" << std::fixed
-              << std::setprecision(2) << tradAsWhiteWinRate
-              << "% DrawRate:" << tradAsWhiteDrawRate << "%\n";
+              << a.perfectWins.load() << "L " << a.draws.load() << "D" << " | "
+              << ta << " games | WinRate:" << std::fixed << std::setprecision(2)
+              << tradAsWhiteWinRate << "% DrawRate:" << tradAsWhiteDrawRate
+              << "%\n";
 
     // Thread B: Traditional=Black vs Perfect=White
     double tradAsBlackWinRate = tb ? (100.0 * b.tradWins.load() / tb) : 0.0;
     double tradAsBlackDrawRate = tb ? (100.0 * b.draws.load() / tb) : 0.0;
     std::cout << "Traditional AI as BLACK: " << b.tradWins.load() << "W "
-              << b.perfectWins.load() << "L " << b.draws.load() << "D"
-              << " | " << tb << " games | WinRate:" << std::fixed
-              << std::setprecision(2) << tradAsBlackWinRate
-              << "% DrawRate:" << tradAsBlackDrawRate << "%\n";
+              << b.perfectWins.load() << "L " << b.draws.load() << "D" << " | "
+              << tb << " games | WinRate:" << std::fixed << std::setprecision(2)
+              << tradAsBlackWinRate << "% DrawRate:" << tradAsBlackDrawRate
+              << "%\n";
 
     // Color-balanced analysis: Handle unequal game counts properly
     auto safe_pct = [](uint64_t x, uint64_t tot) -> double {
@@ -1374,19 +1374,17 @@ static void print_overall_to_file(std::ofstream &file, const ThreadStats &a,
     double tradAsWhiteWinRate = ta ? (100.0 * a.tradWins.load() / ta) : 0.0;
     double tradAsWhiteDrawRate = ta ? (100.0 * a.draws.load() / ta) : 0.0;
     file << "Traditional AI as WHITE: " << a.tradWins.load() << "W "
-         << a.perfectWins.load() << "L " << a.draws.load() << "D"
-         << " | " << ta << " games | WinRate:" << std::fixed
-         << std::setprecision(2) << tradAsWhiteWinRate
-         << "% DrawRate:" << tradAsWhiteDrawRate << "%\n";
+         << a.perfectWins.load() << "L " << a.draws.load() << "D" << " | " << ta
+         << " games | WinRate:" << std::fixed << std::setprecision(2)
+         << tradAsWhiteWinRate << "% DrawRate:" << tradAsWhiteDrawRate << "%\n";
 
     // Thread B: Traditional=Black vs Perfect=White
     double tradAsBlackWinRate = tb ? (100.0 * b.tradWins.load() / tb) : 0.0;
     double tradAsBlackDrawRate = tb ? (100.0 * b.draws.load() / tb) : 0.0;
     file << "Traditional AI as BLACK: " << b.tradWins.load() << "W "
-         << b.perfectWins.load() << "L " << b.draws.load() << "D"
-         << " | " << tb << " games | WinRate:" << std::fixed
-         << std::setprecision(2) << tradAsBlackWinRate
-         << "% DrawRate:" << tradAsBlackDrawRate << "%\n";
+         << b.perfectWins.load() << "L " << b.draws.load() << "D" << " | " << tb
+         << " games | WinRate:" << std::fixed << std::setprecision(2)
+         << tradAsBlackWinRate << "% DrawRate:" << tradAsBlackDrawRate << "%\n";
 
     // Color-balanced analysis: Handle unequal game counts properly
     auto safe_pct = [](uint64_t x, uint64_t tot) -> double {

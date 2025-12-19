@@ -336,6 +336,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "पृष्ठभूमि संगीत",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "स्थानीय ऑडियो फ़ाइल को पृष्ठभूमि संगीत के रूप में चलाएँ",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "पृष्ठभूमि संगीत फ़ाइल",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "पृष्ठभूमि संगीत हटाएँ",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "संगीत फ़ाइलें",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "वापस लेते समय मौन रहें",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

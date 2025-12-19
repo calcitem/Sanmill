@@ -509,6 +509,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Umculo wangemuva",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Dlala ifayela lomsindo lendawo njengomculo wangemuva",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Ifayela lomculo wangemuva",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Susa umculo wangemuva",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Amafayela omculo",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Gcina uthule uma ubuyisela emuva",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

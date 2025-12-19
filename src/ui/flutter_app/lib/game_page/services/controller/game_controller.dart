@@ -104,6 +104,7 @@ class GameController {
     }
 
     await SoundManager().loadSounds();
+    await SoundManager().startBackgroundMusic();
 
     _isInitialized = true;
     logger.i("$_logTag initialized");

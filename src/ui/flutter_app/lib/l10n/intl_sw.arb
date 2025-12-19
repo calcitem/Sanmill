@@ -487,6 +487,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Muziki wa mandharinyuma",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Cheza faili ya sauti ya ndani kama muziki wa mandharinyuma",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Faili ya muziki wa mandharinyuma",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Futa muziki wa mandharinyuma",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Faili za muziki",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Nyamaza unaporudisha",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

@@ -972,8 +972,7 @@ void MillGameWindow::on_actionOpen_Settings_File_triggered()
     if (!editorCommand.isEmpty()) {
         QStringList arguments;
 #if defined(Q_OS_MAC)
-        arguments << "-a"
-                  << "TextEdit" << settingsFilePath;
+        arguments << "-a" << "TextEdit" << settingsFilePath;
 #else
         arguments << settingsFilePath;
 #endif

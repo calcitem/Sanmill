@@ -447,6 +447,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Ֆոնային երաժշտություն",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Նվագարկել տեղային ձայնային ֆայլը որպես ֆոնային երաժշտություն",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Ֆոնային երաժշտության ֆայլ",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Մաքրել ֆոնային երաժշտությունը",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Երաժշտական ֆայլեր",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Հետ վերցնելիս լռեք",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

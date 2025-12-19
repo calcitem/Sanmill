@@ -336,6 +336,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Μουσική υπόβαθρου",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Αναπαραγωγή τοπικού αρχείου ήχου ως μουσική υπόβαθρου",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Αρχείο μουσικής υπόβαθρου",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Εκκαθάριση μουσικής υπόβαθρου",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Αρχεία μουσικής",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Διατηρήστε τη σίγαση όταν παίρνετε πίσω",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

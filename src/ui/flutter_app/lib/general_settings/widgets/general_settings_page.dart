@@ -6,10 +6,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
@@ -199,6 +202,98 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
     logger.t("$_logTag toneEnabled: $value");
+
+    if (value == true) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
+  void _setBackgroundMusicEnabled(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: value,
+    );
+    logger.t("$_logTag backgroundMusicEnabled: $value");
+
+    if (value == true) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
+  Future<void> _pickBackgroundMusicFile(
+    BuildContext context,
+    GeneralSettings generalSettings,
+  ) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
+    final Directory? rootDir = (!kIsWeb && Platform.isAndroid)
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final Directory musicDir = Directory("${appDocDir.path}/music");
+    if (!musicDir.existsSync()) {
+      await musicDir.create(recursive: true);
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
+    final String? picked = await FilesystemPicker.openDialog(
+      context: context,
+      rootDirectory: rootDir ?? appDocDir,
+      rootName: S.of(context).musicFiles,
+      fsType: FilesystemType.file,
+      showGoUp: !kIsWeb && !Platform.isLinux,
+      allowedExtensions: const <String>[
+        ".mp3",
+        ".wav",
+        ".ogg",
+        ".m4a",
+        ".aac",
+        ".flac",
+      ],
+      fileTileSelectMode: FileTileSelectMode.checkButton,
+      theme: const FilesystemPickerTheme(backgroundColor: Colors.greenAccent),
+    );
+
+    if (picked == null) {
+      return;
+    }
+
+    final String ext = p.extension(picked);
+    final String newPath =
+        "${musicDir.path}/bgm_${DateTime.now().millisecondsSinceEpoch}$ext";
+
+    try {
+      await File(picked).copy(newPath);
+    } catch (e) {
+      logger.e("$_logTag Failed to copy background music file: $e");
+      return;
+    }
+
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: true,
+      backgroundMusicFilePath: newPath,
+    );
+    logger.t("$_logTag backgroundMusicFilePath: $newPath");
+
+    await SoundManager().startBackgroundMusic();
+  }
+
+  void _clearBackgroundMusic(GeneralSettings generalSettings) {
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: false,
+      backgroundMusicFilePath: '',
+    );
+    logger.t("$_logTag backgroundMusic cleared");
+    unawaited(SoundManager().stopBackgroundMusic());
   }
 
   void _setKeepMuteWhenTakingBack(GeneralSettings generalSettings, bool value) {
@@ -538,6 +633,34 @@ class GeneralSettingsPage extends StatelessWidget {
               onChanged: (bool val) => _setTone(generalSettings, val),
               titleString: S.of(context).playSoundsInTheGame,
             ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'general_settings_page_settings_card_play_sounds_background_music_enabled',
+              ),
+              value: generalSettings.backgroundMusicEnabled,
+              onChanged: (bool val) =>
+                  _setBackgroundMusicEnabled(generalSettings, val),
+              titleString: S.of(context).backgroundMusic,
+              subtitleString: S.of(context).backgroundMusicDescription,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'general_settings_page_settings_card_play_sounds_background_music_file',
+              ),
+              titleString: S.of(context).backgroundMusicFile,
+              trailingString: generalSettings.backgroundMusicFilePath.isEmpty
+                  ? S.of(context).none
+                  : p.basename(generalSettings.backgroundMusicFilePath),
+              onTap: () => _pickBackgroundMusicFile(context, generalSettings),
+            ),
+            if (generalSettings.backgroundMusicFilePath.isNotEmpty)
+              SettingsListTile(
+                key: const Key(
+                  'general_settings_page_settings_card_play_sounds_background_music_clear',
+                ),
+                titleString: S.of(context).clearBackgroundMusic,
+                onTap: () => _clearBackgroundMusic(generalSettings),
+              ),
             SettingsListTile.switchTile(
               key: const Key(
                 'general_settings_page_settings_card_play_sounds_keep_mute_when_taking_back',
