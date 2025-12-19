@@ -635,6 +635,23 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               key: const Key(
+                'general_settings_page_settings_card_play_sounds_keep_mute_when_taking_back',
+              ),
+              value: generalSettings.keepMuteWhenTakingBack,
+              onChanged: (bool val) =>
+                  _setKeepMuteWhenTakingBack(generalSettings, val),
+              titleString: S.of(context).keepMuteWhenTakingBack,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'general_settings_page_settings_card_play_sounds_sound_theme',
+              ),
+              titleString: S.of(context).soundTheme,
+              trailingString: generalSettings.soundTheme!.localeName(context),
+              onTap: () => _setSoundTheme(context, generalSettings),
+            ),
+            SettingsListTile.switchTile(
+              key: const Key(
                 'general_settings_page_settings_card_play_sounds_background_music_enabled',
               ),
               value: generalSettings.backgroundMusicEnabled,
@@ -661,23 +678,6 @@ class GeneralSettingsPage extends StatelessWidget {
                 titleString: S.of(context).clearBackgroundMusic,
                 onTap: () => _clearBackgroundMusic(generalSettings),
               ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_play_sounds_keep_mute_when_taking_back',
-              ),
-              value: generalSettings.keepMuteWhenTakingBack,
-              onChanged: (bool val) =>
-                  _setKeepMuteWhenTakingBack(generalSettings, val),
-              titleString: S.of(context).keepMuteWhenTakingBack,
-            ),
-            SettingsListTile(
-              key: const Key(
-                'general_settings_page_settings_card_play_sounds_sound_theme',
-              ),
-              titleString: S.of(context).soundTheme,
-              trailingString: generalSettings.soundTheme!.localeName(context),
-              onTap: () => _setSoundTheme(context, generalSettings),
-            ),
             if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
               SettingsListTile.switchTile(
                 key: const Key(
