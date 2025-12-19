@@ -21,6 +21,7 @@ import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/llm_service.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
@@ -191,7 +192,7 @@ class MovesListPageState extends State<MovesListPage> {
     }
 
     // Create a controller for the text editing
-    final TextEditingController controller = TextEditingController(
+    final TextEditingController controller = SafeTextEditingController(
       text: initialPrompt,
     );
 
@@ -1534,7 +1535,7 @@ class MoveListItemState extends State<MoveListItem> {
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
     _comment = _retrieveComment(widget.node);
-    _editingController = TextEditingController(text: _comment);
+    _editingController = SafeTextEditingController(text: _comment);
   }
 
   /// Retrieves comment from node.data, joined if multiple.

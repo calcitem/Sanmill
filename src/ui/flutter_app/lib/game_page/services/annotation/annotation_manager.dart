@@ -11,6 +11,7 @@ import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../painters/painters.dart'; // Provides points, offsetFromPoint, pointFromIndex
 
 /// AnnotationTool is an enum listing the possible drawing tools.
@@ -1028,7 +1029,7 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
 
   /// Prompts the user for text and creates an AnnotationText at the snapped position.
   Future<void> _createTextAt(Offset point, Color color) async {
-    final TextEditingController controller = TextEditingController();
+    final TextEditingController controller = SafeTextEditingController();
 
     final String? userText = await showDialog<String>(
       context: context,

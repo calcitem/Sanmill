@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/config/prompt_defaults.dart';
 import '../../../shared/database/database.dart';
+import '../../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../models/general_settings.dart';
 
 /// A dialog for editing LLM prompt header and footer
@@ -30,12 +31,12 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
     final String currentFooter = DB().generalSettings.llmPromptFooter;
 
     // Initialize controllers with current values, or default values if empty
-    _headerController = TextEditingController(
+    _headerController = SafeTextEditingController(
       text: currentHeader.isEmpty
           ? PromptDefaults.llmPromptHeader
           : currentHeader,
     );
-    _footerController = TextEditingController(
+    _footerController = SafeTextEditingController(
       text: currentFooter.isEmpty
           ? PromptDefaults.llmPromptFooter
           : currentFooter,
