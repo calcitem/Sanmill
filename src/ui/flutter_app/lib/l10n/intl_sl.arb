@@ -336,6 +336,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Glasba v ozadju",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Predvajaj lokalno zvočno datoteko kot glasbo v ozadju",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Datoteka glasbe v ozadju",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Počisti glasbo v ozadju",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Glasbene datoteke",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Pri vračanju umiri zvok",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

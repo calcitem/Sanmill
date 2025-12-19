@@ -336,6 +336,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Fona mūzika",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Atskaņot lokālu audio failu kā fona mūziku",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Fona mūzikas fails",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Notīrīt fona mūziku",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Mūzikas faili",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Atgriešanās laikā saglabāt izslēgtu skaņu",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

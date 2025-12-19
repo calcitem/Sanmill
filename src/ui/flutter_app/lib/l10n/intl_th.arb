@@ -336,6 +336,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "เพลงพื้นหลัง",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "เล่นไฟล์เสียงในเครื่องเป็นเพลงพื้นหลัง",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "ไฟล์เพลงพื้นหลัง",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "ล้างเพลงพื้นหลัง",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "ไฟล์เพลง",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "ปิดเสียงเมื่อทำการย้อนกลับ",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

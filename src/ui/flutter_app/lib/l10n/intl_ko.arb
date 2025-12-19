@@ -336,6 +336,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "배경 음악",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "로컬 오디오 파일을 배경 음악으로 재생",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "배경 음악 파일",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "배경 음악 지우기",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "음악 파일",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "되돌리기를 할 때 음소거",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"

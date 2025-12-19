@@ -435,6 +435,26 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
+  "backgroundMusic": "Agtergrondmusiek",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Speel 'n plaaslike oudiolêer as agtergrondmusiek",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Agtergrondmusieklêer",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Verwyder agtergrondmusiek",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Musieklêers",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
   "keepMuteWhenTakingBack": "Hou stil wanneer jy terugneem",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
