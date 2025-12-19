@@ -6,7 +6,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:filesystem_picker/filesystem_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -231,10 +231,6 @@ class GeneralSettingsPage extends StatelessWidget {
       return;
     }
 
-    final Directory? rootDir = (!kIsWeb && Platform.isAndroid)
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final Directory musicDir = Directory("${appDocDir.path}/music");
     if (!musicDir.existsSync()) {
@@ -245,28 +241,18 @@ class GeneralSettingsPage extends StatelessWidget {
       return;
     }
 
-    final String? picked = await FilesystemPicker.openDialog(
-      context: context,
-      rootDirectory: rootDir ?? appDocDir,
-      rootName: S.of(context).musicFiles,
-      fsType: FilesystemType.file,
-      showGoUp: !kIsWeb && !Platform.isLinux,
-      allowedExtensions: const <String>[
-        ".mp3",
-        ".wav",
-        ".ogg",
-        ".m4a",
-        ".aac",
-        ".flac",
-      ],
-      fileTileSelectMode: FileTileSelectMode.checkButton,
-      theme: const FilesystemPickerTheme(backgroundColor: Colors.greenAccent),
+    // Use FilePicker to allow users to select audio files from any accessible directory.
+    // This solves the issue where users could not access their own music folders on Android
+    // without requiring the MANAGE_EXTERNAL_STORAGE permission.
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
     );
 
-    if (picked == null) {
+    if (result == null || result.files.single.path == null) {
       return;
     }
 
+    final String picked = result.files.single.path!;
     final String ext = p.extension(picked);
     final String newPath =
         "${musicDir.path}/bgm_${DateTime.now().millisecondsSinceEpoch}$ext";
