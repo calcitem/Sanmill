@@ -253,9 +253,15 @@ class GeneralSettingsPage extends StatelessWidget {
     }
 
     final String picked = result.files.single.path!;
-    final String ext = p.extension(picked);
-    final String newPath =
-        "${musicDir.path}/bgm_${DateTime.now().millisecondsSinceEpoch}$ext";
+    final String originalName = p.basename(picked);
+
+    // Clean up old background music file before copying new one.
+    await _deleteOldBackgroundMusicFile(
+      generalSettings.backgroundMusicFilePath,
+    );
+
+    // Determine the target path, avoiding filename conflicts.
+    final String newPath = _resolveUniqueMusicPath(musicDir.path, originalName);
 
     try {
       await File(picked).copy(newPath);
@@ -273,13 +279,49 @@ class GeneralSettingsPage extends StatelessWidget {
     await SoundManager().startBackgroundMusic();
   }
 
-  void _clearBackgroundMusic(GeneralSettings generalSettings) {
+  /// Delete the old background music file if it exists.
+  Future<void> _deleteOldBackgroundMusicFile(String oldPath) async {
+    if (oldPath.isEmpty) {
+      return;
+    }
+    try {
+      final File oldFile = File(oldPath);
+      if (oldFile.existsSync()) {
+        await oldFile.delete();
+        logger.t("$_logTag Deleted old background music file: $oldPath");
+      }
+    } catch (e) {
+      logger.w("$_logTag Failed to delete old background music file: $e");
+    }
+  }
+
+  /// Resolve a unique file path in the music directory.
+  /// If the file already exists, append a numeric suffix.
+  String _resolveUniqueMusicPath(String dirPath, String filename) {
+    final String baseName = p.basenameWithoutExtension(filename);
+    final String ext = p.extension(filename);
+    String candidate = "$dirPath/$filename";
+
+    int counter = 1;
+    while (File(candidate).existsSync()) {
+      candidate = "$dirPath/${baseName}_$counter$ext";
+      counter++;
+    }
+    return candidate;
+  }
+
+  Future<void> _clearBackgroundMusic(GeneralSettings generalSettings) async {
+    // Delete the background music file from disk.
+    await _deleteOldBackgroundMusicFile(
+      generalSettings.backgroundMusicFilePath,
+    );
+
     DB().generalSettings = generalSettings.copyWith(
       backgroundMusicEnabled: false,
       backgroundMusicFilePath: '',
     );
     logger.t("$_logTag backgroundMusic cleared");
-    unawaited(SoundManager().stopBackgroundMusic());
+    await SoundManager().stopBackgroundMusic();
   }
 
   void _setKeepMuteWhenTakingBack(GeneralSettings generalSettings, bool value) {
