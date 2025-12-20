@@ -223,6 +223,83 @@ class GeneralSettingsPage extends StatelessWidget {
     }
   }
 
+  // Platform-specific audio format support.
+  // Windows (Media Foundation): No OGG/OPUS support.
+  // iOS/macOS (AVFoundation): No OGG/OPUS/WMA support.
+  // Android (MediaPlayer): Supports most formats.
+  // Linux (GStreamer): Depends on installed plugins.
+
+  static const Set<String> _windowsSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.m4a',
+    '.aac',
+    '.wma',
+    '.flac',
+  };
+
+  static const Set<String> _appleSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.m4a',
+    '.aac',
+    '.aiff',
+    '.flac',
+    '.caf',
+  };
+
+  static const Set<String> _androidSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.m4a',
+    '.aac',
+    '.ogg',
+    '.flac',
+    '.opus',
+    '.amr',
+    '.mid',
+    '.midi',
+    '.3gp',
+  };
+
+  static const Set<String> _linuxSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.ogg',
+    '.flac',
+    '.opus',
+    '.m4a',
+    '.aac',
+  };
+
+  /// Get the set of supported audio formats for the current platform.
+  Set<String> _getSupportedAudioFormats() {
+    if (kIsWeb) {
+      // Web support varies by browser; allow common formats.
+      return <String>{'.mp3', '.wav', '.ogg', '.m4a', '.aac'};
+    }
+    if (Platform.isWindows) {
+      return _windowsSupportedFormats;
+    }
+    if (Platform.isIOS || Platform.isMacOS) {
+      return _appleSupportedFormats;
+    }
+    if (Platform.isAndroid) {
+      return _androidSupportedFormats;
+    }
+    if (Platform.isLinux) {
+      return _linuxSupportedFormats;
+    }
+    // Fallback: allow common formats.
+    return <String>{'.mp3', '.wav', '.m4a', '.aac', '.flac'};
+  }
+
+  /// Check if the audio format is supported on the current platform.
+  bool _isAudioFormatSupported(String extension) {
+    final String ext = extension.toLowerCase();
+    return _getSupportedAudioFormats().contains(ext);
+  }
+
   Future<void> _pickBackgroundMusicFile(
     BuildContext context,
     GeneralSettings generalSettings,
@@ -254,6 +331,27 @@ class GeneralSettingsPage extends StatelessWidget {
 
     final String picked = result.files.single.path!;
     final String originalName = p.basename(picked);
+    final String ext = p.extension(picked);
+
+    // Validate audio format support on current platform.
+    if (!_isAudioFormatSupported(ext)) {
+      if (!context.mounted) {
+        return;
+      }
+      final String supportedFormats = _getSupportedAudioFormats().join(', ');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            S
+                .of(context)
+                .error(
+                  'Format $ext is not supported. Supported: $supportedFormats',
+                ),
+          ),
+        ),
+      );
+      return;
+    }
 
     // Clean up old background music file before copying new one.
     await _deleteOldBackgroundMusicFile(
