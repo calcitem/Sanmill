@@ -21,8 +21,9 @@ class SoundManager {
   // Use a shared audio context so BGM and SFX can mix instead of interrupting
   // each other (some platforms will stop the current audio when audio focus or
   // the audio session is reconfigured).
-  static final AudioContext _mixWithOthersAudioContext =
-      AudioContextConfig(focus: AudioContextConfigFocus.mixWithOthers).build();
+  static final AudioContext _mixWithOthersAudioContext = AudioContextConfig(
+    focus: AudioContextConfigFocus.mixWithOthers,
+  ).build();
   static bool _isGlobalAudioContextConfigured = false;
 
   final Map<String, Map<Sound, String>> _soundFiles =
