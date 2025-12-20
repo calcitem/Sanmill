@@ -3,7 +3,6 @@
 
 // safe_text_editing_controller.dart
 
-import 'package:flutter/services.dart' show TextRange, TextSelection;
 import 'package:flutter/widgets.dart';
 
 /// A [TextEditingController] that guarantees its [value] never contains
@@ -12,7 +11,7 @@ import 'package:flutter/widgets.dart';
 /// This prevents Android from throwing `IndexOutOfBoundsException` when Flutter
 /// sends the editing state to the platform (e.g. `invalid selection start`).
 class SafeTextEditingController extends TextEditingController {
-  SafeTextEditingController({String? text}) : super(text: text) {
+  SafeTextEditingController({super.text}) {
     // The base constructor initializes with an invalid selection (-1).
     // Normalize it immediately so the first focused frame stays safe.
     value = sanitize(value);
@@ -54,8 +53,8 @@ class SafeTextEditingController extends TextEditingController {
     // ---- composing ----
     TextRange composing = value.composing;
     if (composing.isValid) {
-      int start = composing.start.clamp(0, length);
-      int end = composing.end.clamp(0, length);
+      final int start = composing.start.clamp(0, length);
+      final int end = composing.end.clamp(0, length);
       composing = start <= end
           ? TextRange(start: start, end: end)
           : TextRange.empty;
