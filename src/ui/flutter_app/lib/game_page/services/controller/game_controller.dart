@@ -835,6 +835,17 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
+    // Get localized strings before any async operations to ensure context is valid
+    if (!context.mounted) {
+      logger.w("$tag Context not mounted, returning skip.");
+      return const EngineResponseSkip();
+    }
+
+    final String aiStr = S.of(context).ai;
+    final String thinkingStr = S.of(context).thinking;
+    final String humanStr = S.of(context).human;
+    final String enteredFlyingPhaseStr = S.of(context).enteredFlyingPhase;
+
     // Ensure the engine is started and ready before searching.
     // This avoids startup/search concurrently consuming engine responses.
     await engine.startup();
@@ -843,10 +854,6 @@ class GameController {
 
     bool searched = false;
     bool loopIsFirst = true;
-
-    final String aiStr = S.of(context).ai;
-    final String thinkingStr = S.of(context).thinking;
-    final String humanStr = S.of(context).human;
 
     final GameMode gameMode = gameInstance.gameMode;
     final bool isGameRunning = position.winner == PieceColor.nobody;
@@ -918,7 +925,7 @@ class GameController {
               position.pieceOnBoardCount[position.sideToMove]! >= 3)) {
         rootScaffoldMessengerKey.currentState!.showSnackBar(
           CustomSnackBar(
-            S.of(context).enteredFlyingPhase,
+            enteredFlyingPhaseStr,
             duration: const Duration(seconds: 8),
           ),
         );
@@ -1080,7 +1087,8 @@ class GameController {
 
     // Cache localized strings before async operations to avoid BuildContext usage across async gaps
     final String strTimeout = S.of(context).timeout;
-    final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
+    final String strNoMove = S.of(context).noMove;
+    final String strNoBestMoveErr = S.of(context).error(strNoMove);
     final String strThinking = S.of(context).thinking;
 
     GameController().disableStats = true;
@@ -1149,8 +1157,9 @@ class GameController {
   }
 
   Future<void> gifShare(BuildContext context) async {
-    headerTipNotifier.showTip(S.of(context).pleaseWait);
+    final String pleaseWaitStr = S.of(context).pleaseWait;
     final String done = S.of(context).done;
+    headerTipNotifier.showTip(pleaseWaitStr);
     await GifShare().captureView();
     headerTipNotifier.showTip(done);
 
