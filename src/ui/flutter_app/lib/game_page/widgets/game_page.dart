@@ -79,15 +79,16 @@ class GamePage extends StatelessWidget {
     final GameController controller = GameController();
     controller.gameInstance.gameMode = gameMode;
     // Use a stateful inner widget to manage annotation mode state.
-    return _GamePageInner(controller: controller);
+    return _GamePageInner(controller: controller, gameMode: gameMode);
   }
 }
 
 /// Stateful widget that holds the internal state for annotation mode.
 class _GamePageInner extends StatefulWidget {
-  const _GamePageInner({required this.controller});
+  const _GamePageInner({required this.controller, required this.gameMode});
 
   final GameController controller;
+  final GameMode gameMode;
 
   @override
   State<_GamePageInner> createState() => _GamePageInnerState();
@@ -99,6 +100,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   bool _isAnnotationMode = false;
   late final AnnotationManager _annotationManager;
+
+  // Flag to ensure AI initialization happens only once per game page instance
+  bool _hasInitializedAi = false;
 
   @override
   void initState() {
@@ -357,6 +361,37 @@ class _GamePageInnerState extends State<_GamePageInner> {
     }
   }
 
+  /// Ensures game mode is properly set and AI is started if needed.
+  /// This is called once after the controller is ready.
+  void _initializeGameAfterControllerReady(BuildContext context) {
+    if (_hasInitializedAi) {
+      return;
+    }
+    _hasInitializedAi = true;
+
+    final GameController controller = widget.controller;
+
+    // Re-apply game mode to ensure players list is correctly set.
+    // This handles the case where GameController singleton was created
+    // before DB was fully initialized.
+    controller.gameInstance.gameMode = widget.gameMode;
+
+    // If AI should move first and the game is ready, start the AI.
+    // This handles both humanVsAi (AI first) and aiVsAi modes.
+    if (controller.gameInstance.isAiSideToMove &&
+        controller.position.phase != Phase.gameOver &&
+        controller.position.winner == PieceColor.nobody) {
+      // Use post-frame callback to avoid calling engineToGo during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted &&
+            controller.gameInstance.isAiSideToMove &&
+            !controller.isEngineRunning) {
+          controller.engineToGo(context, isMoveNow: false);
+        }
+      });
+    }
+  }
+
   // Builds the game board widget including orientation handling and layout constraints.
   Widget _buildGameBoard(BuildContext context, GameController controller) {
     return OrientationBuilder(
@@ -376,6 +411,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   // Optionally add a CircularProgressIndicator here
                 );
               }
+
+              // Initialize AI after controller is ready
+              _initializeGameAfterControllerReady(context);
 
               return Padding(
                 key: const Key('game_page_padding'),
