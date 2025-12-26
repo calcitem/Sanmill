@@ -3687,8 +3687,7 @@
     "aiChatCleared": "Chat history cleared",
     "@aiChatCleared": {
         "description": "Message shown after clearing chat history"
-    }
-  },
+    },
   "whiteWin": "Player 1 wins!",
   "@whiteWin": {
     "description": "Player 1 wins!"
