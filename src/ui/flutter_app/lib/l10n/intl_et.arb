@@ -2159,4 +2159,2037 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Konfigureeri mudel, keel ja käitumine",
     "@voiceAssistantSettingsDescription": {}
+  "@@locale": "et",
+  "appName": "Veskimäng",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Tere tulemast",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Jah",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Ei",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Mäng",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Inimene vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Inimene vs. Inimene",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI vs. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Inimene vs. pilv",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Inimene vs LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test LANi kaudu",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Liikumine",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Liikumise nimekiri",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Liigutuste nimekiri",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Puudub kirje",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Kinnita",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Tühista",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Valige vale tükk.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Asetage oma tükid.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Te ei saa seda siia paigutada.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Sa paigutasid.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Eemaldage tükk.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Te ei saa seda eemaldada.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Sa eemaldasid.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Liiguta tükk.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Sa ei saa oma tükki siia paigutada.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Sa ei saa oma mänguasja siia liigutada.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Veski! Võta oma vastasmängija tükk.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Jätka oma vastase tüki võtmist.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Vali üks oma vastase mängujoontest.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Te ei saa eemaldada mängujooni veskist.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Üks tükk võib liikuda 1 punktiga.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Sa ei saa liigutada oma vastase tükki.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Valige oma tükk, mida liigutada.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Sul on kolm tükki alles.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Sa võid liikuda ükskõik millisesse punkti.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} liikumiseks.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Mängija 1 võidab!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Mängija 2 võidab!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Võitis",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Kaotatud",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Mõtlemine…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Uus mäng",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Impordi mäng",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Ekspordi mäng",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Mäng imporditud.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Ei saa importida {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Liigutused ja reeglid ei vasta.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Palun oodake.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Käivitate praeguse mängu uuesti?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Restart",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Mäng algas, palun asetage.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analüüsides…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Viga: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Võitmise määr",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Tulemus:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Mängija 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Mängija 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} tükkide arv on väiksem kui kolm.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} loobuda.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player}-l pole enam teed.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Tahvel on täis ja {player}-l pole enam teed.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Aeg on möödas, {player} kadunud.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Liikumisfaasis ei ole viimase kindla arvu käikude jooksul ühtegi tükki eemaldatud.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "See on viik, sest laud on täis.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "See on viik, sest kolmekordne kordus.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Mängu lõpp! Teadmata põhjusel.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Mängu lõpp",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Te võitsite! Palju õnne!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Kas väljakutse raskem tase? Uueks tasemeks on {level} tase!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Sa kaotad!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analüüsi",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Umbes",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versioon: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Tänu",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Seaded",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Valikud",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "üldised seaded",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Raskuse tase",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI mõtlemisaeg",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Raskusaste",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Heliefektid",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Mängu helide esitamine",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Taustamuusika",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Esita kohalik helifail taustamuusikana",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Taustamuusika fail",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Eemalda taustamuusika",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Muusikafailid",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Tagasivõtmise ajal mute'i hoidmine",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Toon",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Esimene käik",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Inimene",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternatiiv",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automaatne mängu taaskäivitamine, kui mäng on lõppenud",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automaatne esimese käigu muutmine",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Juhuslik liikumine",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Mitmesugused",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Reeglid",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Iga mängija mängus olevate mängujoonte arv",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Mitu tükki on igal mängijal?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Lendava tüki arv",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Kui lendamine on lubatud, siis kui mängija arv on vähenenud teatavale arvule, võivad tema mängujooned vabalt liikuda mis tahes vabasse punkti, selle asemel, et olla piiratud naaberpunktidega, nagu ülejäänud mängus.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Vähemalt tükid",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonaaljooned",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Lisage lauale neli diagonaaljoont.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "Teine mängija liigub esimesena",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Mängija, kes liigub paigutusfaasis teisena, liigub liikumisfaasis esimesena.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Mitmekordne eemaldamine",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Kui mängija sulgeb korraga rohkem kui ühe veski, eemaldab ta nii mitu veskit, kui mitu veskit ta sulges.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Veskite hävitamine",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Vaikimisi peavad mängijad enne moodustatud veski eemaldamist esmalt eemaldama kõik teised tükid. Selle piirangu väljalülitamiseks lülitage see valik sisse.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Teine mängija kaotab, kui laud on täis",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kui laud on paigutusfaasi lõpus täis, kaotab mängu see pool, kes paigutab esimesena. Vastasel juhul on mäng võrdne.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Kaotab, kui seaduslikke käike ei ole",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Mängija kaotab, kui vastane blokeerib neid nii, et neid ei saa liigutada. Vahetage poole, kui see valik on keelatud.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Lendamine",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Kui mängijal on alles ainult kolm või neli (seadistatavat) mänguasja, võib ta liigutada mänguasja suvalisse vabasse punkti.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-liikumise reegel",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Mäng on loositud, kui kumbki mängija ei ole teatud arvu käikude jooksul eemaldanud ühtegi tükki.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Tagasipöördumine",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Palun valige",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopeeri",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Liigutuste ajalugu kopeeritakse lõikelauale.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Abi",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Tagasiside",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Väljumine",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Reeglite seaded",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Värv",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Tahvli värvus",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Tüki värvus",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Taustavärv",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Laua joone värvus",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Mängija 1 tüki värv",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Mängija 2 tüki värvus",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Sõnumi värv",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Näita käes olevate tükikeste arvu",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Näita märkmeid laual",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Näita ajaloo navigeerimise tööriistariba",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Näita",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Laua piiride laius",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Laua sisemise joone laius",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Tüki laius",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Kirjasõna suurus",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD märkimine",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Taastada",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Taastada vaikimisi seaded",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Valige {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Vihje",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "mängija",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Mängija 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Mängija 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Kuidas mängida",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Puudutage ükskõik millist olemasolevat punkti, et paigutada tükk.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Puudutage kujukest, et seda liigutada.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Puudutage tükiga seotud punkti, et seda liigutada.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Puudutage vastase ühte tükki, et seda eemaldada.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Sa pead esmalt looma veski, enne kui saad tüki eemaldada.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Sa pead mängima oma tükkidega.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Mängud kokku",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Tulemused",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "vasakule",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Privaatsuspoliitika",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Palun lugege hoolikalt ja veenduge, et olete sellest täielikult aru saanud ja sellega nõus ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Kui te ei nõustu selle poliitikaga, ärge kasutage seda rakendust. Rakenduse kasutamine tähendab, et nõustute nende tingimustega.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " ja ",
+  "@and": {},
+  "accept": "Nõustun",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Võtke tagasi",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Tagasi võtmine…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Ootamine…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Samm edasi",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Võtke kõik tagasi",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Samm edasi kõik",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Liigu nüüd",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Valmis.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-veski",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Kui mängijal on ainult tükid veskites, ei lukustu veskites olevad tükid eemaldamiseks.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animatsiooni kestus",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Puudub",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Teema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Mängu eesmärk on jätta vastasele vähem kui kolm tükki või mitte ühtegi seaduslikku käiku.\n\nMängus tehakse automaatselt viik, kui positsioon tekib kolmandat korda või ei eemaldata viimase 100 (konfigureeritava) käigu jooksul.\n\nMäng kulgeb kolmes etapis:\n\n1. Mängijate paigutamine vabadele punktidele\n2. Mänguosade liigutamine naaberpunktidesse.\n3. (valikuline etapp) Mängijate arvu vähendamisel kolmele mängujoonele mängujoonte liigutamine mis tahes vabale punktile.\n\npaigutamine.\n\nMäng algab tühja lauaga, mis koosneb kahekümne nelja punktiga ruudustikust. Mängijad paigutavad kordamööda oma mänguasju vabadele punktidele, kuni iga mängija on paigutanud kõik mänguasjad lauale. Kui mängija suudab panna kolm oma tükki otse, on tal \"veski\" ja ta võib ühe oma vastasmängija tükki laualt eemaldada.\n\nMõnede reeglite kohaselt peavad mängijad enne moodustatud veski eemaldamist esmalt eemaldama kõik teised tükid.\n\nMõne reegli puhul ei saa paigutusfaasis eemaldatud tükke uuesti punktidesse paigutada.\n\nKui kasutada kõik tükid, liiguvad mängijad kordamööda.\n\nLiikumine\n\nLiigutamiseks liigutab mängija ühe oma mänguasja piki lauajooni vabasse naaberpunkti. Kui ta ei saa seda teha, on ta mängu kaotanud. Nagu ka asetamisfaasis, on mängijal, kes paigutab kolm oma mänguasja lauajoonele, veski ja ta võib eemaldada ühe oma vastasmängija mänguasja. Iga mängija, kes vähendab oma mängujoonte arvu kahele tükile, ei saa moodustada uusi veskeid ja kaotab seega mängu. Mängija võib kaotada ka siis, kui rohkem kui kolm tükki, kui vastane blokeerib nende liikumise.\n\nLendavad\n\nMõne reegli variandi puhul võivad mängija, kui tal on alles jäänud ainult kolm tükki, tema tükid lennata, hüpata või hüpata mis tahes vabadesse punktidesse, mitte ainult kõrvuti asuvatesse punktidesse.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versiooni info",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Litsents",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Lähtekood",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Rakenduse versioon",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Üldine",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Täiustatud",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Paigutamine",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Liikumine",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Eemaldamine",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Mängu lõpptingimus",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI mängustiil",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Passiivne",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Aeg maha",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Välimus",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Toetudes inimkogemusele",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Arvestage osade liikuvust",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Tükkide arv:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} käes: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} pardal: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Laua nihkumine ülevalt alla",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "See ei ole AI kord.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI ei mõtle.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Olete käikude nimekirja lõpus.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Koputage uuesti tagasi, et lahkuda.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Rohkem",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Tegemist on eksperimentaalse funktsiooniga.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimendid",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Avatud lähtekoodiga litsentsid",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Keel",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Vaikimisi keel",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Tükid võivad liikuda paigutamise faasis",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Puuduvad eraldi paigutus- ja liikumisfaasid, st mängijad võivad igal käigul otsustada, kas nad soovivad paigutada mängulauale ühe mängukivi või liigutada ühte oma mängukivi (niikaua kui neil on allesjäänud mängukivid, mida paigutada).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menüü värv",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menüü teksti värv",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Izvēlnes izcelšanas vienuma krāsa",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Galvenās rīkjoslas fona krāsa",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Galvenās rīkjoslas ikonas krāsa",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Navigācijas rīkjoslas fona krāsa",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Navigācijas rīkjoslas ikonas krāsa",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Automātiski paslēpt rīkjoslu",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Rīkjoslas atrašanās vieta ekrānā",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Tops",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Apakšā",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Centrs",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Vienkrāsaina",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Bilde",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Izvēlieties savu attēlu",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Gaisma",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Tumšs",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Tēmas",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Pašreizējā tēma",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Saglabāt motīvu",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Rādīt analīzes grafiku",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analīze",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Saglabā spēli",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Ielādēt spēli",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Iestatīšanas pozīcija",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Rādīt likumīgus gājienus",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Rādīt pēdējo kustību",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Rādīt bultiņas",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Gabali",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Rādīt analīzi",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Vītnes",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Iesaistīties",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Palīdziet uzlabot tulkošanu",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Apmācība",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Κλασικό μύλο",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Μικτός Μύλος",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Μύλος Κεϋλάνης",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Dzirnavas var būt salauztas un atkārtoti pārtaisītas",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kad spēlētājs ir nonācis līdz trim figūrām un neviens spēlētājs nevar noņemt pretinieka gabalu desmit gājienu laikā, spēle ir neizšķirta.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Sulge",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Valge tükk",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Must tükk",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Tühi punkt",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Pole mõtet",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Asetamise faas",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Liikuv faas",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Lendav faas",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Liigutatav külg: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Viimane käik: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Valitud",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Juurdepääsetavus",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Ekraanilugeja tugi",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "See on viik!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Joonista",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Tükk esiletõstetud värv",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Endgame N-Move reegel",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Kui kummalgi mängijal on ainult kolm tükki ja kumbki mängija ei eemalda tükki kindla käigu jooksul, loositakse mäng välja.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Mõlemal mängijal on ainult kolm tükki ja kumbki mängija ei eemalda tükki kindla käigu jooksul.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Kolmekordne kordamise reegel",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Mäng loositakse, kui positsioon tekib kolmandat korda.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Veski! Jätkake käigu tegemist.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Punkti stiil",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Punkti laius",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Tahke",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Õõnes",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Eesti",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Teisalda}other{{count} Liigutused}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "Laadimine ebaõnnestus.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Faili nimi",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Mängu failid",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "browse": "Sirvi…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Mäng salvestatakse asukohta",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "cannotPaste": "Ei saa kleepida.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "noPiecesCanBeRemoved": "Ühtegi tükki ei saa eemaldada.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "Paigutatud tükkide arv paigutusfaasis.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "Tühi",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Ei mingit liigutust.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Puhas",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "Algasend taastatud.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Koristatud.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Eemalda",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Paigut. ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} tükki}} tuleb eemaldada.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Praegune mängija on asetanud {count} nuppe.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ei pane faasi, ei saa seda muuta.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Kleebi",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta on valmis.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Näita asetamata ja eemaldatud tükke",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Väljuge ja avage rakendus uuesti, et seaded jõustuksid.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Täisekraan",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "forest": "Mets",
+  "@forest": {},
+  "desktopImage": "Töölaua pilt",
+  "@desktopImage": {},
+  "invalidPosition": "Kehtetu positsioon.",
+  "@invalidPosition": {},
+  "shareGIF": "Jagage GIF-i",
+  "@shareGIF": {},
+  "duration": "Kestus",
+  "@duration": {},
+  "pixelRatio": "Pikslite suhe",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Mängu ekraani salvestaja",
+  "@gameScreenRecorder": {},
+  "previous": "Eelmine",
+  "@previous": {},
+  "next": "Edasi",
+  "@next": {},
+  "skip": "Vahele jätma",
+  "@skip": {},
+  "gotIt": "Sain aru",
+  "@gotIt": {},
+  "youCanModifyRules": "Mängu reegleid saate muuta reeglite seadetes.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Väärtuse muutmiseks valijas saate kasutada hiire ratast.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Kui mõtlemisaeg on seatud väärtusele 0, siis mõtlemisel pole ajalimiiti.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Pange tähele, et AI mõtlemisaja reguleerimine ei pruugi olla täiesti täpne. Tegelik mõtlemisaeg võib olla lühem, kui raskusaste on seatud madalamale väärtusele, ja võib olla pikem, kui AI on keskmise mõtteviisiga, kui aeg otsa saab.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Kui seate raskusastme kõrgeks, kuid ei suurenda tehisintellekti mõtlemisaega, võib tegelik raskusaste piirduda mõtlemisaja piirangu tõttu madalama väärtusega. Tegelik väärtus võib olenevalt masina jõudlusest erineda.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) on otsingualgoritm, mis võimaldab leida antud positsioonil parima käigu. See on alfa-beeta-algoritmi täiustus ja kasutab null- või nullaknaotsingut, et kinnitada, kas käik on halvem või mitte halvem kui peamise variatsiooni juba ohutu skoor. PVS keskendub kõige paljutõotavamatele käikudele ja väldib ebavajalikke otsinguid suboptimaalsetest harudest, mis aitab parandada otsingu efektiivsust.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beeta algoritm on otsingualgoritm parima käigu leidmiseks. See kasutab otsingupuu kärpimiseks ja tõhususe suurendamiseks minimaxi põhimõtet ja kahte väärtust, alfa ja beeta. Alfa esindab minimaalset punktisummat, milleni arvuti on kindel, et ta saab, samas kui beeta esindab maksimaalset punktisummat, mille vastane võib saada. Algoritm aitab arvutil teha mängus nutikaid ja tõhusaid otsuseid.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Selles mängus on teisel mängijal lihtsam võita võrreldes esimese mängijaga.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Inimkogemuse järgi, kui üritad võita, siis kaotad. Selle asemel seadke oma eesmärgiks viik ja vältige mängu kaotamist. Jälgige oma vastast ja meelitage ta õrnalt asendisse, kus nad võivad vigu teha. Kui nad näitavad nõrkust, kasutage võimalust ja suruge õrnalt võidu poole. Sel viisil võite mängu võita.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Suvandi Passiivne lubamine paneb tehisintellekti lõõgastuma, kui tal on positsioonil eelis, selle asemel, et püüda agressiivselt võita võimalikult kiiresti.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Kui tehisintellekt arvestab oma nuppude liikuvust, ei ole selle eesmärk mitte ainult vastase nuppude võimalikult kiire tabamine, vaid kaalub ka vastase liikumiste blokeerimist ja takistamist neil sama tegemast.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Selle valiku lubamine suurendab mängu juhuslikkust ja lõbusust, samas kui selle keelamine võib aidata uurida viise, kuidas AI-d ületada.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "Kui laud on täis",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Paigutamisfaasi lõpus, enne liikumisfaasi algust, järgneb tegevus, kui laud on tükke täis.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Mängija, kes liigub liikumise faasis esimesena, eemaldab ühe vastase nupu.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Mõlemad pooled nõustuvad viigiga.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Võtke üks vastase nuppe.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Esimene mängija kaotab mängu.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Esimene ja teine mängija eemaldavad ühe vastase nupu.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Teine ja esimene mängija eemaldavad ühe vastase nupu.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Nüüd lendamisfaasi sisenedes võivad vastase nupud hüpata suvalisse tühja punkti laual. Lennureegli saate välja lülitada jaotises \"Reegli seaded\".",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kui ummikseisus",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Mis toiming järgneb, kui ühtegi tükki ei saa liigutada?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Lõpeta ummikkaotusega.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Muutke liikumiseks külge.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Eemaldage üks vastase nuppudest ja tehke järgmine käik.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Lõpeta ummikseisuga.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Eemaldage üks vastase nupp ja muutke liikumiseks külge.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI reageerimise viivitusaeg",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI on praegu viivitatud reageerimise faasis. Enne jätkamist oodake veidi.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Te ei saa eemaldada mittekülgnevat tükki.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Kui ummikseisus on, saab sinu omadega külgnevad vastase nupud eemaldada, olenemata veski moodustamisest.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS on algajasõbralik algoritm, mis teeb otsuseid simulatsioonide abil erinevaid käike uurides ja hinnates.",
+  "@whatIsMcts": {},
+  "goldenJade": "Kuldne Jade",
+  "@goldenJade": {},
+  "forestWood": "Metsa puit",
+  "@forestWood": {},
+  "greenMeadow": "Roheline heinamaa",
+  "@greenMeadow": {},
+  "stonyPath": "Kivi tee",
+  "@stonyPath": {},
+  "midnightBlue": "Kesköösinine",
+  "@midnightBlue": {},
+  "greenForest": "Roheline mets",
+  "@greenForest": {},
+  "pastelPink": "Pastelne roosa",
+  "@pastelPink": {},
+  "turquoiseSea": "Türkiissinine meri",
+  "@turquoiseSea": {},
+  "violetDream": "Violetne unistus",
+  "@violetDream": {},
+  "mintChocolate": "Mündi šokolaad",
+  "@mintChocolate": {},
+  "skyBlue": "Taevasinine",
+  "@skyBlue": {},
+  "playfulGarden": "Mänguline aed",
+  "@playfulGarden": {},
+  "darkMystery": "Tume müsteerium",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Retrograadse analüüsi algoritm kasutab mitme väärtusega retrograadset analüüsi, et luua erinevatest alguspositsioonidest lõppmängu andmebaas, seejärel rakendab see andmebaas mängu optimeerimiseks. See lähenemisviis kuulub ülitugevate lahenduste kategooriasse.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Kas soovite vaadata selle algoritmi kasutusjuhendit?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Näita positsioonieelise indikaatorit",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Kasutage täiuslikku andmebaasi",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Lubage see suvand, et kasutada tipptasemel algoritmide abil loodud veatut mängude andmebaasi. See funktsioon integreerib nii mängu ava- kui ka lõpustrateegiad, et soovitada optimaalseid käike. See on eelistatud valik mängijatele, kes otsivad mängus kõrgeimat täpsust. Põhjalike arvutustehnikate abil loodud andmebaas on loodud pakkuma peaaegu täiuslikke mängulahendusi.\n\nMärkus. Kui AI-l ei õnnestu andmebaasile juurde pääseda, kasutab see mänguotsuste tegemiseks tavalisi algoritme. Kui andmebaas on saadaval, muutub raskusaste peaaegu ületamatuks ja AI mõtlemisaeg väheneb drastiliselt. Paljud AI's play style'i valikute sätted tühistatakse, kuna andmebaasi tulemused on kõige olulisemad.\n\nJuhiste saamiseks selle veatu andmebaasi maksimaalse kasutamise kohta klõpsake siin.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Taustapilt",
+  "@backgroundImage": {},
+  "whatIsRandom": "Kui suvand \"Kasuta täiuslikku andmebaasi\" pole lubatud, paneb seade \"Juhuslik\" AI-l tükke juhuslikult liigutama, kasutamata käiguvalikuks mingeid algoritme. Selle tulemuseks on tavaliselt oluliselt nõrgem mäng. Ja vastupidi, kui „Kasuta täiuslikku andmebaasi” on lubatud, tugineb AI otsuste tegemisel eranditult „Täiuslikule andmebaasile”, selle asemel, et seda traditsiooniliste AI-algoritmidega segada. Selles režiimis põhinevad AI käigud täielikult andmebaasi sisul, vältides reaalajas arvutusi või otsingualgoritme.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Eemalda vastase käest nupp (nupud); siis on vastase kord paigutada.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Paigutusfaasis veskite moodustamisel",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Eemalda vastase nupp (nupud) laualt.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Eemalda vastase nupp (nupud) laualt; siis on vastase kord paigutada.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Vastane eemaldab enda nupu (nupud) laualt.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Selle asemel, et sina midagi ette võtaksid, valib vastane oma nupu (nupud) tahvlilt ja eemaldab selle, tehes sisuliselt endale kahjuliku käigu.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Eemalda vastase käest nupp (nupud); siis on sinu kord käia.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Eemalda nupp (nupud) vastase käest. Kui vastavalt Multi-remove seadele tuleb eemaldada mitu nuppu ja vastasel pole enam käes nuppe, jätka vastase nuppude eemaldamist laualt. Siis on sinu kord käia. Kui jätkad veskite moodustamist, võid jätkata vastase nuppude eemaldamist.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Eemalda nupp (nupud) vastase käest. Kui vastavalt Multi-remove seadele tuleb eemaldada mitu nuppu ja vastasel pole enam käes nuppe, jätka vastase nuppude eemaldamist laualt. Siis on vastase kord käia.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Märgi ja viivita nuppude eemaldamisega.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Paigutusfaasi ajal märgitakse eemaldatavad nupud ära ja mõlemad mängijad ei saa nendele punktidele uusi nuppe paigutada. Liikumisfaasi sisenedes eemaldatakse need märgitud nupud täielikult ja seejärel saavad mängijad oma nuppe nendele nüüd tühjadele punktidele liigutada.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Tegevused, mida saab võtta veskite moodustamisel paigutamise faasis.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Märgitud",
+  "@marked": {},
+  "menu": "Menüü",
+  "@menu": {},
+  "monochrome": "Monokroomne",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Ekraanilugeja tuge saate sisse lülitada Üldseadete all Otsipääsetavuse seadetes.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Näita numbreid nuppudel",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Salvesta pilt",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Kuva analüüsiriistariba",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analüüsiriistariba taustavärv",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analüüsiriistariba ikooni värv",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformeeritud.",
+  "@transformed": {},
+  "cannotTransform": "Ei saa transformeerida.",
+  "@cannotTransform": {},
+  "rotate": "Pööra",
+  "@rotate": {},
+  "horizontalFlip": "H Pööre",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Pööre",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Pööre",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Läbipaistev Lõuend",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Piira korduvat veskite moodustamist",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Nupp, mis on liigutatud ühest veskist teise, ei saa järgmisel käigul kohe algpunkti tagasi minna, et uuesti veskit moodustada. Esiteks on vajalik teistsugune liigutus.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Ühekordne kasutus veski",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Iga veski saab eemaldada ainult ühe vastase tüki. Saate selle uuesti kujundada, kuid seda ei saa kasutada täiendavate eemaldamiste jaoks.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Praegustel seadistatud reeglitel puudub vastav ideaalne andmebaas. Täiusliku andmebaasi kohta lisateabe saamiseks klõpsake siin.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Keskendu teede blokeerimisele",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioriteerige vastase liikumise takistamist, mitte veskite moodustamist. Selle asemel, et keskenduda veskite täitmisega tükkide eemaldamisele, püüab tehisintellekt vastast lõksu püüda, takistades neil liikumist ja tagades võidu kurnamise, mitte agressiivse mänguga. See strateegia ei blokeeri aktiivselt vastase veskeid.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Maletüki pilt",
+  "@pieceImage": {},
+  "importColorSettings": "Impordi värviseaded",
+  "@importColorSettings": {},
+  "exportColorSettings": "Ekspordi värviseaded",
+  "@exportColorSettings": {},
+  "import": "Impordi",
+  "@import": {},
+  "export": "Ekspordi",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Palun kopeerige kõigepealt JSON-vormingu sätted lõikelauale.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopeeritud lõikelauale.",
+  "@copiedToClipboard": {},
+  "imported": "Imporditud.",
+  "@imported": {},
+  "boardImage": "Laua pilt",
+  "@boardImage": {},
+  "autumnLeaves": "Sügise lehed",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendaarne Maa",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinjett-efekt",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Kas soovite tööriistariba täiesti läbipaistvaks muuta, kui laudade taustapilt on seatud?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Luba vibratsioon mängus",
+  "@vibration": {},
+  "soundTheme": "Heliteema",
+  "@soundTheme": {},
+  "ball": "Pall",
+  "@ball": {},
+  "liquid": "Vedelik",
+  "@liquid": {},
+  "wood": "Puit",
+  "@wood": {},
+  "placeEffectAnimation": "Nupu paigutamise animatsiooni efekt",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Nupu eemaldamise animatsiooni efekt",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Kuva tööriistariba all",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Laua nurga raadius",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Kasuta avamisraamatut",
+  "@useOpeningBook": {},
+  "currentRule": "Praegune",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Reeglistik",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Lubage AI-l kasutada avakäike, mida kasutavad tavaliselt professionaalsed inimmängijad varajases mängus. Märkus: See funktsioon on hetkel saadaval ainult teatud reeglistike jaoks.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Kuva eelise graafik",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Eelisgraafik joonistatakse ainult pärast seda, kui tehisintellekt on käigu teinud. Seda ei joonistata, kui käigu teeb inimmängija.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Keela eemaldamine, kuni kõik nupud on paigutatud. Mängijad eemaldavad nuppe vastavalt veskite arvule.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Keela eemaldamine, kuni kõik nupud on paigutatud. Mängijad eemaldavad nuppe vastavalt veskite arvule: kui arv on võrdne, eemaldavad mõlemad sama palju; kui ühel on rohkem, eemaldab ta ühe nupu lisaks, hoides vahet ühe nupu jagu. Kui veski moodustab ainult üks mängija, eemaldab ta kaks nuppu, teine aga ühe. Kui kumbki ei moodusta veskit, eemaldavad mõlemad ühe nupu.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Vali üks oma nuppudest.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Pole sinu käik.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Kommentaaritööriista taustavärv",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Kommentaaritööriista ikoonivärv",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Kuva kommentaaritööriist",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Lülitu kommentaarirežiimi",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Kas oled kindel, et soovid kõik kommentaarid kustutada?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM päring kopeeritud lõikelauale.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Ühendus keelduti, server võib olla maas.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Avastamine õnnestus, ootab ühendust...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Ühtegi LAN-ühendust pole.",
+  "@noLanConnection": {},
+  "takeScreenshot": "Võta ekraanipilt",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Ühendus vastasega katkestatud.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Tagasivõtmise taotlus",
+  "@takeBackRequest": {},
+  "nothingToShow": "Pole midagi näidata.",
+  "@nothingToShow": {},
+  "stopHosting": "Peata hostimine",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Ühendus lähtestati teise osapoole poolt.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Ühendus kadus heartbeat aja ületuse tõttu. Palun ühendu uuesti.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Alusta hostimist",
+  "@startHosting": {},
+  "restartRequestRejected": "Taaskäivitamise taotlus lükati tagasi.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Ei ole ühendatud LAN-vastasega.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM päring",
+  "@llmPrompt": {},
+  "gameRestarted": "Mäng taaskäivitatud.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Tagasivõtmist lükati tagasi.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Kas oled kindel, et soovid sellest mängust loobuda?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Vastane loobus. Sa võidad!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Kustuta kõik kommentaarid",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Ühendatud, ootab vastase käiku...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Võrguseisund: Ühendus puudub",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Tagasivõtmise taotlus saadetud vastasele.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Vastane võib olla mängust lahkunud.",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Ühendus hostiga õnnestus.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Ühendus kadus: heartbeat aegumisaeg.",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Hosti ei leitud.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Kinnita loobumine",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Mängu hostimine alustatud, ootab mängijate liitumist...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Ühendus aegus, võrguühendus on ebastabiilne.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "LLM päringut pole saadaval.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Loobusid. Mäng läbi.",
+  "@youResignedGameOver": {},
+  "serverIp": "Serveri IP",
+  "@serverIp": {},
+  "confirmClear": "Kinnita kustutamine",
+  "@confirmClear": {},
+  "opponentSTurn": "Vastase käik.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Ootab kliendi ühendust...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Tagasivõtmise taotlus lükati tagasi või see ebaõnnestus.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Lisa tekst",
+  "@addText": {},
+  "exitAnnotationMode": "Välju kommentaarirežiimist",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Kirjuta oma kommentaar",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Üritab uuesti ühendada...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Taaskäivitamise taotlus saadetud. Ootab vastase vastust...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server on peatatud.",
+  "@serverIsStopped": {},
+  "restartRequest": "Taaskäivitamise taotlus",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Tagasivõtmise taotlust ei saa esitada, kui pole sinu käik.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Tagasivõtmine aktsepteeritud.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Kohaliku võrgu seaded",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Ühendus taastati edukalt!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Pildi salvestamine galerii ebaõnnestus.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Vastane palus mängu taaskäivitamist. Kas nõustud?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Sinu käik.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Ühendust ei õnnestunud taastada, palun alusta mäng uuesti.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Liitu",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Vigane IP-aadress.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Vigane port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Ühendamine: katse {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Ühendamine ebaõnnestus: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Hostimise alustamine ebaõnnestus: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host leitud: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Peata",
+  "@stop": {},
+  "discover": "Avasta",
+  "@discover": {},
+  "connect": "Ühenda",
+  "@connect": {},
+  "clientConnected": "Klient ühendas: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Avastamine: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Üritab uuesti ühendada ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Ühendatud",
+  "@connected": {},
+  "delete": "Kustuta",
+  "@delete": {},
+  "ancientEgypt": "Vana-Egiptus",
+  "@ancientEgypt": {},
+  "gothicIce": "Gooti Jää",
+  "@gothicIce": {},
+  "riceField": "Riisipõld",
+  "@riceField": {},
+  "chinesePorcelain": "Hiina Portselan",
+  "@chinesePorcelain": {},
+  "desertDusk": "Kõrbe Hämarik",
+  "@desertDusk": {},
+  "precisionCraft": "Täpsus Käsitöö",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Rahvakirjandus",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpaatide Pärand",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Keiserlik Suursugusus",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Böömimaa Kristall",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanni Päikesetõus",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmoonia Tasakaal",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Kaneeli Vürts",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatoolia Mosaiik",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnevali Vaim",
+  "@carnivalSpirit": {},
+  "custom": "Kohandatud",
+  "@custom": {},
+  "spiceMarket": "Vürtsiturg",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Pühkige, et avada sahtel",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Kuva mänguteave ekraanipiltidel",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Inimkäigu ajalimiit",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Inimkäikudel ajalimiiti pole",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Inimmängija puhul rakendatakse ajaületamise kaotust",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Mängulaua tuvastamine...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Saate sisestada mis tahes mudeli nime.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Laua asukoht rakendatud. FEN on lõikelauale kopeeritud.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Soovitus: proovige teha mängulauast selgemat pilti.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM-päringu mall",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Kehtivat mängulauda ei tuvastatud.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Valin pilti albumist...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Päringu malli seadistamine",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Redigeeri päringu malli LLM-analüüsiks",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "FEN-i genereerimine tuvastatud mängulauast nurjus.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Väljund praeguses keeles",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Levinud Base URL-id",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Vaata levinud mudeleid",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Tuvastamisparameetrid uuendatud.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Valge käik",
+  "@whiteSMove": {},
+  "resetToDefaults": "Lähtesta vaikeväärtustele",
+  "@resetToDefaults": {},
+  "photoShoot": "Pildistamine",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Tuvastatud mängulaua asukohta ei õnnestunud rakendada.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM päringu sisu",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM pole seadistatud. Palun kontrollige oma sätteid.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Määra teenusepakkuja, mudel, API Key ja Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM konfiguratsioon",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Seadista LLM-pakkuja",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM päringu malli päis",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Ühtegi nuppu pildil ei tuvastatud. Palun proovige uuesti.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Tuvasta mängulaud pildilt",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Vaata näpunäiteid",
+  "@viewTips": {},
+  "applyToBoard": "Rakenda mängulauale",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Kohanda mängulaua piirkonda",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Vaata levinud URL-e",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Värvianalüüs nurjus!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Analüüsin mängulaua pilti...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Vali albumist",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Mängulaua punkti ei tuvastatud!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Kui jätta tühjaks, kasutatakse vaikemalli",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM konfiguratsioon",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Kas olete kindel, et soovite päringumallid lähtestada vaikeväärtustele?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM päringu malli jalus",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Laen vastust...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Rakenda see tulemus mängulauale",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Pildistamine...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Palun valige mängulaua pilt tuvastamiseks",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Tuvastamise tulemused",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Analüüsi käike ja anna ülevaade.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Hangi API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Tervet tuvastusprotsessi ei õnnestunud lõpule viia.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Mängulaua tuvastamise tulemus",
+  "@boardRecognitionResult": {},
+  "askLlm": "Küsi LLM-ilt",
+  "@askLlm": {},
+  "boardDetectionFailed": "Mängulaua tuvastamine nurjus!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Mängulaua punkti ei tuvastatud, nuppu ei saa tuvastada!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Kopeeri FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Levinud mudelid",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (valikuline)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Ühtegi pilti valitud pole.",
+  "@noImageSelected": {},
+  "blackSMove": "Musta käik",
+  "@blackSMove": {},
+  "llm": "Suur keelemudel",
+  "@llm": {},
+  "llmProvider": "Pakkuja",
+  "@llmProvider": {},
+  "baseUrl": "Baas-URL",
+  "@baseUrl": {},
+  "model": "Mudel",
+  "@model": {},
+  "temperature": "Temperatuur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Käsk kätte saadud! AI töötleb...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Sügav mõtlemine käib, palun oota...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Peatselt esitletakse...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Tuvastusparameetrid",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Kohanda parameetreid, et parandada tuvastuse täpsust",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Salvesta parameetrid",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Pildi tuvastust ei saa käivitada: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Pildituvastus ebaõnnestus: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Rakendatud seisuga {whiteCount} valget ja {blackCount} musta nuppu",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopeeriti lõikelauale)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Tuvastus ebaõnnestus: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Minu reiting",
+  "@myRating": {},
+  "gamesPlayed": "Mängitud mängud",
+  "@gamesPlayed": {},
+  "wins": "Võidud",
+  "@wins": {},
+  "losses": "Kaotused",
+  "@losses": {},
+  "draws": "Viigid",
+  "@draws": {},
+  "lastUpdated": "Viimati uuendatud",
+  "@lastUpdated": {},
+  "format": "Formaat:",
+  "@format": {},
+  "resetStatistics": "Lähtesta statistika",
+  "@resetStatistics": {},
+  "drawRate": "Viikide määr",
+  "@drawRate": {},
+  "lossRate": "Kaotuste määr",
+  "@lossRate": {},
+  "aiStatistics": "Tehisintellekti statistika",
+  "@aiStatistics": {},
+  "enableStatistics": "Luba statistika",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kui see on lubatud, salvestatakse mängutulemused statistikasse. Tagasivõtmisi sisaldavaid mänge aga ei salvestata. Kui see on keelatud, peatatakse statistika kogumine.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "See lähtestab kogu mängustatistika. Seda toimingut ei saa tagasi võtta.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Laua sisemise rõnga suurus",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Laua vari",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Lõksude tuvastamine",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Tõsta analüüsi ajal lõksukäigud esile paksude ringide ja nooltega.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Lõks on olemas. Lõksukäigud: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Külgnev tabamine",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Lisage üks teie vastase tükki kahe teie vahel sirgjooneliselt, et see jäädvustada.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Luba külgneval jäädvustamisel",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Sekkumisvõitlus",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Liikuge tühja punkti kahe oma vastase tüki vahel, et neid mõlemad jäädvustada.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Luba sekkumise püüdmine",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Hüppamine",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Jäädvustage, hüpates üle külgneva vastase tüki tühja punkti kaugemale.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Luba hüppe jäädvustamine",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Kohaldatavad read",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Mööda väljaku servi",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Mööda ruudu ületavaid ortogonaalseid jooni",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Mööda ruudu ületavat diagonaaljooni",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Täitmisfaasid",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Saadavus liikuva etapi ajal, mis põhineb ülejäänud tükkidel",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Piiranguid pole",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Saadaval, kui teil on kolm või vähem tükki",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

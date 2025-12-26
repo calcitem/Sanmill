@@ -2159,4 +2159,1863 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Lungisa imodeli, ulimi nokuziphatha",
     "@voiceAssistantSettingsDescription": {}
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Umdlali ongu-1 uyawina!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Umdlali 2 uyawina!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Iwinile",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Ilahlekile",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Iyacabanga…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Umdlalo omusha",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Ngenisa umdlalo",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Thekelisa umdlalo",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Umdlalo ungenisiwe.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Ayikwazi ukungenisa {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Ukunyakaza nemithetho akufani.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Ngicela ulinde.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Qala kabusha igeyimu yamanje?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Qala kabusha",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Umdlalo uqalile, sicela ubeke.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Iyahlaziya…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Iphutha: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "Win Rate",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Umphumela:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Umdlali 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "loseReasonlessThanThree": "{player} isibalo socezu singaphansi kokuthathu.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player} ushiye phansi umsebenzi.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} ayinayo indlela yokuhamba.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "Ibhodi ligcwele, futhi i-{player} ayinayo indlela yokuhamba.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "Isikhathi siphelile, i-{player} ilahlekile.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "Esigabeni esinyakazayo, akukho siqeshana esisusiwe enanini elithile lokugcina leminyakazo.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Kuyi-Draw ngoba ibhodi ligcwele.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "I-Draw ngenxa yokuphindaphinda okuphindwe kathathu.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Umdlalo uphelile! Isizathu esingaziwa.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "youWin": "Uwinile! Siyakuhalalisela!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Inselele ileveli enzima? Ileveli entsha izoba ileveli {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Uyehlulwa!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Hlaziya",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Mayelana",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Inguqulo: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "Ngiyabonga",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Izilungiselelo",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Izinketho",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Amasethingi",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Izinga lobunzima",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Isikhathi sokucabanga se-AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Ubunzima",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Imiphumela yomsindo",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Dlala imisindo emdlalweni",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Umculo wangemuva",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Dlala ifayela lomsindo lendawo njengomculo wangemuva",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Ifayela lomculo wangemuva",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Susa umculo wangemuva",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Amafayela omculo",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Gcina uthule uma ubuyisela emuva",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ithoni",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Umnyakazo wokuqala",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Umuntu",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "I-AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Okunye",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Qala kabusha ngokuzenzakalelayo umdlalo lapho umdlalo usuphelile",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Shintsha Okuzenzakalelayo Ukuhambisa Kokuqala",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "misc": "Okunhlobonhlobo",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Imithetho",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Inombolo yezingcezu umdlali ngamunye anazo",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "flyPieceCount": "Inombolo yesiqephu esindizayo",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Uma i-Flying inikwe amandla, uma umdlali encishiselwa esibalweni sesiqephu esithile, izingcezu zakhe zikhululekile ukuya kunoma iyiphi indawo engahlali muntu esikhundleni sokukhawulelwa kumaphoyinti aseduze njengakuyo yonke igeyimu.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Izingcezu Okungenani",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "isDefenderMoveFirst": "Umdlali wesibili uhamba phambili",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Umdlali ohamba okwesibili esigabeni sokubeka uhamba kuqala esigabeni esinyakazayo.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Ukukhipha okuningi",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Uma umdlali evala izigayo ezingaphezu kwesisodwa ngesikhathi esisodwa, uzosusa inombolo yezigayo azivalile.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Bhubhisa izigayo",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Ngokuzenzakalelayo, abadlali kufanele basuse noma yiziphi ezinye izingcezu kuqala ngaphambi kokukhipha ucezu emshinini wokugaya owenziwe. Nika amandla le nketho ukuze ukhubaze umkhawulo.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Umdlali wesibili uyalahlekelwa uma ibhodi seligcwele",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Lapho ibhodi ligcwele ekupheleni kwesigaba sokubeka, uhlangothi olubeka kuqala lulahlekelwa umdlalo. Uma kungenjalo, umdlalo uwukudonsa.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Lahleka uma kungekho mnyakazo wezomthetho",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Umdlali uzolahlekelwa uma imbangi yakhe iwavimba ukuze anganyakaziswa. Shintsha uhlangothi ukuze uhambise uma le nketho ikhutshaziwe.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly_Detail": "Uma umdlali enezingcezu ezintathu noma ezine kuphela (ezilungisekayo) ezisele, angasusa ucezu aluyise kunoma iyiphi indawo yamahhala.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule_Detail": "Umdlalo uyadwetshwa uma kungazange kube khona ukususwa enanini elithile lokunyakaza.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "I-Rollback",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Sicela ukhethe",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopisha",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Hambisa umlando okopishwe ebhodini lokunamathisela.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Usizo",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Impendulo",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Phuma",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Imithetho",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Umbala",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Umbala webhodi",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "lineColor": "Umbala womugqa webhodi",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Umbala wocezu olu-1 lomdlali",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Umdlali 2 ucezu umbala",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Umbala womlayezo",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Bonisa inani lezingcezu ezingabekwanga",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Bonisa amanothi ebhodini",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Bonisa ibha yamathuluzi yokuzula yomlando",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Bonisa",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Ububanzi bomngcele webhodi",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Ububanzi bomugqa wangaphakathi webhodi",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Ububanzi besiqephu",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Usayizi wefonti",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Isaziso se-WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Buyisela",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Buyisela izilungiselelo ezizenzakalelayo",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Khetha {element}",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Ulwazi",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Ukusikisela",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "umdlali",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Umdlali 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "howToPlay": "Idlalwa kanjani",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Thepha kunoma iyiphi indawo etholakalayo ukuze ubeke ucezu.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Thepha ucezu ukuze ulususe.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toRemovePiece": "Thepha ucezu olulodwa lombangi ukuze ulususe.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Udinga ukudala umshini wokugaya kuqala ngaphambi kokuthi ususe ucezu.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Udinga ukudlala ngezicucu zakho.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Izibalo",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Imidlalo ephelele",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Imiphumela",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "kwesokunxele",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Inqubomgomo yobumfihlo",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Sicela ufunde ngokucophelela futhi uqinisekise ukuthi uyaqonda ngokugcwele futhi uyavumelana nalokhu ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Uma ungavumelani nale Nqubomgomo, sicela ungasebenzisi lolu hlelo lokusebenza. Ukusebenzisa uhlelo lokusebenza kusho ukuthi uyayamukela le migomo.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " futhi ",
+  "@and": {},
+  "accept": "Yamukela",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Thatha ubuyisele",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Ibuyisela emuva…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Ilindile…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Hamba uye phambili",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Buyisela konke",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Hambani phambili nonke",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Hambisa manje",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Kwenziwe.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill_Detail": "Uma umdlali enezicucu kuphela ezigayweni, izingcezu ezigayweni ngeke zikhiye ukuze zisuswe.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "theme": "Itimu",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Umdlalo uhlose ukushiya isitha sinezinkomo ezingaphansi kwezintathu noma kungekho mnyakazo osemthethweni.\n\nUmdlalo uqhubeka ngezigaba ezintathu:\n\nIsigaba 1:\n\nNgamunye umdlali uqala ngezinkomo ezingu-12 ezibizwa ngokuthi \"cows\".\n\nUmdlalo uqala ngebhodi elicacile, lapho umdlali ngamunye efaka inkomo eyodwa ngasikhathi esisodwa esigabeni esibizwa ngokuthi \"junction\" (circle). Inhloso ukwakha imigqa emithathu emi nkqo, ema-diagonal, noma emi mpo. Izinkomo zingabekwa kuphela emagabeni angahlali muntu.\n\nUma umdlali ethola imigqa emithathu efanayo, angasusa (adubule) enye yenkomo yomphikisi. Umdlali akakwazi ukudubula izinkomo zomphikisi ezisesimweni semigqa emithathu uma kusasele ezinye izinkomo eziningi ebhodini.\n\nUmdlali angadubula inkomo eyodwa yomphikisi ngesikhathi esisodwa, ngisho noma imigqa emibili noma ngaphezulu yemigqa emithathu ifezwa ngesinye isinyathelo.\n\nUma inkomo idutshulwa, ayisayisebenzi futhi emdlalweni.\n\nIsigaba 2:\n\nUma zonke izinkomo eziyishumi nambili zomdlali ngamunye sezifakwe ebhodini, izinkomo zingahamba zisuke esigabeni esisodwa ziye kwesinye. Ukunyakaza kuhilela ukuthutha inkomo esuka esigabeni esisodwa siye kwesinye esingahlali muntu futhi esihlobene ngokuqondile nesigaba sokuqala.\n\nAbadlali bangaphula imigqa yabo yemithathu ukuze bakhe emisha, noma balungise izikhundla zezinkomo zabo.\n\nIzinkomo zingahamba zibuyele emuva naphambili emagabeni amabili afanayo kaninginingi. Umugqa wemithathu ungakhiwa, uphulwe, futhi wakhiwe futhi kaninginingi.\n\nNaphezu komthetho othi imigqa ingaphulwa futhi yakhiwe kabusha kaningi, uma umdlali ephula umugqa ukuze adale omusha wemithathu \"cows\" ngokushesha, lo mdlali akakwazi ukubuyisela leyo nkomo esigabeni sayo sokuqala ngohambo lwakhe olulandelayo uma lokho kudala umugqa omusha.\n\nNjalo uma umugqa wemithathu usungulwa kabusha, inkomo yomphikisi kumele idutshulwe.\n\nIsigaba 3:\n\nUma umdlali esele ngezinkomo ezintathu kuphela, umdlali angahambisa inkomo kunoma yisiphi isigaba esingenamuntu ebhodini ngakunye unyakazo.\n\nUkunqoba umdlalo:\n\nUmdlalo unqotshwa uma umphikisi engasakwazi ukuhambisa noma yiziphi izinkomo: noma uma umphikisi esele ngezinkomo ezimbili kuphela.\n\nUma umdlali esele ngezinkomo ezintathu, futhi akekho umdlali okwazi ukudubula inkomo yomphikisi phakathi kwezinyathelo eziyishumi, umdlalo uthathwa njengodlule ngokulingana.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Ulwazi lwenguqulo",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "I-EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Ilayisensi",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Ikhodi yomthombo",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Inguqulo yohlelo lokusebenza",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Okujwayelekile",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Okuthuthukile",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Ukubeka",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Iyahamba",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Iyasusa",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Umdlalo phezu kwesimo",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Indlela yokudlala ye-AI",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Ungenzi lutho",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Isikhathi siphelile",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Ukubukeka",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Dweba kokuhlangenwe nakho komuntu",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Cabangela ukuhamba kwezingcezu",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Isibalo seziqephu:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} esandleni: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} ebhodini: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "I-offset yebhodi ukusuka phezulu",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Akulona ithuba le-AI.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "I-AI ayicabangi.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Usekupheleni kohlu lokuhambisa.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Thepha futhi ukuze uhambe.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Okuningi",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Kuyisici sokuhlola.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Izivivinyo",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "defaultLanguage": "Ulimi oluzenzakalelayo",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Izingcezu zingahamba esigabeni sokubeka",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Azikho izigaba ezihlukile zokubeka nezinyakazayo, okungukuthi, abadlali banganquma kukho konke umnyakazo ukuthi bafuna ukubeka ucezu ebhodini noma bahambise esinye sezingcezu zabo (inqobo nje uma benezicucu ezisele ukuze bazibeke).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerTextColor": "Umbala wombhalo wemenyu",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Umbala wento egqanyisiwe yemenyu",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Umbala wangemuva webha yamathuluzi eyinhloko",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Umbala wesithonjana sebha yamathuluzi eyinhloko",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Umbala wangemuva webha yamathuluzi yokuzulazula",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Umbala wesithonjana sebha yamathuluzi yokuzulazula",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Fihla ibha yamathuluzi ngokuzenzakalelayo",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "bottom": "Phansi",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Isikhungo",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Umbala oqinile",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Isithombe",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Khetha isithombe sakho",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Ukukhanya",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Kumnyama",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Izindikimba",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Itimu yamanje",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Londoloza itimu",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Bonisa igrafu yokuhlaziya",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Ukuhlaziya",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Londoloza umdlalo",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Layisha umdlalo",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Setha indawo",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showArrows": "Bonisa imicibisholo",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Izingcezu",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Bonisa ukuhlaziywa",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Imicu",
+  "@threads": {
+    "description": "Threads"
+  },
+  "helpImproveTranslate": "Siza ukuthuthukisa ukuhumusha",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Okokufundisa",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Isigayo Sakudala",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "ceylonMill": "I-Ceylon Mill",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Isigayo singaphulwa futhi senziwe kabusha ngokuphindaphindiwe",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Uma umdlali ephula isigayo ukuze akhe isigayo esisha ngokushesha, umdlali onjalo angakwazi ukubuyisela ucezu olunjalo endaweni yokuhlangana yasekuqaleni ekuhambeni kwakhe okulandelayo uma enza isigayo esisha.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Uma umdlali ehle waba yizicucu ezintathu, futhi kungekho mdlali ongasusa ucezu lombangi phakathi nomnyakazo oyishumi, umdlalo uwumdwebo.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Vala",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Isiqephu esimhlophe",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Isiqephu esimnyama",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Iphuzu elingenalutho",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Akukho phuzu",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Ukubeka isigaba",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Isigaba esinyakazayo",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Isigaba sokundiza",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Uhlangothi oluzosuswa: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Umnyakazo wokugcina: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Ikhethiwe",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Ukufinyeleleka",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Usekelo lwesifundi sesikrini",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "I-Draw!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Dweba",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Umbala wokugqamisa ucezu",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "I-algorithm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Ukuphela komdlalo umthetho we-N-Move",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Umdlalo udwetshwa uma omunye umdlali enezingcezu ezintathu kuphela futhi akekho umdlali osusa ucezu phakathi nokunyakaza okuthile.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Noma yimuphi umdlali unezicucu ezintathu kuphela, futhi akekho umdlali osusa ucezu phakathi nokunyakaza okuthile.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Umthetho wokuphindaphinda okuthathu",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "pointStyle": "Isitayela sephoyinti",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Ububanzi bephoyinti",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Okuqinile",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Okungenalutho",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "isiZulu",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Hambisa}other{{count} Ukuhamba}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "Ukulayisha kwehlulekile.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Igama lefayela",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Amafayela wegeyimu",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Umdlalo ulondolozwe ku",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "empty": "Akunalutho",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Akukho umnyakazo.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Kubuyiselwe indawo yokuqala.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Hlanza",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Kuhlanzwe.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Susa",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Azikho izingcezu ezingasuswa.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} ucezu}other{{count} izingcezu}} kudingeka zisuswe.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Kubekwe ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Isibalo sezingcezu esibekwe esigabeni sokubeka.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Umdlali wamanje ubeke {count} izingcezu.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ayibeki isigaba, ayikwazi ukusishintsha.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Namathisela",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Ukunamathisela kwenziwe.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Ayikwazi ukunamathisela.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Bonisa izingcezu ezingabekwanga nezisusiwe",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Iskrini esigcwele",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Phuma futhi uvule kabusha uhlelo lokusebenza ukuze izilungiselelo zisebenze.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Ihlathi",
+  "@forest": {},
+  "desktopImage": "Isithombe sedeskithophu",
+  "@desktopImage": {},
+  "invalidPosition": "Indawo engavumelekile.",
+  "@invalidPosition": {},
+  "shareGIF": "Yabelana nge-GIF",
+  "@shareGIF": {},
+  "pixelRatio": "Isilinganiso sephikseli",
+  "@pixelRatio": {},
+  "duration": "Ubude besikhathi",
+  "@duration": {},
+  "previous": "Ngaphambilini",
+  "@previous": {},
+  "next": "Olandelayo",
+  "@next": {},
+  "skip": "Yeqa",
+  "@skip": {},
+  "gotIt": "Ngiyitholile",
+  "@gotIt": {},
+  "youCanModifyRules": "Ungashintsha imithetho yomdlalo kuzilungiselelo zokubusa.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Ungasebenzisa isondo legundane ukuze ushintshe inani kusikhi.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Isikhathi sokucabanga se-AI sibekwe ku-0 sisho ukuthi asikho isikhathi sokucabanga.",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "I-MTD(f) iwuhlobo olulungisiwe lwe-alpha-beta yokusesha i-algorithm ehlose ukuthuthukisa ukusebenza kahle ngokusebenzisa kabusha imiphumela yosesho emaphakathi nokusebenzisa ukuqagela kokuqala okuhle ukuze unciphise isikhala sosesho.",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Sicela uqaphele ukuthi ukulungiswa kwesikhathi sokucabanga kwe-AI kungase kungabi nembayo ngokuphelele. Isikhathi sangempela sokucabanga singase sibe sifushane lapho ileveli yobunzima isethelwe kunani eliphansi futhi ingaba yinde uma i-AI imaphakathi nomcabango lapho isikhathi siphela.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Uma usetha izinga lobunzima phezulu kodwa ungakhulisi isikhathi sokucabanga se-AI, izinga lobunzima langempela lingase likhawulelwe kunani eliphansi ngenxa yesithiyo sesikhathi sokucabanga. Inani langempela lingahluka ngokusekelwe ekusebenzeni komshini.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "I-PVS (I-Principal Variation Search) iyi-algorithm yokusesha yokuthola umnyakazo ongcono kakhulu endaweni ethile. Kuwukuthuthukiswa kwe-algorithm ye-alpha-beta futhi kusebenzisa ukusesha kwewindi okungenalutho noma okuyiziro ukuze kuqinisekiswe ukuthi ukuthutha kubi noma akukubi kakhulu kunomphumela osuvele uphephile kusukela kokuhluka okuyinhloko. I-PVS igxile ekunyakazeni okuthembisa kakhulu futhi igwema ukusesha okungadingekile kwamagatsha angaphansi, okusiza ukuthuthukisa ukusebenza kahle kosesho.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "I-alpha-beta algorithm iyi-algorithm yokusesha ukuze uthole umnyakazo ohamba phambili. Isebenzisa isimiso se-minimax namanani amabili, i-alpha ne-beta, ukuthena isihlahla sokusesha nokwandisa ukusebenza kahle. I-Alpha imele amaphuzu amancane ikhompuyutha eqinisekile ukuthi ingawathola, kuyilapho i-beta imele amaphuzu aphezulu angatholwa isitha sayo. I-algorithm isiza ikhompuyutha ukwenza izinqumo ezihlakaniphile, ezisebenzayo emdlalweni.",
+  "@whatIsAlphaBeta": {},
+  "drawOnTheHumanExperienceDetail": "Ngokusho kokuhlangenwe nakho kwabantu, uma uzama ukunqoba, uzolahlekelwa. Esikhundleni salokho, hlose ukudweba njengomgomo wakho futhi ugweme ukulahlekelwa umdlalo. Bheka umphikisi wakho futhi umyenge ngobumnene endaweni lapho engenza khona amaphutha. Lapho bebonisa ubuthakathaka, bamba ithuba bese ucindezela ngobumnene ukunqoba. Ngale ndlela, ungakwazi ukunqoba umdlalo.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "Kulo mdlalo kulula ukuthi umdlali wesibili awine uma kuqhathaniswa nowokuqala.",
+  "@firstMoveDetail": {},
+  "passiveDetail": "Ukunika amandla inketho ye-Passive kuzobangela i-AI ukuthi ikhululeke uma inenzuzo endaweni, kunokuzama ukuwina ngokushesha okukhulu.",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "Ukunika amandla le nketho kukhulisa ukungahleleki nobumnandi begeyimu ngenkathi uyikhubaza kungasiza izindlela zokufunda zokushaya i-AI.",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "Uma i-AI icabangela ukuhamba kwezingcezu zayo, ngeke nje ihlose ukuthwebula izingcezu zombangi ngokushesha okukhulu, kodwa futhi icabange ukuvimba umnyakazo wesitha nokubavimbela ekwenzeni okufanayo.",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull": "Lapho ibhodi ligcwele",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Ekupheleni kwesigaba sokubeka, ngaphambi kokuba isigaba esinyakazayo siqale, isenzo silandela uma ibhodi ligcwele izingcezu.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Umdlali ohamba kuqala esigabeni esinyakazayo ususa ingxenye eyodwa kwezimbangi.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Zombili izinhlangothi zivumelana ngokulingana.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Thatha enye yezingcezu zombangi wakho.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Umdlali wokuqala uhlulwa umdlalo.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Umdlali wokuqala nowesibili basusa izingcezu zesitha.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Umdlali wesibili nowokuqala basusa izingcezu zesitha.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Manje sekungene isigaba sokundiza, izingcezu zomphikisi zingagxumela kunoma iyiphi indawo engenalutho ebhodini. Ungakwazi ukuvala umthetho endizayo kokuthi \"Izilungiselelo Zomthetho\".",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Lapho i-stalemate",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Isiphi isenzo esilandelayo lapho ucezu lungasuswa?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Phelisa ngokulahlekelwa okumile ohlangothini oluvinjiwe.",
+  "@endWithStalemateLoss": {},
+  "removeOpponentsPieceAndMakeNextMove": "Susa eyodwa yezingcezu zombangi bese wenza umnyakazo olandelayo.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Qeda ngokulingana okumile.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Susa eyodwa yezingcezu zombangi bese ushintsha uhlangothi ukuze uhambise.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Isikhathi sokulibaziseka kwempendulo ye-AI",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "I-AI okwamanje isesigabeni sokuphendula esibambezelekile. Sicela ulinde isikhashana ngaphambi kokuthi uqhubeke.",
+  "@aiIsDelaying": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Uma kumile, izingcezu zombangi ezincikene nezakho zingasuswa, kungakhathaliseki ukuthi ukwakheka kwesigayo.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "I-MCTS iyi-algorithm elungele abaqalayo eyenza izinqumo ngokuhlola nokuhlola ukunyakaza okuhlukile ngokulingisa.",
+  "@whatIsMcts": {},
+  "goldenJade": "I-Golden Jade",
+  "@goldenJade": {},
+  "forestWood": "Ihlathi Lezinkuni",
+  "@forestWood": {},
+  "darkMystery": "Imfihlakalo Emnyama",
+  "@darkMystery": {},
+  "midnightBlue": "Ubusuku obuluhlaza",
+  "@midnightBlue": {},
+  "greenForest": "Ihlathi Eliluhlaza",
+  "@greenForest": {},
+  "greenMeadow": "I-Green Meadow",
+  "@greenMeadow": {},
+  "stonyPath": "I-Stony Path",
+  "@stonyPath": {},
+  "pastelPink": "I-Pastel Pink",
+  "@pastelPink": {},
+  "turquoiseSea": "I-Turquoise Sea",
+  "@turquoiseSea": {},
+  "violetDream": "Iphupho le-Violet",
+  "@violetDream": {},
+  "mintChocolate": "I-Mint Chocolate",
+  "@mintChocolate": {},
+  "skyBlue": "Isibhakabhaka Esiluhlaza",
+  "@skyBlue": {},
+  "playfulGarden": "Ingadi Edlalwayo",
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "I-algorithm ye-Retrograde Analysis isebenzisa ukuhlaziya okunenani eliningi lokubuyisela emuva ukuze kwakhiwe isizindalwazi somdlalo wokugcina kusuka ezindaweni ezihlukene zokuqala, bese isebenzisa le sizindalwazi ukuze kulungiselelwe ukudlala umdlalo. Le ndlela ingena ngaphansi kwesigaba sezixazululo ze-Ultra-Strong.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Ungathanda ukubuka umhlahlandlela womsebenzisi wale algorithm?",
+  "@viewAlgorithmGuide": {},
+  "usePerfectDatabase": "Sebenzisa i-database ephelele",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Nika amandla le nketho ukuze usebenzise isizindalwazi segeyimu esingenasici esikhiqizwe ngama-algorithms asezingeni eliphezulu. Lesi sici sihlanganisa kokubili amasu okuvula nawokuqeda ukuphakamisa umnyakazo olungile. Lokhu ukukhetha okuncanyelwayo kwabadlali abafuna ileveli ephezulu yokunemba ekudlalweni kwegeyimu. Idalwe ngamasu ekhompyutha ahlakaniphile, isizindalwazi siklanyelwe ukunikeza izixazululo zegeyimu ezicishe ziphelele.\n\nQaphela: Uma i-AI ihluleka ukufinyelela kusizindalwazi, izophendukela kuma-algorithms avamile ezinqumweni zokudlala umdlalo. Uma isizindalwazi sitholakala, 'Izinga Lobunzima' licishe lingehluleki, futhi 'Isikhathi Sokucabanga Se-AI' sithola ukuncipha okukhulu. Izilungiselelo eziningi ezingaphakathi kwezinketho ze-'AI's play style' zizokhishwa, njengoba imiphumela yesizindalwazi ibambe phezulu kakhulu.\n\nUkuze uthole umhlahlandlela wokuthi ungayisebenzisa kanjani ngokugcwele le database engenasici, chofoza lapha.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Isithombe semva",
+  "@backgroundImage": {},
+  "whatIsRandom": "Uma inketho ethi 'Sebenzisa isizindalwazi esiphelele' ingavunyelwe, ukulungiselelwa 'okungahleliwe' kubangela i-AI ukuthi ihambise izingcezu ngokungahleliwe ngaphandle kokusebenzisa noma yimaphi ama-algorithms ekukhetheni ukunyakaza. Lokhu ngokuvamile kuholela ekudlalweni kwegeyimu okubuthakathaka kakhulu. Ngokuphambene, lapho 'Sebenzisa idatha egciniwe ephelele' inikwe amandla, i-AI incike ngokukhethekile 'Kusizindalwazi Esiphelele' ukuze senze izinqumo, esikhundleni sokuyihlanganisa nama-algorithms endabuko e-AI. Kule modi, ukunyakaza kwe-AI kusekelwe ngokuphelele kokuqukethwe kusizindalwazi, kugwenywa ukuthembela ekubaleni kwesikhathi sangempela noma ama-algorithm okusesha.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Susa ingcezu (izingcezu) zomphikisi esandleni sakhe; bese kuba yithuba lomphikisi lokubeka.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Lapho wakha ama-mills ngesikhathi sokubeka",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Susa ingcezu (izingcezu) zomphikisi ebhodini.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Susa ingcezu (izingcezu) zomphikisi ebhodini; bese kuba yithuba lomphikisi lokubeka.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Umphikisi ususa ingcezu yakhe (izingcezu) ebhodini.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Esikhundleni sokuba nguwe othatha isinyathelo, umphikisi ukhetha futhi asuse ingcezu yakhe (izingcezu) ebhodini, ngaleyo kwalokho enza isenzo esilimazayo kuye.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Susa ingcezu  (izingcezu) zomphikisi esandleni sakhe; bese kuba lithuba lakho lokuhamba.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Susa ingcezu (izingcezu) esandleni somphikisi. Uma, ngokuvumelana nokusetha kokususwa okuningi, izinhlayiya eziningi kufanele zisuswe futhi umphikisi engasekho nezingcezu esandleni, qhubeka ususa izingcezu zomphikisi ebhodini. Khona-ke, yithuba lakho lokuhamba. Uma uqhubeka wakha ama-mill, ungaqhubeka ususa izingcezu zomphikisi.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Susa ingcezu (izingcezu) esandleni somphikisi. Uma, ngokuvumelana nokusetha kokususwa okuningi, izinhlayiya eziningi kufanele zisuswe futhi umphikisi engasekho nezingcezu esandleni, qhubeka ususa izingcezu zomphikisi ebhodini. Khona-ke, kuba yithuba lomphikisi.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Maka bese unqanda ukususa izingcezu.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Ngesikhathi sokubeka, izingcezu ezizosuswa ziyophawulwa, futhi kokubili abadlali, akukho zingcezu ezintsha ezingabekwa kula maphuzu. Lapho ungena esigabeni sokuhambisa, lezi zingcezu ezimakiwe ziyasuswa ngokuphelele, futhi abadlali bangakwazi ukuhambisa izingcezu zabo kula maphuzu manje angenalutho.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Izinyathelo ezingathathwa lapho kwenziwa amakhaya ngesikhathi sesigaba sokubeka.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Uphawulwe",
+  "@marked": {},
+  "menu": "Imenyu",
+  "@menu": {},
+  "monochrome": "I-Monochrome",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Ungavula ukusekelwa kwesikrini esifundi ku-General Settings kuzilungiselelo zokufinyelela.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Khombisa izinombolo kumaphuzu",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Hlela Isithombe",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Khombisa iziqu zokusekela ukuhlaziywa",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Umbala wesikali sesibhakabhakhi seziqu zokusekela ukuhlaziywa",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Umbala wesithonjana seziqu zokusekela ukuhlaziywa",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Ihlanganiswe.",
+  "@transformed": {},
+  "cannotTransform": "Ngikwazi ukungahlukaniswa.",
+  "@cannotTransform": {},
+  "rotate": "Hlela",
+  "@rotate": {},
+  "horizontalFlip": "H Ibhlophu",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Ibhlophu",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Ibhlophu",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "I-Canvas Esobala",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Khawulela Ukwakheka Kabusha Kwezimbokodo",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ucezu oluhambile kusukela kolunye usimende ukuya kolunye alukwazi ukubuyela ngokushesha endaweni yoqobo kujike elilandelayo ukwakha usimende futhi. Kuqala kudingeka enye inyakazo.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Isigayo sokusetshenziswa kanye",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Isigayo ngasinye singasusa isiqeshana somphikisi kanye kuphela. Ungasiphinda futhi, kodwa ngeke usisebenzisele ukususa okwengeziwe.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Imithetho yamanje osuyimiselile ayinayo i-database ephelele ehambisanayo. Ukuthola imininingwane engaphezulu mayelana ne-database ephelele, sicela uchofoze lapha.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Gxila ekuvinjweni kwemizila",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Nikeza phambili ekuphazamiseni ukuhamba kwesitha kunezindleko zokwakha amamili. Esikhundleni sokugxila ekuqedeni izingcezu ngokugcwalisa amamili, i-AI ihlose ukuheha isitha, ukwenza bahluleke ukunyakaza kanye nokuqinisekisa ukunqoba ngokusebenzisa ukufaka engcupheni kunokudlala ngonya. Leli su alivaleli amamili esitha ngendlela ephambili.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Isithombe somkhandi",
+  "@pieceImage": {},
+  "importColorSettings": "Ngenisa izilungiselelo zombala",
+  "@importColorSettings": {},
+  "exportColorSettings": "Thumela izilungiselelo zombala",
+  "@exportColorSettings": {},
+  "import": "Ngenisa",
+  "@import": {},
+  "export": "Thumela",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Sicela ukopishe izilungiselelo zefomethi ye-JSON ku-clipboard kuqala.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Ikhopishwe ku-clipboard.",
+  "@copiedToClipboard": {},
+  "imported": "Kungenisiwe.",
+  "@imported": {},
+  "boardImage": "Isithombe sebhodi",
+  "@boardImage": {},
+  "autumnLeaves": "Amacembe Ekwindla",
+  "@autumnLeaves": {},
+  "legendaryLand": "Izwe Elidumile",
+  "@legendaryLand": {},
+  "vignetteEffect": "Umphumela we-vignette",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ungathanda ukwenza ibha yamathuluzi ifanekane ngokuphelele uma isithombe sangemuva sebhodi sisethwe?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Vumela ukuzamazama emdlalweni",
+  "@vibration": {},
+  "soundTheme": "Itimu yomculo",
+  "@soundTheme": {},
+  "ball": "Ibhola",
+  "@ball": {},
+  "liquid": "Uchwepheshe",
+  "@liquid": {},
+  "wood": "Izinkuni",
+  "@wood": {},
+  "placeEffectAnimation": "Umphumela we-animation wokubeka ucezu",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Umphumela we-animation wokususa ucezu",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Khombisa ibha yamathuluzi ezansi",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Iradiusi yekona yebhodi",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Sebenzisa incwadi yokuvula",
+  "@useOpeningBook": {},
+  "currentRule": "Okwamanje",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Isethi yemithetho",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Vumela i-AI ukuthi isebenzise ukuvula amanyathelo ajwayele ukusetshenziswa ngabadlali abaqeqeshiwe abantu ekuqaleni komdlalo. Qaphela: Lesi sici sitholakala okwamanje kumasethi womthetho athize kuphela.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Khombisa ishadi lezinzuzo",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Ishadi lezinzuzo lizodwetshwa kuphela emva kokuthi i-AI yenze umnyakazo. Alizukudwetshwa uma umdlali womuntu enza umnyakazo.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Misa ukususwa kuze kufakwe wonke amaphinikhodi. Abadlali basusa amaphinikhodi ngokuya ngenani lama-Umlabalaba.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Misa ukususwa kuze kufakwe wonke amaphinikhodi. Abadlali basusa amaphinikhodi ngokuya ngenani lama-Umlabalaba: uma elilinganayo, bobabili basusa inani elifanayo lamaphinikhodi; uma omunye eningi, ususa elilodwa elengeziwe, egcina umehluko owodwa. Uma oyedwa enza i-Umlabalaba, ususa amaphinikhodi amabili, omunye asuse elilodwa. Uma bengakwenzi kokubili i-Umlabalaba, bobabili basusa elilodwa.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Khetha esinye sezicezu zakho.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Akulona ithuba lakho.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Umbala wengemuva yethulbha yezichasiselo",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Umbala we-icon yethulbha yezichasiselo",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Khombisa ithulbha yezichasiselo",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Ngena kumodi yezichasiselo",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Uqinisekile ukuthi ufuna ukusula zonke izichasiselo?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Isikhuthazo se-LLM sikopishiwe ekubhodini lokunamathisela.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Ukuxhumana kunqatshelwe, isiphakeli kungenzeka siphansi.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Ukuthola kuphumelele, kulindelwe ukuxhumana...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Akukho ukuxhumana kwe-LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Thatha isithombe-skrini",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Unqanyuliwe kumbangi.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Isicelo Sokubuyisela Emuva",
+  "@takeBackRequest": {},
+  "nothingToShow": "Akukho okumele kuboniswe.",
+  "@nothingToShow": {},
+  "stopHosting": "Yeka ukubamba",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Ukuxhumana kuqalwe kabusha ngontanga.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Ukuxhumana kulahlekile ngenxa yesikhathi sokushaya kwenhliziyo siphelile. Sicela uxhumane kabusha.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Qala ukubamba",
+  "@startHosting": {},
+  "restartRequestRejected": "Isicelo sokuqala kabusha sinqatshelwe.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Akuxhunyiwe kumbangi we-LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Isikhuthazo se-LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Umdlalo uqalwe kabusha.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Ukubuyisela emuva kunqatshelwe.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Uqinisekile ukuthi ufuna ukuyeka lo mdlalo?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Umbangi uyekile. Uwine!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Sula zonke izichasiselo",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Uxhunyiwe, ulindele umnyakazo wombangi...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Isimo senethiwekhi: Unqanyuliwe",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Isicelo sokubuyisela emuva sithunyelwe kumbangi.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Umbangi kungenzeka ushiye umdlalo",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Uxhunyiwe kumbambi ngempumelelo.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Ukuxhumana kulahlekile: isikhathi sokushaya kwenhliziyo siphelile",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Akukho mbambi otholiwe.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Qinisekisa ukuyeka",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Iqale ukubamba umdlalo, ilindele abadlali ukuthi bajoyine...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Ukuxhumana kuphelelwe yisikhathi, ukuxhumana kwenethiwekhi akuzinzile.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Asikho isikhuthazo se-LLM esitholakalayo.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Uyekile. Umdlalo uphelile.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP yesiphakeli",
+  "@serverIp": {},
+  "confirmClear": "Qinisekisa ukusula",
+  "@confirmClear": {},
+  "opponentSTurn": "Ithuba lombangi.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Ilindele ukuxhumana kweklayenti...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Isicelo sokubuyisela emuva sinqatshelwe noma sihlulekile.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Nezela umbhalo",
+  "@addText": {},
+  "exitAnnotationMode": "Phuma kumodi yezichasiselo",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Thayipha isichasiselo sakho",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Izama ukuxhuma kabusha...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Isicelo sokuqala kabusha sithunyelwe. Ilindele impendulo yombangi...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Isiphakeli simisiwe.",
+  "@serverIsStopped": {},
+  "restartRequest": "Isicelo sokuqala kabusha",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Awukwazi ukucela ukubuyisela emuva uma kungesona ithuba lakho.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Ukubuyisela emuva kwamukelwe.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Izilungiselelo zenethiwekhi yendawo",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Uxhunyiwe kabusha ngempumelelo!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Kuhlulekile ukugcina isithombe kugalari.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Umbangi ucele ukuqala kabusha umdlalo. Uyamukela?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Ithuba lakho.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Akukwazeki ukuxhuma kabusha, sicela uqale kabusha umdlalo.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Umbambi",
+  "@host": {},
+  "join": "Joyina",
+  "@join": {},
+  "port": "Ichweba",
+  "@port": {},
+  "invalidIpAddress": "Ikheli le-IP elingavumelekile.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Ichweba elingavumelekile.",
+  "@invalidPort": {},
+  "connectingAttempt": "Ukuxhuma: Umzamo {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Kuhlulekile ukuxhuma: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Kuhlulekile ukuqala ukubamba: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Umbambi utholiwe: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Yeka",
+  "@stop": {},
+  "discover": "Thola",
+  "@discover": {},
+  "connect": "Xhuma",
+  "@connect": {},
+  "clientConnected": "Iklayenti lixhunyiwe: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Ukuthola: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Ukuxhuma kabusha ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Uxhunyiwe",
+  "@connected": {},
+  "delete": "Susa",
+  "@delete": {},
+  "ancientEgypt": "I-Egypt Yasendulo",
+  "@ancientEgypt": {},
+  "gothicIce": "Iqhwa le-Gothic",
+  "@gothicIce": {},
+  "riceField": "Insimu Yelayisi",
+  "@riceField": {},
+  "chinesePorcelain": "I-Porcelain YaseShayina",
+  "@chinesePorcelain": {},
+  "desertDusk": "Ukuhwalala Kwasogwadule",
+  "@desertDusk": {},
+  "precisionCraft": "Umsebenzi Wokucophelela",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Ukufekethiswa Kwesintu",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Ifa LaseCarpathian",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Ubukhazikhazi Bombuso",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "I-Bohemian Crystal",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Ukuphuma Kwelanga eSavanna",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Ukuvumelana Nokulinganisela",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Isinongo Sesinamoni",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "I-Mosaic Yase-Anatolian",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Umoya Womkhosi",
+  "@carnivalSpirit": {},
+  "custom": "Isiko",
+  "@custom": {},
+  "spiceMarket": "Imakethe yezinongo",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Swipe ukuze uveze iDrawer",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Bonisa imininingwane yomdlalo ezithombeni zesikrini",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Umkhawulo wesikhathi somuntu",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Awukho umkhawulo wesikhathi ekunyakazeni komuntu",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Ukulahlekelwa ngenxa yokuphelelwa isikhathi kuzosetshenziswa kumdlali ongumuntu",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Kutholwa ibhodi lomdlalo...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Ungafaka noma yiliphi igama lemodeli.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Isikhundla sebhodi lomdlalo sisebenzisiwe. FEN ikhophiwe ebhodini lokunamathisela.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Isiphakamiso: zama ukuthatha isithombe esicacile sebhodi lomdlalo.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "Ithemplethi ye-prompt ye-LLM",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Akukho bhodi elivumelekileyo elitholakele.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Kukhethwa isithombe ku-albhamu...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Lungisa ithemplethi ye-prompt",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Hlela ithemplethi ye-prompt yokuhlaziywa kwe-LLM",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Kwehlulekile ukukhiqiza i-FEN ebhodini elitholiwe.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Khipha ngolimi lwamanje",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Ama-Base URL ajwayelekile",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Buka amamodeli ajwayelekile",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Amapharamitha wokuhlonza abuyekezwe.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Ukuhamba komhlophe",
+  "@whiteSMove": {},
+  "resetToDefaults": "Setha kabusha kuzilungiselelo ezenzakalelayo",
+  "@resetToDefaults": {},
+  "photoShoot": "Ukuthatha izithombe",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Kwehlulekile ukusebenzisa isikhundla sebhodi elimaziwe.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "Okuqukethwe kwe-prompt ye-LLM",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "I-LLM ayikalungiswa. Sicela uhlole izilungiselelo zakho.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Setha umphakeli, imodeli, API Key, ne-Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "Ukulungiselelwa kwe-LLM",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Lungisa umphakeli we-LLM",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "Isihloko sethemplethi ye-prompt ye-LLM",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Akukho maqhekeza womdlalo atholakele esithombeni. Sicela uzame futhi.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Hlonza ibhodi lomdlalo esithombeni",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Buka amathiphu",
+  "@viewTips": {},
+  "applyToBoard": "Faka ebhodini lomdlalo",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Lungisa indawo yebhodi lomdlalo",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Buka ama-URL ajwayelekile",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Ukuhlaziya imibala kwehlulekile!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Kuhlaziywa isithombe sebhodi lomdlalo...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Khetha ku-albhamu",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Akukho iphuzu lebhodi elitholakele!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Uma kushiywe kungagcwaliswanga, ithemplethi ezenzakalelayo izosetshenziswa",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "Ukulungiselelwa kwe-LLM",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Uqinisekile ukuthi ufuna ukusetha kabusha amathempulethi we-prompt kwamanani ezenzakalelayo?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "Isiphetho sethemplethi ye-prompt ye-LLM",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Kulayishwa impendulo...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Faka le miphumela ebhodini lomdlalo",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Kuthathwa isithombe...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Sicela ukhethe isithombe sebhodi lomdlalo ukuze lihlonzwe",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Imiphumela yokuhlonza",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Hlaziya izinyathelo bese unikeza ukuqonda.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Thola i-API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Yonke inqubo yokuhlonza yehlulekile ukuqeda.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Umphumela wokuhlonza ibhodi",
+  "@boardRecognitionResult": {},
+  "askLlm": "Buza i-LLM",
+  "@askLlm": {},
+  "boardDetectionFailed": "Ukutholwa kwebhodi kwehlulekile!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Akukho iphuzu lebhodi litholakale, awukwazi ukuhlonza iqhekeza!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Kopisha i-FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Amamodeli asetshenziswa kakhulu",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (uyazikhethela)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Akukho isithombe esikhethiwe",
+  "@noImageSelected": {},
+  "blackSMove": "Ukuhamba komnyama",
+  "@blackSMove": {},
+  "llm": "Imodeli Yolimi Enkulu",
+  "@llm": {},
+  "llmProvider": "Umhlinzeki",
+  "@llmProvider": {},
+  "baseUrl": "I-URL Eyisisekelo",
+  "@baseUrl": {},
+  "model": "Imodeli",
+  "@model": {},
+  "temperature": "Izinga lokushisa",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Umyalo utholiwe! AI iyacubungula...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Ukucabanga okujulile kuqhubeka, sicela ulinde...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Kuzokwethulwa maduze...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Amapharamitha okuqashelwa",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Lungisa amapharamitha ukuze uthuthukise ukunemba kokuqashelwa",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Gcina amapharamitha",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Ayikwazanga ukuqala ukuqashelwa kwesithombe: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Ukuqashelwa kwesithombe kwehlulekile: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Isimo esisetshenzisiwe sinezingcezu ezimhlophe ezingu-{whiteCount} nezimnyama ezingu-{blackCount}",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ikopishiwe ebhodi lokunamathisela)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Ukuqashelwa kwehlulekile: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Isilinganiso sami",
+  "@myRating": {},
+  "gamesPlayed": "Imidlalo edlaliwe",
+  "@gamesPlayed": {},
+  "wins": "Ukunqoba",
+  "@wins": {},
+  "losses": "Ukwehlulwa",
+  "@losses": {},
+  "draws": "Ukudonsa",
+  "@draws": {},
+  "lastUpdated": "Kubuyekezwe okokugcina",
+  "@lastUpdated": {},
+  "format": "Ifomethi:",
+  "@format": {},
+  "resetStatistics": "Setha kabusha izibalo",
+  "@resetStatistics": {},
+  "drawRate": "Izinga lokudonsa",
+  "@drawRate": {},
+  "lossRate": "Izinga lokulahlekelwa",
+  "@lossRate": {},
+  "aiStatistics": "Izibalo ze-AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Nika amandla izibalo",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Uma kunikwe amandla, imiphumela yomdlalo izorekhodwa ezibalweni. Nokho, imidlalo ehilela ukubuyisela emuva ngeke irekhodwe. Uma kukhutshaziwe, ukuqoqwa kwezibalo kuyamiswa.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Lokhu kuzosetha kabusha zonke izibalo zomdlalo. Lesi senzo asinakuhlehliswa.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Usayizi wendandatho yangaphakathi yebhodi",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Umthunzi webhodi",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Ukuqaphela ugibe",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Gqamisa ukuhamba kogibe ngama-siyingi aminyene nemicibisholo ngesikhathi sokuhlaziywa.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Kukhona ugibe. Ukuhamba kogibe: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Ukubanjwa kwe-Flanking",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Faka ingxenye eyodwa yezingcezu zomphikisi wakho phakathi kwayo ezimbili zakho emugqeni oqondile ukuze uzithwebule.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Vumela ukuthathwa kwe-Flanking",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Ukungenelela kokungenelela",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Hambisa endaweni engenalutho phakathi kwezingcezu zabaphikisi zakho ukuze ubabambe bobabili.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Vumela ukungenelela kokungenela",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Eqanjwa",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Capture ngokugxuma ngaphezulu kwesiqeshana somphikisi oseduze kube yindawo engenalutho.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Vumela Ukuqanjwa Kwe-TUSH",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Imigqa esebenzayo",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Ngasemiphethweni yesikwele",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Emigqeni ye-orthogonal ewela isikwele",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Emigqeni ye-diagonal ewela isikwele",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Izigaba Zokubulawa",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Ukutholakala ngesikhathi sesigaba esihambayo esekwe izingcezu ezisele",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Akukho mkhawulo",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Kuyatholakala lapho unezingcezu ezintathu noma ezimbalwa",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

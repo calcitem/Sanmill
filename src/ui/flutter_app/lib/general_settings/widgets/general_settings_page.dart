@@ -6,11 +6,15 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
@@ -204,6 +208,224 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
     logger.t("$_logTag toneEnabled: $value");
+
+    if (value == true) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
+  void _setBackgroundMusicEnabled(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: value,
+    );
+    logger.t("$_logTag backgroundMusicEnabled: $value");
+
+    if (value == true) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
+  // Platform-specific audio format support.
+  // Windows (Media Foundation): No OGG/OPUS support.
+  // iOS/macOS (AVFoundation): No OGG/OPUS/WMA support.
+  // Android (MediaPlayer): Supports most formats.
+  // Linux (GStreamer): Depends on installed plugins.
+
+  static const Set<String> _windowsSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.m4a',
+    '.aac',
+    '.wma',
+    '.flac',
+  };
+
+  static const Set<String> _appleSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.m4a',
+    '.aac',
+    '.aiff',
+    '.flac',
+    '.caf',
+  };
+
+  static const Set<String> _androidSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.m4a',
+    '.aac',
+    '.ogg',
+    '.flac',
+    '.opus',
+    '.amr',
+    '.mid',
+    '.midi',
+    '.3gp',
+  };
+
+  static const Set<String> _linuxSupportedFormats = <String>{
+    '.mp3',
+    '.wav',
+    '.ogg',
+    '.flac',
+    '.opus',
+    '.m4a',
+    '.aac',
+  };
+
+  /// Get the set of supported audio formats for the current platform.
+  Set<String> _getSupportedAudioFormats() {
+    if (kIsWeb) {
+      // Web support varies by browser; allow common formats.
+      return <String>{'.mp3', '.wav', '.ogg', '.m4a', '.aac'};
+    }
+    if (Platform.isWindows) {
+      return _windowsSupportedFormats;
+    }
+    if (Platform.isIOS || Platform.isMacOS) {
+      return _appleSupportedFormats;
+    }
+    if (Platform.isAndroid) {
+      return _androidSupportedFormats;
+    }
+    if (Platform.isLinux) {
+      return _linuxSupportedFormats;
+    }
+    // Fallback: allow common formats.
+    return <String>{'.mp3', '.wav', '.m4a', '.aac', '.flac'};
+  }
+
+  /// Check if the audio format is supported on the current platform.
+  bool _isAudioFormatSupported(String extension) {
+    final String ext = extension.toLowerCase();
+    return _getSupportedAudioFormats().contains(ext);
+  }
+
+  Future<void> _pickBackgroundMusicFile(
+    BuildContext context,
+    GeneralSettings generalSettings,
+  ) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final Directory musicDir = Directory("${appDocDir.path}/music");
+    if (!musicDir.existsSync()) {
+      await musicDir.create(recursive: true);
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
+    // Use FilePicker to allow users to select audio files from any accessible directory.
+    // This solves the issue where users could not access their own music folders on Android
+    // without requiring the MANAGE_EXTERNAL_STORAGE permission.
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+    );
+
+    if (result == null || result.files.single.path == null) {
+      return;
+    }
+
+    final String picked = result.files.single.path!;
+    final String originalName = p.basename(picked);
+    final String ext = p.extension(picked);
+
+    // Validate audio format support on current platform.
+    if (!_isAudioFormatSupported(ext)) {
+      if (!context.mounted) {
+        return;
+      }
+      final String supportedFormats = _getSupportedAudioFormats().join(', ');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            S
+                .of(context)
+                .error(
+                  'Format $ext is not supported. Supported: $supportedFormats',
+                ),
+          ),
+        ),
+      );
+      return;
+    }
+
+    // Clean up old background music file before copying new one.
+    await _deleteOldBackgroundMusicFile(
+      generalSettings.backgroundMusicFilePath,
+    );
+
+    // Determine the target path, avoiding filename conflicts.
+    final String newPath = _resolveUniqueMusicPath(musicDir.path, originalName);
+
+    try {
+      await File(picked).copy(newPath);
+    } catch (e) {
+      logger.e("$_logTag Failed to copy background music file: $e");
+      return;
+    }
+
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: true,
+      backgroundMusicFilePath: newPath,
+    );
+    logger.t("$_logTag backgroundMusicFilePath: $newPath");
+
+    await SoundManager().startBackgroundMusic();
+  }
+
+  /// Delete the old background music file if it exists.
+  Future<void> _deleteOldBackgroundMusicFile(String oldPath) async {
+    if (oldPath.isEmpty) {
+      return;
+    }
+    try {
+      final File oldFile = File(oldPath);
+      if (oldFile.existsSync()) {
+        await oldFile.delete();
+        logger.t("$_logTag Deleted old background music file: $oldPath");
+      }
+    } catch (e) {
+      logger.w("$_logTag Failed to delete old background music file: $e");
+    }
+  }
+
+  /// Resolve a unique file path in the music directory.
+  /// If the file already exists, append a numeric suffix.
+  String _resolveUniqueMusicPath(String dirPath, String filename) {
+    final String baseName = p.basenameWithoutExtension(filename);
+    final String ext = p.extension(filename);
+    String candidate = "$dirPath/$filename";
+
+    int counter = 1;
+    while (File(candidate).existsSync()) {
+      candidate = "$dirPath/${baseName}_$counter$ext";
+      counter++;
+    }
+    return candidate;
+  }
+
+  Future<void> _clearBackgroundMusic(GeneralSettings generalSettings) async {
+    // Delete the background music file from disk.
+    await _deleteOldBackgroundMusicFile(
+      generalSettings.backgroundMusicFilePath,
+    );
+
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: false,
+      backgroundMusicFilePath: '',
+    );
+    logger.t("$_logTag backgroundMusic cleared");
+    await SoundManager().stopBackgroundMusic();
   }
 
   void _setKeepMuteWhenTakingBack(GeneralSettings generalSettings, bool value) {
@@ -585,6 +807,34 @@ class GeneralSettingsPage extends StatelessWidget {
               trailingString: generalSettings.soundTheme!.localeName(context),
               onTap: () => _setSoundTheme(context, generalSettings),
             ),
+            SettingsListTile.switchTile(
+              key: const Key(
+                'general_settings_page_settings_card_play_sounds_background_music_enabled',
+              ),
+              value: generalSettings.backgroundMusicEnabled,
+              onChanged: (bool val) =>
+                  _setBackgroundMusicEnabled(generalSettings, val),
+              titleString: S.of(context).backgroundMusic,
+              subtitleString: S.of(context).backgroundMusicDescription,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'general_settings_page_settings_card_play_sounds_background_music_file',
+              ),
+              titleString: S.of(context).backgroundMusicFile,
+              trailingString: generalSettings.backgroundMusicFilePath.isEmpty
+                  ? S.of(context).none
+                  : p.basename(generalSettings.backgroundMusicFilePath),
+              onTap: () => _pickBackgroundMusicFile(context, generalSettings),
+            ),
+            if (generalSettings.backgroundMusicFilePath.isNotEmpty)
+              SettingsListTile(
+                key: const Key(
+                  'general_settings_page_settings_card_play_sounds_background_music_clear',
+                ),
+                titleString: S.of(context).clearBackgroundMusic,
+                onTap: () => _clearBackgroundMusic(generalSettings),
+              ),
             if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
               SettingsListTile.switchTile(
                 key: const Key(
@@ -832,27 +1082,49 @@ class GeneralSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlockSemantics(
-      key: const Key('general_settings_page_block_semantics'),
-      child: Scaffold(
-        key: const Key('general_settings_page_scaffold'),
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppTheme.lightBackgroundColor,
-        appBar: AppBar(
-          key: const Key('general_settings_page_app_bar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(
-            S.of(context).generalSettings,
-            key: const Key('general_settings_page_app_bar_title'),
-            style: AppTheme.appBarTheme.titleTextStyle,
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        final Widget page = BlockSemantics(
+          key: const Key('general_settings_page_block_semantics'),
+          child: Scaffold(
+            key: const Key('general_settings_page_scaffold'),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: useDarkSettingsUi
+                ? settingsTheme.scaffoldBackgroundColor
+                : AppTheme.lightBackgroundColor,
+            appBar: AppBar(
+              key: const Key('general_settings_page_app_bar'),
+              leading: CustomDrawerIcon.of(context)?.drawerIcon,
+              title: Text(
+                S.of(context).generalSettings,
+                key: const Key('general_settings_page_app_bar_title'),
+                style: useDarkSettingsUi
+                    ? null
+                    : AppTheme.appBarTheme.titleTextStyle,
+              ),
+            ),
+            body: ValueListenableBuilder<Box<GeneralSettings>>(
+              key: const Key('general_settings_page_value_listenable_builder'),
+              valueListenable: DB().listenGeneralSettings,
+              builder: _buildGeneralSettingsList,
+            ),
           ),
-        ),
-        body: ValueListenableBuilder<Box<GeneralSettings>>(
-          key: const Key('general_settings_page_value_listenable_builder'),
-          valueListenable: DB().listenGeneralSettings,
-          builder: _buildGeneralSettingsList,
-        ),
-      ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 }

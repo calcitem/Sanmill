@@ -161,6 +161,8 @@ class GeneralSettings {
     this.llmBaseUrl = '',
     this.llmTemperature = 0.7,
     this.trapAwareness = false,
+    this.backgroundMusicEnabled = false,
+    this.backgroundMusicFilePath = '',
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -303,6 +305,14 @@ class GeneralSettings {
   // Enable trap awareness analysis when using Perfect DB
   @HiveField(40, defaultValue: false)
   final bool trapAwareness;
+
+  // Background music playback toggle (local file only).
+  @HiveField(41, defaultValue: false)
+  final bool backgroundMusicEnabled;
+
+  // Local background music file path.
+  @HiveField(42, defaultValue: "")
+  final String backgroundMusicFilePath;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

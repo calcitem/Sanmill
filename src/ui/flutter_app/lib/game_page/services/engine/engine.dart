@@ -16,6 +16,16 @@ class Engine {
 
   static const String _logTag = "[engine]";
 
+  // Serialize all waits that consume engine responses. The native engine uses a
+  // single response queue; concurrent waiters can steal each other's messages
+  // (e.g., a startup waiter consuming a "bestmove"), which may wedge the UI.
+  Future<void> _responseReadLock = Future<void>.value();
+
+  // Ensure startup() is not executed concurrently. Concurrent startup waits
+  // can steal engine responses (e.g., "bestmove") from an ongoing search and
+  // wedge the UI on AI's turn.
+  Future<void>? _startupFuture;
+
   // Track search session version to invalidate old responses
   int _searchEpoch = 0;
 
@@ -25,28 +35,79 @@ class Engine {
   // Track whether native engine thread has been started to avoid redundant restarts
   bool _started = false;
 
+  // When the native engine restarts mid-game, its options reset to defaults.
+  // We detect this via a stray "uciok" and re-send options before the next search.
+  bool _needsOptionResync = false;
+
+  Future<T> _withResponseReadLock<T>(Future<T> Function() action) {
+    final Completer<T> completer = Completer<T>();
+
+    // Never let a previous error break the chain.
+    final Future<void> previous = _responseReadLock.catchError((_) {});
+
+    _responseReadLock = () async {
+      await previous;
+      try {
+        completer.complete(await action());
+      } catch (e, st) {
+        completer.completeError(e, st);
+      }
+    }();
+
+    return completer.future;
+  }
+
   Future<void> startup() async {
     if (!_isPlatformChannelAvailable) {
       return;
     }
 
-    // If engine already started, only refresh options and ensure readiness
-    if (_started) {
-      await setOptions();
-      _isSearchCancelled = false;
-      await _send("isready");
-      await _waitResponse(<String>["readyok"], expectedEpoch: _searchEpoch);
+    // If a startup is already in flight, always await it. This prevents callers
+    // from starting a search before the engine is fully ready (uciok/readyok).
+    final Future<void>? inFlight = _startupFuture;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    // Fast path: fully started and no resync needed.
+    if (_started && !_needsOptionResync) {
       return;
     }
 
-    // First startup: bring up native engine, wait for uciok, then send options
-    await _platform.invokeMethod("startup");
-    _isSearchCancelled = false;
-    final int currentEpoch = _searchEpoch;
-    await _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch);
+    // De-duplicate concurrent startup calls.
+    final Future<void> newFlight = _startupFuture ??= _startupInternal(
+      resyncOnly: _started,
+    );
+    return newFlight;
+  }
 
-    await setOptions();
-    _started = true;
+  Future<void> _startupInternal({required bool resyncOnly}) async {
+    try {
+      if (!resyncOnly) {
+        // First startup: bring up native engine, wait for uciok, then send options.
+        await _platform.invokeMethod("startup");
+        _isSearchCancelled = false;
+        final int currentEpoch = _searchEpoch;
+        await _withResponseReadLock<String?>(
+          () => _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch),
+        );
+      }
+
+      // Either on first startup or after a detected engine restart, re-send options.
+      await setOptions();
+
+      // Ensure the engine has applied options and is ready for search.
+      await _send("isready");
+      await _withResponseReadLock<String?>(
+        () => _waitResponse(<String>["readyok"], expectedEpoch: _searchEpoch),
+      );
+
+      // Mark as fully started only after we have observed readyok.
+      _started = true;
+      _needsOptionResync = false;
+    } finally {
+      _startupFuture = null;
+    }
   }
 
   Future<void> _send(String command) async {
@@ -135,6 +196,10 @@ class Engine {
   }
 
   Future<EngineRet> search({bool moveNow = false}) async {
+    // Ensure the native engine is fully started and ready before searching.
+    // This prevents a startup waiter from concurrently consuming "bestmove".
+    await startup();
+
     // Clear any existing analysis markers when AI makes a move
     AnalysisMode.disable();
 
@@ -222,24 +287,12 @@ class Engine {
           selectedMove = bestMoves.first;
         }
 
-        // Check if the first character of selectedMove is 'x'
-        if (selectedMove.startsWith('x')) {
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          // Use standard notation directly
-          return EngineRet(
-            "0", // Default score
-            AiMoveType.openingBook,
-            ExtMove(selectedMove, side: GameController().position.sideToMove),
-          );
-        } else {
-          await Future<void>.delayed(const Duration(milliseconds: 100));
-          // Use standard notation directly
-          return EngineRet(
-            "0", // Default score
-            AiMoveType.openingBook,
-            ExtMove(selectedMove, side: GameController().position.sideToMove),
-          );
-        }
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+        return EngineRet(
+          "0", // Default score
+          AiMoveType.openingBook,
+          ExtMove(selectedMove, side: GameController().position.sideToMove),
+        );
       } else {
         // FEN not found in predefined map: proceed with engine search
         fen = _getPositionFen();
@@ -255,16 +308,20 @@ class Engine {
 
     String? response;
     for (int attempt = 0; attempt < 2; attempt++) {
-      response = await _waitResponse(
-        <String>["bestmove", "nobestmove"],
-        expectedEpoch: currentEpoch,
-        disableTimeout: softWait,
+      response = await _withResponseReadLock<String?>(
+        () => _waitResponse(
+          <String>["bestmove", "nobestmove"],
+          expectedEpoch: currentEpoch,
+          disableTimeout: softWait,
+        ),
       );
 
       // If the engine restarted mid-wait (uciok seen), re-send position and go once
       if (_sawUciokDuringWait) {
         _sawUciokDuringWait = false;
         _isSearchCancelled = false; // clear cancellation before re-waiting
+        // Re-apply current options before restarting the search.
+        await startup();
         final String? fenToResend = _getPositionFen();
         if (fenToResend != null) {
           await _send(fenToResend);
@@ -398,6 +455,8 @@ class Engine {
       // If we encounter 'uciok' while waiting for other prefixes, record it
       if (response.contains("uciok")) {
         _sawUciokDuringWait = true;
+        // Native engine restarted mid-game; its options likely reset.
+        _needsOptionResync = true;
       }
       for (final String prefix in prefixes) {
         if (response.contains(prefix)) {
@@ -717,6 +776,8 @@ class Engine {
 
   /// Analyze the current position using the perfect database
   Future<PositionAnalysisResult> analyzePosition() async {
+    await startup();
+
     final String? fen = GameController().position.fen;
     if (fen == null) {
       return PositionAnalysisResult.error("Invalid board position");
@@ -733,9 +794,11 @@ class Engine {
       await _send(command);
 
       // Wait for and parse response
-      final String? response = await _waitResponse(<String>[
-        "info analysis",
-      ], expectedEpoch: currentEpoch);
+      final String? response = await _withResponseReadLock<String?>(
+        () => _waitResponse(<String>[
+          "info analysis",
+        ], expectedEpoch: currentEpoch),
+      );
       if (response == null) {
         return PositionAnalysisResult.error("Engine did not respond");
       }

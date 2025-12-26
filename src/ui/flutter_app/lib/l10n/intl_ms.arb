@@ -2159,4 +2159,2037 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Konfigurasikan model, bahasa dan tingkah laku",
     "@voiceAssistantSettingsDescription": {}
+  "@@locale": "ms",
+  "appName": "Kilang",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Selamat datang",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ya",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Tidak",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Permainan",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Manusia Vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Manusia Vs. Manusia",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Manusia Vs. Awan",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Manusia Vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Uji Melalui LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Bergerak",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Pindahkan senarai",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Pindahkan senarai",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Tiada catatan",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "okey",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Sahkan",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Batal",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Pilih bahagian yang salah.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Letakkan kepingan anda.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Anda tidak boleh meletakkannya di sini.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Anda meletakkan.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Keluarkan sekeping.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Anda tidak boleh mengeluarkannya.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Anda mengalih keluar.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Pindahkan sehelai.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Anda tidak boleh meletakkan barang anda di sini.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Anda tidak boleh memindahkan barang anda di sini.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Kilang! Ambil bahagian lawan anda.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Terus ambil bahagian lawan anda.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Pilih salah satu bahagian lawan anda.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Anda tidak boleh mengeluarkan sekeping dari kilang.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Sekeping boleh bergerak 1 mata.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Anda tidak boleh menggerakkan potongan lawan.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Pilih bahagian anda untuk bergerak.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Anda tinggal tiga keping lagi.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Anda boleh bergerak ke mana-mana tempat yang anda suka.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} untuk bergerak.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Pemain 1 menang!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Pemain 2 menang!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Menang",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Kalah",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Berfikir…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Permainan baru",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Permainan import",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Eksport permainan",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Permainan diimport.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Tidak boleh mengimport {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Pergerakan dan peraturan tidak sepadan.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Sila tunggu.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Mulakan semula permainan semasa?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Mula semula",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Permainan dimulakan, sila letakkan.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Menganalisis…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Ralat: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Kadar Menang",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Markah:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Pemain 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Pemain 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} kiraan sekeping kurang daripada tiga.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} meletak jawatan.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} tiada jalan lagi.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Papan itu penuh, dan {player} tiada jalan lagi.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Masa telah tamat, {player} hilang.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Dalam fasa bergerak, tidak ada potongan yang dikeluarkan dalam jumlah pergerakan tertentu yang terakhir.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Ia adalah Cabutan kerana papannya penuh.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Ia adalah Cabutan kerana pengulangan tiga kali ganda.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Permainan tamat! Sebab tidak diketahui.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Permainan tamat",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Awak menang! Tahniah!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Cabar tahap yang lebih sukar? Tahap baharu ialah tahap {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Awak kalah!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Menganalisis",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Mengenai",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versi: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Terima kasih",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Tetapan",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Pilihan",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Tetapan umum",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Tahap kesukaran",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Masa berfikir AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Kesukaran",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Kesan bunyi",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Mainkan suara dalam permainan",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Muzik latar",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Mainkan fail audio tempatan sebagai muzik latar",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Fail muzik latar",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Kosongkan muzik latar",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Fail muzik",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Tetap bisu semasa mengambil semula",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Nada",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Langkah pertama",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Manusia",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternatif",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Mulakan semula permainan secara automatik apabila permainan tamat",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Tukar Auto Langkah Pertama",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Pergerakan secara rawak",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Pelbagai",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Peraturan",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Bilangan keping yang dimiliki oleh setiap pemain",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Berapakah jumlah kepingan yang dimiliki oleh setiap pemain?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Bilangan kepingan terbang",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Sekiranya Flying diaktifkan, apabila pemain dikurangkan menjadi jumlah potongan tertentu, potongannya bebas bergerak ke titik yang tidak dihuni dan bukannya dibatasi ke titik bersebelahan seperti di sepanjang permainan.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Sekeping Paling Sedikit",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Garisan pepenjuru",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Tambahkan empat garis pepenjuru ke papan.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "Pemain kedua bergerak terlebih dahulu",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Pemain yang bergerak kedua dalam fasa meletakkan bergerak pertama dalam fasa bergerak.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Pembuangan berbilang",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Sekiranya pemain menutup lebih dari satu kilang sekaligus, dia akan membuang jumlah kilang yang ditutupnya.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Hancurkan kilang",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Secara lalai, pemain mesti mengeluarkan kepingan lain terlebih dahulu sebelum mengeluarkan sekeping dari kilang yang dibentuk. Aktifkan pilihan ini untuk melumpuhkan had.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Pemain kedua kalah apabila papan penuh",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Apabila papan penuh pada akhir fasa penempatan, bahagian yang meletakkan pertama akan kehilangan permainan. Jika tidak, permainan ini seri.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Kalah apabila tiada pergerakan undang-undang",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Pemain akan kalah jika lawannya menyekat mereka sehingga mereka tidak dapat dipindahkan. Tukar sebelah untuk bergerak jika pilihan ini dilumpuhkan.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Terbang",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Sekiranya pemain hanya tinggal tiga atau empat keping (dapat dikonfigurasi), dia boleh memindahkannya ke titik bebas.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Peraturan N-bergerak",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Permainan ditarik jika tidak ada penyingkiran dalam jumlah gerakan tertentu.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Kembalikan",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Sila pilih",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Salinan",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Pindahkan sejarah yang disalin ke papan keratan.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Tolonglah",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Maklum balas",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Keluar",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Peraturan",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Warna",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Warna papan",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Warna kepingan",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Warna latar belakang",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Warna garis papan",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Pemain 1 keping warna",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Pemain 2 keping warna",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Warna mesej",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Tunjukkan jumlah kepingan di tangan",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Tunjukkan notasi di atas kapal",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Tunjukkan bar alat navigasi sejarah",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Paparan",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Lebar sempadan papan",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Lebar garis dalaman papan",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Lebar kepingan",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Saiz huruf",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Notasi WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Pulihkan",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Pulihkan tetapan lalai",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Pilih {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Maklumat",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Petunjuk",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "pemain",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Pemain 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Pemain 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Cara bermain",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Ketuk mana-mana titik yang ada untuk meletakkan potongan itu.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Ketuk sekeping untuk memindahkannya.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Ketuk titik yang disambungkan ke sekeping untuk menggerakkannya.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Ketuk satu bahagian lawan untuk dikeluarkan.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Anda perlu membuat kilang terlebih dahulu sebelum dapat mengeluarkan sekepingnya.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Anda perlu bermain dengan kepingan anda.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistik",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Jumlah permainan",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Keputusan",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "dibiarkan",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Dasar Privasi",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Sila baca dengan teliti dan pastikan anda memahami dan menyetujuinya sepenuhnya ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Sekiranya anda tidak bersetuju dengan Dasar ini, jangan gunakan aplikasi ini. Menggunakan aplikasi menunjukkan bahawa anda menerima syarat ini.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " dan ",
+  "@and": {},
+  "accept": "Terima",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Ambil semula",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Mengambil kembali…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Menunggu…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Melangkah ke hadapan",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Kembalikan semua",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Melangkah ke hadapan semua",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Bergerak sekarang",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Selesai.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Kilang retak",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Sekiranya pemain hanya mempunyai kepingan di kilang, kepingan di kilang tidak akan terkunci untuk dikeluarkan.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Tempoh animasi",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Tiada",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Permainan ini bertujuan untuk membiarkan lawan dengan kurang dari tiga keping atau tidak ada gerakan yang sah.\n\nPermainan akan menarik secara automatik jika kedudukan berlaku untuk kali ketiga atau tidak membuat penyingkiran dalam gerakan 100 terakhir (dikonfigurasi).\n\nPermainan ini berjalan dalam tiga fasa:\n\n1. Letakkan kepingan pada titik kosong\n2. Memindahkan kepingan ke titik bersebelahan\n3. (fasa pilihan) Memindahkan kepingan ke titik kosong semasa mengurangkan pemain menjadi tiga keping\n\nMeletak\n\nPermainan dimulakan dengan papan kosong, yang terdiri daripada grid dengan dua puluh empat mata. Pemain bergilir-gilir meletakkan kepingan mereka pada titik kosong sehingga setiap pemain meletakkan semua kepingan di papan. Sekiranya pemain boleh meletakkan tiga kepingannya secara lurus, dia mempunyai \"kilang\" dan boleh mengeluarkan salah satu kepingan lawannya dari papan.\n\nDalam beberapa peraturan, pemain mesti membuang kepingan lain terlebih dahulu sebelum mengeluarkan sekeping dari kilang yang dibentuk.\n\nAnda tidak boleh meletakkan kepingan ke titik kepingan yang dikeluarkan lagi dalam fasa meletakkan dalam beberapa peraturan.\n\nSetelah menggunakan semua kepingan, pemain bergilir-gilir bergerak.\n\nBergerak\n\nUntuk bergerak, pemain menggerakkan salah satu kepingannya di sepanjang garis papan ke titik bersebelahan yang kosong. Sekiranya dia tidak dapat melakukannya, dia akan kalah. Seorang pemain yang meluruskan tiga kepingannya pada garisan papan mempunyai kilang dan boleh mengeluarkan salah satu kepingan lawannya seperti dalam fasa meletakkan. Mana-mana pemain mengurangkan kepada dua bahagian, tidak mempunyai pilihan untuk membentuk kilang baru, dan dengan itu kehilangan permainan. Seorang pemain juga boleh kalah apabila lebih dari tiga keping jika lawannya menghalangnya daripada bergerak.\n\nTerbang\n\nDalam beberapa varian peraturan, setelah pemain hanya memiliki tiga keping yang tersisa, potongannya dapat terbang, melompat, atau melompat ke titik kosong, bukan hanya yang berdekatan.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Maklumat versi",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lesen",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Kod sumber",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Versi Aplikasi",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Am",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Mahir",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Meletak",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Bergerak",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Mengeluarkan",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Permainan melebihi keadaan",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Gaya permainan AI",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Pasif",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Masa tamat",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Penampilan",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Ikuti pengalaman manusia",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Pertimbangkan mobiliti kepingan",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Kiraan kepingan:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} di tangan: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} di atas kapal: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Papan mengimbangi dari atas",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Ini bukan giliran AI.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI tidak berfikir.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Anda berada di akhir senarai pindah.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Ketik kembali sekali lagi untuk pergi.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Lebih banyak lagi",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Ini adalah ciri eksperimen.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimen",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Lesen sumber terbuka",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Bahasa",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Bahasa lalai",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Potongan boleh bergerak dalam fasa penempatan",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Tidak ada fasa penempatan dan pemindahan yang berbeza, iaitu, pemain dapat memutuskan pada setiap gerakan sama ada mereka ingin meletakkan sekeping di papan atau memindahkan salah satu kepingan mereka (selagi mereka mempunyai potongan yang tersisa).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Warna menu",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Warna teks menu",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Warna item highlight menu",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Warna latar bar alat utama",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Warna ikon bar alat utama",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Warna latar bar alat navigasi",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Warna ikon bar alat navigasi",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Sembunyikan bar alat secara automatik",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Lokasi bar alat di skrin",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Atas",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Bawah",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Pusat",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Warna pepejal",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Gambar",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Pilih gambar anda",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Cahaya",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Gelap",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Tema",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Tema semasa",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Simpan tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Tunjukkan grafik analisis",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analisis",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Simpan permainan",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Muatkan permainan",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Kedudukan persediaan",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Tunjukkan langkah undang-undang",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Tunjukkan langkah terakhir",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Tunjukkan anak panah",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Kepingan",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Tunjukkan analisis",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Benang",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Melibatkan diri",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Bantu meningkatkan terjemahan",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Tutorial",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Kilang Klasik",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Kilang Campuran",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Kilang Ceylon",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Kilang boleh rosak dan dibuat semula berulang kali",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Sekiranya pemain memecahkan kilang untuk membuat kilang baru dengan segera, pemain tersebut dapat menggerakkan sekeping itu kembali ke persimpangan asal pada langkah seterusnya jika ia membuat kilang baru.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Permainan digambar jika pemain mempunyai tiga keping dan setelah sepuluh gerakan tidak ada pemain yang mengeluarkan potongan lawan",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Apabila pemain turun menjadi tiga keping, dan tidak ada pemain yang dapat melepaskan potongan lawan dalam sepuluh gerakan, permainan adalah seri.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Tutup",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Kepingan putih",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Sekeping hitam",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Titik kosong",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Tidak ada gunanya",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Fasa meletakkan",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Fasa bergerak",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Fasa terbang",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Sisi untuk digerakkan: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Pergerakan terakhir: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Terpilih",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Kebolehcapaian",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Sokongan pembaca skrin",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Ia adalah Cabutan!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Lukis",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Warna kemuncak kepingan",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritma",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Peraturan Endgame N-Move",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Sekiranya mana-mana pemain hanya mempunyai tiga keping dan tidak ada pemain yang mengeluarkan satu bahagian dalam gerakan tertentu, permainan akan ditarik.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Sama ada pemain hanya mempunyai tiga keping dan kedua-dua pemain tidak melepaskan satu bahagian dalam gerakan tertentu.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Peraturan pengulangan tiga kali ganda",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Permainan dilukis sekiranya kedudukan berlaku untuk kali ketiga.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Kilang! Terus bergerak.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Gaya titik",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Lebar titik",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Padu",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Berongga",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Melayu",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Bergerak}=1{{count} Bergerak}other{{count} Bergerak}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "Muatan gagal.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Nama fail",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Semak imbas…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Permainan disimpan ke",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Fail permainan",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "placedPieceCount": "Kiraan kepingan diletakkan dalam fasa meletakkan.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "noPiecesCanBeRemoved": "Tiada kepingan boleh dikeluarkan.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "empty": "kosong",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Tidak bergerak.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Kedudukan awal dipulihkan.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Bersih",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Dibersihkan.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Alih keluar",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Diletakkan ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece} other{{count} pieces}} perlu dialih keluar.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Pemain semasa telah meletakkan kepingan {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Tidak meletakkan fasa, tidak boleh mengubahnya.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "tampal",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pastu dah siap.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Tidak boleh tampal.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Tunjukkan kepingan yang tidak diletakkan dan dialih keluar",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Skrin penuh",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Keluar dan buka semula apl untuk tetapan berkuat kuasa.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Hutan",
+  "@forest": {},
+  "desktopImage": "Imej Desktop",
+  "@desktopImage": {},
+  "invalidPosition": "Kedudukan tidak sah.",
+  "@invalidPosition": {},
+  "shareGIF": "Kongsi GIF",
+  "@shareGIF": {},
+  "duration": "Tempoh",
+  "@duration": {},
+  "pixelRatio": "Nisbah piksel",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Perakam skrin permainan",
+  "@gameScreenRecorder": {},
+  "previous": "Sebelumnya",
+  "@previous": {},
+  "next": "Seterusnya",
+  "@next": {},
+  "skip": "Langkau",
+  "@skip": {},
+  "gotIt": "faham",
+  "@gotIt": {},
+  "youCanModifyRules": "Anda boleh mengubah suai peraturan permainan dalam tetapan peraturan.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Anda boleh menggunakan roda tetikus untuk menukar nilai dalam pemilih.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Masa AI Thinking ditetapkan kepada 0 bermakna tiada had masa untuk berfikir.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Harap maklum bahawa pelarasan masa pemikiran AI mungkin tidak tepat sepenuhnya. Masa pemikiran sebenar mungkin lebih pendek apabila tahap kesukaran ditetapkan kepada nilai yang lebih rendah dan mungkin lebih lama apabila AI sedang difikirkan apabila masa tamat.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Jika anda menetapkan tahap kesukaran tinggi tetapi tidak meningkatkan masa berfikir AI, tahap kesukaran sebenar mungkin dihadkan kepada nilai yang lebih rendah kerana kekangan masa berfikir. Nilai sebenar mungkin berbeza-beza berdasarkan prestasi mesin.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) ialah bentuk algoritma carian alfa-beta yang diubah suai yang bertujuan untuk meningkatkan kecekapan dengan menggunakan semula hasil carian perantaraan dan menggunakan tekaan awal yang baik untuk mengecilkan ruang carian.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) ialah algoritma carian untuk mencari langkah terbaik dalam kedudukan tertentu. Ia adalah peningkatan algoritma alfa-beta dan menggunakan carian tetingkap nol atau sifar untuk mengesahkan bahawa satu langkah adalah lebih teruk atau tidak lebih teruk daripada skor yang sudah selamat daripada variasi utama. PVS memfokuskan pada langkah yang paling menjanjikan dan mengelakkan carian yang tidak perlu bagi cawangan suboptimum, yang membantu meningkatkan kecekapan carian.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Algoritma alfa-beta ialah algoritma carian untuk mencari langkah terbaik. Ia menggunakan prinsip minimax dan dua nilai, alfa dan beta, untuk memangkas pokok carian dan meningkatkan kecekapan. Alfa mewakili skor minimum yang komputer pasti boleh perolehi, manakala beta mewakili skor maksimum yang boleh diperolehi oleh lawannya. Algoritma membantu komputer membuat keputusan yang bijak dan cekap dalam permainan.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Dalam permainan ini, lebih mudah untuk pemain kedua untuk menang berbanding dengan pemain pertama.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Mengikut pengalaman manusia, jika anda cuba untuk menang, anda akan kalah. Sebaliknya, sasarkan untuk seri sebagai matlamat anda dan elakkan kalah dalam permainan. Perhatikan lawan anda dan perlahan-lahan tarik mereka ke posisi di mana mereka mungkin membuat kesilapan. Apabila mereka menunjukkan kelemahan, rebut peluang dan tolak perlahan-lahan untuk menang. Dengan cara ini, anda boleh memenangi permainan.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Mendayakan pilihan Pasif akan menyebabkan AI berehat apabila ia mempunyai kelebihan dalam kedudukan, dan bukannya cuba secara agresif untuk menang secepat mungkin.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Jika AI mempertimbangkan mobiliti kepingannya, ia bukan sahaja bertujuan untuk menangkap kepingan lawan secepat mungkin, tetapi juga mempertimbangkan untuk menyekat pergerakan lawan dan menghalang mereka daripada melakukan perkara yang sama.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Mendayakan pilihan ini meningkatkan rawak dan keseronokan permainan sambil melumpuhkannya boleh membantu mengkaji cara untuk mengalahkan AI.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "Apabila papan penuh",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Pada akhir fasa meletakkan, sebelum fasa bergerak bermula, tindakan akan menyusul jika papan penuh dengan kepingan.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Pemain yang bergerak terlebih dahulu dalam fasa bergerak mengeluarkan salah satu kepingan pihak lawan.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Kedua-dua pihak bersetuju untuk seri.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Ambil salah satu bahagian lawan anda.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Pemain pertama kalah dalam permainan.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Pemain pertama dan kedua mengeluarkan salah satu kepingan lawan.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Pemain kedua dan pertama mengeluarkan salah satu kepingan lawan.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Kini memasuki fasa terbang, kepingan lawan boleh melompat ke mana-mana titik kosong di papan. Anda boleh mematikan peraturan terbang dalam \"Tetapan Peraturan\".",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Apabila kebuntuan",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Apakah tindakan yang berlaku apabila tiada kepingan boleh digerakkan?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Berakhir dengan kekalahan yang buntu.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Tukar sisi untuk bergerak.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Keluarkan salah satu kepingan lawan dan buat langkah seterusnya.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Diakhiri dengan keputusan seri.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Keluarkan salah satu bahagian lawan dan tukar bahagian tepi untuk bergerak.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Masa kelewatan tindak balas AI",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI kini dalam fasa respons tertunda. Sila tunggu sebentar sebelum meneruskan.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Anda tidak boleh mengeluarkan bahagian yang tidak bersebelahan.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Jika kebuntuan, kepingan lawan yang bersebelahan dengan anda boleh dikeluarkan, tanpa mengira pembentukan kilang.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS ialah algoritma mesra pemula yang membuat keputusan dengan meneroka dan menilai pergerakan berbeza melalui simulasi.",
+  "@whatIsMcts": {},
+  "goldenJade": "Jade Emas",
+  "@goldenJade": {},
+  "forestWood": "Kayu Hutan",
+  "@forestWood": {},
+  "greenMeadow": "Padang Rumput Hijau",
+  "@greenMeadow": {},
+  "stonyPath": "Laluan Berbatu",
+  "@stonyPath": {},
+  "midnightBlue": "Biru Tengah Malam",
+  "@midnightBlue": {},
+  "greenForest": "Hutan Hijau",
+  "@greenForest": {},
+  "pastelPink": "Merah Jambu Pastel",
+  "@pastelPink": {},
+  "turquoiseSea": "Laut Turquoise",
+  "@turquoiseSea": {},
+  "violetDream": "Mimpi Violet",
+  "@violetDream": {},
+  "mintChocolate": "Coklat Pudina",
+  "@mintChocolate": {},
+  "skyBlue": "Biru Langit",
+  "@skyBlue": {},
+  "playfulGarden": "Taman yang suka bermain",
+  "@playfulGarden": {},
+  "darkMystery": "Misteri Gelap",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algoritma Analisis Retrogred menggunakan analisis retrogred berbilang nilai untuk membina pangkalan data permainan akhir daripada kedudukan permulaan yang berbeza, kemudian menggunakan pangkalan data ini untuk mengoptimumkan permainan. Pendekatan ini termasuk dalam kategori penyelesaian Ultra-Kuat.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Adakah anda ingin melihat panduan pengguna untuk algoritma ini?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Tunjukkan penunjuk kelebihan kedudukan",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Gunakan pangkalan data yang sempurna",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Dayakan pilihan ini untuk menggunakan pangkalan data permainan yang sempurna yang dijana melalui algoritma canggih. Ciri ini menyepadukan kedua-dua strategi pembukaan dan akhir permainan untuk mencadangkan pergerakan yang optimum. Ini adalah pilihan pilihan untuk pemain yang mencari tahap ketepatan tertinggi dalam permainan. Dicipta melalui teknik pengiraan yang teliti, pangkalan data direka untuk menawarkan penyelesaian permainan yang hampir sempurna.\n\nNota: Sekiranya AI gagal mengakses pangkalan data, ia akan beralih kepada algoritma konvensional untuk keputusan permainan. Apabila pangkalan data tersedia, 'Tahap Kesukaran' menjadi hampir tiada tandingan, dan 'Masa Pemikiran AI' mengalami pengurangan drastik. Banyak tetapan dalam pilihan 'AI's play style' akan ditindih, kerana hasil pangkalan data memegang keutamaan tertinggi.\n\nUntuk panduan tentang cara memanfaatkan sepenuhnya pangkalan data yang sempurna ini, klik di sini.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Imej latar belakang",
+  "@backgroundImage": {},
+  "whatIsRandom": "Apabila pilihan 'Gunakan pangkalan data yang sempurna' tidak didayakan, tetapan 'Rawak' menyebabkan AI mengalihkan kepingan secara rawak tanpa menggunakan sebarang algoritma untuk pemilihan pergerakan. Ini biasanya menghasilkan permainan yang jauh lebih lemah. Sebaliknya, apabila 'Gunakan pangkalan data yang sempurna' didayakan, AI secara eksklusif bergantung pada 'Pangkalan Data Sempurna' untuk membuat keputusan, dan bukannya menggabungkannya dengan algoritma AI tradisional. Dalam mod ini, pergerakan AI sepenuhnya berdasarkan kandungan pangkalan data, mengelakkan pergantungan pada pengiraan masa nyata atau algoritma carian.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Keluarkan bidak lawan daripada tangan mereka; kemudian giliran lawan untuk meletakkan bidak.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Apabila membentuk kilang semasa fasa meletakkan",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Keluarkan bidak lawan daripada papan.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Keluarkan bidak lawan daripada papan; kemudian giliran lawan untuk meletakkan bidak.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Lawan mengeluarkan bidak mereka sendiri daripada papan.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Daripada anda yang mengambil tindakan, pihak lawan memilih dan mengeluarkan bidak mereka sendiri daripada papan, dengan berkesan mengambil tindakan yang memudaratkan diri mereka sendiri.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Keluarkan bidak lawan daripada tangan mereka; kemudian giliran anda untuk bergerak.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Keluarkan bidak daripada tangan lawan. Jika, mengikut tetapan Alih keluar berbilang, berbilang bidak perlu dialih keluar dan lawan tidak mempunyai baki bidak di tangan, teruskan mengalihkan keluar bidak lawan daripada papan. Kemudian, giliran anda untuk bergerak. Jika anda terus membentuk kilang, anda boleh terus mengalihkan keluar bidak lawan.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Keluarkan bidak daripada tangan lawan. Jika, mengikut tetapan Alih keluar berbilang, berbilang bidak perlu dialih keluar dan lawan tidak mempunyai baki bidak di tangan, teruskan mengalihkan keluar bidak lawan daripada papan. Kemudian, giliran lawan untuk bergerak.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Tandakan dan lengahkan pengalihan keluar bidak.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Semasa fasa meletakkan, bidak yang akan dialihkan keluar ditandakan, dan bagi kedua-dua pemain, tiada bidak baharu boleh diletakkan pada titik ini. Apabila memasuki fasa bergerak, bidak yang ditanda ini dialihkan keluar sekaligus, dan pemain kemudiannya boleh mengalihkan bidak mereka ke titik yang kini kosong ini.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Tindakan yang boleh diambil semasa membentuk kilang semasa fasa penempatan.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Ditandai",
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Anda boleh mengaktifkan sokongan pembaca skrin dalam konfigurasi Aksesibiliti di Tetapan Umum.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Paparkan nombor pada kepingan",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Simpan imej",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Tunjukkan Bar Alat Analisis",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Warna Latar Belakang Bar Alat Analisis",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Warna Ikon Bar Alat Analisis",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformed.",
+  "@transformed": {},
+  "cannotTransform": "Tidak boleh mengubah.",
+  "@cannotTransform": {},
+  "rotate": "Putar",
+  "@rotate": {},
+  "horizontalFlip": "Flip M.",
+  "@horizontalFlip": {},
+  "verticalFlip": "Flip V.",
+  "@verticalFlip": {},
+  "innerOuterFlip": "Flip D/L",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Kanvas Lutsinar",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Hadkan Pembentukan Kilang Berulang",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Kepingan yang dipindahkan dari satu kilang untuk membentuk satu lagi tidak boleh kembali ke titik asal pada giliran seterusnya untuk membentuk kilang lagi. Langkah berbeza diperlukan dahulu.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Kilangan penggunaan satu kali",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Setiap kilangan hanya boleh mengeluarkan satu bahagian lawan sekali sahaja. Anda boleh membentuknya semula, tetapi ia tidak boleh digunakan untuk pengeluaran tambahan.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Peraturan semasa yang anda tetapkan tidak mempunyai pangkalan data sempurna yang sepadan. Untuk maklumat lanjut mengenai pangkalan data sempurna, sila klik di sini.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Tumpu pada menyekat laluan",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Utamakan untuk menghalang pergerakan lawan daripada membentuk kincir. Daripada memberi tumpuan untuk menghapuskan kepingan dengan melengkapkan kincir, AI bertujuan untuk memerangkap lawan, menjadikan mereka tidak dapat bergerak dan memastikan kemenangan melalui kepenatan dan bukan permainan agresif. Strategi ini tidak secara aktif menghalang kincir lawan.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Gambar catur",
+  "@pieceImage": {},
+  "importColorSettings": "Import tetapan warna",
+  "@importColorSettings": {},
+  "exportColorSettings": "Eksport tetapan warna",
+  "@exportColorSettings": {},
+  "import": "Import",
+  "@import": {},
+  "export": "Eksport",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Sila salin tetapan format JSON ke papan keratan terlebih dahulu.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Disalin ke papan keratan.",
+  "@copiedToClipboard": {},
+  "imported": "Diimport.",
+  "@imported": {},
+  "boardImage": "Imej papan",
+  "@boardImage": {},
+  "autumnLeaves": "Daun Musim Gugur",
+  "@autumnLeaves": {},
+  "legendaryLand": "Tanah Lagenda",
+  "@legendaryLand": {},
+  "vignetteEffect": "Kesan vignet",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Adakah anda ingin menjadikan bar alat sepenuhnya telus apabila imej latar belakang papan ditetapkan?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktifkan getaran dalam permainan",
+  "@vibration": {},
+  "soundTheme": "Tema bunyi",
+  "@soundTheme": {},
+  "ball": "Bola",
+  "@ball": {},
+  "liquid": "Cecair",
+  "@liquid": {},
+  "wood": "Kayu",
+  "@wood": {},
+  "placeEffectAnimation": "Efek animasi meletakkan buah",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efek animasi mengeluarkan buah",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Tunjukkan bar alat di bahagian bawah",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Jejari sudut papan",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Gunakan buku pembukaan",
+  "@useOpeningBook": {},
+  "currentRule": "Semasa",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Set peraturan",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Biarkan AI menggunakan langkah pembukaan yang biasa digunakan oleh pemain manusia profesional semasa permainan awal. Nota: Ciri ini hanya tersedia untuk set peraturan tertentu sahaja.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Tunjukkan graf kelebihan",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graf kelebihan hanya akan dilukis selepas AI membuat gerakan. Ia tidak akan dilukis apabila pemain manusia membuat gerakan.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Lumpuhkan penyingkiran sehingga semua kepingan diletakkan. Pemain menyingkirkan kepingan berdasarkan bilangan kilang yang terbentuk.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Lumpuhkan penyingkiran sehingga semua kepingan diletakkan. Pemain menyingkirkan kepingan berdasarkan bilangan kilang: jika sama, kedua-duanya menyingkirkan jumlah kepingan yang sama; jika seorang mempunyai lebih, dia menyingkirkan satu keping tambahan, mengekalkan perbezaan satu keping. Jika hanya seorang berjaya membentuk kilang, dia menyingkirkan dua kepingan manakala yang lain menyingkirkan satu. Jika tiada sesiapa membentuk kilang, kedua-duanya menyingkirkan satu keping.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Pilih salah satu buah catur anda.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Bukan giliran anda.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Warna latar bar alat anotasi",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Warna ikon bar alat anotasi",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Tunjukkan bar alat anotasi",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Masuk ke mod anotasi",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Adakah anda pasti ingin menghapus semua anotasi?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Gesaan LLM disalin ke papan klip.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Sambungan ditolak, pelayan mungkin tidak beroperasi.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Pengesanan berjaya, menunggu sambungan...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Tiada sambungan LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Ambil Tangkapan Skrin",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Terputus daripada lawan.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Permintaan Tarik Balik",
+  "@takeBackRequest": {},
+  "nothingToShow": "Tiada apa untuk ditunjukkan.",
+  "@nothingToShow": {},
+  "stopHosting": "Hentikan Hos",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Sambungan ditetapkan semula oleh rakan.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Sambungan terputus akibat masalah sambungan. Sila sambung semula.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Mula Menjadi Hos",
+  "@startHosting": {},
+  "restartRequestRejected": "Permintaan mulakan semula ditolak.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Tidak bersambung dengan lawan LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Gesaan LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Permainan dimulakan semula.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Tarik balik ditolak.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Adakah anda pasti ingin menyerah dalam permainan ini?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Lawan menyerah. Anda menang!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Kosongkan semua anotasi",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Bersambung, menunggu langkah lawan...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Status rangkaian: Terputus",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Permintaan tarik balik telah dihantar kepada lawan.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Lawan mungkin telah meninggalkan permainan",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Berjaya bersambung ke hos.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Sambungan terputus: masalah sambungan",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Tiada hos dikesan.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Sahkan Penyerahan",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Mula menjadi hos, menunggu pemain menyertai...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Sambungan terlaksana, sambungan rangkaian tidak stabil.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Tiada gesaan LLM tersedia.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Anda menyerah. Permainan tamat.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP Pelayan",
+  "@serverIp": {},
+  "confirmClear": "Sahkan Pengosongan",
+  "@confirmClear": {},
+  "opponentSTurn": "Giliran lawan.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Menunggu sambungan klien...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Permintaan tarik balik ditolak atau gagal.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Tambah teks",
+  "@addText": {},
+  "exitAnnotationMode": "Keluar dari mod anotasi",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Taip anotasi anda",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Cuba menyambung semula...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Permintaan mulakan semula dihantar. Menunggu respons lawan...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Pelayan dihentikan.",
+  "@serverIsStopped": {},
+  "restartRequest": "Permintaan Mulakan Semula",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Tidak boleh meminta tarik balik ketika bukan giliran anda.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Tarik balik diterima.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Tetapan Rangkaian Tempatan",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Berjaya menyambung semula!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Gagal menyimpan imej ke Galeri.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Lawan meminta untuk mulakan semula permainan. Adakah anda terima?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Giliran anda.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Gagal menyambung semula, sila mulakan semula permainan.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Hos",
+  "@host": {},
+  "join": "Sertai",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Alamat IP tidak sah.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Port tidak sah.",
+  "@invalidPort": {},
+  "connectingAttempt": "Menyambung: Percubaan {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Gagal menyambung: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Gagal memulakan hos: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Hos ditemui: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Hentikan",
+  "@stop": {},
+  "discover": "Kesan",
+  "@discover": {},
+  "connect": "Sambung",
+  "@connect": {},
+  "clientConnected": "Klien disambungkan: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Mengesan: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Menyambung semula ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Bersambung",
+  "@connected": {},
+  "delete": "Padam",
+  "@delete": {},
+  "ancientEgypt": "Mesir Purba",
+  "@ancientEgypt": {},
+  "gothicIce": "Ais Gotik",
+  "@gothicIce": {},
+  "riceField": "Sawah Padi",
+  "@riceField": {},
+  "chinesePorcelain": "Porselin Cina",
+  "@chinesePorcelain": {},
+  "desertDusk": "Senja Gurun",
+  "@desertDusk": {},
+  "precisionCraft": "Kraf Ketepatan",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Sulaman Rakyat",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Warisan Carpathian",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Kemegahan Imperial",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Kristal Bohemia",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Matahari Terbit Savana",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmoni dan Keseimbangan",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Rempah Kayu Manis",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Mozaik Anatolia",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Semangat Karnival",
+  "@carnivalSpirit": {},
+  "custom": "Adat",
+  "@custom": {},
+  "spiceMarket": "Pasar Rempah",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Leret untuk mendedahkan Laci",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Tunjukkan maklumat permainan pada tangkapan skrin",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Had masa manusia",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Tiada had masa untuk pergerakan manusia",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Kalah masa tamat akan dikenakan untuk pemain manusia",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Mengesan papan permainan...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Anda boleh masukkan mana‑mana nama model.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Posisi papan diaplikasikan. FEN disalin ke papan klip.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Cadangan: cuba ambil gambar papan permainan yang lebih jelas.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "Templat arahan LLM",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Tiada papan permainan sah dikesan.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Memilih imej dari album...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Tetapkan templat arahan",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Sunting templat arahan untuk analisis LLM",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Gagal menjana FEN daripada papan yang dikenalpasti.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Keluaran dalam bahasa semasa",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "URL Asas biasa",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Papar model biasa",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Parameter pengecaman dikemas kini.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Giliran Putih",
+  "@whiteSMove": {},
+  "resetToDefaults": "Tetapkan semula ke lalai",
+  "@resetToDefaults": {},
+  "photoShoot": "Ambil foto",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Gagal menggunakan posisi papan yang dikenalpasti.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "Kandungan arahan LLM",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM tidak dikonfigurasikan. Sila semak tetapan anda.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Tetapkan pembekal, model, API Key, dan Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "Konfigurasi LLM",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Konfigurasi pembekal LLM",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "Tajuk templat arahan LLM",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Tiada buah dikesan dalam imej. Sila cuba lagi.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Kenal pasti papan permainan dari imej",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Lihat petua",
+  "@viewTips": {},
+  "applyToBoard": "Terap ke papan",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Laraskan kawasan papan",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Lihat URL biasa",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Analisis warna gagal!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Menganalisis imej papan permainan...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Pilih dari album",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Tiada titik papan dikesan!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Jika dibiarkan kosong, templat lalai akan digunakan",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "Konfig LLM",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Anda pasti mahu tetapkan semula templat arahan ke nilai lalai?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "Kaki templat arahan LLM",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Memuat respons...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Terap hasil ini ke papan",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Mengambil gambar...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Sila pilih imej papan permainan untuk dikenalpasti",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Hasil pengecaman",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Analisis langkah dan berikan pandangan.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Dapatkan API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Seluruh proses pengecaman gagal diselesaikan.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Keputusan pengecaman papan",
+  "@boardRecognitionResult": {},
+  "askLlm": "Tanya LLM",
+  "@askLlm": {},
+  "boardDetectionFailed": "Pengesanan papan gagal!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Tiada titik papan dikesan, tidak dapat kenal pasti buah!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Salin FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Model yang biasa digunakan",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (pilihan)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Tiada imej dipilih",
+  "@noImageSelected": {},
+  "blackSMove": "Giliran Hitam",
+  "@blackSMove": {},
+  "llm": "Model Bahasa Besar",
+  "@llm": {},
+  "llmProvider": "Penyedia",
+  "@llmProvider": {},
+  "baseUrl": "URL Asas",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Suhu",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Arahan diterima! AI sedang memproses...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Fikiran mendalam sedang dijalankan, sila tunggu...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Akan dipersembahkan tidak lama lagi...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parameter pengecaman",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Laraskan parameter untuk meningkatkan ketepatan pengecaman",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Simpan parameter",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Tidak dapat memulakan pengecaman imej: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Pengecaman imej gagal: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Kedudukan diterapkan dengan {whiteCount} buah putih dan {blackCount} buah hitam",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN disalin ke papan klip)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Pengecaman gagal: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Penilaian saya",
+  "@myRating": {},
+  "gamesPlayed": "Permainan dimainkan",
+  "@gamesPlayed": {},
+  "wins": "Menang",
+  "@wins": {},
+  "losses": "Kalah",
+  "@losses": {},
+  "draws": "Seri",
+  "@draws": {},
+  "lastUpdated": "Terakhir dikemas kini",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Tetapkan semula statistik",
+  "@resetStatistics": {},
+  "drawRate": "Kadar seri",
+  "@drawRate": {},
+  "lossRate": "Kadar kalah",
+  "@lossRate": {},
+  "aiStatistics": "Statistik AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Dayakan statistik",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Apabila didayakan, keputusan permainan akan direkodkan dalam statistik. Walau bagaimanapun, permainan yang melibatkan pembatalan langkah tidak akan direkodkan. Apabila dilumpuhkan, pengumpulan statistik dijeda.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Ini akan menetapkan semula semua statistik permainan. Tindakan ini tidak boleh dibuat asal.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Saiz gelang dalam papan",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Bayang papan",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Pengesanan perangkap",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Sorot gerakan perangkap dengan bulatan dan anak panah tebal semasa analisis.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Terdapat perangkap. Gerakan perangkap: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Mengapit penangkapan",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Lampirkan salah satu kepingan lawan anda di antara dua anda dalam garis lurus untuk menangkapnya.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Benarkan penangkapan mengapit",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Menangkap intervensi",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Bergerak ke titik kosong di antara dua keping lawan anda untuk menangkap mereka berdua.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Benarkan penangkapan intervensi",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Lompat menangkap",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Tangkap dengan melompat ke atas sekeping lawan bersebelahan ke titik kosong di luar.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Benarkan penangkapan lompat",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Baris yang berkenaan",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Di sepanjang tepi dataran",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Di sepanjang garis ortogonal menyeberangi dataran",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Di sepanjang garis pepenjuru menyeberangi dataran",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Fasa pelaksanaan",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Ketersediaan semasa fasa bergerak berdasarkan kepingan yang tinggal",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Tiada sekatan",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Tersedia semasa anda mempunyai tiga atau lebih sedikit",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

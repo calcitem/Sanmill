@@ -1,5 +1,32 @@
 #!/bin/bash
-/
+
+# Get current branch name
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Only allow release from master or stable branch
+if [ "$CURRENT_BRANCH" != "master" ] && [ "$CURRENT_BRANCH" != "stable" ]; then
+  echo "Error: Release is only allowed from 'master' or 'stable' branch."
+  echo "Current branch: $CURRENT_BRANCH"
+  exit 1
+fi
+
+echo "Current branch: $CURRENT_BRANCH"
+
+# Check if the latest tag follows vX.Y.Z format
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+if [ -z "$LATEST_TAG" ]; then
+  echo "Warning: No tags found in the repository."
+else
+  echo "Latest tag: $LATEST_TAG"
+  # Check if tag matches vX.Y.Z format (X, Y, Z are digits)
+  if ! echo "$LATEST_TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "Error: The latest tag '$LATEST_TAG' does not follow the vX.Y.Z format."
+    echo "Expected format: vX.Y.Z (e.g., v1.2.3)"
+    exit 1
+  fi
+  echo "Tag format check passed: $LATEST_TAG follows vX.Y.Z format"
+fi
+
 YAML_FILE=src/ui/flutter_app/pubspec.yaml
 SNAP_YAML_FILE=snap/snapcraft.yaml
 SNAP_DESKTOP_FILE=snap/gui/mill.desktop
@@ -190,14 +217,14 @@ git tag -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release versio
 git show
 
 # Prompt the user for confirmation
-read -p "Do you want to push the latest changes to the master branch? (y/n): " choice
+read -p "Do you want to push the latest changes to the $CURRENT_BRANCH branch? (y/n): " choice
 
 if [ "$choice" == "y" ]; then
-  # If the user confirms, push the changes to the master branch
+  # If the user confirms, push the changes to the current branch
   git push origin v$NEW_VERSION -f
-  git push origin master
-  echo "Changes have been pushed to the master branch."
+  git push origin $CURRENT_BRANCH
+  echo "Changes have been pushed to the $CURRENT_BRANCH branch."
 else
   # If the user declines, skip the push
-  echo "Push to master branch has been skipped."
+  echo "Push to $CURRENT_BRANCH branch has been skipped."
 fi

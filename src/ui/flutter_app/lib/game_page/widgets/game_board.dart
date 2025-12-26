@@ -102,16 +102,23 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       _isDialogShowing = false;
     }
 
-    GameController().engine.startup();
-
     _setupValueNotifierListener();
 
-    Future<void>.delayed(const Duration(microseconds: 100), () {
-      _setReadyState();
-      processInitialSharingMoveList();
-    });
+    // Initialize the native engine and only then allow user interaction.
+    // This prevents a race where an in-flight startup waiter consumes
+    // a "bestmove" response from the first AI search.
+    Future<void>.microtask(_initEngineAndSetReady);
 
     GameController().animationManager = animationManager;
+  }
+
+  Future<void> _initEngineAndSetReady() async {
+    await GameController().engine.startup();
+    if (!mounted) {
+      return;
+    }
+    await _setReadyState();
+    processInitialSharingMoveList();
   }
 
   Future<void> _setReadyState() async {
@@ -356,7 +363,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                             putDownAnimationValue:
                                 animationManager.putDownAnimation.value,
                             isPutDownAnimating: animationManager
-                                .putDownAnimationController.isAnimating,
+                                .putDownAnimationController
+                                .isAnimating,
                             pieceImages: <PieceColor, ui.Image?>{
                               PieceColor.white: gameImages?.whitePieceImage,
                               PieceColor.black: gameImages?.blackPieceImage,

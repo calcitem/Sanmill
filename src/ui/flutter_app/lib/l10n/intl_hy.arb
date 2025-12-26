@@ -2159,4 +2159,1929 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Կարգավորել մոդելը, լեզուն և վարքագիծը",
     "@voiceAssistantSettingsDescription": {}
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Խաղացող 1-ը հաղթում է:",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Խաղացող 2-ը հաղթում է:",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Հաղթեց",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Կորած",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Մտածում…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Նոր խաղ",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Ներմուծման խաղ",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Արտահանման խաղ",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Խաղը ներմուծված է.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Հնարավոր չէ ներմուծել {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Շարժումները և կանոնները չեն համընկնում:",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Խնդրում ենք սպասել.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Վերսկսե՞լ ընթացիկ խաղը:",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Վերսկսել",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Խաղը սկսվեց, խնդրում եմ տեղադրել:",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Վերլուծվում է…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Սխալ՝ {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "Հաղթելու տոկոսադրույքը",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Գնահատականը:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Խաղացող 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Խաղացող 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} կտորների քանակը երեքից պակաս է:",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player}-ը հրաժարական տվեց:",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player}-ը ճանապարհ չունի գնալու:",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "Տախտակը լիքն է, և {player}-ը ճանապարհ չունի գնալու:",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "Ժամանակն ավարտվել է, {player} կորցրել է:",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "Շարժվող փուլում ոչ մի կտոր չի հեռացվել վերջին կոնկրետ քանակի շարժումներում:",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Դա ոչ-ոքի է, քանի որ տախտակը լիքն է:",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Ոչ-ոքի է եռակի կրկնության պատճառով:",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Խաղն ավարտված է! Անհայտ պատճառ.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Խաղն ավարտված է",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Դու հաղթեցիր! Շնորհավորում եմ:",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "մարտահրավեր նետե՞լ ավելի դժվար մակարդակին: Նոր մակարդակը կլինի մակարդակը {level}:",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Դու պարտվեցիր!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Վերլուծել",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Մասին",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Տարբերակ՝ {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "Շնորհակալություն",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Կարգավորումներ",
+  "@settings": {
+    "description": "Settings"
+  },
+  "generalSettings": "Ընդհանուր կարգավորումներ",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Դժվարության մակարդակ",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI մտածելու ժամանակ",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Դժվարություն",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Ձայնային էֆեկտներ",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Խաղացեք հնչյուններ խաղի մեջ",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Ֆոնային երաժշտություն",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Նվագարկել տեղային ձայնային ֆայլը որպես ֆոնային երաժշտություն",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Ֆոնային երաժշտության ֆայլ",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Մաքրել ֆոնային երաժշտությունը",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Երաժշտական ֆայլեր",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Հետ վերցնելիս լռեք",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Տոն",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Առաջին քայլը",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Մարդ",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Այլընտրանքային",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Ավտոմատ վերսկսել խաղը, երբ խաղն ավարտվի",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Ավտոմատ փոխել առաջին քայլը",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Տեղափոխեք պատահականորեն",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Տարբեր",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Կանոններ",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Յուրաքանչյուր խաղացողի խաղաքարերի քանակը",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Քանի հատ էլեմենտներ ունի յուրաքանչյուր խաղացողը՞:",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount_Detail": "Եթե Flying-ը միացված է, երբ խաղացողը կրճատվում է որոշակի խաղաքարերի քանակով, նրա խաղաքարերը կարող են ազատ տեղաշարժվել դեպի ցանկացած չզբաղեցված կետ, այլ ոչ թե սահմանափակվել հարակից կետերով, ինչպես մնացած խաղում:",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Կտորներ Առնվազն",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Շեղանկյուն գծեր",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Գրատախտակին ավելացրեք չորս անկյունագծեր:",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst_Detail": "Խաղացողը, ով տեղափոխվում է երկրորդը տեղակայման փուլում, շարժվում է առաջինը շարժման փուլում:",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Բազմակի հեռացում",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Եթե խաղացողը միանգամից փակում է մեկից ավելի ջրաղաց, նա կհեռացնի իր փակած ջրաղացների քանակը:",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways_Detail": "Լռելյայնորեն, խաղացողները պետք է նախ հանեն ցանկացած այլ կտոր, նախքան ձևավորված ջրաղացից կտորը հեռացնելը: Միացրեք այս տարբերակը՝ սահմանափակումն անջատելու համար:",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Երկրորդ խաղացողը պարտվում է, երբ խաղատախտակը լի է",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Պարտվել, երբ ոչ մի օրինական քայլ",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Խաղացողը կպարտվի, եթե հակառակորդը արգելափակի նրանց այնպես, որ նրանք չկարողանան տեղաշարժվել: Փոխեք կողմը՝ տեղափոխելու համար, եթե այս տարբերակն անջատված է:",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Թռիչք",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Եթե խաղացողը ունի ընդամենը երեք կամ չորս (կարգավորելի) կտոր, նա կարող է տեղափոխել խաղաքարը ցանկացած ազատ կետ:",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-շարժման կանոն",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Խաղը ոչ-ոքի է անցկացվում, եթե որոշակի քանակությամբ շարժումներում հեռացում չի եղել:",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Վերադարձ",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Խնդրում ենք ընտրել",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Պատճենել",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Պատճենված պատմությունը տեղափոխել սեղմատախտակ:",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Օգնություն",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Հետադարձ կապ",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Ելք",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Կանոններ",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Գույն",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Տախտակի գույնը",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Կտորի գույն",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Ֆոնի գույնը",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Տախտակի գծի գույնը",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Խաղացող 1 հատ գույն",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Խաղացող 2 հատ գույն",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Հաղորդագրության գույնը",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Ցույց տալ չտեղադրված կտորների քանակը",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Ցույց տալ նշումները տախտակի վրա",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Ցույց տալ պատմության նավիգացիոն գործիքագոտին",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Ցուցադրել",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Տախտակի սահմանագծի լայնությունը",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Տախտակի ներքին գծի լայնությունը",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Կտոր լայնությունը",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Տառատեսակի չափը",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD նշում",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Վերականգնել",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Վերականգնել լռելյայն կարգավորումները",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Ընտրեք {element}",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Ինֆո",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Հուշում",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "խաղացող",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Խաղացող 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Խաղացող 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Ինչպես խաղալ",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Հպեք ցանկացած հասանելի կետի՝ կտորը տեղադրելու համար:",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Հպեք մի կտորի՝ այն տեղափոխելու համար:",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Հպեք մի կետի վրա, որը միացված է կտորին՝ այն տեղափոխելու համար:",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Հպեք հակառակորդի մեկ կտորին՝ հեռացնելու համար:",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Նախքան կտորը հեռացնելու համար նախ պետք է ջրաղաց ստեղծեք:",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Դուք պետք է խաղաք ձեր խաղաքարերով:",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Վիճակագրություն",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Ընդհանուր խաղեր",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Արդյունքներ",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "ձախ",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Գաղտնիության քաղաքականություն",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Խնդրում ենք ուշադիր կարդալ և համոզվել, որ դուք լիովին հասկանում և համաձայն եք սա ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Եթե համաձայն չեք այս քաղաքականությանը, խնդրում ենք մի օգտագործեք այս հավելվածը: Հավելվածի օգտագործումը ենթադրում է, որ դուք ընդունում եք այս պայմանները:",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " և ",
+  "@and": {},
+  "accept": "Ընդունել",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Հետ վերցնել",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Հետ վերցնելով…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Սպասում է…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Քայլ առաջ",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Վերցրեք բոլորը",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Քայլ առաջ բոլորը",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Շարժվեք հիմա",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Կատարած.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-mill",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Եթե խաղացողն ունի միայն կտորներ ջրաղացներում, ապա ջրաղացների կտորները չեն կողպվի հանելու համար:",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Անիմացիայի տևողությունը",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "helpContent": "Խաղը նպատակ ունի մրցակցին թողնել երեքից պակաս խաղաքարով կամ առանց օրինական քայլերի:\n\nԽաղն ինքնաբերաբար ոչ-ոքի է անցնում, եթե դիրքը տեղի է ունենում երրորդ անգամ կամ չի հեռացվում վերջին 100 (կարգավորելի) քայլերում:\n\nԽաղն ընթանում է երեք փուլով.\n\n1. Կտորների տեղադրում թափուր կետերի վրա\n2. Կտորների տեղափոխում հարակից կետեր\n3. (ըստ ցանկության փուլ) Ֆիգուրների տեղափոխում ցանկացած թափուր կետ, երբ խաղացողը կրճատվում է երեք կտորով\n\nՏեղադրում\n\nԽաղը սկսվում է դատարկ տախտակով, որը բաղկացած է քսանչորս միավոր ունեցող ցանցից: Խաղացողները հերթով դնում են իրենց խաղաքարերը թափուր կետերի վրա, մինչև յուրաքանչյուր խաղացող բոլոր խաղաքարերը տեղադրի խաղատախտակի վրա: Եթե խաղացողը կարող է ուղիղ դնել իր ֆիգուրներից երեքը, ապա նա ունի «ջրաղաց» և կարող է խաղատախտակից հեռացնել մրցակցի խաղաքարերից մեկը:\n\nՈրոշ կանոնների համաձայն, խաղացողները պետք է նախ հանեն ցանկացած այլ կտոր, նախքան ձևավորված ջրաղացից կտորը հանելը:\n\nՈրոշ կանոններով դուք չեք կարող կտորները տեղադրել հանված կտորների կետերում կրկին տեղադրման փուլում:\n\nԲոլոր խաղաքարերն օգտագործելուց հետո խաղացողները հերթով շարժվում են:\n\nՇարժվող\n\nՏեղափոխվելու համար խաղացողը իր խաղաքարերից մեկը տեղափոխում է տախտակի գծի երկայնքով դատարկ հարակից կետ: Եթե նա չի կարող դա անել, նա պարտվել է խաղը: Խաղացողը, ով իր խաղաքարերից երեքը հավասարեցնում է տախտակի գծի վրա, ունի ջրաղաց և կարող է հեռացնել իր հակառակորդի խաղաքարերից մեկը, ինչպես տեղաբաշխման փուլում: Ցանկացած խաղացող նվազեցնում է երկու կտոր, չունի նոր գործարաններ ստեղծելու հնարավորություն և այդպիսով պարտվում է խաղը: Խաղացողը կարող է նաև պարտվել, երբ ավելի քան երեք խաղաքարեր, եթե նրա հակառակորդը խոչընդոտի նրանց շարժմանը:\n\nԹռիչք\n\nԿանոնների որոշ տարբերակներում, երբ խաղացողին մնում է ընդամենը երեք խաղ, նրա խաղաքարերը կարող են թռչել, թռչել կամ ցատկել դեպի ցանկացած թափուր կետ, ոչ միայն հարակից կետերը:\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Տարբերակի տեղեկություններ",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Լիցենզիա",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Աղբյուրի կոդը",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Հավելվածի տարբերակը",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Գեներալ",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Ընդլայնված",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Տեղադրում",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Շարժվող",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Հեռացնելով",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Խաղը գերազանցում է վիճակը",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI-ի խաղաոճը",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Պասիվ",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Ընդմիջում",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Արտաքին տեսք",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Նկարիր մարդկային փորձի վրա",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Հաշվի առեք կտորների շարժունակությունը",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Կտորների քանակը՝",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} ձեռքին՝ {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} նավի վրա՝ {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "Տախտակի օֆսեթ վերևից",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Հերթը AI-ին չէ.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "atEnd": "Դուք շարժման ցուցակի վերջում եք:",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Կրկին հպեք հետ՝ հեռանալու համար:",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Ավելին",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Դա փորձարարական հատկանիշ է:",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Փորձարկումներ",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Բաց կոդով լիցենզիաներ",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Լեզու",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Կանխադրված լեզու",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Կտորները կարող են շարժվել տեղադրման փուլում",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Չկան տեղաբաշխման և շարժման հստակ փուլեր, այսինքն՝ խաղացողները կարող են յուրաքանչյուր քայլի ժամանակ որոշել՝ արդյոք ցանկանում են խաղատախտակին մի կտոր տեղադրել, թե տեղափոխել իրենց խաղաքարերից մեկը (քանի դեռ նրանք ունեն մնացած խաղաքարերը տեղադրելու համար):",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerTextColor": "Ցանկի տեքստի գույնը",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Ցանկի ընդգծված տարրի գույնը",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Հիմնական գործիքագոտու ֆոնի գույնը",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Հիմնական գործիքագոտու պատկերակի գույնը",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Նավիգացիոն գործիքագոտու ֆոնի գույնը",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Նավիգացիոն գործիքագոտու պատկերակի գույնը",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Ավտոմատ թաքցնել գործիքագոտին",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Գործիքադարակի գտնվելու վայրը էկրանին",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Գագաթ",
+  "@top": {
+    "description": "Top"
+  },
+  "solidColor": "Հոծ գույն",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Նկար",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Ընտրեք ձեր նկարը",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Լույս",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Մութ",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Թեմաներ",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Ընթացիկ թեմա",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Պահպանել թեման",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Ցույց տալ վերլուծության գրաֆիկը",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Վերլուծություն",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Պահպանել խաղը",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Բեռնել խաղը",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Կարգավորման դիրքը",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Ցույց տալ օրինական քայլերը",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Ցույց տալ վերջին քայլը",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Ցույց տալ սլաքները",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Կտորներ",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Ցույց տալ վերլուծությունը",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Թերեւներ",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Զբաղվել",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Օգնեք բարելավել թարգմանությունը",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Ուսուցողական",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Դասական ջրաղաց",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Խառը ջրաղաց",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ցեյլոնի ջրաղաց",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Ջրաղացը կարող է կոտրվել և բազմիցս վերանորոգվել",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Եթե խաղացողը ջարդում է ջրաղացը, որպեսզի անմիջապես ստեղծի նոր ջրաղաց, այդպիսի խաղացողը կարող է իր հաջորդ քայլում նման կտորը հետ տեղափոխել սկզբնական հանգույց, եթե այն պատրաստի նոր ջրաղաց:",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Խաղը ոչ-ոքի է անցկացվում, եթե խաղացողն ունի երեք ֆիգուր, իսկ տասը քայլից ոչ մեկը չի հանում հակառակորդի խաղաքարերը",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Երբ խաղացողը զիջում է երեք խաղաքարի, և ոչ մի խաղացող չի կարող հեռացնել հակառակորդի խաղաքարը տասը քայլի ընթացքում, խաղը ոչ-ոքի է:",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "փակել",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Սպիտակ կտոր",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Սև կտոր",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Դատարկ կետ",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Ոչ մի կետ",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Տեղադրման փուլ",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Շարժվող փուլ",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Թռիչքի փուլ",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Շարժվող կողմը՝ {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Վերջին քայլը՝ {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Ընտրված է",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Մատչելիություն",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Էկրանի ընթերցողի աջակցություն",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Դա ոչ-ոքի է:",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Ոչ ոքի",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Կտորի ընդգծման գույնը",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Ալգորիթմ",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Endgame N-Move կանոն",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Խաղը ոչ-ոքի է ավարտվում, եթե խաղացողներից որևէ մեկն ունի ընդամենը երեք խաղաքար, և ոչ մի խաղացող չի հանում խաղաքարը որոշակի քայլերի ընթացքում:",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "threefoldRepetitionRule": "Եռակի կրկնության կանոն",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Խաղը ոչ-ոքի է ավարտվում, եթե դիրքը տեղի է ունենում երրորդ անգամ:",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Ջրաղաց! Շարունակեք քայլ կատարել:",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Կետերի ոճը",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Կետի լայնությունը",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Պինդ",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Խոռոչ",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Հայերեն",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count, plural, =0{Տեղափոխել}=1{{count} Տեղափոխել}other{{count} Շարժումներ}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "Չհաջողվեց բեռնել:",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Ֆայլի անունը",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Թերթիր…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Խաղի ֆայլեր",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Խաղը պահված է",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "empty": "Դատարկ",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Ոչ մի քայլ:",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Վերականգնված նախնական դիրքը:",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Մաքուր",
+  "@clean": {
+    "description": "Clean"
+  },
+  "remove": "Հեռացնել",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Ոչ մի կտոր չի կարելի հեռացնել:",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} կտոր}other{{count} կտոր}} պետք է հեռացնել:",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Տեղադր. ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Տեղադրված կտորների հաշվարկը տեղադրման փուլում:",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Ներկայիս խաղացողը տեղադրել է {count} կտոր:",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Չի տեղադրում փուլը, այն չի կարող փոխել:",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Կպցնել",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Կպցնելը ավարտվեց:",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Հնարավոր չէ տեղադրել:",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Ցույց տալ չտեղադրված և հեռացված կտորները",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Ամբողջ էկրանով",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Դուրս եկեք և նորից բացեք հավելվածը, որպեսզի կարգավորումներն ուժի մեջ մտնեն:",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Անտառ",
+  "@forest": {},
+  "desktopImage": "Աշխատասեղանի պատկեր",
+  "@desktopImage": {},
+  "invalidPosition": "Անվավեր դիրք:",
+  "@invalidPosition": {},
+  "shareGIF": "Կիսվեք GIF-ով",
+  "@shareGIF": {},
+  "pixelRatio": "Պիքսելների հարաբերակցությունը",
+  "@pixelRatio": {},
+  "duration": "Տեւողությունը",
+  "@duration": {},
+  "gameScreenRecorder": "Խաղի էկրանի ձայնագրիչ",
+  "@gameScreenRecorder": {},
+  "previous": "Նախորդ",
+  "@previous": {},
+  "next": "Հաջորդը",
+  "@next": {},
+  "skip": "Բաց թողնել",
+  "@skip": {},
+  "gotIt": "Հասկացա",
+  "@gotIt": {},
+  "youCanModifyRules": "Դուք կարող եք փոփոխել խաղի կանոնները կանոնների կարգավորումներում:",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Դուք կարող եք օգտագործել մկնիկի անիվը ընտրիչի արժեքը փոխելու համար:",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Մտածողության ժամանակը սահմանվել է 0-ին, նշանակում է, որ մտածելու ժամանակի սահմանափակում չկա:",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f)-ը ալֆա-բետա որոնման ալգորիթմի փոփոխված ձև է, որի նպատակն է բարելավել արդյունավետությունը՝ վերօգտագործելով որոնման միջանկյալ արդյունքները և օգտագործելով լավ նախնական գուշակություն՝ որոնման տարածքը նեղացնելու համար:",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Խնդրում ենք տեղյակ լինել, որ AI մտածողության ժամանակի ճշգրտումը կարող է ամբողջովին ճշգրիտ չլինել: Մտածելու իրական ժամանակը կարող է ավելի կարճ լինել, երբ դժվարության մակարդակը սահմանվում է ավելի ցածր արժեքի և կարող է ավելի երկար լինել, երբ AI-ն միջին մտածողության մեջ է, երբ ժամանակը սպառվում է:",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Եթե դուք բարձր եք դնում դժվարության մակարդակը, բայց չեք ավելացնում AI մտածելու ժամանակը, ապա իրական դժվարության մակարդակը կարող է սահմանափակվել ավելի ցածր արժեքով՝ մտածելու ժամանակի սահմանափակման պատճառով: Փաստացի արժեքը կարող է տարբեր լինել՝ կախված մեքենայի աշխատանքի վրա:",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "PVS (Principal Variation Search) որոնման ալգորիթմ է՝ գտնելու լավագույն քայլը տվյալ դիրքում: Այն ալֆա-բետա ալգորիթմի բարելավումն է և օգտագործում է զրոյական կամ զրոյական պատուհանների որոնումներ՝ հաստատելու, որ քայլն ավելի վատ է կամ ոչ ավելի վատ, քան հիմնական տարբերակից ստացված արդեն ապահով գնահատականը: PVS-ը կենտրոնանում է ամենախոստումնալից քայլերի վրա և խուսափում է ոչ օպտիմալ ճյուղերի անհարկի որոնումներից, ինչը օգնում է բարելավել որոնման արդյունավետությունը:",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Ալֆա-բետա ալգորիթմը որոնման ալգորիթմ է լավագույն քայլը գտնելու համար: Այն օգտագործում է minimax սկզբունքը և երկու արժեք՝ ալֆա և բետա, որոնման ծառը կտրելու և արդյունավետությունը բարձրացնելու համար: Ալֆան ներկայացնում է նվազագույն միավորը, որը համակարգիչը վստահ է, որ կարող է ստանալ, մինչդեռ բետա-ն ներկայացնում է առավելագույն միավորը, որը կարող է ստանալ նրա հակառակորդը: Ալգորիթմն օգնում է համակարգչին խելացի, արդյունավետ որոշումներ կայացնել խաղի ընթացքում:",
+  "@whatIsAlphaBeta": {},
+  "drawOnTheHumanExperienceDetail": "Ըստ մարդկային փորձի՝ եթե փորձես հաղթել, կպարտվես: Փոխարենը նպատակ դրեք ոչ-ոքիին և խուսափեք պարտությունից: Դիտեք ձեր հակառակորդին և նրբորեն հրապուրեք նրան այնպիսի դիրքի, որտեղ նրանք կարող են սխալվել: Երբ նրանք թուլություն են ցույց տալիս, օգտվեք հնարավորությունից և նրբորեն մղեք հաղթանակի: Այսպիսով, դուք կարող եք հաղթել խաղը:",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "Այս խաղում երկրորդ խաղացողի համար ավելի հեշտ է հաղթել առաջին խաղացողի համեմատ:",
+  "@firstMoveDetail": {},
+  "passiveDetail": "Պասիվ տարբերակի ակտիվացումը կհանգեցնի AI-ի թուլացմանը, երբ այն առավելություն ունի դիրքում, այլ ոչ թե ագրեսիվ կերպով փորձում է հնարավորինս արագ հաղթել:",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "Այս ընտրանքի ակտիվացումը մեծացնում է խաղի պատահականությունն ու զվարճությունը, մինչդեռ այն անջատելը կարող է օգնել ուսումնասիրել արհեստական ինտելեկտը հաղթահարելու ուղիները:",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "Եթե AI-ն հաշվի առնի իր խաղաքարերի շարժունակությունը, ապա այն ոչ միայն նպատակ կունենա հնարավորինս արագ գրավել մրցակցի խաղաքարերը, այլ նաև կքննարկի հակառակորդի շարժումները արգելափակելու և նույնը թույլ չտալու մասին:",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull": "Երբ տախտակը լցված է",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Տեղադրման փուլի վերջում, մինչ շարժման փուլը սկսվելը, գործողությունը հաջորդում է, եթե տախտակը լի է կտորներով:",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Շարժվող փուլում առաջինը շարժվող խաղացողը հեռացնում է հակառակորդի խաղաքարերից մեկը:",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Երկու կողմերն էլ համաձայն են ոչ-ոքիի:",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Վերցրեք ձեր հակառակորդի խաղաքարերից մեկը:",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Առաջին խաղացողը պարտվում է խաղը:",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Առաջին և երկրորդ խաղացողները հեռացնում են մրցակցի խաղաքարերից մեկը:",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Երկրորդ և առաջին խաղացողները հեռացնում են հակառակորդի խաղաքարերից մեկը:",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Այժմ մտել է թռիչքի փուլ, հակառակորդի խաղաքարերը կարող են ցատկել խաղատախտակի ցանկացած դատարկ կետ: Դուք կարող եք անջատել թռիչքի կանոնը «Կանոնների կարգավորումներում»:",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Երբ փակուղում",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Ի՞նչ գործողություն է հաջորդում, երբ ոչ մի կտոր հնարավոր չէ տեղափոխել:",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Ավարտեք փակուղային կորուստով այն կողմի համար, որը արգելափակված է:",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Փոխեք կողմը շարժվելու համար:",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Հեռացրեք հակառակորդի խաղաքարերից մեկը և կատարեք հաջորդ քայլը:",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Ավարտեք փակուղային ոչ-ոքիով:",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Հեռացրեք մրցակցի խաղաքարերից մեկը և փոխեք կողմը՝ շարժվելու համար:",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI արձագանքման հետաձգման ժամանակը",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI-ն ներկայումս գտնվում է հետաձգված արձագանքման փուլում: Խնդրում ենք մի քիչ սպասել՝ շարունակելուց առաջ:",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Դուք չեք կարող հեռացնել ոչ հարակից կտորը:",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Եթե փակուղում է, հակառակորդի խաղաքարերը, որոնք կից ձերն են, կարող են հեռացվել՝ անկախ ջրաղացների ձևավորումից:",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS-ը սկսնակների համար հարմար ալգորիթմ է, որը որոշումներ է կայացնում՝ ուսումնասիրելով և գնահատելով տարբեր քայլերը սիմուլյացիաների միջոցով:",
+  "@whatIsMcts": {},
+  "goldenJade": "Ոսկե Jade",
+  "@goldenJade": {},
+  "forestWood": "Անտառային փայտ",
+  "@forestWood": {},
+  "darkMystery": "Մութ առեղծված",
+  "@darkMystery": {},
+  "midnightBlue": "կեսգիշերային կապույտ",
+  "@midnightBlue": {},
+  "greenForest": "Կանաչ անտառ",
+  "@greenForest": {},
+  "greenMeadow": "Կանաչ մարգագետնում",
+  "@greenMeadow": {},
+  "stonyPath": "Քարե արահետ",
+  "@stonyPath": {},
+  "pastelPink": "Պաստել վարդագույն",
+  "@pastelPink": {},
+  "turquoiseSea": "Փիրուզագույն ծով",
+  "@turquoiseSea": {},
+  "violetDream": "Վիոլետ Երազ",
+  "@violetDream": {},
+  "mintChocolate": "Անանուխի շոկոլադ",
+  "@mintChocolate": {},
+  "skyBlue": "Երկնագույն",
+  "@skyBlue": {},
+  "playfulGarden": "Ուրախ այգի",
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "Հետադիմական վերլուծության ալգորիթմը օգտագործում է բազմարժեք հետադիմական վերլուծություն՝ տարբեր մեկնարկային դիրքերից վերջնական խաղի տվյալների բազա ստեղծելու համար, այնուհետև կիրառում է այս տվյալների բազան՝ խաղը օպտիմալացնելու համար: Այս մոտեցումը պատկանում է Ultra-Strong լուծումների կատեգորիային:",
+  "@whatIsRetrogradeAnalysis": {},
+  "showPositionalAdvantageIndicator": "Ցույց տալ դիրքային առավելությունների ցուցիչը",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Օգտագործեք կատարյալ տվյալների բազա",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Միացրեք այս տարբերակը՝ նորագույն ալգորիթմների միջոցով ստեղծված խաղերի անթերի տվյալների բազա օգտագործելու համար: Այս հատկությունը միավորում է ինչպես բացման, այնպես էլ վերջնախաղի ռազմավարությունները՝ օպտիմալ քայլեր առաջարկելու համար: Սա նախընտրելի ընտրությունն է այն խաղացողների համար, ովքեր ձգտում են խաղի ամենաբարձր մակարդակի ճշգրտության: Մանրակրկիտ հաշվարկային տեխնիկայի միջոցով ստեղծված տվյալների բազան նախատեսված է խաղային գրեթե կատարյալ լուծումներ առաջարկելու համար:\n\nՆշում. Եթե AI-ն չկարողանա մուտք գործել տվյալների շտեմարան, այն կդիմի սովորական ալգորիթմներին՝ խաղի որոշումների համար: Երբ տվյալների բազան հասանելի է, «Դժվարության մակարդակը» դառնում է գործնականում անգերազանցելի, և «AI Thinking Time»-ը կտրուկ նվազում է ապրում: «AI's play style» ընտրանքների շատ կարգավորումներ կչեղարկվեն, քանի որ տվյալների բազայի արդյունքները ամենաբարձր առաջնահերթությունն են:\n\nԱյս անթերի տվյալների բազայից առավելագույնս օգտվելու վերաբերյալ ուղեցույցի համար սեղմեք այստեղ:",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Ֆոնական պատկեր",
+  "@backgroundImage": {},
+  "whatIsRandom": "Երբ «Օգտագործել կատարյալ տվյալների բազա» տարբերակը միացված չէ, «Պատահական» պարամետրը ստիպում է AI-ին պատահականորեն տեղափոխել կտորները՝ առանց շարժման ընտրության ալգորիթմներ օգտագործելու: Սա սովորաբար հանգեցնում է զգալիորեն ավելի թույլ խաղի: Ընդհակառակը, երբ «Օգտագործեք կատարյալ տվյալների բազան» միացված է, AI-ն որոշումներ կայացնելու համար բացառապես հիմնվում է «Կատարյալ տվյալների բազայի» վրա՝ այն ավանդական AI ալգորիթմների հետ խառնելու փոխարեն: Այս ռեժիմում AI-ի քայլերն ամբողջությամբ հիմնված են տվյալների բազայի բովանդակության վրա՝ խուսափելով իրական ժամանակի հաշվարկներից կամ որոնման ալգորիթմներից կախվածությունից:",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Հեռացրեք հակառակորդի խաղաքար(եր)ը նրա ձեռքից, ապա հակառակորդի հերթն է տեղադրելու:",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Երբ ձևավորվում են ջրաղացներ տեղադրման փուլում",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Հեռացրեք հակառակորդի խաղաքար(եր)ը տախտակից:",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Հեռացրեք հակառակորդի խաղաքար(եր)ը տախտակից, ապա հակառակորդի հերթն է տեղադրելու:",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Հակառակորդը հեռացնում է իր սեփական խաղաքար(եր)ը տախտակից:",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Ձեր գործողություն կատարելու փոխարեն, հակառակորդն ինքն է ընտրում և հեռացնում իր սեփական խաղաքար(եր)ը տախտակից՝ փաստացի կատարելով գործողություն, որը վնասակար է իր համար:",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Հեռացրեք հակառակորդի խաղաքար(եր)ը նրա ձեռքից, ապա ձեր հերթն է շարժվելու:",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Հեռացրեք խաղաքար(եր)ը հակառակորդի ձեռքից: Եթե, ըստ Բազմակի-հեռացման կարգավորման, պետք է հեռացվեն մի քանի խաղաքարեր, և հակառակորդի ձեռքում այլևս խաղաքարեր չեն մնացել, շարունակեք հեռացնել հակառակորդի խաղաքարերը տախտակից: Ապա ձեր հերթն է շարժվելու: Եթե դուք շարունակում եք ձևավորել ջրաղացներ, կարող եք շարունակել հեռացնել հակառակորդի խաղաքարերը:",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Հեռացրեք խաղաքար(եր)ը հակառակորդի ձեռքից: Եթե, ըստ Բազմակի-հեռացման կարգավորման, պետք է հեռացվեն մի քանի խաղաքարեր, և հակառակորդի ձեռքում այլևս խաղաքարեր չեն մնացել, շարունակեք հեռացնել հակառակորդի խաղաքարերը տախտակից: Ապա հակառակորդի հերթն է շարժվելու:",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Նշեք և հետաձգեք խաղաքարերի հեռացումը:",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Տեղադրման փուլի ընթացքում նշվում են հեռացվելիք խաղաքարերը, և երկու խաղացողների համար էլ այդ կետերում նոր խաղաքարեր չեն կարող տեղադրվել: Մտնելով շարժման փուլ՝ այդ նշված խաղաքարերը միասին հեռացվում են, և խաղացողները կարող են իրենց խաղաքարերը տեղափոխել այդ դատարկված կետերը:",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Միլլեր ձևավորելու ընթացքում տեղադրման փուլում կարող ենթակա լինելու գործողությունները:",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Նշված",
+  "@marked": {},
+  "menu": "Ցանկ",
+  "@menu": {},
+  "showNumbersOnPieces": "Ցուցադրել թվերը քարերի վրա",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Մոնոխրոմ",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Դուք կարող եք միացնել էկրանի ընթերցիչի աջակցությունը Ընդհանուր կարգավորումների մեջ Անհատականության կոնֆիգուրացիայում:",
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Պահպանել պատկերը",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Անալիզիզիայի գործիքային գոտին ցուցադրվում է",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Անալիզիզիայի գործիքային գոտի ետնագույն գույնը",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Անալիզիզիայի գործիքային գոտին նշանակի գույնը",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Վերևում է",
+  "@transformed": {},
+  "cannotTransform": "Անհնար է փոխել",
+  "@cannotTransform": {},
+  "rotate": "Շրջել",
+  "@rotate": {},
+  "horizontalFlip": "H Փոխել",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Փոխել",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Փոխել",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Թափանցիկ կտոր",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Սահմանափակել կրկնվող ջրաղացների ձևավորումը",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Մի քառակուսին, որը տեղափոխվել է մեկ հարթակից մյուսը, չի կարող անմիջապես վերադառնալ սկզբնական կետը հաջորդ հարվածում՝ նորից հարթակ ձևավորելու համար: Սկզբում պետք է կատարել այլ շարժ:",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Մեկանգամյա օգտագործման ջրաղաց",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Յուրաքանչյուր ջրաղաց կարող է հեռացնել հակառակորդի կտորը միայն մեկ անգամ: Դուք կարող եք այն նորից ձևավորել, բայց չի կարող օգտագործվել լրացուցիչ հեռացման համար:",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Ընթացիկ կարգավորած կանոնները չունեն համապատասխան իդեալական տվյալների բազա: Լրացուցիչ տեղեկությունների համար իդեալական տվյալների բազայի մասին սեղմեք այստեղ:",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Հաստատեք արգելքների ուղիները",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Անհրաժեշտ է առաջնահերթ ուշադրություն դարձնել մրցակցի շարժումների խոչընդոտմանը՝ քան կազմելով եռյակը: Փոխարենը կենտրոնանալով մասերը հեռացնելու վրա՝ եռյակը լրացնելու միջոցով, արհեստական ինտելեկտը նպատակ ունի խափանել մրցակցին, դարձնելով նրանց շարժունակությունը նվազեցնելով և ապահովելով հաղթանակը խիստ խաղի միջոցով: Այս ռազմավարությունը չի արգելափակում ակտիվորեն մրցակցի եռյակը:",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Շախմատային նկարը",
+  "@pieceImage": {},
+  "importColorSettings": "Ներմուծել գույնի կարգավորումները",
+  "@importColorSettings": {},
+  "exportColorSettings": "Արտահանել գույնի կարգավորումները",
+  "@exportColorSettings": {},
+  "import": "Ներմուծում",
+  "@import": {},
+  "export": "Արտահանում",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Խնդրում ենք նախ պատճենել JSON ձևաչափի կարգավորումները Clipboard-ին:",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Պատճենվել է Clipboard-ին:",
+  "@copiedToClipboard": {},
+  "imported": "Ներմուծված է:",
+  "@imported": {},
+  "boardImage": "Տախտակի պատկեր",
+  "@boardImage": {},
+  "autumnLeaves": "Աշնանային տերևներ",
+  "@autumnLeaves": {},
+  "legendaryLand": "Լեգենդար երկիր",
+  "@legendaryLand": {},
+  "vignetteEffect": "Վինյետ ազդեցություն",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ցանկանու՞մ եք գործիքը ամբողջովին празնատուն դարձնել, երբ կահույքի պատուհանի պատկերն է կարգավորվում:",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Միացնել թրթռոցը խաղում",
+  "@vibration": {},
+  "soundTheme": "Ցունքի թեմա",
+  "@soundTheme": {},
+  "ball": "գնդակ",
+  "@ball": {},
+  "liquid": "ցուցակ",
+  "@liquid": {},
+  "wood": "փայտ",
+  "@wood": {},
+  "placeEffectAnimation": "Խաղաքար դնելու անիմացիոն էֆեկտ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Խաղաքար հանելու անիմացիոն էֆեկտ",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Ցույց տալ գործիքագոտին ներքեւում",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Տախտակի անկյունային շառավիղ",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Օգտագործեք բացման գիրք",
+  "@useOpeningBook": {},
+  "currentRule": "Ընթացիկ",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Մորաբարաբա",
+  "@morabaraba": {},
+  "dooz": "Դուզ",
+  "@dooz": {},
+  "chamGonu": "Չամգոնու",
+  "@chamGonu": {},
+  "zhiQi": "Ժիչի",
+  "@zhiQi": {},
+  "chengSanQi": "Չենսանցի",
+  "@chengSanQi": {},
+  "mulMulan": "Մուլ-Մուլան",
+  "@mulMulan": {},
+  "nerenchi": "Ներենչի",
+  "@nerenchi": {},
+  "ruleSet": "Կանոնափաթեթ",
+  "@ruleSet": {},
+  "laskerMorris": "Լասկեր Մորիս",
+  "@laskerMorris": {},
+  "oneTimeMill": "Միանգամյա Ջրաղաց",
+  "@oneTimeMill": {},
+  "daSanQi": "Դասանցի",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Թույլատրեք AI-ին օգտագործել բացման քայլերը, որոնք հաճախ կիրառվում են մարզիկ մարդկանց կողմից խաղի վաղ փուլերում: Նշում՝ այս հատկությունը այժմ մատչելի է միայն որոշակի կանոնակարգերի համար:",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Ցուցադրել առավելության գրաֆիկը",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Առավելության գրաֆը կնկարված լինի միայն այն բանից հետո, երբ ԱԲ-ն կատարի քայլը։ Այն չի նկարվի, երբ մարդու խաղացողը կատարի քայլը։",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Գործողության հեռացումը անջատեք մինչև բոլոր քարերը տեղադրվեն։ Խաղացողները հեռացնում են քարերը աղացների քանակի հիման վրա։",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Գործողության հեռացումը անջատեք մինչև բոլոր քարերը տեղադրվեն։ Խաղացողները հեռացնում են քարերը աղացների քանակի հիման վրա։ Եթե քանակը հավասար է, ապա երկուսն էլ հեռացնում են նույն քանակի քարեր։ Եթե մեկի մոտ քանակը ավելի է, նա հեռացնում է մեկ լրացուցիչ քար՝ պահելով մեկ քարի տարբերությունը։ Եթե միայն մեկը կազմավորում է աղաց, նա հեռացնում է երկու քար, իսկ մյուսը՝ մեկ քար։ Եթե ոչ մեկը աղաց չի կազմում, ապա երկուսն էլ հեռացնում են մեկական քար։",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "Էլ Ֆիլջա",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Ընտրեք ձեր քարերից մեկը։",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Դուք չեք խաղում։",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Նշումների գործիքների ֆոնի գույն",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Նշումների գործիքների պատկերի գույն",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Ցուցադրել նշումների գործիքները",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Մուտքագրել նշումների ռեժիմ",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Դուք վստահ եք, որ ցանկանում եք մաքրել բոլոր նշումները։",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM հուշումը պատճենվել է clipboard-ում։",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Միացումը մերժվել է, սերվերը կարող է անջատված լինել։",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Հայտնաբերումը հաջողվել է, սպասում է միացմանը...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Ոչ LAN միացում",
+  "@noLanConnection": {},
+  "takeScreenshot": "Վերցնել էկրանի նկար",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Անջատվել է հակառակորդից։",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Վերադարձի խնդրանք",
+  "@takeBackRequest": {},
+  "nothingToShow": "Ոչինչ ցուցադրելու համար։",
+  "@nothingToShow": {},
+  "stopHosting": "Դադարեցնել հոսթինգը",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Միացումը վերականգնվել է peer-ի կողմից։",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Միացումը կորել է heartbeat timeout-ի պատճառով։ Խնդրում ենք վերամիացնել։",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Սկսել հոսթինգը",
+  "@startHosting": {},
+  "restartRequestRejected": "Վերագործարկման խնդրանքը մերժվել է։",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Ոչ միացված LAN հակառակորդին։",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM հուշում",
+  "@llmPrompt": {},
+  "gameRestarted": "Խաղը վերագործարկվել է։",
+  "@gameRestarted": {},
+  "takeBackRejected": "Վերադարձը մերժվել է։",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Դուք վստահ եք, որ ցանկանում եք հրաժարվել այս խաղից։",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Հակառակորդը հրաժարվել է։ Դուք հաղթել եք։",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Մաքրել բոլոր նշումները",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Միացված, սպասում է հակառակորդի քայլին...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Ցանցի կարգավիճակը՝ անջատված",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Վերադարձի խնդրանքը ուղարկվել է հակառակորդին։",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Հակառակորդը կարող է լքել խաղը",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Հաջողությամբ միացված է հոսթին։",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Միացումը կորել է՝ heartbeat timeout",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Ոչ մի հոսթ հայտնաբերված։",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Հաստատել հրաժարումը",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Սկսել է հոսթինգը, սպասում է խաղացողների միացմանը...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Միացումը ժամանակի սպառվել է, ցանցի միացումը անկայուն է։",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Ոչ LLM հուշում հասանելի։",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Դուք հրաժարվել եք։ Խաղը ավարտվել է։",
+  "@youResignedGameOver": {},
+  "serverIp": "Սերվերի IP",
+  "@serverIp": {},
+  "confirmClear": "Հաստատել մաքրումը",
+  "@confirmClear": {},
+  "opponentSTurn": "Հակառակորդի հերթը։",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Սպասում է client-ի միացմանը...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Վերադարձի խնդրանքը մերժվել է կամ ձախողվել է։",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Ավելացնել տեքստ",
+  "@addText": {},
+  "exitAnnotationMode": "Դուրս գալ նշումների ռեժիմից",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Մուտքագրեք ձեր նշումը",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Փորձում է վերամիացնել...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Վերագործարկման խնդրանքը ուղարկվել է։ Սպասում է հակառակորդի պատասխանին...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Սերվերը դադարեցված է։",
+  "@serverIsStopped": {},
+  "restartRequest": "Վերագործարկման խնդրանք",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Դուք չեք կարող խնդրել վերադարձ, երբ դա ձեր հերթը չէ։",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Վերադարձը ընդունված է։",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Տեղական ցանցի կարգավորումներ",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Հաջողությամբ վերամիացված է։",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Չհաջողվեց պահպանել պատկերը Gallery-ում։",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Հակառակորդը խնդրել է վերագործարկել խաղը։ Դուք ընդունում եք։",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Ձեր հերթը։",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Չհաջողվեց վերամիացնել, խնդրում ենք վերագործարկել խաղը։",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Հոսթ",
+  "@host": {},
+  "join": "Միանալ",
+  "@join": {},
+  "port": "Պորտ",
+  "@port": {},
+  "invalidIpAddress": "Անվավեր IP հասցե։",
+  "@invalidIpAddress": {},
+  "invalidPort": "Անվավեր պորտ։",
+  "@invalidPort": {},
+  "connectingAttempt": "Միացում՝ փորձ {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Չհաջողվեց միացնել՝ {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Չհաջողվեց սկսել հոսթինգը՝ {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Հոսթ հայտնաբերվել է՝ {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Դադարեցնել",
+  "@stop": {},
+  "discover": "Հայտնաբերել",
+  "@discover": {},
+  "connect": "Միացնել",
+  "@connect": {},
+  "clientConnected": "Client-ը միացված է՝ {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Հայտնաբերում՝ {seconds} վ",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Վերամիացում ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Միացված",
+  "@connected": {},
+  "delete": "Ջնջել",
+  "@delete": {},
+  "ancientEgypt": "Հին Եգիպտոս",
+  "@ancientEgypt": {},
+  "gothicIce": "Գոթական Սառույց",
+  "@gothicIce": {},
+  "riceField": "Բրնձի Դաշտ",
+  "@riceField": {},
+  "chinesePorcelain": "Չինական Հախճապակի",
+  "@chinesePorcelain": {},
+  "desertDusk": "Անապատի Մթնշաղ",
+  "@desertDusk": {},
+  "precisionCraft": "Ճշգրիտ Արհեստ",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Ժողովրդական Ասեղնագործություն",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Կարպատյան Ժառանգություն",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Կայսերական Հոյակապություն",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Բոհեմական Բյուրեղ",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Սավաննայի Արևածագ",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Հաշտություն և Հավասարակշռություն",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Դարչինի Համեմունք",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Անատոլիական Խճանկար",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Կառնավալի Հոգի",
+  "@carnivalSpirit": {},
+  "custom": "Սովորություն",
+  "@custom": {},
+  "spiceMarket": "Համեմունքի շուկա",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Սահեցրեք՝ դարակը բացելու համար",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Ցուցադրել խաղի տեղեկությունները նկարված էկրանների վրա",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Մարդու քայլի ժամանակի սահմանափակում",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Մարդու քայլերի համար ժամանակի սահմանափակում չկա",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Մարդ խաղացողի համար կկիրառվի ժամանակի սպառման պարտություն",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Խաղի տախտակի նույնացում...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Դուք կարող եք մուտքագրել ցանկացած մոդելի անուն։",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Խաղի տախտակի դիրքը կիրառվեց. FEN-ն պատճենվել է Clipboard-ում.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Առաջարկություն՝ փորձեք լուսանկարել խաղի տախտակը ավելի հստակ։",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM prompt ձևանմուշ",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Չգտնվեց վավեր խաղի տախտակ։",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Պատկեր ընտրվում է ալբոմից...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Prompt ձևանմուշի կարգավորում",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Փոփոխել Prompt ձևանմուշը LLM վերլուծության համար",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Չհաջողվեց FEN ստեղծել ճանաչված խաղի տախտակից։",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Ելք ընթացիկ լեզվով։",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Հաճախ օգտագործվող Base URL-ներ",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Դիտել հաճախ օգտագործվող մոդելները",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "ճանաչման պարամետրերը թարմացվեցին։",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Սպիտակի հերթը",
+  "@whiteSMove": {},
+  "resetToDefaults": "Վերականգնել սկզբնական արժեքները",
+  "@resetToDefaults": {},
+  "photoShoot": "Լուսանկարահանություն",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Չհաջողվեց կիրառել ճանաչված խաղի տախտակի դիրքը։",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM prompt-ի բովանդակությունը",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM չի կազմաձևված։ Ստուգեք ձեր կարգավորումները։",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Սահմանեք մատակարարին, մոդելը, API Key-ը և Base URL-ը։",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM կազմաձևում",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "LLM մատակարարի կարգավորում",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM prompt ձևանմուշի վերնագիր",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Պատկերում ոչ մի քար չի ճանաչվել. Խնդրում ենք կրկին փորձել։",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Խաղի տախտակի ճանաչում պատկերից",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Խորհուրդներ դիտել",
+  "@viewTips": {},
+  "applyToBoard": "Կիրառել խաղի տախտակին",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Խաղի տախտակի տարածքի ճշգրտում",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Հաճախ օգտագործվող URL-ներ դիտել",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Գույնի վերլուծությունը ձախողվեց!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Խաղի տախտակի պատկերի վերլուծություն...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Ընտրել ալբոմից",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Տախտակի կետ չի հայտնաբերվել!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Եթե դատարկ թողնեք, կկիրառվի կանխադրված ձևանմուշը",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM կազմաձև",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Համոզվա՞ծ եք, որ ցանկանում եք վերականգնել prompt ձևանմուշները կանխադրված արժեքներին։",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM prompt ձևանմուշի ստորին մասը",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Պատասխանի բեռնում...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Կիրառել այս արդյունքը խաղի տախտակին",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Լուսանկարվում է...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Խնդրում ենք ընտրել խաղի տախտակի պատկերը նույնացնելու համար",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "ճանաչման արդյունքներ",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Վերլուծեք քայլերը և առաջարկեք դիտարկումներ",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Ստանալ API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Ճանաչման ամբողջ գործընթացը չհաջողվեց ավարտել։",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Խաղի տախտակի ճանաչման արդյունք",
+  "@boardRecognitionResult": {},
+  "askLlm": "Հարցրեք LLM-ին",
+  "@askLlm": {},
+  "boardDetectionFailed": "Խաղի տախտակի հայտնաբերումը անհաջողվեց!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Տախտակի կետ չի հայտնաբերվել, հնարավոր չէ նույնականացնել քարերը։",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Պատճենել FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Հաճախ օգտագործվող մոդելներ",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (ընտրովի)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Պատկեր չի ընտրվել",
+  "@noImageSelected": {},
+  "blackSMove": "Սևի հերթը",
+  "@blackSMove": {},
+  "llm": "Մեծ լեզվային մոդել",
+  "@llm": {},
+  "llmProvider": "Մատակարար",
+  "@llmProvider": {},
+  "baseUrl": "Հիմնական URL",
+  "@baseUrl": {},
+  "model": "Մոդել",
+  "@model": {},
+  "temperature": "Ջերմաստիճան",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Հրամանն ստացվեց․ ԱԲ մշակում է...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Խորը մտածման գործընթաց է, խնդրում ենք սպասել...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Շուտով կներկայացվի...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Ճանաչման պարամետրեր",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Կարգավորեք պարամետրերը՝ ճանաչման ճշգրտությունը բարելավելու համար",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Պահպանել պարամետրերը",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Չհաջողվեց մեկնարկել պատկերի ճանաչումը: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Պատկերի ճանաչումը ձախողվեց: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Կիրառված դիրք՝ {whiteCount} սպիտակ և {blackCount} սև քարերով",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN-ը պատճենվել է սեղմատախտակին)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Ճանաչումը ձախողվեց: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Իմ վարկանիշը",
+  "@myRating": {},
+  "gamesPlayed": "Խաղացված խաղեր",
+  "@gamesPlayed": {},
+  "wins": "Հաղթանակներ",
+  "@wins": {},
+  "losses": "Պարտություններ",
+  "@losses": {},
+  "draws": "Ոչ-ոքիներ",
+  "@draws": {},
+  "lastUpdated": "Վերջին թարմացում",
+  "@lastUpdated": {},
+  "format": "Ձևաչափ՝",
+  "@format": {},
+  "resetStatistics": "Վերականգնել վիճակագրությունը",
+  "@resetStatistics": {},
+  "drawRate": "Ոչ-ոքիների տոկոս",
+  "@drawRate": {},
+  "lossRate": "Պարտությունների տոկոս",
+  "@lossRate": {},
+  "aiStatistics": "ԱԲ վիճակագրություն",
+  "@aiStatistics": {},
+  "enableStatistics": "Միացնել վիճակագրությունը",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Միացված լինելու դեպքում խաղի արդյունքները կարձանագրվեն վիճակագրության մեջ։ Սակայն հետքայլեր պարունակող խաղերը չեն արձանագրվի։ Անջատված լինելու դեպքում վիճակագրության հավաքագրումը կդադարեցվի։",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Սա կվերականգնի խաղի ամբողջ վիճակագրությունը։ Այս գործողությունը հնարավոր չէ հետարկել։",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Տախտակի ներքին օղակի չափը",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Տախտակի ստվեր",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Որոգայթների հայտնաբերում",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Վերլուծության ընթացքում ընդգծել որոգայթի քայլերը հաստ շրջաններով և սլաքներով.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Կա որոգայթ։ Որոգայթի քայլեր՝ {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Փայլուն գրավում",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Կցեք ձեր հակառակորդի կտորներից մեկին ձեր երկու-ի միջեւ ուղիղ գծով `այն գրավելու համար:",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Թույլ տվեք Flanking Capture",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Միջամտության գրավում",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Տեղափոխեք ձեր հակառակորդի երկու մասի դատարկ կետի մեջ, երկուսն էլ գրավելու համար:",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Թույլատրել միջամտության գրավումը",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Անցնել գրավում",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Սեւեռել, հարակից մրցակիցի կտորի վրա նետվելով դեպի դատարկ կետը:",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Թույլ տվեք ցատկել գրավումը",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Կիրառելի գծեր",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Հրապարակի եզրերի երկայնքով",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Քառակուսի հատող օրթոգոնալ գծերի երկայնքով",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Հրապարակը հատող անկյունագծային գծերի երկայնքով",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Կատարման փուլեր",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Մնացած կտորների հիման վրա շարժվող փուլում առկայություն",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Ոչ մի սահմանափակություն",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Մատչելի է, երբ ունեք երեք կամ ավելի քիչ կտոր",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

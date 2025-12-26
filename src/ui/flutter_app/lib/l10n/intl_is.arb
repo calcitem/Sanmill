@@ -2159,4 +2159,1620 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Stilla líkan, tungumál og hegðun",
     "@voiceAssistantSettingsDescription": {}
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Leikmaður 1 vinnur!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Leikmaður 2 vinnur!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "lost": "Týndur",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Er að hugsa…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nýr leikur",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Innflutningsleikur",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Flytja út leik",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Leikur fluttur inn.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Get ekki flutt inn {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Hreyfingar og reglur passa ekki saman.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Vinsamlegast bíðið.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Endurræsa núverandi leik?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Endurræsa",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Leikurinn byrjaði, vinsamlegast settu.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Er að greina…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Villa: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "Vinningshlutfall",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Mark:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Leikmaður 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Leikmaður 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} stykkjafjöldi er minna en þrjú.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "Spjaldið er fullt og {player} á enga leið að fara.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "Í hreyfistiginu hefur ekkert stykki verið fjarlægt í síðasta tiltekna fjölda hreyfinga.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "analyze": "Greina",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Um",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Útgáfa: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "Takk",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Stillingar",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Valm.",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Almennar stillingar",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Erfiðleikastig",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI hugsunartími",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Erfiðleikar",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Hljóðbrellur",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Spilaðu hljóð í leiknum",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Bakgrunnstónlist",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Spila staðbundna hljóðskrá sem bakgrunnstónlist",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Bakgrunnstónlistarskrá",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Hreinsa bakgrunnstónlist",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Tónlistarskrár",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Haltu hljóði þegar þú tekur til baka",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Tónn",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Fyrsta hreyfing",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Mannlegur",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Varamaður",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Endurræstu leikinn sjálfkrafa þegar leiknum er lokið",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "flyPieceCount": "Númer fljúgandi stykkisins",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Ef kveikt er á fljúgandi, þegar leikmanni er fækkað niður í ákveðna stykkisfjölda, er stykki hennar frjálst að fara á hvaða stað sem er óupptekinn í stað þess að vera bundinn við aðliggjandi stig eins og í restinni af leiknum.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "hasDiagonalLines": "Hvíaðar línur",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "isDefenderMoveFirst": "Annar leikmaður færir sig fyrstur",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Leikmaðurinn sem færist í öðru sæti í staðsetningarfasanum færist fyrstur í hreyfifasanum.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Fjölfjarlægja",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Ef leikmaður lokar fleiri en einni myllu í einu mun hún fjarlægja fjölda myllna sem hún lokaði.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways_Detail": "Sjálfgefið er að leikmenn verða að fjarlægja öll önnur stykki fyrst áður en stykki er fjarlægt úr myndaðri myllu. Virkjaðu þennan valkost til að slökkva á takmörkuninni.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Annar leikmaður tapar þegar borðið er fullt",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Þegar borðið er fullt í lok staðsetningarfasans tapar sú hlið sem kemur fyrst leiknum. Að öðru leyti er leikurinn jafntefli.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Tapa þegar engar löglegar hreyfingar",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "mayFly": "Fljúga",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Ef leikmaður á aðeins þrjá eða fjóra (stillanlega) búta eftir, getur hann fært verkið á hvaða frípunkt sem er.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "copy": "Afrita",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Færa feril afrituð á klippiborð.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Hjálp",
+  "@help": {
+    "description": "Help"
+  },
+  "exit": "Hætta",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Reglustillingar",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Litur",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Litur borðs",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Litur stykkisins",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Bakgrunns litur",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Litur borðlínu",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "messageColor": "Litur skilaboða",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Sýnið fjölda ósettra bita",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Sýna merkingar um borð",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Sýna tækjastiku söguleiðsagnar",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Skjár",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Breidd borðs",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Innri línubreidd borðs",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Stykkjabreidd",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Leturstærð",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "restoreDefaultSettings": "Endurheimta sjálfgefnar stillingar",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Veldu {element}",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Upplýsingar",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Vísbending",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "leikmaður",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Leikmaður 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Leikmaður 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Hvernig á að spila",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Pikkaðu á hvaða lausan punkt sem er til að setja stykkið.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Bankaðu á stykki til að færa það.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Bankaðu á punkt sem er tengdur við verk til að færa hann.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Bankaðu á eitt stykki andstæðingsins til að fjarlægja.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Þú þarft að búa til myllu fyrst áður en þú getur fjarlægt stykki.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Þú þarft að spila með verkin þín.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Tölfræði",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Samtals leikir",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Niðurstöður",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "vinstri",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Friðhelgisstefna",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Vinsamlegast lestu vandlega og vertu viss um að þú skiljir þetta til fulls og samþykkir þetta ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Ef þú samþykkir ekki þessa stefnu skaltu ekki nota þetta forrit. Notkun appsins þýðir að þú samþykkir þessa skilmála.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " og ",
+  "@and": {},
+  "accept": "Samþykkja",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Taka aftur",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Tekur til baka…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Bíður…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Stígðu fram",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Taktu allt til baka",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Stígðu fram öll",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Færðu þig núna",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Búið.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill_Detail": "Ef leikmaður hefur aðeins búta í myllum, þá læsast ekki bitarnir í myllunum til að fjarlægja.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "theme": "Þema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Leikurinn miðar að því að skilja andstæðinginn eftir með færri en þrjú stykki eða engin lögleg hreyfing.\n\nLeikurinn gerir sjálfkrafa jafntefli ef staða kemur upp í þriðja sinn eða tekur ekki af í síðustu 100 (stillanlegu) hreyfingum.\n\nLeikurinn fer fram í þremur áföngum:\n\n1. Setja stykki á lausa punkta\n2. Færa stykki á aðliggjandi punkta\n3. (valfrjáls áfangi) Að færa stykki á hvaða lausa stað sem er þegar leikmaðurinn er minnkaður í þrjú stykki\n\nStaðsetning\n\nLeikurinn hefst á tómu borði sem samanstendur af rist með tuttugu og fjórum stigum. Leikmenn skiptast á að setja verkin sín á lausa punkta þar til hver leikmaður hefur sett alla bitana á borðið. Ef leikmaður getur sett þrjá af kubbana sínum beint, hefur hann „mill“ og má taka einn af stykki andstæðings síns af borðinu.\n\nÍ sumum reglum verða leikmenn að fjarlægja alla aðra búta fyrst áður en þeir taka bút úr myndaðri myllu.\n\nÍ sumum reglum er ekki hægt að setja stykkin á punkta á fjarlægðum stykki aftur í staðsetningarfasa.\n\nÞegar þú hefur notað öll verkin skiptast leikmenn á að hreyfa sig.\n\nAð flytja\n\nTil að hreyfa sig færir leikmaður einn af verkunum sínum eftir borðlínu á lausan aðliggjandi punkt. Ef hann getur það ekki hefur hann tapað leiknum. Leikmaður sem stillir þremur kubba sínum á borðlínu hefur myllu og má fjarlægja einn af stykki andstæðings síns eins og í lagningarfasanum. Sérhver leikmaður minnkar niður í tvö stykki, hefur engan möguleika á að mynda nýjar myllur og tapar þar með leiknum. Leikmaður getur líka tapað þegar fleiri en þrír boltar eru ef andstæðingur hans hindrar hreyfingu þeirra.\n\nFljúga\n\nÍ sumum afbrigðum reglnanna, þegar leikmaður hefur aðeins þrjú stykki eftir, geta stykkin hans flogið, hoppað eða hoppað á hvaða lausa punkta sem er, ekki aðeins aðliggjandi.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Upplýsingar um útgáfu",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Leyfi",
+  "@license": {
+    "description": "License"
+  },
+  "advanced": "Ítarlegri",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Staðsetning",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Að flytja",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Fjarlægir",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Leik lokið ástand",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Leikstíll gervigreindar",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "inHand": "{player} í hendi: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} um borð: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "Borð á móti ofan frá",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Það er ekki röðin að gervigreindinni.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI er ekki að hugsa.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Þú ert í lok flutningslistans.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Bankaðu aftur til baka til að fara.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Meira",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Það er tilraunaeiginleiki.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Tilraunir",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Opinn uppspretta leyfi",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Tungumál",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Sjálfgefið tungumál",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Hlutarnir geta hreyfst í staðsetningarfasa",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Það eru engir aðgreindir staðsetningar- og hreyfingar, þ.e.a.s. spilarar geta ákveðið í hverri hreyfingu hvort þeir vilji setja stykki á borðið eða færa einn kubba (svo framarlega sem þeir eiga eftir af stykki til að setja).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Litur á matseðli",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Litur texta valmyndar",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Valmynd hápunktur hlutur litur",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Bakgrunnslitur aðaltækjastikunnar",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Litur aðaltáknstikunnar",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Bakgrunnslitur tækjastikunnar",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Litur á tækjastiku fyrir siglingar",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Fela tækjastikuna sjálfkrafa",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Staðsetning tækjastikunnar á skjánum",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "chooseYourPicture": "Veldu myndina þína",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Ljós",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Myrkur",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Þemu",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Núverandi þema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Vista þema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Sýna greiningargraf",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Greining",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Vista leik",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Hlaða leik",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Uppsetningarstaða",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Sýndu löglegar hreyfingar",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Sýndu síðustu hreyfingu",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Sýndu örvar",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Stykki",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Sýna greiningu",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "getInvolved": "Taka þátt",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Hjálpaðu til við að bæta þýðingar",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Kennsla",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassísk Mill",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Blandað Mill",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon Mjöl",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mylla getur verið brotin og endurgerð ítrekað",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Ef leikmaður brýtur myllu til að búa til nýja myllu strax, getur hann fært slíkan hlut aftur á upphaflega mótið í næstu hreyfingu sinni ef hann gerir nýja myllu.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Leikurinn er jafntefli ef leikmaður er með þrjú stykki og eftir tíu hreyfingar tekur hvorugur leikmaður stykki andstæðingsins",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Þegar leikmaður er kominn niður í þrjú stykki og hvorugur leikmaðurinn getur fjarlægt stykki andstæðings innan tíu leikja, er leikurinn jafntefli.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "emptyPoint": "Tómur punktur",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Ekkert mál",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Staðsetningarfasi",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Hreyfifasi",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Flugáfangi",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Hlið til að hreyfa: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Síðasta hreyfing: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Valið",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Aðgengi",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Stuðningur við skjálesara",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Það er jafntefli!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Jafntefli",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Hápunktur litur stykkisins",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Reiknirit",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Endgame N-Move regla",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Leikurinn er jafntefli ef annar hvor leikmaðurinn hefur aðeins þrjú stykki og hvorugur leikmaðurinn fjarlægir stykki innan ákveðinna hreyfinga.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Hvor leikmaðurinn á aðeins þrjú stykki og hvorugur leikmaðurinn fjarlægir stykki innan ákveðinna hreyfinga.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Þríþætt endurtekningarregla",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Dregið er í leiknum ef staðan er í þriðja sinn.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mill! Haltu áfram að hreyfa þig.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Punktastíll",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Point breidd",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "þéttur hringur",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Holur",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "empty": "Tómt",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Engin hreyfing.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Endurheimt upphafsstaða.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Hreint",
+  "@clean": {
+    "description": "Clean"
+  },
+  "placedCount": "Sett ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Fjöldi settra stykkja í uppsetningarfasa.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Núverandi leikmaður hefur sett {count} stykki.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ekki setja fasa, getur ekki breytt því.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "forest": "Skógur",
+  "@forest": {},
+  "desktopImage": "Skrifborðsmynd",
+  "@desktopImage": {},
+  "whatIsMtdf": "MTD(f) er breytt form af alfa-beta leitarreikniritinu sem miðar að því að bæta skilvirkni með því að endurnýta millileitarniðurstöður og nota góða fyrstu getgátu til að þrengja leitarrýmið.",
+  "@whatIsMtdf": {},
+  "firstMoveDetail": "Í þessum leik er auðveldara fyrir seinni spilarann að vinna samanborið við þann fyrsta.",
+  "@firstMoveDetail": {},
+  "passiveDetail": "Með því að virkja Passive valmöguleikann mun gervigreindin slaka á þegar hún hefur yfirburði í stöðunni, frekar en að reyna árásargjarnt að vinna eins fljótt og auðið er.",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "Að virkja þennan valkost eykur handahófi og skemmtun leiksins á meðan slökkt er á honum getur hjálpað til við að rannsaka leiðir til að vinna bug á gervigreindinni.",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "Ef gervigreindin veltir fyrir sér hreyfanleika bita sinna mun það ekki aðeins stefna að því að fanga bita andstæðingsins eins fljótt og auðið er, heldur einnig að íhuga að hindra hreyfingar andstæðingsins og koma í veg fyrir að þeir geri slíkt hið sama.",
+  "@considerMobilityOfPiecesDetail": {},
+  "agreeToDraw": "Bæði lið eru sammála um jafntefli.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Taktu eitt af verkum andstæðingsins.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Fyrsti leikmaðurinn tapar leiknum.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Fyrsti og annar leikmaðurinn fjarlægir einn af stykki andstæðingsins.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Annar og fyrsti leikmaðurinn fjarlægir einn af stykki andstæðingsins.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Nú þegar komið er inn í fljúgandi áfanga, geta stykki andstæðingsins hoppað á hvaða tóma stað sem er á borðinu. Þú getur slökkt á flugreglunni í „Reglunarstillingum“.",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Þegar pattstaða",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Hvaða aðgerð fylgir þegar ekki er hægt að færa neinn bita?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Enda með pattstöðu tapi fyrir hliðina sem er læst.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Skiptu um hlið til að færa.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Fjarlægðu einn af stykki andstæðingsins og gerðu næstu hreyfingu.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Enda með jafntefli.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Fjarlægðu einn af stykki andstæðingsins og skiptu um hlið til að færa.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI svarseinkun",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Gervigreind er sem stendur í seinkaðri viðbragðsfasa. Vinsamlegast bíddu í smá stund áður en þú heldur áfram.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Þú getur ekki fjarlægt stykki sem ekki er aðliggjandi.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Ef pattstaða er, er hægt að fjarlægja stykki andstæðingsins, sem liggja að þínum, burt, óháð myllumyndun.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS er byrjendavænt reiknirit sem tekur ákvarðanir með því að kanna og meta mismunandi hreyfingar í gegnum uppgerð.",
+  "@whatIsMcts": {},
+  "goldenJade": "Gullin Jade",
+  "@goldenJade": {},
+  "forestWood": "Skógartre",
+  "@forestWood": {},
+  "darkMystery": "Dökk Leynd",
+  "@darkMystery": {},
+  "midnightBlue": "Miðnæturblár",
+  "@midnightBlue": {},
+  "greenForest": "Grænn skógur",
+  "@greenForest": {},
+  "greenMeadow": "Grænt tún",
+  "@greenMeadow": {},
+  "mintChocolate": "Myntu súkkulaði",
+  "@mintChocolate": {},
+  "skyBlue": "Himinblátt",
+  "@skyBlue": {},
+  "playfulGarden": "Fjörugur Garður",
+  "@playfulGarden": {},
+  "showPositionalAdvantageIndicator": "Sýna stöðuávinningsvísi",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Notaðu fullkominn gagnagrunn",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Virkjaðu þennan valkost til að nota gallalausan leikjagagnagrunn sem er búinn til með nýjustu reikniritum. Þessi eiginleiki samþættir bæði opnunar- og lokaaðferðir til að stinga upp á bestu hreyfingum. Þetta er ákjósanlegur kostur fyrir leikmenn sem sækjast eftir hæsta stigi nákvæmni í spilun. Gagnagrunnurinn er búinn til með nákvæmri tölvutækni og er hannaður til að bjóða upp á næstum fullkomnar leikjalausnir.\n\nAthugið: Ef gervigreind nær ekki aðgangi að gagnagrunninum mun það snúa sér að hefðbundnum reikniritum fyrir ákvarðanir um spilun. Þegar gagnagrunnurinn er tiltækur verður „Erfiðleikastigið“ nánast óviðjafnanlegt og „AI Thinking Time“ minnkar verulega. Mörgum stillingum innan valmöguleika 'AI's play style' verður hnekkt, þar sem niðurstöður gagnagrunnsins hafa hæsta forgang.\n\nTil að fá leiðbeiningar um hvernig á að nýta þennan gallalausa gagnagrunn sem best, smelltu hér.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Bakgrunnsmynd",
+  "@backgroundImage": {},
+  "whatIsRandom": "Þegar valÞegar valmöguleikinn „Notaðu fullkominn gagnagrunn“ er ekki virkur, veldur „Random“ stillingin gervigreind til að færa stykki af handahófi án þess að nota nokkur reiknirit fyrir val á hreyfingu. Þetta leiðir venjulega til verulega veikara spilunar. Aftur á móti, þegar „Notaðu fullkominn gagnagrunn“ er virkt, treystir gervigreindin eingöngu á „fullkomna gagnagrunninn“ til að taka ákvarðanir, í stað þess að blanda honum saman við hefðbundin gervigreind reiknirit. Í þessum ham eru hreyfingar gervigreindar algjörlega byggðar á innihaldi gagnagrunnsins og forðast að treysta á rauntímaútreikninga eða leitarreiknirit.möguleikinn „Notaðu fullkominn gagnagrunn“ er ekki virkur, veldur „Random“ stillingin gervigreind til að færa stykki af handahófi án þess að nota nokkur reiknirit fyrir val á hreyfingu. Þetta leiðir venjulega til verulega veikara spilunar. Aftur á móti, þegar „Notaðu fullkominn gagnagrunn“ er virkt, treystir gervigreindin eingöngu á „fullkomna gagnagrunninn“ til að taka ákvarðanir, í stað þess að blanda honum saman við hefðbundin gervigreind reiknirit. Í þessum ham eru hreyfingar gervigreindar algjörlega byggðar á innihaldi gagnagrunnsins og forðast að treysta á rauntímaútreikninga eða leitarreiknirit.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Fjarlægðu bríki andstæðingsins úr hendinni á þeim; þá er það kominn að andstæðingnum að setja niður.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Þegar mylla er mynduð í uppsetningarlotunni",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Fjarlægðu bríki andstæðingsins af spilaborðinu.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Fjarlægðu bríki andstæðingsins af spilaborðinu; þá er það kominn að andstæðingnum að setja niður.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Andstæðingurinn fjarlægir eigin bríki af spilaborðinu.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Í stað þess að þú grípir til aðgerða, þá velur andstæðingurinn að fjarlægja eigin bríki af spilaborðinu, sem er í reynd aðgerð sem er skaðleg fyrir hann sjálfan.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Fjarlægðu bríki andstæðingsins úr hendinni á þeim; þá er það þinn tími til að hreyfa þig.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Fjarlægðu bríki af hendi andstæðingsins. Ef samkvæmt stillingunni fyrir fjölda til að fjarlægja skal fjarlægja margar bríkur og andstæðingurinn hefur engar bríkur eftir í hendi, skaltu halda áfram að fjarlægja bríkur andstæðingsins af spilaborðinu. Þá er það þinn tími til að hreyfa þig. Ef þú heldur áfram að mynda myllur, þá geturðu haldið áfram að fjarlægja bríkur andstæðingsins.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Fjarlægðu bríki af hendi andstæðingsins. Ef samkvæmt stillingunni fyrir fjölda til að fjarlægja skal fjarlægja margar bríkur og andstæðingurinn hefur engar bríkur eftir í hendi, skaltu halda áfram að fjarlægja bríkur andstæðingsins af spilaborðinu. Þá er það kominn að andstæðingnum að hreyfa sig.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Merktu seinkaða fjarlægingu bríka.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Í uppsetningarlotunni eru bríkur sem á að fjarlægja merktar og hvorugur leikmaður getur sett niður nýjar bríkur á þessum stöðum. Þegar komið er í færslulotuna eru þessar merktar bríkur fjarlægðar að fullu og leikmenn geta þá færst með bríkur sínar á þessar nú tómu stöður.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Aðgerðir sem hægt er að grípa til þegar mylla er mynduð á staðsetningarstigi.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Merkt",
+  "@marked": {},
+  "menu": "Valmynd",
+  "@menu": {},
+  "showNumbersOnPieces": "Sýna númer á peðum",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Einslitur",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Þú getur virkjað stuðning við skjálesara í aðgengisstillingum í Almennar stillingar.",
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Vista mynd",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Sýna greiningartækni",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Bakgrunnslitur greiningartækni",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Litir ikóna greiningartækni",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Breytist.",
+  "@transformed": {},
+  "cannotTransform": "Ekki hægt að breyta.",
+  "@cannotTransform": {},
+  "rotate": "Snúa",
+  "@rotate": {},
+  "horizontalFlip": "L.S.",
+  "@horizontalFlip": {},
+  "verticalFlip": "V.S.",
+  "@verticalFlip": {},
+  "innerOuterFlip": "I/Y S.",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Gegnsætt Striga",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Takmarka endurtekna myndun myllu",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Stykki sem fært er úr einum myllu í aðra getur ekki strax snúið aftur á upphafspunktinn í næsta leik til að mynda myllu aftur. Fyrst þarf annað skref.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Eingang notkun mylla",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Hver mylla getur aðeins fjarlægt eitt stykki andstæðingsins einu sinni. Þú getur endurmyndað það, en það er ekki hægt að nota það til að fjarlægja aðra.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Núverandi reglur sem þú hefur sett hafa ekki samsvarandi fullkominn gagnagrunn. Fyrir frekari upplýsingar um hinn fullkomna gagnagrunn, vinsamlegast smelltu hér.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Einbeitið ykkur að því að loka leiðum",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Forgangsröð að hindra hreyfingar andstæðingsins fram yfir að mynda möllur. Í stað þess að einbeita sér að því að fjarlægja stykki með því að ljúka möllum, miðar AI að því að loka andstæðingnum, gera þeim ófært að hreyfa sig og tryggja sigur með úthaldsleik frekar en árásargjarnri leik. Þessi stefna lokar ekki virkan möllum andstæðingsins.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Skákmanna mynd",
+  "@pieceImage": {},
+  "importColorSettings": "Flytja inn litastillingar",
+  "@importColorSettings": {},
+  "exportColorSettings": "Flytja út litastillingar",
+  "@exportColorSettings": {},
+  "import": "Flytja inn",
+  "@import": {},
+  "export": "Flytja út",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Vinsamlegast afritaðu JSON stillingarnar á klemmuspjald fyrst.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Afritað á klemmuspjald.",
+  "@copiedToClipboard": {},
+  "imported": "Flutt inn.",
+  "@imported": {},
+  "boardImage": "Borðmynd",
+  "@boardImage": {},
+  "autumnLeaves": "Haustlauf",
+  "@autumnLeaves": {},
+  "legendaryLand": "Goðsagnir Land",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignettingaráhrif",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Viltu gera verkstjólastikuna alveg gegnsæa þegar bakgrunnsmynd fyrir borð er stillt?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Virkjaðu titring í leiknum",
+  "@vibration": {},
+  "soundTheme": "Hljóðtema",
+  "@soundTheme": {},
+  "ball": "Kúla",
+  "@ball": {},
+  "liquid": "Vökvi",
+  "@liquid": {},
+  "wood": "Tré",
+  "@wood": {},
+  "placeEffectAnimation": "Hreyfimyndaráhrif við að setja niður taflmann",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Hreyfimyndaráhrif við að fjarlægja taflmann",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Sýna tækjastiku neðst",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Horngeisli spjalds",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Notaðu opnunarbók",
+  "@useOpeningBook": {},
+  "currentRule": "Núverandi",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Regluset",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Leyfðu gervigreindinni að nota opnunaráð sem faglegir mannlegir leikmenn nota oft í upphafi leiks. Athugið: Þessi eiginleiki er núna aðeins í boði fyrir ákveðin regluset.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Sýna forskotslínurit",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Forðagröf mun aðeins vera teiknuð eftir að gervigreindin gerir leik. Hún verður ekki teiknuð þegar mannlegur spilari gerir leik.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Slökktu á fjarlægingu þar til öllum pönnum hefur verið komið fyrir. Spilarar fjarlægja peð út frá fjölda myllu sem myndast.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Slökktu á fjarlægingu þar til öllum pönnum hefur verið komið fyrir. Spilarar fjarlægja peð út frá fjölda myllu: ef fjöldinn er sá sami, fjarlægja báðir jafnmörg peð; ef annar hefur fleiri, fjarlægir hann eitt auka peð og viðheldur mismuni upp á eitt peð. Ef aðeins einn býr til myllu, fjarlægir hann tvö peð en hinn eitt. Ef hvorugur býr til myllu, fjarlægja báðir eitt peð.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Veldu einn af þínum peðum.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Þetta er ekki þín umferð.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Bakgrunnslitur athugasemda tólastiku",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Litir táknmynda athugasemda tólastiku",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Sýna athugasemda tólastiku",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Fara í athugasemda ham",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Ertu viss um að þú viljir hreinsa allar athugasemdir?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM boðorð afritað á klippiborð.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Tenging hafnað, þjónninn gæti verið niðri.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Uppgötvun tókst, bíð eftir tengingu...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Engin staðarnetstenging",
+  "@noLanConnection": {},
+  "takeScreenshot": "Taka skjáskot",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Aftengt frá andstæðingi.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Taka til baka beiðni",
+  "@takeBackRequest": {},
+  "nothingToShow": "Ekkert til að sýna.",
+  "@nothingToShow": {},
+  "stopHosting": "Hætta að hýsa",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Tenging endurstillt af jafningja.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Tenging tapað vegna hjartsláttar tímatakmarks. Vinsamlegast tengdu aftur.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Byrja að hýsa",
+  "@startHosting": {},
+  "restartRequestRejected": "Endurræsing beiðni hafnað.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Ekki tengdur við staðarnet andstæðing.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM boðorð",
+  "@llmPrompt": {},
+  "gameRestarted": "Leikur endurræstur.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Taka til baka hafnað.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Ertu viss um að þú viljir gefast upp á þessum leik?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Andstæðingurinn gafst upp. Þú vinnur!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Hreinsa allar athugasemdir",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Tengdur, bíð eftir hreyfingu andstæðings...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Netstaða: Aftengt",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Taka til baka beiðni send til andstæðings.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Andstæðingurinn gæti hafa yfirgefið leikinn",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Tengdur við hýsinguna með góðum árangri.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Tenging tapað: hjartsláttar tímatakmark",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Engin hýsing uppgötvuð.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Staðfesta uppgjöf",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Byrjaði að hýsa leik, bíð eftir leikmönnum til að taka þátt...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Tenging tímatakmark, netstenging óstöðug.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Ekkert LLM boðorð í boði.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Þú gafst upp. Leikur lokið.",
+  "@youResignedGameOver": {},
+  "serverIp": "Þjónn IP",
+  "@serverIp": {},
+  "confirmClear": "Staðfesta hreinsun",
+  "@confirmClear": {},
+  "opponentSTurn": "Umferð andstæðings.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Bíð eftir tengingu viðskiptavinar...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Taka til baka beiðni var hafnað eða mistókst.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Bæta við texta",
+  "@addText": {},
+  "exitAnnotationMode": "Hætta úr athugasemda ham",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Sláðu inn athugasemd þína",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Reyni að tengjast aftur...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Endurræsing beiðni send. Bíð eftir svari andstæðings...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Þjónninn er stoppaður.",
+  "@serverIsStopped": {},
+  "restartRequest": "Endurræsing beiðni",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Getur ekki beðið um að taka til baka þegar það er ekki þín umferð.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Taka til baka samþykkt.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Stillingar staðarnet",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Tengdur aftur með góðum árangri!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Mistókst að vista mynd í gallerí.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Andstæðingurinn bað um að endurræsa leikinn. Samþykkir þú?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Þín umferð.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Get ekki tengst aftur, vinsamlegast endurræstu leikinn.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Hýsing",
+  "@host": {},
+  "join": "Taka þátt",
+  "@join": {},
+  "port": "Hafn",
+  "@port": {},
+  "invalidIpAddress": "Ógilt IP tala.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Ógilt hafn.",
+  "@invalidPort": {},
+  "connectingAttempt": "Tengist: Tilraun {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Mistókst að tengjast: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Mistókst að byrja að hýsa: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Hýsing uppgötvuð: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Stöðva",
+  "@stop": {},
+  "discover": "Uppgötva",
+  "@discover": {},
+  "connect": "Tengjast",
+  "@connect": {},
+  "clientConnected": "Viðskiptavinur tengdur: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Uppgötvar: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Tengist aftur ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Tengdur",
+  "@connected": {},
+  "delete": "Eyða",
+  "@delete": {},
+  "ancientEgypt": "Forn-Egyptaland",
+  "@ancientEgypt": {},
+  "gothicIce": "Gotneskur Ís",
+  "@gothicIce": {},
+  "riceField": "Hrísgrjónaakur",
+  "@riceField": {},
+  "chinesePorcelain": "Kínverskt Postulín",
+  "@chinesePorcelain": {},
+  "desertDusk": "Eyðimerkurrokkr",
+  "@desertDusk": {},
+  "precisionCraft": "Nákvæmnisverk",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Þjóðbúningasaumur",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpatískar Erfðir",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Keisaralegur Dýrð",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Bæheimskur Kristall",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanna Sólarupprás",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Samhljómur og Jafnvægi",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Kanill Krydd",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatólískt Mósaík",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnival Andi",
+  "@carnivalSpirit": {},
+  "custom": "Sérsniðin",
+  "@custom": {},
+  "spiceMarket": "Kryddmarkaður",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Strjúktu til að sýna skúffuna",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Sýna upplýsingar um leik á skjámyndum",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Tímamörk manna",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Engin tímamörk fyrir mannlega leiki",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Tímamarkatap verður beitt fyrir mannlegan spilara",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Að bera kennsl á leikborðið...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Þú getur slegið inn hvaða nafn líkans sem er.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Staða leikborðsins beitt. FEN afrituð í úrklippuborð.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Tillaga: reyndu að taka skarpari mynd af leikborðinu.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM prompt‑sniðmát",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Ekkert gilt leikborð fannst.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Velja mynd úr albúmi...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Stilla prompt‑sniðmát",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Breyta prompt‑sniðmáti fyrir LLM greiningu",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Mistókst að búa til FEN úr viðurkenndu leikborði.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Úttak á núverandi tungumáli",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Algengar Base URL‑ur",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Skoða algeng líkön",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Viðurkenningarparametrar uppfærðir.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Hvítur á leik",
+  "@whiteSMove": {},
+  "resetToDefaults": "Endurstilla í sjálfgefin gildi",
+  "@resetToDefaults": {},
+  "photoShoot": "Ljósmyndun",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Mistókst að beita viðurkenndri stöðu á leikborði.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM prompt‑efni",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM ekki stillt. Athugaðu stillingarnar þínar.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Stilla veitanda, líkan, API Key og Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM stillingar",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Stilla LLM veitanda",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "Yfirskrift LLM prompt‑sniðmáts",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Engir steinar greindust í myndinni. Reyndu aftur.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Greina leikborð úr mynd",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Skoða ráð",
+  "@viewTips": {},
+  "applyToBoard": "Beita á leikborð",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Stilla svæði á leikborði",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Skoða algengar URL‑ur",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Litagreining mistókst!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Greini mynd af leikborði...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Velja úr albúmi",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Enginn leikborðspunktur fannst!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Ef skilið autt, verður sjálfgefið sniðmát notað",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM stillingar",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Ertu viss um að þú viljir endurstilla prompt‑sniðmát í sjálfgefin gildi?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM prompt‑sniðmát fótur",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Sæki svarið...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Beita þessari niðurstöðu á leikborðið",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Taka mynd...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Vinsamlegast veldu mynd af leikborði til greiningar",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Niðurstöður greiningar",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Greindu leikskrefin og gefðu innsýn.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Sækja API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Allur greiningarferillinn mistókst að ljúka.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Niðurstaða greiningar á leikborði",
+  "@boardRecognitionResult": {},
+  "askLlm": "Spyrðu LLM",
+  "@askLlm": {},
+  "boardDetectionFailed": "Uppgötvun leikborðs mistókst!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Enginn punktur á leikborði fannst, ekki er hægt að bera kennsl á steina!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Afrita FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Algeng líkön",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (valfrjálst)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Engin mynd valin",
+  "@noImageSelected": {},
+  "blackSMove": "Svartur á leik",
+  "@blackSMove": {},
+  "llm": "Stórt tungumálalíkan",
+  "@llm": {},
+  "llmProvider": "Þjónustuaðili",
+  "@llmProvider": {},
+  "baseUrl": "Grunnslóð",
+  "@baseUrl": {},
+  "model": "Líkan",
+  "@model": {},
+  "temperature": "Hitastig",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Skipun móttekin! Gervigreind vinnur...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Djúp hugsun í gangi, vinsamlegast bíðið...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Verður kynnt bráðlega...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Viðurkenningarbreytur",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Stilltu breytur til að bæta nákvæmni viðurkenningar",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Vista breytur",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Ekki tókst að ræsa myndgreiningu: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Myndgreining mistókst: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Staða sett með {whiteCount} hvítum og {blackCount} svörtum peðum",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN afritað á klippiborðið)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Viðurkenning mistókst: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Mín einkunn",
+  "@myRating": {},
+  "gamesPlayed": "Spilaðir leikir",
+  "@gamesPlayed": {},
+  "wins": "Sigrar",
+  "@wins": {},
+  "losses": "Töp",
+  "@losses": {},
+  "draws": "Jafntefli",
+  "@draws": {},
+  "lastUpdated": "Síðast uppfært",
+  "@lastUpdated": {},
+  "format": "Snið:",
+  "@format": {},
+  "resetStatistics": "Endurstilla tölfræði",
+  "@resetStatistics": {},
+  "drawRate": "Jafnteflishlutfall",
+  "@drawRate": {},
+  "lossRate": "Taphlutfall",
+  "@lossRate": {},
+  "aiStatistics": "Gervigreindartölfræði",
+  "@aiStatistics": {},
+  "enableStatistics": "Virkja tölfræði",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Þegar virkjað er verða niðurstöður leikja skráðar í tölfræði. Leikir sem fela í sér að taka til baka leiki verða þó ekki skráðir. Þegar óvirkjað er er söfnun tölfræðinnar í bið.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Þetta mun endurstilla alla leikjatölfræði. Ekki er hægt að afturkalla þessa aðgerð.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Stærð innri hrings borðsins",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Borðskuggi",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Gildruvitund",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Lýstu gildruhreyfingum með þykkum hringjum og örvum meðan á greiningu stendur.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Gildra er til staðar. Gildruhreyfingar: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Flanking handtaka",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Lokaðu einum af verkum andstæðingsins á milli tveggja ykkar í beinni línu til að fanga það.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Leyfa flanking",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Íhlutun handtaka",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Farðu inn í tóma punktinn milli tveggja stykki andstæðingsins til að fanga þá báða.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Leyfa íhlutun",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Handtaka með því að stökkva",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Handtaka með því að hoppa yfir stykki aðliggjandi andstæðings í tóma punktinn handan.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Leyfa stökkupptöku",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Viðeigandi línur",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Meðfram brúnum torgsins",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Meðfram rétthyrndum línum sem fara yfir torgið",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Meðfram ská línum sem fara yfir torgið",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Framkvæmd stig",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Framboð á hreyfingunni sem byggist á verkum sem eftir eru",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Engin takmörkun",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Í boði þegar þú ert með þrjú eða færri stykki",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

@@ -1,0 +1,44 @@
+name: Reject Co-authored-by trailers
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  no-coauthors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fail on Co-authored-by trailers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pattern='^(co-authored-by:|co-author:)'
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+            range="${base}..${head}"
+          else
+            before="${{ github.event.before }}"
+            head="${{ github.sha }}"
+            # For the first push of a new branch, "before" can be all zeros.
+            if [[ "${before}" == "0000000000000000000000000000000000000000" ]]; then
+              range="${head}~0..${head}"
+            else
+              range="${before}..${head}"
+            fi
+          fi
+
+          if git log --format=%B "${range}" | grep -iE "${pattern}"; then
+            echo "Found forbidden co-author trailers in commit messages."
+            echo "Please remove any Co-authored-by/Co-author lines."
+            exit 1
+          fi

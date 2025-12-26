@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
@@ -625,9 +626,18 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   Widget _buildCaptureOptionGroup({
+    required BuildContext context,
     required String label,
     required List<Widget> tiles,
   }) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final TextStyle titleStyle = isDark
+        ? theme.textTheme.bodyLarge!.copyWith(
+            color: theme.colorScheme.onSurface,
+          )
+        : AppTheme.listTileTitleStyle;
+
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
       child: Column(
@@ -635,7 +645,7 @@ class RuleSettingsPage extends StatelessWidget {
         children: <Widget>[
           Align(
             alignment: AlignmentDirectional.centerStart,
-            child: Text(label, style: AppTheme.listTileTitleStyle),
+            child: Text(label, style: titleStyle),
           ),
           const SizedBox(height: 8),
           ListTileTheme(
@@ -655,6 +665,7 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   Widget _buildCaptureCheckboxTile({
+    required BuildContext context,
     required String keyPrefix,
     required String keySuffix,
     required String label,
@@ -662,6 +673,14 @@ class RuleSettingsPage extends StatelessWidget {
     required bool value,
     required ValueChanged<bool> onChanged,
   }) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final TextStyle titleStyle = isDark
+        ? theme.textTheme.bodyLarge!.copyWith(
+            color: theme.colorScheme.onSurface,
+          )
+        : AppTheme.listTileTitleStyle;
+
     return CheckboxListTile(
       key: Key('rule_settings_checkbox_${keyPrefix}_$keySuffix'),
       value: value,
@@ -670,11 +689,12 @@ class RuleSettingsPage extends StatelessWidget {
           : null,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.trailing,
-      title: Text(label, style: AppTheme.listTileTitleStyle),
+      title: Text(label, style: titleStyle),
     );
   }
 
   Widget _buildCaptureRadioTile({
+    required BuildContext context,
     required String keyPrefix,
     required String keySuffix,
     required String label,
@@ -683,6 +703,14 @@ class RuleSettingsPage extends StatelessWidget {
     required bool groupValue,
     required ValueChanged<bool> onChanged,
   }) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final TextStyle titleStyle = isDark
+        ? theme.textTheme.bodyLarge!.copyWith(
+            color: theme.colorScheme.onSurface,
+          )
+        : AppTheme.listTileTitleStyle;
+
     return RadioListTile<bool>(
       key: Key('rule_settings_radio_${keyPrefix}_$keySuffix'),
       value: value,
@@ -692,7 +720,7 @@ class RuleSettingsPage extends StatelessWidget {
           : null,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.trailing,
-      title: Text(label, style: AppTheme.listTileTitleStyle),
+      title: Text(label, style: titleStyle),
     );
   }
 
@@ -717,7 +745,20 @@ class RuleSettingsPage extends StatelessWidget {
     required bool onlyWhenOwnPiecesLeq3,
     required ValueChanged<bool> onOnlyWhenOwnPiecesLeq3Changed,
   }) {
-    const TextStyle subtitleStyle = AppTheme.listTileSubtitleStyle;
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    final TextStyle titleStyle = isDark
+        ? theme.textTheme.bodyLarge!.copyWith(
+            color: theme.colorScheme.onSurface,
+          )
+        : AppTheme.listTileTitleStyle;
+
+    final TextStyle subtitleStyle = isDark
+        ? theme.textTheme.bodyMedium!.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          )
+        : AppTheme.listTileSubtitleStyle;
 
     return SettingsCard(
       key: Key('rule_settings_card_$keyPrefix'),
@@ -727,7 +768,7 @@ class RuleSettingsPage extends StatelessWidget {
           key: Key('rule_settings_switch_${keyPrefix}_enabled'),
           value: enabled,
           onChanged: onEnabledChanged,
-          title: Text(enableLabel, style: AppTheme.listTileTitleStyle),
+          title: Text(enableLabel, style: titleStyle),
           subtitle: Text(description, style: subtitleStyle),
         ),
         // Only show additional options when the main toggle is enabled
@@ -736,9 +777,11 @@ class RuleSettingsPage extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             child: _buildCaptureOptionGroup(
+              context: context,
               label: S.of(context).captureApplicableLines,
               tiles: <Widget>[
                 _buildCaptureCheckboxTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'square_edges',
                   label: S.of(context).captureSquareEdges,
@@ -747,6 +790,7 @@ class RuleSettingsPage extends StatelessWidget {
                   onChanged: onSquareEdgesChanged,
                 ),
                 _buildCaptureCheckboxTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'cross_lines',
                   label: S.of(context).captureCrossLines,
@@ -755,6 +799,7 @@ class RuleSettingsPage extends StatelessWidget {
                   onChanged: onCrossLinesChanged,
                 ),
                 _buildCaptureCheckboxTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'diagonal_lines',
                   label: S.of(context).captureDiagonalLines,
@@ -769,9 +814,11 @@ class RuleSettingsPage extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             child: _buildCaptureOptionGroup(
+              context: context,
               label: S.of(context).captureExecutionPhases,
               tiles: <Widget>[
                 _buildCaptureCheckboxTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'placing_phase',
                   label: S.of(context).placingPhase,
@@ -780,6 +827,7 @@ class RuleSettingsPage extends StatelessWidget {
                   onChanged: onInPlacingPhaseChanged,
                 ),
                 _buildCaptureCheckboxTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'moving_phase',
                   label: S.of(context).movingPhase,
@@ -794,9 +842,11 @@ class RuleSettingsPage extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             child: _buildCaptureOptionGroup(
+              context: context,
               label: S.of(context).capturePiecesCondition,
               tiles: <Widget>[
                 _buildCaptureRadioTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'unlimited',
                   label: S.of(context).capturePiecesConditionUnlimited,
@@ -806,6 +856,7 @@ class RuleSettingsPage extends StatelessWidget {
                   onChanged: onOnlyWhenOwnPiecesLeq3Changed,
                 ),
                 _buildCaptureRadioTile(
+                  context: context,
                   keyPrefix: keyPrefix,
                   keySuffix: 'self_leq_three',
                   label: S.of(context).capturePiecesConditionSelfLeqThree,
@@ -1118,25 +1169,47 @@ class RuleSettingsPage extends StatelessWidget {
 
     //GameController().engine.shutdown();
 
-    return BlockSemantics(
-      child: Scaffold(
-        key: const Key('rule_settings_scaffold'),
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppTheme.lightBackgroundColor,
-        appBar: AppBar(
-          key: const Key('rule_settings_appbar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(
-            S.of(context).ruleSettings,
-            style: AppTheme.appBarTheme.titleTextStyle,
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        final Widget page = BlockSemantics(
+          child: Scaffold(
+            key: const Key('rule_settings_scaffold'),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: useDarkSettingsUi
+                ? settingsTheme.scaffoldBackgroundColor
+                : AppTheme.lightBackgroundColor,
+            appBar: AppBar(
+              key: const Key('rule_settings_appbar'),
+              leading: CustomDrawerIcon.of(context)?.drawerIcon,
+              title: Text(
+                S.of(context).ruleSettings,
+                style: useDarkSettingsUi
+                    ? null
+                    : AppTheme.appBarTheme.titleTextStyle,
+              ),
+            ),
+            body: ValueListenableBuilder<Box<RuleSettings>>(
+              key: const Key('rule_settings_value_listenable_builder'),
+              valueListenable: DB().listenRuleSettings,
+              builder: _buildRuleSettings,
+            ),
           ),
-        ),
-        body: ValueListenableBuilder<Box<RuleSettings>>(
-          key: const Key('rule_settings_value_listenable_builder'),
-          valueListenable: DB().listenRuleSettings,
-          builder: _buildRuleSettings,
-        ),
-      ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 }

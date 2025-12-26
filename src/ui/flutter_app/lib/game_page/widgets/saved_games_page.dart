@@ -18,6 +18,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'mini_board.dart';
@@ -456,7 +457,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   /// Rename a saved game file
   Future<void> _renameGame(SavedGameEntry e) async {
-    final TextEditingController controller = TextEditingController();
+    final TextEditingController controller = SafeTextEditingController();
     // Extract filename without extension for editing
     final String currentName = p.basenameWithoutExtension(e.filename);
     controller.text = currentName;

@@ -2159,4 +2159,1907 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Model, dil və davranışı konfiqurasiya edin",
     "@voiceAssistantSettingsDescription": {}
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Oyunçu 1 qalib gəlir!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Oyunçu 2 qazanır!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Qazandı",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "İtirilmiş",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Düşünür…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Yeni oyun",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "İdxal oyun",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "İxrac oyun",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Oyun idxal edilib.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "{invalidMove} idxal edilə bilməz",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Hərəkətlər və qaydalar uyğun gəlmir.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Zəhmət olmasa, gözləyin.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Cari oyun yenidən başlasın?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Yenidən başlamaq",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Oyun başladı, yerləşdirin.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Təhlil edilir…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Xəta: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "score": "Xal:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Oyunçu 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Oyunçu 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} parça sayı üçdən azdır.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player} istefa verdi.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player}-in getməyə yolu yoxdur.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "Lövhə doludur və {player}-in getməyə yolu yoxdur.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "Vaxt bitdi, {player} itirildi.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "Hərəkət mərhələsində, son konkret sayda hərəkətdə heç bir parça çıxarılmadı.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Püşkatmadır, çünki lövhə doludur.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Üç dəfə təkrarlandığı üçün heç-heçədir.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Oyun bitdi! Naməlum səbəb.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Oyun bitdi",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Sən qalibsən! Təbrik edirik!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Daha çətin səviyyəyə meydan oxuyun? Yeni səviyyə {level} səviyyəsi olacaq!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Siz itirdiniz!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Təhlil edin",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Haqqında",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versiya: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "təşəkkürlər",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Parametrlər",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Seçimlər",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Ümumi Parametrlər",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Çətinlik səviyyəsi",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI düşünmə vaxtı",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Çətinlik",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Səs effektləri",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Oyunda səsləri çalın",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Fon musiqisi",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Yerli audio faylını fon musiqisi kimi oxut",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Fon musiqisi faylı",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Fon musiqisini təmizlə",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Musiqi faylları",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Geri götürərkən səssiz saxlayın",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "İlk hərəkət",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "İnsan",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternativ",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Oyun bitdikdə oyunu avtomatik yenidən başladın",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "İlk Hərəkəti avtomatik dəyişdirin",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Təsadüfi hərəkət edin",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Müxtəlif",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Qaydalar",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Hər oyunçunun sahib olduğu ədədlərin sayı",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Hər oyunçuda neçə ədəd var?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Uçan parçanın nömrəsi",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Uçuş aktivləşdirilibsə, oyunçu müəyyən bir parça sayına endirildikdə, onun fiqurları oyunun qalan hissəsində olduğu kimi bitişik nöqtələrlə məhdudlaşdırılmaq əvəzinə istənilən boş nöqtəyə keçə bilər.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Ən azı Parçalar",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diaqonal xətlər",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Lövhəyə dörd diaqonal xətt əlavə edin.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst_Detail": "Yerləşdirmə mərhələsində ikinci hərəkət edən oyunçu hərəkət mərhələsində birinci olur.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Çoxlu sil",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Oyunçu bir anda birdən çox dəyirmanı bağlasa, bağladığı dəyirmanların sayını siləcək.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Dəyirmanları məhv edin",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Varsayılan olaraq, oyunçular formalaşmış dəyirmandan bir parça çıxarmazdan əvvəl hər hansı digər parçaları çıxarmalıdırlar. Məhdudiyyəti aradan qaldırmaq üçün bu seçimi aktivləşdirin.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Lövhə dolu olduqda ikinci oyunçu itirir",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Yerləşdirmə mərhələsinin sonunda lövhə dolu olduqda, ilk yeri tutan tərəf oyunu uduzur. Əks halda oyun heç-heçə olacaq.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Heç bir qanuni hərəkət olmadığı zaman itirmək",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Rəqibi onları hərəkət etdirə bilməmək üçün blok edərsə, oyunçu itirəcək. Bu seçim deaktivdirsə, hərəkət etmək üçün tərəfi dəyişdirin.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Uçan",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Əgər oyunçuda yalnız üç və ya dörd (konfiqurasiya edilə bilən) parça qalırsa, o, parçanı istənilən boş nöqtəyə daşıya bilər.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-hərəkət qaydası",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Müəyyən sayda hərəkətdə heç bir silinmə olmadıqda oyun çəkilir.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Geriyə qaytarmaq",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Zəhmət olmasa seçin",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopy",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Tarixçəni mübadilə buferinə köçürün.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Kömək edin",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Əlaqə",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Çıx",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Qayda Parametrləri",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Rəng",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Lövhənin rəngi",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Parça rəngi",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Fon rəngi",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Lövhə xətti rəngi",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Oyunçu 1 ədəd rəng",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Oyunçu 2 parça rəng",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Mesaj rəngi",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Yerləşdirilməmiş parçaların sayını göstərin",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Bortda qeydləri göstərin",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Tarixçə naviqasiya alətlər panelini göstərin",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Ekran",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Lövhənin sərhəd xəttinin eni",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Lövhənin daxili xəttinin eni",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Parça eni",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Şrift ölçüsü",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD qeydi",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Bərpa et",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Defolt parametrləri bərpa edin",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} seçin",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Məlumat",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "İpucu",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "oyunçu",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Oyunçu 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Oyunçu 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Necə oynamalı",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Parçanı yerləşdirmək üçün istənilən mövcud nöqtəyə toxunun.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Bir parçanı hərəkət etdirmək üçün üzərinə toxunun.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Parçanı hərəkət etdirmək üçün ona qoşulmuş nöqtəyə toxunun.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Çıxarmaq üçün rəqibin bir parçasına toxunun.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Bir parçanı çıxarmazdan əvvəl əvvəlcə dəyirman yaratmalısınız.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Parçalarınızla oynamaq lazımdır.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Ümumi oyunlar",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Nəticələr",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "sol",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Gizlilik Siyasəti",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Zəhmət olmasa diqqətlə oxuyun və bunu tam başa düşdüyünüzə və razılaşdığınızdan əmin olun ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Bu Siyasətlə razı deyilsinizsə, bu tətbiqdən istifadə etməyin. Tətbiqdən istifadə bu şərtləri qəbul etdiyiniz deməkdir.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " və ",
+  "@and": {},
+  "accept": "Qəbul edin",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Geri götür",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Geri götürülür…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Gözlənir…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "İrəli addımlayın",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Hamısını geri götür",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Hamısını irəli apar",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "İndi köçün",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Bitdi.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Çatlayan dəyirman",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Əgər oyunçunun dəyirmanlarda yalnız parçaları varsa, dəyirmanlardakı parçalar çıxarmaq üçün kilidlənməyəcək.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animasiya müddəti",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "helpContent": "Oyun üçdən az fiqurla və ya qanuni hərəkətsiz rəqibi tərk etmək məqsədi daşıyır.\n\nBir mövqe üçüncü dəfə baş verərsə və ya son 100 (konfiqurasiya edilə bilən) hərəkətdə heç bir silmə etməzsə, oyun avtomatik olaraq heç-heçə edir.\n\nOyun üç mərhələdə davam edir:\n\n1. Boş yerlərə parçaların yerləşdirilməsi\n2. Parçaların bitişik nöqtələrə köçürülməsi\n3. (isteğe bağlı mərhələ) Oyunçunu üç ədədə endirərkən parçaları istənilən boş yerə köçürmək\n\nYerləşdirmə\n\nOyun iyirmi dörd xal olan bir şəbəkədən ibarət boş bir lövhə ilə başlayır. Oyunçular növbə ilə öz hissələrini boş nöqtələrə yerləşdirirlər, ta ki hər bir oyunçu bütün parçaları lövhəyə yerləşdirənə qədər. Əgər oyunçu üç fiqurunu düz qoya bilirsə, onun \"dəyirmanı\" var və rəqibinin fiqurlarından birini lövhədən çıxara bilər.\n\nBəzi qaydalarda oyunçular formalaşmış dəyirmandan bir parça çıxarmazdan əvvəl hər hansı digər parçaları çıxarmalıdırlar.\n\nBəzi qaydalarda yerləşdirmə mərhələsində parçaları çıxarılan parçaların nöqtələrinə yenidən yerləşdirə bilməzsiniz.\n\nBütün parçaları istifadə etdikdən sonra oyunçular növbə ilə hərəkət edirlər.\n\nHərəkət edir\n\nHərəkət etmək üçün oyunçu öz parçalarından birini taxta xətti boyunca boş bitişik nöqtəyə aparır. Əgər bunu edə bilmirsə, oyunu uduzmuşdur. Üç fiqurunu taxta xəttinə düzən oyunçunun dəyirmanı var və yerləşdirmə mərhələsində olduğu kimi rəqibinin fiqurlarından birini çıxara bilər. İstənilən oyunçu iki hissəyə enir, yeni dəyirmanlar yaratmaq imkanı yoxdur və beləliklə oyunu itirir. Rəqibi onların hərəkətinə mane olarsa, oyunçu üçdən çox fiqur qazandıqda da itirə bilər.\n\nUçan\n\nQaydaların bəzi variantlarında, oyunçuda yalnız üç fiqur qaldıqdan sonra, onun fiqurları yalnız bitişik olanlara deyil, istənilən boş nöqtələrə uça, atlaya və ya atlaya bilər.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versiya məlumatı",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lisenziya",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Mənbə kodu",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Proqram Versiyası",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "General",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Qabaqcıl",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Yerləşdirmə",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Hərəkət edir",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Silinir",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Oyunun bitmə şərti",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI-nin oyun tərzi",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Vaxt",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Görünüş",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "İnsan təcrübəsindən istifadə edin",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Parçaların hərəkətliliyini nəzərə alın",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Parça sayı:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} əlində: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} göyərtədə: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "Lövhə yuxarıdan ofset",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Süni intellektin növbəsi deyil.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI düşünmür.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Siz köçürmə siyahısının sonundasınız.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Çıxmaq üçün yenidən klikləyin.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Daha çox",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Bu eksperimental xüsusiyyətdir.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Təcrübələr",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Açıq mənbə lisenziyaları",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "defaultLanguage": "Defolt dil",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase_Detail": "Ayrı-ayrı yerləşdirmə və hərəkət mərhələləri yoxdur, yəni oyunçular hər bir hərəkətdə taxtaya bir parça yerləşdirmək və ya özlərindən birini hərəkət etdirmək (yerləşdirmək üçün qalan hissələri olduğu müddətcə) qərar verə bilərlər.",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menyu rəngi",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menyu mətn rəngi",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Menyu elementinin rəngini vurğulamaq",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Əsas alətlər panelinin fon rəngi",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Əsas alətlər panelinin ikona rəngi",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Naviqasiya alətlər paneli fon rəngi",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Naviqasiya alətlər paneli işarəsi rəngi",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Alətlər panelini avtomatik gizlədin",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Ekranda alətlər panelinin yeri",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Üst",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Aşağı",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Mərkəz",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Düz rəng",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Şəkil",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Şəkilinizi seçin",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "İşıq",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Qaranlıq",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Mövzular",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Cari mövzu",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Mövzunu yadda saxla",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Təhlil qrafikini göstərin",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Təhlil",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Oyun saxlamaq",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Oyun yükləyin",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Quraşdırma mövqeyi",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Qanuni hərəkətləri göstərin",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Son hərəkəti göstərin",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Oxları göstərin",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Parçalar",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Təhlil göstərin",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Qollu",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "İşə cəlb olun",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Tərcüməni təkmilləşdirməyə kömək edin",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Dərslik",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassik dəyirman",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Qarışıq dəyirman",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Seylon dəyirmanı",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Dəyirman dəfələrlə qırıla və yenidən düzəldilə bilər",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Əgər oyunçu dərhal yeni dəyirman yaratmaq üçün dəyirmanı sındırarsa, belə oyunçu yeni dəyirman edərsə, növbəti hərəkətində belə parçanı orijinal qovşağına köçürə bilər.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Əgər oyunçuda üç fiqur varsa və on hərəkətdən sonra heç bir oyunçu rəqibin fiqurlarını çıxarmazsa, oyun heç-heçə sayılır",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Əgər oyunçu üç fiqurdan az olarsa və heç bir oyunçu on hərəkət ərzində rəqibin fiqurunu çıxara bilmirsə, oyun heç-heçə sayılır.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Yaxın",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Ağ parça",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Qara parça",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Boş nöqtə",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Məntiq yoxdur",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Yerləşdirmə mərhələsi",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Hərəkət mərhələsi",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "sideToMove": "Hərəkət ediləcək tərəf: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Son hərəkət: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Seçildi",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Əlçatanlıq",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Ekran oxuyucu dəstəyi",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Bu heç-heçədir!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "çəkmək",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Parçanın vurğu rəngi",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Alqoritm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule_Detail": "Hər iki oyunçuda yalnız üç fiqur varsa və heç bir oyunçu müəyyən hərəkətlər çərçivəsində bir parça çıxarmazsa, oyun çəkilir.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Hər iki oyunçuda yalnız üç fiqur var və heç bir oyunçu müəyyən hərəkətlər çərçivəsində bir parça çıxarmır.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Üçqat təkrarlama qaydası",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Bir mövqe üçüncü dəfə baş verərsə, oyun heç-heçə sayılır.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mill! Hərəkət etməyə davam edin.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Nöqtə üslubu",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Nöqtə eni",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Möhkəm",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Boş dairə",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} Hərəkətlər}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "Yükləmə uğursuz oldu.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Fayl adı",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Baxın…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Oyun faylları",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Oyun saxlanılır",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "empty": "Boş nöqtə",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Hərəkət yoxdur.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "İlkin mövqe bərpa edildi.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Təmiz",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Təmizlənmiş.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Sil",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Heç bir parça çıxarıla bilməz.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} parça}other{{count} ədəd}} çıxarmaq lazımdır.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Yrlşd ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Yerləşdirmə mərhələsində yerləşdirilmiş parçaların sayı.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Cari oyunçu {count} fiqurları yerləşdirdi.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Faza yerləşdirməyin, onu dəyişdirə bilməz.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Yapışdır",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta hazırdır.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Yapışdırmaq mümkün deyil.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Yerləşdirilməmiş və çıxarılan parçaları göstərin",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Tam ekran",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Parametrlərin qüvvəyə minməsi üçün proqramdan çıxın və yenidən açın.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Meşə",
+  "@forest": {},
+  "desktopImage": "Masaüstü Şəkli",
+  "@desktopImage": {},
+  "invalidPosition": "Yanlış mövqe.",
+  "@invalidPosition": {},
+  "shareGIF": "GIF paylaşın",
+  "@shareGIF": {},
+  "pixelRatio": "Piksel nisbəti",
+  "@pixelRatio": {},
+  "duration": "Müddət",
+  "@duration": {},
+  "gameScreenRecorder": "Oyun ekran yazıcı",
+  "@gameScreenRecorder": {},
+  "previous": "Əvvəlki",
+  "@previous": {},
+  "next": "Sonrakı",
+  "@next": {},
+  "skip": "Keç",
+  "@skip": {},
+  "gotIt": "Anladım",
+  "@gotIt": {},
+  "youCanModifyRules": "Oyunun qaydalarını qayda parametrlərində dəyişə bilərsiniz.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Seçicidəki dəyəri dəyişdirmək üçün siçan təkərindən istifadə edə bilərsiniz.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Düşünmə vaxtı 0 olaraq təyin olundu, o deməkdir ki, düşünmək üçün vaxt məhdudiyyəti yoxdur.",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f) alfa-beta axtarış alqoritminin dəyişdirilmiş formasıdır ki, onun məqsədi aralıq axtarış nəticələrindən təkrar istifadə etməklə və axtarış məkanını daraltmaq üçün yaxşı ilkin təxmindən istifadə etməklə səmərəliliyi artırmaqdır.",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Nəzərə alın ki, AI düşünmə vaxtının tənzimlənməsi tamamilə dəqiq olmaya bilər. Çətinlik səviyyəsi aşağı qiymətə təyin edildikdə faktiki düşünmə vaxtı daha qısa ola bilər və vaxt bitdikdə AI orta hesabla olduqda daha uzun ola bilər.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Çətinlik səviyyəsini yüksək təyin etsəniz, lakin AI düşünmə vaxtını artırmasanız, düşünmə vaxtı məhdudiyyətinə görə faktiki çətinlik səviyyəsi aşağı qiymətlə məhdudlaşdırıla bilər. Faktiki dəyər maşının performansına görə dəyişə bilər.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "PVS (Principal Variation Search) müəyyən bir mövqedə ən yaxşı hərəkəti tapmaq üçün axtarış alqoritmidir. Bu, alfa-beta alqoritminin təkmilləşdirilməsidir və hərəkətin əsas variasiyanın onsuz da təhlükəsiz hesabından daha pis və ya pis olmadığını təsdiqləmək üçün sıfır və ya sıfır pəncərə axtarışlarından istifadə edir. PVS ən perspektivli hərəkətlərə diqqət yetirir və axtarışın səmərəliliyini artırmağa kömək edən suboptimal filialların lazımsız axtarışlarının qarşısını alır.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta alqoritmi ən yaxşı hərəkəti tapmaq üçün axtarış alqoritmidir. Axtarış ağacını budamaq və səmərəliliyi artırmaq üçün minimax prinsipindən və iki dəyərdən, alfa və betadan istifadə edir. Alpha kompüterin əldə edə biləcəyi minimum balı, beta isə rəqibinin ala biləcəyi maksimum balı təmsil edir. Alqoritm kompüterə oyunda ağıllı, səmərəli qərarlar qəbul etməyə kömək edir.",
+  "@whatIsAlphaBeta": {},
+  "appName": "Dəyirman",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Xoş gəldiniz",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "winRate": "Qazanma dərəcəsi",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "isDefenderMoveFirst": "İkinci oyunçu əvvəlcə hərəkət edir",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "none": "Heç biri",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Mövzu",
+  "@theme": {
+    "description": "Theme"
+  },
+  "language": "Dil",
+  "@language": {
+    "description": "Languages"
+  },
+  "mayMoveInPlacingPhase": "Parçalar yerləşdirmə mərhələsində hərəkət edə bilər",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "flyingPhase": "Uçuş mərhələsi",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "endgameNMoveRule": "Endgame N-Move qaydası",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "languageName": "Azərbaycanca",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "usePerfectDatabase": "Mükəmməl verilənlər bazasından istifadə edin",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Ən müasir alqoritmlər vasitəsilə yaradılan qüsursuz oyun bazasından istifadə etmək üçün bu seçimi aktivləşdirin. Bu xüsusiyyət optimal hərəkətlər təklif etmək üçün həm açılış, həm də oyun sonu strategiyalarını birləşdirir. Bu, oyunda ən yüksək səviyyəli dəqiqliyə can atan oyunçular üçün üstünlük verilən seçimdir. Vasvası hesablama üsulları vasitəsilə yaradılmış verilənlər bazası mükəmməl oyun həlləri təklif etmək üçün nəzərdə tutulmuşdur.\n\nQeyd: Süni intellekt verilənlər bazasına daxil ola bilməsə, o, oyun qərarları üçün adi alqoritmlərə müraciət edəcək. Verilənlər bazası mövcud olduqda, \"Çətinlik Səviyyəsi\" faktiki olaraq məğlubedilməz olur və \"AI Thinking Time\" kəskin azalma ilə üzləşir. Verilənlər bazası nəticələri ən yüksək prioritetə malik olduğundan, \"AI-nin Playstyle\" seçimlərindəki bir çox parametr ləğv ediləcək.\n\nBu qüsursuz verilənlər bazasından maksimum yararlanmaq üçün bura klikləyin.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Fon şəkili",
+  "@backgroundImage": {},
+  "whatIsRandom": "\"Mükəmməl verilənlər bazasından istifadə et\" seçimi aktiv edilmədikdə, \"Təsadüfi\" parametri süni intellektin hərəkət seçimi üçün heç bir alqoritmdən istifadə etmədən parçaları təsadüfi şəkildə daşımasına səbəb olur. Bu, adətən əhəmiyyətli dərəcədə zəif oyunla nəticələnir. Əksinə, \"Mükəmməl verilənlər bazasından istifadə et\" aktiv olduqda, AI ənənəvi AI alqoritmləri ilə qarışdırmaq əvəzinə, qərar qəbul etmək üçün yalnız \"Mükəmməl verilənlər bazası\"na etibar edir. Bu rejimdə AI-nin hərəkətləri real vaxt hesablamalarına və ya axtarış alqoritmlərinə etibar etməkdən qaçaraq, tamamilə verilənlər bazasının məzmununa əsaslanır.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Rəqibin əlindəki daşları götürün; sonra rəqibin yerləşdirmə növbəsidir.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Yerləşdirmə fazasında dəyirmanlar qurarkən",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Rəqibin lövhədəki daşlarını götürün.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Rəqibin lövhədəki daşlarını götürün; sonra rəqibin yerləşdirmə növbəsidir.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Rəqib öz daşlarını lövhədən götürür.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Sizin hərəkət etməyiniz əvəzinə, rəqib öz daşlarını seçir və lövhədən götürür, effektiv olaraq özünə zərər verən bir hərəkət edir.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Rəqibin əlindəki daşları götürün; sonra sizin hərəkət etmə növbənizdir.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Rəqibin əlindəki daşları götürün. Çox sayda daş götürmə parametrinə görə, çoxlu daşlar götürülməlidirsə və rəqibin əlində daş qalmayıbsa, rəqibin lövhədəki daşlarını götürməyə davam edin. Sonra sizin hərəkət etmə növbənizdir. Dəyirmanlar qurmağa davam etsəniz, rəqibin daşlarını götürməyə davam edə bilərsiniz.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Rəqibin əlindəki daşları götürün. Çox sayda daş götürmə parametrinə görə, çoxlu daşlar götürülməlidirsə və rəqibin əlində daş qalmayıbsa, rəqibin lövhədəki daşlarını götürməyə davam edin. Sonra rəqibin hərəkət etmə növbəsidir.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Daşları işarələyin və götürməyi gecikdirin.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Yerləşdirmə fazasında götürüləcək daşlar işarələnir və hər iki oyunçu üçün bu nöqtələrə yeni daşlar qoyula bilməz. Hərəkət fazasına keçdikdə, bu işarələnmiş daşlar tamamilə götürülür və oyunçular öz daşlarını bu boş qalmış nöqtələrə hərəkət etdirə bilərlər.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Yerləşdirmə mərhələsində dəyirmanların formalaşdırılması zamanı həyata keçirilə bilən fəaliyyətlər.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "İşarələnib",
+  "@marked": {},
+  "menu": "Menyu",
+  "@menu": {},
+  "monochrome": "Monoxrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Siz Ümumi Ayarlar bölməsindəki Əlçatanlıq konfiqurasiyasında ekran oxuyucusu dəstəyini aktivləşdirə bilərsiniz.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Fişlərdə nömrələri göstərin",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Şəkil saxla",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Analiz panelini göstər",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analiz panelinin arxa fon rəngi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analiz panelinin ikonu rəngi",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Dönüşdürüldü.",
+  "@transformed": {},
+  "cannotTransform": "Dönüşdürmək mümkün deyil.",
+  "@cannotTransform": {},
+  "rotate": "Döndür",
+  "@rotate": {},
+  "horizontalFlip": "Y-Fli",
+  "@horizontalFlip": {},
+  "verticalFlip": "D-Fli",
+  "@verticalFlip": {},
+  "innerOuterFlip": "İ/O Fli",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Şəffaf Kanvas",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Təkrarlanan Dəyirmanların Formalaşmasını Məhdudlaşdırın",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Bir dəyirmanından digərinə köçürülən bir fiqur dərhal növbəti növbədə ilk dəyirmanı yenidən formalaşdırmaq üçün əvvəlki nöqtəyə qayıda bilməz. İlk öncə fərqli bir hərəkət tələb olunur.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Bir dəfə istifadə olunan dəyirman",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Hər dəyirman rəqibin bir hissəsini yalnız bir dəfə çıxara bilər. Onu yenidən formalaşdıra bilərsiniz, lakin əlavə çıxarma üçün istifadə edilə bilməz.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Təyin etdiyiniz cari qaydalar uyğun mükəmməl verilənlər bazasına malik deyil. Mükəmməl verilənlər bazası haqqında daha çox məlumat üçün bura klikləyin.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Bloklama yollarına diqqət yetirin",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Rəqibin hərəkətini maneə törətməyə üstünlük verin, üçlüyü formalaşdırmaqdan daha çox. Üçlü yaratmaqla parçaları çıxarmağa yönəlmək əvəzinə, AI rəqibi tələyə salmağa çalışır, onları hərəkətsiz vəziyyətə gətirir və aqressiv oyundan çox tükəndirməklə qalib gəlir. Bu strategiya rəqibin üçlü yaratmasına aktiv şəkildə mane olmur.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Fiqur şəkli",
+  "@pieceImage": {},
+  "importColorSettings": "Rəng ayarlarını idxal edin",
+  "@importColorSettings": {},
+  "exportColorSettings": "Rəng ayarlarını ixrac edin",
+  "@exportColorSettings": {},
+  "import": "İdxal",
+  "@import": {},
+  "export": "İxrac",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Zəhmət olmasa əvvəlcə JSON formatlı parametrləri mübadilə buferinə kopyalayın.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Mübadilə buferinə kopyalandı.",
+  "@copiedToClipboard": {},
+  "imported": "İdxal edildi.",
+  "@imported": {},
+  "boardImage": "Taxta şəkli",
+  "@boardImage": {},
+  "autumnLeaves": "Payız yarpaqları",
+  "@autumnLeaves": {},
+  "legendaryLand": "Əfsanəvi Torpaq",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinyet effekti",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Bir taxta arxa plan şəkli təyin edildikdə alət çubuğunu tam şəffaf etmək istərdiniz?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Oyun içində vibrasiyanı aktiv edin",
+  "@vibration": {},
+  "soundTheme": "Səs mövzusu",
+  "@soundTheme": {},
+  "ball": "Top",
+  "@ball": {},
+  "liquid": "Maye",
+  "@liquid": {},
+  "wood": "Taxta",
+  "@wood": {},
+  "placeEffectAnimation": "Fiquru yerləşdirmə animasiya effekti",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Fiquru çıxarma animasiya effekti",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Alətlər panelini aşağıda göstər",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Lövhənin bucaq radiusu",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Açılış kitabı istifadə edin",
+  "@useOpeningBook": {},
+  "currentRule": "Cari",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Qayda dəsti",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "AI-ya oyunun əvvəlində peşəkar insan oyunçular tərəfindən geniş istifadə edilən açılış hərəkətlərini istifadə etməyə icazə ver. Qeyd: Bu xüsusiyyət hazırda yalnız müəyyən qayda dəstləri üçün mövcuddur.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Üstünlük qrafikini göstər",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Üstünlük qrafiki yalnız süni intellekt hərəkət etdikdən sonra çəkiləcək. İnsan oyunçu hərəkət edəndə o çəkilməyəcək.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Bütün fişlər yerləşdirilənə qədər çıxarışı dayandırın. Oyunçular fişləri dəyirman sayına əsasən çıxarırlar.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Bütün fişlər yerləşdirilənə qədər çıxarışı dayandırın. Oyunçular fişləri dəyirman sayına əsasən çıxarırlar: əgər saylar bərabərdirsə, hər iki oyunçu eyni sayda fiş çıxarır; birinin sayı çoxdursa, o, əlavə bir fiş çıxararaq fərqi bir fiş səviyyəsində saxlayır. Yalnız bir oyunçu dəyirman yığıbsa, o, iki fiş çıxarır, digər oyunçu isə bir fiş çıxarır. Heç biri dəyirman yığmayıbsa, hər ikisi bir fiş çıxarır.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Fişlərinizdən birini seçin.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Sizin növbəniz deyil.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Annotasiya alətlər panelinin fon rəngi",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Annotasiya alətlər panelinin işarə rəngi",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Annotasiya alətlər panelini göstər",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Annotasiya rejiminə daxil ol",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Bütün annotasiyaları silmək istədiyinizə əminsiniz?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM sorğusu panoya kopyalandı.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Bağlantı rədd edildi, server işləməyə bilər.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Axtarış uğurlu oldu, bağlantı gözlənilir...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "LAN bağlantısı yoxdur.",
+  "@noLanConnection": {},
+  "takeScreenshot": "Ekran görüntüsü al.",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Rəqibdən ayrıldı.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Geri alma sorğusu.",
+  "@takeBackRequest": {},
+  "nothingToShow": "Göstəriləcək heç nə yoxdur.",
+  "@nothingToShow": {},
+  "stopHosting": "Host etməyi dayandır.",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Bağlantı digər tərəf tərəfindən sıfırlandı.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Heartbeat vaxtı bitdiyi üçün bağlantı kəsildi. Yenidən qoşulun.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Host etməyə başla.",
+  "@startHosting": {},
+  "restartRequestRejected": "Yenidən başlatma sorğusu rədd edildi.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "LAN rəqibinə qoşulmayıb.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM sorğusu.",
+  "@llmPrompt": {},
+  "gameRestarted": "Oyun yenidən başladı.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Geri alma rədd edildi.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Bu oyundan imtina etmək istədiyinizə əminsiniz?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Rəqib imtina etdi. Siz qalib gəldiniz!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Bütün annotasiyaları sil.",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Qoşuldu, rəqibin hərəkətini gözləyir...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Şəbəkə statusu: Ayrıldı.",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Geri alma sorğusu rəqibə göndərildi.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Rəqib oyunu tərk etmiş ola bilər.",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Host'a uğurla qoşuldu.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Bağlantı kəsildi: heartbeat vaxtı bitdi.",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Host tapılmadı.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "İmtina etməyi təsdiqlə.",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Oyun host edildi, oyunçuların qoşulması gözlənilir...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Bağlantı vaxtı bitdi, şəbəkə bağlantısı qeyri-sabitdir.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "LLM sorğusu mövcud deyil.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Siz imtina etdiniz. Oyun bitdi.",
+  "@youResignedGameOver": {},
+  "serverIp": "Serverin IP ünvanı",
+  "@serverIp": {},
+  "confirmClear": "Silinməni təsdiqlə.",
+  "@confirmClear": {},
+  "opponentSTurn": "Rəqibin növbəsi.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Müştəri bağlantısı gözlənilir...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Geri alma sorğusu rədd edildi və ya uğursuz oldu.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Mətn əlavə et.",
+  "@addText": {},
+  "exitAnnotationMode": "Annotasiya rejimindən çıx.",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Annotasiyanızı yazın.",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Yenidən qoşulmağa cəhd edilir...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Yenidən başlatma sorğusu göndərildi. Rəqibin cavabını gözləyir...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server dayandırıldı.",
+  "@serverIsStopped": {},
+  "restartRequest": "Yenidən başlatma sorğusu.",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Növbəniz olmadığı halda geri alma sorğusu verə bilməzsiniz.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Geri alma qəbul edildi.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Yerli şəbəkə parametrləri.",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Uğurla yenidən qoşuldu!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Şəkil qalereyaya saxlanıla bilmədi.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Rəqib oyunu yenidən başlatmaq istəyir. Qəbul edirsiniz?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Sizin növbəniz.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Yenidən qoşulmaq mümkün olmadı, lütfən oyunu yenidən başladın.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host et",
+  "@host": {},
+  "join": "Qoşul",
+  "@join": {},
+  "port": "Port nömrəsi",
+  "@port": {},
+  "invalidIpAddress": "Yanlış IP ünvanı.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Yanlış port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Qoşulma: Cəhd {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Qoşulma uğursuz oldu: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Host etməyə başlamaq uğursuz oldu: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host tapıldı: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Dayandır.",
+  "@stop": {},
+  "discover": "Axtar.",
+  "@discover": {},
+  "connect": "Qoşul.",
+  "@connect": {},
+  "clientConnected": "Müştəri qoşuldu: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Axtarılır: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Yenidən qoşulur ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Qoşuldu.",
+  "@connected": {},
+  "delete": "Sil.",
+  "@delete": {},
+  "ancientEgypt": "Qədim Misir",
+  "@ancientEgypt": {},
+  "gothicIce": "Qotik Buz",
+  "@gothicIce": {},
+  "riceField": "Çəltik Tarlası",
+  "@riceField": {},
+  "chinesePorcelain": "Çin Porseleni",
+  "@chinesePorcelain": {},
+  "desertDusk": "Çöl Alatoranı",
+  "@desertDusk": {},
+  "precisionCraft": "Dəqiq Sənətkarlıq",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Xalq Naxışı",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpat İrsi",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "İmperator Əzəməti",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Bohem Kristalı",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanna Günəş Doğuşu",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmoniya Balansı",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Darçın Ədviyyatı",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anadolu Mozaikası",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnaval Ruhu",
+  "@carnivalSpirit": {},
+  "custom": "Adət",
+  "@custom": {},
+  "spiceMarket": "Ədviyyat Bazarı",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Çəkməni göstərmək üçün sürüşdürün",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Ekran görüntülərində oyun məlumatlarını göstər",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "İnsan hərəkəti üçün vaxt məhdudiyyəti",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "İnsan hərəkətləri üçün vaxt məhdudiyyəti yoxdur",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "İnsan oyunçu üçün vaxt aşımı ilə məğlubiyyət tətbiq olunacaq",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Oyun taxtası tanınır...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Hər hansı model adını daxil edə bilərsiniz",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Oyun taxtası vəziyyəti tətbiq olundu. FEN panoya köçürüldü.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Təklif: Taxtanın daha aydın fotoşəkilini çəkin",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM sorğu şablonu",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Etibarlı oyun taxtası aşkarlanmadı",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Albomdan şəkil seçilir...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Sorğu şablonunu konfiqurasiya et",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "LLM təhlili üçün sorğu şablonunu redaktə et",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Tanınmış oyun taxtasından FEN yaratmaq mümkün olmadı",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Cari dildə çıxış",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Ümumi Base URL-lər",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Ümumi modellərə bax",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Tanıma parametrləri yeniləndi",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Ağın gedişi",
+  "@whiteSMove": {},
+  "resetToDefaults": "Standartlara qaytar",
+  "@resetToDefaults": {},
+  "photoShoot": "Fotoşəkil çəkilişi",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Tanınmış oyun taxtası vəziyyətini tətbiq etmək mümkün olmadı",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM sorğu məzmunu",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM konfiqurasiya olunmayıb. Zəhmət olmasa, parametrləri yoxlayın.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Provider, model, API Key və Base URL-i təyin edin",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM konfiqurasiyası",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "LLM provider-ini konfiqurasiya et",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM sorğu şablonunun başlığı",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Şəkildə heç bir fiqur tanınmadı. Zəhmət olmasa, yenidən cəhd edin.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Şəkildən taxtanı tanı",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Məsləhətlərə bax",
+  "@viewTips": {},
+  "applyToBoard": "Oyun taxtasına tətbiq et",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Oyun taxtası sahəsini tənzimləyin",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Ümumi URL-lərə bax",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Rəng analizi alınmadı!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Oyun taxtasının şəkli analiz edilir...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Albomdan seç",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Heç bir oyun taxtası nöqtəsi tapılmadı!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Boş buraxılsa, standart şablon istifadə ediləcək",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM konfiqurasiyası",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Sorğu şablonlarını standart dəyərlərə qaytarmaq istədiyinizə əminsiniz?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM sorğu şablonu altbilgisi",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Cavab yüklənir...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Bu nəticəni oyun taxtasına tətbiq et",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Şəkil çəkilir...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Tanımaq üçün oyun taxtasının şəklini seçin",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Tanıma nəticələri",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Gedişləri analiz edin və təhlillər verin.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "API Key alın",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Bütün tanıma prosesi tamamlanmadı",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Oyun taxtasının tanınma nəticəsi",
+  "@boardRecognitionResult": {},
+  "askLlm": "LLM-ə soruş",
+  "@askLlm": {},
+  "boardDetectionFailed": "Oyun taxtasının aşkarlanması alınmadı!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Heç bir oyun taxtası nöqtəsi aşkarlanmadı, fiquru müəyyən etmək mümkün deyil!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "FEN-i kopyala",
+  "@copyFen": {},
+  "commonlyUsedModels": "Tez-tez istifadə olunan modellər",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (istəyə bağlı)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Heç bir şəkil seçilməyib",
+  "@noImageSelected": {},
+  "blackSMove": "Qaranın gedişi",
+  "@blackSMove": {},
+  "llm": "Böyük Dil Modeli",
+  "@llm": {},
+  "llmProvider": "Təchizatçı",
+  "@llmProvider": {},
+  "baseUrl": "Əsas URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperatur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Əmr qəbul edildi! Süni intellekt emal edir...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Dərin düşünmə gedir, zəhmət olmasa gözləyin...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Yaxın zamanda təqdim olunacaq...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Tanınma parametrləri",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Tanınmanın dəqiqliyini artırmaq üçün parametrləri tənzimləyin",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Parametrləri yadda saxla",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Şəkil tanınmasını başlatmaq mümkün olmadı: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Şəkil tanınması uğursuz oldu: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} ağ və {blackCount} qara fiqurlu mövqe tətbiq edildi",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN mübadilə buferinə kopyalandı)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Tanınma uğursuz oldu: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Mənim reytinqim",
+  "@myRating": {},
+  "gamesPlayed": "Oynanılan oyunlar",
+  "@gamesPlayed": {},
+  "wins": "Qələbələr",
+  "@wins": {},
+  "losses": "Məğlubiyyətlər",
+  "@losses": {},
+  "draws": "Heç-heçələr",
+  "@draws": {},
+  "lastUpdated": "Son yenilənmə",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Statistikanı sıfırla",
+  "@resetStatistics": {},
+  "drawRate": "Heç-heçə nisbəti",
+  "@drawRate": {},
+  "lossRate": "Məğlubiyyət nisbəti",
+  "@lossRate": {},
+  "aiStatistics": "Süni intellekt statistikası",
+  "@aiStatistics": {},
+  "enableStatistics": "Statistikanı aktivləşdirin",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Aktivləşdirildikdə oyun nəticələri statistikada qeyd olunacaq. Lakin geri almaların olduğu oyunlar qeydə alınmayacaq. Deaktivləşdirildikdə statistika toplanması dayandırılır.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Bu, bütün oyun statistikasını sıfırlayacaq. Bu əməliyyat geri qaytarıla bilməz.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Taxtanın daxili halqanın ölçüsü",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Taxta kölgəsi",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Tələ xəbərdarlığı",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Analiz zamanı tələ gedişlərini qalın dairələr və oxlarla vurğulayın.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Tələ mövcuddur. Tələ gedişləri: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Sahil ələ keçirmə",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Rəqibinizin parçalarından birini ələ keçirmək üçün düz bir xəttdə ikiniz arasında əlavə edin.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Flinging ələ keçirməyə icazə verin",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Müdaxilə tutulması",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Hər ikisini ələ keçirmək üçün rəqibinizin iki parçası arasındakı boş nöqtəyə keçin.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Müdaxilə ələ keçirməyə icazə verin",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Atlanmaq",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Qonşu bir rəqib parçasının üstündən kənar nöqtəyə atlayaraq çəkin.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Atlama ələ keçirməyə icazə verin",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Tətbiq olunan xətlər",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Kvadrat kənarları boyunca",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Meydanı keçən ortogonal xətlər boyunca",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Meydanı keçən diaqonal xətlər boyunca",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "İcra mərhələləri",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Qalan hissələrə əsaslanan hərəkət mərhələsində mövcudluq",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Heç bir məhdudiyyət yoxdur",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Üç və ya daha az hissədən olanda mövcuddur",
+  "@capturePiecesConditionSelfLeqThree": {}
 }
