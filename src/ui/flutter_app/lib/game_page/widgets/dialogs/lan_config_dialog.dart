@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
+import '../../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../services/mill.dart';
 
 class LanConfigDialog extends StatefulWidget {
@@ -195,8 +196,8 @@ class LanConfigDialogState extends State<LanConfigDialog>
       duration: const Duration(seconds: 2),
     )..stop();
 
-    _ipController = TextEditingController(text: "192.168.1.100");
-    _portController = TextEditingController(text: "33333");
+    _ipController = SafeTextEditingController(text: "192.168.1.100");
+    _portController = SafeTextEditingController(text: "33333");
 
     // Setup callbacks
     _networkService.onDisconnected = () {

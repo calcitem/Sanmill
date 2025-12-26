@@ -242,7 +242,7 @@ class Database {
 
   /// ColorSettings
   static Future<void> _initColorSettings() async {
-    // Note: ColorAdapter is built-in to hive_ce_flutter (typeId 200)
+    // Note: ColorAdapter is built into hive_ce_flutter (typeId 200)
     // Register legacy adapter (typeId=6) to read colors written by v6.8.0 installers
     if (!Hive.isAdapterRegistered(6)) {
       // Register as dynamic to avoid overriding Color's default adapter.

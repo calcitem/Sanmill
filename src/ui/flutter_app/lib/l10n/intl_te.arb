@@ -2159,4 +2159,2037 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "మోడల్, భాష మరియు ప్రవర్తనను కాన్ఫిగర్ చేయండి",
     "@voiceAssistantSettingsDescription": {}
+  "@@locale": "te",
+  "appName": "దాడి",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "స్వాగతం",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "అవును",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "లేదు",
+  "@no": {
+    "description": "No"
+  },
+  "game": "గేమ్",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "మానవ Vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "మానవ Vs. మానవ",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "మానవ Vs. మేఘం",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "మానవ Vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "LAN ద్వారా పరీక్షించండి",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "కదలిక",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "జాబితాను తరలించండి",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "జాబితాను తరలించండి",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "రికార్డ్ లేదు",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "అలాగే",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "నిర్ధారించండి",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "రద్దు చేయండి",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "తప్పు భాగాన్ని ఎంచుకోండి.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "మీ ముక్కలు ఉంచండి.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "మీరు దీన్ని ఇక్కడ ఉంచలేరు.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "మీరు ఉంచారు.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "ఒక ముక్క తొలగించండి.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "మీరు దాన్ని తీసివేయలేరు.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "మీరు తీసివేశారు.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "ఒక భాగాన్ని తరలించండి.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "మీరు మీ భాగాన్ని ఇక్కడ ఉంచలేరు.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "మీరు మీ భాగాన్ని ఇక్కడకు తరలించలేరు.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "మిల్లు! మీ ప్రత్యర్థి భాగాన్ని తీసుకోండి.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "మీ ప్రత్యర్థి భాగాన్ని తీసుకోవడం కొనసాగించండి.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "మీ ప్రత్యర్థి ముక్కలలో ఒకదాన్ని ఎంచుకోండి.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "మీరు మిల్లు నుండి ఒక భాగాన్ని తీసివేయలేరు.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "ఒక ముక్క 1 పాయింట్‌ను కదిలించగలదు.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "మీరు మీ ప్రత్యర్థి ముక్కలను తరలించలేరు.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "తరలించడానికి మీ భాగాన్ని ఎంచుకోండి.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "మీకు మూడు ముక్కలు మిగిలి ఉన్నాయి.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "మీకు నచ్చిన ఏ పాయింట్‌కైనా వెళ్లవచ్చు.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} తరలించడానికి.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "ప్లేయర్ 1 విజయాలు!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "ప్లేయర్ 2 విజయాలు!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "గెలిచింది",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "కోల్పోయిన",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "ఆలోచిస్తూ…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "కొత్త ఆట",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "ఆట దిగుమతి",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "ఎగుమతి ఆట",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "గేమ్ దిగుమతి చేయబడింది.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "దిగుమతి చేయడం సాధ్యపడదు {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "కదలికలు మరియు నియమాలు సరిపోలడం లేదు.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "దయచేసి వేచి ఉండండి.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "ప్రస్తుత ఆటను పున art ప్రారంభించాలా?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "పున art ప్రారంభించండి",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "ఆట ప్రారంభమైంది, దయచేసి ఉంచండి.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "విశ్లేషిస్తోంది…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "లోపం: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "విన్ రేట్",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "స్కోరు:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "ప్లేయర్ 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "ప్లేయర్ 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} ముక్కల సంఖ్య మూడు కంటే తక్కువ.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} రాజీనామా.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} వెళ్ళడానికి మార్గం లేదు.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "బోర్డు నిండింది మరియు {player} వెళ్ళడానికి మార్గం లేదు.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "సమయం ముగిసింది, {player} కోల్పోయింది.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "కదిలే దశలో, చివరి నిర్దిష్ట సంఖ్యలో కదలికలలో ఏ భాగాన్ని తొలగించలేదు.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "బోర్డు నిండినందున ఇది డ్రా.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "మూడు రెట్లు పునరావృతం కావడం వల్ల ఇది డ్రా.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "ఆట సమాప్తం! తెలియని కారణం.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "ఆట సమాప్తం",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "నువ్వు గెలిచావు! అభినందనలు!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "కఠినమైన స్థాయిని సవాలు చేయాలా? కొత్త స్థాయి స్థాయి {level} ఉంటుంది!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "మీరు కోల్పోతారు!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "విశ్లేషించడానికి",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "గురించి",
+  "@about": {
+    "description": "About"
+  },
+  "version": "వెర్షన్: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "ధన్యవాదాలు",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "సెట్టింగులు",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "ఎంపికలు",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "సాధారణ అమర్పులు",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "కఠినత స్థాయి",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI ఆలోచించే సమయం",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "కఠినత",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "ధ్వని ప్రభావాలు",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "ఆటలో శబ్దాలు ఆడండి",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "నేపథ్య సంగీతం",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "స్థానిక ఆడియో ఫైలును నేపథ్య సంగీతంగా ప్లే చేయండి",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "నేపథ్య సంగీత ఫైల్",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "నేపథ్య సంగీతాన్ని తొలగించండి",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "సంగీత ఫైళ్లు",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "తిరిగి తీసుకునేటప్పుడు మ్యూట్ చేయండి",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "టోన్",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "మొదటి కదలిక",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "మానవ",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "ప్రత్యామ్నాయం",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "ఆట ముగిసినప్పుడు ఆటను పున art ప్రారంభించండి",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "ఆటో చేంజ్ ఫస్ట్ మూవ్",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "యాదృచ్ఛిక కదలిక",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "ఇతరాలు",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "నియమాలు",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "ప్రతి క్రీడాకారుడు కలిగి ఉన్న ముక్కల సంఖ్య",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "ప్రతి క్రీడాకారుడికి ఎన్ని ముక్కలు ఉన్నాయి?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "ఎగిరే ముక్క సంఖ్య",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "ఫ్లయింగ్ ప్రారంభించబడితే, ఒక క్రీడాకారుడు ఒక నిర్దిష్ట ముక్కల సంఖ్యకు తగ్గించబడినప్పుడు, ఆమె ముక్కలు మిగిలిన ఆటల మాదిరిగానే ప్రక్కనే ఉన్న పాయింట్లకు పరిమితం కాకుండా ఏదైనా ఖాళీ చేయని బిందువుకు వెళ్లడానికి ఉచితం.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "ముక్కలు తక్కువ",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "వికర్ణ రేఖలు",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "బోర్డుకు నాలుగు వికర్ణ రేఖలను జోడించండి.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "రెండవ ఆటగాడు మొదట కదులుతాడు",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "ఉంచే దశలో రెండవ స్థానంలో ఉన్న ఆటగాడు కదిలే దశలో మొదట కదులుతాడు.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "బహుళ-తీసివేయి",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "ఒక క్రీడాకారుడు ఒకేసారి ఒకటి కంటే ఎక్కువ మిల్లులను మూసివేస్తే, ఆమె మూసివేసిన మిల్లుల సంఖ్యను ఆమె తొలగిస్తుంది.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "మిల్లులను నాశనం చేయండి",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "అప్రమేయంగా, ఏర్పడిన మిల్లు నుండి ఒక భాగాన్ని తొలగించే ముందు ఆటగాళ్ళు మొదట ఇతర ముక్కలను తొలగించాలి. పరిమితిని నిలిపివేయడానికి ఈ ఎంపికను ప్రారంభించండి.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "బోర్డు నిండినప్పుడు రెండవ ఆటగాడు ఓడిపోతాడు",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "ఉంచే దశ చివరిలో బోర్డు నిండినప్పుడు, మొదట ఉంచే వైపు ఆటను కోల్పోతుంది. లేకపోతే, ఆట డ్రా.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "చట్టపరమైన కదలికలు లేనప్పుడు కోల్పోతారు",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "తన ప్రత్యర్థి వారిని తరలించకుండా అడ్డుకుంటే ఆటగాడు కోల్పోతాడు. ఈ ఎంపిక నిలిపివేయబడితే తరలించడానికి వైపు మార్చండి.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "ఎగురుతూ",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "ఒక ఆటగాడికి మూడు లేదా నాలుగు (కాన్ఫిగర్ చేయదగిన) ముక్కలు మాత్రమే మిగిలి ఉంటే, ఆమె ఆ భాగాన్ని ఏదైనా ఉచిత బిందువుకు తరలించవచ్చు.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "ఎన్-మూవ్ రూల్",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "నిర్దిష్ట సంఖ్యలో కదలికలలో తొలగింపు లేనట్లయితే ఆట డ్రా అవుతుంది.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "రోల్‌బ్యాక్",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "దయచేసి ఎంచుకోండి",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "కాపీ",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "క్లిప్‌బోర్డ్‌కు కాపీ చేసిన చరిత్రను తరలించండి.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "సహాయం",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "అభిప్రాయం",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "బయటకి దారి",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "రూల్ సెట్టింగులు",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "రంగు",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "బోర్డు రంగు",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "పీస్ రంగు",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "నేపథ్య రంగు",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "బోర్డు లైన్ రంగు",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "ప్లేయర్ 1 ముక్క రంగు",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "ప్లేయర్ 2 ముక్క రంగు",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "సందేశ రంగు",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "చేతిలో ఉన్న ముక్కల సంఖ్యను చూపించు",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "బోర్డులో సంకేతాలను చూపించు",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "చరిత్ర నావిగేషన్ టూల్ బార్ చూపించు",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "ప్రదర్శన",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "బోర్డు సరిహద్దు వెడల్పు",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "బోర్డు లోపలి పంక్తి వెడల్పు",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "పీస్ వెడల్పు",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "ఫాంట్ పరిమాణం",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD సంజ్ఞామానం",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "పునరుద్ధరించు",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "డిఫాల్ట్ సెట్టింగ్లను పునరుద్ధరించండి",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} ఎంచుకోండి",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "సమ",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "సూచన",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "ప్లేయర్",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "ప్లేయర్ 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "ప్లేయర్ 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "ఎలా ఆడాలి",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "భాగాన్ని ఉంచడానికి అందుబాటులో ఉన్న ఏదైనా పాయింట్‌పై నొక్కండి.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "దానిని తరలించడానికి భాగాన్ని నొక్కండి.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "ముక్కను తరలించడానికి కనెక్ట్ చేసిన పాయింట్‌పై నొక్కండి.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "తొలగించడానికి ప్రత్యర్థి యొక్క ఒక భాగాన్ని నొక్కండి.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "మీరు ఒక భాగాన్ని తొలగించే ముందు మీరు మొదట ఒక మిల్లును సృష్టించాలి.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "మీరు మీ ముక్కలతో ఆడాలి.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "గణాంకాలు",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "మొత్తం ఆటలు",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "ఫలితాలు",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "ఎడమ",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "గోప్యతా విధానం",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "దయచేసి జాగ్రత్తగా చదవండి మరియు మీరు దీన్ని పూర్తిగా అర్థం చేసుకున్నారని మరియు అంగీకరిస్తున్నారని నిర్ధారించుకోండి ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". మీరు ఈ విధానాన్ని అంగీకరించకపోతే, దయచేసి ఈ అనువర్తనాన్ని ఉపయోగించవద్దు. అనువర్తనాన్ని ఉపయోగించడం మీరు ఈ నిబంధనలను అంగీకరించినట్లు సూచిస్తుంది.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " మరియు ",
+  "@and": {},
+  "accept": "అంగీకరించు",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "వెనక్కి తీసుకో",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "తిరిగి తీసుకొని…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "వేచి ఉంది…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "అడుగు ముందుకు వేయండి",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "అన్నీ వెనక్కి తీసుకోండి",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "అన్ని ముందుకు",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "ఇప్పుడే తరలించండి",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "పూర్తి.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "క్రాక్-మిల్లు",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "ఒక ఆటగాడికి మిల్లుల్లో ముక్కలు మాత్రమే ఉంటే, మిల్లుల్లోని ముక్కలు తొలగించడానికి లాక్ చేయబడవు.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "యానిమేషన్ వ్యవధి",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "ఏదీ లేదు",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "థీమ్",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "ఆట ప్రత్యర్థిని మూడు ముక్కల కన్నా తక్కువ లేదా చట్టపరమైన కదలికలతో వదిలివేయాలని లక్ష్యంగా పెట్టుకుంది.\n\nమూడవ సారి స్థానం సంభవిస్తే లేదా చివరి 100 (కాన్ఫిగర్ చేయదగిన) కదలికలలో తీసివేయకపోతే ఆట స్వయంచాలకంగా డ్రా అవుతుంది.\n\nఆట మూడు దశల్లో కొనసాగుతుంది:\n\n1. ఖాళీ పాయింట్లపై ముక్కలు ఉంచడం\n2. ముక్కలను ప్రక్కనే ఉన్న బిందువులకు తరలించడం\n3. (ఐచ్ఛిక దశ) ఆటగాడిని మూడు ముక్కలుగా తగ్గించేటప్పుడు ఏదైనా ఖాళీ స్థానానికి ముక్కలు తరలించడం\n\nఉంచడం\n\nఆట ఖాళీ బోర్డుతో ప్రారంభమవుతుంది, దీనిలో ఇరవై నాలుగు పాయింట్లతో గ్రిడ్ ఉంటుంది. ప్రతి క్రీడాకారుడు అన్ని ముక్కలను బోర్డులో ఉంచే వరకు ఆటగాళ్ళు తమ ముక్కలను ఖాళీ పాయింట్లపై ఉంచే మలుపులు తీసుకుంటారు. ఒక ఆటగాడు తన మూడు ముక్కలను సూటిగా ఉంచగలిగితే, అతనికి \"మిల్లు\" ఉంది మరియు అతని ప్రత్యర్థి ముక్కలలో ఒకదాన్ని బోర్డు నుండి తొలగించవచ్చు.\n\nకొన్ని నియమాలలో, ఏర్పడిన మిల్లు నుండి ఒక భాగాన్ని తొలగించే ముందు ఆటగాళ్ళు మొదట ఇతర ముక్కలను తొలగించాలి.\n\nమీరు తొలగించిన ముక్కల బిందువులకు కొన్ని నియమాలలో ఉంచే దశలో ఉంచలేరు.\n\nఅన్ని ముక్కలను ఉపయోగించిన తర్వాత, ఆటగాళ్ళు కదిలే మలుపులు తీసుకుంటారు.\n\nకదులుతోంది\n\nతరలించడానికి, ఒక ఆటగాడు తన ముక్కలలో ఒకదాన్ని బోర్డు రేఖ వెంట ఖాళీగా ఉన్న ప్రక్కన ఉన్న స్థానానికి తరలిస్తాడు. అతను అలా చేయలేకపోతే, అతను ఆటను కోల్పోయాడు. బోర్డు లైన్‌లో తన మూడు ముక్కలను సమలేఖనం చేసే ఆటగాడికి ఒక మిల్లు ఉంటుంది మరియు ఉంచే దశలో ఉన్నట్లుగా తన ప్రత్యర్థి ముక్కలలో ఒకదాన్ని తీసివేయవచ్చు. ఏదైనా ఆటగాడు రెండు ముక్కలుగా తగ్గిస్తాడు, కొత్త మిల్లులను ఏర్పరుచుకునే అవకాశం లేదు, తద్వారా ఆటను కోల్పోతాడు. ఒక ఆటగాడు తన ప్రత్యర్థి వాటిని కదలకుండా అడ్డుకుంటే మూడు ముక్కలకు పైగా ఉన్నప్పుడు కూడా కోల్పోవచ్చు.\n\nఎగురుతూ\n\nనిబంధనల యొక్క కొన్ని వైవిధ్యాలలో, ఒక ఆటగాడికి మూడు ముక్కలు మాత్రమే మిగిలి ఉంటే, అతని ముక్కలు ప్రక్కనే ఉన్న వాటికి మాత్రమే కాకుండా, ఖాళీగా ఉన్న పాయింట్లకు ఎగరవచ్చు, హాప్ చేయవచ్చు లేదా దూకవచ్చు.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "సంస్కరణ సమాచారం",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "లైసెన్స్",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "మూల కోడ్",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "అనువర్తన సంస్కరణ",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "జనరల్",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "ఆధునిక",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "ఉంచడం",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "కదులుతోంది",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "తొలగిస్తోంది",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "గేమ్ ఓవర్ కండిషన్",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI యొక్క ప్లేస్టైల్",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "నిష్క్రియాత్మ",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "సమయం ముగిసినది",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "స్వరూపం",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "మానవ అనుభవాన్ని గీయండి",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "ముక్కల కదలికను పరిగణించండి",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "పీస్ కౌంట్:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "చేతిలో {player}: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} బోర్డులో: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "ఎగువ నుండి బోర్డు ఆఫ్‌సెట్",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "ఇది AI యొక్క మలుపు కాదు.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI ఆలోచించడం లేదు.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "మీరు కదలిక జాబితా చివరిలో ఉన్నారు.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "బయలుదేరడానికి మళ్ళీ నొక్కండి.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "మరింత",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "ఇది ప్రయోగాత్మక లక్షణం.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "ప్రయోగాలు",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "ఓపెన్ సోర్స్ లైసెన్సులు",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "భాష",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "డిఫాల్ట్ భాష",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "ముక్కలు ఉంచే దశలో కదలవచ్చు",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "ప్రత్యేకమైన ఉంచడం మరియు కదిలే దశలు లేవు, అనగా, ఆటగాళ్ళు ప్రతి కదలికలో బోర్డు మీద ఒక భాగాన్ని ఉంచాలనుకుంటున్నారా లేదా వారి ముక్కలలో ఒకదాన్ని తరలించాలా అని నిర్ణయించుకోవచ్చు (వారు ఉంచడానికి మిగిలిన ముక్కలు ఉన్నంత వరకు).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "మెనూ రంగు",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "మెనూ టెక్స్ట్ రంగు",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "మెను అంశం రంగును హైలైట్ చేస్తుంది",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "ప్రధాన ఉపకరణపట్టీ నేపథ్య రంగు",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "ప్రధాన ఉపకరణపట్టీ చిహ్నం రంగు",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "నావిగేషన్ టూల్ బార్ నేపథ్య రంగు",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "నావిగేషన్ టూల్ బార్ చిహ్నం రంగు",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "ఉపకరణపట్టీని స్వయంచాలకంగా దాచండి",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "తెరపై ఉపకరణపట్టీ స్థానం",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "టాప్",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "దిగువ",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "కేంద్రం",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "ఘన రంగు",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "చిత్రం",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "మీ చిత్రాన్ని ఎంచుకోండి",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "కాంతి",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "చీకటి",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "థీమ్స్",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "ప్రస్తుత థీమ్",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "థీమ్‌ను సేవ్ చేయండి",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "విశ్లేషణ గ్రాఫ్ చూపించు",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "విశ్లేషణ",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "ఆటను సేవ్ చేయండి",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "ఆట లోడ్",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "సెటప్ స్థానం",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "చట్టపరమైన కదలికలను చూపించు",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "చివరి కదలికను చూపించు",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "బాణాలు చూపించు",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "ముక్కలు",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "విశ్లేషణ చూపించు",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "థ్రెడ్లు",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "చేరి చేసుకోగా",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "అనువాదాన్ని మెరుగుపరచడంలో సహాయపడండి",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "ట్యుటోరియల్",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "క్లాసిక్ మిల్",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "మిశ్రమ మిల్లు",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "సిలోన్ మిల్",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "మిల్లు విచ్ఛిన్నమై పదేపదే రీమేక్ చేయవచ్చు",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "ఒక కొత్త మిల్లును సృష్టించడానికి ఒక ఆటగాడు ఒక మిల్లును విచ్ఛిన్నం చేస్తే, అలాంటి ఆటగాడు కొత్త మిల్లును తయారు చేస్తే, ఆ ముక్కను తన తదుపరి కదలికలో అసలు జంక్షన్‌కు తిరిగి తరలించవచ్చు.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ఒక ఆటగాడికి మూడు ముక్కలు ఉంటే ఆట డ్రా అవుతుంది మరియు పది కదలికల తరువాత ఆటగాడు ప్రత్యర్థి ముక్కలను తొలగించడు",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ఒక ఆటగాడు మూడు ముక్కలుగా ఉన్నప్పుడు, మరియు ఏ ఆటగాడు పది కదలికలలో ప్రత్యర్థి భాగాన్ని తీసివేయలేడు, ఆట డ్రా.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "దగ్గరగా",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "తెల్ల ముక్క",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "నల్ల ముక్క",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "ఖాళీ పాయింట్",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "ప్రయోజనం లేదు",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "ఉంచడం దశ",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "కదిలే దశ",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "ఎగిరే దశ",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "తరలించడానికి వైపు: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "చివరి తరలింపు: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "ఎంపిక చేయబడింది",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "సౌలభ్యాన్ని",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "స్క్రీన్ రీడర్ మద్దతు",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "ఇది డ్రా!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "గీయండి",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "పీస్ హైలైట్ రంగు",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "అల్గోరిథం",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "ఎండ్ గేమ్ N- మూవ్ నియమం",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "ఒక ఆటగాడికి మూడు ముక్కలు మాత్రమే ఉంటే మరియు నిర్దిష్ట కదలికల లోపల ఆటగాడు ఒక భాగాన్ని తీసివేయకపోతే, గేమ్ డ్రా అవుతుంది.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "ఏ ఆటగాడికైనా మూడు ముక్కలు మాత్రమే ఉంటాయి మరియు నిర్దిష్ట కదలికలలో ఏ ఆటగాడు ఒక భాగాన్ని తీసివేయడు.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "మూడు రెట్లు పునరావృత నియమం",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "ఒక స్థానం మూడవసారి సంభవించినట్లయితే గేమ్ డ్రా అవుతుంది.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "మిల్! ఒక కదలికను కొనసాగించండి.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "పాయింట్ శైలి",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "పాయింట్ వెడల్పు",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "ఘన",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "బోలు",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "తెలుగు",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} కదలికలు}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "filename": "ఫైల్ పేరు",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "బ్రౌజ్ చేయండి…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "గేమ్ ఫైళ్లు",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "గేమ్ సేవ్ చేయబడింది",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "loadFailed": "లోడ్ విఫలమైంది.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "restoredPosition": "ప్రారంభ స్థానం పునరుద్ధరించబడింది.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "hasPlacedPieceCount": "ప్రస్తుత ఆటగాడు {count} ముక్కలను ఉంచాడు.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "empty": "ఖాళీ",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "కదలిక లేదు.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "శుభ్రంగా",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "శుభ్రం చేశారు.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "తొలగించు",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "ముక్కలు తీసివేయబడవు.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} ముక్క}other{{count} ముక్కలు}} తీసివేయాలి.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "ఉంచబ. ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "ఉంచే దశలో ముక్కల సంఖ్యను ఉంచారు.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "notPlacingPhase": "దశను ఉంచడం లేదు, దానిని మార్చలేరు.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "అతికించండి",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "పేస్ట్ పూర్తయింది.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "అతికించలేరు.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "ఉంచని మరియు తీసివేయబడిన ముక్కలను చూపించు",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "పూర్తి స్క్రీన్",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "సెట్టింగ్‌లు అమలులోకి రావడానికి యాప్ నుండి నిష్క్రమించి, మళ్లీ తెరవండి.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "అడవి",
+  "@forest": {},
+  "desktopImage": "డెస్క్‌టాప్ చిత్రం",
+  "@desktopImage": {},
+  "invalidPosition": "చెల్లని స్థానం.",
+  "@invalidPosition": {},
+  "shareGIF": "GIFని షేర్ చేయండి",
+  "@shareGIF": {},
+  "duration": "వ్యవధి",
+  "@duration": {},
+  "pixelRatio": "పిక్సెల్ నిష్పత్తి",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "గేమ్ స్క్రీన్ రికార్డర్",
+  "@gameScreenRecorder": {},
+  "previous": "మునుపటి",
+  "@previous": {},
+  "next": "తరువాత",
+  "@next": {},
+  "skip": "దాటవేయి",
+  "@skip": {},
+  "gotIt": "దొరికింది",
+  "@gotIt": {},
+  "youCanModifyRules": "మీరు రూల్ సెట్టింగ్‌లలో గేమ్ నియమాలను సవరించవచ్చు.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "పికర్‌లో విలువను మార్చడానికి మీరు మౌస్ వీల్‌ని ఉపయోగించవచ్చు.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI ఆలోచించే సమయం 0కి సెట్ చేయబడింది అంటే ఆలోచించడానికి సమయ పరిమితి లేదు.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "AI థింకింగ్ టైమ్ అడ్జస్ట్‌మెంట్ పూర్తిగా ఖచ్చితంగా ఉండకపోవచ్చని దయచేసి గుర్తుంచుకోండి. క్లిష్టత స్థాయిని తక్కువ విలువకు సెట్ చేసినప్పుడు వాస్తవ ఆలోచనా సమయం తక్కువగా ఉండవచ్చు మరియు సమయం ముగిసినప్పుడు AI మధ్యలో ఆలోచించినప్పుడు ఎక్కువ సమయం ఉండవచ్చు.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "మీరు క్లిష్టత స్థాయిని ఎక్కువగా సెట్ చేసి, AI ఆలోచించే సమయాన్ని పెంచకపోతే, ఆలోచన సమయ పరిమితి కారణంగా అసలు కష్ట స్థాయి తక్కువ విలువకు పరిమితం కావచ్చు. యంత్రం యొక్క పనితీరు ఆధారంగా వాస్తవ విలువ మారవచ్చు.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) అనేది ఆల్ఫా-బీటా శోధన అల్గోరిథం యొక్క సవరించిన రూపం, ఇది ఇంటర్మీడియట్ శోధన ఫలితాలను తిరిగి ఉపయోగించడం ద్వారా మరియు శోధన స్థలాన్ని తగ్గించడానికి మంచి ప్రారంభ అంచనాను ఉపయోగించడం ద్వారా సామర్థ్యాన్ని మెరుగుపరచడం లక్ష్యంగా పెట్టుకుంది.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (ప్రిన్సిపల్ వేరియేషన్ సెర్చ్) అనేది ఇచ్చిన స్థానంలో అత్యుత్తమ కదలికను కనుగొనే శోధన అల్గారిథమ్. ఇది ఆల్ఫా-బీటా అల్గోరిథం యొక్క మెరుగుదల మరియు ప్రధాన వైవిధ్యం నుండి ఇప్పటికే సురక్షితమైన స్కోర్ కంటే కదలిక అధ్వాన్నంగా లేదా అధ్వాన్నంగా ఉందని నిర్ధారించడానికి శూన్య లేదా సున్నా విండో శోధనలను ఉపయోగిస్తుంది. PVS అత్యంత ఆశాజనకమైన కదలికలపై దృష్టి పెడుతుంది మరియు సబ్‌ప్టిమల్ శాఖల యొక్క అనవసర శోధనలను నివారిస్తుంది, ఇది శోధన సామర్థ్యాన్ని మెరుగుపరచడంలో సహాయపడుతుంది.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "ఆల్ఫా-బీటా అల్గోరిథం అనేది ఉత్తమ కదలికను కనుగొనడానికి ఒక శోధన అల్గారిథమ్. శోధన చెట్టును కత్తిరించడానికి మరియు సామర్థ్యాన్ని పెంచడానికి ఇది మినిమాక్స్ సూత్రాన్ని మరియు ఆల్ఫా మరియు బీటా అనే రెండు విలువలను ఉపయోగిస్తుంది. ఆల్ఫా అనేది కంప్యూటర్ ఖచ్చితంగా పొందగల కనీస స్కోర్‌ను సూచిస్తుంది, అయితే బీటా దాని ప్రత్యర్థి పొందగలిగే గరిష్ట స్కోర్‌ను సూచిస్తుంది. గేమ్‌లో స్మార్ట్, సమర్థవంతమైన నిర్ణయాలు తీసుకోవడంలో అల్గోరిథం కంప్యూటర్‌కు సహాయపడుతుంది.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "ఈ గేమ్‌లో, మొదటి ఆటగాడితో పోలిస్తే రెండవ ఆటగాడు గెలవడం సులభం.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "మానవ అనుభవం ప్రకారం, మీరు గెలవాలని ప్రయత్నిస్తే, మీరు ఓడిపోతారు. బదులుగా, మీ లక్ష్యం డ్రాగా లక్ష్యంగా చేసుకోండి మరియు గేమ్‌ను కోల్పోకుండా ఉండండి. మీ ప్రత్యర్థిని గమనించండి మరియు వారు తప్పులు చేసే స్థితికి సున్నితంగా వారిని ఆకర్షించండి. వారు బలహీనతను చూపినప్పుడు, అవకాశాన్ని ఉపయోగించుకోండి మరియు విజయం కోసం సున్నితంగా ముందుకు సాగండి. ఈ విధంగా, మీరు గేమ్ గెలవవచ్చు.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "నిష్క్రియ ఎంపికను ప్రారంభించడం వలన AIకి వీలైనంత త్వరగా గెలవడానికి దూకుడుగా ప్రయత్నించడం కంటే, ఆ స్థానంలో ప్రయోజనం ఉన్నప్పుడు విశ్రాంతిని పొందుతుంది.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "AI దాని ముక్కల చలనశీలతను పరిగణనలోకి తీసుకుంటే, అది ప్రత్యర్థి ముక్కలను వీలైనంత త్వరగా పట్టుకోవడమే కాకుండా, ప్రత్యర్థి కదలికలను అడ్డుకోవడం మరియు అదే పని చేయకుండా నిరోధించడాన్ని కూడా పరిగణలోకి తీసుకుంటుంది.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "ఈ ఎంపికను ప్రారంభించడం వలన ఆట యొక్క యాదృచ్ఛికత మరియు వినోదం పెరుగుతుంది, అయితే దానిని నిలిపివేయడం AIని అధిగమించే మార్గాలను అధ్యయనం చేయడంలో సహాయపడుతుంది.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "బోర్డు నిండినప్పుడు",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "ప్లేసింగ్ దశ ముగింపులో, కదిలే దశ ప్రారంభమయ్యే ముందు, బోర్డు పూర్తిగా ముక్కలతో ఉంటే చర్య అనుసరిస్తుంది.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "కదిలే దశలో ముందుగా కదిలే ఆటగాడు ప్రత్యర్థి పావుల్లో ఒకదాన్ని తొలగిస్తాడు.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "ఇరుపక్షాలు డ్రాకు అంగీకరించాయి.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "మీ ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసుకోండి.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "మొదటి ఆటగాడు ఆటను కోల్పోతాడు.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "మొదటి మరియు రెండవ ఆటగాళ్ళు ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేస్తారు.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "రెండవ మరియు మొదటి ఆటగాళ్ళు ప్రత్యర్థి ముక్కలలో ఒకదాన్ని తీసివేస్తారు.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "ఇప్పుడు ఎగిరే దశలోకి ప్రవేశించింది, ప్రత్యర్థి పావులు బోర్డ్‌లోని ఏదైనా ఖాళీ పాయింట్‌కి వెళ్లవచ్చు. మీరు \"రూల్ సెట్టింగ్‌లు\"లో ఫ్లయింగ్ నియమాన్ని ఆఫ్ చేయవచ్చు.",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "ప్రతిష్టంభన ఏర్పడినప్పుడు",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "ఏ భాగాన్ని తరలించలేనప్పుడు ఏ చర్య అనుసరిస్తుంది?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "ప్రతిష్టంభన నష్టంతో ముగించండి.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "తరలించడానికి వైపు మార్చండి.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తదుపరి కదలికను చేయండి.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "ప్రతిష్టంభన డ్రాతో ముగించండి.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తరలించడానికి వైపు మార్చండి.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI ప్రతిస్పందన ఆలస్యం సమయం",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI ప్రస్తుతం ఆలస్యం ప్రతిస్పందన దశలో ఉంది. దయచేసి కొనసాగడానికి ముందు కొంతసేపు వేచి ఉండండి.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "మీరు పక్కనే లేని భాగాన్ని తీసివేయలేరు.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "ప్రతిష్టంభన ఏర్పడితే, మిల్లు నిర్మాణంతో సంబంధం లేకుండా మీ పక్కనే ఉన్న ప్రత్యర్థి ముక్కలను తీసివేయవచ్చు.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS అనేది అనుభవశూన్యుడు-స్నేహపూర్వక అల్గోరిథం, ఇది అనుకరణల ద్వారా విభిన్న కదలికలను విశ్లేషించడం మరియు మూల్యాంకనం చేయడం ద్వారా నిర్ణయాలు తీసుకుంటుంది.",
+  "@whatIsMcts": {},
+  "goldenJade": "గోల్డెన్ జేడ్",
+  "@goldenJade": {},
+  "forestWood": "ఫారెస్ట్ వుడ్",
+  "@forestWood": {},
+  "greenMeadow": "గ్రీన్ మేడో",
+  "@greenMeadow": {},
+  "stonyPath": "రాతి మార్గం",
+  "@stonyPath": {},
+  "midnightBlue": "మిడ్నైట్ బ్లూ",
+  "@midnightBlue": {},
+  "greenForest": "గ్రీన్ ఫారెస్ట్",
+  "@greenForest": {},
+  "pastelPink": "పాస్టెల్ పింక్",
+  "@pastelPink": {},
+  "turquoiseSea": "టర్కోయిస్ సముద్రం",
+  "@turquoiseSea": {},
+  "violetDream": "వైలెట్ డ్రీం",
+  "@violetDream": {},
+  "mintChocolate": "మింట్ చాక్లెట్",
+  "@mintChocolate": {},
+  "skyBlue": "లేత నీలి రంగు",
+  "@skyBlue": {},
+  "playfulGarden": "ఉల్లాసభరితమైన గార్డెన్",
+  "@playfulGarden": {},
+  "darkMystery": "డార్క్ మిస్టరీ",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "వివిధ ప్రారంభ స్థానాల నుండి ముగింపు గేమ్ డేటాబేస్‌ను రూపొందించడానికి రెట్రోగ్రేడ్ విశ్లేషణ అల్గోరిథం బహుళ-విలువైన రెట్రోగ్రేడ్ విశ్లేషణను ఉపయోగిస్తుంది, ఆపై గేమ్‌ప్లేను ఆప్టిమైజ్ చేయడానికి ఈ డేటాబేస్‌ను వర్తింపజేస్తుంది. ఈ విధానం అల్ట్రా-స్ట్రాంగ్ సొల్యూషన్స్ విభాగంలోకి వస్తుంది.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "మీరు ఈ అల్గారిథమ్ కోసం యూజర్ గైడ్‌ని వీక్షించాలనుకుంటున్నారా?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "స్థాన ప్రయోజన సూచికను చూపు",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "ఖచ్చితమైన డేటాబేస్ ఉపయోగించండి",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "అత్యాధునిక అల్గారిథమ్‌ల ద్వారా రూపొందించబడిన దోషరహిత గేమ్ డేటాబేస్‌ను ఉపయోగించడానికి ఈ ఎంపికను ప్రారంభించండి. ఈ ఫీచర్ సరైన కదలికలను సూచించడానికి ప్రారంభ మరియు ముగింపు గేమ్ వ్యూహాలను రెండింటినీ అనుసంధానిస్తుంది. గేమ్‌ప్లేలో అత్యున్నత స్థాయి ఖచ్చితత్వాన్ని కోరుకునే ఆటగాళ్లకు ఇది ప్రాధాన్య ఎంపిక. ఖచ్చితమైన గణన పద్ధతుల ద్వారా సృష్టించబడిన, డేటాబేస్ దాదాపు ఖచ్చితమైన గేమ్ పరిష్కారాలను అందించడానికి రూపొందించబడింది.\n\nగమనిక: డేటాబేస్‌ను యాక్సెస్ చేయడంలో AI విఫలమైతే, గేమ్‌ప్లే నిర్ణయాల కోసం ఇది సంప్రదాయ అల్గారిథమ్‌లను ఆశ్రయిస్తుంది. డేటాబేస్ అందుబాటులో ఉన్నప్పుడు, 'డిఫికల్టీ లెవెల్' అనేది వాస్తవంగా అజేయంగా మారుతుంది మరియు 'AI థింకింగ్ టైమ్' తీవ్ర తగ్గింపును అనుభవిస్తుంది. డేటాబేస్ ఫలితాలకు అత్యధిక ప్రాధాన్యత ఉన్నందున 'AI'స్ ప్లేస్టైల్' ఎంపికలలోని అనేక సెట్టింగ్‌లు భర్తీ చేయబడతాయి.\n\nఈ దోషరహిత డేటాబేస్‌ను ఎలా ఉపయోగించాలో మార్గదర్శకత్వం కోసం, ఇక్కడ క్లిక్ చేయండి.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "నేపథ్య చిత్రం",
+  "@backgroundImage": {},
+  "whatIsRandom": "'పర్ఫెక్ట్ డేటాబేస్ ఉపయోగించండి' ఎంపిక ప్రారంభించబడనప్పుడు, 'ర్యాండమ్' సెట్టింగ్ తరలింపు ఎంపిక కోసం ఎటువంటి అల్గారిథమ్‌లను ఉపయోగించకుండా AI యాదృచ్ఛికంగా ముక్కలను తరలించేలా చేస్తుంది. ఇది సాధారణంగా గణనీయంగా బలహీనమైన గేమ్‌ప్లేకు దారి తీస్తుంది. దీనికి విరుద్ధంగా, 'పర్ఫెక్ట్ డేటాబేస్‌ని ఉపయోగించండి' ప్రారంభించబడినప్పుడు, AI సంప్రదాయ AI అల్గారిథమ్‌లతో కలపడానికి బదులుగా నిర్ణయాలు తీసుకోవడానికి 'పర్ఫెక్ట్ డేటాబేస్'పై ప్రత్యేకంగా ఆధారపడుతుంది. ఈ మోడ్‌లో, AI యొక్క కదలికలు పూర్తిగా డేటాబేస్ కంటెంట్‌పై ఆధారపడి ఉంటాయి, నిజ-సమయ గణనలు లేదా శోధన అల్గారిథమ్‌లపై ఆధారపడకుండా ఉంటాయి.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "ప్రత్యర్థి పావు(ల)ను వారి చేతి నుండి తొలగించండి; అప్పుడు పావును ఉంచడం ప్రత్యర్థి వంతు.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "ప్లేసింగ్ దశలో మిల్లులను రూపొందించేటప్పుడు",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "ప్రత్యర్థి పావు(ల)ను బోర్డు నుండి తీసివేయండి.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "ప్రత్యర్థి పావు(ల)ను బోర్డు నుండి తీసివేయండి; అప్పుడు పావును ఉంచడం ప్రత్యర్థి వంతు.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "ప్రత్యర్థి తన సొంత పావు(ల)ను బోర్డు నుండి తొలగిస్తాడు.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "మీరు చర్య తీసుకునే బదులు, ప్రత్యర్థి తన సొంత పావు(ల)ను బోర్డ్ నుండి ఎంచుకుని తొలగిస్తాడు, ఇది వారికి హానికరమైన చర్యను సమర్థవంతంగా తీసుకుంటుంది.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "ప్రత్యర్థి పావు(ల)ను వారి చేతి నుండి తొలగించండి; అప్పుడు మీరు కదిలే వంతు.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "ప్రత్యర్థి చేతి నుండి పావు(లు) తొలగించండి. మల్టీ-రిమూవ్ సెట్టింగ్ ప్రకారం, బహుళ పావులను తీసివేయాలంటే, ప్రత్యర్థి దగ్గర చేతిలో పావులు లేకపోతే, బోర్డు నుండి ప్రత్యర్థి పావులను తొలగించడం కొనసాగించండి. అప్పుడు, ఇది మీరు కదిలే వంతు. మీరు మిల్లులను ఏర్పరచడం కొనసాగిస్తే, మీరు ప్రత్యర్థి పావులను తొలగించడం కొనసాగించవచ్చు.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ప్రత్యర్థి చేతి నుండి పావు(లు) తొలగించండి. మల్టీ-రిమూవ్ సెట్టింగ్ ప్రకారం, బహుళ పావులను తీసివేయాలంటే మరియు ప్రత్యర్థికి చేతిలో పావులు లేకపోతే, బోర్డు నుండి ప్రత్యర్థి పావులను తీసివేయడం కొనసాగించండి. అప్పుడు, ప్రత్యర్థి కదిలే వంతు.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "పావులను తొలగించడాన్ని గుర్తించండి మరియు ఆలస్యం చేయండి.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "ప్లేసింగ్ దశలో, తొలగించాల్సిన పావులను గుర్తించబడతాయి మరియు ఇద్దరు ఆటగాళ్ల కోసం, ఈ పాయింట్లలో కొత్త పావులను ఉంచలేరు. కదిలే దశలోకి ప్రవేశించిన తర్వాత, ఈ గుర్తించబడిన పావులు పూర్తిగా తీసివేయబడతాయి మరియు ఆటగాళ్ళు తమ పావులను ఈ ఖాళీ పాయింట్లకు తరలించవచ్చు.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "ప్లేసింగ్ దశలో ఆటగాళ్ళు మిల్లులను ఏర్పరిచినప్పుడు చేపట్టగల చర్యలు.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "గుర్తించబడింది",
+  "@marked": {},
+  "menu": "మెనూ",
+  "@menu": {},
+  "monochrome": "మోనోక్రోమ్",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "మీరు జనరల్ సెట్టింగ్స్‌లో యాక్సెసిబిలిటీ కాన్ఫిగరేషన్‌లో స్క్రీన్ రీడర్ సపోర్ట్ స్విచ్‌ను ఆన్ చేయవచ్చు.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "ముక్కలపై సంఖ్యలను చూపించు",
+  "@showNumbersOnPieces": {},
+  "saveImage": "చిత్రాన్ని భద్రపరచండి",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "విశ్లేషణ టూల్‌బార్ ప్రదర్శించు",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "విశ్లేషణ టూల్‌బార్ నేపథ్యం రంగు",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "విశ్లేషణ టూల్‌బార్ చిహ్నం రంగు",
+  "@analysisToolbarIconColor": {},
+  "transformed": "పరివర్తితం.",
+  "@transformed": {},
+  "cannotTransform": "పరివర్తన చేయలేము.",
+  "@cannotTransform": {},
+  "rotate": "పరిసరాలను తిరిగించు",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "పారదర్శక క్యాన్వాస్",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "పునరావృత మిల్లుల ఏర్పాటును నిషేధించండి",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ఒక గిరాటం నుండి మరొకటిని ఏర్పరచడానికి తరలించబడిన ముక్క తదుపరి వంతున వెంటనే అసలు పాయింట్ కు తిరిగి మరలా గిరాటం ఏర్పరచలేదు. ముందుగా వేరొక కదలిక అవసరం.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "ఒకసారి ఉపయోగించే మిల్",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "ప్రతి మిల్ ఒక సారి మాత్రమే ప్రత్యర్థి ముక్కను తొలగిస్తుంది. మీరు దాన్ని మళ్ళీ రూపకల్పన చేయవచ్చు, కానీ అదనపు తొలగింపులకు ఉపయోగించబడదు.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "మీరు సెట్ చేసిన ప్రస్తుత నిబంధనలకు అనుగుణంగా ఖచ్చితమైన డేటాబేస్ లేదు. ఖచ్చితమైన డేటాబేస్ గురించి మరింత సమాచారం కోసం ఇక్కడ క్లిక్ చేయండి.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "అడ్డంకుల మార్గాలపై దృష్టి పెట్టండి",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "మిల్లులు ఏర్పరచడం కంటే ప్రత్యర్థి యొక్క కదలికలను అడ్డుకోవడానికి ప్రాధాన్యత ఇవ్వండి. మిల్లులు పూర్తి చేయడం ద్వారా ముక్కలను తొలగించడం మీద దృష్టి పెట్టడం బదులు, AI ప్రత్యర్థిని ఉంచడానికి ప్రయత్నిస్తుంది, వారిని కదలకుండా చేసి, ఆగ్రహపు ఆటకు బదులుగా క్షీణత ద్వారా విజయం సాధించడానికి లక్ష్యం చేస్తుంది. ఈ వ్యూహం ప్రత్యర్థి యొక్క మిల్లులను చురుకుగా అడ్డుకోదు.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "చదరంగపు ముక్క చిత్రం",
+  "@pieceImage": {},
+  "importColorSettings": "రంగు సెట్టింగ్‌లను దిగుమతి చేయండి",
+  "@importColorSettings": {},
+  "exportColorSettings": "రంగు సెట్టింగ్‌లను ఎగుమతి చేయండి",
+  "@exportColorSettings": {},
+  "import": "దిగుమతి",
+  "@import": {},
+  "export": "ఎగుమతి",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "దయచేసి ముందుగా JSON ఫార్మాట్ సెట్టింగ్‌లను క్లిప్‌బోర్డ్‌కి కాపీ చేయండి.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "క్లిప్‌బోర్డ్‌కి కాపీ చేయబడింది.",
+  "@copiedToClipboard": {},
+  "imported": "ఆయాతించబడింది.",
+  "@imported": {},
+  "boardImage": "బోర్డ్ చిత్రం",
+  "@boardImage": {},
+  "autumnLeaves": "శరదృతువు ఆకులు",
+  "@autumnLeaves": {},
+  "legendaryLand": "పౌరాణిక భూమి",
+  "@legendaryLand": {},
+  "vignetteEffect": "వినియట్ ప్రభావం",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "బోర్డు నేపథ్య చిత్రాన్ని సెట్ చేసినప్పుడు టూల్‌బార్‌ను పూర్తిగా పారదర్శకంగా చేయాలనుకుంటున్నారా?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "గేమ్‌లో వైబ్రేషన్‌ని ప్రారంభించండి",
+  "@vibration": {},
+  "soundTheme": "శబ్ద థీమ్",
+  "@soundTheme": {},
+  "ball": "బంతి",
+  "@ball": {},
+  "liquid": "ద్రవం",
+  "@liquid": {},
+  "wood": "మొక్క",
+  "@wood": {},
+  "placeEffectAnimation": "గేమ్ భాగాన్ని ఉంచే యానిమేషన్ ప్రభావం",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "గేమ్ భాగాన్ని తొలగించే యానిమేషన్ ప్రభావం",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "క్రింద టూల్‌బార్ చూపించు",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "బోర్డు మూల వ్యాసార్ధం",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ఓపెనింగ్ బుక్ వాడండి",
+  "@useOpeningBook": {},
+  "currentRule": "ప్రస్తుత",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "నియమాల సెట్",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "ప్రారంభ ఆటలో వృత్తిపరమైన మానవ ఆటగాళ్లు సాధారణంగా ఉపయోగించే ఓపెనింగ్ మూవ్స్‌ను AI వాడనివ్వండి. గమనిక: ఈ ఫీచర్ ప్రస్తుతం కొన్ని నియమాల సెట్ల కోసం మాత్రమే అందుబాటులో ఉంది.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "ఆధిక్యత గ్రాఫ్‌ను చూపించు",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "AI పోన్ చేసిన తర్వాత మాత్రమే ప్రయోజన గ్రాఫ్ వేయబడుతుంది. మానవ ఆటగాడు పోన్ చేసినప్పుడు ఇది వేయబడదు.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "అన్నీ ఏర్పాటు అయ్యే వరకు తీసివేతను నిలిపివుంచండి. ఆటగాళ్లు మిల్ ల సంఖ్య ఆధారంగా ముక్కలను తీసివేస్తారు.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "అన్నీ ఏర్పాటు అయ్యే వరకు తీసివేతను నిలిపివుంచండి. ఆటగాళ్లు మిల్ ల సంఖ్య ఆధారంగా ముక్కలను తీసివేస్తారు: సమానంగా ఉంటే, ఇద్దరూ ఒకే సంఖ్యలో ముక్కలను తీసివేస్తారు; ఒకరి దగ్గర ఎక్కువ ఉంటే, అతను ఒక అదనపు ముక్కను తీసివేసి ఒక్క ముక్క తేడాను కొనసాగిస్తాడు. ఒక ఆటగాడు మాత్రమే మిల్ ను రూపొందిస్తే, అతను రెండు ముక్కలను తీసివేస్తాడు, మరోవాడు ఒక ముక్కను తీసివేస్తాడు. ఇద్దరూ మిల్ ను రూపొందించలేకపోతే, ఇద్దరూ ఒక్క ముక్కను తీసివేస్తారు.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ఎల్ ఫిల్జా",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "నీ వర్గాల్లో ఒకటిని ఎంచుకో.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "మీ సారి కాదు.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "వ్యాఖ్యాన టూల్‌బార్ నేపథ్య రంగు",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "వ్యాఖ్యాన టూల్‌బార్ చిహ్నం రంగు",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "వ్యాఖ్యాన టూల్‌బార్ చూపించు",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "వ్యాఖ్యాన మోడ్‌లో ప్రవేశించండి",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "మీరు అన్ని వ్యాఖ్యానాలను తొలగించాలని ఖచ్చితంగా అనుకుంటున్నారా?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM ప్రాంప్ట్ క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "కనెక్షన్ నిరాకరించబడింది, సర్వర్ డౌన్‌లో ఉండవచ్చు.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "అన్వేషణ విజయవంతం, కనెక్షన్ కోసం ఎదురు చూస్తోంది...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "LAN కనెక్షన్ లేదు",
+  "@noLanConnection": {},
+  "takeScreenshot": "స్క్రీన్‌షాట్ తీసుకోండి",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "ప్రతిస్పర్థి నుండి డిస్‌కనెక్ట్ అయింది.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "చలనం రద్దు అభ్యర్థన",
+  "@takeBackRequest": {},
+  "nothingToShow": "చూపించడానికి ఏమీ లేదు.",
+  "@nothingToShow": {},
+  "stopHosting": "హోస్టింగ్ ఆపండి",
+  "@stopHosting": {},
+  "connectionResetByPeer": "కనెక్షన్ పియర్ ద్వారా రీసెట్ చేయబడింది.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "హార్ట్‌బీట్ టైమౌట్ కారణంగా కనెక్షన్ కోల్పోయింది. దయచేసి మళ్లీ కనెక్ట్ అవ్వండి.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "హోస్టింగ్ ప్రారంభించండి",
+  "@startHosting": {},
+  "restartRequestRejected": "రీస్టార్ట్ అభ్యర్థన నిరాకరించబడింది.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "LAN ప్రత్యర్థితో కనెక్ట్ కాలేదు.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM ప్రాంప్ట్",
+  "@llmPrompt": {},
+  "gameRestarted": "గేమ్ మళ్లీ ప్రారంభించబడింది.",
+  "@gameRestarted": {},
+  "takeBackRejected": "చలనం రద్దు నిరాకరించబడింది.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "మీరు ఈ గేమ్ నుండి రాజీనామా చేయాలని నిజంగా అనుకుంటున్నారా?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "ప్రతిస్పర్థి రాజీనామా చేసాడు. మీరు గెలిచారు!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "అన్ని వ్యాఖ్యానాలను తొలగించండి",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "కనెక్ట్ అయింది, ప్రత్యర్థి యొక్క చలనం కోసం ఎదురు చూస్తోంది...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "నెట్‌వర్క్ స్థితి: కనెక్ట్ కాలేదు.",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "ప్రతిస్పర్థికి చలనం రద్దు అభ్యర్థన పంపబడింది.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "ప్రతిస్పర్థి గేమ్ నుండి బయలుదేరి ఉండవచ్చు.",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "హోస్ట్‌తో విజయవంతంగా కనెక్ట్ అయింది.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "కనెక్షన్ కోల్పోయింది: హార్ట్‌బీట్ టైమౌట్",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "ఎలాంటి హోస్ట్ కనుగొనబడలేదు.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "రాజీనామాను నిర్ధారించండి",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "గేమ్ హోస్ట్ చేయడం ప్రారంభించబడింది, ఆటగాళ్లు చేరుకోవడం కోసం ఎదురు చూస్తోంది...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "కనెక్షన్ టైమౌట్ అయింది, నెట్‌వర్క్ స్థిరంగా లేదు.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "LLM ప్రాంప్ట్ అందుబాటులో లేదు.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "మీరు రాజీనామా చేసారు. గేమ్ ముగిసింది.",
+  "@youResignedGameOver": {},
+  "serverIp": "సర్వర్ IP",
+  "@serverIp": {},
+  "confirmClear": "తొలగింపును నిర్ధారించండి",
+  "@confirmClear": {},
+  "opponentSTurn": "ప్రతిస్పర్థి సారి.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "క్లయింట్ కనెక్షన్ కోసం ఎదురు చూస్తోంది...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "చలనం రద్దు అభ్యర్థన నిరాకరించబడింది లేదా విఫలమైంది.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "టెక్స్ట్ జోడించండి",
+  "@addText": {},
+  "exitAnnotationMode": "వ్యాఖ్యాన మోడ్ నుండి బయటకు రండి",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "మీ వ్యాఖ్యానాన్ని టైప్ చేయండి",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "మళ్లీ కనెక్ట్ అవ్వడానికి ప్రయత్నిస్తోంది...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "రీస్టార్ట్ అభ్యర్థన పంపబడింది. ప్రత్యర్థి యొక్క ప్రతిస్పందన కోసం ఎదురు చూస్తోంది...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "సర్వర్ ఆపబడింది.",
+  "@serverIsStopped": {},
+  "restartRequest": "రీస్టార్ట్ అభ్యర్థన",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "మీ సారి కానప్పుడు చలనం రద్దు అభ్యర్థన చేయలేరు.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "చలనం రద్దు ఆమోదించబడింది.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "స్థానిక నెట్‌వర్క్ సెట్టింగ్స్",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "విజయవంతంగా మళ్లీ కనెక్ట్ అయ్యారు!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "గ్యాలరీకి చిత్రం సేవ్ చేయడంలో విఫలమైంది.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "ప్రతిస్పర్థి గేమ్ మళ్లీ ప్రారంభించాలనే అభ్యర్థన చేశాడు. మీరు అంగీకరిస్తారా?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "మీ సారి.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "మళ్లీ కనెక్ట్ కావడం సాధ్యపడలేదు, దయచేసి గేమ్‌ను మళ్లీ ప్రారంభించండి.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "హోస్ట్",
+  "@host": {},
+  "join": "చేరండి",
+  "@join": {},
+  "port": "పోర్ట్",
+  "@port": {},
+  "invalidIpAddress": "చెల్లని IP చిరునామా.",
+  "@invalidIpAddress": {},
+  "invalidPort": "చెల్లని పోర్ట్.",
+  "@invalidPort": {},
+  "connectingAttempt": "కనెక్ట్ అవుతున్నది: ప్రయత్నం {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "కనెక్ట్ అవడంలో విఫలమైంది: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "హోస్టింగ్ ప్రారంభించడంలో విఫలమైంది: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "హోస్ట్ కనుగొనబడింది: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "ఆపు",
+  "@stop": {},
+  "discover": "కనుగొనండి",
+  "@discover": {},
+  "connect": "కనెక్ట్ అవ్వండి",
+  "@connect": {},
+  "clientConnected": "క్లయింట్ కనెక్ట్ అయింది: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "కనుగొనడం: {seconds} సెకన్లు",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "మళ్లీ కనెక్ట్ అవుతోంది ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "కనెక్ట్ అయింది.",
+  "@connected": {},
+  "delete": "తొలగించండి",
+  "@delete": {},
+  "ancientEgypt": "పురాతన ఈజిప్ట్",
+  "@ancientEgypt": {},
+  "gothicIce": "గోతిక్ ఐస్",
+  "@gothicIce": {},
+  "riceField": "వరి పొలం",
+  "@riceField": {},
+  "chinesePorcelain": "చైనీస్ పోర్సెలిన్",
+  "@chinesePorcelain": {},
+  "desertDusk": "ఎడారి సంధ్య",
+  "@desertDusk": {},
+  "precisionCraft": "నిఖార్సైన హస్తకళ",
+  "@precisionCraft": {},
+  "folkEmbroidery": "సాంప్రదాయ ఎంబ్రాయిడరీ",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "కార్పాతియన్ వారసత్వం",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "సామ్రాజ్య వైభవం",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "బోహీమియన్ క్రిస్టల్",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "సవన్నా సూర్యోదయం",
+  "@savannaSunrise": {},
+  "harmonyBalance": "సామరస్య సమతుల్యత",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "దాల్చిన చెక్క మసాలా",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "అనాటోలియన్ మొజాయిక్",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "కార్నివల్ స్ఫూర్తి",
+  "@carnivalSpirit": {},
+  "custom": "ఆచారం",
+  "@custom": {},
+  "spiceMarket": "మసాలా మార్కెట్",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "డ్రాయర్ చూపించడానికి స్వైప్ చేయండి",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "స్క్రీన్‌షాట్‌లలో గేమ్ సమాచారం చూపించు",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "మానవ సమయ పరిమితి",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "మానవ కదలికలకు సమయ పరిమితి లేదు",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "మానవ ఆటగాడికి సమయం ముగిసిపోతే ఓటమి వర్తిస్తుంది",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "బోర్డును గుర్తిస్తోంది...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "మీరు ఏదైనా మోడల్ పేరును నమోదు చేయవచ్చు.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "బోర్డు స్థానం వర్తించబడింది. FEN క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "సూచన: బోర్డు యొక్క స్పష్టమైన చిత్రం తీసుకోవడానికి ప్రయత్నించండి.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM ప్రాంప్ట్ నమూనా",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "చెల్లుబాటు అయ్యే బోర్డు కనుగొనబడలేదు.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "అల్బమ్ నుండి చిత్రం ఎంచుకుంటోంది...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "ప్రాంప్ట్ నమూనాను సెట్ చేయండి",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "LLM విశ్లేషణ కోసం ప్రాంప్ట్ నమూనాను సవరించండి",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "గుర్తించిన బోర్డు నుంచి FEN సృష్టించడంలో విఫలం.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "ప్రస్తుత భాషలో అవుట్పుట్",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "సాధారణ Base URLలు",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "సాధారణ మోడళ్లను చూడండి",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "గుర్తింపు పరామితులు నవీకరించబడ్డాయి.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "తెల్లవారి బారి",
+  "@whiteSMove": {},
+  "resetToDefaults": "డిఫాల్ట్‌లను పునఃస్థాపించండి",
+  "@resetToDefaults": {},
+  "photoShoot": "ఫోటో షూట్",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "గుర్తించిన బోర్డు స్థానాన్ని వర్తింపజేయడంలో విఫలం.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM ప్రాంప్ట్ విషయము",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM కాన్ఫిగర్ చేయబడలేదు. దయచేసి మీ సెట్టింగులను తనిఖీ చేయండి.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "ప్రొవైడర్, మోడల్, API Key, మరియు Base URL సెట్ చేయండి.",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM కాన్ఫిగరేషన్",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "LLM provider ను కాన్ఫిగర్ చేయండి",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM ప్రాంప్ట్ టెంప్లేట్ శీర్షిక",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "చిత్రంలో ఏ భాగాలు గుర్తించబడలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "చిత్రం నుండి బోర్డును గుర్తించండి",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "సలహాలు చూడండి",
+  "@viewTips": {},
+  "applyToBoard": "బోర్డు పై వర్తించండి",
+  "@applyToBoard": {},
+  "adjustBoardArea": "బోర్డు ప్రాంతాన్ని సర్దుబాటు చేయండి",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "సాధారణ URLలు చూడండి",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "రంగుల విశ్లేషణ విఫలమైంది!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "ఆట బోర్డు చిత్రాన్ని విశ్లేషిస్తోంది...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "అల్బమ్ నుంచి ఎంచుకోండి",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "బోర్డు బిందువు కనుగొనబడలేదు!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "ఖాళీగా వదిలివేస్తే, డిఫాల్ట్ నమూనా ఉపయోగించబడుతుంది",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM కాన్ఫిగరేషన్",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "మీరు నిజంగా ప్రాంప్ట్ నమూనాలను డిఫాల్ట్ విలువలకు రీసెట్ చేయాలనుకుంటున్నారా?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM ప్రాంప్ట్ టెంప్లేట్ ఫుటర్",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "సమాధానం లోడ్ అవుతోంది...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "ఈ ఫలితాన్ని బోర్డుకు వర్తించండి",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "చిత్రం తీసుకుంటోంది...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "దయచేసి గుర్తించడానికి ఆట బోర్డు చిత్రాన్ని ఎంచుకోండి",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "గుర్తింపు ఫలితాలు",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "చలనాలను విశ్లేషించి, అవగాహన అందించండి.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "API Key పొందండి",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "మొత్తం గుర్తింపు ప్రక్రియ పూర్తి కాలేదు.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "బోర్డు గుర్తింపు ఫలితం",
+  "@boardRecognitionResult": {},
+  "askLlm": "LLMను అడగండి",
+  "@askLlm": {},
+  "boardDetectionFailed": "బోర్డు గుర్తింపు విఫలమైంది!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "బోర్డు బిందువు కనుగొనబడలేదు, కాబట్టి ముక్కను గుర్తించలేము!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "FENను కాపీ చేయండి",
+  "@copyFen": {},
+  "commonlyUsedModels": "సాధారణంగా ఉపయోగించే మోడళ్లు",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (ఐచ్చిక)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "ఏ చిత్రం ఎంచుకోబడలేదు",
+  "@noImageSelected": {},
+  "blackSMove": "నలుపువారి బారి",
+  "@blackSMove": {},
+  "llm": "పెద్ద భాషా మోడల్",
+  "@llm": {},
+  "llmProvider": "సరఫరాదారు",
+  "@llmProvider": {},
+  "baseUrl": "బేస్ URL",
+  "@baseUrl": {},
+  "model": "మోడల్",
+  "@model": {},
+  "temperature": "ఉష్ణోగ్రత",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "ఆదేశం స్వీకరించబడింది! AI ప్రాసెస్ అవుతోంది...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "లోతైన ఆలోచన జరుగుతోంది, దయచేసి వేచి ఉండండి...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "త్వరిగా ప్రదర్శించబడుతుంది...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "గుర్తింపు పరామితులు",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "గుర్తింపు ఖచ్చితత్వాన్ని మెరుగుపర్చేందుకు పరామితులను సర్దుబాటు చేయండి",
+  "@adjustParamsDesc": {},
+  "saveParameters": "పరామితులను సేవ్ చేయండి",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "చిత్ర గుర్తింపును ప్రారంభించలేకపోయాం: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "చిత్ర గుర్తింపు విఫలమైంది: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} తెల్ల మరియు {blackCount} నలుపు ముక్కలతో దరఖాస్తు చేసిన స్థానం",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN క్లిప్‌బోర్డుకు కాపీ చేయబడింది)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "గుర్తింపు విఫలమైంది: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "నా రేటింగ్",
+  "@myRating": {},
+  "gamesPlayed": "ఆడిన ఆటలు",
+  "@gamesPlayed": {},
+  "wins": "గెలుపులు",
+  "@wins": {},
+  "losses": "ఓటములు",
+  "@losses": {},
+  "draws": "డ్రాలు",
+  "@draws": {},
+  "lastUpdated": "చివరిగా నవీకరించబడింది",
+  "@lastUpdated": {},
+  "format": "ఫార్మాట్:",
+  "@format": {},
+  "resetStatistics": "గణాంకాలను రీసెట్ చేయండి",
+  "@resetStatistics": {},
+  "drawRate": "డ్రా రేటు",
+  "@drawRate": {},
+  "lossRate": "ఓటమి రేటు",
+  "@lossRate": {},
+  "aiStatistics": "AI గణాంకాలు",
+  "@aiStatistics": {},
+  "enableStatistics": "గణాంకాలను ప్రారంభించండి",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "ప్రారంభించినప్పుడు, ఆట ఫలితాలు గణాంకాలలో రికార్డ్ చేయబడతాయి. అయితే, టేక్-బ్యాక్‌లను కలిగి ఉన్న ఆటలు రికార్డ్ చేయబడవు. నిలిపివేసినప్పుడు, గణాంకాల సేకరణ పాజ్ చేయబడుతుంది.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "ఇది అన్ని ఆట గణాంకాలను రీసెట్ చేస్తుంది. ఈ చర్యను రద్దు చేయడం సాధ్యం కాదు.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "బోర్డు లోపలి రింగ్ పరిమాణం",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "బోర్డు నీడ",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "ఉచ్చు గుర్తింపు",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "విశ్లేషణ సమయంలో మందమైన వృత్తాలు మరియు బాణాలతో ఉచ్చు కదలికలను హైలైట్ చేయండి.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "ఉచ్చు ఉంది. ఉచ్చు కదలికలు: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "లాంకింగ్ క్యాప్చర్",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "మీ ప్రత్యర్థి ముక్కలలో ఒకదాన్ని మీ రెండింటి మధ్య సరళ రేఖలో పట్టుకోవటానికి ఒకదాన్ని నొక్కిచెప్పండి.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "పార్శ్వ సంగ్రహాన్ని అనుమతించండి",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "ఇంటర్వెన్షన్ క్యాప్చర్",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "మీ ప్రత్యర్థి రెండు ముక్కల మధ్య ఖాళీ బిందువులోకి వెళ్లండి.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "జోక్యం సంగ్రహాన్ని అనుమతించండి",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "జంప్ క్యాప్చర్",
+  "@leapCapture": {},
+  "leapCaptureDescription": "ప్రక్కనే ఉన్న ప్రత్యర్థి ముక్కను మించిన ఖాళీ బిందువులోకి దూకడం ద్వారా పట్టుకోండి.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "జంప్ క్యాప్చర్ అనుమతించండి",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "వర్తించే పంక్తులు",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "చదరపు అంచుల వెంట",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "చదరపు దాటి ఆర్తోగోనల్ మార్గాల్లో",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "వికర్ణ రేఖల వెంట చదరపు దాటుతుంది",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "అమలు దశలు",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "మిగిలిన ముక్కల ఆధారంగా కదిలే దశలో లభ్యత",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "పరిమితి లేదు",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "మీకు మూడు లేదా అంతకంటే తక్కువ ముక్కలు ఉన్నప్పుడు లభిస్తుంది",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

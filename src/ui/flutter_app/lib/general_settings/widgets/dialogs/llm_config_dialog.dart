@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
+import '../../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../models/general_settings.dart';
 
 /// A dialog for configuring LLM provider settings
@@ -67,13 +68,13 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
     super.initState();
     // Get current LLM settings from DB
     _selectedProvider = DB().generalSettings.llmProvider;
-    _modelController = TextEditingController(
+    _modelController = SafeTextEditingController(
       text: DB().generalSettings.llmModel,
     );
-    _apiKeyController = TextEditingController(
+    _apiKeyController = SafeTextEditingController(
       text: DB().generalSettings.llmApiKey,
     );
-    _baseUrlController = TextEditingController(
+    _baseUrlController = SafeTextEditingController(
       text: DB().generalSettings.llmBaseUrl,
     );
     _temperature = DB().generalSettings.llmTemperature;

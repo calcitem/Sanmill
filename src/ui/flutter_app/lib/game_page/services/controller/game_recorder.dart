@@ -1285,7 +1285,7 @@ class GameRecorder {
 
     // ---------------------------------------------------------------------
     // Legal moves for the side to move (after the last completed step)
-    // This helps the LLM avoid proposing non-existent alternatives.
+    // This helps the LLM avoid proposing nonexistent alternatives.
     // ---------------------------------------------------------------------
     final PieceColor stm = pos.sideToMove;
 

@@ -206,7 +206,9 @@ class HeaderTipState extends State<HeaderTip> {
     // Initialize the FocusNode and controller.
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
-    _editingController = TextEditingController(text: _messageNotifier.value);
+    _editingController = SafeTextEditingController(
+      text: _messageNotifier.value,
+    );
   }
 
   /// Displays a tip message from the notifier.

@@ -8,12 +8,15 @@ import 'dart:io';
 import 'package:catcher_2/core/catcher_2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../appearance_settings/models/color_settings.dart';
 import '../custom_drawer/custom_drawer.dart';
 import '../generated/flutter_version.dart';
 import '../generated/intl/l10n.dart';
 import '../shared/config/constants.dart';
+import '../shared/database/database.dart';
 import '../shared/services/git_info.dart';
 import '../shared/services/url.dart';
 import '../shared/themes/app_theme.dart';
@@ -128,26 +131,49 @@ class AboutPage extends StatelessWidget {
       ),
     ];
 
-    return BlockSemantics(
-      child: Scaffold(
-        key: const Key('about_page_scaffold'),
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppTheme.aboutPageBackgroundColor,
-        appBar: AppBar(
-          key: const Key('about_page_appbar'),
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(
-            S.of(context).about,
-            style: AppTheme.appBarTheme.titleTextStyle,
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        final Widget page = BlockSemantics(
+          child: Scaffold(
+            key: const Key('about_page_scaffold'),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: useDarkSettingsUi
+                ? settingsTheme.scaffoldBackgroundColor
+                : AppTheme.aboutPageBackgroundColor,
+            appBar: AppBar(
+              key: const Key('about_page_appbar'),
+              leading: CustomDrawerIcon.of(context)?.drawerIcon,
+              title: Text(
+                S.of(context).about,
+                style: useDarkSettingsUi
+                    ? null
+                    : AppTheme.appBarTheme.titleTextStyle,
+              ),
+            ),
+            body: ListView.separated(
+              key: const Key('about_page_listview'),
+              itemBuilder: (_, int index) => settingsItems[index],
+              // ignore: unnecessary_underscores
+              separatorBuilder: (_, __) => const Divider(),
+              itemCount: settingsItems.length,
+            ),
           ),
-        ),
-        body: ListView.separated(
-          key: const Key('about_page_listview'),
-          itemBuilder: (_, int index) => settingsItems[index],
-          separatorBuilder: (_, _) => const Divider(),
-          itemCount: settingsItems.length,
-        ),
-      ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 }

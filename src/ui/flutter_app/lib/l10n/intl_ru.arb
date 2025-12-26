@@ -2159,4 +2159,2037 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Настройка модели, языка и поведения",
     "@voiceAssistantSettingsDescription": {}
+  "@@locale": "ru",
+  "appName": "Мельница",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Добро пожаловать",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Да",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Нет",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Игра",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Человек против ИИ",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Человек против человека",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "ИИ против ИИ",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Человек против облачного ИИ",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Человек против локальной сети",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Тестирование через локальную сеть",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Ходы",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Список ходов",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Список ходов",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Нет записей",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "ОК",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Подтвердить",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Отмена",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Выберите неверную фигуру.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Разместите свои фигуры.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Невозможно разместить здесь.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Размещено.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Удалите фигуру.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Вы не можете удалить его.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Фигура удалена.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Переместите фигуру.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Вы не можете разместить здесь фигуру.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Вы не можете передвинуть свою фигуру сюда.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Мельница! Захватите фигуру противника.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Продолжайте захватывать фигуры противника.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Выберите одну из фигур противника.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Вы не можете убрать фигуру с мельницы.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Фигура может переместиться на 1 очко.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Вы не можете передвигать фигуры противника.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Выберите свою фигуру для перемещения.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "У вас осталось 3 фигуры.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Вы можете переместиться в любую точку.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "Ход {player}.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Игрок 1 победил!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Игрок 2 победил!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Выиграл",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Проиграл",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Думает…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Новая игра",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Импортировать игру",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Экспортировать игру",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Игра импортирована.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Не удалось открыть {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Движения и правила не совпадают.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Пожалуйста, подождите...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Перезапустить текущую игру?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Перезапустить",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Игра началась, пожалуйста, поместите.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Анализ…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Ошибка: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Частота побед",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Очки:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Игрок 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Игрок 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} количество фигур меньше трех.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} сдался.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} некуда ходить.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Доска заполнена, {player} не может никуда сходить.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Время вышло, {player} проиграл.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "В фазе перемещения ни одна фигура не была удалена за последнее определенное кол-во ходов.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Это ничья, потому что доска переполнена.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Ничья из-за трехкратного повторения.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Игра окончена! Причина неизвестна.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Игра окончена",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Вы выиграли! Поздравляем!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Сыграем на более сложном уровне? Новый уровень будет {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Вы проиграли!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Анализируйте",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "О программе",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Версия: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Спасибо",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Настройки",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Опции",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Общие настройки",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Уровень сложности",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Время размышления ИИ",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Сложность",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Звуковые эффекты",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Звуки в игре",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Фоновая музыка",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Воспроизводить локальный аудиофайл как фоновую музыку",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Файл фоновой музыки",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Очистить фоновую музыку",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Музыкальные файлы",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Тихий откат хода",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Тон",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Первый ход",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Человек",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "ИИ",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Альтернативный",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Начинать новую игру автоматически",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Автоматическая смена первого хода",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Случайный ход",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Прочее",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Правила",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Количество фигур у каждого игрока",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Сколько фигур у каждого игрока?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Номер летающей фигуры",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Если функция \"Полет\" включена, когда игрок уменьшает количество фигур до определенного значения, его фигуры могут свободно перемещаться в любую незанятую точку, а не ограничиваться соседними точками, как в остальной части игры.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Наименьшее количество фигур",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Диагональные линии",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Добавить на доску четыре диагональные линии.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "Второй игрок ходит первым",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Игрок, который ходит вторым в фазе расстановки, ходит первым в фазе перемещения.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Мульти-перемещение",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Если игрок закрывает более одной мельницы одновременно, он может удалить то количество мельниц, которое он закрыл.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Уничтожить мельницы",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "По умолчанию игроки должны сначала удалить все другие фигуры, прежде чем удалить фигуру из сформированной мельницы. Включите эту опцию, чтобы отключить ограничение.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Второй игрок проигрывает, когда доска заполнена",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "В конце фазы расстановки, когда доска заполнена, сторона, которая расставляет первой, проигрывает игру, в противном случае - ничья.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Проигрыш при отсутствии законных ходов",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Игрок проиграет, если его противник заблокирует его так, что его нельзя будет передвинуть. Смените сторону для хода, если эта опция отключена.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Летающий",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Если у игрока осталось только три или четыре (настраиваемые) фигуры, он может переместить фигуру в любую свободную точку.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Правило N ходов",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Партия сводится к ничьей, если за определенное количество ходов каждый игрок не сделал ни одного удаления.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Откат",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Пожалуйста, выберите",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Копир.",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "История ходов скопирована в буфер обмена.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Помощь",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Обратная связь",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Выход",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Правила",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Цвет",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Цвет доски",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Цвет фигур",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Цвет фона",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Цвет линий на доске",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Цвет фигур игрока 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Цвет фигур игрока 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Цвет сообщений",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Показать количество фигур в руке",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Показать обозначения на доске",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Показать панель навигации по истории",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Отображать",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Ширина границ доски",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Ширина внутренних линий доски",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Ширина фигуры",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Размер шрифта",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Условные обозначения WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Восстановить",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Восстановить настройки по умолчанию",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Выберите {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Инфо",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Подсказка",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "игрок",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Игрок 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Игрок 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Как играть",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Нажмите на любую доступную точку, чтобы разместить фигуру.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Нажмите на фигуру, чтобы переместить ее.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Нажмите на точку, связанную с фигурой, чтобы переместить ее.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Нажмите на фигуру противника, чтобы удалить ее.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Прежде чем убрать фигуру, необходимо создать мельницу.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Вам нужно играть своими фигурами.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Статистика",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Всего игр",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Результаты",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "слева",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Политика конфиденциальности",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Пожалуйста, прочитайте внимательно и убедитесь, что вы полностью понимаете и согласны с этим ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Если вы не согласны с данной Политикой, пожалуйста, не используйте данное Приложение. Использование Приложения подразумевает, что вы принимаете эти условия.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " и ",
+  "@and": {},
+  "accept": "Принять",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Откатить ход",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Откат хода…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Ожидание…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Возвратить ход",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Откатиться к началу",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Возвратить все откаченные",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Двигайся сейчас",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Готово.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Крек-мельница",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Если у игрока есть только фигуры в мельницах, фигуры в мельницах не будут блокироваться для удаления.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Длительность анимации",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Нет",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Тема",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Цель игры — оставить у соперника менее трех фигур или лишить его возможности делать законные ходы.\n\nИгра автоматически заканчивается вничью, если позиция повторяется в третий раз или если за последние 100 (настраиваемых) ходов не было сделано ни одного хода.\n\nИгра проходит в три этапа:\n\n1. Размещение фигур на свободных полях.\n2. Перемещение фигур на соседние поля.\n3. (дополнительный этап) Перемещение фигур на любое свободное поле при уменьшении количества фигур игрока до трех.\n\nРазмещение\n\nИгра начинается с пустой доски, состоящей из сетки с двадцатью четырьмя полями. Игроки по очереди размещают свои фигуры на свободных полях, пока каждый игрок не разместит все свои фигуры на доске. Если игрок может поставить три своих фигуры в линию, у него появляется «мельница» и он может удалить одну из фигур соперника с доски.\n\nВ некоторых наборах правил игроки должны сначала удалить все другие фигуры, прежде чем удалять фигуру из сформированной мельницы.\n\nПо некоторым правилам нельзя снова размещать фигуры на полях, с которых были удалены фигуры.\n\nПосле того, как все фигуры размещены, игроки по очереди перемещают их.\n\nПеремещение\n\nДля перемещения игрок перемещает одну из своих фигур по линии доски на свободное соседнее поле. Если он не может этого сделать, он проигрывает игру. Игрок, который выстроил три своих фигуры в линию на доске, имеет «мельницу» и может удалить одну из фигур соперника, как и на этапе размещения. Если у игрока осталось только две фигуры, он не имеет возможности сформировать новые мельницы и, следовательно, проигрывает игру. Игрок также может проиграть, если у него осталось более трех фигур, но соперник блокирует их движение.\n\nПрыжки\n\nВ некоторых вариантах правил, когда у игрока остается только три фигуры, они могут прыгать, скакать или перемещаться на любые свободные точки, а не только на соседние.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Информация о версии",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Лицензия",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Исходный код",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Версия приложения",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Общие",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Дополнительно",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Размещение",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Перемещение",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Удаление",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Условие завершения игры",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Игровой стиль ИИ",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Пассивный",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Таймаут",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Внешний вид",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Опираться на человеческий опыт",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Учитывать мобильность фигур",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Количество фигур:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} в руке: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} на доске: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Смещение доски сверху",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Сейчас не ход ИИ.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "ИИ не думает.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "В конце списка ходов.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Нажмите назад еще раз, чтобы выйти.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Больше",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Это экспериментальная функция.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Эксперименты",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Лицензии с открытым исходным кодом",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Язык",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Язык по умолчанию",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Фигуры могут перемещаться в фазе размещения",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Не существует отдельных фаз размещения и перемещения, т.е. игроки могут решать на каждом ходу, хотят ли они разместить фигуру на доске или переместить одну из своих фигур (пока у них есть оставшиеся фигуры для размещения).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Цвет меню",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Цвет текста меню",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Цвет выделенного пункта меню",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Цвет фона панели инструментов",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Цвет значка панели инструментов",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Цвет фона панели навигации",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Цвет значка панели навигации",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Автоматически скрывать панель инструментов",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Расположение панели инструментов на экране",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Сверху",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Снизу",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "По центру",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Сплошной цвет",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Картинка",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Выберите свою картинку",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Светлая",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Тёмная",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Темы",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Текущая тема",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Сохранить тему",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Показать график анализа",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Анализ",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Сохранить игру",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Загрузить игру",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Положение установки",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Показать возможные ходы",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Показать последний ход",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Показать стрелки",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Фигуры",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Показать анализ",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Потоки",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Принять участие в разработке",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Помогите улучшить перевод",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Руководство",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Классическая мельница",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Смешанная мельница",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Цейлонская мельница",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Мельница может быть многократно сломана и переделана",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Если игрок ломает мельницу, чтобы немедленно создать новую мельницу, такой игрок может переместить такой кусок обратно к исходному соединению своим следующим ходом, если он сделает новую мельницу.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Игра считается ничьей, если у игрока есть три фишки и после десяти ходов ни один из игроков не убирает фишки соперника",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Когда у игрока осталось три фишки, и ни один из игроков не может убрать фишку соперника в течение десяти ходов, игра считается ничьей.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Закрыть",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Белая фигура",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Черная фигура",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Пустая точка",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Нет смысла",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Фаза размещения",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Фаза передвижения",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Фаза полета",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Ходит {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Последний ход: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Выбрано",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Доступность",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Поддержка программ чтения с экрана",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Это розыгрыш!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Рисовать",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Цвет выделенной фигуры",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Алгоритм",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Эндшпиль N-Move правило",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Если у любого из игроков есть только три фишки, и ни один из игроков не убирает фишку за определенный ход, игра заканчивается вничью.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "У любого игрока есть только три фишки, и ни один из игроков не убирает фишку за определенный ход.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Правило тройного повторения",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Игра считается ничьей, если позиция выпадает в третий раз.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Мельница! Продолжайте двигаться.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Стиль точки",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Ширина точки",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Твердый",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Пустой",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Pусский",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Ходов}=1{{count} Ход}other{{count} Хода}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "gameSavedTo": "Игра сохраняется в",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "Просматривать…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "filename": "Имя файла",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "Загрузка не удалась.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameFiles": "Файлы игры",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "hasPlacedPieceCount": "{count, plural, =0{Текущий игрок не разместил ни одной фишки.} =1{Текущий игрок разместил одну фишку.} few{Текущий игрок разместил {count} фишки.} many{Текущий игрок разместил {count} фишек.} other{Текущий игрок разместил {count} фишки.}}",
+  "@hasPlacedPieceCount": {
+    "description": "Message describing how many pieces the current player has placed, with support for Russian pluralization.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Number of pieces placed by the player.",
+        "example": "3"
+      }
+    }
+  },
+  "empty": "Пустой",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "cannotPaste": "Не могу вставить.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "paste": "Вставить",
+  "@paste": {
+    "description": "Paste"
+  },
+  "remove": "Удалять",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedPieceCount": "Подсчет размещенных фигур на этапе размещения.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "clean": "Чистый",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Убрано.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "noPiecesCanBeRemoved": "Никакие фрагменты не могут быть удалены.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "Разм. ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Не размещая фазу, не может ее изменить.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "Паста готова.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "noMove": "Нет движения.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "pieceCountNeedToRemove": "{count, plural, =0{Нужно удалить фигуру.} one{Нужно удалить {count} фигуру.} few{Нужно удалить {count} фигуры.} many{Нужно удалить {count} фигур.} other{Нужно удалить {count} фигур.}}",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "restoredPosition": "Восстановлено исходное положение.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Показать неразмещенные и удаленные фрагменты",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Полноэкранный",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Выйдите и снова откройте приложение, чтобы настройки вступили в силу.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Лес",
+  "@forest": {},
+  "desktopImage": "Изображение рабочего стола",
+  "@desktopImage": {},
+  "invalidPosition": "Неверная позиция.",
+  "@invalidPosition": {},
+  "shareGIF": "Поделись гифкой",
+  "@shareGIF": {},
+  "duration": "Продолжительность",
+  "@duration": {},
+  "pixelRatio": "Соотношение пикселей",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Запись игрового экрана",
+  "@gameScreenRecorder": {},
+  "previous": "Предыдущий",
+  "@previous": {},
+  "next": "Следующий",
+  "@next": {},
+  "skip": "Пропускать",
+  "@skip": {},
+  "gotIt": "Понятно",
+  "@gotIt": {},
+  "youCanModifyRules": "Вы можете изменить правила игры в настройках правил.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Вы можете использовать колесо мыши, чтобы изменить значение в средстве выбора.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Время обдумывания ИИ, установленное на 0, означает, что время обдумывания не ограничено.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Имейте в виду, что корректировка времени обдумывания ИИ может быть не совсем точной. Фактическое время обдумывания может быть короче, если уровень сложности установлен на более низкое значение, и может быть больше, когда ИИ находится в середине размышлений, когда время истекает.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Если вы установите высокий уровень сложности, но не увеличите время обдумывания ИИ, фактический уровень сложности может быть ограничен более низким значением из-за ограничения времени обдумывания. Фактическое значение может варьироваться в зависимости от производительности машины.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) — это модифицированная форма алгоритма альфа-бета-поиска, целью которого является повышение эффективности за счет повторного использования промежуточных результатов поиска и использования хорошего начального предположения для сужения пространства поиска.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) — алгоритм поиска лучшего хода в заданной позиции. Это усовершенствование альфа-бета-алгоритма, в котором используется нулевой или нулевой поиск в окне, чтобы подтвердить, что ход хуже или не хуже, чем уже безопасный результат основного варианта. PVS фокусируется на наиболее перспективных ходах и избегает ненужных поисков неоптимальных ветвей, что помогает повысить эффективность поиска.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Алгоритм альфа-бета — это поисковый алгоритм для нахождения наилучшего хода. Он использует принцип минимакса и два значения, альфа и бета, для обрезки дерева поиска и повышения эффективности. Альфа представляет собой минимальное количество очков, которое компьютер может получить, а бета представляет собой максимальное количество очков, которое может получить его противник. Алгоритм помогает компьютеру принимать разумные и эффективные решения в игре.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "В этой игре второму игроку легче выиграть, чем первому.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Согласно человеческому опыту, если вы попытаетесь выиграть, вы проиграете. Вместо этого стремитесь к ничьей в качестве своей цели и избегайте проигрыша в игре. Наблюдайте за противником и мягко заманивайте его в положение, в котором он может совершить ошибку. Когда они проявляют слабость, воспользуйтесь возможностью и осторожно подтолкните к победе. Таким образом, вы можете выиграть игру.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Включение пассивной опции заставит ИИ расслабиться, когда у него есть преимущество в позиции, а не агрессивно пытаться выиграть как можно быстрее.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Если ИИ учитывает подвижность своих фигур, он не только будет стремиться как можно быстрее захватить фигуры противника, но также рассмотрит возможность блокирования движений противника и предотвращения того, чтобы он делал то же самое.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Включение этой опции увеличивает случайность и удовольствие от игры, а ее отключение может помочь изучить способы победить ИИ.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "Когда доска заполнена",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "В конце фазы размещения, до начала фазы перемещения, действие следует, если доска заполнена фигурами.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Игрок, который ходит первым в фазе движения, убирает одну из фигур противника.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Обе стороны соглашаются на ничью.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Возьмите одну из фигур противника.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Первый игрок проигрывает.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Первый и второй игроки убирают одну из фигур соперника.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Второй и первый игроки убирают по одной из фигур соперника.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Теперь наступила фаза полета, фигуры противника могут прыгнуть в любую свободную точку на доске. Вы можете отключить правило полета в «Настройках правила».",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Когда тупик",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Какое действие следует, если ни одна фигура не может быть перемещена?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Конец с патовой потерей для стороны, которая заблокирована.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Меняйте сторону, чтобы двигаться.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Уберите одну из фигур соперника и сделайте следующий ход.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Закончим патовой ничьей.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Уберите одну из фигур противника и поменяйте сторону хода.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Время задержки ответа ИИ",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "ИИ в настоящее время находится в фазе отложенного ответа. Пожалуйста, подождите некоторое время, прежде чем продолжить.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Вы не можете удалить несмежную часть.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "В случае пата фигуры противника, соседние с вашими, могут быть удалены, независимо от формации мельницы.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS — это удобный для начинающих алгоритм, который принимает решения, исследуя и оценивая различные ходы с помощью симуляций.",
+  "@whatIsMcts": {},
+  "goldenJade": "Золотой нефрит",
+  "@goldenJade": {},
+  "forestWood": "Лесная древесина",
+  "@forestWood": {},
+  "greenMeadow": "Зеленый луг",
+  "@greenMeadow": {},
+  "stonyPath": "Каменистая тропа",
+  "@stonyPath": {},
+  "midnightBlue": "Темно-синий",
+  "@midnightBlue": {},
+  "greenForest": "Зеленый лес",
+  "@greenForest": {},
+  "pastelPink": "Пастельно-розовый",
+  "@pastelPink": {},
+  "turquoiseSea": "Бирюзовое море",
+  "@turquoiseSea": {},
+  "violetDream": "фиолетовый сон",
+  "@violetDream": {},
+  "mintChocolate": "Мятный шоколад",
+  "@mintChocolate": {},
+  "skyBlue": "Голубое небо",
+  "@skyBlue": {},
+  "playfulGarden": "Игривый сад",
+  "@playfulGarden": {},
+  "darkMystery": "Темная тайна",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Алгоритм ретроградного анализа использует многозначный ретроградный анализ для создания базы данных эндшпиля с разных начальных позиций, а затем применяет эту базу данных для оптимизации игрового процесса. Этот подход относится к категории сверхсильных решений.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Хотите просмотреть руководство пользователя для этого алгоритма?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Показать индикатор позиционного преимущества",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Использование идеальной базы данных",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Включите эту опцию, чтобы использовать безупречную базу данных игр, созданную с помощью передовых алгоритмов. Эта функция интегрирует стратегии начала игры и финальной стадии для предложения оптимальных ходов. Это предпочтительный выбор для игроков, которые ищут максимальную точность в игре. База данных разработана с помощью тщательных вычислительных методов и предназначена для предложения почти идеальных игровых решений.\n\nПримечание: Если искусственному интеллекту не удастся получить доступ к базе данных, он переключится на традиционные алгоритмы для принятия игровых решений. Когда база данных доступна, уровень сложности становится практически непобедимым, а время на \"Размышления AI\" существенно сокращается. Многие настройки в опциях \"Стиль игры AI\" будут переопределены, так как результаты базы данных имеют наивысший приоритет.\n\nДля рекомендаций по максимально эффективному использованию этой безупречной базы данных нажмите сюда.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Фоновое изображение",
+  "@backgroundImage": {},
+  "whatIsRandom": "Когда опция \"Использовать идеальную базу данных\" не активирована, настройка \"Случайность\" заставляет ИИ перемещать фигуры случайным образом, не используя никаких алгоритмов для выбора ходов. Это обычно приводит к значительно слабой игре. Напротив, когда активирована опция \"Использовать идеальную базу данных\", ИИ полностью опирается на \"Идеальную базу данных\" для принятия решений, а не смешивает её с традиционными алгоритмами ИИ. В этом режиме все действия ИИ полностью основаны на содержании базы данных, избегая зависимости от реальных расчетов или поисковых алгоритмов.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Уберите фигуру(ы) противника из его руки; затем наступает очередь противника разместить фигуру.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "При формировании мельниц в фазе размещения",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Уберите фигуру(ы) противника с доски.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Уберите фигуру(ы) противника с доски; затем наступает очередь противника разместить фигуру.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Противник убирает свою фигуру(ы) с доски.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Вместо вашего действия, противник выбирает и убирает свою фигуру(ы) с доски, эффективно совершая действие, вредное для себя.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Уберите фигуру(ы) противника из его руки; затем ваш ход.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Уберите фигуру(ы) из руки противника. Если согласно настройке Multi-remove должно быть убрано несколько фигур и у противника не осталось фигур в руке, продолжайте убирать фигуры противника с доски. Затем ваш ход. Если вы продолжаете формировать мельницы, вы можете продолжать убирать фигуры противника.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Уберите фигуру(ы) из руки противника. Если согласно настройке Multi-remove должно быть убрано несколько фигур и у противника не осталось фигур в руке, продолжайте убирать фигуры противника с доски. Затем ход противника.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Отметьте и задержите удаление фигур.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Во время фазы размещения фигуры, которые должны быть убраны, отмечаются, и оба игрока не могут размещать новые фигуры на этих точках. При входе в фазу перемещения эти отмеченные фигуры убираются полностью, и игроки могут затем перемещать свои фигуры на эти теперь пустые точки.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Действия, которые можно предпринять во время формирования мельниц на этапе размещения.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Отмечено",
+  "@marked": {},
+  "menu": "Меню",
+  "@menu": {},
+  "showNumbersOnPieces": "Показать номера на фигурах",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Монохром",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Вы можете включить поддержку экранного диктора в настройках доступности в общих настройках.",
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Сохранить изображение",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Показать панель инструментов анализа",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Цвет фона панели инструментов анализа",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Цвет иконки панели инструментов анализа",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Трансформировано.",
+  "@transformed": {},
+  "cannotTransform": "Невозможно трансформировать.",
+  "@cannotTransform": {},
+  "rotate": "Повернуть",
+  "@rotate": {},
+  "horizontalFlip": "H Перев",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Перев",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Перев",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Прозрачное Полотно",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ограничить повторное образование мельниц",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Фигура, перемещённая с одной мельницы на другую, не может сразу вернуться в исходную точку на следующем ходу, чтобы снова сформировать мельницу. Сначала требуется другой ход.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Одноразовая мельница",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Каждая мельница может удалить только одну часть соперника. Вы можете реформировать его снова, но его нельзя использовать для дополнительных удалений.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Текущие правила, которые вы установили, не имеют соответствующей идеальной базы данных. Для получения дополнительной информации об идеальной базе данных нажмите здесь.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Сосредоточьтесь на блокировке путей",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "В определенные фазы игры отдавайте приоритет препятствию движению противника, а не созданию мельниц. Вместо того чтобы сосредотачиваться на удалении фигурок, завершая мельницы, ИИ стремится поймать противника в ловушку во время этих фаз, лишая его возможности двигаться и обеспечивая победу путем изнурения, а не агрессивной игры. Эта стратегия, специфическая для определенных фаз, не активно блокирует мельницы противника.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Изображение фигуры",
+  "@pieceImage": {},
+  "importColorSettings": "Импорт настроек цвета",
+  "@importColorSettings": {},
+  "exportColorSettings": "Экспорт настроек цвета",
+  "@exportColorSettings": {},
+  "import": "Импорт",
+  "@import": {},
+  "export": "Экспорт",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Пожалуйста, сначала скопируйте настройки формата JSON в буфер обмена.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Скопировано в буфер обмена.",
+  "@copiedToClipboard": {},
+  "imported": "Импортировано.",
+  "@imported": {},
+  "boardImage": "Изображение доски",
+  "@boardImage": {},
+  "autumnLeaves": "Осенние Листья",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарная Земля",
+  "@legendaryLand": {},
+  "vignetteEffect": "Эффект виньетки",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Вы хотите сделать панель инструментов полностью прозрачной, когда установлено фоновое изображение доски?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Включить вибрацию в игре",
+  "@vibration": {},
+  "soundTheme": "Тема звука",
+  "@soundTheme": {},
+  "ball": "Мяч",
+  "@ball": {},
+  "liquid": "Жидкость",
+  "@liquid": {},
+  "wood": "Дерево",
+  "@wood": {},
+  "placeEffectAnimation": "Анимационный эффект при размещении фигуры",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Анимационный эффект при удалении фигуры",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Показать панель инструментов внизу",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радиус угла доски",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Использовать книгу открытий",
+  "@useOpeningBook": {},
+  "currentRule": "Текущий",
+  "@currentRule": {},
+  "nineMensMorris": "Девять мужчин Моррис",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Двенадцать мужчин Моррис",
+  "@twelveMensMorris": {},
+  "morabaraba": "Морабараба",
+  "@morabaraba": {},
+  "dooz": "Доз",
+  "@dooz": {},
+  "chamGonu": "Чамгону",
+  "@chamGonu": {},
+  "zhiQi": "Чжици",
+  "@zhiQi": {},
+  "chengSanQi": "Чэнсанци",
+  "@chengSanQi": {},
+  "mulMulan": "Мул-Мулан",
+  "@mulMulan": {},
+  "nerenchi": "Неренчи",
+  "@nerenchi": {},
+  "ruleSet": "Набор правил",
+  "@ruleSet": {},
+  "laskerMorris": "Ласкер Моррис",
+  "@laskerMorris": {},
+  "oneTimeMill": "Мельница",
+  "@oneTimeMill": {},
+  "daSanQi": "Дацци",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Позвольте ИИ использовать начальные ходы, которые часто применяются профессиональными человеческими игроками на раннем этапе игры. Примечание: Эта функция в настоящее время доступна только для определенных наборов правил.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Показать график преимущества",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "График преимущества будет нарисован только после того, как ИИ сделает ход. Он не будет нарисован, когда ход сделает человек-игрок.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Отключите удаление, пока все фишки не будут размещены, затем удаляйте фишки в соответствии с количеством построенных мельниц.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Отключите удаление, пока все фишки не будут размещены, затем удаляйте фишки в соответствии с количеством построенных мельниц: если количество совпадает, оба игрока удаляют одинаковое число фишек; если у одного больше, он удаляет на одну фишку больше, сохраняя разницу в одну. Если мельницы образует только один, он убирает две фишки, а другой одну. Если никто не образует мельниц, оба убирают по одной фишке.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "Эль Фильджа",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Выберите одну из своих фигур.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Сейчас не ваш ход.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Цвет фона панели аннотаций",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Цвет иконок панели аннотаций",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Показать панель аннотаций",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Войти в режим аннотаций",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Вы уверены, что хотите удалить все аннотации?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Подсказка LLM скопирована в буфер обмена.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Соединение отклонено, сервер может быть недоступен.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Обнаружение успешно, ожидание соединения...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Нет подключения к локальной сети",
+  "@noLanConnection": {},
+  "takeScreenshot": "Сделать скриншот",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Отключено от противника.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Запрос на возврат хода",
+  "@takeBackRequest": {},
+  "nothingToShow": "Нечего показывать.",
+  "@nothingToShow": {},
+  "stopHosting": "Остановить хостинг",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Соединение сброшено пиром.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Соединение потеряно из-за таймаута heartbeat. Пожалуйста, переподключитесь.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Начать хостинг",
+  "@startHosting": {},
+  "restartRequestRejected": "Запрос на перезапуск отклонен.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Не подключено к противнику в локальной сети.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Подсказка LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Игра перезапущена.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Возврат хода отклонен.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Вы уверены, что хотите сдаться в этой игре?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Противник сдался. Вы выиграли!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Удалить все аннотации",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Подключено, ожидание хода противника...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Статус сети: Отключено",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Запрос на возврат хода отправлен противнику.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Противник, возможно, покинул игру",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Успешно подключено к хосту.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Соединение потеряно: таймаут heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Хост не обнаружен.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Подтвердить сдачу",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Начало хостинга игры, ожидание присоединения игроков...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Соединение истекло, сетевое соединение нестабильно.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Подсказка LLM недоступна.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Вы сдались. Игра окончена.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP сервера",
+  "@serverIp": {},
+  "confirmClear": "Подтвердить очистку",
+  "@confirmClear": {},
+  "opponentSTurn": "Ход противника.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Ожидание подключения клиента...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Запрос на возврат хода был отклонен или не удался.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Добавить текст",
+  "@addText": {},
+  "exitAnnotationMode": "Выйти из режима аннотаций",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Введите вашу аннотацию",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Попытка переподключения...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Запрос на перезапуск отправлен. Ожидание ответа противника...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Сервер остановлен.",
+  "@serverIsStopped": {},
+  "restartRequest": "Запрос на перезапуск",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Нельзя запросить возврат хода, когда не ваш ход.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Возврат хода принят.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Настройки локальной сети",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Успешно переподключено!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Не удалось сохранить изображение в галерею.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Противник запросил перезапуск игры. Вы принимаете?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Ваш ход.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Невозможно переподключиться, пожалуйста, перезапустите игру.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Хост",
+  "@host": {},
+  "join": "Присоединиться",
+  "@join": {},
+  "port": "Порт",
+  "@port": {},
+  "invalidIpAddress": "Неверный IP-адрес.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Неверный порт.",
+  "@invalidPort": {},
+  "connectingAttempt": "Попытка подключения: {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Не удалось подключиться: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Не удалось начать хостинг: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Хост обнаружен: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Остановить",
+  "@stop": {},
+  "discover": "Обнаружить",
+  "@discover": {},
+  "connect": "Подключиться",
+  "@connect": {},
+  "clientConnected": "Клиент подключен: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Обнаружение: {seconds} с",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Переподключение ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Подключено",
+  "@connected": {},
+  "delete": "Удалить",
+  "@delete": {},
+  "ancientEgypt": "Древний Египет",
+  "@ancientEgypt": {},
+  "gothicIce": "Готический Лёд",
+  "@gothicIce": {},
+  "riceField": "Рисовое Поле",
+  "@riceField": {},
+  "chinesePorcelain": "Китайский Фарфор",
+  "@chinesePorcelain": {},
+  "desertDusk": "Пустынные Сумерки",
+  "@desertDusk": {},
+  "precisionCraft": "Точное Ремесло",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Народная Вышивка",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Карпатское Наследие",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Имперское Величие",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Богемский Хрусталь",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Саванный Рассвет",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Гармония и Баланс",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Коричная Специя",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Анатолийская Мозаика",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Карнавальный Дух",
+  "@carnivalSpirit": {},
+  "custom": "Обычай",
+  "@custom": {},
+  "spiceMarket": "Рынок специй",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Проведите, чтобы открыть ящик",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Показывать информацию об игре на скриншотах",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Лимит времени для человека",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Нет лимита времени для ходов человека",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Для игрока-человека будет применено поражение по таймауту",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Идентификация игровой доски...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Вы можете ввести любое название модели.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Позиция доски применена. FEN скопирован в буфер обмена.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Совет: попробуйте сделать более чёткое фото доски.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "Шаблон запроса LLM",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Не обнаружена корректная доска.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Выбор изображения из альбома...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Настроить шаблон запроса",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Редактировать шаблон запроса для анализа LLM",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Не удалось сгенерировать FEN из распознанной доски.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Вывод на текущем языке",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Общие Base URL",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Просмотреть общие модели",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Параметры распознавания обновлены.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Ход белых",
+  "@whiteSMove": {},
+  "resetToDefaults": "Сбросить к значениям по умолчанию",
+  "@resetToDefaults": {},
+  "photoShoot": "Фотосъемка",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Не удалось применить распознанную позицию доски.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "Содержимое запроса LLM",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM не настроен. Проверьте настройки.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Указать поставщика, модель, API Key и Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "Конфигурация LLM",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Настроить поставщика LLM",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "Заголовок шаблона запроса LLM",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Ни одной фигуры не распознано на изображении. Попробуйте снова.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Распознать доску с изображения",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Просмотреть советы",
+  "@viewTips": {},
+  "applyToBoard": "Применить к доске",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Настроить область доски",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Просмотреть общие URL",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Анализ цвета не удался!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Анализ изображения игровой доски...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Выбрать из альбома",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Точка на доске не обнаружена!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Если оставить пустым, будет использован шаблон по умолчанию",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "Конфигурация LLM",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Вы уверены, что хотите сбросить шаблоны запросов до значений по умолчанию?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "Нижний колонтитул шаблона запроса LLM",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Загрузка ответа...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Применить этот результат к доске",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Съемка фото...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Пожалуйста, выберите изображение игровой доски для распознавания",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Результаты идентификации",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Проанализируйте ходы и предоставьте информацию.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Получить API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Весь процесс распознавания не был завершен.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Результат распознавания доски",
+  "@boardRecognitionResult": {},
+  "askLlm": "Спросить LLM",
+  "@askLlm": {},
+  "boardDetectionFailed": "Обнаружение доски не удалось!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Точка на доске не обнаружена, невозможно распознать фигуру!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Скопировать FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Часто используемые модели",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (необязательно)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Изображение не выбрано",
+  "@noImageSelected": {},
+  "blackSMove": "Ход черных",
+  "@blackSMove": {},
+  "llm": "Большая языковая модель",
+  "@llm": {},
+  "llmProvider": "Поставщик",
+  "@llmProvider": {},
+  "baseUrl": "Базовый URL",
+  "@baseUrl": {},
+  "model": "Модель",
+  "@model": {},
+  "temperature": "Температура",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Команда получена! ИИ обрабатывает...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Идёт глубокое мышление, пожалуйста, подождите...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Скоро будет представлено...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Параметры распознавания",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Настройте параметры для повышения точности распознавания",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Сохранить параметры",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Не удалось запустить распознавание изображения: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Сбой распознавания изображения: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Применена позиция с {whiteCount} белыми и {blackCount} черными фишками",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN скопирован в буфер обмена)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Ошибка распознавания: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Мой рейтинг",
+  "@myRating": {},
+  "gamesPlayed": "Сыграно игр",
+  "@gamesPlayed": {},
+  "wins": "Победы",
+  "@wins": {},
+  "losses": "Поражения",
+  "@losses": {},
+  "draws": "Ничьи",
+  "@draws": {},
+  "lastUpdated": "Последнее обновление",
+  "@lastUpdated": {},
+  "format": "Формат:",
+  "@format": {},
+  "resetStatistics": "Сбросить статистику",
+  "@resetStatistics": {},
+  "drawRate": "Процент ничьих",
+  "@drawRate": {},
+  "lossRate": "Процент поражений",
+  "@lossRate": {},
+  "aiStatistics": "Статистика ИИ",
+  "@aiStatistics": {},
+  "enableStatistics": "Включить статистику",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Если включено, результаты игр будут записываться в статистику. Однако игры, включающие возвраты ходов, записываться не будут. Если отключено, сбор статистики приостанавливается.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Это сбросит всю статистику игры. Это действие нельзя отменить.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Размер внутреннего кольца доски",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Тень доски",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Обнаружение ловушек",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Выделяйте ходы-ловушки жирными кругами и стрелками во время анализа.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Есть ловушка. Ходы-ловушки: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Фланговый захват",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Поместите одну из фигур соперника между двумя своими по прямой линии, чтобы снять её.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Разрешить фланговый захват",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Захват вмешиванием",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Перейдите на пустую точку между двумя фигурами соперника, чтобы снять их обе.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Разрешить захват вмешиванием",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Прыжковый захват",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Перепрыгните через соседнюю фигуру соперника на пустую точку за ней, чтобы снять её.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Разрешить прыжковый захват",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Применимые линии",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Вдоль краев квадрата",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Вдоль ортогональных линий, пересекающих квадрат",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Вдоль диагональных линий, пересекающих квадрат",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Фазы исполнения",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Доступность в фазе перемещения в зависимости от числа оставшихся фигур",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Без ограничений",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Доступно, если у вас осталось три или меньше фигур",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

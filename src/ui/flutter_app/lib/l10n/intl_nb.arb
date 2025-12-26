@@ -2159,4 +2159,2037 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Konfigurer modell, språk og oppførsel",
     "@voiceAssistantSettingsDescription": {}
+  "@@locale": "nb",
+  "appName": "Mølle",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Velkommen",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ja",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nei",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Spill",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Human vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Human vs. Menneskelig",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI mot AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Human vs. Sky",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Human vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test via LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Trekk",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Flytt liste",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Flytt liste",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Ingen rekord",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Bekrefte",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Avbryt",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Velg feil brikke.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Plasser brikkene dine.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Du kan ikke plassere den her.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Du plasserte.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Fjern et stykke.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Du kan ikke fjerne den.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Du fjernet.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Flytt et stykke.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Du kan ikke plassere brikken din her.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Du kan ikke flytte brikken din hit.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mølle! Ta motstanderens brikke.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Fortsett å ta motstanderens brikke.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Velg en av motstanderens brikker.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Du kan ikke fjerne et stykke fra en mølle.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Et stykke kan flytte 1 poeng.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Du kan ikke flytte motstanderens brikker.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Velg brikken du vil flytte.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Du har tre stykker igjen.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Du kan flytte til et hvilket som helst punkt du vil.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} for å flytte.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Spiller 1 vinner!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Spiller 2 vinner!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Vant",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Tapt",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Tenker…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nytt spill",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importer spill",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Eksporter spill",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Spill importert.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Kan ikke importere {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Bevegelser og regler stemmer ikke overens.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Vennligst vent.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Start det nåværende spillet på nytt?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Omstart",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Spillet startet, vær så snill å plassere det.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analyserer…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Feil: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Vinnsats",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Resultat:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Spiller 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Spiller 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} antall stykker er mindre enn tre.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} si opp.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} har ingen vei å gå.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Brettet er fullt, og {player} har ingen vei å gå.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Tiden er over, {player} tapt.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "I den bevegelige fasen er ingen brikker fjernet i det siste spesifikke antallet trekk.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Det er uavgjort fordi brettet er fullt.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Det er uavgjort på grunn av tredelt repetisjon.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Spillet er over! Ukjent årsak.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Spillet er over",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Du vinner! Gratulerer!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Utfordre hardere nivå? Det nye nivået vil være nivå {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Du tapte!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analysere",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Om",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versjon: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Takk",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Innstillinger",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Alternativer",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Generelle innstillinger",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Vanskelighetsnivå",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI tenktid",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Vanskelighet",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Lydeffekter",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Spill lyder i spillet",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Bakgrunnsmusikk",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Spill av en lokal lydfil som bakgrunnsmusikk",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Bakgrunnsmusikkfil",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Fjern bakgrunnsmusikk",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Musikkfiler",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Hold dempet når du tar tilbake",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Tone",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Første trekk",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Menneskelig",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternere",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Start spillet på nytt automatisk når spillet er over",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automatisk endring av første trekk",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Beveg deg tilfeldig",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Diverse",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regler",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Antall brikker hver spiller har",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Hvor mange brikker har hver spiller?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Antallet på flygende brikke",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Hvis Flying er aktivert, når en spiller reduseres til et bestemt antall brikker, er brikkene hennes fritt til å bevege seg til et ledig punkt i stedet for å være begrenset til tilstøtende poeng som i resten av spillet.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Stykker minst",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonale linjer",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Legg til fire diagonale linjer på tavlen.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "Den andre spilleren beveger seg først",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Spilleren som beveger seg andre i plasseringsfasen, beveger seg først i den bevegelige fasen.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Fjern flere",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Hvis en spiller stenger mer enn en mølle samtidig, vil hun fjerne antall møller hun stengte.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Ødelegge møller",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Som standard må spillerne fjerne alle andre brikker før de fjerner en brikke fra en dannet mølle. Aktiver dette alternativet for å deaktivere begrensningen.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Den andre spilleren taper når brettet er fullt",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Når brettet er fullt på slutten av plasseringsfasen, mister siden som plasseres først spillet. Ellers er spillet uavgjort.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Taper når ingen lovlige trekk",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Spilleren taper hvis motstanderen blokkerer dem slik at de ikke kan flyttes. Bytt side for å flytte hvis dette alternativet er deaktivert.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Flyr",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Hvis en spiller bare har tre eller fire (konfigurerbare) brikker igjen, kan hun flytte brikken til et hvilket som helst ledig punkt.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-trekkregel",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Spillet trekkes hvis det ikke har blitt fjernet i et bestemt antall trekk.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Tilbakeslag",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Vennligst velg",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopiere",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Flytt historikken som er kopiert til utklippstavlen.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Hjelp",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Tilbakemelding",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Utgang",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Regelinnstillinger",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Farge",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Brettfarge",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Brikkefarge",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Bakgrunnsfarge",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Board line farge",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Spiller 1 stk farge",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Spiller 2-delt farge",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Melding farge",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Vis antall stykker i hånden",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Vis notasjoner om bord",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Vis historikknavigasjonsverktøylinjen",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Vise",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Board borderline bredde",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Board indre linjebredde",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Stykke bredde",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Skriftstørrelse",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD-notasjon",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Restaurere",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Gjenopprett standardinnstillinger",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Velg {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Vink",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "spiller",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Spiller 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Spiller 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Hvordan spille",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Trykk på et hvilket som helst tilgjengelig punkt for å plassere stykket.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Trykk på et stykke for å flytte det.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Trykk på et punkt som er koblet til et stykke for å flytte det.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Trykk på motstanderens brikke for å fjerne.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Du må først lage en mølle før du kan fjerne et stykke.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Du må leke med brikkene dine.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistikk",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Totalt antall spill",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Resultater",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "venstre",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Personvernregler",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Vennligst les nøye og sørg for at du forstår og er enig i dette ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Hvis du ikke godtar disse retningslinjene, ikke bruk denne appen. Å bruke appen innebærer at du godtar disse vilkårene.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " og ",
+  "@and": {},
+  "accept": "Aksepterer",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Ta tilbake",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Tar tilbake…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Venter…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Skritt fremover",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Ta tilbake alt",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Gå fremover alle",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Flytt deg nå",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Ferdig.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Sprekkvern",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Hvis en spiller bare har brikker i møller, vil ikke brikkene i møllene låses for å fjerne.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animasjonens varighet",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Ingen",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Spillet tar sikte på å gi motstanderen færre enn tre brikker eller ingen lovlige grep.\n\nSpillet trekker automatisk hvis en posisjon oppstår for tredje gang eller ikke fjerner de siste 100 (konfigurerbare) trekkene.\n\nSpillet fortsetter i tre faser:\n\n1. Plasser brikker på ledige punkter\n2. Flytte brikker til tilstøtende punkter\n3. (valgfri fase) Flytter brikker til et ledig punkt når du reduserer spilleren til tre brikker\n\nPlassering\n\nSpillet begynner med et tomt brett, som består av et rutenett med tjuefire poeng. Spillere bytter på å plassere brikkene sine på ledige poeng til hver spiller har plassert alle brikkene på brettet. Hvis en spiller kan sette tre av brikkene sine rett, har han en \"mølle\" og kan fjerne en av motstanderens brikker fra brettet.\n\nI noen regler må spillerne fjerne andre stykker først før de fjerner et stykke fra en dannet mølle.\n\nDu kan ikke plassere brikkene til punktene til fjernede brikker igjen i plasseringsfasen i noen regler.\n\nNår alle brikkene er brukt, bytter spillerne på å bevege seg.\n\nFlytter\n\nFor å flytte, flytter en spiller en av brikkene sine langs en brettelinje til et ledig tilstøtende punkt. Hvis han ikke kan gjøre det, har han tapt spillet. En spiller som justerer tre av brikkene sine på en brettlinje, har en mølle og kan fjerne en av motstanderens brikker som i plasseringsfasen. Enhver spiller reduserer til to stykker, har ingen mulighet til å danne nye møller og taper dermed spillet. En spiller kan også tape når mer enn tre brikker hvis motstanderen blokkerer dem fra å bevege seg.\n\nFlyr\n\nI noen varianter av reglene, når en spiller bare har tre brikker igjen, kan brikkene hans fly, hoppe eller hoppe til ledige punkter, ikke bare tilstøtende.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versjonsinfo",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Tillatelse",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Kildekode",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Appversjon",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Generell",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Avansert",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Plassering",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Flytter",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Fjerner",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Game over tilstand",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AIs spillestil",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Pause",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Utseende",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Tegn på den menneskelige opplevelsen",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Vurder mobilitet av stykker",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Antall stykker:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} i hånden: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} om bord: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Styret forskjøvet fra toppen",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Det er ikke AIs tur.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI tenker ikke.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Du er på slutten av trekklisten.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Trykk tilbake for å dra.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Mer",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Det er en eksperimentell funksjon.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimenter",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Åpen kildekode lisenser",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Språk",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standard språk",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Brikkene kan bevege seg i plasseringsfasen",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Det er ingen distinkte plasserings- og flyttingsfaser, dvs. spillerne kan bestemme ved hvert trekk om de vil plassere et stykke på brettet eller flytte et av brikkene sine (så lenge de har gjenværende brikker å plassere).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menyfarge",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menyens tekstfarge",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Menyhøydepunktfarge",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Hovedverktøylinjens bakgrunnsfarge",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Hovedverktøylinjens ikonfarge",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Navigasjonsverktøylinjens bakgrunnsfarge",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Navigasjonsverktøylinjens ikonfarge",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Skjul verktøylinjen automatisk",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Verktøylinjeplassering på skjermen",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Topp",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Bunn",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Senter",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Ensfarget",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Bilde",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Velg bildet ditt",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Lys",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Mørk",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Temaer",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Aktuelt tema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Lagre tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Vis analysegraf",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analyse",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Lagre spillet",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Last Spill",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Oppsettposisjon",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Vis juridiske grep",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Vis siste trekk",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Vis piler",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Stykker",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Vis analyse",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Tråder",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Bli involvert",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Hjelp med å forbedre oversettelsen",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Opplæringen",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassisk mølle",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Blandet Mill",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon Mill",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Kvernen kan bli ødelagt og omgjort gjentatte ganger",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Hvis en spiller bryter en mølle for å opprette en ny mølle med en gang, kan en slik spiller flytte en slik brikke tilbake til det opprinnelige krysset i sitt neste trekk hvis den lager en ny mølle.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spillet trekkes hvis en spiller har tre brikker, og etter ti trekk fjerner ingen av spillerne motstanderens brikker",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Når en spiller er nede i tre brikker, og ingen av spillerne kan fjerne en motstanders brikke innen ti trekk, er spillet uavgjort.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Lukk",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Hvitt stykke",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Svart stykke",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Tomt poeng",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Ikke noe poeng",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Plasseringsfase",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Flyttende fase",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Flygende fase",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Side å flytte: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Siste trekk: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Valgt",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "tilgjengelighet",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Støtte for skjermleser",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Det er uavgjort!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Tegne",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Farge på høydepunktet",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritme",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Sluttspill N-Move-regel",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Hvis en av spillerne bare har tre brikker og ingen av spillerne fjerner en brikke innenfor et bestemt trekk, trekkes spillet.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Hver spiller har bare tre brikker, og ingen av spillerne fjerner en brikke innenfor et bestemt trekk.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Tredobbelt gjentagelsesregel",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Spillet trekkes hvis en posisjon oppstår for tredje gang.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mølle! Fortsett å gjøre et trekk.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Poengstil",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Punktbredde",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Fast",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Hul",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Norsk bokmål",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{trekk}=1{{count} trekk}other{{count} trekk}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "filename": "Filnavn",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameSavedTo": "Spillet er lagret til",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Spillfiler",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Lasten mislyktes.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "browse": "Bla gjennom…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "empty": "Tømme",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "Ingen biter kan fjernes.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "noMove": "Ingen bevegelse.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Gjenopprettet utgangsposisjon.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Ren",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Ryddet opp.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Fjerne",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Plassert ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} må fjernes.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Plassert stykktelling i plasseringsfasen.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Den nåværende spilleren har plassert {count} brikker.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ikke plassere fase, kan ikke endre den.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Lim inn",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pastaen er ferdig.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Kan ikke lime inn.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Vis uplasserte og fjernede brikker",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Full skjerm",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Avslutt og åpne appen på nytt for at innstillingene skal tre i kraft.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "skog",
+  "@forest": {},
+  "desktopImage": "Skrivebordsbilde",
+  "@desktopImage": {},
+  "invalidPosition": "Ugyldig stilling.",
+  "@invalidPosition": {},
+  "shareGIF": "Del GIF",
+  "@shareGIF": {},
+  "duration": "Varighet",
+  "@duration": {},
+  "pixelRatio": "Pikselforhold",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Spillskjermopptaker",
+  "@gameScreenRecorder": {},
+  "previous": "Tidligere",
+  "@previous": {},
+  "next": "Neste",
+  "@next": {},
+  "skip": "Hopp over",
+  "@skip": {},
+  "gotIt": "Har det",
+  "@gotIt": {},
+  "youCanModifyRules": "Du kan endre spillereglene i regelinnstillingene.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Du kan bruke musehjulet til å endre verdien i velgeren.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Tenketid satt til 0 betyr at det ikke er noen tidsbegrensning for å tenke.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Vær oppmerksom på at AI-tenkningstidsjusteringen kanskje ikke er helt presis. Den faktiske tenketiden kan være kortere når vanskelighetsgraden er satt til en lavere verdi og kan være lengre når AI-en er midt i tanken når tiden renner ut.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Hvis du setter vanskelighetsnivået høyt, men ikke øker AI-tenketiden, kan det faktiske vanskelighetsnivået begrenses til en lavere verdi på grunn av tenketidsbegrensningen. Den faktiske verdien kan variere basert på maskinens ytelse.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) er en modifisert form av alfa-beta-søkealgoritmen som har som mål å forbedre effektiviteten ved å gjenbruke mellomliggende søkeresultater og bruke en god innledende gjetning for å begrense søkeområdet.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) er en søkealgoritme for å finne det beste trekket i en gitt posisjon. Det er en forbedring av alfa-beta-algoritmen og bruker null- eller null-vindusøk for å bekrefte at et trekk er dårligere eller ikke dårligere enn en allerede sikker poengsum fra hovedvarianten. PVS fokuserer på de mest lovende trekkene og unngår unødvendige søk etter suboptimale grener, noe som bidrar til å forbedre søkets effektivitet.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta-algoritmen er en søkealgoritme for å finne det beste trekket. Den bruker minimax-prinsippet og to verdier, alfa og beta, for å beskjære søketreet og øke effektiviteten. Alfa representerer den minste poengsummen datamaskinen er sikker på at den kan få, mens beta representerer den maksimale poengsummen motstanderen kan få. Algoritmen hjelper datamaskinen med å ta smarte, effektive avgjørelser i et spill.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "I dette spillet er det lettere for den andre spilleren å vinne sammenlignet med den første spilleren.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Ifølge menneskelig erfaring, hvis du prøver å vinne, vil du tape. Sikt i stedet på uavgjort som mål og unngå å tape spillet. Observer motstanderen din og lok dem forsiktig inn i en posisjon der de kan gjøre feil. Når de viser svakhet, grip muligheten og press forsiktig for å vinne. På denne måten kan du vinne spillet.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Aktivering av det passive alternativet vil få AI til å slappe av når den har en fordel i posisjonen, i stedet for aggressivt å prøve å vinne så raskt som mulig.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Hvis AI vurderer mobiliteten til brikkene sine, vil den ikke bare ta sikte på å fange motstanderens brikker så raskt som mulig, men også vurdere å blokkere motstanderens bevegelser og hindre dem i å gjøre det samme.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Aktivering av dette alternativet øker tilfeldigheten og moroa i spillet, mens deaktivering kan hjelpe med å studere måter å slå AI.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "Når brettet er fullt",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "På slutten av plasseringsfasen, før flyttefasen begynner, følger handlingen hvis brettet er fullt av brikker.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Spilleren som flytter først i flyttefasen fjerner en av motstanderens brikker.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Begge sider er enige om uavgjort.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Ta en av motstanderens brikker.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Den første spilleren taper spillet.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Den første og andre spilleren fjerner en av motstanderens brikker.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "Den andre og første spilleren fjerner en av motstanderens brikker.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Nå inn i flyfasen, kan motstanderens brikker hoppe til et hvilket som helst tomt punkt på brettet. Du kan slå av flyregelen i \"Regelinnstillinger\".",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Når det står fast",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Hvilken handling følger når ingen brikker kan flyttes?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Avslutt med et dødsulykketap.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Bytt side for å flytte.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Fjern en av motstanderens brikker og gjør neste trekk.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Avslutt med uavgjort uavgjort.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Fjern en av motstanderens brikker og bytt side for å flytte.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI-responsforsinkelsestid",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI er for tiden i en forsinket responsfase. Vennligst vent en stund før du fortsetter.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Du kan ikke fjerne en ikke-tilstøtende del.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Hvis det går i stå, kan motstanderens brikker ved siden av din fjernes, uavhengig av mølleformasjonen.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS er en nybegynnervennlig algoritme som tar beslutninger ved å utforske og evaluere forskjellige bevegelser gjennom simuleringer.",
+  "@whatIsMcts": {},
+  "goldenJade": "Golden Jade",
+  "@goldenJade": {},
+  "forestWood": "Forest Wood",
+  "@forestWood": {},
+  "greenMeadow": "Grønn Eng",
+  "@greenMeadow": {},
+  "stonyPath": "Steinete sti",
+  "@stonyPath": {},
+  "midnightBlue": "Midnatt blå",
+  "@midnightBlue": {},
+  "greenForest": "Grønn skog",
+  "@greenForest": {},
+  "pastelPink": "Pastell rosa",
+  "@pastelPink": {},
+  "turquoiseSea": "Turkis hav",
+  "@turquoiseSea": {},
+  "violetDream": "Fiolett drøm",
+  "@violetDream": {},
+  "mintChocolate": "Muntsjokolade",
+  "@mintChocolate": {},
+  "skyBlue": "Himmelblå",
+  "@skyBlue": {},
+  "playfulGarden": "Leken hage",
+  "@playfulGarden": {},
+  "darkMystery": "Dark Mystery",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algoritmen for retrograd analyse bruker retrograd analyse med flere verdier for å bygge en sluttspilldatabase fra forskjellige startposisjoner, og bruker deretter denne databasen for å optimalisere spillingen. Denne tilnærmingen faller inn under kategorien Ultra-Strong-løsninger.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Vil du se brukerveiledningen for denne algoritmen?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Vis indikator for posisjonsfordel",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Benytt deg av den perfekte databasen",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Aktiver dette alternativet for å bruke en feilfri spilldatabase generert gjennom avanserte algoritmer. Denne funksjonen integrerer både åpnings- og sluttfasestrategier for å foreslå optimale trekk. Dette er det foretrukne valget for spillere som søker det høyeste nivået av presisjon i spillet. Databasen er skapt gjennom nitidige beregningsteknikker, og er designet for å tilby nesten perfekte spillløsninger.\n\nMerk: Hvis AI-en ikke får tilgang til databasen, vil den gå over til konvensjonelle algoritmer for spillbeslutninger. Når databasen er tilgjengelig, blir 'Vanskelighetsgrad' praktisk talt uslåelig, og 'AI Tenketid' reduseres drastisk. Mange innstillinger innen 'AIs Spillestil'-alternativene vil bli overstyrt, ettersom databasens resultater har høyest prioritet.\n\nFor veiledning om hvordan du får mest mulig ut av denne feilfrie databasen, klikk her.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Bakgrunnsbilde",
+  "@backgroundImage": {},
+  "whatIsRandom": "Når 'Bruk perfekt database'-alternativet ikke er aktivert, fører 'Tilfeldig'-innstillingen til at AI flytter brikker tilfeldig uten å bruke noen algoritmer for trekkvalg. Dette resulterer vanligvis i betydelig svakere spill. På den annen side, når 'Bruk perfekt database' er aktivert, stoler AI utelukkende på 'Perfekt Database' for å ta beslutninger, i stedet for å blande den med tradisjonelle AI-algoritmer. I denne modusen er AI's trekk helt basert på databasens innhold, og unngår avhengighet av sanntidsberegninger eller søkealgoritmer.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Fjern motstanderens brikke(r) fra hånden deres; så er det motstanderens tur å plassere.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Når du danner møller under plasseringsfasen",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Fjern motstanderens brikke(r) fra brettet.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Fjern motstanderens brikke(r) fra brettet; så er det motstanderens tur å plassere.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Motstanderen fjerner sine egne brikker fra brettet.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "I stedet for at du tar grep, velger og fjerner motstanderen sin egen brikke(r) fra brettet, og tar effektivt en handling som er skadelig for dem selv.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Fjern motstanderens brikke(r) fra hånden deres; så er det din tur å flytte.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Fjern brikke(r) fra motstanderens hånd. Hvis flere brikker skal fjernes i henhold til innstillingen for flerfjerning, og motstanderen ikke har flere brikker i hånden, fortsetter du å fjerne motstanderens brikker fra brettet. Så er det din tur å flytte. Hvis du fortsetter å danne møller, kan du fortsette å fjerne motstanderens brikker.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Fjern brikke(r) fra motstanderens hånd. Hvis flere brikker skal fjernes i henhold til innstillingen for flerfjerning, og motstanderen ikke har flere brikker igjen på hånden, fortsetter du å fjerne motstanderens brikker fra brettet. Så er det motstanderens tur å flytte.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Merk og forsink fjerning av brikker.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "I løpet av plasseringsfasen merkes brikkene som skal fjernes, og ingen av spillerne kan plassere nye brikker på disse punktene. Når du går inn i flyttefasen, fjernes disse merkede brikkene helt, og spillere kan deretter flytte brikkene sine til disse nå tomme punktene.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Handlingene som kan tas når møller dannes under plasseringsfasen.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Merket",
+  "@marked": {},
+  "menu": "Meny",
+  "@menu": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Du kan aktivere støtte for skjermleser i tilgjengelighetsinnstillingene under Generelle innstillinger.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Vis numre på brikkene",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Lagre bilde",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Vis analyseverktøylinjen",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Bakgrunnsfarge for analyseverktøylinjen",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Ikonfarge for analyseverktøylinjen",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformert.",
+  "@transformed": {},
+  "cannotTransform": "Kan ikke transformere.",
+  "@cannotTransform": {},
+  "rotate": "Roter",
+  "@rotate": {},
+  "horizontalFlip": "H. Snu",
+  "@horizontalFlip": {},
+  "verticalFlip": "V. Snu",
+  "@verticalFlip": {},
+  "innerOuterFlip": "I/U Snu",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Gjennomsiktig Lerret",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Begrens gjentatt mølleformasjon",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "En brikke flyttet fra én kvern til en annen kan ikke umiddelbart returnere til det opprinnelige punktet på neste trekk for å danne en kvern igjen. Et annet trekk kreves først.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Engangsbruk mølle",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Hver mølle kan fjerne en motstanders brikke bare én gang. Du kan omforme den igjen, men den kan ikke brukes til ytterligere fjerninger.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "De gjeldende reglene du har satt har ikke en tilsvarende perfekt database. For mer informasjon om den perfekte databasen, klikk her.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Fokuser på å blokkere veier",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioriter å hindre motstanderens bevegelser over å danne møller. I stedet for å fokusere på å fjerne brikker ved å fullføre møller, har AI som mål å fange motstanderen, gjøre dem ute av stand til å bevege seg og sikre en seier gjennom utholdenhet i stedet for aggressivt spill. Denne strategien blokkerer ikke aktivt motstanderens møller.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Brikkebilde",
+  "@pieceImage": {},
+  "importColorSettings": "Importer fargeinnstillinger",
+  "@importColorSettings": {},
+  "exportColorSettings": "Eksporter fargeinnstillinger",
+  "@exportColorSettings": {},
+  "import": "Importere",
+  "@import": {},
+  "export": "Eksportere",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Vennligst kopier JSON-formatinnstillingene til utklippstavlen først.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopiert til utklippstavlen.",
+  "@copiedToClipboard": {},
+  "imported": "Importert.",
+  "@imported": {},
+  "boardImage": "Bilde av brett",
+  "@boardImage": {},
+  "autumnLeaves": "Høstløv",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendarisk Land",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignett-effekt",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Vil du gjøre verktøylinjen helt gjennomsiktig når et bakgrunnsbilde for brettet er satt?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktiver vibrasjon i spillet",
+  "@vibration": {},
+  "soundTheme": "Lydtema",
+  "@soundTheme": {},
+  "ball": "Ball",
+  "@ball": {},
+  "liquid": "Væske",
+  "@liquid": {},
+  "wood": "Tre",
+  "@wood": {},
+  "placeEffectAnimation": "Animasjonseffekt ved plassering av brikke",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animasjonseffekt ved fjerning av brikke",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Vis verktøylinjen nederst",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Bordhjørneradius",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Bruk åpningsbok",
+  "@useOpeningBook": {},
+  "currentRule": "Nåværende",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Regelsett",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "La AI bruke åpningsbevegelser som er vanlig brukt av profesjonelle menneskelige spillere i begynnelsen av spillet. Merk: Denne funksjonen er for øyeblikket bare tilgjengelig for spesifikke regelsett.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Vis fordelsgraf",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Fordelsgrafen tegnes bare etter at KI-en har gjort et trekk. Den vil ikke tegnes når den menneskelige spilleren gjør et trekk.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Deaktiver fjerning til alle brikker er plassert. Spillerne fjerner brikker basert på antall møller de lager.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Deaktiver fjerning til alle brikker er plassert. Spillerne fjerner brikker basert på antall møller: hvis det er likt, fjerner begge samme antall brikker; hvis en har flere, fjerner vedkommende én ekstra brikke og opprettholder én brikkes forskjell. Hvis bare én danner en mølle, fjerner denne spilleren to brikker, mens den andre fjerner én. Hvis ingen danner en mølle, fjerner begge én brikke.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Velg en av dine brikker.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Det er ikke din tur.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Bakgrunnsfarge for annotasjonsverktøylinje",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Farge på ikoner i annotasjonsverktøylinjen",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Vis annotasjonsverktøylinje",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Gå inn i annotasjonsmodus",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Er du sikker på at du vil slette alle annotasjoner?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM-oppfordring kopiert til utklippstavlen.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Forbindelsen avvist, serveren kan være nede.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Søk vellykket, venter på tilkobling...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Ingen LAN-tilkobling",
+  "@noLanConnection": {},
+  "takeScreenshot": "Ta skjermbilde",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Koblet fra motstanderen.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Forespørsel om å angre trekk",
+  "@takeBackRequest": {},
+  "nothingToShow": "Ingenting å vise.",
+  "@nothingToShow": {},
+  "stopHosting": "Stopp hosting",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Forbindelsen ble nullstilt av motparten.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Forbindelsen mistet på grunn av hjertebank-tidsavbrudd. Vennligst koble til på nytt.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Start hosting",
+  "@startHosting": {},
+  "restartRequestRejected": "Forespørsel om omstart ble avvist.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Ikke tilkoblet LAN-motstander.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM-oppfordring",
+  "@llmPrompt": {},
+  "gameRestarted": "Spillet startet på nytt.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Angre trekk ble avvist.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Er du sikker på at du vil trekke deg fra dette spillet?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Motstanderen trakk seg. Du vinner!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Fjern alle annotasjoner",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Tilkoblet, venter på motstanderens trekk...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Nettverksstatus: Frakoblet",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Forespørsel om å angre trekk sendt til motstanderen.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Motstanderen kan ha forlatt spillet",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Tilkoblet til verten med suksess.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Forbindelsen mistet: hjertebank-tidsavbrudd",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Ingen vert oppdaget.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Bekreft oppgivelse",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Starter hosting, venter på at spillere skal bli med...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Forbindelsen tidsavbrutt, nettverkstilkoblingen er ustabil.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Ingen LLM-oppfordring tilgjengelig.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Du trakk deg. Spillet er over.",
+  "@youResignedGameOver": {},
+  "serverIp": "Server-IP",
+  "@serverIp": {},
+  "confirmClear": "Bekreft sletting",
+  "@confirmClear": {},
+  "opponentSTurn": "Motstanderens tur.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Venter på klienttilkobling...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Forespørsel om å angre trekk ble avvist eller mislyktes.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Legg til tekst",
+  "@addText": {},
+  "exitAnnotationMode": "Avslutt annotasjonsmodus",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Skriv inn din annotasjon",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Forsøker å koble til på nytt...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Omstartforespørsel sendt. Venter på motstanderens svar...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Serveren er stoppet.",
+  "@serverIsStopped": {},
+  "restartRequest": "Omstartforespørsel",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Kan ikke be om å angre trekk når det ikke er din tur.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Angre trekk akseptert.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Lokal nettverksinnstillinger",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Koblet til på nytt med suksess!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Kunne ikke lagre bildet i galleriet.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Motstanderen ba om å starte spillet på nytt. Godtar du det?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Din tur.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Kunne ikke koble til på nytt, vennligst start spillet på nytt.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Vert",
+  "@host": {},
+  "join": "Bli med",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Ugyldig IP-adresse.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Ugyldig port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Kobler til: Forsøk {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Kunne ikke koble til: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Kunne ikke starte hosting: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Vert oppdaget: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Stopp",
+  "@stop": {},
+  "discover": "Oppdag",
+  "@discover": {},
+  "connect": "Koble til",
+  "@connect": {},
+  "clientConnected": "Klient tilkoblet: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Oppdager: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Kobler til på nytt ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Tilkoblet",
+  "@connected": {},
+  "delete": "Slett",
+  "@delete": {},
+  "ancientEgypt": "Det gamle Egypt",
+  "@ancientEgypt": {},
+  "gothicIce": "Gotisk Is",
+  "@gothicIce": {},
+  "riceField": "Risåker",
+  "@riceField": {},
+  "chinesePorcelain": "Kinesisk Porselen",
+  "@chinesePorcelain": {},
+  "desertDusk": "Ørkenskumring",
+  "@desertDusk": {},
+  "precisionCraft": "Presisjonsarbeid",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Folkebroderi",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpatenes Arv",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Keiserlig Prakt",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Bøhmisk Krystall",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanne Soloppgang",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmoni og Balanse",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Kanel Krydder",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatolsk Mosaikk",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnevalsånd",
+  "@carnivalSpirit": {},
+  "custom": "Tilpasset",
+  "@custom": {},
+  "spiceMarket": "Kryddermarked",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Sveip for å åpne skuffen",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Vis spillinformasjon på skjermbilder",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Menneskelig tidsbegrensning",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Ingen tidsbegrensning for menneskelige trekk",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Timeout-tap vil bli brukt for menneskelig spiller",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Identifiserer spillbrett...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Du kan angi hvilket som helst modellnavn.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "Brettposisjon brukt. FEN kopiert til utklippstavlen.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Forslag: prøv å ta et klarere bilde av spillbrettet.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM prompt‑mal",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Ingen gyldig spillbrett registrert.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Velger bilde fra album...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Konfigurer prompt‑mal",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Rediger prompt‑mal for LLM‑analyse",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "Kunne ikke generere FEN fra gjenkjent brett.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Utdata på gjeldende språk",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Vanlige Base URL-er",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Vis vanlige modeller",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "Gjenkjenningsparametere oppdatert.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Hvits trekk",
+  "@whiteSMove": {},
+  "resetToDefaults": "Tilbakestill til standard",
+  "@resetToDefaults": {},
+  "photoShoot": "Fotografering",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Kunne ikke bruke gjenkjent brettposisjon.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM prompt‑innhold",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "LLM ikke konfigurert. Vennligst sjekk innstillingene dine.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Angi leverandør, modell, API Key og Base URL",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM‑konfigurasjon",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "Konfigurer LLM‑leverandør",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM prompt‑mal overskrift",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "Ingen brikker gjenkjent i bildet. Prøv igjen.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Gjenkjenn brett fra bilde",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Se tips",
+  "@viewTips": {},
+  "applyToBoard": "Bruk på brett",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Juster brettområde",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Vis vanlige URL-er",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Fargeanalyse mislyktes!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Analyserer spillbrett‑bilde...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Velg fra album",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Ingen brettpunkt registrert!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Hvis tomt, brukes standardmalen",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM‑innstillinger",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Er du sikker på at du vil tilbakestille prompt‑malene til standardverdiene?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM prompt‑mal bunntekst",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Laster respons...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Bruk dette resultatet på brett",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Tar bilde...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Velg et spillbrett‑bilde for gjenkjenning",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Gjenkjenningsresultater",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Analyser trekkene og gi innsikt.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "Hent API Key",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Hele gjenkjenningsprosessen kunne ikke fullføres.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Brettgjenkjenningsresultat",
+  "@boardRecognitionResult": {},
+  "askLlm": "Spør LLM",
+  "@askLlm": {},
+  "boardDetectionFailed": "Brettgjenkjenning mislyktes!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Ingen brettpunkt registrert, kan ikke identifisere brikke!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "Kopier FEN",
+  "@copyFen": {},
+  "commonlyUsedModels": "Vanlig brukte modeller",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (valgfritt)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Ingen bilde valgt",
+  "@noImageSelected": {},
+  "blackSMove": "Svarts trekk",
+  "@blackSMove": {},
+  "llm": "Stort språkmodell",
+  "@llm": {},
+  "llmProvider": "Leverandør",
+  "@llmProvider": {},
+  "baseUrl": "Basis-URL",
+  "@baseUrl": {},
+  "model": "Modell",
+  "@model": {},
+  "temperature": "Temperatur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Kommando mottatt! KI behandler...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Dyp tenking pågår, vennligst vent...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Presenteres snart...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Gjenkjenningsparametere",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Juster parametere for å forbedre gjenkjenningsnøyaktighet",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Lagre parametere",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Kan ikke starte bildegjenkjenning: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Bildegjenkjenning mislyktes: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Posisjon med {whiteCount} hvite og {blackCount} svarte brikker brukt",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopiert til utklippstavlen)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Gjenkjenning mislyktes: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Min vurdering",
+  "@myRating": {},
+  "gamesPlayed": "Spilte spill",
+  "@gamesPlayed": {},
+  "wins": "Seire",
+  "@wins": {},
+  "losses": "Tap",
+  "@losses": {},
+  "draws": "Uavgjort",
+  "@draws": {},
+  "lastUpdated": "Sist oppdatert",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Tilbakestill statistikk",
+  "@resetStatistics": {},
+  "drawRate": "Uavgjortrate",
+  "@drawRate": {},
+  "lossRate": "Tapsrate",
+  "@lossRate": {},
+  "aiStatistics": "AI-statistikk",
+  "@aiStatistics": {},
+  "enableStatistics": "Aktiver statistikk",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Når aktivert, vil spillresultater bli registrert i statistikken. Spill som involverer tilbaketrekking av trekk vil imidlertid ikke bli registrert. Når deaktivert, pauses statistikkinnhentingen.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Dette vil tilbakestille all spillstatistikk. Denne handlingen kan ikke angres.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Størrelse på den indre ringen på brettet",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Brettskygge",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Felledeteksjon",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Fremhev felle-trekk med fete sirkler og piler under analysen.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Det finnes en felle. Felle-trekk: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Flankerende fangst",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Lukk en av motstanderens brikker mellom to av deg i en rett linje for å fange den.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Tillat flankerende fangst",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Intervensjonsfangst",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Gå inn i det tomme punktet mellom to av motstanderens stykker for å fange dem begge.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Tillat intervensjonsfangst",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Hoppfangst",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Fangst ved å hoppe over en tilstøtende motstanders stykke inn i det tomme punktet utenfor.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Tillat hoppfangst",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Gjeldende linjer",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "Langs kvadratets kanter",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Langs ortogonale linjer som krysser torget",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Langs diagonale linjer som krysser torget",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Utførelsesfaser",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Tilgjengelighet i bevegelsesfasen basert på gjenværende brikker",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Ingen begrensninger",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Tilgjengelig når du har tre eller færre stykker",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

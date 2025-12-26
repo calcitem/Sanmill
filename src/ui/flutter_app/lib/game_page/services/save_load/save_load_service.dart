@@ -376,7 +376,8 @@ class LoadService {
   }
 
   static Future<String?> _showTextInputDialog(BuildContext context) async {
-    final TextEditingController textFieldController = TextEditingController();
+    final TextEditingController textFieldController =
+        SafeTextEditingController();
     return showDialog(
       context: context,
       builder: (BuildContext context) {

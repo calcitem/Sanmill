@@ -636,7 +636,7 @@ def upload_screenshots(service, package_name, parent_dir):
                     final_edit_status = "Commit Failed"
                     print(f"! Edit ID: {edit_id}")
                     print("! Validation was successful, but committing the edit failed.")
-                    print("! Changes remain in a draft state. Please log in to Play Console to handle manually.")
+                    print("! Changes remain in a draft state. Please log into Play Console to handle manually.")
                 except Exception as commit_e:
                     print(f"✗ Unexpected error during Edit Commit: {commit_e}")
                     final_edit_status = "Commit Error"
@@ -645,7 +645,7 @@ def upload_screenshots(service, package_name, parent_dir):
             else:
                  print("\n! Due to errors detected during processing, the edit was validated but NOT automatically committed.")
                  print(f"! Edit ID: {edit_id}")
-                 print("! Please log in to the Play Console, review the draft changes, and manually commit or discard the edit.")
+                 print("! Please log into the Play Console, review the draft changes, and manually commit or discard the edit.")
                  final_edit_status = "Validated (Not Committed due to errors)"
 
         except googleapiclient.errors.HttpError as e:
@@ -654,7 +654,7 @@ def upload_screenshots(service, package_name, parent_dir):
             final_edit_status = "Validation Failed"
             print(f"! Edit ID: {edit_id}")
             print("! Uploaded changes have been saved as a draft, but validation found issues.")
-            print("! It is CRITICAL to log in to the Play Console, review the draft, and fix errors manually.")
+            print("! It is CRITICAL to log into the Play Console, review the draft, and fix errors manually.")
             overall_success = False # Ensure overall status reflects validation failure
         except Exception as e:
             print(f"✗ Unexpected error during Edit Validation: {e}")

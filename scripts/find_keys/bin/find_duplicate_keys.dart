@@ -36,8 +36,9 @@ void main(List<String> arguments) {
   }
 
   // Find duplicate Keys
-  final duplicates =
-      keyOccurrences.entries.where((entry) => entry.value.length > 1).toList();
+  final duplicates = keyOccurrences.entries
+      .where((entry) => entry.value.length > 1)
+      .toList();
 
   if (duplicates.isEmpty) {
     print('No duplicate Keys.');

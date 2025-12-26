@@ -108,6 +108,7 @@ class GameController {
     }
 
     await SoundManager().loadSounds();
+    await SoundManager().startBackgroundMusic();
 
     _isInitialized = true;
     logger.i("$_logTag initialized");
@@ -834,6 +835,10 @@ class GameController {
       return const EngineResponseHumanOK();
     }
 
+    // Ensure the engine is started and ready before searching.
+    // This avoids startup/search concurrently consuming engine responses.
+    await engine.startup();
+
     late EngineRet engineRet;
 
     bool searched = false;
@@ -863,153 +868,180 @@ class GameController {
     }
 
     if (isEngineRunning && !isMoveNow) {
-      // TODO: Monkey test trigger
-      logger.t("$tag engineToGo() is still running, skip.");
-      return const EngineResponseSkip();
+      // Defensive: `isEngineRunning` can become out-of-sync with the native
+      // engine state if an earlier `engineToGo()` threw unexpectedly.
+      // If the engine is NOT actually thinking, recover by clearing the flag
+      // and proceeding; otherwise, keep the old behavior and skip.
+      bool aiThinking = false;
+      try {
+        aiThinking = await engine.isThinking();
+      } catch (e, st) {
+        logger.w("$tag isThinking() failed while guarding: $e");
+        logger.d("$tag Stack trace: $st");
+        aiThinking = false;
+      }
+
+      if (aiThinking) {
+        // TODO: Monkey test trigger
+        logger.t("$tag engineToGo() is still running, skip.");
+        return const EngineResponseSkip();
+      }
+
+      logger.w(
+        "$tag isEngineRunning=true but engine is not thinking; recovering.",
+      );
+      isEngineRunning = false;
     }
 
     isEngineRunning = true;
     isControllerActive = true;
 
-    // Start AI's timer when AI starts thinking
-    // This ensures the countdown appears during AI's turn
+    // Start AI's timer when AI starts thinking.
+    // This ensures the countdown appears during AI's turn.
     if (gameInstance.isAiSideToMove && gameMode == GameMode.humanVsAi) {
-      // Start timer only if AI has a time limit (moveTime > 0)
-      // When moveTime is 0, AI has unlimited thinking time
+      // Start timer only if AI has a time limit (moveTime > 0).
+      // When moveTime is 0, AI has unlimited thinking time.
       PlayerTimer().start();
     }
 
-    // TODO
-    logger.t("$tag engine type is $gameMode");
+    try {
+      // TODO
+      logger.t("$tag engine type is $gameMode");
 
-    if (gameMode == GameMode.humanVsAi &&
-        position.phase == Phase.moving &&
-        !isMoveNow &&
-        DB().ruleSettings.mayFly &&
-        DB().generalSettings.remindedOpponentMayFly == false &&
-        (position.pieceOnBoardCount[position.sideToMove]! <=
-                DB().ruleSettings.flyPieceCount &&
-            position.pieceOnBoardCount[position.sideToMove]! >= 3)) {
-      rootScaffoldMessengerKey.currentState!.showSnackBar(
-        CustomSnackBar(
-          S.of(context).enteredFlyingPhase,
-          duration: const Duration(seconds: 8),
-        ),
-      );
-      DB().generalSettings = DB().generalSettings.copyWith(
-        remindedOpponentMayFly: true,
-      );
-    }
-
-    while ((gameInstance.isAiSideToMove &&
-            (isGameRunning || isAutoRestart())) &&
-        isControllerActive) {
-      if (gameMode == GameMode.aiVsAi) {
-        headerTipNotifier.showTip(position.scoreString, snackBar: false);
-      } else {
-        headerTipNotifier.showTip(thinkingStr, snackBar: false);
-        showSnakeBarHumanNotation(humanStr);
+      if (gameMode == GameMode.humanVsAi &&
+          position.phase == Phase.moving &&
+          !isMoveNow &&
+          DB().ruleSettings.mayFly &&
+          DB().generalSettings.remindedOpponentMayFly == false &&
+          (position.pieceOnBoardCount[position.sideToMove]! <=
+                  DB().ruleSettings.flyPieceCount &&
+              position.pieceOnBoardCount[position.sideToMove]! >= 3)) {
+        rootScaffoldMessengerKey.currentState!.showSnackBar(
+          CustomSnackBar(
+            S.of(context).enteredFlyingPhase,
+            duration: const Duration(seconds: 8),
+          ),
+        );
+        DB().generalSettings = DB().generalSettings.copyWith(
+          remindedOpponentMayFly: true,
+        );
       }
 
-      headerIconsNotifier.showIcons();
-      boardSemanticsNotifier.updateSemantics();
-
-      try {
-        logger.t("$tag Searching..., isMoveNow: $isMoveNow");
-
-        if (position.pieceOnBoardCount[PieceColor.black]! > 0) {
-          isEngineInDelay = true;
-          await Future<void>.delayed(
-            Duration(
-              milliseconds: (DB().displaySettings.animationDuration * 1000)
-                  .toInt(),
-            ),
-          );
-          isEngineInDelay = false;
+      while ((gameInstance.isAiSideToMove &&
+              (isGameRunning || isAutoRestart())) &&
+          isControllerActive) {
+        if (gameMode == GameMode.aiVsAi) {
+          headerTipNotifier.showTip(position.scoreString, snackBar: false);
+        } else {
+          headerTipNotifier.showTip(thinkingStr, snackBar: false);
+          showSnakeBarHumanNotation(humanStr);
         }
 
-        engineRet = await engine.search(moveNow: loopIsFirst && isMoveNow);
+        headerIconsNotifier.showIcons();
+        boardSemanticsNotifier.updateSemantics();
 
-        if (!isControllerActive) {
-          break;
-        }
+        try {
+          logger.t("$tag Searching..., isMoveNow: $isMoveNow");
 
-        // TODO: Unify return and throw
-        if (!gameInstance.doMove(engineRet.extMove!)) {
-          // TODO: Should catch it and throw.
-          isEngineRunning = false;
+          if (position.pieceOnBoardCount[PieceColor.black]! > 0) {
+            isEngineInDelay = true;
+            await Future<void>.delayed(
+              Duration(
+                milliseconds: (DB().displaySettings.animationDuration * 1000)
+                    .toInt(),
+              ),
+            );
+            isEngineInDelay = false;
+          }
+
+          engineRet = await engine.search(moveNow: loopIsFirst && isMoveNow);
+
+          if (!isControllerActive) {
+            break;
+          }
+
+          // TODO: Unify return and throw
+          if (!gameInstance.doMove(engineRet.extMove!)) {
+            // TODO: Should catch it and throw.
+            return const EngineNoBestMove();
+          }
+
+          loopIsFirst = false;
+          searched = true;
+
+          // Record game start time for AI vs AI mode on first move
+          _recordGameStartTime();
+
+          // TODO: Do not use BuildContexts across async gaps.
+          if (DB().generalSettings.screenReaderSupport) {
+            rootScaffoldMessengerKey.currentState!.showSnackBar(
+              CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"),
+            );
+          }
+        } on EngineTimeOut catch (_, st) {
+          logger.i("$tag Engine response type: timeout");
+          logger.d("$tag Stack trace: $st");
+
+          // In AI vs AI mode, auto-recover from timeout and retry.
+          if (gameMode == GameMode.aiVsAi) {
+            await engine.stopSearching();
+            // Brief delay to avoid hitting stale session immediately
+            await Future<void>.delayed(const Duration(milliseconds: 10));
+            continue;
+          }
+
+          return const EngineTimeOut();
+        } on EngineNoBestMove catch (_, st) {
+          logger.i("$tag Engine response type: nobestmove");
+          logger.d("$tag Stack trace: $st");
+
+          if (gameMode == GameMode.aiVsAi) {
+            await engine.stopSearching();
+            await Future<void>.delayed(const Duration(milliseconds: 10));
+            continue;
+          }
+
           return const EngineNoBestMove();
         }
 
-        loopIsFirst = false;
-        searched = true;
+        value = engineRet.value;
+        aiMoveType = engineRet.aiMoveType;
 
-        // Record game start time for AI vs AI mode on first move
-        _recordGameStartTime();
-
-        // TODO: Do not use BuildContexts across async gaps.
-        if (DB().generalSettings.screenReaderSupport) {
-          rootScaffoldMessengerKey.currentState!.showSnackBar(
-            CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"),
-          );
+        if (value != null && aiMoveType != AiMoveType.unknown) {
+          lastMoveFromAI = true;
         }
-      } on EngineTimeOut {
-        logger.i("$tag Engine response type: timeout");
-        // In AI vs AI mode, auto-recover from timeout and retry
-        if (gameMode == GameMode.aiVsAi) {
-          await engine.stopSearching();
-          // Brief delay to avoid hitting stale session immediately
-          await Future<void>.delayed(const Duration(milliseconds: 10));
-          continue;
-        }
-        isEngineRunning = false;
-        return const EngineTimeOut();
-      } on EngineNoBestMove {
-        logger.i("$tag Engine response type: nobestmove");
-        if (gameMode == GameMode.aiVsAi) {
-          await engine.stopSearching();
-          await Future<void>.delayed(const Duration(milliseconds: 10));
-          continue;
-        }
-        isEngineRunning = false;
-        return const EngineNoBestMove();
-      }
 
-      value = engineRet.value;
-      aiMoveType = engineRet.aiMoveType;
-
-      if (value != null && aiMoveType != AiMoveType.unknown) {
-        lastMoveFromAI = true;
-      }
-
-      if (position.winner != PieceColor.nobody) {
-        if (isAutoRestart()) {
-          reset();
-        } else {
-          isEngineRunning = false;
-          if (gameMode == GameMode.aiVsAi) {
-            headerTipNotifier.showTip(position.scoreString, snackBar: false);
-            headerIconsNotifier.showIcons();
-            boardSemanticsNotifier.updateSemantics();
+        if (position.winner != PieceColor.nobody) {
+          if (isAutoRestart()) {
+            reset();
+          } else {
+            if (gameMode == GameMode.aiVsAi) {
+              headerTipNotifier.showTip(position.scoreString, snackBar: false);
+              headerIconsNotifier.showIcons();
+              boardSemanticsNotifier.updateSemantics();
+            }
+            // Always call showResult to trigger UI update, dialog display is handled in GameBoard
+            gameResultNotifier.showResult(force: true);
+            return const EngineResponseOK();
           }
-          // Always call showResult to trigger UI update, dialog display is handled in GameBoard
-          gameResultNotifier.showResult(force: true);
-          return const EngineResponseOK();
         }
       }
+
+      return searched
+          ? const EngineResponseOK()
+          : const EngineResponseHumanOK();
+    } finally {
+      isEngineRunning = false;
+
+      // TODO: Why need not update tip and icons?
+      boardSemanticsNotifier.updateSemantics();
+
+      // After AI makes a move, start the human player's timer if needed.
+      if (gameInstance.gameMode == GameMode.humanVsAi &&
+          gameInstance.isHumanToMove) {
+        PlayerTimer().start();
+      }
     }
-
-    isEngineRunning = false;
-
-    // TODO: Why need not update tip and icons?
-    boardSemanticsNotifier.updateSemantics();
-
-    // After AI makes a move, start the human player's timer if needed
-    if (gameInstance.gameMode == GameMode.humanVsAi) {
-      PlayerTimer().start();
-    }
-
-    return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }
 
   Future<void> moveNow(BuildContext context) async {

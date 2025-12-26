@@ -2159,4 +2159,2037 @@
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Modell, nyelv és viselkedés beállítása",
     "@voiceAssistantSettingsDescription": {}
+  "@@locale": "hu",
+  "appName": "Malom",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Üdvözöljük!",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Igen",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nem",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Játék",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Ember a gép ellen",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Ember ember ellen",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "Gép a gép ellen",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Ember a felhő ellen",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Ember a helyi hálózat ellen",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Tesztelés LAN-on keresztül",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Lépés",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Lépéslista áttekintése",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Lépéslista",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Nincs feljegyzés",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "Rendben",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Jóváhagy",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Mégsem",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Válassza ki a rossz helyen lévő korongot!",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Rakjon le egy korongot.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "A korongot nem lehet odarakni.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Lerakott egy korongot.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Távolítson el egy korongot.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Nem lehet eltávolítani.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Eltávolítva.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Lépjen egy koronggal.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Korongod nem rakható ide.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Nem léphet ide.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Malom! Levehet egy ellenfél-korongot.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Folytassa az ellenfél korongjainak eltávolítását.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Válasszon egyet az ellenfél korongjaiból.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Malomból nem lehet korongot levenni.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Egy korong vonal mentén csakis a következő mezőre léphet.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Nem mozgathatja az ellenfél korongjait.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Válasszon lépéshez egy korongot.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Három korongja maradt.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Bármely tetszőleges szabad mezőre léphet.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} a mozgáshoz.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "1-es játékos nyer!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "2-es játékos nyer!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Nyert",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Veszített",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Gondolkodás…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Új játék",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Játék importálása",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Játék exportálása",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Játék importálva.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Nem lehet importálni {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "A lépések és a szabályok nem egyeznek.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Kérem várjon...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Indítsa újra az aktuális játékot?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Újraindítás",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "A játék indul, kérjük, rakjon.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Elemzés…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Hiba: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Nyerési arány",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Eredmény:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "J1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "J2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "Az {player} darabszám kevesebb, mint három.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} lemondott.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "Az {player}-nek nincs más útja.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "A tábla megtelt, és az {player}-nek nincs útja.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Az idő lejárt, {player} elveszett.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Az utolsó N lépés során egyetlen korong sem lett eltávolítva.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Ez egy döntetlen, mert a tábla megtelt.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Ez egy döntetlen a háromszoros ismétlés miatt.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Játék vége! Ismeretlen ok.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Játék vége",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Nyert! Gratulálunk!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Kihívás nehezebb szinten? Az új szint az {level} szint lesz!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Vesztített!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Elemezés",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Az alkalmazásról",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Verzió: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Köszönet",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Beállítások",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Opciók",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Általános beállítások",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Nehézségi szint",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI gondolkodási ideje",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Nehézség",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Hanghatások",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Hangok lejátszása játék közben",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "backgroundMusic": "Háttérzene",
+  "@backgroundMusic": {
+    "description": "Background music"
+  },
+  "backgroundMusicDescription": "Helyi hangfájl lejátszása háttérzeneként",
+  "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+  },
+  "backgroundMusicFile": "Háttérzene fájl",
+  "@backgroundMusicFile": {
+    "description": "Background music file"
+  },
+  "clearBackgroundMusic": "Háttérzene törlése",
+  "@clearBackgroundMusic": {
+    "description": "Clear background music"
+  },
+  "musicFiles": "Zenei fájlok",
+  "@musicFiles": {
+    "description": "Root label for music file picker"
+  },
+  "keepMuteWhenTakingBack": "Visszanézéskor tartsa a némítást",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Hang",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Első lépés",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Személy",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Váltakozó",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automatikus újraindítás, játék végén",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automatikusan cserélődik az első játékos a játék végén",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Véletlenszerű lépés",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Vegyes",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Szabályok",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Játékosra eső korongszám",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Hány korongja van minden játékosnak?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Az ugrálható (flying) korongok száma",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Ha az ugrálás (Flying) aktiválva van és a játékos korongjainak száma előre meghatározott értékre csökkentek, ezek bármely szabad mezőre ugorhatnak.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Legkevesebb korong",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Átlós vonalak",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Kösse össze négy átlóssal a játéktábla három koncentrikus négyszögének csúcsait.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "A második játékos lép először",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Az a játékos, aki a második a lerakásban, lépésben első lesz.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Többszörös eltávolítás",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Ha egy játékos ugyanazzal a koronggal egyszerre több malmot hoz létre, akkor a létrehozott malmok számának megfelelő számú ellenfél-korongot távolíthat el.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Pusztítsd a malmokat",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Alapértelmezés szerint a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll. Engedélyezze ezt a lehetőséget a korlátozás kikapcsolásával.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "A második játékos veszít, ha a tábla megtelt",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ha a lerakási szakasz végén, megtelik a tábla, az elsőként lerakó lesz a vesztes (nem tud lépni), helyezett játékos veszíti el a játékot, különben a játék döntetlen lenne.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Vesztes, ha nincs érvényes lépési lehetősége",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "A játékos veszít, ha ellenfele blokkolja összes korongjainak lépési lehetőségét. Ha az opció ki van kapcsolva, akkor változtasson.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Ugrás",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Ha egy játékosnak csak három vagy négy (konfigurálható) korongja marad, akkor ezekkel bármelyik szabad mezőre ugrálhat.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N lépéses szabály",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "A játék sorsolásra kerül, ha az egyes játékosok nem hajtottak végre bizonyos számú mozdulatot.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Visszaállítás",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Kérem, válasszon",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Másolat",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Az előzmények vágólapra vannak másolva.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Segítség",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Visszajelzés",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Kilépés",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Szabálybeállítások",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Szín",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Tábla színe",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Korongszín",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Háttérszín",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Tábla vonalszíne",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "1-es játékos korongszíne",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "2-es játékos korongszíne",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Üzenet színe",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "A kézben lévő korongszám megjelenítése",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Jelölések megjelenítése a fedélzeten",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "A navigációs előzmények eszköztárának megjelenítése",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Kijelző",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "A játéktábla határvonalának szélessége",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "A tábla belső vonalainak szélessége",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Korongszélesség",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Betűméret",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD jelölés",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Visszaállítás",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Visszaállítja az alapértelmezett beállításokat",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Válasszon {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Célzás",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "játékos",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "1. játékos",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "2. játékos",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Hogyan kell játszani",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Érintse meg a rendelkezésre álló mezőt a korong elhelyezése végett.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Érintse meg a korongot annak mozgatásához.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Érintse meg a mezőt amelyhez csatlakoztatni akarja a korongot.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Eltávolítás végett érintse meg az ellenfél egy korongját.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Malmot kell alkotnia, mielőtt eltávolíthatna egy korongot.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Saját korongjaival kell játszania.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statisztika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Összes játék",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Eredmények",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "bal",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Adatvédelmi irányelvek",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Kérjük, olvassa el figyelmesen, és győződjön meg róla, hogy teljes mértékben megértette és egyetért ezzel ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Ha nem ért egyet ezzel az irányelvvel, kérjük, ne használja ezt az alkalmazást. Az alkalmazás használata kötelezi ezen feltételek elfogadására.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " és ",
+  "@and": {},
+  "accept": "Elfogad",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Visszavesz",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Visszavenni…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Várakozás…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Lépjen előre",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Vissza mindent",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Lépjen előre mindenek előtt",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Most lépjen",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Kész.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Nyitott malom",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Ha egy játékos össszes korongja malomot alkot, ez nem jelenti, hogy ezek nem távolíthatóak el.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Az animáció időtartama",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Egyik sem",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Téma",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "A játék célja, hogy az ellenfélnek kevesebb, mint három korongja maradjon, vagy beszoruljon, azaz ne tudjon legálisan lépni egyetlen koronggal sem.\n\nA játék automatikusan felfüggesztődik, ha egymás után háromszor ismétlődik ugyanaz a lépés, vagy ha 100 (konfigurálható) lépés alatt nem történik korongeltávolítás.\n\nA játék három szakaszban halad:\n\n1. Korongok felrakása a tábla üres mezőire\n2. Korongok lépegetése a táblán \n3. (opcionális szakasz) Ugrálás a táblán bármely üres mezőre, ha a játékosnak csak három korongja maradt.\n\nFelrakás\n\nA játék egy üres táblával kezdődik, amelyen egy huszonnégy mezőből álló rács van. A játékosok felváltva rakják a korongjaikat az üres mezőkre, amíg azok el nem fogynak. Ha egy játékos három korongját képes egyvonalba helyezni, akkor \"Malom\" van, és eltávolíthatja a tábláról ellenfelének egyik korongját.\n\nA szabályok egyes változataiban a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll.\n\nA szabályok egyes változataiban az eltávolított korongok, ugyanazon játék közben, nem rakhatók vissza a táblára.\n\nMiután az összes korong felrakódott, a játékosok felváltva lépegetnek.\n\nLépegetés\n\nLépegetéskor a játékos az egyik korongját egy vonal mentén csakis a közvetlenül mellette levő üres mezőre tolhatja. Ha ezt egyetlen koronggal sem teheti, akkor beszorult és elveszítette a játékot. Akárcsak a felrakási fázisban, malmot létesít az a játékos is, akinek lépegetéssel egyvonalba sikerül elhelyezni három korongot, s így ezúttal is eltávolíthatja az ellenfél egyik korongját. Ha bármelyik játékosnak csak két korongja marad, tehát nincs lehetősége malmot létrehozni, elveszítette a játékot. Egy játékos háromnál több darabbal is veszíthet, ha ellenfele lezárja, azaz egyetlen koronggal sem léphet.\n\nUgrálás\n\nA szabályok egyes változataiban, ha egy játékosnak csak három korongja marad, akkor ezekkel nemcsak szomszédos, hanem bármely üres mezőre ugorhat.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Verzió információ",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licenc",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Forráskód",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "App verzió",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Általánosság",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Haladó",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Felrakás",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Lépés",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Eltávolítás",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Játékvég feltétel",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI játékstílusa",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Passzív",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Időszünet",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Megjelenés",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Használja a személyes tapasztalatokat",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Fontolja meg a korongok mobilitását",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Korongszám:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} kézben: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} a fedélzeten: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "A tábla eltolása felülről",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Nem AI van soron.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI nem gondolkodik.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "A lépegetés lista végén.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Koppintson újra a távozáshoz.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Több",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Ez egy kísérleti jellemző.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Kísérletek",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Nyílt forráskódú licencek",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Nyelv",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Alapértelmezett nyelv",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "A darabok mozoghatnak az elhelyezési fázisban",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Nincs külön elhelyezési és mozgási fázis, azaz a játékosok minden lépésnél eldönthetik, hogy egy bábut akarnak-e elhelyezni a táblán, vagy pedig az egyik bábujukat akarják-e mozgatni (amíg van még elhelyezendő bábujuk).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "A menü színe",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "A menü szövegének színe",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "A menü kiemelésének színe",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "A fő eszköztár háttérszíne",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Fő eszköztár ikon színe",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "A navigációs eszköztár háttérszíne",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "A navigációs eszköztár ikonjának színe",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Az eszköztár automatikus elrejtése",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Az eszköztár helye a képernyőn",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Felül",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Alsó",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Központ",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Szolid szín",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Kép",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Válassza ki a képét",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Fény",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Sötét",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Témák",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Aktuális téma",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Téma mentése",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Elemzési grafikon megjelenítése",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Elemzés",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Játék mentése",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Játék betöltése",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Beállítási helyzet",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Jogi lépések megjelenítése",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Az utolsó lépés megjelenítése",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Nyilak megjelenítése",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Darabok",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Elemzés megjelenítése",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Szálak",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Részt venni",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Segítsen javítani a fordítást",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Bemutató",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klasszikus Malom",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Vegyes malom",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceiloni malom",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Lehet, hogy a malom megszakad, és többször átdolgozik",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Ha egy játékos megtöri a malmot, hogy azonnal új malmot hozzon létre, akkor az ilyen darabot a következő lépésével visszahelyezheti az eredeti kereszteződésbe, ha új malmot készít.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ha egy játékos három darabból áll, és egyik játékos sem tudja eltávolítani az ellenfél darabját tíz mozdulaton belül, akkor a játék döntetlen.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Bezárás",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Fehér darab",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Fekete darab",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Üres pont",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Nincs értelme",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Helyezési fázis",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Mozgó fázis",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Repülő fázis",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Oldal mozgatandó: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Utolsó lépés: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Kiválasztott",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Megközelíthetőség",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Képernyőolvasó támogatás",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Ez egy döntetlen!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Húz",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "A lemez kiemelésének színe",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritmus",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Végjáték N lépéses szabály",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Ha bármelyik játékosnak csak három korongja van, és egyik játékos sem vesz ki korongot egy adott lépésen belül, a játék döntetlenre végződik.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Bármelyik játékosnak csak három korongja van, és egyik játékos sem távolít el korongot egy adott lépésen belül.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Háromszoros ismétlési szabály",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "A játék döntetlenre végződik, ha egy pozíció harmadszor is előfordul.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Malom! Folytassa a lépést.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Pont stílus",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Pont szélessége",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Szilárd",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Üreges",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Magyar",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Mozog}=1{{count} Mozog}other{{count} Mozdul}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "gameSavedTo": "A játék el lett mentve ide",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "loadFailed": "A betöltés nem sikerült.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Fájl név",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Tallózás…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Játékfájlok",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} darab}} el kell távolítani.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "noPiecesCanBeRemoved": "Egyetlen darab sem távolítható el.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "empty": "Üres",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Nincs mozgás.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Kiinduló helyzet visszaállítva.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Tiszta",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Feltakarítva.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Távolít.",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Elhz. ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Elhelyezett darabszám az elhelyezési fázisban.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Az aktuális játékos {count} figurát helyezett el.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Nem az elhelyezési fázisban van, nem módosítható.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Paszta",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "A beillesztés megtörtént.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nem lehet beilleszteni.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Az el nem helyezett és eltávolított darabok megjelenítése",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Teljes képernyő",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Lépjen ki, majd nyissa meg újra az alkalmazást, hogy a beállítások érvénybe lépjenek.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Erdő",
+  "@forest": {},
+  "desktopImage": "Asztali kép",
+  "@desktopImage": {},
+  "invalidPosition": "Érvénytelen pozíció.",
+  "@invalidPosition": {},
+  "shareGIF": "GIF megosztása",
+  "@shareGIF": {},
+  "duration": "Időtartam",
+  "@duration": {},
+  "pixelRatio": "Pixel arány",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Játék képernyő felvevő",
+  "@gameScreenRecorder": {},
+  "previous": "Előző",
+  "@previous": {},
+  "next": "Következő",
+  "@next": {},
+  "skip": "Kihagyás",
+  "@skip": {},
+  "gotIt": "Megvan",
+  "@gotIt": {},
+  "youCanModifyRules": "A játékszabályokat a szabálybeállításokban módosíthatja.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Az egérgörgővel módosíthatja az értéket a kiválasztóban.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "A 0-ra beállított AI gondolkodási idő azt jelenti, hogy a gondolkodásnak nincs időkorlátja.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Kérjük, vegye figyelembe, hogy az AI gondolkodási idő beállítása nem feltétlenül teljesen pontos. A tényleges gondolkodási idő rövidebb lehet, ha a nehézségi szint alacsonyabb értékre van állítva, és hosszabb lehet, ha az AI középen gondolkodik, amikor lejár az idő.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Ha magasra állítja a nehézségi szintet, de nem növeli az AI gondolkodási idejét, a tényleges nehézségi szint alacsonyabb értékre korlátozódhat a gondolkodási idő korlátja miatt. A tényleges érték a gép teljesítményétől függően változhat.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "Az MTD(f) az alfa-béta keresési algoritmus egy módosított formája, amelynek célja a hatékonyság javítása a közbenső keresési eredmények újrafelhasználásával és egy jó kezdeti találgatással a keresési tér szűkítésére.",
+  "@whatIsMtdf": {},
+  "whatIsPvs": "A PVS (Principal Variation Search) egy keresési algoritmus az adott pozícióban a legjobb lépés megtalálására. Ez az alfa-béta algoritmus továbbfejlesztése, és nulla vagy nulla ablakban történő keresést használ annak megerősítésére, hogy egy lépés rosszabb vagy nem rosszabb, mint a fő variáció már biztonságos pontszáma. A PVS a legígéretesebb lépésekre összpontosít, és elkerüli a szuboptimális ágak szükségtelen keresését, ami javítja a keresés hatékonyságát.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Az alfa-béta algoritmus egy keresési algoritmus a legjobb lépés megtalálására. A minimax elvet és két értéket, az alfa és a béta értéket használja a keresési fa metszéséhez és a hatékonyság növeléséhez. Az alfa azt a minimális pontszámot jelenti, amelyet a számítógép biztosan el tud érni, míg a béta azt a maximális pontszámot jelenti, amelyet az ellenfél elérhet. Az algoritmus segít a számítógépnek okos, hatékony döntések meghozatalában a játék során.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Ebben a játékban a második játékos könnyebben nyer, mint az első játékos.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Az emberi tapasztalatok szerint, ha megpróbálsz nyerni, akkor veszítesz. Ehelyett célozzon döntetlent, és kerülje el a játék elvesztését. Figyeld meg ellenfeledet, és finoman csald olyan helyzetbe, ahol hibázhatnak. Amikor gyengeséget mutatnak, ragadja meg a lehetőséget, és finoman nyomja meg a győzelmet. Ily módon megnyerheti a játékot.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "A Passzív opció engedélyezése azt eredményezi, hogy a mesterséges intelligencia ellazul, amikor előnyben van a pozícióban, ahelyett, hogy agresszíven próbálna nyerni a lehető leggyorsabban.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Ha az AI figyelembe veszi bábui mozgékonyságát, akkor nemcsak az ellenfél bábuinak mielőbbi elfogására törekszik, hanem azt is fontolóra veszi, hogy blokkolja az ellenfél mozgását, és megakadályozza, hogy ugyanezt tegye.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Ennek az opciónak az engedélyezése növeli a játék véletlenszerűségét és szórakozását, míg letiltása segíthet a mesterséges intelligencia legyőzésének módjainak tanulmányozásában.",
+  "@moveRandomlyDetail": {},
+  "whenBoardIsFull": "Amikor megtelt a tábla",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Az elhelyezési fázis végén, mielőtt a mozgó fázis elkezdődne, az akció következik, ha a tábla tele van figurákkal.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Az a játékos, aki először mozog a mozgási fázisban, eltávolítja az ellenfél egyik bábuját.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Mindkét fél döntetlenben állapodik meg.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Vedd el ellenfeled egyik bábuját.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "Az első játékos elveszíti a játékot.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Az első és a második játékos eltávolítja az ellenfél egyik bábuját.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "A második és az első játékos eltávolítja az ellenfél egyik bábuját.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "A repülési fázisba lépve az ellenfeled bármely korongja a tábla bármely üres mezőjére ugorhat.",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Amikor patthelyzet",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Mi történik, ha egyetlen darabot sem lehet mozgatni?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Vége a blokkolt oldal patthelyzeti veszteségével.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Változtassa meg az oldalt a mozgáshoz.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Távolítsd el az ellenfél egyik bábuját, és tedd meg a következő lépést.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Patthelyzet döntetlennel fejezzük be.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Távolítsd el az ellenfél egyik bábuját, és változtasd meg az oldalt a mozgáshoz.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI válasz késleltetési ideje",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "A mesterséges intelligencia jelenleg egy késleltetett válaszfázisban van. Kérjük, várjon egy kicsit a folytatás előtt.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nem távolíthat el egy nem szomszédos darabot.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Patthelyzet esetén az ellenfél a tieddel szomszédos bábuit el lehet távolítani, függetlenül a malomfelállástól.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "Az MCTS egy kezdőbarát algoritmus, amely a különböző mozgások szimulációkon keresztüli feltárásával és értékelésével hoz döntéseket.",
+  "@whatIsMcts": {},
+  "goldenJade": "Arany Jade",
+  "@goldenJade": {},
+  "forestWood": "Forest Wood",
+  "@forestWood": {},
+  "greenMeadow": "Zöld rét",
+  "@greenMeadow": {},
+  "stonyPath": "Köves ösvény",
+  "@stonyPath": {},
+  "midnightBlue": "Éjkék",
+  "@midnightBlue": {},
+  "greenForest": "Zöld erdő",
+  "@greenForest": {},
+  "pastelPink": "Pasztell rózsaszín",
+  "@pastelPink": {},
+  "turquoiseSea": "Türkiz tenger",
+  "@turquoiseSea": {},
+  "violetDream": "Ibolya álom",
+  "@violetDream": {},
+  "mintChocolate": "Mentás csokoládé",
+  "@mintChocolate": {},
+  "skyBlue": "Égszínkék",
+  "@skyBlue": {},
+  "playfulGarden": "Játékos kert",
+  "@playfulGarden": {},
+  "darkMystery": "Sötét rejtély",
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "A Retrográd Analysis algoritmus többértékű retrográd elemzést használ a végjáték-adatbázis felépítéséhez különböző kezdőpozíciókból, majd ezt az adatbázist alkalmazza a játékmenet optimalizálására. Ez a megközelítés az Ultra-Strong megoldások kategóriájába tartozik.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Szeretné megtekinteni az algoritmus felhasználói útmutatóját?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Helyzetelőny jelző megjelenítése",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Használjon tökéletes adatbázist",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Engedélyezze ezt az opciót a hibátlan játékadatbázis használatához, amelyet a legmodernebb algoritmusok generálnak. Ez a funkció integrálja a nyitó és záró stratégiákat az optimális lépések javaslatához. Ez az elsődleges választás azoknak a játékosoknak, akik a játékban a legnagyobb pontosságot keresik. Az adatbázis gondos számítási technikák segítségével készült, és közel tökéletes játékmegoldásokat kínál.\n\nMegjegyzés: Ha az MI nem tud hozzáférni az adatbázishoz, akkor hagyományos algoritmusokhoz fordul a játék döntések meghozatalához. Amikor az adatbázis elérhető, a 'Nehézségi Szint' gyakorlatilag legyőzhetetlenné válik, és az 'MI Gondolkodási Ideje' drasztikusan csökken. Az 'MI Játékstílusa' beállítások közül sokat felülír az adatbázis, mivel az eredményeknek a legmagasabb prioritása van.\n\nTovábbi útmutatóért arra vonatkozóan, hogy hogyan használja ki leginkább ezt a hibátlan adatbázist, kattintson ide.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Háttérkép",
+  "@backgroundImage": {},
+  "whatIsRandom": "Amikor a 'Használja a tökéletes adatbázist' opció nincs engedélyezve, a 'Véletlenszerű' beállítás az AI-t arra készteti, hogy véletlenszerűen mozgassa a bábukat anélkül, hogy bármilyen algoritmust használna a lépések kiválasztására. Ez általában jelentősen gyengébb játékmenetet eredményez. Ezzel szemben, amikor a 'Használja a tökéletes adatbázist' opció engedélyezve van, az AI kizárólag a 'Tökéletes Adatbázisra' támaszkodik a döntéshozatal során, ahelyett, hogy azt hagyományos AI algoritmusokkal keverné. Ebben a módban az AI lépései teljes mértékben az adatbázis tartalmán alapulnak, elkerülve a valós idejű számításokra vagy keresési algoritmusokra való támaszkodást.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Vedd ki az ellenfél korongját(korongjait) a kezéből; aztán az ellenfél következik, hogy helyezzen.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Malomképződéskor a helyezési fázisban",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Vedd ki az ellenfél korongját(korongjait) a tábláról.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Vedd ki az ellenfél korongját(korongjait) a tábláról; aztán az ellenfél következik, hogy helyezzen.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Az ellenfél eltávolítja saját korongját(korongjait) a tábláról.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Helyetted az ellenfél választja ki és távolítja el saját korongját(korongjait) a tábláról, ezzel hatékonyan olyan lépést végez, ami hátrányos saját magára nézve.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Vedd ki az ellenfél korongját(korongjait) a kezéből; aztán te jössz, hogy mozogj.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Vedd ki a korongot(korongokat) az ellenfél kezéből. Ha a többszörös eltávolítás beállítása szerint több korongot kell eltávolítani és az ellenfélnek nincs több korongja a kezében, folytasd az ellenfél korongjainak eltávolítását a tábláról. Aztán te jössz, hogy mozogj. Ha folytatod a malomképzést, továbbra is eltávolíthatod az ellenfél korongjait.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Vedd ki a korongot(korongokat) az ellenfél kezéből. Ha a többszörös eltávolítás beállítása szerint több korongot kell eltávolítani és az ellenfélnek nincs több korongja a kezében, folytasd az ellenfél korongjainak eltávolítását a tábláról. Aztán az ellenfél következik, hogy mozogjon.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Jelölj meg és késleltesd a korongok eltávolítását.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "A helyezési fázisban a korongokat, amelyeket el kell távolítani, megjelölik, és mindkét játékos számára tilos új korongokat helyezni ezekre a pontokra. A mozgási fázisba lépéskor ezeket a megjelölt korongokat egyszerre távolítják el, és a játékosok ezután mozgathatják a korongjaikat ezekre a most üres pontokra.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "A lépések, amelyek meghozhatóak a malomképződés során a helyezési fázisban.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Megjelölt",
+  "@marked": {},
+  "menu": "Menü",
+  "@menu": {},
+  "monochrome": "Monokróm",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "A Képernyőolvasó támogatását az Általános beállításoknál a Hozzáférhetőségi beállítások között kapcsolhatja be.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Számok megjelenítése a korongokon",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Kép mentése",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Elemzési eszköztár megjelenítése",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Elemzési eszköztár hátterének színe",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Elemzési eszköztár ikonjának színe",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Átalakítva.",
+  "@transformed": {},
+  "cannotTransform": "Nem lehet átalakítani.",
+  "@cannotTransform": {},
+  "rotate": "Forgat",
+  "@rotate": {},
+  "horizontalFlip": "HF",
+  "@horizontalFlip": {},
+  "verticalFlip": "VF",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IOF",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Átlátszó Vászon",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ismételt malmok kialakulásának korlátozása",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Egy egyik malomból a másikba áthelyezett bábu nem térhet vissza azonnal az eredeti pontra a következő körben, hogy újra malom alakuljon ki. Először egy másik lépés szükséges.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Egyszeri használatú malom",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Minden malom csak egyszer távolíthatja el az ellenfél egy darabját. Újra megformázhatja, de további eltávolításokhoz nem használható.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "A beállított jelenlegi szabályoknak nincs megfelelő tökéletes adatbázisa. A tökéletes adatbázisról további információkért kattintson ide.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Összpontosítson az útvonalak blokkolására",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "A játék bizonyos fázisaiban részesítse előnyben az ellenfél mozgásának akadályozását a malmok kialakításával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI ezekben a fázisokban törekszik az ellenfél csapdába ejtésére, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a fázisspecifikus stratégia nem akadályozza aktívan az ellenfél malmait.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Bábuképek",
+  "@pieceImage": {},
+  "importColorSettings": "Színbeállítások importálása",
+  "@importColorSettings": {},
+  "exportColorSettings": "Színbeállítások exportálása",
+  "@exportColorSettings": {},
+  "import": "Importálás",
+  "@import": {},
+  "export": "Exportálás",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kérjük, először másolja a JSON formátumú beállításokat a vágólapra.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Vágólapra másolva.",
+  "@copiedToClipboard": {},
+  "imported": "Importálva.",
+  "@imported": {},
+  "boardImage": "Tábla kép",
+  "@boardImage": {},
+  "autumnLeaves": "Őszi levelek",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendás Föld",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetta hatás",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Szeretné a felső eszköztárat teljesen átlátszóvá tenni, amikor egy tábla háttérkép van beállítva?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Engedélyezze a rezgést a játékban",
+  "@vibration": {},
+  "soundTheme": "Hang téma",
+  "@soundTheme": {},
+  "ball": "Labda",
+  "@ball": {},
+  "liquid": "Folyadék",
+  "@liquid": {},
+  "wood": "Fa",
+  "@wood": {},
+  "placeEffectAnimation": "Bábu elhelyezési animációs effektus",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Bábu eltávolítási animációs effektus",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Eszköztár megjelenítése alul",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Tábla sarkának sugara",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Használja a nyitókönyvet",
+  "@useOpeningBook": {},
+  "currentRule": "Jelenlegi",
+  "@currentRule": {},
+  "nineMensMorris": "Malom",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Tizenkét férfi Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Szabálykészlet",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker-malom",
+  "@laskerMorris": {},
+  "oneTimeMill": "Egyszeri Malom",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Engedje meg az AI-nak, hogy az első játékszakaszban a profi emberi játékosok által gyakran használt nyitómozdulatokat alkalmazza. Megjegyzés: Ez a funkció jelenleg csak bizonyos szabálykészletekhez érhető el.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mutassa az előny grafikonját",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Az előnygráf csak akkor kerül megrajzolásra, miután a mesterséges intelligencia lépést tett. Nem kerül megrajzolásra, amikor az emberi játékos lép.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Tiltsd meg a bábuk eltávolítását, amíg minden bábu a táblára nem kerül, majd a malmok száma alapján távolíts el bábukat.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Tiltsd meg a bábuk eltávolítását, amíg minden bábu a táblára nem kerül, majd a malmok száma alapján távolíts el bábukat: ha megegyezik, mindkét fél ugyanannyi bábut távolít el; ha az egyiknek több van, akkor egy bábuval többet távolít el, hogy megmaradjon az egy bábu különbség. Ha csak az egyik alakít ki malmokat, akkor ő két bábut távolít el, a másik pedig egyet. Ha egyik sem alakít ki malmot, mindkét fél egy-egy bábut távolít el.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Válassz egyet a bábuid közül.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Nem te következel.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Megjegyzősáv háttérszíne",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Megjegyzősáv ikon színe",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Megjegyzősáv megjelenítése",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Lépj be a megjegyzési módba",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Biztosan törölni akarod az összes megjegyzést?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM prompt vágólapra másolva.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Kapcsolat megtagadva, a szerver esetleg leállt.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Felderítés sikeres, várakozás a kapcsolatra...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Nincs LAN-kapcsolat",
+  "@noLanConnection": {},
+  "takeScreenshot": "Képernyőkép készítése",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Megszakadt a kapcsolat az ellenféllel.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Visszalépési kérelem",
+  "@takeBackRequest": {},
+  "nothingToShow": "Nincs megjeleníthető tartalom.",
+  "@nothingToShow": {},
+  "stopHosting": "Hosztolás leállítása",
+  "@stopHosting": {},
+  "connectionResetByPeer": "A kapcsolatot a peer visszaállította.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "A kapcsolat szívverés-időtúllépés miatt megszakadt. Kérjük, csatlakozz újra.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Hosztolás indítása",
+  "@startHosting": {},
+  "restartRequestRejected": "Az újraindítási kérés elutasítva.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Nincs kapcsolat LAN-ellenféllel.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM prompt",
+  "@llmPrompt": {},
+  "gameRestarted": "A játék újraindult.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Visszalépés elutasítva.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Biztosan feladod ezt a játékot?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Az ellenfél feladta. Győztél!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Összes megjegyzés törlése",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Csatlakozva, várjuk az ellenfél lépését...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Hálózati állapot: kapcsolat bontva",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Visszalépési kérés elküldve az ellenfélnek.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Lehet, hogy az ellenfél kilépett a játékból",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Sikeresen csatlakoztál a hoszthoz.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "A kapcsolat megszakadt: heartbeat-timeout",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Nem található hoszt.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Feladás megerősítése",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "A játék hosztolása elindult, várjuk a csatlakozó játékosokat...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Időtúllépés, instabil hálózati kapcsolat.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Nincs elérhető LLM prompt.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Feladtad. Véget ért a játék.",
+  "@youResignedGameOver": {},
+  "serverIp": "Szerver IP",
+  "@serverIp": {},
+  "confirmClear": "Törlés megerősítése",
+  "@confirmClear": {},
+  "opponentSTurn": "Az ellenfél következik.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Várakozás klienskapcsolatra...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "A visszalépési kérés elutasítva vagy sikertelen.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Szöveg hozzáadása",
+  "@addText": {},
+  "exitAnnotationMode": "Kilépés a megjegyzési módból",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Írd be a megjegyzésedet",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Újracsatlakozás folyamatban...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Újraindítási kérelem elküldve. Várakozás az ellenfél válaszára...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "A szerver le van állítva.",
+  "@serverIsStopped": {},
+  "restartRequest": "Újraindítási kérelem",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Nem kérhetsz visszalépést, ha nem te következel.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "A visszalépés elfogadva.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Helyi hálózati beállítások",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Sikeresen újrakapcsolódva!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "A kép mentése a galériába sikertelen.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Az ellenfél kérte a játék újraindítását. Elfogadod?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Te következel.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Nem sikerült újracsatlakozni, kérjük, indítsd újra a játékot.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Hoszt",
+  "@host": {},
+  "join": "Csatlakozás",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Érvénytelen IP-cím.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Érvénytelen port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Csatlakozás: próbálkozás {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Nem sikerült csatlakozni: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Nem sikerült elindítani a hosztolást: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Hoszt felfedezve: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Leállítás",
+  "@stop": {},
+  "discover": "Felfedezés",
+  "@discover": {},
+  "connect": "Csatlakozás",
+  "@connect": {},
+  "clientConnected": "Kliens csatlakozott: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Felfedezés: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Újracsatlakozás ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Csatlakozva",
+  "@connected": {},
+  "delete": "Törlés",
+  "@delete": {},
+  "ancientEgypt": "Árpád-kori Örökség",
+  "@ancientEgypt": {},
+  "gothicIce": "Mátyás-kori Gótika",
+  "@gothicIce": {},
+  "riceField": "Búzamező",
+  "@riceField": {},
+  "chinesePorcelain": "Herendi Porcelán",
+  "@chinesePorcelain": {},
+  "desertDusk": "Pusztai Alkony",
+  "@desertDusk": {},
+  "precisionCraft": "Kézműves Elegancia",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Matyó Hímzés",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Kárpát Örökség",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Monarchikus Pompa",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Ajka Kristály",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Pusztai Hajnal",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmónia és Egyensúly",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Paprikás Fűszer",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Zsolnay Mozaik",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Busójárás Szellem",
+  "@carnivalSpirit": {},
+  "custom": "Sajátos",
+  "@custom": {},
+  "spiceMarket": "Paprika Piac",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Húzd el az ujjad a fiók megnyitásához",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Játékadatok megjelenítése a képernyőképeken",
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Emberi időkorlát",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Nincs időkorlát az emberi lépésekre",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Időtúllépéses vesztés lesz alkalmazva az emberi játékosra",
+  "@timeoutLoseWillBeApplied": {},
+  "identifyingBoard": "Játéktábla azonosítása...",
+  "@identifyingBoard": {},
+  "youCanEnterAnyModelName": "Bármilyen modell nevét megadhatod.",
+  "@youCanEnterAnyModelName": {},
+  "boardPositionAppliedFenCopiedToClipboard": "A játéktábla pozíciója alkalmazva. A FEN a vágólapra másolva.",
+  "@boardPositionAppliedFenCopiedToClipboard": {},
+  "suggestionTryTakingAClearerPictureOfTheBoard": "Javaslat: próbálj élesebb képet készíteni a játéktábláról.",
+  "@suggestionTryTakingAClearerPictureOfTheBoard": {},
+  "llmPromptTemplate": "LLM prompt sablon",
+  "@llmPromptTemplate": {},
+  "noValidBoardDetected": "Nem található érvényes játéktábla.",
+  "@noValidBoardDetected": {},
+  "selectingImageFromAlbum": "Kép kiválasztása az albumból...",
+  "@selectingImageFromAlbum": {},
+  "configurePromptTemplate": "Prompt-sablon konfigurálása",
+  "@configurePromptTemplate": {},
+  "editPromptTemplateForLlmAnalysis": "Prompt-sablon szerkesztése LLM elemzéshez",
+  "@editPromptTemplateForLlmAnalysis": {},
+  "failedToGenerateFenFromRecognizedBoard": "A felismert játéktáblából nem sikerült FEN-t generálni.",
+  "@failedToGenerateFenFromRecognizedBoard": {},
+  "outputInCurrentLanguage": "Kimenet a jelenlegi nyelven",
+  "@outputInCurrentLanguage": {},
+  "commonBaseUrls": "Gyakori Base URL‑ek",
+  "@commonBaseUrls": {},
+  "viewCommonModels": "Gyakori modellek megtekintése",
+  "@viewCommonModels": {},
+  "recognitionParametersUpdated": "A felismerési paraméterek frissítve.",
+  "@recognitionParametersUpdated": {},
+  "whiteSMove": "Fehér következik",
+  "@whiteSMove": {},
+  "resetToDefaults": "Alapértékek visszaállítása",
+  "@resetToDefaults": {},
+  "photoShoot": "Fotózás",
+  "@photoShoot": {},
+  "failedToApplyRecognizedBoardPosition": "Nem sikerült alkalmazni a felismert játéktábla‑pozíciót.",
+  "@failedToApplyRecognizedBoardPosition": {},
+  "llmPromptContent": "LLM prompt tartalma",
+  "@llmPromptContent": {},
+  "llmNotConfiguredPleaseCheckYourSettings": "Az LLM nincs konfigurálva. Kérlek, ellenőrizd a beállításaidat.",
+  "@llmNotConfiguredPleaseCheckYourSettings": {},
+  "setProviderModelApiKeyAndBaseUrl": "Szolgáltató, modell, API Key és Base URL beállítása",
+  "@setProviderModelApiKeyAndBaseUrl": {},
+  "llmConfiguration": "LLM konfiguráció",
+  "@llmConfiguration": {},
+  "configureLlmProvider": "LLM szolgáltató konfigurálása",
+  "@configureLlmProvider": {},
+  "llmPromptTemplateHeader": "LLM prompt sablon fejléc",
+  "@llmPromptTemplateHeader": {},
+  "noPiecesWereRecognizedInTheImagePleaseTryAgain": "A képen egy bábú sem ismerhető fel. Kérlek, próbáld újra.",
+  "@noPiecesWereRecognizedInTheImagePleaseTryAgain": {},
+  "recognizeBoardFromImage": "Játéktábla felismerése képből",
+  "@recognizeBoardFromImage": {},
+  "viewTips": "Tippek megtekintése",
+  "@viewTips": {},
+  "applyToBoard": "Játéktáblára alkalmaz",
+  "@applyToBoard": {},
+  "adjustBoardArea": "Játéktábla területének beállítása",
+  "@adjustBoardArea": {},
+  "viewCommonUrls": "Gyakori URL‑ek megtekintése",
+  "@viewCommonUrls": {},
+  "colorAnalysisFailed": "Színanalízis sikertelen!",
+  "@colorAnalysisFailed": {},
+  "analyzingGameBoardImage": "Játéktábla képének elemzése...",
+  "@analyzingGameBoardImage": {},
+  "selectFromAlbum": "Kiválasztás az albumból",
+  "@selectFromAlbum": {},
+  "noBoardPointDetected": "Nem észlelhető játéktábla pont!",
+  "@noBoardPointDetected": {},
+  "ifLeftEmptyDefaultTemplateWillBeUsed": "Ha üresen hagyod, az alapértelmezett sablon kerül használatra",
+  "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
+  "llmConfig": "LLM konfiguráció",
+  "@llmConfig": {},
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Biztosan vissza szeretnéd állítani a prompt‑sablonokat az alapértelmezett értékekre?",
+  "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
+  "llmPromptTemplateFooter": "LLM prompt sablon lábléc",
+  "@llmPromptTemplateFooter": {},
+  "loadingResponse": "Válasz betöltése...",
+  "@loadingResponse": {},
+  "applyThisResultToBoard": "Eredmény alkalmazása játéktáblára",
+  "@applyThisResultToBoard": {},
+  "takingPicture": "Kép készítése...",
+  "@takingPicture": {},
+  "pleaseSelectAGameBoardImageToIdentify": "Kérlek, válassz ki egy játéktábla képét azonosításhoz.",
+  "@pleaseSelectAGameBoardImageToIdentify": {},
+  "identificationResults": "Azonosítás eredményei",
+  "@identificationResults": {},
+  "analyzeTheMovesAndProvideInsights": "Elemezd a lépéseket és adj betekintést.",
+  "@analyzeTheMovesAndProvideInsights": {},
+  "getApiKey": "API Key beszerzése",
+  "@getApiKey": {},
+  "entireRecognitionProcessFailedToComplete": "Az egész felismerési folyamat nem fejeződött be.",
+  "@entireRecognitionProcessFailedToComplete": {},
+  "boardRecognitionResult": "Játéktábla felismerési eredménye",
+  "@boardRecognitionResult": {},
+  "askLlm": "Kérdezz az LLM‑től",
+  "@askLlm": {},
+  "boardDetectionFailed": "A játéktábla észlelése sikertelen!",
+  "@boardDetectionFailed": {},
+  "noBoardPointDetectedCannotIdentifyPiece": "Nem észlelhető egyetlen játéktábla pont sem, nem lehet azonosítani a bábut!",
+  "@noBoardPointDetectedCannotIdentifyPiece": {},
+  "copyFen": "FEN másolása",
+  "@copyFen": {},
+  "commonlyUsedModels": "Gyakran használt modellek",
+  "@commonlyUsedModels": {},
+  "apiKeyOptional": "API Key (opcionális)",
+  "@apiKeyOptional": {},
+  "noImageSelected": "Nincs kép kiválasztva",
+  "@noImageSelected": {},
+  "blackSMove": "Fekete következik",
+  "@blackSMove": {},
+  "llm": "Nagy nyelvi modell",
+  "@llm": {},
+  "llmProvider": "Szolgáltató",
+  "@llmProvider": {},
+  "baseUrl": "Alap URL",
+  "@baseUrl": {},
+  "model": "Modell",
+  "@model": {},
+  "temperature": "Hőmérséklet",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Parancs fogadva! A mesterséges intelligencia feldolgoz...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Mély gondolkodás folyamatban, kérjük, várjon...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Hamarosan bemutatjuk...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Felismerési paraméterek",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Paraméterek beállítása a felismerés pontosságának javításához",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Paraméterek mentése",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nem sikerült elindítani a képfelismerést: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "A képfelismerés sikertelen: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Alkalmazott állás {whiteCount} fehér és {blackCount} fekete bábuval",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "int",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN a vágólapra másolva)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "A felismerés sikertelen: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  },
+  "myRating": "Értékelésem",
+  "@myRating": {},
+  "gamesPlayed": "Játszott játékok",
+  "@gamesPlayed": {},
+  "wins": "Győzelmek",
+  "@wins": {},
+  "losses": "Vesztések",
+  "@losses": {},
+  "draws": "Döntetlenek",
+  "@draws": {},
+  "lastUpdated": "Utoljára frissítve",
+  "@lastUpdated": {},
+  "format": "Formátum:",
+  "@format": {},
+  "resetStatistics": "Statisztika visszaállítása",
+  "@resetStatistics": {},
+  "drawRate": "Döntetlen arány",
+  "@drawRate": {},
+  "lossRate": "Vesztési arány",
+  "@lossRate": {},
+  "aiStatistics": "MI statisztika",
+  "@aiStatistics": {},
+  "enableStatistics": "Statisztika engedélyezése",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Engedélyezés esetén a játékeredmények rögzítésre kerülnek a statisztikában. A visszalépést tartalmazó játékok azonban nem kerülnek rögzítésre. Letiltás esetén a statisztikagyűjtés szünetel.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Ez visszaállítja az összes játékstatisztikát. Ez a művelet nem vonható vissza.",
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "A tábla belső gyűrűjének mérete",
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Tábla árnyéka",
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Csapdaészlelés",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Elemzés közben emeld ki a csapdalépéseket vastag körökkel és nyilakkal.",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Csapda van. Csapdalépések: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "custodianCapture": "Szomorú elfogás",
+  "@custodianCapture": {},
+  "custodianCaptureDescription": "Csatlakoztassa az ellenfél egyik darabját kettő között egyenes vonalban, hogy elfogja.",
+  "@custodianCaptureDescription": {},
+  "custodianCaptureEnable": "Engedje meg a szélsőséges elfogást",
+  "@custodianCaptureEnable": {},
+  "interventionCapture": "Beavatkozás",
+  "@interventionCapture": {},
+  "interventionCaptureDescription": "Haladjon az ellenfél két darabja közötti üres pontba, hogy mindkettőt elfogja.",
+  "@interventionCaptureDescription": {},
+  "interventionCaptureEnable": "Engedélyezze a beavatkozást",
+  "@interventionCaptureEnable": {},
+  "leapCapture": "Ugrásfogás",
+  "@leapCapture": {},
+  "leapCaptureDescription": "Fogja meg azáltal, hogy átugor egy szomszédos ellenfél darabját az üres pontba.",
+  "@leapCaptureDescription": {},
+  "leapCaptureEnable": "Engedje meg az ugrás elfogását",
+  "@leapCaptureEnable": {},
+  "captureApplicableLines": "Alkalmazható vonalak",
+  "@captureApplicableLines": {},
+  "captureSquareEdges": "A tér szélén",
+  "@captureSquareEdges": {},
+  "captureCrossLines": "Az ortogonális vonalak mentén átlépve a négyzetet",
+  "@captureCrossLines": {},
+  "captureDiagonalLines": "Átlós vonalak mentén, átlépve a négyzetet",
+  "@captureDiagonalLines": {},
+  "captureExecutionPhases": "Végrehajtási szakasz",
+  "@captureExecutionPhases": {},
+  "capturePiecesCondition": "Elérhetőség a mozgó szakaszban a fennmaradó darabok alapján",
+  "@capturePiecesCondition": {},
+  "capturePiecesConditionUnlimited": "Nincs korlátozás",
+  "@capturePiecesConditionUnlimited": {},
+  "capturePiecesConditionSelfLeqThree": "Elérhető, ha három vagy kevesebb darabja van",
+  "@capturePiecesConditionSelfLeqThree": {}
 }

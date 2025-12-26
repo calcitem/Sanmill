@@ -18,6 +18,14 @@ class SoundManager {
 
   String? soundThemeName = 'ball';
 
+  // Use a shared audio context so BGM and SFX can mix instead of interrupting
+  // each other (some platforms will stop the current audio when audio focus or
+  // the audio session is reconfigured).
+  static final AudioContext _mixWithOthersAudioContext = AudioContextConfig(
+    focus: AudioContextConfigFocus.mixWithOthers,
+  ).build();
+  static bool _isGlobalAudioContextConfigured = false;
+
   final Map<String, Map<Sound, String>> _soundFiles =
       <String, Map<Sound, String>>{
         'ball': <Sound, String>{
@@ -55,13 +63,31 @@ class SoundManager {
   // Map of Sound to SoundPlayer instances, which include the player and fileName.
   final Map<Sound, SoundPlayer> _players = <Sound, SoundPlayer>{};
 
+  AudioPlayer? _backgroundMusicPlayer;
+  String? _backgroundMusicPath;
+
   bool _isTemporaryMute = false;
 
   bool _allSoundsLoaded = false;
 
   static const String _logTag = "[audio]";
 
+  Future<void> _ensureGlobalAudioContextConfigured() async {
+    if (_isGlobalAudioContextConfigured) {
+      return;
+    }
+
+    try {
+      await AudioPlayer.global.setAudioContext(_mixWithOthersAudioContext);
+      _isGlobalAudioContextConfigured = true;
+      logger.t("$_logTag Global audio context configured: mixWithOthers");
+    } catch (e) {
+      logger.e("$_logTag Failed to set global audio context: $e");
+    }
+  }
+
   Future<void> loadSounds() async {
+    await _ensureGlobalAudioContextConfigured();
     soundThemeName = DB().generalSettings.soundTheme?.name ?? 'ball';
 
     final Map<Sound, String>? sounds = _soundFiles[soundThemeName];
@@ -75,6 +101,7 @@ class SoundManager {
         // Adjust the file path by replacing 'assets/' with ''.
         final String fileName = sounds[sound]!.replaceFirst('assets/', '');
         final AudioPlayer player = AudioPlayer();
+        await player.setAudioContext(_mixWithOthersAudioContext);
         await player.setReleaseMode(ReleaseMode.stop);
         // No need to set the source here; we'll set it and play immediately in playTone.
         _players[sound] = SoundPlayer(player, fileName);
@@ -83,6 +110,66 @@ class SoundManager {
     } catch (e) {
       logger.e("Failed to load sound: $e");
       _allSoundsLoaded = false;
+    }
+  }
+
+  Future<void> startBackgroundMusic() async {
+    await _ensureGlobalAudioContextConfigured();
+    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+      return;
+    }
+
+    // Treat background music as part of the overall in-game audio setting.
+    if (!DB().generalSettings.toneEnabled) {
+      await stopBackgroundMusic();
+      return;
+    }
+
+    if (!DB().generalSettings.backgroundMusicEnabled) {
+      await stopBackgroundMusic();
+      return;
+    }
+
+    final String filePath = DB().generalSettings.backgroundMusicFilePath;
+    if (filePath.isEmpty) {
+      await stopBackgroundMusic();
+      return;
+    }
+
+    assert(
+      filePath.isNotEmpty,
+      'backgroundMusicFilePath must not be empty when enabled',
+    );
+
+    // Avoid restarting if already playing the same file.
+    if (_backgroundMusicPlayer != null &&
+        _backgroundMusicPath == filePath &&
+        _backgroundMusicPlayer!.state == PlayerState.playing) {
+      return;
+    }
+
+    try {
+      _backgroundMusicPlayer ??= AudioPlayer();
+      await _backgroundMusicPlayer!.setAudioContext(_mixWithOthersAudioContext);
+      _backgroundMusicPath = filePath;
+      await _backgroundMusicPlayer!.setReleaseMode(ReleaseMode.loop);
+      await _backgroundMusicPlayer!.stop();
+      await _backgroundMusicPlayer!.play(DeviceFileSource(filePath));
+      logger.t("$_logTag Background music started: $filePath");
+    } catch (e) {
+      logger.e("$_logTag Error starting background music: $e");
+    }
+  }
+
+  Future<void> stopBackgroundMusic() async {
+    try {
+      if (_backgroundMusicPlayer == null) {
+        return;
+      }
+      await _backgroundMusicPlayer!.stop();
+      logger.t("$_logTag Background music stopped");
+    } catch (e) {
+      logger.e("$_logTag Error stopping background music: $e");
     }
   }
 
@@ -132,6 +219,10 @@ class SoundManager {
       soundPlayer.player.dispose();
     });
     _players.clear();
+
+    _backgroundMusicPlayer?.dispose();
+    _backgroundMusicPlayer = null;
+    _backgroundMusicPath = null;
   }
 }
 

@@ -353,7 +353,8 @@ class _AiChatDialogState extends State<AiChatDialog> {
   void _clearHistory() {
     setState(() {
       _chatService.sessionManager.clearSession();
-      _isInitialized = false; // Reset to allow welcome message to be shown again
+      _isInitialized =
+          false; // Reset to allow welcome message to be shown again
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
