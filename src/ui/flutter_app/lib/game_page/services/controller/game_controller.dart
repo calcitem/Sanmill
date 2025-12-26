@@ -101,7 +101,7 @@ class GameController {
   @visibleForTesting
   static GameController instance = GameController._();
 
-  /// S.of(context).starts up the controller. It will initialize the audio subsystem and heat the engine.
+  /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> startController() async {
     if (_isInitialized) {
       return;
@@ -111,7 +111,9 @@ class GameController {
     await SoundManager().startBackgroundMusic();
 
     _isInitialized = true;
-    logger.i("$_logTag initialized");
+    // Mark controller as ready to accept user input
+    isControllerReady = true;
+    logger.i("$_logTag initialized and ready");
   }
 
   /// Recompute LAN turn state from the authoritative board state and update UI.
