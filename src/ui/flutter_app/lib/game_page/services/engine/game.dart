@@ -19,12 +19,43 @@ class Game {
 
   static const String _logTag = "[game]";
 
+  bool _isAiForColor(PieceColor color) {
+    switch (color) {
+      case PieceColor.white:
+      case PieceColor.black:
+        break;
+      case PieceColor.none:
+      case PieceColor.marked:
+      case PieceColor.nobody:
+      case PieceColor.draw:
+        return false;
+    }
+
+    switch (_gameMode) {
+      case GameMode.humanVsAi:
+      case GameMode.testViaLAN:
+        // White is AI when aiMovesFirst is true, otherwise Black is AI.
+        if (color == PieceColor.white) {
+          return DB().generalSettings.aiMovesFirst;
+        }
+        return !DB().generalSettings.aiMovesFirst;
+      case GameMode.aiVsAi:
+        return true;
+      case GameMode.humanVsHuman:
+      case GameMode.humanVsLAN:
+      case GameMode.humanVsCloud:
+      case GameMode.setupPosition:
+      case GameMode.puzzle:
+        return false;
+    }
+  }
+
   bool get isAiSideToMove {
     assert(
       GameController().position.sideToMove == PieceColor.white ||
           GameController().position.sideToMove == PieceColor.black,
     );
-    return getPlayerByColor(GameController().position.sideToMove).isAi;
+    return _isAiForColor(GameController().position.sideToMove);
   }
 
   bool get isHumanToMove => !isAiSideToMove;
@@ -33,42 +64,8 @@ class Game {
   int? blurIndex;
   int? removeIndex;
 
-  final List<Player> players = <Player>[
-    Player(color: PieceColor.white, isAi: false),
-    Player(color: PieceColor.black, isAi: true),
-  ];
-
   Player getPlayerByColor(PieceColor color) {
-    if (color == PieceColor.draw) {
-      return Player(color: PieceColor.draw, isAi: false);
-    } else if (color == PieceColor.marked) {
-      return Player(color: PieceColor.marked, isAi: false);
-    } else if (color == PieceColor.nobody) {
-      return Player(color: PieceColor.nobody, isAi: false);
-    } else if (color == PieceColor.none) {
-      return Player(color: PieceColor.none, isAi: false);
-    }
-
-    return players.firstWhere((Player player) => player.color == color);
-  }
-
-  void reverseWhoIsAi() {
-    if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
-      for (final Player player in players) {
-        player.isAi = !player.isAi;
-      }
-    } else if (GameController().gameInstance.gameMode ==
-        GameMode.humanVsHuman) {
-      final bool whiteIsAi = getPlayerByColor(PieceColor.white).isAi;
-      final bool blackIsAi = getPlayerByColor(PieceColor.black).isAi;
-      if (whiteIsAi == blackIsAi) {
-        getPlayerByColor(GameController().position.sideToMove).isAi = true;
-      } else {
-        for (final Player player in players) {
-          player.isAi = false;
-        }
-      }
-    }
+    return Player(color: color, isAi: _isAiForColor(color));
   }
 
   late GameMode _gameMode;
@@ -79,15 +76,9 @@ class Game {
     _gameMode = type;
 
     logger.i("$_logTag Engine type: $type");
-
-    final Map<PieceColor, bool> whoIsAi = type.whoIsAI;
-    for (final Player player in players) {
-      player.isAi = whoIsAi[player.color]!;
-    }
-
     logger.i(
-      "$_logTag White is AI? ${getPlayerByColor(PieceColor.white).isAi}\n"
-      "$_logTag Black is AI? ${getPlayerByColor(PieceColor.black).isAi}\n",
+      "$_logTag White is AI? ${_isAiForColor(PieceColor.white)}\n"
+      "$_logTag Black is AI? ${_isAiForColor(PieceColor.black)}\n",
     );
   }
 

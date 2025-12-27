@@ -843,6 +843,7 @@ class GameController {
   Future<EngineResponse> engineToGo(
     BuildContext context, {
     required bool isMoveNow,
+    PieceColor? forcedSideToMove,
   }) async {
     const String tag = "[engineToGo]";
 
@@ -875,7 +876,7 @@ class GameController {
     final bool isGameRunning = position.winner == PieceColor.nobody;
 
     // If isMoveNow but it's actually humanToMove, skip
-    if (isMoveNow && gameInstance.isHumanToMove) {
+    if (isMoveNow && gameInstance.isHumanToMove && forcedSideToMove == null) {
       return const EngineResponseSkip();
     }
 
@@ -921,7 +922,10 @@ class GameController {
 
     // Start AI's timer when AI starts thinking.
     // This ensures the countdown appears during AI's turn.
-    if (gameInstance.isAiSideToMove && gameMode == GameMode.humanVsAi) {
+    final bool isEngineSideToMove =
+        gameInstance.isAiSideToMove ||
+        (forcedSideToMove != null && position.sideToMove == forcedSideToMove);
+    if (isEngineSideToMove && gameMode == GameMode.humanVsAi) {
       // Start timer only if AI has a time limit (moveTime > 0).
       // When moveTime is 0, AI has unlimited thinking time.
       PlayerTimer().start();
@@ -950,7 +954,9 @@ class GameController {
         );
       }
 
-      while ((gameInstance.isAiSideToMove &&
+      while (((gameInstance.isAiSideToMove ||
+                  (forcedSideToMove != null &&
+                      position.sideToMove == forcedSideToMove)) &&
               (isGameRunning || isAutoRestart())) &&
           isControllerActive) {
         if (gameMode == GameMode.aiVsAi) {
@@ -1069,7 +1075,7 @@ class GameController {
 
   Future<void> moveNow(BuildContext context) async {
     const String tag = "[engineToGo]";
-    bool reversed = false;
+    PieceColor? forcedSideToMove;
 
     loadedGameFilenamePrefix = null;
 
@@ -1094,11 +1100,9 @@ class GameController {
     }
 
     if (gameInstance.isHumanToMove) {
-      logger.i("$tag Human to Move. Temporarily swap AI and Human roles.");
-      //return rootScaffoldMessengerKey.currentState!
-      //    .showSnackBarClear(S.of(context).notAIsTurn);
-      gameInstance.reverseWhoIsAi();
-      reversed = true;
+      // Allow "Move Now" to play a move for the side to move even when this
+      // side is configured as Human (e.g., in Human vs Human mode).
+      forcedSideToMove = position.sideToMove;
     }
 
     // Cache localized strings before async operations to avoid BuildContext usage across async gaps
@@ -1112,7 +1116,7 @@ class GameController {
     // If AI is already thinking, just send a soft stop to fetch the
     // current best move from the ongoing search, and return without
     // spawning another engineToGo loop.
-    if (!reversed && isEngineRunning) {
+    if (forcedSideToMove == null && isEngineRunning) {
       final bool aiThinking = await engine.isThinking();
       if (aiThinking) {
         await engine.stopSoft();
@@ -1129,7 +1133,11 @@ class GameController {
       if (!context.mounted) {
         return;
       }
-      switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
+      switch (await engineToGo(
+        context,
+        isMoveNow: isEngineRunning,
+        forcedSideToMove: forcedSideToMove,
+      )) {
         case EngineResponseOK():
         case EngineGameIsOver():
           gameResultNotifier.showResult(force: true);
@@ -1151,9 +1159,6 @@ class GameController {
           break;
       }
     } finally {
-      if (reversed) {
-        gameInstance.reverseWhoIsAi();
-      }
       _isMoveNowInProgress = false;
     }
   }
