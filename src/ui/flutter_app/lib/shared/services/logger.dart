@@ -3,9 +3,31 @@
 
 // logger.dart
 
+import 'dart:collection';
+
 import 'package:logger/logger.dart';
 
 import 'environment_config.dart';
+
+class MemoryOutput extends LogOutput {
+  final int bufferSize;
+  final ListQueue<OutputEvent> _buffer;
+
+  MemoryOutput({this.bufferSize = 4000})
+    : _buffer = ListQueue<OutputEvent>(bufferSize);
+
+  @override
+  void output(OutputEvent event) {
+    if (_buffer.length >= bufferSize) {
+      _buffer.removeFirst();
+    }
+    _buffer.add(event);
+  }
+
+  List<OutputEvent> get logs => _buffer.toList();
+}
+
+final MemoryOutput memoryOutput = MemoryOutput();
 
 int _clampLogLevel(int requested) {
   if (requested < 0) {
@@ -18,5 +40,6 @@ int _clampLogLevel(int requested) {
 }
 
 final Logger logger = Logger(
+  output: MultiOutput([ConsoleOutput(), memoryOutput]),
   level: Level.values[_clampLogLevel(EnvironmentConfig.logLevel)],
 );

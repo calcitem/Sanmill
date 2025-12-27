@@ -85,8 +85,7 @@ class AiChatService {
       // Build comprehensive system prompt
       final StringBuffer prompt = StringBuffer();
 
-      prompt.writeln(
-        '''
+      prompt.writeln('''
 You are an expert Nine Men's Morris (Mill) game assistant with deep knowledge of game strategy, tactics, and variants. Your role is to provide context-aware, strategic advice based on the current game state.
 
 CURRENT GAME STATE:
@@ -95,8 +94,7 @@ CURRENT GAME STATE:
 - Game Phase: $phase
 - Current Action: $action
 - White: $whitePiecesOnBoard on board, $whitePiecesInHand in hand
-- Black: $blackPiecesOnBoard on board, $blackPiecesInHand in hand''',
-      );
+- Black: $blackPiecesOnBoard on board, $blackPiecesInHand in hand''');
 
       // Add move history if available
       if (moveHistory.isNotEmpty) {

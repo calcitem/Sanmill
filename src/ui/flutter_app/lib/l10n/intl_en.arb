@@ -3707,5 +3707,13 @@
     "aiChatCleared": "Chat history cleared",
     "@aiChatCleared": {
         "description": "Message shown after clearing chat history"
+    },
+    "logs": "Logs",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "Download Logs",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
     }
 }
