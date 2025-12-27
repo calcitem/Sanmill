@@ -5662,5 +5662,33 @@
   "capturePiecesConditionUnlimited": "No restriction",
   "@capturePiecesConditionUnlimited": {},
   "capturePiecesConditionSelfLeqThree": "Available when you have 3 or fewer pieces",
-  "@capturePiecesConditionSelfLeqThree": {}
+  "@capturePiecesConditionSelfLeqThree": {},
+  "logViewerTitle": "Logs",
+  "@logViewerTitle": {
+    "description": "Title for the in-app log viewer page"
+  },
+  "logViewerPrivacyHint": "Logs may contain sensitive information. Please review before sharing.",
+  "@logViewerPrivacyHint": {
+    "description": "Privacy hint shown in the in-app log viewer"
+  },
+  "logViewerFilterHint": "Filter (substring match)",
+  "@logViewerFilterHint": {
+    "description": "Hint text for the log filter input"
+  },
+  "logViewerAutoScroll": "Auto-scroll",
+  "@logViewerAutoScroll": {
+    "description": "Tooltip for the auto-scroll toggle"
+  },
+  "logViewerClear": "Clear logs",
+  "@logViewerClear": {
+    "description": "Tooltip for clearing in-app logs"
+  },
+  "logViewerEmpty": "No logs yet.",
+  "@logViewerEmpty": {
+    "description": "Shown when the in-app log buffer is empty"
+  },
+  "logViewerCleared": "Logs cleared.",
+  "@logViewerCleared": {
+    "description": "Snackbar message after clearing logs"
+  }
 }
