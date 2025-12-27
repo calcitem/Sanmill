@@ -31,6 +31,7 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
+import 'logs_page.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
 part 'dialogs/use_perfect_database_dialog.dart';
@@ -933,6 +934,13 @@ class GeneralSettingsPage extends StatelessWidget {
               value: generalSettings.isAutoRestart,
               onChanged: (bool val) => _setIsAutoRestart(generalSettings, val),
               titleString: S.of(context).isAutoRestart,
+            ),
+            SettingsListTile(
+              key: const Key('general_settings_page_settings_card_misc_logs'),
+              titleString: S.of(context).logs,
+              onTap: () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const LogsPage())),
             ),
           ],
         ),
