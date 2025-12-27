@@ -833,7 +833,7 @@ class GameController {
       boardSemanticsNotifier.updateSemantics();
 
       try {
-        logger.t("$tag Searching..., isMoveNow: $isMoveNow");
+        logger.i("$tag Searching..., isMoveNow: $isMoveNow");
 
         if (position.pieceOnBoardCount[PieceColor.black]! > 0) {
           isEngineInDelay = true;
