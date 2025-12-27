@@ -8,3 +8,4 @@
 *.sh
 *.pl
 !ensure_flutter.sh
+!search-commit-message.py
