@@ -107,8 +107,22 @@ class GameController {
       return;
     }
 
+    // Block user interaction until both UI resources and the native engine
+    // are ready. Without this, the user can make the first move while the
+    // engine is still starting up, which can make the AI appear "stuck"
+    // (no response after the human's first move, and Move Now does nothing).
+    isControllerReady = false;
+
     await SoundManager().loadSounds();
     await SoundManager().startBackgroundMusic();
+
+    // Warm up the engine before enabling input so the first AI reply is
+    // always available immediately after the human's first move.
+    //
+    // NOTE: The engine internally de-duplicates concurrent startup calls.
+    if (gameInstance.gameMode != GameMode.humanVsLAN) {
+      await engine.startup();
+    }
 
     _isInitialized = true;
     // Mark controller as ready to accept user input
