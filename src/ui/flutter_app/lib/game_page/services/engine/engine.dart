@@ -54,7 +54,7 @@ class Engine {
       return;
     }
 
-    logger.t("$_logTag send: $command");
+    logger.i("$_logTag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
@@ -146,6 +146,10 @@ class Engine {
 
     bool softWait = false;
     final bool currentlyThinking = await isThinking();
+
+    logger.i(
+      "$_logTag search() called. moveNow: $moveNow, currentlyThinking: $currentlyThinking",
+    );
 
     if (moveNow && currentlyThinking) {
       // Soft-stop for Move Now while thinking: do not bump epoch
@@ -248,6 +252,7 @@ class Engine {
         }
         await _send(fen);
         await _send("go");
+        logger.i("$_logTag Sent 'go' command to engine.");
       }
     } else {
       logger.t("$_logTag Move now");
@@ -255,11 +260,15 @@ class Engine {
 
     String? response;
     for (int attempt = 0; attempt < 2; attempt++) {
+      logger.i(
+        "$_logTag Waiting for bestmove/nobestmove (attempt $attempt)...",
+      );
       response = await _waitResponse(
         <String>["bestmove", "nobestmove"],
         expectedEpoch: currentEpoch,
         disableTimeout: softWait,
       );
+      logger.i("$_logTag _waitResponse returned: $response");
 
       // If the engine restarted mid-wait (uciok seen), re-send position and go once
       if (_sawUciokDuringWait) {
@@ -379,7 +388,9 @@ class Engine {
     // current iteration before producing a stable bestmove.
     final bool enforceTimeout = !disableTimeout || EnvironmentConfig.devMode;
     if (enforceTimeout && times > timeLimit) {
-      logger.t("$_logTag Timeout. sleep = $sleep, times = $times");
+      logger.w(
+        "$_logTag Timeout. sleep = $sleep, times = $times, limit = $timeLimit",
+      );
 
       // Note:
       // Do not throw exception in the production environment here.
@@ -393,6 +404,10 @@ class Engine {
     }
 
     final String? response = await _read();
+
+    if (response != null && response.isNotEmpty) {
+      logger.i("$_logTag read: $response");
+    }
 
     if (response != null) {
       // If we encounter 'uciok' while waiting for other prefixes, record it
