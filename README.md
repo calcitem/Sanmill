@@ -1,5 +1,8 @@
 ## Overview
 
+[![Run in Smithery](https://smithery.ai/badge/skills/calcitem)](https://smithery.ai/skills?ns=calcitem&utm_source=github&utm_medium=badge)
+
+
 [![Graphic](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
 
 <a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
