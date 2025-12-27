@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "پس منظر موسیقی",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "مقامی آڈیو فائل کو پس منظر موسیقی کے طور پر چلائیں",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "پس منظر موسیقی فائل",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "پس منظر موسیقی صاف کریں",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "موسیقی فائلیں",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "واپس لیتے وقت خاموش رہیں",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

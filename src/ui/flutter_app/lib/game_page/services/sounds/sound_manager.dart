@@ -55,6 +55,9 @@ class SoundManager {
   // Map of Sound to SoundPlayer instances, which include the player and fileName.
   final Map<Sound, SoundPlayer> _players = <Sound, SoundPlayer>{};
 
+  AudioPlayer? _backgroundMusicPlayer;
+  String? _backgroundMusicPath;
+
   bool _isTemporaryMute = false;
 
   bool _allSoundsLoaded = false;
@@ -83,6 +86,64 @@ class SoundManager {
     } catch (e) {
       logger.e("Failed to load sound: $e");
       _allSoundsLoaded = false;
+    }
+  }
+
+  Future<void> startBackgroundMusic() async {
+    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+      return;
+    }
+
+    // Treat background music as part of the overall in-game audio setting.
+    if (!DB().generalSettings.toneEnabled) {
+      await stopBackgroundMusic();
+      return;
+    }
+
+    if (!DB().generalSettings.backgroundMusicEnabled) {
+      await stopBackgroundMusic();
+      return;
+    }
+
+    final String filePath = DB().generalSettings.backgroundMusicFilePath;
+    if (filePath.isEmpty) {
+      await stopBackgroundMusic();
+      return;
+    }
+
+    assert(
+      filePath.isNotEmpty,
+      'backgroundMusicFilePath must not be empty when enabled',
+    );
+
+    // Avoid restarting if already playing the same file.
+    if (_backgroundMusicPlayer != null &&
+        _backgroundMusicPath == filePath &&
+        _backgroundMusicPlayer!.state == PlayerState.playing) {
+      return;
+    }
+
+    try {
+      _backgroundMusicPlayer ??= AudioPlayer();
+      _backgroundMusicPath = filePath;
+      await _backgroundMusicPlayer!.setReleaseMode(ReleaseMode.loop);
+      await _backgroundMusicPlayer!.stop();
+      await _backgroundMusicPlayer!.play(DeviceFileSource(filePath));
+      logger.t("$_logTag Background music started: $filePath");
+    } catch (e) {
+      logger.e("$_logTag Error starting background music: $e");
+    }
+  }
+
+  Future<void> stopBackgroundMusic() async {
+    try {
+      if (_backgroundMusicPlayer == null) {
+        return;
+      }
+      await _backgroundMusicPlayer!.stop();
+      logger.t("$_logTag Background music stopped");
+    } catch (e) {
+      logger.e("$_logTag Error stopping background music: $e");
     }
   }
 
@@ -132,6 +193,10 @@ class SoundManager {
       soundPlayer.player.dispose();
     });
     _players.clear();
+
+    _backgroundMusicPlayer?.dispose();
+    _backgroundMusicPlayer = null;
+    _backgroundMusicPath = null;
   }
 }
 

@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "ಹಿನ್ನಲೆ ಸಂಗೀತ",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "ಸ್ಥಳೀಯ ಆಡಿಯೋ ಕಡತವನ್ನು ಹಿನ್ನಲೆ ಸಂಗೀತವಾಗಿ ಪ್ಲೇ ಮಾಡಿ",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "ಹಿನ್ನಲೆ ಸಂಗೀತ ಕಡತ",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "ಹಿನ್ನಲೆ ಸಂಗೀತವನ್ನು ತೆರವುಗೊಳಿಸಿ",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "ಸಂಗೀತ ಕಡತಗಳು",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "ಹಿಂತಿರುಗುವಾಗ ಮ್ಯೂಟ್ ಮಾಡಿ",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

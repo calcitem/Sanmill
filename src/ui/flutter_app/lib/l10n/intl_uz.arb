@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "Fon musiqasi",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "Mahalliy audio faylni fon musiqasi sifatida ijro etish",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "Fon musiqasi fayli",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "Fon musiqasini tozalash",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "Musiqa fayllari",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "Orqaga olayotganda sukut saqlang",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

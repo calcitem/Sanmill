@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "Musique de fond",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "Lire un fichier audio local comme musique de fond",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "Fichier de musique de fond",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "Effacer la musique de fond",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "Fichiers musicaux",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "Rester muet lors de la reprise",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

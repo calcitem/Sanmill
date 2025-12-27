@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "నేపథ్య సంగీతం",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "స్థానిక ఆడియో ఫైలును నేపథ్య సంగీతంగా ప్లే చేయండి",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "నేపథ్య సంగీత ఫైల్",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "నేపథ్య సంగీతాన్ని తొలగించండి",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "సంగీత ఫైళ్లు",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "తిరిగి తీసుకునేటప్పుడు మ్యూట్ చేయండి",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

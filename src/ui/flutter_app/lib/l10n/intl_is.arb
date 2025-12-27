@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "Bakgrunnstónlist",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "Spila staðbundna hljóðskrá sem bakgrunnstónlist",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "Bakgrunnstónlistarskrá",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "Hreinsa bakgrunnstónlist",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "Tónlistarskrár",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "Haltu hljóði þegar þú tekur til baka",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

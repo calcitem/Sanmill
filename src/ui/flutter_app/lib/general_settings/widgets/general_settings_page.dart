@@ -6,10 +6,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
@@ -25,12 +28,6 @@ import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
-// Voice assistant functionality disabled
-// import '../../voice_assistant/models/voice_assistant_settings.dart';
-// import '../../voice_assistant/services/model_downloader.dart';
-// import '../../voice_assistant/services/voice_assistant_service.dart';
-// import '../../voice_assistant/widgets/voice_assistant_settings_page.dart';
-// import '../../voice_assistant/widgets/voice_model_download_progress_indicator.dart';
 import '../models/general_settings.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
@@ -205,6 +202,98 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
     logger.t("$_logTag toneEnabled: $value");
+
+    if (value == true) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
+  void _setBackgroundMusicEnabled(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: value,
+    );
+    logger.t("$_logTag backgroundMusicEnabled: $value");
+
+    if (value == true) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
+  Future<void> _pickBackgroundMusicFile(
+    BuildContext context,
+    GeneralSettings generalSettings,
+  ) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
+    final Directory? rootDir = (!kIsWeb && Platform.isAndroid)
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final Directory musicDir = Directory("${appDocDir.path}/music");
+    if (!musicDir.existsSync()) {
+      await musicDir.create(recursive: true);
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
+    final String? picked = await FilesystemPicker.openDialog(
+      context: context,
+      rootDirectory: rootDir ?? appDocDir,
+      rootName: S.of(context).musicFiles,
+      fsType: FilesystemType.file,
+      showGoUp: !kIsWeb && !Platform.isLinux,
+      allowedExtensions: const <String>[
+        ".mp3",
+        ".wav",
+        ".ogg",
+        ".m4a",
+        ".aac",
+        ".flac",
+      ],
+      fileTileSelectMode: FileTileSelectMode.checkButton,
+      theme: const FilesystemPickerTheme(backgroundColor: Colors.greenAccent),
+    );
+
+    if (picked == null) {
+      return;
+    }
+
+    final String ext = p.extension(picked);
+    final String newPath =
+        "${musicDir.path}/bgm_${DateTime.now().millisecondsSinceEpoch}$ext";
+
+    try {
+      await File(picked).copy(newPath);
+    } catch (e) {
+      logger.e("$_logTag Failed to copy background music file: $e");
+      return;
+    }
+
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: true,
+      backgroundMusicFilePath: newPath,
+    );
+    logger.t("$_logTag backgroundMusicFilePath: $newPath");
+
+    await SoundManager().startBackgroundMusic();
+  }
+
+  void _clearBackgroundMusic(GeneralSettings generalSettings) {
+    DB().generalSettings = generalSettings.copyWith(
+      backgroundMusicEnabled: false,
+      backgroundMusicFilePath: '',
+    );
+    logger.t("$_logTag backgroundMusic cleared");
+    unawaited(SoundManager().stopBackgroundMusic());
   }
 
   void _setKeepMuteWhenTakingBack(GeneralSettings generalSettings, bool value) {
@@ -251,29 +340,6 @@ class GeneralSettingsPage extends StatelessWidget {
 
     logger.t("$_logTag screenReaderSupport: $value");
   }
-
-  // Voice assistant functionality disabled
-  // // Enable or disable voice assistant
-  // Future<void> _setVoiceAssistantEnabled(
-  //   BuildContext context,
-  //   bool value,
-  // ) async {
-  //   if (value) {
-  //     // When enabling, use the service to properly initialize
-  //     final bool success = await VoiceAssistantService().enable(context);
-  //     if (!success) {
-  //       // If initialization failed, revert the switch
-  //       // The switch will update based on the database value
-  //       logger.w("$_logTag Failed to enable voice assistant");
-  //       return;
-  //     }
-  //   } else {
-  //     // When disabling, use the service to properly clean up
-  //     await VoiceAssistantService().disable();
-  //   }
-  //
-  //   logger.t("$_logTag voiceAssistantEnabled: $value");
-  // }
 
   void _setGameScreenRecorderSupport(
     GeneralSettings generalSettings,
@@ -343,8 +409,6 @@ class GeneralSettingsPage extends StatelessWidget {
       DB.generalSettingsKey,
       defaultValue: const GeneralSettings(),
     )!;
-
-    // Get voice assistant settings for accessibility section
 
     final String perfectDatabaseDescription = S
         .of(context)
@@ -571,6 +635,34 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               key: const Key(
+                'general_settings_page_settings_card_play_sounds_background_music_enabled',
+              ),
+              value: generalSettings.backgroundMusicEnabled,
+              onChanged: (bool val) =>
+                  _setBackgroundMusicEnabled(generalSettings, val),
+              titleString: S.of(context).backgroundMusic,
+              subtitleString: S.of(context).backgroundMusicDescription,
+            ),
+            SettingsListTile(
+              key: const Key(
+                'general_settings_page_settings_card_play_sounds_background_music_file',
+              ),
+              titleString: S.of(context).backgroundMusicFile,
+              trailingString: generalSettings.backgroundMusicFilePath.isEmpty
+                  ? S.of(context).none
+                  : p.basename(generalSettings.backgroundMusicFilePath),
+              onTap: () => _pickBackgroundMusicFile(context, generalSettings),
+            ),
+            if (generalSettings.backgroundMusicFilePath.isNotEmpty)
+              SettingsListTile(
+                key: const Key(
+                  'general_settings_page_settings_card_play_sounds_background_music_clear',
+                ),
+                titleString: S.of(context).clearBackgroundMusic,
+                onTap: () => _clearBackgroundMusic(generalSettings),
+              ),
+            SettingsListTile.switchTile(
+              key: const Key(
                 'general_settings_page_settings_card_play_sounds_keep_mute_when_taking_back',
               ),
               value: generalSettings.keepMuteWhenTakingBack,
@@ -620,99 +712,6 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).screenReaderSupport,
               ),
-              // Voice assistant functionality disabled
-              // Voice assistant switch with download progress indicator
-              // Uses nested ValueListenableBuilders to react to both download progress
-              // and settings changes
-              // ValueListenableBuilder<Box<VoiceAssistantSettings>>(
-              //   valueListenable: DB().listenVoiceAssistantSettings,
-              //   builder:
-              //       (
-              //         BuildContext context,
-              //         Box<VoiceAssistantSettings> voiceBox,
-              //         Widget? child,
-              //       ) {
-              //         final VoiceAssistantSettings currentVoiceSettings =
-              //             voiceBox.get(
-              //               DB.voiceAssistantSettingsKey,
-              //               defaultValue: const VoiceAssistantSettings(),
-              //             )!;
-              //
-              //         return ValueListenableBuilder<double>(
-              //           valueListenable: ModelDownloader().downloadProgress,
-              //           builder: (BuildContext context, double progress, Widget? child) {
-              //             final bool isDownloading =
-              //                 progress >= 0.0 && progress < 1.0;
-              //
-              //             return Column(
-              //               mainAxisSize: MainAxisSize.min,
-              //               children: <Widget>[
-              //                 ListTile(
-              //                   key: const Key(
-              //                     'general_settings_page_settings_card_accessibility_voice_assistant',
-              //                   ),
-              //                   title: Text(
-              //                     S.of(context).voiceAssistantEnabled,
-              //                     style: AppTheme.listTileTitleStyle,
-              //                   ),
-              //                   subtitle: Text(
-              //                     S
-              //                         .of(context)
-              //                         .voiceAssistantEnabledDescription,
-              //                     style: AppTheme.listTileSubtitleStyle,
-              //                   ),
-              //                   // Show progress indicator when downloading, otherwise show switch
-              //                   trailing: isDownloading
-              //                       ? VoiceModelDownloadProgressIndicator(
-              //                           progress: progress,
-              //                         )
-              //                       : Switch(
-              //                           value: currentVoiceSettings.enabled,
-              //                           onChanged: (bool val) {
-              //                             _setVoiceAssistantEnabled(
-              //                               context,
-              //                               val,
-              //                             );
-              //                           },
-              //                         ),
-              //                   // Disable tap when downloading
-              //                   onTap: isDownloading
-              //                       ? null
-              //                       : () {
-              //                           _setVoiceAssistantEnabled(
-              //                             context,
-              //                             !currentVoiceSettings.enabled,
-              //                           );
-              //                         },
-              //                 ),
-              //                 // Navigation to voice assistant detailed settings
-              //                 if (currentVoiceSettings.enabled)
-              //                   SettingsListTile(
-              //                     key: const Key(
-              //                       'general_settings_page_settings_card_accessibility_voice_assistant_settings',
-              //                     ),
-              //                     titleString: S
-              //                         .of(context)
-              //                         .voiceAssistantSettings,
-              //                     subtitleString: S
-              //                         .of(context)
-              //                         .voiceAssistantSettingsDescription,
-              //                     onTap: () {
-              //                       Navigator.push(
-              //                         context,
-              //                         MaterialPageRoute<void>(
-              //                           builder: (BuildContext context) =>
-              //                               const VoiceAssistantSettingsPage(),
-              //                         ),
-              //                       );
-              //                     },
-              //                   ),
-              //               ],
-              //             );
-              //           },
-              //         );
-              //       },
-              // ),
             ],
           ),
         // TODO: Fix iOS bug

@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "နောက်ခံဂီတ",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "ဒေသခံ အသံဖိုင်ကို နောက်ခံဂီတအဖြစ် ဖွင့်ပါ",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "နောက်ခံဂီတ ဖိုင်",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "နောက်ခံဂီတ ဖယ်ရှားရန်",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "ဂီတဖိုင်များ",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "ပြန်ယူသည့်အခါ အသံတိတ်ထားပါ",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

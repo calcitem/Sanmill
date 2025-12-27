@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "የበስተጀርባ ሙዚቃ",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "አካባቢ የድምጽ ፋይልን እንደ የበስተጀርባ ሙዚቃ አጫውት",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "የበስተጀርባ ሙዚቃ ፋይል",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "የበስተጀርባ ሙዚቃን አጥፋ",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "የሙዚቃ ፋይሎች",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "በመመለስ ጊዜ ድምጽ አልባ ሁን",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

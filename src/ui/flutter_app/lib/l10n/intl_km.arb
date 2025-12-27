@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "តន្ត្រីផ្ទៃក្រោយ",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "ចាក់ឯកសារសំឡេងក្នុងម៉ាស៊ីនជាតន្ត្រីផ្ទៃក្រោយ",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "ឯកសារតន្ត្រីផ្ទៃក្រោយ",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "លុបតន្ត្រីផ្ទៃក្រោយ",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "ឯកសារតន្ត្រី",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "រក្សាភាពស្ងៀមស្ងាត់ពេលដកថយ",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"

@@ -38,10 +38,6 @@ class GameController {
 
   bool disableStats = false;
 
-  // Prevent concurrent Move Now actions that could trigger repeated stops
-  // and epoch bumps on the engine side.
-  bool _isMoveNowInProgress = false;
-
   String? value;
   AiMoveType? aiMoveType;
 
@@ -108,42 +104,10 @@ class GameController {
     }
 
     await SoundManager().loadSounds();
+    await SoundManager().startBackgroundMusic();
 
     _isInitialized = true;
     logger.i("$_logTag initialized");
-  }
-
-  /// Recompute LAN turn state from the authoritative board state and update UI.
-  ///
-  /// This method must be called right after any state change that may alter
-  /// `position.sideToMove` (local move, remote move, take-back, restart, etc).
-  /// It ensures `isLanOpponentTurn` and the header tip stay consistent on both
-  /// peers by using the single source of truth:
-  ///   isLanOpponentTurn = (position.sideToMove != localColor)
-  void refreshLanTurn({bool showTip = true, bool snackBar = false}) {
-    if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      return;
-    }
-    final PieceColor localColor = getLocalColor();
-    final bool wasOpponentTurn = isLanOpponentTurn;
-    isLanOpponentTurn = (position.sideToMove != localColor);
-    logger.i(
-      "$_logTag [LAN] refreshLanTurn: local=$localColor, sideToMove=${position.sideToMove}, "
-      "isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
-    );
-    if (showTip) {
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String ot = context != null
-          ? S.of(context).opponentSTurn
-          : "Opponent's turn";
-      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-      headerTipNotifier.showTip(
-        isLanOpponentTurn ? ot : yt,
-        snackBar: snackBar,
-      );
-    }
-    headerIconsNotifier.showIcons();
-    boardSemanticsNotifier.updateSemantics();
   }
 
   /// Determines the local player's color based on whether they are Host or Client
@@ -178,8 +142,8 @@ class GameController {
   /// Shows a confirmation dialog; if accepted, sends "restart:accepted" and resets game;
   /// otherwise, sends "restart:rejected".
   void handleRestartRequest() {
-    // Use a global navigator context to guarantee Navigator availability
-    final BuildContext? context = currentNavigatorKey.currentContext;
+    // Use a global context (e.g. rootScaffoldMessengerKey.currentContext) to show the dialog.
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (context == null) {
       return;
     }
@@ -233,8 +197,8 @@ class GameController {
       return;
     }
 
-    // In LAN mode, confirm with the player first (Navigator must be present)
-    final BuildContext? context = currentNavigatorKey.currentContext;
+    // In LAN mode, confirm with the player first
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (context == null) {
       return;
     }
@@ -358,18 +322,8 @@ class GameController {
     logger.i("$_logTag Local player resigned. Winner: $winnerColor");
   }
 
-  /// Resets controller and game state.
-  ///
-  /// When [lanRestart] is true in LAN mode, the network socket is preserved.
-  /// When [preserveLan] is true, the LAN connection and opponent-turn flag are
-  /// kept intact regardless of the current game mode. This is mainly used by
-  /// history replay (e.g. LAN take-back) to avoid disconnects and host-role
-  /// mis-detection during temporary mode switches.
-  void reset({
-    bool force = false,
-    bool lanRestart = false,
-    bool preserveLan = false,
-  }) {
+  /// Modify the reset method so that in LAN restart mode the socket is preserved.
+  void reset({bool force = false, bool lanRestart = false}) {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
@@ -392,29 +346,25 @@ class GameController {
     // Reset game timing tracking
     _resetGameTiming();
 
-    // Preserve LAN connection/flags when requested (e.g. during history replay).
-    if (!preserveLan) {
-      if (gameModeBak == GameMode.humanVsLAN) {
-        // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
-        // But if this is a LAN restart (both agreed), do NOT dispose socket.
-        if (force || !(networkService?.isConnected ?? false)) {
-          networkService?.dispose();
-          networkService = null;
-          isLanOpponentTurn = false;
-        } else if (!lanRestart) {
-          // For normal LAN reset, dispose the connection.
-          networkService?.dispose();
-          networkService = null;
-          isLanOpponentTurn = false;
-        }
-        // Otherwise (lanRestart == true) keep the socket open.
-      } else {
-        // Non-LAN reset: dispose any existing LAN connection.
+    if (gameModeBak == GameMode.humanVsLAN) {
+      // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
+      // But if this is a LAN restart (both agreed), do NOT dispose socket.
+      if (force || !(networkService?.isConnected ?? false)) {
         networkService?.dispose();
         networkService = null;
-        if (!force) {
-          isLanOpponentTurn = false;
-        }
+        isLanOpponentTurn = false;
+      } else if (!lanRestart) {
+        // For normal LAN reset, dispose the connection.
+        networkService?.dispose();
+        networkService = null;
+        isLanOpponentTurn = false;
+      }
+      // Otherwise (lanRestart == true) keep the socket open.
+    } else {
+      networkService?.dispose();
+      networkService = null;
+      if (!force) {
+        isLanOpponentTurn = false;
       }
     }
 
@@ -424,10 +374,6 @@ class GameController {
 
     // Reinitialize game objects
     _init(gameModeBak);
-
-    // After reinitialization, mark controller as active (not disposed)
-    // to allow engine to wait for responses normally.
-    isDisposed = false;
 
     lanHostPlaysWhite = savedHostPlaysWhite;
 
@@ -485,27 +431,14 @@ class GameController {
     bool hostPlaysWhite = true, // Explicitly enforce Host as White
     void Function(String, int)? onClientConnected,
   }) {
-    logger.i(
-      "$_logTag [LAN] startLanGame() called - isHost: $isHost, port: $port, hostPlaysWhite: $hostPlaysWhite",
-    );
-    if (hostAddress != null) {
-      logger.i("$_logTag [LAN] Target host address: $hostAddress");
-    }
-
     gameInstance.gameMode = GameMode.humanVsLAN;
     lanHostPlaysWhite = hostPlaysWhite;
-    logger.i("$_logTag [LAN] Game mode set to humanVsLAN");
 
     headerIconsNotifier.showIcons();
 
     if (networkService == null || !networkService!.isConnected) {
-      logger.i(
-        "$_logTag [LAN] Creating new NetworkService (existing was ${networkService == null ? 'null' : 'not connected'})",
-      );
       networkService?.dispose();
       networkService = NetworkService();
-    } else {
-      logger.i("$_logTag [LAN] Reusing existing connected NetworkService");
     }
 
     final BuildContext? currentContext =
@@ -517,7 +450,6 @@ class GameController {
 
     try {
       if (isHost) {
-        logger.i("$_logTag [LAN] Starting as HOST");
         position.sideToMove = PieceColor.white; // Host starts as White
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: false,
@@ -525,15 +457,12 @@ class GameController {
         final PieceColor localColor = getLocalColor();
         isLanOpponentTurn =
             (position.sideToMove != localColor); // Should be false for Host
-        logger.i(
-          "$_logTag [LAN] Host setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn",
-        );
 
         networkService!.startHost(
           port,
           onClientConnected: (String clientIp, int clientPort) {
             logger.i(
-              "$_logTag [LAN] Client connected callback - IP: $clientIp, port: $clientPort",
+              "$_logTag onClientConnected => IP:$clientIp, port:$clientPort",
             );
             headerTipNotifier.showTip(
               "Client connected at $clientIp:$clientPort",
@@ -541,59 +470,34 @@ class GameController {
             );
             // Ensure turn state is correct after connection
             isLanOpponentTurn = false; // Host moves first
-            logger.i(
-              "$_logTag [LAN] Set isLanOpponentTurn to false (host moves first)",
-            );
             headerIconsNotifier.showIcons(); // Update icons immediately
-            // Announce host's chosen color to client for correct localColor mapping
-            final bool hpw = lanHostPlaysWhite ?? true;
-            logger.i("$_logTag [LAN] Announce hostPlaysWhite=$hpw to client");
-            networkService?.sendMove("announce:hostPlaysWhite:$hpw");
             onClientConnected?.call(clientIp, clientPort);
           },
         );
       } else if (hostAddress != null) {
-        logger.i(
-          "$_logTag [LAN] Starting as CLIENT connecting to $hostAddress:$port",
-        );
         position.sideToMove = PieceColor.white; // Game starts with White
         DB().generalSettings = DB().generalSettings.copyWith(
           aiMovesFirst: true,
         );
-        networkService!
-            .connectToHost(hostAddress, port)
-            .then((_) {
-              logger.i("$_logTag [LAN] Client successfully connected to host");
-              final PieceColor localColor = getLocalColor();
-              isLanOpponentTurn = (position.sideToMove != localColor);
-              logger.i(
-                "$_logTag [LAN] Client setup - localColor: $localColor, sideToMove: ${position.sideToMove}, isOpponentTurn: $isLanOpponentTurn",
-              );
+        networkService!.connectToHost(hostAddress, port).then((_) {
+          final PieceColor localColor = getLocalColor();
+          isLanOpponentTurn = (position.sideToMove != localColor);
 
-              headerTipNotifier.showTip(
-                connectedWaitingForOpponentSMove,
-                snackBar: false,
-              );
-              onClientConnected?.call(hostAddress, port);
-            })
-            // Explicitly type the error parameter for lint compliance
-            .catchError((Object error) {
-              logger.e("$_logTag [LAN] Client connection error: $error");
-              headerTipNotifier.showTip("Connection failed: $error");
-            });
+          headerTipNotifier.showTip(
+            connectedWaitingForOpponentSMove,
+            snackBar: false,
+          );
+          onClientConnected?.call(hostAddress, port);
+        });
       } else {
-        logger.e(
-          "$_logTag [LAN] Error: Host address required when not hosting",
-        );
+        logger.e("$_logTag Host address required when not hosting");
         headerTipNotifier.showTip("Error: Host address required");
         return;
       }
 
       boardSemanticsNotifier.updateSemantics();
-      logger.i("$_logTag [LAN] LAN game setup initiated successfully");
-    } catch (e, st) {
-      logger.e("$_logTag [LAN] LAN game setup failed: $e");
-      logger.d("$_logTag [LAN] Stack trace: $st");
+    } catch (e) {
+      logger.e("$_logTag LAN game setup failed: $e");
       headerTipNotifier.showTip("Failed to start LAN game: $e");
       resetLanState(); // Reset on failure
     }
@@ -616,92 +520,75 @@ class GameController {
   /// Handles a move received from the LAN opponent
   void handleLanMove(String moveNotation) {
     if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.w(
-        "$_logTag [LAN] Ignoring move - not in LAN mode (current: ${gameInstance.gameMode})",
-      );
+      logger.w("$_logTag Ignoring LAN move: wrong mode");
       return;
     }
 
-    logger.i("$_logTag [LAN] handleLanMove() called with: $moveNotation");
-    logger.i("$_logTag [LAN] Current position: ${position.fen}");
-    logger.i(
-      "$_logTag [LAN] Current turn: ${position.sideToMove}, isLanOpponentTurn: $isLanOpponentTurn",
-    );
-
     try {
       if (moveNotation.startsWith("request:aiMovesFirst")) {
-        logger.i("$_logTag [LAN] Received aiMovesFirst request from client");
         // Host receives a request from Client and returns the aiMovesFirst value
         final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
         networkService?.sendMove("response:aiMovesFirst:$aiMovesFirst");
-        logger.i(
-          "$_logTag [LAN] Sent aiMovesFirst response: $aiMovesFirst to client",
-        );
+        logger.i("$_logTag Sent aiMovesFirst: $aiMovesFirst to Client");
         return;
       }
 
-      logger.i("$_logTag [LAN] Creating ExtMove from notation: $moveNotation");
       final ExtMove move = ExtMove(
         moveNotation,
-        // Use current sideToMove as the moving side on receiver
-        side: position.sideToMove,
+        side: position.sideToMove.opponent,
       );
 
-      logger.i("$_logTag [LAN] Attempting to apply move: ${move.notation}");
       if (gameInstance.doMove(move)) {
-        logger.i("$_logTag [LAN] Move applied successfully");
-        // Refresh LAN turn state and tip from authoritative board state
-        // Using default parameters (showTip: true, snackBar: false)
-        refreshLanTurn();
-        logger.i("$_logTag [LAN] Move processed successfully: $moveNotation");
-        logger.i("$_logTag [LAN] New position: ${position.fen}");
+        // Update turn based on local color
+        final PieceColor localColor = getLocalColor();
+        isLanOpponentTurn = (position.sideToMove != localColor);
+        boardSemanticsNotifier.updateSemantics();
+
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        final String ot = context != null
+            ? S.of(context).opponentSTurn
+            : "Opponent's turn";
+        final String yt = context != null
+            ? S.of(context).yourTurn
+            : "Your turn";
+        headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
+        logger.i("$_logTag Successfully processed LAN move: $moveNotation");
 
         gameRecorder.appendMoveIfDifferent(move);
         if (position.phase == Phase.gameOver) {
-          logger.i("$_logTag [LAN] Game is over after opponent's move");
           gameResultNotifier.showResult(force: true);
         }
       } else {
-        logger.e("$_logTag [LAN] Invalid move received: $moveNotation");
-        logger.e("$_logTag [LAN] Position state: ${position.fen}");
-        logger.e(
-          "$_logTag [LAN] Expected side to move: ${position.sideToMove}",
-        );
+        logger.e("$_logTag Invalid move received from LAN: $moveNotation");
         headerTipNotifier.showTip("Opponent sent an invalid move");
       }
-    } catch (e, st) {
-      logger.e("$_logTag [LAN] Error processing LAN move '$moveNotation': $e");
-      logger.d("$_logTag [LAN] Stack trace: $st");
+    } catch (e) {
+      logger.e("$_logTag Error processing LAN move: $e");
       headerTipNotifier.showTip("Error with opponent's move: $e");
     }
   }
 
   /// Sends a move to the LAN opponent
   void sendLanMove(String moveNotation) {
-    logger.i("$_logTag [LAN] sendLanMove() called with: $moveNotation");
-    logger.i(
-      "$_logTag [LAN] Game mode: ${gameInstance.gameMode}, isLanOpponentTurn: $isLanOpponentTurn",
-    );
-
     if (gameInstance.gameMode != GameMode.humanVsLAN || isLanOpponentTurn) {
-      logger.w(
-        "$_logTag [LAN] Cannot send move - mode: ${gameInstance.gameMode}, isOpponentTurn: $isLanOpponentTurn",
-      );
+      logger.w("$_logTag Cannot send move: not your turn or wrong mode");
       return;
     }
 
     try {
-      logger.i("$_logTag [LAN] Sending move to opponent: $moveNotation");
-      logger.i("$_logTag [LAN] Current position before send: ${position.fen}");
       networkService?.sendMove(moveNotation);
-
-      // After sending our move, it becomes opponent's turn
-      // Refresh LAN turn state and tip from authoritative board state
-      // Using default parameters (showTip: true, snackBar: false)
-      refreshLanTurn();
-    } catch (e, st) {
-      logger.e("$_logTag [LAN] Failed to send move '$moveNotation': $e");
-      logger.d("$_logTag [LAN] Stack trace: $st");
+      // After sending, toggle turn based on local color
+      final PieceColor localColor = getLocalColor();
+      isLanOpponentTurn = (position.sideToMove != localColor);
+      logger.i("$_logTag Sent move to LAN opponent: $moveNotation");
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String ot = context != null
+          ? S.of(context).opponentSTurn
+          : "Opponent's turn";
+      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
+      headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
+    } catch (e) {
+      logger.e("$_logTag Failed to send move: $e");
       headerTipNotifier.showTip("Failed to send move: $e");
     }
   }
@@ -725,13 +612,12 @@ class GameController {
       headerTipNotifier.showTip(notConnectedToLanOpponent);
       return false;
     }
-    // Only allow take-back immediately after your move, i.e., while it's opponent's turn
-    if (!isLanOpponentTurn) {
+    if (isLanOpponentTurn) {
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String msg = context != null
-          ? S.of(context).canOnlyRequestTakeBackRightAfterYourMove
-          : "You can only request a take back immediately after your move.";
-      headerTipNotifier.showTip(msg);
+      final String cannotRequestATakeBackWhenItSNotYourTurn = context != null
+          ? S.of(context).cannotRequestATakeBackWhenItSNotYourTurn
+          : "Cannot request a take back when it's not your turn";
+      headerTipNotifier.showTip(cannotRequestATakeBackWhenItSNotYourTurn);
       return false;
     }
 
@@ -771,8 +657,7 @@ class GameController {
       networkService?.sendMove("take back:$steps:rejected");
       return;
     }
-    // Use the global navigator key context to ensure a Navigator is present
-    final BuildContext? context = currentNavigatorKey.currentContext;
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (context == null) {
       // If no context, auto-reject
       networkService?.sendMove("take back:$steps:rejected");
@@ -794,9 +679,7 @@ class GameController {
                 networkService?.sendMove("take back:$steps:accepted");
                 // Locally apply the 1-step rollback
                 HistoryNavigator.doEachMove(HistoryNavMode.takeBack, 1);
-                // Refresh LAN turn state and tip from authoritative board state
-                // Using default parameters (showTip: true, snackBar: false)
-                refreshLanTurn();
+                // Also mark the next turn, etc. as needed
               },
               child: const Text("Yes"),
             ),
@@ -955,22 +838,10 @@ class GameController {
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
-        // In AI vs AI mode, auto-recover from timeout and retry
-        if (gameMode == GameMode.aiVsAi) {
-          await engine.stopSearching();
-          // Brief delay to avoid hitting stale session immediately
-          await Future<void>.delayed(const Duration(milliseconds: 10));
-          continue;
-        }
         isEngineRunning = false;
         return const EngineTimeOut();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
-        if (gameMode == GameMode.aiVsAi) {
-          await engine.stopSearching();
-          await Future<void>.delayed(const Duration(milliseconds: 10));
-          continue;
-        }
         isEngineRunning = false;
         return const EngineNoBestMove();
       }
@@ -1046,59 +917,35 @@ class GameController {
       reversed = true;
     }
 
-    // Cache localized strings before async operations to avoid BuildContext usage across async gaps
     final String strTimeout = S.of(context).timeout;
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
-    final String strThinking = S.of(context).thinking;
 
     GameController().disableStats = true;
 
-    // If AI is already thinking, just send a soft stop to fetch the
-    // current best move from the ongoing search, and return without
-    // spawning another engineToGo loop.
-    if (!reversed && isEngineRunning) {
-      final bool aiThinking = await engine.isThinking();
-      if (aiThinking) {
-        await engine.stopSoft();
-        headerTipNotifier.showTip(strThinking, snackBar: false);
-        return;
-      }
+    switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
+      case EngineResponseOK():
+      case EngineGameIsOver():
+        gameResultNotifier.showResult(force: true);
+        break;
+      case EngineResponseHumanOK():
+        gameResultNotifier.showResult();
+        break;
+      case EngineTimeOut():
+        headerTipNotifier.showTip(strTimeout);
+        break;
+      case EngineNoBestMove():
+        headerTipNotifier.showTip(strNoBestMoveErr);
+        break;
+      case EngineResponseSkip():
+        headerTipNotifier.showTip("Error: Skip"); // TODO
+        break;
+      default:
+        logger.e("$tag Unknown engine response type.");
+        break;
     }
-    if (_isMoveNowInProgress) {
-      return; // silently ignore repeated taps
-    }
-    _isMoveNowInProgress = true;
-    try {
-      // Pass context to engineToGo immediately before the async call
-      if (!context.mounted) {
-        return;
-      }
-      switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
-        case EngineResponseOK():
-        case EngineGameIsOver():
-          gameResultNotifier.showResult(force: true);
-          break;
-        case EngineResponseHumanOK():
-          gameResultNotifier.showResult();
-          break;
-        case EngineTimeOut():
-          headerTipNotifier.showTip(strTimeout);
-          break;
-        case EngineNoBestMove():
-          headerTipNotifier.showTip(strNoBestMoveErr);
-          break;
-        case EngineResponseSkip():
-          headerTipNotifier.showTip("Error: Skip"); // TODO
-          break;
-        default:
-          logger.e("$tag Unknown engine response type.");
-          break;
-      }
-    } finally {
-      if (reversed) {
-        gameInstance.reverseWhoIsAi();
-      }
-      _isMoveNowInProgress = false;
+
+    if (reversed) {
+      gameInstance.reverseWhoIsAi();
     }
   }
 

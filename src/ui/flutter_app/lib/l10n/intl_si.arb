@@ -397,6 +397,26 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
+    "backgroundMusic": "පසුබිම් සංගීතය",
+    "@backgroundMusic": {
+    "description": "Background music"
+    },
+    "backgroundMusicDescription": "දේශීය ශබ්ද ගොනුවක් පසුබිම් සංගීතයක් ලෙස වාදනය කරන්න",
+    "@backgroundMusicDescription": {
+    "description": "Description for background music option"
+    },
+    "backgroundMusicFile": "පසුබිම් සංගීත ගොනුව",
+    "@backgroundMusicFile": {
+    "description": "Background music file"
+    },
+    "clearBackgroundMusic": "පසුබිම් සංගීතය ඉවත් කරන්න",
+    "@clearBackgroundMusic": {
+    "description": "Clear background music"
+    },
+    "musicFiles": "සංගීත ගොනු",
+    "@musicFiles": {
+    "description": "Root label for music file picker"
+    },
     "keepMuteWhenTakingBack": "නැවත ගත් විට නිහඬ කර තබන්න",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
