@@ -107,55 +107,60 @@ class HistoryNavigator {
       GameController().animationManager.allowAnimations = false;
     }
 
-    // Replay moves to get the new board state
-    final HistoryResponse resp = await doEachMove(navMode, number);
+    try {
+      // Replay moves to get the new board state
+      final HistoryResponse resp = await doEachMove(navMode, number);
 
-    GameController().animationManager.allowAnimations = true;
+      GameController().animationManager.allowAnimations = true;
 
-    if (!context.mounted) {
-      return const HistoryAbort();
-    }
-
-    switch (resp) {
-      case HistoryOK():
-        final ExtMove? lastEffectiveMove =
-            controller.gameRecorder.activeNode?.data;
-        if (lastEffectiveMove != null) {
-          GameController().headerTipNotifier.showTip(
-            S.of(context).lastMove(lastEffectiveMove.notation),
-          );
-          GameController().headerIconsNotifier.showIcons();
-          GameController().boardSemanticsNotifier.updateSemantics();
-        }
-        break;
-      case HistoryRange(): // TODO: Impossible resp
-        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-          S.of(context).atEnd,
-        );
-        logger.i(HistoryRange);
-        break;
-      case HistoryRule():
-      default:
-        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-          S.of(context).movesAndRulesNotMatch,
-        );
-        logger.i(HistoryRule);
-        break;
-    }
-
-    SoundManager().unMute();
-    await navMode.gotoHistoryPlaySound();
-
-    _isGoingToHistory = false;
-
-    if (pop) {
       if (!context.mounted) {
         return const HistoryAbort();
       }
-      Navigator.pop(context);
-    }
 
-    return resp;
+      switch (resp) {
+        case HistoryOK():
+          final ExtMove? lastEffectiveMove =
+              controller.gameRecorder.activeNode?.data;
+          if (lastEffectiveMove != null) {
+            GameController().headerTipNotifier.showTip(
+              S.of(context).lastMove(lastEffectiveMove.notation),
+            );
+            GameController().headerIconsNotifier.showIcons();
+            GameController().boardSemanticsNotifier.updateSemantics();
+          }
+          break;
+        case HistoryRange(): // TODO: Impossible resp
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            S.of(context).atEnd,
+          );
+          logger.i(HistoryRange);
+          break;
+        case HistoryRule():
+        default:
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            S.of(context).movesAndRulesNotMatch,
+          );
+          logger.i(HistoryRule);
+          break;
+      }
+
+      await navMode.gotoHistoryPlaySound();
+
+      if (pop) {
+        if (!context.mounted) {
+          return const HistoryAbort();
+        }
+        Navigator.pop(context);
+      }
+
+      return resp;
+    } finally {
+      // Always re-enable the controller, otherwise AI can get stuck after any
+      // history navigation (including automated history processing).
+      GameController().isControllerActive = true;
+      SoundManager().unMute();
+      _isGoingToHistory = false;
+    }
   }
 
   /// Requests a 1-step LAN take back, returns true if accepted, false if rejected or error.
