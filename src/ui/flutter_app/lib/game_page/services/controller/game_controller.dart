@@ -323,7 +323,11 @@ class GameController {
   }
 
   /// Modify the reset method so that in LAN restart mode the socket is preserved.
-  void reset({bool force = false, bool lanRestart = false}) {
+  void reset({
+    bool force = false,
+    bool lanRestart = false,
+    bool preserveLan = false,
+  }) {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
@@ -515,6 +519,37 @@ class GameController {
       headerIconsNotifier.showIcons(); // Force icon update
       boardSemanticsNotifier.updateSemantics();
     }
+  }
+
+  /// This method must be called right after any state change that may alter
+  /// `position.sideToMove` (local move, remote move, take-back, restart, etc).
+  /// It ensures `isLanOpponentTurn` and the header tip stay consistent on both
+  /// peers by using the single source of truth:
+  ///   isLanOpponentTurn = (position.sideToMove != localColor)
+  void refreshLanTurn({bool showTip = true, bool snackBar = false}) {
+    if (gameInstance.gameMode != GameMode.humanVsLAN) {
+      return;
+    }
+    final PieceColor localColor = getLocalColor();
+    final bool wasOpponentTurn = isLanOpponentTurn;
+    isLanOpponentTurn = (position.sideToMove != localColor);
+    logger.i(
+      "$_logTag [LAN] refreshLanTurn: local=$localColor, sideToMove=${position.sideToMove}, "
+      "isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
+    );
+    if (showTip) {
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String ot = context != null
+          ? S.of(context).opponentSTurn
+          : "Opponent's turn";
+      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
+      headerTipNotifier.showTip(
+        isLanOpponentTurn ? ot : yt,
+        snackBar: snackBar,
+      );
+    }
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
   }
 
   /// Handles a move received from the LAN opponent

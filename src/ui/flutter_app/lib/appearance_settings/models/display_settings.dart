@@ -146,7 +146,7 @@ class DisplaySettings {
   @HiveField(12, defaultValue: 1.0)
   final double animationDuration;
 
-  @HiveField(13, defaultValue: null)
+  @HiveField(13)
   @JsonKey(
     fromJson: LocaleAdapter.localeFromJson,
     toJson: LocaleAdapter.localeToJson,
@@ -205,16 +205,16 @@ class DisplaySettings {
   @HiveField(30, defaultValue: false)
   final bool isToolbarAtBottom;
 
-  @HiveField(31, defaultValue: null)
+  @HiveField(31)
   final String? customBackgroundImagePath;
 
-  @HiveField(32, defaultValue: null)
+  @HiveField(32)
   final String? customBoardImagePath;
 
-  @HiveField(33, defaultValue: null)
+  @HiveField(33)
   final String? customWhitePieceImagePath;
 
-  @HiveField(34, defaultValue: null)
+  @HiveField(34)
   final String? customBlackPieceImagePath;
 
   @HiveField(35, defaultValue: 5.0)
