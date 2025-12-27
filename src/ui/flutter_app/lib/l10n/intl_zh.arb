@@ -3687,5 +3687,33 @@
     "aiChatCleared": "聊天记录已清除",
     "@aiChatCleared": {
         "description": "Message shown after clearing chat history"
+    },
+    "logViewerTitle": "日志",
+    "@logViewerTitle": {
+        "description": "Title for the in-app log viewer page"
+    },
+    "logViewerPrivacyHint": "日志可能包含敏感信息，请在分享前检查。",
+    "@logViewerPrivacyHint": {
+        "description": "Privacy hint shown in the in-app log viewer"
+    },
+    "logViewerFilterHint": "筛选（包含匹配）",
+    "@logViewerFilterHint": {
+        "description": "Hint text for the log filter input"
+    },
+    "logViewerAutoScroll": "自动滚动",
+    "@logViewerAutoScroll": {
+        "description": "Tooltip for the auto-scroll toggle"
+    },
+    "logViewerClear": "清空日志",
+    "@logViewerClear": {
+        "description": "Tooltip for clearing in-app logs"
+    },
+    "logViewerEmpty": "暂无日志。",
+    "@logViewerEmpty": {
+        "description": "Shown when the in-app log buffer is empty"
+    },
+    "logViewerCleared": "日志已清空。",
+    "@logViewerCleared": {
+        "description": "Snackbar message after clearing logs"
     }
 }

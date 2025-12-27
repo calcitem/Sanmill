@@ -29,6 +29,7 @@ import '../generated/intl/l10n.dart';
 import '../main.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
+import '../misc/log_viewer_page.dart';
 import '../puzzle/pages/puzzles_home_page.dart';
 import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
@@ -52,6 +53,7 @@ enum _DrawerIndex {
   aiVsAi,
   humanVsLAN,
   setupPosition,
+  logs,
   puzzles,
   statistics,
   settingsGroup,
@@ -84,6 +86,8 @@ extension _DrawerScreen on _DrawerIndex {
           GameMode.setupPosition,
           key: const Key("setup_position"),
         );
+      case _DrawerIndex.logs:
+        return const LogViewerPage();
       case _DrawerIndex.puzzles:
         return const PuzzlesHomePage();
       case _DrawerIndex.statistics:
@@ -159,6 +163,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
       case _DrawerIndex.setupPosition:
         logger.i('Switching to Setup Position');
+        break;
+      case _DrawerIndex.logs:
+        logger.i('Switching to Logs');
         break;
       case _DrawerIndex.puzzles:
         logger.i('Switching to Puzzles');
@@ -288,6 +295,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.humanVsLAN:
       case _DrawerIndex.setupPosition:
         return true;
+      case _DrawerIndex.logs:
       case _DrawerIndex.puzzles:
       case _DrawerIndex.statistics:
       case _DrawerIndex.settingsGroup:
@@ -459,6 +467,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),
+      // Logs (on-device log viewer)
+      CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_logs'),
+        itemValue: _DrawerIndex.logs,
+        itemTitle: S.of(context).logViewerTitle,
+        itemIcon: const Icon(FluentIcons.document_text_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: _changeIndex,
+      ),
       // Puzzle item
       CustomDrawerItem<_DrawerIndex>(
         key: const Key('drawer_item_puzzles'),

@@ -6,6 +6,7 @@
 import 'package:logger/logger.dart';
 
 import 'environment_config.dart';
+import 'in_app_log_buffer.dart';
 
 int _clampLogLevel(int requested) {
   if (requested < 0) {
@@ -17,6 +18,21 @@ int _clampLogLevel(int requested) {
   return requested;
 }
 
+class _InAppLogOutput extends LogOutput {
+  _InAppLogOutput({required this.delegate});
+
+  final LogOutput delegate;
+
+  @override
+  void output(OutputEvent event) {
+    for (final String line in event.lines) {
+      InAppLogBuffer.instance.addLine(event.level, line);
+    }
+    delegate.output(event);
+  }
+}
+
 final Logger logger = Logger(
   level: Level.values[_clampLogLevel(EnvironmentConfig.logLevel)],
+  output: _InAppLogOutput(delegate: ConsoleOutput()),
 );
