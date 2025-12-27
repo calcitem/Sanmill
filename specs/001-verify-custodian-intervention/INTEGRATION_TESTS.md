@@ -27,7 +27,7 @@ Call Stack:
 ## Current Environment Limitations
 
 **Environment**: Headless Linux server (no GUI, no sudo access)
-**Flutter SDK**: 3.35.5 (snap installation)
+**Flutter SDK**: 3.38.5 (snap installation)
 **Permissions**: Cannot install system packages via `apt-get` (no sudo)
 
 ## Solutions

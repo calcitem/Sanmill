@@ -15,7 +15,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.5'
+          flutter-version: '3.38.5'
 
       - name: Export environment valuables
         run: export
@@ -47,7 +47,7 @@ jobs:
       - name: Build iOS
         run: |
           cd src/ui/flutter_app
-          
+
           # First try simulator build (safer for CI)
           echo "Attempting iOS Simulator build..."
           if flutter build ios -v --release --no-codesign --simulator; then
@@ -58,7 +58,7 @@ jobs:
             # Get the latest available iOS SDK
             AVAILABLE_SDK=$(xcodebuild -showsdks | grep iphoneos | tail -1 | sed 's/.*iphoneos//' | tr -d ' ')
             echo "Using iOS SDK: $AVAILABLE_SDK"
-            
+
             # Try device build with the available SDK
             if flutter build ios -v --release --no-codesign; then
               echo "iOS device build successful with SDK $AVAILABLE_SDK"

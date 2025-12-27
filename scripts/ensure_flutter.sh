@@ -11,7 +11,7 @@ fi
 SANMILL_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SANMILL_REPO_ROOT="$(cd "${SANMILL_SCRIPT_DIR}/.." && pwd)"
 
-: "${REQUIRED_FLUTTER_VERSION:=3.35.5}"
+: "${REQUIRED_FLUTTER_VERSION:=3.38.5}"
 : "${FLUTTER_CHANNEL:=stable}"
 : "${FLUTTER_DOWNLOAD_BASE_URL:=https://storage.googleapis.com/flutter_infra_release/releases}"
 : "${FLUTTER_TOOL_DIR:=${SANMILL_REPO_ROOT}/.tools/flutter}"
@@ -41,7 +41,7 @@ flutter__detect_system_flutter() {
   fi
   version_line="$(printf '%s' "${version_output}" | head -n 1)"
 
-  # Expected format: "Flutter 3.35.5 • channel stable • ..."
+  # Expected format: "Flutter 3.38.5 • channel stable • ..."
   local version
   version="$(printf '%s' "${version_line}" | awk '{print $2}')"
   if [[ "${version}" != "${REQUIRED_FLUTTER_VERSION}" ]]; then
@@ -210,7 +210,7 @@ ensure_flutter_sdk() {
 
 ensure_flutter_on_path() {
   ensure_flutter_sdk || return 1
-  
+
   if [[ -z "${FLUTTER_SDK_PATH}" ]]; then
     echo "FLUTTER_SDK_PATH is not set. Cannot add Flutter to PATH." >&2
     return 1
@@ -218,14 +218,14 @@ ensure_flutter_on_path() {
 
   # Set FLUTTER_HOME environment variable
   export FLUTTER_HOME="${FLUTTER_SDK_PATH}"
-  
+
   # Add Flutter bin directory to PATH if not already present
   local flutter_bin_dir="${FLUTTER_SDK_PATH}/bin"
   case ":${PATH}:" in
-    *:"${flutter_bin_dir}":*) 
+    *:"${flutter_bin_dir}":*)
       # Already in PATH
       ;;
-    *) 
+    *)
       export PATH="${flutter_bin_dir}:${PATH}"
       echo "Added Flutter to PATH: ${flutter_bin_dir}" >&2
       ;;
@@ -236,7 +236,7 @@ ensure_flutter_on_path() {
     echo "Warning: Flutter command still not available after adding to PATH." >&2
     return 1
   fi
-  
+
   if ! command -v dart >/dev/null 2>&1; then
     echo "Warning: Dart command still not available after adding to PATH." >&2
     return 1

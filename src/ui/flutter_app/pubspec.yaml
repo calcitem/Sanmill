@@ -47,7 +47,7 @@ dependencies:
   json_annotation: 4.9.0
   logger: 2.6.1
   marquee: 2.3.0
-  meta: 1.16.0
+  meta: 1.17.0
   native_screenshot_widget: 0.0.8
   network_info_plus: 7.0.0
   package_info_plus: 9.0.0

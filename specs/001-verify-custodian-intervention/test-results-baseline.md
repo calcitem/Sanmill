@@ -6,7 +6,7 @@
 ## Execution Environment
 
 - **Platform**: Linux (headless CI environment)
-- **Flutter SDK**: 3.35.5 (snap installation)
+- **Flutter SDK**: 3.38.5 (snap installation)
 - **Test Type**: Integration tests with real app build
 
 ## Test Execution Status

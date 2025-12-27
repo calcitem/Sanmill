@@ -39,7 +39,7 @@ Verify the correctness and completeness of recently implemented custodian and in
 
 ## Technical Context
 **Language/Version**: C++17 (game engine), Dart 3.8+ (Flutter UI)
-**Primary Dependencies**: C++ STL, Flutter SDK 3.35.5, Dart test framework, integration_test package
+**Primary Dependencies**: C++ STL, Flutter SDK 3.38.5, Dart test framework, integration_test package
 **Storage**: FEN notation for game state serialization (file-based), in-memory game state
 **Testing**: Dart unit tests (`flutter test`), integration tests (`flutter test integration_test`), C++ unit tests (existing test harness)
 **Target Platform**: Multi-platform (Android, iOS, Windows, macOS)
@@ -239,8 +239,8 @@ src/ui/flutter_app/integration_test/
 ## Phase 3+: Future Implementation
 *These phases are beyond the scope of the /plan command*
 
-**Phase 3**: Task execution (/tasks command creates tasks.md)  
-**Phase 4**: Implementation (execute tasks.md following constitutional principles)  
+**Phase 3**: Task execution (/tasks command creates tasks.md)
+**Phase 4**: Implementation (execute tasks.md following constitutional principles)
 **Phase 5**: Validation (run tests, execute quickstart.md, performance validation)
 
 ## Complexity Tracking
