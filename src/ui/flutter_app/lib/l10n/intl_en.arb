@@ -3715,5 +3715,25 @@
     "downloadLogs": "Download Logs",
     "@downloadLogs": {
         "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "No Logs Available",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "Logs will appear here as the app runs. Try using the app and come back to see the logs.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "No logs available to download",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "Download failed",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "Refresh",
+    "@refresh": {
+        "description": "Label for refresh action"
     }
 }

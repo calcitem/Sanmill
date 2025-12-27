@@ -3715,5 +3715,25 @@
     "downloadLogs": "下载日志",
     "@downloadLogs": {
         "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "暂无日志",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "日志将在应用运行时显示在此处。请先使用应用,然后返回查看日志。",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "没有可下载的日志",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "下载失败",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "刷新",
+    "@refresh": {
+        "description": "Label for refresh action"
     }
 }

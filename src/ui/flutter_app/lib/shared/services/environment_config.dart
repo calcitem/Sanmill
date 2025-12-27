@@ -26,6 +26,7 @@ class EnvironmentConfig {
   );
 
   /// Gets log level
-  /// Defaults to 4
-  static const int logLevel = int.fromEnvironment("log_level", defaultValue: 4);
+  /// Defaults to 0 (all) to record all logs for user viewing
+  /// Level values: 0=all, 1=trace, 2=debug, 3=info, 4=warning, 5=error, 6=fatal
+  static const int logLevel = int.fromEnvironment("log_level", defaultValue: 0);
 }
