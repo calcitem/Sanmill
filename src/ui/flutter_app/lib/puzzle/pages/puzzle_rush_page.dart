@@ -311,7 +311,11 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   OutlinedButton.icon(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
                     icon: const Icon(FluentIcons.dismiss_24_regular),
                     label: Text(s.close),
                   ),
@@ -391,6 +395,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   void _startRush() {
+    if (!mounted) {
+      return;
+    }
     // Get puzzles based on difficulty
     List<PuzzleInfo> puzzles;
     if (_selectedDifficulty == null) {
@@ -439,8 +446,8 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   void _onPuzzleSolved() {
-    // Don't process if time is up
-    if (_remainingSeconds <= 0) {
+    // Don't process if time is up or widget unmounted
+    if (_remainingSeconds <= 0 || !mounted) {
       return;
     }
 
@@ -452,8 +459,8 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   void _onPuzzleFailed() {
-    // Don't process if time is up or already out of lives
-    if (_remainingSeconds <= 0 || _livesRemaining <= 0) {
+    // Don't process if time is up, already out of lives, or widget unmounted
+    if (_remainingSeconds <= 0 || _livesRemaining <= 0 || !mounted) {
       return;
     }
 
@@ -473,23 +480,28 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   void _confirmQuit() {
+    if (!mounted) {
+      return;
+    }
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        final S s = S.of(context);
+      builder: (BuildContext dialogContext) {
+        final S s = S.of(dialogContext);
         return AlertDialog(
           title: Text(s.confirm),
           content: Text(s.puzzleRushQuitConfirm),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
               child: Text(s.cancel),
             ),
             TextButton(
               onPressed: () {
                 _timer?.cancel();
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.of(dialogContext).pop();
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: Text(s.quit),
             ),
@@ -500,6 +512,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   void _resetAndStart() {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _isActive = false;
     });
