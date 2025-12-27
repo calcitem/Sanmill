@@ -378,7 +378,11 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   OutlinedButton.icon(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
                     icon: const Icon(FluentIcons.dismiss_24_regular),
                     label: Text(s.close),
                   ),
@@ -413,6 +417,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _startStreak() {
+    if (!mounted) {
+      return;
+    }
     // Get all puzzles and shuffle
     final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles();
     puzzles.shuffle();
@@ -428,6 +435,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _loadMorePuzzles() {
+    if (!mounted) {
+      return;
+    }
     // If we're running out of puzzles, shuffle and add more
     final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles();
     puzzles.shuffle();
@@ -437,8 +447,8 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _onPuzzleSolved() {
-    // Don't process if already failed
-    if (_failed) {
+    // Don't process if already failed or widget unmounted
+    if (_failed || !mounted) {
       return;
     }
 
@@ -452,8 +462,8 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _onPuzzleFailed() {
-    // Don't process if already failed
-    if (_failed) {
+    // Don't process if already failed or widget unmounted
+    if (_failed || !mounted) {
       return;
     }
 
@@ -465,22 +475,27 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _confirmQuit() {
+    if (!mounted) {
+      return;
+    }
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        final S s = S.of(context);
+      builder: (BuildContext dialogContext) {
+        final S s = S.of(dialogContext);
         return AlertDialog(
           title: Text(s.confirm),
           content: Text(s.puzzleStreakQuitConfirm),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
               child: Text(s.cancel),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.of(dialogContext).pop();
+                if (mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               child: Text(s.quit),
             ),
@@ -491,6 +506,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   void _resetAndStart() {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _isActive = false;
       _failed = false;
