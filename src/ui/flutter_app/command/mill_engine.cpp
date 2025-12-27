@@ -56,7 +56,11 @@ int MillEngine::startup()
         }
     }
 
-    CommandChannel::getInstance();
+    CommandChannel *channel = CommandChannel::getInstance();
+    channel->clearQueues();
+
+    // Reset engine state to READY as we are starting a fresh session.
+    state = ENGINE_STATE_READY;
 
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
