@@ -3796,5 +3796,21 @@
                 "type": "int"
             }
         }
+    },
+    "clearLogs": "清空日志",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "确定要清空所有日志吗？此操作无法撤销。",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "清空",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "日志已清空",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
     }
 }

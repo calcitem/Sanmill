@@ -111,6 +111,42 @@ class _LogsPageState extends State<LogsPage> {
     }
   }
 
+  Future<void> _clearLogs(BuildContext context) async {
+    final S s = S.of(context);
+
+    // Show confirmation dialog
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(s.clearLogs),
+        content: Text(s.clearLogsConfirmation),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(s.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(s.clear),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed ?? false) {
+      setState(() {
+        memoryOutput.clear();
+        _logs.clear();
+        _selectionStart = null;
+        _selectionEnd = null;
+      });
+
+      if (mounted) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(s.logsCleared);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
@@ -133,12 +169,7 @@ class _LogsPageState extends State<LogsPage> {
               tooltip: s.cancel,
             ),
           ] else ...<Widget>[
-            // Regular mode buttons
-            IconButton(
-              icon: const Icon(Icons.select_all),
-              onPressed: _toggleSelectionMode,
-              tooltip: s.selectMode,
-            ),
+            // Regular mode buttons - only frequently used actions
             IconButton(
               icon: const Icon(Icons.vertical_align_bottom),
               onPressed: _logs.isEmpty ? null : _scrollToBottom,
@@ -149,27 +180,60 @@ class _LogsPageState extends State<LogsPage> {
               onPressed: _refreshLogs,
               tooltip: s.refresh,
             ),
-            IconButton(
-              icon: _isProcessing
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.download),
-              onPressed: _isProcessing ? null : () => _downloadLogs(context),
-              tooltip: s.downloadLogs,
-            ),
-            IconButton(
-              icon: _isProcessing
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.share),
-              onPressed: _isProcessing ? null : () => _shareLogs(context),
-              tooltip: s.shareLogs,
+            // More menu for other actions
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert),
+              tooltip: s.more,
+              onSelected: (String value) {
+                switch (value) {
+                  case 'select':
+                    _toggleSelectionMode();
+                  case 'download':
+                    _downloadLogs(context);
+                  case 'share':
+                    _shareLogs(context);
+                  case 'clear':
+                    _clearLogs(context);
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'select',
+                  child: ListTile(
+                    leading: const Icon(Icons.select_all),
+                    title: Text(s.selectMode),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'download',
+                  enabled: !_isProcessing,
+                  child: ListTile(
+                    leading: const Icon(Icons.download),
+                    title: Text(s.downloadLogs),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'share',
+                  enabled: !_isProcessing,
+                  child: ListTile(
+                    leading: const Icon(Icons.share),
+                    title: Text(s.shareLogs),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuDivider(),
+                PopupMenuItem<String>(
+                  value: 'clear',
+                  enabled: _logs.isNotEmpty,
+                  child: ListTile(
+                    leading: const Icon(Icons.delete_outline),
+                    title: Text(s.clearLogs),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
             ),
           ],
         ],

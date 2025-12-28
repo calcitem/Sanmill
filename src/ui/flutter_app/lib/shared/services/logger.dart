@@ -28,6 +28,11 @@ class MemoryOutput extends LogOutput {
 
   /// Get all logs in the buffer
   List<OutputEvent> get logs => _buffer.toList();
+
+  /// Clear all logs from the buffer
+  void clear() {
+    _buffer.clear();
+  }
 }
 
 final MemoryOutput memoryOutput = MemoryOutput();

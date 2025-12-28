@@ -3796,5 +3796,21 @@
                 "type": "int"
             }
         }
+    },
+    "clearLogs": "Clear Logs",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "Are you sure you want to clear all logs? This action cannot be undone.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "Clear",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "Logs cleared",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
     }
 }
