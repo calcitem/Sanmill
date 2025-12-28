@@ -110,14 +110,14 @@ void main() {
 
             // Configure Human vs AI mode with human as white
             GameController().gameInstance.gameMode = GameMode.humanVsAi;
-            GameController()
-                .gameInstance
-                .getPlayerByColor(PieceColor.white)
-                .isAi = false;
-            GameController()
-                .gameInstance
-                .getPlayerByColor(PieceColor.black)
-                .isAi = true;
+            GameController().gameInstance
+                    .getPlayerByColor(PieceColor.white)
+                    .isAi =
+                false;
+            GameController().gameInstance
+                    .getPlayerByColor(PieceColor.black)
+                    .isAi =
+                true;
 
             // Start the engine fresh
             print('$logTag Starting engine...');
@@ -143,7 +143,8 @@ void main() {
             // Move 2: Wait for AI response (THIS IS THE CRITICAL TEST)
             print('$logTag Move 2: Black (AI)');
             print(
-                "$logTag Waiting for AI's FIRST response (timeout: ${aiResponseTimeoutSeconds}s)...");
+              "$logTag Waiting for AI's FIRST response (timeout: ${aiResponseTimeoutSeconds}s)...",
+            );
 
             final bool aiSuccess = await _waitForAiMoveWithTimeout(
               aiResponseTimeoutSeconds,
@@ -155,8 +156,7 @@ void main() {
             if (!aiSuccess) {
               // HANG DETECTED on second move!
               print('$logTag ❌❌❌ HANG DETECTED ❌❌❌');
-              print(
-                  '$logTag AI failed to respond on move 2 (first AI move)');
+              print('$logTag AI failed to respond on move 2 (first AI move)');
 
               final String hangDetail =
                   'Game $gameNum, Move 2: AI failed to respond within $aiResponseTimeoutSeconds seconds';
@@ -165,7 +165,8 @@ void main() {
 
               print('$logTag Position FEN: ${GameController().position.fen}');
               print(
-                  '$logTag Move history: ${GameController().gameRecorder.moveHistoryText}');
+                '$logTag Move history: ${GameController().gameRecorder.moveHistoryText}',
+              );
 
               print('$logTag ❌❌❌ STOPPING TEST ❌❌❌');
               print('$logTag Bug reproduced on game $gameNum, move 2');
@@ -178,7 +179,8 @@ void main() {
             // Short delay before next game
             if (gameNum < maxGamesToTest) {
               await Future<void>.delayed(
-                  Duration(milliseconds: delayBetweenGames));
+                Duration(milliseconds: delayBetweenGames),
+              );
             }
           }
         } finally {
@@ -213,10 +215,7 @@ void main() {
 }
 
 /// Wait for AI to make a move with timeout detection
-Future<bool> _waitForAiMoveWithTimeout(
-  int timeoutSeconds,
-  int gameNum,
-) async {
+Future<bool> _waitForAiMoveWithTimeout(int timeoutSeconds, int gameNum) async {
   final Completer<bool> completer = Completer<bool>();
   Timer? timeoutTimer;
 
@@ -226,7 +225,8 @@ Future<bool> _waitForAiMoveWithTimeout(
   timeoutTimer = Timer(Duration(seconds: timeoutSeconds), () {
     if (!completer.isCompleted) {
       print(
-          '$logTag ⚠️ TIMEOUT: AI did not respond within $timeoutSeconds seconds');
+        '$logTag ⚠️ TIMEOUT: AI did not respond within $timeoutSeconds seconds',
+      );
       print('$logTag Engine running: ${GameController().isEngineRunning}');
       print('$logTag Engine in delay: ${GameController().isEngineInDelay}');
       completer.complete(false);
@@ -242,8 +242,9 @@ Future<bool> _waitForAiMoveWithTimeout(
       print('$logTag Engine returned move: ${ret.extMove!.move}');
 
       // Execute the move
-      final bool moveSuccessful =
-          GameController().gameInstance.doMove(ret.extMove!);
+      final bool moveSuccessful = GameController().gameInstance.doMove(
+        ret.extMove!,
+      );
 
       if (moveSuccessful) {
         print('$logTag Move executed successfully');
@@ -285,8 +286,8 @@ Future<bool> _makeRandomHumanMove() async {
 
   try {
     // Use engine's analyzePosition to get all legal moves
-    final PositionAnalysisResult analysisResult =
-        await GameController().engine.analyzePosition();
+    final PositionAnalysisResult analysisResult = await GameController().engine
+        .analyzePosition();
 
     if (!analysisResult.isValid || analysisResult.possibleMoves.isEmpty) {
       print('$logTag No legal moves available from analysis');
@@ -299,7 +300,8 @@ Future<bool> _makeRandomHumanMove() async {
         .toList();
 
     print(
-        '$logTag Found ${legalMoves.length} legal moves: ${legalMoves.take(5).join(", ")}...');
+      '$logTag Found ${legalMoves.length} legal moves: ${legalMoves.take(5).join(", ")}...',
+    );
 
     // Shuffle and pick a random move
     legalMoves.shuffle();

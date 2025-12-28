@@ -5,10 +5,13 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
@@ -342,42 +345,67 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _isEditing ? S.of(context).puzzleEdit : S.of(context).puzzleCreateNew,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(FluentIcons.save_24_regular),
-            onPressed: _savePuzzle,
-            tooltip: S.of(context).save,
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        final Widget page = Scaffold(
+          backgroundColor: useDarkSettingsUi
+              ? settingsTheme.scaffoldBackgroundColor
+              : AppTheme.lightBackgroundColor,
+          appBar: AppBar(
+            title: Text(
+              _isEditing
+                  ? S.of(context).puzzleEdit
+                  : S.of(context).puzzleCreateNew,
+              style: useDarkSettingsUi
+                  ? null
+                  : AppTheme.appBarTheme.titleTextStyle,
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(FluentIcons.save_24_regular),
+                onPressed: _savePuzzle,
+                tooltip: S.of(context).save,
+              ),
+            ],
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // Instructions card
-            _buildInstructionsCard(),
-            const SizedBox(height: 16),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                // Instructions card
+                _buildInstructionsCard(),
+                const SizedBox(height: 16),
 
-            // Position capture section
-            _buildPositionCaptureSection(),
-            const SizedBox(height: 16),
+                // Position capture section
+                _buildPositionCaptureSection(),
+                const SizedBox(height: 16),
 
-            // Solution recording section
-            _buildSolutionRecordingSection(),
-            const SizedBox(height: 24),
+                // Solution recording section
+                _buildSolutionRecordingSection(),
+                const SizedBox(height: 24),
 
-            // Metadata section
-            _buildMetadataSection(),
-          ],
-        ),
-      ),
+                // Metadata section
+                _buildMetadataSection(),
+              ],
+            ),
+          ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 

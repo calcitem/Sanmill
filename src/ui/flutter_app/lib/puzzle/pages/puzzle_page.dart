@@ -6,7 +6,9 @@
 // Main puzzle solving page
 
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
@@ -155,99 +157,125 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
-        if (didPop) {
-          return;
-        }
-        final bool? shouldPop = await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: Text(s.exitPuzzle),
-            content: Text(s.puzzleProgressWillBeLost),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(s.cancel),
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        final Widget page = PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, Object? result) async {
+            if (didPop) {
+              return;
+            }
+            final bool? shouldPop = await showDialog<bool>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text(s.exitPuzzle),
+                content: Text(s.puzzleProgressWillBeLost),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text(s.cancel),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: Text(s.exit),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(s.exit),
+            );
+            // Check if user confirmed exit and widget is still mounted
+            if (shouldPop ?? false) {
+              if (!mounted) {
+                return;
+              }
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            }
+          },
+          child: Scaffold(
+            backgroundColor: useDarkSettingsUi
+                ? settingsTheme.scaffoldBackgroundColor
+                : AppTheme.lightBackgroundColor,
+            appBar: AppBar(
+              title: Text(
+                widget.puzzle.title,
+                style: useDarkSettingsUi
+                    ? null
+                    : AppTheme.appBarTheme.titleTextStyle,
               ),
-            ],
+              actions: <Widget>[
+                // Undo button
+                IconButton(
+                  icon: const Icon(Icons.undo),
+                  onPressed: _canUndo ? _undoMove : null,
+                  tooltip: s.undo,
+                ),
+                // Hint button
+                if (DB().puzzleSettings.showHints && _hintService.hasHints)
+                  IconButton(
+                    icon: const Icon(Icons.lightbulb_outline),
+                    onPressed: _showHint,
+                    tooltip: s.hint,
+                  ),
+                // Reset button
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: _resetPuzzle,
+                  tooltip: s.reset,
+                ),
+              ],
+            ),
+            body: Column(
+              children: <Widget>[
+                // Puzzle info panel - only rebuilds when move count changes
+                ValueListenableBuilder<int>(
+                  valueListenable: _moveCountNotifier,
+                  builder:
+                      (BuildContext context, int moveCount, Widget? child) {
+                        return _buildInfoPanel(s, moveCount, useDarkSettingsUi);
+                      },
+                ),
+
+                // Game board - properly constructed with GameMode
+                Expanded(
+                  child: _PuzzleGameBoard(
+                    puzzle: widget.puzzle,
+                    onMoveCompleted: _onPlayerMove,
+                  ),
+                ),
+
+                // Action buttons
+                _buildActionButtons(s),
+              ],
+            ),
           ),
         );
-        // Check if user confirmed exit and widget is still mounted
-        if (shouldPop ?? false) {
-          if (!mounted) {
-            return;
-          }
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
-        }
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.puzzle.title,
-            style: AppTheme.appBarTheme.titleTextStyle,
-          ),
-          actions: <Widget>[
-            // Undo button
-            IconButton(
-              icon: const Icon(Icons.undo),
-              onPressed: _canUndo ? _undoMove : null,
-              tooltip: s.undo,
-            ),
-            // Hint button
-            if (DB().puzzleSettings.showHints && _hintService.hasHints)
-              IconButton(
-                icon: const Icon(Icons.lightbulb_outline),
-                onPressed: _showHint,
-                tooltip: s.hint,
-              ),
-            // Reset button
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: _resetPuzzle,
-              tooltip: s.reset,
-            ),
-          ],
-        ),
-        body: Column(
-          children: <Widget>[
-            // Puzzle info panel - only rebuilds when move count changes
-            ValueListenableBuilder<int>(
-              valueListenable: _moveCountNotifier,
-              builder: (BuildContext context, int moveCount, Widget? child) {
-                return _buildInfoPanel(s, moveCount);
-              },
-            ),
-
-            // Game board - properly constructed with GameMode
-            Expanded(
-              child: _PuzzleGameBoard(
-                puzzle: widget.puzzle,
-                onMoveCompleted: _onPlayerMove,
-              ),
-            ),
-
-            // Action buttons
-            _buildActionButtons(s),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget _buildInfoPanel(S s, int moveCount) {
+  Widget _buildInfoPanel(S s, int moveCount, bool useDarkSettingsUi) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: Theme.of(
-        context,
-      ).colorScheme.primaryContainer.withValues(alpha: 0.1), // Use theme color
+      color: useDarkSettingsUi
+          ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.3)
+          : Theme.of(context).colorScheme.primaryContainer.withValues(
+              alpha: 0.1,
+            ), // Use theme color
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

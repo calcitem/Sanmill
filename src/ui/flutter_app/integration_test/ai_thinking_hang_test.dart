@@ -37,8 +37,10 @@ void main() {
   const String logTag = '[AIThinkingHangTest]';
 
   // Test configuration
-  const int maxGamesToTest = 100; // Run many games to increase chance of reproducing
-  const int aiResponseTimeoutSeconds = 30; // AI should respond within 30 seconds
+  const int maxGamesToTest =
+      100; // Run many games to increase chance of reproducing
+  const int aiResponseTimeoutSeconds =
+      30; // AI should respond within 30 seconds
   const int maxMovesPerGame = 50; // Limit moves per game to speed up testing
 
   group('AI Thinking Hang Detection Tests', () {
@@ -109,14 +111,14 @@ void main() {
 
           // Configure Human vs AI mode with human as white
           GameController().gameInstance.gameMode = GameMode.humanVsAi;
-          GameController()
-              .gameInstance
-              .getPlayerByColor(PieceColor.white)
-              .isAi = false;
-          GameController()
-              .gameInstance
-              .getPlayerByColor(PieceColor.black)
-              .isAi = true;
+          GameController().gameInstance
+                  .getPlayerByColor(PieceColor.white)
+                  .isAi =
+              false;
+          GameController().gameInstance
+                  .getPlayerByColor(PieceColor.black)
+                  .isAi =
+              true;
 
           print('$logTag Configured: Human (White) vs AI (Black)');
 
@@ -131,10 +133,8 @@ void main() {
             moveNum++;
             totalMoves++;
 
-            final PieceColor currentSide =
-                GameController().position.sideToMove;
-            final bool isAiTurn =
-                GameController().gameInstance.isAiSideToMove;
+            final PieceColor currentSide = GameController().position.sideToMove;
+            final bool isAiTurn = GameController().gameInstance.isAiSideToMove;
 
             print(
               '$logTag Game $gameNum, Move $moveNum: ${currentSide == PieceColor.white ? "White" : "Black"}${isAiTurn ? " (AI)" : " (Human)"}',
@@ -181,9 +181,7 @@ void main() {
             // Check if game is over
             if (GameController().position.winner != PieceColor.nobody) {
               gameOver = true;
-              print(
-                '$logTag Game over: ${GameController().position.winner}',
-              );
+              print('$logTag Game over: ${GameController().position.winner}');
             }
 
             // Small delay between moves
@@ -255,7 +253,9 @@ Future<bool> _waitForAiMoveWithTimeout(
   // Set up timeout
   timeoutTimer = Timer(Duration(seconds: timeoutSeconds), () {
     if (!completer.isCompleted) {
-      print('$logTag ⚠️ TIMEOUT: AI did not respond within $timeoutSeconds seconds');
+      print(
+        '$logTag ⚠️ TIMEOUT: AI did not respond within $timeoutSeconds seconds',
+      );
       print('$logTag Engine running: ${GameController().isEngineRunning}');
       print('$logTag Engine in delay: ${GameController().isEngineInDelay}');
       print(
@@ -276,8 +276,9 @@ Future<bool> _waitForAiMoveWithTimeout(
       print('$logTag Engine returned move: ${ret.extMove!.move}');
 
       // Execute the move
-      final bool moveSuccessful =
-          GameController().gameInstance.doMove(ret.extMove!);
+      final bool moveSuccessful = GameController().gameInstance.doMove(
+        ret.extMove!,
+      );
 
       if (moveSuccessful) {
         final int finalMoveCount =
@@ -334,8 +335,8 @@ Future<bool> _makeRandomHumanMove() async {
 
   try {
     // Use engine's analyzePosition to get all legal moves
-    final PositionAnalysisResult analysisResult =
-        await GameController().engine.analyzePosition();
+    final PositionAnalysisResult analysisResult = await GameController().engine
+        .analyzePosition();
 
     if (!analysisResult.isValid || analysisResult.possibleMoves.isEmpty) {
       print('$logTag No legal moves available from analysis');
@@ -343,10 +344,13 @@ Future<bool> _makeRandomHumanMove() async {
     }
 
     // Extract all move strings
-    final List<String> legalMoves =
-        analysisResult.possibleMoves.map((MoveAnalysisResult m) => m.move).toList();
+    final List<String> legalMoves = analysisResult.possibleMoves
+        .map((MoveAnalysisResult m) => m.move)
+        .toList();
 
-    print('$logTag Found ${legalMoves.length} legal moves: ${legalMoves.take(5).join(", ")}...');
+    print(
+      '$logTag Found ${legalMoves.length} legal moves: ${legalMoves.take(5).join(", ")}...',
+    );
 
     // Shuffle and pick a random move
     legalMoves.shuffle();
