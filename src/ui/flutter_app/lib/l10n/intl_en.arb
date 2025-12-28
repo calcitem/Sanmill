@@ -3769,9 +3769,17 @@
     "@nothingSelected": {
         "description": "Message shown when trying to copy but no logs are selected"
     },
-    "scrollToBottom": "Scroll to bottom",
+    "scrollToTop": "Scroll to top (oldest)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "Scroll to bottom (newest)",
     "@scrollToBottom": {
         "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "Newest logs at bottom",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
     },
     "logsCount": "Logs: {current} / {max}",
     "@logsCount": {

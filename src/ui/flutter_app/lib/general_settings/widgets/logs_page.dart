@@ -38,21 +38,21 @@ final RegExp _emojiOnlyPattern = RegExp(
 String _stripAnsiCodes(String text) {
   // First remove ANSI codes
   String cleaned = text.replaceAll(_ansiEscapePattern, '');
-  
+
   // Remove lines that are only box drawing characters
   if (_boxDrawingPattern.hasMatch(cleaned)) {
     return '';
   }
-  
+
   // Remove lines that are only emoji and whitespace
   if (_emojiOnlyPattern.hasMatch(cleaned)) {
     return '';
   }
-  
+
   // Remove box drawing characters from the beginning and end of lines
   cleaned = cleaned.replaceAll(RegExp(r'^[│├└┌]\s*'), '');
   cleaned = cleaned.replaceAll(RegExp(r'\s*[│┤┘┐]$'), '');
-  
+
   return cleaned;
 }
 
@@ -89,7 +89,8 @@ class _LogsPageState extends State<LogsPage> {
 
   void _refreshLogs() {
     setState(() {
-      _logs = memoryOutput.logs.reversed.toList();
+      // Keep logs in chronological order (oldest first, newest last)
+      _logs = memoryOutput.logs.toList();
     });
   }
 
@@ -99,12 +100,12 @@ class _LogsPageState extends State<LogsPage> {
         .map(_stripAnsiCodes)
         .where((String line) => line.trim().isNotEmpty)
         .toList();
-    
+
     // Add a blank line at the end if there are any lines
     if (cleaned.isNotEmpty) {
       cleaned.add('');
     }
-    
+
     return cleaned;
   }
 
@@ -159,6 +160,16 @@ class _LogsPageState extends State<LogsPage> {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _scrollToTop() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
@@ -240,6 +251,8 @@ class _LogsPageState extends State<LogsPage> {
               tooltip: s.more,
               onSelected: (String value) {
                 switch (value) {
+                  case 'scrollTop':
+                    _scrollToTop();
                   case 'select':
                     _toggleSelectionMode();
                   case 'download':
@@ -251,6 +264,16 @@ class _LogsPageState extends State<LogsPage> {
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'scrollTop',
+                  enabled: _logs.isNotEmpty,
+                  child: ListTile(
+                    leading: const Icon(Icons.vertical_align_top),
+                    title: Text(s.scrollToTop),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuDivider(),
                 PopupMenuItem<String>(
                   value: 'select',
                   child: ListTile(
@@ -347,6 +370,12 @@ class _LogsPageState extends State<LogsPage> {
     final int bufferSize = memoryOutput.bufferSize;
     final bool isBufferFull = totalLogs >= bufferSize;
 
+    final String statsText = isBufferFull
+        ? s.logsBufferFull(totalLogs, bufferSize)
+        : s.logsCount(totalLogs, bufferSize);
+
+    final String hintText = '$statsText • ${s.newestLogsAtBottom}';
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       color: isBufferFull
@@ -364,9 +393,7 @@ class _LogsPageState extends State<LogsPage> {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              isBufferFull
-                  ? s.logsBufferFull(totalLogs, bufferSize)
-                  : s.logsCount(totalLogs, bufferSize),
+              hintText,
               style: TextStyle(
                 color: isBufferFull
                     ? Theme.of(context).colorScheme.onErrorContainer
@@ -514,7 +541,7 @@ class _LogsPageState extends State<LogsPage> {
       buffer.writeln('=' * 50);
       buffer.writeln();
 
-      for (final OutputEvent log in _logs.reversed) {
+      for (final OutputEvent log in _logs) {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
         _getCleanedLogLines(log).forEach(buffer.writeln);
@@ -592,7 +619,7 @@ class _LogsPageState extends State<LogsPage> {
       buffer.writeln('=' * 50);
       buffer.writeln();
 
-      for (final OutputEvent log in _logs.reversed) {
+      for (final OutputEvent log in _logs) {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
         _getCleanedLogLines(log).forEach(buffer.writeln);

@@ -3769,9 +3769,17 @@
     "@nothingSelected": {
         "description": "Message shown when trying to copy but no logs are selected"
     },
-    "scrollToBottom": "滚动到底部",
+    "scrollToTop": "滚动到顶部（最旧）",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "滚动到底部（最新）",
     "@scrollToBottom": {
         "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "最新日志在底部",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
     },
     "logsCount": "日志：{current} / {max}",
     "@logsCount": {
