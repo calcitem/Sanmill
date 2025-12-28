@@ -26,6 +26,9 @@ class PuzzleInfo extends HiveObject {
     this.rating,
     this.ruleVariantId =
         'standard_9mm', // Default to standard Nine Men's Morris
+    this.titleLocalizationKey,
+    this.descriptionLocalizationKey,
+    this.hintLocalizationKey,
   }) : createdDate = createdDate ?? DateTime.now();
 
   /// Create from JSON
@@ -62,6 +65,10 @@ class PuzzleInfo extends HiveObject {
       version: json['version'] as int? ?? 1,
       rating: json['rating'] as int?,
       ruleVariantId: json['ruleVariantId'] as String? ?? 'standard_9mm',
+      titleLocalizationKey: json['titleLocalizationKey'] as String?,
+      descriptionLocalizationKey:
+          json['descriptionLocalizationKey'] as String?,
+      hintLocalizationKey: json['hintLocalizationKey'] as String?,
     );
   }
 
@@ -132,6 +139,24 @@ class PuzzleInfo extends HiveObject {
   @HiveField(15)
   final String ruleVariantId;
 
+  /// Optional localization key for the title.
+  /// If provided, this key will be used to look up the localized title.
+  /// Falls back to the `title` field if the key is not found or is null.
+  @HiveField(16)
+  final String? titleLocalizationKey;
+
+  /// Optional localization key for the description.
+  /// If provided, this key will be used to look up the localized description.
+  /// Falls back to the `description` field if the key is not found or is null.
+  @HiveField(17)
+  final String? descriptionLocalizationKey;
+
+  /// Optional localization key for the hint.
+  /// If provided, this key will be used to look up the localized hint.
+  /// Falls back to the `hint` field if the key is not found or is null.
+  @HiveField(18)
+  final String? hintLocalizationKey;
+
   /// Creates a copy with updated fields
   PuzzleInfo copyWith({
     String? id,
@@ -150,6 +175,9 @@ class PuzzleInfo extends HiveObject {
     int? version,
     int? rating,
     String? ruleVariantId,
+    String? titleLocalizationKey,
+    String? descriptionLocalizationKey,
+    String? hintLocalizationKey,
   }) {
     return PuzzleInfo(
       id: id ?? this.id,
@@ -168,6 +196,11 @@ class PuzzleInfo extends HiveObject {
       version: version ?? this.version,
       rating: rating ?? this.rating,
       ruleVariantId: ruleVariantId ?? this.ruleVariantId,
+      titleLocalizationKey:
+          titleLocalizationKey ?? this.titleLocalizationKey,
+      descriptionLocalizationKey:
+          descriptionLocalizationKey ?? this.descriptionLocalizationKey,
+      hintLocalizationKey: hintLocalizationKey ?? this.hintLocalizationKey,
     );
   }
 
@@ -190,6 +223,33 @@ class PuzzleInfo extends HiveObject {
       'version': version,
       'rating': rating,
       'ruleVariantId': ruleVariantId,
+      'titleLocalizationKey': titleLocalizationKey,
+      'descriptionLocalizationKey': descriptionLocalizationKey,
+      'hintLocalizationKey': hintLocalizationKey,
     };
+  }
+
+  /// Get the localized title, falling back to the raw title if no key is set.
+  String getLocalizedTitle(BuildContext context) {
+    // For now, return the raw title as localization key lookup
+    // would require adding keys to ARB files
+    // Future enhancement: if (titleLocalizationKey != null) {
+    //   return S.of(context).puzzleTitles[titleLocalizationKey];
+    // }
+    return title;
+  }
+
+  /// Get the localized description, falling back to the raw description if no key is set.
+  String getLocalizedDescription(BuildContext context) {
+    // For now, return the raw description
+    // Future enhancement: similar to getLocalizedTitle
+    return description;
+  }
+
+  /// Get the localized hint, falling back to the raw hint if no key is set.
+  String? getLocalizedHint(BuildContext context) {
+    // For now, return the raw hint
+    // Future enhancement: similar to getLocalizedTitle
+    return hint;
   }
 }

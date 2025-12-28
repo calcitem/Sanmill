@@ -14,6 +14,10 @@ class GameRecorder {
   /// Custom setup position. If not null, it will be used instead of current FEN.
   String? setupPosition;
 
+  /// Notifier that fires whenever a move is made or undone.
+  /// Listeners can use this to react to move changes in business logic.
+  final ValueNotifier<int> moveCountNotifier = ValueNotifier<int>(0);
+
   /// PGN tree root node.
   /// Multiple branches are allowed; activeNode tracks the "current" branch.
   final PgnNode<ExtMove> _pgnRoot = PgnNode<ExtMove>();
@@ -42,6 +46,7 @@ class GameRecorder {
     _pgnRoot.children.clear();
     activeNode = null;
     lastPositionWithRemove = null;
+    moveCountNotifier.value = 0;
   }
 
   /// Appends a new move at the end of the current active line.
@@ -63,6 +68,8 @@ class GameRecorder {
       activeNode!.children.insert(0, newChild);
       activeNode = newChild;
     }
+    // Notify that move count has changed
+    moveCountNotifier.value = mainlineMoves.length;
   }
 
   /// Appends a new move only if it differs from the current active move.

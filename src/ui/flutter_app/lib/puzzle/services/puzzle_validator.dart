@@ -80,9 +80,28 @@ class PuzzleValidator {
     logger.i("$_tag Validating solution for puzzle ${puzzle.id}");
     logger.t("$_tag Player moves: $_playerMoves");
 
-    // Check if the puzzle objective is met based on category
-    final bool objectiveMet = _checkObjective(currentPosition);
+    // First, check if the move sequence matches any expected solution.
+    // This prevents exploiting the puzzle by making opponent play poorly.
+    final bool matchesSolution = _matchesAnySolution();
 
+    if (matchesSolution) {
+      // Verify objective is also met
+      final bool objectiveMet = _checkObjective(currentPosition);
+      if (objectiveMet) {
+        final bool isOptimal = _playerMoves.length <= puzzle.optimalMoveCount;
+        return ValidationFeedback(
+          result: ValidationResult.correct,
+          message: isOptimal
+              ? "Perfect! Solved in optimal moves!"
+              : "Correct! (${_playerMoves.length} moves, optimal: ${puzzle.optimalMoveCount})",
+          isOptimal: isOptimal,
+          moveCount: _playerMoves.length,
+        );
+      }
+    }
+
+    // Check if still in progress (objective not met)
+    final bool objectiveMet = _checkObjective(currentPosition);
     if (!objectiveMet) {
       return ValidationFeedback(
         result: ValidationResult.inProgress,
@@ -91,27 +110,12 @@ class PuzzleValidator {
       );
     }
 
-    // Objective is met - check if it matches any solution sequence
-    final bool matchesSolution = _matchesAnySolution();
-
-    if (matchesSolution || _isSolutionEquivalent(currentPosition)) {
-      final bool isOptimal = _playerMoves.length <= puzzle.optimalMoveCount;
-      return ValidationFeedback(
-        result: ValidationResult.correct,
-        message: isOptimal
-            ? "Perfect! Solved in optimal moves!"
-            : "Correct! (${_playerMoves.length} moves, optimal: ${puzzle.optimalMoveCount})",
-        isOptimal: isOptimal,
-        moveCount: _playerMoves.length,
-      );
-    }
-
-    // Objective met but not matching the expected solution
-    // This could still be a valid alternative solution
-    logger.i("$_tag Objective met but solution differs from expected");
+    // Objective met but move sequence doesn't match - this is WRONG
+    // The user likely exploited the puzzle by making opponent play poorly
+    logger.w("$_tag Objective met but solution differs - likely exploited");
     return ValidationFeedback(
-      result: ValidationResult.correct,
-      message: "Correct! You found an alternative solution!",
+      result: ValidationResult.wrong,
+      message: "Objective reached but not following the correct sequence. Try to match the intended solution.",
       moveCount: _playerMoves.length,
     );
   }
@@ -197,17 +201,6 @@ class PuzzleValidator {
     final String normalized1 = move1.trim().toLowerCase();
     final String normalized2 = move2.trim().toLowerCase();
     return normalized1 == normalized2;
-  }
-
-  /// Check if the resulting position is equivalent to the solution
-  /// (for cases where move order might differ but result is the same)
-  bool _isSolutionEquivalent(Position currentPosition) {
-    // This is a more advanced check that would require:
-    // 1. Replaying the solution moves
-    // 2. Comparing the resulting positions
-    // For now, we'll accept the objective-based validation
-    logger.t("$_tag Checking position equivalence");
-    return false; // Conservative approach - stick to exact solution matching
   }
 
   /// Get next hint move

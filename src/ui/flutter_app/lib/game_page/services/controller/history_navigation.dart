@@ -371,6 +371,9 @@ class HistoryNavigator {
 
     // Update the active node to the target
     GameController().gameRecorder.activeNode = targetNode;
+    // Notify move count change
+    GameController().gameRecorder.moveCountNotifier.value =
+        GameController().gameRecorder.mainlineMoves.length;
 
     // Re-enable the controller
     GameController().isControllerActive = true;
@@ -398,6 +401,9 @@ class HistoryNavigator {
       // Just move activeNode to parent
       GameController().gameRecorder.activeNode = node.parent;
     }
+    // Notify move count change after all steps
+    GameController().gameRecorder.moveCountNotifier.value =
+        GameController().gameRecorder.mainlineMoves.length;
   }
 
   /// Move HEAD to the root
@@ -405,6 +411,8 @@ class HistoryNavigator {
     // HEAD => pgnRoot
     GameController().gameRecorder.activeNode =
         GameController().gameRecorder.pgnRoot;
+    // Notify move count change
+    GameController().gameRecorder.moveCountNotifier.value = 0;
   }
 
   /// Move HEAD forward by `n` steps along the first child
@@ -426,6 +434,9 @@ class HistoryNavigator {
         }
       }
     }
+    // Notify move count change after all steps
+    GameController().gameRecorder.moveCountNotifier.value =
+        GameController().gameRecorder.mainlineMoves.length;
   }
 
   /// Move HEAD forward to the very end of the main child path
@@ -445,6 +456,9 @@ class HistoryNavigator {
         break;
       }
     }
+    // Notify move count change
+    GameController().gameRecorder.moveCountNotifier.value =
+        GameController().gameRecorder.mainlineMoves.length;
   }
 
   /// Collect all moves from HEAD up to the root
