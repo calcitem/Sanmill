@@ -22,9 +22,38 @@ final RegExp _ansiEscapePattern = RegExp(
   r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])',
 );
 
-/// Remove ANSI escape codes from text
+// Regular expression to match logger box drawing characters and decorative lines
+final RegExp _boxDrawingPattern = RegExp(
+  r'^[┌┐└┘├┤│─┄┬┴┼╌╍═╔╗╚╝╠╣║╟╢╞╡╪╫╬\s]+$',
+);
+
+// Regular expression to match lines with only emoji and whitespace
+// Common emoji Unicode ranges
+final RegExp _emojiOnlyPattern = RegExp(
+  r'^[\s\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}💡]+$',
+  unicode: true,
+);
+
+/// Remove ANSI escape codes and decorative box drawing characters from text
 String _stripAnsiCodes(String text) {
-  return text.replaceAll(_ansiEscapePattern, '');
+  // First remove ANSI codes
+  String cleaned = text.replaceAll(_ansiEscapePattern, '');
+  
+  // Remove lines that are only box drawing characters
+  if (_boxDrawingPattern.hasMatch(cleaned)) {
+    return '';
+  }
+  
+  // Remove lines that are only emoji and whitespace
+  if (_emojiOnlyPattern.hasMatch(cleaned)) {
+    return '';
+  }
+  
+  // Remove box drawing characters from the beginning and end of lines
+  cleaned = cleaned.replaceAll(RegExp(r'^[│├└┌]\s*'), '');
+  cleaned = cleaned.replaceAll(RegExp(r'\s*[│┤┘┐]$'), '');
+  
+  return cleaned;
 }
 
 class LogsPage extends StatefulWidget {
@@ -64,9 +93,19 @@ class _LogsPageState extends State<LogsPage> {
     });
   }
 
-  /// Get cleaned log lines without ANSI codes
+  /// Get cleaned log lines without ANSI codes and decorative characters
   List<String> _getCleanedLogLines(OutputEvent log) {
-    return log.lines.map(_stripAnsiCodes).toList();
+    final List<String> cleaned = log.lines
+        .map(_stripAnsiCodes)
+        .where((String line) => line.trim().isNotEmpty)
+        .toList();
+    
+    // Add a blank line at the end if there are any lines
+    if (cleaned.isNotEmpty) {
+      cleaned.add('');
+    }
+    
+    return cleaned;
   }
 
   void _toggleSelectionMode() {
@@ -416,9 +455,6 @@ class _LogsPageState extends State<LogsPage> {
       final String levelStr = _getLevelString(log.level);
       buffer.writeln('[$levelStr]');
       _getCleanedLogLines(log).forEach(buffer.writeln);
-      if (i < end) {
-        buffer.writeln();
-      }
     }
 
     await Clipboard.setData(ClipboardData(text: buffer.toString()));
@@ -482,7 +518,6 @@ class _LogsPageState extends State<LogsPage> {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
         _getCleanedLogLines(log).forEach(buffer.writeln);
-        buffer.writeln();
       }
 
       final String content = buffer.toString();
@@ -561,7 +596,6 @@ class _LogsPageState extends State<LogsPage> {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
         _getCleanedLogLines(log).forEach(buffer.writeln);
-        buffer.writeln();
       }
 
       final String content = buffer.toString();
@@ -710,7 +744,10 @@ class _LogItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 12, 12),
               child: SelectableText(
-                log.lines.map(_stripAnsiCodes).join('\n'),
+                log.lines
+                    .map(_stripAnsiCodes)
+                    .where((String line) => line.trim().isNotEmpty)
+                    .join('\n'),
                 style: TextStyle(
                   color: isSelected
                       ? Theme.of(context).colorScheme.onPrimaryContainer
