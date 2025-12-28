@@ -25,28 +25,83 @@ class Engine {
   // Track whether native engine thread has been started to avoid redundant restarts
   bool _started = false;
 
+  // Prevent concurrent startup/search/analyze flows from racing on the native
+  // response queue (which is FIFO and consumed by `read()`).
+  //
+  // Root cause of occasional "AI thinks forever" is typically two async flows
+  // calling `_waitResponse()` concurrently (e.g. fire-and-forget `startup()`
+  // plus a user-triggered `search()`), causing one flow to consume the other's
+  // expected response (bestmove/readyok/uciok) and leaving the other waiting.
+  Future<void>? _startupInProgress;
+
+  Future<void> ensureReady() async {
+    if (!_isPlatformChannelAvailable) {
+      return;
+    }
+
+    final Future<void>? pending = _startupInProgress;
+    if (pending != null) {
+      final Stopwatch sw = Stopwatch()..start();
+      await pending;
+      sw.stop();
+      if (sw.elapsedMilliseconds >= 50) {
+        logger.i("$_logTag ensureReady waited ${sw.elapsedMilliseconds}ms");
+      }
+      return;
+    }
+
+    if (_started) {
+      return;
+    }
+
+    await startup();
+  }
+
   Future<void> startup() async {
     if (!_isPlatformChannelAvailable) {
       return;
     }
 
-    // If engine already started, only refresh options and ensure readiness
-    if (_started) {
-      await setOptions();
-      _isSearchCancelled = false;
-      await _send("isready");
-      await _waitResponse(<String>["readyok"], expectedEpoch: _searchEpoch);
+    final Future<void>? pending = _startupInProgress;
+    if (pending != null) {
+      await pending;
       return;
     }
 
-    // First startup: bring up native engine, wait for uciok, then send options
-    await _platform.invokeMethod("startup");
-    _isSearchCancelled = false;
-    final int currentEpoch = _searchEpoch;
-    await _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch);
+    final Stopwatch sw = Stopwatch()..start();
 
-    await setOptions();
-    _started = true;
+    final Future<void> task = () async {
+      // If engine already started, only refresh options and ensure readiness
+      if (_started) {
+        await setOptions();
+        _isSearchCancelled = false;
+        await _send("isready");
+        await _waitResponse(<String>["readyok"], expectedEpoch: _searchEpoch);
+        return;
+      }
+
+      // First startup: bring up native engine, wait for uciok, then send options
+      await _platform.invokeMethod("startup");
+      _isSearchCancelled = false;
+      final int currentEpoch = _searchEpoch;
+      await _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch);
+
+      await setOptions();
+      _started = true;
+    }();
+
+    _startupInProgress = task;
+
+    try {
+      await task;
+    } finally {
+      sw.stop();
+      logger.i("$_logTag startup finished in ${sw.elapsedMilliseconds}ms");
+      // Only clear if we're still pointing at the same in-flight future.
+      if (identical(_startupInProgress, task)) {
+        _startupInProgress = null;
+      }
+    }
   }
 
   Future<void> _send(String command) async {
@@ -135,6 +190,8 @@ class Engine {
   }
 
   Future<EngineRet> search({bool moveNow = false}) async {
+    await ensureReady();
+
     // Clear any existing analysis markers when AI makes a move
     AnalysisMode.disable();
 
@@ -414,18 +471,21 @@ class Engine {
       if (response.contains("uciok")) {
         _sawUciokDuringWait = true;
       }
-      for (final String prefix in prefixes) {
-        if (response.contains(prefix)) {
-          return response;
-        } else {
-          if (response == "") {
-            if (EnvironmentConfig.devMode) {
-              logger.w("$_logTag Empty response");
-            }
-          } else {
-            logger.w("$_logTag Unexpected engine response: $response");
-          }
+
+      final bool matched = prefixes.any(response.contains);
+      if (matched) {
+        return response;
+      }
+
+      if (response == "") {
+        if (EnvironmentConfig.devMode) {
+          logger.w("$_logTag Empty response");
         }
+      } else {
+        logger.w(
+          "$_logTag Unexpected engine response while waiting for "
+          "${prefixes.join(", ")}: $response",
+        );
       }
     }
 
@@ -732,6 +792,8 @@ class Engine {
 
   /// Analyze the current position using the perfect database
   Future<PositionAnalysisResult> analyzePosition() async {
+    await ensureReady();
+
     final String? fen = GameController().position.fen;
     if (fen == null) {
       return PositionAnalysisResult.error("Invalid board position");
