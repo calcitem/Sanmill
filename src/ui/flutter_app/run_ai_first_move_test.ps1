@@ -39,5 +39,3 @@ if ($ExitCode -eq 0) {
 Write-Host "========================================" -ForegroundColor Blue
 
 exit $ExitCode
-
-

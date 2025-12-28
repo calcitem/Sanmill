@@ -50,6 +50,3 @@ if ($TestResult -eq 0) {
 Write-Host "==========================================" -ForegroundColor Green
 
 exit $TestResult
-
-
-

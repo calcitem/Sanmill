@@ -974,14 +974,16 @@ class AppearanceSettingsPage extends StatelessWidget {
                   valueListenable: DB().listenDisplaySettings,
                   builder: _buildDisplaySettings,
                 ),
-                if (Constants.isSmallScreen(context) == false)
-                  ValueListenableBuilder<Box<ColorSettings>>(
-                    key: const Key(
-                      'appearance_settings_page_color_settings_value_listenable_builder',
-                    ),
-                    valueListenable: DB().listenColorSettings,
-                    builder: _buildColorSettings,
+                // Always show color settings regardless of screen size.
+                // Previously hidden on small screens, but users should have
+                // access to color customization on all platforms.
+                ValueListenableBuilder<Box<ColorSettings>>(
+                  key: const Key(
+                    'appearance_settings_page_color_settings_value_listenable_builder',
                   ),
+                  valueListenable: DB().listenColorSettings,
+                  builder: _buildColorSettings,
+                ),
               ],
             ),
           ),
