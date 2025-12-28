@@ -17,6 +17,16 @@ import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 
+// Regular expression to remove ANSI escape codes (color codes, etc.)
+final RegExp _ansiEscapePattern = RegExp(
+  r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])',
+);
+
+/// Remove ANSI escape codes from text
+String _stripAnsiCodes(String text) {
+  return text.replaceAll(_ansiEscapePattern, '');
+}
+
 class LogsPage extends StatefulWidget {
   const LogsPage({super.key});
 
@@ -52,6 +62,11 @@ class _LogsPageState extends State<LogsPage> {
     setState(() {
       _logs = memoryOutput.logs.reversed.toList();
     });
+  }
+
+  /// Get cleaned log lines without ANSI codes
+  List<String> _getCleanedLogLines(OutputEvent log) {
+    return log.lines.map(_stripAnsiCodes).toList();
   }
 
   void _toggleSelectionMode() {
@@ -400,7 +415,7 @@ class _LogsPageState extends State<LogsPage> {
       final OutputEvent log = _logs[i];
       final String levelStr = _getLevelString(log.level);
       buffer.writeln('[$levelStr]');
-      log.lines.forEach(buffer.writeln);
+      _getCleanedLogLines(log).forEach(buffer.writeln);
       if (i < end) {
         buffer.writeln();
       }
@@ -466,7 +481,7 @@ class _LogsPageState extends State<LogsPage> {
       for (final OutputEvent log in _logs.reversed) {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
-        log.lines.forEach(buffer.writeln);
+        _getCleanedLogLines(log).forEach(buffer.writeln);
         buffer.writeln();
       }
 
@@ -545,7 +560,7 @@ class _LogsPageState extends State<LogsPage> {
       for (final OutputEvent log in _logs.reversed) {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
-        log.lines.forEach(buffer.writeln);
+        _getCleanedLogLines(log).forEach(buffer.writeln);
         buffer.writeln();
       }
 
@@ -695,7 +710,7 @@ class _LogItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 12, 12),
               child: SelectableText(
-                log.lines.join('\n'),
+                log.lines.map(_stripAnsiCodes).join('\n'),
                 style: TextStyle(
                   color: isSelected
                       ? Theme.of(context).colorScheme.onPrimaryContainer
