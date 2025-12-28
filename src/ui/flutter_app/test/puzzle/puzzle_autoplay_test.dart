@@ -16,6 +16,7 @@ import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
+import '../helpers/mocks/mock_animation_manager.dart';
 import '../helpers/mocks/mock_audios.dart';
 
 void main() {
@@ -61,7 +62,9 @@ void main() {
     // Provide a stable documents directory for Hive/path_provider callers.
     appDocDir = Directory.systemTemp.createTempSync('sanmill_test_');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(pathProviderChannel, (MethodCall methodCall) async {
+        .setMockMethodCallHandler(pathProviderChannel, (
+          MethodCall methodCall,
+        ) async {
           switch (methodCall.method) {
             case 'getApplicationDocumentsDirectory':
             case 'getApplicationSupportDirectory':
@@ -92,6 +95,7 @@ void main() {
     controller.reset(force: true);
     controller.puzzleHumanColor = null;
     controller.isPuzzleAutoMoveInProgress = false;
+    controller.animationManager = MockAnimationManager();
   });
 
   PuzzleInfo buildPuzzle({
@@ -138,6 +142,12 @@ void main() {
   }
 
   Future<void> pumpPuzzlePage(WidgetTester tester, PuzzleInfo puzzle) async {
+    // Set a larger screen size to avoid overflow errors in GameHeader
+    tester.view.physicalSize = const Size(1024, 768);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       MaterialApp(
         scaffoldMessengerKey: rootScaffoldMessengerKey,
@@ -158,8 +168,11 @@ void main() {
     for (int i = 0; i < maxPumps && !condition(); i++) {
       await tester.pump(step);
     }
-    expect(condition(), isTrue,
-        reason: 'Condition not met after $maxPumps pumps');
+    expect(
+      condition(),
+      isTrue,
+      reason: 'Condition not met after $maxPumps pumps',
+    );
   }
 
   testWidgets('Puzzle auto-plays opponent response from solution line', (
@@ -184,7 +197,9 @@ void main() {
     // Wait for auto-play to complete
     await pumpUntil(
       tester,
-      () => !controller.isPuzzleAutoMoveInProgress && controller.gameRecorder.mainlineMoves.length == 2,
+      () =>
+          !controller.isPuzzleAutoMoveInProgress &&
+          controller.gameRecorder.mainlineMoves.length == 2,
     );
 
     final List<String> moves = controller.gameRecorder.mainlineMoves
@@ -213,7 +228,9 @@ void main() {
     // Wait for auto-play logic to complete (including undo)
     await pumpUntil(
       tester,
-      () => !controller.isPuzzleAutoMoveInProgress && controller.gameRecorder.mainlineMoves.isEmpty,
+      () =>
+          !controller.isPuzzleAutoMoveInProgress &&
+          controller.gameRecorder.mainlineMoves.isEmpty,
     );
 
     expect(find.text('Wrong move. Try again.'), findsOneWidget);
@@ -240,7 +257,9 @@ void main() {
     // Wait for auto-play to complete
     await pumpUntil(
       tester,
-      () => !controller.isPuzzleAutoMoveInProgress && controller.gameRecorder.mainlineMoves.length == 2,
+      () =>
+          !controller.isPuzzleAutoMoveInProgress &&
+          controller.gameRecorder.mainlineMoves.length == 2,
     );
 
     final List<String> moves = controller.gameRecorder.mainlineMoves
@@ -249,37 +268,40 @@ void main() {
     expect(moves, <String>['a4', 'g7']);
   });
 
-  testWidgets('Puzzle auto-plays consecutive opponent moves (mill then remove)', (
-    WidgetTester tester,
-  ) async {
-    final String startFen = buildPositionFenForOpponentMillThenRemove();
-    final PuzzleInfo puzzle = buildPuzzle(
-      initialPosition: startFen,
-      solutions: const <List<String>>[
-        <String>['g1', 'a7', 'xd1'],
-      ],
-    );
-    await pumpPuzzlePage(tester, puzzle);
+  testWidgets(
+    'Puzzle auto-plays consecutive opponent moves (mill then remove)',
+    (WidgetTester tester) async {
+      final String startFen = buildPositionFenForOpponentMillThenRemove();
+      final PuzzleInfo puzzle = buildPuzzle(
+        initialPosition: startFen,
+        solutions: const <List<String>>[
+          <String>['g1', 'a7', 'xd1'],
+        ],
+      );
+      await pumpPuzzlePage(tester, puzzle);
 
-    final GameController controller = GameController();
-    expect(controller.position.sideToMove, PieceColor.white);
-    expect(controller.puzzleHumanColor, PieceColor.white);
+      final GameController controller = GameController();
+      expect(controller.position.sideToMove, PieceColor.white);
+      expect(controller.puzzleHumanColor, PieceColor.white);
 
-    final bool ok = controller.applyMove(
-      ExtMove('g1', side: controller.position.sideToMove),
-    );
-    expect(ok, isTrue);
+      final bool ok = controller.applyMove(
+        ExtMove('g1', side: controller.position.sideToMove),
+      );
+      expect(ok, isTrue);
 
-    // Wait for consecutive auto-play to complete (mill + remove)
-    await pumpUntil(
-      tester,
-      () => !controller.isPuzzleAutoMoveInProgress && controller.gameRecorder.mainlineMoves.length == 3,
-    );
+      // Wait for consecutive auto-play to complete (mill + remove)
+      await pumpUntil(
+        tester,
+        () =>
+            !controller.isPuzzleAutoMoveInProgress &&
+            controller.gameRecorder.mainlineMoves.length == 3,
+      );
 
-    final List<String> moves = controller.gameRecorder.mainlineMoves
-        .map((ExtMove m) => m.move)
-        .toList(growable: false);
-    expect(moves, <String>['g1', 'a7', 'xd1']);
-    expect(controller.position.sideToMove, PieceColor.white);
-  });
+      final List<String> moves = controller.gameRecorder.mainlineMoves
+          .map((ExtMove m) => m.move)
+          .toList(growable: false);
+      expect(moves, <String>['g1', 'a7', 'xd1']);
+      expect(controller.position.sideToMove, PieceColor.white);
+    },
+  );
 }
