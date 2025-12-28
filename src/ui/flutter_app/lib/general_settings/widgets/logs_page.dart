@@ -33,10 +33,19 @@ class _LogsPageState extends State<LogsPage> {
   int? _selectionStart;
   int? _selectionEnd;
 
+  // Scroll controller for scrolling to bottom
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     _refreshLogs();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _refreshLogs() {
@@ -92,6 +101,16 @@ class _LogsPageState extends State<LogsPage> {
     return index >= _selectionStart! && index <= _selectionEnd!;
   }
 
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
@@ -119,6 +138,11 @@ class _LogsPageState extends State<LogsPage> {
               icon: const Icon(Icons.select_all),
               onPressed: _toggleSelectionMode,
               tooltip: s.selectMode,
+            ),
+            IconButton(
+              icon: const Icon(Icons.vertical_align_bottom),
+              onPressed: _logs.isEmpty ? null : _scrollToBottom,
+              tooltip: s.scrollToBottom,
             ),
             IconButton(
               icon: const Icon(Icons.refresh),
@@ -239,6 +263,7 @@ class _LogsPageState extends State<LogsPage> {
 
   Widget _buildLogsList() {
     return ListView.builder(
+      controller: _scrollController,
       itemCount: _logs.length,
       itemBuilder: (BuildContext context, int index) {
         return _LogItem(

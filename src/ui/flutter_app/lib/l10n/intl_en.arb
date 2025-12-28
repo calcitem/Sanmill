@@ -3769,8 +3769,8 @@
     "@nothingSelected": {
         "description": "Message shown when trying to copy but no logs are selected"
     },
-    "copiedToClipboard": "Copied to clipboard",
-    "@copiedToClipboard": {
-        "description": "Message shown when content is copied to clipboard"
+    "scrollToBottom": "Scroll to bottom",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
     }
 }

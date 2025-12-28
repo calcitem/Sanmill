@@ -3769,8 +3769,8 @@
     "@nothingSelected": {
         "description": "Message shown when trying to copy but no logs are selected"
     },
-    "copiedToClipboard": "已拷贝到剪贴板",
-    "@copiedToClipboard": {
-        "description": "Message shown when content is copied to clipboard"
+    "scrollToBottom": "滚动到底部",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
     }
 }
