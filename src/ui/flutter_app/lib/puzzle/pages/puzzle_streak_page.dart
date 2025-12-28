@@ -95,10 +95,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // Header card
+            // Header card - use white background for better readability
             Card(
               elevation: 4,
-              color: Colors.purple.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -161,10 +160,10 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
             ),
             const SizedBox(height: 24),
 
-            // Best streak card
+            // Best streak card - use white background for better text readability
             if (_bestStreak > 0)
               Card(
-                color: Colors.amber.withValues(alpha: 0.1),
+                elevation: 2,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
@@ -199,17 +198,18 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
               ),
             const SizedBox(height: 24),
 
-            // Start button
+            // Start button - use darker purple for better text contrast
             ElevatedButton.icon(
               onPressed: _startStreak,
               icon: const Icon(FluentIcons.play_24_regular),
               label: Text(
                 s.puzzleStreakStart,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.purple.shade700,
+                foregroundColor: Colors.white,
               ),
             ),
           ],
@@ -248,13 +248,16 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       ),
       body: Column(
         children: <Widget>[
-          // Stats bar
-          Container(
-            padding: const EdgeInsets.all(16.0),
+          // Stats bar - use Card for better contrast in light mode
+          Card(
+            margin: EdgeInsets.zero,
+            elevation: useDarkSettingsUi ? 0 : 2,
             color: useDarkSettingsUi
-                ? Colors.purple.withValues(alpha: 0.2)
-                : Colors.purple.withValues(alpha: 0.1),
-            child: Row(
+                ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.3)
+                : Theme.of(context).colorScheme.surface,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 // Current streak
@@ -280,8 +283,12 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                     ),
                   ],
                 ),
-                // Divider
-                Container(height: 60, width: 1, color: Colors.grey[700]),
+                // Divider - use theme color for better contrast in both modes
+                Container(
+                  height: 60,
+                  width: 1,
+                  color: Theme.of(context).dividerColor,
+                ),
                 // Best streak
                 Column(
                   children: <Widget>[
@@ -306,6 +313,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   ],
                 ),
               ],
+              ),
             ),
           ),
 
@@ -445,10 +453,17 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   ),
                   ElevatedButton.icon(
                     onPressed: _resetAndStart,
-                    icon: const Icon(FluentIcons.arrow_clockwise_24_regular),
-                    label: Text(s.puzzleStreakTryAgain),
+                    icon: const Icon(
+                      FluentIcons.arrow_clockwise_24_regular,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      s.puzzleStreakTryAgain,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
+                      backgroundColor: Colors.purple.shade700,
+                      foregroundColor: Colors.white,
                     ),
                   ),
                 ],

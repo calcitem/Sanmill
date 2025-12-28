@@ -303,6 +303,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   }
 
   /// Build featured daily puzzle card (compact version)
+  /// Use white background for better text readability in light mode
   Widget _buildFeaturedCard(
     BuildContext context,
     S s, {
@@ -314,7 +315,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   }) {
     return Card(
       elevation: 4,
-      color: color.withValues(alpha: 0.1),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -325,7 +325,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
               Container(
                 padding: const EdgeInsets.all(12), // Reduced from 16 to 12
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.2),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(

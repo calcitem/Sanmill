@@ -89,9 +89,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
   }
 
   Widget _buildRatingCard(BuildContext context, PuzzleRating rating, S s) {
+    // Use white card background for better text readability in light mode
     return Card(
       elevation: 4,
-      color: Colors.blue.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -111,31 +111,36 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             ),
             if (rating.isProvisional) ...<Widget>[
               const SizedBox(height: 8),
+              // Use darker orange for better text contrast on light backgrounds
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withValues(alpha: 0.2),
+                  color: Colors.orange.shade100,
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.orange.shade300,
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       FluentIcons.warning_24_regular,
                       size: 16,
-                      color: Colors.orange,
+                      color: Colors.orange.shade700,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       s.puzzleStatsProvisional(
                         rating.provisionalGames - rating.gamesPlayed,
                       ),
-                      style: const TextStyle(
-                        color: Colors.orange,
+                      style: TextStyle(
+                        color: Colors.orange.shade900,
                         fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],

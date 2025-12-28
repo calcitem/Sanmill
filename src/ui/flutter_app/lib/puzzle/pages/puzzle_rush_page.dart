@@ -116,10 +116,9 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // Header card
+            // Header card - use white background for better readability
             Card(
               elevation: 4,
-              color: Colors.red.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -215,17 +214,18 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
             ),
             const SizedBox(height: 32),
 
-            // Start button
+            // Start button - use darker red for better text contrast
             ElevatedButton.icon(
               onPressed: _startRush,
               icon: const Icon(FluentIcons.play_24_regular),
               label: Text(
                 s.puzzleRushStart,
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.red.shade700,
+                foregroundColor: Colors.white,
               ),
             ),
           ],
@@ -597,10 +597,16 @@ class _RushStatsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      color: useDarkSettingsUi ? Colors.grey[900] : Colors.grey[200],
-      child: Row(
+    // Use Card instead of Container for better contrast in both light and dark modes
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: useDarkSettingsUi ? 0 : 2,
+      color: useDarkSettingsUi
+          ? Theme.of(context).colorScheme.surface.withValues(alpha: 0.3)
+          : Theme.of(context).colorScheme.surface,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           // Timer - rebuilds only when timer notifier changes
@@ -645,6 +651,7 @@ class _RushStatsBar extends StatelessWidget {
             },
           ),
         ],
+        ),
       ),
     );
   }

@@ -70,7 +70,9 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                 );
               }
 
-              final PuzzleProgress? progress = _puzzleManager.getProgress(puzzle.id);
+              final PuzzleProgress? progress = _puzzleManager.getProgress(
+                puzzle.id,
+              );
               final bool isCompleted = progress?.completed ?? false;
               final int stars = progress?.stars ?? 0;
 
@@ -89,7 +91,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                     // Streak info
                     IconButton(
                       icon: const Icon(FluentIcons.trophy_24_regular),
-                      onPressed: () => _showStreakInfo(context, dailyInfo, settingsTheme),
+                      onPressed: () =>
+                          _showStreakInfo(context, dailyInfo, settingsTheme),
                       tooltip: s.dailyPuzzleStreak,
                     ),
                   ],
@@ -107,11 +110,13 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                           child: Column(
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           _formatDate(dailyInfo.date),
@@ -122,7 +127,9 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Text(
-                                          s.dailyPuzzleNumber(dailyInfo.dayNumber),
+                                          s.dailyPuzzleNumber(
+                                            dailyInfo.dayNumber,
+                                          ),
                                           style: Theme.of(
                                             context,
                                           ).textTheme.bodySmall,
@@ -157,7 +164,9 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                       ),
                                       Text(
                                         s.dailyPuzzleDayStreak,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -169,7 +178,9 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                   dailyInfo.currentStreak) ...<Widget>[
                                 const SizedBox(height: 8),
                                 Text(
-                                  s.dailyPuzzleBestStreak(dailyInfo.longestStreak),
+                                  s.dailyPuzzleBestStreak(
+                                    dailyInfo.longestStreak,
+                                  ),
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -191,13 +202,16 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                 children: <Widget>[
                                   Icon(
                                     puzzle.category.icon,
-                                    color: _getDifficultyColor(puzzle.difficulty),
+                                    color: _getDifficultyColor(
+                                      puzzle.difficulty,
+                                    ),
                                     size: 32,
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           puzzle.title,
@@ -208,7 +222,9 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Text(
-                                          puzzle.difficulty.displayName(context),
+                                          puzzle.difficulty.displayName(
+                                            context,
+                                          ),
                                           style: TextStyle(
                                             color: _getDifficultyColor(
                                               puzzle.difficulty,
@@ -224,7 +240,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                                     Column(
                                       children: <Widget>[
                                         const Icon(
-                                          FluentIcons.checkmark_circle_24_regular,
+                                          FluentIcons
+                                              .checkmark_circle_24_regular,
                                           color: Colors.green,
                                           size: 32,
                                         ),
@@ -256,30 +273,35 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
                       ),
                       const SizedBox(height: 24),
 
-                      // Start button
+                      // Start button - use darker colors for better text contrast
                       ElevatedButton.icon(
                         onPressed: () => _startPuzzle(puzzle),
-                        icon: Icon(
-                          isCompleted
-                              ? FluentIcons.arrow_clockwise_24_regular
-                              : FluentIcons.play_24_regular,
+                        icon: const Icon(
+                          FluentIcons.play_24_regular,
+                          color: Colors.white,
                         ),
                         label: Text(
                           isCompleted ? s.tryAgain : s.dailyPuzzleStart,
-                          style: const TextStyle(fontSize: 18),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor: isCompleted ? Colors.blue : Colors.green,
+                          backgroundColor: isCompleted
+                              ? Colors.blue.shade700
+                              : Colors.green.shade700,
+                          foregroundColor: Colors.white,
                         ),
                       ),
 
                       const SizedBox(height: 16),
 
-                      // Hint: How to improve streak
+                      // Hint: How to improve streak - use white card for better contrast
                       if (!isCompleted)
                         Card(
-                          color: Colors.blue.withValues(alpha: 0.1),
+                          elevation: 2,
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Row(
