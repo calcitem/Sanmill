@@ -51,146 +51,157 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        final Widget page = Scaffold(
-          backgroundColor: useDarkSettingsUi
-              ? settingsTheme.scaffoldBackgroundColor
-              : AppTheme.lightBackgroundColor,
-          appBar: AppBar(
-            title: _isMultiSelectMode
-                ? Text(
-                    s.puzzleSelectedCount(_selectedPuzzleIds.length),
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
-                  )
-                : Text(
-                    s.customPuzzles,
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
-                  ),
-            leading: _isMultiSelectMode
-                ? IconButton(
-                    icon: const Icon(FluentIcons.dismiss_24_regular),
-                    onPressed: _toggleMultiSelectMode,
-                  )
-                : null,
-            actions: <Widget>[
-              if (_isMultiSelectMode) ...<Widget>[
-                // Select all
-                IconButton(
-                  icon: const Icon(FluentIcons.select_all_on_24_regular),
-                  onPressed: _selectAllPuzzles,
-                  tooltip: s.puzzleSelectAll,
+        // Use Builder to ensure the context has the correct theme.
+        // This prevents computing text styles from a context outside the Theme wrapper.
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: useDarkSettingsUi
+                    ? settingsTheme.scaffoldBackgroundColor
+                    : AppTheme.lightBackgroundColor,
+                appBar: AppBar(
+                  title: _isMultiSelectMode
+                      ? Text(
+                          s.puzzleSelectedCount(_selectedPuzzleIds.length),
+                          style: useDarkSettingsUi
+                              ? null
+                              : AppTheme.appBarTheme.titleTextStyle,
+                        )
+                      : Text(
+                          s.customPuzzles,
+                          style: useDarkSettingsUi
+                              ? null
+                              : AppTheme.appBarTheme.titleTextStyle,
+                        ),
+                  leading: _isMultiSelectMode
+                      ? IconButton(
+                          icon: const Icon(FluentIcons.dismiss_24_regular),
+                          onPressed: _toggleMultiSelectMode,
+                        )
+                      : null,
+                  actions: <Widget>[
+                    if (_isMultiSelectMode) ...<Widget>[
+                      // Select all
+                      IconButton(
+                        icon: const Icon(FluentIcons.select_all_on_24_regular),
+                        onPressed: _selectAllPuzzles,
+                        tooltip: s.puzzleSelectAll,
+                      ),
+                      // Contribute selected
+                      if (_selectedPuzzleIds.isNotEmpty)
+                        IconButton(
+                          icon: const Icon(FluentIcons.arrow_upload_24_regular),
+                          onPressed: () => _contributeSelectedPuzzles(
+                            context,
+                            settingsTheme,
+                          ),
+                          tooltip: 'Contribute to Sanmill',
+                        ),
+                      // Export selected
+                      if (_selectedPuzzleIds.isNotEmpty)
+                        IconButton(
+                          icon: const Icon(FluentIcons.share_24_regular),
+                          onPressed: _exportSelectedPuzzles,
+                          tooltip: s.puzzleExport,
+                        ),
+                      // Delete selected
+                      if (_selectedPuzzleIds.isNotEmpty)
+                        IconButton(
+                          icon: const Icon(FluentIcons.delete_24_regular),
+                          onPressed: () => _deleteSelectedPuzzles(
+                            context,
+                            settingsTheme,
+                          ),
+                          tooltip: s.delete,
+                        ),
+                    ] else ...<Widget>[
+                      // Import button (open file to import puzzles)
+                      IconButton(
+                        icon: const Icon(FluentIcons.folder_open_24_regular),
+                        onPressed: _importPuzzles,
+                        tooltip: s.puzzleImport,
+                      ),
+                      // Contribution info button
+                      IconButton(
+                        icon: const Icon(FluentIcons.info_24_regular),
+                        onPressed: () =>
+                            _showContributionInfo(context, settingsTheme),
+                        tooltip: 'How to Contribute',
+                      ),
+                      // Multi-select button
+                      IconButton(
+                        icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+                        onPressed: _toggleMultiSelectMode,
+                        tooltip: s.puzzleSelect,
+                      ),
+                    ],
+                  ],
                 ),
-                // Contribute selected
-                if (_selectedPuzzleIds.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(FluentIcons.arrow_upload_24_regular),
-                    onPressed: _contributeSelectedPuzzles,
-                    tooltip: 'Contribute to Sanmill',
-                  ),
-                // Export selected
-                if (_selectedPuzzleIds.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(FluentIcons.share_24_regular),
-                    onPressed: _exportSelectedPuzzles,
-                    tooltip: s.puzzleExport,
-                  ),
-                // Delete selected
-                if (_selectedPuzzleIds.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(FluentIcons.delete_24_regular),
-                    onPressed: _deleteSelectedPuzzles,
-                    tooltip: s.delete,
-                  ),
-              ] else ...<Widget>[
-                // Import button (open file to import puzzles)
-                IconButton(
-                  icon: const Icon(FluentIcons.folder_open_24_regular),
-                  onPressed: _importPuzzles,
-                  tooltip: s.puzzleImport,
-                ),
-                // Contribution info button
-                IconButton(
-                  icon: const Icon(FluentIcons.info_24_regular),
-                  onPressed: _showContributionInfo,
-                  tooltip: 'How to Contribute',
-                ),
-                // Multi-select button
-                IconButton(
-                  icon: const Icon(FluentIcons.checkbox_checked_24_regular),
-                  onPressed: _toggleMultiSelectMode,
-                  tooltip: s.puzzleSelect,
-                ),
-              ],
-            ],
-          ),
-          floatingActionButton: _isMultiSelectMode
-              ? null
-              : FloatingActionButton(
-                  onPressed: _createNewPuzzle,
-                  tooltip: s.puzzleCreateNew,
-                  child: const Icon(FluentIcons.add_24_regular),
-                ),
-          body: ValueListenableBuilder<PuzzleSettings>(
-            valueListenable: _puzzleManager.settingsNotifier,
-            builder:
-                (BuildContext context, PuzzleSettings settings, Widget? child) {
-                  final List<PuzzleInfo> customPuzzles = _puzzleManager
-                      .getCustomPuzzles();
+                floatingActionButton: _isMultiSelectMode
+                    ? null
+                    : FloatingActionButton(
+                        onPressed: _createNewPuzzle,
+                        tooltip: s.puzzleCreateNew,
+                        child: const Icon(FluentIcons.add_24_regular),
+                      ),
+                body: ValueListenableBuilder<PuzzleSettings>(
+                  valueListenable: _puzzleManager.settingsNotifier,
+                  builder: (BuildContext context, PuzzleSettings settings, _) {
+                    final List<PuzzleInfo> customPuzzles =
+                        _puzzleManager.getCustomPuzzles();
 
-                  if (customPuzzles.isEmpty) {
-                    return _buildEmptyState(s);
-                  }
+                    if (customPuzzles.isEmpty) {
+                      return _buildEmptyState(context, s);
+                    }
 
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(8.0),
-                    itemCount: customPuzzles.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final PuzzleInfo puzzle = customPuzzles[index];
-                      final PuzzleProgress? progress = settings.getProgress(
-                        puzzle.id,
-                      );
-                      final bool isSelected = _selectedPuzzleIds.contains(
-                        puzzle.id,
-                      );
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: customPuzzles.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final PuzzleInfo puzzle = customPuzzles[index];
+                        final PuzzleProgress? progress = settings.getProgress(
+                          puzzle.id,
+                        );
+                        final bool isSelected = _selectedPuzzleIds.contains(
+                          puzzle.id,
+                        );
 
-                      return PuzzleCard(
-                        puzzle: puzzle,
-                        progress: progress,
-                        onTap: _isMultiSelectMode
-                            ? () => _togglePuzzleSelection(puzzle.id)
-                            : () => _openPuzzle(puzzle),
-                        onLongPress: _isMultiSelectMode
-                            ? null
-                            : () {
-                                _toggleMultiSelectMode();
-                                _togglePuzzleSelection(puzzle.id);
-                              },
-                        isSelected: _isMultiSelectMode ? isSelected : null,
-                        showCustomBadge: true,
-                        onEdit: !_isMultiSelectMode
-                            ? () => _editPuzzle(puzzle)
-                            : null,
-                        onDelete: !_isMultiSelectMode
-                            ? () => _deleteSinglePuzzle(puzzle.id)
-                            : null,
-                      );
-                    },
-                  );
-                },
+                        return PuzzleCard(
+                          puzzle: puzzle,
+                          progress: progress,
+                          onTap: _isMultiSelectMode
+                              ? () => _togglePuzzleSelection(puzzle.id)
+                              : () => _openPuzzle(puzzle),
+                          onLongPress: _isMultiSelectMode
+                              ? null
+                              : () {
+                                  _toggleMultiSelectMode();
+                                  _togglePuzzleSelection(puzzle.id);
+                                },
+                          isSelected: _isMultiSelectMode ? isSelected : null,
+                          showCustomBadge: true,
+                          onEdit: !_isMultiSelectMode
+                              ? () => _editPuzzle(puzzle)
+                              : null,
+                          onDelete: !_isMultiSelectMode
+                              ? () => _deleteSinglePuzzle(puzzle.id)
+                              : null,
+                        );
+                      },
+                    );
+                  },
+                ),
+              );
+            },
           ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
 
-  Widget _buildEmptyState(S s) {
+  Widget _buildEmptyState(BuildContext context, S s) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -305,7 +316,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     }
   }
 
-  Future<void> _deleteSelectedPuzzles() async {
+  Future<void> _deleteSelectedPuzzles(
+    BuildContext context,
+    ThemeData settingsTheme,
+  ) async {
     if (_selectedPuzzleIds.isEmpty) {
       return;
     }
@@ -313,22 +327,25 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     // Confirm deletion
     final bool? confirmed = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        final S s = S.of(context);
-        return AlertDialog(
-          title: Text(s.confirm),
-          content: Text(s.puzzleDeleteConfirm(_selectedPuzzleIds.length)),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(s.cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: Text(s.delete),
-            ),
-          ],
+      builder: (BuildContext dialogContext) {
+        final S s = S.of(dialogContext);
+        return Theme(
+          data: settingsTheme,
+          child: AlertDialog(
+            title: Text(s.confirm),
+            content: Text(s.puzzleDeleteConfirm(_selectedPuzzleIds.length)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: Text(s.cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: Text(s.delete),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -341,7 +358,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       _selectedPuzzleIds.toList(),
     );
 
-    if (!mounted) {
+    if (!mounted || !context.mounted) {
       return;
     }
 
@@ -441,7 +458,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     );
   }
 
-  Future<void> _contributeSelectedPuzzles() async {
+  Future<void> _contributeSelectedPuzzles(
+    BuildContext context,
+    ThemeData settingsTheme,
+  ) async {
     if (_selectedPuzzleIds.isEmpty) {
       return;
     }
@@ -468,33 +488,36 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     if (invalidPuzzles.isNotEmpty && mounted) {
       await showDialog<void>(
         context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Validation Errors'),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    'The following puzzles need to be fixed before contributing:',
-                  ),
-                  const SizedBox(height: 12),
-                  ...invalidPuzzles.map(
-                    (String error) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Text(error),
+        builder: (BuildContext dialogContext) {
+          return Theme(
+            data: settingsTheme,
+            child: AlertDialog(
+              title: const Text('Validation Errors'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      'The following puzzles need to be fixed before contributing:',
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 12),
+                    ...invalidPuzzles.map(
+                      (String error) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(error),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
           );
         },
       );
@@ -504,47 +527,50 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     // Show contribution info dialog before exporting
     final bool? confirmed = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Contribute Puzzles to Sanmill'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'You are about to export ${puzzlesToContribute.length} puzzle(s) for contribution.',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                const Text('What happens next:'),
-                const SizedBox(height: 8),
-                const Text('1. Your puzzles will be exported to a JSON file'),
-                const Text('2. You can share this file via the share dialog'),
-                const Text(
-                  '3. Submit via GitHub, email, or GitHub issue (see guide)',
-                ),
-                const Text('4. Puzzles will be reviewed by maintainers'),
-                const Text('5. Once approved, they become built-in puzzles!'),
-                const SizedBox(height: 16),
-                const Text(
-                  'By contributing, you agree to license your puzzles under GPL-3.0-or-later.',
-                  style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-                ),
-              ],
+      builder: (BuildContext dialogContext) {
+        return Theme(
+          data: settingsTheme,
+          child: AlertDialog(
+            title: const Text('Contribute Puzzles to Sanmill'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'You are about to export ${puzzlesToContribute.length} puzzle(s) for contribution.',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('What happens next:'),
+                  const SizedBox(height: 8),
+                  const Text('1. Your puzzles will be exported to a JSON file'),
+                  const Text('2. You can share this file via the share dialog'),
+                  const Text(
+                    '3. Submit via GitHub, email, or GitHub issue (see guide)',
+                  ),
+                  const Text('4. Puzzles will be reviewed by maintainers'),
+                  const Text('5. Once approved, they become built-in puzzles!'),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'By contributing, you agree to license your puzzles under GPL-3.0-or-later.',
+                    style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                  ),
+                ],
+              ),
             ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton.icon(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                icon: const Icon(FluentIcons.arrow_upload_24_regular),
+                label: const Text('Export for Contribution'),
+              ),
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton.icon(
-              onPressed: () => Navigator.of(context).pop(true),
-              icon: const Icon(FluentIcons.arrow_upload_24_regular),
-              label: const Text('Export for Contribution'),
-            ),
-          ],
         );
       },
     );
@@ -562,7 +588,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             puzzlesToContribute,
           );
 
-    if (!mounted) {
+    if (!mounted || !context.mounted) {
       return;
     }
 
@@ -578,7 +604,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             ? SnackBarAction(
                 label: 'View Guide',
                 textColor: Colors.white,
-                onPressed: _showContributionInfo,
+                onPressed: () => _showContributionInfo(context, settingsTheme),
               )
             : null,
       ),
@@ -592,173 +618,182 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     }
   }
 
-  void _showContributionInfo() {
+  void _showContributionInfo(BuildContext context, ThemeData settingsTheme) {
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-            children: <Widget>[
-              Icon(
-                FluentIcons.info_24_regular,
-                color: Theme.of(
-                  context,
-                ).colorScheme.primary, // Use primary color
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'How to Contribute Puzzles',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+      builder: (BuildContext dialogContext) {
+        final Color primary = Theme.of(dialogContext).colorScheme.primary;
+        final Color onSurfaceVariant =
+            Theme.of(dialogContext).colorScheme.onSurfaceVariant;
+        return Theme(
+          data: settingsTheme,
+          child: AlertDialog(
+            title: Row(
+              children: <Widget>[
+                Icon(
+                  FluentIcons.info_24_regular,
+                  color: primary, // Use primary color
                 ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'How to Contribute Puzzles',
+                    style: Theme.of(dialogContext).textTheme.titleLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            content: ConstrainedBox(
+              // Use ConstrainedBox instead of fixed width to avoid overflow on small screens
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(dialogContext).size.width * 0.85,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      'Help make Sanmill better by contributing your puzzles!',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Quick Start:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoStep(
+                      dialogContext,
+                      '1',
+                      'Create Quality Puzzles',
+                      'Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.',
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoStep(
+                      dialogContext,
+                      '2',
+                      'Add Your Name',
+                      'Edit your puzzle and add your name as the author to get credit.',
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoStep(
+                      dialogContext,
+                      '3',
+                      'Export for Contribution',
+                      'Select your puzzles and tap the upload icon to export in the correct format.',
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoStep(
+                      dialogContext,
+                      '4',
+                      'Submit',
+                      'Share the exported file via GitHub Pull Request, Issue, or email.',
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        // Theme-aware surface to keep text readable in both light and dark modes.
+                        color: primary.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: primary.withValues(alpha: 0.25),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Icon(
+                                FluentIcons.document_24_regular,
+                                size: 16,
+                                color: primary, // Use primary color
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  'Full Documentation',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: primary,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: onSurfaceVariant,
+                            ),
+                            softWrap: true,
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Quality Requirements:',
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                    ),
+                    const SizedBox(height: 6),
+                    const Text('✓ Clear, unique solution', style: TextStyle(fontSize: 13)),
+                    const Text(
+                      '✓ Complete metadata (title, description, etc.)',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    const Text('✓ Author attribution', style: TextStyle(fontSize: 13)),
+                    const Text(
+                      '✓ Accurate difficulty rating',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    const Text(
+                      '✓ Instructive or entertaining',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text('Close'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _toggleMultiSelectMode();
+                },
+                child: const Text('Start Contributing'),
               ),
             ],
           ),
-          content: ConstrainedBox(
-            // Use ConstrainedBox instead of fixed width to avoid overflow on small screens
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.85,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    'Help make Sanmill better by contributing your puzzles!',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Quick Start:',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoStep(
-                    '1',
-                    'Create Quality Puzzles',
-                    'Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoStep(
-                    '2',
-                    'Add Your Name',
-                    'Edit your puzzle and add your name as the author to get credit.',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoStep(
-                    '3',
-                    'Export for Contribution',
-                    'Select your puzzles and tap the upload icon to export in the correct format.',
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoStep(
-                    '4',
-                    'Submit',
-                    'Share the exported file via GitHub Pull Request, Issue, or email.',
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.blue.shade200),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Icon(
-                              FluentIcons.document_24_regular,
-                              size: 16,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary, // Use primary color
-                            ),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                'Full Documentation',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurface.withValues(alpha: 0.8),
-                          ),
-                          softWrap: true,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Quality Requirements:',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                  ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    '✓ Clear, unique solution',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  const Text(
-                    '✓ Complete metadata (title, description, etc.)',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  const Text(
-                    '✓ Author attribution',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  const Text(
-                    '✓ Accurate difficulty rating',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  const Text(
-                    '✓ Instructive or entertaining',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _toggleMultiSelectMode();
-              },
-              child: const Text('Start Contributing'),
-            ),
-          ],
         );
       },
     );
   }
 
-  Widget _buildInfoStep(String number, String title, String description) {
+  Widget _buildInfoStep(
+    BuildContext context,
+    String number,
+    String title,
+    String description,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -787,13 +822,18 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             children: <Widget>[
               Text(
                 title,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 description,
-                style: const TextStyle(fontSize: 13, color: Colors.black87),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 13,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),

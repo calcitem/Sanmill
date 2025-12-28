@@ -77,22 +77,26 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        Widget page;
-        if (!_isActive) {
-          page = _buildSetupScreen(s, useDarkSettingsUi, settingsTheme);
-        } else {
-          page = _buildRushScreen(s, useDarkSettingsUi, settingsTheme);
-        }
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
+        // Use Builder to ensure the context has the correct theme
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              if (!_isActive) {
+                return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+              } else {
+                return _buildRushScreen(context, s, useDarkSettingsUi, settingsTheme);
+              }
+            },
+          ),
+        );
       },
     );
   }
 
   /// Build setup/intro screen
   Widget _buildSetupScreen(
+    BuildContext context,
     S s,
     bool useDarkSettingsUi,
     ThemeData settingsTheme,
@@ -232,6 +236,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   /// Build active rush screen
   Widget _buildRushScreen(
+    BuildContext context,
     S s,
     bool useDarkSettingsUi,
     ThemeData settingsTheme,
@@ -240,7 +245,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     if (_remainingSeconds <= 0 ||
         _livesRemaining <= 0 ||
         _currentPuzzleIndex >= _rushPuzzles.length) {
-      return _buildResultsScreen(s, useDarkSettingsUi, settingsTheme);
+      return _buildResultsScreen(context, s, useDarkSettingsUi, settingsTheme);
     }
 
     final PuzzleInfo currentPuzzle = _rushPuzzles[_currentPuzzleIndex];
@@ -287,6 +292,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
 
   /// Build results screen
   Widget _buildResultsScreen(
+    BuildContext context,
     S s,
     bool useDarkSettingsUi,
     ThemeData settingsTheme,

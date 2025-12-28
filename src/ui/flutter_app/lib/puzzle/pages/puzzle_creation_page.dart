@@ -357,61 +357,65 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        final Widget page = Scaffold(
-          backgroundColor: useDarkSettingsUi
-              ? settingsTheme.scaffoldBackgroundColor
-              : AppTheme.lightBackgroundColor,
-          appBar: AppBar(
-            title: Text(
-              _isEditing
-                  ? S.of(context).puzzleEdit
-                  : S.of(context).puzzleCreateNew,
-              style: useDarkSettingsUi
-                  ? null
-                  : AppTheme.appBarTheme.titleTextStyle,
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(FluentIcons.save_24_regular),
-                onPressed: _savePuzzle,
-                tooltip: S.of(context).save,
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                // Instructions card
-                _buildInstructionsCard(),
-                const SizedBox(height: 16),
+        // Use Builder to ensure the context has the correct theme.
+        // This prevents computing styles from a context outside the Theme wrapper.
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: useDarkSettingsUi
+                    ? settingsTheme.scaffoldBackgroundColor
+                    : AppTheme.lightBackgroundColor,
+                appBar: AppBar(
+                  title: Text(
+                    _isEditing
+                        ? S.of(context).puzzleEdit
+                        : S.of(context).puzzleCreateNew,
+                    style: useDarkSettingsUi
+                        ? null
+                        : AppTheme.appBarTheme.titleTextStyle,
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: const Icon(FluentIcons.save_24_regular),
+                      onPressed: _savePuzzle,
+                      tooltip: S.of(context).save,
+                    ),
+                  ],
+                ),
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      // Instructions card
+                      _buildInstructionsCard(context),
+                      const SizedBox(height: 16),
 
-                // Position capture section
-                _buildPositionCaptureSection(),
-                const SizedBox(height: 16),
+                      // Position capture section
+                      _buildPositionCaptureSection(context),
+                      const SizedBox(height: 16),
 
-                // Solution recording section
-                _buildSolutionRecordingSection(),
-                const SizedBox(height: 24),
+                      // Solution recording section
+                      _buildSolutionRecordingSection(context),
+                      const SizedBox(height: 24),
 
-                // Metadata section
-                _buildMetadataSection(),
-              ],
-            ),
+                      // Metadata section
+                      _buildMetadataSection(context),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
 
-  Widget _buildInstructionsCard() {
+  Widget _buildInstructionsCard(BuildContext context) {
     return Card(
-      color: AppTheme.cardColor,
       child: Padding(
         padding: const EdgeInsets.all(12.0), // Reduced padding
         child: Row(
@@ -440,7 +444,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 color: Colors.blue[300],
                 size: 24,
               ),
-              onPressed: _showWorkflowHelp,
+              onPressed: () => _showWorkflowHelp(context),
               tooltip: S.of(context).puzzleShowDetailedWorkflow,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
@@ -452,10 +456,10 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
   }
 
   /// Show detailed workflow help dialog
-  void _showWorkflowHelp() {
+  void _showWorkflowHelp(BuildContext context) {
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
+      builder: (BuildContext dialogContext) => AlertDialog(
         title: Row(
           children: <Widget>[
             Icon(FluentIcons.lightbulb_24_filled, color: Colors.amber[300]),
@@ -463,7 +467,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             // Wrap text in Expanded to prevent overflow on small screens
             Expanded(
               child: Text(
-                S.of(context).puzzleCreationWorkflow,
+                S.of(dialogContext).puzzleCreationWorkflow,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -476,27 +480,31 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               _buildWorkflowStep(
+                dialogContext,
                 '1',
-                S.of(context).puzzleWorkflowStepSetup,
-                S.of(context).puzzleWorkflowStepSetupDesc,
+                S.of(dialogContext).puzzleWorkflowStepSetup,
+                S.of(dialogContext).puzzleWorkflowStepSetupDesc,
                 _capturedPosition != null,
               ),
               _buildWorkflowStep(
+                dialogContext,
                 '2',
-                S.of(context).puzzleWorkflowStepRecord,
-                S.of(context).puzzleWorkflowStepRecordDesc,
+                S.of(dialogContext).puzzleWorkflowStepRecord,
+                S.of(dialogContext).puzzleWorkflowStepRecordDesc,
                 _solutionMoves.isNotEmpty,
               ),
               _buildWorkflowStep(
+                dialogContext,
                 '3',
-                S.of(context).puzzleWorkflowStepDetails,
-                S.of(context).puzzleWorkflowStepDetailsDesc,
+                S.of(dialogContext).puzzleWorkflowStepDetails,
+                S.of(dialogContext).puzzleWorkflowStepDetailsDesc,
                 false,
               ),
               _buildWorkflowStep(
+                dialogContext,
                 '4',
-                S.of(context).puzzleWorkflowStepSave,
-                S.of(context).puzzleWorkflowStepSaveDesc,
+                S.of(dialogContext).puzzleWorkflowStepSave,
+                S.of(dialogContext).puzzleWorkflowStepSaveDesc,
                 false,
               ),
               const SizedBox(height: 12),
@@ -520,127 +528,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        S.of(context).puzzleWorkflowTip,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.orange[200],
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).ok),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Show position capture help dialog
-  void _showPositionCaptureHelp() {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Row(
-          children: <Widget>[
-            Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
-            const SizedBox(width: 8),
-            // Wrap text in Expanded to prevent overflow on small screens
-            Expanded(
-              child: Text(
-                S.of(context).puzzlePositionCaptureHelp,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        content: SingleChildScrollView(
-          child: Text(
-            S.of(context).puzzlePositionCaptureHelpContent,
-            style: const TextStyle(fontSize: 14),
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).ok),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Show solution recording help dialog
-  void _showSolutionRecordingHelp() {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Row(
-          children: <Widget>[
-            Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
-            const SizedBox(width: 8),
-            // Wrap text in Expanded to prevent overflow on small screens
-            Expanded(
-              child: Text(
-                S.of(context).puzzleSolutionRecordingHelp,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                S.of(context).puzzleSolutionRecordingHelpContent,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-              const SizedBox(height: 12),
-              _buildInstructionStep('1', S.of(context).puzzleSolutionStep1),
-              _buildInstructionStep('2', S.of(context).puzzleSolutionStep2),
-              _buildInstructionStep(
-                '3',
-                S.of(context).puzzleRecordingHintUseButton,
-              ),
-              _buildInstructionStep('4', S.of(context).puzzleSolutionStep4),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.orange.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: Colors.orange.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      FluentIcons.info_24_regular,
-                      size: 16,
-                      color: Colors.orange[300],
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        S.of(context).puzzleSolutionRecordingTip,
+                        S.of(dialogContext).puzzleWorkflowTip,
+                        // Avoid forcing a low-contrast color; let the theme decide.
                         style: const TextStyle(fontSize: 12),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -654,8 +543,125 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).ok),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(S.of(dialogContext).ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Show position capture help dialog
+  void _showPositionCaptureHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
+            const SizedBox(width: 8),
+            // Wrap text in Expanded to prevent overflow on small screens
+            Expanded(
+              child: Text(
+                S.of(dialogContext).puzzlePositionCaptureHelp,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Text(
+            S.of(dialogContext).puzzlePositionCaptureHelpContent,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(S.of(dialogContext).ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Show solution recording help dialog
+  void _showSolutionRecordingHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: Row(
+          children: <Widget>[
+            Icon(FluentIcons.info_24_filled, color: Colors.blue[300]),
+            const SizedBox(width: 8),
+            // Wrap text in Expanded to prevent overflow on small screens
+            Expanded(
+              child: Text(
+                S.of(dialogContext).puzzleSolutionRecordingHelp,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                S.of(dialogContext).puzzleSolutionRecordingHelpContent,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildInstructionStep('1', S.of(dialogContext).puzzleSolutionStep1),
+              _buildInstructionStep('2', S.of(dialogContext).puzzleSolutionStep2),
+              _buildInstructionStep(
+                '3',
+                S.of(dialogContext).puzzleRecordingHintUseButton,
+              ),
+              _buildInstructionStep('4', S.of(dialogContext).puzzleSolutionStep4),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: Colors.orange.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.info_24_regular,
+                      size: 16,
+                      color: Colors.orange[300],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        S.of(dialogContext).puzzleSolutionRecordingTip,
+                        style: const TextStyle(fontSize: 12),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(S.of(dialogContext).ok),
           ),
         ],
       ),
@@ -663,11 +669,18 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
   }
 
   Widget _buildWorkflowStep(
+    BuildContext context,
     String number,
     String title,
     String description,
     bool isCompleted,
   ) {
+    final Color stepColor =
+        isCompleted ? Colors.green : Theme.of(context).colorScheme.primary;
+    final Color titleColor = isCompleted
+        ? Colors.green
+        : Theme.of(context).colorScheme.onSurface;
+    final Color descriptionColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -677,7 +690,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
             width: 24,
             height: 24,
             decoration: BoxDecoration(
-              color: isCompleted ? Colors.green : Colors.blue,
+              color: stepColor,
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -703,12 +716,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
-                    color: isCompleted ? Colors.green[300] : Colors.white,
+                    color: titleColor,
                   ),
                 ),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+                  style: TextStyle(fontSize: 12, color: descriptionColor),
                 ),
               ],
             ),
@@ -718,7 +731,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     );
   }
 
-  Widget _buildPositionCaptureSection() {
+  Widget _buildPositionCaptureSection(BuildContext context) {
+    final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -746,7 +760,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     color: Colors.blue[300],
                     size: 20,
                   ),
-                  onPressed: _showPositionCaptureHelp,
+                  onPressed: () => _showPositionCaptureHelp(context),
                   tooltip: S.of(context).puzzleShowPositionCaptureHelp,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -791,13 +805,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 children: <Widget>[
                   Icon(
                     FluentIcons.warning_24_regular,
-                    color: Colors.grey[400],
+                    color: hintColor,
                     size: 18,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     S.of(context).puzzleNoPositionCaptured,
-                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                    style: TextStyle(color: hintColor, fontSize: 14),
                   ),
                 ],
               ),
@@ -828,7 +842,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     );
   }
 
-  Widget _buildSolutionRecordingSection() {
+  Widget _buildSolutionRecordingSection(BuildContext context) {
+    final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -856,7 +871,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                     color: Colors.blue[300],
                     size: 20,
                   ),
-                  onPressed: _showSolutionRecordingHelp,
+                  onPressed: () => _showSolutionRecordingHelp(context),
                   tooltip: S.of(context).puzzleShowSolutionRecordingHelp,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -934,13 +949,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
                 children: <Widget>[
                   Icon(
                     FluentIcons.warning_24_regular,
-                    color: Colors.grey[400],
+                    color: hintColor,
                     size: 18,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     S.of(context).puzzleNoSolutionRecorded,
-                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                    style: TextStyle(color: hintColor, fontSize: 14),
                   ),
                 ],
               ),
@@ -1021,7 +1036,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     );
   }
 
-  Widget _buildMetadataSection() {
+  Widget _buildMetadataSection(BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),

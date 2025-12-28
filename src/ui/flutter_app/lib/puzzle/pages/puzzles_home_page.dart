@@ -51,130 +51,145 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        final Widget page = Scaffold(
-          backgroundColor: useDarkSettingsUi
-              ? settingsTheme.scaffoldBackgroundColor
-              : AppTheme.lightBackgroundColor,
-          appBar: AppBar(
-            leading: CustomDrawerIcon.of(context)?.drawerIcon,
-            title: Text(
-              s.puzzles,
-              style: useDarkSettingsUi
-                  ? null
-                  : AppTheme.appBarTheme.titleTextStyle,
-            ),
-            actions: <Widget>[
-              // Statistics overview
-              IconButton(
-                icon: const Icon(FluentIcons.chart_multiple_24_regular),
-                onPressed: _showStatistics,
-                tooltip: s.puzzleStatistics,
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(12.0), // Reduced from 16 to 12
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                // Header with overall stats
-                _buildStatsCard(s, useDarkSettingsUi),
-                const SizedBox(height: 12), // Reduced from 24 to 12
-                // Daily Puzzle - Featured
-                _buildFeaturedCard(
-                  s,
-                  title: s.dailyPuzzle,
-                  subtitle: s.dailyPuzzleDesc,
-                  icon: FluentIcons.calendar_star_24_regular,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary, // Use primary color
-                  onTap: () => _navigateTo(const DailyPuzzlePage()),
-                ),
-                const SizedBox(height: 12), // Reduced from 16 to 12
-                // Grid of puzzle modes
-                GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12, // Reduced from 16 to 12
-                  crossAxisSpacing: 12, // Reduced from 16 to 12
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    // All Puzzles
-                    _buildModeCard(
-                      s,
-                      title: s.allPuzzles,
-                      description: s.allPuzzlesDesc,
-                      icon: FluentIcons.puzzle_piece_24_regular,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary, // Use primary green
-                      onTap: () => _navigateTo(const PuzzleListPage()),
-                    ),
-                    // Puzzle Rush
-                    _buildModeCard(
-                      s,
-                      title: s.puzzleRush,
-                      description: s.puzzleRushDesc,
-                      icon: FluentIcons.flash_24_regular,
-                      color: Colors
-                          .deepOrange, // Keep energetic orange for "rush" mode
-                      onTap: () => _navigateTo(const PuzzleRushPage()),
-                    ),
-                    // Puzzle Streak
-                    _buildModeCard(
-                      s,
-                      title: s.puzzleStreak,
-                      description: s.puzzleStreakDesc,
-                      icon: FluentIcons.flash_24_filled,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primaryContainer, // Darker green shade
-                      onTap: () => _navigateTo(const PuzzleStreakPage()),
-                    ),
-                    // Custom Puzzles
-                    _buildModeCard(
-                      s,
-                      title: s.customPuzzles,
-                      description: s.customPuzzlesDesc,
-                      icon: FluentIcons.edit_24_regular,
-                      color: Colors.lightGreen, // Lighter green variant
-                      onTap: () => _navigateTo(const CustomPuzzlesPage()),
-                    ),
-                    // History
-                    _buildModeCard(
-                      s,
-                      title: s.puzzleHistory,
-                      description: s.puzzleHistoryDesc,
-                      icon: FluentIcons.history_24_regular,
-                      color: Colors.teal, // Teal stays as complementary color
-                      onTap: () => _navigateTo(const PuzzleHistoryPage()),
-                    ),
-                    // Statistics
-                    _buildModeCard(
-                      s,
-                      title: s.puzzleStatistics,
-                      description: s.puzzleStatisticsDesc,
-                      icon: FluentIcons.chart_multiple_24_regular,
-                      color: Colors.blueGrey, // Neutral grey-blue for stats
-                      onTap: () => _navigateTo(const PuzzleStatsPage()),
+        // Use Builder to ensure the context has the correct theme
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: useDarkSettingsUi
+                    ? settingsTheme.scaffoldBackgroundColor
+                    : AppTheme.lightBackgroundColor,
+                appBar: AppBar(
+                  leading: CustomDrawerIcon.of(context)?.drawerIcon,
+                  title: Text(
+                    s.puzzles,
+                    style: useDarkSettingsUi
+                        ? null
+                        : AppTheme.appBarTheme.titleTextStyle,
+                  ),
+                  actions: <Widget>[
+                    // Statistics overview
+                    IconButton(
+                      icon: const Icon(FluentIcons.chart_multiple_24_regular),
+                      onPressed: () => _showStatistics(context),
+                      tooltip: s.puzzleStatistics,
                     ),
                   ],
                 ),
-              ],
-            ),
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.all(12.0), // Reduced from 16 to 12
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      // Header with overall stats
+                      _buildStatsCard(context, s, useDarkSettingsUi),
+                      const SizedBox(height: 12), // Reduced from 24 to 12
+                      // Daily Puzzle - Featured
+                      _buildFeaturedCard(
+                        context,
+                        s,
+                        title: s.dailyPuzzle,
+                        subtitle: s.dailyPuzzleDesc,
+                        icon: FluentIcons.calendar_star_24_regular,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary, // Use primary color
+                        onTap: () => _navigateTo(context, const DailyPuzzlePage()),
+                      ),
+                      const SizedBox(height: 12), // Reduced from 16 to 12
+                      // Grid of puzzle modes
+                      GridView.count(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 12, // Reduced from 16 to 12
+                        crossAxisSpacing: 12, // Reduced from 16 to 12
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          // All Puzzles
+                          _buildModeCard(
+                            context,
+                            s,
+                            title: s.allPuzzles,
+                            description: s.allPuzzlesDesc,
+                            icon: FluentIcons.puzzle_piece_24_regular,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary, // Use primary green
+                            onTap: () => _navigateTo(context, const PuzzleListPage()),
+                          ),
+                          // Puzzle Rush
+                          _buildModeCard(
+                            context,
+                            s,
+                            title: s.puzzleRush,
+                            description: s.puzzleRushDesc,
+                            icon: FluentIcons.flash_24_regular,
+                            color: Colors
+                                .deepOrange, // Keep energetic orange for "rush" mode
+                            onTap: () => _navigateTo(context, const PuzzleRushPage()),
+                          ),
+                          // Puzzle Streak
+                          _buildModeCard(
+                            context,
+                            s,
+                            title: s.puzzleStreak,
+                            description: s.puzzleStreakDesc,
+                            icon: FluentIcons.flash_24_filled,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer, // Darker green shade
+                            onTap: () => _navigateTo(context, const PuzzleStreakPage()),
+                          ),
+                          // Custom Puzzles
+                          _buildModeCard(
+                            context,
+                            s,
+                            title: s.customPuzzles,
+                            description: s.customPuzzlesDesc,
+                            icon: FluentIcons.edit_24_regular,
+                            color: Colors.lightGreen, // Lighter green variant
+                            onTap: () => _navigateTo(context, const CustomPuzzlesPage()),
+                          ),
+                          // History
+                          _buildModeCard(
+                            context,
+                            s,
+                            title: s.puzzleHistory,
+                            description: s.puzzleHistoryDesc,
+                            icon: FluentIcons.history_24_regular,
+                            color: Colors.teal, // Teal stays as complementary color
+                            onTap: () => _navigateTo(context, const PuzzleHistoryPage()),
+                          ),
+                          // Statistics
+                          _buildModeCard(
+                            context,
+                            s,
+                            title: s.puzzleStatistics,
+                            description: s.puzzleStatisticsDesc,
+                            icon: FluentIcons.chart_multiple_24_regular,
+                            color: Colors.blueGrey, // Neutral grey-blue for stats
+                            onTap: () => _navigateTo(context, const PuzzleStatsPage()),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
 
   /// Build overall statistics card (compact version)
-  Widget _buildStatsCard(S s, bool useDarkSettingsUi) {
+  Widget _buildStatsCard(
+    BuildContext context,
+    S s,
+    bool useDarkSettingsUi,
+  ) {
     return ValueListenableBuilder<PuzzleSettings>(
       valueListenable: _puzzleManager.settingsNotifier,
       builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
@@ -276,7 +291,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
             label,
             style: TextStyle(
               fontSize: 11,
-              color: useDarkSettingsUi ? Colors.grey[400] : Colors.grey[600],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ), // Reduced from 12 to 11
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -289,6 +304,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
 
   /// Build featured daily puzzle card (compact version)
   Widget _buildFeaturedCard(
+    BuildContext context,
     S s, {
     required String title,
     required String subtitle,
@@ -357,6 +373,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
 
   /// Build puzzle mode card (compact version)
   Widget _buildModeCard(
+    BuildContext context,
     S s, {
     required String title,
     required String description,
@@ -422,14 +439,14 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   }
 
   /// Navigate to a page
-  void _navigateTo(Widget page) {
+  void _navigateTo(BuildContext context, Widget page) {
     Navigator.of(context).push<void>(
       MaterialPageRoute<void>(builder: (BuildContext context) => page),
     );
   }
 
   /// Show statistics dialog
-  void _showStatistics() {
+  void _showStatistics(BuildContext context) {
     final S s = S.of(context);
     final Map<String, dynamic> stats = _puzzleManager.getStatistics();
 

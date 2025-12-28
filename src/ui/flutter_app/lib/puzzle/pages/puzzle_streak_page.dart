@@ -54,24 +54,28 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        Widget page;
-        if (!_isActive) {
-          page = _buildSetupScreen(s, useDarkSettingsUi, settingsTheme);
-        } else if (_failed) {
-          page = _buildResultsScreen(s, useDarkSettingsUi, settingsTheme);
-        } else {
-          page = _buildStreakScreen(s, useDarkSettingsUi, settingsTheme);
-        }
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
+        // Use Builder to ensure the context has the correct theme
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              if (!_isActive) {
+                return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+              } else if (_failed) {
+                return _buildResultsScreen(context, s, useDarkSettingsUi, settingsTheme);
+              } else {
+                return _buildStreakScreen(context, s, useDarkSettingsUi, settingsTheme);
+              }
+            },
+          ),
+        );
       },
     );
   }
 
   /// Build setup/intro screen
   Widget _buildSetupScreen(
+    BuildContext context,
     S s,
     bool useDarkSettingsUi,
     ThemeData settingsTheme,
@@ -216,6 +220,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
   /// Build active streak screen
   Widget _buildStreakScreen(
+    BuildContext context,
     S s,
     bool useDarkSettingsUi,
     ThemeData settingsTheme,
@@ -319,6 +324,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
   /// Build results screen
   Widget _buildResultsScreen(
+    BuildContext context,
     S s,
     bool useDarkSettingsUi,
     ThemeData settingsTheme,

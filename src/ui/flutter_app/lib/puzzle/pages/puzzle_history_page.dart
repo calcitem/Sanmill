@@ -63,94 +63,98 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        final Widget page = Scaffold(
-          backgroundColor: useDarkSettingsUi
-              ? settingsTheme.scaffoldBackgroundColor
-              : AppTheme.lightBackgroundColor,
-          appBar: AppBar(
-            title: Text(
-              s.puzzleHistory,
-              style: useDarkSettingsUi
-                  ? null
-                  : AppTheme.appBarTheme.titleTextStyle,
-            ),
-            actions: <Widget>[
-              // Filter menu
-              PopupMenuButton<String>(
-                icon: const Icon(FluentIcons.filter_24_regular),
-                onSelected: (String value) {
-                  setState(() {
-                    if (value == 'all') {
-                      _showSuccessOnly = false;
-                      _showFailedOnly = false;
-                    } else if (value == 'success') {
-                      _showSuccessOnly = true;
-                      _showFailedOnly = false;
-                    } else if (value == 'failed') {
-                      _showSuccessOnly = false;
-                      _showFailedOnly = true;
-                    }
-                  });
-                },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'all',
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(FluentIcons.apps_list_24_regular),
-                        const SizedBox(width: 12),
-                        Text(s.all),
-                      ],
-                    ),
+        // Use Builder to ensure the context has the correct theme
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: useDarkSettingsUi
+                    ? settingsTheme.scaffoldBackgroundColor
+                    : AppTheme.lightBackgroundColor,
+                appBar: AppBar(
+                  title: Text(
+                    s.puzzleHistory,
+                    style: useDarkSettingsUi
+                        ? null
+                        : AppTheme.appBarTheme.titleTextStyle,
                   ),
-                  PopupMenuItem<String>(
-                    value: 'success',
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(
-                          FluentIcons.checkmark_circle_24_regular,
-                          color: Colors.green,
+                  actions: <Widget>[
+                    // Filter menu
+                    PopupMenuButton<String>(
+                      icon: const Icon(FluentIcons.filter_24_regular),
+                      onSelected: (String value) {
+                        setState(() {
+                          if (value == 'all') {
+                            _showSuccessOnly = false;
+                            _showFailedOnly = false;
+                          } else if (value == 'success') {
+                            _showSuccessOnly = true;
+                            _showFailedOnly = false;
+                          } else if (value == 'failed') {
+                            _showSuccessOnly = false;
+                            _showFailedOnly = true;
+                          }
+                        });
+                      },
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                        PopupMenuItem<String>(
+                          value: 'all',
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(FluentIcons.apps_list_24_regular),
+                              const SizedBox(width: 12),
+                              Text(s.all),
+                            ],
+                          ),
                         ),
-                        const SizedBox(width: 12),
-                        Text(s.puzzleHistorySuccess),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'failed',
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(
-                          FluentIcons.dismiss_circle_24_regular,
-                          color: Colors.red,
+                        PopupMenuItem<String>(
+                          value: 'success',
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(
+                                FluentIcons.checkmark_circle_24_regular,
+                                color: Colors.green,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(s.puzzleHistorySuccess),
+                            ],
+                          ),
                         ),
-                        const SizedBox(width: 12),
-                        Text(s.puzzleHistoryFailed),
+                        PopupMenuItem<String>(
+                          value: 'failed',
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(
+                                FluentIcons.dismiss_circle_24_regular,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(s.puzzleHistoryFailed),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          body: filteredHistory.isEmpty
-              ? _buildEmptyState(s)
-              : ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: filteredHistory.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final PuzzleAttemptResult attempt = filteredHistory[index];
-                    final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(
-                      attempt.puzzleId,
-                    );
-                    return _buildHistoryCard(attempt, puzzle, s);
-                  },
+                  ],
                 ),
+                body: filteredHistory.isEmpty
+                    ? _buildEmptyState(s)
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemCount: filteredHistory.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final PuzzleAttemptResult attempt = filteredHistory[index];
+                          final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(
+                            attempt.puzzleId,
+                          );
+                          return _buildHistoryCard(attempt, puzzle, s);
+                        },
+                      ),
+              );
+            },
+          ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
@@ -280,7 +284,9 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
               _formatTimestamp(attempt.timestamp),
               style: Theme.of(
                 context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
+              ).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
           ],
         ),

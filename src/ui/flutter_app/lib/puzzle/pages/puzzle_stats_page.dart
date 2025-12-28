@@ -44,46 +44,51 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        final Widget page = Scaffold(
-          backgroundColor: useDarkSettingsUi
-              ? settingsTheme.scaffoldBackgroundColor
-              : AppTheme.lightBackgroundColor,
-          appBar: AppBar(
-            title: Text(
-              s.puzzleStatistics,
-              style: useDarkSettingsUi
-                  ? null
-                  : AppTheme.appBarTheme.titleTextStyle,
-            ),
-          ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                // Rating card
-                _buildRatingCard(rating, s),
-                const SizedBox(height: 16),
+        // Use Builder to ensure the context has the correct theme.
+        // This prevents computing text styles from a context outside the Theme wrapper.
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: useDarkSettingsUi
+                    ? settingsTheme.scaffoldBackgroundColor
+                    : AppTheme.lightBackgroundColor,
+                appBar: AppBar(
+                  title: Text(
+                    s.puzzleStatistics,
+                    style: useDarkSettingsUi
+                        ? null
+                        : AppTheme.appBarTheme.titleTextStyle,
+                  ),
+                ),
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      // Rating card
+                      _buildRatingCard(context, rating, s),
+                      const SizedBox(height: 16),
 
-                // Performance overview
-                _buildPerformanceCard(stats, s),
-                const SizedBox(height: 16),
+                      // Performance overview
+                      _buildPerformanceCard(context, stats, s),
+                      const SizedBox(height: 16),
 
-                // Recent activity
-                _buildRecentActivityCard(s),
-              ],
-            ),
+                      // Recent activity
+                      _buildRecentActivityCard(context, s),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
 
-  Widget _buildRatingCard(PuzzleRating rating, S s) {
+  Widget _buildRatingCard(BuildContext context, PuzzleRating rating, S s) {
     return Card(
       elevation: 4,
       color: Colors.blue.withValues(alpha: 0.1),
@@ -143,14 +148,20 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
               children: <Widget>[
                 Flexible(
                   child: _buildStatItem(
+                    context,
                     s.puzzleStatsGamesPlayed,
                     '${rating.gamesPlayed}',
                     FluentIcons.games_24_regular,
                   ),
                 ),
-                Container(width: 1, height: 40, color: Colors.grey[700]),
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: Theme.of(context).dividerColor,
+                ),
                 Flexible(
                   child: _buildStatItem(
+                    context,
                     s.puzzleStatsDeviation,
                     '±${rating.ratingDeviation.round()}',
                     FluentIcons.chart_multiple_24_regular,
@@ -164,7 +175,11 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     );
   }
 
-  Widget _buildPerformanceCard(Map<String, dynamic> stats, S s) {
+  Widget _buildPerformanceCard(
+    BuildContext context,
+    Map<String, dynamic> stats,
+    S s,
+  ) {
     final double successRate = stats['successRate'] as double;
     final int avgTime = stats['averageTime'] as int;
 
@@ -176,15 +191,16 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsPerformance,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 16),
             Row(
               children: <Widget>[
                 Flexible(
                   child: _buildPerformanceTile(
+                    context,
                     s.puzzleStatsSuccessRate,
                     '${successRate.toStringAsFixed(1)}%',
                     Colors.green,
@@ -194,6 +210,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                 const SizedBox(width: 16),
                 Flexible(
                   child: _buildPerformanceTile(
+                    context,
                     s.puzzleStatsAvgTime,
                     _formatAvgTime(avgTime),
                     Colors.blue,
@@ -207,6 +224,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
               children: <Widget>[
                 Flexible(
                   child: _buildPerformanceTile(
+                    context,
                     s.puzzleStatsSolved,
                     '${stats['successCount']}',
                     Colors.green,
@@ -216,6 +234,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                 const SizedBox(width: 16),
                 Flexible(
                   child: _buildPerformanceTile(
+                    context,
                     s.puzzleStatsFailed,
                     '${stats['failCount']}',
                     Colors.red,
@@ -231,6 +250,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
   }
 
   Widget _buildPerformanceTile(
+    BuildContext context,
     String label,
     String value,
     Color color,
@@ -258,7 +278,10 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           ),
           Text(
             label,
-            style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+            style: TextStyle(
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -267,7 +290,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     );
   }
 
-  Widget _buildRecentActivityCard(S s) {
+  Widget _buildRecentActivityCard(BuildContext context, S s) {
     final List<PuzzleAttemptResult> recentAttempts = _ratingService
         .getAttemptHistory(limit: 5);
 
@@ -279,9 +302,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsRecentActivity,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 16),
             if (recentAttempts.isEmpty)
@@ -290,15 +313,15 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     s.puzzleStatsNoActivity,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey[400]),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ),
               )
             else
               ...recentAttempts.map((PuzzleAttemptResult attempt) {
-                return _buildActivityItem(attempt);
+                return _buildActivityItem(context, attempt);
               }),
           ],
         ),
@@ -306,7 +329,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     );
   }
 
-  Widget _buildActivityItem(PuzzleAttemptResult attempt) {
+  Widget _buildActivityItem(BuildContext context, PuzzleAttemptResult attempt) {
     final bool success = attempt.success;
     final Color color = success ? Colors.green : Colors.red;
     final IconData icon = success
@@ -346,7 +369,12 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     );
   }
 
-  Widget _buildStatItem(String label, String value, IconData icon) {
+  Widget _buildStatItem(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+  ) {
     // Return Column directly - the calling code wraps this in Flexible
     return Column(
       children: <Widget>[
@@ -359,9 +387,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
         ),
         Text(
           label,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: Colors.grey[400]),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,

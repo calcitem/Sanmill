@@ -99,168 +99,180 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
 
-        final Widget page = Scaffold(
-          backgroundColor: useDarkSettingsUi
-              ? settingsTheme.scaffoldBackgroundColor
-              : AppTheme.lightBackgroundColor,
-          appBar: AppBar(
-            title: _isMultiSelectMode
-                ? Text(
-                    s.puzzleSelectedCount(_selectedPuzzleIds.length),
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
-                  )
-                : Text(
-                    s.puzzles,
-                    style: useDarkSettingsUi
-                        ? null
-                        : AppTheme.appBarTheme.titleTextStyle,
-                  ),
-            leading: _isMultiSelectMode
-                ? IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: _toggleMultiSelectMode,
-                  )
-                : null,
-            actions: <Widget>[
-              if (_isMultiSelectMode) ...<Widget>[
-                // Select all
-                IconButton(
-                  icon: const Icon(FluentIcons.select_all_on_24_regular),
-                  onPressed: _selectAllPuzzles,
-                  tooltip: s.puzzleSelectAll,
-                ),
-                // Export selected
-                if (_selectedPuzzleIds.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(FluentIcons.share_24_regular),
-                    onPressed: _exportSelectedPuzzles,
-                    tooltip: s.puzzleExport,
-                  ),
-                // Delete selected (only custom puzzles)
-                if (_canDeleteSelected)
-                  IconButton(
-                    icon: const Icon(FluentIcons.delete_24_regular),
-                    onPressed: _deleteSelectedPuzzles,
-                    tooltip: s.delete,
-                  ),
-              ] else ...<Widget>[
-                // Import button (open file to import puzzles)
-                IconButton(
-                  icon: const Icon(FluentIcons.folder_open_24_regular),
-                  onPressed: _importPuzzles,
-                  tooltip: s.puzzleImport,
-                ),
-                // Multi-select button
-                IconButton(
-                  icon: const Icon(FluentIcons.checkbox_checked_24_regular),
-                  onPressed: _toggleMultiSelectMode,
-                  tooltip: s.puzzleSelect,
-                ),
-                // Filter button
-                IconButton(
-                  icon: const Icon(Icons.filter_list),
-                  onPressed: _showFilterDialog,
-                ),
-                // Stats button
-                IconButton(
-                  icon: const Icon(Icons.bar_chart),
-                  onPressed: _showStatsDialog,
-                ),
-              ],
-            ],
-          ),
-          floatingActionButton: _isMultiSelectMode
-              ? null
-              : FloatingActionButton(
-                  onPressed: _createNewPuzzle,
-                  tooltip: s.puzzleCreateNew,
-                  child: const Icon(FluentIcons.add_24_regular),
-                ),
-          body: ValueListenableBuilder<PuzzleSettings>(
-            valueListenable: _puzzleManager.settingsNotifier,
-            builder:
-                (BuildContext context, PuzzleSettings settings, Widget? child) {
-                  final List<PuzzleInfo> puzzles = _filteredPuzzles;
-
-                  if (puzzles.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            FluentIcons.puzzle_piece_24_regular,
-                            size: 64,
-                            color: Colors.grey[400],
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            s.noPuzzlesAvailable,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ],
+        // Use Builder to ensure the context has the correct theme.
+        // This prevents computing text styles from a context outside the Theme wrapper.
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return Scaffold(
+                backgroundColor: useDarkSettingsUi
+                    ? settingsTheme.scaffoldBackgroundColor
+                    : AppTheme.lightBackgroundColor,
+                appBar: AppBar(
+                  title: _isMultiSelectMode
+                      ? Text(
+                          s.puzzleSelectedCount(_selectedPuzzleIds.length),
+                          style: useDarkSettingsUi
+                              ? null
+                              : AppTheme.appBarTheme.titleTextStyle,
+                        )
+                      : Text(
+                          s.puzzles,
+                          style: useDarkSettingsUi
+                              ? null
+                              : AppTheme.appBarTheme.titleTextStyle,
+                        ),
+                  leading: _isMultiSelectMode
+                      ? IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: _toggleMultiSelectMode,
+                        )
+                      : null,
+                  actions: <Widget>[
+                    if (_isMultiSelectMode) ...<Widget>[
+                      // Select all
+                      IconButton(
+                        icon: const Icon(FluentIcons.select_all_on_24_regular),
+                        onPressed: _selectAllPuzzles,
+                        tooltip: s.puzzleSelectAll,
                       ),
-                    );
-                  }
-
-                  return Column(
-                    children: <Widget>[
-                      // Filter chips
-                      if (_selectedDifficulties.isNotEmpty ||
-                          _selectedCategories.isNotEmpty)
-                        _buildFilterChips(s),
-
-                      // Puzzle list
-                      Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(8.0),
-                          itemCount: puzzles.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final PuzzleInfo puzzle = puzzles[index];
-                            final PuzzleProgress? progress = settings
-                                .getProgress(puzzle.id);
-                            final bool isSelected = _selectedPuzzleIds.contains(
-                              puzzle.id,
-                            );
-
-                            return PuzzleCard(
-                              puzzle: puzzle,
-                              progress: progress,
-                              onTap: _isMultiSelectMode
-                                  ? () => _togglePuzzleSelection(puzzle.id)
-                                  : () => _openPuzzle(puzzle),
-                              onLongPress: _isMultiSelectMode
-                                  ? null
-                                  : () {
-                                      _toggleMultiSelectMode();
-                                      _togglePuzzleSelection(puzzle.id);
-                                    },
-                              isSelected: _isMultiSelectMode
-                                  ? isSelected
-                                  : null,
-                              showCustomBadge: puzzle.isCustom,
-                              onEdit: puzzle.isCustom && !_isMultiSelectMode
-                                  ? () => _editPuzzle(puzzle)
-                                  : null,
-                            );
-                          },
+                      // Export selected
+                      if (_selectedPuzzleIds.isNotEmpty)
+                        IconButton(
+                          icon: const Icon(FluentIcons.share_24_regular),
+                          onPressed: _exportSelectedPuzzles,
+                          tooltip: s.puzzleExport,
+                        ),
+                      // Delete selected (only custom puzzles)
+                      if (_canDeleteSelected)
+                        IconButton(
+                          icon: const Icon(FluentIcons.delete_24_regular),
+                          onPressed: () => _deleteSelectedPuzzles(
+                            context,
+                            settingsTheme,
+                          ),
+                          tooltip: s.delete,
+                        ),
+                    ] else ...<Widget>[
+                      // Import button (open file to import puzzles)
+                      IconButton(
+                        icon: const Icon(FluentIcons.folder_open_24_regular),
+                        onPressed: _importPuzzles,
+                        tooltip: s.puzzleImport,
+                      ),
+                      // Multi-select button
+                      IconButton(
+                        icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+                        onPressed: _toggleMultiSelectMode,
+                        tooltip: s.puzzleSelect,
+                      ),
+                      // Filter button
+                      IconButton(
+                        icon: const Icon(Icons.filter_list),
+                        onPressed: () => _showFilterDialog(
+                          context,
+                          settingsTheme,
+                        ),
+                      ),
+                      // Stats button
+                      IconButton(
+                        icon: const Icon(Icons.bar_chart),
+                        onPressed: () => _showStatsDialog(
+                          context,
+                          settingsTheme,
                         ),
                       ),
                     ],
-                  );
-                },
+                  ],
+                ),
+                floatingActionButton: _isMultiSelectMode
+                    ? null
+                    : FloatingActionButton(
+                        onPressed: _createNewPuzzle,
+                        tooltip: s.puzzleCreateNew,
+                        child: const Icon(FluentIcons.add_24_regular),
+                      ),
+                body: ValueListenableBuilder<PuzzleSettings>(
+                  valueListenable: _puzzleManager.settingsNotifier,
+                  builder: (BuildContext context, PuzzleSettings settings, _) {
+                    final List<PuzzleInfo> puzzles = _filteredPuzzles;
+
+                    if (puzzles.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              FluentIcons.puzzle_piece_24_regular,
+                              size: 64,
+                              color: Colors.grey[400],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              s.noPuzzlesAvailable,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return Column(
+                      children: <Widget>[
+                        // Filter chips
+                        if (_selectedDifficulties.isNotEmpty ||
+                            _selectedCategories.isNotEmpty)
+                          _buildFilterChips(context, s),
+
+                        // Puzzle list
+                        Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(8.0),
+                            itemCount: puzzles.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final PuzzleInfo puzzle = puzzles[index];
+                              final PuzzleProgress? progress =
+                                  settings.getProgress(puzzle.id);
+                              final bool isSelected =
+                                  _selectedPuzzleIds.contains(puzzle.id);
+
+                              return PuzzleCard(
+                                puzzle: puzzle,
+                                progress: progress,
+                                onTap: _isMultiSelectMode
+                                    ? () => _togglePuzzleSelection(puzzle.id)
+                                    : () => _openPuzzle(puzzle),
+                                onLongPress: _isMultiSelectMode
+                                    ? null
+                                    : () {
+                                        _toggleMultiSelectMode();
+                                        _togglePuzzleSelection(puzzle.id);
+                                      },
+                                isSelected: _isMultiSelectMode
+                                    ? isSelected
+                                    : null,
+                                showCustomBadge: puzzle.isCustom,
+                                onEdit: puzzle.isCustom && !_isMultiSelectMode
+                                    ? () => _editPuzzle(puzzle)
+                                    : null,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
           ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
 
-  Widget _buildFilterChips(S s) {
+  Widget _buildFilterChips(BuildContext context, S s) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Wrap(
@@ -301,125 +313,131 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     );
   }
 
-  void _showFilterDialog() {
+  void _showFilterDialog(BuildContext context, ThemeData settingsTheme) {
     final S s = S.of(context);
 
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setDialogState) {
-            return AlertDialog(
-              title: Text(s.filter),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      s.difficulty,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    ...PuzzleDifficulty.values.map(
-                      (PuzzleDifficulty d) => CheckboxListTile(
-                        title: Text(d.getDisplayName(S.of, context)),
-                        value: _selectedDifficulties.contains(d),
-                        onChanged: (bool? checked) {
-                          setState(() {
-                            if (checked ?? false) {
-                              _selectedDifficulties.add(d);
-                            } else {
-                              _selectedDifficulties.remove(d);
-                            }
-                          });
-                          setDialogState(() {}); // Update dialog state
-                        },
+      builder: (BuildContext dialogContext) {
+        return Theme(
+          data: settingsTheme,
+          child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setDialogState) {
+              return AlertDialog(
+                title: Text(s.filter),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        s.difficulty,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
-                    ),
-                    const Divider(),
-                    Text(
-                      s.category,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    ...PuzzleCategory.values.map(
-                      (PuzzleCategory c) => CheckboxListTile(
-                        title: Text(c.getDisplayName(S.of, context)),
-                        value: _selectedCategories.contains(c),
-                        onChanged: (bool? checked) {
-                          setState(() {
-                            if (checked ?? false) {
-                              _selectedCategories.add(c);
-                            } else {
-                              _selectedCategories.remove(c);
-                            }
-                          });
-                          setDialogState(() {}); // Update dialog state
-                        },
+                      ...PuzzleDifficulty.values.map(
+                        (PuzzleDifficulty d) => CheckboxListTile(
+                          title: Text(d.getDisplayName(S.of, context)),
+                          value: _selectedDifficulties.contains(d),
+                          onChanged: (bool? checked) {
+                            setState(() {
+                              if (checked ?? false) {
+                                _selectedDifficulties.add(d);
+                              } else {
+                                _selectedDifficulties.remove(d);
+                              }
+                            });
+                            setDialogState(() {}); // Update dialog state
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                      const Divider(),
+                      Text(
+                        s.category,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      ...PuzzleCategory.values.map(
+                        (PuzzleCategory c) => CheckboxListTile(
+                          title: Text(c.getDisplayName(S.of, context)),
+                          value: _selectedCategories.contains(c),
+                          onChanged: (bool? checked) {
+                            setState(() {
+                              if (checked ?? false) {
+                                _selectedCategories.add(c);
+                              } else {
+                                _selectedCategories.remove(c);
+                              }
+                            });
+                            setDialogState(() {}); // Update dialog state
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedDifficulties.clear();
-                      _selectedCategories.clear();
-                    });
-                    setDialogState(() {}); // Update dialog state
-                  },
-                  child: Text(s.clearFilter),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(s.close),
-                ),
-              ],
-            );
-          },
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedDifficulties.clear();
+                        _selectedCategories.clear();
+                      });
+                      setDialogState(() {}); // Update dialog state
+                    },
+                    child: Text(s.clearFilter),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(),
+                    child: Text(s.close),
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
     );
   }
 
-  void _showStatsDialog() {
+  void _showStatsDialog(BuildContext context, ThemeData settingsTheme) {
     final S s = S.of(context);
     final Map<String, dynamic> stats = _puzzleManager.getStatistics();
 
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(s.puzzleStatistics),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildStatRow(
-                s.totalPuzzles,
-                (stats['totalPuzzles'] as int? ?? 0).toString(),
-              ),
-              _buildStatRow(
-                s.completed,
-                (stats['completedPuzzles'] as int? ?? 0).toString(),
-              ),
-              _buildStatRow(
-                s.totalStars,
-                (stats['totalStars'] as int? ?? 0).toString(),
-              ),
-              _buildStatRow(
-                s.completionPercentage,
-                '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}%',
+      builder: (BuildContext dialogContext) {
+        return Theme(
+          data: settingsTheme,
+          child: AlertDialog(
+            title: Text(s.puzzleStatistics),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildStatRow(
+                  s.totalPuzzles,
+                  (stats['totalPuzzles'] as int? ?? 0).toString(),
+                ),
+                _buildStatRow(
+                  s.completed,
+                  (stats['completedPuzzles'] as int? ?? 0).toString(),
+                ),
+                _buildStatRow(
+                  s.totalStars,
+                  (stats['totalStars'] as int? ?? 0).toString(),
+                ),
+                _buildStatRow(
+                  s.completionPercentage,
+                  '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}%',
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(s.close),
               ),
             ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(s.close),
-            ),
-          ],
         );
       },
     );
@@ -505,7 +523,10 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   }
 
   /// Delete selected puzzles
-  Future<void> _deleteSelectedPuzzles() async {
+  Future<void> _deleteSelectedPuzzles(
+    BuildContext context,
+    ThemeData settingsTheme,
+  ) async {
     if (_selectedPuzzleIds.isEmpty) {
       return;
     }
@@ -529,23 +550,26 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     // Confirm deletion
     final bool? confirmed = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(S.of(context).confirm),
-          content: Text(
-            S.of(context).puzzleDeleteConfirm(customPuzzleIds.length),
+      builder: (BuildContext dialogContext) {
+        return Theme(
+          data: settingsTheme,
+          child: AlertDialog(
+            title: Text(S.of(dialogContext).confirm),
+            content: Text(
+              S.of(dialogContext).puzzleDeleteConfirm(customPuzzleIds.length),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: Text(S.of(dialogContext).cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: Text(S.of(dialogContext).delete),
+              ),
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(S.of(context).cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: Text(S.of(context).delete),
-            ),
-          ],
         );
       },
     );
@@ -556,7 +580,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
 
     final int deletedCount = _puzzleManager.deletePuzzles(customPuzzleIds);
 
-    if (!mounted) {
+    if (!mounted || !context.mounted) {
       return;
     }
 

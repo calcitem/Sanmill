@@ -44,6 +44,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   final ValueNotifier<int> _moveCountNotifier = ValueNotifier<int>(0);
   bool _hintsUsed = false;
   int _lastRecordedMoveIndex = -1;
+  ThemeData? _settingsThemeForDialogs;
 
   bool get _canUndo => _moveCountNotifier.value > 0;
 
@@ -127,28 +128,33 @@ class _PuzzlePageState extends State<PuzzlePage> {
       showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Row(
-            children: <Widget>[
-              Icon(Icons.error, color: Colors.red),
-              SizedBox(width: 8),
-              Text('Invalid Puzzle'),
-            ],
-          ),
-          content: const Text(
-            'This puzzle has an invalid position format and cannot be loaded. '
-            'Please contact the puzzle author or try a different puzzle.',
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-              child: const Text('Back to List'),
+        builder: (BuildContext dialogContext) {
+          return Theme(
+            data: _settingsThemeForDialogs ?? Theme.of(dialogContext),
+            child: AlertDialog(
+              title: const Row(
+                children: <Widget>[
+                  Icon(Icons.error, color: Colors.red),
+                  SizedBox(width: 8),
+                  Text('Invalid Puzzle'),
+                ],
+              ),
+              content: const Text(
+                'This puzzle has an invalid position format and cannot be loaded. '
+                'Please contact the puzzle author or try a different puzzle.',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text('Back to List'),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       );
     });
   }
@@ -168,107 +174,133 @@ class _PuzzlePageState extends State<PuzzlePage> {
         final ThemeData settingsTheme = useDarkSettingsUi
             ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
             : Theme.of(context);
+        _settingsThemeForDialogs = settingsTheme;
 
-        final Widget page = PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (bool didPop, Object? result) async {
-            if (didPop) {
-              return;
-            }
-            final bool? shouldPop = await showDialog<bool>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: Text(s.exitPuzzle),
-                content: Text(s.puzzleProgressWillBeLost),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text(s.cancel),
+        // Use Builder to ensure the context has the correct theme.
+        // This prevents computing text styles from a context outside the Theme wrapper.
+        return Theme(
+          data: settingsTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (bool didPop, Object? result) async {
+                  if (didPop) {
+                    return;
+                  }
+                  final bool? shouldPop = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return Theme(
+                        data: settingsTheme,
+                        child: AlertDialog(
+                          title: Text(s.exitPuzzle),
+                          content: Text(s.puzzleProgressWillBeLost),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(false),
+                              child: Text(s.cancel),
+                            ),
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(true),
+                              child: Text(s.exit),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                  // Check if user confirmed exit and widget is still mounted
+                  if (shouldPop ?? false) {
+                    if (!mounted) {
+                      return;
+                    }
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  }
+                },
+                child: Scaffold(
+                  backgroundColor: useDarkSettingsUi
+                      ? settingsTheme.scaffoldBackgroundColor
+                      : AppTheme.lightBackgroundColor,
+                  appBar: AppBar(
+                    title: Text(
+                      widget.puzzle.title,
+                      style: useDarkSettingsUi
+                          ? null
+                          : AppTheme.appBarTheme.titleTextStyle,
+                    ),
+                    actions: <Widget>[
+                      // Undo button
+                      IconButton(
+                        icon: const Icon(Icons.undo),
+                        onPressed: _canUndo ? _undoMove : null,
+                        tooltip: s.undo,
+                      ),
+                      // Hint button
+                      if (DB().puzzleSettings.showHints && _hintService.hasHints)
+                        IconButton(
+                          icon: const Icon(Icons.lightbulb_outline),
+                          onPressed: _showHint,
+                          tooltip: s.hint,
+                        ),
+                      // Reset button
+                      IconButton(
+                        icon: const Icon(Icons.refresh),
+                        onPressed: _resetPuzzle,
+                        tooltip: s.reset,
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text(s.exit),
-                  ),
-                ],
-              ),
-            );
-            // Check if user confirmed exit and widget is still mounted
-            if (shouldPop ?? false) {
-              if (!mounted) {
-                return;
-              }
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            }
-          },
-          child: Scaffold(
-            backgroundColor: useDarkSettingsUi
-                ? settingsTheme.scaffoldBackgroundColor
-                : AppTheme.lightBackgroundColor,
-            appBar: AppBar(
-              title: Text(
-                widget.puzzle.title,
-                style: useDarkSettingsUi
-                    ? null
-                    : AppTheme.appBarTheme.titleTextStyle,
-              ),
-              actions: <Widget>[
-                // Undo button
-                IconButton(
-                  icon: const Icon(Icons.undo),
-                  onPressed: _canUndo ? _undoMove : null,
-                  tooltip: s.undo,
-                ),
-                // Hint button
-                if (DB().puzzleSettings.showHints && _hintService.hasHints)
-                  IconButton(
-                    icon: const Icon(Icons.lightbulb_outline),
-                    onPressed: _showHint,
-                    tooltip: s.hint,
-                  ),
-                // Reset button
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: _resetPuzzle,
-                  tooltip: s.reset,
-                ),
-              ],
-            ),
-            body: Column(
-              children: <Widget>[
-                // Puzzle info panel - only rebuilds when move count changes
-                ValueListenableBuilder<int>(
-                  valueListenable: _moveCountNotifier,
-                  builder:
-                      (BuildContext context, int moveCount, Widget? child) {
-                        return _buildInfoPanel(s, moveCount, useDarkSettingsUi);
-                      },
-                ),
+                  body: Column(
+                    children: <Widget>[
+                      // Puzzle info panel - only rebuilds when move count changes
+                      ValueListenableBuilder<int>(
+                        valueListenable: _moveCountNotifier,
+                        builder: (
+                          BuildContext context,
+                          int moveCount,
+                          Widget? child,
+                        ) {
+                          return _buildInfoPanel(
+                            context,
+                            s,
+                            moveCount,
+                            useDarkSettingsUi,
+                          );
+                        },
+                      ),
 
-                // Game board - properly constructed with GameMode
-                Expanded(
-                  child: _PuzzleGameBoard(
-                    puzzle: widget.puzzle,
-                    onMoveCompleted: _onPlayerMove,
+                      // Game board - properly constructed with GameMode
+                      Expanded(
+                        child: _PuzzleGameBoard(
+                          puzzle: widget.puzzle,
+                          onMoveCompleted: _onPlayerMove,
+                        ),
+                      ),
+
+                      // Action buttons
+                      _buildActionButtons(s),
+                    ],
                   ),
                 ),
-
-                // Action buttons
-                _buildActionButtons(s),
-              ],
-            ),
+              );
+            },
           ),
         );
-
-        return useDarkSettingsUi
-            ? Theme(data: settingsTheme, child: page)
-            : page;
       },
     );
   }
 
-  Widget _buildInfoPanel(S s, int moveCount, bool useDarkSettingsUi) {
+  Widget _buildInfoPanel(
+    BuildContext context,
+    S s,
+    int moveCount,
+    bool useDarkSettingsUi,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       color: useDarkSettingsUi
@@ -431,11 +463,24 @@ class _PuzzlePageState extends State<PuzzlePage> {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => _buildCompletionDialog(feedback),
+      builder: (BuildContext dialogContext) {
+        final ThemeData theme = _settingsThemeForDialogs ?? Theme.of(dialogContext);
+        return Theme(
+          data: theme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return _buildCompletionDialog(context, feedback);
+            },
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCompletionDialog(ValidationFeedback feedback) {
+  Widget _buildCompletionDialog(
+    BuildContext context,
+    ValidationFeedback feedback,
+  ) {
     final S s = S.of(context);
     final int stars = PuzzleProgress.calculateStars(
       moveCount: _moveCountNotifier.value,
@@ -569,22 +614,32 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Row(
-          children: <Widget>[
-            Icon(Icons.lightbulb, color: Colors.amber),
-            SizedBox(width: 8),
-            Text('Hint'),
-          ],
-        ),
-        content: Text(hint.content),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+      builder: (BuildContext dialogContext) {
+        final ThemeData theme = _settingsThemeForDialogs ?? Theme.of(dialogContext);
+        return Theme(
+          data: theme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Row(
+                  children: <Widget>[
+                    Icon(Icons.lightbulb, color: Colors.amber),
+                    SizedBox(width: 8),
+                    Text('Hint'),
+                  ],
+                ),
+                content: Text(hint.content),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -618,87 +673,105 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Row(
-          children: <Widget>[
-            Icon(
-              Icons.info_outline,
-              color: Theme.of(context).colorScheme.primary, // Use primary color
-            ),
-            const SizedBox(width: 8),
-            // Wrap text in Expanded to prevent overflow on small screens
-            Expanded(child: Text(s.solution, overflow: TextOverflow.ellipsis)),
-          ],
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Optimal solution (${widget.puzzle.solutionMoves.first.length} moves):',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              // Show solution as numbered list
-              ...widget.puzzle.solutionMoves.first.asMap().entries.map((
-                MapEntry<int, String> entry,
-              ) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary
-                              .withValues(alpha: 0.2), // Use primary color
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Text(
-                            '${entry.key + 1}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+      builder: (BuildContext dialogContext) {
+        final ThemeData theme = _settingsThemeForDialogs ?? Theme.of(dialogContext);
+        return Theme(
+          data: theme,
+          child: Builder(
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.info_outline,
+                      color:
+                          Theme.of(context).colorScheme.primary, // Use primary color
+                    ),
+                    const SizedBox(width: 8),
+                    // Wrap text in Expanded to prevent overflow on small screens
+                    Expanded(
+                      child: Text(
+                        s.solution,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(width: 12),
+                    ),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
                       Text(
-                        entry.value,
-                        style: const TextStyle(
-                          fontFamily: 'monospace',
-                          fontSize: 14,
-                        ),
+                        'Optimal solution (${widget.puzzle.solutionMoves.first.length} moves):',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                      // Show solution as numbered list
+                      ...widget.puzzle.solutionMoves.first.asMap().entries.map(
+                        (MapEntry<int, String> entry) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withValues(alpha: 0.2), // Use primary color
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '${entry.key + 1}',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  entry.value,
+                                  style: const TextStyle(
+                                    fontFamily: 'monospace',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
-                );
-              }),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(s.cancel),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _puzzleManager.recordAttempt(
-                widget.puzzle.id,
-                hintUsed: _hintsUsed,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(s.cancel),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _puzzleManager.recordAttempt(
+                        widget.puzzle.id,
+                        hintUsed: _hintsUsed,
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(s.backToList),
+                  ),
+                ],
               );
-              Navigator.of(context).pop();
             },
-            child: Text(s.backToList),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
