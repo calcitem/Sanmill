@@ -123,14 +123,14 @@ void main() {
 
           // Configure Human vs AI mode
           GameController().gameInstance.gameMode = GameMode.humanVsAi;
-          GameController()
-              .gameInstance
-              .getPlayerByColor(PieceColor.white)
-              .isAi = false;
-          GameController()
-              .gameInstance
-              .getPlayerByColor(PieceColor.black)
-              .isAi = true;
+          GameController().gameInstance
+                  .getPlayerByColor(PieceColor.white)
+                  .isAi =
+              false;
+          GameController().gameInstance
+                  .getPlayerByColor(PieceColor.black)
+                  .isAi =
+              true;
 
           print('$logTag ♟️  Human (White) vs 🤖 AI (Black)');
 
@@ -147,10 +147,8 @@ void main() {
             moveNum++;
             totalMoves++;
 
-            final PieceColor currentSide =
-                GameController().position.sideToMove;
-            final bool isAiTurn =
-                GameController().gameInstance.isAiSideToMove;
+            final PieceColor currentSide = GameController().position.sideToMove;
+            final bool isAiTurn = GameController().gameInstance.isAiSideToMove;
 
             print('');
             print(
@@ -214,11 +212,12 @@ void main() {
             // Check if game is over
             if (GameController().position.winner != PieceColor.nobody) {
               gameOver = true;
-              final String winner = GameController().position.winner == PieceColor.white
+              final String winner =
+                  GameController().position.winner == PieceColor.white
                   ? '⚪ White'
                   : GameController().position.winner == PieceColor.black
-                      ? '⚫ Black'
-                      : '🤝 Draw';
+                  ? '⚫ Black'
+                  : '🤝 Draw';
               print('$logTag 🏁 Game over: $winner wins!');
             }
 
@@ -289,7 +288,9 @@ Future<bool> _waitForAiMoveWithTimeout(
   // Set up timeout
   timeoutTimer = Timer(Duration(seconds: timeoutSeconds), () {
     if (!completer.isCompleted) {
-      print('$logTag ⚠️  TIMEOUT: AI did not respond within $timeoutSeconds seconds');
+      print(
+        '$logTag ⚠️  TIMEOUT: AI did not respond within $timeoutSeconds seconds',
+      );
       print('$logTag Engine running: ${GameController().isEngineRunning}');
       print('$logTag Engine in delay: ${GameController().isEngineInDelay}');
       completer.complete(false);
@@ -300,8 +301,9 @@ Future<bool> _waitForAiMoveWithTimeout(
     final EngineRet ret = await GameController().engine.search();
 
     if (ret.extMove != null) {
-      final bool moveSuccessful =
-          GameController().gameInstance.doMove(ret.extMove!);
+      final bool moveSuccessful = GameController().gameInstance.doMove(
+        ret.extMove!,
+      );
 
       // Update UI
       await tester.pump();
@@ -340,8 +342,8 @@ Future<bool> _makeRandomHumanMove() async {
 
   try {
     // Use engine's analyzePosition to get all legal moves
-    final PositionAnalysisResult analysisResult =
-        await GameController().engine.analyzePosition();
+    final PositionAnalysisResult analysisResult = await GameController().engine
+        .analyzePosition();
 
     if (!analysisResult.isValid || analysisResult.possibleMoves.isEmpty) {
       return false;

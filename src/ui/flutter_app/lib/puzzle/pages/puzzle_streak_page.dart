@@ -7,8 +7,11 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
@@ -39,20 +42,49 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    if (!_isActive) {
-      return _buildSetupScreen(s);
-    } else if (_failed) {
-      return _buildResultsScreen(s);
-    } else {
-      return _buildStreakScreen(s);
-    }
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        Widget page;
+        if (!_isActive) {
+          page = _buildSetupScreen(s, useDarkSettingsUi, settingsTheme);
+        } else if (_failed) {
+          page = _buildResultsScreen(s, useDarkSettingsUi, settingsTheme);
+        } else {
+          page = _buildStreakScreen(s, useDarkSettingsUi, settingsTheme);
+        }
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
+    );
   }
 
   /// Build setup/intro screen
-  Widget _buildSetupScreen(S s) {
+  Widget _buildSetupScreen(
+    S s,
+    bool useDarkSettingsUi,
+    ThemeData settingsTheme,
+  ) {
     return Scaffold(
+      backgroundColor: useDarkSettingsUi
+          ? settingsTheme.scaffoldBackgroundColor
+          : AppTheme.lightBackgroundColor,
       appBar: AppBar(
-        title: Text(s.puzzleStreak, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(
+          s.puzzleStreak,
+          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -183,7 +215,11 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   /// Build active streak screen
-  Widget _buildStreakScreen(S s) {
+  Widget _buildStreakScreen(
+    S s,
+    bool useDarkSettingsUi,
+    ThemeData settingsTheme,
+  ) {
     if (_currentPuzzleIndex >= _streakPuzzles.length) {
       // Need to load more puzzles
       _loadMorePuzzles();
@@ -192,8 +228,14 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     final PuzzleInfo currentPuzzle = _streakPuzzles[_currentPuzzleIndex];
 
     return Scaffold(
+      backgroundColor: useDarkSettingsUi
+          ? settingsTheme.scaffoldBackgroundColor
+          : AppTheme.lightBackgroundColor,
       appBar: AppBar(
-        title: Text(s.puzzleStreak, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(
+          s.puzzleStreak,
+          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
+        ),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,
@@ -204,7 +246,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
           // Stats bar
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: Colors.purple.withValues(alpha: 0.2),
+            color: useDarkSettingsUi
+                ? Colors.purple.withValues(alpha: 0.2)
+                : Colors.purple.withValues(alpha: 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -274,14 +318,21 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
   }
 
   /// Build results screen
-  Widget _buildResultsScreen(S s) {
+  Widget _buildResultsScreen(
+    S s,
+    bool useDarkSettingsUi,
+    ThemeData settingsTheme,
+  ) {
     final bool newRecord = _currentStreak > _bestStreak;
 
     return Scaffold(
+      backgroundColor: useDarkSettingsUi
+          ? settingsTheme.scaffoldBackgroundColor
+          : AppTheme.lightBackgroundColor,
       appBar: AppBar(
         title: Text(
           s.puzzleStreakResults,
-          style: AppTheme.appBarTheme.titleTextStyle,
+          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
         ),
       ),
       body: Center(

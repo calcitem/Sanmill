@@ -7,8 +7,11 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../services/puzzle_rating_service.dart';
 
@@ -29,31 +32,54 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     final Map<String, dynamic> stats = _ratingService.getStatistics();
     final PuzzleRating rating = _ratingService.getUserRating();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          s.puzzleStatistics,
-          style: AppTheme.appBarTheme.titleTextStyle,
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // Rating card
-            _buildRatingCard(rating, s),
-            const SizedBox(height: 16),
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
 
-            // Performance overview
-            _buildPerformanceCard(stats, s),
-            const SizedBox(height: 16),
+        final Widget page = Scaffold(
+          backgroundColor: useDarkSettingsUi
+              ? settingsTheme.scaffoldBackgroundColor
+              : AppTheme.lightBackgroundColor,
+          appBar: AppBar(
+            title: Text(
+              s.puzzleStatistics,
+              style: useDarkSettingsUi
+                  ? null
+                  : AppTheme.appBarTheme.titleTextStyle,
+            ),
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                // Rating card
+                _buildRatingCard(rating, s),
+                const SizedBox(height: 16),
 
-            // Recent activity
-            _buildRecentActivityCard(s),
-          ],
-        ),
-      ),
+                // Performance overview
+                _buildPerformanceCard(stats, s),
+                const SizedBox(height: 16),
+
+                // Recent activity
+                _buildRecentActivityCard(s),
+              ],
+            ),
+          ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 

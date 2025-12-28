@@ -7,8 +7,11 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_export_service.dart';
@@ -36,126 +39,154 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: _isMultiSelectMode
-            ? Text(
-                s.puzzleSelectedCount(_selectedPuzzleIds.length),
-                style: AppTheme.appBarTheme.titleTextStyle,
-              )
-            : Text(s.customPuzzles, style: AppTheme.appBarTheme.titleTextStyle),
-        leading: _isMultiSelectMode
-            ? IconButton(
-                icon: const Icon(FluentIcons.dismiss_24_regular),
-                onPressed: _toggleMultiSelectMode,
-              )
-            : null,
-        actions: <Widget>[
-          if (_isMultiSelectMode) ...<Widget>[
-            // Select all
-            IconButton(
-              icon: const Icon(FluentIcons.select_all_on_24_regular),
-              onPressed: _selectAllPuzzles,
-              tooltip: s.puzzleSelectAll,
-            ),
-            // Contribute selected
-            if (_selectedPuzzleIds.isNotEmpty)
-              IconButton(
-                icon: const Icon(FluentIcons.arrow_upload_24_regular),
-                onPressed: _contributeSelectedPuzzles,
-                tooltip: 'Contribute to Sanmill',
-              ),
-            // Export selected
-            if (_selectedPuzzleIds.isNotEmpty)
-              IconButton(
-                icon: const Icon(FluentIcons.share_24_regular),
-                onPressed: _exportSelectedPuzzles,
-                tooltip: s.puzzleExport,
-              ),
-            // Delete selected
-            if (_selectedPuzzleIds.isNotEmpty)
-              IconButton(
-                icon: const Icon(FluentIcons.delete_24_regular),
-                onPressed: _deleteSelectedPuzzles,
-                tooltip: s.delete,
-              ),
-          ] else ...<Widget>[
-            // Import button (open file to import puzzles)
-            IconButton(
-              icon: const Icon(FluentIcons.folder_open_24_regular),
-              onPressed: _importPuzzles,
-              tooltip: s.puzzleImport,
-            ),
-            // Contribution info button
-            IconButton(
-              icon: const Icon(FluentIcons.info_24_regular),
-              onPressed: _showContributionInfo,
-              tooltip: 'How to Contribute',
-            ),
-            // Multi-select button
-            IconButton(
-              icon: const Icon(FluentIcons.checkbox_checked_24_regular),
-              onPressed: _toggleMultiSelectMode,
-              tooltip: s.puzzleSelect,
-            ),
-          ],
-        ],
-      ),
-      floatingActionButton: _isMultiSelectMode
-          ? null
-          : FloatingActionButton(
-              onPressed: _createNewPuzzle,
-              tooltip: s.puzzleCreateNew,
-              child: const Icon(FluentIcons.add_24_regular),
-            ),
-      body: ValueListenableBuilder<PuzzleSettings>(
-        valueListenable: _puzzleManager.settingsNotifier,
-        builder:
-            (BuildContext context, PuzzleSettings settings, Widget? child) {
-              final List<PuzzleInfo> customPuzzles = _puzzleManager
-                  .getCustomPuzzles();
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
 
-              if (customPuzzles.isEmpty) {
-                return _buildEmptyState(s);
-              }
-
-              return ListView.builder(
-                padding: const EdgeInsets.all(8.0),
-                itemCount: customPuzzles.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final PuzzleInfo puzzle = customPuzzles[index];
-                  final PuzzleProgress? progress = settings.getProgress(
-                    puzzle.id,
-                  );
-                  final bool isSelected = _selectedPuzzleIds.contains(
-                    puzzle.id,
-                  );
-
-                  return PuzzleCard(
-                    puzzle: puzzle,
-                    progress: progress,
-                    onTap: _isMultiSelectMode
-                        ? () => _togglePuzzleSelection(puzzle.id)
-                        : () => _openPuzzle(puzzle),
-                    onLongPress: _isMultiSelectMode
+        final Widget page = Scaffold(
+          backgroundColor: useDarkSettingsUi
+              ? settingsTheme.scaffoldBackgroundColor
+              : AppTheme.lightBackgroundColor,
+          appBar: AppBar(
+            title: _isMultiSelectMode
+                ? Text(
+                    s.puzzleSelectedCount(_selectedPuzzleIds.length),
+                    style: useDarkSettingsUi
                         ? null
-                        : () {
-                            _toggleMultiSelectMode();
-                            _togglePuzzleSelection(puzzle.id);
-                          },
-                    isSelected: _isMultiSelectMode ? isSelected : null,
-                    showCustomBadge: true,
-                    onEdit: !_isMultiSelectMode
-                        ? () => _editPuzzle(puzzle)
-                        : null,
-                    onDelete: !_isMultiSelectMode
-                        ? () => _deleteSinglePuzzle(puzzle.id)
-                        : null,
+                        : AppTheme.appBarTheme.titleTextStyle,
+                  )
+                : Text(
+                    s.customPuzzles,
+                    style: useDarkSettingsUi
+                        ? null
+                        : AppTheme.appBarTheme.titleTextStyle,
+                  ),
+            leading: _isMultiSelectMode
+                ? IconButton(
+                    icon: const Icon(FluentIcons.dismiss_24_regular),
+                    onPressed: _toggleMultiSelectMode,
+                  )
+                : null,
+            actions: <Widget>[
+              if (_isMultiSelectMode) ...<Widget>[
+                // Select all
+                IconButton(
+                  icon: const Icon(FluentIcons.select_all_on_24_regular),
+                  onPressed: _selectAllPuzzles,
+                  tooltip: s.puzzleSelectAll,
+                ),
+                // Contribute selected
+                if (_selectedPuzzleIds.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(FluentIcons.arrow_upload_24_regular),
+                    onPressed: _contributeSelectedPuzzles,
+                    tooltip: 'Contribute to Sanmill',
+                  ),
+                // Export selected
+                if (_selectedPuzzleIds.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(FluentIcons.share_24_regular),
+                    onPressed: _exportSelectedPuzzles,
+                    tooltip: s.puzzleExport,
+                  ),
+                // Delete selected
+                if (_selectedPuzzleIds.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(FluentIcons.delete_24_regular),
+                    onPressed: _deleteSelectedPuzzles,
+                    tooltip: s.delete,
+                  ),
+              ] else ...<Widget>[
+                // Import button (open file to import puzzles)
+                IconButton(
+                  icon: const Icon(FluentIcons.folder_open_24_regular),
+                  onPressed: _importPuzzles,
+                  tooltip: s.puzzleImport,
+                ),
+                // Contribution info button
+                IconButton(
+                  icon: const Icon(FluentIcons.info_24_regular),
+                  onPressed: _showContributionInfo,
+                  tooltip: 'How to Contribute',
+                ),
+                // Multi-select button
+                IconButton(
+                  icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+                  onPressed: _toggleMultiSelectMode,
+                  tooltip: s.puzzleSelect,
+                ),
+              ],
+            ],
+          ),
+          floatingActionButton: _isMultiSelectMode
+              ? null
+              : FloatingActionButton(
+                  onPressed: _createNewPuzzle,
+                  tooltip: s.puzzleCreateNew,
+                  child: const Icon(FluentIcons.add_24_regular),
+                ),
+          body: ValueListenableBuilder<PuzzleSettings>(
+            valueListenable: _puzzleManager.settingsNotifier,
+            builder:
+                (BuildContext context, PuzzleSettings settings, Widget? child) {
+                  final List<PuzzleInfo> customPuzzles = _puzzleManager
+                      .getCustomPuzzles();
+
+                  if (customPuzzles.isEmpty) {
+                    return _buildEmptyState(s);
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: customPuzzles.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final PuzzleInfo puzzle = customPuzzles[index];
+                      final PuzzleProgress? progress = settings.getProgress(
+                        puzzle.id,
+                      );
+                      final bool isSelected = _selectedPuzzleIds.contains(
+                        puzzle.id,
+                      );
+
+                      return PuzzleCard(
+                        puzzle: puzzle,
+                        progress: progress,
+                        onTap: _isMultiSelectMode
+                            ? () => _togglePuzzleSelection(puzzle.id)
+                            : () => _openPuzzle(puzzle),
+                        onLongPress: _isMultiSelectMode
+                            ? null
+                            : () {
+                                _toggleMultiSelectMode();
+                                _togglePuzzleSelection(puzzle.id);
+                              },
+                        isSelected: _isMultiSelectMode ? isSelected : null,
+                        showCustomBadge: true,
+                        onEdit: !_isMultiSelectMode
+                            ? () => _editPuzzle(puzzle)
+                            : null,
+                        onDelete: !_isMultiSelectMode
+                            ? () => _deleteSinglePuzzle(puzzle.id)
+                            : null,
+                      );
+                    },
                   );
                 },
-              );
-            },
-      ),
+          ),
+        );
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
     );
   }
 

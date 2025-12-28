@@ -928,9 +928,7 @@ class GeneralSettingsPage extends StatelessWidget {
                 'general_settings_page_settings_card_developer_options',
               ),
               titleString: S.of(context).developerOptions,
-              onTap: () => Navigator.of(
-                context,
-              ).push(
+              onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (BuildContext context) =>
                       const DeveloperOptionsPage(),

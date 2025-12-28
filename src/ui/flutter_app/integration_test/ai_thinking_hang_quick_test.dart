@@ -103,14 +103,14 @@ void main() {
 
           // Configure Human vs AI mode
           GameController().gameInstance.gameMode = GameMode.humanVsAi;
-          GameController()
-              .gameInstance
-              .getPlayerByColor(PieceColor.white)
-              .isAi = false;
-          GameController()
-              .gameInstance
-              .getPlayerByColor(PieceColor.black)
-              .isAi = true;
+          GameController().gameInstance
+                  .getPlayerByColor(PieceColor.white)
+                  .isAi =
+              false;
+          GameController().gameInstance
+                  .getPlayerByColor(PieceColor.black)
+                  .isAi =
+              true;
 
           print('$logTag Configured: Human (White) vs AI (Black)');
 
@@ -125,10 +125,8 @@ void main() {
             moveNum++;
             totalMoves++;
 
-            final PieceColor currentSide =
-                GameController().position.sideToMove;
-            final bool isAiTurn =
-                GameController().gameInstance.isAiSideToMove;
+            final PieceColor currentSide = GameController().position.sideToMove;
+            final bool isAiTurn = GameController().gameInstance.isAiSideToMove;
 
             print(
               '$logTag Move $moveNum: ${currentSide == PieceColor.white ? "White" : "Black"}${isAiTurn ? " (AI)" : " (Human)"}',
@@ -239,8 +237,9 @@ Future<bool> _waitForAiMoveWithTimeout(
     final EngineRet ret = await GameController().engine.search();
 
     if (ret.extMove != null) {
-      final bool moveSuccessful =
-          GameController().gameInstance.doMove(ret.extMove!);
+      final bool moveSuccessful = GameController().gameInstance.doMove(
+        ret.extMove!,
+      );
 
       timeoutTimer.cancel();
 
@@ -275,8 +274,8 @@ Future<bool> _makeRandomHumanMove() async {
 
   try {
     // Use engine's analyzePosition to get all legal moves
-    final PositionAnalysisResult analysisResult =
-        await GameController().engine.analyzePosition();
+    final PositionAnalysisResult analysisResult = await GameController().engine
+        .analyzePosition();
 
     if (!analysisResult.isValid || analysisResult.possibleMoves.isEmpty) {
       print('$logTag No legal moves available');
@@ -284,8 +283,9 @@ Future<bool> _makeRandomHumanMove() async {
     }
 
     // Extract all move strings
-    final List<String> legalMoves =
-        analysisResult.possibleMoves.map((MoveAnalysisResult m) => m.move).toList();
+    final List<String> legalMoves = analysisResult.possibleMoves
+        .map((MoveAnalysisResult m) => m.move)
+        .toList();
 
     legalMoves.shuffle();
 

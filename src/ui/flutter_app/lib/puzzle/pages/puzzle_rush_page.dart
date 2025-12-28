@@ -9,8 +9,11 @@ import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
@@ -62,18 +65,47 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
 
-    if (!_isActive) {
-      return _buildSetupScreen(s);
-    } else {
-      return _buildRushScreen(s);
-    }
+    return ValueListenableBuilder<Box<ColorSettings>>(
+      valueListenable: DB().listenColorSettings,
+      builder: (BuildContext context, Box<ColorSettings> box, Widget? child) {
+        final ColorSettings colors = box.get(
+          DB.colorSettingsKey,
+          defaultValue: const ColorSettings(),
+        )!;
+        final bool useDarkSettingsUi = AppTheme.shouldUseDarkSettingsUi(colors);
+        final ThemeData settingsTheme = useDarkSettingsUi
+            ? AppTheme.buildAccessibleSettingsDarkTheme(colors)
+            : Theme.of(context);
+
+        Widget page;
+        if (!_isActive) {
+          page = _buildSetupScreen(s, useDarkSettingsUi, settingsTheme);
+        } else {
+          page = _buildRushScreen(s, useDarkSettingsUi, settingsTheme);
+        }
+
+        return useDarkSettingsUi
+            ? Theme(data: settingsTheme, child: page)
+            : page;
+      },
+    );
   }
 
   /// Build setup/intro screen
-  Widget _buildSetupScreen(S s) {
+  Widget _buildSetupScreen(
+    S s,
+    bool useDarkSettingsUi,
+    ThemeData settingsTheme,
+  ) {
     return Scaffold(
+      backgroundColor: useDarkSettingsUi
+          ? settingsTheme.scaffoldBackgroundColor
+          : AppTheme.lightBackgroundColor,
       appBar: AppBar(
-        title: Text(s.puzzleRush, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(
+          s.puzzleRush,
+          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -199,19 +231,29 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   /// Build active rush screen
-  Widget _buildRushScreen(S s) {
+  Widget _buildRushScreen(
+    S s,
+    bool useDarkSettingsUi,
+    ThemeData settingsTheme,
+  ) {
     // Check if rush should end (time up, out of lives, or no puzzles)
     if (_remainingSeconds <= 0 ||
         _livesRemaining <= 0 ||
         _currentPuzzleIndex >= _rushPuzzles.length) {
-      return _buildResultsScreen(s);
+      return _buildResultsScreen(s, useDarkSettingsUi, settingsTheme);
     }
 
     final PuzzleInfo currentPuzzle = _rushPuzzles[_currentPuzzleIndex];
 
     return Scaffold(
+      backgroundColor: useDarkSettingsUi
+          ? settingsTheme.scaffoldBackgroundColor
+          : AppTheme.lightBackgroundColor,
       appBar: AppBar(
-        title: Text(s.puzzleRush, style: AppTheme.appBarTheme.titleTextStyle),
+        title: Text(
+          s.puzzleRush,
+          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
+        ),
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           onPressed: _confirmQuit,
@@ -225,6 +267,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
             solvedCountNotifier: _solvedCountNotifier,
             livesRemainingNotifier: _livesRemainingNotifier,
             maxLives: _maxLives,
+            useDarkSettingsUi: useDarkSettingsUi,
           ),
 
           // Puzzle - this won't rebuild when timer ticks
@@ -243,15 +286,22 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
   }
 
   /// Build results screen
-  Widget _buildResultsScreen(S s) {
+  Widget _buildResultsScreen(
+    S s,
+    bool useDarkSettingsUi,
+    ThemeData settingsTheme,
+  ) {
     final bool timeUp = _remainingSeconds <= 0;
     final bool outOfLives = _livesRemaining <= 0;
 
     return Scaffold(
+      backgroundColor: useDarkSettingsUi
+          ? settingsTheme.scaffoldBackgroundColor
+          : AppTheme.lightBackgroundColor,
       appBar: AppBar(
         title: Text(
           s.puzzleRushResults,
-          style: AppTheme.appBarTheme.titleTextStyle,
+          style: useDarkSettingsUi ? null : AppTheme.appBarTheme.titleTextStyle,
         ),
       ),
       body: Center(
@@ -530,18 +580,20 @@ class _RushStatsBar extends StatelessWidget {
     required this.solvedCountNotifier,
     required this.livesRemainingNotifier,
     required this.maxLives,
+    required this.useDarkSettingsUi,
   });
 
   final ValueNotifier<int> remainingSecondsNotifier;
   final ValueNotifier<int> solvedCountNotifier;
   final ValueNotifier<int> livesRemainingNotifier;
   final int maxLives;
+  final bool useDarkSettingsUi;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      color: Colors.grey[900],
+      color: useDarkSettingsUi ? Colors.grey[900] : Colors.grey[200],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
