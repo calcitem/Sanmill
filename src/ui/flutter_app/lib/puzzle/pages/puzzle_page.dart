@@ -50,6 +50,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _isSolved = false;
   bool _isAutoPlayingOpponent = false;
 
+  // Store original game state to restore on exit
+  GameMode? _previousGameMode;
+  PieceColor? _previousPuzzleHumanColor;
+  bool _previousIsPuzzleAutoMoveInProgress = false;
+
   bool get _canUndo => _moveCountNotifier.value > 0;
 
   @override
@@ -57,6 +62,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
     super.initState();
     _validator = PuzzleValidator(puzzle: widget.puzzle);
     _hintService = PuzzleHintService(puzzle: widget.puzzle);
+    
+    // Save current game state before entering puzzle mode
+    final GameController controller = GameController();
+    _previousGameMode = controller.gameInstance.gameMode;
+    _previousPuzzleHumanColor = controller.puzzleHumanColor;
+    _previousIsPuzzleAutoMoveInProgress = controller.isPuzzleAutoMoveInProgress;
+    
     _initializePuzzle();
   }
 
@@ -72,12 +84,18 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   @override
   void dispose() {
-    // Clear puzzle-specific state so it won't affect other modes.
+    // Restore previous game state when leaving puzzle mode
     final GameController controller = GameController();
+    
+    // Only restore if we're still in puzzle mode (not already changed by another page)
     if (controller.gameInstance.gameMode == GameMode.puzzle) {
-      controller.puzzleHumanColor = null;
-      controller.isPuzzleAutoMoveInProgress = false;
+      controller.gameInstance.gameMode = _previousGameMode ?? GameMode.humanVsAi;
+      controller.puzzleHumanColor = _previousPuzzleHumanColor;
+      controller.isPuzzleAutoMoveInProgress = _previousIsPuzzleAutoMoveInProgress;
+      
+      logger.i('[PuzzlePage] Restored game mode to ${_previousGameMode}');
     }
+    
     _moveCountNotifier.dispose();
     super.dispose();
   }
@@ -464,6 +482,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (feedback.result == ValidationResult.correct) {
       _onPuzzleSolved(feedback);
       return feedback;
+    } else if (feedback.result == ValidationResult.wrong) {
+      // Wrong solution - show error message
+      if (!autoCheck && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(feedback.message ?? 'Wrong approach. Try again!'),
+            duration: const Duration(seconds: 3),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } else if (!autoCheck) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -920,8 +949,8 @@ class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
     _controller = GameController();
     _lastMoveCount = _controller.gameRecorder.mainlineMoves.length;
 
-    // Listen for game state updates to detect when moves are made
-    _controller.headerIconsNotifier.addListener(_onControllerUpdated);
+    // Listen to the proper business logic notifier for move changes
+    _controller.gameRecorder.moveCountNotifier.addListener(_onMoveCountChanged);
   }
 
   @override
@@ -932,18 +961,21 @@ class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
 
   @override
   void dispose() {
-    _controller.headerIconsNotifier.removeListener(_onControllerUpdated);
+    _controller.gameRecorder.moveCountNotifier
+        .removeListener(_onMoveCountChanged);
     super.dispose();
   }
 
-  void _onControllerUpdated() {
+  void _onMoveCountChanged() {
     final int currentMoveCount = _controller.gameRecorder.mainlineMoves.length;
 
+    // Ignore if move count decreased (undo operation)
     if (currentMoveCount < _lastMoveCount) {
       _lastMoveCount = currentMoveCount;
       return;
     }
 
+    // New move(s) added - notify parent
     if (currentMoveCount > _lastMoveCount) {
       _lastMoveCount = currentMoveCount;
       widget.onMoveCompleted();
