@@ -17,7 +17,7 @@
 //   flutter test integration_test/ai_thinking_hang_first_move_test.dart -d linux
 //   flutter test integration_test/ai_thinking_hang_first_move_test.dart -d android
 
-// ignore_for_file: avoid_print, always_specify_types
+// ignore_for_file: avoid_print, always_specify_types, prefer_const_constructors
 
 import 'dart:async';
 
@@ -71,7 +71,7 @@ void main() {
         print('$logTag ========================================');
         print('$logTag Starting First Move Hang Detection Test');
         print('$logTag Testing $maxGamesToTest games');
-        print('$logTag Focus: AI\'s second move (first AI response)');
+        print("$logTag Focus: AI's second move (first AI response)");
         print('$logTag ========================================');
 
         int totalGames = 0;
@@ -86,26 +86,26 @@ void main() {
 
             // Thorough reset: Clean all state before each game
             print('$logTag Performing thorough state reset...');
-            
+
             // 1. Shutdown engine if running
             if (GameController().isEngineRunning) {
               print('$logTag Shutting down engine...');
               await GameController().engine.shutdown();
               await Future<void>.delayed(const Duration(milliseconds: 200));
             }
-            
+
             // 2. Force reset game controller
             GameController.instance.reset(force: true);
-            
+
             // 3. Reset controller ready flag (CRITICAL!)
             GameController().isControllerReady = false;
-            
+
             // 4. Wait for state to settle completely
             await tester.pumpAndSettle(const Duration(milliseconds: 500));
-            
+
             // 5. Additional delay to ensure clean state
             await Future<void>.delayed(const Duration(milliseconds: 300));
-            
+
             print('$logTag State reset complete');
 
             // Configure Human vs AI mode with human as white
@@ -143,7 +143,7 @@ void main() {
             // Move 2: Wait for AI response (THIS IS THE CRITICAL TEST)
             print('$logTag Move 2: Black (AI)');
             print(
-                '$logTag Waiting for AI\'s FIRST response (timeout: ${aiResponseTimeoutSeconds}s)...');
+                "$logTag Waiting for AI's FIRST response (timeout: ${aiResponseTimeoutSeconds}s)...");
 
             final bool aiSuccess = await _waitForAiMoveWithTimeout(
               aiResponseTimeoutSeconds,
@@ -236,7 +236,7 @@ Future<bool> _waitForAiMoveWithTimeout(
   try {
     // Use engine.search directly to avoid UI dependencies
     print('$logTag Calling engine.search()...');
-    final EngineRet ret = await GameController().engine.search(moveNow: false);
+    final EngineRet ret = await GameController().engine.search();
 
     if (ret.extMove != null) {
       print('$logTag Engine returned move: ${ret.extMove!.move}');

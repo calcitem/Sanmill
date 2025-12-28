@@ -6,8 +6,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
@@ -24,7 +26,12 @@ class LogsPage extends StatefulWidget {
 
 class _LogsPageState extends State<LogsPage> {
   List<OutputEvent> _logs = <OutputEvent>[];
-  bool _isDownloading = false;
+  bool _isProcessing = false;
+
+  // Selection mode state
+  bool _isSelectionMode = false;
+  int? _selectionStart;
+  int? _selectionEnd;
 
   @override
   void initState() {
@@ -38,6 +45,53 @@ class _LogsPageState extends State<LogsPage> {
     });
   }
 
+  void _toggleSelectionMode() {
+    setState(() {
+      _isSelectionMode = !_isSelectionMode;
+      if (!_isSelectionMode) {
+        _selectionStart = null;
+        _selectionEnd = null;
+      }
+    });
+  }
+
+  void _onLogTap(int index) {
+    if (!_isSelectionMode) {
+      return;
+    }
+
+    setState(() {
+      if (_selectionStart == null) {
+        // Select start point
+        _selectionStart = index;
+        _selectionEnd = null;
+      } else if (_selectionEnd == null) {
+        // Select end point
+        if (index >= _selectionStart!) {
+          _selectionEnd = index;
+        } else {
+          // If tapped before start, swap them
+          _selectionEnd = _selectionStart;
+          _selectionStart = index;
+        }
+      } else {
+        // Reset and start new selection
+        _selectionStart = index;
+        _selectionEnd = null;
+      }
+    });
+  }
+
+  bool _isLogSelected(int index) {
+    if (_selectionStart == null) {
+      return false;
+    }
+    if (_selectionEnd == null) {
+      return index == _selectionStart;
+    }
+    return index >= _selectionStart! && index <= _selectionEnd!;
+  }
+
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
@@ -46,25 +100,100 @@ class _LogsPageState extends State<LogsPage> {
       appBar: AppBar(
         title: Text(s.logs, style: AppTheme.appBarTheme.titleTextStyle),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshLogs,
-            tooltip: s.refresh,
+          if (_isSelectionMode) ...<Widget>[
+            // Copy selected button in selection mode
+            IconButton(
+              icon: const Icon(Icons.copy),
+              onPressed: _copySelectedLogs,
+              tooltip: s.copySelected,
+            ),
+            // Cancel selection mode
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: _toggleSelectionMode,
+              tooltip: s.cancel,
+            ),
+          ] else ...<Widget>[
+            // Regular mode buttons
+            IconButton(
+              icon: const Icon(Icons.select_all),
+              onPressed: _toggleSelectionMode,
+              tooltip: s.selectMode,
+            ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: _refreshLogs,
+              tooltip: s.refresh,
+            ),
+            IconButton(
+              icon: _isProcessing
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.download),
+              onPressed: _isProcessing ? null : () => _downloadLogs(context),
+              tooltip: s.downloadLogs,
+            ),
+            IconButton(
+              icon: _isProcessing
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.share),
+              onPressed: _isProcessing ? null : () => _shareLogs(context),
+              tooltip: s.shareLogs,
+            ),
+          ],
+        ],
+      ),
+      body: _logs.isEmpty
+          ? _buildEmptyState(s)
+          : Column(
+              children: <Widget>[
+                if (_isSelectionMode) _buildSelectionHint(s),
+                Expanded(child: _buildLogsList()),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildSelectionHint(S s) {
+    final String hintText;
+    if (_selectionStart == null) {
+      hintText = s.selectStartPoint;
+    } else if (_selectionEnd == null) {
+      hintText = s.selectEndPoint;
+    } else {
+      final int count = _selectionEnd! - _selectionStart! + 1;
+      hintText = '$count logs selected';
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      color: Theme.of(context).colorScheme.primaryContainer,
+      child: Row(
+        children: <Widget>[
+          Icon(
+            Icons.info_outline,
+            size: 16,
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
-          IconButton(
-            icon: _isDownloading
-                ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.download),
-            onPressed: _isDownloading ? null : () => _downloadLogs(context),
-            tooltip: s.downloadLogs,
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              hintText,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                fontSize: 14,
+              ),
+            ),
           ),
         ],
       ),
-      body: _logs.isEmpty ? _buildEmptyState(s) : _buildLogsList(),
     );
   }
 
@@ -112,9 +241,53 @@ class _LogsPageState extends State<LogsPage> {
     return ListView.builder(
       itemCount: _logs.length,
       itemBuilder: (BuildContext context, int index) {
-        return _LogItem(log: _logs[index], index: index);
+        return _LogItem(
+          log: _logs[index],
+          index: index,
+          isSelected: _isLogSelected(index),
+          isSelectionMode: _isSelectionMode,
+          onTap: () => _onLogTap(index),
+        );
       },
     );
+  }
+
+  Future<void> _copySelectedLogs() async {
+    final S s = S.of(context);
+
+    if (_selectionStart == null) {
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        s.nothingSelected,
+      );
+      return;
+    }
+
+    final int start = _selectionStart!;
+    final int end = _selectionEnd ?? _selectionStart!;
+
+    final StringBuffer buffer = StringBuffer();
+    for (int i = start; i <= end; i++) {
+      final OutputEvent log = _logs[i];
+      final String levelStr = _getLevelString(log.level);
+      buffer.writeln('[$levelStr]');
+      log.lines.forEach(buffer.writeln);
+      if (i < end) {
+        buffer.writeln();
+      }
+    }
+
+    await Clipboard.setData(ClipboardData(text: buffer.toString()));
+
+    if (!mounted) {
+      return;
+    }
+
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+      s.copiedToClipboard,
+    );
+
+    // Exit selection mode after copying
+    _toggleSelectionMode();
   }
 
   Future<void> _downloadLogs(BuildContext context) async {
@@ -132,46 +305,73 @@ class _LogsPageState extends State<LogsPage> {
     }
 
     setState(() {
-      _isDownloading = true;
+      _isProcessing = true;
     });
 
     try {
+      // Request storage permission on Android
+      if (Platform.isAndroid) {
+        final PermissionStatus status = await Permission.storage.request();
+        if (!status.isGranted) {
+          // Try with manageExternalStorage for Android 11+
+          final PermissionStatus manageStatus = await Permission
+              .manageExternalStorage
+              .request();
+          if (!manageStatus.isGranted) {
+            if (mounted) {
+              rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+                '${s.downloadFailed}: Storage permission denied',
+              );
+            }
+            return;
+          }
+        }
+      }
+
       final StringBuffer buffer = StringBuffer();
-      buffer.writeln('Sanmill Logs - ${DateTime.now().toIso8601String()}');
+      buffer.writeln('${s.logs} - ${DateTime.now().toIso8601String()}');
       buffer.writeln('=' * 50);
       buffer.writeln();
 
       for (final OutputEvent log in _logs.reversed) {
         final String levelStr = _getLevelString(log.level);
         buffer.writeln('[$levelStr]');
-        for (final String line in log.lines) {
-          buffer.writeln(line);
-        }
+        log.lines.forEach(buffer.writeln);
         buffer.writeln();
       }
 
       final String content = buffer.toString();
 
-      final Directory tempDir = await getTemporaryDirectory();
+      // Get appropriate directory for each platform
+      Directory? targetDir;
+      if (Platform.isAndroid) {
+        // Use Downloads directory on Android
+        targetDir = Directory('/storage/emulated/0/Download');
+        if (!targetDir.existsSync()) {
+          targetDir = await getExternalStorageDirectory();
+        }
+      } else if (Platform.isIOS) {
+        // Use app documents directory on iOS
+        targetDir = await getApplicationDocumentsDirectory();
+      } else {
+        // Use downloads directory on desktop platforms
+        targetDir = await getDownloadsDirectory();
+        targetDir ??= await getApplicationDocumentsDirectory();
+      }
+
       final String timestamp = DateTime.now()
           .toIso8601String()
           .replaceAll(':', '-')
           .split('.')[0];
-      final File file = File('${tempDir.path}/sanmill_logs_$timestamp.txt');
+      final File file = File('${targetDir!.path}/logs_$timestamp.txt');
       await file.writeAsString(content);
 
       if (!mounted) {
         return;
       }
 
-      final RenderBox? box = context.findRenderObject() as RenderBox?;
-
-      await Share.shareXFiles(
-        <XFile>[XFile(file.path)],
-        text: 'Sanmill Logs',
-        sharePositionOrigin: box != null
-            ? box.localToGlobal(Offset.zero) & box.size
-            : null,
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        s.downloadSuccess(file.path),
       );
     } catch (e) {
       if (mounted) {
@@ -182,7 +382,70 @@ class _LogsPageState extends State<LogsPage> {
     } finally {
       if (mounted) {
         setState(() {
-          _isDownloading = false;
+          _isProcessing = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _shareLogs(BuildContext context) async {
+    if (!mounted) {
+      return;
+    }
+
+    final S s = S.of(context);
+
+    if (_logs.isEmpty) {
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        s.noLogsToDownload,
+      );
+      return;
+    }
+
+    setState(() {
+      _isProcessing = true;
+    });
+
+    try {
+      final StringBuffer buffer = StringBuffer();
+      buffer.writeln('${s.logs} - ${DateTime.now().toIso8601String()}');
+      buffer.writeln('=' * 50);
+      buffer.writeln();
+
+      for (final OutputEvent log in _logs.reversed) {
+        final String levelStr = _getLevelString(log.level);
+        buffer.writeln('[$levelStr]');
+        log.lines.forEach(buffer.writeln);
+        buffer.writeln();
+      }
+
+      final String content = buffer.toString();
+
+      final Directory tempDir = await getTemporaryDirectory();
+      final String timestamp = DateTime.now()
+          .toIso8601String()
+          .replaceAll(':', '-')
+          .split('.')[0];
+      final File file = File('${tempDir.path}/logs_$timestamp.txt');
+      await file.writeAsString(content);
+
+      if (!mounted) {
+        return;
+      }
+
+      await SharePlus.instance.share(
+        ShareParams(files: <XFile>[XFile(file.path)], text: s.logs),
+      );
+    } catch (e) {
+      if (mounted) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+          '${s.downloadFailed}: $e',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isProcessing = false;
         });
       }
     }
@@ -202,85 +465,124 @@ class _LogsPageState extends State<LogsPage> {
         return 'ERROR';
       case Level.fatal:
         return 'FATAL';
-      default:
-        return 'LOG';
+      case Level.all:
+        return 'ALL';
+      // ignore: deprecated_member_use
+      case Level.verbose:
+        return 'VERBOSE';
+      // ignore: deprecated_member_use
+      case Level.wtf:
+        return 'WTF';
+      // ignore: deprecated_member_use
+      case Level.nothing:
+        return 'NOTHING';
+      case Level.off:
+        return 'OFF';
     }
   }
 }
 
 class _LogItem extends StatelessWidget {
-  const _LogItem({required this.log, required this.index});
+  const _LogItem({
+    required this.log,
+    required this.index,
+    required this.isSelected,
+    required this.isSelectionMode,
+    required this.onTap,
+  });
+
   final OutputEvent log;
   final int index;
+  final bool isSelected;
+  final bool isSelectionMode;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     final Color levelColor = _getLevelColor(log.level);
-    final Color backgroundColor = index.isEven
+    Color backgroundColor = index.isEven
         ? (isDark ? Colors.grey[900]! : Colors.grey[50]!)
         : (isDark ? Colors.grey[850] ?? Colors.grey[800]! : Colors.white);
+
+    // Highlight selected logs
+    if (isSelected) {
+      backgroundColor = Theme.of(context).colorScheme.primaryContainer;
+    }
 
     final String levelStr = _getLevelString(log.level);
     final IconData levelIcon = _getLevelIcon(log.level);
 
-    return Container(
-      color: backgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // Header with level indicator
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              border: Border(left: BorderSide(color: levelColor, width: 4)),
-            ),
-            child: Row(
-              children: <Widget>[
-                Icon(levelIcon, size: 16, color: levelColor),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 6,
-                    vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: levelColor.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    levelStr,
-                    style: TextStyle(
-                      color: levelColor,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace',
+    return InkWell(
+      onTap: isSelectionMode ? onTap : null,
+      child: Container(
+        color: backgroundColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Header with level indicator
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                border: Border(left: BorderSide(color: levelColor, width: 4)),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Icon(levelIcon, size: 16, color: levelColor),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: levelColor.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      levelStr,
+                      style: TextStyle(
+                        color: levelColor,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'monospace',
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          // Log content
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 12, 12),
-            child: SelectableText(
-              log.lines.join('\n'),
-              style: TextStyle(
-                color: isDark ? Colors.grey[300] : Colors.grey[800],
-                fontFamily: 'monospace',
-                fontSize: 12,
-                height: 1.4,
+                  if (isSelected) ...<Widget>[
+                    const Spacer(),
+                    Icon(
+                      Icons.check_circle,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ],
+                ],
               ),
             ),
-          ),
-          Divider(
-            height: 1,
-            thickness: 0.5,
-            color: Theme.of(context).dividerColor,
-          ),
-        ],
+            // Log content
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 12, 12),
+              child: SelectableText(
+                log.lines.join('\n'),
+                style: TextStyle(
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onPrimaryContainer
+                      : (isDark ? Colors.grey[300] : Colors.grey[800]),
+                  fontFamily: 'monospace',
+                  fontSize: 12,
+                  height: 1.4,
+                ),
+              ),
+            ),
+            Divider(
+              height: 1,
+              thickness: 0.5,
+              color: Theme.of(context).dividerColor,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -299,7 +601,18 @@ class _LogItem extends StatelessWidget {
         return Colors.red;
       case Level.fatal:
         return Colors.purple;
-      default:
+      case Level.all:
+        return Colors.blueGrey;
+      // ignore: deprecated_member_use
+      case Level.verbose:
+        return Colors.grey;
+      // ignore: deprecated_member_use
+      case Level.wtf:
+        return Colors.deepPurple;
+      // ignore: deprecated_member_use
+      case Level.nothing:
+        return Colors.grey;
+      case Level.off:
         return Colors.grey;
     }
   }
@@ -318,8 +631,19 @@ class _LogItem extends StatelessWidget {
         return 'ERROR';
       case Level.fatal:
         return 'FATAL';
-      default:
-        return 'LOG';
+      case Level.all:
+        return 'ALL';
+      // ignore: deprecated_member_use
+      case Level.verbose:
+        return 'VERBOSE';
+      // ignore: deprecated_member_use
+      case Level.wtf:
+        return 'WTF';
+      // ignore: deprecated_member_use
+      case Level.nothing:
+        return 'NOTHING';
+      case Level.off:
+        return 'OFF';
     }
   }
 
@@ -337,8 +661,19 @@ class _LogItem extends StatelessWidget {
         return Icons.error_outline;
       case Level.fatal:
         return Icons.dangerous_outlined;
-      default:
+      case Level.all:
+        return Icons.list_alt;
+      // ignore: deprecated_member_use
+      case Level.verbose:
         return Icons.article_outlined;
+      // ignore: deprecated_member_use
+      case Level.wtf:
+        return Icons.whatshot_outlined;
+      // ignore: deprecated_member_use
+      case Level.nothing:
+        return Icons.block;
+      case Level.off:
+        return Icons.block;
     }
   }
 }

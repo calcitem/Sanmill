@@ -86,25 +86,25 @@ void main() {
 
           // Thorough reset: Clean all state before each game
           print('$logTag Performing thorough state reset...');
-          
+
           // 1. Shutdown engine if running
           if (GameController().isEngineRunning) {
             await GameController().engine.shutdown();
             await Future<void>.delayed(const Duration(milliseconds: 200));
           }
-          
+
           // 2. Force reset game controller
           GameController.instance.reset(force: true);
-          
+
           // 3. Reset controller ready flag (CRITICAL!)
           GameController().isControllerReady = false;
-          
+
           // 4. Wait for state to settle completely
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          
+
           // 5. Additional delay to ensure clean state
           await Future<void>.delayed(const Duration(milliseconds: 300));
-          
+
           print('$logTag State reset complete');
 
           // Configure Human vs AI mode with human as white
@@ -270,7 +270,7 @@ Future<bool> _waitForAiMoveWithTimeout(
   try {
     // Use engine.search directly to avoid UI dependencies
     print('$logTag Calling engine.search()...');
-    final EngineRet ret = await GameController().engine.search(moveNow: false);
+    final EngineRet ret = await GameController().engine.search();
 
     if (ret.extMove != null) {
       print('$logTag Engine returned move: ${ret.extMove!.move}');
@@ -385,4 +385,3 @@ Future<bool> _makeRandomHumanMove() async {
     return false;
   }
 }
-

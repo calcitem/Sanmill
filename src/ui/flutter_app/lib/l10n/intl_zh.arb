@@ -3735,5 +3735,42 @@
     "refresh": "刷新",
     "@refresh": {
         "description": "Label for refresh action"
+    },
+    "shareLogs": "分享日志",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "已下载到 {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "选择模式",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "拷贝选中",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "点击选择起点",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "点击选择终点",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "没有选中的日志",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "copiedToClipboard": "已拷贝到剪贴板",
+    "@copiedToClipboard": {
+        "description": "Message shown when content is copied to clipboard"
     }
 }

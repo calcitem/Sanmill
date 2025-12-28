@@ -3735,5 +3735,42 @@
     "refresh": "Refresh",
     "@refresh": {
         "description": "Label for refresh action"
+    },
+    "shareLogs": "Share Logs",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "Downloaded to {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Select Mode",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "Copy Selected",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "Tap to select start point",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "Tap to select end point",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "No logs selected",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "copiedToClipboard": "Copied to clipboard",
+    "@copiedToClipboard": {
+        "description": "Message shown when content is copied to clipboard"
     }
 }

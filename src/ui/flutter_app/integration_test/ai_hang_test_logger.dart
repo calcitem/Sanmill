@@ -49,29 +49,29 @@ class HangStateSnapshot {
     buffer.writeln('Timestamp: ${timestamp.toIso8601String()}');
     buffer.writeln('Game Number: $gameNumber');
     buffer.writeln('Move Number: $moveNumber');
-    buffer.writeln('');
+    buffer.writeln();
     buffer.writeln('=== Position State ===');
     buffer.writeln('FEN: ${fen ?? "null"}');
     buffer.writeln('Current Side: $currentSide');
     buffer.writeln('Current Phase: $currentPhase');
     buffer.writeln('Current Action: $currentAction');
-    buffer.writeln('');
+    buffer.writeln();
     buffer.writeln('=== Engine State ===');
     buffer.writeln('Engine Running: $isEngineRunning');
     buffer.writeln('Engine In Delay: $isEngineInDelay');
-    buffer.writeln('');
+    buffer.writeln();
     buffer.writeln('=== Move History ===');
     buffer.writeln(moveHistory.isEmpty ? '(empty)' : moveHistory);
 
     if (additionalInfo != null && additionalInfo!.isNotEmpty) {
-      buffer.writeln('');
+      buffer.writeln();
       buffer.writeln('=== Additional Info ===');
       additionalInfo!.forEach((String key, dynamic value) {
         buffer.writeln('$key: $value');
       });
     }
 
-    buffer.writeln('');
+    buffer.writeln();
     buffer.writeln('=== Reproduction Steps ===');
     buffer.writeln('1. Import the move list above');
     buffer.writeln('2. Set up Human vs AI mode');
@@ -173,39 +173,37 @@ class AiHangTestLogger {
       buffer.writeln('Test Name: $testName');
       buffer.writeln('Generated: ${DateTime.now().toIso8601String()}');
       buffer.writeln('=' * 80);
-      buffer.writeln('');
+      buffer.writeln();
 
       // Write summary
       buffer.writeln('SUMMARY');
       buffer.writeln('Total Logs: ${_logs.length}');
       buffer.writeln('Hangs Detected: ${_hangSnapshots.length}');
-      buffer.writeln('');
+      buffer.writeln();
       buffer.writeln('=' * 80);
-      buffer.writeln('');
+      buffer.writeln();
 
       // Write hang snapshots
       if (_hangSnapshots.isNotEmpty) {
         buffer.writeln('HANG SNAPSHOTS');
-        buffer.writeln('');
+        buffer.writeln();
 
         for (int i = 0; i < _hangSnapshots.length; i++) {
           buffer.writeln('Snapshot ${i + 1}:');
           buffer.writeln(_hangSnapshots[i].toString());
-          buffer.writeln('');
+          buffer.writeln();
           buffer.writeln('-' * 80);
-          buffer.writeln('');
+          buffer.writeln();
         }
 
         buffer.writeln('=' * 80);
-        buffer.writeln('');
+        buffer.writeln();
       }
 
       // Write full logs
       buffer.writeln('FULL LOG');
-      buffer.writeln('');
-      for (final String log in _logs) {
-        buffer.writeln(log);
-      }
+      buffer.writeln();
+      _logs.forEach(buffer.writeln);
 
       await file.writeAsString(buffer.toString());
 
@@ -240,4 +238,3 @@ class AiHangTestLogger {
     print('=' * 80);
   }
 }
-

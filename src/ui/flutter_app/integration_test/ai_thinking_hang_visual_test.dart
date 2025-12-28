@@ -49,7 +49,7 @@ void main() {
       // Launch the full app with UI
       print('$logTag Launching Sanmill app with UI...');
       app.main();
-      
+
       // Pump and settle to let UI render
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
@@ -99,26 +99,26 @@ void main() {
 
           // Thorough reset: Clean all state before each game
           print('$logTag 🔄 Performing thorough state reset...');
-          
+
           // 1. Shutdown engine if running
           if (GameController().isEngineRunning) {
             print('$logTag 🛑 Shutting down engine...');
             await GameController().engine.shutdown();
             await Future<void>.delayed(const Duration(milliseconds: 200));
           }
-          
+
           // 2. Force reset game controller
           GameController.instance.reset(force: true);
-          
+
           // 3. Reset controller ready flag (CRITICAL!)
           GameController().isControllerReady = false;
-          
+
           // 4. Wait for state to settle completely
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          
+
           // 5. Additional delay to ensure clean state
           await Future<void>.delayed(const Duration(milliseconds: 300));
-          
+
           print('$logTag ✅ State reset complete');
 
           // Configure Human vs AI mode
@@ -160,7 +160,7 @@ void main() {
             if (isAiTurn) {
               // AI's turn - trigger AI move and monitor for hang
               print('$logTag 🤔 AI is thinking...');
-              
+
               final bool aiResponded = await _waitForAiMoveWithTimeout(
                 tester,
                 aiResponseTimeoutSeconds,
@@ -173,7 +173,7 @@ void main() {
                 final String hangDetail =
                     'Game $gameNum, Move $moveNum: AI timeout';
                 hangDetails.add(hangDetail);
-                
+
                 print('');
                 print('$logTag ❌❌❌ HANG DETECTED ❌❌❌');
                 print('$logTag $hangDetail');
@@ -183,20 +183,20 @@ void main() {
                 );
                 print('$logTag ❌❌❌ STOPPING TEST ❌❌❌');
                 print('');
-                
+
                 // Let user observe the frozen state
                 await Future<void>.delayed(const Duration(seconds: 5));
                 break;
               }
 
               print('$logTag ✅ AI responded successfully');
-              
+
               // Update UI
               await tester.pumpAndSettle();
             } else {
               // Human's turn - make a random legal move
               print('$logTag 🎯 Making human move...');
-              
+
               final bool humanMoved = await _makeRandomHumanMove();
 
               if (!humanMoved) {
@@ -206,7 +206,7 @@ void main() {
               }
 
               print('$logTag ✅ Human move completed');
-              
+
               // Update UI
               await tester.pumpAndSettle();
             }
@@ -224,7 +224,7 @@ void main() {
 
             // Delay between moves to allow observation
             await Future<void>.delayed(
-              Duration(milliseconds: delayBetweenMoves),
+              const Duration(milliseconds: delayBetweenMoves),
             );
             await tester.pump();
           }
@@ -237,7 +237,7 @@ void main() {
           }
 
           print('$logTag ✓ Game $gameNum completed: $moveNum moves');
-          
+
           // Delay between games
           await Future<void>.delayed(const Duration(seconds: 2));
         }
@@ -297,7 +297,7 @@ Future<bool> _waitForAiMoveWithTimeout(
   });
 
   try {
-    final EngineRet ret = await GameController().engine.search(moveNow: false);
+    final EngineRet ret = await GameController().engine.search();
 
     if (ret.extMove != null) {
       final bool moveSuccessful =
@@ -372,4 +372,3 @@ Future<bool> _makeRandomHumanMove() async {
     return false;
   }
 }
-

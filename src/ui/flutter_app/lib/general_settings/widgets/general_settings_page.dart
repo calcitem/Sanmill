@@ -940,7 +940,11 @@ class GeneralSettingsPage extends StatelessWidget {
               titleString: S.of(context).logs,
               onTap: () => Navigator.of(
                 context,
-              ).push(MaterialPageRoute(builder: (_) => const LogsPage())),
+              ).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const LogsPage(),
+                ),
+              ),
             ),
           ],
         ),
