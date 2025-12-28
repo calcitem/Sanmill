@@ -77,14 +77,14 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                     ),
                   ],
                 ),
-                body: SingleChildScrollView(
-                  padding: const EdgeInsets.all(12.0), // Reduced from 16 to 12
+                body: Padding(
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       // Header with overall stats
                       _buildStatsCard(context, s, useDarkSettingsUi),
-                      const SizedBox(height: 12), // Reduced from 24 to 12
+                      const SizedBox(height: 12),
                       // Daily Puzzle - Featured
                       _buildFeaturedCard(
                         context,
@@ -97,15 +97,49 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                         ).colorScheme.primary, // Use primary color
                         onTap: () => _navigateTo(context, const DailyPuzzlePage()),
                       ),
-                      const SizedBox(height: 12), // Reduced from 16 to 12
+                      const SizedBox(height: 12),
                       // Grid of puzzle modes
-                      GridView.count(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12, // Reduced from 16 to 12
-                        crossAxisSpacing: 12, // Reduced from 16 to 12
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: <Widget>[
+                      Expanded(
+                        child: LayoutBuilder(
+                          builder: (
+                            BuildContext context,
+                            BoxConstraints constraints,
+                          ) {
+                            // Calculate child aspect ratio to fit all items in the available space
+                            // We have 6 items in 2 columns = 3 rows
+                            const int crossAxisCount = 2;
+                            const int rowCount = 3;
+                            const double spacing = 12.0;
+
+                            final double availableHeight = constraints.maxHeight;
+                            final double availableWidth = constraints.maxWidth;
+
+                            // Calculate height available for each item
+                            // Total height = (rowCount * itemHeight) + ((rowCount - 1) * spacing)
+                            // itemHeight = (Total height - ((rowCount - 1) * spacing)) / rowCount
+                            final double itemHeight =
+                                (availableHeight - ((rowCount - 1) * spacing)) /
+                                rowCount;
+
+                            // itemWidth = (Total width - ((crossAxisCount - 1) * spacing)) / crossAxisCount
+                            final double itemWidth =
+                                (availableWidth -
+                                    ((crossAxisCount - 1) * spacing)) /
+                                crossAxisCount;
+
+                            // Prevent division by zero or negative values
+                            final double childAspectRatio =
+                                (itemHeight > 0 && itemWidth > 0)
+                                    ? itemWidth / itemHeight
+                                    : 1.5; // Default fallback
+
+                            return GridView.count(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: spacing,
+                              crossAxisSpacing: spacing,
+                              childAspectRatio: childAspectRatio,
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: <Widget>[
                           // All Puzzles
                           _buildModeCard(
                             context,
@@ -172,10 +206,13 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                             onTap: () => _navigateTo(context, const PuzzleStatsPage()),
                           ),
                         ],
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
+              ],
+            ),
+          ),
               );
             },
           ),
