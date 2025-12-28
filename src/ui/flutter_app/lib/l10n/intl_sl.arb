@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Možnosti razvijalca",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Pravila",
     "@rules": {
         "description": "Rules"

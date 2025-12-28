@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "개발자 옵션",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "규칙",
     "@rules": {
         "description": "Rules"

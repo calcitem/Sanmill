@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Pilihan Pembangun",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Peraturan",
     "@rules": {
         "description": "Rules"

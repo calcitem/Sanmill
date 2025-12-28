@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "ตัวเลือกสำหรับนักพัฒนา",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "กฎ",
     "@rules": {
         "description": "Rules"

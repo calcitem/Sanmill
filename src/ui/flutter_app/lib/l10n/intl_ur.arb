@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "ڈویلپر کے اختیارات",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "قواعد",
     "@rules": {
         "description": "Rules"

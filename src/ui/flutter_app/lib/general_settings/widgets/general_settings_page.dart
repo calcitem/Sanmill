@@ -29,9 +29,9 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
+import 'developer_options_page.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
-import 'logs_page.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
 part 'dialogs/use_perfect_database_dialog.dart';
@@ -185,12 +185,6 @@ class GeneralSettingsPage extends StatelessWidget {
     );
 
     logger.t("$_logTag focusOnBlockingPaths: $value");
-  }
-
-  void _setIsAutoRestart(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
-
-    logger.t("$_logTag isAutoRestart: $value");
   }
 
   void _setShufflingEnabled(GeneralSettings generalSettings, bool value) {
@@ -921,28 +915,25 @@ class GeneralSettingsPage extends StatelessWidget {
             ],
           ),
         SettingsCard(
-          key: const Key('general_settings_page_settings_card_misc'),
+          key: const Key('general_settings_page_settings_card_developer'),
           title: Text(
-            S.of(context).misc,
-            key: const Key('general_settings_page_settings_card_misc_title'),
+            S.of(context).developerOptions,
+            key: const Key(
+              'general_settings_page_settings_card_developer_title',
+            ),
           ),
           children: <Widget>[
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_misc_auto_restart',
-              ),
-              value: generalSettings.isAutoRestart,
-              onChanged: (bool val) => _setIsAutoRestart(generalSettings, val),
-              titleString: S.of(context).isAutoRestart,
-            ),
             SettingsListTile(
-              key: const Key('general_settings_page_settings_card_misc_logs'),
-              titleString: S.of(context).logs,
+              key: const Key(
+                'general_settings_page_settings_card_developer_options',
+              ),
+              titleString: S.of(context).developerOptions,
               onTap: () => Navigator.of(
                 context,
               ).push(
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const LogsPage(),
+                  builder: (BuildContext context) =>
+                      const DeveloperOptionsPage(),
                 ),
               ),
             ),

@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "开发者选项",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "棋规",
     "@rules": {
         "description": "Rules"

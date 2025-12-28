@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "developer ရွေးချယ်မှုများ",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "စည်းကမ်းများ",
     "@rules": {
         "description": "Rules"

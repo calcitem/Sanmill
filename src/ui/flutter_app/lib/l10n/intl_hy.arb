@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Ծրագրավորողի տարբերակներ",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Կանոններ",
     "@rules": {
         "description": "Rules"

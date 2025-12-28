@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Ishlab chiquvchi parametrlari",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Qoidalar",
     "@rules": {
         "description": "Rules"

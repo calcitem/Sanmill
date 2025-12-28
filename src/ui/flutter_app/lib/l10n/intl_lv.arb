@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Izstrādātāja opcijas",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Noteikumi",
     "@rules": {
         "description": "Rules"

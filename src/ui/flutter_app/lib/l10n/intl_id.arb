@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Opsi Pengembang",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Aturan",
     "@rules": {
         "description": "Rules"

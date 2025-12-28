@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Arendaja valikud",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Reeglid",
     "@rules": {
         "description": "Rules"

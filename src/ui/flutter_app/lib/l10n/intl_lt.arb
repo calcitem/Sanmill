@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Kūrėjo parinktys",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Taisyklės",
     "@rules": {
         "description": "Rules"

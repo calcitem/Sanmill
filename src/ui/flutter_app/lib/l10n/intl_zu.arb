@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Izinketho Zonjiniyela",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Imithetho",
     "@rules": {
         "description": "Rules"

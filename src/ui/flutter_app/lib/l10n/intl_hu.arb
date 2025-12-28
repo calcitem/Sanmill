@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Fejlesztői beállítások",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Szabályok",
     "@rules": {
         "description": "Rules"

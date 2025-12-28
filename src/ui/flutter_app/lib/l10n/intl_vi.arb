@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Tùy chọn nhà phát triển",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Quy tắc",
     "@rules": {
         "description": "Rules"

@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Geliştirici Seçenekleri",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Kurallar",
     "@rules": {
         "description": "Rules"

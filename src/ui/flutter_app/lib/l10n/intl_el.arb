@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Επιλογές προγραμματιστή",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Κανόνες",
     "@rules": {
         "description": "Rules"

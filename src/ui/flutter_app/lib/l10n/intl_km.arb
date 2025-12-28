@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "ជម្រើសសម្រាប់អ្នកអភិវឌ្ឍន៍",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "ច្បាប់",
     "@rules": {
         "description": "Rules"

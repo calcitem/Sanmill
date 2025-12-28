@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Opzioni sviluppatore",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Regole",
     "@rules": {
         "description": "Rules"

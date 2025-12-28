@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Параметри розробника",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "правила",
     "@rules": {
         "description": "Rules"

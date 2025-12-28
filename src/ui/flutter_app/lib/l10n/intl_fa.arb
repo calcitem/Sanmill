@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "گزینه‌های توسعه‌دهنده",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "قوانین",
     "@rules": {
         "description": "Rules"

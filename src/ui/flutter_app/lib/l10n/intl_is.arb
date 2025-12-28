@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Valkostir þróunaraðila",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Reglur",
     "@rules": {
         "description": "Rules"

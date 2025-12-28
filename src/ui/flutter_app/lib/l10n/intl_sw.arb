@@ -457,6 +457,10 @@
     "@misc": {
         "description": "Miscellaneous"
     },
+    "developerOptions": "Chaguo za Msanidi",
+    "@developerOptions": {
+        "description": "Developer Options"
+    },
     "rules": "Kanuni",
     "@rules": {
         "description": "Rules"
