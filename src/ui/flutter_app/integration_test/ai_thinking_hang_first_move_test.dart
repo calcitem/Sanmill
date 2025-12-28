@@ -84,9 +84,29 @@ void main() {
             print('$logTag ');
             print('$logTag --- Game $gameNum/$maxGamesToTest ---');
 
-            // Reset game controller
+            // Thorough reset: Clean all state before each game
+            print('$logTag Performing thorough state reset...');
+            
+            // 1. Shutdown engine if running
+            if (GameController().isEngineRunning) {
+              print('$logTag Shutting down engine...');
+              await GameController().engine.shutdown();
+              await Future<void>.delayed(const Duration(milliseconds: 200));
+            }
+            
+            // 2. Force reset game controller
             GameController.instance.reset(force: true);
-            await tester.pumpAndSettle();
+            
+            // 3. Reset controller ready flag (CRITICAL!)
+            GameController().isControllerReady = false;
+            
+            // 4. Wait for state to settle completely
+            await tester.pumpAndSettle(const Duration(milliseconds: 500));
+            
+            // 5. Additional delay to ensure clean state
+            await Future<void>.delayed(const Duration(milliseconds: 300));
+            
+            print('$logTag State reset complete');
 
             // Configure Human vs AI mode with human as white
             GameController().gameInstance.gameMode = GameMode.humanVsAi;
@@ -99,8 +119,11 @@ void main() {
                 .getPlayerByColor(PieceColor.black)
                 .isAi = true;
 
-            // Start the engine
+            // Start the engine fresh
+            print('$logTag Starting engine...');
             await GameController().engine.startup();
+            await Future<void>.delayed(const Duration(milliseconds: 200));
+            print('$logTag Engine started');
 
             totalGames++;
 
