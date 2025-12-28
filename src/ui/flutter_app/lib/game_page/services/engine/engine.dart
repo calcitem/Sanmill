@@ -1147,11 +1147,35 @@ extension GameModeExtension on GameMode {
           PieceColor.white: DB().generalSettings.aiMovesFirst,
           PieceColor.black: !DB().generalSettings.aiMovesFirst,
         };
+      case GameMode.puzzle:
+        // Puzzle mode: the human plays exactly one side (set by PuzzlePage).
+        // The opponent is treated as AI so the rest of the game logic can
+        // recognize whose turn it is, while the actual moves are auto-played
+        // from the puzzle's predefined solution line.
+        final PieceColor? humanColor = GameController().puzzleHumanColor;
+        if (humanColor == PieceColor.white) {
+          return <PieceColor, bool>{
+            PieceColor.white: false,
+            PieceColor.black: true,
+          };
+        }
+        if (humanColor == PieceColor.black) {
+          return <PieceColor, bool>{
+            PieceColor.white: true,
+            PieceColor.black: false,
+          };
+        }
+
+        // If the puzzle hasn't been initialized yet, keep both sides human to
+        // avoid triggering engine search from generic AI hooks.
+        return <PieceColor, bool>{
+          PieceColor.white: false,
+          PieceColor.black: false,
+        };
       case GameMode.setupPosition:
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:
       case GameMode.humanVsCloud:
-      case GameMode.puzzle:
         return <PieceColor, bool>{
           PieceColor.white: false,
           PieceColor.black: false,

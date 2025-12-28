@@ -38,6 +38,13 @@ class GameController {
 
   bool disableStats = false;
 
+  // Puzzle mode state:
+  // - puzzleHumanColor: which side the user controls when solving a puzzle.
+  // - isPuzzleAutoMoveInProgress: prevents user input while the app auto-plays
+  //   the opponent's forced responses.
+  PieceColor? puzzleHumanColor;
+  bool isPuzzleAutoMoveInProgress = false;
+
   String? value;
   AiMoveType? aiMoveType;
 
@@ -333,6 +340,9 @@ class GameController {
     final bool isPosSetup = isPositionSetup;
     final bool? savedHostPlaysWhite = lanHostPlaysWhite;
 
+    // Puzzle mode: reset any transient auto-move lock.
+    isPuzzleAutoMoveInProgress = false;
+
     value = "0";
     aiMoveType = AiMoveType.unknown;
     engine.stopSearching();
@@ -399,6 +409,15 @@ class GameController {
 
     // Timer is no longer started here.
     // It will be started in tap_handler after the first human move.
+  }
+
+  /// Apply a move programmatically without going through UI tapping.
+  ///
+  /// This is primarily used by Puzzle mode to auto-play the opponent's forced
+  /// responses while keeping the core move execution inside the `mill.dart`
+  /// library.
+  bool applyMove(ExtMove move) {
+    return gameInstance.doMove(move);
   }
 
   /// S.of(context).starts the current game.

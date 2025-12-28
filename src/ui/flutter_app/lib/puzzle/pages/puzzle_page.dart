@@ -16,6 +16,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
+import '../services/puzzle_auto_player.dart';
 import '../services/puzzle_hint_service.dart';
 import '../services/puzzle_manager.dart';
 import '../services/puzzle_validator.dart';
@@ -45,6 +46,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _hintsUsed = false;
   int _lastRecordedMoveIndex = -1;
   ThemeData? _settingsThemeForDialogs;
+  PieceColor? _puzzleHumanColor;
+  bool _isSolved = false;
+  bool _isAutoPlayingOpponent = false;
 
   bool get _canUndo => _moveCountNotifier.value > 0;
 
@@ -68,6 +72,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   @override
   void dispose() {
+    // Clear puzzle-specific state so it won't affect other modes.
+    final GameController controller = GameController();
+    if (controller.gameInstance.gameMode == GameMode.puzzle) {
+      controller.puzzleHumanColor = null;
+      controller.isPuzzleAutoMoveInProgress = false;
+    }
     _moveCountNotifier.dispose();
     super.dispose();
   }
@@ -103,6 +113,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _showFenErrorDialog();
       return;
     }
+
+    // Puzzle mode: the human plays the side-to-move from the initial position.
+    _puzzleHumanColor = controller.position.sideToMove;
+    controller.puzzleHumanColor = _puzzleHumanColor;
+    controller.isPuzzleAutoMoveInProgress = false;
+    // Re-apply puzzle mode so whoIsAI can reflect the resolved human side.
+    controller.gameInstance.gameMode = GameMode.puzzle;
+    _isSolved = false;
+    _isAutoPlayingOpponent = false;
 
     // Store the starting position for exports and history
     controller.gameRecorder.setupPosition = widget.puzzle.initialPosition;
@@ -241,7 +260,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
                         tooltip: s.undo,
                       ),
                       // Hint button
-                      if (DB().puzzleSettings.showHints && _hintService.hasHints)
+                      if (DB().puzzleSettings.showHints &&
+                          _hintService.hasHints)
                         IconButton(
                           icon: const Icon(Icons.lightbulb_outline),
                           onPressed: _showHint,
@@ -260,18 +280,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
                       // Puzzle info panel - only rebuilds when move count changes
                       ValueListenableBuilder<int>(
                         valueListenable: _moveCountNotifier,
-                        builder: (
-                          BuildContext context,
-                          int moveCount,
-                          Widget? child,
-                        ) {
-                          return _buildInfoPanel(
-                            context,
-                            s,
-                            moveCount,
-                            useDarkSettingsUi,
-                          );
-                        },
+                        builder:
+                            (
+                              BuildContext context,
+                              int moveCount,
+                              Widget? child,
+                            ) {
+                              return _buildInfoPanel(
+                                context,
+                                s,
+                                moveCount,
+                                useDarkSettingsUi,
+                              );
+                            },
                       ),
 
                       // Game board - properly constructed with GameMode
@@ -428,10 +449,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
 
     // Auto-check after processing the new moves
-    _checkSolution(autoCheck: true);
+    final ValidationFeedback feedback = _checkSolution(autoCheck: true);
+    if (feedback.result != ValidationResult.correct) {
+      _maybeAutoPlayOpponentResponse();
+    }
   }
 
-  void _checkSolution({bool autoCheck = false}) {
+  ValidationFeedback _checkSolution({bool autoCheck = false}) {
     final GameController controller = GameController();
     final ValidationFeedback feedback = _validator.validateSolution(
       controller.position,
@@ -439,6 +463,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     if (feedback.result == ValidationResult.correct) {
       _onPuzzleSolved(feedback);
+      return feedback;
     } else if (!autoCheck) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -447,9 +472,83 @@ class _PuzzlePageState extends State<PuzzlePage> {
         ),
       );
     }
+    return feedback;
+  }
+
+  void _maybeAutoPlayOpponentResponse() {
+    if (!mounted || _isSolved || _isAutoPlayingOpponent) {
+      return;
+    }
+
+    final GameController controller = GameController();
+    if (controller.gameInstance.gameMode != GameMode.puzzle) {
+      return;
+    }
+
+    final PieceColor? humanColor =
+        _puzzleHumanColor ?? controller.puzzleHumanColor;
+    if (humanColor == null) {
+      return;
+    }
+
+    if (controller.position.phase == Phase.gameOver) {
+      return;
+    }
+
+    // Only auto-play when it's the opponent's turn.
+    if (controller.position.sideToMove == humanColor) {
+      return;
+    }
+
+    _isAutoPlayingOpponent = true;
+    controller.isPuzzleAutoMoveInProgress = true;
+
+    Future<void>.delayed(Duration.zero, () async {
+      try {
+        await PuzzleAutoPlayer.autoPlayOpponentResponses(
+          solutions: widget.puzzle.solutionMoves,
+          humanColor: humanColor,
+          isGameOver: () =>
+              !mounted || controller.position.phase == Phase.gameOver,
+          sideToMove: () => controller.position.sideToMove,
+          movesSoFar: () => controller.gameRecorder.mainlineMoves
+              .map((ExtMove m) => m.move)
+              .toList(growable: false),
+          applyMove: (String move) {
+            final bool ok = controller.applyMove(
+              ExtMove(move, side: controller.position.sideToMove),
+            );
+            if (!ok) {
+              logger.e('[PuzzlePage] Failed to auto-play move: $move');
+            }
+            return ok;
+          },
+          onWrongMove: () async {
+            // No solution matches the current line. Undo the last move to prevent
+            // a deadlock (human input is restricted to one side in puzzle mode).
+            if (!mounted) {
+              return;
+            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Wrong move. Try again.'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+            await _undoMove(allowDuringAutoPlay: true);
+          },
+        );
+      } finally {
+        controller.isPuzzleAutoMoveInProgress = false;
+        _isAutoPlayingOpponent = false;
+        controller.headerIconsNotifier.showIcons();
+        controller.boardSemanticsNotifier.updateSemantics();
+      }
+    });
   }
 
   void _onPuzzleSolved(ValidationFeedback feedback) {
+    _isSolved = true;
     // Record completion
     _puzzleManager.completePuzzle(
       puzzleId: widget.puzzle.id,
@@ -464,7 +563,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
-        final ThemeData theme = _settingsThemeForDialogs ?? Theme.of(dialogContext);
+        final ThemeData theme =
+            _settingsThemeForDialogs ?? Theme.of(dialogContext);
         return Theme(
           data: theme,
           child: Builder(
@@ -615,7 +715,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
-        final ThemeData theme = _settingsThemeForDialogs ?? Theme.of(dialogContext);
+        final ThemeData theme =
+            _settingsThemeForDialogs ?? Theme.of(dialogContext);
         return Theme(
           data: theme,
           child: Builder(
@@ -643,20 +744,41 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
   }
 
-  Future<void> _undoMove() async {
+  Future<void> _undoMove({bool allowDuringAutoPlay = false}) async {
     final GameController controller = GameController();
     if (controller.gameRecorder.mainlineMoves.isEmpty) {
       return;
     }
 
-    // Take back the last move using HistoryNavigator
-    await HistoryNavigator.takeBack(context, pop: false);
+    if (!allowDuringAutoPlay &&
+        (_isAutoPlayingOpponent || controller.isPuzzleAutoMoveInProgress)) {
+      return;
+    }
 
-    // Update state without rebuilding entire widget tree
-    if (_moveCountNotifier.value > 0) {
-      _moveCountNotifier.value--;
+    // In puzzle mode, a single user decision is typically followed by an
+    // auto-played opponent response. Undo should bring the user back to a
+    // position where it's the human side to move again, otherwise input would
+    // be locked to prevent playing for the opponent.
+    final PieceColor? humanColor =
+        _puzzleHumanColor ?? controller.puzzleHumanColor;
+    final int maxSteps = controller.gameRecorder.mainlineMoves.length;
+    int undone = 0;
+
+    while (controller.gameRecorder.mainlineMoves.isNotEmpty &&
+        undone < maxSteps) {
+      await HistoryNavigator.takeBack(context, pop: false);
+      undone++;
+
+      // Update state without rebuilding entire widget tree
+      if (_moveCountNotifier.value > 0) {
+        _moveCountNotifier.value--;
+      }
       _lastRecordedMoveIndex--;
       _validator.undoLastMove();
+
+      if (humanColor == null || controller.position.sideToMove == humanColor) {
+        break;
+      }
     }
   }
 
@@ -665,6 +787,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     setState(() {
       _hintsUsed = false;
     });
+    _isSolved = false;
+    _isAutoPlayingOpponent = false;
     GameController().headerIconsNotifier.showIcons();
   }
 
@@ -674,7 +798,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
-        final ThemeData theme = _settingsThemeForDialogs ?? Theme.of(dialogContext);
+        final ThemeData theme =
+            _settingsThemeForDialogs ?? Theme.of(dialogContext);
         return Theme(
           data: theme,
           child: Builder(
@@ -684,16 +809,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
                   children: <Widget>[
                     Icon(
                       Icons.info_outline,
-                      color:
-                          Theme.of(context).colorScheme.primary, // Use primary color
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary, // Use primary color
                     ),
                     const SizedBox(width: 8),
                     // Wrap text in Expanded to prevent overflow on small screens
                     Expanded(
-                      child: Text(
-                        s.solution,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      child: Text(s.solution, overflow: TextOverflow.ellipsis),
                     ),
                   ],
                 ),
@@ -708,45 +831,45 @@ class _PuzzlePageState extends State<PuzzlePage> {
                       ),
                       const SizedBox(height: 12),
                       // Show solution as numbered list
-                      ...widget.puzzle.solutionMoves.first.asMap().entries.map(
-                        (MapEntry<int, String> entry) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withValues(alpha: 0.2), // Use primary color
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '${entry.key + 1}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                      ...widget.puzzle.solutionMoves.first.asMap().entries.map((
+                        MapEntry<int, String> entry,
+                      ) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary
+                                      .withValues(
+                                        alpha: 0.2,
+                                      ), // Use primary color
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${entry.key + 1}',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  entry.value,
-                                  style: const TextStyle(
-                                    fontFamily: 'monospace',
-                                    fontSize: 14,
-                                  ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                entry.value,
+                                style: const TextStyle(
+                                  fontFamily: 'monospace',
+                                  fontSize: 14,
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ),

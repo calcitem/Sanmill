@@ -127,10 +127,25 @@ class TapHandler {
         _isBoardEmpty) {
       //controller.reset();
 
-      if (isAiSideToMove) {
+      if (isAiSideToMove &&
+          controller.gameInstance.gameMode != GameMode.puzzle) {
         logger.i("$_logTag AI is not thinking. AI is to move.");
 
         return GameController().engineToGo(context, isMoveNow: false);
+      }
+    }
+
+    // Puzzle mode: the user should only play one side.
+    // We use GameController.puzzleHumanColor as the single source of truth,
+    // set by PuzzlePage when a puzzle is initialized.
+    if (controller.gameInstance.gameMode == GameMode.puzzle) {
+      final PieceColor? humanColor = controller.puzzleHumanColor;
+      if (humanColor != null) {
+        final bool isHumanTurn = controller.position.sideToMove == humanColor;
+        if (!isHumanTurn || controller.isPuzzleAutoMoveInProgress) {
+          showTip(S.of(context).opponentSTurn, snackBar: true);
+          return const EngineResponseSkip();
+        }
       }
     }
 
@@ -701,6 +716,12 @@ class TapHandler {
 
       // Check if the next player is AI and needs to start thinking
       if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
+        if (GameController().gameInstance.gameMode == GameMode.puzzle) {
+          // Puzzle mode: do not trigger native engine search here.
+          // PuzzlePage will auto-play the opponent's forced responses from
+          // the predefined solution line.
+          return const EngineResponseHumanOK();
+        }
         return GameController().engineToGo(context, isMoveNow: false);
       } else {
         return const EngineResponseHumanOK();
