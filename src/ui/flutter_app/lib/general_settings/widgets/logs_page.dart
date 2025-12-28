@@ -178,7 +178,10 @@ class _LogsPageState extends State<LogsPage> {
           ? _buildEmptyState(s)
           : Column(
               children: <Widget>[
-                if (_isSelectionMode) _buildSelectionHint(s),
+                if (_isSelectionMode)
+                  _buildSelectionHint(s)
+                else
+                  _buildLogStats(s),
                 Expanded(child: _buildLogsList()),
               ],
             ),
@@ -213,6 +216,44 @@ class _LogsPageState extends State<LogsPage> {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogStats(S s) {
+    final int totalLogs = _logs.length;
+    final int bufferSize = memoryOutput.bufferSize;
+    final bool isBufferFull = totalLogs >= bufferSize;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      color: isBufferFull
+          ? Theme.of(context).colorScheme.errorContainer
+          : Theme.of(context).colorScheme.surfaceContainerHighest,
+      child: Row(
+        children: <Widget>[
+          Icon(
+            isBufferFull ? Icons.warning_amber : Icons.info_outline,
+            size: 16,
+            color: isBufferFull
+                ? Theme.of(context).colorScheme.onErrorContainer
+                : Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              isBufferFull
+                  ? s.logsBufferFull(totalLogs, bufferSize)
+                  : s.logsCount(totalLogs, bufferSize),
+              style: TextStyle(
+                color: isBufferFull
+                    ? Theme.of(context).colorScheme.onErrorContainer
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
+                fontSize: 12,
               ),
             ),
           ),

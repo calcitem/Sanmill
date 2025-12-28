@@ -3772,5 +3772,29 @@
     "scrollToBottom": "滚动到底部",
     "@scrollToBottom": {
         "description": "Tooltip for scroll to bottom button"
+    },
+    "logsCount": "日志：{current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "日志缓冲区已满（{current}/{max}），旧日志正在被移除。",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
     }
 }

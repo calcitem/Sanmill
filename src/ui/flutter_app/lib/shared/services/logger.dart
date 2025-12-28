@@ -12,7 +12,10 @@ import 'environment_config.dart';
 class MemoryOutput extends LogOutput {
   MemoryOutput({this.bufferSize = 4000})
     : _buffer = ListQueue<OutputEvent>(bufferSize);
+
+  /// Maximum number of logs to keep in memory
   final int bufferSize;
+
   final ListQueue<OutputEvent> _buffer;
 
   @override
@@ -23,6 +26,7 @@ class MemoryOutput extends LogOutput {
     _buffer.add(event);
   }
 
+  /// Get all logs in the buffer
   List<OutputEvent> get logs => _buffer.toList();
 }
 

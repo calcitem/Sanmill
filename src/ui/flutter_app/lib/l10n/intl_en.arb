@@ -3772,5 +3772,29 @@
     "scrollToBottom": "Scroll to bottom",
     "@scrollToBottom": {
         "description": "Tooltip for scroll to bottom button"
+    },
+    "logsCount": "Logs: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "Log buffer full ({current}/{max}). Old logs are being removed.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
     }
 }
