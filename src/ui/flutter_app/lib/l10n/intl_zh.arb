@@ -461,6 +461,14 @@
     "@developerOptions": {
         "description": "Developer Options"
     },
+    "llmAssistedDevelopment": "LLM 辅助开发",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "请输入要让 LLM 帮你完成的任务描述…",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
     "rules": "棋规",
     "@rules": {
         "description": "Rules"

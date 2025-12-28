@@ -461,6 +461,14 @@
     "@developerOptions": {
         "description": "Developer Options"
     },
+    "llmAssistedDevelopment": "LLM-assisted development",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
     "rules": "Rules",
     "@rules": {
         "description": "Rules"

@@ -13,6 +13,7 @@ import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../models/general_settings.dart';
+import 'dialogs/llm_assisted_development_dialog.dart';
 import 'logs_page.dart';
 
 /// Developer options page
@@ -56,11 +57,19 @@ class DeveloperOptionsPage extends StatelessWidget {
               titleString: S.of(context).isAutoRestart,
             ),
             SettingsListTile(
+              key: const Key(
+                'developer_options_page_settings_card_llm_assisted_development',
+              ),
+              titleString: S.of(context).llmAssistedDevelopment,
+              onTap: () => showDialog(
+                context: context,
+                builder: (_) => const LlmAssistedDevelopmentDialog(),
+              ),
+            ),
+            SettingsListTile(
               key: const Key('developer_options_page_settings_card_logs'),
               titleString: S.of(context).logs,
-              onTap: () => Navigator.of(
-                context,
-              ).push(
+              onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (BuildContext context) => const LogsPage(),
                 ),

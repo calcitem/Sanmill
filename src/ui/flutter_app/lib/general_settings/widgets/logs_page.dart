@@ -69,8 +69,10 @@ class _LogsPageState extends State<LogsPage> {
 
   // Selection mode state
   bool _isSelectionMode = false;
-  int? _selectionStart;
-  int? _selectionEnd;
+  // Store multiple selection ranges as pairs of (start, end)
+  final List<(int, int)> _selectedRanges = <(int, int)>[];
+  // Temporary selection in progress
+  int? _tempSelectionStart;
 
   // Scroll controller for scrolling to bottom
   final ScrollController _scrollController = ScrollController();
@@ -113,8 +115,8 @@ class _LogsPageState extends State<LogsPage> {
     setState(() {
       _isSelectionMode = !_isSelectionMode;
       if (!_isSelectionMode) {
-        _selectionStart = null;
-        _selectionEnd = null;
+        _selectedRanges.clear();
+        _tempSelectionStart = null;
       }
     });
   }
@@ -125,35 +127,58 @@ class _LogsPageState extends State<LogsPage> {
     }
 
     setState(() {
-      if (_selectionStart == null) {
-        // Select start point
-        _selectionStart = index;
-        _selectionEnd = null;
-      } else if (_selectionEnd == null) {
-        // Select end point
-        if (index >= _selectionStart!) {
-          _selectionEnd = index;
-        } else {
-          // If tapped before start, swap them
-          _selectionEnd = _selectionStart;
-          _selectionStart = index;
-        }
+      // Check if this log is already in a selected range
+      final int? rangeIndex = _findRangeContaining(index);
+
+      if (rangeIndex != null) {
+        // If tapped log is in an existing range, remove that range
+        _selectedRanges.removeAt(rangeIndex);
+        _tempSelectionStart = null;
+        return;
+      }
+
+      if (_tempSelectionStart == null) {
+        // Start new selection
+        _tempSelectionStart = index;
       } else {
-        // Reset and start new selection
-        _selectionStart = index;
-        _selectionEnd = null;
+        // Complete the selection range
+        final int start = _tempSelectionStart! < index
+            ? _tempSelectionStart!
+            : index;
+        final int end = _tempSelectionStart! < index
+            ? index
+            : _tempSelectionStart!;
+        _selectedRanges.add((start, end));
+        _tempSelectionStart = null;
       }
     });
   }
 
+  /// Find which range (if any) contains the given index
+  int? _findRangeContaining(int index) {
+    for (int i = 0; i < _selectedRanges.length; i++) {
+      final (int start, int end) = _selectedRanges[i];
+      if (index >= start && index <= end) {
+        return i;
+      }
+    }
+    return null;
+  }
+
   bool _isLogSelected(int index) {
-    if (_selectionStart == null) {
-      return false;
+    // Check if index is in any completed range
+    for (final (int start, int end) in _selectedRanges) {
+      if (index >= start && index <= end) {
+        return true;
+      }
     }
-    if (_selectionEnd == null) {
-      return index == _selectionStart;
+
+    // Check if index is the temporary start point
+    if (_tempSelectionStart == index) {
+      return true;
     }
-    return index >= _selectionStart! && index <= _selectionEnd!;
+
+    return false;
   }
 
   void _scrollToBottom() {
@@ -202,8 +227,8 @@ class _LogsPageState extends State<LogsPage> {
       setState(() {
         memoryOutput.clear();
         _logs.clear();
-        _selectionStart = null;
-        _selectionEnd = null;
+        _selectedRanges.clear();
+        _tempSelectionStart = null;
       });
 
       if (mounted) {
@@ -241,6 +266,11 @@ class _LogsPageState extends State<LogsPage> {
               tooltip: s.scrollToBottom,
             ),
             IconButton(
+              icon: const Icon(Icons.select_all),
+              onPressed: _toggleSelectionMode,
+              tooltip: s.selectMode,
+            ),
+            IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _refreshLogs,
               tooltip: s.refresh,
@@ -253,8 +283,6 @@ class _LogsPageState extends State<LogsPage> {
                 switch (value) {
                   case 'scrollTop':
                     _scrollToTop();
-                  case 'select':
-                    _toggleSelectionMode();
                   case 'download':
                     _downloadLogs(context);
                   case 'share':
@@ -274,14 +302,6 @@ class _LogsPageState extends State<LogsPage> {
                   ),
                 ),
                 const PopupMenuDivider(),
-                PopupMenuItem<String>(
-                  value: 'select',
-                  child: ListTile(
-                    leading: const Icon(Icons.select_all),
-                    title: Text(s.selectMode),
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
                 PopupMenuItem<String>(
                   value: 'download',
                   enabled: !_isProcessing,
@@ -331,13 +351,19 @@ class _LogsPageState extends State<LogsPage> {
 
   Widget _buildSelectionHint(S s) {
     final String hintText;
-    if (_selectionStart == null) {
+
+    if (_selectedRanges.isEmpty && _tempSelectionStart == null) {
       hintText = s.selectStartPoint;
-    } else if (_selectionEnd == null) {
+    } else if (_tempSelectionStart != null) {
       hintText = s.selectEndPoint;
     } else {
-      final int count = _selectionEnd! - _selectionStart! + 1;
-      hintText = '$count logs selected';
+      // Calculate total selected logs across all ranges
+      int totalSelected = 0;
+      for (final (int start, int end) in _selectedRanges) {
+        totalSelected += end - start + 1;
+      }
+      hintText =
+          '$totalSelected logs selected (${_selectedRanges.length} ranges)';
     }
 
     return Container(
@@ -360,6 +386,22 @@ class _LogsPageState extends State<LogsPage> {
               ),
             ),
           ),
+          if (_selectedRanges.isNotEmpty) ...<Widget>[
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _selectedRanges.clear();
+                  _tempSelectionStart = null;
+                });
+              },
+              child: Text(
+                s.clear,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -466,22 +508,34 @@ class _LogsPageState extends State<LogsPage> {
   Future<void> _copySelectedLogs() async {
     final S s = S.of(context);
 
-    if (_selectionStart == null) {
+    if (_selectedRanges.isEmpty) {
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
         s.nothingSelected,
       );
       return;
     }
 
-    final int start = _selectionStart!;
-    final int end = _selectionEnd ?? _selectionStart!;
-
     final StringBuffer buffer = StringBuffer();
-    for (int i = start; i <= end; i++) {
-      final OutputEvent log = _logs[i];
-      final String levelStr = _getLevelString(log.level);
-      buffer.writeln('[$levelStr]');
-      _getCleanedLogLines(log).forEach(buffer.writeln);
+
+    // Sort ranges by start index to copy in order
+    final List<(int, int)> sortedRanges = List<(int, int)>.from(_selectedRanges)
+      ..sort(((int, int) a, (int, int) b) => a.$1.compareTo(b.$1));
+
+    for (int rangeIdx = 0; rangeIdx < sortedRanges.length; rangeIdx++) {
+      final (int start, int end) = sortedRanges[rangeIdx];
+
+      if (rangeIdx > 0) {
+        buffer.writeln();
+        buffer.writeln('--- Range ${rangeIdx + 1} ---');
+        buffer.writeln();
+      }
+
+      for (int i = start; i <= end; i++) {
+        final OutputEvent log = _logs[i];
+        final String levelStr = _getLevelString(log.level);
+        buffer.writeln('[$levelStr]');
+        _getCleanedLogLines(log).forEach(buffer.writeln);
+      }
     }
 
     await Clipboard.setData(ClipboardData(text: buffer.toString()));
