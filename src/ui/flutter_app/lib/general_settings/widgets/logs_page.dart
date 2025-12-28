@@ -84,16 +84,16 @@ class _LogsPageState extends State<LogsPage> {
             Text(
               s.noLogsAvailable,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).disabledColor,
-                  ),
+                color: Theme.of(context).disabledColor,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               s.noLogsDescription,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).disabledColor,
-                  ),
+                color: Theme.of(context).disabledColor,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -153,8 +153,10 @@ class _LogsPageState extends State<LogsPage> {
       final String content = buffer.toString();
 
       final Directory tempDir = await getTemporaryDirectory();
-      final String timestamp =
-          DateTime.now().toIso8601String().replaceAll(':', '-').split('.')[0];
+      final String timestamp = DateTime.now()
+          .toIso8601String()
+          .replaceAll(':', '-')
+          .split('.')[0];
       final File file = File('${tempDir.path}/sanmill_logs_$timestamp.txt');
       await file.writeAsString(content);
 
@@ -167,8 +169,9 @@ class _LogsPageState extends State<LogsPage> {
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
         text: 'Sanmill Logs',
-        sharePositionOrigin:
-            box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+        sharePositionOrigin: box != null
+            ? box.localToGlobal(Offset.zero) & box.size
+            : null,
       );
     } catch (e) {
       if (mounted) {
@@ -206,10 +209,9 @@ class _LogsPageState extends State<LogsPage> {
 }
 
 class _LogItem extends StatelessWidget {
+  const _LogItem({required this.log, required this.index});
   final OutputEvent log;
   final int index;
-
-  const _LogItem({required this.log, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -232,17 +234,17 @@ class _LogItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(color: levelColor, width: 4),
-              ),
+              border: Border(left: BorderSide(color: levelColor, width: 4)),
             ),
             child: Row(
               children: <Widget>[
                 Icon(levelIcon, size: 16, color: levelColor),
                 const SizedBox(width: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: levelColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),

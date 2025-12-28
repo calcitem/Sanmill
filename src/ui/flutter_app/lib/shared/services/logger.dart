@@ -10,11 +10,10 @@ import 'package:logger/logger.dart';
 import 'environment_config.dart';
 
 class MemoryOutput extends LogOutput {
-  final int bufferSize;
-  final ListQueue<OutputEvent> _buffer;
-
   MemoryOutput({this.bufferSize = 4000})
     : _buffer = ListQueue<OutputEvent>(bufferSize);
+  final int bufferSize;
+  final ListQueue<OutputEvent> _buffer;
 
   @override
   void output(OutputEvent event) {
@@ -40,6 +39,6 @@ int _clampLogLevel(int requested) {
 }
 
 final Logger logger = Logger(
-  output: MultiOutput([ConsoleOutput(), memoryOutput]),
+  output: MultiOutput(<LogOutput?>[ConsoleOutput(), memoryOutput]),
   level: Level.values[_clampLogLevel(EnvironmentConfig.logLevel)],
 );
