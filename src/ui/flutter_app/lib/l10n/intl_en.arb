@@ -2626,9 +2626,9 @@
     "@puzzlePositionSnapshotted": {
         "description": "Position snapshotted message"
     },
-    "puzzlePositionCaptured": "Position Captured",
-    "@puzzlePositionCaptured": {
-        "description": "Header showing position has been captured"
+    "puzzlePositionSnapshotted2": "Position Snapshotted",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
     },
     "puzzleInitialPosition": "Initial Position",
     "@puzzleInitialPosition": {
@@ -3211,7 +3211,7 @@
     },
     "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please resnapshot the position.",
     "@puzzleInvalidPositionFormatRecapture": {
-        "description": "Error message when position format is invalid and needs recapture"
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
     },
     "puzzleShowDetailedWorkflow": "Show detailed workflow",
     "@puzzleShowDetailedWorkflow": {
@@ -3263,11 +3263,11 @@
     },
     "puzzlePositionSnapshotHelp": "Position Snapshot Help",
     "@puzzlePositionSnapshotHelp": {
-        "description": "Title for position capture help dialog"
+        "description": "Title for position snapshot help dialog"
     },
     "puzzlePositionSnapshotHelpContent": "How to snapshot the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. The position will be snapshotted automatically. If not, click \"Snapshot Position\" button to save the current board state\n\nThis snapshotted position will be used as the starting point for your puzzle.",
     "@puzzlePositionSnapshotHelpContent": {
-        "description": "Help content for capturing puzzle starting position"
+        "description": "Help content for snapshotting puzzle starting position"
     },
     "puzzleSolutionRecordingHelp": "Solution Recording Help",
     "@puzzleSolutionRecordingHelp": {
@@ -3299,7 +3299,7 @@
     },
     "puzzleShowPositionSnapshotHelp": "Show position snapshot help",
     "@puzzleShowPositionSnapshotHelp": {
-        "description": "Tooltip for position capture help button"
+        "description": "Tooltip for position snapshot help button"
     },
     "puzzleShowSolutionRecordingHelp": "Show solution recording help",
     "@puzzleShowSolutionRecordingHelp": {

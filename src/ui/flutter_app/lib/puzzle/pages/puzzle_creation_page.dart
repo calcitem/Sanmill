@@ -575,8 +575,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       _buildInstructionsCard(context),
                       const SizedBox(height: 16),
 
-                      // Position capture section
-                      _buildPositionCaptureSection(context),
+                      // Position snapshot section
+                      _buildPositionSnapshotSection(context),
                       const SizedBox(height: 16),
 
                       // Solution recording section
@@ -922,7 +922,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     );
   }
 
-  Widget _buildPositionCaptureSection(BuildContext context) {
+  Widget _buildPositionSnapshotSection(BuildContext context) {
     final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
     // Wrap in RepaintBoundary for performance isolation
     return RepaintBoundary(
@@ -946,7 +946,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  // Help icon for position capture instructions
+                  // Help icon for position snapshot instructions
                   IconButton(
                     icon: Icon(
                       FluentIcons.question_circle_24_regular,
@@ -986,7 +986,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              S.of(context).puzzlePositionCaptured,
+                              S.of(context).puzzlePositionSnapshotted2,
                               style: TextStyle(
                                 color: Colors.green[300],
                                 fontSize: 14,
@@ -997,7 +997,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                         ],
                       ),
                       const SizedBox(height: 8),
-                      // Mini board preview of captured position
+                      // Mini board preview of snapshotted position
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
