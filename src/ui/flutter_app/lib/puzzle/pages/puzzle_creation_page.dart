@@ -1006,18 +1006,48 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ],
                 ),
               const SizedBox(height: 12),
-              // Button to open board in setup mode (manually place pieces)
-              OutlinedButton.icon(
-                onPressed: () => _openGameBoard(GameMode.setupPosition),
-                icon: const Icon(FluentIcons.window_new_24_regular),
-                label: Text(S.of(context).puzzleOpenBoardSetup),
-              ),
-              const SizedBox(height: 8),
-              // Button to open board in play mode (make moves to reach position)
-              OutlinedButton.icon(
-                onPressed: () => _openGameBoard(GameMode.humanVsHuman),
-                icon: const Icon(FluentIcons.play_24_regular),
-                label: Text(S.of(context).puzzleOpenBoardPlay),
+              // Two options to set up the position: manually or by playing
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    // Option 1: Manual Setup
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _openGameBoard(GameMode.setupPosition),
+                        icon: const Icon(FluentIcons.window_new_24_regular),
+                        label: Text(
+                          S.of(context).puzzleOpenBoardSetup,
+                          textAlign: TextAlign.center,
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 4,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Option 2: Play to Reach Position
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _openGameBoard(GameMode.humanVsHuman),
+                        icon: const Icon(FluentIcons.play_24_regular),
+                        label: Text(
+                          S.of(context).puzzleOpenBoardPlay,
+                          textAlign: TextAlign.center,
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 4,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 8),
               // Button to capture current board position
