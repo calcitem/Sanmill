@@ -182,24 +182,21 @@ class _PuzzlePageState extends State<PuzzlePage> {
           return Theme(
             data: _settingsThemeForDialogs ?? Theme.of(dialogContext),
             child: AlertDialog(
-              title: const Row(
+              title: Row(
                 children: <Widget>[
-                  Icon(Icons.error, color: Colors.red),
-                  SizedBox(width: 8),
-                  Text('Invalid Puzzle'),
+                  const Icon(Icons.error, color: Colors.red),
+                  const SizedBox(width: 8),
+                  Text(S.of(dialogContext).puzzleInvalidPuzzle),
                 ],
               ),
-              content: const Text(
-                'This puzzle has an invalid position format and cannot be loaded. '
-                'Please contact the puzzle author or try a different puzzle.',
-              ),
+              content: Text(S.of(dialogContext).puzzleInvalidPuzzleMessage),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
                     Navigator.of(dialogContext).pop();
                   },
-                  child: const Text('Back to List'),
+                  child: Text(S.of(dialogContext).puzzleBackToList),
                 ),
               ],
             ),
@@ -653,9 +650,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
               return;
             }
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Wrong move. Try again.'),
-                duration: Duration(seconds: 2),
+              SnackBar(
+                content: Text(S.of(context).puzzleWrongMove),
+                duration: const Duration(seconds: 2),
               ),
             );
             await _undoMove(allowDuringAutoPlay: true);
@@ -825,7 +822,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (hint == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('No more hints available')));
+      ).showSnackBar(SnackBar(content: Text(S.of(context).puzzleNoMoreHints)));
       return;
     }
 
@@ -845,18 +842,18 @@ class _PuzzlePageState extends State<PuzzlePage> {
           child: Builder(
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Row(
+                title: Row(
                   children: <Widget>[
-                    Icon(Icons.lightbulb, color: Colors.amber),
-                    SizedBox(width: 8),
-                    Text('Hint'),
+                    const Icon(Icons.lightbulb, color: Colors.amber),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).puzzleHintDialogTitle),
                   ],
                 ),
                 content: Text(hint.content),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
+                    child: Text(S.of(context).ok),
                   ),
                 ],
               );

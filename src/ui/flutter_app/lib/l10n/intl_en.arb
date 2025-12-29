@@ -3904,5 +3904,134 @@
     "logsCleared": "Logs cleared",
     "@logsCleared": {
         "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "Invalid Puzzle",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "This puzzle has an invalid position format and cannot be loaded. Please contact the puzzle author or try a different puzzle.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "Back to List",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "Wrong move. Try again.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleNoMoreHints": "No more hints available",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "Hint",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "Validation Errors",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "The following puzzles need to be fixed before contributing:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Contribute Puzzles to Sanmill",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "You are about to export {count} puzzle(s) for contribution.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "What happens next:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. Your puzzles will be exported to a JSON file",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. You can share this file via the share dialog",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. Submit via GitHub, email, or GitHub issue (see guide)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. Puzzles will be reviewed by maintainers",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. Once approved, they become built-in puzzles!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "By contributing, you agree to license your puzzles under GPL-3.0-or-later.",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "Export for Contribution",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "Start Contributing",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "monthJanuary": "January",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "February",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "March",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "April",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "May",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "June",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "July",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "August",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "September",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "October",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "November",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "December",
+    "@monthDecember": {
+        "description": "December month name"
     }
 }
