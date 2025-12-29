@@ -28,7 +28,8 @@ class PuzzleCreationPage extends StatefulWidget {
   State<PuzzleCreationPage> createState() => _PuzzleCreationPageState();
 }
 
-class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
+class _PuzzleCreationPageState extends State<PuzzleCreationPage>
+    with SingleTickerProviderStateMixin {
   static const String _tag = "[PuzzleCreationPage]";
 
   final TextEditingController _titleController = TextEditingController();
@@ -41,15 +42,34 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
   PuzzleDifficulty _selectedDifficulty = PuzzleDifficulty.easy;
 
   String? _capturedPosition;
-  final List<String> _solutionMoves = <String>[]; // Raw move notations during recording
+
+  // Multi-solution support
+  final List<_SolutionData> _solutions = <_SolutionData>[];
+  int _currentSolutionIndex = 0;
   bool _isRecordingSolution = false;
   int _moveCountBeforeRecording = 0;
 
+  // Tab controller for solution tabs
+  late TabController _tabController;
+
   bool get _isEditing => widget.puzzleToEdit != null;
+
+  // Current solution being edited/recorded
+  _SolutionData get _currentSolution {
+    if (_solutions.isEmpty) {
+      _solutions.add(_SolutionData());
+    }
+    return _solutions[_currentSolutionIndex];
+  }
 
   @override
   void initState() {
     super.initState();
+    // Initialize with one empty solution
+    _solutions.add(_SolutionData(isOptimal: true));
+    _tabController = TabController(length: 1, vsync: this);
+    _tabController.addListener(_onTabChanged);
+
     if (_isEditing) {
       _loadPuzzleForEditing();
     }
@@ -57,12 +77,97 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _titleController.dispose();
     _descriptionController.dispose();
     _hintController.dispose();
     _tagsController.dispose();
     _authorController.dispose();
     super.dispose();
+  }
+
+  /// Handle tab change
+  void _onTabChanged() {
+    if (_tabController.indexIsChanging) {
+      setState(() {
+        _currentSolutionIndex = _tabController.index;
+      });
+    }
+  }
+
+  /// Add a new solution
+  void _addSolution() {
+    setState(() {
+      _solutions.add(_SolutionData());
+      _currentSolutionIndex = _solutions.length - 1;
+      _tabController.dispose();
+      _tabController = TabController(
+        length: _solutions.length,
+        vsync: this,
+        initialIndex: _currentSolutionIndex,
+      );
+      _tabController.addListener(_onTabChanged);
+    });
+  }
+
+  /// Remove current solution
+  void _removeSolution() {
+    if (_solutions.length <= 1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzleAtLeastOneSolution),
+        ),
+      );
+      return;
+    }
+
+    showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).puzzleRemoveSolutionConfirm),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(S.of(context).cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(S.of(context).remove),
+            ),
+          ],
+        );
+      },
+    ).then((bool? confirmed) {
+      if (confirmed == true) {
+        setState(() {
+          _solutions.removeAt(_currentSolutionIndex);
+          if (_currentSolutionIndex >= _solutions.length) {
+            _currentSolutionIndex = _solutions.length - 1;
+          }
+          _tabController.dispose();
+          _tabController = TabController(
+            length: _solutions.length,
+            vsync: this,
+            initialIndex: _currentSolutionIndex,
+          );
+          _tabController.addListener(_onTabChanged);
+        });
+      }
+    });
+  }
+
+  /// Toggle optimal status of current solution
+  void _toggleOptimalStatus() {
+    setState(() {
+      // If marking as optimal, unmark all others
+      if (!_currentSolution.isOptimal) {
+        for (final _SolutionData solution in _solutions) {
+          solution.isOptimal = false;
+        }
+      }
+      _currentSolution.isOptimal = !_currentSolution.isOptimal;
+    });
   }
 
   /// Load puzzle data when editing
@@ -77,14 +182,26 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
     _selectedDifficulty = puzzle.difficulty;
     _capturedPosition = puzzle.initialPosition;
 
-    // Load existing solution moves
-    // Take the first solution path if multiple exist
-    if (puzzle.solutions.isNotEmpty) {
-      _solutionMoves.clear();
-      // Extract move notations from the solution
-      for (final PuzzleMove move in puzzle.solutions.first.moves) {
-        _solutionMoves.add(move.notation);
+    // Load all solutions
+    _solutions.clear();
+    for (final PuzzleSolution solution in puzzle.solutions) {
+      final _SolutionData solutionData = _SolutionData(
+        isOptimal: solution.isOptimal,
+      );
+      for (final PuzzleMove move in solution.moves) {
+        solutionData.moves.add(move.notation);
       }
+      _solutions.add(solutionData);
+    }
+
+    // Update tab controller
+    if (_solutions.isNotEmpty) {
+      _tabController.dispose();
+      _tabController = TabController(
+        length: _solutions.length,
+        vsync: this,
+      );
+      _tabController.addListener(_onTabChanged);
     }
   }
 
@@ -188,7 +305,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
     setState(() {
       _isRecordingSolution = true;
-      _solutionMoves.clear();
+      _currentSolution.moves.clear();
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -198,7 +315,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       ),
     );
 
-    logger.i("$_tag Started recording solution moves from captured position");
+    logger.i("$_tag Started recording solution ${_currentSolutionIndex + 1} moves from captured position");
   }
 
   /// Stop recording solution moves
@@ -214,27 +331,27 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
     setState(() {
       _isRecordingSolution = false;
-      _solutionMoves.clear();
-      _solutionMoves.addAll(recordedMoves);
+      _currentSolution.moves.clear();
+      _currentSolution.moves.addAll(recordedMoves);
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          S.of(context).puzzleRecordingStopped(_solutionMoves.length),
+          S.of(context).puzzleRecordingStopped(_currentSolution.moves.length),
         ),
       ),
     );
 
     logger.i(
-      "$_tag Stopped recording, captured ${_solutionMoves.length} moves",
+      "$_tag Stopped recording, captured ${_currentSolution.moves.length} moves for solution ${_currentSolutionIndex + 1}",
     );
   }
 
   /// Clear recorded solution moves
   void _clearSolution() {
     setState(() {
-      _solutionMoves.clear();
+      _currentSolution.moves.clear();
       _isRecordingSolution = false;
     });
   }
@@ -259,7 +376,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       return S.of(context).puzzleInvalidPositionFormatRecapture;
     }
 
-    if (_solutionMoves.isEmpty) {
+    if (_solutions.every((_SolutionData s) => s.moves.isEmpty)) {
       return S.of(context).puzzleSolutionRequired;
     }
 
@@ -288,25 +405,47 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         .where((String tag) => tag.isNotEmpty)
         .toList();
 
-    // Create PuzzleSolution from recorded moves
+    // Create PuzzleSolution objects from all recorded solutions
     // Get starting side from initial position
     final Position tempPos = Position();
     tempPos.setFen(_capturedPosition!);
-    PieceColor currentSide = tempPos.sideToMove;
+    final PieceColor startingSide = tempPos.sideToMove;
 
-    // Convert move notations to PuzzleMove objects
-    final List<PuzzleMove> puzzleMoves = <PuzzleMove>[];
-    for (final String notation in _solutionMoves) {
-      puzzleMoves.add(
-        PuzzleMove(
-          notation: notation,
-          side: currentSide,
+    final List<PuzzleSolution> puzzleSolutions = <PuzzleSolution>[];
+    for (final _SolutionData solutionData in _solutions) {
+      // Skip empty solutions
+      if (solutionData.moves.isEmpty) {
+        continue;
+      }
+
+      // Convert move notations to PuzzleMove objects
+      PieceColor currentSide = startingSide;
+      final List<PuzzleMove> puzzleMoves = <PuzzleMove>[];
+      for (final String notation in solutionData.moves) {
+        puzzleMoves.add(
+          PuzzleMove(
+            notation: notation,
+            side: currentSide,
+          ),
+        );
+        currentSide = currentSide.opponent;
+      }
+
+      puzzleSolutions.add(
+        PuzzleSolution(
+          moves: puzzleMoves,
+          isOptimal: solutionData.isOptimal,
         ),
       );
-      currentSide = currentSide.opponent;
     }
 
-    final PuzzleSolution solution = PuzzleSolution(moves: puzzleMoves);
+    // Ensure at least one solution is marked as optimal
+    if (!puzzleSolutions.any((PuzzleSolution s) => s.isOptimal)) {
+      puzzleSolutions.first = PuzzleSolution(
+        moves: puzzleSolutions.first.moves,
+        isOptimal: true,
+      );
+    }
 
     // Create puzzle info
     final PuzzleInfo puzzle = PuzzleInfo(
@@ -316,7 +455,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       category: _selectedCategory,
       difficulty: _selectedDifficulty,
       initialPosition: _capturedPosition!,
-      solutions: <PuzzleSolution>[solution],
+      solutions: puzzleSolutions,
       hint: _hintController.text.trim().isEmpty
           ? null
           : _hintController.text.trim(),
@@ -1183,4 +1322,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       ),
     );
   }
+}
+
+/// Helper class to store solution data during creation/editing
+class _SolutionData {
+  _SolutionData({this.isOptimal = false});
+
+  final List<String> moves = <String>[];
+  bool isOptimal;
 }

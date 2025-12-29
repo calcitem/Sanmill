@@ -2518,6 +2518,52 @@
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
+    "puzzleSolutionTab": "解答 {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "添加另一个解答",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "删除此解答",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ 最优",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "备选",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "标记为最优",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count} 个解答",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "确定删除此解答？",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "至少需要一个解答",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
     "puzzleDetails": "谜题详情",
     "@puzzleDetails": {
         "description": "Puzzle details section"

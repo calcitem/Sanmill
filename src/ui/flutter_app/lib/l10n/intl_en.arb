@@ -2518,6 +2518,52 @@
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
+    "puzzleSolutionTab": "Solution {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "Add Another Solution",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "Remove This Solution",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ Optimal",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "Alternative",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Mark as Optimal",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count, plural, =1{1 solution} other{{count} solutions}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Remove this solution?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "At least one solution is required",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
     "puzzleDetails": "Puzzle Details",
     "@puzzleDetails": {
         "description": "Puzzle details section"
