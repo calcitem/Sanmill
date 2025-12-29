@@ -337,19 +337,20 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
 
   /// Format date for display
   String _formatDate(DateTime date) {
+    final S s = S.of(context);
     final List<String> months = <String>[
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      s.monthJanuary,
+      s.monthFebruary,
+      s.monthMarch,
+      s.monthApril,
+      s.monthMay,
+      s.monthJune,
+      s.monthJuly,
+      s.monthAugust,
+      s.monthSeptember,
+      s.monthOctober,
+      s.monthNovember,
+      s.monthDecember,
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }

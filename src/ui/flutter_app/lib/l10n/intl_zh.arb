@@ -3904,5 +3904,134 @@
     "logsCleared": "日志已清空",
     "@logsCleared": {
         "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "无效谜题",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "此谜题的局面格式无效，无法加载。请联系谜题作者或尝试其他谜题。",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "返回列表",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "错误着法，请重试。",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleNoMoreHints": "没有更多提示了",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "提示",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "验证错误",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "以下谜题需要修正后才能贡献：",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "向 Sanmill 贡献谜题",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "您将导出 {count} 个谜题以供贡献。",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "接下来会发生什么：",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. 您的谜题将导出为 JSON 文件",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. 您可以通过分享对话框分享此文件",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. 通过 GitHub、电子邮件或 GitHub issue 提交（见指南）",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. 谜题将由维护者审核",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. 一旦批准，它们将成为内置谜题！",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "贡献即表示您同意将您的谜题以 GPL-3.0-or-later 许可。",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "导出以供贡献",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "开始贡献",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "monthJanuary": "一月",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "二月",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "三月",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "四月",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "五月",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "六月",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "七月",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "八月",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "九月",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "十月",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "十一月",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "十二月",
+    "@monthDecember": {
+        "description": "December month name"
     }
 }

@@ -492,15 +492,13 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           return Theme(
             data: settingsTheme,
             child: AlertDialog(
-              title: const Text('Validation Errors'),
+              title: Text(S.of(dialogContext).puzzleValidationErrors),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      'The following puzzles need to be fixed before contributing:',
-                    ),
+                    Text(S.of(dialogContext).puzzleValidationErrorsMessage),
                     const SizedBox(height: 12),
                     ...invalidPuzzles.map(
                       (String error) => Padding(
@@ -514,7 +512,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: const Text('OK'),
+                  child: Text(S.of(dialogContext).ok),
                 ),
               ],
             ),
@@ -531,30 +529,33 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
         return Theme(
           data: settingsTheme,
           child: AlertDialog(
-            title: const Text('Contribute Puzzles to Sanmill'),
+            title: Text(S.of(dialogContext).puzzleContributeDialogTitle),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'You are about to export ${puzzlesToContribute.length} puzzle(s) for contribution.',
+                    S
+                        .of(dialogContext)
+                        .puzzleContributeCount(puzzlesToContribute.length),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
-                  const Text('What happens next:'),
+                  Text(S.of(dialogContext).puzzleContributeWhatNext),
                   const SizedBox(height: 8),
-                  const Text('1. Your puzzles will be exported to a JSON file'),
-                  const Text('2. You can share this file via the share dialog'),
-                  const Text(
-                    '3. Submit via GitHub, email, or GitHub issue (see guide)',
-                  ),
-                  const Text('4. Puzzles will be reviewed by maintainers'),
-                  const Text('5. Once approved, they become built-in puzzles!'),
+                  Text(S.of(dialogContext).puzzleContributeStep1),
+                  Text(S.of(dialogContext).puzzleContributeStep2),
+                  Text(S.of(dialogContext).puzzleContributeStep3),
+                  Text(S.of(dialogContext).puzzleContributeStep4),
+                  Text(S.of(dialogContext).puzzleContributeStep5),
                   const SizedBox(height: 16),
-                  const Text(
-                    'By contributing, you agree to license your puzzles under GPL-3.0-or-later.',
-                    style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                  Text(
+                    S.of(dialogContext).puzzleContributeLicense,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ],
               ),
@@ -562,12 +563,12 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: const Text('Cancel'),
+                child: Text(S.of(dialogContext).cancel),
               ),
               ElevatedButton.icon(
                 onPressed: () => Navigator.of(dialogContext).pop(true),
                 icon: const Icon(FluentIcons.arrow_upload_24_regular),
-                label: const Text('Export for Contribution'),
+                label: Text(S.of(dialogContext).puzzleExportForContribution),
               ),
             ],
           ),
@@ -782,14 +783,14 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('Close'),
+                child: Text(S.of(dialogContext).close),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                   _toggleMultiSelectMode();
                 },
-                child: const Text('Start Contributing'),
+                child: Text(S.of(dialogContext).puzzleStartContributing),
               ),
             ],
           ),
