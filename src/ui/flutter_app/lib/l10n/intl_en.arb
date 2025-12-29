@@ -4081,6 +4081,30 @@
     "@puzzleWrongMove": {
         "description": "Message shown when user makes wrong move"
     },
+    "puzzleWrongMoveMessage": "That move doesn't match the solution. You can try again or view the correct solution.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "Show Solution",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "Playing the solution...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "Solution playback complete",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "No solution available for this puzzle",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "Solution viewed (no stars)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
     "puzzleNoMoreHints": "No more hints available",
     "@puzzleNoMoreHints": {
         "description": "Message shown when no more hints available"

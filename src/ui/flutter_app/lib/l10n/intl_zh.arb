@@ -4081,6 +4081,30 @@
     "@puzzleWrongMove": {
         "description": "Message shown when user makes wrong move"
     },
+    "puzzleWrongMoveMessage": "该着法与解答不符。您可以重试或查看正确解答。",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "显示解答",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "正在播放解答...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "解答播放完成",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "此谜题没有可用的解答",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "已查看解答（无星级）",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
     "puzzleNoMoreHints": "没有更多提示了",
     "@puzzleNoMoreHints": {
         "description": "Message shown when no more hints available"

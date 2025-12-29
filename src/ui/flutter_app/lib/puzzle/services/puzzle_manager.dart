@@ -116,6 +116,7 @@ class PuzzleManager {
     required PuzzleDifficulty difficulty,
     required int optimalMoveCount,
     required bool hintsUsed,
+    bool solutionViewed = false,
   }) {
     final PuzzleProgress? currentProgress = getProgress(puzzleId);
     final int attempts = (currentProgress?.attempts ?? 0) + 1;
@@ -127,6 +128,7 @@ class PuzzleManager {
       optimalMoveCount: optimalMoveCount,
       difficulty: difficulty,
       hintsUsed: hintsUsed,
+      solutionViewed: solutionViewed,
     );
 
     final bool isNewBest =
@@ -145,6 +147,8 @@ class PuzzleManager {
           : (currentProgress.bestMoveCount ?? moveCount),
       attempts: attempts,
       hintsUsed: totalHintsUsed,
+      solutionViewed:
+          solutionViewed || (currentProgress?.solutionViewed ?? false),
       lastAttemptDate: DateTime.now(),
       completionDate: currentProgress?.completionDate ?? DateTime.now(),
     );
