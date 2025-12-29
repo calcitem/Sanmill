@@ -2618,14 +2618,6 @@
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleSnapshotPosition": "Snapshot Position",
-    "@puzzleSnapshotPosition": {
-        "description": "Snapshot current board position"
-    },
-    "puzzlePositionSnapshotted": "Position snapshotted",
-    "@puzzlePositionSnapshotted": {
-        "description": "Position snapshotted message"
-    },
     "puzzlePositionSnapshotted2": "Position Snapshotted",
     "@puzzlePositionSnapshotted2": {
         "description": "Header showing position has been snapshotted (title case)"

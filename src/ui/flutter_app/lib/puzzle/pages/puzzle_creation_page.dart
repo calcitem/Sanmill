@@ -231,18 +231,16 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     );
 
     // Auto-update snapshot when returning from board editor
-    _checkAndSnapshotPosition(silent: true);
+    _checkAndSnapshotPosition();
   }
 
   /// Check if the current game board position is valid and different from
   /// the snapshotted position, and if so, update the snapshot.
-  void _checkAndSnapshotPosition({bool silent = false}) {
+  void _checkAndSnapshotPosition() {
     final GameController controller = GameController();
     final String fen = controller.position.fen ?? '';
 
-    // If empty or invalid, ignore (unless we want to allow clearing?)
-    // But usually we don't want to auto-clear valid positions with empty ones
-    // unless explicit.
+    // If empty or invalid, ignore
     if (fen.isEmpty) {
       return;
     }
@@ -262,24 +260,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       _snapshottedPosition = fen;
     });
 
-    if (!silent) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).puzzlePositionSnapshotted),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    } else {
-      // Maybe a subtle indicator or just log?
-      // User requested they "don't realize they need to click capture".
-      // So updating silently updates the UI (MiniBoard), which is the visual feedback.
-      logger.i("$_tag Auto-snapshotted position: $fen");
-    }
-  }
-
-  /// Snapshot the current board position as the puzzle starting position
-  void _snapshotPosition() {
-    _checkAndSnapshotPosition();
+    logger.i("$_tag Auto-snapshotted position: $fen");
   }
 
   /// Start recording solution moves
@@ -1109,13 +1090,6 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 8),
-              // Button to snapshot current board position
-              ElevatedButton.icon(
-                onPressed: _snapshotPosition,
-                icon: const Icon(FluentIcons.camera_24_regular),
-                label: Text(S.of(context).puzzleSnapshotPosition),
               ),
             ],
           ),
