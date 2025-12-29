@@ -1021,8 +1021,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                               width: 120,
                               height: 120,
                               child: MiniBoard(
-                                boardLayout:
-                                    _extractBoardLayout(_snapshottedPosition!),
+                                boardLayout: _extractBoardLayout(
+                                  _snapshottedPosition!,
+                                ),
                               ),
                             ),
                           ),
@@ -1190,13 +1191,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                                   ),
                                   decoration: BoxDecoration(
                                     color: _currentSolutionIndex == i
-                                        ? Colors.blue.withValues(alpha: 0.3)
-                                        : Colors.grey.withValues(alpha: 0.2),
+                                        ? Colors.blue[700]
+                                        : Colors.grey[700],
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
                                       color: _currentSolutionIndex == i
-                                          ? Colors.blue
-                                          : Colors.grey.withValues(alpha: 0.4),
+                                          ? Colors.blue[400]!
+                                          : Colors.grey[500]!,
                                       width: _currentSolutionIndex == i ? 2 : 1,
                                     ),
                                   ),
@@ -1219,11 +1220,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                                               ? FontWeight.bold
                                               : FontWeight.normal,
                                           color: _currentSolutionIndex == i
-                                              ? Colors.blue[100]
-                                              : Colors.grey[300],
+                                              ? Colors.white
+                                              : Colors.grey[100],
                                         ),
                                       ),
-                                      if (_solutions[i].moves.isNotEmpty) ...<Widget>[
+                                      if (_solutions[i]
+                                          .moves
+                                          .isNotEmpty) ...<Widget>[
                                         const SizedBox(width: 4),
                                         Container(
                                           padding: const EdgeInsets.symmetric(
@@ -1231,10 +1234,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                                             vertical: 2,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: Colors.green
-                                                .withValues(alpha: 0.3),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                                            color: Colors.green.withValues(
+                                              alpha: 0.3,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
                                           ),
                                           child: Text(
                                             '${_solutions[i].moves.length}',
@@ -1303,16 +1308,14 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ],
                 ),
               const SizedBox(height: 8),
-              
+
               // Info about multiple solutions
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: Colors.blue.withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1688,7 +1691,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   labelText:
                       '${S.of(context).puzzleCompletionMessage} (${S.of(context).optional})',
                   border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(FluentIcons.chat_bubbles_question_24_regular),
+                  prefixIcon: const Icon(
+                    FluentIcons.chat_bubbles_question_24_regular,
+                  ),
                   hintText: S.of(context).puzzleCompletionMessageHint,
                 ),
                 maxLines: 3,
