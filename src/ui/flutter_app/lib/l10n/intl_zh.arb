@@ -3077,7 +3077,7 @@
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "打开棋盘（摆局或走子），创建起始局面，返回并捕获",
+    "puzzleWorkflowStepSetupDesc": "打开棋盘，摆局面，捕获",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
@@ -3085,7 +3085,7 @@
     "@puzzleWorkflowStepRecord": {
         "description": "Workflow step: record solution"
     },
-    "puzzleWorkflowStepRecordDesc": "点击开始录制（棋盘重置到起始局面），返回，走子，回到本页并停止",
+    "puzzleWorkflowStepRecordDesc": "开始录制，走子，停止",
     "@puzzleWorkflowStepRecordDesc": {
         "description": "Description for record solution workflow step"
     },
@@ -3093,7 +3093,7 @@
     "@puzzleWorkflowStepDetails": {
         "description": "Workflow step: add details"
     },
-    "puzzleWorkflowStepDetailsDesc": "填写标题、描述、类别、难度和标签",
+    "puzzleWorkflowStepDetailsDesc": "填标题、类别、难度",
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
@@ -3101,7 +3101,7 @@
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
-    "puzzleWorkflowStepSaveDesc": "点击右上角的保存按钮",
+    "puzzleWorkflowStepSaveDesc": "点击保存按钮",
     "@puzzleWorkflowStepSaveDesc": {
         "description": "Description for save puzzle workflow step"
     },
