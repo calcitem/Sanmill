@@ -44,18 +44,20 @@ class _PuzzlePageState extends State<PuzzlePage> {
   final PuzzleManager _puzzleManager = PuzzleManager();
   final ValueNotifier<int> _moveCountNotifier = ValueNotifier<int>(0);
   bool _hintsUsed = false;
+  bool _solutionViewed = false;
   int _lastRecordedMoveIndex = -1;
   ThemeData? _settingsThemeForDialogs;
   PieceColor? _puzzleHumanColor;
   bool _isSolved = false;
   bool _isAutoPlayingOpponent = false;
+  bool _isPlayingSolution = false;
 
   // Store original game state to restore on exit
   GameMode? _previousGameMode;
   PieceColor? _previousPuzzleHumanColor;
   bool _previousIsPuzzleAutoMoveInProgress = false;
 
-  bool get _canUndo => _moveCountNotifier.value > 0;
+  bool get _canUndo => _moveCountNotifier.value > 0 && !_isPlayingSolution;
 
   @override
   void initState() {
@@ -433,6 +435,41 @@ class _PuzzlePageState extends State<PuzzlePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          // Show solution playback indicator
+          if (_isPlayingSolution)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.blue.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.blue),
+              ),
+              child: Row(
+                children: <Widget>[
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      s.puzzlePlayingSolution,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
           // Description
           Text(
             widget.puzzle.description,
@@ -566,15 +603,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _onPuzzleSolved(feedback);
       return feedback;
     } else if (feedback.result == ValidationResult.wrong) {
-      // Wrong solution - show error message
+      // Wrong solution - show error message with option to view solution
       if (!autoCheck && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(feedback.message ?? 'Wrong approach. Try again!'),
-            duration: const Duration(seconds: 3),
-            backgroundColor: Colors.red,
-          ),
-        );
+        _showWrongMoveDialog();
       }
     } else if (!autoCheck) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -585,6 +616,131 @@ class _PuzzlePageState extends State<PuzzlePage> {
       );
     }
     return feedback;
+  }
+
+  /// Show dialog when user makes a wrong move
+  void _showWrongMoveDialog() {
+    final S s = S.of(context);
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return Theme(
+          data: _settingsThemeForDialogs ?? Theme.of(dialogContext),
+          child: AlertDialog(
+            title: Row(
+              children: <Widget>[
+                const Icon(Icons.error_outline, color: Colors.red, size: 28),
+                const SizedBox(width: 8),
+                Expanded(child: Text(s.puzzleWrongMove)),
+              ],
+            ),
+            content: Text(s.puzzleWrongMoveMessage),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(s.tryAgain),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _showSolution();
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.secondary,
+                ),
+                child: Text(s.puzzleShowSolution),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  /// Play the optimal solution automatically
+  Future<void> _showSolution() async {
+    if (_isPlayingSolution || _isSolved) {
+      return;
+    }
+
+    final PuzzleSolution? solution = widget.puzzle.optimalSolution;
+    if (solution == null || solution.moves.isEmpty) {
+      logger.w('[PuzzlePage] No solution available to show');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context).puzzleNoSolutionAvailable),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      return;
+    }
+
+    setState(() {
+      _isPlayingSolution = true;
+      _solutionViewed = true;
+    });
+
+    // Mark solution as viewed in progress
+    final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
+    final PuzzleProgress? currentProgress =
+        settings.getProgress(widget.puzzle.id);
+    if (currentProgress != null) {
+      final PuzzleProgress updatedProgress =
+          currentProgress.copyWith(solutionViewed: true);
+      _puzzleManager.updateProgress(updatedProgress);
+    }
+
+    // Reset to initial position
+    _resetPuzzle();
+
+    // Show info message
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzlePlayingSolution),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.blue,
+        ),
+      );
+    }
+
+    // Wait a moment before starting playback
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+
+    // Play each move with delay
+    final GameController controller = GameController();
+    for (final PuzzleMove move in solution.moves) {
+      if (!mounted || !_isPlayingSolution) {
+        break;
+      }
+
+      // Try to make the move
+      final bool success = controller.select(move.notation);
+      if (!success) {
+        logger.e('[PuzzlePage] Failed to play solution move: ${move.notation}');
+        break;
+      }
+
+      // Wait before next move
+      await Future<void>.delayed(const Duration(milliseconds: 800));
+    }
+
+    if (mounted) {
+      setState(() {
+        _isPlayingSolution = false;
+      });
+
+      // Show completion message after solution playback
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzleSolutionComplete),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   void _maybeAutoPlayOpponentResponse() {
@@ -669,13 +825,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   void _onPuzzleSolved(ValidationFeedback feedback) {
     _isSolved = true;
-    // Record completion
+    // Record completion with solution viewed status
     _puzzleManager.completePuzzle(
       puzzleId: widget.puzzle.id,
       moveCount: _moveCountNotifier.value,
       difficulty: widget.puzzle.difficulty,
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       hintsUsed: _hintsUsed,
+      solutionViewed: _solutionViewed,
     );
 
     // Show completion dialog
@@ -707,6 +864,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       difficulty: widget.puzzle.difficulty,
       hintsUsed: _hintsUsed,
+      solutionViewed: _solutionViewed,
     );
 
     final String? completionMessage =
@@ -753,6 +911,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
                   Text('${s.moves}: ${_moveCountNotifier.value}'),
                   Text('${s.optimal}: ${widget.puzzle.optimalMoveCount}'),
                   if (_hintsUsed) Text(s.hintsUsed),
+                  if (_solutionViewed)
+                    Text(
+                      s.puzzleSolutionViewedNote,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
                 ],
               ),
             ),

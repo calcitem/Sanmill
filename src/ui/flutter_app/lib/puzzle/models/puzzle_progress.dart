@@ -15,6 +15,7 @@ class PuzzleProgress {
     this.bestMoveCount,
     this.attempts = 0,
     this.hintsUsed = 0,
+    this.solutionViewed = false,
     this.lastAttemptDate,
     this.completionDate,
   });
@@ -28,6 +29,7 @@ class PuzzleProgress {
       bestMoveCount: json['bestMoveCount'] as int?,
       attempts: json['attempts'] as int? ?? 0,
       hintsUsed: json['hintsUsed'] as int? ?? 0,
+      solutionViewed: json['solutionViewed'] as bool? ?? false,
       lastAttemptDate: json['lastAttemptDate'] != null
           ? DateTime.parse(json['lastAttemptDate'] as String)
           : null,
@@ -61,6 +63,10 @@ class PuzzleProgress {
   @HiveField(5)
   final int hintsUsed;
 
+  /// Whether the user has viewed the solution
+  @HiveField(8)
+  final bool solutionViewed;
+
   /// Date of last attempt
   @HiveField(6)
   final DateTime? lastAttemptDate;
@@ -77,6 +83,7 @@ class PuzzleProgress {
     int? bestMoveCount,
     int? attempts,
     int? hintsUsed,
+    bool? solutionViewed,
     DateTime? lastAttemptDate,
     DateTime? completionDate,
   }) {
@@ -87,6 +94,7 @@ class PuzzleProgress {
       bestMoveCount: bestMoveCount ?? this.bestMoveCount,
       attempts: attempts ?? this.attempts,
       hintsUsed: hintsUsed ?? this.hintsUsed,
+      solutionViewed: solutionViewed ?? this.solutionViewed,
       lastAttemptDate: lastAttemptDate ?? this.lastAttemptDate,
       completionDate: completionDate ?? this.completionDate,
     );
@@ -98,7 +106,13 @@ class PuzzleProgress {
     required int optimalMoveCount,
     required PuzzleDifficulty difficulty,
     required bool hintsUsed,
+    bool solutionViewed = false,
   }) {
+    // If solution was viewed, no stars awarded
+    if (solutionViewed) {
+      return 0;
+    }
+
     // If hints were used, maximum 2 stars
     if (hintsUsed) {
       if (moveCount <= optimalMoveCount) {
@@ -129,6 +143,7 @@ class PuzzleProgress {
       'bestMoveCount': bestMoveCount,
       'attempts': attempts,
       'hintsUsed': hintsUsed,
+      'solutionViewed': solutionViewed,
       'lastAttemptDate': lastAttemptDate?.toIso8601String(),
       'completionDate': completionDate?.toIso8601String(),
     };
