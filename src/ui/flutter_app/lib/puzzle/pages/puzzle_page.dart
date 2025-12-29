@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../appearance_settings/models/color_settings.dart';
+import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
@@ -879,6 +880,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
               ),
             );
             await _undoMove(allowDuringAutoPlay: true);
+
+            // Clear auto-play flags immediately after undo so subsequent moves can
+            // trigger auto-play again. Otherwise, the finally block would only run
+            // after autoPlayOpponentResponses completes (which is too late).
+            controller.isPuzzleAutoMoveInProgress = false;
+            _isAutoPlayingOpponent = false;
           },
         );
       } finally {
@@ -1163,6 +1170,18 @@ class _PuzzlePageState extends State<PuzzlePage> {
         undone < maxSteps) {
       await HistoryNavigator.takeBack(context, pop: false);
       undone++;
+
+      // In Puzzle mode, we need to delete the move node from the PGN tree (not just
+      // move the pointer). Otherwise, mainlineMoves will still include the old node,
+      // causing the next appendMove to create a branch instead of extending the
+      // mainline.
+      final PgnNode<ExtMove>? currentNode = controller.gameRecorder.activeNode;
+      if (currentNode != null && currentNode.children.isNotEmpty) {
+        currentNode.children.clear();
+        // Sync the moveCountNotifier with the new mainline length after clearing children.
+        controller.gameRecorder.moveCountNotifier.value =
+            controller.gameRecorder.mainlineMoves.length;
+      }
 
       // Update state without rebuilding entire widget tree
       if (_moveCountNotifier.value > 0) {
