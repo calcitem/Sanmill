@@ -98,7 +98,7 @@ void main() {
         ];
 
         final List<String> moves = <String>['wrong'];
-        PieceColor sideToMove = PieceColor.black;
+        const PieceColor sideToMove = PieceColor.black;
 
         int applyCount = 0;
         int undoCount = 0;

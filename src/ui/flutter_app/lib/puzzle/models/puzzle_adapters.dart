@@ -9,6 +9,7 @@ library;
 
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
+import '../../game_page/services/mill.dart' show PieceColor;
 import 'puzzle_models.dart';
 
 /// Type ids reserved for puzzle-related Hive adapters.
@@ -17,12 +18,29 @@ const int puzzleProgressTypeId = 31;
 const int puzzleSettingsTypeId = 32;
 const int puzzleDifficultyTypeId = 33;
 const int puzzleCategoryTypeId = 34;
-// Reserved: 35 (formerly used, now available)
+const int pieceColorTypeId = 35; // For PieceColor enum used in PuzzleMove
 const int puzzleMoveTypeId = 36;
 const int puzzleSolutionTypeId = 37;
 const int puzzlePackMetadataTypeId = 38;
 
 // Enums need manual adapters
+
+/// Adapter for PieceColor enum (from game engine)
+/// Using typeId 35 (previously reserved)
+class PieceColorAdapter extends TypeAdapter<PieceColor> {
+  @override
+  final int typeId = 35;
+
+  @override
+  PieceColor read(BinaryReader reader) {
+    return PieceColor.values[reader.readByte()];
+  }
+
+  @override
+  void write(BinaryWriter writer, PieceColor obj) {
+    writer.writeByte(obj.index);
+  }
+}
 
 /// Adapter for PuzzleDifficulty enum
 class PuzzleDifficultyAdapter extends TypeAdapter<PuzzleDifficulty> {

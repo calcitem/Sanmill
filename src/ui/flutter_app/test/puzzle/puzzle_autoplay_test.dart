@@ -120,7 +120,7 @@ void main() {
         return move;
       }).toList();
 
-      return PuzzleSolution(moves: puzzleMoves, isOptimal: true);
+      return PuzzleSolution(moves: puzzleMoves);
     }).toList();
 
     return PuzzleInfo(

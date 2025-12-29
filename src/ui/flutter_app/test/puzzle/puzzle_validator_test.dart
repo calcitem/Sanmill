@@ -87,14 +87,13 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
               PuzzleMove(notation: 'd1', side: PieceColor.black),
               PuzzleMove(notation: 'a4', side: PieceColor.white),
             ],
-            isOptimal: true,
           ),
         ],
       );
@@ -171,14 +170,13 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
               PuzzleMove(notation: 'd1', side: PieceColor.black),
               PuzzleMove(notation: 'a4', side: PieceColor.white),
             ],
-            isOptimal: true,
           ),
           PuzzleSolution(
             moves: <PuzzleMove>[
@@ -215,7 +213,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[],
+        solutions: const <PuzzleSolution>[],
       );
 
       final PuzzleValidator validator = PuzzleValidator(puzzle: emptyPuzzle);

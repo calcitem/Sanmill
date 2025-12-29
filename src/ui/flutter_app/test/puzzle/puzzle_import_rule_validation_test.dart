@@ -7,8 +7,6 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/engine/bitboard.dart';
-import 'package:sanmill/game_page/services/mill.dart';
-import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/services/puzzle_export_service.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
@@ -264,7 +262,7 @@ void main() {
             await PuzzleExportService.importPuzzlesFromFile(tempFile.path);
 
         expect(result.success, isTrue);
-        expect(result.puzzles!.length, equals(3));
+        expect(result.puzzles.length, equals(3));
 
         // Should have warnings for the 2 mismatched puzzles
         expect(result.errorMessage, isNotNull);

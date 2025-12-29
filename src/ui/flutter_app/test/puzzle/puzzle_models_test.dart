@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -32,9 +34,12 @@ void main() {
       final Map<String, dynamic> json = puzzle.toJson();
 
       expect(json['id'], equals('test_001'));
-      expect(json['solutions'], isA<List>());
-      expect((json['solutions'] as List).length, equals(1));
-      expect(json['solutions'][0]['moves'], isA<List>());
+      expect(json['solutions'], isA<List<dynamic>>());
+      final List<dynamic> solutions = json['solutions'] as List<dynamic>;
+      expect(solutions.length, equals(1));
+      final Map<String, dynamic> firstSolution =
+          solutions[0] as Map<String, dynamic>;
+      expect(firstSolution['moves'], isA<List<dynamic>>());
     });
 
     test('exports multiple solutions with optimal marking', () {
@@ -51,7 +56,6 @@ void main() {
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
             ],
-            isOptimal: true,
           ),
           PuzzleSolution(
             moves: <PuzzleMove>[
@@ -64,9 +68,14 @@ void main() {
 
       final Map<String, dynamic> json = puzzle.toJson();
 
-      expect((json['solutions'] as List).length, equals(2));
-      expect(json['solutions'][0]['isOptimal'], isTrue);
-      expect(json['solutions'][1]['isOptimal'], isFalse);
+      final List<dynamic> solutions = json['solutions'] as List<dynamic>;
+      expect(solutions.length, equals(2));
+      final Map<String, dynamic> firstSolution =
+          solutions[0] as Map<String, dynamic>;
+      final Map<String, dynamic> secondSolution =
+          solutions[1] as Map<String, dynamic>;
+      expect(firstSolution['isOptimal'], isTrue);
+      expect(secondSolution['isOptimal'], isFalse);
     });
 
     test('imports puzzle with multiple solutions correctly', () {
@@ -89,7 +98,6 @@ void main() {
                   <String, dynamic>{'notation': 'a1', 'side': 'white'},
                   <String, dynamic>{'notation': 'd1', 'side': 'black'},
                 ],
-                'isOptimal': true,
               },
               <String, dynamic>{
                 'moves': <Map<String, dynamic>>[
@@ -111,8 +119,9 @@ void main() {
       // Parse the JSON to verify structure
       final Map<String, dynamic> data =
           jsonDecode(jsonString) as Map<String, dynamic>;
+      final List<dynamic> puzzles = data['puzzles'] as List<dynamic>;
       final PuzzleInfo puzzle = PuzzleInfo.fromJson(
-        data['puzzles'][0] as Map<String, dynamic>,
+        puzzles[0] as Map<String, dynamic>,
       );
 
       expect(puzzle.solutions.length, equals(2));
@@ -170,19 +179,16 @@ void main() {
       const PuzzleSolution sol1 = PuzzleSolution(
         moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
         description: 'Main',
-        isOptimal: true,
       );
 
       const PuzzleSolution sol2 = PuzzleSolution(
         moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
         description: 'Main',
-        isOptimal: true,
       );
 
       const PuzzleSolution sol3 = PuzzleSolution(
         moves: <PuzzleMove>[PuzzleMove(notation: 'a4', side: PieceColor.white)],
         description: 'Main',
-        isOptimal: true,
       );
 
       expect(sol1, equals(sol2));
@@ -206,8 +212,11 @@ void main() {
       );
 
       final Map<String, dynamic> json = solution.toJson();
-      expect(json['moves'][0]['comment'], equals('Opening move'));
-      expect(json['moves'][1]['comment'], equals('Response'));
+      final List<dynamic> moves = json['moves'] as List<dynamic>;
+      final Map<String, dynamic> firstMove = moves[0] as Map<String, dynamic>;
+      final Map<String, dynamic> secondMove = moves[1] as Map<String, dynamic>;
+      expect(firstMove['comment'], equals('Opening move'));
+      expect(secondMove['comment'], equals('Response'));
 
       final PuzzleSolution fromJson = PuzzleSolution.fromJson(json);
       expect(fromJson.moves[0].comment, equals('Opening move'));

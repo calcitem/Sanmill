@@ -9,6 +9,7 @@ part of 'puzzle_models.dart';
 ///
 /// Contains the move notation and metadata about which side plays the move.
 /// This provides clarity about the expected sequence of player and opponent moves.
+@immutable
 @HiveType(typeId: 36)
 class PuzzleMove {
   const PuzzleMove({required this.notation, required this.side, this.comment});
@@ -66,6 +67,7 @@ class PuzzleMove {
 /// Contains the full sequence of moves from initial position to solution.
 /// Multiple PuzzleSolution instances can exist for a puzzle if there are
 /// alternative ways to solve it.
+@immutable
 @HiveType(typeId: 37)
 class PuzzleSolution {
   const PuzzleSolution({

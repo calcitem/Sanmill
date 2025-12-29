@@ -29,7 +29,7 @@ enum PuzzleAutoPlayOutcome {
 
 /// Puzzle mode helper that keeps the auto-play logic testable and UI-free.
 class PuzzleAutoPlayer {
-  const PuzzleAutoPlayer();
+  const PuzzleAutoPlayer._();
 
   /// Normalizes a move string for prefix comparison.
   static String normalizeMove(String move) => move.trim().toLowerCase();

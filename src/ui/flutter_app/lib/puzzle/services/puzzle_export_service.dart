@@ -13,7 +13,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../game_page/services/mill.dart';
 import '../../shared/database/database.dart';
 import '../models/puzzle_models.dart';
-import '../models/rule_variant.dart';
 
 /// Service for exporting and importing puzzles
 class PuzzleExportService {
@@ -229,7 +228,9 @@ class PuzzleExportService {
           }
         }
         if (warnings.isNotEmpty) {
-          if (errors.isNotEmpty) buffer.writeln();
+          if (errors.isNotEmpty) {
+            buffer.writeln();
+          }
           buffer.writeln('Warnings:');
           for (final String warning in warnings) {
             buffer.writeln('  - $warning');

@@ -369,6 +369,9 @@ class Database {
 
   /// Initializes the [PuzzleSettings] reference
   static Future<void> _initPuzzleSettings() async {
+    if (!Hive.isAdapterRegistered(pieceColorTypeId)) {
+      Hive.registerAdapter<PieceColor>(PieceColorAdapter());
+    }
     if (!Hive.isAdapterRegistered(puzzleDifficultyTypeId)) {
       Hive.registerAdapter<PuzzleDifficulty>(PuzzleDifficultyAdapter());
     }

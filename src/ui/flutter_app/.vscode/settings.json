@@ -16,5 +16,6 @@
     "readyok",
     "uciok",
     "XCRASH"
-  ]
+  ],
+  "dart.showTodos": false
 }

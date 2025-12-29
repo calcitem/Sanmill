@@ -83,13 +83,12 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
               PuzzleMove(notation: 'd1', side: PieceColor.black),
             ],
-            isOptimal: true,
           ),
         ],
         author: 'Test Author',
@@ -111,7 +110,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -136,7 +135,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -161,7 +160,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -185,7 +184,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -209,7 +208,7 @@ void main() {
         category: PuzzleCategory.formMill,
         difficulty: PuzzleDifficulty.easy,
         initialPosition: 'invalid_fen_format',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -234,7 +233,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[],
+        solutions: const <PuzzleSolution>[],
       );
 
       final PuzzleValidationReport report =
@@ -253,7 +252,9 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[PuzzleSolution(moves: <PuzzleMove>[])],
+        solutions: <PuzzleSolution>[
+          const PuzzleSolution(moves: <PuzzleMove>[]),
+        ],
       );
 
       final PuzzleValidationReport report =
@@ -272,7 +273,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: '', side: PieceColor.white),
@@ -297,7 +298,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -325,7 +326,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -356,7 +357,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -378,7 +379,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -404,7 +405,7 @@ void main() {
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
         solutions: <PuzzleSolution>[
-          PuzzleSolution(
+          const PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
             ],
@@ -428,7 +429,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
