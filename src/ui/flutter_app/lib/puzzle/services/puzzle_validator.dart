@@ -198,6 +198,20 @@ class PuzzleValidator {
   }
 
   int? _inferTargetCaptureCount() {
+    // 1. Try to find explicit tag "capture:N" or "target:N"
+    for (final String tag in puzzle.tags) {
+      if (tag.startsWith('capture:') || tag.startsWith('target:')) {
+        final List<String> parts = tag.split(':');
+        if (parts.length == 2) {
+          final int? value = int.tryParse(parts[1].trim());
+          if (value != null && value > 0) {
+            return value;
+          }
+        }
+      }
+    }
+
+    // 2. Fallback to parsing title/description
     int? fromText(String text) {
       final RegExpMatch? match = RegExp(r'\d+').firstMatch(text);
       if (match == null) {

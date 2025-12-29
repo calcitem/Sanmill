@@ -6,12 +6,12 @@
 // Main puzzle solving page
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
-import '../../game_page/widgets/game_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
@@ -22,6 +22,8 @@ import '../services/puzzle_hint_service.dart';
 import '../services/puzzle_manager.dart';
 import '../services/puzzle_rating_service.dart';
 import '../services/puzzle_validator.dart';
+import '../widgets/puzzle_game_board.dart';
+import '../widgets/puzzle_solution_view.dart';
 
 /// Page for solving a specific puzzle
 class PuzzlePage extends StatefulWidget {
@@ -416,7 +418,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
                       // Game board - properly constructed with GameMode
                       Expanded(
-                        child: _PuzzleGameBoard(
+                        child: PuzzleGameBoard(
                           puzzle: widget.puzzle,
                           onMoveCompleted: _onPlayerMove,
                         ),
@@ -864,7 +866,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
         )
         .toList();
 
-    Future<void>.delayed(Duration.zero, () async {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) {
+        return;
+      }
       try {
         await PuzzleAutoPlayer.autoPlayOpponentResponses(
           solutions: legacySolutions,
@@ -1328,7 +1333,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                       ),
                                     ),
                                     const SizedBox(height: 12),
-                                    ..._buildSolutionMoves(solution, context),
+                                    ...buildSolutionMoves(solution, context),
                                   ],
                                 )
                               : ExpansionTile(
@@ -1368,7 +1373,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: _buildSolutionMoves(
+                                        children: buildSolutionMoves(
                                           solution,
                                           context,
                                         ),
@@ -1416,123 +1421,4 @@ class _PuzzlePageState extends State<PuzzlePage> {
       },
     );
   }
-}
-
-/// Wrapper widget for GamePage that monitors move completion
-class _PuzzleGameBoard extends StatefulWidget {
-  const _PuzzleGameBoard({required this.puzzle, required this.onMoveCompleted});
-
-  final PuzzleInfo puzzle;
-  final VoidCallback onMoveCompleted;
-
-  @override
-  State<_PuzzleGameBoard> createState() => _PuzzleGameBoardState();
-}
-
-class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
-  late final GameController _controller;
-  ValueNotifier<int>? _boundMoveCountNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = GameController();
-    _bindMoveCountNotifier();
-  }
-
-  @override
-  void didUpdateWidget(covariant _PuzzleGameBoard oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _bindMoveCountNotifier();
-  }
-
-  @override
-  void dispose() {
-    // Detach from the last bound notifier to avoid leaking listeners.
-    _boundMoveCountNotifier?.removeListener(_onMoveCountChanged);
-    super.dispose();
-  }
-
-  /// Ensures we listen to the current [GameRecorder.moveCountNotifier].
-  ///
-  /// NOTE: `GameController.reset()` creates a new `GameRecorder`, so the notifier
-  /// instance can change across "retry" / "reset" flows. If we don't rebind,
-  /// the puzzle page won't receive move completion callbacks anymore.
-  void _bindMoveCountNotifier() {
-    final ValueNotifier<int> current =
-        _controller.gameRecorder.moveCountNotifier;
-    if (identical(_boundMoveCountNotifier, current)) {
-      return;
-    }
-
-    _boundMoveCountNotifier?.removeListener(_onMoveCountChanged);
-    _boundMoveCountNotifier = current;
-
-    current.addListener(_onMoveCountChanged);
-  }
-
-  void _onMoveCountChanged() {
-    // Notify parent on any move history change.
-    //
-    // IMPORTANT: After taking back moves, adding a new move can shorten the
-    // PGN mainline (branching replaces the remainder). We still want to notify
-    // the parent so it can process the new move and trigger auto-play.
-    widget.onMoveCompleted();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Make sure we stay bound even if the recorder changes without a parent rebuild.
-    _bindMoveCountNotifier();
-
-    // Use GamePage with puzzle mode
-    return GamePage(GameMode.puzzle, key: const Key('puzzle_game'));
-  }
-}
-
-/// Helper method to build solution moves list
-List<Widget> _buildSolutionMoves(
-  PuzzleSolution solution,
-  BuildContext context,
-) {
-  return solution.moves.asMap().entries.map((MapEntry<int, PuzzleMove> entry) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              color: Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Text(
-                '${entry.key + 1}',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              entry.value.notation,
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
-            ),
-          ),
-          // Show side indicator (subtle)
-          Text(
-            entry.value.side == PieceColor.white ? '⚪' : '⚫',
-            style: const TextStyle(fontSize: 12), // Increased from 10 to 12
-          ),
-        ],
-      ),
-    );
-  }).toList();
 }
