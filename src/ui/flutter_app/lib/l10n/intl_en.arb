@@ -2626,6 +2626,10 @@
     "@puzzlePositionSnapshotted": {
         "description": "Position snapshotted message"
     },
+    "puzzlePositionCaptured": "Position Captured",
+    "@puzzlePositionCaptured": {
+        "description": "Header showing position has been captured"
+    },
     "puzzleInitialPosition": "Initial Position",
     "@puzzleInitialPosition": {
         "description": "Label for initial puzzle position"
@@ -3288,6 +3292,10 @@
     "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your snapshotted position when you start recording.",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "You can add multiple solutions (no limit). Mark the shortest/best one as optimal.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
     },
     "puzzleShowPositionSnapshotHelp": "Show position snapshot help",
     "@puzzleShowPositionSnapshotHelp": {
