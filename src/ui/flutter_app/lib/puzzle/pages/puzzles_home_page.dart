@@ -68,14 +68,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                         ? null
                         : AppTheme.appBarTheme.titleTextStyle,
                   ),
-                  actions: <Widget>[
-                    // Statistics overview
-                    IconButton(
-                      icon: const Icon(FluentIcons.chart_multiple_24_regular),
-                      onPressed: () => _showStatistics(context),
-                      tooltip: s.puzzleStatistics,
-                    ),
-                  ],
                 ),
                 body: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -496,62 +488,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
   void _navigateTo(BuildContext context, Widget page) {
     Navigator.of(context).push<void>(
       MaterialPageRoute<void>(builder: (BuildContext context) => page),
-    );
-  }
-
-  /// Show statistics dialog
-  void _showStatistics(BuildContext context) {
-    final S s = S.of(context);
-    final Map<String, dynamic> stats = _puzzleManager.getStatistics();
-
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(s.puzzleStatistics),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildStatRow(
-                s.totalPuzzles,
-                (stats['totalPuzzles'] as int? ?? 0).toString(),
-              ),
-              _buildStatRow(
-                s.completed,
-                (stats['completedPuzzles'] as int? ?? 0).toString(),
-              ),
-              _buildStatRow(
-                s.totalStars,
-                (stats['totalStars'] as int? ?? 0).toString(),
-              ),
-              _buildStatRow(
-                s.completionPercentage,
-                '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}%',
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(s.close),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildStatRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(label),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
     );
   }
 }
