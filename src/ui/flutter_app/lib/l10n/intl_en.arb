@@ -2287,7 +2287,7 @@
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture Pieces",
+    "puzzleCategoryCapturePieces": "Capture",
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
@@ -2295,11 +2295,11 @@
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
-    "puzzleCategoryDefend": "Defend",
+    "puzzleCategoryDefend": "Defense",
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "Find Best Move",
+    "puzzleCategoryFindBestMove": "Best Move",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
