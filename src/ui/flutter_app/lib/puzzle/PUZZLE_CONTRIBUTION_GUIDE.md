@@ -291,10 +291,15 @@ All accepted puzzles will credit the contributor:
 
 By submitting puzzles, you agree to:
 
-- License under GPL-3.0-or-later (same as Sanmill)
-- Allow modification for quality/compatibility
+- **Puzzle content** licensed under **CC BY-SA 4.0** (Creative Commons Attribution-ShareAlike 4.0 International)
+  - This allows free use, sharing, and adaptation
+  - Requires attribution to you as the author
+  - Derivative works must use the same license
+- Allow modification for quality/compatibility within the app
 - Grant perpetual usage rights to the project
 - Maintain attribution to your username
+
+**Note:** The Sanmill application code remains under GPL-3.0-or-later, but puzzle data uses the more permissive CC BY-SA 4.0 license, following industry best practices for chess/game content (similar to Lichess, Chess Tactics databases, etc.).
 
 ### Third-Party Positions
 

@@ -3974,7 +3974,7 @@
     "@puzzleContributeStep5": {
         "description": "Contribution step 5"
     },
-    "puzzleContributeLicense": "By contributing, you agree to license your puzzles under GPL-3.0-or-later.",
+    "puzzleContributeLicense": "By contributing, you agree to license your puzzle content under CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike).",
     "@puzzleContributeLicense": {
         "description": "License agreement message for contributions"
     },

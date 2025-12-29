@@ -3974,7 +3974,7 @@
     "@puzzleContributeStep5": {
         "description": "Contribution step 5"
     },
-    "puzzleContributeLicense": "贡献即表示您同意将您的谜题以 GPL-3.0-or-later 许可。",
+    "puzzleContributeLicense": "贡献即表示您同意将您的谜题内容以 CC BY-SA 4.0（知识共享 署名-相同方式共享）许可。",
     "@puzzleContributeLicense": {
         "description": "License agreement message for contributions"
     },
