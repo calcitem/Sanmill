@@ -93,6 +93,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   /// Handle tab change
   void _onTabChanged() {
     if (_tabController.indexIsChanging) {
+      // If recording is in progress, stop it before switching tabs
+      if (_isRecordingSolution) {
+        _stopRecordingSolution();
+      }
+      
       setState(() {
         _currentSolutionIndex = _tabController.index;
       });
@@ -135,7 +140,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text(S.of(context).remove),
+              child: Text(S.of(context).confirm),
             ),
           ],
         );
@@ -1159,6 +1164,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                               padding: const EdgeInsets.only(right: 8),
                               child: InkWell(
                                 onTap: () {
+                                  // If recording is in progress, stop it before switching
+                                  if (_isRecordingSolution) {
+                                    _stopRecordingSolution();
+                                  }
+                                  
                                   setState(() {
                                     _currentSolutionIndex = i;
                                     _tabController.animateTo(i);
@@ -1441,9 +1451,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     return Chip(
                       label: Text(
                         '${entry.key + 1}. ${entry.value.notation}',
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
                       ),
-                      backgroundColor: Colors.blue[700],
+                      backgroundColor: const Color(0xFF2E7D32),
                     );
                   }).toList(),
                 ),
@@ -1479,6 +1492,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       label: Text(S.of(context).puzzleStopRecording),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[700],
+                        foregroundColor: Colors.white,
                         minimumSize: const Size(double.infinity, 48),
                       ),
                     ),
