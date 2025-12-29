@@ -139,7 +139,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
         );
       },
     ).then((bool? confirmed) {
-      if (confirmed == true) {
+      if (confirmed ?? false) {
         setState(() {
           _solutions.removeAt(_currentSolutionIndex);
           if (_currentSolutionIndex >= _solutions.length) {
@@ -443,7 +443,6 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     if (!puzzleSolutions.any((PuzzleSolution s) => s.isOptimal)) {
       puzzleSolutions.first = PuzzleSolution(
         moves: puzzleSolutions.first.moves,
-        isOptimal: true,
       );
     }
 
@@ -652,7 +651,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 '2',
                 S.of(dialogContext).puzzleWorkflowStepRecord,
                 S.of(dialogContext).puzzleWorkflowStepRecordDesc,
-                _solutionMoves.isNotEmpty,
+                _currentSolution.moves.isNotEmpty,
               ),
               _buildWorkflowStep(
                 dialogContext,
@@ -1039,6 +1038,88 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+
+            // Multi-solution tabs
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        // Solution tabs
+                        for (int i = 0; i < _solutions.length; i++)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: ChoiceChip(
+                              label: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(S.of(context).puzzleSolutionTab(i + 1)),
+                                  if (_solutions[i].isOptimal) ...<Widget>[
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      '⭐',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                              selected: _currentSolutionIndex == i,
+                              onSelected: (bool selected) {
+                                if (selected) {
+                                  setState(() {
+                                    _currentSolutionIndex = i;
+                                    _tabController.animateTo(i);
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        // Add solution button
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: ActionChip(
+                            avatar: const Icon(
+                              FluentIcons.add_24_regular,
+                              size: 16,
+                            ),
+                            label: Text(S.of(context).puzzleAddSolution),
+                            onPressed: _addSolution,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+
+            // Solution control buttons (mark as optimal, delete)
+            if (_solutions.length > 1 || !_currentSolution.isOptimal)
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: <Widget>[
+                  if (!_currentSolution.isOptimal)
+                    OutlinedButton.icon(
+                      onPressed: _toggleOptimalStatus,
+                      icon: const Icon(FluentIcons.star_24_regular, size: 16),
+                      label: Text(S.of(context).puzzleMarkAsOptimal),
+                    ),
+                  if (_solutions.length > 1)
+                    OutlinedButton.icon(
+                      onPressed: _removeSolution,
+                      icon: const Icon(FluentIcons.delete_24_regular, size: 16),
+                      label: Text(S.of(context).puzzleRemoveSolution),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.red[300],
+                      ),
+                    ),
+                ],
+              ),
             const SizedBox(height: 8),
 
             // Recording in progress indicator (compact)
@@ -1074,7 +1155,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               ),
 
             const SizedBox(height: 8),
-            if (_solutionMoves.isNotEmpty) ...<Widget>[
+            if (_currentSolution.moves.isNotEmpty) ...<Widget>[
               Row(
                 children: <Widget>[
                   Icon(
@@ -1084,7 +1165,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    S.of(context).puzzleSolutionMoves(_solutionMoves.length),
+                    S.of(context).puzzleSolutionMoves(_currentSolution.moves.length),
                     style: TextStyle(color: Colors.green[300], fontSize: 14),
                   ),
                 ],
@@ -1093,7 +1174,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               Wrap(
                 spacing: 4,
                 runSpacing: 4,
-                children: _solutionMoves.asMap().entries.map((
+                children: _currentSolution.moves.asMap().entries.map((
                   MapEntry<int, String> entry,
                 ) {
                   return Chip(
@@ -1152,7 +1233,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     icon: const Icon(FluentIcons.record_24_regular),
                     label: Text(S.of(context).puzzleStartRecording),
                   ),
-                  if (_solutionMoves.isNotEmpty)
+                  if (_currentSolution.moves.isNotEmpty)
                     OutlinedButton.icon(
                       onPressed: _clearSolution,
                       icon: const Icon(FluentIcons.delete_24_regular),
