@@ -3265,7 +3265,7 @@
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
     },
-    "puzzlePositionSnapshotHelpContent": "如何快照谜题起始局面：\n\n1. 点击\"打开棋盘（摆局）\"手动摆放棋子，或点击\"打开棋盘（走子）\"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 局面将自动快照。如果没有，您可以点击\"快照局面\"按钮保存当前棋盘状态\n\n快照的局面将作为您谜题的起始点。",
+    "puzzlePositionSnapshotHelpContent": "如何快照谜题起始局面：\n\n1. 点击\"打开棋盘（摆局）\"手动摆放棋子，或点击\"打开棋盘（走子）\"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 局面将自动快照并保存\n\n快照的局面将作为您谜题的起始点。",
     "@puzzlePositionSnapshotHelpContent": {
         "description": "Help content for snapshotting puzzle starting position"
     },
