@@ -513,39 +513,52 @@ class _PuzzlePageState extends State<PuzzlePage> {
           // Attempt counter - show current session attempts
           ValueListenableBuilder<PuzzleSettings>(
             valueListenable: _puzzleManager.settingsNotifier,
-            builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
-              final PuzzleProgress? progress = settings.getProgress(widget.puzzle.id);
-              final int attempts = progress?.attempts ?? 0;
-              
-              if (attempts > 0) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(
-                        Icons.replay,
-                        size: 14,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+            builder:
+                (BuildContext context, PuzzleSettings settings, Widget? child) {
+                  final PuzzleProgress? progress = settings.getProgress(
+                    widget.puzzle.id,
+                  );
+                  final int attempts = progress?.attempts ?? 0;
+
+                  if (attempts > 0) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        s.puzzleAttempts(attempts),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest
+                            .withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(
+                            Icons.replay,
+                            size: 14,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            s.puzzleAttempts(attempts),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
           ),
         ],
       ),
@@ -724,11 +737,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Mark solution as viewed in progress
     final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
-    final PuzzleProgress? currentProgress =
-        settings.getProgress(widget.puzzle.id);
+    final PuzzleProgress? currentProgress = settings.getProgress(
+      widget.puzzle.id,
+    );
     if (currentProgress != null) {
-      final PuzzleProgress updatedProgress =
-          currentProgress.copyWith(solutionViewed: true);
+      final PuzzleProgress updatedProgress = currentProgress.copyWith(
+        solutionViewed: true,
+      );
       _puzzleManager.updateProgress(updatedProgress);
     }
 
@@ -757,7 +772,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
       }
 
       // Try to make the move
-      final bool success = controller.select(move.notation);
+      final bool success = controller.applyMove(
+        ExtMove(move.notation, side: controller.position.sideToMove),
+      );
       if (!success) {
         logger.e('[PuzzlePage] Failed to play solution move: ${move.notation}');
         break;
@@ -906,8 +923,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
       solutionViewed: _solutionViewed,
     );
 
-    final String? completionMessage =
-        widget.puzzle.getLocalizedCompletionMessage(context);
+    final String? completionMessage = widget.puzzle
+        .getLocalizedCompletionMessage(context);
 
     return AlertDialog(
       title: Row(
@@ -1154,7 +1171,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (_moveCountNotifier.value > 0 && !_isSolved) {
       _puzzleManager.recordAttempt(widget.puzzle.id, hintUsed: _hintsUsed);
     }
-    
+
     _initializePuzzle(); // This already resets _moveCountNotifier.value = 0
     setState(() {
       _hintsUsed = false;
