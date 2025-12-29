@@ -375,6 +375,12 @@ class Database {
     if (!Hive.isAdapterRegistered(puzzleCategoryTypeId)) {
       Hive.registerAdapter<PuzzleCategory>(PuzzleCategoryAdapter());
     }
+    if (!Hive.isAdapterRegistered(puzzleMoveTypeId)) {
+      Hive.registerAdapter<PuzzleMove>(PuzzleMoveAdapter());
+    }
+    if (!Hive.isAdapterRegistered(puzzleSolutionTypeId)) {
+      Hive.registerAdapter<PuzzleSolution>(PuzzleSolutionAdapter());
+    }
     if (!Hive.isAdapterRegistered(puzzleInfoTypeId)) {
       Hive.registerAdapter<PuzzleInfo>(PuzzleInfoAdapter());
     }
