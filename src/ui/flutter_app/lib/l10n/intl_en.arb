@@ -2774,6 +2774,14 @@
     "@puzzleAuthor": {
         "description": "Puzzle author field"
     },
+    "puzzleCompletionMessage": "Completion Message",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "Explain the tactic or congratulate the solver",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
     "puzzleTitleRequired": "Title is required",
     "@puzzleTitleRequired": {
         "description": "Title required error"

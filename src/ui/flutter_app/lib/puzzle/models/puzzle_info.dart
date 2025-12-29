@@ -17,6 +17,7 @@ class PuzzleInfo extends HiveObject {
     required this.initialPosition,
     required this.solutions,
     this.hint,
+    this.completionMessage,
     this.tags = const <String>[],
     this.isCustom = false,
     this.author,
@@ -28,6 +29,7 @@ class PuzzleInfo extends HiveObject {
     this.titleLocalizationKey,
     this.descriptionLocalizationKey,
     this.hintLocalizationKey,
+    this.completionMessageLocalizationKey,
   }) : createdDate = createdDate ?? DateTime.now();
 
   /// Create from JSON
@@ -49,6 +51,7 @@ class PuzzleInfo extends HiveObject {
           )
           .toList(),
       hint: json['hint'] as String?,
+      completionMessage: json['completionMessage'] as String?,
       tags:
           (json['tags'] as List<dynamic>?)
               ?.map((dynamic e) => e as String)
@@ -65,6 +68,8 @@ class PuzzleInfo extends HiveObject {
       titleLocalizationKey: json['titleLocalizationKey'] as String?,
       descriptionLocalizationKey: json['descriptionLocalizationKey'] as String?,
       hintLocalizationKey: json['hintLocalizationKey'] as String?,
+      completionMessageLocalizationKey:
+          json['completionMessageLocalizationKey'] as String?,
     );
   }
 
@@ -101,6 +106,12 @@ class PuzzleInfo extends HiveObject {
   /// Hint text (optional)
   @HiveField(8)
   final String? hint;
+
+  /// Completion message shown after solving (optional)
+  /// This can be used by puzzle authors to explain the tactic,
+  /// provide educational context, or congratulate the solver.
+  @HiveField(19)
+  final String? completionMessage;
 
   /// Tags for filtering/searching
   @HiveField(9)
@@ -150,6 +161,12 @@ class PuzzleInfo extends HiveObject {
   @HiveField(18)
   final String? hintLocalizationKey;
 
+  /// Optional localization key for the completion message.
+  /// If provided, this key will be used to look up the localized completion message.
+  /// Falls back to the `completionMessage` field if the key is not found or is null.
+  @HiveField(20)
+  final String? completionMessageLocalizationKey;
+
   /// Get the player's side (who is solving the puzzle)
   /// This is determined by the side-to-move in the initial position
   PieceColor get playerSide {
@@ -187,6 +204,7 @@ class PuzzleInfo extends HiveObject {
     String? initialPosition,
     List<PuzzleSolution>? solutions,
     String? hint,
+    String? completionMessage,
     List<String>? tags,
     bool? isCustom,
     String? author,
@@ -197,6 +215,7 @@ class PuzzleInfo extends HiveObject {
     String? titleLocalizationKey,
     String? descriptionLocalizationKey,
     String? hintLocalizationKey,
+    String? completionMessageLocalizationKey,
   }) {
     return PuzzleInfo(
       id: id ?? this.id,
@@ -207,6 +226,7 @@ class PuzzleInfo extends HiveObject {
       initialPosition: initialPosition ?? this.initialPosition,
       solutions: solutions ?? this.solutions,
       hint: hint ?? this.hint,
+      completionMessage: completionMessage ?? this.completionMessage,
       tags: tags ?? this.tags,
       isCustom: isCustom ?? this.isCustom,
       author: author ?? this.author,
@@ -218,6 +238,8 @@ class PuzzleInfo extends HiveObject {
       descriptionLocalizationKey:
           descriptionLocalizationKey ?? this.descriptionLocalizationKey,
       hintLocalizationKey: hintLocalizationKey ?? this.hintLocalizationKey,
+      completionMessageLocalizationKey: completionMessageLocalizationKey ??
+          this.completionMessageLocalizationKey,
     );
   }
 
@@ -232,6 +254,7 @@ class PuzzleInfo extends HiveObject {
       'initialPosition': initialPosition,
       'solutions': solutions.map((PuzzleSolution s) => s.toJson()).toList(),
       'hint': hint,
+      'completionMessage': completionMessage,
       'tags': tags,
       'isCustom': isCustom,
       'author': author,
@@ -242,6 +265,7 @@ class PuzzleInfo extends HiveObject {
       'titleLocalizationKey': titleLocalizationKey,
       'descriptionLocalizationKey': descriptionLocalizationKey,
       'hintLocalizationKey': hintLocalizationKey,
+      'completionMessageLocalizationKey': completionMessageLocalizationKey,
     };
   }
 
@@ -267,5 +291,12 @@ class PuzzleInfo extends HiveObject {
     // For now, return the raw hint
     // Future enhancement: similar to getLocalizedTitle
     return hint;
+  }
+
+  /// Get the localized completion message, falling back to the raw message if no key is set.
+  String? getLocalizedCompletionMessage(BuildContext context) {
+    // For now, return the raw completion message
+    // Future enhancement: similar to getLocalizedTitle
+    return completionMessage;
   }
 }

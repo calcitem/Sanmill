@@ -100,6 +100,7 @@ Metadata provides information about a collection of puzzles:
     }
   ],
   "hint": "Try forming a mill on the outer ring",
+  "completionMessage": "Great job! You formed a mill by placing three pieces in a row. This is the fundamental tactic in Mill games.",
   "tags": ["mill-formation", "beginner"],
   "isCustom": false,
   "author": "Sanmill Team",
@@ -109,7 +110,8 @@ Metadata provides information about a collection of puzzles:
   "ruleVariantId": "standard_9mm",
   "titleLocalizationKey": "puzzle_first_mill_title",
   "descriptionLocalizationKey": "puzzle_first_mill_desc",
-  "hintLocalizationKey": "puzzle_first_mill_hint"
+  "hintLocalizationKey": "puzzle_first_mill_hint",
+  "completionMessageLocalizationKey": "puzzle_first_mill_completion"
 }
 ```
 
@@ -132,6 +134,7 @@ Metadata provides information about a collection of puzzles:
 | Field | Type | Description |
 |-------|------|-------------|
 | `hint` | string | Textual hint for solving |
+| `completionMessage` | string | Message shown after completing the puzzle |
 | `tags` | array | String tags for filtering |
 | `isCustom` | boolean | User-created puzzle (default: false) |
 | `author` | string | Creator's name |
@@ -230,6 +233,7 @@ When providing localization keys, follow this naming convention:
 - Title: `puzzle_<id>_title`
 - Description: `puzzle_<id>_desc`
 - Hint: `puzzle_<id>_hint`
+- Completion Message: `puzzle_<id>_completion`
 
 Example:
 
@@ -238,7 +242,8 @@ Example:
   "id": "first_mill_001",
   "titleLocalizationKey": "puzzle_first_mill_001_title",
   "descriptionLocalizationKey": "puzzle_first_mill_001_desc",
-  "hintLocalizationKey": "puzzle_first_mill_001_hint"
+  "hintLocalizationKey": "puzzle_first_mill_001_hint",
+  "completionMessageLocalizationKey": "puzzle_first_mill_001_completion"
 }
 ```
 

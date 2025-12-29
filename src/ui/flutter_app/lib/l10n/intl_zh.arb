@@ -2774,6 +2774,14 @@
     "@puzzleAuthor": {
         "description": "Puzzle author field"
     },
+    "puzzleCompletionMessage": "完成说明",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "解释战术原理或向解题者致以祝贺",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
     "puzzleTitleRequired": "标题为必填项",
     "@puzzleTitleRequired": {
         "description": "Title required error"

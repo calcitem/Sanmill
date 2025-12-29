@@ -36,6 +36,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _hintController = TextEditingController();
+  final TextEditingController _completionMessageController =
+      TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
 
@@ -82,6 +84,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     _titleController.dispose();
     _descriptionController.dispose();
     _hintController.dispose();
+    _completionMessageController.dispose();
     _tagsController.dispose();
     _authorController.dispose();
     super.dispose();
@@ -175,6 +178,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     _titleController.text = puzzle.title;
     _descriptionController.text = puzzle.description;
     _hintController.text = puzzle.hint ?? '';
+    _completionMessageController.text = puzzle.completionMessage ?? '';
     _tagsController.text = puzzle.tags.join(', ');
     _authorController.text = puzzle.author ?? '';
     _selectedCategory = puzzle.category;
@@ -473,6 +477,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       hint: _hintController.text.trim().isEmpty
           ? null
           : _hintController.text.trim(),
+      completionMessage: _completionMessageController.text.trim().isEmpty
+          ? null
+          : _completionMessageController.text.trim(),
       tags: tags,
       isCustom: true,
       author: _authorController.text.trim().isEmpty
@@ -1671,6 +1678,20 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   prefixIcon: const Icon(FluentIcons.lightbulb_24_regular),
                 ),
                 maxLines: 2,
+              ),
+              const SizedBox(height: 12),
+
+              // Completion message (optional)
+              TextField(
+                controller: _completionMessageController,
+                decoration: InputDecoration(
+                  labelText:
+                      '${S.of(context).puzzleCompletionMessage} (${S.of(context).optional})',
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.chat_bubbles_question_24_regular),
+                  hintText: S.of(context).puzzleCompletionMessageHint,
+                ),
+                maxLines: 3,
               ),
               const SizedBox(height: 12),
 
