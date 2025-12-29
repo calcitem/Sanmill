@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Фонова музика",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Възпроизвеждане на локален аудио файл като фонова музика",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Файл за фонова музика",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Изчистване на фоновата музика",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Музикални файлове",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Запазване на звука при връщане",
     "@keepMuteWhenTakingBack": {

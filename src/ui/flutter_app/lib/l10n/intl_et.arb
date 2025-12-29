@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Taustamuusika",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Esita kohalik helifail taustamuusikana",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Taustamuusika fail",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Eemalda taustamuusika",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Muusikafailid",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Tagasivõtmise ajal mute'i hoidmine",
     "@keepMuteWhenTakingBack": {

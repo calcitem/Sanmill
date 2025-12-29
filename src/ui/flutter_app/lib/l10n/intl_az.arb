@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Fon musiqisi",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Yerli audio faylını fon musiqisi kimi oxut",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Fon musiqisi faylı",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Fon musiqisini təmizlə",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Musiqi faylları",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Geri götürərkən səssiz saxlayın",
     "@keepMuteWhenTakingBack": {

@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Фоновая музыка",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Воспроизводить локальный аудиофайл как фоновую музыку",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Файл фоновой музыки",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Очистить фоновую музыку",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Музыкальные файлы",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Тихий откат хода",
     "@keepMuteWhenTakingBack": {

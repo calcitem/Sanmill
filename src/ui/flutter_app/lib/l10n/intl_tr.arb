@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Arka plan müziği",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Yerel bir ses dosyasını arka plan müziği olarak çal",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Arka plan müziği dosyası",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Arka plan müziğini temizle",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Müzik dosyaları",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Geri alırken sessize alın",
     "@keepMuteWhenTakingBack": {
