@@ -29,7 +29,7 @@ class PuzzleCreationPage extends StatefulWidget {
 }
 
 class _PuzzleCreationPageState extends State<PuzzleCreationPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   static const String _tag = "[PuzzleCreationPage]";
 
   final TextEditingController _titleController = TextEditingController();
