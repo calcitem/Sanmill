@@ -10,6 +10,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import '../../appearance_settings/models/color_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/widgets/game_page.dart';
+import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
@@ -326,10 +327,14 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       recordedMoves.add(allMoves[i].move);
     }
 
+    // Capture the final position after all solution moves
+    final String? finalFen = controller.position.fen;
+
     setState(() {
       _isRecordingSolution = false;
       _currentSolution.moves.clear();
       _currentSolution.moves.addAll(recordedMoves);
+      _currentSolution.finalPosition = finalFen;
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -952,21 +957,38 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ],
                 ),
                 const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: SelectableText(
-                    _capturedPosition!,
-                    style: TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize:
-                          12, // Increased from 11 to 12 for better readability
-                      color: Colors.grey[300],
+                // Mini board preview of captured position
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    // Mini board
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: MiniBoard(
+                        boardLayout: _extractBoardLayout(_capturedPosition!),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    // FEN string
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[800],
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: SelectableText(
+                          _capturedPosition!,
+                          style: TextStyle(
+                            fontFamily: 'monospace',
+                            fontSize: 12,
+                            color: Colors.grey[300],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ] else
                 Row(
@@ -1189,6 +1211,68 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ],
                 ),
                 const SizedBox(height: 8),
+                // Display both initial and final positions as mini boards
+                if (_capturedPosition != null &&
+                    _currentSolution.finalPosition != null)
+                  Row(
+                    children: <Widget>[
+                      // Initial position
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              S.of(context).puzzleInitialPosition,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: MiniBoard(
+                                boardLayout:
+                                    _extractBoardLayout(_capturedPosition!),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        FluentIcons.arrow_right_24_filled,
+                        color: Colors.grey[400],
+                        size: 24,
+                      ),
+                      const SizedBox(width: 8),
+                      // Final position
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              S.of(context).puzzleFinalPosition,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: MiniBoard(
+                                boardLayout: _extractBoardLayout(
+                                  _currentSolution.finalPosition!,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                const SizedBox(height: 8),
                 Wrap(
                   spacing: 4,
                   runSpacing: 4,
@@ -1295,6 +1379,19 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
         ],
       ),
     );
+  }
+
+  /// Extract board layout from FEN string
+  /// FEN format: "boardLayout activeColor phase action counts..."
+  /// Example: "OO******/********/******** w p p 2 7 0 9 0 0 0 0 0 0 0 0 1"
+  /// Returns just the board layout part: "OO******/********/********"
+  String _extractBoardLayout(String fen) {
+    final List<String> parts = fen.split(' ');
+    if (parts.isEmpty) {
+      // Return empty board if FEN is invalid
+      return '********/********/********';
+    }
+    return parts[0];
   }
 
   Widget _buildMetadataSection(BuildContext context) {
@@ -1446,4 +1543,5 @@ class _SolutionData {
 
   final List<String> moves = <String>[];
   bool isOptimal;
+  String? finalPosition; // Store the final FEN position after solution moves
 }
