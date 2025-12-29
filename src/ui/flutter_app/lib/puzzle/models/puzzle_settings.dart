@@ -14,6 +14,7 @@ class PuzzleSettings {
     this.showHints = true,
     this.autoShowSolution = false,
     this.soundEnabled = true,
+    this.userRating = 1500, // Default ELO-style rating
   });
 
   /// Create from JSON
@@ -37,6 +38,7 @@ class PuzzleSettings {
       showHints: json['showHints'] as bool? ?? true,
       autoShowSolution: json['autoShowSolution'] as bool? ?? false,
       soundEnabled: json['soundEnabled'] as bool? ?? true,
+      userRating: json['userRating'] as int? ?? 1500,
     );
   }
 
@@ -60,6 +62,10 @@ class PuzzleSettings {
   @HiveField(4)
   final bool soundEnabled;
 
+  /// User's puzzle rating (ELO-style, default 1500)
+  @HiveField(5)
+  final int userRating;
+
   /// Creates a copy with updated fields
   PuzzleSettings copyWith({
     List<PuzzleInfo>? allPuzzles,
@@ -67,6 +73,7 @@ class PuzzleSettings {
     bool? showHints,
     bool? autoShowSolution,
     bool? soundEnabled,
+    int? userRating,
   }) {
     return PuzzleSettings(
       allPuzzles: allPuzzles ?? this.allPuzzles,
@@ -74,6 +81,7 @@ class PuzzleSettings {
       showHints: showHints ?? this.showHints,
       autoShowSolution: autoShowSolution ?? this.autoShowSolution,
       soundEnabled: soundEnabled ?? this.soundEnabled,
+      userRating: userRating ?? this.userRating,
     );
   }
 
@@ -123,6 +131,7 @@ class PuzzleSettings {
       'showHints': showHints,
       'autoShowSolution': autoShowSolution,
       'soundEnabled': soundEnabled,
+      'userRating': userRating,
     };
   }
 }

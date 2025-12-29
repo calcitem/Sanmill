@@ -5,6 +5,8 @@
 //
 // Manages puzzle loading, saving, and progress tracking
 
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 
 import '../../shared/database/database.dart';
@@ -154,7 +156,51 @@ class PuzzleManager {
     );
 
     updateProgress(newProgress);
+    
+    // Update user rating if puzzle has a rating
+    final PuzzleInfo? puzzle = getPuzzleById(puzzleId);
+    if (puzzle != null && puzzle.rating != null && !solutionViewed) {
+      _updateUserRating(
+        puzzleRating: puzzle.rating!,
+        success: stars > 0,
+        hintsUsed: hintsUsed,
+      );
+    }
+    
     logger.i("$_tag Puzzle $puzzleId completed with $stars stars");
+  }
+
+  /// Update user's puzzle rating based on performance
+  void _updateUserRating({
+    required int puzzleRating,
+    required bool success,
+    required bool hintsUsed,
+  }) {
+    final PuzzleSettings currentSettings = settingsNotifier.value;
+    final int currentRating = currentSettings.userRating;
+    
+    // Calculate expected score based on rating difference
+    final double expectedScore = 1.0 / (1.0 + pow(10.0, (puzzleRating - currentRating) / 400.0));
+    
+    // Actual score: 1 for success, 0.5 if hints used, 0 for failure
+    final double actualScore = success ? (hintsUsed ? 0.5 : 1.0) : 0.0;
+    
+    // K-factor (higher for beginners, lower for experienced)
+    final double kFactor = currentRating < 1500 ? 40.0 : 20.0;
+    
+    // Calculate rating change
+    final int ratingChange = (kFactor * (actualScore - expectedScore)).round();
+    final int newRating = max(100, min(3000, currentRating + ratingChange));
+    
+    // Update settings with new rating
+    final PuzzleSettings updatedSettings = currentSettings.copyWith(
+      userRating: newRating,
+    );
+    _saveSettings(updatedSettings);
+    
+    logger.i(
+      "$_tag User rating updated: $currentRating -> $newRating (${ratingChange >= 0 ? '+' : ''}$ratingChange)",
+    );
   }
 
   /// Record a failed attempt
@@ -375,5 +421,56 @@ class PuzzleManager {
   /// Dispose resources
   void dispose() {
     settingsNotifier.dispose();
+  }
+
+  /// Get recommended puzzles based on user's rating
+  /// Returns puzzles within a rating range suitable for the user
+  List<PuzzleInfo> getRecommendedPuzzles({
+    int? targetRating,
+    int ratingRange = 200,
+    int maxCount = 10,
+  }) {
+    final int userRating = targetRating ?? settingsNotifier.value.userRating;
+    final PuzzleSettings settings = settingsNotifier.value;
+    
+    // Get unsolved or poorly solved puzzles
+    final List<PuzzleInfo> candidates = settingsNotifier.value.allPuzzles
+        .where((PuzzleInfo p) {
+          final PuzzleProgress? progress = settings.getProgress(p.id);
+          
+          // Include if:
+          // 1. Never attempted
+          // 2. Not completed
+          // 3. Completed but with low stars (< 3)
+          if (progress == null || !progress.completed) {
+            return true;
+          }
+          return progress.stars < 3;
+        })
+        .where((PuzzleInfo p) => p.rating != null)
+        .toList();
+    
+    if (candidates.isEmpty) {
+      return <PuzzleInfo>[];
+    }
+    
+    // Sort by rating closeness to user rating
+    candidates.sort((PuzzleInfo a, PuzzleInfo b) {
+      final int aDiff = (a.rating! - userRating).abs();
+      final int bDiff = (b.rating! - userRating).abs();
+      return aDiff.compareTo(bDiff);
+    });
+    
+    // Filter to puzzles within rating range and return top matches
+    final List<PuzzleInfo> recommended = candidates
+        .where((PuzzleInfo p) => (p.rating! - userRating).abs() <= ratingRange)
+        .take(maxCount)
+        .toList();
+    
+    logger.i(
+      "$_tag Found ${recommended.length} recommended puzzles for rating $userRating",
+    );
+    
+    return recommended;
   }
 }

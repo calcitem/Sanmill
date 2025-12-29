@@ -508,6 +508,45 @@ class _PuzzlePageState extends State<PuzzlePage> {
               ),
             ],
           ),
+          const SizedBox(height: 8),
+
+          // Attempt counter - show current session attempts
+          ValueListenableBuilder<PuzzleSettings>(
+            valueListenable: _puzzleManager.settingsNotifier,
+            builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
+              final PuzzleProgress? progress = settings.getProgress(widget.puzzle.id);
+              final int attempts = progress?.attempts ?? 0;
+              
+              if (attempts > 0) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.replay,
+                        size: 14,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        s.puzzleAttempts(attempts),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ],
       ),
     );
@@ -1111,9 +1150,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _resetPuzzle() {
+    // Record retry attempt if puzzle was already started
+    if (_moveCountNotifier.value > 0 && !_isSolved) {
+      _puzzleManager.recordAttempt(widget.puzzle.id, hintUsed: _hintsUsed);
+    }
+    
     _initializePuzzle(); // This already resets _moveCountNotifier.value = 0
     setState(() {
       _hintsUsed = false;
+      _solutionViewed = false;
     });
     _isSolved = false;
     _isAutoPlayingOpponent = false;
