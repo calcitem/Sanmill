@@ -963,53 +963,85 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               const SizedBox(height: 8),
 
               if (_snapshottedPosition != null) ...<Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      FluentIcons.checkmark_circle_24_filled,
-                      color: Colors.green[300],
-                      size: 20,
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.green.withValues(alpha: 0.4),
+                      width: 2,
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      S.of(context).puzzlePositionSnapshotted,
-                      style: TextStyle(color: Colors.green[300], fontSize: 14),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                // Mini board preview of captured position
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // Mini board
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: MiniBoard(
-                        boardLayout: _extractBoardLayout(_snapshottedPosition!),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    // FEN string
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: SelectableText(
-                          _snapshottedPosition!,
-                          style: TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 12,
-                            color: Colors.grey[300],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            FluentIcons.checkmark_circle_24_filled,
+                            color: Colors.green[300],
+                            size: 20,
                           ),
-                        ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              S.of(context).puzzlePositionCaptured,
+                              style: TextStyle(
+                                color: Colors.green[300],
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      // Mini board preview of captured position
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Mini board with subtle animation border
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.green.withValues(alpha: 0.3),
+                                width: 2,
+                              ),
+                            ),
+                            child: SizedBox(
+                              width: 120,
+                              height: 120,
+                              child: MiniBoard(
+                                boardLayout:
+                                    _extractBoardLayout(_snapshottedPosition!),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          // FEN string
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[800],
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: SelectableText(
+                                _snapshottedPosition!,
+                                style: TextStyle(
+                                  fontFamily: 'monospace',
+                                  fontSize: 12,
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ] else
                 Row(
@@ -1124,7 +1156,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               ),
               const SizedBox(height: 12),
 
-              // Multi-solution tabs
+              // Multi-solution tabs with improved visual design
               Row(
                 children: <Widget>[
                   Expanded(
@@ -1132,47 +1164,101 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: <Widget>[
-                          // Solution tabs
+                          // Solution tabs with custom styling to avoid confusion
                           for (int i = 0; i < _solutions.length; i++)
                             Padding(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: ChoiceChip(
-                                label: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(
-                                      S.of(context).puzzleSolutionTab(i + 1),
-                                    ),
-                                    if (_solutions[i].isOptimal) ...<Widget>[
-                                      const SizedBox(width: 4),
-                                      const Text(
-                                        '⭐',
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                                selected: _currentSolutionIndex == i,
-                                onSelected: (bool selected) {
-                                  if (selected) {
-                                    setState(() {
-                                      _currentSolutionIndex = i;
-                                      _tabController.animateTo(i);
-                                    });
-                                  }
+                              padding: const EdgeInsets.only(right: 8),
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _currentSolutionIndex = i;
+                                    _tabController.animateTo(i);
+                                  });
                                 },
+                                borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _currentSolutionIndex == i
+                                        ? Colors.blue.withValues(alpha: 0.3)
+                                        : Colors.grey.withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: _currentSolutionIndex == i
+                                          ? Colors.blue
+                                          : Colors.grey.withValues(alpha: 0.4),
+                                      width: _currentSolutionIndex == i ? 2 : 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      if (_solutions[i].isOptimal)
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 4),
+                                          child: Text(
+                                            '⭐',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                      Text(
+                                        S.of(context).puzzleSolutionTab(i + 1),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: _currentSolutionIndex == i
+                                              ? FontWeight.bold
+                                              : FontWeight.normal,
+                                          color: _currentSolutionIndex == i
+                                              ? Colors.blue[100]
+                                              : Colors.grey[300],
+                                        ),
+                                      ),
+                                      if (_solutions[i].moves.isNotEmpty) ...<Widget>[
+                                        const SizedBox(width: 4),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green
+                                                .withValues(alpha: 0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          child: Text(
+                                            '${_solutions[i].moves.length}',
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.green[200],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           // Add solution button
                           Padding(
                             padding: const EdgeInsets.only(left: 4),
-                            child: ActionChip(
-                              avatar: const Icon(
+                            child: OutlinedButton.icon(
+                              onPressed: _addSolution,
+                              icon: const Icon(
                                 FluentIcons.add_24_regular,
                                 size: 16,
                               ),
                               label: Text(S.of(context).puzzleAddSolution),
-                              onPressed: _addSolution,
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -1209,6 +1295,36 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       ),
                   ],
                 ),
+              const SizedBox(height: 8),
+              
+              // Info about multiple solutions
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: Colors.blue.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.info_24_regular,
+                      size: 16,
+                      color: Colors.blue[300],
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        S.of(context).puzzleMultipleSolutionsSupported,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 8),
 
               // Recording in progress indicator (compact)

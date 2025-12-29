@@ -2626,6 +2626,10 @@
     "@puzzlePositionSnapshotted": {
         "description": "Position snapshotted message"
     },
+    "puzzlePositionCaptured": "已捕获局面",
+    "@puzzlePositionCaptured": {
+        "description": "Header showing position has been captured"
+    },
     "puzzleInitialPosition": "初始局面",
     "@puzzleInitialPosition": {
         "description": "Label for initial puzzle position"
@@ -3288,6 +3292,10 @@
     "puzzleSolutionRecordingTip": "提示：开始录制时，棋盘会自动重置到您快照的局面。",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "可以添加多个解答（无数量限制）。请将最短/最佳的标记为最优。",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
     },
     "puzzleShowPositionCaptureHelp": "显示局面快照帮助",
     "@puzzleShowPositionCaptureHelp": {
