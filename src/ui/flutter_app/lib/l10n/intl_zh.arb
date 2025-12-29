@@ -2299,7 +2299,7 @@
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "找最佳着法",
+    "puzzleCategoryFindBestMove": "最优",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
