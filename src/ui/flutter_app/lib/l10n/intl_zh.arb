@@ -2319,7 +2319,7 @@
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
-    "puzzleProgressWillBeLost": "您的进度将会丢失。确定吗？",
+    "puzzleProgressWillBeLost": "进度将丢失，继续吗？",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
     },
@@ -2375,7 +2375,7 @@
     "@puzzleRuleMismatch": {
         "description": "Badge shown when puzzle rules don't match current settings"
     },
-    "puzzleRuleMismatchWarning": "此谜题为 {puzzleRules} 规则设计，但当前设置为 {currentRules}。谜题可能无法正常工作。",
+    "puzzleRuleMismatchWarning": "为 {puzzleRules} 设计，当前为 {currentRules}",
     "@puzzleRuleMismatchWarning": {
         "description": "Warning message when opening a puzzle with mismatched rules",
         "placeholders": {
@@ -2389,7 +2389,7 @@
             }
         }
     },
-    "puzzleRuleMismatchContinue": "仍然继续",
+    "puzzleRuleMismatchContinue": "继续",
     "@puzzleRuleMismatchContinue": {
         "description": "Button to continue opening a puzzle despite rule mismatch"
     },
@@ -2486,7 +2486,7 @@
     "@puzzleCapturePosition": {
         "description": "Capture current board position"
     },
-    "puzzlePositionCaptured": "局面捕获成功",
+    "puzzlePositionCaptured": "已捕获局面",
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
@@ -2618,7 +2618,7 @@
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "用逗号分隔标签",
+    "puzzleTagsHint": "逗号分隔",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
@@ -2642,11 +2642,11 @@
     "@puzzleSolutionRequired": {
         "description": "Solution required error"
     },
-    "puzzleCreated": "谜题创建成功",
+    "puzzleCreated": "已创建谜题",
     "@puzzleCreated": {
         "description": "Puzzle created message"
     },
-    "puzzleUpdated": "谜题更新成功",
+    "puzzleUpdated": "已更新谜题",
     "@puzzleUpdated": {
         "description": "Puzzle updated message"
     },

@@ -2319,7 +2319,7 @@
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
-    "puzzleProgressWillBeLost": "Your progress will be lost. Are you sure?",
+    "puzzleProgressWillBeLost": "Progress will be lost. Continue?",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
     },
@@ -2371,11 +2371,11 @@
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
-    "puzzleRuleMismatch": "Rule Mismatch",
+    "puzzleRuleMismatch": "Rules Mismatch",
     "@puzzleRuleMismatch": {
         "description": "Badge shown when puzzle rules don't match current settings"
     },
-    "puzzleRuleMismatchWarning": "This puzzle is designed for {puzzleRules}, but your current settings are {currentRules}. The puzzle may not work correctly.",
+    "puzzleRuleMismatchWarning": "For {puzzleRules}, currently {currentRules}",
     "@puzzleRuleMismatchWarning": {
         "description": "Warning message when opening a puzzle with mismatched rules",
         "placeholders": {
@@ -2389,7 +2389,7 @@
             }
         }
     },
-    "puzzleRuleMismatchContinue": "Continue Anyway",
+    "puzzleRuleMismatchContinue": "Continue",
     "@puzzleRuleMismatchContinue": {
         "description": "Button to continue opening a puzzle despite rule mismatch"
     },
@@ -2474,7 +2474,7 @@
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
-    "puzzleCreationSteps": "1. Set up the board position\n2. Capture the position\n3. Record the solution moves\n4. Fill in puzzle details\n5. Save",
+    "puzzleCreationSteps": "1. Setup board\n2. Capture position\n3. Record moves\n4. Fill details\n5. Save",
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
@@ -2486,15 +2486,15 @@
     "@puzzleCapturePosition": {
         "description": "Capture current board position"
     },
-    "puzzlePositionCaptured": "Position captured successfully",
+    "puzzlePositionCaptured": "Position captured",
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
-    "puzzleNoPositionCaptured": "No position captured yet",
+    "puzzleNoPositionCaptured": "No position yet",
     "@puzzleNoPositionCaptured": {
         "description": "No position captured message"
     },
-    "puzzleCapturePositionFirst": "Please capture a position first",
+    "puzzleCapturePositionFirst": "Capture position first",
     "@puzzleCapturePositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2514,7 +2514,7 @@
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
-    "puzzleRecordingStarted": "Started recording solution moves",
+    "puzzleRecordingStarted": "Recording started",
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
@@ -2536,7 +2536,7 @@
             }
         }
     },
-    "puzzleNoSolutionRecorded": "No solution recorded yet",
+    "puzzleNoSolutionRecorded": "No solution yet",
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
@@ -2586,7 +2586,7 @@
     "@puzzleRemoveSolutionConfirm": {
         "description": "Confirmation dialog for removing solution"
     },
-    "puzzleAtLeastOneSolution": "At least one solution is required",
+    "puzzleAtLeastOneSolution": "At least one solution required",
     "@puzzleAtLeastOneSolution": {
         "description": "At least one solution required validation message"
     },
@@ -2618,7 +2618,7 @@
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "Separate tags with commas",
+    "puzzleTagsHint": "Comma separated",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
@@ -2642,11 +2642,11 @@
     "@puzzleSolutionRequired": {
         "description": "Solution required error"
     },
-    "puzzleCreated": "Puzzle created successfully",
+    "puzzleCreated": "Puzzle created",
     "@puzzleCreated": {
         "description": "Puzzle created message"
     },
-    "puzzleUpdated": "Puzzle updated successfully",
+    "puzzleUpdated": "Puzzle updated",
     "@puzzleUpdated": {
         "description": "Puzzle updated message"
     },
@@ -2776,7 +2776,7 @@
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
-    "puzzleRushQuitConfirm": "Are you sure you want to quit the rush? Your progress will be lost.",
+    "puzzleRushQuitConfirm": "Quit rush? Progress will be lost.",
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
