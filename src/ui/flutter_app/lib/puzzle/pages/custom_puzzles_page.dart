@@ -289,8 +289,11 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    final S s = S.of(context);
     final bool success = await _puzzleManager.exportAndSharePuzzles(
       puzzlesToExport,
+      shareText: s.puzzleShareMessage(puzzlesToExport.length),
+      shareSubject: s.puzzleShareSubject(puzzlesToExport.length),
     );
 
     if (!mounted) {
@@ -587,12 +590,21 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     }
 
     // Export puzzles in contribution format
+    final S s = S.of(context);
     final bool success = puzzlesToContribute.length == 1
         ? await PuzzleExportService.shareForContribution(
             puzzlesToContribute.first,
+            shareText: s.puzzleContributionShareText,
+            shareSubject: s.puzzleContributionShareSubject(
+              puzzlesToContribute.first.title,
+            ),
           )
         : await PuzzleExportService.shareMultipleForContribution(
             puzzlesToContribute,
+            shareText: s.puzzleContributionsShareText,
+            shareSubject: s.puzzleContributionsShareSubject(
+              puzzlesToContribute.length,
+            ),
           );
 
     if (!mounted || !context.mounted) {
@@ -629,6 +641,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
+        final S s = S.of(dialogContext);
         final Color primary = Theme.of(dialogContext).colorScheme.primary;
         final Color onSurfaceVariant = Theme.of(
           dialogContext,
@@ -645,7 +658,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'How to Contribute Puzzles',
+                    s.puzzleContributeInfo,
                     style: Theme.of(dialogContext).textTheme.titleLarge,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -663,14 +676,14 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      'Help make Sanmill better by contributing your puzzles!',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      s.puzzleContributeHelp,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Quick Start:',
-                      style: TextStyle(
+                    Text(
+                      s.puzzleContributeQuickStart,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
@@ -679,29 +692,29 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     _buildInfoStep(
                       dialogContext,
                       '1',
-                      'Create Quality Puzzles',
-                      'Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.',
+                      s.puzzleContributeStep1Title,
+                      s.puzzleContributeStep1Desc,
                     ),
                     const SizedBox(height: 8),
                     _buildInfoStep(
                       dialogContext,
                       '2',
-                      'Add Your Name',
-                      'Edit your puzzle and add your name as the author to get credit.',
+                      s.puzzleContributeStep2Title,
+                      s.puzzleContributeStep2Desc,
                     ),
                     const SizedBox(height: 8),
                     _buildInfoStep(
                       dialogContext,
                       '3',
-                      'Export for Contribution',
-                      'Select your puzzles and tap the upload icon to export in the correct format.',
+                      s.puzzleContributeStep3Title,
+                      s.puzzleContributeStep3Desc,
                     ),
                     const SizedBox(height: 8),
                     _buildInfoStep(
                       dialogContext,
                       '4',
-                      'Submit',
-                      'Share the exported file via GitHub Pull Request, Issue, or email.',
+                      s.puzzleContributeStep4Title,
+                      s.puzzleContributeStep4Desc,
                     ),
                     const SizedBox(height: 16),
                     Container(
@@ -728,7 +741,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
-                                  'Full Documentation',
+                                  s.puzzleContributeFullDocs,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: primary,
@@ -741,7 +754,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.',
+                            s.puzzleContributeDocsDesc,
                             style: TextStyle(
                               fontSize: 13,
                               color: onSurfaceVariant,
@@ -754,33 +767,33 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Quality Requirements:',
-                      style: TextStyle(
+                    Text(
+                      s.puzzleContributeQualityRequirements,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      '✓ Clear, unique solution',
-                      style: TextStyle(fontSize: 13),
+                    Text(
+                      s.puzzleContributeReqClearSolution,
+                      style: const TextStyle(fontSize: 13),
                     ),
-                    const Text(
-                      '✓ Complete metadata (title, description, etc.)',
-                      style: TextStyle(fontSize: 13),
+                    Text(
+                      s.puzzleContributeReqMetadata,
+                      style: const TextStyle(fontSize: 13),
                     ),
-                    const Text(
-                      '✓ Author attribution',
-                      style: TextStyle(fontSize: 13),
+                    Text(
+                      s.puzzleContributeReqAttribution,
+                      style: const TextStyle(fontSize: 13),
                     ),
-                    const Text(
-                      '✓ Accurate difficulty rating',
-                      style: TextStyle(fontSize: 13),
+                    Text(
+                      s.puzzleContributeReqDifficulty,
+                      style: const TextStyle(fontSize: 13),
                     ),
-                    const Text(
-                      '✓ Instructive or entertaining',
-                      style: TextStyle(fontSize: 13),
+                    Text(
+                      s.puzzleContributeReqInstructive,
+                      style: const TextStyle(fontSize: 13),
                     ),
                   ],
                 ),
@@ -789,14 +802,14 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: Text(S.of(dialogContext).close),
+                child: Text(s.close),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                   _toggleMultiSelectMode();
                 },
-                child: Text(S.of(dialogContext).puzzleStartContributing),
+                child: Text(s.puzzleStartContributing),
               ),
             ],
           ),
