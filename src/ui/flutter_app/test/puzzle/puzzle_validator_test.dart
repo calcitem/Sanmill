@@ -15,6 +15,9 @@ import 'package:sanmill/shared/services/environment_config.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  const MethodChannel engineChannel = MethodChannel(
+    'com.calcitem.sanmill/engine',
+  );
   const MethodChannel pathProviderChannel = MethodChannel(
     'plugins.flutter.io/path_provider',
   );
@@ -26,6 +29,23 @@ void main() {
 
     // Initialize bitboards
     initBitboards();
+
+    // Mock engine channel
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
+          switch (methodCall.method) {
+            case 'send':
+            case 'shutdown':
+            case 'startup':
+              return null;
+            case 'read':
+              return 'uciok';
+            case 'isThinking':
+              return false;
+            default:
+              return null;
+          }
+        });
 
     // Provide a stable documents directory for Hive/path_provider callers
     appDocDir = Directory.systemTemp.createTempSync('sanmill_test_');
@@ -47,6 +67,8 @@ void main() {
   });
 
   tearDownAll(() async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(engineChannel, null);
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pathProviderChannel, null);
   });
