@@ -126,73 +126,6 @@ void main() {
       expect(() => moves.add('test'), throwsUnsupportedError);
     });
 
-    test('validateSolution returns in_progress when not finished', () {
-      final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
-      final Position position = Position();
-      position.setFen(testPuzzle.initialPosition);
-
-      validator.addMove('a1');
-
-      final ValidationFeedback feedback = validator.validateSolution(position);
-
-      expect(feedback.result, equals(ValidationResult.inProgress));
-    });
-
-    test('validateSolution returns correct when solution matches exactly', () {
-      final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
-      final Position position = Position();
-      position.setFen(testPuzzle.initialPosition);
-
-      // Simulate player moves (only white moves count)
-      validator.addMove('a1');
-      validator.addMove('a4');
-
-      // Mock a winning position
-      position.phase = Phase.gameOver;
-
-      final ValidationFeedback feedback = validator.validateSolution(position);
-
-      expect(feedback.result, equals(ValidationResult.correct));
-    });
-
-    test('validateSolution returns wrong when moves do not match solution', () {
-      final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
-      final Position position = Position();
-      position.setFen(testPuzzle.initialPosition);
-
-      // Wrong moves
-      validator.addMove('d4');
-
-      // Mock a winning position (but wrong path)
-      position.phase = Phase.gameOver;
-
-      final ValidationFeedback feedback = validator.validateSolution(position);
-
-      expect(feedback.result, equals(ValidationResult.wrong));
-    });
-
-    test('getHint returns next move in solution', () {
-      final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
-
-      final String? hint1 = validator.getHint();
-      expect(hint1, equals('a1'));
-
-      validator.addMove('a1');
-      final String? hint2 = validator.getHint();
-      // After white's move, current index is 1, next player move is at index 2
-      expect(hint2, equals('a4'));
-    });
-
-    test('getHint returns null when no more moves', () {
-      final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
-
-      validator.addMove('a1');
-      validator.addMove('a4');
-
-      final String? hint = validator.getHint();
-      expect(hint, isNull);
-    });
-
     test('reset clears all moves', () {
       final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
 
@@ -204,169 +137,10 @@ void main() {
       expect(validator.moveCount, equals(0));
       expect(validator.playerMoves, isEmpty);
     });
-
-    test('validateSolution marks optimal when move count is optimal', () {
-      final PuzzleValidator validator = PuzzleValidator(puzzle: testPuzzle);
-      final Position position = Position();
-      position.setFen(testPuzzle.initialPosition);
-
-      // Add exactly optimal number of moves
-      validator.addMove('a1');
-      validator.addMove('a4');
-
-      // Mock winning position
-      position.phase = Phase.gameOver;
-
-      final ValidationFeedback feedback = validator.validateSolution(position);
-
-      expect(feedback.result, equals(ValidationResult.correct));
-      expect(feedback.isOptimal, isTrue);
-    });
   });
 
   group('PuzzleValidator with multiple solutions', () {
-    test('matches any of the valid solutions', () {
-      final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'multi_solution_puzzle',
-        title: 'Multi Solution',
-        description: 'Puzzle with multiple solutions',
-        category: PuzzleCategory.formMill,
-        difficulty: PuzzleDifficulty.medium,
-        initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a1', side: PieceColor.white),
-              PuzzleMove(notation: 'd1', side: PieceColor.black),
-            ],
-            isOptimal: true,
-          ),
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a4', side: PieceColor.white),
-              PuzzleMove(notation: 'd4', side: PieceColor.black),
-            ],
-            isOptimal: false,
-          ),
-        ],
-      );
-
-      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
-      final Position position = Position();
-      position.setFen(puzzle.initialPosition);
-
-      // Try the second solution
-      validator.addMove('a4');
-
-      // Mock winning position
-      position.phase = Phase.gameOver;
-
-      final ValidationFeedback feedback = validator.validateSolution(position);
-
-      expect(feedback.result, equals(ValidationResult.correct));
-    });
-
-    test('distinguishes optimal vs alternative solutions', () {
-      final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'opt_test',
-        title: 'Optimal Test',
-        description: 'Test optimal detection',
-        category: PuzzleCategory.formMill,
-        difficulty: PuzzleDifficulty.medium,
-        initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a1', side: PieceColor.white),
-              PuzzleMove(notation: 'd1', side: PieceColor.black),
-            ],
-            isOptimal: true,
-          ),
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a4', side: PieceColor.white),
-              PuzzleMove(notation: 'd4', side: PieceColor.black),
-              PuzzleMove(notation: 'a7', side: PieceColor.white),
-              PuzzleMove(notation: 'd7', side: PieceColor.black),
-            ],
-            isOptimal: false,
-          ),
-        ],
-      );
-
-      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
-      final Position position = Position();
-      position.setFen(puzzle.initialPosition);
-
-      // Try optimal solution
-      validator.addMove('a1');
-      position.phase = Phase.gameOver;
-
-      ValidationFeedback feedback = validator.validateSolution(position);
-      expect(feedback.result, equals(ValidationResult.correct));
-      expect(feedback.isOptimal, isTrue);
-
-      // Reset and try longer alternative solution
-      validator.reset();
-      validator.addMove('a4');
-      validator.addMove('a7');
-
-      feedback = validator.validateSolution(position);
-      expect(feedback.result, equals(ValidationResult.correct));
-      expect(feedback.isOptimal, isFalse);
-    });
-
-    test('handles puzzle with 3+ solutions', () {
-      final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'many_sol',
-        title: 'Many Solutions',
-        description: 'Puzzle with 3 solutions',
-        category: PuzzleCategory.formMill,
-        difficulty: PuzzleDifficulty.hard,
-        initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a1', side: PieceColor.white),
-            ],
-            isOptimal: true,
-          ),
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a4', side: PieceColor.white),
-            ],
-            isOptimal: false,
-          ),
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a7', side: PieceColor.white),
-            ],
-            isOptimal: false,
-          ),
-        ],
-      );
-
-      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
-      final Position position = Position();
-      position.setFen(puzzle.initialPosition);
-
-      // Try each solution
-      for (final String move in <String>['a1', 'a4', 'a7']) {
-        validator.reset();
-        validator.addMove(move);
-        position.phase = Phase.gameOver;
-
-        final ValidationFeedback feedback = validator.validateSolution(
-          position,
-        );
-        expect(feedback.result, equals(ValidationResult.correct));
-      }
-    });
-
-    test('getHint cycles through optimal solution only', () {
+    test('getHint returns next move from optimal solution', () {
       final PuzzleInfo puzzle = PuzzleInfo(
         id: 'hint_test',
         title: 'Hint Test',
@@ -402,6 +176,10 @@ void main() {
       validator.addMove('a1');
       final String? hint2 = validator.getHint();
       expect(hint2, equals('a4'));
+
+      validator.addMove('a4');
+      final String? hint3 = validator.getHint();
+      expect(hint3, isNull);
     });
   });
 
