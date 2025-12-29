@@ -496,57 +496,72 @@ class ImportService {
       return segments;
     }
 
-    // Convert each SAN move to internal move string and add to newHistory
-    for (final PgnNodeData node in game.moves.mainline()) {
-      final String san = node.san.trim().toLowerCase();
-      if (san.isEmpty ||
-          san == "*" ||
-          san == "x" ||
-          san == "xx" ||
-          san == "xxx" ||
-          san == "p") {
-        // Skip pass moves or asterisks
-        continue;
-      }
-
-      final List<String> segments = splitSan(san);
-
-      // For moves that split into multiple segments (e.g. "b6xd3"), attach comments only to the last segment.
-      for (int i = 0; i < segments.length; i++) {
-        final String segment = segments[i];
-        if (segment.isEmpty) {
+    /// Recursively convert PGN tree to ExtMove tree with all variations
+    void convertPgnNodeToExtMove(
+      PgnNode<PgnNodeData> sourceNode,
+      PgnNode<ExtMove> targetParent,
+      Position position,
+    ) {
+      // Process all children (mainline first, then variations)
+      for (final PgnNode<PgnNodeData> child in sourceNode.children) {
+        if (child.data == null) {
           continue;
         }
-        try {
-          final String uciMove = _wmdNotationToMoveString(segment);
 
-          // If this is a place move followed by a remove move (like "b4xb2"),
-          // set preferred target so intervention capture selects the correct line
-          if (!segment.startsWith('x') &&
-              i + 1 < segments.length &&
-              segments[i + 1].startsWith('x')) {
-            final String nextRemoveMove = _wmdNotationToMoveString(
-              segments[i + 1],
-            );
-            final int targetSquare = ExtMove._parseToSquare(nextRemoveMove);
-            if (targetSquare != -1) {
-              localPos.preferredRemoveTarget = targetSquare;
-            }
+        final String san = child.data!.san.trim().toLowerCase();
+        if (san.isEmpty ||
+            san == "*" ||
+            san == "x" ||
+            san == "xx" ||
+            san == "xxx" ||
+            san == "p") {
+          // Skip pass moves or asterisks
+          continue;
+        }
+
+        // Clone position for this variation to avoid state interference
+        final Position branchPos = position.clone();
+        final List<String> segments = splitSan(san);
+        PgnNode<ExtMove>? lastAddedNode = targetParent;
+
+        // Process all segments of this move
+        for (int i = 0; i < segments.length; i++) {
+          final String segment = segments[i];
+          if (segment.isEmpty) {
+            continue;
           }
 
-          // Only attach comments, nags, and startingComments to the last segment.
-          final List<int>? nags = (i == segments.length - 1) ? node.nags : null;
-          final List<String>? startingComments = (i == segments.length - 1)
-              ? node.startingComments
-              : null;
-          final List<String>? comments = (i == segments.length - 1)
-              ? node.comments
-              : null;
+          try {
+            final String uciMove = _wmdNotationToMoveString(segment);
 
-          newHistory.appendMove(
-            ExtMove(
+            // If this is a place move followed by a remove move (like "b4xb2"),
+            // set preferred target so intervention capture selects the correct line
+            if (!segment.startsWith('x') &&
+                i + 1 < segments.length &&
+                segments[i + 1].startsWith('x')) {
+              final String nextRemoveMove = _wmdNotationToMoveString(
+                segments[i + 1],
+              );
+              final int targetSquare = ExtMove._parseToSquare(nextRemoveMove);
+              if (targetSquare != -1) {
+                branchPos.preferredRemoveTarget = targetSquare;
+              }
+            }
+
+            // Only attach comments, nags, and startingComments to the last segment.
+            final List<int>? nags = (i == segments.length - 1)
+                ? child.data!.nags
+                : null;
+            final List<String>? startingComments = (i == segments.length - 1)
+                ? child.data!.startingComments
+                : null;
+            final List<String>? comments = (i == segments.length - 1)
+                ? child.data!.comments
+                : null;
+
+            final ExtMove extMove = ExtMove(
               uciMove,
-              side: localPos.sideToMove,
+              side: branchPos.sideToMove,
               // Carry preferredRemoveTarget only for the place segment when followed by remove
               preferredRemoveTarget:
                   (!segment.startsWith('x') &&
@@ -559,19 +574,33 @@ class ImportService {
               nags: nags,
               startingComments: startingComments,
               comments: comments,
-            ),
-          );
+            );
 
-          final bool ok = localPos.doMove(uciMove);
-          if (!ok) {
-            throw ImportFormatException(" $segment → $uciMove");
+            // Create new node and add to target tree
+            final PgnNode<ExtMove> newNode = PgnNode<ExtMove>(extMove);
+            newNode.parent = lastAddedNode;
+            lastAddedNode!.children.add(newNode);
+            lastAddedNode = newNode;
+
+            final bool ok = branchPos.doMove(uciMove);
+            if (!ok) {
+              throw ImportFormatException(" $segment → $uciMove");
+            }
+          } catch (e) {
+            logger.e("$_logTag Failed to parse move segment '$segment': $e");
+            throw ImportFormatException(" $segment");
           }
-        } catch (e) {
-          logger.e("$_logTag Failed to parse move segment '$segment': $e");
-          throw ImportFormatException(" $segment");
+        }
+
+        // Recursively process children (sub-variations)
+        if (lastAddedNode != null) {
+          convertPgnNodeToExtMove(child, lastAddedNode, branchPos);
         }
       }
     }
+
+    // Convert the entire PGN tree starting from the root
+    convertPgnNodeToExtMove(game.moves, newHistory.pgnRoot, localPos);
 
     if (newHistory.mainlineMoves.isNotEmpty ||
         (fen != null && fen.isNotEmpty)) {
