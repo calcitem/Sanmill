@@ -82,10 +82,26 @@ class MovesListPageState extends State<MovesListPage> {
   // }
 
   /// Clears and refreshes _allNodes from the game recorder.
+  /// Now includes all variations, not just the mainline.
   void _refreshAllNodes() {
-    _allNodes
-      ..clear()
-      ..addAll(GameController().gameRecorder.mainlineNodes);
+    _allNodes.clear();
+
+    // Collect all nodes including variations using DFS
+    void collectNodesWithVariations(PgnNode<ExtMove> parent, {int depth = 0}) {
+      for (int i = 0; i < parent.children.length; i++) {
+        final PgnNode<ExtMove> node = parent.children[i];
+        // Mark if this is a variation (not the first child)
+        node.data?.isVariation = (i > 0);
+        node.data?.variationDepth = depth;
+        _allNodes.add(node);
+
+        // Recursively collect children
+        collectNodesWithVariations(node, depth: i > 0 ? depth + 1 : depth);
+      }
+    }
+
+    final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+    collectNodesWithVariations(root);
 
     int currentMoveIndex = 0; // Initialize move index for the first node
     int currentRound = 1; // Initialize round number starting at 1
@@ -1624,43 +1640,77 @@ class MoveListItemState extends State<MoveListItem> {
         ? (isWhite ? "$roundIndex. " : "$roundIndex... ")
         : "";
 
+    // Check if this move is a variation
+    final bool isVariation = moveData?.isVariation ?? false;
+    final int variationDepth = moveData?.variationDepth ?? 0;
+
     // Common text style with monospace font for notation
     final TextStyle combinedStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.bold,
-      color: DB().colorSettings.messageColor,
+      color: isVariation
+          ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.8)
+          : DB().colorSettings.messageColor,
       fontFamily: 'monospace', // Add monospace font
     );
 
+    // Wrap the widget with variation indicator if needed
+    Widget content;
     switch (widget.layout) {
       case MovesViewLayout.large:
-        return _buildLargeLayout(
+        content = _buildLargeLayout(
           notation,
           boardLayout,
           roundNotation,
           combinedStyle,
         );
+        break;
       case MovesViewLayout.medium:
-        return _buildMediumLayout(
+        content = _buildMediumLayout(
           notation,
           boardLayout,
           roundNotation,
           combinedStyle,
         );
+        break;
       case MovesViewLayout.small:
-        return _buildSmallLayout(
+        content = _buildSmallLayout(
           notation,
           boardLayout,
           roundNotation,
           combinedStyle,
         );
+        break;
       case MovesViewLayout.list:
         // The "list" layout is now handled in MovesListPageState._buildThreeColumnListLayout()
         // so we can return an empty container here.
         return const SizedBox.shrink();
       case MovesViewLayout.details:
-        return _buildDetailsLayout(notation, roundNotation, combinedStyle);
+        content = _buildDetailsLayout(notation, roundNotation, combinedStyle);
+        break;
     }
+
+    // Add visual indicator for variations
+    if (isVariation && widget.layout != MovesViewLayout.list) {
+      return Padding(
+        padding: EdgeInsets.only(left: 16.0 * variationDepth),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: DB().colorSettings.pieceHighlightColor.withValues(
+                  alpha: 0.6,
+                ),
+                width: 3,
+              ),
+            ),
+          ),
+          child: content,
+        ),
+      );
+    }
+
+    return content;
   }
 
   /// Large boards: single column, board on top, then "roundNotation + notation", then comment.
@@ -1670,31 +1720,46 @@ class MoveListItemState extends State<MoveListItem> {
     String roundNotation,
     TextStyle combinedStyle,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        color: DB().colorSettings.darkBackgroundColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (boardLayout.isNotEmpty)
-              AspectRatio(
-                aspectRatio: 1.0,
-                child: MiniBoard(
-                  boardLayout: boardLayout,
-                  extMove: widget.node.data,
+    return GestureDetector(
+      onTap: () => _navigateToNode(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          color: _isActiveNode()
+              ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
+              : DB().colorSettings.darkBackgroundColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              if (boardLayout.isNotEmpty)
+                AspectRatio(
+                  aspectRatio: 1.0,
+                  child: MiniBoard(
+                    boardLayout: boardLayout,
+                    extMove: widget.node.data,
+                  ),
                 ),
+              const SizedBox(height: 8),
+              Text(roundNotation + notation, style: combinedStyle),
+              const SizedBox(height: 6),
+              _buildEditableComment(
+                TextStyle(fontSize: 12, color: DB().colorSettings.messageColor),
               ),
-            const SizedBox(height: 8),
-            Text(roundNotation + notation, style: combinedStyle),
-            const SizedBox(height: 6),
-            _buildEditableComment(
-              TextStyle(fontSize: 12, color: DB().colorSettings.messageColor),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  /// Check if this node is the currently active node
+  bool _isActiveNode() {
+    return GameController().gameRecorder.activeNode == widget.node;
+  }
+
+  /// Navigate to this node when tapped
+  void _navigateToNode() {
+    HistoryNavigator.gotoNode(context, widget.node, pop: false);
   }
 
   /// Medium boards: board on the left, "roundNotation + notation" and comment on the right.
@@ -1704,63 +1769,68 @@ class MoveListItemState extends State<MoveListItem> {
     String roundNotation,
     TextStyle combinedStyle,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: DB().colorSettings.darkBackgroundColor,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: const <BoxShadow>[
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 2,
-              offset: Offset(2, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Left: mini board.
-            Expanded(
-              flex: 382,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: boardLayout.isNotEmpty
-                    ? MiniBoard(
-                        boardLayout: boardLayout,
-                        extMove: widget.node.data,
-                      )
-                    : const SizedBox.shrink(),
+    return GestureDetector(
+      onTap: () => _navigateToNode(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: _isActiveNode()
+                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
+                : DB().colorSettings.darkBackgroundColor,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 2,
+                offset: Offset(2, 2),
               ),
-            ),
-            // Right: text.
-            Expanded(
-              flex: 618,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      roundNotation + notation,
-                      style: combinedStyle,
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildEditableComment(
-                      TextStyle(
-                        fontSize: 12,
-                        color: DB().colorSettings.messageColor,
-                      ),
-                    ),
-                  ],
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Left: mini board.
+              Expanded(
+                flex: 382,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: boardLayout.isNotEmpty
+                      ? MiniBoard(
+                          boardLayout: boardLayout,
+                          extMove: widget.node.data,
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ),
-            ),
-          ],
+              // Right: text.
+              Expanded(
+                flex: 618,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        roundNotation + notation,
+                        style: combinedStyle,
+                        softWrap: true,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8),
+                      _buildEditableComment(
+                        TextStyle(
+                          fontSize: 12,
+                          color: DB().colorSettings.messageColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1773,32 +1843,37 @@ class MoveListItemState extends State<MoveListItem> {
     String roundNotation,
     TextStyle combinedStyle,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: Container(
-        color: DB().colorSettings.darkBackgroundColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (boardLayout.isNotEmpty)
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: MiniBoard(
-                    boardLayout: boardLayout,
-                    extMove: widget.node.data,
+    return GestureDetector(
+      onTap: () => _navigateToNode(),
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Container(
+          color: _isActiveNode()
+              ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
+              : DB().colorSettings.darkBackgroundColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (boardLayout.isNotEmpty)
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: MiniBoard(
+                      boardLayout: boardLayout,
+                      extMove: widget.node.data,
+                    ),
                   ),
-                ),
-              )
-            else
-              const Expanded(child: SizedBox.shrink()),
-            const SizedBox(height: 4),
-            Text(
-              roundNotation + notation,
-              style: combinedStyle.copyWith(fontSize: 12),
-              textAlign: TextAlign.center,
-            ),
-          ],
+                )
+              else
+                const Expanded(child: SizedBox.shrink()),
+              const SizedBox(height: 4),
+              Text(
+                roundNotation + notation,
+                style: combinedStyle.copyWith(fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1810,27 +1885,35 @@ class MoveListItemState extends State<MoveListItem> {
     String roundNotation,
     TextStyle combinedStyle,
   ) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: DB().colorSettings.darkBackgroundColor,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Row(
-          children: <Widget>[
-            // Left side.
-            Expanded(
-              child: Text(roundNotation + notation, style: combinedStyle),
-            ),
-            const SizedBox(width: 8),
-            // Right side: editable comment.
-            Expanded(
-              child: _buildEditableComment(
-                TextStyle(fontSize: 12, color: DB().colorSettings.messageColor),
+    return GestureDetector(
+      onTap: () => _navigateToNode(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: _isActiveNode()
+                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
+                : DB().colorSettings.darkBackgroundColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            children: <Widget>[
+              // Left side.
+              Expanded(
+                child: Text(roundNotation + notation, style: combinedStyle),
               ),
-            ),
-          ],
+              const SizedBox(width: 8),
+              // Right side: editable comment.
+              Expanded(
+                child: _buildEditableComment(
+                  TextStyle(
+                    fontSize: 12,
+                    color: DB().colorSettings.messageColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

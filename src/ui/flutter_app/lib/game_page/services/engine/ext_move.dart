@@ -97,6 +97,12 @@ class ExtMove extends PgnNodeData {
   /// Move quality evaluation
   MoveQuality? quality;
 
+  /// Whether this move is part of a variation (not mainline)
+  bool? isVariation;
+
+  /// Depth level of the variation (0 for mainline, 1+ for nested variations)
+  int? variationDepth;
+
   /// Convert MoveQuality to numeric NAG (Numeric Annotation Glyph)
   /// Good moves: ! (1), !! (3)
   /// Bad moves: ? (2), ?? (4)
