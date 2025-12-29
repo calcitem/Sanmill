@@ -201,35 +201,56 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     }
   }
 
-  /// Capture the current board position as the puzzle starting position
-  void _capturePosition() {
+  /// Open the game board with the given mode and return when user goes back.
+  /// This keeps the creation page on the stack so state is preserved.
+  Future<void> _openGameBoard(GameMode mode) async {
+    final GameController controller = GameController();
+
+    // If we have a captured position, load it into the controller so the user
+    // can continue editing from where they left off.
+    if (_capturedPosition != null) {
+      controller.position.setFen(_capturedPosition!);
+      // Also update the recorder so if they undo, they go back to this state?
+      // For setup mode, we usually just care about the board state.
+      // But clearing setupPosition ensures we are in a "fresh" edit mode from this fen.
+      controller.gameRecorder.setupPosition = _capturedPosition;
+    } else {
+      // If no position captured, start with a fresh board
+      // Ensure we don't carry over state from a previous session
+      controller.reset(force: true);
+    }
+
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => GamePage(mode),
+      ),
+    );
+
+    // Auto-update snapshot when returning from board editor
+    _checkAndSnapshotPosition(silent: true);
+  }
+
+  /// Check if the current game board position is valid and different from
+  /// the captured position, and if so, update the snapshot.
+  void _checkAndSnapshotPosition({bool silent = false}) {
     final GameController controller = GameController();
     final String fen = controller.position.fen ?? '';
 
-    // Validate FEN format before capturing
+    // If empty or invalid, ignore (unless we want to allow clearing?)
+    // But usually we don't want to auto-clear valid positions with empty ones
+    // unless explicit.
     if (fen.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).puzzleInvalidPosition),
-          backgroundColor: Colors.red,
-        ),
-      );
-      logger.e("$_tag Cannot capture empty FEN position");
       return;
     }
 
-    // Create a temporary position to validate the FEN
+    // Validate FEN
     final Position tempPosition = Position();
-    final bool isValid = tempPosition.validateFen(fen);
+    if (!tempPosition.validateFen(fen)) {
+      return;
+    }
 
-    if (!isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).puzzleInvalidPositionFormat),
-          backgroundColor: Colors.red,
-        ),
-      );
-      logger.e("$_tag Failed to validate FEN: $fen");
+    // Check if changed
+    if (fen == _capturedPosition) {
       return;
     }
 
@@ -237,24 +258,24 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       _capturedPosition = fen;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(S.of(context).puzzlePositionCaptured),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-
-    logger.i("$_tag Captured position: $fen");
+    if (!silent) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).puzzlePositionCaptured),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } else {
+      // Maybe a subtle indicator or just log?
+      // User requested they "don't realize they need to click capture".
+      // So updating silently updates the UI (MiniBoard), which is the visual feedback.
+      logger.i("$_tag Auto-snapshotted position: $fen");
+    }
   }
 
-  /// Open the game board with the given mode and return when user goes back.
-  /// This keeps the creation page on the stack so state is preserved.
-  Future<void> _openGameBoard(GameMode mode) async {
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => GamePage(mode),
-      ),
-    );
+  /// Capture the current board position as the puzzle starting position
+  void _capturePosition() {
+    _checkAndSnapshotPosition();
   }
 
   /// Start recording solution moves
@@ -1262,8 +1283,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                               width: 100,
                               height: 100,
                               child: MiniBoard(
-                                boardLayout:
-                                    _extractBoardLayout(_capturedPosition!),
+                                boardLayout: _extractBoardLayout(
+                                  _capturedPosition!,
+                                ),
                               ),
                             ),
                           ],

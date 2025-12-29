@@ -2610,7 +2610,7 @@
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
-    "puzzleCreationSteps": "1. Setup board\n2. Capture position\n3. Record moves\n4. Fill details\n5. Save",
+    "puzzleCreationSteps": "1. Setup board\n2. Snapshot position\n3. Record moves\n4. Fill details\n5. Save",
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
@@ -2618,11 +2618,11 @@
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleCapturePosition": "Capture Position",
+    "puzzleCapturePosition": "Snapshot Position",
     "@puzzleCapturePosition": {
         "description": "Capture current board position"
     },
-    "puzzlePositionCaptured": "Position captured",
+    "puzzlePositionCaptured": "Position snapshotted",
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
@@ -2634,11 +2634,11 @@
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionCaptured": "No position yet",
+    "puzzleNoPositionCaptured": "No snapshot yet",
     "@puzzleNoPositionCaptured": {
         "description": "No position captured message"
     },
-    "puzzleCapturePositionFirst": "Capture position first",
+    "puzzleCapturePositionFirst": "Snapshot position first",
     "@puzzleCapturePositionFirst": {
         "description": "Error when trying to record without position"
     },

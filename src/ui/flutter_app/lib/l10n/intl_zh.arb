@@ -2610,7 +2610,7 @@
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
-    "puzzleCreationSteps": "1. 设置棋盘局面\n2. 捕获当前局面\n3. 录制解答步骤\n4. 填写谜题详情\n5. 保存",
+    "puzzleCreationSteps": "1. 设置棋盘局面\n2. 快照当前局面\n3. 录制解答步骤\n4. 填写谜题详情\n5. 保存",
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
@@ -2618,11 +2618,11 @@
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleCapturePosition": "捕获局面",
+    "puzzleCapturePosition": "快照局面",
     "@puzzleCapturePosition": {
         "description": "Capture current board position"
     },
-    "puzzlePositionCaptured": "已捕获局面",
+    "puzzlePositionCaptured": "局面已快照",
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
@@ -2634,11 +2634,11 @@
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionCaptured": "尚未捕获局面",
+    "puzzleNoPositionCaptured": "尚未快照局面",
     "@puzzleNoPositionCaptured": {
         "description": "No position captured message"
     },
-    "puzzleCapturePositionFirst": "请先捕获局面",
+    "puzzleCapturePositionFirst": "请先快照局面",
     "@puzzleCapturePositionFirst": {
         "description": "Error when trying to record without position"
     },
