@@ -2371,6 +2371,32 @@
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
+    "puzzleRuleMismatch": "规则不匹配",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "此谜题为 {puzzleRules} 规则设计，但当前设置为 {currentRules}。谜题可能无法正常工作。",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "十二子棋"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "九子棋"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "仍然继续",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "仅兼容规则",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
     "puzzleSelect": "选择谜题",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"

@@ -33,6 +33,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   // Multi-select filters
   final Set<PuzzleDifficulty> _selectedDifficulties = <PuzzleDifficulty>{};
   final Set<PuzzleCategory> _selectedCategories = <PuzzleCategory>{};
+  bool _compatibleRulesOnly = false;
 
   // Multi-select mode
   bool _isMultiSelectMode = false;
@@ -77,6 +78,16 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     if (_selectedCategories.isNotEmpty) {
       puzzles = puzzles
           .where((PuzzleInfo p) => _selectedCategories.contains(p.category))
+          .toList();
+    }
+
+    // Filter by compatible rules
+    if (_compatibleRulesOnly) {
+      final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+        DB().ruleSettings,
+      );
+      puzzles = puzzles
+          .where((PuzzleInfo p) => p.ruleVariantId == currentVariant.id)
           .toList();
     }
 
@@ -218,7 +229,8 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                       children: <Widget>[
                         // Filter chips
                         if (_selectedDifficulties.isNotEmpty ||
-                            _selectedCategories.isNotEmpty)
+                            _selectedCategories.isNotEmpty ||
+                            _compatibleRulesOnly)
                           _buildFilterChips(context, s),
 
                         // Puzzle list
@@ -291,9 +303,17 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
               deleteIcon: const Icon(Icons.close, size: 18),
             ),
           ),
+          // Compatible rules filter chip
+          if (_compatibleRulesOnly)
+            Chip(
+              label: Text(s.puzzleCompatibleOnly),
+              onDeleted: () => setState(() => _compatibleRulesOnly = false),
+              deleteIcon: const Icon(Icons.close, size: 18),
+            ),
           // Clear all filters chip
           if (_selectedDifficulties.isNotEmpty ||
-              _selectedCategories.isNotEmpty)
+              _selectedCategories.isNotEmpty ||
+              _compatibleRulesOnly)
             ActionChip(
               label: Text(s.clearFilter),
               avatar: const Icon(Icons.clear_all, size: 18),
@@ -301,6 +321,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                 setState(() {
                   _selectedDifficulties.clear();
                   _selectedCategories.clear();
+                  _compatibleRulesOnly = false;
                 });
               },
             ),
@@ -367,6 +388,21 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                           },
                         ),
                       ),
+                      const Divider(),
+                      Text(
+                        s.rules,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      CheckboxListTile(
+                        title: Text(s.puzzleCompatibleOnly),
+                        value: _compatibleRulesOnly,
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            _compatibleRulesOnly = checked ?? false;
+                          });
+                          setDialogState(() {}); // Update dialog state
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -376,6 +412,7 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                       setState(() {
                         _selectedDifficulties.clear();
                         _selectedCategories.clear();
+                        _compatibleRulesOnly = false;
                       });
                       setDialogState(() {}); // Update dialog state
                     },
