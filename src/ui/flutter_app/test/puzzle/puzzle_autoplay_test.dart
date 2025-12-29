@@ -102,6 +102,27 @@ void main() {
     required List<List<String>> solutions,
     String? initialPosition,
   }) {
+    // Convert solution move lists to PuzzleSolution objects
+    final Position tempPos = Position();
+    tempPos.setFen(initialPosition ?? initialFen);
+    final PieceColor startingSide = tempPos.sideToMove;
+
+    final List<PuzzleSolution> puzzleSolutions = solutions.map((
+      List<String> moves,
+    ) {
+      PieceColor currentSide = startingSide;
+      final List<PuzzleMove> puzzleMoves = moves.map((String notation) {
+        final PuzzleMove move = PuzzleMove(
+          notation: notation,
+          side: currentSide,
+        );
+        currentSide = currentSide.opponent;
+        return move;
+      }).toList();
+
+      return PuzzleSolution(moves: puzzleMoves, isOptimal: true);
+    }).toList();
+
     return PuzzleInfo(
       id: 'test_puzzle',
       title: 'Test Puzzle',
@@ -109,8 +130,7 @@ void main() {
       category: PuzzleCategory.formMill,
       difficulty: PuzzleDifficulty.easy,
       initialPosition: initialPosition ?? initialFen,
-      solutionMoves: solutions,
-      optimalMoveCount: solutions.first.length,
+      solutions: puzzleSolutions,
       tags: const <String>['test'],
       isCustom: true,
       author: 'test',

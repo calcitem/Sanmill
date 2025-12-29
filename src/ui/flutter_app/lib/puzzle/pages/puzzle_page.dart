@@ -532,10 +532,16 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _isAutoPlayingOpponent = true;
     controller.isPuzzleAutoMoveInProgress = true;
 
+    // Convert solutions to legacy format for auto-player
+    final List<List<String>> legacySolutions = widget.puzzle.solutions
+        .map((PuzzleSolution s) =>
+            s.moves.map((PuzzleMove m) => m.notation).toList())
+        .toList();
+
     Future<void>.delayed(Duration.zero, () async {
       try {
         await PuzzleAutoPlayer.autoPlayOpponentResponses(
-          solutions: widget.puzzle.solutionMoves,
+          solutions: legacySolutions,
           humanColor: humanColor,
           isGameOver: () =>
               !mounted || controller.position.phase == Phase.gameOver,
@@ -855,13 +861,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Optimal solution (${widget.puzzle.solutionMoves.first.length} moves):',
+                        'Optimal solution (${widget.puzzle.solutions.first.moves.length} moves):',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 12),
                       // Show solution as numbered list
-                      ...widget.puzzle.solutionMoves.first.asMap().entries.map((
-                        MapEntry<int, String> entry,
+                      ...widget.puzzle.solutions.first.moves.asMap().entries.map((
+                        MapEntry<int, PuzzleMove> entry,
                       ) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -889,7 +895,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                               ),
                               const SizedBox(width: 12),
                               Text(
-                                entry.value,
+                                entry.value.notation,
                                 style: const TextStyle(
                                   fontFamily: 'monospace',
                                   fontSize: 14,
