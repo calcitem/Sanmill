@@ -12,13 +12,20 @@ import 'puzzle_models.dart';
 /// This groups puzzles that are designed for the same rule set.
 /// Puzzles within a collection can be sorted by difficulty, category, rating, etc.
 class PuzzleCollection {
-  PuzzleCollection({required this.variant, required this.puzzles});
+  PuzzleCollection({
+    required this.variant,
+    required this.puzzles,
+    this.metadata,
+  });
 
   /// The rule variant for this collection
   final RuleVariant variant;
 
   /// All puzzles in this collection
   final List<PuzzleInfo> puzzles;
+
+  /// Optional metadata about this collection
+  final PuzzlePackMetadata? metadata;
 
   /// Get puzzles filtered by difficulty
   List<PuzzleInfo> getPuzzlesByDifficulty(PuzzleDifficulty difficulty) {

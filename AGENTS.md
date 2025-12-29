@@ -322,9 +322,16 @@ Before submitting changes:
 ### What NOT to Create
 
 * **Do not create new Markdown documents solely to summarize code
-  changes**
+ changes**
 * Do not create redundant documentation
 * Do not document obvious code
+
+### Puzzle Format Documentation
+
+* Refer to `docs/PUZZLE_FORMAT.md` for the current puzzle JSON format
+ specification
+* Version 1.0 format uses structured `PuzzleSolution` and `PuzzleMove`
+ objects with explicit side-to-move information
 
 ---
 

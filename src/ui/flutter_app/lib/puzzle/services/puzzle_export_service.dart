@@ -18,7 +18,7 @@ class PuzzleExportService {
   const PuzzleExportService._();
 
   /// Export format version
-  static const int exportVersion = 1;
+  static const String exportVersion = '1.0';
 
   /// File extension for puzzle exports
   static const String fileExtension = 'sanmill_puzzles';
@@ -28,12 +28,18 @@ class PuzzleExportService {
   static Future<String?> exportPuzzles(
     List<PuzzleInfo> puzzles, {
     String? fileName,
+    PuzzlePackMetadata? metadata,
   }) async {
     try {
       final Map<String, dynamic> exportData = <String, dynamic>{
-        'version': exportVersion,
+        'formatVersion': exportVersion,
+        'exportedBy': <String, String>{
+          'appName': 'Sanmill',
+          'platform': Platform.operatingSystem,
+        },
         'exportDate': DateTime.now().toIso8601String(),
         'puzzleCount': puzzles.length,
+        if (metadata != null) 'metadata': metadata.toJson(),
         'puzzles': puzzles.map((PuzzleInfo p) => p.toJson()).toList(),
       };
 
@@ -62,9 +68,14 @@ class PuzzleExportService {
   static Future<bool> sharePuzzles(
     List<PuzzleInfo> puzzles, {
     String? fileName,
+    PuzzlePackMetadata? metadata,
   }) async {
     try {
-      final String? filePath = await exportPuzzles(puzzles, fileName: fileName);
+      final String? filePath = await exportPuzzles(
+        puzzles,
+        fileName: fileName,
+        metadata: metadata,
+      );
 
       if (filePath == null) {
         return false;
@@ -133,20 +144,34 @@ class PuzzleExportService {
           jsonDecode(jsonString) as Map<String, dynamic>;
 
       // Validate format
-      if (!data.containsKey('version') || !data.containsKey('puzzles')) {
+      if (!data.containsKey('puzzles')) {
         return ImportResult(
           success: false,
-          errorMessage: 'Invalid file format',
+          errorMessage: 'Invalid file format: missing puzzles field',
         );
       }
 
-      final int fileVersion = data['version'] as int;
-      if (fileVersion > exportVersion) {
+      // Check format version
+      final String? formatVersion = data['formatVersion'] as String?;
+      if (formatVersion != null && formatVersion != exportVersion) {
         return ImportResult(
           success: false,
           errorMessage:
-              'File version ($fileVersion) is newer than supported version ($exportVersion)',
+              'Incompatible file format version: $formatVersion (expected $exportVersion)',
         );
+      }
+
+      // Parse metadata if present
+      PuzzlePackMetadata? metadata;
+      if (data.containsKey('metadata')) {
+        try {
+          metadata = PuzzlePackMetadata.fromJson(
+            data['metadata'] as Map<String, dynamic>,
+          );
+        } catch (e) {
+          // Metadata parsing failed, but continue with puzzles
+          assert(false, 'Failed to parse metadata: $e');
+        }
       }
 
       // Parse puzzles
@@ -178,6 +203,7 @@ class PuzzleExportService {
       return ImportResult(
         success: true,
         puzzles: importedPuzzles,
+        metadata: metadata,
         errorMessage: errors.isEmpty ? null : errors.join('\n'),
       );
     } catch (e) {
@@ -456,6 +482,7 @@ class ImportResult {
   ImportResult({
     required this.success,
     this.puzzles = const <PuzzleInfo>[],
+    this.metadata,
     this.errorMessage,
   });
 
@@ -464,6 +491,9 @@ class ImportResult {
 
   /// Successfully imported puzzles
   final List<PuzzleInfo> puzzles;
+
+  /// Imported puzzle pack metadata (if present)
+  final PuzzlePackMetadata? metadata;
 
   /// Error message if import failed
   final String? errorMessage;

@@ -17,6 +17,10 @@ const int puzzleProgressTypeId = 31;
 const int puzzleSettingsTypeId = 32;
 const int puzzleDifficultyTypeId = 33;
 const int puzzleCategoryTypeId = 34;
+// Reserved: 35 (formerly used, now available)
+const int puzzleMoveTypeId = 36;
+const int puzzleSolutionTypeId = 37;
+const int puzzlePackMetadataTypeId = 38;
 
 // Enums need manual adapters
 
