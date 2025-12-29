@@ -2448,6 +2448,142 @@
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
+    "puzzleImportNoFileSelected": "未选择文件",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "无效的文件路径",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "选择文件时出错：{error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "文件不存在",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "无效的文件格式：缺少谜题字段",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "不兼容的文件格式版本：{version}（期望 {expected}）",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "谜题 {index}（\"{title}\"）的 FEN 格式无效",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "谜题 {index}（\"{title}\"）使用不同的规则：{puzzleRules}（当前：{currentRules}）。此谜题可能无法在您当前的设置下正常工作。",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "解析谜题 {index} 失败：{error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "错误：",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "警告：",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "读取文件时出错：{error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "谜题必须有标题",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "谜题必须有描述",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "谜题必须有有效的局面",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "谜题的 FEN 格式无效。请检查局面。",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "谜题必须有解答",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "标题太短（至少 5 个字符）",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "标题太长（最多 100 个字符）",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "描述太短（至少 10 个字符）",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "描述太长（最多 500 个字符）",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "贡献前请添加您的姓名作为作者",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
     "puzzleDeleteConfirm": "{count,plural, other{删除 {count} 个谜题？}}",
     "@puzzleDeleteConfirm": {
         "description": "Confirm deletion of puzzles",
