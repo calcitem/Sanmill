@@ -213,7 +213,15 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     // If we have a snapshotted position, load it into the controller so the user
     // can continue editing from where they left off.
     if (_snapshottedPosition != null) {
-      controller.position.setFen(_snapshottedPosition!);
+      // While recording a solution, do not force-reset the board back to the
+      // snapshotted position when reopening the board in play mode. This allows
+      // the user to continue recording from the current position.
+      //
+      // For setup mode, always load the snapshotted position so editing remains
+      // consistent with the current snapshot.
+      if (!_isRecordingSolution || mode == GameMode.setupPosition) {
+        controller.position.setFen(_snapshottedPosition!);
+      }
       // Also update the recorder so if they undo, they go back to this state?
       // For setup mode, we usually just care about the board state.
       // But clearing setupPosition ensures we are in a "fresh" edit mode from this fen.
@@ -230,8 +238,17 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       ),
     );
 
-    // Auto-update snapshot when returning from board editor
-    _checkAndSnapshotPosition();
+    // Auto-update snapshot when returning from board editor.
+    //
+    // Important: While recording a solution in play mode, we must NOT update
+    // the initial snapshotted position from the current board, otherwise the
+    // initial position will be overwritten by the final (post-solution) position.
+    //
+    // For setup mode, always allow snapshot updates so users can still edit the
+    // initial position if needed.
+    if (!_isRecordingSolution || mode == GameMode.setupPosition) {
+      _checkAndSnapshotPosition();
+    }
   }
 
   /// Check if the current game board position is valid and different from
