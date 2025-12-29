@@ -32,6 +32,57 @@ class GameRecorder {
   /// Returns all the moves from the main line (children[0] chain) as a list.
   List<ExtMove> get mainlineMoves => _pgnRoot.mainline().toList();
 
+  /// Get the path from root to active node as a list of moves
+  List<ExtMove> get currentPath {
+    final List<ExtMove> path = <ExtMove>[];
+    PgnNode<ExtMove>? node = activeNode;
+    while (node != null && node.data != null) {
+      path.insert(0, node.data!);
+      node = node.parent;
+    }
+    return path;
+  }
+
+  /// Get all variations (alternative moves) at the active node
+  /// Returns a list of sibling nodes (excluding the active node itself)
+  List<PgnNode<ExtMove>> getVariationsAtActiveNode() {
+    final PgnNode<ExtMove>? parent = activeNode?.parent;
+    if (parent == null) {
+      return <PgnNode<ExtMove>>[];
+    }
+
+    // Return all siblings except the active node
+    return parent.children
+        .where((PgnNode<ExtMove> node) => node != activeNode)
+        .toList();
+  }
+
+  /// Switch to a specific variation by setting it as the active branch
+  /// This makes the variation node the new active node
+  void switchToVariation(PgnNode<ExtMove> variationNode) {
+    if (variationNode.parent != null) {
+      activeNode = variationNode;
+      moveCountNotifier.value = currentPath.length;
+    }
+  }
+
+  /// Check if the active node has any variations (sibling branches)
+  bool hasVariationsAtActiveNode() {
+    return getVariationsAtActiveNode().isNotEmpty;
+  }
+
+  /// Get the next moves available from the current active position
+  /// Returns the first child (mainline continuation) and any variation siblings
+  List<PgnNode<ExtMove>> getNextMoveOptions() {
+    final PgnNode<ExtMove>? node = activeNode ?? _pgnRoot;
+    return node.children;
+  }
+
+  /// Check if there are multiple move options from the current position
+  bool hasMultipleNextMoves() {
+    return getNextMoveOptions().length > 1;
+  }
+
   /// Returns whether we are at the end of the move history.
   bool isAtEnd() {
     final PgnNode<ExtMove>? node = activeNode;
@@ -50,7 +101,9 @@ class GameRecorder {
   }
 
   /// Appends a new move at the end of the current active line.
-  void appendMove(ExtMove move) {
+  /// If a move already exists at this position with different notation,
+  /// creates a new variation branch.
+  void appendMove(ExtMove move, {bool createVariation = true}) {
     if (activeNode == null) {
       // No moves yet or just reset. Walk down the mainline from root to the last child.
       PgnNode<ExtMove> tail = _pgnRoot;
@@ -62,20 +115,60 @@ class GameRecorder {
       tail.children.add(newChild);
       activeNode = newChild;
     } else {
-      // Extend the active line by inserting new move at the front of children.
-      final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
-      newChild.parent = activeNode;
-      activeNode!.children.insert(0, newChild);
-      activeNode = newChild;
+      // Check if active node already has children
+      if (activeNode!.children.isNotEmpty && createVariation) {
+        // Check if the new move is different from existing first child
+        final ExtMove? existingMove = activeNode!.children.first.data;
+        if (existingMove != null && existingMove.move != move.move) {
+          // Create a variation: add as a new child (not at position 0)
+          final PgnNode<ExtMove> variationNode = PgnNode<ExtMove>(move);
+          variationNode.parent = activeNode;
+          activeNode!.children.add(variationNode);
+          activeNode = variationNode;
+        } else if (existingMove != null && existingMove.move == move.move) {
+          // Same move exists, just follow it
+          activeNode = activeNode!.children.first;
+        } else {
+          // Extend normally
+          final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
+          newChild.parent = activeNode;
+          activeNode!.children.insert(0, newChild);
+          activeNode = newChild;
+        }
+      } else {
+        // Extend the active line by inserting new move at the front of children.
+        final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
+        newChild.parent = activeNode;
+        activeNode!.children.insert(0, newChild);
+        activeNode = newChild;
+      }
     }
     // Notify that move count has changed
-    moveCountNotifier.value = mainlineMoves.length;
+    moveCountNotifier.value = currentPath.length;
   }
 
   /// Appends a new move only if it differs from the current active move.
   void appendMoveIfDifferent(ExtMove newMove) {
-    final ExtMove? curr = activeNode?.data;
-    if (curr == null || curr.move != newMove.move) {
+    final PgnNode<ExtMove>? node = activeNode;
+    if (node == null) {
+      appendMove(newMove);
+      return;
+    }
+
+    // Check if there's already a child with this move
+    final PgnNode<ExtMove>? existingChild = node.children
+        .cast<PgnNode<ExtMove>?>()
+        .firstWhere(
+          (PgnNode<ExtMove>? child) => child?.data?.move == newMove.move,
+          orElse: () => null,
+        );
+
+    if (existingChild != null) {
+      // Move already exists, just follow it
+      activeNode = existingChild;
+      moveCountNotifier.value = currentPath.length;
+    } else {
+      // New move, append it (will create variation if needed)
       appendMove(newMove);
     }
   }
