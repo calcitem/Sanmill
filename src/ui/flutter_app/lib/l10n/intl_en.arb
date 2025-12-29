@@ -2618,13 +2618,13 @@
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleCapturePosition": "Snapshot Position",
-    "@puzzleCapturePosition": {
-        "description": "Capture current board position"
+    "puzzleSnapshotPosition": "Snapshot Position",
+    "@puzzleSnapshotPosition": {
+        "description": "Snapshot current board position"
     },
-    "puzzlePositionCaptured": "Position snapshotted",
-    "@puzzlePositionCaptured": {
-        "description": "Position captured message"
+    "puzzlePositionSnapshotted": "Position snapshotted",
+    "@puzzlePositionSnapshotted": {
+        "description": "Position snapshotted message"
     },
     "puzzleInitialPosition": "Initial Position",
     "@puzzleInitialPosition": {
@@ -2634,12 +2634,12 @@
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionCaptured": "No snapshot yet",
-    "@puzzleNoPositionCaptured": {
-        "description": "No position captured message"
+    "puzzleNoPositionSnapshotted": "No snapshot yet",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
     },
-    "puzzleCapturePositionFirst": "Snapshot position first",
-    "@puzzleCapturePositionFirst": {
+    "puzzleSnapshotPositionFirst": "Snapshot position first",
+    "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
     "puzzleRecordSolution": "Record Solution",
@@ -3201,11 +3201,11 @@
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "Failed to load position. Please recapture.",
+    "puzzleFailedLoadPosition": "Failed to load position. Please resnapshot.",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please recapture the position.",
+    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please resnapshot the position.",
     "@puzzleInvalidPositionFormatRecapture": {
         "description": "Error message when position format is invalid and needs recapture"
     },
@@ -3221,7 +3221,7 @@
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "Open board, setup position, capture",
+    "puzzleWorkflowStepSetupDesc": "Open board, setup position, snapshot",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
@@ -3257,12 +3257,12 @@
     "@ok": {
         "description": "OK button text"
     },
-    "puzzlePositionCaptureHelp": "Position Capture Help",
-    "@puzzlePositionCaptureHelp": {
+    "puzzlePositionSnapshotHelp": "Position Snapshot Help",
+    "@puzzlePositionSnapshotHelp": {
         "description": "Title for position capture help dialog"
     },
-    "puzzlePositionCaptureHelpContent": "How to capture the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. Click \"Capture Position\" button to save the current board state\n\nThe captured position will be used as the starting point for your puzzle.",
-    "@puzzlePositionCaptureHelpContent": {
+    "puzzlePositionSnapshotHelpContent": "How to snapshot the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. The position will be snapshotted automatically. If not, click \"Snapshot Position\" button to save the current board state\n\nThis snapshotted position will be used as the starting point for your puzzle.",
+    "@puzzlePositionSnapshotHelpContent": {
         "description": "Help content for capturing puzzle starting position"
     },
     "puzzleSolutionRecordingHelp": "Solution Recording Help",
@@ -3273,11 +3273,11 @@
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "Capture the starting position first",
+    "puzzleSolutionStep1": "Snapshot the starting position first",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your captured position)",
+    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your snapshotted position)",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
@@ -3285,12 +3285,12 @@
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your captured position when you start recording.",
+    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your snapshotted position when you start recording.",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleShowPositionCaptureHelp": "Show position capture help",
-    "@puzzleShowPositionCaptureHelp": {
+    "puzzleShowPositionSnapshotHelp": "Show position snapshot help",
+    "@puzzleShowPositionSnapshotHelp": {
         "description": "Tooltip for position capture help button"
     },
     "puzzleShowSolutionRecordingHelp": "Show solution recording help",

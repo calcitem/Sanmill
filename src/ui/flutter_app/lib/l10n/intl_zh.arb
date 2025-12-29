@@ -2618,13 +2618,13 @@
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzleCapturePosition": "快照局面",
-    "@puzzleCapturePosition": {
-        "description": "Capture current board position"
+    "puzzleSnapshotPosition": "快照局面",
+    "@puzzleSnapshotPosition": {
+        "description": "Snapshot current board position"
     },
-    "puzzlePositionCaptured": "局面已快照",
-    "@puzzlePositionCaptured": {
-        "description": "Position captured message"
+    "puzzlePositionSnapshotted": "局面已快照",
+    "@puzzlePositionSnapshotted": {
+        "description": "Position snapshotted message"
     },
     "puzzleInitialPosition": "初始局面",
     "@puzzleInitialPosition": {
@@ -2634,12 +2634,12 @@
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionCaptured": "尚未快照局面",
-    "@puzzleNoPositionCaptured": {
-        "description": "No position captured message"
+    "puzzleNoPositionSnapshotted": "尚未快照局面",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
     },
-    "puzzleCapturePositionFirst": "请先快照局面",
-    "@puzzleCapturePositionFirst": {
+    "puzzleSnapshotPositionFirst": "请先快照局面",
+    "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
     "puzzleRecordSolution": "录制解答",
@@ -3201,11 +3201,11 @@
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "加载局面失败。请重新捕获。",
+    "puzzleFailedLoadPosition": "加载局面失败。请重新快照。",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "无效的局面格式。请重新捕获局面。",
+    "puzzleInvalidPositionFormatRecapture": "无效的局面格式。请重新快照局面。",
     "@puzzleInvalidPositionFormatRecapture": {
         "description": "Error message when position format is invalid and needs recapture"
     },
@@ -3221,7 +3221,7 @@
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "打开棋盘，摆局面，捕获",
+    "puzzleWorkflowStepSetupDesc": "打开棋盘，摆局面，快照",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
@@ -3257,11 +3257,11 @@
     "@ok": {
         "description": "OK button text"
     },
-    "puzzlePositionCaptureHelp": "局面捕获帮助",
+    "puzzlePositionCaptureHelp": "局面快照帮助",
     "@puzzlePositionCaptureHelp": {
         "description": "Title for position capture help dialog"
     },
-    "puzzlePositionCaptureHelpContent": "如何捕获谜题起始局面：\n\n1. 点击\"打开棋盘（摆局）\"手动摆放棋子，或点击\"打开棋盘（走子）\"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 点击\"捕获局面\"按钮保存当前棋盘状态\n\n捕获的局面将作为您谜题的起始点。",
+    "puzzlePositionCaptureHelpContent": "如何快照谜题起始局面：\n\n1. 点击\"打开棋盘（摆局）\"手动摆放棋子，或点击\"打开棋盘（走子）\"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 局面将自动快照。如果没有，您可以点击\"快照局面\"按钮保存当前棋盘状态\n\n快照的局面将作为您谜题的起始点。",
     "@puzzlePositionCaptureHelpContent": {
         "description": "Help content for capturing puzzle starting position"
     },
@@ -3273,11 +3273,11 @@
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "首先捕获起始局面",
+    "puzzleSolutionStep1": "首先快照起始局面",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "点击\"开始录制\"按钮（这会将棋盘重置到您捕获的局面）",
+    "puzzleSolutionStep2": "点击\"开始录制\"按钮（这会将棋盘重置到您快照的局面）",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
@@ -3285,11 +3285,11 @@
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "提示：开始录制时，棋盘会自动重置到您捕获的局面。",
+    "puzzleSolutionRecordingTip": "提示：开始录制时，棋盘会自动重置到您快照的局面。",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleShowPositionCaptureHelp": "显示局面捕获帮助",
+    "puzzleShowPositionCaptureHelp": "显示局面快照帮助",
     "@puzzleShowPositionCaptureHelp": {
         "description": "Tooltip for position capture help button"
     },

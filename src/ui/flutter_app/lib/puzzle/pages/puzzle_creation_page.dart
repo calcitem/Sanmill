@@ -42,7 +42,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   PuzzleCategory _selectedCategory = PuzzleCategory.formMill;
   PuzzleDifficulty _selectedDifficulty = PuzzleDifficulty.easy;
 
-  String? _capturedPosition;
+  String? _snapshottedPosition;
 
   // Multi-solution support
   final List<_SolutionData> _solutions = <_SolutionData>[];
@@ -179,7 +179,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     _authorController.text = puzzle.author ?? '';
     _selectedCategory = puzzle.category;
     _selectedDifficulty = puzzle.difficulty;
-    _capturedPosition = puzzle.initialPosition;
+    _snapshottedPosition = puzzle.initialPosition;
 
     // Load all solutions
     _solutions.clear();
@@ -206,16 +206,16 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   Future<void> _openGameBoard(GameMode mode) async {
     final GameController controller = GameController();
 
-    // If we have a captured position, load it into the controller so the user
+    // If we have a snapshotted position, load it into the controller so the user
     // can continue editing from where they left off.
-    if (_capturedPosition != null) {
-      controller.position.setFen(_capturedPosition!);
+    if (_snapshottedPosition != null) {
+      controller.position.setFen(_snapshottedPosition!);
       // Also update the recorder so if they undo, they go back to this state?
       // For setup mode, we usually just care about the board state.
       // But clearing setupPosition ensures we are in a "fresh" edit mode from this fen.
-      controller.gameRecorder.setupPosition = _capturedPosition;
+      controller.gameRecorder.setupPosition = _snapshottedPosition;
     } else {
-      // If no position captured, start with a fresh board
+      // If no position snapshotted, start with a fresh board
       // Ensure we don't carry over state from a previous session
       controller.reset(force: true);
     }
@@ -231,7 +231,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   }
 
   /// Check if the current game board position is valid and different from
-  /// the captured position, and if so, update the snapshot.
+  /// the snapshotted position, and if so, update the snapshot.
   void _checkAndSnapshotPosition({bool silent = false}) {
     final GameController controller = GameController();
     final String fen = controller.position.fen ?? '';
@@ -250,18 +250,18 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     }
 
     // Check if changed
-    if (fen == _capturedPosition) {
+    if (fen == _snapshottedPosition) {
       return;
     }
 
     setState(() {
-      _capturedPosition = fen;
+      _snapshottedPosition = fen;
     });
 
     if (!silent) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzlePositionCaptured),
+          content: Text(S.of(context).puzzlePositionSnapshotted),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -273,17 +273,17 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     }
   }
 
-  /// Capture the current board position as the puzzle starting position
-  void _capturePosition() {
+  /// Snapshot the current board position as the puzzle starting position
+  void _snapshotPosition() {
     _checkAndSnapshotPosition();
   }
 
   /// Start recording solution moves
   void _startRecordingSolution() {
-    if (_capturedPosition == null) {
+    if (_snapshottedPosition == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleCapturePositionFirst),
+          content: Text(S.of(context).puzzleSnapshotPositionFirst),
           backgroundColor: Colors.orange,
         ),
       );
@@ -292,9 +292,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
     final GameController controller = GameController();
 
-    // Load the captured position to the game board
+    // Load the snapshotted position to the game board
     // This ensures the board is at the correct starting position when user returns
-    final bool loaded = controller.position.setFen(_capturedPosition!);
+    final bool loaded = controller.position.setFen(_snapshottedPosition!);
     if (!loaded) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -302,7 +302,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
           backgroundColor: Colors.red,
         ),
       );
-      logger.e("$_tag Failed to load captured position for recording");
+      logger.e("$_tag Failed to load snapshotted position for recording");
       return;
     }
 
@@ -311,7 +311,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
     // Reset the game recorder to clear all previous moves
     controller.gameRecorder.reset();
-    controller.gameRecorder.setupPosition = _capturedPosition;
+    controller.gameRecorder.setupPosition = _snapshottedPosition;
 
     // Refresh UI elements
     controller.headerIconsNotifier.showIcons();
@@ -333,7 +333,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     );
 
     logger.i(
-      "$_tag Started recording solution ${_currentSolutionIndex + 1} moves from captured position",
+      "$_tag Started recording solution ${_currentSolutionIndex + 1} moves from snapshotted position",
     );
   }
 
@@ -348,7 +348,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       recordedMoves.add(allMoves[i].move);
     }
 
-    // Capture the final position after all solution moves
+    // Snapshot the final position after all solution moves
     final String? finalFen = controller.position.fen;
 
     setState(() {
@@ -367,7 +367,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     );
 
     logger.i(
-      "$_tag Stopped recording, captured ${_currentSolution.moves.length} moves for solution ${_currentSolutionIndex + 1}",
+      "$_tag Stopped recording, snapshotted ${_currentSolution.moves.length} moves for solution ${_currentSolutionIndex + 1}",
     );
   }
 
@@ -389,13 +389,13 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       return S.of(context).puzzleDescriptionRequired;
     }
 
-    if (_capturedPosition == null) {
+    if (_snapshottedPosition == null) {
       return S.of(context).puzzlePositionRequired;
     }
 
     // Validate FEN format before saving
     final Position tempPosition = Position();
-    if (!tempPosition.validateFen(_capturedPosition!)) {
+    if (!tempPosition.validateFen(_snapshottedPosition!)) {
       return S.of(context).puzzleInvalidPositionFormatRecapture;
     }
 
@@ -431,7 +431,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     // Create PuzzleSolution objects from all recorded solutions
     // Get starting side from initial position
     final Position tempPos = Position();
-    tempPos.setFen(_capturedPosition!);
+    tempPos.setFen(_snapshottedPosition!);
     final PieceColor startingSide = tempPos.sideToMove;
 
     final List<PuzzleSolution> puzzleSolutions = <PuzzleSolution>[];
@@ -468,7 +468,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       description: _descriptionController.text.trim(),
       category: _selectedCategory,
       difficulty: _selectedDifficulty,
-      initialPosition: _capturedPosition!,
+      initialPosition: _snapshottedPosition!,
       solutions: puzzleSolutions,
       hint: _hintController.text.trim().isEmpty
           ? null
@@ -666,7 +666,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 '1',
                 S.of(dialogContext).puzzleWorkflowStepSetup,
                 S.of(dialogContext).puzzleWorkflowStepSetupDesc,
-                _capturedPosition != null,
+                _snapshottedPosition != null,
               ),
               _buildWorkflowStep(
                 dialogContext,
@@ -733,8 +733,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     );
   }
 
-  /// Show position capture help dialog
-  void _showPositionCaptureHelp(BuildContext context) {
+  /// Show position snapshot help dialog
+  void _showPositionSnapshotHelp(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) => AlertDialog(
@@ -745,7 +745,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
             // Wrap text in Expanded to prevent overflow on small screens
             Expanded(
               child: Text(
-                S.of(dialogContext).puzzlePositionCaptureHelp,
+                S.of(dialogContext).puzzlePositionSnapshotHelp,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -754,7 +754,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
         ),
         content: SingleChildScrollView(
           child: Text(
-            S.of(dialogContext).puzzlePositionCaptureHelpContent,
+            S.of(dialogContext).puzzlePositionSnapshotHelpContent,
             style: const TextStyle(fontSize: 14),
           ),
         ),
@@ -953,8 +953,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       color: Colors.blue[300],
                       size: 20,
                     ),
-                    onPressed: () => _showPositionCaptureHelp(context),
-                    tooltip: S.of(context).puzzleShowPositionCaptureHelp,
+                    onPressed: () => _showPositionSnapshotHelp(context),
+                    tooltip: S.of(context).puzzleShowPositionSnapshotHelp,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -962,7 +962,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               ),
               const SizedBox(height: 8),
 
-              if (_capturedPosition != null) ...<Widget>[
+              if (_snapshottedPosition != null) ...<Widget>[
                 Row(
                   children: <Widget>[
                     Icon(
@@ -972,7 +972,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      S.of(context).puzzlePositionCaptured,
+                      S.of(context).puzzlePositionSnapshotted,
                       style: TextStyle(color: Colors.green[300], fontSize: 14),
                     ),
                   ],
@@ -987,7 +987,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       width: 120,
                       height: 120,
                       child: MiniBoard(
-                        boardLayout: _extractBoardLayout(_capturedPosition!),
+                        boardLayout: _extractBoardLayout(_snapshottedPosition!),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1000,7 +1000,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: SelectableText(
-                          _capturedPosition!,
+                          _snapshottedPosition!,
                           style: TextStyle(
                             fontFamily: 'monospace',
                             fontSize: 12,
@@ -1021,7 +1021,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      S.of(context).puzzleNoPositionCaptured,
+                      S.of(context).puzzleNoPositionSnapshotted,
                       style: TextStyle(color: hintColor, fontSize: 14),
                     ),
                   ],
@@ -1071,11 +1071,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 ),
               ),
               const SizedBox(height: 8),
-              // Button to capture current board position
+              // Button to snapshot current board position
               ElevatedButton.icon(
-                onPressed: _capturePosition,
+                onPressed: _snapshotPosition,
                 icon: const Icon(FluentIcons.camera_24_regular),
-                label: Text(S.of(context).puzzleCapturePosition),
+                label: Text(S.of(context).puzzleSnapshotPosition),
               ),
             ],
           ),
@@ -1263,7 +1263,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 ),
                 const SizedBox(height: 8),
                 // Display both initial and final positions as mini boards
-                if (_capturedPosition != null &&
+                if (_snapshottedPosition != null &&
                     _currentSolution.finalPosition != null)
                   Row(
                     children: <Widget>[
@@ -1284,7 +1284,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                               height: 100,
                               child: MiniBoard(
                                 boardLayout: _extractBoardLayout(
-                                  _capturedPosition!,
+                                  _snapshottedPosition!,
                                 ),
                               ),
                             ),
