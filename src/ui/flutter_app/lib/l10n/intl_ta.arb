@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "பின்னணி இசை",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "உள்ளக ஒலிக்கோப்பை பின்னணி இசையாக இயக்கவும்",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "பின்னணி இசை கோப்பு",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "பின்னணி இசையை அகற்று",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "இசை கோப்புகள்",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "திரும்பப் பெறும்போது ஊமையாக வைத்திருங்கள்",
     "@keepMuteWhenTakingBack": {
