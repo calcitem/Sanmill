@@ -4105,6 +4105,15 @@
     "@puzzleSolutionViewedNote": {
         "description": "Note shown in completion dialog when solution was viewed"
     },
+    "puzzleAttempts": "尝试次数：{count}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleNoMoreHints": "没有更多提示了",
     "@puzzleNoMoreHints": {
         "description": "Message shown when no more hints available"

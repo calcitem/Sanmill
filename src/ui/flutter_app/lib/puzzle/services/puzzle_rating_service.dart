@@ -7,6 +7,7 @@
 
 import 'dart:math';
 
+import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/puzzle_models.dart';
 
@@ -72,12 +73,15 @@ class PuzzleRatingService {
 
   /// Get user's current puzzle rating
   PuzzleRating getUserRating() {
-    // TODO: Load from database
+    // Load from PuzzleSettings
+    final int currentRating = DB().puzzleSettings.userRating;
+    final int gamesPlayed = DB().puzzleSettings.totalCompleted;
+    
     return PuzzleRating(
-      rating: _initialRating,
-      gamesPlayed: 0,
+      rating: currentRating,
+      gamesPlayed: gamesPlayed,
       provisionalGames: _provisionalGames,
-      ratingDeviation: _initialRD,
+      ratingDeviation: gamesPlayed < _provisionalGames ? _initialRD : _minRD,
     );
   }
 

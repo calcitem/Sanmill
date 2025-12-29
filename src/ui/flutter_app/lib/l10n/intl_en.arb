@@ -4105,6 +4105,15 @@
     "@puzzleSolutionViewedNote": {
         "description": "Note shown in completion dialog when solution was viewed"
     },
+    "puzzleAttempts": "{count, plural, =1{Attempt: {count}} other{Attempts: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleNoMoreHints": "No more hints available",
     "@puzzleNoMoreHints": {
         "description": "Message shown when no more hints available"
