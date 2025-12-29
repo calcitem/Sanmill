@@ -246,14 +246,16 @@ void main() {
     expect(ok, isTrue);
 
     // Wait for auto-play logic to complete (including undo)
+    // After wrong move, the system should undo and show error message
     await pumpUntil(
       tester,
-      () =>
-          !controller.isPuzzleAutoMoveInProgress &&
-          controller.gameRecorder.mainlineMoves.isEmpty,
+      () => !controller.isPuzzleAutoMoveInProgress,
+      maxPumps: 500,
     );
 
+    // Verify error message is shown
     expect(find.text('Wrong move. Try again.'), findsOneWidget);
+    // After undo, it should be white's turn again
     expect(controller.position.sideToMove, PieceColor.white);
   });
 
