@@ -516,6 +516,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 backgroundColor: useDarkSettingsUi
                     ? settingsTheme.scaffoldBackgroundColor
                     : AppTheme.lightBackgroundColor,
+                // Prevent scaffold from resizing when keyboard appears
+                // This improves performance by avoiding layout recalculation
+                resizeToAvoidBottomInset: true,
                 appBar: AppBar(
                   title: Text(
                     _isEditing
@@ -534,6 +537,10 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ],
                 ),
                 body: SingleChildScrollView(
+                  // Use physics that don't interfere with keyboard animation
+                  physics: const ClampingScrollPhysics(),
+                  // Reduce rebuild overhead with const key
+                  key: const PageStorageKey<String>('puzzle_creation_scroll'),
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -891,110 +898,113 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
   Widget _buildPositionCaptureSection(BuildContext context) {
     final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Section title with help icon
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    S.of(context).puzzleSetupPosition,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                // Help icon for position capture instructions
-                IconButton(
-                  icon: Icon(
-                    FluentIcons.question_circle_24_regular,
-                    color: Colors.blue[300],
-                    size: 20,
-                  ),
-                  onPressed: () => _showPositionCaptureHelp(context),
-                  tooltip: S.of(context).puzzleShowPositionCaptureHelp,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            if (_capturedPosition != null) ...<Widget>[
+    // Wrap in RepaintBoundary for performance isolation
+    return RepaintBoundary(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Section title with help icon
               Row(
                 children: <Widget>[
-                  Icon(
-                    FluentIcons.checkmark_circle_24_filled,
-                    color: Colors.green[300],
-                    size: 20,
+                  Expanded(
+                    child: Text(
+                      S.of(context).puzzleSetupPosition,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    S.of(context).puzzlePositionCaptured,
-                    style: TextStyle(color: Colors.green[300], fontSize: 14),
+                  // Help icon for position capture instructions
+                  IconButton(
+                    icon: Icon(
+                      FluentIcons.question_circle_24_regular,
+                      color: Colors.blue[300],
+                      size: 20,
+                    ),
+                    onPressed: () => _showPositionCaptureHelp(context),
+                    tooltip: S.of(context).puzzleShowPositionCaptureHelp,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular(4),
+
+              if (_capturedPosition != null) ...<Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.checkmark_circle_24_filled,
+                      color: Colors.green[300],
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      S.of(context).puzzlePositionCaptured,
+                      style: TextStyle(color: Colors.green[300], fontSize: 14),
+                    ),
+                  ],
                 ),
-                child: SelectableText(
-                  _capturedPosition!,
-                  style: TextStyle(
-                    fontFamily: 'monospace',
-                    fontSize: 11,
-                    color: Colors.grey[300],
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: SelectableText(
+                    _capturedPosition!,
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 11,
+                      color: Colors.grey[300],
+                    ),
                   ),
                 ),
+              ] else
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.warning_24_regular,
+                      color: hintColor,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      S.of(context).puzzleNoPositionCaptured,
+                      style: TextStyle(color: hintColor, fontSize: 14),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 12),
+              // Button to open board in setup mode (manually place pieces)
+              OutlinedButton.icon(
+                onPressed: () => _openGameBoard(GameMode.setupPosition),
+                icon: const Icon(FluentIcons.window_new_24_regular),
+                label: Text(S.of(context).puzzleOpenBoardSetup),
               ),
-            ] else
-              Row(
-                children: <Widget>[
-                  Icon(
-                    FluentIcons.warning_24_regular,
-                    color: hintColor,
-                    size: 18,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    S.of(context).puzzleNoPositionCaptured,
-                    style: TextStyle(color: hintColor, fontSize: 14),
-                  ),
-                ],
+              const SizedBox(height: 8),
+              // Button to open board in play mode (make moves to reach position)
+              OutlinedButton.icon(
+                onPressed: () => _openGameBoard(GameMode.humanVsHuman),
+                icon: const Icon(FluentIcons.play_24_regular),
+                label: Text(S.of(context).puzzleOpenBoardPlay),
               ),
-            const SizedBox(height: 12),
-            // Button to open board in setup mode (manually place pieces)
-            OutlinedButton.icon(
-              onPressed: () => _openGameBoard(GameMode.setupPosition),
-              icon: const Icon(FluentIcons.window_new_24_regular),
-              label: Text(S.of(context).puzzleOpenBoardSetup),
-            ),
-            const SizedBox(height: 8),
-            // Button to open board in play mode (make moves to reach position)
-            OutlinedButton.icon(
-              onPressed: () => _openGameBoard(GameMode.humanVsHuman),
-              icon: const Icon(FluentIcons.play_24_regular),
-              label: Text(S.of(context).puzzleOpenBoardPlay),
-            ),
-            const SizedBox(height: 8),
-            // Button to capture current board position
-            ElevatedButton.icon(
-              onPressed: _capturePosition,
-              icon: const Icon(FluentIcons.camera_24_regular),
-              label: Text(S.of(context).puzzleCapturePosition),
-            ),
-          ],
+              const SizedBox(height: 8),
+              // Button to capture current board position
+              ElevatedButton.icon(
+                onPressed: _capturePosition,
+                icon: const Icon(FluentIcons.camera_24_regular),
+                label: Text(S.of(context).puzzleCapturePosition),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1002,246 +1012,254 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
   Widget _buildSolutionRecordingSection(BuildContext context) {
     final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Section title with help icon
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    S.of(context).puzzleRecordSolution,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                // Help icon for solution recording instructions
-                IconButton(
-                  icon: Icon(
-                    FluentIcons.question_circle_24_regular,
-                    color: Colors.blue[300],
-                    size: 20,
-                  ),
-                  onPressed: () => _showSolutionRecordingHelp(context),
-                  tooltip: S.of(context).puzzleShowSolutionRecordingHelp,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Multi-solution tabs
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: <Widget>[
-                        // Solution tabs
-                        for (int i = 0; i < _solutions.length; i++)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: ChoiceChip(
-                              label: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(S.of(context).puzzleSolutionTab(i + 1)),
-                                  if (_solutions[i].isOptimal) ...<Widget>[
-                                    const SizedBox(width: 4),
-                                    const Text(
-                                      '⭐',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                              selected: _currentSolutionIndex == i,
-                              onSelected: (bool selected) {
-                                if (selected) {
-                                  setState(() {
-                                    _currentSolutionIndex = i;
-                                    _tabController.animateTo(i);
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        // Add solution button
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: ActionChip(
-                            avatar: const Icon(
-                              FluentIcons.add_24_regular,
-                              size: 16,
-                            ),
-                            label: Text(S.of(context).puzzleAddSolution),
-                            onPressed: _addSolution,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            // Solution control buttons (mark as optimal, delete)
-            if (_solutions.length > 1 || !_currentSolution.isOptimal)
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: <Widget>[
-                  if (!_currentSolution.isOptimal)
-                    OutlinedButton.icon(
-                      onPressed: _toggleOptimalStatus,
-                      icon: const Icon(FluentIcons.star_24_regular, size: 16),
-                      label: Text(S.of(context).puzzleMarkAsOptimal),
-                    ),
-                  if (_solutions.length > 1)
-                    OutlinedButton.icon(
-                      onPressed: _removeSolution,
-                      icon: const Icon(FluentIcons.delete_24_regular, size: 16),
-                      label: Text(S.of(context).puzzleRemoveSolution),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red[300],
-                      ),
-                    ),
-                ],
-              ),
-            const SizedBox(height: 8),
-
-            // Recording in progress indicator (compact)
-            if (_isRecordingSolution)
-              Container(
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.green),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FluentIcons.record_24_filled,
-                      color: Colors.red[400],
-                      size: 16,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        S.of(context).puzzleRecording,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-            const SizedBox(height: 8),
-            if (_currentSolution.moves.isNotEmpty) ...<Widget>[
+    // Wrap in RepaintBoundary for performance isolation
+    return RepaintBoundary(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Section title with help icon
               Row(
                 children: <Widget>[
-                  Icon(
-                    FluentIcons.checkmark_circle_24_filled,
-                    color: Colors.green[300],
-                    size: 20,
+                  Expanded(
+                    child: Text(
+                      S.of(context).puzzleRecordSolution,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    S
-                        .of(context)
-                        .puzzleSolutionMoves(_currentSolution.moves.length),
-                    style: TextStyle(color: Colors.green[300], fontSize: 14),
+                  // Help icon for solution recording instructions
+                  IconButton(
+                    icon: Icon(
+                      FluentIcons.question_circle_24_regular,
+                      color: Colors.blue[300],
+                      size: 20,
+                    ),
+                    onPressed: () => _showSolutionRecordingHelp(context),
+                    tooltip: S.of(context).puzzleShowSolutionRecordingHelp,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Multi-solution tabs
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: <Widget>[
+                          // Solution tabs
+                          for (int i = 0; i < _solutions.length; i++)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: ChoiceChip(
+                                label: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      S.of(context).puzzleSolutionTab(i + 1),
+                                    ),
+                                    if (_solutions[i].isOptimal) ...<Widget>[
+                                      const SizedBox(width: 4),
+                                      const Text(
+                                        '⭐',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                                selected: _currentSolutionIndex == i,
+                                onSelected: (bool selected) {
+                                  if (selected) {
+                                    setState(() {
+                                      _currentSolutionIndex = i;
+                                      _tabController.animateTo(i);
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          // Add solution button
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: ActionChip(
+                              avatar: const Icon(
+                                FluentIcons.add_24_regular,
+                                size: 16,
+                              ),
+                              label: Text(S.of(context).puzzleAddSolution),
+                              onPressed: _addSolution,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 4,
-                runSpacing: 4,
-                children: _currentSolution.moves.asMap().entries.map((
-                  MapEntry<int, String> entry,
-                ) {
-                  return Chip(
-                    label: Text(
-                      '${entry.key + 1}. ${entry.value}',
-                      style: const TextStyle(fontSize: 12),
+
+              // Solution control buttons (mark as optimal, delete)
+              if (_solutions.length > 1 || !_currentSolution.isOptimal)
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: <Widget>[
+                    if (!_currentSolution.isOptimal)
+                      OutlinedButton.icon(
+                        onPressed: _toggleOptimalStatus,
+                        icon: const Icon(FluentIcons.star_24_regular, size: 16),
+                        label: Text(S.of(context).puzzleMarkAsOptimal),
+                      ),
+                    if (_solutions.length > 1)
+                      OutlinedButton.icon(
+                        onPressed: _removeSolution,
+                        icon: const Icon(
+                          FluentIcons.delete_24_regular,
+                          size: 16,
+                        ),
+                        label: Text(S.of(context).puzzleRemoveSolution),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red[300],
+                        ),
+                      ),
+                  ],
+                ),
+              const SizedBox(height: 8),
+
+              // Recording in progress indicator (compact)
+              if (_isRecordingSolution)
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.green),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        FluentIcons.record_24_filled,
+                        color: Colors.red[400],
+                        size: 16,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          S.of(context).puzzleRecording,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              const SizedBox(height: 8),
+              if (_currentSolution.moves.isNotEmpty) ...<Widget>[
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.checkmark_circle_24_filled,
+                      color: Colors.green[300],
+                      size: 20,
                     ),
-                    backgroundColor: Colors.blue[700],
-                  );
-                }).toList(),
-              ),
-            ] else if (!_isRecordingSolution)
-              Row(
-                children: <Widget>[
-                  Icon(
-                    FluentIcons.warning_24_regular,
-                    color: hintColor,
-                    size: 18,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    S.of(context).puzzleNoSolutionRecorded,
-                    style: TextStyle(color: hintColor, fontSize: 14),
-                  ),
-                ],
-              ),
-            const SizedBox(height: 12),
-            if (_isRecordingSolution)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  OutlinedButton.icon(
-                    onPressed: () => _openGameBoard(GameMode.humanVsHuman),
-                    icon: const Icon(FluentIcons.window_new_24_regular),
-                    label: Text(S.of(context).puzzleOpenBoardPlay),
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton.icon(
-                    onPressed: _stopRecordingSolution,
-                    icon: const Icon(FluentIcons.stop_24_regular),
-                    label: Text(S.of(context).puzzleStopRecording),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red[700],
-                      minimumSize: const Size(double.infinity, 48),
+                    const SizedBox(width: 8),
+                    Text(
+                      S
+                          .of(context)
+                          .puzzleSolutionMoves(_currentSolution.moves.length),
+                      style: TextStyle(color: Colors.green[300], fontSize: 14),
                     ),
-                  ),
-                ],
-              )
-            else
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: _startRecordingSolution,
-                    icon: const Icon(FluentIcons.record_24_regular),
-                    label: Text(S.of(context).puzzleStartRecording),
-                  ),
-                  if (_currentSolution.moves.isNotEmpty)
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: _currentSolution.moves.asMap().entries.map((
+                    MapEntry<int, String> entry,
+                  ) {
+                    return Chip(
+                      label: Text(
+                        '${entry.key + 1}. ${entry.value}',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      backgroundColor: Colors.blue[700],
+                    );
+                  }).toList(),
+                ),
+              ] else if (!_isRecordingSolution)
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.warning_24_regular,
+                      color: hintColor,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      S.of(context).puzzleNoSolutionRecorded,
+                      style: TextStyle(color: hintColor, fontSize: 14),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 12),
+              if (_isRecordingSolution)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
                     OutlinedButton.icon(
-                      onPressed: _clearSolution,
-                      icon: const Icon(FluentIcons.delete_24_regular),
-                      label: Text(S.of(context).puzzleClearSolution),
+                      onPressed: () => _openGameBoard(GameMode.humanVsHuman),
+                      icon: const Icon(FluentIcons.window_new_24_regular),
+                      label: Text(S.of(context).puzzleOpenBoardPlay),
                     ),
-                ],
-              ),
-          ],
+                    const SizedBox(height: 8),
+                    ElevatedButton.icon(
+                      onPressed: _stopRecordingSolution,
+                      icon: const Icon(FluentIcons.stop_24_regular),
+                      label: Text(S.of(context).puzzleStopRecording),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red[700],
+                        minimumSize: const Size(double.infinity, 48),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: <Widget>[
+                    ElevatedButton.icon(
+                      onPressed: _startRecordingSolution,
+                      icon: const Icon(FluentIcons.record_24_regular),
+                      label: Text(S.of(context).puzzleStartRecording),
+                    ),
+                    if (_currentSolution.moves.isNotEmpty)
+                      OutlinedButton.icon(
+                        onPressed: _clearSolution,
+                        icon: const Icon(FluentIcons.delete_24_regular),
+                        label: Text(S.of(context).puzzleClearSolution),
+                      ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -1279,126 +1297,142 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   }
 
   Widget _buildMetadataSection(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              S.of(context).puzzleDetails,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 16),
-
-            // Title
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                labelText: S.of(context).puzzleTitle,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.textbox_24_regular),
+    // Wrap in RepaintBoundary to isolate repaints from keyboard animation
+    return RepaintBoundary(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                S.of(context).puzzleDetails,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
-            // Description
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(
-                labelText: S.of(context).puzzleDescription,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.text_description_24_regular),
+              // Title
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: S.of(context).puzzleTitle,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.textbox_24_regular),
+                ),
+                // Enable platform optimizations
+                enableInteractiveSelection: true,
+                // Reduce rebuilds on text changes
+                textInputAction: TextInputAction.next,
               ),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Category
-            DropdownButtonFormField<PuzzleCategory>(
-              initialValue: _selectedCategory,
-              decoration: InputDecoration(
-                labelText: S.of(context).puzzleCategory,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.folder_24_regular),
+              // Description
+              TextField(
+                controller: _descriptionController,
+                decoration: InputDecoration(
+                  labelText: S.of(context).puzzleDescription,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(
+                    FluentIcons.text_description_24_regular,
+                  ),
+                ),
+                maxLines: 3,
+                // Reduce rebuilds on text changes
+                textInputAction: TextInputAction.newline,
               ),
-              items: PuzzleCategory.values.map((PuzzleCategory category) {
-                return DropdownMenuItem<PuzzleCategory>(
-                  value: category,
-                  child: Text(category.displayName(context)),
-                );
-              }).toList(),
-              onChanged: (PuzzleCategory? value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                }
-              },
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Difficulty
-            DropdownButtonFormField<PuzzleDifficulty>(
-              initialValue: _selectedDifficulty,
-              decoration: InputDecoration(
-                labelText: S.of(context).puzzleDifficulty,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.star_24_regular),
+              // Category
+              DropdownButtonFormField<PuzzleCategory>(
+                initialValue: _selectedCategory,
+                decoration: InputDecoration(
+                  labelText: S.of(context).puzzleCategory,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.folder_24_regular),
+                ),
+                items: PuzzleCategory.values.map((PuzzleCategory category) {
+                  return DropdownMenuItem<PuzzleCategory>(
+                    value: category,
+                    child: Text(category.displayName(context)),
+                  );
+                }).toList(),
+                onChanged: (PuzzleCategory? value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  }
+                },
               ),
-              items: PuzzleDifficulty.values.map((PuzzleDifficulty difficulty) {
-                return DropdownMenuItem<PuzzleDifficulty>(
-                  value: difficulty,
-                  child: Text(difficulty.displayName(context)),
-                );
-              }).toList(),
-              onChanged: (PuzzleDifficulty? value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedDifficulty = value;
-                  });
-                }
-              },
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Hint (optional)
-            TextField(
-              controller: _hintController,
-              decoration: InputDecoration(
-                labelText:
-                    '${S.of(context).puzzleHint} (${S.of(context).optional})',
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.lightbulb_24_regular),
+              // Difficulty
+              DropdownButtonFormField<PuzzleDifficulty>(
+                initialValue: _selectedDifficulty,
+                decoration: InputDecoration(
+                  labelText: S.of(context).puzzleDifficulty,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.star_24_regular),
+                ),
+                items: PuzzleDifficulty.values.map((
+                  PuzzleDifficulty difficulty,
+                ) {
+                  return DropdownMenuItem<PuzzleDifficulty>(
+                    value: difficulty,
+                    child: Text(difficulty.displayName(context)),
+                  );
+                }).toList(),
+                onChanged: (PuzzleDifficulty? value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedDifficulty = value;
+                    });
+                  }
+                },
               ),
-              maxLines: 2,
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Tags (optional)
-            TextField(
-              controller: _tagsController,
-              decoration: InputDecoration(
-                labelText:
-                    '${S.of(context).puzzleTags} (${S.of(context).optional})',
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.tag_24_regular),
-                hintText: S.of(context).puzzleTagsHint,
+              // Hint (optional)
+              TextField(
+                controller: _hintController,
+                decoration: InputDecoration(
+                  labelText:
+                      '${S.of(context).puzzleHint} (${S.of(context).optional})',
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.lightbulb_24_regular),
+                ),
+                maxLines: 2,
               ),
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Author (optional)
-            TextField(
-              controller: _authorController,
-              decoration: InputDecoration(
-                labelText:
-                    '${S.of(context).puzzleAuthor} (${S.of(context).optional})',
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(FluentIcons.person_24_regular),
+              // Tags (optional)
+              TextField(
+                controller: _tagsController,
+                decoration: InputDecoration(
+                  labelText:
+                      '${S.of(context).puzzleTags} (${S.of(context).optional})',
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.tag_24_regular),
+                  hintText: S.of(context).puzzleTagsHint,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+
+              // Author (optional)
+              TextField(
+                controller: _authorController,
+                decoration: InputDecoration(
+                  labelText:
+                      '${S.of(context).puzzleAuthor} (${S.of(context).optional})',
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(FluentIcons.person_24_regular),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
