@@ -178,6 +178,10 @@ class PuzzleExportService {
       final List<dynamic> puzzlesJson = data['puzzles'] as List<dynamic>;
       final List<PuzzleInfo> importedPuzzles = <PuzzleInfo>[];
       final List<String> errors = <String>[];
+      final List<String> warnings = <String>[];
+
+      // Get current rule variant for comparison
+      final String currentVariant = DB().ruleSettings.ruleVariantId;
 
       for (int i = 0; i < puzzlesJson.length; i++) {
         try {
@@ -194,17 +198,45 @@ class PuzzleExportService {
             continue;
           }
 
+          // Check if rule variant matches current settings
+          if (puzzle.ruleVariantId != currentVariant) {
+            warnings.add(
+              'Puzzle ${i + 1} ("${puzzle.title}") uses different rule variant: '
+              '${puzzle.ruleVariantId} (current: $currentVariant)',
+            );
+          }
+
           importedPuzzles.add(puzzle);
         } catch (e) {
           errors.add('Failed to parse puzzle ${i + 1}: $e');
         }
       }
 
+      // Build result message
+      String? resultMessage;
+      if (errors.isNotEmpty || warnings.isNotEmpty) {
+        final StringBuffer buffer = StringBuffer();
+        if (errors.isNotEmpty) {
+          buffer.writeln('Errors:');
+          for (final String error in errors) {
+            buffer.writeln('  - $error');
+          }
+        }
+        if (warnings.isNotEmpty) {
+          if (errors.isNotEmpty) buffer.writeln();
+          buffer.writeln('Warnings:');
+          for (final String warning in warnings) {
+            buffer.writeln('  - $warning');
+          }
+        }
+        resultMessage = buffer.toString().trim();
+      }
+
       return ImportResult(
         success: true,
         puzzles: importedPuzzles,
         metadata: metadata,
-        errorMessage: errors.isEmpty ? null : errors.join('\n'),
+        errorMessage: resultMessage,
       );
     } catch (e) {
       return ImportResult(
