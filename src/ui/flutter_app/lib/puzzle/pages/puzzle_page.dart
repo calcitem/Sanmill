@@ -709,6 +709,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
       hintsUsed: _hintsUsed,
     );
 
+    final String? completionMessage =
+        widget.puzzle.getLocalizedCompletionMessage(context);
+
     return AlertDialog(
       title: Row(
         children: <Widget>[
@@ -724,28 +727,66 @@ class _PuzzlePageState extends State<PuzzlePage> {
           ),
         ],
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // Stars
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List<Widget>.generate(
-              3,
-              (int index) => Icon(
-                index < stars ? Icons.star : Icons.star_border,
-                color: Colors.amber, // Keep amber for stars
-                size: 40,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Stars
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List<Widget>.generate(
+                3,
+                (int index) => Icon(
+                  index < stars ? Icons.star : Icons.star_border,
+                  color: Colors.amber, // Keep amber for stars
+                  size: 40,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // Stats
-          Text('${s.moves}: ${_moveCountNotifier.value}'),
-          Text('${s.optimal}: ${widget.puzzle.optimalMoveCount}'),
-          if (_hintsUsed) Text(s.hintsUsed),
-        ],
+            // Stats
+            Center(
+              child: Column(
+                children: <Widget>[
+                  Text('${s.moves}: ${_moveCountNotifier.value}'),
+                  Text('${s.optimal}: ${widget.puzzle.optimalMoveCount}'),
+                  if (_hintsUsed) Text(s.hintsUsed),
+                ],
+              ),
+            ),
+
+            // Completion message from puzzle author
+            if (completionMessage != null &&
+                completionMessage.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 12),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.lightbulb_outline,
+                    size: 20,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      completionMessage,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
       ),
       actions: <Widget>[
         TextButton(
