@@ -343,9 +343,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
           Text(
             label,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 12, // Increased from 11 to 12 for better readability
               color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ), // Reduced from 12 to 11
+            ),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -477,8 +477,9 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                 child: Text(
                   description,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontSize: 11,
-                  ), // Reduced font size
+                    fontSize:
+                        12, // Increased from 11 to 12 for better readability
+                  ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

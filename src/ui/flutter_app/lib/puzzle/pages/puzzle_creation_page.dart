@@ -962,7 +962,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     _capturedPosition!,
                     style: TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 11,
+                      fontSize:
+                          12, // Increased from 11 to 12 for better readability
                       color: Colors.grey[300],
                     ),
                   ),

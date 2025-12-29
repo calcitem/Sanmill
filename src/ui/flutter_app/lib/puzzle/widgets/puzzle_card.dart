@@ -258,7 +258,7 @@ class PuzzleCard extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 10,
+          fontSize: 12, // Increased from 10 to 12 for better readability
           color: color,
           fontWeight: FontWeight.w500,
         ),
