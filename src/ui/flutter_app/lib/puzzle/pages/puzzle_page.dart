@@ -93,7 +93,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       controller.puzzleHumanColor = _previousPuzzleHumanColor;
       controller.isPuzzleAutoMoveInProgress = _previousIsPuzzleAutoMoveInProgress;
       
-      logger.i('[PuzzlePage] Restored game mode to ${_previousGameMode}');
+      logger.i('[PuzzlePage] Restored game mode to $_previousGameMode');
     }
     
     _moveCountNotifier.dispose();
@@ -860,49 +860,63 @@ class _PuzzlePageState extends State<PuzzlePage> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Optimal solution (${widget.puzzle.solutions.first.moves.length} moves):',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 12),
-                      // Show solution as numbered list
-                      ...widget.puzzle.solutions.first.moves.asMap().entries.map((
-                        MapEntry<int, PuzzleMove> entry,
+                      // Show all solutions with expansion tiles
+                      ...widget.puzzle.solutions.asMap().entries.map((
+                        MapEntry<int, PuzzleSolution> solutionEntry,
                       ) {
+                        final int solutionIndex = solutionEntry.key;
+                        final PuzzleSolution solution = solutionEntry.value;
+                        final bool isOnlySolution = widget.puzzle.solutions.length == 1;
+
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                width: 24,
-                                height: 24,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary
-                                      .withValues(
-                                        alpha: 0.2,
-                                      ), // Use primary color
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${entry.key + 1}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: isOnlySolution
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      '${solution.isOptimal ? s.puzzleOptimalSolution : s.puzzleAlternativeSolution} (${solution.moves.length} moves):',
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
                                     ),
+                                    const SizedBox(height: 12),
+                                    ..._buildSolutionMoves(solution, context),
+                                  ],
+                                )
+                              : ExpansionTile(
+                                  title: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        '${s.puzzleSolutionTab(solutionIndex + 1)} ',
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        solution.isOptimal ? s.puzzleOptimalSolution : s.puzzleAlternativeSolution,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: solution.isOptimal ? Colors.amber[300] : Colors.grey[400],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        '(${solution.moves.length} moves)',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey[400],
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  initiallyExpanded: solutionIndex == 0,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: _buildSolutionMoves(solution, context),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                entry.value.notation,
-                                style: const TextStyle(
-                                  fontFamily: 'monospace',
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
                         );
                       }),
                     ],
@@ -993,4 +1007,51 @@ class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
     // Use GamePage with puzzle mode
     return GamePage(GameMode.puzzle, key: const Key('puzzle_game'));
   }
+}
+
+/// Helper method to build solution moves list
+List<Widget> _buildSolutionMoves(PuzzleSolution solution, BuildContext context) {
+  return solution.moves.asMap().entries.map((
+    MapEntry<int, PuzzleMove> entry,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                '${entry.key + 1}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              entry.value.notation,
+              style: const TextStyle(
+                fontFamily: 'monospace',
+                fontSize: 14,
+              ),
+            ),
+          ),
+          // Show side indicator (subtle)
+          Text(
+            entry.value.side == PieceColor.white ? '⚪' : '⚫',
+            style: const TextStyle(fontSize: 10),
+          ),
+        ],
+      ),
+    );
+  }).toList();
 }
