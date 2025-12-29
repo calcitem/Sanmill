@@ -2490,6 +2490,14 @@
     "@puzzlePositionCaptured": {
         "description": "Position captured message"
     },
+    "puzzleInitialPosition": "初始局面",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "最终局面",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
     "puzzleNoPositionCaptured": "尚未捕获局面",
     "@puzzleNoPositionCaptured": {
         "description": "No position captured message"
