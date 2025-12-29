@@ -491,7 +491,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
             children: <Widget>[
               Text(
                 label,
-                style: const TextStyle(fontSize: 10),
+                style: const TextStyle(fontSize: 11), // Increased from 10 to 11
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -1150,7 +1150,7 @@ List<Widget> _buildSolutionMoves(
           // Show side indicator (subtle)
           Text(
             entry.value.side == PieceColor.white ? '⚪' : '⚫',
-            style: const TextStyle(fontSize: 10),
+            style: const TextStyle(fontSize: 12), // Increased from 10 to 12
           ),
         ],
       ),
