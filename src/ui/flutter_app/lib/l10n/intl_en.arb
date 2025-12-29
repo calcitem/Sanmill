@@ -3265,7 +3265,7 @@
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
     },
-    "puzzlePositionSnapshotHelpContent": "How to snapshot the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. The position will be snapshotted automatically. If not, click \"Snapshot Position\" button to save the current board state\n\nThis snapshotted position will be used as the starting point for your puzzle.",
+    "puzzlePositionSnapshotHelpContent": "How to snapshot the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. The position will be automatically snapshotted and saved\n\nThis snapshotted position will be used as the starting point for your puzzle.",
     "@puzzlePositionSnapshotHelpContent": {
         "description": "Help content for snapshotting puzzle starting position"
     },
