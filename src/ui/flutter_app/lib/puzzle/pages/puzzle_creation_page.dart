@@ -114,9 +114,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   void _removeSolution() {
     if (_solutions.length <= 1) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).puzzleAtLeastOneSolution),
-        ),
+        SnackBar(content: Text(S.of(context).puzzleAtLeastOneSolution)),
       );
       return;
     }
@@ -197,10 +195,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     // Update tab controller
     if (_solutions.isNotEmpty) {
       _tabController.dispose();
-      _tabController = TabController(
-        length: _solutions.length,
-        vsync: this,
-      );
+      _tabController = TabController(length: _solutions.length, vsync: this);
       _tabController.addListener(_onTabChanged);
     }
   }
@@ -315,7 +310,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       ),
     );
 
-    logger.i("$_tag Started recording solution ${_currentSolutionIndex + 1} moves from captured position");
+    logger.i(
+      "$_tag Started recording solution ${_currentSolutionIndex + 1} moves from captured position",
+    );
   }
 
   /// Stop recording solution moves
@@ -422,20 +419,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       PieceColor currentSide = startingSide;
       final List<PuzzleMove> puzzleMoves = <PuzzleMove>[];
       for (final String notation in solutionData.moves) {
-        puzzleMoves.add(
-          PuzzleMove(
-            notation: notation,
-            side: currentSide,
-          ),
-        );
+        puzzleMoves.add(PuzzleMove(notation: notation, side: currentSide));
         currentSide = currentSide.opponent;
       }
 
       puzzleSolutions.add(
-        PuzzleSolution(
-          moves: puzzleMoves,
-          isOptimal: solutionData.isOptimal,
-        ),
+        PuzzleSolution(moves: puzzleMoves, isOptimal: solutionData.isOptimal),
       );
     }
 
@@ -778,13 +767,22 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 ),
               ),
               const SizedBox(height: 12),
-              _buildInstructionStep('1', S.of(dialogContext).puzzleSolutionStep1),
-              _buildInstructionStep('2', S.of(dialogContext).puzzleSolutionStep2),
+              _buildInstructionStep(
+                '1',
+                S.of(dialogContext).puzzleSolutionStep1,
+              ),
+              _buildInstructionStep(
+                '2',
+                S.of(dialogContext).puzzleSolutionStep2,
+              ),
               _buildInstructionStep(
                 '3',
                 S.of(dialogContext).puzzleRecordingHintUseButton,
               ),
-              _buildInstructionStep('4', S.of(dialogContext).puzzleSolutionStep4),
+              _buildInstructionStep(
+                '4',
+                S.of(dialogContext).puzzleSolutionStep4,
+              ),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(8),
@@ -835,12 +833,15 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     String description,
     bool isCompleted,
   ) {
-    final Color stepColor =
-        isCompleted ? Colors.green : Theme.of(context).colorScheme.primary;
+    final Color stepColor = isCompleted
+        ? Colors.green
+        : Theme.of(context).colorScheme.primary;
     final Color titleColor = isCompleted
         ? Colors.green
         : Theme.of(context).colorScheme.onSurface;
-    final Color descriptionColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final Color descriptionColor = Theme.of(
+      context,
+    ).colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -849,10 +850,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
           Container(
             width: 24,
             height: 24,
-            decoration: BoxDecoration(
-              color: stepColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: stepColor, shape: BoxShape.circle),
             child: Center(
               child: isCompleted
                   ? const Icon(Icons.check, size: 16, color: Colors.white)
@@ -1165,7 +1163,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    S.of(context).puzzleSolutionMoves(_currentSolution.moves.length),
+                    S
+                        .of(context)
+                        .puzzleSolutionMoves(_currentSolution.moves.length),
                     style: TextStyle(color: Colors.green[300], fontSize: 14),
                   ),
                 ],

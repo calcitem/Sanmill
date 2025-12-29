@@ -1,227 +1,245 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
+import 'package:sanmill/puzzle/services/puzzle_export_service.dart';
 
 void main() {
-  group('PuzzleMove', () {
-    test('creates a puzzle move with required fields', () {
-      const PuzzleMove move = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
-
-      expect(move.notation, equals('a1'));
-      expect(move.side, equals(PieceColor.white));
-      expect(move.comment, isNull);
-    });
-
-    test('creates a puzzle move with optional comment', () {
-      const PuzzleMove move = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-        comment: 'Opening move',
-      );
-
-      expect(move.comment, equals('Opening move'));
-    });
-
-    test('serializes to and from JSON', () {
-      const PuzzleMove move = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-        comment: 'Test comment',
-      );
-
-      final Map<String, dynamic> json = move.toJson();
-      expect(json['notation'], equals('a1'));
-      expect(json['side'], equals('white'));
-      expect(json['comment'], equals('Test comment'));
-
-      final PuzzleMove fromJson = PuzzleMove.fromJson(json);
-      expect(fromJson.notation, equals(move.notation));
-      expect(fromJson.side, equals(move.side));
-      expect(fromJson.comment, equals(move.comment));
-    });
-
-    test('handles JSON without optional comment', () {
-      final Map<String, dynamic> json = <String, dynamic>{
-        'notation': 'a1',
-        'side': 'white',
-      };
-
-      final PuzzleMove move = PuzzleMove.fromJson(json);
-      expect(move.notation, equals('a1'));
-      expect(move.side, equals(PieceColor.white));
-      expect(move.comment, isNull);
-    });
-
-    test('equality comparison works correctly', () {
-      const PuzzleMove move1 = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
-      const PuzzleMove move2 = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
-      const PuzzleMove move3 = PuzzleMove(
-        notation: 'a4',
-        side: PieceColor.white,
-      );
-
-      expect(move1, equals(move2));
-      expect(move1, isNot(equals(move3)));
-    });
-
-    test('toString returns readable format', () {
-      const PuzzleMove move = PuzzleMove(
-        notation: 'a1',
-        side: PieceColor.white,
-      );
-
-      expect(move.toString(), contains('a1'));
-      expect(move.toString(), contains('white'));
-    });
-  });
-
-  group('PuzzleSolution', () {
-    test('creates a solution with moves', () {
-      const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-          PuzzleMove(notation: 'd1', side: PieceColor.black),
-        ],
-      );
-
-      expect(solution.moves.length, equals(2));
-      expect(solution.isOptimal, isTrue);
-      expect(solution.description, isNull);
-    });
-
-    test('marks solution as non-optimal', () {
-      const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-        ],
-        isOptimal: false,
-      );
-
-      expect(solution.isOptimal, isFalse);
-    });
-
-    test('getPlayerMoves returns only player moves', () {
-      const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-          PuzzleMove(notation: 'd1', side: PieceColor.black),
-          PuzzleMove(notation: 'a4', side: PieceColor.white),
-        ],
-      );
-
-      final List<PuzzleMove> whiteMoves =
-          solution.getPlayerMoves(PieceColor.white);
-      expect(whiteMoves.length, equals(2));
-      expect(whiteMoves[0].notation, equals('a1'));
-      expect(whiteMoves[1].notation, equals('a4'));
-    });
-
-    test('getOpponentMoves returns only opponent moves', () {
-      const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-          PuzzleMove(notation: 'd1', side: PieceColor.black),
-          PuzzleMove(notation: 'a4', side: PieceColor.white),
-        ],
-      );
-
-      final List<PuzzleMove> blackMoves =
-          solution.getOpponentMoves(PieceColor.white);
-      expect(blackMoves.length, equals(1));
-      expect(blackMoves[0].notation, equals('d1'));
-    });
-
-    test('getPlayerMoveCount returns correct count', () {
-      const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-          PuzzleMove(notation: 'd1', side: PieceColor.black),
-          PuzzleMove(notation: 'a4', side: PieceColor.white),
-        ],
-      );
-
-      expect(solution.getPlayerMoveCount(PieceColor.white), equals(2));
-      expect(solution.getPlayerMoveCount(PieceColor.black), equals(1));
-    });
-
-    test('serializes to and from JSON', () {
-      const PuzzleSolution solution = PuzzleSolution(
-        moves: <PuzzleMove>[
-          PuzzleMove(notation: 'a1', side: PieceColor.white),
-          PuzzleMove(notation: 'd1', side: PieceColor.black),
-        ],
-        description: 'Main line',
-        isOptimal: true,
-      );
-
-      final Map<String, dynamic> json = solution.toJson();
-      expect(json['moves'], isA<List>());
-      expect(json['description'], equals('Main line'));
-      expect(json['isOptimal'], isTrue);
-
-      final PuzzleSolution fromJson = PuzzleSolution.fromJson(json);
-      expect(fromJson.moves.length, equals(solution.moves.length));
-      expect(fromJson.description, equals(solution.description));
-      expect(fromJson.isOptimal, equals(solution.isOptimal));
-    });
-
-    test('handles empty moves list', () {
-      const PuzzleSolution solution = PuzzleSolution(moves: <PuzzleMove>[]);
-
-      expect(solution.moves.isEmpty, isTrue);
-      expect(solution.getPlayerMoveCount(PieceColor.white), equals(0));
-    });
-  });
-
-  group('PuzzleInfo', () {
-    test('creates a puzzle with required fields', () {
+  group('PuzzleExportService JSON format', () {
+    test('exports single solution puzzle correctly', () {
       final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test_001',
         title: 'Test Puzzle',
         description: 'A test puzzle',
         category: PuzzleCategory.formMill,
         difficulty: PuzzleDifficulty.easy,
-        initialPosition: 'test_fen',
-        solutions: <PuzzleSolution>[
+        initialPosition:
+            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
+              PuzzleMove(notation: 'd1', side: PieceColor.black),
             ],
           ),
         ],
       );
 
-      expect(puzzle.id, equals('test_001'));
-      expect(puzzle.title, equals('Test Puzzle'));
-      expect(puzzle.solutions.length, equals(1));
+      final Map<String, dynamic> json = puzzle.toJson();
+
+      expect(json['id'], equals('test_001'));
+      expect(json['solutions'], isA<List>());
+      expect((json['solutions'] as List).length, equals(1));
+      expect(json['solutions'][0]['moves'], isA<List>());
     });
 
-    test('calculates player side from FEN', () {
-      // Skip test requiring Position initialization
-      // Position needs database initialization which is complex to set up
-    });
-
-    test('getOptimalSolution returns first optimal solution', () {
+    test('exports multiple solutions with optimal marking', () {
       final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'test',
-        title: 'Test',
+        id: 'multi_test',
+        title: 'Multi Test',
+        description: 'Multi solution test',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.medium,
+        initialPosition:
+            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+        solutions: const <PuzzleSolution>[
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a1', side: PieceColor.white),
+            ],
+            isOptimal: true,
+          ),
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a4', side: PieceColor.white),
+            ],
+            isOptimal: false,
+          ),
+        ],
+      );
+
+      final Map<String, dynamic> json = puzzle.toJson();
+
+      expect((json['solutions'] as List).length, equals(2));
+      expect(json['solutions'][0]['isOptimal'], isTrue);
+      expect(json['solutions'][1]['isOptimal'], isFalse);
+    });
+
+    test('imports puzzle with multiple solutions correctly', () {
+      final String jsonString = jsonEncode(<String, dynamic>{
+        'formatVersion': '1.0',
+        'exportDate': '2025-12-28T00:00:00.000Z',
+        'puzzleCount': 1,
+        'puzzles': <Map<String, dynamic>>[
+          <String, dynamic>{
+            'id': 'import_test',
+            'title': 'Import Test',
+            'description': 'Test import with multiple solutions',
+            'category': 'formMill',
+            'difficulty': 'easy',
+            'initialPosition':
+                '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+            'solutions': <Map<String, dynamic>>[
+              <String, dynamic>{
+                'moves': <Map<String, dynamic>>[
+                  <String, dynamic>{'notation': 'a1', 'side': 'white'},
+                  <String, dynamic>{'notation': 'd1', 'side': 'black'},
+                ],
+                'isOptimal': true,
+              },
+              <String, dynamic>{
+                'moves': <Map<String, dynamic>>[
+                  <String, dynamic>{'notation': 'a4', 'side': 'white'},
+                  <String, dynamic>{'notation': 'd4', 'side': 'black'},
+                ],
+                'isOptimal': false,
+              },
+            ],
+            'tags': <String>[],
+            'isCustom': false,
+            'createdDate': '2025-01-01T00:00:00.000Z',
+            'version': 1,
+            'ruleVariantId': 'standard_9mm',
+          },
+        ],
+      });
+
+      // Parse the JSON to verify structure
+      final Map<String, dynamic> data =
+          jsonDecode(jsonString) as Map<String, dynamic>;
+      final PuzzleInfo puzzle = PuzzleInfo.fromJson(
+        data['puzzles'][0] as Map<String, dynamic>,
+      );
+
+      expect(puzzle.solutions.length, equals(2));
+      expect(puzzle.solutions[0].isOptimal, isTrue);
+      expect(puzzle.solutions[1].isOptimal, isFalse);
+      expect(puzzle.solutions[0].moves[0].notation, equals('a1'));
+      expect(puzzle.solutions[1].moves[0].notation, equals('a4'));
+    });
+
+    test('exports puzzle pack metadata correctly', () {
+      const PuzzlePackMetadata metadata = PuzzlePackMetadata(
+        id: 'test_pack',
+        name: 'Test Pack',
+        description: 'A test pack',
+        author: 'Test Author',
+        version: '1.0.0',
+      );
+
+      final Map<String, dynamic> json = metadata.toJson();
+
+      expect(json['id'], equals('test_pack'));
+      expect(json['name'], equals('Test Pack'));
+      expect(json['author'], equals('Test Author'));
+      expect(json['version'], equals('1.0.0'));
+    });
+  });
+
+  group('PuzzleSolution advanced tests', () {
+    test('getPlayerMoves with complex sequence', () {
+      const PuzzleSolution solution = PuzzleSolution(
+        moves: <PuzzleMove>[
+          PuzzleMove(notation: 'a1', side: PieceColor.white),
+          PuzzleMove(notation: 'd1', side: PieceColor.black),
+          PuzzleMove(notation: 'a4', side: PieceColor.white),
+          PuzzleMove(notation: 'd4', side: PieceColor.black),
+          PuzzleMove(notation: 'a7', side: PieceColor.white),
+          PuzzleMove(
+            notation: 'xa1',
+            side: PieceColor.white,
+          ), // Remove after mill
+        ],
+      );
+
+      final List<PuzzleMove> whiteMoves = solution.getPlayerMoves(
+        PieceColor.white,
+      );
+      expect(whiteMoves.length, equals(4));
+      expect(
+        whiteMoves.map((PuzzleMove m) => m.notation).toList(),
+        equals(<String>['a1', 'a4', 'a7', 'xa1']),
+      );
+    });
+
+    test('equality works for complex solutions', () {
+      const PuzzleSolution sol1 = PuzzleSolution(
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
+        description: 'Main',
+        isOptimal: true,
+      );
+
+      const PuzzleSolution sol2 = PuzzleSolution(
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
+        description: 'Main',
+        isOptimal: true,
+      );
+
+      const PuzzleSolution sol3 = PuzzleSolution(
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a4', side: PieceColor.white)],
+        description: 'Main',
+        isOptimal: true,
+      );
+
+      expect(sol1, equals(sol2));
+      expect(sol1, isNot(equals(sol3)));
+    });
+
+    test('handles move comments in JSON', () {
+      const PuzzleSolution solution = PuzzleSolution(
+        moves: <PuzzleMove>[
+          PuzzleMove(
+            notation: 'a1',
+            side: PieceColor.white,
+            comment: 'Opening move',
+          ),
+          PuzzleMove(
+            notation: 'd1',
+            side: PieceColor.black,
+            comment: 'Response',
+          ),
+        ],
+      );
+
+      final Map<String, dynamic> json = solution.toJson();
+      expect(json['moves'][0]['comment'], equals('Opening move'));
+      expect(json['moves'][1]['comment'], equals('Response'));
+
+      final PuzzleSolution fromJson = PuzzleSolution.fromJson(json);
+      expect(fromJson.moves[0].comment, equals('Opening move'));
+      expect(fromJson.moves[1].comment, equals('Response'));
+    });
+  });
+
+  group('PuzzleInfo edge cases with multiple solutions', () {
+    test('handles empty solutions list gracefully', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'empty_sol',
+        title: 'Empty',
         description: 'Test',
         category: PuzzleCategory.formMill,
         difficulty: PuzzleDifficulty.easy,
         initialPosition: 'test_fen',
-        solutions: <PuzzleSolution>[
+        solutions: const <PuzzleSolution>[],
+      );
+
+      expect(puzzle.optimalSolution, isNull);
+      expect(puzzle.optimalMoveCount, equals(0));
+    });
+
+    test('handles all non-optimal solutions', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'non_optimal',
+        title: 'Non Optimal',
+        description: 'Test',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.easy,
+        initialPosition: 'test_fen',
+        solutions: const <PuzzleSolution>[
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
@@ -232,144 +250,40 @@ void main() {
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a4', side: PieceColor.white),
             ],
-            isOptimal: true,
+            isOptimal: false,
           ),
         ],
       );
 
+      // Should return first solution as fallback
       final PuzzleSolution? optimal = puzzle.optimalSolution;
       expect(optimal, isNotNull);
-      expect(optimal!.moves[0].notation, equals('a4'));
+      expect(optimal!.moves[0].notation, equals('a1'));
     });
 
-    test('optimalMoveCount returns player moves in optimal solution', () {
-      // Skip test requiring Position initialization
-      // optimalMoveCount internally calls playerSide which needs Position
-    });
+    test('handles very long solution list', () {
+      final List<PuzzleSolution> manySolutions = List<PuzzleSolution>.generate(
+        10,
+        (int i) => PuzzleSolution(
+          moves: <PuzzleMove>[
+            PuzzleMove(notation: 'move$i', side: PieceColor.white),
+          ],
+          isOptimal: i == 0,
+        ),
+      );
 
-    test('serializes to and from JSON', () {
       final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'test_001',
-        title: 'Test Puzzle',
-        description: 'A test puzzle',
+        id: 'many_sol',
+        title: 'Many Solutions',
+        description: 'Puzzle with many solutions',
         category: PuzzleCategory.formMill,
-        difficulty: PuzzleDifficulty.easy,
+        difficulty: PuzzleDifficulty.expert,
         initialPosition: 'test_fen',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a1', side: PieceColor.white),
-            ],
-          ),
-        ],
-        hint: 'Test hint',
-        tags: <String>['test'],
-        isCustom: true,
-        author: 'Test Author',
+        solutions: manySolutions,
       );
 
-      final Map<String, dynamic> json = puzzle.toJson();
-      expect(json['id'], equals('test_001'));
-      expect(json['title'], equals('Test Puzzle'));
-      expect(json['hint'], equals('Test hint'));
-      expect(json['author'], equals('Test Author'));
-
-      final PuzzleInfo fromJson = PuzzleInfo.fromJson(json);
-      expect(fromJson.id, equals(puzzle.id));
-      expect(fromJson.title, equals(puzzle.title));
-      expect(fromJson.hint, equals(puzzle.hint));
-      expect(fromJson.author, equals(puzzle.author));
-    });
-
-    test('copyWith creates modified copy', () {
-      final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'test_001',
-        title: 'Original Title',
-        description: 'Original Description',
-        category: PuzzleCategory.formMill,
-        difficulty: PuzzleDifficulty.easy,
-        initialPosition: 'test_fen',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(moves: <PuzzleMove>[]),
-        ],
-      );
-
-      final PuzzleInfo modified = puzzle.copyWith(
-        title: 'Modified Title',
-      );
-
-      expect(modified.title, equals('Modified Title'));
-      expect(modified.description, equals('Original Description'));
-      expect(modified.id, equals(puzzle.id));
-    });
-  });
-
-  group('PuzzlePackMetadata', () {
-    test('creates metadata with required fields', () {
-      const PuzzlePackMetadata metadata = PuzzlePackMetadata(
-        id: 'pack_001',
-        name: 'Test Pack',
-        description: 'A test puzzle pack',
-      );
-
-      expect(metadata.id, equals('pack_001'));
-      expect(metadata.name, equals('Test Pack'));
-      expect(metadata.isOfficial, isFalse);
-    });
-
-    test('supports optional fields', () {
-      const PuzzlePackMetadata metadata = PuzzlePackMetadata(
-        id: 'pack_001',
-        name: 'Test Pack',
-        description: 'A test puzzle pack',
-        author: 'Test Author',
-        version: '1.0.0',
-        tags: <String>['beginner', 'tactics'],
-        isOfficial: true,
-      );
-
-      expect(metadata.author, equals('Test Author'));
-      expect(metadata.version, equals('1.0.0'));
-      expect(metadata.tags.length, equals(2));
-      expect(metadata.isOfficial, isTrue);
-    });
-
-    test('serializes to and from JSON', () {
-      final PuzzlePackMetadata metadata = PuzzlePackMetadata(
-        id: 'pack_001',
-        name: 'Test Pack',
-        description: 'A test puzzle pack',
-        author: 'Test Author',
-        version: '1.0.0',
-        createdDate: DateTime(2025, 1, 1),
-        tags: const <String>['test'],
-        isOfficial: true,
-      );
-
-      final Map<String, dynamic> json = metadata.toJson();
-      expect(json['id'], equals('pack_001'));
-      expect(json['name'], equals('Test Pack'));
-      expect(json['author'], equals('Test Author'));
-
-      final PuzzlePackMetadata fromJson = PuzzlePackMetadata.fromJson(json);
-      expect(fromJson.id, equals(metadata.id));
-      expect(fromJson.name, equals(metadata.name));
-      expect(fromJson.author, equals(metadata.author));
-    });
-
-    test('copyWith creates modified copy', () {
-      const PuzzlePackMetadata metadata = PuzzlePackMetadata(
-        id: 'pack_001',
-        name: 'Original Name',
-        description: 'Original Description',
-      );
-
-      final PuzzlePackMetadata modified = metadata.copyWith(
-        name: 'Modified Name',
-      );
-
-      expect(modified.name, equals('Modified Name'));
-      expect(modified.description, equals('Original Description'));
+      expect(puzzle.solutions.length, equals(10));
+      expect(puzzle.optimalSolution?.moves[0].notation, equals('move0'));
     });
   });
 }

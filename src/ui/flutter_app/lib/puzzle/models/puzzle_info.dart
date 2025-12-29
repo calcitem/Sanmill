@@ -44,7 +44,9 @@ class PuzzleInfo extends HiveObject {
       ),
       initialPosition: json['initialPosition'] as String,
       solutions: (json['solutions'] as List<dynamic>)
-          .map((dynamic e) => PuzzleSolution.fromJson(e as Map<String, dynamic>))
+          .map(
+            (dynamic e) => PuzzleSolution.fromJson(e as Map<String, dynamic>),
+          )
           .toList(),
       hint: json['hint'] as String?,
       tags:
@@ -61,8 +63,7 @@ class PuzzleInfo extends HiveObject {
       rating: json['rating'] as int?,
       ruleVariantId: json['ruleVariantId'] as String? ?? 'standard_9mm',
       titleLocalizationKey: json['titleLocalizationKey'] as String?,
-      descriptionLocalizationKey:
-          json['descriptionLocalizationKey'] as String?,
+      descriptionLocalizationKey: json['descriptionLocalizationKey'] as String?,
       hintLocalizationKey: json['hintLocalizationKey'] as String?,
     );
   }
@@ -213,8 +214,7 @@ class PuzzleInfo extends HiveObject {
       version: version ?? this.version,
       rating: rating ?? this.rating,
       ruleVariantId: ruleVariantId ?? this.ruleVariantId,
-      titleLocalizationKey:
-          titleLocalizationKey ?? this.titleLocalizationKey,
+      titleLocalizationKey: titleLocalizationKey ?? this.titleLocalizationKey,
       descriptionLocalizationKey:
           descriptionLocalizationKey ?? this.descriptionLocalizationKey,
       hintLocalizationKey: hintLocalizationKey ?? this.hintLocalizationKey,

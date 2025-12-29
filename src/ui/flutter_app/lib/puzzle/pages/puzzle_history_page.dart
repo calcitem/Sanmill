@@ -97,44 +97,45 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
                           }
                         });
                       },
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                        PopupMenuItem<String>(
-                          value: 'all',
-                          child: Row(
-                            children: <Widget>[
-                              const Icon(FluentIcons.apps_list_24_regular),
-                              const SizedBox(width: 12),
-                              Text(s.all),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'success',
-                          child: Row(
-                            children: <Widget>[
-                              const Icon(
-                                FluentIcons.checkmark_circle_24_regular,
-                                color: Colors.green,
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<String>>[
+                            PopupMenuItem<String>(
+                              value: 'all',
+                              child: Row(
+                                children: <Widget>[
+                                  const Icon(FluentIcons.apps_list_24_regular),
+                                  const SizedBox(width: 12),
+                                  Text(s.all),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Text(s.puzzleHistorySuccess),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'failed',
-                          child: Row(
-                            children: <Widget>[
-                              const Icon(
-                                FluentIcons.dismiss_circle_24_regular,
-                                color: Colors.red,
+                            ),
+                            PopupMenuItem<String>(
+                              value: 'success',
+                              child: Row(
+                                children: <Widget>[
+                                  const Icon(
+                                    FluentIcons.checkmark_circle_24_regular,
+                                    color: Colors.green,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(s.puzzleHistorySuccess),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Text(s.puzzleHistoryFailed),
-                            ],
-                          ),
-                        ),
-                      ],
+                            ),
+                            PopupMenuItem<String>(
+                              value: 'failed',
+                              child: Row(
+                                children: <Widget>[
+                                  const Icon(
+                                    FluentIcons.dismiss_circle_24_regular,
+                                    color: Colors.red,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(s.puzzleHistoryFailed),
+                                ],
+                              ),
+                            ),
+                          ],
                     ),
                   ],
                 ),
@@ -144,10 +145,10 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
                         padding: const EdgeInsets.all(8.0),
                         itemCount: filteredHistory.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final PuzzleAttemptResult attempt = filteredHistory[index];
-                          final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(
-                            attempt.puzzleId,
-                          );
+                          final PuzzleAttemptResult attempt =
+                              filteredHistory[index];
+                          final PuzzleInfo? puzzle = _puzzleManager
+                              .getPuzzleById(attempt.puzzleId);
                           return _buildHistoryCard(attempt, puzzle, s);
                         },
                       ),
@@ -282,11 +283,9 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
             // Timestamp
             Text(
               _formatTimestamp(attempt.timestamp),
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),

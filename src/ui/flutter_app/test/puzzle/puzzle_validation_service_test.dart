@@ -1,15 +1,59 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/engine/bitboard.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/services/puzzle_validation_service.dart';
+import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/services/environment_config.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  const MethodChannel pathProviderChannel = MethodChannel(
+    'plugins.flutter.io/path_provider',
+  );
+
+  late Directory appDocDir;
+
+  setUpAll(() async {
+    EnvironmentConfig.catcher = false;
+
+    // Initialize bitboards
+    initBitboards();
+
+    // Provide a stable documents directory for Hive/path_provider callers
+    appDocDir = Directory.systemTemp.createTempSync('sanmill_test_');
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProviderChannel, (
+          MethodCall methodCall,
+        ) async {
+          switch (methodCall.method) {
+            case 'getApplicationDocumentsDirectory':
+            case 'getApplicationSupportDirectory':
+            case 'getTemporaryDirectory':
+              return appDocDir.path;
+            default:
+              return null;
+          }
+        });
+
+    await DB.init();
+  });
+
+  tearDownAll(() async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProviderChannel, null);
+  });
+
   group('PuzzleValidationService.validatePuzzle', () {
     test('valid puzzle passes validation', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'valid_puzzle',
         title: 'Valid Puzzle',
         description: 'This is a valid puzzle with proper format',
@@ -37,7 +81,7 @@ void main() {
     });
 
     test('detects empty puzzle ID', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: '',
         title: 'Test',
         description: 'Test description',
@@ -62,7 +106,7 @@ void main() {
     });
 
     test('detects empty title', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: '',
         description: 'Test description',
@@ -87,7 +131,7 @@ void main() {
     });
 
     test('warns about very short title', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'AB',
         description: 'Test description',
@@ -111,7 +155,7 @@ void main() {
     });
 
     test('detects empty description', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: '',
@@ -136,7 +180,7 @@ void main() {
     });
 
     test('detects invalid FEN format', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -160,7 +204,7 @@ void main() {
     });
 
     test('detects puzzle with no solutions', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -179,7 +223,7 @@ void main() {
     });
 
     test('detects solution with empty moves', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -187,9 +231,7 @@ void main() {
         difficulty: PuzzleDifficulty.easy,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(moves: <PuzzleMove>[]),
-        ],
+        solutions: <PuzzleSolution>[PuzzleSolution(moves: <PuzzleMove>[])],
       );
 
       final PuzzleValidationReport report =
@@ -200,7 +242,7 @@ void main() {
     });
 
     test('detects move with empty notation', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -225,7 +267,7 @@ void main() {
     });
 
     test('warns when no solution is marked optimal', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -246,11 +288,14 @@ void main() {
       final PuzzleValidationReport report =
           PuzzleValidationService.validatePuzzle(puzzle);
 
-      expect(report.warnings, contains(contains('No solution is marked as optimal')));
+      expect(
+        report.warnings,
+        contains(contains('No solution is marked as optimal')),
+      );
     });
 
     test('detects incorrect side alternation', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -262,7 +307,10 @@ void main() {
           PuzzleSolution(
             moves: <PuzzleMove>[
               PuzzleMove(notation: 'a1', side: PieceColor.white),
-              PuzzleMove(notation: 'd1', side: PieceColor.white), // Wrong: should be black
+              PuzzleMove(
+                notation: 'd1',
+                side: PieceColor.white,
+              ), // Wrong: should be black
             ],
           ),
         ],
@@ -278,7 +326,7 @@ void main() {
 
   group('PuzzleValidationService.quickValidate', () {
     test('returns null for valid puzzle', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Test Puzzle',
         description: 'Test description',
@@ -300,7 +348,7 @@ void main() {
     });
 
     test('returns error for empty title', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: '',
         description: 'Test description',
@@ -325,7 +373,7 @@ void main() {
 
   group('PuzzleValidationService.validateForContribution', () {
     test('enforces stricter requirements', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'AB', // Too short for contribution
         description: 'Short', // Too short for contribution
@@ -350,7 +398,7 @@ void main() {
     });
 
     test('requires author for contribution', () {
-      const PuzzleInfo puzzle = PuzzleInfo(
+      final PuzzleInfo puzzle = PuzzleInfo(
         id: 'test',
         title: 'Contribution Puzzle',
         description: 'A puzzle for contribution',

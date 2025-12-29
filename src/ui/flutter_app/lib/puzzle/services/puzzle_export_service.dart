@@ -274,7 +274,9 @@ class PuzzleExportService {
       'title': puzzle.title,
       'description': puzzle.description,
       'initialPosition': puzzle.initialPosition,
-      'solutions': puzzle.solutions.map((PuzzleSolution s) => s.toJson()).toList(),
+      'solutions': puzzle.solutions
+          .map((PuzzleSolution s) => s.toJson())
+          .toList(),
       'category': puzzle.category.name,
       'difficulty': puzzle.difficulty.name,
       'ruleVariantId': puzzle.ruleVariantId,

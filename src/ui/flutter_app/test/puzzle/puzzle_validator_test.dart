@@ -1,12 +1,56 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/engine/bitboard.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/services/puzzle_validator.dart';
+import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/services/environment_config.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  const MethodChannel pathProviderChannel = MethodChannel(
+    'plugins.flutter.io/path_provider',
+  );
+
+  late Directory appDocDir;
+
+  setUpAll(() async {
+    EnvironmentConfig.catcher = false;
+
+    // Initialize bitboards
+    initBitboards();
+
+    // Provide a stable documents directory for Hive/path_provider callers
+    appDocDir = Directory.systemTemp.createTempSync('sanmill_test_');
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProviderChannel, (
+          MethodCall methodCall,
+        ) async {
+          switch (methodCall.method) {
+            case 'getApplicationDocumentsDirectory':
+            case 'getApplicationSupportDirectory':
+            case 'getTemporaryDirectory':
+              return appDocDir.path;
+            default:
+              return null;
+          }
+        });
+
+    await DB.init();
+  });
+
+  tearDownAll(() async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProviderChannel, null);
+  });
+
   group('PuzzleValidator', () {
     late PuzzleInfo testPuzzle;
     late Position testPosition;
@@ -104,7 +148,7 @@ void main() {
       validator.addMove('a4');
 
       // Mock a winning position
-      position.action = Phase.gameOver;
+      position.phase = Phase.gameOver;
 
       final ValidationFeedback feedback = validator.validateSolution(position);
 
@@ -120,7 +164,7 @@ void main() {
       validator.addMove('d4');
 
       // Mock a winning position (but wrong path)
-      position.action = Phase.gameOver;
+      position.phase = Phase.gameOver;
 
       final ValidationFeedback feedback = validator.validateSolution(position);
 
@@ -171,7 +215,7 @@ void main() {
       validator.addMove('a4');
 
       // Mock winning position
-      position.action = Phase.gameOver;
+      position.phase = Phase.gameOver;
 
       final ValidationFeedback feedback = validator.validateSolution(position);
 
@@ -216,11 +260,148 @@ void main() {
       validator.addMove('a4');
 
       // Mock winning position
-      position.action = Phase.gameOver;
+      position.phase = Phase.gameOver;
 
       final ValidationFeedback feedback = validator.validateSolution(position);
 
       expect(feedback.result, equals(ValidationResult.correct));
+    });
+
+    test('distinguishes optimal vs alternative solutions', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'opt_test',
+        title: 'Optimal Test',
+        description: 'Test optimal detection',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.medium,
+        initialPosition:
+            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+        solutions: <PuzzleSolution>[
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a1', side: PieceColor.white),
+              PuzzleMove(notation: 'd1', side: PieceColor.black),
+            ],
+            isOptimal: true,
+          ),
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a4', side: PieceColor.white),
+              PuzzleMove(notation: 'd4', side: PieceColor.black),
+              PuzzleMove(notation: 'a7', side: PieceColor.white),
+              PuzzleMove(notation: 'd7', side: PieceColor.black),
+            ],
+            isOptimal: false,
+          ),
+        ],
+      );
+
+      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
+      final Position position = Position();
+      position.setFen(puzzle.initialPosition);
+
+      // Try optimal solution
+      validator.addMove('a1');
+      position.phase = Phase.gameOver;
+
+      ValidationFeedback feedback = validator.validateSolution(position);
+      expect(feedback.result, equals(ValidationResult.correct));
+      expect(feedback.isOptimal, isTrue);
+
+      // Reset and try longer alternative solution
+      validator.reset();
+      validator.addMove('a4');
+      validator.addMove('a7');
+
+      feedback = validator.validateSolution(position);
+      expect(feedback.result, equals(ValidationResult.correct));
+      expect(feedback.isOptimal, isFalse);
+    });
+
+    test('handles puzzle with 3+ solutions', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'many_sol',
+        title: 'Many Solutions',
+        description: 'Puzzle with 3 solutions',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.hard,
+        initialPosition:
+            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+        solutions: <PuzzleSolution>[
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a1', side: PieceColor.white),
+            ],
+            isOptimal: true,
+          ),
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a4', side: PieceColor.white),
+            ],
+            isOptimal: false,
+          ),
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a7', side: PieceColor.white),
+            ],
+            isOptimal: false,
+          ),
+        ],
+      );
+
+      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
+      final Position position = Position();
+      position.setFen(puzzle.initialPosition);
+
+      // Try each solution
+      for (final String move in <String>['a1', 'a4', 'a7']) {
+        validator.reset();
+        validator.addMove(move);
+        position.phase = Phase.gameOver;
+
+        final ValidationFeedback feedback = validator.validateSolution(
+          position,
+        );
+        expect(feedback.result, equals(ValidationResult.correct));
+      }
+    });
+
+    test('getHint cycles through optimal solution only', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'hint_test',
+        title: 'Hint Test',
+        description: 'Test hint with multiple solutions',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.easy,
+        initialPosition:
+            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
+        solutions: <PuzzleSolution>[
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a1', side: PieceColor.white),
+              PuzzleMove(notation: 'd1', side: PieceColor.black),
+              PuzzleMove(notation: 'a4', side: PieceColor.white),
+            ],
+            isOptimal: true,
+          ),
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a7', side: PieceColor.white),
+            ],
+            isOptimal: false,
+          ),
+        ],
+      );
+
+      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
+
+      // Should get hints from optimal solution only
+      final String? hint1 = validator.getHint();
+      expect(hint1, equals('a1'));
+
+      validator.addMove('a1');
+      final String? hint2 = validator.getHint();
+      expect(hint2, equals('a4'));
     });
   });
 
@@ -261,9 +442,7 @@ void main() {
         difficulty: PuzzleDifficulty.master,
         initialPosition:
             '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: <PuzzleSolution>[
-          PuzzleSolution(moves: longMoves),
-        ],
+        solutions: <PuzzleSolution>[PuzzleSolution(moves: longMoves)],
       );
 
       final PuzzleValidator validator = PuzzleValidator(puzzle: longPuzzle);

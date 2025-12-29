@@ -120,9 +120,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                 decoration: BoxDecoration(
                   color: Colors.orange.shade100,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.orange.shade300,
-                  ),
+                  border: Border.all(color: Colors.orange.shade300),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -196,9 +194,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsPerformance,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Row(
@@ -307,9 +305,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           children: <Widget>[
             Text(
               s.puzzleStatsRecentActivity,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             if (recentAttempts.isEmpty)
@@ -319,8 +317,8 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                   child: Text(
                     s.puzzleStatsNoActivity,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
               )
@@ -393,8 +391,8 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,

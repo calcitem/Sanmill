@@ -110,10 +110,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                       if (_selectedPuzzleIds.isNotEmpty)
                         IconButton(
                           icon: const Icon(FluentIcons.delete_24_regular),
-                          onPressed: () => _deleteSelectedPuzzles(
-                            context,
-                            settingsTheme,
-                          ),
+                          onPressed: () =>
+                              _deleteSelectedPuzzles(context, settingsTheme),
                           tooltip: s.delete,
                         ),
                     ] else ...<Widget>[
@@ -132,7 +130,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                       ),
                       // Multi-select button
                       IconButton(
-                        icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+                        icon: const Icon(
+                          FluentIcons.checkbox_checked_24_regular,
+                        ),
                         onPressed: _toggleMultiSelectMode,
                         tooltip: s.puzzleSelect,
                       ),
@@ -149,8 +149,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                 body: ValueListenableBuilder<PuzzleSettings>(
                   valueListenable: _puzzleManager.settingsNotifier,
                   builder: (BuildContext context, PuzzleSettings settings, _) {
-                    final List<PuzzleInfo> customPuzzles =
-                        _puzzleManager.getCustomPuzzles();
+                    final List<PuzzleInfo> customPuzzles = _puzzleManager
+                        .getCustomPuzzles();
 
                     if (customPuzzles.isEmpty) {
                       return _buildEmptyState(context, s);
@@ -623,8 +623,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         final Color primary = Theme.of(dialogContext).colorScheme.primary;
-        final Color onSurfaceVariant =
-            Theme.of(dialogContext).colorScheme.onSurfaceVariant;
+        final Color onSurfaceVariant = Theme.of(
+          dialogContext,
+        ).colorScheme.onSurfaceVariant;
         return Theme(
           data: settingsTheme,
           child: AlertDialog(
@@ -748,15 +749,24 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
                     const SizedBox(height: 16),
                     const Text(
                       'Quality Requirements:',
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
                     ),
                     const SizedBox(height: 6),
-                    const Text('✓ Clear, unique solution', style: TextStyle(fontSize: 13)),
+                    const Text(
+                      '✓ Clear, unique solution',
+                      style: TextStyle(fontSize: 13),
+                    ),
                     const Text(
                       '✓ Complete metadata (title, description, etc.)',
                       style: TextStyle(fontSize: 13),
                     ),
-                    const Text('✓ Author attribution', style: TextStyle(fontSize: 13)),
+                    const Text(
+                      '✓ Author attribution',
+                      style: TextStyle(fontSize: 13),
+                    ),
                     const Text(
                       '✓ Accurate difficulty rating',
                       style: TextStyle(fontSize: 13),
@@ -822,18 +832,18 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             children: <Widget>[
               Text(
                 title,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 13,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),

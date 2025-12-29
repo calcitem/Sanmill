@@ -115,7 +115,8 @@ class PuzzleValidator {
     logger.w("$_tag Objective met but solution differs - likely exploited");
     return ValidationFeedback(
       result: ValidationResult.wrong,
-      message: "Objective reached but not following the correct sequence. Try to match the intended solution.",
+      message:
+          "Objective reached but not following the correct sequence. Try to match the intended solution.",
       moveCount: _playerMoves.length,
     );
   }
@@ -183,8 +184,9 @@ class PuzzleValidator {
   /// Check if player's moves match a specific solution
   bool _matchesSolution(PuzzleSolution solution) {
     // Get only the player moves from the solution
-    final List<PuzzleMove> expectedPlayerMoves =
-        solution.getPlayerMoves(puzzle.playerSide);
+    final List<PuzzleMove> expectedPlayerMoves = solution.getPlayerMoves(
+      puzzle.playerSide,
+    );
 
     // Check if the count matches first
     if (_playerMoves.length != expectedPlayerMoves.length) {
@@ -193,10 +195,7 @@ class PuzzleValidator {
 
     // Compare each move
     for (int i = 0; i < _playerMoves.length; i++) {
-      if (!_movesEquivalent(
-        _playerMoves[i],
-        expectedPlayerMoves[i].notation,
-      )) {
+      if (!_movesEquivalent(_playerMoves[i], expectedPlayerMoves[i].notation)) {
         return false;
       }
     }
@@ -220,8 +219,9 @@ class PuzzleValidator {
 
     // Get the first (optimal) solution
     final PuzzleSolution firstSolution = puzzle.solutions.first;
-    final List<PuzzleMove> playerMoves =
-        firstSolution.getPlayerMoves(puzzle.playerSide);
+    final List<PuzzleMove> playerMoves = firstSolution.getPlayerMoves(
+      puzzle.playerSide,
+    );
 
     // Return the next player move in the sequence
     if (_currentMoveIndex < playerMoves.length) {

@@ -83,9 +83,19 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
           child: Builder(
             builder: (BuildContext context) {
               if (!_isActive) {
-                return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+                return _buildSetupScreen(
+                  context,
+                  s,
+                  useDarkSettingsUi,
+                  settingsTheme,
+                );
               } else {
-                return _buildRushScreen(context, s, useDarkSettingsUi, settingsTheme);
+                return _buildRushScreen(
+                  context,
+                  s,
+                  useDarkSettingsUi,
+                  settingsTheme,
+                );
               }
             },
           ),
@@ -607,50 +617,51 @@ class _RushStatsBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          // Timer - rebuilds only when timer notifier changes
-          ValueListenableBuilder<int>(
-            valueListenable: remainingSecondsNotifier,
-            builder:
-                (BuildContext context, int remainingSeconds, Widget? child) {
-                  return _buildStatItem(
-                    _formatTime(remainingSeconds),
-                    FluentIcons.timer_24_regular,
-                    Colors.red,
-                  );
-                },
-          ),
-          // Solved count - rebuilds only when solved count changes
-          ValueListenableBuilder<int>(
-            valueListenable: solvedCountNotifier,
-            builder: (BuildContext context, int solvedCount, Widget? child) {
-              return _buildStatItem(
-                '$solvedCount',
-                FluentIcons.checkmark_circle_24_regular,
-                Colors.green,
-              );
-            },
-          ),
-          // Lives - rebuilds only when lives change
-          ValueListenableBuilder<int>(
-            valueListenable: livesRemainingNotifier,
-            builder: (BuildContext context, int livesRemaining, Widget? child) {
-              return Row(
-                children: List<Widget>.generate(
-                  maxLives,
-                  (int index) => Icon(
-                    index < livesRemaining
-                        ? FluentIcons.heart_24_filled
-                        : FluentIcons.heart_24_regular,
-                    color: Colors.red,
-                    size: 20,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            // Timer - rebuilds only when timer notifier changes
+            ValueListenableBuilder<int>(
+              valueListenable: remainingSecondsNotifier,
+              builder:
+                  (BuildContext context, int remainingSeconds, Widget? child) {
+                    return _buildStatItem(
+                      _formatTime(remainingSeconds),
+                      FluentIcons.timer_24_regular,
+                      Colors.red,
+                    );
+                  },
+            ),
+            // Solved count - rebuilds only when solved count changes
+            ValueListenableBuilder<int>(
+              valueListenable: solvedCountNotifier,
+              builder: (BuildContext context, int solvedCount, Widget? child) {
+                return _buildStatItem(
+                  '$solvedCount',
+                  FluentIcons.checkmark_circle_24_regular,
+                  Colors.green,
+                );
+              },
+            ),
+            // Lives - rebuilds only when lives change
+            ValueListenableBuilder<int>(
+              valueListenable: livesRemainingNotifier,
+              builder:
+                  (BuildContext context, int livesRemaining, Widget? child) {
+                    return Row(
+                      children: List<Widget>.generate(
+                        maxLives,
+                        (int index) => Icon(
+                          index < livesRemaining
+                              ? FluentIcons.heart_24_filled
+                              : FluentIcons.heart_24_regular,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                      ),
+                    );
+                  },
+            ),
+          ],
         ),
       ),
     );

@@ -62,13 +62,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
     super.initState();
     _validator = PuzzleValidator(puzzle: widget.puzzle);
     _hintService = PuzzleHintService(puzzle: widget.puzzle);
-    
+
     // Save current game state before entering puzzle mode
     final GameController controller = GameController();
     _previousGameMode = controller.gameInstance.gameMode;
     _previousPuzzleHumanColor = controller.puzzleHumanColor;
     _previousIsPuzzleAutoMoveInProgress = controller.isPuzzleAutoMoveInProgress;
-    
+
     _initializePuzzle();
   }
 
@@ -86,16 +86,18 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void dispose() {
     // Restore previous game state when leaving puzzle mode
     final GameController controller = GameController();
-    
+
     // Only restore if we're still in puzzle mode (not already changed by another page)
     if (controller.gameInstance.gameMode == GameMode.puzzle) {
-      controller.gameInstance.gameMode = _previousGameMode ?? GameMode.humanVsAi;
+      controller.gameInstance.gameMode =
+          _previousGameMode ?? GameMode.humanVsAi;
       controller.puzzleHumanColor = _previousPuzzleHumanColor;
-      controller.isPuzzleAutoMoveInProgress = _previousIsPuzzleAutoMoveInProgress;
-      
+      controller.isPuzzleAutoMoveInProgress =
+          _previousIsPuzzleAutoMoveInProgress;
+
       logger.i('[PuzzlePage] Restored game mode to $_previousGameMode');
     }
-    
+
     _moveCountNotifier.dispose();
     super.dispose();
   }
@@ -534,8 +536,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Convert solutions to legacy format for auto-player
     final List<List<String>> legacySolutions = widget.puzzle.solutions
-        .map((PuzzleSolution s) =>
-            s.moves.map((PuzzleMove m) => m.notation).toList())
+        .map(
+          (PuzzleSolution s) =>
+              s.moves.map((PuzzleMove m) => m.notation).toList(),
+        )
         .toList();
 
     Future<void>.delayed(Duration.zero, () async {
@@ -866,7 +870,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
                       ) {
                         final int solutionIndex = solutionEntry.key;
                         final PuzzleSolution solution = solutionEntry.value;
-                        final bool isOnlySolution = widget.puzzle.solutions.length == 1;
+                        final bool isOnlySolution =
+                            widget.puzzle.solutions.length == 1;
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
@@ -876,7 +881,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                   children: <Widget>[
                                     Text(
                                       '${solution.isOptimal ? s.puzzleOptimalSolution : s.puzzleAlternativeSolution} (${solution.moves.length} moves):',
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     const SizedBox(height: 12),
                                     ..._buildSolutionMoves(solution, context),
@@ -887,13 +894,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                     children: <Widget>[
                                       Text(
                                         '${s.puzzleSolutionTab(solutionIndex + 1)} ',
-                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                       Text(
-                                        solution.isOptimal ? s.puzzleOptimalSolution : s.puzzleAlternativeSolution,
+                                        solution.isOptimal
+                                            ? s.puzzleOptimalSolution
+                                            : s.puzzleAlternativeSolution,
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: solution.isOptimal ? Colors.amber[300] : Colors.grey[400],
+                                          color: solution.isOptimal
+                                              ? Colors.amber[300]
+                                              : Colors.grey[400],
                                         ),
                                       ),
                                       const SizedBox(width: 8),
@@ -911,8 +924,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: _buildSolutionMoves(solution, context),
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: _buildSolutionMoves(
+                                          solution,
+                                          context,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -981,8 +998,9 @@ class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
 
   @override
   void dispose() {
-    _controller.gameRecorder.moveCountNotifier
-        .removeListener(_onMoveCountChanged);
+    _controller.gameRecorder.moveCountNotifier.removeListener(
+      _onMoveCountChanged,
+    );
     super.dispose();
   }
 
@@ -1010,10 +1028,11 @@ class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
 }
 
 /// Helper method to build solution moves list
-List<Widget> _buildSolutionMoves(PuzzleSolution solution, BuildContext context) {
-  return solution.moves.asMap().entries.map((
-    MapEntry<int, PuzzleMove> entry,
-  ) {
+List<Widget> _buildSolutionMoves(
+  PuzzleSolution solution,
+  BuildContext context,
+) {
+  return solution.moves.asMap().entries.map((MapEntry<int, PuzzleMove> entry) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -1022,7 +1041,9 @@ List<Widget> _buildSolutionMoves(PuzzleSolution solution, BuildContext context) 
             width: 24,
             height: 24,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -1039,10 +1060,7 @@ List<Widget> _buildSolutionMoves(PuzzleSolution solution, BuildContext context) 
           Expanded(
             child: Text(
               entry.value.notation,
-              style: const TextStyle(
-                fontFamily: 'monospace',
-                fontSize: 14,
-              ),
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
             ),
           ),
           // Show side indicator (subtle)
