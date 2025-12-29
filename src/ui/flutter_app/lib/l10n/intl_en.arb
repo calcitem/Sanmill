@@ -2371,6 +2371,32 @@
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
+    "puzzleRuleMismatch": "Rule Mismatch",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "This puzzle is designed for {puzzleRules}, but your current settings are {currentRules}. The puzzle may not work correctly.",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Continue Anyway",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "Compatible Only",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
     "puzzleSelect": "Select Puzzles",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"

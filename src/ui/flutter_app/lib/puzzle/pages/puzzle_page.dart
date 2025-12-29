@@ -103,6 +103,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _initializePuzzle() {
+    // Check rule variant compatibility first
+    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+      DB().ruleSettings,
+    );
+    if (widget.puzzle.ruleVariantId != currentVariant.id) {
+      // Show warning dialog after build is complete
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showRuleMismatchWarning(currentVariant);
+      });
+    }
+
     // Set up the game controller with puzzle position
     final GameController controller = GameController();
 
@@ -196,6 +207,79 @@ class _PuzzlePageState extends State<PuzzlePage> {
         },
       );
     });
+  }
+
+  /// Show warning dialog when puzzle rules don't match current settings
+  void _showRuleMismatchWarning(RuleVariant currentVariant) {
+    if (!mounted) {
+      return;
+    }
+
+    // Get friendly rule names instead of IDs
+    final RuleVariant puzzleVariant = _getVariantById(
+      widget.puzzle.ruleVariantId,
+    );
+    final String puzzleRuleName = puzzleVariant.name;
+    final String currentRuleName = currentVariant.name;
+
+    final S s = S.of(context);
+
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return Theme(
+          data: _settingsThemeForDialogs ?? Theme.of(dialogContext),
+          child: AlertDialog(
+            title: Row(
+              children: <Widget>[
+                const Icon(Icons.warning, color: Colors.orange),
+                const SizedBox(width: 8),
+                Text(s.puzzleRuleMismatch),
+              ],
+            ),
+            content: Text(
+              s.puzzleRuleMismatchWarning(puzzleRuleName, currentRuleName),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(s.cancel),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                style: TextButton.styleFrom(foregroundColor: Colors.orange),
+                child: Text(s.puzzleRuleMismatchContinue),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  /// Get rule variant by ID, fallback to creating from puzzle's ID
+  RuleVariant _getVariantById(String variantId) {
+    // Try to get predefined variant
+    final RuleVariant? predefined = PredefinedVariants.getById(variantId);
+    if (predefined != null) {
+      return predefined;
+    }
+
+    // Fallback: create a basic variant with the ID as name
+    return RuleVariant(
+      id: variantId,
+      name: variantId
+          .replaceAll('_', ' ')
+          .split(' ')
+          .map((String word) {
+            return word.isEmpty
+                ? ''
+                : word[0].toUpperCase() + word.substring(1);
+          })
+          .join(' '),
+      description: 'Custom variant: $variantId',
+      ruleHash: '',
+    );
   }
 
   @override

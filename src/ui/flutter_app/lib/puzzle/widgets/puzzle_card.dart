@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../models/puzzle_models.dart';
 
 /// Card widget for displaying a puzzle in the list
@@ -33,6 +34,14 @@ class PuzzleCard extends StatelessWidget {
   final bool showCustomBadge;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+
+  /// Check if puzzle rules match current settings
+  bool _isRuleMismatch() {
+    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+      DB().ruleSettings,
+    );
+    return puzzle.ruleVariantId != currentVariant.id;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +197,8 @@ class PuzzleCard extends StatelessWidget {
                         ),
                         if (showCustomBadge)
                           _buildBadge(s.puzzleCustom, Colors.purple),
+                        if (_isRuleMismatch())
+                          _buildBadge(s.puzzleRuleMismatch, Colors.orange),
                       ],
                     ),
                   ],
