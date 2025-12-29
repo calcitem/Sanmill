@@ -478,9 +478,15 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     // Validate puzzles before contribution
     final List<String> invalidPuzzles = <String>[];
     for (final PuzzleInfo puzzle in puzzlesToContribute) {
-      final String? error = PuzzleExportService.validateForContribution(puzzle);
-      if (error != null) {
-        invalidPuzzles.add('${puzzle.title}: $error');
+      final String? errorKey =
+          PuzzleExportService.validateForContribution(puzzle);
+      if (errorKey != null) {
+        // Translate error key to localized message
+        final String localizedError = _getLocalizedValidationError(
+          context,
+          errorKey,
+        );
+        invalidPuzzles.add('${puzzle.title}: $localizedError');
       }
     }
 
@@ -853,5 +859,34 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
         ),
       ],
     );
+  }
+
+  /// Get localized validation error message from error key
+  String _getLocalizedValidationError(BuildContext context, String errorKey) {
+    final S s = S.of(context);
+    switch (errorKey) {
+      case 'puzzleValidationTitleRequired':
+        return s.puzzleValidationTitleRequired;
+      case 'puzzleValidationDescriptionRequired':
+        return s.puzzleValidationDescriptionRequired;
+      case 'puzzleValidationPositionRequired':
+        return s.puzzleValidationPositionRequired;
+      case 'puzzleValidationInvalidFen':
+        return s.puzzleValidationInvalidFen;
+      case 'puzzleValidationSolutionRequired':
+        return s.puzzleValidationSolutionRequired;
+      case 'puzzleValidationTitleTooShort':
+        return s.puzzleValidationTitleTooShort;
+      case 'puzzleValidationTitleTooLong':
+        return s.puzzleValidationTitleTooLong;
+      case 'puzzleValidationDescriptionTooShort':
+        return s.puzzleValidationDescriptionTooShort;
+      case 'puzzleValidationDescriptionTooLong':
+        return s.puzzleValidationDescriptionTooLong;
+      case 'puzzleValidationAuthorRequired':
+        return s.puzzleValidationAuthorRequired;
+      default:
+        return errorKey; // Fallback to key itself
+    }
   }
 }

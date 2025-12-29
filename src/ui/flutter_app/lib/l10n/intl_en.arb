@@ -2448,6 +2448,142 @@
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
+    "puzzleImportNoFileSelected": "No file selected",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "Invalid file path",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "Error picking file: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "File does not exist",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "Invalid file format: missing puzzles field",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "Incompatible file format version: {version} (expected {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "Puzzle {index} (\"{title}\") has invalid FEN format",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "Puzzle {index} (\"{title}\") uses different rules: {puzzleRules} (current: {currentRules}). This puzzle may not work correctly with your current settings.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "Failed to parse puzzle {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Errors:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Warnings:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Error reading file: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "Puzzle must have a title",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "Puzzle must have a description",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "Puzzle must have a valid position",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "Puzzle has invalid FEN format. Please check the position.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "Puzzle must have a solution",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "Title too short (minimum 5 characters)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Title too long (maximum 100 characters)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Description too short (minimum 10 characters)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Description too long (maximum 500 characters)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Please add your name as author before contributing",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
     "puzzleDeleteConfirm": "{count,plural, =1{Delete {count} puzzle?}other{Delete {count} puzzles?}}",
     "@puzzleDeleteConfirm": {
         "description": "Confirm deletion of puzzles",

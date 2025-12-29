@@ -109,21 +109,31 @@ class PuzzleExportService {
       );
 
       if (result == null || result.files.isEmpty) {
-        return ImportResult(success: false, errorMessage: 'No file selected');
+        return ImportResult(
+          success: false,
+          errorKey: 'puzzleImportNoFileSelected',
+          errorMessage: 'No file selected',
+        );
       }
 
       final PlatformFile pickedFile = result.files.first;
       final String? filePath = pickedFile.path;
 
       if (filePath == null) {
-        return ImportResult(success: false, errorMessage: 'Invalid file path');
+        return ImportResult(
+          success: false,
+          errorKey: 'puzzleImportInvalidFilePath',
+          errorMessage: 'Invalid file path',
+        );
       }
 
       return await importPuzzlesFromFile(filePath);
     } catch (e) {
       return ImportResult(
         success: false,
+        errorKey: 'puzzleImportErrorPickingFile',
         errorMessage: 'Error picking file: $e',
+        errorParams: <String, dynamic>{'error': e.toString()},
       );
     }
   }
@@ -136,6 +146,7 @@ class PuzzleExportService {
       if (!file.existsSync()) {
         return ImportResult(
           success: false,
+          errorKey: 'puzzleImportFileNotExist',
           errorMessage: 'File does not exist',
         );
       }
@@ -148,6 +159,7 @@ class PuzzleExportService {
       if (!data.containsKey('puzzles')) {
         return ImportResult(
           success: false,
+          errorKey: 'puzzleImportInvalidFormat',
           errorMessage: 'Invalid file format: missing puzzles field',
         );
       }
@@ -157,8 +169,13 @@ class PuzzleExportService {
       if (formatVersion != null && formatVersion != exportVersion) {
         return ImportResult(
           success: false,
+          errorKey: 'puzzleImportIncompatibleVersion',
           errorMessage:
               'Incompatible file format version: $formatVersion (expected $exportVersion)',
+          errorParams: <String, dynamic>{
+            'version': formatVersion,
+            'expected': exportVersion,
+          },
         );
       }
 
@@ -178,8 +195,8 @@ class PuzzleExportService {
       // Parse puzzles
       final List<dynamic> puzzlesJson = data['puzzles'] as List<dynamic>;
       final List<PuzzleInfo> importedPuzzles = <PuzzleInfo>[];
-      final List<String> errors = <String>[];
-      final List<String> warnings = <String>[];
+      final List<DetailedError> errors = <DetailedError>[];
+      final List<DetailedError> warnings = <DetailedError>[];
 
       // Get current rule variant ID from settings
       final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
@@ -197,7 +214,15 @@ class PuzzleExportService {
           final Position tempPosition = Position();
           if (!tempPosition.validateFen(puzzle.initialPosition)) {
             errors.add(
-              'Puzzle ${i + 1} ("${puzzle.title}") has invalid FEN format',
+              DetailedError(
+                key: 'puzzleImportInvalidFen',
+                fallbackMessage:
+                    'Puzzle ${i + 1} ("${puzzle.title}") has invalid FEN format',
+                params: <String, dynamic>{
+                  'index': i + 1,
+                  'title': puzzle.title,
+                },
+              ),
             );
             continue;
           }
@@ -205,26 +230,45 @@ class PuzzleExportService {
           // Check if rule variant matches current settings
           if (puzzle.ruleVariantId != currentVariantId) {
             warnings.add(
-              'Puzzle ${i + 1} ("${puzzle.title}") uses different rules: '
-              '${puzzle.ruleVariantId} (current: $currentVariantId). '
-              'This puzzle may not work correctly with your current settings.',
+              DetailedError(
+                key: 'puzzleImportRuleMismatchWarning',
+                fallbackMessage:
+                    'Puzzle ${i + 1} ("${puzzle.title}") uses different rules: '
+                    '${puzzle.ruleVariantId} (current: $currentVariantId). '
+                    'This puzzle may not work correctly with your current settings.',
+                params: <String, dynamic>{
+                  'index': i + 1,
+                  'title': puzzle.title,
+                  'puzzleRules': puzzle.ruleVariantId,
+                  'currentRules': currentVariantId,
+                },
+              ),
             );
           }
 
           importedPuzzles.add(puzzle);
         } catch (e) {
-          errors.add('Failed to parse puzzle ${i + 1}: $e');
+          errors.add(
+            DetailedError(
+              key: 'puzzleImportParseFailed',
+              fallbackMessage: 'Failed to parse puzzle ${i + 1}: $e',
+              params: <String, dynamic>{
+                'index': i + 1,
+                'error': e.toString(),
+              },
+            ),
+          );
         }
       }
 
-      // Build result message
+      // Build result message for backward compatibility
       String? resultMessage;
       if (errors.isNotEmpty || warnings.isNotEmpty) {
         final StringBuffer buffer = StringBuffer();
         if (errors.isNotEmpty) {
           buffer.writeln('Errors:');
-          for (final String error in errors) {
-            buffer.writeln('  - $error');
+          for (final DetailedError error in errors) {
+            buffer.writeln('  - ${error.fallbackMessage}');
           }
         }
         if (warnings.isNotEmpty) {
@@ -232,8 +276,8 @@ class PuzzleExportService {
             buffer.writeln();
           }
           buffer.writeln('Warnings:');
-          for (final String warning in warnings) {
-            buffer.writeln('  - $warning');
+          for (final DetailedError warning in warnings) {
+            buffer.writeln('  - ${warning.fallbackMessage}');
           }
         }
         resultMessage = buffer.toString().trim();
@@ -244,11 +288,15 @@ class PuzzleExportService {
         puzzles: importedPuzzles,
         metadata: metadata,
         errorMessage: resultMessage,
+        detailedErrors: errors,
+        detailedWarnings: warnings,
       );
     } catch (e) {
       return ImportResult(
         success: false,
+        errorKey: 'puzzleImportErrorReading',
         errorMessage: 'Error reading file: $e',
+        errorParams: <String, dynamic>{'error': e.toString()},
       );
     }
   }
@@ -434,52 +482,52 @@ class PuzzleExportService {
 
   /// Validate puzzle for contribution
   ///
-  /// Returns null if valid, error message if invalid
+  /// Returns null if valid, localization key if invalid
   static String? validateForContribution(PuzzleInfo puzzle) {
     // Check required fields
     if (puzzle.title.trim().isEmpty) {
-      return 'Puzzle must have a title';
+      return 'puzzleValidationTitleRequired';
     }
 
     if (puzzle.description.trim().isEmpty) {
-      return 'Puzzle must have a description';
+      return 'puzzleValidationDescriptionRequired';
     }
 
     if (puzzle.initialPosition.trim().isEmpty) {
-      return 'Puzzle must have a valid position';
+      return 'puzzleValidationPositionRequired';
     }
 
     // Validate FEN format
     final Position tempPosition = Position();
     if (!tempPosition.validateFen(puzzle.initialPosition)) {
-      return 'Puzzle has invalid FEN format. Please check the position.';
+      return 'puzzleValidationInvalidFen';
     }
 
     if (puzzle.solutions.isEmpty) {
-      return 'Puzzle must have a solution';
+      return 'puzzleValidationSolutionRequired';
     }
 
     // Check title length
     if (puzzle.title.length < 5) {
-      return 'Title too short (minimum 5 characters)';
+      return 'puzzleValidationTitleTooShort';
     }
 
     if (puzzle.title.length > 100) {
-      return 'Title too long (maximum 100 characters)';
+      return 'puzzleValidationTitleTooLong';
     }
 
     // Check description length
     if (puzzle.description.length < 10) {
-      return 'Description too short (minimum 10 characters)';
+      return 'puzzleValidationDescriptionTooShort';
     }
 
     if (puzzle.description.length > 500) {
-      return 'Description too long (maximum 500 characters)';
+      return 'puzzleValidationDescriptionTooLong';
     }
 
     // Check for attribution
     if (puzzle.author == null || puzzle.author!.trim().isEmpty) {
-      return 'Please add your name as author before contributing';
+      return 'puzzleValidationAuthorRequired';
     }
 
     // All checks passed
@@ -524,6 +572,10 @@ class ImportResult {
     this.puzzles = const <PuzzleInfo>[],
     this.metadata,
     this.errorMessage,
+    this.errorKey,
+    this.errorParams,
+    this.detailedErrors = const <DetailedError>[],
+    this.detailedWarnings = const <DetailedError>[],
   });
 
   /// Whether the import was successful
@@ -537,4 +589,34 @@ class ImportResult {
 
   /// Error message if import failed
   final String? errorMessage;
+
+  /// Error localization key for UI layer
+  final String? errorKey;
+
+  /// Parameters for error message localization
+  final Map<String, dynamic>? errorParams;
+
+  /// Detailed error list for localization
+  final List<DetailedError> detailedErrors;
+
+  /// Detailed warning list for localization
+  final List<DetailedError> detailedWarnings;
+}
+
+/// Detailed error or warning with localization support
+class DetailedError {
+  DetailedError({
+    required this.key,
+    required this.fallbackMessage,
+    this.params,
+  });
+
+  /// Localization key
+  final String key;
+
+  /// Fallback message in English
+  final String fallbackMessage;
+
+  /// Parameters for localization
+  final Map<String, dynamic>? params;
 }
