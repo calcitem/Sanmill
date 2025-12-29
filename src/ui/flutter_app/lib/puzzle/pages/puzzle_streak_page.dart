@@ -60,11 +60,26 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
           child: Builder(
             builder: (BuildContext context) {
               if (!_isActive) {
-                return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+                return _buildSetupScreen(
+                  context,
+                  s,
+                  useDarkSettingsUi,
+                  settingsTheme,
+                );
               } else if (_failed) {
-                return _buildResultsScreen(context, s, useDarkSettingsUi, settingsTheme);
+                return _buildResultsScreen(
+                  context,
+                  s,
+                  useDarkSettingsUi,
+                  settingsTheme,
+                );
               } else {
-                return _buildStreakScreen(context, s, useDarkSettingsUi, settingsTheme);
+                return _buildStreakScreen(
+                  context,
+                  s,
+                  useDarkSettingsUi,
+                  settingsTheme,
+                );
               }
             },
           ),
@@ -258,61 +273,61 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                // Current streak
-                Column(
-                  children: <Widget>[
-                    const Icon(
-                      FluentIcons.flash_24_filled,
-                      color: Colors.purple,
-                      size: 32,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$_currentStreak',
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  // Current streak
+                  Column(
+                    children: <Widget>[
+                      const Icon(
+                        FluentIcons.flash_24_filled,
                         color: Colors.purple,
+                        size: 32,
                       ),
-                    ),
-                    Text(
-                      s.puzzleStreakCurrent,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                // Divider - use theme color for better contrast in both modes
-                Container(
-                  height: 60,
-                  width: 1,
-                  color: Theme.of(context).dividerColor,
-                ),
-                // Best streak
-                Column(
-                  children: <Widget>[
-                    const Icon(
-                      FluentIcons.trophy_24_regular,
-                      color: Colors.amber,
-                      size: 32,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$_bestStreak',
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(height: 4),
+                      Text(
+                        '$_currentStreak',
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple,
+                        ),
+                      ),
+                      Text(
+                        s.puzzleStreakCurrent,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                  // Divider - use theme color for better contrast in both modes
+                  Container(
+                    height: 60,
+                    width: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                  // Best streak
+                  Column(
+                    children: <Widget>[
+                      const Icon(
+                        FluentIcons.trophy_24_regular,
                         color: Colors.amber,
+                        size: 32,
                       ),
-                    ),
-                    Text(
-                      s.puzzleStreakBest,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(height: 4),
+                      Text(
+                        '$_bestStreak',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amber,
+                        ),
+                      ),
+                      Text(
+                        s.puzzleStreakBest,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

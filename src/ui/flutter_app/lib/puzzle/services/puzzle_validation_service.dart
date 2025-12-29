@@ -109,8 +109,9 @@ class PuzzleValidationService {
       errors.add('Puzzle has no solutions');
     } else {
       // Check if at least one solution is marked optimal
-      final bool hasOptimal =
-          puzzle.solutions.any((PuzzleSolution s) => s.isOptimal);
+      final bool hasOptimal = puzzle.solutions.any(
+        (PuzzleSolution s) => s.isOptimal,
+      );
       if (!hasOptimal) {
         warnings.add('No solution is marked as optimal');
       }
@@ -151,7 +152,9 @@ class PuzzleValidationService {
     // 5. Validate rating
     if (puzzle.rating != null) {
       if (puzzle.rating! < 100 || puzzle.rating! > 3000) {
-        warnings.add('Puzzle rating (${puzzle.rating}) is outside normal range');
+        warnings.add(
+          'Puzzle rating (${puzzle.rating}) is outside normal range',
+        );
       }
     }
 

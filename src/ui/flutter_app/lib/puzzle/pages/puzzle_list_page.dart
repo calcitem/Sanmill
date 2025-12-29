@@ -148,10 +148,8 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                       if (_canDeleteSelected)
                         IconButton(
                           icon: const Icon(FluentIcons.delete_24_regular),
-                          onPressed: () => _deleteSelectedPuzzles(
-                            context,
-                            settingsTheme,
-                          ),
+                          onPressed: () =>
+                              _deleteSelectedPuzzles(context, settingsTheme),
                           tooltip: s.delete,
                         ),
                     ] else ...<Widget>[
@@ -163,25 +161,23 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                       ),
                       // Multi-select button
                       IconButton(
-                        icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+                        icon: const Icon(
+                          FluentIcons.checkbox_checked_24_regular,
+                        ),
                         onPressed: _toggleMultiSelectMode,
                         tooltip: s.puzzleSelect,
                       ),
                       // Filter button
                       IconButton(
                         icon: const Icon(Icons.filter_list),
-                        onPressed: () => _showFilterDialog(
-                          context,
-                          settingsTheme,
-                        ),
+                        onPressed: () =>
+                            _showFilterDialog(context, settingsTheme),
                       ),
                       // Stats button
                       IconButton(
                         icon: const Icon(Icons.bar_chart),
-                        onPressed: () => _showStatsDialog(
-                          context,
-                          settingsTheme,
-                        ),
+                        onPressed: () =>
+                            _showStatsDialog(context, settingsTheme),
                       ),
                     ],
                   ],
@@ -232,10 +228,10 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
                             itemCount: puzzles.length,
                             itemBuilder: (BuildContext context, int index) {
                               final PuzzleInfo puzzle = puzzles[index];
-                              final PuzzleProgress? progress =
-                                  settings.getProgress(puzzle.id);
-                              final bool isSelected =
-                                  _selectedPuzzleIds.contains(puzzle.id);
+                              final PuzzleProgress? progress = settings
+                                  .getProgress(puzzle.id);
+                              final bool isSelected = _selectedPuzzleIds
+                                  .contains(puzzle.id);
 
                               return PuzzleCard(
                                 puzzle: puzzle,

@@ -11,11 +11,7 @@ part of 'puzzle_models.dart';
 /// This provides clarity about the expected sequence of player and opponent moves.
 @HiveType(typeId: 36)
 class PuzzleMove {
-  const PuzzleMove({
-    required this.notation,
-    required this.side,
-    this.comment,
-  });
+  const PuzzleMove({required this.notation, required this.side, this.comment});
 
   /// Create from JSON
   factory PuzzleMove.fromJson(Map<String, dynamic> json) {
@@ -136,10 +132,10 @@ class PuzzleSolution {
 
   @override
   int get hashCode => Object.hash(
-        const ListEquality<PuzzleMove>().hash(moves),
-        description,
-        isOptimal,
-      );
+    const ListEquality<PuzzleMove>().hash(moves),
+    description,
+    isOptimal,
+  );
 
   @override
   String toString() =>
