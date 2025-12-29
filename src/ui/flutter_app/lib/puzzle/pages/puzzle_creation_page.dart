@@ -191,9 +191,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       final _SolutionData solutionData = _SolutionData(
         isOptimal: solution.isOptimal,
       );
-      for (final PuzzleMove move in solution.moves) {
-        solutionData.moves.add(move.notation);
-      }
+      solution.moves.forEach(solutionData.moves.add);
       _solutions.add(solutionData);
     }
 
@@ -345,9 +343,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     final List<ExtMove> allMoves = controller.gameRecorder.mainlineMoves;
 
     // Extract moves recorded during solution recording
-    final List<String> recordedMoves = <String>[];
+    final List<PuzzleMove> recordedMoves = <PuzzleMove>[];
     for (int i = _moveCountBeforeRecording; i < allMoves.length; i++) {
-      recordedMoves.add(allMoves[i].move);
+      recordedMoves.add(
+        PuzzleMove(notation: allMoves[i].move, side: allMoves[i].side),
+      );
     }
 
     // Snapshot the final position after all solution moves
@@ -431,11 +431,6 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
         .toList();
 
     // Create PuzzleSolution objects from all recorded solutions
-    // Get starting side from initial position
-    final Position tempPos = Position();
-    tempPos.setFen(_snapshottedPosition!);
-    final PieceColor startingSide = tempPos.sideToMove;
-
     final List<PuzzleSolution> puzzleSolutions = <PuzzleSolution>[];
     for (final _SolutionData solutionData in _solutions) {
       // Skip empty solutions
@@ -443,16 +438,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
         continue;
       }
 
-      // Convert move notations to PuzzleMove objects
-      PieceColor currentSide = startingSide;
-      final List<PuzzleMove> puzzleMoves = <PuzzleMove>[];
-      for (final String notation in solutionData.moves) {
-        puzzleMoves.add(PuzzleMove(notation: notation, side: currentSide));
-        currentSide = currentSide.opponent;
-      }
-
       puzzleSolutions.add(
-        PuzzleSolution(moves: puzzleMoves, isOptimal: solutionData.isOptimal),
+        PuzzleSolution(
+          moves: List<PuzzleMove>.from(solutionData.moves),
+          isOptimal: solutionData.isOptimal,
+        ),
       );
     }
 
@@ -1446,11 +1436,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                   spacing: 4,
                   runSpacing: 4,
                   children: _currentSolution.moves.asMap().entries.map((
-                    MapEntry<int, String> entry,
+                    MapEntry<int, PuzzleMove> entry,
                   ) {
                     return Chip(
                       label: Text(
-                        '${entry.key + 1}. ${entry.value}',
+                        '${entry.key + 1}. ${entry.value.notation}',
                         style: const TextStyle(fontSize: 12),
                       ),
                       backgroundColor: Colors.blue[700],
@@ -1726,7 +1716,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 class _SolutionData {
   _SolutionData({this.isOptimal = false});
 
-  final List<String> moves = <String>[];
+  final List<PuzzleMove> moves = <PuzzleMove>[];
   bool isOptimal;
   String? finalPosition; // Store the final FEN position after solution moves
 }

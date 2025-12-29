@@ -12,6 +12,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import '../../appearance_settings/models/color_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_manager.dart';
@@ -558,7 +559,44 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       _failed = true;
     });
 
-    // TODO: Save streak result to database
+    // Save streak result to database
+    _saveStreakResult();
+  }
+  
+  Future<void> _saveStreakResult() async {
+    if (_currentStreak == 0) {
+      return; // No streak to save
+    }
+    
+    try {
+      // Load existing streak history
+      final dynamic data = DB().puzzleAnalyticsBox.get('puzzleStreakHistory');
+      final List<Map<String, dynamic>> history = data != null
+          ? List<Map<String, dynamic>>.from(
+              (data as List<dynamic>).map(
+                (dynamic e) => Map<String, dynamic>.from(e as Map<dynamic, dynamic>),
+              ),
+            )
+          : <Map<String, dynamic>>[];
+      
+      // Add current streak result
+      history.add(<String, dynamic>{
+        'streak': _currentStreak,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+      
+      // Keep only the last 100 streak results
+      if (history.length > 100) {
+        history.removeRange(0, history.length - 100);
+      }
+      
+      // Save to database
+      await DB().puzzleAnalyticsBox.put('puzzleStreakHistory', history);
+      
+      logger.i('[PuzzleStreakPage] Saved streak result: $_currentStreak');
+    } catch (e) {
+      logger.e('[PuzzleStreakPage] Failed to save streak result: $e');
+    }
   }
 
   void _confirmQuit() {

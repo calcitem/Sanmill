@@ -347,7 +347,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              _formatTimestamp(attempt.timestamp),
+              _formatTimestamp(context, attempt.timestamp),
               style: Theme.of(context).textTheme.bodySmall,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -410,16 +410,17 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
     return '${minutes}m ${secs}s';
   }
 
-  String _formatTimestamp(DateTime timestamp) {
+  String _formatTimestamp(BuildContext context, DateTime timestamp) {
+    final S s = S.of(context);
     final Duration diff = DateTime.now().difference(timestamp);
     if (diff.inDays > 0) {
-      return '${diff.inDays}d ago';
+      return s.daysAgo(diff.inDays);
     } else if (diff.inHours > 0) {
-      return '${diff.inHours}h ago';
+      return s.hoursAgo(diff.inHours);
     } else if (diff.inMinutes > 0) {
-      return '${diff.inMinutes}m ago';
+      return s.minutesAgo(diff.inMinutes);
     } else {
-      return 'Just now';
+      return s.justNow;
     }
   }
 }

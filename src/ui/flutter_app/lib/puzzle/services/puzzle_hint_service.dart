@@ -50,7 +50,7 @@ class PuzzleHintService {
 
   /// Get the next hint
   /// Hints are progressive: textual -> next move -> show solution
-  PuzzleHint? getNextHint(int currentMoveIndex) {
+  PuzzleHint? getNextHint(int currentPlayerMoveIndex) {
     logger.i(
       "$_tag Getting hint (level $_currentHintLevel) for puzzle ${puzzle.id}",
     );
@@ -69,12 +69,13 @@ class PuzzleHintService {
       // Second hint: show the next move
       _currentHintLevel++;
       _hintsGiven++;
-      final String? nextMove = _getNextMove(currentMoveIndex);
+      final String? nextMove = _getNextPlayerMove(currentPlayerMoveIndex);
       if (nextMove != null) {
         return PuzzleHint(
           type: HintType.nextMove,
-          content: "Next move: $nextMove",
-          moveIndex: currentMoveIndex,
+          // Store raw move notation; UI layer formats with localization.
+          content: nextMove,
+          moveIndex: currentPlayerMoveIndex,
         );
       }
     }
@@ -86,7 +87,8 @@ class PuzzleHintService {
       final String solution = _getFullSolution();
       return PuzzleHint(
         type: HintType.showSolution,
-        content: "Complete solution: $solution",
+        // Store raw solution string; UI layer formats with localization.
+        content: solution,
       );
     }
 
@@ -95,7 +97,7 @@ class PuzzleHintService {
   }
 
   /// Get a specific hint type
-  PuzzleHint? getHintOfType(HintType type, int currentMoveIndex) {
+  PuzzleHint? getHintOfType(HintType type, int currentPlayerMoveIndex) {
     logger.i("$_tag Getting hint of type $type for puzzle ${puzzle.id}");
     _hintsGiven++;
 
@@ -107,22 +109,24 @@ class PuzzleHintService {
         return null;
 
       case HintType.nextMove:
-        final String? nextMove = _getNextMove(currentMoveIndex);
+        final String? nextMove = _getNextPlayerMove(currentPlayerMoveIndex);
         if (nextMove != null) {
           return PuzzleHint(
             type: HintType.nextMove,
-            content: "Next move: $nextMove",
-            moveIndex: currentMoveIndex,
+            // Store raw move notation; UI layer formats with localization.
+            content: nextMove,
+            moveIndex: currentPlayerMoveIndex,
           );
         }
         return null;
 
       case HintType.highlight:
-        final List<int>? squares = _getHighlightSquares(currentMoveIndex);
+        final List<int>? squares = _getHighlightSquares(currentPlayerMoveIndex);
         if (squares != null && squares.isNotEmpty) {
           return PuzzleHint(
             type: HintType.highlight,
-            content: "Pay attention to these positions",
+            // Store a generic marker; UI layer can provide localized text.
+            content: '',
             highlightSquares: squares,
           );
         }
@@ -131,20 +135,31 @@ class PuzzleHintService {
       case HintType.showSolution:
         return PuzzleHint(
           type: HintType.showSolution,
-          content: "Complete solution: ${_getFullSolution()}",
+          // Store raw solution string; UI layer formats with localization.
+          content: _getFullSolution(),
         );
     }
   }
 
-  /// Get the next move in the solution
-  String? _getNextMove(int currentMoveIndex) {
-    if (puzzle.solutions.isEmpty) {
+  PuzzleSolution? _getPrimarySolution() {
+    return puzzle.optimalSolution ??
+        (puzzle.solutions.isNotEmpty ? puzzle.solutions.first : null);
+  }
+
+  /// Get the next *player* move (excluding opponent responses).
+  ///
+  /// The caller passes the number of player moves already made in this attempt.
+  String? _getNextPlayerMove(int currentPlayerMoveIndex) {
+    final PuzzleSolution? solution = _getPrimarySolution();
+    if (solution == null) {
       return null;
     }
 
-    final List<PuzzleMove> firstSolutionMoves = puzzle.solutions.first.moves;
-    if (currentMoveIndex < firstSolutionMoves.length) {
-      return firstSolutionMoves[currentMoveIndex].notation;
+    final List<PuzzleMove> playerMoves = solution.getPlayerMoves(
+      puzzle.playerSide,
+    );
+    if (currentPlayerMoveIndex < playerMoves.length) {
+      return playerMoves[currentPlayerMoveIndex].notation;
     }
 
     return null;
@@ -152,19 +167,20 @@ class PuzzleHintService {
 
   /// Get the full solution as a string
   String _getFullSolution() {
-    if (puzzle.solutions.isEmpty) {
-      return "No solution available";
+    final PuzzleSolution? solution = _getPrimarySolution();
+    if (solution == null) {
+      return '';
     }
 
-    final List<String> moveNotations = puzzle.solutions.first.moves
+    final List<String> moveNotations = solution.moves
         .map((PuzzleMove m) => m.notation)
-        .toList();
+        .toList(growable: false);
     return moveNotations.join(' → ');
   }
 
   /// Get squares to highlight for the next move
   List<int>? _getHighlightSquares(int currentMoveIndex) {
-    final String? nextMove = _getNextMove(currentMoveIndex);
+    final String? nextMove = _getNextPlayerMove(currentMoveIndex);
     if (nextMove == null) {
       return null;
     }

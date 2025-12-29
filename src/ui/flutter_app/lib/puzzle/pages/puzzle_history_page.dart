@@ -282,7 +282,7 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
 
             // Timestamp
             Text(
-              _formatTimestamp(attempt.timestamp),
+              _formatTimestamp(context, attempt.timestamp, s),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -319,19 +319,19 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
     return '${seconds}s';
   }
 
-  String _formatTimestamp(DateTime timestamp) {
+  String _formatTimestamp(BuildContext context, DateTime timestamp, S s) {
     final Duration diff = DateTime.now().difference(timestamp);
 
     if (diff.inDays > 30) {
-      return '${timestamp.month}/${timestamp.day}/${timestamp.year}';
+      return MaterialLocalizations.of(context).formatShortDate(timestamp);
     } else if (diff.inDays > 0) {
-      return '${diff.inDays}d ago';
+      return s.daysAgo(diff.inDays);
     } else if (diff.inHours > 0) {
-      return '${diff.inHours}h ago';
+      return s.hoursAgo(diff.inHours);
     } else if (diff.inMinutes > 0) {
-      return '${diff.inMinutes}m ago';
+      return s.minutesAgo(diff.inMinutes);
     } else {
-      return 'Just now';
+      return s.justNow;
     }
   }
 

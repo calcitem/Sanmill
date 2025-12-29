@@ -5,6 +5,7 @@
 //
 // Service for managing daily puzzle rotation and streak tracking
 
+import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/puzzle_models.dart';
 import 'puzzle_manager.dart';
@@ -101,17 +102,38 @@ class DailyPuzzleService {
 
   /// Get puzzle statistics
   DailyPuzzleStats _getStats() {
-    // TODO: Load from database
-    // For now, return default stats
-    return DailyPuzzleStats(completedDates: <String>[], longestStreak: 0);
+    // Load from database
+    final dynamic data = DB().puzzleAnalyticsBox.get('dailyPuzzleStats');
+    if (data == null) {
+      return DailyPuzzleStats(completedDates: <String>[], longestStreak: 0);
+    }
+    
+    try {
+      final Map<String, dynamic> map = Map<String, dynamic>.from(data as Map<dynamic, dynamic>);
+      return DailyPuzzleStats(
+        completedDates: List<String>.from(map['completedDates'] as List<dynamic>? ?? <dynamic>[]),
+        longestStreak: map['longestStreak'] as int? ?? 0,
+      );
+    } catch (e) {
+      logger.e("$_tag Failed to load daily puzzle stats: $e");
+      return DailyPuzzleStats(completedDates: <String>[], longestStreak: 0);
+    }
   }
 
   /// Save puzzle statistics
-  void _saveStats(DailyPuzzleStats stats) {
-    // TODO: Save to database
-    logger.i(
-      "$_tag Saved daily puzzle stats: ${stats.completedDates.length} completed",
-    );
+  Future<void> _saveStats(DailyPuzzleStats stats) async {
+    // Save to database
+    try {
+      await DB().puzzleAnalyticsBox.put('dailyPuzzleStats', <String, dynamic>{
+        'completedDates': stats.completedDates,
+        'longestStreak': stats.longestStreak,
+      });
+      logger.i(
+        "$_tag Saved daily puzzle stats: ${stats.completedDates.length} completed",
+      );
+    } catch (e) {
+      logger.e("$_tag Failed to save daily puzzle stats: $e");
+    }
   }
 
   /// Calculate current streak

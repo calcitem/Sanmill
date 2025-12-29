@@ -41,35 +41,44 @@ class ValidationFeedback {
 
 /// Service for validating puzzle solutions
 class PuzzleValidator {
-  PuzzleValidator({required this.puzzle});
+  PuzzleValidator({required this.puzzle}) {
+    // Pre-compute opponent piece baseline for capture objectives.
+    final Position initial = Position();
+    final bool ok = initial.setFen(puzzle.initialPosition);
+    assert(
+      ok,
+      'PuzzleValidator failed to load initial position for puzzle ${puzzle.id}.',
+    );
+    _puzzleOpponentSide = initial.sideToMove.opponent;
+    _initialOpponentPiecesTotal = _countPieces(initial, _puzzleOpponentSide);
+  }
 
   static const String _tag = "[PuzzleValidator]";
 
   final PuzzleInfo puzzle;
+  late final PieceColor _puzzleOpponentSide;
+  late final int _initialOpponentPiecesTotal;
+  bool _warnedMissingCaptureTarget = false;
+
   /// Full move history in notation form (player + opponent).
   ///
   /// Puzzle mode records all moves from the mainline (including auto-played
   /// opponent responses) to keep validation consistent with how solutions are
   /// stored (a complete move sequence with sides).
   final List<String> _playerMoves = <String>[];
-  int _currentMoveIndex = 0;
 
   /// Add a move to the solution
   void addMove(String move) {
     _playerMoves.add(move);
-    _currentMoveIndex++;
-    logger.t("$_tag Move added: $move (total: $_currentMoveIndex moves)");
+    logger.t("$_tag Move added: $move (total: ${_playerMoves.length} moves)");
   }
 
   /// Undo the last move
   void undoLastMove() {
     if (_playerMoves.isNotEmpty) {
       final String removedMove = _playerMoves.removeLast();
-      if (_currentMoveIndex > 0) {
-        _currentMoveIndex--;
-      }
       logger.t(
-        "$_tag Move undone: $removedMove (remaining: $_currentMoveIndex moves)",
+        "$_tag Move undone: $removedMove (remaining: ${_playerMoves.length} moves)",
       );
     }
   }
@@ -93,19 +102,13 @@ class PuzzleValidator {
     // phase). In that case, requiring `_checkObjective()` would incorrectly
     // block completion. Therefore, a full solution match is always considered
     // correct.
-    final bool matchesSolution = _matchesAnySolution();
-
-    if (matchesSolution) {
-      final bool isOptimal = _playerMoves.length <= puzzle.optimalMoveCount;
-      final ValidationFeedback feedback = ValidationFeedback(
+    final PuzzleSolution? matchedSolution = _findMatchingSolution();
+    if (matchedSolution != null) {
+      return ValidationFeedback(
         result: ValidationResult.correct,
-        message: isOptimal
-            ? "Perfect! Solved in optimal moves!"
-            : "Correct! (${_playerMoves.length} moves, optimal: ${puzzle.optimalMoveCount})",
-        isOptimal: isOptimal,
+        isOptimal: matchedSolution.isOptimal,
         moveCount: _playerMoves.length,
       );
-      return feedback;
     }
 
     // Check if still in progress (objective not met)
@@ -113,7 +116,6 @@ class PuzzleValidator {
     if (!objectiveMet) {
       return ValidationFeedback(
         result: ValidationResult.inProgress,
-        message: "Keep going! The objective hasn't been achieved yet.",
         moveCount: _playerMoves.length,
       );
     }
@@ -123,8 +125,6 @@ class PuzzleValidator {
     logger.w("$_tag Objective met but solution differs - likely exploited");
     return ValidationFeedback(
       result: ValidationResult.wrong,
-      message:
-          "Objective reached but not following the correct sequence. Try to match the intended solution.",
       moveCount: _playerMoves.length,
     );
   }
@@ -166,27 +166,60 @@ class PuzzleValidator {
 
   /// Check if required pieces were captured
   bool _checkPiecesCaptured(Position position) {
-    // Get initial and current piece counts
-    // Extract from position notation or track during game
-    // For now, check if opponent has fewer pieces
-    final int opponentPiecesOnBoard =
-        position.pieceOnBoardCount[position.sideToMove.opponent] ?? 0;
-    final int opponentPiecesInHand =
-        position.pieceInHandCount[position.sideToMove.opponent] ?? 0;
+    final int? targetCaptures = _inferTargetCaptureCount();
+    if (targetCaptures == null || targetCaptures <= 0) {
+      if (!_warnedMissingCaptureTarget) {
+        _warnedMissingCaptureTarget = true;
+        logger.w(
+          '$_tag capturePieces objective target is not specified. '
+          'Add a number to the title/description (e.g. "Capture 2 pieces") '
+          'or rely on exact solution matching.',
+        );
+      }
+      return false;
+    }
 
-    // If opponent has very few pieces, capture objective likely met
-    return (opponentPiecesOnBoard + opponentPiecesInHand) <=
-        (puzzle.title.contains('2') ? 2 : 3);
+    final int currentOpponentTotal = _countPieces(
+      position,
+      _puzzleOpponentSide,
+    );
+    return currentOpponentTotal <= _initialOpponentPiecesTotal - targetCaptures;
   }
 
   /// Check if player's moves match any solution sequence
   bool _matchesAnySolution() {
+    return _findMatchingSolution() != null;
+  }
+
+  static int _countPieces(Position position, PieceColor side) {
+    final int onBoard = position.pieceOnBoardCount[side] ?? 0;
+    final int inHand = position.pieceInHandCount[side] ?? 0;
+    return onBoard + inHand;
+  }
+
+  int? _inferTargetCaptureCount() {
+    int? fromText(String text) {
+      final RegExpMatch? match = RegExp(r'\d+').firstMatch(text);
+      if (match == null) {
+        return null;
+      }
+      final int? value = int.tryParse(match.group(0) ?? '');
+      if (value == null || value <= 0) {
+        return null;
+      }
+      return value;
+    }
+
+    return fromText(puzzle.title) ?? fromText(puzzle.description);
+  }
+
+  PuzzleSolution? _findMatchingSolution() {
     for (final PuzzleSolution solution in puzzle.solutions) {
       if (_matchesSolution(solution)) {
-        return true;
+        return solution;
       }
     }
-    return false;
+    return null;
   }
 
   /// Check if player's moves match a specific solution
@@ -217,35 +250,9 @@ class PuzzleValidator {
     return normalized1 == normalized2;
   }
 
-  /// Get next hint move
-  String? getHint() {
-    if (puzzle.solutions.isEmpty) {
-      return null;
-    }
-
-    // Get the first (optimal) solution
-    final PuzzleSolution firstSolution = puzzle.solutions.first;
-    final List<PuzzleMove> playerMoves = firstSolution.getPlayerMoves(
-      puzzle.playerSide,
-    );
-
-    // Return the next player move in the sequence
-    if (_currentMoveIndex < playerMoves.length) {
-      return playerMoves[_currentMoveIndex].notation;
-    }
-
-    return null;
-  }
-
-  /// Get textual hint
-  String? getTextHint() {
-    return puzzle.hint;
-  }
-
   /// Reset validator state
   void reset() {
     _playerMoves.clear();
-    _currentMoveIndex = 0;
     logger.i("$_tag Validator reset for puzzle ${puzzle.id}");
   }
 

@@ -246,23 +246,15 @@ void main() {
 
       final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
 
-      // Get first hint
-      final String? hint1 = validator.getHint();
-      expect(hint1, equals('a1'));
+      // Note: Hint functionality has been moved to PuzzleHintService
+      // This test now only validates move tracking
+      expect(validator.moveCount, equals(0));
 
-      // Play first move
       validator.addMove('a1');
+      expect(validator.moveCount, equals(1));
 
-      // Get next hint (should skip opponent move)
-      final String? hint2 = validator.getHint();
-      expect(hint2, equals('a4'));
-
-      // Play second move
       validator.addMove('a4');
-
-      // No more hints
-      final String? hint3 = validator.getHint();
-      expect(hint3, isNull);
+      expect(validator.moveCount, equals(2));
     });
   });
 }

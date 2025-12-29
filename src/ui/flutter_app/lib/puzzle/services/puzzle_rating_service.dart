@@ -42,6 +42,31 @@ class PuzzleAttemptResult {
     this.ratingChange,
   });
 
+  /// Create from persisted JSON-like data.
+  factory PuzzleAttemptResult.fromJson(Map<String, dynamic> json) {
+    final String? timestampIso = json['timestamp'] as String?;
+    final DateTime? parsedTimestamp =
+        timestampIso == null ? null : DateTime.tryParse(timestampIso);
+    assert(
+      parsedTimestamp != null,
+      'PuzzleAttemptResult.fromJson: invalid timestamp "$timestampIso".',
+    );
+
+    final int timeSpentMs = (json['timeSpentMs'] as int?) ?? 0;
+
+    return PuzzleAttemptResult(
+      puzzleId: (json['puzzleId'] as String?) ?? '',
+      success: (json['success'] as bool?) ?? false,
+      timeSpent: Duration(milliseconds: timeSpentMs),
+      hintsUsed: (json['hintsUsed'] as int?) ?? 0,
+      movesPlayed: (json['movesPlayed'] as int?) ?? 0,
+      timestamp: parsedTimestamp ?? DateTime.fromMillisecondsSinceEpoch(0),
+      oldRating: json['oldRating'] as int?,
+      newRating: json['newRating'] as int?,
+      ratingChange: json['ratingChange'] as int?,
+    );
+  }
+
   final String puzzleId;
   final bool success;
   final Duration timeSpent;
@@ -51,6 +76,21 @@ class PuzzleAttemptResult {
   int? oldRating;
   int? newRating;
   int? ratingChange;
+
+  /// Convert to JSON-like data with only primitive values.
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'puzzleId': puzzleId,
+      'success': success,
+      'timeSpentMs': timeSpent.inMilliseconds,
+      'hintsUsed': hintsUsed,
+      'movesPlayed': movesPlayed,
+      'timestamp': timestamp.toIso8601String(),
+      if (oldRating != null) 'oldRating': oldRating,
+      if (newRating != null) 'newRating': newRating,
+      if (ratingChange != null) 'ratingChange': ratingChange,
+    };
+  }
 }
 
 /// Service for managing puzzle ratings
@@ -70,6 +110,7 @@ class PuzzleRatingService {
   static const double _minRD = 50.0; // Minimum rating deviation
   static const double _kFactorProvisional = 40.0;
   static const double _kFactorNormal = 20.0;
+  static const int _maxStoredAttempts = 500;
 
   /// Get user's current puzzle rating
   PuzzleRating getUserRating() {
@@ -208,15 +249,44 @@ class PuzzleRatingService {
   }
 
   /// Get puzzle attempt history
-  List<PuzzleAttemptResult> getAttemptHistory({int limit = 50}) {
-    // TODO: Load from database
-    return <PuzzleAttemptResult>[];
+  List<PuzzleAttemptResult> getAttemptHistory({int? limit}) {
+    final List<Map<String, dynamic>> raw = DB().puzzleAttemptHistoryRaw;
+    final List<PuzzleAttemptResult> results = <PuzzleAttemptResult>[];
+
+    for (final Map<String, dynamic> entry in raw) {
+      final String? ts = entry['timestamp'] as String?;
+      final DateTime? parsed = ts == null ? null : DateTime.tryParse(ts);
+      if (parsed == null) {
+        continue; // Skip corrupted entries.
+      }
+      results.add(PuzzleAttemptResult.fromJson(entry));
+    }
+
+    // Stored order is newest-first, but keep this robust.
+    results.sort(
+      (PuzzleAttemptResult a, PuzzleAttemptResult b) =>
+          b.timestamp.compareTo(a.timestamp),
+    );
+
+    return limit == null ? results : results.take(limit).toList();
   }
 
   /// Get rating history over time
   List<MapEntry<DateTime, int>> getRatingHistory() {
-    // TODO: Load from database
-    return <MapEntry<DateTime, int>>[];
+    final List<PuzzleAttemptResult> history = getAttemptHistory();
+    final List<MapEntry<DateTime, int>> points = <MapEntry<DateTime, int>>[];
+
+    for (final PuzzleAttemptResult attempt in history) {
+      if (attempt.newRating != null) {
+        points.add(MapEntry<DateTime, int>(attempt.timestamp, attempt.newRating!));
+      }
+    }
+
+    // Sort ascending for charts.
+    points.sort((MapEntry<DateTime, int> a, MapEntry<DateTime, int> b) {
+      return a.key.compareTo(b.key);
+    });
+    return points;
   }
 
   /// Calculate various statistics
@@ -260,13 +330,24 @@ class PuzzleRatingService {
 
   /// Save user rating
   void _saveUserRating(PuzzleRating rating) {
-    // TODO: Save to database
+    final PuzzleSettings currentSettings = DB().puzzleSettings;
+    DB().puzzleSettings = currentSettings.copyWith(userRating: rating.rating);
     logger.i("$_tag Saved user rating: ${rating.rating}");
   }
 
   /// Save attempt result
   void _saveAttemptResult(PuzzleAttemptResult result) {
-    // TODO: Save to database
+    final List<Map<String, dynamic>> history = DB().puzzleAttemptHistoryRaw;
+    history.insert(0, result.toJson());
+    if (history.length > _maxStoredAttempts) {
+      history.removeRange(_maxStoredAttempts, history.length);
+    }
+    DB().puzzleAttemptHistoryRaw = history;
     logger.i("$_tag Saved attempt result: ${result.puzzleId}");
+  }
+
+  /// Persist an externally computed attempt result (e.g. from UI flows).
+  void saveAttemptResult(PuzzleAttemptResult result) {
+    _saveAttemptResult(result);
   }
 }

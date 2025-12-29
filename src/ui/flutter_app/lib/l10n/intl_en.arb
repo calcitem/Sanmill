@@ -3484,6 +3484,33 @@
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
+    "minutesAgo": "{minutes}m ago",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}h ago",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}d ago",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
     "january": "January",
     "@january": {
         "description": "Month name"

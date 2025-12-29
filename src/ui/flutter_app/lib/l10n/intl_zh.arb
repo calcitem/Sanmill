@@ -3484,6 +3484,33 @@
     "@justNow": {
         "description": "Time indicator for very recent activity"
     },
+    "minutesAgo": "{minutes} 分钟前",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours} 小时前",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days} 天前",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
     "january": "一月",
     "@january": {
         "description": "Month name"

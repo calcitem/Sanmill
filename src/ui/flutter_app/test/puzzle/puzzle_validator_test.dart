@@ -161,46 +161,9 @@ void main() {
   });
 
   group('PuzzleValidator with multiple solutions', () {
-    test('getHint returns next move from optimal solution', () {
-      final PuzzleInfo puzzle = PuzzleInfo(
-        id: 'hint_test',
-        title: 'Hint Test',
-        description: 'Test hint with multiple solutions',
-        category: PuzzleCategory.formMill,
-        difficulty: PuzzleDifficulty.easy,
-        initialPosition:
-            '********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1',
-        solutions: const <PuzzleSolution>[
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a1', side: PieceColor.white),
-              PuzzleMove(notation: 'd1', side: PieceColor.black),
-              PuzzleMove(notation: 'a4', side: PieceColor.white),
-            ],
-          ),
-          PuzzleSolution(
-            moves: <PuzzleMove>[
-              PuzzleMove(notation: 'a7', side: PieceColor.white),
-            ],
-            isOptimal: false,
-          ),
-        ],
-      );
-
-      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
-
-      // Should get hints from optimal solution only
-      final String? hint1 = validator.getHint();
-      expect(hint1, equals('a1'));
-
-      validator.addMove('a1');
-      final String? hint2 = validator.getHint();
-      expect(hint2, equals('a4'));
-
-      validator.addMove('a4');
-      final String? hint3 = validator.getHint();
-      expect(hint3, isNull);
-    });
+    // Note: Hint functionality has been moved to PuzzleHintService
+    // This test is removed as PuzzleValidator no longer provides getHint()
+    // See test/puzzle/puzzle_hint_service_test.dart for hint-related tests
   });
 
   group('PuzzleValidator edge cases', () {
@@ -218,8 +181,9 @@ void main() {
 
       final PuzzleValidator validator = PuzzleValidator(puzzle: emptyPuzzle);
 
-      final String? hint = validator.getHint();
-      expect(hint, isNull);
+      // Note: Hint functionality moved to PuzzleHintService
+      // This validator should still work for validation purposes
+      expect(validator.moveCount, equals(0));
     });
 
     test('handles very long solution sequence', () {

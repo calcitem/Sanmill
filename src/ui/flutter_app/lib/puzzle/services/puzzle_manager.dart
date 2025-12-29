@@ -87,14 +87,13 @@ class PuzzleManager {
 
   /// Get a specific puzzle by ID
   PuzzleInfo? getPuzzleById(String id) {
-    try {
-      return settingsNotifier.value.allPuzzles.firstWhere(
-        (PuzzleInfo p) => p.id == id,
-      );
-    } catch (e) {
-      logger.w("$_tag Puzzle with id $id not found");
-      return null;
+    for (final PuzzleInfo puzzle in settingsNotifier.value.allPuzzles) {
+      if (puzzle.id == id) {
+        return puzzle;
+      }
     }
+    logger.w("$_tag Puzzle with id $id not found");
+    return null;
   }
 
   /// Get progress for a specific puzzle
@@ -122,8 +121,7 @@ class PuzzleManager {
   }) {
     final PuzzleProgress? currentProgress = getProgress(puzzleId);
     final int attempts = (currentProgress?.attempts ?? 0) + 1;
-    final int totalHintsUsed =
-        (currentProgress?.hintsUsed ?? 0) + (hintsUsed ? 1 : 0);
+    final int totalHintsUsed = currentProgress?.hintsUsed ?? 0;
 
     final int stars = PuzzleProgress.calculateStars(
       moveCount: moveCount,
@@ -204,11 +202,10 @@ class PuzzleManager {
   }
 
   /// Record a failed attempt
-  void recordAttempt(String puzzleId, {bool hintUsed = false}) {
+  void recordAttempt(String puzzleId) {
     final PuzzleProgress? currentProgress = getProgress(puzzleId);
     final int attempts = (currentProgress?.attempts ?? 0) + 1;
-    final int hintsUsed =
-        (currentProgress?.hintsUsed ?? 0) + (hintUsed ? 1 : 0);
+    final int hintsUsed = currentProgress?.hintsUsed ?? 0;
 
     final PuzzleProgress newProgress = PuzzleProgress(
       puzzleId: puzzleId,
@@ -217,6 +214,30 @@ class PuzzleManager {
       bestMoveCount: currentProgress?.bestMoveCount,
       attempts: attempts,
       hintsUsed: hintsUsed,
+      solutionViewed: currentProgress?.solutionViewed ?? false,
+      lastAttemptDate: DateTime.now(),
+      completionDate: currentProgress?.completionDate,
+    );
+
+    updateProgress(newProgress);
+  }
+
+  /// Record that the user used a hint without counting a new attempt.
+  ///
+  /// Attempts should represent discrete solve attempts (retry/give up/solve),
+  /// not hint usage within the same attempt.
+  void recordHintUsed(String puzzleId) {
+    final PuzzleProgress? currentProgress = getProgress(puzzleId);
+    final int newHintsUsed = (currentProgress?.hintsUsed ?? 0) + 1;
+
+    final PuzzleProgress newProgress = PuzzleProgress(
+      puzzleId: puzzleId,
+      completed: currentProgress?.completed ?? false,
+      stars: currentProgress?.stars ?? 0,
+      bestMoveCount: currentProgress?.bestMoveCount,
+      attempts: currentProgress?.attempts ?? 0,
+      hintsUsed: newHintsUsed,
+      solutionViewed: currentProgress?.solutionViewed ?? false,
       lastAttemptDate: DateTime.now(),
       completionDate: currentProgress?.completionDate,
     );

@@ -177,12 +177,10 @@ class PuzzleInfo extends HiveObject {
 
   /// Get the optimal solution (first solution marked as optimal)
   PuzzleSolution? get optimalSolution {
-    try {
-      return solutions.firstWhere((PuzzleSolution s) => s.isOptimal);
-    } catch (_) {
-      // If no solution is marked optimal, return the first one
-      return solutions.isNotEmpty ? solutions.first : null;
-    }
+    final PuzzleSolution? optimal = solutions.firstWhereOrNull(
+      (PuzzleSolution s) => s.isOptimal,
+    );
+    return optimal ?? (solutions.isNotEmpty ? solutions.first : null);
   }
 
   /// Get optimal move count (number of player moves in optimal solution)

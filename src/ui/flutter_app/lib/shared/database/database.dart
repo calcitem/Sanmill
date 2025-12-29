@@ -106,6 +106,14 @@ class Database {
   /// Key at which the [_puzzleSettingsBox] will be saved
   static const String _puzzleSettingsBoxName = "puzzleSettings";
 
+  /// Dynamic box for puzzle analytics (attempt history, etc.)
+  static late final Box<dynamic> _puzzleAnalyticsBox;
+  static const String _puzzleAnalyticsBoxName = "puzzleAnalytics";
+  static const String puzzleAttemptHistoryKey = "attemptHistory";
+  
+  /// Getter for puzzle analytics box (for DailyPuzzleService, PuzzleStreakPage, etc.)
+  Box<dynamic> get puzzleAnalyticsBox => _puzzleAnalyticsBox;
+
   // Voice assistant functionality disabled
   // /// [VoiceAssistantSettings] Box reference
   // static late final Box<VoiceAssistantSettings> _voiceAssistantSettingsBox;
@@ -127,6 +135,7 @@ class Database {
     await _initCustomThemes();
     await _initStatsSettings();
     await _initPuzzleSettings();
+    await _initPuzzleAnalytics();
     // Voice assistant functionality disabled
     // await _initVoiceAssistantSettings();
 
@@ -144,6 +153,7 @@ class Database {
     await _customThemesBox.delete(customThemesKey);
     await _statsSettingsBox.delete(statsSettingsKey);
     await _puzzleSettingsBox.delete(puzzleSettingsKey);
+    await _puzzleAnalyticsBox.delete(puzzleAttemptHistoryKey);
     // Voice assistant functionality disabled
     // await _voiceAssistantSettingsBox.delete(voiceAssistantSettingsKey);
   }
@@ -396,6 +406,40 @@ class Database {
     _puzzleSettingsBox = await Hive.openBox<PuzzleSettings>(
       _puzzleSettingsBoxName,
     );
+  }
+
+  /// Initializes the puzzle analytics box.
+  static Future<void> _initPuzzleAnalytics() async {
+    _puzzleAnalyticsBox = await Hive.openBox<dynamic>(_puzzleAnalyticsBoxName);
+  }
+
+  /// Raw attempt history for puzzles.
+  ///
+  /// Each entry is a JSON-like map with only primitive values so it can be
+  /// stored in a dynamic Hive box safely.
+  List<Map<String, dynamic>> get puzzleAttemptHistoryRaw {
+    final dynamic rawData = _puzzleAnalyticsBox.get(puzzleAttemptHistoryKey);
+    if (rawData is! List) {
+      return <Map<String, dynamic>>[];
+    }
+
+    final List<Map<String, dynamic>> result = <Map<String, dynamic>>[];
+    for (final dynamic item in rawData) {
+      if (item is Map) {
+        final Map<String, dynamic> normalized = <String, dynamic>{};
+        item.forEach((dynamic key, dynamic value) {
+          if (key is String) {
+            normalized[key] = value;
+          }
+        });
+        result.add(normalized);
+      }
+    }
+    return result;
+  }
+
+  set puzzleAttemptHistoryRaw(List<Map<String, dynamic>> history) {
+    _puzzleAnalyticsBox.put(puzzleAttemptHistoryKey, history);
   }
 
   /// Listens to changes inside the PuzzleSettings Box

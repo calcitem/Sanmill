@@ -20,6 +20,7 @@ import '../models/puzzle_models.dart';
 import '../services/puzzle_auto_player.dart';
 import '../services/puzzle_hint_service.dart';
 import '../services/puzzle_manager.dart';
+import '../services/puzzle_rating_service.dart';
 import '../services/puzzle_validator.dart';
 
 /// Page for solving a specific puzzle
@@ -43,6 +44,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   late PuzzleValidator _validator;
   late PuzzleHintService _hintService;
   final PuzzleManager _puzzleManager = PuzzleManager();
+  final PuzzleRatingService _ratingService = PuzzleRatingService();
   final ValueNotifier<int> _moveCountNotifier = ValueNotifier<int>(0);
   bool _hintsUsed = false;
   bool _solutionViewed = false;
@@ -52,6 +54,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _isSolved = false;
   bool _isAutoPlayingOpponent = false;
   bool _isPlayingSolution = false;
+  DateTime _attemptStartedAt = DateTime.now();
 
   // Store original game state to restore on exit
   GameMode? _previousGameMode;
@@ -167,6 +170,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _lastRecordedMoveIndex = -1;
     _validator.reset();
     _hintService.reset();
+    _attemptStartedAt = DateTime.now();
   }
 
   /// Show error dialog when FEN validation fails
@@ -640,14 +644,26 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
+    final PieceColor? humanColor =
+        _puzzleHumanColor ?? controller.puzzleHumanColor;
+
     for (int i = _lastRecordedMoveIndex + 1; i < moves.length; i++) {
       final ExtMove latestMove = moves[i];
       _lastRecordedMoveIndex = i;
 
-      // Update move count without rebuilding entire widget tree
-      _moveCountNotifier.value++;
       // Add move to validator using the move's string representation
       _validator.addMove(latestMove.move);
+
+      // Count only *player* moves so it aligns with optimalMoveCount and hint index.
+      if (humanColor == null || latestMove.side == humanColor) {
+        _moveCountNotifier.value++;
+      }
+    }
+
+    // During solution playback we only want to update internal counters;
+    // avoid triggering validation dialogs / completion flows.
+    if (_isPlayingSolution) {
+      return;
     }
 
     // Auto-check after processing the new moves
@@ -658,6 +674,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   ValidationFeedback _checkSolution({bool autoCheck = false}) {
+    final S s = S.of(context);
     final GameController controller = GameController();
     final ValidationFeedback feedback = _validator.validateSolution(
       controller.position,
@@ -672,11 +689,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
         _showWrongMoveDialog();
       }
     } else if (!autoCheck) {
+      final String message = feedback.result == ValidationResult.inProgress
+          ? s.keepGoingObjectiveNotAchieved
+          : s.keepTrying;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(feedback.message ?? 'Keep trying!'),
-          duration: const Duration(seconds: 2),
-        ),
+        SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
       );
     }
     return feedback;
@@ -899,6 +916,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   void _onPuzzleSolved(ValidationFeedback feedback) {
     _isSolved = true;
+    final DateTime now = DateTime.now();
+    final Duration timeSpent = now.difference(_attemptStartedAt);
+    final int hintsUsed = _hintService.hintsGiven;
+    final int movesPlayed = _moveCountNotifier.value;
+    final int oldRating = DB().puzzleSettings.userRating;
+
     // Record completion with solution viewed status
     _puzzleManager.completePuzzle(
       puzzleId: widget.puzzle.id,
@@ -907,6 +930,22 @@ class _PuzzlePageState extends State<PuzzlePage> {
       optimalMoveCount: widget.puzzle.optimalMoveCount,
       hintsUsed: _hintsUsed,
       solutionViewed: _solutionViewed,
+    );
+
+    final int newRating = DB().puzzleSettings.userRating;
+    final int ratingChange = newRating - oldRating;
+    _ratingService.saveAttemptResult(
+      PuzzleAttemptResult(
+        puzzleId: widget.puzzle.id,
+        success: true,
+        timeSpent: timeSpent,
+        hintsUsed: hintsUsed,
+        movesPlayed: movesPlayed,
+        timestamp: now,
+        oldRating: ratingChange == 0 ? null : oldRating,
+        newRating: ratingChange == 0 ? null : newRating,
+        ratingChange: ratingChange == 0 ? null : ratingChange,
+      ),
     );
 
     // Show completion dialog
@@ -1112,7 +1151,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _hintsUsed = true;
     });
 
-    _puzzleManager.recordAttempt(widget.puzzle.id, hintUsed: true);
+    _puzzleManager.recordHintUsed(widget.puzzle.id);
+
+    final S s = S.of(context);
+    final String content = switch (hint.type) {
+      HintType.textual => hint.content,
+      HintType.nextMove => s.nextMoveHint(hint.content),
+      HintType.showSolution => s.completeSolutionHint(hint.content),
+      HintType.highlight => hint.content,
+    };
 
     showDialog<void>(
       context: context,
@@ -1131,7 +1178,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                     Text(S.of(context).puzzleHintDialogTitle),
                   ],
                 ),
-                content: Text(hint.content),
+                content: Text(content),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -1168,6 +1215,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     while (controller.gameRecorder.mainlineMoves.isNotEmpty &&
         undone < maxSteps) {
+      final ExtMove lastMove = controller.gameRecorder.mainlineMoves.last;
       await HistoryNavigator.takeBack(context, pop: false);
       undone++;
 
@@ -1183,9 +1231,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
             controller.gameRecorder.mainlineMoves.length;
       }
 
-      // Update state without rebuilding entire widget tree
-      if (_moveCountNotifier.value > 0) {
-        _moveCountNotifier.value--;
+      // Update state without rebuilding entire widget tree.
+      // Only decrement when we undo a *player* move.
+      if (humanColor == null || lastMove.side == humanColor) {
+        if (_moveCountNotifier.value > 0) {
+          _moveCountNotifier.value--;
+        }
       }
       _lastRecordedMoveIndex--;
       _validator.undoLastMove();
@@ -1199,7 +1250,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void _resetPuzzle() {
     // Record retry attempt if puzzle was already started
     if (_moveCountNotifier.value > 0 && !_isSolved) {
-      _puzzleManager.recordAttempt(widget.puzzle.id, hintUsed: _hintsUsed);
+      _puzzleManager.recordAttempt(widget.puzzle.id);
+      _ratingService.saveAttemptResult(
+        PuzzleAttemptResult(
+          puzzleId: widget.puzzle.id,
+          success: false,
+          timeSpent: DateTime.now().difference(_attemptStartedAt),
+          hintsUsed: _hintService.hintsGiven,
+          movesPlayed: _moveCountNotifier.value,
+          timestamp: DateTime.now(),
+        ),
+      );
     }
 
     _initializePuzzle(); // This already resets _moveCountNotifier.value = 0
@@ -1328,10 +1389,21 @@ class _PuzzlePageState extends State<PuzzlePage> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      _puzzleManager.recordAttempt(
-                        widget.puzzle.id,
-                        hintUsed: _hintsUsed,
-                      );
+                      _puzzleManager.recordAttempt(widget.puzzle.id);
+                      if (_moveCountNotifier.value > 0 || _hintsUsed) {
+                        _ratingService.saveAttemptResult(
+                          PuzzleAttemptResult(
+                            puzzleId: widget.puzzle.id,
+                            success: false,
+                            timeSpent: DateTime.now().difference(
+                              _attemptStartedAt,
+                            ),
+                            hintsUsed: _hintService.hintsGiven,
+                            movesPlayed: _moveCountNotifier.value,
+                            timestamp: DateTime.now(),
+                          ),
+                        );
+                      }
                       Navigator.of(context).pop();
                     },
                     child: Text(s.backToList),
