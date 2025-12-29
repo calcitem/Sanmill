@@ -7,10 +7,12 @@
 
 library;
 
+import 'package:collection/collection.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
+import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 
 // Export adapters
@@ -24,5 +26,7 @@ part 'puzzle_category.dart';
 part 'puzzle_difficulty.dart';
 part 'puzzle_info.dart';
 part 'puzzle_models.g.dart';
+part 'puzzle_pack_metadata.dart';
 part 'puzzle_progress.dart';
 part 'puzzle_settings.dart';
+part 'puzzle_solution.dart';

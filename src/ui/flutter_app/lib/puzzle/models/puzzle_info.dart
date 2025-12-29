@@ -15,14 +15,13 @@ class PuzzleInfo extends HiveObject {
     required this.category,
     required this.difficulty,
     required this.initialPosition,
-    required this.solutionMoves,
-    required this.optimalMoveCount,
+    required this.solutions,
     this.hint,
     this.tags = const <String>[],
     this.isCustom = false,
     this.author,
     DateTime? createdDate,
-    this.version = 1,
+    this.version = 1, // Format version 1.0
     this.rating,
     this.ruleVariantId =
         'standard_9mm', // Default to standard Nine Men's Morris
@@ -44,13 +43,9 @@ class PuzzleInfo extends HiveObject {
         (PuzzleDifficulty e) => e.name == json['difficulty'],
       ),
       initialPosition: json['initialPosition'] as String,
-      solutionMoves: (json['solutionMoves'] as List<dynamic>)
-          .map(
-            (dynamic e) =>
-                (e as List<dynamic>).map((dynamic m) => m as String).toList(),
-          )
+      solutions: (json['solutions'] as List<dynamic>)
+          .map((dynamic e) => PuzzleSolution.fromJson(e as Map<String, dynamic>))
           .toList(),
-      optimalMoveCount: json['optimalMoveCount'] as int,
       hint: json['hint'] as String?,
       tags:
           (json['tags'] as List<dynamic>?)
@@ -96,14 +91,11 @@ class PuzzleInfo extends HiveObject {
   @HiveField(5)
   final String initialPosition;
 
-  /// List of solution move sequences (multiple solutions possible)
-  /// Each move is in algebraic notation
+  /// List of solution sequences (multiple solutions possible)
+  /// Each PuzzleSolution contains a complete move sequence with side information.
+  /// The first solution with isOptimal=true is considered the primary solution.
   @HiveField(6)
-  final List<List<String>> solutionMoves;
-
-  /// Optimal number of moves to solve
-  @HiveField(7)
-  final int optimalMoveCount;
+  final List<PuzzleSolution> solutions;
 
   /// Hint text (optional)
   @HiveField(8)
@@ -157,6 +149,33 @@ class PuzzleInfo extends HiveObject {
   @HiveField(18)
   final String? hintLocalizationKey;
 
+  /// Get the player's side (who is solving the puzzle)
+  /// This is determined by the side-to-move in the initial position
+  PieceColor get playerSide {
+    final Position tempPos = Position();
+    tempPos.setFen(initialPosition);
+    return tempPos.sideToMove;
+  }
+
+  /// Get the optimal solution (first solution marked as optimal)
+  PuzzleSolution? get optimalSolution {
+    try {
+      return solutions.firstWhere((PuzzleSolution s) => s.isOptimal);
+    } catch (_) {
+      // If no solution is marked optimal, return the first one
+      return solutions.isNotEmpty ? solutions.first : null;
+    }
+  }
+
+  /// Get optimal move count (number of player moves in optimal solution)
+  int get optimalMoveCount {
+    final PuzzleSolution? optimal = optimalSolution;
+    if (optimal == null) {
+      return 0;
+    }
+    return optimal.getPlayerMoveCount(playerSide);
+  }
+
   /// Creates a copy with updated fields
   PuzzleInfo copyWith({
     String? id,
@@ -165,8 +184,7 @@ class PuzzleInfo extends HiveObject {
     PuzzleCategory? category,
     PuzzleDifficulty? difficulty,
     String? initialPosition,
-    List<List<String>>? solutionMoves,
-    int? optimalMoveCount,
+    List<PuzzleSolution>? solutions,
     String? hint,
     List<String>? tags,
     bool? isCustom,
@@ -186,8 +204,7 @@ class PuzzleInfo extends HiveObject {
       category: category ?? this.category,
       difficulty: difficulty ?? this.difficulty,
       initialPosition: initialPosition ?? this.initialPosition,
-      solutionMoves: solutionMoves ?? this.solutionMoves,
-      optimalMoveCount: optimalMoveCount ?? this.optimalMoveCount,
+      solutions: solutions ?? this.solutions,
       hint: hint ?? this.hint,
       tags: tags ?? this.tags,
       isCustom: isCustom ?? this.isCustom,
@@ -213,8 +230,7 @@ class PuzzleInfo extends HiveObject {
       'category': category.name,
       'difficulty': difficulty.name,
       'initialPosition': initialPosition,
-      'solutionMoves': solutionMoves,
-      'optimalMoveCount': optimalMoveCount,
+      'solutions': solutions.map((PuzzleSolution s) => s.toJson()).toList(),
       'hint': hint,
       'tags': tags,
       'isCustom': isCustom,

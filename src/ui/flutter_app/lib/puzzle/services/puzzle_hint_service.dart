@@ -138,13 +138,13 @@ class PuzzleHintService {
 
   /// Get the next move in the solution
   String? _getNextMove(int currentMoveIndex) {
-    if (puzzle.solutionMoves.isEmpty) {
+    if (puzzle.solutions.isEmpty) {
       return null;
     }
 
-    final List<String> firstSolution = puzzle.solutionMoves.first;
-    if (currentMoveIndex < firstSolution.length) {
-      return firstSolution[currentMoveIndex];
+    final List<PuzzleMove> firstSolutionMoves = puzzle.solutions.first.moves;
+    if (currentMoveIndex < firstSolutionMoves.length) {
+      return firstSolutionMoves[currentMoveIndex].notation;
     }
 
     return null;
@@ -152,12 +152,14 @@ class PuzzleHintService {
 
   /// Get the full solution as a string
   String _getFullSolution() {
-    if (puzzle.solutionMoves.isEmpty) {
+    if (puzzle.solutions.isEmpty) {
       return "No solution available";
     }
 
-    final List<String> firstSolution = puzzle.solutionMoves.first;
-    return firstSolution.join(' → ');
+    final List<String> moveNotations = puzzle.solutions.first.moves
+        .map((PuzzleMove m) => m.notation)
+        .toList();
+    return moveNotations.join(' → ');
   }
 
   /// Get squares to highlight for the next move
@@ -178,7 +180,7 @@ class PuzzleHintService {
 
   /// Check if hints are available
   bool get hasHints {
-    return puzzle.hint != null || puzzle.solutionMoves.isNotEmpty;
+    return puzzle.hint != null || puzzle.solutions.isNotEmpty;
   }
 
   /// Reset hint state

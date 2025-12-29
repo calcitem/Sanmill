@@ -41,7 +41,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
   PuzzleDifficulty _selectedDifficulty = PuzzleDifficulty.easy;
 
   String? _capturedPosition;
-  final List<String> _solutionMoves = <String>[];
+  final List<String> _solutionMoves = <String>[]; // Raw move notations during recording
   bool _isRecordingSolution = false;
   int _moveCountBeforeRecording = 0;
 
@@ -79,9 +79,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
 
     // Load existing solution moves
     // Take the first solution path if multiple exist
-    if (puzzle.solutionMoves.isNotEmpty) {
+    if (puzzle.solutions.isNotEmpty) {
       _solutionMoves.clear();
-      _solutionMoves.addAll(puzzle.solutionMoves.first);
+      // Extract move notations from the solution
+      for (final PuzzleMove move in puzzle.solutions.first.moves) {
+        _solutionMoves.add(move.notation);
+      }
     }
   }
 
@@ -285,6 +288,26 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
         .where((String tag) => tag.isNotEmpty)
         .toList();
 
+    // Create PuzzleSolution from recorded moves
+    // Get starting side from initial position
+    final Position tempPos = Position();
+    tempPos.setFen(_capturedPosition!);
+    PieceColor currentSide = tempPos.sideToMove;
+
+    // Convert move notations to PuzzleMove objects
+    final List<PuzzleMove> puzzleMoves = <PuzzleMove>[];
+    for (final String notation in _solutionMoves) {
+      puzzleMoves.add(
+        PuzzleMove(
+          notation: notation,
+          side: currentSide,
+        ),
+      );
+      currentSide = currentSide.opponent;
+    }
+
+    final PuzzleSolution solution = PuzzleSolution(moves: puzzleMoves);
+
     // Create puzzle info
     final PuzzleInfo puzzle = PuzzleInfo(
       id: puzzleId,
@@ -293,8 +316,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage> {
       category: _selectedCategory,
       difficulty: _selectedDifficulty,
       initialPosition: _capturedPosition!,
-      solutionMoves: <List<String>>[_solutionMoves],
-      optimalMoveCount: _solutionMoves.length,
+      solutions: <PuzzleSolution>[solution],
       hint: _hintController.text.trim().isEmpty
           ? null
           : _hintController.text.trim(),

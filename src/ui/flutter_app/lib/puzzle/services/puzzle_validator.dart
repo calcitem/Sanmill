@@ -172,7 +172,7 @@ class PuzzleValidator {
 
   /// Check if player's moves match any solution sequence
   bool _matchesAnySolution() {
-    for (final List<String> solution in puzzle.solutionMoves) {
+    for (final PuzzleSolution solution in puzzle.solutions) {
       if (_matchesSolution(solution)) {
         return true;
       }
@@ -181,13 +181,22 @@ class PuzzleValidator {
   }
 
   /// Check if player's moves match a specific solution
-  bool _matchesSolution(List<String> solution) {
-    if (_playerMoves.length != solution.length) {
+  bool _matchesSolution(PuzzleSolution solution) {
+    // Get only the player moves from the solution
+    final List<PuzzleMove> expectedPlayerMoves =
+        solution.getPlayerMoves(puzzle.playerSide);
+
+    // Check if the count matches first
+    if (_playerMoves.length != expectedPlayerMoves.length) {
       return false;
     }
 
+    // Compare each move
     for (int i = 0; i < _playerMoves.length; i++) {
-      if (!_movesEquivalent(_playerMoves[i], solution[i])) {
+      if (!_movesEquivalent(
+        _playerMoves[i],
+        expectedPlayerMoves[i].notation,
+      )) {
         return false;
       }
     }
@@ -205,16 +214,18 @@ class PuzzleValidator {
 
   /// Get next hint move
   String? getHint() {
-    if (puzzle.solutionMoves.isEmpty) {
+    if (puzzle.solutions.isEmpty) {
       return null;
     }
 
-    // Get the first solution sequence
-    final List<String> firstSolution = puzzle.solutionMoves.first;
+    // Get the first (optimal) solution
+    final PuzzleSolution firstSolution = puzzle.solutions.first;
+    final List<PuzzleMove> playerMoves =
+        firstSolution.getPlayerMoves(puzzle.playerSide);
 
-    // Return the next move in the sequence
-    if (_currentMoveIndex < firstSolution.length) {
-      return firstSolution[_currentMoveIndex];
+    // Return the next player move in the sequence
+    if (_currentMoveIndex < playerMoves.length) {
+      return playerMoves[_currentMoveIndex].notation;
     }
 
     return null;
