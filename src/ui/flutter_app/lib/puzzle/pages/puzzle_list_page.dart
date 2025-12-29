@@ -528,8 +528,11 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
+    final S s = S.of(context);
     final bool success = await _puzzleManager.exportAndSharePuzzles(
       puzzlesToExport,
+      shareText: s.puzzleShareMessage(puzzlesToExport.length),
+      shareSubject: s.puzzleShareSubject(puzzlesToExport.length),
     );
 
     if (!mounted) {

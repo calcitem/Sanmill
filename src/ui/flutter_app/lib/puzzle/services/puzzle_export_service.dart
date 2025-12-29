@@ -70,6 +70,8 @@ class PuzzleExportService {
     List<PuzzleInfo> puzzles, {
     String? fileName,
     PuzzlePackMetadata? metadata,
+    String? shareText,
+    String? shareSubject,
   }) async {
     try {
       final String? filePath = await exportPuzzles(
@@ -84,8 +86,8 @@ class PuzzleExportService {
 
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text: 'Check out these ${puzzles.length} Sanmill puzzles!',
-          subject: 'Sanmill Puzzles (${puzzles.length})',
+          text: shareText ?? 'Check out these ${puzzles.length} puzzles!',
+          subject: shareSubject ?? 'Puzzles (${puzzles.length})',
           files: <XFile>[XFile(filePath)],
         ),
       );
@@ -394,7 +396,11 @@ class PuzzleExportService {
   /// Share puzzle for contribution
   ///
   /// Exports puzzle in contribution format and opens share dialog
-  static Future<bool> shareForContribution(PuzzleInfo puzzle) async {
+  static Future<bool> shareForContribution(
+    PuzzleInfo puzzle, {
+    String? shareText,
+    String? shareSubject,
+  }) async {
     try {
       // Validate before export
       final String? validationError = validateForContribution(puzzle);
@@ -420,10 +426,11 @@ class PuzzleExportService {
       // Share the file
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text:
-              'Puzzle contribution for Sanmill.\n\n'
+          text: shareText ??
+              'Puzzle contribution.\n\n'
               'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
-          subject: 'Sanmill Puzzle Contribution: ${puzzle.title}',
+          subject:
+              shareSubject ?? 'Puzzle Contribution: ${puzzle.title}',
           files: <XFile>[XFile(filePath)],
         ),
       );
@@ -438,8 +445,10 @@ class PuzzleExportService {
 
   /// Share multiple puzzles for contribution
   static Future<bool> shareMultipleForContribution(
-    List<PuzzleInfo> puzzles,
-  ) async {
+    List<PuzzleInfo> puzzles, {
+    String? shareText,
+    String? shareSubject,
+  }) async {
     try {
       // Validate all puzzles
       for (final PuzzleInfo puzzle in puzzles) {
@@ -464,10 +473,11 @@ class PuzzleExportService {
       // Share the file
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text:
-              'Puzzle contributions for Sanmill.\n\n'
+          text: shareText ??
+              'Puzzle contributions.\n\n'
               'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
-          subject: 'Sanmill Puzzle Contributions (${puzzles.length} puzzles)',
+          subject: shareSubject ??
+              'Puzzle Contributions (${puzzles.length} puzzles)',
           files: <XFile>[XFile(filePath)],
         ),
       );

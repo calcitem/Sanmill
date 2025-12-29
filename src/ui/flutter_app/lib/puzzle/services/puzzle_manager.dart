@@ -377,9 +377,16 @@ class PuzzleManager {
   Future<bool> exportAndSharePuzzles(
     List<PuzzleInfo> puzzles, {
     String? fileName,
+    String? shareText,
+    String? shareSubject,
   }) async {
     logger.i("$_tag Exporting ${puzzles.length} puzzles");
-    return PuzzleExportService.sharePuzzles(puzzles, fileName: fileName);
+    return PuzzleExportService.sharePuzzles(
+      puzzles,
+      fileName: fileName,
+      shareText: shareText,
+      shareSubject: shareSubject,
+    );
   }
 
   /// Import puzzles from a file
