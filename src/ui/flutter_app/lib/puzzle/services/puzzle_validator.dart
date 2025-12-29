@@ -46,6 +46,11 @@ class PuzzleValidator {
   static const String _tag = "[PuzzleValidator]";
 
   final PuzzleInfo puzzle;
+  /// Full move history in notation form (player + opponent).
+  ///
+  /// Puzzle mode records all moves from the mainline (including auto-played
+  /// opponent responses) to keep validation consistent with how solutions are
+  /// stored (a complete move sequence with sides).
   final List<String> _playerMoves = <String>[];
   int _currentMoveIndex = 0;
 
@@ -81,23 +86,26 @@ class PuzzleValidator {
     logger.t("$_tag Player moves: $_playerMoves");
 
     // First, check if the move sequence matches any expected solution.
-    // This prevents exploiting the puzzle by making opponent play poorly.
+    //
+    // IMPORTANT: For custom puzzles (and for some rule variants), completing the
+    // intended solution line may not always put the engine into an "objective"
+    // state (e.g. `Act.remove` might not be used for mill formation in placing
+    // phase). In that case, requiring `_checkObjective()` would incorrectly
+    // block completion. Therefore, a full solution match is always considered
+    // correct.
     final bool matchesSolution = _matchesAnySolution();
 
     if (matchesSolution) {
-      // Verify objective is also met
-      final bool objectiveMet = _checkObjective(currentPosition);
-      if (objectiveMet) {
-        final bool isOptimal = _playerMoves.length <= puzzle.optimalMoveCount;
-        return ValidationFeedback(
-          result: ValidationResult.correct,
-          message: isOptimal
-              ? "Perfect! Solved in optimal moves!"
-              : "Correct! (${_playerMoves.length} moves, optimal: ${puzzle.optimalMoveCount})",
-          isOptimal: isOptimal,
-          moveCount: _playerMoves.length,
-        );
-      }
+      final bool isOptimal = _playerMoves.length <= puzzle.optimalMoveCount;
+      final ValidationFeedback feedback = ValidationFeedback(
+        result: ValidationResult.correct,
+        message: isOptimal
+            ? "Perfect! Solved in optimal moves!"
+            : "Correct! (${_playerMoves.length} moves, optimal: ${puzzle.optimalMoveCount})",
+        isOptimal: isOptimal,
+        moveCount: _playerMoves.length,
+      );
+      return feedback;
     }
 
     // Check if still in progress (objective not met)
@@ -183,19 +191,17 @@ class PuzzleValidator {
 
   /// Check if player's moves match a specific solution
   bool _matchesSolution(PuzzleSolution solution) {
-    // Get only the player moves from the solution
-    final List<PuzzleMove> expectedPlayerMoves = solution.getPlayerMoves(
-      puzzle.playerSide,
-    );
+    // Solutions are stored as a complete move sequence (player + opponent).
+    // Compare against the full expected line so that auto-played opponent moves
+    // don't break validation.
+    final List<PuzzleMove> expectedMoves = solution.moves;
 
-    // Check if the count matches first
-    if (_playerMoves.length != expectedPlayerMoves.length) {
+    if (_playerMoves.length != expectedMoves.length) {
       return false;
     }
 
-    // Compare each move
     for (int i = 0; i < _playerMoves.length; i++) {
-      if (!_movesEquivalent(_playerMoves[i], expectedPlayerMoves[i].notation)) {
+      if (!_movesEquivalent(_playerMoves[i], expectedMoves[i].notation)) {
         return false;
       }
     }

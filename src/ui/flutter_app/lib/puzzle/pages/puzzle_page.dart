@@ -57,8 +57,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
   PieceColor? _previousPuzzleHumanColor;
   bool _previousIsPuzzleAutoMoveInProgress = false;
 
-  bool get _canUndo => _moveCountNotifier.value > 0 && !_isPlayingSolution;
-
   @override
   void initState() {
     super.initState();
@@ -357,10 +355,23 @@ class _PuzzlePageState extends State<PuzzlePage> {
                     ),
                     actions: <Widget>[
                       // Undo button
-                      IconButton(
-                        icon: const Icon(Icons.undo),
-                        onPressed: _canUndo ? _undoMove : null,
-                        tooltip: s.undo,
+                      ValueListenableBuilder<int>(
+                        valueListenable: _moveCountNotifier,
+                        builder:
+                            (
+                              BuildContext context,
+                              int moveCount,
+                              Widget? child,
+                            ) {
+                              final bool canUndo =
+                                  moveCount > 0 && !_isPlayingSolution;
+
+                              return IconButton(
+                                icon: const Icon(Icons.undo),
+                                onPressed: canUndo ? _undoMove : null,
+                                tooltip: s.undo,
+                              );
+                            },
                       ),
                       // Hint button
                       if (DB().puzzleSettings.showHints &&
@@ -1329,50 +1340,60 @@ class _PuzzleGameBoard extends StatefulWidget {
 
 class _PuzzleGameBoardState extends State<_PuzzleGameBoard> {
   late final GameController _controller;
-  int _lastMoveCount = 0;
+  ValueNotifier<int>? _boundMoveCountNotifier;
 
   @override
   void initState() {
     super.initState();
     _controller = GameController();
-    _lastMoveCount = _controller.gameRecorder.mainlineMoves.length;
-
-    // Listen to the proper business logic notifier for move changes
-    _controller.gameRecorder.moveCountNotifier.addListener(_onMoveCountChanged);
+    _bindMoveCountNotifier();
   }
 
   @override
   void didUpdateWidget(covariant _PuzzleGameBoard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _lastMoveCount = _controller.gameRecorder.mainlineMoves.length;
+    _bindMoveCountNotifier();
   }
 
   @override
   void dispose() {
-    _controller.gameRecorder.moveCountNotifier.removeListener(
-      _onMoveCountChanged,
-    );
+    // Detach from the last bound notifier to avoid leaking listeners.
+    _boundMoveCountNotifier?.removeListener(_onMoveCountChanged);
     super.dispose();
   }
 
-  void _onMoveCountChanged() {
-    final int currentMoveCount = _controller.gameRecorder.mainlineMoves.length;
-
-    // Ignore if move count decreased (undo operation)
-    if (currentMoveCount < _lastMoveCount) {
-      _lastMoveCount = currentMoveCount;
+  /// Ensures we listen to the current [GameRecorder.moveCountNotifier].
+  ///
+  /// NOTE: `GameController.reset()` creates a new `GameRecorder`, so the notifier
+  /// instance can change across "retry" / "reset" flows. If we don't rebind,
+  /// the puzzle page won't receive move completion callbacks anymore.
+  void _bindMoveCountNotifier() {
+    final ValueNotifier<int> current =
+        _controller.gameRecorder.moveCountNotifier;
+    if (identical(_boundMoveCountNotifier, current)) {
       return;
     }
 
-    // New move(s) added - notify parent
-    if (currentMoveCount > _lastMoveCount) {
-      _lastMoveCount = currentMoveCount;
-      widget.onMoveCompleted();
-    }
+    _boundMoveCountNotifier?.removeListener(_onMoveCountChanged);
+    _boundMoveCountNotifier = current;
+
+    current.addListener(_onMoveCountChanged);
+  }
+
+  void _onMoveCountChanged() {
+    // Notify parent on any move history change.
+    //
+    // IMPORTANT: After taking back moves, adding a new move can shorten the
+    // PGN mainline (branching replaces the remainder). We still want to notify
+    // the parent so it can process the new move and trigger auto-play.
+    widget.onMoveCompleted();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Make sure we stay bound even if the recorder changes without a parent rebuild.
+    _bindMoveCountNotifier();
+
     // Use GamePage with puzzle mode
     return GamePage(GameMode.puzzle, key: const Key('puzzle_game'));
   }
