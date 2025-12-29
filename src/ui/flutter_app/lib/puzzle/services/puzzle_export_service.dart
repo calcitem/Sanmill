@@ -11,7 +11,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../game_page/services/mill.dart';
+import '../../shared/database/database.dart';
 import '../models/puzzle_models.dart';
+import '../models/rule_variant.dart';
 
 /// Service for exporting and importing puzzles
 class PuzzleExportService {
@@ -180,8 +182,11 @@ class PuzzleExportService {
       final List<String> errors = <String>[];
       final List<String> warnings = <String>[];
 
-      // Get current rule variant for comparison
-      final String currentVariant = DB().ruleSettings.ruleVariantId;
+      // Get current rule variant ID from settings
+      final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+        DB().ruleSettings,
+      );
+      final String currentVariantId = currentVariant.id;
 
       for (int i = 0; i < puzzlesJson.length; i++) {
         try {
@@ -199,10 +204,11 @@ class PuzzleExportService {
           }
 
           // Check if rule variant matches current settings
-          if (puzzle.ruleVariantId != currentVariant) {
+          if (puzzle.ruleVariantId != currentVariantId) {
             warnings.add(
-              'Puzzle ${i + 1} ("${puzzle.title}") uses different rule variant: '
-              '${puzzle.ruleVariantId} (current: $currentVariant)',
+              'Puzzle ${i + 1} ("${puzzle.title}") uses different rules: '
+              '${puzzle.ruleVariantId} (current: $currentVariantId). '
+              'This puzzle may not work correctly with your current settings.',
             );
           }
 
