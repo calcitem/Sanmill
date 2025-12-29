@@ -274,8 +274,7 @@ class PuzzleExportService {
       'title': puzzle.title,
       'description': puzzle.description,
       'initialPosition': puzzle.initialPosition,
-      'solutionMoves': puzzle.solutionMoves,
-      'optimalMoveCount': puzzle.optimalMoveCount,
+      'solutions': puzzle.solutions.map((PuzzleSolution s) => s.toJson()).toList(),
       'category': puzzle.category.name,
       'difficulty': puzzle.difficulty.name,
       'ruleVariantId': puzzle.ruleVariantId,
@@ -415,7 +414,7 @@ class PuzzleExportService {
       return 'Puzzle has invalid FEN format. Please check the position.';
     }
 
-    if (puzzle.solutionMoves.isEmpty) {
+    if (puzzle.solutions.isEmpty) {
       return 'Puzzle must have a solution';
     }
 
