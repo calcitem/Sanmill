@@ -92,6 +92,40 @@ class MovesListPageState extends State<MovesListPage> {
     // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
     // _collectAllNodes(root);
     _refreshAllNodes();
+
+    // Listen to move changes to auto-refresh the list when moves are made
+    GameController().gameRecorder.moveCountNotifier.addListener(
+      _onMoveCountChanged,
+    );
+  }
+
+  @override
+  void dispose() {
+    // Remove listener to prevent memory leaks
+    GameController().gameRecorder.moveCountNotifier.removeListener(
+      _onMoveCountChanged,
+    );
+    _scrollController.dispose();
+    loadingTimer?.cancel();
+    super.dispose();
+  }
+
+  /// Called when moveCountNotifier changes (moves added/removed)
+  void _onMoveCountChanged() {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      // For non-list views showing full tree, refresh _allNodes (expensive DFS)
+      // For list view or Active Path mode, the data is calculated on-the-fly in build()
+      if (_currentLayout != MovesViewLayout.list &&
+          DB().displaySettings.showBranchTree) {
+        _refreshAllNodes();
+      }
+      // Note: setState will trigger rebuild, so _calculateActivePathNodes()
+      // will be called again with the latest activeNode value
+    });
   }
 
   // Uncomment if you want a fully recursive collecting method.
@@ -125,11 +159,13 @@ class MovesListPageState extends State<MovesListPage> {
     }
 
     // Part 2: From activeNode (or root if active==null) forward along children[0]
+    // Note: If activeNode is null, we show the full mainline starting from root
     PgnNode<ExtMove> current = active ?? root;
     while (current.children.isNotEmpty) {
       current = current.children.first;
-      // Only add if not already in path (avoid duplication at activeNode)
-      if (active == null || current != active) {
+      // Avoid duplication: only add if not the same as activeNode
+      // (activeNode was already added in Part 1)
+      if (current != active) {
         pathNodes.add(current);
       }
     }
@@ -2248,7 +2284,10 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Builds the main body widget according to the chosen view layout.
   Widget _buildBody() {
+    // Check if there are any moves by looking at activeNode or root children
+    // This ensures we show moves even if _allNodes hasn't been populated yet
     final bool hasMoves =
+        GameController().gameRecorder.activeNode != null ||
         GameController().gameRecorder.pgnRoot.children.isNotEmpty;
     if (!hasMoves) {
       return _buildEmptyState();
@@ -2257,6 +2296,13 @@ class MovesListPageState extends State<MovesListPage> {
     // Default: hide side branches for readability.
     // Advanced: show full tree when branch tree mode is enabled.
     final bool showFullTree = DB().displaySettings.showBranchTree;
+
+    // For list view, always use Active Path (showFullTree ignored)
+    if (_currentLayout == MovesViewLayout.list) {
+      return _buildThreeColumnListLayout();
+    }
+
+    // For other views, use Active Path by default, or full tree if enabled
     final List<PgnNode<ExtMove>> nodesToDisplay = showFullTree
         ? (_allNodes.isNotEmpty ? _allNodes : _calculateActivePathNodes())
         : _calculateActivePathNodes();
