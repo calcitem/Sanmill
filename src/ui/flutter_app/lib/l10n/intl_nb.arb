@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Bakgrunnsmusikk",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Spill av en lokal lydfil som bakgrunnsmusikk",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Bakgrunnsmusikkfil",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Fjern bakgrunnsmusikk",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Musikkfiler",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Hold dempet når du tar tilbake",
     "@keepMuteWhenTakingBack": {

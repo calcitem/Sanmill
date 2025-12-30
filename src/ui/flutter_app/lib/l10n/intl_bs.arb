@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Pozadinska muzika",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Pusti lokalnu audio datoteku kao pozadinsku muziku",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Datoteka pozadinske muzike",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Ukloni pozadinsku muziku",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Muzičke datoteke",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Bez zvuka pri vraćanju figure na prethodno mjesto",
     "@keepMuteWhenTakingBack": {
