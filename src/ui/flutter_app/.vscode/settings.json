@@ -17,5 +17,6 @@
     "uciok",
     "XCRASH"
   ],
-  "dart.showTodos": false
+  "dart.showTodos": false,
+  "cmake.sourceDirectory": "../windows/runner"
 }

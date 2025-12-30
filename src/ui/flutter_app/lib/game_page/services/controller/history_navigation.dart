@@ -268,7 +268,7 @@ class HistoryNavigator {
     GameController().engine.stopSearching();
 
     final GameRecorder recorder = GameController().gameRecorder;
-    final PgnNode<ExtMove>? current = recorder.activeNode ?? recorder.pgnRoot;
+    final PgnNode<ExtMove> current = recorder.activeNode ?? recorder.pgnRoot;
 
     if (current.children.isEmpty || variationIndex >= current.children.length) {
       if (pop && context.mounted) {

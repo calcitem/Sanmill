@@ -481,8 +481,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     // Validate puzzles before contribution
     final List<String> invalidPuzzles = <String>[];
     for (final PuzzleInfo puzzle in puzzlesToContribute) {
-      final String? errorKey =
-          PuzzleExportService.validateForContribution(puzzle);
+      final String? errorKey = PuzzleExportService.validateForContribution(
+        puzzle,
+      );
       if (errorKey != null) {
         // Translate error key to localized message
         final String localizedError = _getLocalizedValidationError(
@@ -586,6 +587,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     );
 
     if (confirmed != true) {
+      return;
+    }
+
+    if (!mounted || !context.mounted) {
       return;
     }
 

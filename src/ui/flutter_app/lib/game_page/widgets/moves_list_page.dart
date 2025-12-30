@@ -90,7 +90,6 @@ class MovesListPageState extends State<MovesListPage> {
     final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
 
     // Track which columns have active branches
-    final List<int> activeColumns = <int>[];
     int nextColumnIndex = 0;
 
     // Collect all nodes including variations using DFS with branch tracking

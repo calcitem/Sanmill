@@ -74,7 +74,7 @@ class GameRecorder {
   /// Get the next moves available from the current active position
   /// Returns the first child (mainline continuation) and any variation siblings
   List<PgnNode<ExtMove>> getNextMoveOptions() {
-    final PgnNode<ExtMove>? node = activeNode ?? _pgnRoot;
+    final PgnNode<ExtMove> node = activeNode ?? _pgnRoot;
     return node.children;
   }
 

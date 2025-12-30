@@ -65,7 +65,7 @@ class BranchTreePainter extends CustomPainter {
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
-    final double columnWidth = 20.0;
+    const double columnWidth = 20.0;
     final double centerY = size.height / 2;
 
     // Draw vertical lines for active branches in other columns

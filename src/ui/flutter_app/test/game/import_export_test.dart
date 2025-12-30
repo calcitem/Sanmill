@@ -5,6 +5,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -132,25 +133,25 @@ void main() {
       ImportService.import(pgnWithVariations);
 
       // Verify that the tree structure is preserved
-      final dynamic root = controller.newGameRecorder?.pgnRoot;
+      final PgnNode<ExtMove>? root = controller.newGameRecorder?.pgnRoot;
       expect(root, isNotNull, reason: 'Root node should exist');
 
       // Root should have 1 child (first move: d6)
-      expect(root.children.length, 1, reason: 'Root should have 1 child');
+      expect(root!.children.length, 1, reason: 'Root should have 1 child');
 
       // First move (d6)
-      final dynamic move1 = root.children[0];
+      final PgnNode<ExtMove> move1 = root.children[0];
       expect(move1.data?.move, 'd6', reason: 'First move should be d6');
       expect(move1.children.length, 1, reason: 'Move 1 should have 1 child');
 
       // Second move (f4)
-      final dynamic move2 = move1.children[0];
+      final PgnNode<ExtMove> move2 = move1.children[0];
       expect(move2.data?.move, 'f4', reason: 'Second move should be f4');
       expect(move2.children.length, 1, reason: 'Move 2 should have 1 child');
 
       // Third move (d7) - this is where variations start
       // The mainline should be d7, but there should be a variation with a7
-      final dynamic move3Main = move2.children[0];
+      final PgnNode<ExtMove> move3Main = move2.children[0];
       expect(
         move3Main.data?.move,
         'd7',
@@ -180,7 +181,7 @@ void main() {
       );
 
       // Fourth move in mainline (Black's g7)
-      final dynamic move4Main = move3Main.children[0];
+      final PgnNode<ExtMove> move4Main = move3Main.children[0];
       expect(
         move4Main.data?.move,
         'g7',
@@ -194,7 +195,7 @@ void main() {
         reason: 'Move 4 (g7) should have children',
       );
 
-      final dynamic move5Main = move4Main.children[0];
+      final PgnNode<ExtMove> move5Main = move4Main.children[0];
       expect(
         move5Main.data?.move,
         'f6',
@@ -212,7 +213,7 @@ void main() {
               'Move 2 should have 2 variations (mainline d7 and alternative a7)',
         );
 
-        final dynamic variation = move2.children[1];
+        final PgnNode<ExtMove> variation = move2.children[1];
         expect(
           variation.data?.move,
           'a7',
@@ -229,11 +230,11 @@ void main() {
               'Move 3 (d7) should have 2 variations (mainline g7 and alternative f6)',
         );
 
-        final dynamic blackVariation = move3Main.children[1];
+        final PgnNode<ExtMove> blackVariation = move3Main.children[1];
         expect(
           blackVariation.data?.move,
           'f6',
-          reason: 'Black\'s variation after d7 should be f6',
+          reason: "Black's variation after d7 should be f6",
         );
       }
 
