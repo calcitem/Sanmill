@@ -25,6 +25,7 @@ import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dar
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
+import 'branch_tree_painter.dart';
 import 'cat_fishing_game.dart';
 import 'mini_board.dart';
 import 'saved_games_page.dart';
@@ -82,64 +83,143 @@ class MovesListPageState extends State<MovesListPage> {
   // }
 
   /// Clears and refreshes _allNodes from the game recorder.
-  /// Now includes all variations, not just the mainline.
+  /// Now includes all variations with branch graph metadata.
   void _refreshAllNodes() {
     _allNodes.clear();
 
-    // Collect all nodes including variations using DFS
-    void collectNodesWithVariations(PgnNode<ExtMove> parent, {int depth = 0}) {
-      for (int i = 0; i < parent.children.length; i++) {
+    final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+
+    // Track which columns have active branches
+    final List<int> activeColumns = <int>[];
+    int nextColumnIndex = 0;
+
+    // Collect all nodes including variations using DFS with branch tracking
+    void collectNodesWithBranchInfo(
+      PgnNode<ExtMove> parent, {
+      int depth = 0,
+      int parentColumn = 0,
+      List<bool> parentActiveColumns = const <bool>[],
+    }) {
+      final int childCount = parent.children.length;
+
+      for (int i = 0; i < childCount; i++) {
         final PgnNode<ExtMove> node = parent.children[i];
-        // Mark if this is a variation (not the first child)
-        node.data?.isVariation = (i > 0);
+        final bool isVariation = i > 0;
+        final bool isLastSibling = i == childCount - 1;
+
+        // Determine column for this node
+        int nodeColumn = parentColumn;
+        if (isVariation) {
+          // Variation gets a new column
+          nodeColumn = nextColumnIndex++;
+        }
+
+        // Mark if this is a variation
+        node.data?.isVariation = isVariation;
         node.data?.variationDepth = depth;
+        node.data?.siblingIndex = i;
+        node.data?.isLastSibling = isLastSibling;
+        node.data?.branchColumn = nodeColumn;
+
+        // Calculate active columns for this node
+        final List<bool> currentActiveColumns = List<bool>.filled(
+          nextColumnIndex,
+          false,
+        );
+
+        // Copy parent's active columns
+        for (int j = 0; j < parentActiveColumns.length; j++) {
+          if (j < currentActiveColumns.length) {
+            currentActiveColumns[j] = parentActiveColumns[j];
+          }
+        }
+
+        // Mark current column as active
+        if (nodeColumn < currentActiveColumns.length) {
+          currentActiveColumns[nodeColumn] = true;
+        }
+
+        node.data?.branchColumns = List<bool>.from(currentActiveColumns);
+
+        // Determine branch line type
+        if (isVariation) {
+          if (node.children.isEmpty) {
+            node.data?.branchLineType = 'variation_end';
+          } else {
+            node.data?.branchLineType = 'variation_start';
+          }
+        } else {
+          // Mainline or continuation
+          if (parent.children.length > 1) {
+            // Parent has variations, this is a fork point
+            node.data?.branchLineType = 'fork_start';
+          } else if (node.children.isEmpty) {
+            node.data?.branchLineType = 'variation_end';
+          } else if (node.children.length > 1) {
+            node.data?.branchLineType = 'fork_start';
+          } else {
+            node.data?.branchLineType = isVariation
+                ? 'variation_continue'
+                : 'mainline';
+          }
+        }
+
         _allNodes.add(node);
 
         // Recursively collect children
-        collectNodesWithVariations(node, depth: i > 0 ? depth + 1 : depth);
+        if (node.children.isNotEmpty) {
+          // Update active columns for children
+          final List<bool> childActiveColumns = List<bool>.from(
+            currentActiveColumns,
+          );
+          if (node.children.length > 1) {
+            // This node forks, keep its column active for variations
+            if (nodeColumn < childActiveColumns.length) {
+              childActiveColumns[nodeColumn] = true;
+            }
+          }
+
+          collectNodesWithBranchInfo(
+            node,
+            depth: isVariation ? depth + 1 : depth,
+            parentColumn: nodeColumn,
+            parentActiveColumns: childActiveColumns,
+          );
+        }
       }
     }
 
-    final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
-    collectNodesWithVariations(root);
+    collectNodesWithBranchInfo(root);
 
-    int currentMoveIndex = 0; // Initialize move index for the first node
-    int currentRound = 1; // Initialize round number starting at 1
-    PieceColor?
-    lastNonRemoveSide; // To track the side of the last non-remove move
+    // Assign move indices and round indices
+    int currentMoveIndex = 0;
+    int currentRound = 1;
+    PieceColor? lastNonRemoveSide;
 
     for (int i = 0; i < _allNodes.length; i++) {
       final PgnNode<ExtMove> node = _allNodes[i];
 
-      // Set moveIndex as before
+      // Set moveIndex
       if (i == 0) {
-        // First node always gets moveIndex 0
         node.data?.moveIndex = currentMoveIndex;
       } else if (node.data?.type == MoveType.remove) {
-        // If it's a remove type, use the previous node's moveIndex
         node.data?.moveIndex = _allNodes[i - 1].data?.moveIndex;
       } else {
-        // Otherwise, increment the previous node's moveIndex
         currentMoveIndex = (_allNodes[i - 1].data?.moveIndex ?? 0) + 1;
         node.data?.moveIndex = currentMoveIndex;
       }
 
-      // Calculate and assign roundIndex for each move
+      // Calculate and assign roundIndex
       if (node.data != null) {
         if (node.data!.type == MoveType.remove) {
-          // For remove moves, assign the same round as the last non-remove move
           node.data!.roundIndex = currentRound;
         } else {
-          // For non-remove moves:
-          // If the last non-remove move was made by Black and current move is by White,
-          // it indicates a new round should start.
           if (lastNonRemoveSide == PieceColor.black &&
               node.data!.side == PieceColor.white) {
             currentRound++;
           }
           node.data!.roundIndex = currentRound;
-          lastNonRemoveSide =
-              node.data!.side; // Update last non-remove move side
+          lastNonRemoveSide = node.data!.side;
         }
       }
     }
@@ -1644,6 +1724,13 @@ class MoveListItemState extends State<MoveListItem> {
     final bool isVariation = moveData?.isVariation ?? false;
     final int variationDepth = moveData?.variationDepth ?? 0;
 
+    // Get branch graph metadata
+    final List<bool> branchColumns = moveData?.branchColumns ?? <bool>[];
+    final int branchColumn = moveData?.branchColumn ?? 0;
+    final String branchLineType = moveData?.branchLineType ?? 'mainline';
+    final bool isLastSibling = moveData?.isLastSibling ?? false;
+    final int siblingIndex = moveData?.siblingIndex ?? 0;
+
     // Common text style with monospace font for notation
     final TextStyle combinedStyle = TextStyle(
       fontSize: 14,
@@ -1654,23 +1741,39 @@ class MoveListItemState extends State<MoveListItem> {
       fontFamily: 'monospace', // Add monospace font
     );
 
-    // Wrap the widget with variation indicator if needed
+    // Build branch tree widget
+    final Widget branchTree = branchColumns.isNotEmpty
+        ? BranchTreeWidget(
+            branchColumns: branchColumns,
+            branchColumn: branchColumn,
+            branchLineType: branchLineType,
+            isLastSibling: isLastSibling,
+            siblingIndex: siblingIndex,
+            color: isVariation
+                ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.7)
+                : DB().colorSettings.messageColor.withValues(alpha: 0.5),
+          )
+        : const SizedBox.shrink();
+
+    // Wrap the widget with branch tree visualization
     Widget content;
     switch (widget.layout) {
       case MovesViewLayout.large:
-        content = _buildLargeLayout(
+        content = _buildLargeLayoutWithBranch(
           notation,
           boardLayout,
           roundNotation,
           combinedStyle,
+          branchTree,
         );
         break;
       case MovesViewLayout.medium:
-        content = _buildMediumLayout(
+        content = _buildMediumLayoutWithBranch(
           notation,
           boardLayout,
           roundNotation,
           combinedStyle,
+          branchTree,
         );
         break;
       case MovesViewLayout.small:
@@ -1686,39 +1789,25 @@ class MoveListItemState extends State<MoveListItem> {
         // so we can return an empty container here.
         return const SizedBox.shrink();
       case MovesViewLayout.details:
-        content = _buildDetailsLayout(notation, roundNotation, combinedStyle);
+        content = _buildDetailsLayoutWithBranch(
+          notation,
+          roundNotation,
+          combinedStyle,
+          branchTree,
+        );
         break;
-    }
-
-    // Add visual indicator for variations
-    if (isVariation && widget.layout != MovesViewLayout.list) {
-      return Padding(
-        padding: EdgeInsets.only(left: 16.0 * variationDepth),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(
-                color: DB().colorSettings.pieceHighlightColor.withValues(
-                  alpha: 0.6,
-                ),
-                width: 3,
-              ),
-            ),
-          ),
-          child: content,
-        ),
-      );
     }
 
     return content;
   }
 
   /// Large boards: single column, board on top, then "roundNotation + notation", then comment.
-  Widget _buildLargeLayout(
+  Widget _buildLargeLayoutWithBranch(
     String notation,
     String boardLayout,
     String roundNotation,
     TextStyle combinedStyle,
+    Widget branchTree,
   ) {
     return GestureDetector(
       onTap: () => _navigateToNode(),
@@ -1728,22 +1817,36 @@ class MoveListItemState extends State<MoveListItem> {
           color: _isActiveNode()
               ? DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3)
               : DB().colorSettings.darkBackgroundColor,
-          child: Column(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (boardLayout.isNotEmpty)
-                AspectRatio(
-                  aspectRatio: 1.0,
-                  child: MiniBoard(
-                    boardLayout: boardLayout,
-                    extMove: widget.node.data,
-                  ),
+              // Branch tree on the left
+              branchTree,
+              const SizedBox(width: 8),
+              // Main content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (boardLayout.isNotEmpty)
+                      AspectRatio(
+                        aspectRatio: 1.0,
+                        child: MiniBoard(
+                          boardLayout: boardLayout,
+                          extMove: widget.node.data,
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    Text(roundNotation + notation, style: combinedStyle),
+                    const SizedBox(height: 6),
+                    _buildEditableComment(
+                      TextStyle(
+                        fontSize: 12,
+                        color: DB().colorSettings.messageColor,
+                      ),
+                    ),
+                  ],
                 ),
-              const SizedBox(height: 8),
-              Text(roundNotation + notation, style: combinedStyle),
-              const SizedBox(height: 6),
-              _buildEditableComment(
-                TextStyle(fontSize: 12, color: DB().colorSettings.messageColor),
               ),
             ],
           ),
@@ -1763,11 +1866,13 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   /// Medium boards: board on the left, "roundNotation + notation" and comment on the right.
-  Widget _buildMediumLayout(
+  /// Medium boards: board on the left, "roundNotation + notation" and comment on the right.
+  Widget _buildMediumLayoutWithBranch(
     String notation,
     String boardLayout,
     String roundNotation,
     TextStyle combinedStyle,
+    Widget branchTree,
   ) {
     return GestureDetector(
       onTap: () => _navigateToNode(),
@@ -1790,7 +1895,10 @@ class MoveListItemState extends State<MoveListItem> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // Left: mini board.
+              // Branch tree on the left
+              branchTree,
+              const SizedBox(width: 4),
+              // Mini board
               Expanded(
                 flex: 382,
                 child: Padding(
@@ -1803,7 +1911,7 @@ class MoveListItemState extends State<MoveListItem> {
                       : const SizedBox.shrink(),
                 ),
               ),
-              // Right: text.
+              // Text content
               Expanded(
                 flex: 618,
                 child: Padding(
@@ -1880,10 +1988,11 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   /// Details layout: single row: "roundNotation + notation" on the left, comment on the right.
-  Widget _buildDetailsLayout(
+  Widget _buildDetailsLayoutWithBranch(
     String notation,
     String roundNotation,
     TextStyle combinedStyle,
+    Widget branchTree,
   ) {
     return GestureDetector(
       onTap: () => _navigateToNode(),
@@ -1898,12 +2007,15 @@ class MoveListItemState extends State<MoveListItem> {
           ),
           child: Row(
             children: <Widget>[
-              // Left side.
+              // Branch tree on the left
+              branchTree,
+              const SizedBox(width: 8),
+              // Move notation
               Expanded(
                 child: Text(roundNotation + notation, style: combinedStyle),
               ),
               const SizedBox(width: 8),
-              // Right side: editable comment.
+              // Comment
               Expanded(
                 child: _buildEditableComment(
                   TextStyle(
