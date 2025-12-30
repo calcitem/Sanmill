@@ -1406,6 +1406,25 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
+          // Branch tree toggle icon
+          IconButton(
+            icon: Icon(
+              DB().displaySettings.showBranchTree
+                  ? FluentIcons.branch_fork_24_regular
+                  : FluentIcons.branch_24_regular,
+            ),
+            tooltip: DB().displaySettings.showBranchTree
+                ? 'Hide branch tree'
+                : 'Show branch tree',
+            onPressed: () {
+              setState(() {
+                DB().displaySettings = DB().displaySettings.copyWith(
+                  showBranchTree: !DB().displaySettings.showBranchTree,
+                );
+                _refreshAllNodes();
+              });
+            },
+          ),
           // Reverse order icon.
           IconButton(
             icon: AnimatedSwitcher(
@@ -1741,8 +1760,9 @@ class MoveListItemState extends State<MoveListItem> {
       fontFamily: 'monospace', // Add monospace font
     );
 
-    // Build branch tree widget
-    final Widget branchTree = branchColumns.isNotEmpty
+    // Build branch tree widget (only if enabled)
+    final Widget branchTree =
+        DB().displaySettings.showBranchTree && branchColumns.isNotEmpty
         ? BranchTreeWidget(
             branchColumns: branchColumns,
             branchColumn: branchColumn,
@@ -1796,6 +1816,28 @@ class MoveListItemState extends State<MoveListItem> {
           branchTree,
         );
         break;
+    }
+
+    // If branch tree is disabled, add simple indentation for variations
+    if (!DB().displaySettings.showBranchTree &&
+        isVariation &&
+        widget.layout != MovesViewLayout.list) {
+      return Padding(
+        padding: EdgeInsets.only(left: 16.0 * variationDepth),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(
+                color: DB().colorSettings.pieceHighlightColor.withValues(
+                  alpha: 0.6,
+                ),
+                width: 3,
+              ),
+            ),
+          ),
+          child: content,
+        ),
+      );
     }
 
     return content;
