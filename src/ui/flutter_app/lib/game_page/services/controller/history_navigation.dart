@@ -231,7 +231,7 @@ class HistoryNavigator {
     );
   }
 
-  static Future<HistoryResponse?> takeBackN(
+  static Future<HistoryResponse?> stepForwardN(
     BuildContext context,
     int n, {
     bool pop = true,
@@ -244,6 +244,41 @@ class HistoryNavigator {
       pop: pop,
       toolbar: toolbar,
     );
+  }
+
+  /// Navigate to a specific variation branch
+  /// This method switches to the given variation node and replays to that position
+  static Future<HistoryResponse?> gotoVariation(
+    BuildContext context,
+    PgnNode<ExtMove> variationNode, {
+    bool pop = true,
+  }) async {
+    // Simply use the existing gotoNode method which handles arbitrary nodes
+    return gotoNode(context, variationNode, pop: pop);
+  }
+
+  /// Navigate forward selecting a specific variation by index
+  /// Index 0 is the mainline, 1+ are variations
+  static Future<HistoryResponse?> stepForwardToVariation(
+    BuildContext context,
+    int variationIndex, {
+    bool pop = true,
+  }) async {
+    GameController().isControllerActive = false;
+    GameController().engine.stopSearching();
+
+    final GameRecorder recorder = GameController().gameRecorder;
+    final PgnNode<ExtMove>? current = recorder.activeNode ?? recorder.pgnRoot;
+
+    if (current.children.isEmpty || variationIndex >= current.children.length) {
+      if (pop && context.mounted) {
+        Navigator.pop(context);
+      }
+      return const HistoryRange();
+    }
+
+    final PgnNode<ExtMove> targetNode = current.children[variationIndex];
+    return gotoNode(context, targetNode, pop: pop);
   }
 
   /// Moves through the History by replaying all relevant moves.
@@ -416,19 +451,23 @@ class HistoryNavigator {
   }
 
   /// Move HEAD forward by `n` steps along the first child
-  static void _stepForward(int n) {
+  static void _stepForward(int n, {int variationIndex = 0}) {
     while (n-- > 0) {
       final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
       if (node == null) {
         final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
         if (root.children.isNotEmpty) {
-          GameController().gameRecorder.activeNode = root.children.first;
+          // Use variationIndex to select which child to follow
+          final int index = variationIndex.clamp(0, root.children.length - 1);
+          GameController().gameRecorder.activeNode = root.children[index];
         } else {
           break;
         }
       } else {
         if (node.children.isNotEmpty) {
-          GameController().gameRecorder.activeNode = node.children.first;
+          // Use variationIndex to select which child to follow
+          final int index = variationIndex.clamp(0, node.children.length - 1);
+          GameController().gameRecorder.activeNode = node.children[index];
         } else {
           break;
         }
@@ -436,7 +475,7 @@ class HistoryNavigator {
     }
     // Notify move count change after all steps
     GameController().gameRecorder.moveCountNotifier.value =
-        GameController().gameRecorder.mainlineMoves.length;
+        GameController().gameRecorder.currentPath.length;
   }
 
   /// Move HEAD forward to the very end of the main child path

@@ -97,6 +97,28 @@ class ExtMove extends PgnNodeData {
   /// Move quality evaluation
   MoveQuality? quality;
 
+  /// Whether this move is part of a variation (not mainline)
+  bool? isVariation;
+
+  /// Depth level of the variation (0 for mainline, 1+ for nested variations)
+  int? variationDepth;
+
+  /// Branch graph metadata for tree visualization
+  /// Indicates which columns have active branches at this move
+  List<bool>? branchColumns;
+
+  /// The column index where this move is displayed in the branch tree
+  int? branchColumn;
+
+  /// Branch line type: 'continue', 'fork', 'join', 'end'
+  String? branchLineType;
+
+  /// Whether this is the last child of its parent (for drawing └ vs ├)
+  bool? isLastSibling;
+
+  /// Index among siblings (0 = first child, 1 = second, etc.)
+  int? siblingIndex;
+
   /// Convert MoveQuality to numeric NAG (Numeric Annotation Glyph)
   /// Good moves: ! (1), !! (3)
   /// Bad moves: ? (2), ?? (4)
