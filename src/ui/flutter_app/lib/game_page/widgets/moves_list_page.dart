@@ -1512,9 +1512,47 @@ class MovesListPageState extends State<MovesListPage> {
     return moves.join(' ');
   }
 
+  /// Generates a preview summary for a branch (up to 2 moves or more if includes remove)
+  String _generateBranchPreview(PgnNode<ExtMove> startNode) {
+    final List<String> moves = <String>[];
+    PgnNode<ExtMove>? current = startNode;
+    int stepsRead = 0;
+    const int maxNormalSteps = 2; // Show up to 2 non-remove moves
+
+    while (current != null && current.data != null) {
+      final String notation = current.data!.notation;
+      moves.add(notation);
+
+      // If this is a remove move, keep reading subsequent removes
+      if (current.data!.type == MoveType.remove) {
+        // Continue to next if it exists
+        if (current.children.isNotEmpty) {
+          current = current.children.first;
+        } else {
+          break;
+        }
+      } else {
+        // Non-remove move
+        stepsRead++;
+        if (stepsRead >= maxNormalSteps) {
+          break; // Stop after reading maxNormalSteps non-remove moves
+        }
+        // Move to next
+        if (current.children.isNotEmpty) {
+          current = current.children.first;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return moves.join(' ');
+  }
+
   /// Builds a variation chip for an alternative move
   Widget _buildVariationChip(PgnNode<ExtMove> variationNode) {
-    final String notation = variationNode.data?.notation ?? '';
+    // Use two-step preview for better branch recognition
+    final String notation = _generateBranchPreview(variationNode);
 
     return GestureDetector(
       onTap: () => _navigateToNode(variationNode),
@@ -2318,25 +2356,26 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
-          // Branch tree toggle icon
-          IconButton(
-            icon: Icon(
-              DB().displaySettings.showBranchTree
-                  ? FluentIcons.branch_fork_24_regular
-                  : FluentIcons.branch_24_regular,
+          // Branch tree toggle icon (hide in list view as it uses Active Path only)
+          if (_currentLayout != MovesViewLayout.list)
+            IconButton(
+              icon: Icon(
+                DB().displaySettings.showBranchTree
+                    ? FluentIcons.branch_fork_24_regular
+                    : FluentIcons.branch_24_regular,
+              ),
+              tooltip: DB().displaySettings.showBranchTree
+                  ? 'Switch to Active Line View'
+                  : 'Switch to Full Tree View',
+              onPressed: () {
+                setState(() {
+                  DB().displaySettings = DB().displaySettings.copyWith(
+                    showBranchTree: !DB().displaySettings.showBranchTree,
+                  );
+                  _refreshAllNodes();
+                });
+              },
             ),
-            tooltip: DB().displaySettings.showBranchTree
-                ? 'Hide branch tree'
-                : 'Show branch tree',
-            onPressed: () {
-              setState(() {
-                DB().displaySettings = DB().displaySettings.copyWith(
-                  showBranchTree: !DB().displaySettings.showBranchTree,
-                );
-                _refreshAllNodes();
-              });
-            },
-          ),
           // Reverse order icon.
           IconButton(
             icon: AnimatedSwitcher(
@@ -2941,8 +2980,45 @@ class MoveListItemState extends State<MoveListItem> {
     return false;
   }
 
+  /// Generates a preview summary for a branch (up to 2 moves or more if includes remove)
+  String _generateBranchPreview(PgnNode<ExtMove> startNode) {
+    final List<String> moves = <String>[];
+    PgnNode<ExtMove>? current = startNode;
+    int stepsRead = 0;
+    const int maxNormalSteps = 2; // Show up to 2 non-remove moves
+
+    while (current != null && current.data != null) {
+      final String notation = current.data!.notation;
+      moves.add(notation);
+
+      // If this is a remove move, keep reading subsequent removes
+      if (current.data!.type == MoveType.remove) {
+        // Continue to next if it exists
+        if (current.children.isNotEmpty) {
+          current = current.children.first;
+        } else {
+          break;
+        }
+      } else {
+        // Non-remove move
+        stepsRead++;
+        if (stepsRead >= maxNormalSteps) {
+          break; // Stop after reading maxNormalSteps non-remove moves
+        }
+        // Move to next
+        if (current.children.isNotEmpty) {
+          current = current.children.first;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return moves.join(' ');
+  }
+
   Widget _buildChildBranchChip(PgnNode<ExtMove> child) {
-    final String label = child.data?.notation ?? '';
+    final String label = _generateBranchPreview(child);
     final bool isSelected = _isNodeOrDescendantOfActive(child);
 
     return InkWell(
