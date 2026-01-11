@@ -1,23 +1,49 @@
+# Build configuration for optimized code generation
+# This limits build_runner to only scan directories that need code generation,
+# significantly improving build speed by excluding UI/presentation layers.
+
 targets:
   $default:
     builders:
+      # CopyWith extension builder - only scan model directories
       copy_with_extension_gen|copy_with_extension_gen:
         enabled: true
         generate_for:
-          - "**/models/**.dart"
-          - "**/model/**.dart"
+          include:
+            - lib/appearance_settings/models/**
+            - lib/general_settings/models/**
+            - lib/puzzle/models/**
+            - lib/rule_settings/models/**
+            - lib/shared/models/**
+            - lib/statistics/model/**
+
+      # JSON serializable builder - only scan model directories
       json_serializable|json_serializable:
         options:
           field_rename: pascal
         enabled: true
         generate_for:
-          - "**/models/**.dart"
-          - "**/model/**.dart"
+          include:
+            - lib/appearance_settings/models/**
+            - lib/general_settings/models/**
+            - lib/puzzle/models/**
+            - lib/rule_settings/models/**
+            - lib/shared/models/**
+            - lib/statistics/model/**
+
+      # Hive type adapter builder - only scan model directories
       hive_ce_generator|hive_type_adapter_generator:
         enabled: true
         generate_for:
-          - "**/models/**.dart"
-          - "**/model/**.dart"
+          include:
+            - lib/appearance_settings/models/**
+            - lib/general_settings/models/**
+            - lib/puzzle/models/**
+            - lib/rule_settings/models/**
+            - lib/shared/models/**
+            - lib/statistics/model/**
+
+      # Hive registrar generator
       hive_ce_generator|hive_registrar_generator:
         enabled: true
         options:
@@ -25,9 +51,37 @@ targets:
             - prefer_relative_imports
             - document_ignores
             - public_member_api_docs
+            - type=lint
+
+      # Hive adapters generator - only scan model directories
+      hive_ce_generator|hive_adapters_generator:
+        enabled: true
+        generate_for:
+          include:
+            - lib/appearance_settings/models/**
+            - lib/general_settings/models/**
+            - lib/puzzle/models/**
+            - lib/rule_settings/models/**
+            - lib/shared/models/**
+            - lib/statistics/model/**
+
+      # Hive registrar intermediate generator
+      hive_ce_generator|hive_registrar_intermediate_generator:
+        enabled: true
+        generate_for:
+          include:
+            - lib/appearance_settings/models/**
+            - lib/general_settings/models/**
+            - lib/puzzle/models/**
+            - lib/rule_settings/models/**
+            - lib/shared/models/**
+            - lib/statistics/model/**
+
+      # Source gen combining builder optimization
       source_gen|combining_builder:
         options:
           ignore_for_file:
             - prefer_relative_imports
             - document_ignores
             - public_member_api_docs
+            - type=lint
