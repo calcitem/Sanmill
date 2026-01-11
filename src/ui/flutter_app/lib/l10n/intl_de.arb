@@ -2280,7 +2280,19 @@
     "puzzleRuleMismatch": "Regeln stimmen nicht überein",
     "@puzzleRuleMismatch": {},
     "puzzleRuleMismatchWarning": "Für {puzzleRules}, derzeit {currentRules}",
-    "@puzzleRuleMismatchWarning": {},
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
     "puzzleRuleMismatchContinue": "Fortfahren",
     "@puzzleRuleMismatchContinue": {},
     "puzzleCompatibleOnly": "Nur kompatible",
@@ -2288,7 +2300,14 @@
     "puzzleSelect": "Rätsel auswählen",
     "@puzzleSelect": {},
     "puzzleSelectedCount": "{count} ausgewählt",
-    "@puzzleSelectedCount": {},
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleSelectAll": "Alle auswählen",
     "@puzzleSelectAll": {},
     "puzzleExport": "Exportieren",
@@ -2296,11 +2315,25 @@
     "puzzleImport": "Importieren",
     "@puzzleImport": {},
     "puzzleExportSuccess": "{count,plural, =1{{count} Rätsel erfolgreich exportiert}other{{count} Rätsel erfolgreich exportiert}}",
-    "@puzzleExportSuccess": {},
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleExportFailed": "Rätsel konnten nicht exportiert werden",
     "@puzzleExportFailed": {},
     "puzzleImportSuccess": "{count,plural, =1{{count} Rätsel erfolgreich importiert}other{{count} Rätsel erfolgreich importiert}}",
-    "@puzzleImportSuccess": {},
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleImportFailed": "Rätsel konnten nicht importiert werden",
     "@puzzleImportFailed": {},
     "puzzleImportNoFileSelected": "Keine Datei ausgewählt",
@@ -2308,25 +2341,85 @@
     "puzzleImportInvalidFilePath": "Ungültiger Dateipfad",
     "@puzzleImportInvalidFilePath": {},
     "puzzleImportErrorPickingFile": "Fehler beim Auswählen der Datei: {error}",
-    "@puzzleImportErrorPickingFile": {},
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleImportFileNotExist": "Datei existiert nicht",
     "@puzzleImportFileNotExist": {},
     "puzzleImportInvalidFormat": "Ungültiges Dateiformat: Feld „puzzles“ fehlt",
     "@puzzleImportInvalidFormat": {},
     "puzzleImportIncompatibleVersion": "Inkompatible Dateiformatversion: {version} (erwartet {expected})",
-    "@puzzleImportIncompatibleVersion": {},
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleImportInvalidFen": "Rätsel {index} (\"{title}\") hat ein ungültiges FEN-Format",
-    "@puzzleImportInvalidFen": {},
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleImportRuleMismatchWarning": "Rätsel {index} (\"{title}\") verwendet andere Regeln: {puzzleRules} (aktuell: {currentRules}). Dieses Rätsel funktioniert möglicherweise nicht korrekt mit deinen aktuellen Einstellungen.",
-    "@puzzleImportRuleMismatchWarning": {},
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleImportParseFailed": "Rätsel {index} konnte nicht geparst werden: {error}",
-    "@puzzleImportParseFailed": {},
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleImportErrors": "Fehler:",
     "@puzzleImportErrors": {},
     "puzzleImportWarnings": "Warnungen:",
     "@puzzleImportWarnings": {},
     "puzzleImportErrorReading": "Fehler beim Lesen der Datei: {error}",
-    "@puzzleImportErrorReading": {},
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleValidationTitleRequired": "Rätsel muss einen Titel haben",
     "@puzzleValidationTitleRequired": {},
     "puzzleValidationDescriptionRequired": "Rätsel muss eine Beschreibung haben",
@@ -2348,9 +2441,23 @@
     "puzzleValidationAuthorRequired": "Bitte füge deinen Namen als Autor hinzu, bevor du beiträgst",
     "@puzzleValidationAuthorRequired": {},
     "puzzleDeleteConfirm": "{count,plural, =1{{count} Rätsel löschen?}other{{count} Rätsel löschen?}}",
-    "@puzzleDeleteConfirm": {},
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleDeleted": "{count,plural, =1{{count} Rätsel gelöscht}other{{count} Rätsel gelöscht}}",
-    "@puzzleDeleted": {},
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleCannotDeleteBuiltIn": "Integrierte Rätsel können nicht gelöscht werden",
     "@puzzleCannotDeleteBuiltIn": {},
     "puzzleCreationInstructions": "So erstellst du ein Rätsel",
@@ -2380,15 +2487,36 @@
     "puzzleRecordingStarted": "Aufzeichnung gestartet",
     "@puzzleRecordingStarted": {},
     "puzzleRecordingStopped": "{count,plural, =1{{count} Zug aufgezeichnet}other{{count} Züge aufgezeichnet}}",
-    "@puzzleRecordingStopped": {},
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleSolutionMoves": "{count,plural, =1{Lösung: {count} Zug}other{Lösung: {count} Züge}}",
-    "@puzzleSolutionMoves": {},
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleNoSolutionRecorded": "Noch keine Lösung",
     "@puzzleNoSolutionRecorded": {},
     "puzzleClearSolution": "Lösung löschen",
     "@puzzleClearSolution": {},
     "puzzleSolutionTab": "Lösung {number}",
-    "@puzzleSolutionTab": {},
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleAddSolution": "Weitere Lösung hinzufügen",
     "@puzzleAddSolution": {},
     "puzzleRemoveSolution": "Diese Lösung entfernen",
@@ -2400,7 +2528,14 @@
     "puzzleMarkAsOptimal": "Als optimal markieren",
     "@puzzleMarkAsOptimal": {},
     "puzzleSolutionCount": "{count, plural, =1{1 Lösung} other{{count} Lösungen}}",
-    "@puzzleSolutionCount": {},
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleRemoveSolutionConfirm": "Diese Lösung entfernen?",
     "@puzzleRemoveSolutionConfirm": {},
     "puzzleAtLeastOneSolution": "Mindestens eine Lösung erforderlich",
@@ -2456,7 +2591,14 @@
     "dailyPuzzleDesc": "Löse jeden Tag ein neues Rätsel",
     "@dailyPuzzleDesc": {},
     "dailyPuzzleNumber": "Tag #{dayNumber}",
-    "@dailyPuzzleNumber": {},
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
     "dailyPuzzleStreak": "Serie",
     "@dailyPuzzleStreak": {},
     "dailyPuzzleDayStreak": "Tage in Folge",
@@ -2464,7 +2606,14 @@
     "dailyPuzzleDays": "Tage",
     "@dailyPuzzleDays": {},
     "dailyPuzzleBestStreak": "Bestwert: {longestStreak} Tage",
-    "@dailyPuzzleBestStreak": {},
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
     "dailyPuzzleStart": "Tagesrätsel starten",
     "@dailyPuzzleStart": {},
     "dailyPuzzleStreakHint": "Schließe Tagesrätsel ab, um deine Serie aufzubauen!",
@@ -2592,7 +2741,14 @@
     "puzzleStatsRating": "Dein Rätsel-Rating",
     "@puzzleStatsRating": {},
     "puzzleStatsProvisional": "Vorläufig ({gamesLeft} Spiele übrig)",
-    "@puzzleStatsProvisional": {},
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleStatsGamesPlayed": "Gespielte Spiele",
     "@puzzleStatsGamesPlayed": {},
     "puzzleStatsDeviation": "Abweichung",
@@ -2688,7 +2844,14 @@
     "hintDialogTitle": "Hinweis",
     "@hintDialogTitle": {},
     "optimalSolutionWithMoves": "Optimale Lösung ({moves} Züge):",
-    "@optimalSolutionWithMoves": {},
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
     "validationErrors": "Validierungsfehler",
     "@validationErrors": {},
     "contributePuzzlesToSanmill": "Rätsel zu Sanmill beitragen",
@@ -2742,9 +2905,25 @@
     "qualityReqInstructive": "✓ Lehrreich oder unterhaltsam",
     "@qualityReqInstructive": {},
     "nextMoveHint": "Nächster Zug: {move}",
-    "@nextMoveHint": {},
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
     "completeSolutionHint": "Vollständige Lösung: {solution}",
-    "@completeSolutionHint": {},
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
     "payAttentionToPositions": "Achte auf diese Positionen",
     "@payAttentionToPositions": {},
     "noSolutionAvailable": "Keine Lösung verfügbar",
@@ -2754,17 +2933,50 @@
     "perfectSolvedOptimal": "Perfekt! In optimalen Zügen gelöst!",
     "@perfectSolvedOptimal": {},
     "correctMovesOptimal": "Richtig! ({count} Züge, optimal: {optimal})",
-    "@correctMovesOptimal": {},
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
     "correctAlternativeSolution": "Richtig! Du hast eine alternative Lösung gefunden!",
     "@correctAlternativeSolution": {},
     "justNow": "Gerade eben",
     "@justNow": {},
     "minutesAgo": "vor {minutes} Min.",
-    "@minutesAgo": {},
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
     "hoursAgo": "vor {hours} Std.",
-    "@hoursAgo": {},
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
     "daysAgo": "vor {days} Tagen",
-    "@daysAgo": {},
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
     "invalidPuzzle": "Ungültiges Rätsel",
     "@invalidPuzzle": {},
     "invalidPuzzleMessage": "Dieses Rätsel hat ein ungültiges Stellungsformat und kann nicht geladen werden. Bitte kontaktiere den Autor des Rätsels oder versuche ein anderes Rätsel.",
@@ -2810,7 +3022,14 @@
     "shareLogs": "Logs teilen",
     "@shareLogs": {},
     "downloadSuccess": "Heruntergeladen nach {path}",
-    "@downloadSuccess": {},
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
     "selectMode": "Auswahlmodus",
     "@selectMode": {},
     "copySelected": "Ausgewählte kopieren",
@@ -2828,9 +3047,29 @@
     "newestLogsAtBottom": "Neueste Logs unten",
     "@newestLogsAtBottom": {},
     "logsCount": "Logs: {current} / {max}",
-    "@logsCount": {},
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
     "logsBufferFull": "Log-Puffer voll ({current}/{max}). Alte Logs werden entfernt.",
-    "@logsBufferFull": {},
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
     "clearLogs": "Logs löschen",
     "@clearLogs": {},
     "clearLogsConfirmation": "Möchtest du wirklich alle Logs löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -2860,7 +3099,14 @@
     "puzzleSolutionViewedNote": "Lösung angesehen (keine Sterne)",
     "@puzzleSolutionViewedNote": {},
     "puzzleAttempts": "{count, plural, =1{Versuch: {count}} other{Versuche: {count}}}",
-    "@puzzleAttempts": {},
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleNoMoreHints": "Keine weiteren Hinweise verfügbar",
     "@puzzleNoMoreHints": {},
     "puzzleHintDialogTitle": "Hinweis",
@@ -2872,7 +3118,14 @@
     "puzzleContributeDialogTitle": "Rätsel zu Sanmill beitragen",
     "@puzzleContributeDialogTitle": {},
     "puzzleContributeCount": "Du bist dabei, {count} Rätsel für einen Beitrag zu exportieren.",
-    "@puzzleContributeCount": {},
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleContributeWhatNext": "Was als Nächstes passiert:",
     "@puzzleContributeWhatNext": {},
     "puzzleContributeStep1": "1. Deine Rätsel werden in eine JSON-Datei exportiert",
@@ -2894,17 +3147,45 @@
     "puzzleContributeInfo": "So trägst du Rätsel bei",
     "@puzzleContributeInfo": {},
     "puzzleShareMessage": "Schau dir diese {count} Rätsel an!",
-    "@puzzleShareMessage": {},
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleShareSubject": "Rätsel ({count})",
-    "@puzzleShareSubject": {},
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleContributionShareText": "Rätsel-Beitrag.\n\nSiehe PUZZLE_CONTRIBUTION_GUIDE.md für Einreichungsanweisungen.",
     "@puzzleContributionShareText": {},
     "puzzleContributionShareSubject": "Rätsel-Beitrag: {title}",
-    "@puzzleContributionShareSubject": {},
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "puzzleContributionsShareText": "Rätsel-Beiträge.\n\nSiehe PUZZLE_CONTRIBUTION_GUIDE.md für Einreichungsanweisungen.",
     "@puzzleContributionsShareText": {},
     "puzzleContributionsShareSubject": "Rätsel-Beiträge ({count} Rätsel)",
-    "@puzzleContributionsShareSubject": {},
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "puzzleContributeHelp": "Hilf mit, dieses Programm besser zu machen, indem du deine Rätsel beiträgst!",
     "@puzzleContributeHelp": {},
     "puzzleContributeQuickStart": "Schnellstart:",
