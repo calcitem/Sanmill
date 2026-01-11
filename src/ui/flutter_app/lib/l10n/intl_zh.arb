@@ -3519,54 +3519,6 @@
             }
         }
     },
-    "january": "一月",
-    "@january": {
-        "description": "Month name"
-    },
-    "february": "二月",
-    "@february": {
-        "description": "Month name"
-    },
-    "march": "三月",
-    "@march": {
-        "description": "Month name"
-    },
-    "april": "四月",
-    "@april": {
-        "description": "Month name"
-    },
-    "may": "五月",
-    "@may": {
-        "description": "Month name"
-    },
-    "june": "六月",
-    "@june": {
-        "description": "Month name"
-    },
-    "july": "七月",
-    "@july": {
-        "description": "Month name"
-    },
-    "august": "八月",
-    "@august": {
-        "description": "Month name"
-    },
-    "september": "九月",
-    "@september": {
-        "description": "Month name"
-    },
-    "october": "十月",
-    "@october": {
-        "description": "Month name"
-    },
-    "november": "十一月",
-    "@november": {
-        "description": "Month name"
-    },
-    "december": "十二月",
-    "@december": {
-        "description": "Month name"
-    },
     "invalidPuzzle": "无效谜题",
     "@invalidPuzzle": {
         "description": "Title for invalid puzzle error"

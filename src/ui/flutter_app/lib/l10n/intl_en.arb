@@ -3519,54 +3519,6 @@
             }
         }
     },
-    "january": "January",
-    "@january": {
-        "description": "Month name"
-    },
-    "february": "February",
-    "@february": {
-        "description": "Month name"
-    },
-    "march": "March",
-    "@march": {
-        "description": "Month name"
-    },
-    "april": "April",
-    "@april": {
-        "description": "Month name"
-    },
-    "may": "May",
-    "@may": {
-        "description": "Month name"
-    },
-    "june": "June",
-    "@june": {
-        "description": "Month name"
-    },
-    "july": "July",
-    "@july": {
-        "description": "Month name"
-    },
-    "august": "August",
-    "@august": {
-        "description": "Month name"
-    },
-    "september": "September",
-    "@september": {
-        "description": "Month name"
-    },
-    "october": "October",
-    "@october": {
-        "description": "Month name"
-    },
-    "november": "November",
-    "@november": {
-        "description": "Month name"
-    },
-    "december": "December",
-    "@december": {
-        "description": "Month name"
-    },
     "invalidPuzzle": "Invalid Puzzle",
     "@invalidPuzzle": {
         "description": "Title for invalid puzzle error"
