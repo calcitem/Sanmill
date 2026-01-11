@@ -12,7 +12,7 @@ import url_launcher_macos
 
 class MainFlutterWindow: NSWindow {
     var engine: MillEngine?
-    
+
     private func setTitle(title: String) {
         DispatchQueue.main.async {
             self.title = title
@@ -52,7 +52,7 @@ class MainFlutterWindow: NSWindow {
             }
         }
     }
-    
+
     private func setupUIMethodChannel(controller: FlutterViewController) {
             let uiChannel = FlutterMethodChannel(name: "com.calcitem.sanmill/ui",
                                                 binaryMessenger: controller.engine.binaryMessenger)
@@ -70,7 +70,7 @@ class MainFlutterWindow: NSWindow {
                 }
             }
         }
-    
+
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
     let windowFrame = self.frame
@@ -82,7 +82,7 @@ class MainFlutterWindow: NSWindow {
     RegisterGeneratedPlugins(registry: flutterViewController)
 
     super.awakeFromNib()
- 
+
     self.engine = MillEngine()
 
     setupMethodChannel(controller: flutterViewController)

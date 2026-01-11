@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
-// Copyright (C) 2019- Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // perfect_eval_elem.h
 

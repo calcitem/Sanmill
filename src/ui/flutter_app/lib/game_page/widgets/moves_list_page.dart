@@ -4,7 +4,7 @@
 // moves_list_page.dart
 
 import 'dart:async';
-import 'dart:io' show Platform;
+import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';

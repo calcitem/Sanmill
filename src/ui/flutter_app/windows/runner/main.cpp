@@ -52,6 +52,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
     // Cleanup Perfect error handling for the main UI thread
     PerfectErrors::cleanup_thread_local_storage();
-    
+
     return EXIT_SUCCESS;
 }

@@ -378,9 +378,16 @@ class HistoryNavigator {
     // Force into humanVsHuman so we can freely replay moves
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
+    // CRITICAL: Save the original gameRecorder to preserve the PGN tree
+    // reset() will create a new GameRecorder, losing all variations/branches
+    final GameRecorder originalRecorder = GameController().gameRecorder;
+
     // Reset the board, clear position history, and replay moves on the path
     GameController().reset();
     posKeyHistory.clear();
+
+    // Let reset() create a temporary new recorder for replay
+    // This prevents adding duplicate nodes to the original tree
 
     bool success = true;
     for (final PgnNode<ExtMove> node in path) {
@@ -403,6 +410,10 @@ class HistoryNavigator {
 
     // Restore game mode
     GameController().gameInstance.gameMode = backupMode;
+
+    // CRITICAL: Restore the original gameRecorder AFTER replay
+    // This preserves the PGN tree without adding duplicate nodes
+    GameController().gameRecorder = originalRecorder;
 
     // Update the active node to the target
     GameController().gameRecorder.activeNode = targetNode;

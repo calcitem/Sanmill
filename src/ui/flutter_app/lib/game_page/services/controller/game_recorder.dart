@@ -213,6 +213,7 @@ class GameRecorder {
 
     // Obtain mainline nodes (not just moves) for richer comment merging.
     final List<PgnNode<ExtMove>> nodes = mainlineNodes;
+
     if (nodes.isEmpty) {
       if (GameController().isPositionSetup) {
         return buildTagPairs();
@@ -231,7 +232,8 @@ class GameRecorder {
         // Retrieve current node
         final PgnNode<ExtMove> currentNode = nodes[i];
         sb.write(sep);
-        sb.write(_formatMoveWithAnnotations(currentNode));
+        final String moveText = _formatMoveWithAnnotations(currentNode);
+        sb.write(moveText);
 
         // Check for variations after this move
         if (currentNode.parent != null &&
@@ -247,8 +249,10 @@ class GameRecorder {
               varIdx++
             ) {
               sb.write(' (');
+              // Use num-1 because num was already incremented in sb.writeNumber(num++)
+              // The variation should use the same move number as the mainline move
               sb.write(
-                _formatVariation(currentNode.parent!.children[varIdx], num),
+                _formatVariation(currentNode.parent!.children[varIdx], num - 1),
               );
               sb.write(')');
             }
@@ -276,8 +280,13 @@ class GameRecorder {
                 varIdx++
               ) {
                 sb.write(' (');
+                // Use num-1 because num was already incremented in sb.writeNumber(num++)
+                // The variation should use the same move number as the mainline move
                 sb.write(
-                  _formatVariation(currentNode.parent!.children[varIdx], num),
+                  _formatVariation(
+                    currentNode.parent!.children[varIdx],
+                    num - 1,
+                  ),
                 );
                 sb.write(')');
               }
@@ -342,6 +351,7 @@ class GameRecorder {
     final StringBuffer sb = StringBuffer();
     PgnNode<ExtMove>? current = start;
     int currentMove = moveNumber;
+    PieceColor? lastSide;
 
     while (current != null && current.data != null) {
       final ExtMove move = current.data!;
@@ -353,10 +363,33 @@ class GameRecorder {
         }
       }
 
-      // Write move number for first move in variation or after removal
-      if (current == start &&
-          (move.type == MoveType.place || move.type == MoveType.move)) {
-        if (move.side == PieceColor.white) {
+      // Write move number following PGN standard:
+      // 1. White's move: always show "N."
+      // 2. Black's move: only show "N..." if:
+      //    a) First move in variation AND it's black's move (variation starts with black)
+      //    b) Previous move was also black (consecutive black moves, e.g. after removal)
+      // 3. Black's move right after white's move (same turn): omit "N..." for brevity
+      final bool isFirstMove = current == start;
+      final bool isWhiteMove = move.side == PieceColor.white;
+      final bool isNonRemoveMove =
+          move.type == MoveType.place || move.type == MoveType.move;
+
+      // Determine if we should show move number
+      bool showMoveNumber = false;
+      if (isNonRemoveMove) {
+        if (isWhiteMove) {
+          // Always show move number for white
+          showMoveNumber = true;
+        } else {
+          // For black, only show if variation starts with black OR previous was also black
+          final bool variationStartsWithBlack = isFirstMove;
+          final bool consecutiveBlackMoves = lastSide == PieceColor.black;
+          showMoveNumber = variationStartsWithBlack || consecutiveBlackMoves;
+        }
+      }
+
+      if (showMoveNumber) {
+        if (isWhiteMove) {
           sb.write('$currentMove. ');
         } else {
           sb.write('$currentMove... ');
@@ -392,16 +425,23 @@ class GameRecorder {
         }
       }
 
-      // Update move number
+      // Update move number and track last side
       if (move.type != MoveType.remove && move.side == PieceColor.black) {
         currentMove++;
       }
-
-      sb.write(' ');
+      if (move.type != MoveType.remove) {
+        lastSide = move.side;
+      }
 
       // Move to next node
       if (current.children.isNotEmpty) {
         current = current.children[0];
+
+        // Add space before next move, UNLESS next move is a removal
+        // (place/move + remove should be concatenated like "b2xf4")
+        if (current.data != null && current.data!.type != MoveType.remove) {
+          sb.write(' ');
+        }
       } else {
         break;
       }
