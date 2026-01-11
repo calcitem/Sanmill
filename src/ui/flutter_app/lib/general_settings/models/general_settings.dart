@@ -160,6 +160,7 @@ class GeneralSettings {
     this.llmApiKey = '',
     this.llmBaseUrl = '',
     this.llmTemperature = 0.7,
+    this.aiChatEnabled = false,
     this.trapAwareness = false,
     this.backgroundMusicEnabled = false,
     this.backgroundMusicFilePath = '',
@@ -301,6 +302,10 @@ class GeneralSettings {
 
   @HiveField(39, defaultValue: 0.7)
   final double llmTemperature;
+
+  // Enable AI chat assistant (experimental feature)
+  @HiveField(43, defaultValue: false)
+  final bool aiChatEnabled;
 
   // Enable trap awareness analysis when using Perfect DB
   @HiveField(40, defaultValue: false)
