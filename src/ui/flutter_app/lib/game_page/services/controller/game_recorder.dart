@@ -198,9 +198,9 @@ class GameRecorder {
     activeNode = newChild;
   }
 
-  /// Returns a textual representation of the move history including NAG and comments.
-  /// In this updated implementation, the node's own comments (i.e. after-move comments)
-  /// and the startingComments of its successor are merged and displayed together.
+  /// Returns a textual representation of the move history including NAG, comments,
+  /// and variations (branches).
+  /// This implementation outputs complete PGN format with variations enclosed in parentheses.
   String get moveHistoryText {
     // Helper to build tag pair header (e.g. FEN, SetUp).
     String buildTagPairs() {
@@ -210,9 +210,7 @@ class GameRecorder {
       return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
-    // Obtain mainline nodes (not just moves) for richer comment merging.
-    final List<PgnNode<ExtMove>> nodes = mainlineNodes;
-    if (nodes.isEmpty) {
+    if (_pgnRoot.children.isEmpty) {
       if (GameController().isPositionSetup) {
         return buildTagPairs();
       }
@@ -220,55 +218,123 @@ class GameRecorder {
     }
 
     final StringBuffer sb = StringBuffer();
-    int num = 1;
-    int i = 0;
-
-    // Build one step of notation (up to two moves per line).
-    void buildStandardNotation() {
-      const String sep = "    "; // For formatting alignment.
-      if (i < nodes.length) {
-        // Retrieve current node and the next node's startingComments (if available).
-        final PgnNode<ExtMove> currentNode = nodes[i];
-        final List<String>? nextStartingComments = (i + 1 < nodes.length)
-            ? nodes[i + 1].data!.startingComments
-            : null;
-        sb.write(sep);
-        sb.write(
-          _getRichMoveNotationForNode(currentNode, nextStartingComments),
-        );
-        i++;
-      }
-      // Process subsequent removal moves (up to 3) if present.
-      for (int round = 0; round < 3; round++) {
-        if (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
-          final PgnNode<ExtMove> currentNode = nodes[i];
-          final List<String>? nextStartingComments = (i + 1 < nodes.length)
-              ? nodes[i + 1].data!.startingComments
-              : null;
-          sb.write(
-            _getRichMoveNotationForNode(currentNode, nextStartingComments),
-          );
-          i++;
-        }
-      }
-    }
 
     // Write FEN tag pairs if a custom position is set.
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
 
-    // Walk through the moves in pairs (like typical chess notation).
-    while (i < nodes.length) {
-      sb.writeNumber(num++);
-      buildStandardNotation();
-      buildStandardNotation();
-      if (i < nodes.length) {
-        sb.writeln();
+    // Generate PGN with variations using recursive traversal
+    _writePgnWithVariations(sb, _pgnRoot, moveNumber: 1);
+
+    return sb.toString().trim();
+  }
+
+  /// Recursively writes PGN notation including all variations.
+  /// Variations are enclosed in parentheses.
+  void _writePgnWithVariations(
+    StringBuffer sb,
+    PgnNode<ExtMove> parent, {
+    required int moveNumber,
+    PieceColor? lastSide,
+  }) {
+    if (parent.children.isEmpty) {
+      return;
+    }
+
+    // Process mainline (first child)
+    final PgnNode<ExtMove> mainline = parent.children[0];
+    _writeSingleMove(sb, mainline, moveNumber, lastSide);
+
+    // Update move number and side for next iteration
+    int nextMoveNumber = moveNumber;
+    PieceColor? nextSide = mainline.data?.side;
+
+    if (mainline.data != null &&
+        (mainline.data!.type == MoveType.place ||
+            mainline.data!.type == MoveType.move)) {
+      if (mainline.data!.side == PieceColor.black) {
+        nextMoveNumber++;
       }
     }
 
-    return sb.toString();
+    // Process variations (siblings of mainline)
+    for (int i = 1; i < parent.children.length; i++) {
+      final PgnNode<ExtMove> variation = parent.children[i];
+      sb.write(' (');
+      _writeSingleMove(sb, variation, moveNumber, lastSide);
+      // Recursively process variation's children
+      _writePgnWithVariations(
+        sb,
+        variation,
+        moveNumber: mainline.data?.side == PieceColor.black
+            ? moveNumber + 1
+            : moveNumber,
+        lastSide: variation.data?.side,
+      );
+      sb.write(')');
+    }
+
+    // Continue with mainline's children
+    _writePgnWithVariations(
+      sb,
+      mainline,
+      moveNumber: nextMoveNumber,
+      lastSide: nextSide,
+    );
+  }
+
+  /// Writes a single move with its annotations (NAGs and comments).
+  void _writeSingleMove(
+    StringBuffer sb,
+    PgnNode<ExtMove> node,
+    int moveNumber,
+    PieceColor? lastSide,
+  ) {
+    if (node.data == null) {
+      return;
+    }
+
+    final ExtMove move = node.data!;
+
+    // Write starting comments if present
+    if (move.startingComments != null && move.startingComments!.isNotEmpty) {
+      for (final String comment in move.startingComments!) {
+        sb.write(' {$comment}');
+      }
+    }
+
+    // Determine if we need to write move number
+    final bool isPlaceOrMove =
+        move.type == MoveType.place || move.type == MoveType.move;
+
+    if (isPlaceOrMove) {
+      // Write move number
+      // Always write for White's moves, or for Black's moves when starting a variation
+      if (move.side == PieceColor.white) {
+        sb.write(' $moveNumber.');
+      } else if (move.side == PieceColor.black &&
+          (lastSide == null || lastSide == PieceColor.black)) {
+        // Black's move at start of variation or after another Black move
+        sb.write(' $moveNumber...');
+      }
+    }
+
+    // Write the move notation
+    sb.write(' ');
+    sb.write(move.notation);
+
+    // Write NAG symbols
+    if (move.nags != null && move.nags!.isNotEmpty) {
+      sb.write(_nagsToString(move.nags!));
+    }
+
+    // Write after-move comments
+    if (move.comments != null && move.comments!.isNotEmpty) {
+      for (final String comment in move.comments!) {
+        sb.write(' {$comment}');
+      }
+    }
   }
 
   /// Returns a human-readable move list containing all ExtMove details,
@@ -1078,50 +1144,6 @@ class GameRecorder {
       nodes.add(current);
     }
     return nodes;
-  }
-
-  /// Converts a PGN node into a rich move notation string.
-  ///
-  /// This method takes the node's own after-move comments (stored in [move.comments])
-  /// and, if available, merges them with the [nextStartingComments] (which come from
-  /// the next node's startingComments). This implements the requirement to merge
-  /// the node's comments with its successor's startingComments.
-  String _getRichMoveNotationForNode(
-    PgnNode<ExtMove> node, [
-    List<String>? nextStartingComments,
-  ]) {
-    // Force non-null for node.data since mainlineNodes should not include nodes with null data.
-    final ExtMove move = node.data!;
-    final StringBuffer sb = StringBuffer();
-
-    // 1) Write the base move notation (e.g. "d6", "d5-c5", etc.).
-    sb.write(move.notation);
-
-    // 2) Append NAG symbols if present.
-    if (move.nags != null && move.nags!.isNotEmpty) {
-      sb.write(' ');
-      sb.write(_nagsToString(move.nags!));
-    }
-
-    // 3) Merge the node's own after-move comments with next node's startingComments.
-    // Note: The current node's startingComments are intentionally not displayed,
-    // as they belong to the previous move.
-    final List<String> mergedComments = <String>[];
-    if (move.comments != null && move.comments!.isNotEmpty) {
-      mergedComments.addAll(move.comments!);
-    }
-    if (nextStartingComments != null && nextStartingComments.isNotEmpty) {
-      mergedComments.addAll(nextStartingComments);
-    }
-
-    // 4) If there are any merged comments, enclose them in braces.
-    if (mergedComments.isNotEmpty) {
-      sb.write(' {');
-      sb.write(mergedComments.join(' '));
-      sb.write('} ');
-    }
-
-    return sb.toString();
   }
 
   /// Build a compact dynamic context block derived from current engine state.

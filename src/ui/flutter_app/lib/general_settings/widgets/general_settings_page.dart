@@ -78,16 +78,18 @@ class GeneralSettingsPage extends StatelessWidget {
       showDialog(context: context, builder: (_) => const LlmConfigDialog());
 
   // Enable or disable AI chat assistant
-  void _setAiChatEnabled(BuildContext context, GeneralSettings generalSettings, bool value) {
+  void _setAiChatEnabled(
+    BuildContext context,
+    GeneralSettings generalSettings,
+    bool value,
+  ) {
     DB().generalSettings = generalSettings.copyWith(aiChatEnabled: value);
-    
+
     // Show experimental feature warning when enabling
     if (value) {
-      SnackBarService.showRootSnackBar(
-        S.of(context).experimental,
-      );
+      SnackBarService.showRootSnackBar(S.of(context).experimental);
     }
-    
+
     logger.t("$_logTag aiChatEnabled: $value");
   }
 
@@ -914,7 +916,8 @@ class GeneralSettingsPage extends StatelessWidget {
                   'general_settings_page_settings_card_ai_chat_enabled',
                 ),
                 value: generalSettings.aiChatEnabled,
-                onChanged: (bool val) => _setAiChatEnabled(context, generalSettings, val),
+                onChanged: (bool val) =>
+                    _setAiChatEnabled(context, generalSettings, val),
                 titleString: S.of(context).enableAiChat,
                 subtitleString: S.of(context).allowChatWithAiAssistant,
               ),
