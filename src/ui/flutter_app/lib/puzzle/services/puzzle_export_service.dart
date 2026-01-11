@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // puzzle_export_service.dart
 
@@ -254,10 +254,7 @@ class PuzzleExportService {
             DetailedError(
               key: 'puzzleImportParseFailed',
               fallbackMessage: 'Failed to parse puzzle ${i + 1}: $e',
-              params: <String, dynamic>{
-                'index': i + 1,
-                'error': e.toString(),
-              },
+              params: <String, dynamic>{'index': i + 1, 'error': e.toString()},
             ),
           );
         }
@@ -426,11 +423,11 @@ class PuzzleExportService {
       // Share the file
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text: shareText ??
+          text:
+              shareText ??
               'Puzzle contribution.\n\n'
-              'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
-          subject:
-              shareSubject ?? 'Puzzle Contribution: ${puzzle.title}',
+                  'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+          subject: shareSubject ?? 'Puzzle Contribution: ${puzzle.title}',
           files: <XFile>[XFile(filePath)],
         ),
       );
@@ -473,10 +470,12 @@ class PuzzleExportService {
       // Share the file
       final ShareResult result = await SharePlus.instance.share(
         ShareParams(
-          text: shareText ??
+          text:
+              shareText ??
               'Puzzle contributions.\n\n'
-              'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
-          subject: shareSubject ??
+                  'See PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.',
+          subject:
+              shareSubject ??
               'Puzzle Contributions (${puzzles.length} puzzles)',
           files: <XFile>[XFile(filePath)],
         ),

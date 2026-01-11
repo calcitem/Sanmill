@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // ai_thinking_hang_quick_test.dart
 

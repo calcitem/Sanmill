@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // daily_puzzle_service.dart
 //
@@ -107,11 +107,15 @@ class DailyPuzzleService {
     if (data == null) {
       return DailyPuzzleStats(completedDates: <String>[], longestStreak: 0);
     }
-    
+
     try {
-      final Map<String, dynamic> map = Map<String, dynamic>.from(data as Map<dynamic, dynamic>);
+      final Map<String, dynamic> map = Map<String, dynamic>.from(
+        data as Map<dynamic, dynamic>,
+      );
       return DailyPuzzleStats(
-        completedDates: List<String>.from(map['completedDates'] as List<dynamic>? ?? <dynamic>[]),
+        completedDates: List<String>.from(
+          map['completedDates'] as List<dynamic>? ?? <dynamic>[],
+        ),
         longestStreak: map['longestStreak'] as int? ?? 0,
       );
     } catch (e) {

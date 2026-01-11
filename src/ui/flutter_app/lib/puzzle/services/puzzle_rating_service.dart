@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // puzzle_rating_service.dart
 //
@@ -45,8 +45,9 @@ class PuzzleAttemptResult {
   /// Create from persisted JSON-like data.
   factory PuzzleAttemptResult.fromJson(Map<String, dynamic> json) {
     final String? timestampIso = json['timestamp'] as String?;
-    final DateTime? parsedTimestamp =
-        timestampIso == null ? null : DateTime.tryParse(timestampIso);
+    final DateTime? parsedTimestamp = timestampIso == null
+        ? null
+        : DateTime.tryParse(timestampIso);
     assert(
       parsedTimestamp != null,
       'PuzzleAttemptResult.fromJson: invalid timestamp "$timestampIso".',
@@ -117,7 +118,7 @@ class PuzzleRatingService {
     // Load from PuzzleSettings
     final int currentRating = DB().puzzleSettings.userRating;
     final int gamesPlayed = DB().puzzleSettings.totalCompleted;
-    
+
     return PuzzleRating(
       rating: currentRating,
       gamesPlayed: gamesPlayed,
@@ -278,7 +279,9 @@ class PuzzleRatingService {
 
     for (final PuzzleAttemptResult attempt in history) {
       if (attempt.newRating != null) {
-        points.add(MapEntry<DateTime, int>(attempt.timestamp, attempt.newRating!));
+        points.add(
+          MapEntry<DateTime, int>(attempt.timestamp, attempt.newRating!),
+        );
       }
     }
 

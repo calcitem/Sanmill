@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019- Sanmill developers (see AUTHORS file)
 
 // languagemanager.cpp
 
@@ -45,11 +45,11 @@ void LanguageManager::loadAndApplyLanguageFromSettings()
 {
     // Load the saved language without triggering unnecessary signals
     Language savedLanguage = m_currentLanguage;
-    
+
     // Force reload by temporarily setting to a different language
     Language tempLang = (savedLanguage == English) ? German : English;
     m_currentLanguage = tempLang;
-    
+
     // Now load the actual saved language
     loadLanguage(savedLanguage);
 }
@@ -68,20 +68,20 @@ void LanguageManager::loadLanguage(Language language)
 
     // Create new translator
     m_translator = new QTranslator(this);
-    
+
     QString languageCode = getLanguageCode(language);
     QString translationFile = QString("mill-pro_%1").arg(languageCode);
-    
+
     // Try to load from resources first
     QString resourcePath = QString(":/translations/%1").arg(translationFile);
     bool loaded = m_translator->load(resourcePath);
-    
+
     if (!loaded) {
         // Try to load from local translations directory
         QString localPath = QString("translations/%1").arg(translationFile);
         loaded = m_translator->load(localPath);
     }
-    
+
     if (!loaded) {
         // Try to load from current directory
         loaded = m_translator->load(translationFile);
@@ -170,7 +170,7 @@ void LanguageManager::saveLanguageSettings()
 void LanguageManager::loadLanguageSettings()
 {
     QString languageCode;
-    
+
     if (m_settingsFilePath.isEmpty()) {
         // Fallback to default QSettings if no settings file path is set
         QSettings settings;
@@ -180,7 +180,7 @@ void LanguageManager::loadLanguageSettings()
         QSettings settings(m_settingsFilePath, QSettings::IniFormat);
         languageCode = settings.value("Options/Language", "en").toString();
     }
-    
+
     m_currentLanguage = getLanguageFromCode(languageCode);
 }
 
@@ -206,4 +206,4 @@ LanguageManager::Language LanguageManager::getLanguageFromCode(const QString& co
     if (code == "hu") return Hungarian;
     if (code == "zh_CN") return SimplifiedChinese;
     return English; // Default to English
-} 
+}

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // puzzle_creation_page.dart
 
@@ -97,7 +97,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
       if (_isRecordingSolution) {
         _stopRecordingSolution();
       }
-      
+
       setState(() {
         _currentSolutionIndex = _tabController.index;
       });
@@ -1168,7 +1168,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                                   if (_isRecordingSolution) {
                                     _stopRecordingSolution();
                                   }
-                                  
+
                                   setState(() {
                                     _currentSolutionIndex = i;
                                     _tabController.animateTo(i);

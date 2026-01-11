@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // find_duplicate_keys.dart
 
@@ -36,9 +36,8 @@ void main(List<String> arguments) {
   }
 
   // Find duplicate Keys
-  final duplicates = keyOccurrences.entries
-      .where((entry) => entry.value.length > 1)
-      .toList();
+  final duplicates =
+      keyOccurrences.entries.where((entry) => entry.value.length > 1).toList();
 
   if (duplicates.isEmpty) {
     print('No duplicate Keys.');
@@ -62,16 +61,14 @@ class KeyVisitor extends RecursiveAstVisitor<void> {
   @override
   void visitInstanceCreationExpression(InstanceCreationExpression node) {
     final typeName = node.constructorName.type;
-    if (typeName is NamedType) {
-      final constructorName = typeName.name2.lexeme;
-      if (constructorName == 'Key' || constructorName == 'ValueKey') {
-        if (node.argumentList.arguments.isNotEmpty) {
-          final arg = node.argumentList.arguments.first;
-          if (arg is StringLiteral) {
-            final keyValue = arg.stringValue;
-            if (keyValue != null) {
-              keyOccurrences.putIfAbsent(keyValue, () => []).add(filePath);
-            }
+    final constructorName = typeName.name2.lexeme;
+    if (constructorName == 'Key' || constructorName == 'ValueKey') {
+      if (node.argumentList.arguments.isNotEmpty) {
+        final arg = node.argumentList.arguments.first;
+        if (arg is StringLiteral) {
+          final keyValue = arg.stringValue;
+          if (keyValue != null) {
+            keyOccurrences.putIfAbsent(keyValue, () => []).add(filePath);
           }
         }
       }

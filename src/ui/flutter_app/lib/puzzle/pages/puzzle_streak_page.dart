@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // puzzle_streak_page.dart
 //
@@ -562,37 +562,38 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     // Save streak result to database
     _saveStreakResult();
   }
-  
+
   Future<void> _saveStreakResult() async {
     if (_currentStreak == 0) {
       return; // No streak to save
     }
-    
+
     try {
       // Load existing streak history
       final dynamic data = DB().puzzleAnalyticsBox.get('puzzleStreakHistory');
       final List<Map<String, dynamic>> history = data != null
           ? List<Map<String, dynamic>>.from(
               (data as List<dynamic>).map(
-                (dynamic e) => Map<String, dynamic>.from(e as Map<dynamic, dynamic>),
+                (dynamic e) =>
+                    Map<String, dynamic>.from(e as Map<dynamic, dynamic>),
               ),
             )
           : <Map<String, dynamic>>[];
-      
+
       // Add current streak result
       history.add(<String, dynamic>{
         'streak': _currentStreak,
         'timestamp': DateTime.now().toIso8601String(),
       });
-      
+
       // Keep only the last 100 streak results
       if (history.length > 100) {
         history.removeRange(0, history.length - 100);
       }
-      
+
       // Save to database
       await DB().puzzleAnalyticsBox.put('puzzleStreakHistory', history);
-      
+
       logger.i('[PuzzleStreakPage] Saved streak result: $_currentStreak');
     } catch (e) {
       logger.e('[PuzzleStreakPage] Failed to save streak result: $e');

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // scan_keys.dart
 
@@ -127,24 +127,22 @@ class KeyScannerVisitor extends RecursiveAstVisitor<void> {
   @override
   void visitInstanceCreationExpression(InstanceCreationExpression node) {
     final constructorName = node.constructorName.type;
-    if (constructorName is NamedType) {
-      final nameLexeme = constructorName.name2.lexeme;
-      if (nameLexeme == 'Key' || nameLexeme == 'ValueKey') {
-        if (node.argumentList.arguments.isNotEmpty) {
-          final arg = node.argumentList.arguments.first;
-          if (arg is StringLiteral) {
-            final keyValue = arg.stringValue;
-            if (keyValue != null) {
-              final location = lineInfo.getLocation(node.offset);
-              allKeyInfos.add(
-                KeyInfo(
-                  keyValue: keyValue,
-                  filePath: filePath,
-                  line: location.lineNumber,
-                  column: location.columnNumber,
-                ),
-              );
-            }
+    final nameLexeme = constructorName.name2.lexeme;
+    if (nameLexeme == 'Key' || nameLexeme == 'ValueKey') {
+      if (node.argumentList.arguments.isNotEmpty) {
+        final arg = node.argumentList.arguments.first;
+        if (arg is StringLiteral) {
+          final keyValue = arg.stringValue;
+          if (keyValue != null) {
+            final location = lineInfo.getLocation(node.offset);
+            allKeyInfos.add(
+              KeyInfo(
+                keyValue: keyValue,
+                filePath: filePath,
+                line: location.lineNumber,
+                column: location.columnNumber,
+              ),
+            );
           }
         }
       }

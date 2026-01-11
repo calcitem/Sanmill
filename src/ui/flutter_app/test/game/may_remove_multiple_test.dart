@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 // Test coverage: FR-018 to FR-020, FR-036 to FR-038
 // mayRemoveMultiple=false mode interactions with custodian and intervention
