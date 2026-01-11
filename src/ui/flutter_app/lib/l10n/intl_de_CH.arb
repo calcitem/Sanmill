@@ -2616,7 +2616,7 @@
     },
     "dailyPuzzleStart": "Tagesrätsel starten",
     "@dailyPuzzleStart": {},
-    "dailyPuzzleStreakHint": "Schließe Tagesrätsel ab, um deine Serie aufzubauen!",
+    "dailyPuzzleStreakHint": "Schliesse Tagesrätsel ab, um deine Serie aufzubauen!",
     "@dailyPuzzleStreakHint": {},
     "dailyPuzzleCurrentStreak": "Aktuelle Serie",
     "@dailyPuzzleCurrentStreak": {},
