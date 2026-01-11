@@ -22,6 +22,7 @@
 #ifdef FLUTTER_UI
 #include "base.h"
 #include "command_channel.h"
+#include "engine_main.h"
 #endif
 
 #include "engine_controller.h"
@@ -177,8 +178,12 @@ void UCI::loop(int argc, char *argv[])
             // token = "quit";
         }
 #endif // SELF_PLAY
-        else if (token == "isready")
+        else if (token == "isready") {
             sync_cout << "readyok" << sync_endl;
+#ifdef FLUTTER_UI
+            println("readyok");
+#endif
+        }
         else
             sync_cout << "Unknown command: " << cmd << sync_endl;
     } while (token != "quit" && argc == 1); // Command line args are one-shot
