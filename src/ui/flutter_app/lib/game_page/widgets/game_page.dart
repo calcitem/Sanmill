@@ -176,37 +176,16 @@ class _GamePageInnerState extends State<_GamePageInner> {
                 alignment: AlignmentDirectional.topStart,
                 child: SafeArea(child: _buildTopLeftButton(context)),
               ),
-              // Analysis button in the top-right corner
+              // Top-right corner buttons (analysis, AI chat, image recognition)
               if (GameController().gameInstance.gameMode ==
-                  GameMode.humanVsHuman)
+                      GameMode.humanVsHuman ||
+                  GameController().gameInstance.gameMode ==
+                      GameMode.humanVsAi ||
+                  GameController().gameInstance.gameMode == GameMode.aiVsAi ||
+                  GameController().gameInstance.gameMode ==
+                      GameMode.setupPosition)
                 Align(
-                  key: const Key('game_page_analysis_button_align'),
-                  alignment: AlignmentDirectional.topEnd,
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: IconButton(
-                          key: const Key('game_page_analysis_button'),
-                          icon: Icon(
-                            AnalysisMode.isEnabled
-                                ? FluentIcons.eye_off_24_regular
-                                : FluentIcons.eye_24_regular,
-                            color: Colors.white,
-                          ),
-                          tooltip: S.of(context).analysis,
-                          onPressed: () => _analyzePosition(context),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              // Board image recognition button in the top-right corner (only in Setup Position mode)
-              if (GameController().gameInstance.gameMode ==
-                  GameMode.setupPosition)
-                Align(
-                  key: const Key('game_page_image_recognition_button_align'),
+                  key: const Key('game_page_top_right_buttons_align'),
                   alignment: AlignmentDirectional.topEnd,
                   child: SafeArea(
                     child: Padding(
@@ -216,65 +195,64 @@ class _GamePageInnerState extends State<_GamePageInner> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            // Parameters adjustment button (only shown in dev mode)
-                            if (EnvironmentConfig.devMode)
+                            // AI Chat Assistant button (shown when game board is active)
+                            if (_shouldShowAiChatButton())
                               IconButton(
-                                key: const Key(
-                                  'game_page_recognition_params_button',
-                                ),
+                                key: const Key('game_page_ai_chat_button'),
                                 icon: const Icon(
-                                  FluentIcons.settings_24_regular,
+                                  FluentIcons.chat_24_regular,
                                   color: Colors.white,
                                 ),
-                                tooltip: S.of(context).recognitionParameters,
+                                tooltip: S.of(context).aiChatButtonTooltip,
+                                onPressed: () => _showAiChatDialog(context),
+                              ),
+                            // Analysis button (only in humanVsHuman mode)
+                            if (GameController().gameInstance.gameMode ==
+                                GameMode.humanVsHuman)
+                              IconButton(
+                                key: const Key('game_page_analysis_button'),
+                                icon: Icon(
+                                  AnalysisMode.isEnabled
+                                      ? FluentIcons.eye_off_24_regular
+                                      : FluentIcons.eye_24_regular,
+                                  color: Colors.white,
+                                ),
+                                tooltip: S.of(context).analysis,
+                                onPressed: () => _analyzePosition(context),
+                              ),
+                            // Board image recognition buttons (only in Setup Position mode)
+                            if (GameController().gameInstance.gameMode ==
+                                GameMode.setupPosition) ...<Widget>[
+                              // Parameters adjustment button (only shown in dev mode)
+                              if (EnvironmentConfig.devMode)
+                                IconButton(
+                                  key: const Key(
+                                    'game_page_recognition_params_button',
+                                  ),
+                                  icon: const Icon(
+                                    FluentIcons.settings_24_regular,
+                                    color: Colors.white,
+                                  ),
+                                  tooltip: S.of(context).recognitionParameters,
+                                  onPressed: () =>
+                                      _showRecognitionParamsDialog(context),
+                                ),
+                              // Camera button for board recognition
+                              IconButton(
+                                key: const Key(
+                                  'game_page_image_recognition_button',
+                                ),
+                                icon: const Icon(
+                                  FluentIcons.camera_24_regular,
+                                  color: Colors.white,
+                                ),
+                                tooltip: S.of(context).recognizeBoardFromImage,
+                                // Board image recognition
                                 onPressed: () =>
-                                    _showRecognitionParamsDialog(context),
+                                    _recognizeBoardFromImage(context),
                               ),
-                            // Camera button for board recognition
-                            IconButton(
-                              key: const Key(
-                                'game_page_image_recognition_button',
-                              ),
-                              icon: const Icon(
-                                FluentIcons.camera_24_regular,
-                                color: Colors.white,
-                              ),
-                              tooltip: S.of(context).recognizeBoardFromImage,
-                              // Board image recognition
-                              onPressed: () =>
-                                  _recognizeBoardFromImage(context),
-                            ),
+                            ],
                           ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              // AI Chat Assistant button in the top-right corner (shown when game board is active)
-              if (_shouldShowAiChatButton())
-                Align(
-                  key: const Key('game_page_ai_chat_button_align'),
-                  alignment: AlignmentDirectional.topEnd,
-                  child: SafeArea(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top:
-                            GameController().gameInstance.gameMode ==
-                                GameMode.humanVsHuman
-                            ? 64.0 // Position below analysis button
-                            : 8.0,
-                        right: 8.0,
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: IconButton(
-                          key: const Key('game_page_ai_chat_button'),
-                          icon: const Icon(
-                            FluentIcons.chat_24_regular,
-                            color: Colors.white,
-                          ),
-                          tooltip: S.of(context).aiChatButtonTooltip,
-                          onPressed: () => _showAiChatDialog(context),
                         ),
                       ),
                     ),
@@ -1038,8 +1016,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
   /// Shows when the game board is active (not in setup mode)
   bool _shouldShowAiChatButton() {
     final GameController controller = GameController();
-    // Only show button if controller is ready and not in setup/puzzle mode
-    if (!controller.isControllerReady || controller.isDisposed) {
+    // Only show button if controller is not disposed and in appropriate game mode
+    if (controller.isDisposed) {
       return false;
     }
     final GameMode mode = controller.gameInstance.gameMode;

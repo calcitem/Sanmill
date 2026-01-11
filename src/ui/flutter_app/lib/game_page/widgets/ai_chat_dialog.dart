@@ -85,15 +85,6 @@ class _AiChatDialogState extends State<AiChatDialog> {
       return;
     }
 
-    // Check if LLM is configured
-    if (!_chatService.isConfigured()) {
-      _showConfigurationError();
-      return;
-    }
-
-    // Cancel any existing stream subscription to prevent overlapping requests
-    await _streamSubscription?.cancel();
-
     // Add user message to session
     final ChatMessage userMessage = ChatMessage(
       id: _uuid.v4(),
@@ -104,12 +95,24 @@ class _AiChatDialogState extends State<AiChatDialog> {
 
     setState(() {
       _chatService.sessionManager.addMessage(userMessage);
-      _isSending = true;
-      _retryCount = 0; // Reset retry counter
     });
 
     _messageController.clear();
     _scrollToBottom();
+
+    // Check if LLM is configured
+    if (!_chatService.isConfigured()) {
+      _showConfigurationError();
+      return;
+    }
+
+    // Cancel any existing stream subscription to prevent overlapping requests
+    await _streamSubscription?.cancel();
+
+    setState(() {
+      _isSending = true;
+      _retryCount = 0; // Reset retry counter
+    });
 
     // Create AI message that will be updated with streaming content
     final String aiMessageId = _uuid.v4();
@@ -310,18 +313,19 @@ class _AiChatDialogState extends State<AiChatDialog> {
   }
 
   void _showConfigurationError() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(S.of(context).aiChatNotConfigured),
-        action: SnackBarAction(
-          label: S.of(context).settings,
-          onPressed: () {
-            Navigator.of(context).pop();
-            // Navigate to settings would be handled by the app
-          },
-        ),
-      ),
+    // Add AI response message to chat
+    final ChatMessage errorMessage = ChatMessage(
+      id: _uuid.v4(),
+      content: S.of(context).aiChatNotConfigured,
+      isUser: false,
+      timestamp: DateTime.now(),
     );
+
+    setState(() {
+      _chatService.sessionManager.addMessage(errorMessage);
+    });
+
+    _scrollToBottom();
   }
 
   Future<void> _showClearHistoryDialog() async {
@@ -351,11 +355,19 @@ class _AiChatDialogState extends State<AiChatDialog> {
   }
 
   void _clearHistory() {
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
       _chatService.sessionManager.clearSession();
       _isInitialized =
           false; // Reset to allow welcome message to be shown again
     });
+
+    if (!mounted) {
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
