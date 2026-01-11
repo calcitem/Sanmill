@@ -200,7 +200,8 @@ class GameRecorder {
 
   /// Returns a textual representation of the move history including NAG, comments,
   /// and variations (branches).
-  /// This implementation outputs complete PGN format with variations enclosed in parentheses.
+  /// This implementation preserves the original formatting style when there are no variations,
+  /// and adds support for variations and comments.
   String get moveHistoryText {
     // Helper to build tag pair header (e.g. FEN, SetUp).
     String buildTagPairs() {
@@ -210,7 +211,9 @@ class GameRecorder {
       return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
-    if (_pgnRoot.children.isEmpty) {
+    // Obtain mainline nodes (not just moves) for richer comment merging.
+    final List<PgnNode<ExtMove>> nodes = mainlineNodes;
+    if (nodes.isEmpty) {
       if (GameController().isPositionSetup) {
         return buildTagPairs();
       }
@@ -218,110 +221,105 @@ class GameRecorder {
     }
 
     final StringBuffer sb = StringBuffer();
+    int num = 1;
+    int i = 0;
+
+    // Build one step of notation (up to two moves per line).
+    void buildStandardNotation() {
+      const String sep = "    "; // For formatting alignment.
+      if (i < nodes.length) {
+        // Retrieve current node
+        final PgnNode<ExtMove> currentNode = nodes[i];
+        sb.write(sep);
+        sb.write(_formatMoveWithAnnotations(currentNode));
+
+        // Check for variations after this move
+        if (currentNode.parent != null &&
+            currentNode.parent!.children.length > 1) {
+          final int currentIndex = currentNode.parent!.children.indexOf(
+            currentNode,
+          );
+          if (currentIndex == 0) {
+            // This is mainline; output variations
+            for (
+              int varIdx = 1;
+              varIdx < currentNode.parent!.children.length;
+              varIdx++
+            ) {
+              sb.write(' (');
+              sb.write(
+                _formatVariation(currentNode.parent!.children[varIdx], num),
+              );
+              sb.write(')');
+            }
+          }
+        }
+
+        i++;
+      }
+      // Process subsequent removal moves (up to 3) if present.
+      for (int round = 0; round < 3; round++) {
+        if (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
+          final PgnNode<ExtMove> currentNode = nodes[i];
+          sb.write(_formatMoveWithAnnotations(currentNode));
+
+          // Check for variations after removal move
+          if (currentNode.parent != null &&
+              currentNode.parent!.children.length > 1) {
+            final int currentIndex = currentNode.parent!.children.indexOf(
+              currentNode,
+            );
+            if (currentIndex == 0) {
+              for (
+                int varIdx = 1;
+                varIdx < currentNode.parent!.children.length;
+                varIdx++
+              ) {
+                sb.write(' (');
+                sb.write(
+                  _formatVariation(currentNode.parent!.children[varIdx], num),
+                );
+                sb.write(')');
+              }
+            }
+          }
+
+          i++;
+        }
+      }
+    }
 
     // Write FEN tag pairs if a custom position is set.
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
 
-    // Generate PGN with variations using recursive traversal
-    _writePgnWithVariations(sb, _pgnRoot, moveNumber: 1);
-
-    return sb.toString().trim();
-  }
-
-  /// Recursively writes PGN notation including all variations.
-  /// Variations are enclosed in parentheses.
-  void _writePgnWithVariations(
-    StringBuffer sb,
-    PgnNode<ExtMove> parent, {
-    required int moveNumber,
-    PieceColor? lastSide,
-  }) {
-    if (parent.children.isEmpty) {
-      return;
-    }
-
-    // Process mainline (first child)
-    final PgnNode<ExtMove> mainline = parent.children[0];
-    _writeSingleMove(sb, mainline, moveNumber, lastSide);
-
-    // Update move number and side for next iteration
-    int nextMoveNumber = moveNumber;
-    PieceColor? nextSide = mainline.data?.side;
-
-    if (mainline.data != null &&
-        (mainline.data!.type == MoveType.place ||
-            mainline.data!.type == MoveType.move)) {
-      if (mainline.data!.side == PieceColor.black) {
-        nextMoveNumber++;
+    // Walk through the moves in pairs (like typical chess notation).
+    while (i < nodes.length) {
+      sb.writeNumber(num++);
+      buildStandardNotation();
+      buildStandardNotation();
+      if (i < nodes.length) {
+        sb.writeln();
       }
     }
 
-    // Process variations (siblings of mainline)
-    for (int i = 1; i < parent.children.length; i++) {
-      final PgnNode<ExtMove> variation = parent.children[i];
-      sb.write(' (');
-      _writeSingleMove(sb, variation, moveNumber, lastSide);
-      // Recursively process variation's children
-      _writePgnWithVariations(
-        sb,
-        variation,
-        moveNumber: mainline.data?.side == PieceColor.black
-            ? moveNumber + 1
-            : moveNumber,
-        lastSide: variation.data?.side,
-      );
-      sb.write(')');
-    }
-
-    // Continue with mainline's children
-    _writePgnWithVariations(
-      sb,
-      mainline,
-      moveNumber: nextMoveNumber,
-      lastSide: nextSide,
-    );
+    return sb.toString();
   }
 
-  /// Writes a single move with its annotations (NAGs and comments).
-  void _writeSingleMove(
-    StringBuffer sb,
-    PgnNode<ExtMove> node,
-    int moveNumber,
-    PieceColor? lastSide,
-  ) {
-    if (node.data == null) {
-      return;
-    }
-
+  /// Formats a single move with its annotations (startingComments, NAGs, and comments).
+  String _formatMoveWithAnnotations(PgnNode<ExtMove> node) {
     final ExtMove move = node.data!;
+    final StringBuffer sb = StringBuffer();
 
     // Write starting comments if present
     if (move.startingComments != null && move.startingComments!.isNotEmpty) {
       for (final String comment in move.startingComments!) {
-        sb.write(' {$comment}');
-      }
-    }
-
-    // Determine if we need to write move number
-    final bool isPlaceOrMove =
-        move.type == MoveType.place || move.type == MoveType.move;
-
-    if (isPlaceOrMove) {
-      // Write move number
-      // Always write for White's moves, or for Black's moves when starting a variation
-      if (move.side == PieceColor.white) {
-        sb.write(' $moveNumber.');
-      } else if (move.side == PieceColor.black &&
-          (lastSide == null || lastSide == PieceColor.black)) {
-        // Black's move at start of variation or after another Black move
-        sb.write(' $moveNumber...');
+        sb.write('{$comment} ');
       }
     }
 
     // Write the move notation
-    sb.write(' ');
     sb.write(move.notation);
 
     // Write NAG symbols
@@ -335,6 +333,81 @@ class GameRecorder {
         sb.write(' {$comment}');
       }
     }
+
+    return sb.toString();
+  }
+
+  /// Formats a variation branch in compact notation.
+  String _formatVariation(PgnNode<ExtMove> start, int moveNumber) {
+    final StringBuffer sb = StringBuffer();
+    PgnNode<ExtMove>? current = start;
+    int currentMove = moveNumber;
+
+    while (current != null && current.data != null) {
+      final ExtMove move = current.data!;
+
+      // Write starting comments
+      if (move.startingComments != null && move.startingComments!.isNotEmpty) {
+        for (final String comment in move.startingComments!) {
+          sb.write('{$comment} ');
+        }
+      }
+
+      // Write move number for first move in variation or after removal
+      if (current == start &&
+          (move.type == MoveType.place || move.type == MoveType.move)) {
+        if (move.side == PieceColor.white) {
+          sb.write('$currentMove. ');
+        } else {
+          sb.write('$currentMove... ');
+        }
+      }
+
+      // Write the move notation
+      sb.write(move.notation);
+
+      // Write NAG symbols
+      if (move.nags != null && move.nags!.isNotEmpty) {
+        sb.write(_nagsToString(move.nags!));
+      }
+
+      // Write after-move comments
+      if (move.comments != null && move.comments!.isNotEmpty) {
+        for (final String comment in move.comments!) {
+          sb.write(' {$comment}');
+        }
+      }
+
+      // Handle nested variations
+      if (current.children.length > 1) {
+        for (int i = 1; i < current.children.length; i++) {
+          sb.write(' (');
+          sb.write(
+            _formatVariation(
+              current.children[i],
+              move.side == PieceColor.black ? currentMove + 1 : currentMove,
+            ),
+          );
+          sb.write(')');
+        }
+      }
+
+      // Update move number
+      if (move.type != MoveType.remove && move.side == PieceColor.black) {
+        currentMove++;
+      }
+
+      sb.write(' ');
+
+      // Move to next node
+      if (current.children.isNotEmpty) {
+        current = current.children[0];
+      } else {
+        break;
+      }
+    }
+
+    return sb.toString().trim();
   }
 
   /// Returns a human-readable move list containing all ExtMove details,

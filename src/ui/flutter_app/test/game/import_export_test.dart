@@ -147,15 +147,27 @@ void main() {
       // Second move (f4)
       final PgnNode<ExtMove> move2 = move1.children[0];
       expect(move2.data?.move, 'f4', reason: 'Second move should be f4');
-      expect(move2.children.length, 1, reason: 'Move 2 should have 1 child');
+      expect(
+        move2.children.length,
+        2,
+        reason: 'Move 2 should have 2 children (mainline d7 and variation a7)',
+      );
 
       // Third move (d7) - this is where variations start
-      // The mainline should be d7, but there should be a variation with a7
+      // The mainline should be d7, and there should be a variation with a7
       final PgnNode<ExtMove> move3Main = move2.children[0];
       expect(
         move3Main.data?.move,
         'd7',
         reason: 'Third move mainline should be d7',
+      );
+
+      // Check variation after move 2
+      final PgnNode<ExtMove> move3Var = move2.children[1];
+      expect(
+        move3Var.data?.move,
+        'a7',
+        reason: 'Variation after move 2 should be a7',
       );
 
       // At move 2, there should be an alternative variation (a7)
@@ -202,24 +214,7 @@ void main() {
         reason: 'Fifth move mainline should be f6',
       );
 
-      // Verify that variations exist as separate branches
-      // Check if move2 has variations (multiple children)
-      if (move2.children.length > 1) {
-        // Found a variation at move 2
-        expect(
-          move2.children.length,
-          2,
-          reason:
-              'Move 2 should have 2 variations (mainline d7 and alternative a7)',
-        );
-
-        final PgnNode<ExtMove> variation = move2.children[1];
-        expect(
-          variation.data?.move,
-          'a7',
-          reason: 'First variation after move 2 should be a7',
-        );
-      }
+      // Variations have already been verified above
 
       // Check if move3Main has variations for Black's response
       if (move3Main.children.length > 1) {
@@ -245,6 +240,146 @@ void main() {
         mainlineMoves.length,
         greaterThanOrEqualTo(5),
         reason: 'Mainline should have at least 5 moves',
+      );
+    });
+
+    test("Export PGN with comments and variations", () async {
+      // Access the singleton GameController instance
+      final GameController controller = GameController.instance;
+
+      // PGN with comments and variations
+      const String pgnWithCommentsAndVariations = '''
+1. d6 {Good opening} f4 2. d7 (2. a7 {Alternative opening} g4 3. g7) 2... g7 {Solid response} (2... f6 {Aggressive variation} 3. f2) 3. f6 *
+''';
+
+      // Import the PGN
+      ImportService.import(pgnWithCommentsAndVariations);
+
+      // Export the PGN
+      final String exported =
+          controller.newGameRecorder?.moveHistoryText.trim() ?? '';
+
+      // Verify that comments are preserved
+      expect(
+        exported,
+        contains('Good opening'),
+        reason: 'Export should contain the comment "Good opening"',
+      );
+
+      expect(
+        exported,
+        contains('Solid response'),
+        reason: 'Export should contain the comment "Solid response"',
+      );
+
+      expect(
+        exported,
+        contains('Alternative opening'),
+        reason: 'Export should contain the comment "Alternative opening"',
+      );
+
+      expect(
+        exported,
+        contains('Aggressive variation'),
+        reason: 'Export should contain the comment "Aggressive variation"',
+      );
+
+      // Verify that variations are enclosed in parentheses
+      expect(
+        exported,
+        contains('('),
+        reason: 'Export should contain opening parenthesis for variations',
+      );
+
+      expect(
+        exported,
+        contains(')'),
+        reason: 'Export should contain closing parenthesis for variations',
+      );
+
+      // Verify that the mainline moves are present
+      expect(exported, contains('d6'), reason: 'Export should contain move d6');
+
+      expect(exported, contains('f4'), reason: 'Export should contain move f4');
+
+      expect(exported, contains('d7'), reason: 'Export should contain move d7');
+
+      expect(exported, contains('g7'), reason: 'Export should contain move g7');
+
+      // Verify that variation moves are present
+      expect(
+        exported,
+        contains('a7'),
+        reason: 'Export should contain variation move a7',
+      );
+
+      expect(
+        exported,
+        contains('f6'),
+        reason: 'Export should contain variation move f6',
+      );
+    });
+
+    test("Export PGN with NAGs (Numeric Annotation Glyphs)", () async {
+      // Access the singleton GameController instance
+      final GameController controller = GameController.instance;
+
+      // Create a game manually with NAGs
+      controller.reset(force: true);
+
+      // Add moves with NAGs
+      final ExtMove move1 = ExtMove(
+        'd6',
+        side: PieceColor.white,
+        nags: <int>[1],
+      ); // !
+      final ExtMove move2 = ExtMove(
+        'f4',
+        side: PieceColor.black,
+        nags: <int>[2],
+      ); // ?
+      final ExtMove move3 = ExtMove(
+        'd7',
+        side: PieceColor.white,
+        nags: <int>[3],
+      ); // !!
+      final ExtMove move4 = ExtMove(
+        'g7',
+        side: PieceColor.black,
+        nags: <int>[4],
+      ); // ??
+
+      controller.gameRecorder.appendMove(move1);
+      controller.gameRecorder.appendMove(move2);
+      controller.gameRecorder.appendMove(move3);
+      controller.gameRecorder.appendMove(move4);
+
+      // Export the PGN
+      final String exported = controller.gameRecorder.moveHistoryText.trim();
+
+      // Verify that NAG symbols are present
+      expect(
+        exported,
+        contains('!'),
+        reason: 'Export should contain NAG symbol !',
+      );
+
+      expect(
+        exported,
+        contains('?'),
+        reason: 'Export should contain NAG symbol ?',
+      );
+
+      expect(
+        exported,
+        contains('!!'),
+        reason: 'Export should contain NAG symbol !!',
+      );
+
+      expect(
+        exported,
+        contains('??'),
+        reason: 'Export should contain NAG symbol ??',
       );
     });
   });
