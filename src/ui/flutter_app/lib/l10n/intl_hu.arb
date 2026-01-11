@@ -2182,5 +2182,1033 @@
     "voiceAssistantSettings": "Hangasszisztens beállításai",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Modell, nyelv és viselkedés beállítása",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM-támogatott fejlesztés",
+    "@llmAssistedDevelopment": {},
+    "llmAssistedDevelopmentInputHint": "Írd le a feladatot, amiben az LLM segítségét kéred...",
+    "@llmAssistedDevelopmentInputHint": {},
+    "download": "Letöltés",
+    "@download": {},
+    "status": "Állapot",
+    "@status": {},
+    "unknown": "Ismeretlen",
+    "@unknown": {},
+    "enableAiChat": "AI-chat engedélyezése",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Csevegés engedélyezése az AI-asszisztenssel (kísérleti)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Bábu felvételi animáció engedélyezése",
+    "@enablePiecePickUpAnimation": {},
+    "puzzles": "Feladványok",
+    "@puzzles": {},
+    "puzzle": "Feladvány",
+    "@puzzle": {},
+    "noPuzzlesAvailable": "Nincsenek elérhető feladványok",
+    "@noPuzzlesAvailable": {},
+    "filter": "Szűrő",
+    "@filter": {},
+    "category": "Kategória",
+    "@category": {},
+    "clearFilter": "Szűrők törlése",
+    "@clearFilter": {},
+    "puzzleStatistics": "Feladvány statisztikák",
+    "@puzzleStatistics": {},
+    "totalPuzzles": "Összes feladvány",
+    "@totalPuzzles": {},
+    "completed": "Teljesítve",
+    "@completed": {},
+    "totalStars": "Összes csillag",
+    "@totalStars": {},
+    "completionPercentage": "Teljesítés",
+    "@completionPercentage": {},
+    "puzzleDifficultyBeginner": "Kezdő",
+    "@puzzleDifficultyBeginner": {},
+    "puzzleDifficultyEasy": "Könnyű",
+    "@puzzleDifficultyEasy": {},
+    "puzzleDifficultyMedium": "Közepes",
+    "@puzzleDifficultyMedium": {},
+    "puzzleDifficultyHard": "Nehéz",
+    "@puzzleDifficultyHard": {},
+    "puzzleDifficultyExpert": "Szakértő",
+    "@puzzleDifficultyExpert": {},
+    "puzzleDifficultyMaster": "Mester",
+    "@puzzleDifficultyMaster": {},
+    "puzzleCategoryFormMill": "Malom kialakítása",
+    "@puzzleCategoryFormMill": {},
+    "puzzleCategoryCapturePieces": "Ütés",
+    "@puzzleCategoryCapturePieces": {},
+    "puzzleCategoryWinGame": "Játék megnyerése",
+    "@puzzleCategoryWinGame": {},
+    "puzzleCategoryDefend": "Védekezés",
+    "@puzzleCategoryDefend": {},
+    "puzzleCategoryFindBestMove": "Legjobb lépés",
+    "@puzzleCategoryFindBestMove": {},
+    "puzzleCategoryEndgame": "Végjáték",
+    "@puzzleCategoryEndgame": {},
+    "puzzleCategoryOpening": "Megnyitás",
+    "@puzzleCategoryOpening": {},
+    "puzzleCategoryMixed": "Vegyes",
+    "@puzzleCategoryMixed": {},
+    "exitPuzzle": "Kilépsz a feladványból?",
+    "@exitPuzzle": {},
+    "puzzleProgressWillBeLost": "Az előrehaladás elvész. Folytatod?",
+    "@puzzleProgressWillBeLost": {},
+    "moves": "Lépések",
+    "@moves": {},
+    "optimal": "Optimális",
+    "@optimal": {},
+    "checkSolution": "Megoldás ellenőrzése",
+    "@checkSolution": {},
+    "giveUp": "Feladás",
+    "@giveUp": {},
+    "puzzleSolved": "Feladvány megoldva!",
+    "@puzzleSolved": {},
+    "hintsUsed": "Felhasznált tippek",
+    "@hintsUsed": {},
+    "tryAgain": "Próbáld újra",
+    "@tryAgain": {},
+    "backToList": "Vissza a listához",
+    "@backToList": {},
+    "solution": "Megoldás",
+    "@solution": {},
+    "puzzleCreateNew": "Új feladvány létrehozása",
+    "@puzzleCreateNew": {},
+    "puzzleEdit": "Feladvány szerkesztése",
+    "@puzzleEdit": {},
+    "puzzleCustom": "Egyéni",
+    "@puzzleCustom": {},
+    "puzzleRuleMismatch": "Szabályeltérés",
+    "@puzzleRuleMismatch": {},
+    "puzzleRuleMismatchWarning": "{puzzleRules}, jelenleg {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Folytatás",
+    "@puzzleRuleMismatchContinue": {},
+    "puzzleCompatibleOnly": "Csak kompatibilisek",
+    "@puzzleCompatibleOnly": {},
+    "puzzleSelect": "Feladványok kijelölése",
+    "@puzzleSelect": {},
+    "puzzleSelectedCount": "{count} kijelölve",
+    "@puzzleSelectedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Összes kijelölése",
+    "@puzzleSelectAll": {},
+    "puzzleExport": "Exportálás",
+    "@puzzleExport": {},
+    "puzzleImport": "Importálás",
+    "@puzzleImport": {},
+    "puzzleExportSuccess": "{count,plural, =1{Sikeresen exportálva {count} feladvány}other{Sikeresen exportálva {count} feladvány}}",
+    "@puzzleExportSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "A feladványok exportálása sikertelen",
+    "@puzzleExportFailed": {},
+    "puzzleImportSuccess": "{count,plural, =1{Sikeresen importálva {count} feladvány}other{Sikeresen importálva {count} feladvány}}",
+    "@puzzleImportSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "A feladványok importálása sikertelen",
+    "@puzzleImportFailed": {},
+    "puzzleImportNoFileSelected": "Nincs fájl kiválasztva",
+    "@puzzleImportNoFileSelected": {},
+    "puzzleImportInvalidFilePath": "Érvénytelen fájlútvonal",
+    "@puzzleImportInvalidFilePath": {},
+    "puzzleImportErrorPickingFile": "Hiba a fájl kiválasztásakor: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "A fájl nem létezik",
+    "@puzzleImportFileNotExist": {},
+    "puzzleImportInvalidFormat": "Érvénytelen fájlformátum: hiányzik a puzzles mező",
+    "@puzzleImportInvalidFormat": {},
+    "puzzleImportIncompatibleVersion": "Nem kompatibilis fájlformátum-verzió: {version} (elvárt: {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "A(z) {index}. feladvány (\"{title}\") FEN formátuma érvénytelen",
+    "@puzzleImportInvalidFen": {
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "A(z) {index}. feladvány (\"{title}\") eltérő szabályokat használ: {puzzleRules} (jelenlegi: {currentRules}). Ez a feladvány nem biztos, hogy megfelelően működik a jelenlegi beállításaid mellett.",
+    "@puzzleImportRuleMismatchWarning": {
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "Nem sikerült feldolgozni a(z) {index}. feladványt: {error}",
+    "@puzzleImportParseFailed": {
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Hibák:",
+    "@puzzleImportErrors": {},
+    "puzzleImportWarnings": "Figyelmeztetések:",
+    "@puzzleImportWarnings": {},
+    "puzzleImportErrorReading": "Hiba a fájl olvasásakor: {error}",
+    "@puzzleImportErrorReading": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "A feladványnak címmel kell rendelkeznie",
+    "@puzzleValidationTitleRequired": {},
+    "puzzleValidationDescriptionRequired": "A feladványnak leírással kell rendelkeznie",
+    "@puzzleValidationDescriptionRequired": {},
+    "puzzleValidationPositionRequired": "A feladványnak érvényes pozícióval kell rendelkeznie",
+    "@puzzleValidationPositionRequired": {},
+    "puzzleValidationInvalidFen": "A feladvány FEN formátuma érvénytelen. Kérjük, ellenőrizd a pozíciót.",
+    "@puzzleValidationInvalidFen": {},
+    "puzzleValidationSolutionRequired": "A feladványnak megoldással kell rendelkeznie",
+    "@puzzleValidationSolutionRequired": {},
+    "puzzleValidationTitleTooShort": "A cím túl rövid (minimum 5 karakter)",
+    "@puzzleValidationTitleTooShort": {},
+    "puzzleValidationTitleTooLong": "A cím túl hosszú (maximum 100 karakter)",
+    "@puzzleValidationTitleTooLong": {},
+    "puzzleValidationDescriptionTooShort": "A leírás túl rövid (minimum 10 karakter)",
+    "@puzzleValidationDescriptionTooShort": {},
+    "puzzleValidationDescriptionTooLong": "A leírás túl hosszú (maximum 500 karakter)",
+    "@puzzleValidationDescriptionTooLong": {},
+    "puzzleValidationAuthorRequired": "Kérjük, hozzájárulás előtt add meg a neved szerzőként",
+    "@puzzleValidationAuthorRequired": {},
+    "puzzleDeleteConfirm": "{count,plural, =1{Törlöd a(z) {count} feladványt?}other{Törlöd a(z) {count} feladványt?}}",
+    "@puzzleDeleteConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{Törölve {count} feladvány}other{Törölve {count} feladvány}}",
+    "@puzzleDeleted": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "Beépített feladványok nem törölhetők",
+    "@puzzleCannotDeleteBuiltIn": {},
+    "puzzleCreationInstructions": "Hogyan hozz létre feladványt",
+    "@puzzleCreationInstructions": {},
+    "puzzleCreationSteps": "1. Tábla beállítása\n2. Pozíció mentése\n3. Lépések rögzítése\n4. Részletek kitöltése\n5. Mentés",
+    "@puzzleCreationSteps": {},
+    "puzzleSetupPosition": "Pozíció beállítása",
+    "@puzzleSetupPosition": {},
+    "puzzlePositionSnapshotted2": "Pozíció elmentve",
+    "@puzzlePositionSnapshotted2": {},
+    "puzzleInitialPosition": "Kezdő pozíció",
+    "@puzzleInitialPosition": {},
+    "puzzleFinalPosition": "Végső pozíció",
+    "@puzzleFinalPosition": {},
+    "puzzleNoPositionSnapshotted": "Még nincs mentés",
+    "@puzzleNoPositionSnapshotted": {},
+    "puzzleSnapshotPositionFirst": "Előbb mentsd el a pozíciót",
+    "@puzzleSnapshotPositionFirst": {},
+    "puzzleRecordSolution": "Megoldás rögzítése",
+    "@puzzleRecordSolution": {},
+    "puzzleStartRecording": "Rögzítés indítása",
+    "@puzzleStartRecording": {},
+    "puzzleStopRecording": "Rögzítés leállítása",
+    "@puzzleStopRecording": {},
+    "puzzleRecording": "Rögzítés...",
+    "@puzzleRecording": {},
+    "puzzleRecordingStarted": "Rögzítés elindult",
+    "@puzzleRecordingStarted": {},
+    "puzzleRecordingStopped": "{count,plural, =1{Rögzítve {count} lépés}other{Rögzítve {count} lépés}}",
+    "@puzzleRecordingStopped": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Megoldás: {count} lépés}other{Megoldás: {count} lépés}}",
+    "@puzzleSolutionMoves": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "Még nincs megoldás",
+    "@puzzleNoSolutionRecorded": {},
+    "puzzleClearSolution": "Megoldás törlése",
+    "@puzzleClearSolution": {},
+    "puzzleSolutionTab": "Megoldás {number}",
+    "@puzzleSolutionTab": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "További megoldás hozzáadása",
+    "@puzzleAddSolution": {},
+    "puzzleRemoveSolution": "Ennek a megoldásnak az eltávolítása",
+    "@puzzleRemoveSolution": {},
+    "puzzleOptimalSolution": "⭐ Optimális",
+    "@puzzleOptimalSolution": {},
+    "puzzleAlternativeSolution": "Alternatív",
+    "@puzzleAlternativeSolution": {},
+    "puzzleMarkAsOptimal": "Megjelölés optimálisként",
+    "@puzzleMarkAsOptimal": {},
+    "puzzleSolutionCount": "{count, plural, =1{1 megoldás} other{{count} megoldás}}",
+    "@puzzleSolutionCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Eltávolítod ezt a megoldást?",
+    "@puzzleRemoveSolutionConfirm": {},
+    "puzzleAtLeastOneSolution": "Legalább egy megoldás szükséges",
+    "@puzzleAtLeastOneSolution": {},
+    "puzzleDetails": "Feladvány részletei",
+    "@puzzleDetails": {},
+    "puzzleTitle": "Cím",
+    "@puzzleTitle": {},
+    "puzzleDescription": "Leírás",
+    "@puzzleDescription": {},
+    "puzzleCategory": "Kategória",
+    "@puzzleCategory": {},
+    "puzzleDifficulty": "Nehézség",
+    "@puzzleDifficulty": {},
+    "puzzleHint": "Tipp",
+    "@puzzleHint": {},
+    "puzzleTags": "Címkék",
+    "@puzzleTags": {},
+    "puzzleTagsHint": "Vesszővel elválasztva",
+    "@puzzleTagsHint": {},
+    "puzzleAuthor": "Szerző",
+    "@puzzleAuthor": {},
+    "puzzleCompletionMessage": "Befejezési üzenet",
+    "@puzzleCompletionMessage": {},
+    "puzzleCompletionMessageHint": "Magyarázd el a taktikát vagy gratulálj a megoldónak",
+    "@puzzleCompletionMessageHint": {},
+    "puzzleTitleRequired": "A cím kötelező",
+    "@puzzleTitleRequired": {},
+    "puzzleDescriptionRequired": "A leírás kötelező",
+    "@puzzleDescriptionRequired": {},
+    "puzzlePositionRequired": "A pozíció kötelező",
+    "@puzzlePositionRequired": {},
+    "puzzleSolutionRequired": "A megoldás kötelező",
+    "@puzzleSolutionRequired": {},
+    "puzzleCreated": "Feladvány létrehozva",
+    "@puzzleCreated": {},
+    "puzzleUpdated": "Feladvány frissítve",
+    "@puzzleUpdated": {},
+    "puzzleSaveFailed": "A feladvány mentése sikertelen",
+    "@puzzleSaveFailed": {},
+    "optional": "opcionális",
+    "@optional": {},
+    "yourProgress": "Az előrehaladásod",
+    "@yourProgress": {},
+    "quit": "Kilépés",
+    "@quit": {},
+    "all": "Összes",
+    "@all": {},
+    "comingSoon": "Hamarosan",
+    "@comingSoon": {},
+    "dailyPuzzle": "Napi feladvány",
+    "@dailyPuzzle": {},
+    "dailyPuzzleDesc": "Oldj meg minden nap egy új feladványt",
+    "@dailyPuzzleDesc": {},
+    "dailyPuzzleNumber": "{dayNumber}. nap",
+    "@dailyPuzzleNumber": {
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Sorozat",
+    "@dailyPuzzleStreak": {},
+    "dailyPuzzleDayStreak": "napos sorozat",
+    "@dailyPuzzleDayStreak": {},
+    "dailyPuzzleDays": "nap",
+    "@dailyPuzzleDays": {},
+    "dailyPuzzleBestStreak": "Legjobb: {longestStreak} nap",
+    "@dailyPuzzleBestStreak": {
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Napi feladvány indítása",
+    "@dailyPuzzleStart": {},
+    "dailyPuzzleStreakHint": "Teljesítsd a napi feladványokat, hogy építsd a sorozatod!",
+    "@dailyPuzzleStreakHint": {},
+    "dailyPuzzleCurrentStreak": "Jelenlegi sorozat",
+    "@dailyPuzzleCurrentStreak": {},
+    "dailyPuzzleLongestStreak": "Leghosszabb sorozat",
+    "@dailyPuzzleLongestStreak": {},
+    "dailyPuzzleTotalCompleted": "Összes teljesített",
+    "@dailyPuzzleTotalCompleted": {},
+    "dailyPuzzleStreakInfo": "Oldj meg minden nap feladványokat, hogy megtartsd a sorozatod. Ha kihagysz egy napot, a sorozat lenullázódik!",
+    "@dailyPuzzleStreakInfo": {},
+    "allPuzzles": "Összes feladvány",
+    "@allPuzzles": {},
+    "allPuzzlesDesc": "Böngészd az összes elérhető feladványt",
+    "@allPuzzlesDesc": {},
+    "puzzleRush": "Feladványroham",
+    "@puzzleRush": {},
+    "puzzleRushDesc": "Oldj meg feladványokat az idő ellen",
+    "@puzzleRushDesc": {},
+    "puzzleRushTagline": "Oldj meg minél több feladványt 5 perc alatt!",
+    "@puzzleRushTagline": {},
+    "puzzleRushRules": "Szabályok",
+    "@puzzleRushRules": {},
+    "puzzleRushRule1": "⏱️ 5 perc a számlálón",
+    "@puzzleRushRule1": {},
+    "puzzleRushRule2": "❤️ 3 élet – hibánként 1 elvész",
+    "@puzzleRushRule2": {},
+    "puzzleRushRule3": "🏆 Maximalizáld a pontszámod!",
+    "@puzzleRushRule3": {},
+    "puzzleRushStart": "Roham indítása",
+    "@puzzleRushStart": {},
+    "puzzleRushQuitConfirm": "Kilépsz a rohamból? Az előrehaladás elvész.",
+    "@puzzleRushQuitConfirm": {},
+    "puzzleRushResults": "Roham eredmények",
+    "@puzzleRushResults": {},
+    "puzzleRushTimeUp": "Lejárt az idő!",
+    "@puzzleRushTimeUp": {},
+    "puzzleRushOutOfLives": "Elfogytak az életek",
+    "@puzzleRushOutOfLives": {},
+    "puzzleRushComplete": "Roham teljesítve!",
+    "@puzzleRushComplete": {},
+    "puzzleRushSolved": "Megoldva",
+    "@puzzleRushSolved": {},
+    "puzzleRushFailed": "Sikertelen",
+    "@puzzleRushFailed": {},
+    "puzzleRushAccuracy": "Pontosság",
+    "@puzzleRushAccuracy": {},
+    "puzzleRushPlayAgain": "Újra játék",
+    "@puzzleRushPlayAgain": {},
+    "puzzleBattle": "Feladványcsata",
+    "@puzzleBattle": {},
+    "puzzleBattleDesc": "Mérkőzz meg más játékosokkal",
+    "@puzzleBattleDesc": {},
+    "puzzleBattleComingSoon": "Hamarosan!",
+    "@puzzleBattleComingSoon": {},
+    "puzzleBattleStayTuned": "Ez a funkció jelenleg fejlesztés alatt áll. Maradj velünk!",
+    "@puzzleBattleStayTuned": {},
+    "puzzleBattleFeature1": "⚔️ 1v1 feladványversenyek",
+    "@puzzleBattleFeature1": {},
+    "puzzleBattleFeature2": "🎯 Élő ellenfélpárosítás",
+    "@puzzleBattleFeature2": {},
+    "puzzleBattleFeature3": "📊 Értékelési rendszer",
+    "@puzzleBattleFeature3": {},
+    "puzzleBattleFeature4": "🏆 Ranglisták",
+    "@puzzleBattleFeature4": {},
+    "customPuzzles": "Egyéni feladványok",
+    "@customPuzzles": {},
+    "customPuzzlesDesc": "Hozd létre és kezeld a feladványaidat",
+    "@customPuzzlesDesc": {},
+    "puzzleMultiSelectMode": "Többszörös kijelölés mód",
+    "@puzzleMultiSelectMode": {},
+    "puzzleCreate": "Feladvány létrehozása",
+    "@puzzleCreate": {},
+    "puzzleStreak": "Feladvány sorozat",
+    "@puzzleStreak": {},
+    "puzzleStreakDesc": "Oldj meg egymás után hibák nélkül",
+    "@puzzleStreakDesc": {},
+    "puzzleStreakTagline": "Mennyit tudsz megoldani egymás után?",
+    "@puzzleStreakTagline": {},
+    "puzzleStreakRules": "Szabályok",
+    "@puzzleStreakRules": {},
+    "puzzleStreakRule1": "🎯 Oldj meg minél több feladványt",
+    "@puzzleStreakRule1": {},
+    "puzzleStreakRule2": "❌ Egy hiba, és vége",
+    "@puzzleStreakRule2": {},
+    "puzzleStreakRule3": "🏆 Döntsd meg a saját rekordod",
+    "@puzzleStreakRule3": {},
+    "puzzleStreakStart": "Sorozat indítása",
+    "@puzzleStreakStart": {},
+    "puzzleStreakCurrent": "Jelenlegi",
+    "@puzzleStreakCurrent": {},
+    "puzzleStreakBest": "Legjobb",
+    "@puzzleStreakBest": {},
+    "puzzleStreakResults": "Sorozat eredmények",
+    "@puzzleStreakResults": {},
+    "puzzleStreakEnded": "A sorozat véget ért",
+    "@puzzleStreakEnded": {},
+    "puzzleStreakNewRecord": "Új rekord!",
+    "@puzzleStreakNewRecord": {},
+    "puzzleStreakFinalScore": "Végső pontszám",
+    "@puzzleStreakFinalScore": {},
+    "puzzleStreakTryAgain": "Próbáld újra",
+    "@puzzleStreakTryAgain": {},
+    "puzzleStreakQuitConfirm": "Biztosan kilépsz? A sorozatod el fog veszni.",
+    "@puzzleStreakQuitConfirm": {},
+    "puzzleHistory": "Előzmények",
+    "@puzzleHistory": {},
+    "puzzleHistoryDesc": "Nézd meg a feladvány-próbálkozásaidat",
+    "@puzzleHistoryDesc": {},
+    "puzzleHistoryEmpty": "Nincs előzmény",
+    "@puzzleHistoryEmpty": {},
+    "puzzleHistoryEmptyHint": "Kezdj el feladványokat megoldani, hogy itt lásd az előzményeidet",
+    "@puzzleHistoryEmptyHint": {},
+    "puzzleHistorySuccess": "Csak sikeresek",
+    "@puzzleHistorySuccess": {},
+    "puzzleHistoryFailed": "Csak sikertelenek",
+    "@puzzleHistoryFailed": {},
+    "puzzleHistoryUnknown": "Ismeretlen feladvány",
+    "@puzzleHistoryUnknown": {},
+    "puzzleHistoryHints": "tippek",
+    "@puzzleHistoryHints": {},
+    "puzzleStatisticsDesc": "Részletes elemzések megtekintése",
+    "@puzzleStatisticsDesc": {},
+    "puzzleStatsRating": "Feladvány értékelésed",
+    "@puzzleStatsRating": {},
+    "puzzleStatsProvisional": "Ideiglenes ({gamesLeft} játék van hátra)",
+    "@puzzleStatsProvisional": {
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "Lejátszott játékok",
+    "@puzzleStatsGamesPlayed": {},
+    "puzzleStatsDeviation": "Eltérés",
+    "@puzzleStatsDeviation": {},
+    "puzzleStatsPerformance": "Teljesítmény áttekintés",
+    "@puzzleStatsPerformance": {},
+    "puzzleStatsSuccessRate": "Sikerességi arány",
+    "@puzzleStatsSuccessRate": {},
+    "puzzleStatsAvgTime": "Átlagos idő",
+    "@puzzleStatsAvgTime": {},
+    "puzzleStatsSolved": "Megoldva",
+    "@puzzleStatsSolved": {},
+    "puzzleStatsFailed": "Sikertelen",
+    "@puzzleStatsFailed": {},
+    "puzzleStatsByDifficulty": "Sikeresség nehézség szerint",
+    "@puzzleStatsByDifficulty": {},
+    "puzzleStatsByCategory": "Sikeresség kategória szerint",
+    "@puzzleStatsByCategory": {},
+    "puzzleStatsRecentActivity": "Legutóbbi aktivitás",
+    "@puzzleStatsRecentActivity": {},
+    "puzzleStatsNoActivity": "Nincs legutóbbi aktivitás",
+    "@puzzleStatsNoActivity": {},
+    "edit": "Szerkesztés",
+    "@edit": {},
+    "save": "Mentés",
+    "@save": {},
+    "noCustomPuzzles": "Nincsenek egyéni feladványok",
+    "@noCustomPuzzles": {},
+    "noCustomPuzzlesHint": "Hozz létre saját feladványokat, hogy konkrét pozíciókat gyakorolj",
+    "@noCustomPuzzlesHint": {},
+    "plannedFeatures": "Ez a funkció egy jövőbeli kiadásra van tervezve",
+    "@plannedFeatures": {},
+    "puzzleInvalidPosition": "Érvénytelen pozíció",
+    "@puzzleInvalidPosition": {},
+    "puzzleOpenBoardSetup": "Tábla megnyitása (Pozíció beállítása)",
+    "@puzzleOpenBoardSetup": {},
+    "puzzleOpenBoardPlay": "Tábla megnyitása (Lépések lejátszása)",
+    "@puzzleOpenBoardPlay": {},
+    "puzzleRecordingHintUseButton": "Használd az alábbi gombot a tábla megnyitásához, majd nyomd meg a Vissza gombot a visszatéréshez.",
+    "@puzzleRecordingHintUseButton": {},
+    "puzzleInvalidPositionFormat": "Érvénytelen pozícióformátum. Kérjük, ellenőrizd a játék tábláját.",
+    "@puzzleInvalidPositionFormat": {},
+    "puzzleFailedLoadPosition": "Nem sikerült betölteni a pozíciót. Kérjük, készítsd el újra a mentést.",
+    "@puzzleFailedLoadPosition": {},
+    "puzzleInvalidPositionFormatRecapture": "Érvénytelen pozícióformátum. Kérjük, készítsd el újra a pozíciómentést.",
+    "@puzzleInvalidPositionFormatRecapture": {},
+    "puzzleShowDetailedWorkflow": "Részletes munkafolyamat megjelenítése",
+    "@puzzleShowDetailedWorkflow": {},
+    "puzzleCreationWorkflow": "Feladványkészítési munkafolyamat",
+    "@puzzleCreationWorkflow": {},
+    "puzzleWorkflowStepSetup": "Pozíció beállítása",
+    "@puzzleWorkflowStepSetup": {},
+    "puzzleWorkflowStepSetupDesc": "Tábla megnyitása, pozíció beállítása, mentés",
+    "@puzzleWorkflowStepSetupDesc": {},
+    "puzzleWorkflowStepRecord": "Megoldás rögzítése",
+    "@puzzleWorkflowStepRecord": {},
+    "puzzleWorkflowStepRecordDesc": "Rögzítés indítása, lépések lejátszása, leállítás",
+    "@puzzleWorkflowStepRecordDesc": {},
+    "puzzleWorkflowStepDetails": "Részletek hozzáadása",
+    "@puzzleWorkflowStepDetails": {},
+    "puzzleWorkflowStepDetailsDesc": "Cím, kategória, nehézség kitöltése",
+    "@puzzleWorkflowStepDetailsDesc": {},
+    "puzzleWorkflowStepSave": "Feladvány mentése",
+    "@puzzleWorkflowStepSave": {},
+    "puzzleWorkflowStepSaveDesc": "Mentés gomb megnyomása",
+    "@puzzleWorkflowStepSaveDesc": {},
+    "puzzleWorkflowTip": "Tipp: ezen az oldal és a játék tábla között fogsz váltani. Az előrehaladásod mentésre kerül!",
+    "@puzzleWorkflowTip": {},
+    "puzzlePositionSnapshotHelp": "Pozíciómentés súgó",
+    "@puzzlePositionSnapshotHelp": {},
+    "puzzlePositionSnapshotHelpContent": "Hogyan mentsd el a feladvány kezdő pozícióját:\n\n1. Kattints a \"Tábla megnyitása (Pozíció beállítása)\" gombra a bábuk kézi elhelyezéséhez, VAGY a \"Tábla megnyitása (Lépések lejátszása)\" gombra, hogy lépésekkel érd el a pozíciót\n\n2. Állítsd be a táblát a kívánt kezdő pozícióra\n\n3. Nyomd meg a vissza gombot, hogy visszatérj erre az oldalra\n\n4. A pozíció automatikusan mentésre kerül\n\nEz a mentett pozíció lesz a feladványod kiindulópontja.",
+    "@puzzlePositionSnapshotHelpContent": {},
+    "puzzleSolutionRecordingHelp": "Megoldásrögzítés súgó",
+    "@puzzleSolutionRecordingHelp": {},
+    "puzzleSolutionRecordingHelpContent": "Hogyan rögzítsd a megoldás lépéseit:",
+    "@puzzleSolutionRecordingHelpContent": {},
+    "puzzleSolutionStep1": "Először mentsd el a kezdő pozíciót",
+    "@puzzleSolutionStep1": {},
+    "puzzleSolutionStep2": "Kattints a \"Rögzítés indítása\" gombra (ez visszaállítja a táblát a mentett pozícióra)",
+    "@puzzleSolutionStep2": {},
+    "puzzleSolutionStep4": "Térj vissza ide, és kattints a \"Rögzítés leállítása\" gombra",
+    "@puzzleSolutionStep4": {},
+    "puzzleSolutionRecordingTip": "Tipp: a tábla automatikusan visszaáll a mentett pozícióra, amikor elindítod a rögzítést.",
+    "@puzzleSolutionRecordingTip": {},
+    "puzzleMultipleSolutionsSupported": "Több megoldást is hozzáadhatsz (nincs korlát). A legrövidebbet/legjobbat jelöld optimálisnak.",
+    "@puzzleMultipleSolutionsSupported": {},
+    "puzzleShowPositionSnapshotHelp": "Pozíciómentés súgó megjelenítése",
+    "@puzzleShowPositionSnapshotHelp": {},
+    "puzzleShowSolutionRecordingHelp": "Megoldásrögzítés súgó megjelenítése",
+    "@puzzleShowSolutionRecordingHelp": {},
+    "noMoreHintsAvailable": "Nincs több elérhető tipp",
+    "@noMoreHintsAvailable": {},
+    "hintDialogTitle": "Tipp",
+    "@hintDialogTitle": {},
+    "optimalSolutionWithMoves": "Optimális megoldás ({moves} lépés):",
+    "@optimalSolutionWithMoves": {
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "Érvényesítési hibák",
+    "@validationErrors": {},
+    "contributePuzzlesToSanmill": "Feladványok beküldése a Sanmillhez",
+    "@contributePuzzlesToSanmill": {},
+    "whatHappensNext": "Mi történik ezután:",
+    "@whatHappensNext": {},
+    "contributionStep1": "1. A feladványaid egy JSON fájlba lesznek exportálva",
+    "@contributionStep1": {},
+    "contributionStep2": "2. Ezt a fájlt megoszthatod a megosztási párbeszédablakon keresztül",
+    "@contributionStep2": {},
+    "contributionStep4": "4. A feladványokat a karbantartók felülvizsgálják",
+    "@contributionStep4": {},
+    "contributionStep5": "5. Jóváhagyás után beépített feladványok lesznek!",
+    "@contributionStep5": {},
+    "exportForContribution": "Exportálás beküldéshez",
+    "@exportForContribution": {},
+    "startContributing": "Beküldés indítása",
+    "@startContributing": {},
+    "quickStart": "Gyors kezdés:",
+    "@quickStart": {},
+    "createQualityPuzzles": "Minőségi feladványok készítése",
+    "@createQualityPuzzles": {},
+    "createQualityPuzzlesDesc": "Gondoskodj róla, hogy a feladványnak egyértelmű megoldása, jó metaadatai legyenek, és valami hasznosat tanítson.",
+    "@createQualityPuzzlesDesc": {},
+    "addYourName": "Add meg a neved",
+    "@addYourName": {},
+    "addYourNameDesc": "Szerkeszd a feladványt, és add meg a neved szerzőként, hogy megkapd az elismerést.",
+    "@addYourNameDesc": {},
+    "exportForContributionStep": "Exportálás beküldéshez",
+    "@exportForContributionStep": {},
+    "exportForContributionStepDesc": "Jelöld ki a feladványaidat, és koppints a feltöltés ikonra a megfelelő formátumú exportáláshoz.",
+    "@exportForContributionStepDesc": {},
+    "submitStep": "Beküldés",
+    "@submitStep": {},
+    "submitStepDesc": "Oszd meg az exportált fájlt GitHub Pull Requestként, Issue-ként vagy e-mailben.",
+    "@submitStepDesc": {},
+    "fullDocumentation": "Teljes dokumentáció",
+    "@fullDocumentation": {},
+    "fullDocumentationDesc": "A teljes útmutatóért, minőségi irányelvekért és beküldési lehetőségekért lásd a tárházban a PUZZLE_CONTRIBUTION_GUIDE.md fájlt.",
+    "@fullDocumentationDesc": {},
+    "qualityRequirements": "Minőségi követelmények:",
+    "@qualityRequirements": {},
+    "qualityReqClearSolution": "✓ Egyértelmű, egyedi megoldás",
+    "@qualityReqClearSolution": {},
+    "qualityReqCompleteMetadata": "✓ Teljes metaadatok (cím, leírás, stb.)",
+    "@qualityReqCompleteMetadata": {},
+    "qualityReqAuthorAttribution": "✓ Szerzői hozzárendelés",
+    "@qualityReqAuthorAttribution": {},
+    "qualityReqAccurateDifficulty": "✓ Pontos nehézségi besorolás",
+    "@qualityReqAccurateDifficulty": {},
+    "qualityReqInstructive": "✓ Tanulságos vagy szórakoztató",
+    "@qualityReqInstructive": {},
+    "nextMoveHint": "Következő lépés: {move}",
+    "@nextMoveHint": {
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "Teljes megoldás: {solution}",
+    "@completeSolutionHint": {
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "Figyelj ezekre a pozíciókra",
+    "@payAttentionToPositions": {},
+    "noSolutionAvailable": "Nincs elérhető megoldás",
+    "@noSolutionAvailable": {},
+    "keepGoingObjectiveNotAchieved": "Csak így tovább! A cél még nem teljesült.",
+    "@keepGoingObjectiveNotAchieved": {},
+    "perfectSolvedOptimal": "Tökéletes! Optimális lépésszámmal oldottad meg!",
+    "@perfectSolvedOptimal": {},
+    "correctMovesOptimal": "Helyes! ({count} lépés, optimális: {optimal})",
+    "@correctMovesOptimal": {
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "Helyes! Találtál egy alternatív megoldást!",
+    "@correctAlternativeSolution": {},
+    "justNow": "Épp most",
+    "@justNow": {},
+    "minutesAgo": "{minutes}p",
+    "@minutesAgo": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}ó",
+    "@hoursAgo": {
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}n",
+    "@daysAgo": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "Érvénytelen feladvány",
+    "@invalidPuzzle": {},
+    "invalidPuzzleMessage": "Ennek a feladványnak érvénytelen a pozícióformátuma, ezért nem tölthető be. Kérjük, vedd fel a kapcsolatot a feladvány szerzőjével, vagy válassz egy másik feladványt.",
+    "@invalidPuzzleMessage": {},
+    "keepTrying": "Próbálkozz tovább!",
+    "@keepTrying": {},
+    "examples": "Példák",
+    "@examples": {},
+    "aiChatTitle": "AI-asszisztens",
+    "@aiChatTitle": {},
+    "aiChatWelcomeMessage": "Szia! Én vagyok a malomjáték asszisztensed. Kérdezz stratégiákról, pozíciókról, vagy bármiről az aktuális játékkal kapcsolatban.",
+    "@aiChatWelcomeMessage": {},
+    "aiChatInputHint": "Kérdezz a játékról...",
+    "@aiChatInputHint": {},
+    "aiChatErrorMessage": "Sajnálom, hiba történt. Kérjük, próbáld újra.",
+    "@aiChatErrorMessage": {},
+    "aiChatNotConfigured": "Az AI-asszisztens nincs beállítva. Kérjük, előbb állítsd be az LLM beállításokat.",
+    "@aiChatNotConfigured": {},
+    "aiChatButtonTooltip": "Csevegés az AI-asszisztenssel",
+    "@aiChatButtonTooltip": {},
+    "aiChatClearHistory": "Csevegési előzmények törlése",
+    "@aiChatClearHistory": {},
+    "aiChatClearHistoryConfirm": "Törlöd a csevegési előzményeket?",
+    "@aiChatClearHistoryConfirm": {},
+    "aiChatClearHistoryMessage": "Ez töröl minden üzenetet és új beszélgetést indít. Ez a művelet nem visszavonható.",
+    "@aiChatClearHistoryMessage": {},
+    "aiChatCleared": "Csevegési előzmények törölve",
+    "@aiChatCleared": {},
+    "logs": "Naplók",
+    "@logs": {},
+    "downloadLogs": "Naplók letöltése",
+    "@downloadLogs": {},
+    "noLogsAvailable": "Nincsenek elérhető naplók",
+    "@noLogsAvailable": {},
+    "noLogsDescription": "A naplók itt jelennek meg, miközben az alkalmazás fut. Használd az alkalmazást, majd térj vissza ide a naplók megtekintéséhez.",
+    "@noLogsDescription": {},
+    "noLogsToDownload": "Nincs letölthető napló",
+    "@noLogsToDownload": {},
+    "downloadFailed": "A letöltés sikertelen",
+    "@downloadFailed": {},
+    "refresh": "Frissítés",
+    "@refresh": {},
+    "shareLogs": "Naplók megosztása",
+    "@shareLogs": {},
+    "downloadSuccess": "Letöltve ide: {path}",
+    "@downloadSuccess": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Kijelölési mód",
+    "@selectMode": {},
+    "copySelected": "Kijelöltek másolása",
+    "@copySelected": {},
+    "selectStartPoint": "Koppints a kezdőpont kiválasztásához",
+    "@selectStartPoint": {},
+    "selectEndPoint": "Koppints a végpont kiválasztásához",
+    "@selectEndPoint": {},
+    "nothingSelected": "Nincs napló kiválasztva",
+    "@nothingSelected": {},
+    "scrollToTop": "Görgetés a tetejére (legrégebbi)",
+    "@scrollToTop": {},
+    "scrollToBottom": "Görgetés az aljára (legújabb)",
+    "@scrollToBottom": {},
+    "newestLogsAtBottom": "A legújabb naplók alul vannak",
+    "@newestLogsAtBottom": {},
+    "logsCount": "Naplók: {current} / {max}",
+    "@logsCount": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "A napló puffer megtelt ({current}/{max}). A régi naplók eltávolításra kerülnek.",
+    "@logsBufferFull": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "Naplók törlése",
+    "@clearLogs": {},
+    "clearLogsConfirmation": "Biztosan törlöd az összes naplót? Ez a művelet nem visszavonható.",
+    "@clearLogsConfirmation": {},
+    "clear": "Törlés",
+    "@clear": {},
+    "logsCleared": "Naplók törölve",
+    "@logsCleared": {},
+    "puzzleInvalidPuzzle": "Érvénytelen feladvány",
+    "@puzzleInvalidPuzzle": {},
+    "puzzleInvalidPuzzleMessage": "Ennek a feladványnak érvénytelen a pozícióformátuma, ezért nem tölthető be. Kérjük, vedd fel a kapcsolatot a feladvány szerzőjével, vagy válassz egy másik feladványt.",
+    "@puzzleInvalidPuzzleMessage": {},
+    "puzzleBackToList": "Vissza a listához",
+    "@puzzleBackToList": {},
+    "puzzleWrongMove": "Rossz lépés. Próbáld újra.",
+    "@puzzleWrongMove": {},
+    "puzzleWrongMoveMessage": "Ez a lépés nem egyezik a megoldással. Próbálkozhatsz újra, vagy megnézheted a helyes megoldást.",
+    "@puzzleWrongMoveMessage": {},
+    "puzzleShowSolution": "Megoldás megjelenítése",
+    "@puzzleShowSolution": {},
+    "puzzlePlayingSolution": "A megoldás lejátszása...",
+    "@puzzlePlayingSolution": {},
+    "puzzleSolutionComplete": "A megoldás lejátszása befejeződött",
+    "@puzzleSolutionComplete": {},
+    "puzzleNoSolutionAvailable": "Ehhez a feladványhoz nem érhető el megoldás",
+    "@puzzleNoSolutionAvailable": {},
+    "puzzleSolutionViewedNote": "Megoldás megtekintve (nincs csillag)",
+    "@puzzleSolutionViewedNote": {},
+    "puzzleAttempts": "{count, plural, =1{Próbálkozás: {count}} other{Próbálkozások: {count}}}",
+    "@puzzleAttempts": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "Nincs több elérhető tipp",
+    "@puzzleNoMoreHints": {},
+    "puzzleHintDialogTitle": "Tipp",
+    "@puzzleHintDialogTitle": {},
+    "puzzleValidationErrors": "Érvényesítési hibák",
+    "@puzzleValidationErrors": {},
+    "puzzleValidationErrorsMessage": "A következő feladványokat javítani kell a beküldés előtt:",
+    "@puzzleValidationErrorsMessage": {},
+    "puzzleContributeDialogTitle": "Feladványok beküldése a Sanmillhez",
+    "@puzzleContributeDialogTitle": {},
+    "puzzleContributeCount": "Hamarosan exportálni fogsz {count} feladványt a beküldéshez.",
+    "@puzzleContributeCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "Mi történik ezután:",
+    "@puzzleContributeWhatNext": {},
+    "puzzleContributeStep1": "1. A feladványaid egy JSON fájlba lesznek exportálva",
+    "@puzzleContributeStep1": {},
+    "puzzleContributeStep2": "2. Ezt a fájlt megoszthatod a megosztási párbeszédablakon keresztül",
+    "@puzzleContributeStep2": {},
+    "puzzleContributeStep3": "3. Beküldés GitHubon, e-mailben vagy GitHub issue-ként (lásd az útmutatót)",
+    "@puzzleContributeStep3": {},
+    "puzzleContributeStep4": "4. A feladványokat a karbantartók felülvizsgálják",
+    "@puzzleContributeStep4": {},
+    "puzzleContributeStep5": "5. Jóváhagyás után beépített feladványok lesznek!",
+    "@puzzleContributeStep5": {},
+    "puzzleContributeLicense": "A beküldéssel elfogadod, hogy a feladványtartalmadat CC BY-SA 4.0 (Creative Commons Nevezd meg – Így add tovább) licenc alatt adod közre.",
+    "@puzzleContributeLicense": {},
+    "puzzleExportForContribution": "Exportálás beküldéshez",
+    "@puzzleExportForContribution": {},
+    "puzzleStartContributing": "Beküldés indítása",
+    "@puzzleStartContributing": {},
+    "puzzleContributeInfo": "Hogyan küldj be feladványokat",
+    "@puzzleContributeInfo": {},
+    "puzzleShareMessage": "Nézd meg ezt a(z) {count} feladványt!",
+    "@puzzleShareMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "Feladványok ({count})",
+    "@puzzleShareSubject": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "Feladvány hozzájárulás.\n\nA beküldési útmutatóért lásd a PUZZLE_CONTRIBUTION_GUIDE.md fájlt.",
+    "@puzzleContributionShareText": {},
+    "puzzleContributionShareSubject": "Feladvány beküldése: {title}",
+    "@puzzleContributionShareSubject": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "Feladvány beküldések.\n\nA beküldési útmutatóért lásd a PUZZLE_CONTRIBUTION_GUIDE.md fájlt.",
+    "@puzzleContributionsShareText": {},
+    "puzzleContributionsShareSubject": "Feladvány beküldések ({count} feladvány)",
+    "@puzzleContributionsShareSubject": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "Segíts jobbá tenni a programot a feladványaid beküldésével!",
+    "@puzzleContributeHelp": {},
+    "puzzleContributeQuickStart": "Gyors kezdés:",
+    "@puzzleContributeQuickStart": {},
+    "puzzleContributeStep1Title": "Minőségi feladványok készítése",
+    "@puzzleContributeStep1Title": {},
+    "puzzleContributeStep1Desc": "Gondoskodj róla, hogy a feladványnak egyértelmű megoldása, jó metaadatai legyenek, és valami hasznosat tanítson.",
+    "@puzzleContributeStep1Desc": {},
+    "puzzleContributeStep2Title": "Add meg a neved",
+    "@puzzleContributeStep2Title": {},
+    "puzzleContributeStep2Desc": "Szerkeszd a feladványt, és add meg a neved szerzőként, hogy megkapd az elismerést.",
+    "@puzzleContributeStep2Desc": {},
+    "puzzleContributeStep3Title": "Exportálás beküldéshez",
+    "@puzzleContributeStep3Title": {},
+    "puzzleContributeStep3Desc": "Jelöld ki a feladványaidat, és koppints a feltöltés ikonra a megfelelő formátumú exportáláshoz.",
+    "@puzzleContributeStep3Desc": {},
+    "puzzleContributeStep4Title": "Beküldés",
+    "@puzzleContributeStep4Title": {},
+    "puzzleContributeStep4Desc": "Oszd meg az exportált fájlt GitHub Pull Requestként, Issue-ként vagy e-mailben.",
+    "@puzzleContributeStep4Desc": {},
+    "puzzleContributeFullDocs": "Teljes dokumentáció",
+    "@puzzleContributeFullDocs": {},
+    "puzzleContributeDocsDesc": "A teljes útmutatóért, minőségi irányelvekért és beküldési lehetőségekért lásd a tárházban a PUZZLE_CONTRIBUTION_GUIDE.md fájlt.",
+    "@puzzleContributeDocsDesc": {},
+    "puzzleContributeQualityRequirements": "Minőségi követelmények:",
+    "@puzzleContributeQualityRequirements": {},
+    "puzzleContributeReqClearSolution": "✓ Egyértelmű, egyedi megoldás",
+    "@puzzleContributeReqClearSolution": {},
+    "puzzleContributeReqMetadata": "✓ Teljes metaadatok (cím, leírás, stb.)",
+    "@puzzleContributeReqMetadata": {},
+    "puzzleContributeReqAttribution": "✓ Szerzői hozzárendelés",
+    "@puzzleContributeReqAttribution": {},
+    "puzzleContributeReqDifficulty": "✓ Pontos nehézségi besorolás",
+    "@puzzleContributeReqDifficulty": {},
+    "puzzleContributeReqInstructive": "✓ Tanulságos vagy szórakoztató",
+    "@puzzleContributeReqInstructive": {},
+    "monthJanuary": "január",
+    "@monthJanuary": {},
+    "monthFebruary": "február",
+    "@monthFebruary": {},
+    "monthMarch": "március",
+    "@monthMarch": {},
+    "monthApril": "április",
+    "@monthApril": {},
+    "monthMay": "május",
+    "@monthMay": {},
+    "monthJune": "június",
+    "@monthJune": {},
+    "monthJuly": "július",
+    "@monthJuly": {},
+    "monthAugust": "augusztus",
+    "@monthAugust": {},
+    "monthSeptember": "szeptember",
+    "@monthSeptember": {},
+    "monthOctober": "október",
+    "@monthOctober": {},
+    "monthNovember": "november",
+    "@monthNovember": {},
+    "monthDecember": "december",
+    "@monthDecember": {}
 }
