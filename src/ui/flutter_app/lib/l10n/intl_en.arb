@@ -62,7 +62,7 @@
     },
     "ok": "OK",
     "@ok": {
-        "description": "OK"
+        "description": "OK button text"
     },
     "confirm": "Confirm",
     "@confirm": {
@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Background music",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Play a local audio file as background music",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Background music file",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Clear background music",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Music files",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Keep mute when taking back",
     "@keepMuteWhenTakingBack": {
@@ -460,14 +460,6 @@
     "developerOptions": "Developer Options",
     "@developerOptions": {
         "description": "Developer Options"
-    },
-    "llmAssistedDevelopment": "LLM-assisted development",
-    "@llmAssistedDevelopment": {
-        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
-    },
-    "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with...",
-    "@llmAssistedDevelopmentInputHint": {
-        "description": "Hint text for the LLM-assisted development input field"
     },
     "rules": "Rules",
     "@rules": {
@@ -1134,18 +1126,6 @@
     "close": "Close",
     "@close": {
         "description": "Close"
-    },
-    "download": "Download",
-    "@download": {
-        "description": "Download button text"
-    },
-    "status": "Status",
-    "@status": {
-        "description": "Status label"
-    },
-    "unknown": "Unknown",
-    "@unknown": {
-        "description": "Unknown value"
     },
     "whitePiece": "White piece",
     "@whitePiece": {
@@ -2029,10 +2009,6 @@
     "@model": {},
     "temperature": "Temperature",
     "@temperature": {},
-    "enableAiChat": "Enable AI Chat",
-    "@enableAiChat": {},
-    "allowChatWithAiAssistant": "Allow chatting with AI assistant (experimental)",
-    "@allowChatWithAiAssistant": {},
     "llmCommandReceivedProcessing": "Command received! AI is processing...",
     "@llmCommandReceivedProcessing": {},
     "llmDeepThinkingWait": "Deep thinking in progress, please wait...",
@@ -2199,10 +2175,6 @@
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
-    "enablePiecePickUpAnimation": "Enable piece pick-up animation",
-    "@enablePiecePickUpAnimation": {
-        "description": "Enable piece pick-up and drop animation when moving"
-    },
     "undo": "Undo",
     "@undo": {
         "description": "Undo last move"
@@ -2218,6 +2190,42 @@
     "back": "Back",
     "@back": {
         "description": "Back button tooltip"
+    },
+    "voiceAssistantSettings": "Voice Assistant Settings",
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
+    "voiceAssistantSettingsDescription": "Configure model, language, and behavior",
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "llmAssistedDevelopment": "LLM-assisted development",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "Download",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "Enable AI Chat",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Allow chatting with AI assistant (experimental)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Enable piece pick-up animation",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
     },
     "puzzles": "Puzzles",
     "@puzzles": {
@@ -3261,10 +3269,6 @@
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK button text"
-    },
     "puzzlePositionSnapshotHelp": "Position Snapshot Help",
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
@@ -3698,14 +3702,6 @@
     "voiceAssistantEnabledDescription": "Allow app to receive voice commands",
     "@voiceAssistantEnabledDescription": {
         "description": "Description for voice assistant enable toggle"
-    },
-    "voiceAssistantSettings": "Voice Assistant Settings",
-    "@voiceAssistantSettings": {
-        "description": "Voice assistant settings page title"
-    },
-    "voiceAssistantSettingsDescription": "Configure model, language, and behavior",
-    "@voiceAssistantSettingsDescription": {
-        "description": "Voice assistant settings description"
     },
     "voiceAssistantGeneral": "General",
     "@voiceAssistantGeneral": {

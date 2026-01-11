@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "পটভূমির সঙ্গীত",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "স্থানীয় অডিও ফাইলকে পটভূমির সঙ্গীত হিসেবে চালান",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "পটভূমির সঙ্গীত ফাইল",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "পটভূমির সঙ্গীত মুছুন",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "সঙ্গীত ফাইলসমূহ",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "ফিরে যাওয়ার সময় নিঃশব্দ থাকুন",
     "@keepMuteWhenTakingBack": {

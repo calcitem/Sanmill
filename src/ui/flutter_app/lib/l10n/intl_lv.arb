@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Fona mūzika",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Atskaņot lokālu audio failu kā fona mūziku",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Fona mūzikas fails",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Notīrīt fona mūziku",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Mūzikas faili",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Atgriešanās laikā saglabāt izslēgtu skaņu",
     "@keepMuteWhenTakingBack": {

@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "የበስተጀርባ ሙዚቃ",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "አካባቢ የድምጽ ፋይልን እንደ የበስተጀርባ ሙዚቃ አጫውት",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "የበስተጀርባ ሙዚቃ ፋይል",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "የበስተጀርባ ሙዚቃን አጥፋ",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "የሙዚቃ ፋይሎች",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "በመመለስ ጊዜ ድምጽ አልባ ሁን",
     "@keepMuteWhenTakingBack": {

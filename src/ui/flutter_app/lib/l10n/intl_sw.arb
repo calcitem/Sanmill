@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Muziki wa mandharinyuma",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Cheza faili ya sauti ya ndani kama muziki wa mandharinyuma",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Faili ya muziki wa mandharinyuma",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Futa muziki wa mandharinyuma",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Faili za muziki",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Nyamaza unaporudisha",
     "@keepMuteWhenTakingBack": {

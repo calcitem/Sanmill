@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "རྒྱབ་ལྗོངས་རོལ་དབྱངས་",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "ས་གནས་སྒྲ་ཡིག་ཆ་ཞིག་རྒྱབ་ལྗོངས་རོལ་དབྱངས་ལྟར་གཏོང་",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "རྒྱབ་ལྗོངས་རོལ་དབྱངས་ཡིག་ཆ་",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "རྒྱབ་ལྗོངས་རོལ་དབྱངས་སུབ་",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "རོལ་དབྱངས་ཡིག་ཆ་ཚོ་",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "ཕྱིར་ལེན་སྐབས་སྒྲ་མེད་ཉར་བ།",
     "@keepMuteWhenTakingBack": {

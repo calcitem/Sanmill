@@ -60,9 +60,9 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "好的",
+    "ok": "确定",
     "@ok": {
-        "description": "OK"
+        "description": "OK button text"
     },
     "confirm": "确认",
     "@confirm": {
@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "背景音乐",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "使用本地音频文件作为背景音乐",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "背景音乐文件",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "清除背景音乐",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "音乐文件",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "悔棋时保持静音",
     "@keepMuteWhenTakingBack": {
@@ -460,14 +460,6 @@
     "developerOptions": "开发者选项",
     "@developerOptions": {
         "description": "Developer Options"
-    },
-    "llmAssistedDevelopment": "LLM 辅助开发",
-    "@llmAssistedDevelopment": {
-        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
-    },
-    "llmAssistedDevelopmentInputHint": "请输入要让 LLM 帮你完成的任务描述…",
-    "@llmAssistedDevelopmentInputHint": {
-        "description": "Hint text for the LLM-assisted development input field"
     },
     "rules": "棋规",
     "@rules": {
@@ -1134,18 +1126,6 @@
     "close": "关闭",
     "@close": {
         "description": "Close"
-    },
-    "download": "下载",
-    "@download": {
-        "description": "Download button text"
-    },
-    "status": "状态",
-    "@status": {
-        "description": "Status label"
-    },
-    "unknown": "未知",
-    "@unknown": {
-        "description": "Unknown value"
     },
     "whitePiece": "白棋",
     "@whitePiece": {
@@ -2029,10 +2009,6 @@
     "@model": {},
     "temperature": "温度",
     "@temperature": {},
-    "enableAiChat": "允许和 AI 助手聊天",
-    "@enableAiChat": {},
-    "allowChatWithAiAssistant": "启用 AI 聊天助手功能（实验性）",
-    "@allowChatWithAiAssistant": {},
     "llmCommandReceivedProcessing": "收到指令，AI 正在处理...",
     "@llmCommandReceivedProcessing": {},
     "llmDeepThinkingWait": "深度思考中，请稍候...",
@@ -2199,10 +2175,6 @@
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
-    "enablePiecePickUpAnimation": "启用棋子拿起动画",
-    "@enablePiecePickUpAnimation": {
-        "description": "Enable piece pick-up and drop animation when moving"
-    },
     "undo": "撤销",
     "@undo": {
         "description": "Undo last move"
@@ -2218,6 +2190,42 @@
     "back": "返回",
     "@back": {
         "description": "Back button tooltip"
+    },
+    "voiceAssistantSettings": "语音助手设置",
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
+    "voiceAssistantSettingsDescription": "配置模型、语言和行为",
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "llmAssistedDevelopment": "LLM 辅助开发",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "请输入要让 LLM 帮你完成的任务描述…",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "下载",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "状态",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "未知",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "允许和 AI 助手聊天",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "启用 AI 聊天助手功能（实验性）",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "启用棋子拿起动画",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
     },
     "puzzles": "谜题练习",
     "@puzzles": {
@@ -3261,10 +3269,6 @@
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "ok": "确定",
-    "@ok": {
-        "description": "OK button text"
-    },
     "puzzlePositionSnapshotHelp": "局面快照帮助",
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
@@ -3698,14 +3702,6 @@
     "voiceAssistantEnabledDescription": "允许应用接收语音指令",
     "@voiceAssistantEnabledDescription": {
         "description": "Description for voice assistant enable toggle"
-    },
-    "voiceAssistantSettings": "语音助手设置",
-    "@voiceAssistantSettings": {
-        "description": "Voice assistant settings page title"
-    },
-    "voiceAssistantSettingsDescription": "配置模型、语言和行为",
-    "@voiceAssistantSettingsDescription": {
-        "description": "Voice assistant settings description"
     },
     "voiceAssistantGeneral": "常规",
     "@voiceAssistantGeneral": {

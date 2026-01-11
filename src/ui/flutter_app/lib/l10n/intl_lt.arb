@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Foninė muzika",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Leisti vietinį garso failą kaip foninę muziką",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Foninės muzikos failas",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Išvalyti foninę muziką",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Muzikos failai",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Išlaikykite garsą išjungtą, kai grįžtate atgal",
     "@keepMuteWhenTakingBack": {

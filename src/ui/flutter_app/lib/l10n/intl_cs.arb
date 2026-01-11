@@ -399,23 +399,23 @@
     },
     "backgroundMusic": "Hudba na pozadí",
     "@backgroundMusic": {
-    "description": "Background music"
+        "description": "Background music"
     },
     "backgroundMusicDescription": "Přehrávat místní zvukový soubor jako hudbu na pozadí",
     "@backgroundMusicDescription": {
-    "description": "Description for background music option"
+        "description": "Description for background music option"
     },
     "backgroundMusicFile": "Soubor hudby na pozadí",
     "@backgroundMusicFile": {
-    "description": "Background music file"
+        "description": "Background music file"
     },
     "clearBackgroundMusic": "Vymazat hudbu na pozadí",
     "@clearBackgroundMusic": {
-    "description": "Clear background music"
+        "description": "Clear background music"
     },
     "musicFiles": "Hudební soubory",
     "@musicFiles": {
-    "description": "Root label for music file picker"
+        "description": "Root label for music file picker"
     },
     "keepMuteWhenTakingBack": "Zachovat ticho při vracení tahu",
     "@keepMuteWhenTakingBack": {
