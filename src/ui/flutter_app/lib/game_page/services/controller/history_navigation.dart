@@ -349,9 +349,44 @@ class HistoryNavigator {
 
     final String? lastPosWithRemove =
         GameController().gameRecorder.lastPositionWithRemove;
-    GameController().gameRecorder = tempRec; // adopt the updated recorder
+
+    // CRITICAL: Build the path of moves to relocate activeNode in original tree
+    final List<ExtMove> activePath = <ExtMove>[];
+    PgnNode<ExtMove>? cur = GameController().gameRecorder.activeNode;
+    while (cur != null && cur.data != null) {
+      activePath.insert(0, cur.data!);
+      cur = cur.parent;
+    }
+
+    GameController().gameRecorder = tempRec; // Restore the original recorder
     GameController().gameRecorder.lastPositionWithRemove = lastPosWithRemove;
     GameController().newGameRecorder = null;
+
+    // CRITICAL: Re-locate activeNode in the original tree by walking the path
+    PgnNode<ExtMove> targetNode = GameController().gameRecorder.pgnRoot;
+    for (final ExtMove moveInPath in activePath) {
+      // Find the child that matches this move
+      PgnNode<ExtMove>? matchingChild;
+      for (final PgnNode<ExtMove> child in targetNode.children) {
+        if (child.data != null && child.data!.move == moveInPath.move) {
+          matchingChild = child;
+          break;
+        }
+      }
+      if (matchingChild != null) {
+        targetNode = matchingChild;
+      } else {
+        // Path not found in original tree - should not happen
+        break;
+      }
+    }
+
+    // Update activeNode to point to the correct node in the original tree
+    if (activePath.isEmpty) {
+      GameController().gameRecorder.activeNode = null;
+    } else {
+      GameController().gameRecorder.activeNode = targetNode;
+    }
 
     return success ? const HistoryOK() : const HistoryRule();
   }
@@ -447,6 +482,7 @@ class HistoryNavigator {
       // Just move activeNode to parent
       GameController().gameRecorder.activeNode = node.parent;
     }
+
     // Notify move count change after all steps
     GameController().gameRecorder.moveCountNotifier.value =
         GameController().gameRecorder.mainlineMoves.length;

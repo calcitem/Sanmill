@@ -117,23 +117,27 @@ class GameRecorder {
     } else {
       // Check if active node already has children
       if (activeNode!.children.isNotEmpty && createVariation) {
-        // Check if the new move is different from existing first child
-        final ExtMove? existingMove = activeNode!.children.first.data;
-        if (existingMove != null && existingMove.move != move.move) {
-          // Create a variation: add as a new child (not at position 0)
+        // IMPORTANT: Check ALL children to see if this move already exists
+        // This allows re-walking existing variations without creating duplicates
+        PgnNode<ExtMove>? matchingChild;
+
+        for (int i = 0; i < activeNode!.children.length; i++) {
+          final ExtMove? childMove = activeNode!.children[i].data;
+          if (childMove != null && childMove.move == move.move) {
+            matchingChild = activeNode!.children[i];
+            break;
+          }
+        }
+
+        if (matchingChild != null) {
+          // Found matching move in existing children - follow it
+          activeNode = matchingChild;
+        } else {
+          // No matching child found - create new variation
           final PgnNode<ExtMove> variationNode = PgnNode<ExtMove>(move);
           variationNode.parent = activeNode;
           activeNode!.children.add(variationNode);
           activeNode = variationNode;
-        } else if (existingMove != null && existingMove.move == move.move) {
-          // Same move exists, just follow it
-          activeNode = activeNode!.children.first;
-        } else {
-          // Extend normally
-          final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
-          newChild.parent = activeNode;
-          activeNode!.children.insert(0, newChild);
-          activeNode = newChild;
         }
       } else {
         // Extend the active line by inserting new move at the front of children.
@@ -190,12 +194,27 @@ class GameRecorder {
   }
 
   /// Creates a new branch node under the current activeNode and sets it as active.
+  /// IMPORTANT: Now checks if the move already exists in children to avoid duplicates.
   void branchNewMoveFromActiveNode(ExtMove newMove) {
     final PgnNode<ExtMove> where = activeNode ?? _pgnRoot;
+
+    // Check if this move already exists in children to avoid duplicates
+    for (int i = 0; i < where.children.length; i++) {
+      final ExtMove? childMove = where.children[i].data;
+      if (childMove != null && childMove.move == newMove.move) {
+        // Move already exists - just follow it instead of creating duplicate
+        activeNode = where.children[i];
+        moveCountNotifier.value = currentPath.length;
+        return;
+      }
+    }
+
+    // No matching child found - create new branch
     final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(newMove);
     newChild.parent = where;
     where.children.insert(0, newChild);
     activeNode = newChild;
+    moveCountNotifier.value = currentPath.length;
   }
 
   /// Returns a textual representation of the move history including NAG, comments,
