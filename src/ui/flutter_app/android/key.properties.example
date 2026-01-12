@@ -2,3 +2,6 @@ storePassword=<password from previous step>
 keyPassword=<password from previous step>
 keyAlias=key
 storeFile=<location of the key store file, e.g. /Users/<user name>/key.jks>
+# Optional: Explicit keystore type. Recommended for JDK 9+ where the default
+# keystore type is often PKCS12. Common values: jks, pkcs12.
+# storeType=jks

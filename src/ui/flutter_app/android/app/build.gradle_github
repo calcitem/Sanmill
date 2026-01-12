@@ -32,9 +32,31 @@ if (keystorePropertiesFile.exists()) {
         keystoreProperties.setProperty('keyPassword', System.getenv('KEY_PASSWORD'));
         keystoreProperties.setProperty('keyAlias', System.getenv('ALIAS'));
         keystoreProperties.setProperty('storeFile', System.getenv('KEY_PATH'));
+        // Optional override. Defaults to type inferred from file extension.
+        if (System.getenv('KEY_STORE_TYPE')) {
+            keystoreProperties.setProperty('storeType', System.getenv('KEY_STORE_TYPE'));
+        }
 	} else {
 	    throw new GradleException("key.properties not found. Copy key.properties.example to key.properties and modify it to suit your needs.")
 	}
+}
+
+// JDK 9+ defaults keystore.type to PKCS12. If a JKS file is provided (common for
+// Android signing), not setting storeType can cause parsing errors like:
+// "Tag number over 30 is not supported". Infer a sensible default from the
+// keystore file extension, but allow explicit override via key.properties/env.
+def inferKeyStoreType = { String storeFilePath ->
+    if (storeFilePath == null) {
+        return null
+    }
+    def lower = storeFilePath.toLowerCase()
+    if (lower.endsWith('.jks') || lower.endsWith('.keystore')) {
+        return 'jks'
+    }
+    if (lower.endsWith('.p12') || lower.endsWith('.pfx')) {
+        return 'pkcs12'
+    }
+    return null
 }
 
 android {
@@ -67,10 +89,25 @@ android {
 
     signingConfigs {
         release {
+            def storeFilePath = (keystoreProperties['storeFile'] ?: '').toString().trim()
+            if (storeFilePath.isEmpty()) {
+                throw new GradleException("Signing keystore path is missing. Set storeFile in key.properties or KEY_PATH env var.")
+            }
+
+            def resolvedStoreFile = file(storeFilePath)
+            if (!resolvedStoreFile.exists()) {
+                throw new GradleException("Signing keystore file not found at: ${resolvedStoreFile}")
+            }
+
+            def storeTypeValue = (keystoreProperties['storeType'] ?: inferKeyStoreType(storeFilePath))?.toString()
+
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storeFile resolvedStoreFile
             storePassword keystoreProperties['storePassword']
+            if (storeTypeValue != null && !storeTypeValue.trim().isEmpty()) {
+                storeType storeTypeValue
+            }
         }
     }
     buildTypes {
