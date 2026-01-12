@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "குரல் உதவியாளர் அமைப்புகள்",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "மாதிரி, மொழி மற்றும் நடத்தையை உள்ளமை",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "எல்எல்எம்-உதவி மேம்பாடு",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "LLM உங்களுக்கு உதவ விரும்பும் பணியை விவரிக்கவும்...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "பதிவிறக்கவும்",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "நிலை",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "தெரியவில்லை",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI அரட்டையை இயக்கவும்",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "AI உதவியாளருடன் அரட்டையடிக்க அனுமதி (பரிசோதனை)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "துண்டு பிக்-அப் அனிமேஷனை இயக்கு",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "புதிர்கள்",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "புதிர்",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "புதிர்கள் எதுவும் இல்லை",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "வடிகட்டி",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "வகை",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "வடிகட்டியை அழி",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "புதிர் புள்ளிவிவரங்கள்",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "மொத்த புதிர்கள்",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "முடிக்கப்பட்டது",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "மொத்த நட்சத்திரங்கள்",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "நிறைவு",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "ஆரம்பநிலை",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "எளிதானது",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "நடுத்தர",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "கடினமான",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "நிபுணர்",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "மாஸ்டர்",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "படிவம் மில்",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "பிடிப்பு",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "வின் கேம்",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "பாதுகாப்பு",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "சிறந்த நகர்வு",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "இறுதி விளையாட்டு",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "திறப்பு",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "கலப்பு",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "புதிரில் இருந்து வெளியேறவா?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "முன்னேற்றம் இழக்கப்படும்.தொடரவா?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "நகர்கிறது",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "உகந்தது",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "தீர்வைச் சரிபார்க்கவும்",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "கிவ் அப்",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "புதிர் தீர்ந்தது!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "பயன்படுத்தப்பட்ட குறிப்புகள்",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "மீண்டும் முயற்சிக்கவும்",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "பட்டியல்க்குத் திரும்பு",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "தீர்வு",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "புதிய புதிரை உருவாக்கவும்",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "புதிரைத் திருத்து",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "தனிப்பயன்",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "விதிகள் பொருந்தவில்லை",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules}க்கு, தற்போது {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "தொடரவும்",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "இணக்கமானது மட்டுமே",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "புதிர்களைத் தேர்ந்தெடுக்கவும்",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} தேர்ந்தெடுக்கப்பட்டது",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "அனைத்தையும் தேர்ந்தெடுக்கவும்",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "ஏற்றுமதி",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "இறக்குமதி",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{{count} புதிர் வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டது} other{{count} புதிர்கள் வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டன}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "புதிர்களை ஏற்றுமதி செய்ய முடியவில்லை",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{{count} புதிர் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது} other{{count} புதிர்கள் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டன}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "புதிர்களை இறக்குமதி செய்ய முடியவில்லை",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "கோப்பு எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "தவறான கோப்பு பாதை",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "கோப்பை எடுப்பதில் பிழை: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "கோப்பு இல்லை",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "தவறான கோப்பு வடிவம்: விடுபட்ட புதிர்கள் புலம்",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "பொருந்தாத கோப்பு வடிவமைப்பு பதிப்பு: {version} (எதிர்பார்க்கப்படும் {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "புதிர் {index} (\"{title}\") தவறான FEN வடிவமைப்பைக் கொண்டுள்ளது",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "புதிர் {index} (\"{title}\") வெவ்வேறு விதிகளைப் பயன்படுத்துகிறது: {puzzleRules} (தற்போதைய: {currentRules}).உங்கள் தற்போதைய அமைப்புகளுடன் இந்தப் புதிர் சரியாக வேலை செய்யாமல் போகலாம்.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "புதிரை அலசுவதில் தோல்வி {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "பிழைகள்:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "எச்சரிக்கைகள்:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "கோப்பைப் படிப்பதில் பிழை: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "புதிருக்கு ஒரு தலைப்பு இருக்க வேண்டும்",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "புதிருக்கு விளக்கம் இருக்க வேண்டும்",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "புதிர் சரியான நிலையில் இருக்க வேண்டும்",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "புதிரில் தவறான FEN வடிவம் உள்ளது.நிலையை சரிபார்க்கவும்.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "புதிருக்கு ஒரு தீர்வு இருக்க வேண்டும்",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "தலைப்பு மிகவும் சிறியது (குறைந்தபட்சம் 5 எழுத்துகள்)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "தலைப்பு மிக நீளமானது (அதிகபட்சம் 100 எழுத்துகள்)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "விளக்கம் மிகவும் சிறியது (குறைந்தபட்சம் 10 எழுத்துகள்)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "விளக்கம் மிக நீளமானது (அதிகபட்சம் 500 எழுத்துகள்)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "பங்களிக்கும் முன் உங்கள் பெயரை ஆசிரியராகச் சேர்க்கவும்",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} புதிரை நீக்கவா?} other{{count} புதிர்களை நீக்கவா?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} புதிர் நீக்கப்பட்டது} other{{count} புதிர்கள் நீக்கப்பட்டன}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "உள்ளமைக்கப்பட்ட புதிர்களை நீக்க முடியாது",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "ஒரு புதிரை எவ்வாறு உருவாக்குவது",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. அமைவு பலகை\n2.ஸ்னாப்ஷாட் நிலை\n3.பதிவு நகர்வுகள்\n4.விவரங்களை நிரப்பவும்\n5.சேமிக்கவும்",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "அமைவு நிலை",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "நிலை ஸ்னாப்ஷாட்",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "ஆரம்ப நிலை",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "இறுதி நிலை",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "இன்னும் ஸ்னாப்ஷாட் இல்லை",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "முதலில் ஸ்னாப்ஷாட் நிலை",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "பதிவு தீர்வு",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "பதிவைத் தொடங்கவும்",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "பதிவு செய்வதை நிறுத்து",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "பதிவு செய்கிறது...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "பதிவு தொடங்கியது",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{பதிவு செய்யப்பட்ட {count} நகர்வு} other{பதிவுசெய்யப்பட்ட {count} நகர்வுகள்}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{தீர்வு: {count} நகர்வு} other{தீர்வு: {count} நகர்வுகள்}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "இன்னும் தீர்வு இல்லை",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "தெளிவான தீர்வு",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "தீர்வு {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "மற்றொரு தீர்வைச் சேர்க்கவும்",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "இந்த தீர்வை அகற்று",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ உகந்தது",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "மாற்று",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "உகந்ததாகக் குறிக்கவும்",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 தீர்வு} other{{count} தீர்வுகள்}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "இந்த தீர்வை அகற்றவா?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "குறைந்தபட்சம் ஒரு தீர்வு தேவை",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "புதிர் விவரங்கள்",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "தலைப்பு",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "விளக்கம்",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "வகை",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "சிரமம்",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "குறிப்பு",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "குறிச்சொற்கள்",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "கமா பிரிக்கப்பட்டது",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "ஆசிரியர்",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "நிறைவு செய்தி",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "தந்திரோபாயத்தை விளக்குங்கள் அல்லது தீர்ப்பாளரை வாழ்த்துங்கள்",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "தலைப்பு தேவை",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "விளக்கம் தேவை",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "பதவி தேவை",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "தீர்வு தேவை",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "புதிர் உருவாக்கப்பட்டது",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "புதிர் புதுப்பிக்கப்பட்டது",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "புதிரைச் சேமிக்க முடியவில்லை",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "விருப்பமானது",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "உங்கள் முன்னேற்றம்",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "வெளியேறு",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "அனைத்து",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "விரைவில்",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "தினசரி புதிர்",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "ஒவ்வொரு நாளும் ஒரு புதிய புதிரைத் தீர்க்கவும்",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "நாள் #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "ஸ்ட்ரீக்",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "நாள் ஸ்ட்ரீக்",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "நாட்கள்",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "சிறந்தது: {longestStreak} நாட்கள்",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "தினசரி புதிரைத் தொடங்குங்கள்",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "உங்கள் தொடரை உருவாக்க தினசரி புதிர்களை முடிக்கவும்!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "தற்போதைய ஸ்ட்ரீக்",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "நீளமான ஸ்ட்ரீக்",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "மொத்தம் முடிந்தது",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "உங்கள் தொடரை பராமரிக்க ஒவ்வொரு நாளும் புதிர்களைத் தீர்க்கவும்.ஒரு நாள் விடுபட்டால் அது மீட்டமைக்கப்படும்!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "அனைத்து புதிர்கள்",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "கிடைக்கக்கூடிய அனைத்து புதிர்களையும் உலாவவும்",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "புதிர் ரஷ்",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "கடிகாரத்திற்கு எதிராக புதிர்களைத் தீர்க்கவும்",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 நிமிடங்களில் உங்களால் முடிந்தவரை பல புதிர்களை தீர்க்கவும்!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "விதிகள்",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ கடிகாரத்தில் 5 நிமிடங்கள்",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 உயிர்கள் - ஒரு தவறுக்கு 1 இழப்பு",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 உங்கள் மதிப்பெண்ணை அதிகரிக்கவும்!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "ரஷ் தொடங்கு",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "அவசரத்தை கைவிடவா?முன்னேற்றம் இழக்கப்படும்.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "அவசர முடிவுகள்",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "நேரம் முடிந்தது!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "அவுட் ஆஃப் லைவ்ஸ்",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "அவசரம் முடிந்தது!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "தீர்க்கப்பட்டது",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "தோல்வியடைந்தது",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "துல்லியம்",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "மீண்டும் விளையாடு",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "புதிர் போர்",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "மற்ற வீரர்களுடன் போட்டியிடுங்கள்",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "விரைவில்!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "இந்த அம்சம் தற்போது உருவாக்கத்தில் உள்ளது.காத்திருங்கள்!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 புதிர் பந்தயங்கள்",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 நேரடி எதிராளி பொருத்தம்",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 மதிப்பீட்டு முறை",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 லீடர்போர்டுகள்",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "தனிப்பயன் புதிர்கள்",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "உங்கள் புதிர்களை உருவாக்கி நிர்வகிக்கவும்",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "பல தேர்வு முறை",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "புதிரை உருவாக்கவும்",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "புதிர் ஸ்ட்ரீக்",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "தவறின்றி தொடர்ச்சியாக தீர்க்கவும்",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "ஒரு வரிசையில் எத்தனை தீர்க்க முடியும்?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "விதிகள்",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 முடிந்தவரை பல புதிர்களைத் தீர்க்கவும்",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ ஒரு தவறு மற்றும் அது முடிந்துவிட்டது",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 உங்கள் தனிப்பட்ட சாதனையை முறியடிக்கவும்",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "ஸ்ட்ரீக்கைத் தொடங்குங்கள்",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "தற்போதைய",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "சிறந்த",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "ஸ்ட்ரீக் முடிவுகள்",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "ஸ்ட்ரீக் முடிந்தது",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "புதிய சாதனை!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "இறுதி மதிப்பெண்",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "மீண்டும் முயற்சிக்கவும்",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "நீங்கள் நிச்சயமாக வெளியேற விரும்புகிறீர்களா?உனது கோடு தொலைந்து போகும்.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "வரலாறு",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "உங்கள் புதிர் முயற்சிகளைப் பார்க்கவும்",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "புதிர் வரலாறு இல்லை",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "உங்கள் வரலாற்றை இங்கே காண புதிர்களைத் தீர்க்கத் தொடங்குங்கள்",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "வெற்றி மட்டுமே",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "தோல்வி மட்டுமே",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "தெரியாத புதிர்",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "குறிப்புகள்",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "விரிவான பகுப்பாய்வுகளைக் காண்க",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "உங்கள் புதிர் மதிப்பீடு",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "தற்காலிக ({gamesLeft} கேம்கள் மீதமுள்ளன)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "விளையாடிய விளையாட்டுகள்",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "விலகல்",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "செயல்திறன் கண்ணோட்டம்",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "வெற்றி விகிதம்",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "சராசரிநேரம்",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "தீர்க்கப்பட்டது",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "தோல்வியடைந்தது",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "சிரமத்தால் வெற்றி",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "வகையின்படி வெற்றி",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "சமீபத்திய செயல்பாடு",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "சமீபத்திய செயல்பாடு இல்லை",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "திருத்தவும்",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "சேமிக்கவும்",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "தனிப்பயன் புதிர்கள் இல்லை",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "குறிப்பிட்ட நிலைகளை பயிற்சி செய்ய உங்கள் சொந்த புதிர்களை உருவாக்கவும்",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "இந்த அம்சம் எதிர்காலத்தில் வெளியிட திட்டமிடப்பட்டுள்ளது",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "தவறான நிலை",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "திறந்த பலகை (அமைவு நிலை)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "திறந்த பலகை (விளையாட்டு நகர்வுகள்)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "பலகையைத் திறக்க கீழே உள்ள பொத்தானைப் பயன்படுத்தவும், பின்னர் திரும்புவதற்கு Back என்பதை அழுத்தவும்.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "தவறான நிலை வடிவம்.விளையாட்டு பலகையை சரிபார்க்கவும்.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "நிலையை ஏற்றுவதில் தோல்வி.மறுபடி எடுக்கவும்.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "தவறான நிலை வடிவம்.தயவு செய்து நிலையை மீண்டும் படமெடுக்கவும்.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "விரிவான பணிப்பாய்வுகளைக் காட்டு",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "புதிர் உருவாக்கும் பணிப்பாய்வு",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "அமைவு நிலை",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "திறந்த பலகை, அமைவு நிலை, ஸ்னாப்ஷாட்",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "பதிவு தீர்வு",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "பதிவைத் தொடங்கவும், நகர்வுகளை இயக்கவும், நிறுத்தவும்",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "விவரங்களைச் சேர்க்கவும்",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "தலைப்பு, வகை, சிரமம் ஆகியவற்றை நிரப்பவும்",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "புதிரைச் சேமிக்கவும்",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "சேமி பொத்தானைக் கிளிக் செய்யவும்",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "உதவிக்குறிப்பு: இந்தப் பக்கத்திற்கும் கேம் போர்டுக்கும் இடையில் நீங்கள் செல்லலாம்.உங்கள் முன்னேற்றம் சேமிக்கப்பட்டது!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "நிலை ஸ்னாப்ஷாட் உதவி",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "புதிரின் தொடக்க நிலையை ஸ்னாப்ஷாட் செய்வது எப்படி:\n\n1.கைமுறையாக துண்டுகளை வைக்க \"திறந்த பலகை (அமைவு நிலை)\" என்பதைக் கிளிக் செய்யவும் அல்லது நகர்வுகளைச் செய்வதன் மூலம் நிலையை அடைய \"திறந்த பலகை (மூவ்ஸ்)\" என்பதைக் கிளிக் செய்யவும்\n\n2.நீங்கள் விரும்பிய புதிர் தொடக்க நிலைக்கு பலகையை அமைக்கவும்\n\n3.இந்தப் பக்கத்திற்குத் திரும்ப பின் பொத்தானை அழுத்தவும்\n\n4.நிலை தானாகவே ஸ்னாப்ஷாட் செய்யப்பட்டு சேமிக்கப்படும்\n\nஇந்த ஸ்னாப்ஷாட் செய்யப்பட்ட நிலை உங்கள் புதிரின் தொடக்கப் புள்ளியாகப் பயன்படுத்தப்படும்.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "தீர்வு பதிவு உதவி",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "தீர்வு நகர்வுகளை எவ்வாறு பதிவு செய்வது:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "முதலில் தொடக்க நிலையை ஸ்னாப்ஷாட் செய்யவும்",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"பதிவு செய்யத் தொடங்கு\" பொத்தானைக் கிளிக் செய்யவும் (இது உங்கள் ஸ்னாப்ஷாட் நிலைக்கு பலகையை மீட்டமைக்கிறது)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "இங்கே திரும்பி, \"பதிவு செய்வதை நிறுத்து\" என்பதைக் கிளிக் செய்யவும்",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "உதவிக்குறிப்பு: நீங்கள் பதிவு செய்யத் தொடங்கும் போது போர்டு தானாகவே உங்கள் ஸ்னாப்ஷாட் நிலைக்கு மீட்டமைக்கப்படும்.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "நீங்கள் பல தீர்வுகளைச் சேர்க்கலாம் (வரம்பு இல்லை).மிகச் சிறிய/சிறந்த ஒன்றை உகந்ததாகக் குறிக்கவும்.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "நிலை ஸ்னாப்ஷாட் உதவியைக் காட்டு",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "தீர்வு பதிவு உதவியைக் காட்டு",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "மேலும் குறிப்புகள் இல்லை",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "குறிப்பு",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "உகந்த தீர்வு ({moves} நகர்வுகள்):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "சரிபார்ப்பு பிழைகள்",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "சான்மில் புதிர்களை பங்களிக்கவும்",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "அடுத்து என்ன நடக்கும்:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. உங்கள் புதிர்கள் JSON கோப்பிற்கு ஏற்றுமதி செய்யப்படும்",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. பகிர்வு உரையாடல் வழியாக இந்தக் கோப்பைப் பகிரலாம்",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. புதிர்கள் பராமரிப்பாளர்களால் மதிப்பாய்வு செய்யப்படும்",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. அங்கீகரிக்கப்பட்டவுடன், அவை உள்ளமைக்கப்பட்ட புதிர்களாக மாறும்!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "பங்களிப்புக்காக ஏற்றுமதி",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "பங்களிக்கத் தொடங்குங்கள்",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "விரைவு தொடக்கம்:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "தரமான புதிர்களை உருவாக்கவும்",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "உங்கள் புதிர் தெளிவான தீர்வு, நல்ல மெட்டாடேட்டா மற்றும் மதிப்புமிக்க ஒன்றைக் கற்பிக்கிறது என்பதை உறுதிப்படுத்தவும்.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "உங்கள் பெயரைச் சேர்க்கவும்",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "கிரெடிட்டைப் பெற, உங்கள் புதிரைத் திருத்தி, உங்கள் பெயரை ஆசிரியராகச் சேர்க்கவும்.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "பங்களிப்புக்காக ஏற்றுமதி",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "உங்கள் புதிர்களைத் தேர்ந்தெடுத்து, சரியான வடிவத்தில் ஏற்றுமதி செய்ய பதிவேற்ற ஐகானைத் தட்டவும்.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "சமர்ப்பிக்கவும்",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "ஏற்றுமதி செய்யப்பட்ட கோப்பை GitHub புல் கோரிக்கை, வெளியீடு அல்லது மின்னஞ்சல் வழியாகப் பகிரவும்.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "முழு ஆவணம்",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "முழுமையான வழிமுறைகள், தர வழிகாட்டுதல்கள் மற்றும் சமர்ப்பிக்கும் விருப்பங்களுக்கு களஞ்சியத்தில் PUZZLE_CONTRIBUTION_GUIDE.md ஐப் பார்க்கவும்.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "தரமான தேவைகள்:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ தெளிவான, தனித்துவமான தீர்வு",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ முழுமையான மெட்டாடேட்டா (தலைப்பு, விளக்கம் போன்றவை)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ ஆசிரியர் பண்புக்கூறு",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ துல்லியமான சிரம மதிப்பீடு",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ அறிவுறுத்தல் அல்லது பொழுதுபோக்கு",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "அடுத்த நகர்வு: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "முழுமையான தீர்வு: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "இந்த நிலைகளில் கவனம் செலுத்துங்கள்",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "தீர்வு கிடைக்கவில்லை",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "தொடருங்கள்!இலக்கு இன்னும் அடையப்படவில்லை.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "சரியானது!உகந்த நகர்வுகளில் தீர்க்கப்பட்டது!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "சரி!({count} நகர்வுகள், உகந்தது: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "சரி!நீங்கள் ஒரு மாற்று தீர்வைக் கண்டுபிடித்தீர்கள்!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "இப்போதுதான்",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}நி முன்பு",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}ம முன்பு",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}நா முன்பு",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "தவறான புதிர்",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "இந்த புதிர் தவறான நிலை வடிவமைப்பைக் கொண்டுள்ளது மற்றும் ஏற்ற முடியாது.புதிர் ஆசிரியரைத் தொடர்பு கொள்ளவும் அல்லது வேறு புதிரை முயற்சிக்கவும்.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "தொடர்ந்து முயற்சி செய்யுங்கள்!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "எடுத்துக்காட்டுகள்",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI உதவியாளர்",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "வணக்கம்!நான் உங்கள் மில் விளையாட்டு உதவியாளர்.உத்திகள், நிலைகள் அல்லது தற்போதைய விளையாட்டைப் பற்றிய ஏதேனும் கேள்விகள் பற்றி என்னிடம் கேளுங்கள்.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "விளையாட்டைப் பற்றி கேளுங்கள்...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "மன்னிக்கவும், நான் ஒரு பிழையை எதிர்கொண்டேன்.மீண்டும் முயற்சிக்கவும்.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI உதவியாளர் கட்டமைக்கப்படவில்லை.முதலில் LLM அமைப்புகளை உள்ளமைக்கவும்.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "AI உதவியாளருடன் அரட்டையடிக்கவும்",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "அரட்டை வரலாற்றை அழிக்கவும்",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "அரட்டை வரலாற்றை அழிக்கவா?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "இது அனைத்து செய்திகளையும் நீக்கி புதிய உரையாடலைத் தொடங்கும்.இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "அரட்டை வரலாறு அழிக்கப்பட்டது",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "பதிவுகள்",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "பதிவுகளைப் பதிவிறக்கவும்",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "பதிவுகள் எதுவும் கிடைக்கவில்லை",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "பயன்பாடு இயங்கும்போது பதிவுகள் இங்கே தோன்றும்.பயன்பாட்டைப் பயன்படுத்தி, பதிவுகளைப் பார்க்க மீண்டும் வரவும்.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "பதிவிறக்க பதிவுகள் இல்லை",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "பதிவிறக்கம் தோல்வியடைந்தது",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "புதுப்பிக்கவும்",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "பகிர்வு பதிவுகள்",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "{path} க்கு பதிவிறக்கப்பட்டது",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "பயன்முறையைத் தேர்ந்தெடுக்கவும்",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "நகல் தேர்ந்தெடுக்கப்பட்டது",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "தொடக்கப் புள்ளியைத் தேர்ந்தெடுக்க தட்டவும்",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "இறுதிப் புள்ளியைத் தேர்ந்தெடுக்க தட்டவும்",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "பதிவுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "மேலே உருட்டவும் (பழையது)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "கீழே உருட்டவும் (புதிய)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "கீழே புதிய பதிவுகள்",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "பதிவுகள்: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "பதிவு இடையகம் நிரம்பியது ({current}/{max}).பழைய பதிவுகள் அகற்றப்படுகின்றன.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "பதிவுகளை அழிக்கவும்",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "எல்லா பதிவுகளையும் நிச்சயமாக அழிக்க விரும்புகிறீர்களா?இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "தெளிவு",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "பதிவுகள் அழிக்கப்பட்டன",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "தவறான புதிர்",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "இந்த புதிர் தவறான நிலை வடிவமைப்பைக் கொண்டுள்ளது மற்றும் ஏற்ற முடியாது.புதிர் ஆசிரியரைத் தொடர்பு கொள்ளவும் அல்லது வேறு புதிரை முயற்சிக்கவும்.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "பட்டியல்க்குத் திரும்பு",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "தவறான நடவடிக்கை.மீண்டும் முயற்சிக்கவும்.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "அந்த நடவடிக்கை தீர்வுக்கு பொருந்தவில்லை.நீங்கள் மீண்டும் முயற்சிக்கலாம் அல்லது சரியான தீர்வைப் பார்க்கலாம்.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "தீர்வைக் காட்டு",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "தீர்வு விளையாடுகிறது...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "தீர்வு பிளேபேக் முடிந்தது",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "இந்த புதிருக்கு தீர்வு கிடைக்கவில்லை",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "தீர்வு பார்க்கப்பட்டது (நட்சத்திரங்கள் இல்லை)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{முயற்சி: {count}} other{முயற்சிகள்: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "மேலும் குறிப்புகள் இல்லை",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "குறிப்பு",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "சரிபார்ப்பு பிழைகள்",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "பங்களிக்கும் முன் பின்வரும் புதிர்களை சரிசெய்ய வேண்டும்:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "சான்மில் புதிர்களை பங்களிக்கவும்",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "பங்களிப்பிற்காக {count} புதிர்(களை) ஏற்றுமதி செய்ய உள்ளீர்கள்.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "அடுத்து என்ன நடக்கும்:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. உங்கள் புதிர்கள் JSON கோப்பிற்கு ஏற்றுமதி செய்யப்படும்",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. பகிர்வு உரையாடல் வழியாக இந்தக் கோப்பைப் பகிரலாம்",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. GitHub, மின்னஞ்சல் அல்லது GitHub மூலம் சமர்ப்பிக்கவும் (வழிகாட்டியைப் பார்க்கவும்)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. புதிர்கள் பராமரிப்பாளர்களால் மதிப்பாய்வு செய்யப்படும்",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. அங்கீகரிக்கப்பட்டவுடன், அவை உள்ளமைக்கப்பட்ட புதிர்களாக மாறும்!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "பங்களிப்பதன் மூலம், CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike) இன் கீழ் உங்கள் புதிர் உள்ளடக்கத்திற்கு உரிமம் வழங்க ஒப்புக்கொள்கிறீர்கள்.",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "பங்களிப்புக்காக ஏற்றுமதி",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "பங்களிக்கத் தொடங்குங்கள்",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "புதிர்களை எவ்வாறு பங்களிப்பது",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "இந்த {count} புதிர்களைப் பாருங்கள்!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "புதிர்கள் ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "புதிர் பங்களிப்பு.\n\nசமர்ப்பிப்பதற்கான வழிமுறைகளுக்கு PUZZLE_CONTRIBUTION_GUIDE.md ஐப் பார்க்கவும்.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "புதிர் பங்களிப்பு: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "புதிர் பங்களிப்புகள்.\n\nசமர்ப்பிப்பதற்கான வழிமுறைகளுக்கு PUZZLE_CONTRIBUTION_GUIDE.md ஐப் பார்க்கவும்.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "புதிர் பங்களிப்புகள் ({count} புதிர்கள்)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "உங்கள் புதிர்களை பங்களிப்பதன் மூலம் இந்த திட்டத்தை சிறப்பாக்க உதவுங்கள்!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "விரைவு தொடக்கம்:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "தரமான புதிர்களை உருவாக்கவும்",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "உங்கள் புதிர் தெளிவான தீர்வு, நல்ல மெட்டாடேட்டா மற்றும் மதிப்புமிக்க ஒன்றைக் கற்பிக்கிறது என்பதை உறுதிப்படுத்தவும்.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "உங்கள் பெயரைச் சேர்க்கவும்",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "கிரெடிட்டைப் பெற, உங்கள் புதிரைத் திருத்தி, உங்கள் பெயரை ஆசிரியராகச் சேர்க்கவும்.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "பங்களிப்புக்காக ஏற்றுமதி",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "உங்கள் புதிர்களைத் தேர்ந்தெடுத்து, சரியான வடிவத்தில் ஏற்றுமதி செய்ய பதிவேற்ற ஐகானைத் தட்டவும்.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "சமர்ப்பிக்கவும்",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "ஏற்றுமதி செய்யப்பட்ட கோப்பை GitHub புல் கோரிக்கை, வெளியீடு அல்லது மின்னஞ்சல் வழியாகப் பகிரவும்.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "முழு ஆவணம்",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "முழுமையான வழிமுறைகள், தர வழிகாட்டுதல்கள் மற்றும் சமர்ப்பிக்கும் விருப்பங்களுக்கு களஞ்சியத்தில் PUZZLE_CONTRIBUTION_GUIDE.md ஐப் பார்க்கவும்.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "தரமான தேவைகள்:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ தெளிவான, தனித்துவமான தீர்வு",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ முழுமையான மெட்டாடேட்டா (தலைப்பு, விளக்கம் போன்றவை)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ ஆசிரியர் பண்புக்கூறு",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ துல்லியமான சிரம மதிப்பீடு",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ அறிவுறுத்தல் அல்லது பொழுதுபோக்கு",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "ஜனவரி",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "பிப்ரவரி",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "மார்ச்",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "ஏப்ரல்",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "மே",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "ஜூன்",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "ஜூலை",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "ஆகஸ்ட்",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "செப்டம்பர்",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "அக்டோபர்",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "நவம்பர்",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "டிசம்பர்",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

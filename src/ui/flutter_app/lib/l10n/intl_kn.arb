@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "ಧ್ವನಿ ಸಹಾಯಕ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "ಮಾದರಿ, ಭಾಷೆ ಮತ್ತು ನಡವಳಿಕೆಯನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM ನೆರವಿನ ಅಭಿವೃದ್ಧಿ",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "LLM ಸಹಾಯ ಮಾಡಲು ನೀವು ಬಯಸುವ ಕಾರ್ಯವನ್ನು ವಿವರಿಸಿ...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "ಸ್ಥಿತಿ",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "ಅಜ್ಞಾತ",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI ಚಾಟ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "AI ಸಹಾಯಕರೊಂದಿಗೆ ಚಾಟ್ ಮಾಡಲು ಅನುಮತಿಸಿ (ಪ್ರಾಯೋಗಿಕ)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "ತುಂಡು ಪಿಕ್-ಅಪ್ ಅನಿಮೇಷನ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "ಒಗಟುಗಳು",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "ಒಗಟು",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "ಯಾವುದೇ ಒಗಟುಗಳು ಲಭ್ಯವಿಲ್ಲ",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "ಫಿಲ್ಟರ್",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "ವರ್ಗ",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "ಫಿಲ್ಟರ್ ಅನ್ನು ತೆರವುಗೊಳಿಸಿ",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "ಒಗಟು ಅಂಕಿಅಂಶಗಳು",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "ಒಟ್ಟು ಒಗಟುಗಳು",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "ಪೂರ್ಣಗೊಂಡಿದೆ",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "ಒಟ್ಟು ನಕ್ಷತ್ರಗಳು",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "ಹರಿಕಾರ",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "ಸುಲಭ",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "ಮಧ್ಯಮ",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "ಕಠಿಣ",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "ಪರಿಣಿತ",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "ಮಾಸ್ಟರ್",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "ಫಾರ್ಮ್ ಮಿಲ್",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "ಸೆರೆಹಿಡಿಯಿರಿ",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "ವಿನ್ ಗೇಮ್",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "ರಕ್ಷಣಾ",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "ಅತ್ಯುತ್ತಮ ಮೂವ್",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "ಎಂಡ್‌ಗೇಮ್",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "ತೆರೆಯಲಾಗುತ್ತಿದೆ",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "ಮಿಶ್ರಿತ",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "ಒಗಟು ನಿರ್ಗಮಿಸುವುದೇ?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "ಪ್ರಗತಿ ನಷ್ಟವಾಗುತ್ತದೆ.ಮುಂದುವರಿಸುವುದೇ?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "ಚಲಿಸುತ್ತದೆ",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "ಆಪ್ಟಿಮಲ್",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "ಪರಿಹಾರವನ್ನು ಪರಿಶೀಲಿಸಿ",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "ಬಿಟ್ಟುಕೊಡಿ",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "ಒಗಟು ಪರಿಹರಿಸಲಾಗಿದೆ!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "ಬಳಸಿದ ಸುಳಿವುಗಳು",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "ಪಟ್ಟಿಗೆ ಹಿಂತಿರುಗಿ",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "ಪರಿಹಾರ",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "ಹೊಸ ಒಗಟು ರಚಿಸಿ",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "ಒಗಟು ಸಂಪಾದಿಸಿ",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "ಕಸ್ಟಮ್",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "ನಿಯಮಗಳು ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules} ಗೆ, ಪ್ರಸ್ತುತ {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "ಮುಂದುವರಿಸಿ",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "ಹೊಂದಾಣಿಕೆ ಮಾತ್ರ",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "ಒಗಟುಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "ರಫ್ತು ಮಾಡಿ",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "ಆಮದು ಮಾಡಿಕೊಳ್ಳಿ",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{{count} ಪಜಲ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಫ್ತು ಮಾಡಲಾಗಿದೆ} other{{count} ಪದಬಂಧಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಫ್ತು ಮಾಡಲಾಗಿದೆ}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "ಒಗಟುಗಳನ್ನು ರಫ್ತು ಮಾಡಲು ವಿಫಲವಾಗಿದೆ",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{{count} ಪಜಲ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಆಮದು ಮಾಡಲಾಗಿದೆ} other{{count} ಪದಬಂಧಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಆಮದು ಮಾಡಲಾಗಿದೆ}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "ಒಗಟುಗಳನ್ನು ಆಮದು ಮಾಡಿಕೊಳ್ಳಲು ವಿಫಲವಾಗಿದೆ",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "ಯಾವುದೇ ಫೈಲ್ ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "ಅಮಾನ್ಯವಾದ ಫೈಲ್ ಮಾರ್ಗ",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "ಫೈಲ್ ಆಯ್ಕೆಮಾಡುವಲ್ಲಿ ದೋಷ: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ಫೈಲ್ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "ಅಮಾನ್ಯ ಫೈಲ್ ಫಾರ್ಮ್ಯಾಟ್: ಕಾಣೆಯಾದ ಪದಬಂಧ ಕ್ಷೇತ್ರ",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "ಹೊಂದಾಣಿಕೆಯಾಗದ ಫೈಲ್ ಫಾರ್ಮ್ಯಾಟ್ ಆವೃತ್ತಿ: {version} (ನಿರೀಕ್ಷಿತ {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "ಒಗಟು {index} (\"{title}\") ಅಮಾನ್ಯವಾದ FEN ಸ್ವರೂಪವನ್ನು ಹೊಂದಿದೆ",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "ಒಗಟು {index} (\"{title}\") ವಿಭಿನ್ನ ನಿಯಮಗಳನ್ನು ಬಳಸುತ್ತದೆ: {puzzleRules} (ಪ್ರಸ್ತುತ: {currentRules}).ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸೆಟ್ಟಿಂಗ್‌ಗಳೊಂದಿಗೆ ಈ ಒಗಟು ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರಬಹುದು.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "ಪಝಲ್ ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "ದೋಷಗಳು:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "ಎಚ್ಚರಿಕೆಗಳು:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "ಫೈಲ್ ಓದುವಲ್ಲಿ ದೋಷ: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "ಒಗಟು ಶೀರ್ಷಿಕೆಯನ್ನು ಹೊಂದಿರಬೇಕು",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "ಒಗಟು ವಿವರಣೆಯನ್ನು ಹೊಂದಿರಬೇಕು",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "ಒಗಟು ಮಾನ್ಯವಾದ ಸ್ಥಾನವನ್ನು ಹೊಂದಿರಬೇಕು",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "ಒಗಟು ಅಮಾನ್ಯವಾದ FEN ಸ್ವರೂಪವನ್ನು ಹೊಂದಿದೆ.ದಯವಿಟ್ಟು ಸ್ಥಾನವನ್ನು ಪರಿಶೀಲಿಸಿ.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "ಒಗಟು ಪರಿಹಾರವನ್ನು ಹೊಂದಿರಬೇಕು",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "ಶೀರ್ಷಿಕೆ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ (ಕನಿಷ್ಠ 5 ಅಕ್ಷರಗಳು)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "ಶೀರ್ಷಿಕೆ ತುಂಬಾ ಉದ್ದವಾಗಿದೆ (ಗರಿಷ್ಠ 100 ಅಕ್ಷರಗಳು)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "ವಿವರಣೆ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ (ಕನಿಷ್ಠ 10 ಅಕ್ಷರಗಳು)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "ವಿವರಣೆ ತುಂಬಾ ಉದ್ದವಾಗಿದೆ (ಗರಿಷ್ಠ 500 ಅಕ್ಷರಗಳು)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "ದಯವಿಟ್ಟು ಕೊಡುಗೆ ನೀಡುವ ಮೊದಲು ನಿಮ್ಮ ಹೆಸರನ್ನು ಲೇಖಕರಾಗಿ ಸೇರಿಸಿ",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} ಒಗಟು ಅಳಿಸುವುದೇ?} other{{count} ಒಗಟುಗಳನ್ನು ಅಳಿಸುವುದೇ?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} ಒಗಟು ಅಳಿಸಲಾಗಿದೆ} other{{count} ಒಗಟುಗಳನ್ನು ಅಳಿಸಲಾಗಿದೆ}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "ಅಂತರ್ನಿರ್ಮಿತ ಒಗಟುಗಳನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "ಒಂದು ಪಜಲ್ ಅನ್ನು ಹೇಗೆ ರಚಿಸುವುದು",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. ಸೆಟಪ್ ಬೋರ್ಡ್\n2.ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಸ್ಥಾನ\n3.ರೆಕಾರ್ಡ್ ಚಲನೆಗಳು\n4.ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ\n5.ಉಳಿಸಿ",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "ಸೆಟಪ್ ಸ್ಥಾನ",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "ಸ್ಥಾನವನ್ನು ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಲಾಗಿದೆ",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "ಆರಂಭಿಕ ಸ್ಥಾನ",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "ಅಂತಿಮ ಸ್ಥಾನ",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "ಇನ್ನೂ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಇಲ್ಲ",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "ಮೊದಲು ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಸ್ಥಾನ",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "ರೆಕಾರ್ಡ್ ಪರಿಹಾರ",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "ರೆಕಾರ್ಡಿಂಗ್...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭವಾಯಿತು",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{{count} ನಡೆಸುವಿಕೆಯನ್ನು ದಾಖಲಿಸಲಾಗಿದೆ} other{ರೆಕಾರ್ಡ್ ಮಾಡಲಾದ {count} ಚಲನೆಗಳು}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{ಪರಿಹಾರ: {count} ಚಲಿಸು} other{ಪರಿಹಾರ: {count} ಚಲಿಸುತ್ತದೆ}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "ಇನ್ನೂ ಪರಿಹಾರವಿಲ್ಲ",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "ಸ್ಪಷ್ಟ ಪರಿಹಾರ",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "ಪರಿಹಾರ {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "ಮತ್ತೊಂದು ಪರಿಹಾರವನ್ನು ಸೇರಿಸಿ",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "ಈ ಪರಿಹಾರವನ್ನು ತೆಗೆದುಹಾಕಿ",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ ಆಪ್ಟಿಮಲ್",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "ಪರ್ಯಾಯ",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "ಆಪ್ಟಿಮಲ್ ಎಂದು ಗುರುತಿಸಿ",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 ಪರಿಹಾರ} other{{count} ಪರಿಹಾರಗಳು}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "ಈ ಪರಿಹಾರವನ್ನು ತೆಗೆದುಹಾಕುವುದೇ?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "ಕನಿಷ್ಠ ಒಂದು ಪರಿಹಾರದ ಅಗತ್ಯವಿದೆ",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "ಒಗಟು ವಿವರಗಳು",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "ಶೀರ್ಷಿಕೆ",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "ವಿವರಣೆ",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "ವರ್ಗ",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "ಕಷ್ಟ",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "ಸುಳಿವು",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "ಟ್ಯಾಗ್‌ಗಳು",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "ಅಲ್ಪವಿರಾಮವನ್ನು ಬೇರ್ಪಡಿಸಲಾಗಿದೆ",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "ಲೇಖಕ",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "ಮುಕ್ತಾಯದ ಸಂದೇಶ",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "ತಂತ್ರವನ್ನು ವಿವರಿಸಿ ಅಥವಾ ಪರಿಹರಿಸುವವರನ್ನು ಅಭಿನಂದಿಸಿ",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "ಶೀರ್ಷಿಕೆ ಅಗತ್ಯವಿದೆ",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "ವಿವರಣೆ ಅಗತ್ಯವಿದೆ",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "ಸ್ಥಾನದ ಅಗತ್ಯವಿದೆ",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "ಪರಿಹಾರದ ಅಗತ್ಯವಿದೆ",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "ಒಗಟು ರಚಿಸಲಾಗಿದೆ",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "ಒಗಟು ನವೀಕರಿಸಲಾಗಿದೆ",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "ಒಗಟು ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "ಐಚ್ಛಿಕ",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "ನಿಮ್ಮ ಪ್ರಗತಿ",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "ತ್ಯಜಿಸು",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "ಎಲ್ಲಾ",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "ದೈನಂದಿನ ಒಗಟು",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "ಪ್ರತಿದಿನ ಹೊಸ ಒಗಟು ಪರಿಹರಿಸಿ",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "ದಿನ #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "ಗೆರೆ",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "ದಿನದ ಗೆರೆ",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "ದಿನಗಳು",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "ಅತ್ಯುತ್ತಮ: {longestStreak} ದಿನಗಳು",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "ದೈನಂದಿನ ಒಗಟು ಪ್ರಾರಂಭಿಸಿ",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "ನಿಮ್ಮ ಸ್ಟ್ರೀಕ್ ಅನ್ನು ನಿರ್ಮಿಸಲು ದೈನಂದಿನ ಒಗಟುಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "ಪ್ರಸ್ತುತ ಸ್ಟ್ರೀಕ್",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "ಉದ್ದವಾದ ಸ್ಟ್ರೀಕ್",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "ಒಟ್ಟು ಪೂರ್ಣಗೊಂಡಿದೆ",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "ನಿಮ್ಮ ಗೆರೆಯನ್ನು ಕಾಪಾಡಿಕೊಳ್ಳಲು ಪ್ರತಿದಿನ ಒಗಟುಗಳನ್ನು ಪರಿಹರಿಸಿ.ಒಂದು ದಿನ ತಪ್ಪಿಸಿಕೊಂಡರೆ ಅದನ್ನು ಮರುಹೊಂದಿಸುತ್ತದೆ!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "ಎಲ್ಲಾ ಒಗಟುಗಳು",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "ಲಭ್ಯವಿರುವ ಎಲ್ಲಾ ಒಗಟುಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "ಪಜಲ್ ರಶ್",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "ಗಡಿಯಾರದ ವಿರುದ್ಧ ಒಗಟುಗಳನ್ನು ಪರಿಹರಿಸಿ",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 ನಿಮಿಷಗಳಲ್ಲಿ ನಿಮಗೆ ಸಾಧ್ಯವಾದಷ್ಟು ಒಗಟುಗಳನ್ನು ಪರಿಹರಿಸಿ!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "ನಿಯಮಗಳು",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "ಗಡಿಯಾರದಲ್ಲಿ ⏱️ 5 ನಿಮಿಷಗಳು",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 ಜೀವಗಳು - ಪ್ರತಿ ತಪ್ಪಿಗೆ 1 ನಷ್ಟ",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 ನಿಮ್ಮ ಸ್ಕೋರ್ ಅನ್ನು ಗರಿಷ್ಠಗೊಳಿಸಿ!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "ರಶ್ ಪ್ರಾರಂಭಿಸಿ",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "ವಿಪರೀತ ಬಿಡುವುದೇ?ಪ್ರಗತಿ ನಷ್ಟವಾಗುತ್ತದೆ.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "ರಶ್ ಫಲಿತಾಂಶಗಳು",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "ಸಮಯ ಮುಗಿದಿದೆ!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "ಔಟ್ ಆಫ್ ಲೈವ್ಸ್",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "ರಶ್ ಕಂಪ್ಲೀಟ್!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "ಪರಿಹರಿಸಲಾಗಿದೆ",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "ವಿಫಲವಾಗಿದೆ",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "ನಿಖರತೆ",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "ಮತ್ತೆ ಪ್ಲೇ ಮಾಡಿ",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "ಪಜಲ್ ಬ್ಯಾಟಲ್",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "ಇತರ ಆಟಗಾರರೊಂದಿಗೆ ಸ್ಪರ್ಧಿಸಿ",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "ಈ ವೈಶಿಷ್ಟ್ಯವು ಪ್ರಸ್ತುತ ಅಭಿವೃದ್ಧಿಯಲ್ಲಿದೆ.ಟ್ಯೂನ್ ಆಗಿರಿ!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 ಪಜಲ್ ರೇಸ್",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 ಲೈವ್ ಎದುರಾಳಿಯ ಹೊಂದಾಣಿಕೆ",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 ರೇಟಿಂಗ್ ವ್ಯವಸ್ಥೆ",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 ಲೀಡರ್‌ಬೋರ್ಡ್‌ಗಳು",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "ಕಸ್ಟಮ್ ಪದಬಂಧ",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "ನಿಮ್ಮ ಒಗಟುಗಳನ್ನು ರಚಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "ಬಹು-ಆಯ್ಕೆ ಮೋಡ್",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "ಒಗಟು ರಚಿಸಿ",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "ಪಜಲ್ ಸ್ಟ್ರೀಕ್",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "ತಪ್ಪುಗಳಿಲ್ಲದೆ ಸತತವಾಗಿ ಪರಿಹರಿಸಿ",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "ನೀವು ಸತತವಾಗಿ ಎಷ್ಟು ಪರಿಹರಿಸಬಹುದು?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "ನಿಯಮಗಳು",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 ಸಾಧ್ಯವಾದಷ್ಟು ಒಗಟುಗಳನ್ನು ಪರಿಹರಿಸಿ",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ ಒಂದು ತಪ್ಪು ಮತ್ತು ಅದು ಮುಗಿದಿದೆ",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ದಾಖಲೆಯನ್ನು ಸೋಲಿಸಿ",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "ಸ್ಟ್ರೀಕ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "ಪ್ರಸ್ತುತ",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "ಅತ್ಯುತ್ತಮ",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "ಸ್ಟ್ರೀಕ್ ಫಲಿತಾಂಶಗಳು",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "ಸ್ಟ್ರೀಕ್ ಕೊನೆಗೊಂಡಿದೆ",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "ಹೊಸ ದಾಖಲೆ!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "ಅಂತಿಮ ಅಂಕ",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "ನೀವು ತೊರೆಯಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?ನಿಮ್ಮ ಗೆರೆ ಕಳೆದು ಹೋಗುತ್ತದೆ.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "ಇತಿಹಾಸ",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "ನಿಮ್ಮ ಒಗಟು ಪ್ರಯತ್ನಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "ಒಗಟು ಇತಿಹಾಸವಿಲ್ಲ",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "ನಿಮ್ಮ ಇತಿಹಾಸವನ್ನು ಇಲ್ಲಿ ನೋಡಲು ಒಗಟುಗಳನ್ನು ಪರಿಹರಿಸಲು ಪ್ರಾರಂಭಿಸಿ",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "ಯಶಸ್ಸು ಮಾತ್ರ",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "ವಿಫಲವಾಗಿದೆ ಮಾತ್ರ",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "ಅಜ್ಞಾತ ಒಗಟು",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "ಸುಳಿವುಗಳು",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "ವಿವರವಾದ ವಿಶ್ಲೇಷಣೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "ನಿಮ್ಮ ಪಜಲ್ ರೇಟಿಂಗ್",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "ತಾತ್ಕಾಲಿಕ ({gamesLeft} ಆಟಗಳು ಉಳಿದಿವೆ)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "ಆಡಿದ ಆಟಗಳು",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "ವಿಚಲನ",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "ಕಾರ್ಯಕ್ಷಮತೆಯ ಅವಲೋಕನ",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "ಯಶಸ್ಸಿನ ಪ್ರಮಾಣ",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "ಸರಾಸರಿಸಮಯ",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "ಪರಿಹರಿಸಲಾಗಿದೆ",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "ವಿಫಲವಾಗಿದೆ",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "ಕಷ್ಟದಿಂದ ಯಶಸ್ಸು",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "ವರ್ಗದಿಂದ ಯಶಸ್ಸು",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "ಯಾವುದೇ ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ ಇಲ್ಲ",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "ಸಂಪಾದಿಸು",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "ಉಳಿಸಿ",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "ಯಾವುದೇ ಕಸ್ಟಮ್ ಪದಬಂಧಗಳಿಲ್ಲ",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "ನಿರ್ದಿಷ್ಟ ಸ್ಥಾನಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಲು ನಿಮ್ಮ ಸ್ವಂತ ಒಗಟುಗಳನ್ನು ರಚಿಸಿ",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "ಈ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಭವಿಷ್ಯದ ಬಿಡುಗಡೆಗಾಗಿ ಯೋಜಿಸಲಾಗಿದೆ",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "ಅಮಾನ್ಯ ಸ್ಥಾನ",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "ಓಪನ್ ಬೋರ್ಡ್ (ಸೆಟಪ್ ಪೊಸಿಷನ್)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "ಓಪನ್ ಬೋರ್ಡ್ (ಪ್ಲೇ ಮೂವ್ಸ್)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "ಬೋರ್ಡ್ ತೆರೆಯಲು ಕೆಳಗಿನ ಬಟನ್ ಬಳಸಿ, ನಂತರ ಹಿಂತಿರುಗಲು ಹಿಂದಕ್ಕೆ ಒತ್ತಿರಿ.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "ಅಮಾನ್ಯವಾದ ಸ್ಥಾನದ ಸ್ವರೂಪ.ದಯವಿಟ್ಟು ಆಟದ ಬೋರ್ಡ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "ಸ್ಥಾನವನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ.ದಯವಿಟ್ಟು ರೆಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಿ.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "ಅಮಾನ್ಯವಾದ ಸ್ಥಾನದ ಸ್ವರೂಪ.ದಯವಿಟ್ಟು ಸ್ಥಾನವನ್ನು ಮರುಹೊಂದಿಸಿ.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "ವಿವರವಾದ ಕೆಲಸದ ಹರಿವನ್ನು ತೋರಿಸಿ",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "ಪಜಲ್ ರಚನೆ ಕೆಲಸದ ಹರಿವು",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "ಸೆಟಪ್ ಸ್ಥಾನ",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "ಓಪನ್ ಬೋರ್ಡ್, ಸೆಟಪ್ ಸ್ಥಾನ, ಸ್ನ್ಯಾಪ್‌ಶಾಟ್",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "ರೆಕಾರ್ಡ್ ಪರಿಹಾರ",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ, ಚಲನೆಗಳನ್ನು ಪ್ಲೇ ಮಾಡಿ, ನಿಲ್ಲಿಸಿ",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "ಶೀರ್ಷಿಕೆ, ವರ್ಗ, ತೊಂದರೆಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "ಒಗಟು ಉಳಿಸಿ",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "ಉಳಿಸು ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "ಸಲಹೆ: ನೀವು ಈ ಪುಟ ಮತ್ತು ಗೇಮ್ ಬೋರ್ಡ್ ನಡುವೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡುತ್ತೀರಿ.ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಉಳಿಸಲಾಗಿದೆ!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "ಸ್ಥಾನ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಸಹಾಯ",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "ಒಗಟು ಆರಂಭದ ಸ್ಥಾನವನ್ನು ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡುವುದು ಹೇಗೆ:\n\n1.ತುಣುಕುಗಳನ್ನು ಹಸ್ತಚಾಲಿತವಾಗಿ ಇರಿಸಲು \"ಓಪನ್ ಬೋರ್ಡ್ (ಸೆಟಪ್ ಪೊಸಿಷನ್)\" ಕ್ಲಿಕ್ ಮಾಡಿ, ಅಥವಾ ಚಲನೆಗಳನ್ನು ಮಾಡುವ ಮೂಲಕ ಸ್ಥಾನವನ್ನು ತಲುಪಲು \"ಓಪನ್ ಬೋರ್ಡ್ (ಪ್ಲೇ ಮೂವ್ಸ್)\" ಕ್ಲಿಕ್ ಮಾಡಿ\n\n2.ಬೋರ್ಡ್ ಅನ್ನು ನಿಮ್ಮ ಅಪೇಕ್ಷಿತ ಒಗಟು ಆರಂಭಿಕ ಸ್ಥಾನಕ್ಕೆ ಜೋಡಿಸಿ\n\n3.ಈ ಪುಟಕ್ಕೆ ಹಿಂತಿರುಗಲು ಹಿಂದಿನ ಬಟನ್ ಅನ್ನು ಒತ್ತಿ\n\n4.ಸ್ಥಾನವನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಲಾಗುತ್ತದೆ ಮತ್ತು ಉಳಿಸಲಾಗುತ್ತದೆ\n\nಈ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಿದ ಸ್ಥಾನವನ್ನು ನಿಮ್ಮ ಪಝಲ್‌ಗೆ ಆರಂಭಿಕ ಹಂತವಾಗಿ ಬಳಸಲಾಗುತ್ತದೆ.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "ಪರಿಹಾರ ರೆಕಾರ್ಡಿಂಗ್ ಸಹಾಯ",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "ಪರಿಹಾರದ ಚಲನೆಯನ್ನು ರೆಕಾರ್ಡ್ ಮಾಡುವುದು ಹೇಗೆ:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "ಮೊದಲು ಆರಂಭಿಕ ಸ್ಥಾನವನ್ನು ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಿ",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"ಸ್ಟಾರ್ಟ್ ರೆಕಾರ್ಡಿಂಗ್\" ಬಟನ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ (ಇದು ಬೋರ್ಡ್ ಅನ್ನು ನಿಮ್ಮ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಿದ ಸ್ಥಾನಕ್ಕೆ ಮರುಹೊಂದಿಸುತ್ತದೆ)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "ಇಲ್ಲಿಗೆ ಹಿಂತಿರುಗಿ ಮತ್ತು \"ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸು\" ಕ್ಲಿಕ್ ಮಾಡಿ",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "ಸಲಹೆ: ನೀವು ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿದಾಗ ಬೋರ್ಡ್ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನಿಮ್ಮ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಮಾಡಿದ ಸ್ಥಾನಕ್ಕೆ ಮರುಹೊಂದಿಸುತ್ತದೆ.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "ನೀವು ಬಹು ಪರಿಹಾರಗಳನ್ನು ಸೇರಿಸಬಹುದು (ಮಿತಿಯಿಲ್ಲ).ಚಿಕ್ಕದಾದ/ಉತ್ತಮವಾದುದನ್ನು ಸೂಕ್ತವೆಂದು ಗುರುತಿಸಿ.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "ಸ್ಥಾನದ ಸ್ನ್ಯಾಪ್‌ಶಾಟ್ ಸಹಾಯವನ್ನು ತೋರಿಸಿ",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "ಪರಿಹಾರ ರೆಕಾರ್ಡಿಂಗ್ ಸಹಾಯವನ್ನು ತೋರಿಸಿ",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "ಹೆಚ್ಚಿನ ಸುಳಿವು ಲಭ್ಯವಿಲ್ಲ",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "ಸುಳಿವು",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "ಸೂಕ್ತ ಪರಿಹಾರ ({moves} ಚಲಿಸುತ್ತದೆ):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "ಮೌಲ್ಯೀಕರಣ ದೋಷಗಳು",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Sanmill ಗೆ ಪದಬಂಧಗಳನ್ನು ಕೊಡುಗೆ ನೀಡಿ",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "ಮುಂದೆ ಏನಾಗುತ್ತದೆ:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. ನಿಮ್ಮ ಒಗಟುಗಳನ್ನು JSON ಫೈಲ್‌ಗೆ ರಫ್ತು ಮಾಡಲಾಗುತ್ತದೆ",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. ನೀವು ಈ ಫೈಲ್ ಅನ್ನು ಹಂಚಿಕೆ ಸಂವಾದದ ಮೂಲಕ ಹಂಚಿಕೊಳ್ಳಬಹುದು",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. ಪದಬಂಧಗಳನ್ನು ನಿರ್ವಾಹಕರು ಪರಿಶೀಲಿಸುತ್ತಾರೆ",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. ಒಮ್ಮೆ ಅನುಮೋದಿಸಿದ ನಂತರ, ಅವು ಅಂತರ್ನಿರ್ಮಿತ ಒಗಟುಗಳಾಗುತ್ತವೆ!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "ಕೊಡುಗೆಗಾಗಿ ರಫ್ತು ಮಾಡಿ",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "ಕೊಡುಗೆ ನೀಡಲು ಪ್ರಾರಂಭಿಸಿ",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "ತ್ವರಿತ ಆರಂಭ:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "ಗುಣಮಟ್ಟದ ಒಗಟುಗಳನ್ನು ರಚಿಸಿ",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "ನಿಮ್ಮ ಒಗಟು ಸ್ಪಷ್ಟ ಪರಿಹಾರ, ಉತ್ತಮ ಮೆಟಾಡೇಟಾ ಮತ್ತು ಮೌಲ್ಯಯುತವಾದದ್ದನ್ನು ಕಲಿಸುತ್ತದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "ನಿಮ್ಮ ಹೆಸರನ್ನು ಸೇರಿಸಿ",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "ನಿಮ್ಮ ಒಗಟು ಸಂಪಾದಿಸಿ ಮತ್ತು ಕ್ರೆಡಿಟ್ ಪಡೆಯಲು ನಿಮ್ಮ ಹೆಸರನ್ನು ಲೇಖಕರಾಗಿ ಸೇರಿಸಿ.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "ಕೊಡುಗೆಗಾಗಿ ರಫ್ತು ಮಾಡಿ",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "ನಿಮ್ಮ ಒಗಟುಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಸರಿಯಾದ ಸ್ವರೂಪದಲ್ಲಿ ರಫ್ತು ಮಾಡಲು ಅಪ್‌ಲೋಡ್ ಐಕಾನ್ ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "ಸಲ್ಲಿಸಿ",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "ರಫ್ತು ಮಾಡಿದ ಫೈಲ್ ಅನ್ನು GitHub ಪುಲ್ ವಿನಂತಿ, ಸಂಚಿಕೆ ಅಥವಾ ಇಮೇಲ್ ಮೂಲಕ ಹಂಚಿಕೊಳ್ಳಿ.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "ಪೂರ್ಣ ದಾಖಲೆ",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "ಸಂಪೂರ್ಣ ಸೂಚನೆಗಳು, ಗುಣಮಟ್ಟದ ಮಾರ್ಗಸೂಚಿಗಳು ಮತ್ತು ಸಲ್ಲಿಕೆ ಆಯ್ಕೆಗಳಿಗಾಗಿ ರೆಪೊಸಿಟರಿಯಲ್ಲಿ PUZZLE_CONTRIBUTION_GUIDE.md ಅನ್ನು ನೋಡಿ.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "ಗುಣಮಟ್ಟದ ಅವಶ್ಯಕತೆಗಳು:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ ಸ್ಪಷ್ಟ, ಅನನ್ಯ ಪರಿಹಾರ",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ ಸಂಪೂರ್ಣ ಮೆಟಾಡೇಟಾ (ಶೀರ್ಷಿಕೆ, ವಿವರಣೆ, ಇತ್ಯಾದಿ)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ ಲೇಖಕರ ಗುಣಲಕ್ಷಣ",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ ನಿಖರವಾದ ತೊಂದರೆ ರೇಟಿಂಗ್",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ ಬೋಧಕ ಅಥವಾ ಮನರಂಜನೆ",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "ಮುಂದಿನ ನಡೆ: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "ಸಂಪೂರ್ಣ ಪರಿಹಾರ: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "ಈ ಸ್ಥಾನಗಳಿಗೆ ಗಮನ ಕೊಡಿ",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "ಯಾವುದೇ ಪರಿಹಾರ ಲಭ್ಯವಿಲ್ಲ",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "ಮುಂದುವರಿಸಿ!ಗುರಿ ಇನ್ನೂ ಈಡೇರಿಲ್ಲ.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "ಪರಿಪೂರ್ಣ!ಸೂಕ್ತ ಚಲನೆಗಳಲ್ಲಿ ಪರಿಹರಿಸಲಾಗಿದೆ!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "ಸರಿ!({count} ಚಲನೆಗಳು, ಸೂಕ್ತ: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "ಸರಿ!ನೀವು ಪರ್ಯಾಯ ಪರಿಹಾರವನ್ನು ಕಂಡುಕೊಂಡಿದ್ದೀರಿ!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "ಈಗಷ್ಟೇ",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}m ಹಿಂದೆ",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}ಗಂ ಹಿಂದೆ",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}ದಿ ಹಿಂದೆ",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "ಅಮಾನ್ಯವಾದ ಒಗಟು",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "ಈ ಒಗಟು ಅಮಾನ್ಯವಾದ ಸ್ಥಾನ ಸ್ವರೂಪವನ್ನು ಹೊಂದಿದೆ ಮತ್ತು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.ದಯವಿಟ್ಟು ಪಝಲ್ ಲೇಖಕರನ್ನು ಸಂಪರ್ಕಿಸಿ ಅಥವಾ ಬೇರೆ ಪಝಲ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "ಪ್ರಯತ್ನಿಸುತ್ತಿರಿ!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "ಉದಾಹರಣೆಗಳು",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI ಸಹಾಯಕ",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "ನಮಸ್ಕಾರ!ನಾನು ನಿಮ್ಮ ಮಿಲ್ ಆಟದ ಸಹಾಯಕ.ಕಾರ್ಯತಂತ್ರಗಳು, ಸ್ಥಾನಗಳು ಅಥವಾ ಪ್ರಸ್ತುತ ಆಟದ ಕುರಿತು ಯಾವುದೇ ಪ್ರಶ್ನೆಗಳ ಬಗ್ಗೆ ನನ್ನನ್ನು ಕೇಳಿ.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "ಆಟದ ಬಗ್ಗೆ ಕೇಳಿ...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "ಕ್ಷಮಿಸಿ, ನಾನು ದೋಷವನ್ನು ಎದುರಿಸಿದೆ.ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI ಸಹಾಯಕವನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ.ದಯವಿಟ್ಟು ಮೊದಲು LLM ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "AI ಸಹಾಯಕರೊಂದಿಗೆ ಚಾಟ್ ಮಾಡಿ",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "ಚಾಟ್ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸಿ",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "ಚಾಟ್ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸುವುದೇ?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "ಇದು ಎಲ್ಲಾ ಸಂದೇಶಗಳನ್ನು ಅಳಿಸುತ್ತದೆ ಮತ್ತು ಹೊಸ ಸಂಭಾಷಣೆಯನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತದೆ.ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "ಚಾಟ್ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "ದಾಖಲೆಗಳು",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "ಲಾಗ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "ಯಾವುದೇ ಲಾಗ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "ಅಪ್ಲಿಕೇಶನ್ ರನ್ ಆಗುತ್ತಿದ್ದಂತೆ ಲಾಗ್‌ಗಳು ಇಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ.ಅಪ್ಲಿಕೇಶನ್ ಬಳಸಲು ಪ್ರಯತ್ನಿಸಿ ಮತ್ತು ಲಾಗ್‌ಗಳನ್ನು ನೋಡಲು ಹಿಂತಿರುಗಿ.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಯಾವುದೇ ಲಾಗ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "ಡೌನ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "ರಿಫ್ರೆಶ್ ಮಾಡಿ",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "ಲಾಗ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "{path} ಗೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "ಮೋಡ್ ಆಯ್ಕೆಮಾಡಿ",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "ನಕಲು ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "ಪ್ರಾರಂಭ ಬಿಂದುವನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "ಅಂತಿಮ ಬಿಂದುವನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "ಯಾವುದೇ ಲಾಗ್‌ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "ಮೇಲಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ (ಹಳೆಯದು)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "ಕೆಳಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ (ಹೊಸತು)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "ಕೆಳಭಾಗದಲ್ಲಿ ಹೊಸ ಲಾಗ್‌ಗಳು",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "ದಾಖಲೆಗಳು: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "ಲಾಗ್ ಬಫರ್ ತುಂಬಿದೆ ({current}/{max}).ಹಳೆಯ ದಾಖಲೆಗಳನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "ದಾಖಲೆಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "ಎಲ್ಲಾ ಲಾಗ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "ತೆರವುಗೊಳಿಸಿ",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "ದಾಖಲೆಗಳನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "ಅಮಾನ್ಯವಾದ ಒಗಟು",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "ಈ ಒಗಟು ಅಮಾನ್ಯವಾದ ಸ್ಥಾನ ಸ್ವರೂಪವನ್ನು ಹೊಂದಿದೆ ಮತ್ತು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.ದಯವಿಟ್ಟು ಪಝಲ್ ಲೇಖಕರನ್ನು ಸಂಪರ್ಕಿಸಿ ಅಥವಾ ಬೇರೆ ಪಝಲ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "ಪಟ್ಟಿಗೆ ಹಿಂತಿರುಗಿ",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "ತಪ್ಪು ನಡೆ.ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "ಆ ಕ್ರಮವು ಪರಿಹಾರಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ.ನೀವು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಬಹುದು ಅಥವಾ ಸರಿಯಾದ ಪರಿಹಾರವನ್ನು ವೀಕ್ಷಿಸಬಹುದು.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "ಪರಿಹಾರ ತೋರಿಸಿ",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "ಪರಿಹಾರವನ್ನು ನುಡಿಸಲಾಗುತ್ತಿದೆ...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "ಪರಿಹಾರ ಪ್ಲೇಬ್ಯಾಕ್ ಪೂರ್ಣಗೊಂಡಿದೆ",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "ಈ ಒಗಟುಗೆ ಯಾವುದೇ ಪರಿಹಾರ ಲಭ್ಯವಿಲ್ಲ",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "ಪರಿಹಾರವನ್ನು ವೀಕ್ಷಿಸಲಾಗಿದೆ (ನಕ್ಷತ್ರಗಳಿಲ್ಲ)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{ಪ್ರಯತ್ನ: {count}} other{ಪ್ರಯತ್ನಗಳು: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "ಹೆಚ್ಚಿನ ಸುಳಿವು ಲಭ್ಯವಿಲ್ಲ",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "ಸುಳಿವು",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "ಮೌಲ್ಯೀಕರಣ ದೋಷಗಳು",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "ಕೊಡುಗೆ ನೀಡುವ ಮೊದಲು ಈ ಕೆಳಗಿನ ಒಗಟುಗಳನ್ನು ಸರಿಪಡಿಸಬೇಕಾಗಿದೆ:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Sanmill ಗೆ ಪದಬಂಧಗಳನ್ನು ಕೊಡುಗೆ ನೀಡಿ",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "ಕೊಡುಗೆಗಾಗಿ ನೀವು {count} ಒಗಟು(ಗಳನ್ನು) ರಫ್ತು ಮಾಡಲಿರುವಿರಿ.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "ಮುಂದೆ ಏನಾಗುತ್ತದೆ:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. ನಿಮ್ಮ ಒಗಟುಗಳನ್ನು JSON ಫೈಲ್‌ಗೆ ರಫ್ತು ಮಾಡಲಾಗುತ್ತದೆ",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. ನೀವು ಈ ಫೈಲ್ ಅನ್ನು ಹಂಚಿಕೆ ಸಂವಾದದ ಮೂಲಕ ಹಂಚಿಕೊಳ್ಳಬಹುದು",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. GitHub, ಇಮೇಲ್ ಅಥವಾ GitHub ಸಂಚಿಕೆ ಮೂಲಕ ಸಲ್ಲಿಸಿ (ಮಾರ್ಗದರ್ಶಿ ನೋಡಿ)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. ಪದಬಂಧಗಳನ್ನು ನಿರ್ವಾಹಕರು ಪರಿಶೀಲಿಸುತ್ತಾರೆ",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. ಒಮ್ಮೆ ಅನುಮೋದಿಸಿದ ನಂತರ, ಅವು ಅಂತರ್ನಿರ್ಮಿತ ಒಗಟುಗಳಾಗುತ್ತವೆ!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "ಕೊಡುಗೆ ನೀಡುವ ಮೂಲಕ, CC BY-SA 4.0 (ಕ್ರಿಯೇಟಿವ್ ಕಾಮನ್ಸ್ ಆಟ್ರಿಬ್ಯೂಷನ್-ShareAlike) ಅಡಿಯಲ್ಲಿ ನಿಮ್ಮ ಒಗಟು ವಿಷಯಕ್ಕೆ ಪರವಾನಗಿ ನೀಡಲು ನೀವು ಒಪ್ಪುತ್ತೀರಿ.",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "ಕೊಡುಗೆಗಾಗಿ ರಫ್ತು ಮಾಡಿ",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "ಕೊಡುಗೆ ನೀಡಲು ಪ್ರಾರಂಭಿಸಿ",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "ಪದಬಂಧಗಳನ್ನು ಹೇಗೆ ಕೊಡುಗೆ ನೀಡಬೇಕು",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "ಈ {count} ಒಗಟುಗಳನ್ನು ಪರಿಶೀಲಿಸಿ!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "ಒಗಟುಗಳು ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "ಒಗಟು ಕೊಡುಗೆ.\n\nಸಲ್ಲಿಕೆಯ ಸೂಚನೆಗಳಿಗಾಗಿ PUZZLE_CONTRIBUTION_GUIDE.md ನೋಡಿ.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "ಒಗಟು ಕೊಡುಗೆ: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "ಒಗಟು ಕೊಡುಗೆಗಳು.\n\nಸಲ್ಲಿಕೆಯ ಸೂಚನೆಗಳಿಗಾಗಿ PUZZLE_CONTRIBUTION_GUIDE.md ನೋಡಿ.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "ಒಗಟು ಕೊಡುಗೆಗಳು ({count} ಒಗಟುಗಳು)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "ನಿಮ್ಮ ಒಗಟುಗಳನ್ನು ಕೊಡುಗೆ ನೀಡುವ ಮೂಲಕ ಈ ಪ್ರೋಗ್ರಾಂ ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿ!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "ತ್ವರಿತ ಆರಂಭ:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "ಗುಣಮಟ್ಟದ ಒಗಟುಗಳನ್ನು ರಚಿಸಿ",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "ನಿಮ್ಮ ಒಗಟು ಸ್ಪಷ್ಟ ಪರಿಹಾರ, ಉತ್ತಮ ಮೆಟಾಡೇಟಾ ಮತ್ತು ಮೌಲ್ಯಯುತವಾದದ್ದನ್ನು ಕಲಿಸುತ್ತದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "ನಿಮ್ಮ ಹೆಸರನ್ನು ಸೇರಿಸಿ",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "ನಿಮ್ಮ ಒಗಟು ಸಂಪಾದಿಸಿ ಮತ್ತು ಕ್ರೆಡಿಟ್ ಪಡೆಯಲು ನಿಮ್ಮ ಹೆಸರನ್ನು ಲೇಖಕರಾಗಿ ಸೇರಿಸಿ.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "ಕೊಡುಗೆಗಾಗಿ ರಫ್ತು ಮಾಡಿ",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "ನಿಮ್ಮ ಒಗಟುಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಸರಿಯಾದ ಸ್ವರೂಪದಲ್ಲಿ ರಫ್ತು ಮಾಡಲು ಅಪ್‌ಲೋಡ್ ಐಕಾನ್ ಅನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "ಸಲ್ಲಿಸಿ",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "ರಫ್ತು ಮಾಡಿದ ಫೈಲ್ ಅನ್ನು GitHub ಪುಲ್ ವಿನಂತಿ, ಸಂಚಿಕೆ ಅಥವಾ ಇಮೇಲ್ ಮೂಲಕ ಹಂಚಿಕೊಳ್ಳಿ.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "ಪೂರ್ಣ ದಾಖಲೆ",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "ಸಂಪೂರ್ಣ ಸೂಚನೆಗಳು, ಗುಣಮಟ್ಟದ ಮಾರ್ಗಸೂಚಿಗಳು ಮತ್ತು ಸಲ್ಲಿಕೆ ಆಯ್ಕೆಗಳಿಗಾಗಿ ರೆಪೊಸಿಟರಿಯಲ್ಲಿ PUZZLE_CONTRIBUTION_GUIDE.md ಅನ್ನು ನೋಡಿ.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "ಗುಣಮಟ್ಟದ ಅವಶ್ಯಕತೆಗಳು:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ ಸ್ಪಷ್ಟ, ಅನನ್ಯ ಪರಿಹಾರ",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ ಸಂಪೂರ್ಣ ಮೆಟಾಡೇಟಾ (ಶೀರ್ಷಿಕೆ, ವಿವರಣೆ, ಇತ್ಯಾದಿ)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ ಲೇಖಕರ ಗುಣಲಕ್ಷಣ",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ ನಿಖರವಾದ ತೊಂದರೆ ರೇಟಿಂಗ್",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ ಬೋಧಕ ಅಥವಾ ಮನರಂಜನೆ",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "ಜನವರಿ",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "ಫೆಬ್ರವರಿ",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "ಮಾರ್ಚ್",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "ಏಪ್ರಿಲ್",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "ಮೇ",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "ಜೂನ್",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "ಜುಲೈ",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "ಆಗಸ್ಟ್",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "ಸೆಪ್ಟೆಂಬರ್",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "ಅಕ್ಟೋಬರ್",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "ನವೆಂಬರ್",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "ಡಿಸೆಂಬರ್",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

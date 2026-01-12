@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "အသံအကူအညီ ဆက်တင်များ",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "မော်ဒယ်၊ ဘာသာစကားနှင့် အပြုအမူကို စီစဉ်သတ်မှတ်ပါ",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM အကူအညီပေးသော ဖွံ့ဖြိုးတိုးတက်မှု",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "LLM မှ သင်ကူညီလိုသောတာဝန်ကို ဖော်ပြပါ...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "ဒေါင်းလုဒ်လုပ်ပါ။",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "အဆင့်အတန်း",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "မသိ",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI Chat ကိုဖွင့်ပါ။",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "AI assistant (စမ်းသပ်ဆဲ) နှင့် ချတ်လုပ်ခွင့်ပြုပါ",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "တစ်စစ ကောက်နုတ်ကာတွန်းကို ဖွင့်ပါ။",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "ပဟေဠိများ",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "ပဟေဋ္ဌိ",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "ပဟေဠိများ မရရှိနိုင်ပါ။",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "ဇကာ",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "အမျိုးအစား",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Filter ကိုရှင်းလင်းပါ။",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "ပဟေဠိစာရင်းအင်းများ",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "စုစုပေါင်း ပဟေဋ္ဌိများ",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "ပြီးသွားပြီ",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "စုစုပေါင်းကြယ်များ",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "ပြီးစီးခြင်း။",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Beginner ပါ။",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "လွယ်ပါတယ်။",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "လတ်",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "ခက်တယ်။",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "ကျွမ်းကျင်သူ",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "ဆရာကြီး",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "ဖောင်ကြိတ်",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "ဖမ်းသည်။",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Win Game",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "ကာကွယ်ရေး",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "အကောင်းဆုံးရွှေ့",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "အဆုံးသတ်ဂိမ်း",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "ဖွင့်လှစ်ခြင်း။",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "ရောနှော",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "ပဟေဋ္ဌိမှ ထွက်မလား။",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "တိုးတက်မှု ဆုံးရှုံးမည်။ဆက်မလား။",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "ရွေ့လျား",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "အကောင်းဆုံး",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "ဖြေရှင်းချက်စစ်ဆေးပါ။",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "လက်လျှော့လိုက်ပါ။",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "ပဟေဋ္ဌိဖြေရှင်းပြီးပြီ။",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "အကြံဥာဏ်များကို အသုံးပြုသည်။",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "ထပ်စမ်းကြည့်ပါ။",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "စာရင်းသို့ ပြန်သွားရန်",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "ဖြေရှင်းချက်",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "ပဟေဋ္ဌိအသစ်ဖန်တီးပါ။",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "ပဟေဋ္ဌိ တည်းဖြတ်ပါ။",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "စိတ်ကြိုက်",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "စည်းကမ်းများ မတိုက်ဆိုင်ပါ။",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules} အတွက်၊ လက်ရှိ {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "ဆက်ရန်",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "သဟဇာတသာ",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "ပဟေဋ္ဌိများကို ရွေးပါ။",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} ရွေးထားသည်။",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "အားလုံးကို ရွေးပါ။",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "တင်ပို့ခြင်း။",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "သွင်းကုန်",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{ပဟေဠိ {count} ကို အောင်မြင်စွာ ထုတ်ယူနိုင်ပါပြီ။} other{ပဟေဠိများ {count} ကို အောင်မြင်စွာ ထုတ်ယူနိုင်ပါပြီ။}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "ပဟေဠိများကို ထုတ်ယူ၍မရပါ။",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{ပဟေဠိ {count} ကို အောင်မြင်စွာ ထည့်သွင်းခဲ့သည်။} other{ပဟေဠိများ {count} ကို အောင်မြင်စွာ ထည့်သွင်းခဲ့သည်။}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "ပဟေဠိများကို ထည့်သွင်း၍မရပါ။",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "ဖိုင်ကို ရွေးထားခြင်းမရှိပါ။",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "ဖိုင်လမ်းကြောင်း မမှန်ကန်ပါ။",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "ဖိုင်ကို ရွေးရာတွင် အမှားအယွင်းရှိသည်- {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ဖိုင်မရှိပါ။",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "မမှန်ကန်သော ဖိုင်ဖော်မတ်- ပျောက်ဆုံးနေသော ပဟေဠိအကွက်",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "သဟဇာတမဖြစ်သော ဖိုင်ဖော်မတ်ဗားရှင်း- {version} (မျှော်လင့်ထားသော {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "ပဟေဠိ {index} (\"{title}\") တွင် မမှန်ကန်သော FEN ဖော်မတ်ရှိသည်။",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "ပဟေဠိ {index} (\"{title}\") သည် မတူညီသောစည်းမျဉ်းများကို အသုံးပြုသည်- {puzzleRules} (လက်ရှိ- {currentRules})။ဤပဟေဠိသည် သင့်လက်ရှိဆက်တင်များနှင့် မှန်ကန်စွာအလုပ်လုပ်မည်မဟုတ်ပါ။",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "ပဟေဠိ {index}- {error} ခွဲခြမ်းစိတ်ဖြာရန် မအောင်မြင်ပါ",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "အမှားများ-",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "သတိပေးချက်များ-",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "ဖိုင်ကိုဖတ်ရာတွင် အမှားအယွင်းရှိသည်- {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "ပဟေဋ္ဌိခေါင်းစဉ်တစ်ခုရှိရမည်။",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "ပဟေဠိဖော်ပြချက်ရှိရမည်။",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "ပဟေဠိတွင် မှန်ကန်သော အနေအထားရှိရမည်။",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "ပဟေဋ္ဌိတွင် မမှန်ကန်သော FEN ဖော်မတ်ရှိသည်။ကျေးဇူးပြု၍ ရာထူးကို စစ်ဆေးပါ။",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "ပဟေဠိအဖြေတစ်ခုရှိရမည်။",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "ခေါင်းစဉ် တိုလွန်းသည် (အနည်းဆုံး စာလုံး 5 လုံး)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "ခေါင်းစဉ်ရှည်လွန်းသည် (အများဆုံး စာလုံးရေ 100)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "ဖော်ပြချက် တိုလွန်းသည် (အနည်းဆုံး စာလုံး 10 လုံး)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "ဖော်ပြချက် ရှည်လွန်းသည် (အများဆုံး စာလုံးရေ 500)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "မပါဝင်မီ သင့်အမည်ကို စာရေးဆရာအဖြစ် ထည့်ပါ။",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} ပဟေဠိကို ဖျက်မလား။} other{{count} ပဟေဠိများကို ဖျက်မလား။}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} ပဟေဠိကို ဖျက်ထားသည်။} other{{count} ပဟေဠိများကို ဖျက်ထားသည်။}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "built-in ပဟေဠိများကို ဖျက်၍မရပါ။",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "ပဟေဋ္ဌိဖန်တီးနည်း",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. စနစ်ထည့်သွင်းရန်ဘုတ်အဖွဲ့\n2။လျှပ်တစ်ပြက် အနေအထား\n3။မှတ်တမ်းရွှေ့ခြင်း\n4။အသေးစိတ်အချက်အလက်များဖြည့်ပါ\n5။သိမ်းဆည်းပါ။",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "သတ်မှတ်အနေအထား",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "အနေအထား လျှပ်တစ်ပြက်",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "ကနဦးရာထူး",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "နောက်ဆုံးရာထူး",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "လျှပ်တစ်ပြက်ရိုက်ချက် မရှိသေးပါ။",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Snapshot အနေအထားကို အရင်လုပ်ပါ။",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "မှတ်တမ်းဖြေရှင်းချက်",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "စတင်ရိုက်ကူးပါ။",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "မှတ်တမ်းတင်ခြင်းကို ရပ်ပါ။",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "ရိုက်ကူးနေသည်...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "စတင်ရိုက်ကူးနေပါပြီ။",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{{count} ရွှေ့ခြင်းကို မှတ်တမ်းတင်ထားသည်။} other{မှတ်တမ်းတင်ထားသော {count} ရွေ့လျားမှုများ}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{ဖြေရှင်းချက်- {count} ရွှေ့ပါ။} other{ဖြေရှင်းချက်- {count} ရွှေ့သည်။}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "ဖြေရှင်းချက်မရသေးပါ။",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "ရှင်းလင်းဖြေရှင်းချက်",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "ဖြေရှင်းချက် {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "နောက်ထပ်ဖြေရှင်းချက်တစ်ခုထည့်ပါ။",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "ဤဖြေရှင်းချက်ကို ဖယ်ရှားပါ။",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ အကောင်းဆုံး",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "အခြားရွေးချယ်စရာ",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "အကောင်းဆုံးအဖြစ် အမှတ်အသားပြုပါ။",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{ဖြေရှင်းချက် ၁} other{{count} ဖြေရှင်းချက်များ}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "ဤဖြေရှင်းချက်ကို ဖယ်ရှားမလား။",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "အနည်းဆုံး ဖြေရှင်းချက်တစ်ခု လိုအပ်ပါသည်။",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "ပဟေဋ္ဌိအသေးစိတ်",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "ခေါင်းစဉ်",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "ဖော်ပြချက်",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "အမျိုးအစား",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "အခက်အခဲ",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "အရိပ်အမြွက်",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "တဂ်",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "ကော်မာ ခွဲထားသည်။",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "စာရေးသူ",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "ဖြည့်စွက်စာ",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "နည်းဗျူဟာကို ရှင်းပြပါ သို့မဟုတ် ဖြေရှင်းသူကို ချီးကျူးပေးပါ။",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "ခေါင်းစဉ် လိုအပ်ပါသည်။",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "ဖော်ပြချက် လိုအပ်ပါသည်။",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "ရာထူးလိုအပ်သည်။",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "ဖြေရှင်းချက် လိုအပ်ပါသည်။",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "ပဟေဋ္ဌိဖန်တီးထားသည်။",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "ပဟေဋ္ဌိမွမ်းမံထားသည်။",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "ပဟေဠိကို သိမ်းဆည်း၍မရပါ။",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "ရွေးချယ်ခွင့်",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "သင်၏တိုးတက်မှု",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "ထွက်လိုက်ပါ။",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "အားလုံး",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "မကြာမီလာမည်",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "နေ့စဉ်ပဟေဠိ",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "ပဟေဋ္ဌိအသစ်တစ်ခုကို နေ့တိုင်းဖြေရှင်းပါ။",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "နေ့ #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Streak ပါ။",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "နေ့စထရိ",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "နေ့ရက်များ",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "အကောင်းဆုံး- {longestStreak} ရက်",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "နေ့စဉ်ပဟေဠိကိုစတင်ပါ။",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "သင်၏ဇာတ်လမ်းကိုတည်ဆောက်ရန် နေ့စဉ်ပဟေဠိများကို ပြီးအောင်လုပ်ပါ။",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "လက်ရှိ Streak",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "အရှည်ဆုံး Streak",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "စုစုပေါင်းပြီးပါပြီ။",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "သင်၏လမ်းကြောင်းကိုထိန်းသိမ်းရန် ပဟေဠိများကို နေ့တိုင်းဖြေရှင်းပါ။တစ်ရက်ပျက်သွားပါက ၎င်းကို ပြန်လည်သတ်မှတ်ပါမည်။",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "ပဟေဋ္ဌိအားလုံး",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "ရနိုင်သော ပဟေဠိများအားလုံးကို ရှာဖွေပါ။",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "ပဟေဋ္ဌိအပြေးအလွှား",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "နာရီနှင့်ဆန့်ကျင်ဘက်ပဟေဠိများကိုဖြေရှင်းပါ။",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 မိနစ်အတွင်း သင်လုပ်နိုင်သလောက် ပဟေဋ္ဌိများစွာကို ဖြေရှင်းပါ။",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "စည်းကမ်းများ",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ နာရီမှာ ၅ မိနစ်",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 အသက် - အမှားတစ်ခုလျှင် 1 ကြိမ်ရှုံးသည်။",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 သင်၏ရမှတ်ကို မြှင့်တင်ပါ။",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Rush စတင်ပါ။",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "အလျင်စလို ထွက်မလား။တိုးတက်မှု ဆုံးရှုံးမည်။",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "အလျင်စလို ရလဒ်များ",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "အချိန်ကုန်ပြီ။",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "ဘဝထဲက",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "အလျင်စလို အပြီးသတ်ပါ။",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "ကြွပ်ကြွပ်အိတ်",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "မအောင်မြင်ပါ။",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "တိကျမှု",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "ထပ်ကစားပါ။",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "ပဟေဋ္ဌိတိုက်ပွဲ",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "အခြားကစားသမားများနှင့် ယှဉ်ပြိုင်ပါ။",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "မကြာမီလာမည်",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "ဤအင်္ဂါရပ်သည် လောလောဆယ်တွင် ဖွံ့ဖြိုးတိုးတက်နေပါသည်။ဆက်ပြီးနားထောင်ပါ!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 ပဟေဋ္ဌိပြိုင်ပွဲများ",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 ပြိုင်ဘက်တိုက်ရိုက်တိုက်ရိုက်",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 အဆင့်သတ်မှတ်စနစ်",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 ဦးဆောင်ဘုတ်အဖွဲ့များ",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "စိတ်ကြိုက် ပဟေဋ္ဌိများ",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "သင့်ပဟေဠိများကို ဖန်တီးပြီး စီမံပါ။",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select မုဒ်",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "ပဟေဋ္ဌိဖန်တီးပါ။",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "ပဟေဋ္ဌိ Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "အမှားမပါဘဲ ရှေ့ဆင့်နောက်ဆင့် ဖြေရှင်းပါ။",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "တစ်တန်းမှာ ဘယ်နှစ်ယောက် ဖြေရှင်းနိုင်မလဲ။",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "စည်းကမ်းများ",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 ပဟေဋ္ဌိများကို တတ်နိုင်သမျှ ဖြေရှင်းပါ။",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ အမှားတစ်ခုက ပြီးသွားပါပြီ။",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 သင်၏ကိုယ်ရေးကိုယ်တာမှတ်တမ်းကို ကျော်ဖြတ်ပါ။",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Streak စတင်ပါ။",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "လက်ရှိ",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "အကောင်းဆုံး",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "တိုက်ရိုက်ရလဒ်များ",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Streak ပြီးသွားပါပြီ။",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "စံချိန်သစ်။",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "နောက်ဆုံးရမှတ်",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "ထပ်စမ်းကြည့်ပါ။",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "နုတ်ထွက်လိုသည်မှာ သေချာပါသလား။မင်းရဲ့စထရိကို ဆုံးရှုံးလိမ့်မယ်။",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "သမိုင်း",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "သင်၏ပဟေဠိကြိုးစားမှုများကိုကြည့်ပါ။",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "ပဟေဋ္ဌိမှတ်တမ်းမရှိပါ။",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "သင့်သမိုင်းကို ဤနေရာတွင်ကြည့်ရှုရန် ပဟေဋ္ဌိများကို စတင်ဖြေရှင်းပါ။",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "အောင်မြင်ခြင်းသာ",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "မအောင်မြင်သာ",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "အမည်မသိ ပဟေဋ္ဌိ",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "အရိပ်အမြွက်",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "အသေးစိတ် ခွဲခြမ်းစိတ်ဖြာမှုများကို ကြည့်ပါ။",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "သင်၏ပဟေဠိအဆင့်သတ်မှတ်ချက်",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "ယာယီ ({gamesLeft} ဂိမ်းများ ကျန်သည်)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "ကစားခဲ့သောဂိမ်းများ",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "သွေဖည်ခြင်း။",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "စွမ်းဆောင်ရည် ခြုံငုံသုံးသပ်ချက်",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "အောင်မြင်မှုနှုန်း",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "ပျမ်းမျှအချိန်",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "ကြွပ်ကြွပ်အိတ်",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "မအောင်မြင်ပါ။",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "ခက်ခဲမှုဖြင့် အောင်မြင်မည်။",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "အမျိုးအစားအလိုက် အောင်မြင်မှု",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "လတ်တလော လုပ်ဆောင်ချက်",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "လတ်တလော လှုပ်ရှားမှုမရှိပါ။",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "တည်းဖြတ်ပါ။",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "သိမ်းဆည်းပါ။",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "စိတ်ကြိုက် ပဟေဋ္ဌိများ မရှိပါ။",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "သတ်မှတ်ထားသောရာထူးများကိုလေ့ကျင့်ရန် သင့်ကိုယ်ပိုင်ပဟေဠိများကိုဖန်တီးပါ။",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "ဤအင်္ဂါရပ်ကို နောင်ထွက်ရှိရန် စီစဉ်ထားသည်။",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "မမှန်ကန်သောအနေအထား",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "ဘုတ်ဖွင့်ခြင်း (တည်ဆောက်မှုအနေအထား)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "ဘုတ်ဖွင့်ပါ (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "ဘုတ်ကိုဖွင့်ရန် အောက်ဖော်ပြပါ ခလုတ်ကို အသုံးပြုပါ၊ ထို့နောက် ပြန်သွားရန် Back ကိုနှိပ်ပါ။",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "မမှန်ကန်သောအနေအထားဖော်မတ်။ဂိမ်းဘုတ်ကို စစ်ဆေးပါ။",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "အနေအထားကို တင်ရန် မအောင်မြင်ပါ။ကျေးဇူးပြု၍ ပြန်လည်ရိုက်ကူးပါ။",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "မမှန်ကန်သောအနေအထားဖော်မတ်။ကျေးဇူးပြု၍ အနေအထားကို ပြန်လည်ရိုက်ကူးပါ။",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "အသေးစိတ် အလုပ်အသွားအလာကို ပြပါ။",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "ပဟေဠိဖန်တီးမှုလုပ်ငန်းအသွားအလာ",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "သတ်မှတ်အနေအထား",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "ဘုတ်ကိုဖွင့်ပါ၊ စနစ်ထည့်သွင်းမှုအနေအထား၊ လျှပ်တစ်ပြက်ရိုက်ချက်",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "မှတ်တမ်းဖြေရှင်းချက်",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "အသံသွင်းခြင်း၊ လှုပ်ရှားကစားခြင်း၊ ရပ်ပါ။",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "အသေးစိတ်အချက်အလက်များကိုထည့်ပါ။",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "ခေါင်းစဉ်၊ အမျိုးအစား၊ အခက်အခဲတို့ကို ဖြည့်စွက်ပါ။",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "ပဟေဋ္ဌိကို သိမ်းဆည်းပါ။",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "save ခလုတ်ကိုနှိပ်ပါ။",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "အကြံပြုချက်- သင်သည် ဤစာမျက်နှာနှင့် ဂိမ်းဘုတ်ကြားတွင် လမ်းညွှန်သွားပါမည်။သင်၏တိုးတက်မှုကို သိမ်းဆည်းထားသည်။",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "အနေအထား လျှပ်တစ်ပြက် အကူအညီ",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "ပဟေဠိစတင်သည့်အနေအထားကို လျှပ်တစ်ပြက်ပုံရိုက်နည်း-\n\n1။အပိုင်းများကို ကိုယ်တိုင် နေရာချရန် \"Open Board (Setup Position)\" ကို နှိပ်ပါ၊ သို့မဟုတ် ရွှေ့ခြင်းဖြင့် နေရာသို့ ရောက်ရန် \"Open Board (Play Moves)\" ကို နှိပ်ပါ။သင်အလိုရှိသော ပဟေဋ္ဌိကို စတင်သည့် အနေအထားတွင် ဘုတ်အဖွဲ့ကို စီစဉ်ပါ\n\n3။ဤစာမျက်နှာသို့ ပြန်သွားရန် __SANMILL_NL_SANMILL_NL__4 သို့ ပြန်သွားရန် နောက်ပြန်ခလုတ်ကို နှိပ်ပါ။တည်နေရာကို အလိုအလျောက် လျှပ်တစ်ပြက်ရိုက်ပြီး သိမ်းဆည်းသွားပါမည်__SANMILL_NL_SANMILL_NL__ဤလျှပ်တစ်ပြက်ရိုက်ချက်အနေအထားကို သင့်ပဟေဋ္ဌိအတွက် အစမှတ်အဖြစ် အသုံးပြုပါမည်။",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "ဖြေရှင်းချက် မှတ်တမ်းတင်ခြင်း အကူအညီ",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "ဖြေရှင်းချက်ရွေ့လျားမှုကို မှတ်တမ်းတင်နည်း",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "ပထမဆုံး စတင်သည့် အနေအထားကို လျှပ်တစ်ပြက် ရိုက်ပါ။",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"စတင်ရိုက်ကူးခြင်း\" ခလုတ်ကို နှိပ်ပါ (၎င်းသည် ဘုတ်အဖွဲ့အား သင့်လျှပ်တစ်ပြက်ရိုက်ထားသည့် အနေအထားသို့ ပြန်လည်သတ်မှတ်သည်)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "ဤနေရာသို့ ပြန်သွားပြီး \"Stop Recording\" ကိုနှိပ်ပါ။",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "အကြံပြုချက်- သင်စတင်ရိုက်ကူးသောအခါတွင် ဘုတ်အဖွဲ့သည် သင်၏လျှပ်တစ်ပြက်ရိုက်ချက်အနေအထားသို့ အလိုအလျောက်ပြန်လည်သတ်မှတ်မည်ဖြစ်သည်။",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "ဖြေရှင်းချက်များစွာကို သင်ထည့်သွင်းနိုင်သည် (အကန့်အသတ်မရှိ)။အတိုဆုံး/အကောင်းဆုံးကို အကောင်းဆုံးအဖြစ် အမှတ်အသားပြုပါ။",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "တည်နေရာလျှပ်တစ်ပြက်အကူအညီကိုပြသပါ။",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "ဖြေရှင်းချက် အသံသွင်းအကူအညီကို ပြပါ။",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "အရိပ်အမြွက်များ မရနိုင်တော့ပါ။",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "အရိပ်အမြွက်",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "အကောင်းဆုံးဖြေရှင်းချက် ({moves} ရွှေ့ခြင်း-",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "အတည်ပြုချက်အမှားများ",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Sanmill သို့ ပဟေဋ္ဌိများကို ပံ့ပိုးကူညီပါ။",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "ဘာဆက်ဖြစ်မလဲ-",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. သင့်ပဟေဠိများကို JSON ဖိုင်တစ်ခုသို့ တင်ပို့မည်ဖြစ်သည်။",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. သင်သည် ဤဖိုင်ကို မျှဝေသည့် ဒိုင်ယာလော့ခ်မှတစ်ဆင့် မျှဝေနိုင်ပါသည်။",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. ပဟေဋ္ဌိများကို ထိန်းသိမ်းသူများမှ ပြန်လည်သုံးသပ်ပါမည်။",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. အတည်ပြုပြီးသည်နှင့် ၎င်းတို့သည် built-in ပဟေဠိများဖြစ်လာသည်။",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "ပံ့ပိုးကူညီမှုအတွက် တင်ပို့ခြင်း။",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "စတင်ပါဝင်လှူဒါန်းပါ။",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "အမြန်စတင်ရန်-",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "အရည်အသွေးရှိသော ပဟေဋ္ဌိများကို ဖန်တီးပါ။",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "သင့်ပဟေဋ္ဌိတွင် ရှင်းလင်းသောအဖြေတစ်ခု၊ ကောင်းမွန်သော မက်တာဒေတာရှိပြီး အဖိုးတန်အရာတစ်ခုကို သင်ကြားပေးကြောင်း သေချာပါစေ။",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "သင့်အမည်ကိုထည့်ပါ။",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "သင့်ပဟေဋ္ဌိကို တည်းဖြတ်ပြီး ခရက်ဒစ်ရရန် သင့်အမည်ကို စာရေးဆရာအဖြစ် ထည့်ပါ။",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "ပံ့ပိုးကူညီမှုအတွက် တင်ပို့ခြင်း။",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "သင့်ပဟေဠိများကို ရွေးချယ်ပြီး မှန်ကန်သောဖော်မတ်ဖြင့် တင်ပို့ရန် အပ်လုဒ်အိုင်ကွန်ကို နှိပ်ပါ။",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "တင်ပြပါ။",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "GitHub Pull Request၊ Issue သို့မဟုတ် email မှတဆင့် တင်ပို့ထားသော ဖိုင်ကို မျှဝေပါ။",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "စာရွက်စာတမ်းအပြည့်အစုံ",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "ပြီးပြည့်စုံသော ညွှန်ကြားချက်များ၊ အရည်အသွေးလမ်းညွှန်ချက်များ နှင့် တင်ပြမှုရွေးချယ်စရာများအတွက် သိုလှောင်ခန်းရှိ PUZZLE_CONTRIBUTION_GUIDE.md ကို ကြည့်ပါ။",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "အရည်အသွေး လိုအပ်ချက်များ-",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ ရှင်းလင်းပြီး ထူးခြားသော ဖြေရှင်းချက်",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ ပြီးပြည့်စုံသော metadata (ခေါင်းစဉ်၊ ဖော်ပြချက်၊ စသည်ဖြင့်)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ စာရေးဆရာ ထည့်တွက်ခြင်း။",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ တိကျသောအခက်အခဲအဆင့်သတ်မှတ်ခြင်း။",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ သင်ယူစရာ သို့မဟုတ် ဖျော်ဖြေမှု",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "နောက်ရွှေ့ခြင်း- {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "ပြီးပြည့်စုံသော ဖြေရှင်းချက်- {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "ဒီရာထူးတွေကို အာရုံစိုက်ပါ။",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "ဖြေရှင်းချက်မရရှိနိုင်ပါ။",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "ဆက်သွားပါ။ရည်မှန်းချက် မအောင်မြင်သေးဘူး။",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "ပြီးပြည့်စုံသော!အကောင်းဆုံး လှုပ်ရှားမှုများဖြင့် ဖြေရှင်းနိုင်သည် ။",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "မှန်တယ်!({count} ရွှေ့ခြင်း၊ အကောင်းဆုံးဖြစ်သည်- {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "မှန်တယ်!အစားထိုးဖြေရှင်းချက်တစ်ခုကို သင်တွေ့ရှိခဲ့သည်။",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "အခုပဲ",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "လွန်ခဲ့သော {minutes}m",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "လွန်ခဲ့သော {hours}နာရီ",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "လွန်ခဲ့သော {days}d",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "မမှန်ကန်သော ပဟေဋ္ဌိ",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "ဤပဟေဠိတွင် မမှန်ကန်သော အနေအထားဖော်မတ်ရှိပြီး တင်၍မရပါ။ပဟေဠိရေးသားသူထံ ဆက်သွယ်ပါ သို့မဟုတ် အခြားပဟေဠိတစ်ခုကို စမ်းကြည့်ပါ။",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "ဆက်ကြိုးစားပါ။",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "ဥပမာများ",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI လက်ထောက်",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "မင်္ဂလာပါငါက မင်းရဲ့ Mill ဂိမ်းလက်ထောက်ပါ။ဗျူဟာများ၊ ရာထူးများ သို့မဟုတ် လက်ရှိဂိမ်းနှင့်ပတ်သက်သည့် မေးခွန်းများအကြောင်း မေးပါ။",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "ဂိမ်းအကြောင်းမေးပါ...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "ဝမ်းနည်းပါတယ်၊ အမှားတစ်ခုကြုံခဲ့ရတယ်။ထပ်စမ်းကြည့်ပါ။",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI assistant ကို စီစဉ်မထားပါ။LLM ဆက်တင်များကို ဦးစွာ ပြင်ဆင်သတ်မှတ်ပါ။",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "AI Assistant နှင့် စကားပြောပါ။",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "ချတ်မှတ်တမ်းကို ရှင်းလင်းပါ။",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "ချတ်မှတ်တမ်းကို ရှင်းမလား။",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "၎င်းသည် မက်ဆေ့ဂျ်အားလုံးကို ဖျက်ပြီး စကားဝိုင်းအသစ်တစ်ခု စတင်မည်ဖြစ်သည်။ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "ချတ်မှတ်တမ်းကို ရှင်းလင်းထားသည်။",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "မှတ်တမ်းများ",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "မှတ်တမ်းများကို ဒေါင်းလုဒ်လုပ်ပါ။",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "မှတ်တမ်းများ မရနိုင်ပါ။",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "အက်ပ်လည်ပတ်နေချိန်တွင် မှတ်တမ်းများ ဤနေရာတွင် ပေါ်လာပါမည်။အက်ပ်ကိုသုံး၍ မှတ်တမ်းများကိုကြည့်ရန် ပြန်လာပါ။",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "ဒေါင်းလုဒ်လုပ်ရန် မှတ်တမ်းများမရှိပါ။",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "ဒေါင်းလုဒ် မအောင်မြင်ပါ။",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "ပြန်လည်စတင်ပါ။",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "မှတ်တမ်းများကို မျှဝေပါ။",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "{path} သို့ ဒေါင်းလုဒ်လုပ်ထားသည်",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "မုဒ်ကို ရွေးပါ။",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "ကော်ပီ ရွေးထားသည်။",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "စတင်အမှတ်ကို ရွေးချယ်ရန် တို့ပါ။",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "အဆုံးမှတ်ကို ရွေးရန် တို့ပါ။",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "မှတ်တမ်းများကို ရွေးချယ်ထားခြင်းမရှိပါ။",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "(ရှေးအကျဆုံး) အပေါ်ကို ရွှေ့ပါ",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "အောက်ခြေသို့ ဆင်းပါ (အသစ်ဆုံး)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "အောက်ခြေတွင် နောက်ဆုံးပေါ် မှတ်တမ်းများ",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "မှတ်တမ်းများ- {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "မှတ်တမ်းကြားခံ အပြည့် ({current}/{max})။သစ်လုံးဟောင်းများကို ဖယ်ရှားလျက်ရှိသည်။",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "မှတ်တမ်းများကို ရှင်းလင်းပါ။",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "မှတ်တမ်းများအားလုံးကို ရှင်းလင်းလိုသည်မှာ သေချာပါသလား။ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "ရှင်းပါတယ်။",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "မှတ်တမ်းများကို ရှင်းလင်းထားသည်။",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "မမှန်ကန်သော ပဟေဋ္ဌိ",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "ဤပဟေဠိတွင် မမှန်ကန်သော အနေအထားဖော်မတ်ရှိပြီး တင်၍မရပါ။ပဟေဠိရေးသားသူထံ ဆက်သွယ်ပါ သို့မဟုတ် အခြားပဟေဠိတစ်ခုကို စမ်းကြည့်ပါ။",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "စာရင်းသို့ ပြန်သွားရန်",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "မှားယွင်းသော လှုပ်ရှားမှု။ထပ်စမ်းကြည့်ပါ။",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "ထိုလှုပ်ရှားမှုသည် ဖြေရှင်းချက်နှင့် မကိုက်ညီပါ။သင်သည် ထပ်စမ်းကြည့်နိုင်သည် သို့မဟုတ် မှန်ကန်သောဖြေရှင်းချက်ကို ကြည့်နိုင်သည်။",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "ဖြေရှင်းချက်ပြပါ။",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "ဖြေရှင်းချက်ကစားနေသည်...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "အဖြေပြန်ဖွင့်ခြင်း ပြီးပါပြီ။",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "ဤပဟေဠိအတွက် အဖြေမရှိပါ။",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "ဖြေရှင်းချက်ကို ကြည့်ပါ (ကြယ်များမပါ)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{ကြိုးစားမှု- {count}} other{ကြိုးစားမှု- {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "အရိပ်အမြွက်များ မရနိုင်တော့ပါ။",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "အရိပ်အမြွက်",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "အတည်ပြုချက်အမှားများ",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "မပါဝင်မီ အောက်ပါပဟေဠိများကို ပြင်ဆင်ရန် လိုအပ်သည်-",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Sanmill သို့ ပဟေဋ္ဌိများကို ပံ့ပိုးကူညီပါ။",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "သင်သည် ပံ့ပိုးကူညီမှုအတွက် {count} ပဟေဠိ(များ) ကို ထုတ်ယူပါတော့မည်။",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "ဘာဆက်ဖြစ်မလဲ-",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. သင့်ပဟေဠိများကို JSON ဖိုင်တစ်ခုသို့ တင်ပို့မည်ဖြစ်သည်။",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. သင်သည် ဤဖိုင်ကို မျှဝေသည့် ဒိုင်ယာလော့ခ်မှတစ်ဆင့် မျှဝေနိုင်ပါသည်။",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. GitHub၊ အီးမေးလ် သို့မဟုတ် GitHub ပြဿနာမှတစ်ဆင့် တင်ပြပါ (လမ်းညွှန်ကိုကြည့်ပါ)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. ပဟေဋ္ဌိများကို ထိန်းသိမ်းသူများမှ ပြန်လည်သုံးသပ်ပါမည်။",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. အတည်ပြုပြီးသည်နှင့် ၎င်းတို့သည် built-in ပဟေဠိများဖြစ်လာသည်။",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "ပံ့ပိုးပေးခြင်းဖြင့်၊ သင်သည် CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike) အောက်တွင် သင်၏ပဟေဠိအကြောင်းအရာကို လိုင်စင်ခွင့်ပြုရန် သဘောတူပါသည်။",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "ပံ့ပိုးကူညီမှုအတွက် တင်ပို့ခြင်း။",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "စတင်ပါဝင်လှူဒါန်းပါ။",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "ပဟေဋ္ဌိများကို ပံ့ပိုးနည်း",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "ဤ {count} ပဟေဠိများကို စစ်ဆေးကြည့်ပါ။",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "ပဟေဋ္ဌိများ ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "ပဟေဋ္ဌိ ပံ့ပိုးကူညီမှု။__SANMILL_NL_SANMILL_NL__တင်ပြချက် ညွှန်ကြားချက်များအတွက် PUZZLE_CONTRIBUTION_GUIDE.md ကို ကြည့်ပါ။",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "ပဟေဋ္ဌိပံ့ပိုးမှု- {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "ပဟေဋ္ဌိ ပံ့ပိုးမှုများ။__SANMILL_NL_SANMILL_NL__တင်ပြချက် ညွှန်ကြားချက်များအတွက် PUZZLE_CONTRIBUTION_GUIDE.md ကို ကြည့်ပါ။",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "ပဟေဋ္ဌိ ပံ့ပိုးမှုများ ({count} ပဟေဠိများ)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "သင်၏ပဟေဠိများကို ပံ့ပိုးပေးခြင်းဖြင့် ဤပရိုဂရမ်ကို ပိုမိုကောင်းမွန်အောင် ကူညီပေးပါ။",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "အမြန်စတင်ရန်-",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "အရည်အသွေးရှိသော ပဟေဋ္ဌိများကို ဖန်တီးပါ။",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "သင့်ပဟေဋ္ဌိတွင် ရှင်းလင်းသောအဖြေတစ်ခု၊ ကောင်းမွန်သော မက်တာဒေတာရှိပြီး အဖိုးတန်အရာတစ်ခုကို သင်ကြားပေးကြောင်း သေချာပါစေ။",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "သင့်အမည်ကိုထည့်ပါ။",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "သင့်ပဟေဋ္ဌိကို တည်းဖြတ်ပြီး ခရက်ဒစ်ရရန် သင့်အမည်ကို စာရေးဆရာအဖြစ် ထည့်ပါ။",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "ပံ့ပိုးကူညီမှုအတွက် တင်ပို့ခြင်း။",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "သင့်ပဟေဠိများကို ရွေးချယ်ပြီး မှန်ကန်သောဖော်မတ်ဖြင့် တင်ပို့ရန် အပ်လုဒ်အိုင်ကွန်ကို နှိပ်ပါ။",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "တင်ပြပါ။",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "GitHub Pull Request၊ Issue သို့မဟုတ် email မှတဆင့် တင်ပို့ထားသော ဖိုင်ကို မျှဝေပါ။",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "စာရွက်စာတမ်းအပြည့်အစုံ",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "ပြီးပြည့်စုံသော ညွှန်ကြားချက်များ၊ အရည်အသွေးလမ်းညွှန်ချက်များ နှင့် တင်ပြမှုရွေးချယ်စရာများအတွက် သိုလှောင်ခန်းရှိ PUZZLE_CONTRIBUTION_GUIDE.md ကို ကြည့်ပါ။",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "အရည်အသွေး လိုအပ်ချက်များ-",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ ရှင်းလင်းပြီး ထူးခြားသော ဖြေရှင်းချက်",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ ပြီးပြည့်စုံသော metadata (ခေါင်းစဉ်၊ ဖော်ပြချက်၊ စသည်ဖြင့်)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ စာရေးဆရာ ထည့်တွက်ခြင်း။",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ တိကျသောအခက်အခဲအဆင့်သတ်မှတ်ခြင်း။",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ သင်ယူစရာ သို့မဟုတ် ဖျော်ဖြေမှု",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "ဇန်နဝါရီလ",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "ဖေဖော်ဝါရီလ",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "မတ်လ",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "ဧပြီလ",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "မေ",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "ဇွန်လ",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "ဇူလိုင်လ",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "သြဂုတ်လ",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "စက်တင်ဘာ",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "အောက်တိုဘာလ",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "နိုဝင်ဘာလ",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "ဒီဇင်ဘာ",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

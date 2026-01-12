@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "ការកំណត់ជំនួយការសម្លេង",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "កំណត់រចនាសម្ព័ន្ធគំរូ ភាសា និងឥរិយាបថ",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "ការអភិវឌ្ឍន៍ដែលជួយ LLM",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "រៀបរាប់ពីកិច្ចការដែលអ្នកចង់ឱ្យ LLM ជួយជាមួយ...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "ទាញយក",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "ស្ថានភាព",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "មិនស្គាល់",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "បើក AI Chat",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "អនុញ្ញាតឱ្យជជែកជាមួយជំនួយការ AI (ពិសោធន៍)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "បើកដំណើរការចលនាប្រមូលដុំ",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "ល្បែងផ្គុំរូប",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "ល្បែងផ្គុំរូប",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "មិនមានល្បែងផ្គុំរូបទេ។",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "តម្រង",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "ប្រភេទ",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "ជម្រះតម្រង",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "ស្ថិតិល្បែងផ្គុំរូប",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "ល្បែងផ្គុំរូបសរុប",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "បានបញ្ចប់",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "ផ្កាយសរុប",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "ការបញ្ចប់",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "អ្នកចាប់ផ្តើម",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "ងាយស្រួល",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "មធ្យម",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "រឹង",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "អ្នកជំនាញ",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "មេ",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "ទម្រង់រោងម៉ាស៊ីនកិនស្រូវ",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "ចាប់យក",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "ហ្គេមឈ្នះ",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "ការពារ",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "ផ្លាស់ទីល្អបំផុត",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "ហ្គេមបញ្ចប់",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "ការបើក",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "លាយ",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "ចាកចេញពីល្បែងផ្គុំរូប?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "វឌ្ឍនភាពនឹងត្រូវបាត់បង់។បន្ត?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "ផ្លាស់ទី",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "ល្អបំផុត",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "ពិនិត្យដំណោះស្រាយ",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "បោះបង់",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "ស្រាយ​ចម្ងល់!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "ការណែនាំដែលបានប្រើ",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "ព្យាយាមម្តងទៀត",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "ត្រឡប់ទៅ បញ្ជី វិញ",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "ដំណោះស្រាយ",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "បង្កើតរូបផ្គុំថ្មី។",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "កែសម្រួលល្បែងផ្គុំរូប",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "ផ្ទាល់ខ្លួន",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "ច្បាប់មិនត្រូវគ្នា។",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "សម្រាប់ {puzzleRules} បច្ចុប្បន្ន {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "បន្ត",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "ឆបគ្នាតែប៉ុណ្ណោះ",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "ជ្រើសរើសល្បែងផ្គុំរូប",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} បានជ្រើសរើស",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "ជ្រើសរើសទាំងអស់។",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "នាំចេញ",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "នាំចូល",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{បាននាំចេញដោយជោគជ័យ {count} ល្បែងផ្គុំរូប} other{បាននាំចេញដោយជោគជ័យ {count} ល្បែងផ្គុំរូប}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "បរាជ័យក្នុងការនាំចេញល្បែងផ្គុំរូប",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{បាននាំចូលដោយជោគជ័យ {count} ល្បែងផ្គុំរូប} other{បាននាំចូលដោយជោគជ័យ {count} ល្បែងផ្គុំរូប}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "បានបរាជ័យក្នុងការនាំចូលល្បែងផ្គុំរូប",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "គ្មានឯកសារត្រូវបានជ្រើសរើសទេ។",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "ផ្លូវឯកសារមិនត្រឹមត្រូវ",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "កំហុសក្នុងការជ្រើសរើសឯកសារ៖ {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ឯកសារមិនមានទេ។",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "ទម្រង់​ឯកសារ​មិន​ត្រឹមត្រូវ៖ បាត់​កន្លែង​ផ្គុំ​រូប",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "កំណែទម្រង់ឯកសារមិនត្រូវគ្នា៖ {version} (រំពឹងទុក {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "រូបផ្គុំ {index} (\"{title}\") មានទម្រង់ FEN មិនត្រឹមត្រូវ",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "ល្បែងផ្គុំរូប {index} (\"{title}\") ប្រើច្បាប់ផ្សេងៗគ្នា៖ {puzzleRules} (បច្ចុប្បន្ន៖ {currentRules})។ល្បែងផ្គុំរូបនេះអាចដំណើរការមិនត្រឹមត្រូវជាមួយការកំណត់បច្ចុប្បន្នរបស់អ្នក។",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "បរាជ័យក្នុងការញែកល្បែងផ្គុំរូប {index}៖ {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "កំហុស៖",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "ការព្រមាន៖",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "កំហុសក្នុងការអានឯកសារ៖ {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "ល្បែងផ្គុំរូបត្រូវតែមានចំណងជើង",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "ល្បែងផ្គុំរូបត្រូវតែមានការពិពណ៌នា",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "រូបផ្គុំត្រូវតែមានទីតាំងត្រឹមត្រូវ។",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "ល្បែងផ្គុំរូបមានទម្រង់ FEN មិនត្រឹមត្រូវ។សូមពិនិត្យមើលទីតាំង។",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "ល្បែងផ្គុំរូបត្រូវតែមានដំណោះស្រាយ",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "ចំណងជើងខ្លីពេក (យ៉ាងតិច 5 តួអក្សរ)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "ចំណងជើងវែងពេក (អតិបរមា 100 តួអក្សរ)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "ការពិពណ៌នាខ្លីពេក (យ៉ាងហោចណាស់ 10 តួអក្សរ)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "ការពិពណ៌នាវែងពេក (អតិបរមា 500 តួអក្សរ)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "សូមបញ្ចូលឈ្មោះរបស់អ្នកជាអ្នកនិពន្ធ មុនពេលចូលរួមចំណែក",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{លុប {count} រូបផ្គុំ?} other{លុប {count} ល្បែងផ្គុំរូប?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{បានលុប {count} ល្បែងផ្គុំរូប} other{បានលុប {count} ល្បែងផ្គុំរូប}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "មិនអាចលុបល្បែងផ្គុំរូបដែលមានស្រាប់បានទេ។",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "របៀបបង្កើតល្បែងផ្គុំរូប",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. ដំឡើងបន្ទះ\n2។ទីតាំងរូបថត\n3.កត់ត្រាចលនា\n4.បំពេញព័ត៌មានលម្អិត\n5.រក្សាទុក",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "កំណត់ទីតាំង",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "រូបថតទីតាំង",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "មុខតំណែងដំបូង",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "មុខតំណែងចុងក្រោយ",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "មិនទាន់មានរូបថតទេ។",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "ទីតាំងរូបថតដំបូង",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "ដំណោះស្រាយកំណត់ត្រា",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "ចាប់ផ្តើមថត",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "បញ្ឈប់ការថត",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "កំពុងថត...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "ការថតបានចាប់ផ្តើម",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{បានកត់ត្រា {count} ផ្លាស់ទី} other{បានកត់ត្រាចលនា {count}}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{ដំណោះស្រាយ៖ {count} ផ្លាស់ទី} other{ដំណោះស្រាយ៖ {count} ផ្លាស់ទី}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "មិនទាន់មានដំណោះស្រាយនៅឡើយ",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "ដំណោះស្រាយច្បាស់លាស់",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "ដំណោះស្រាយ {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "បន្ថែមដំណោះស្រាយមួយទៀត",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "យកដំណោះស្រាយនេះចេញ",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ល្អបំផុត",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "ជម្មើសជំនួស",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "សម្គាល់ថាល្អបំផុត",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 ដំណោះស្រាយ} other{{count} ដំណោះស្រាយ}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "យកដំណោះស្រាយនេះចេញ?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "ត្រូវការដំណោះស្រាយយ៉ាងតិចមួយ។",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "ព័ត៌មានលម្អិតអំពីល្បែងផ្គុំរូប",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "ចំណងជើង",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "ការពិពណ៌នា",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "ប្រភេទ",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "ភាពលំបាក",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "ព័ត៌មានជំនួយ",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "ស្លាក",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "បំបែកដោយក្បៀស",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "អ្នកនិពន្ធ",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "សារបញ្ចប់",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "ពន្យល់យុទ្ធសាស្ត្រ ឬអបអរសាទរអ្នកដោះស្រាយ",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "ចំណងជើងត្រូវបានទាមទារ",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "ការពិពណ៌នាត្រូវបានទាមទារ",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "មុខតំណែងត្រូវបានទាមទារ",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "ដំណោះស្រាយត្រូវបានទាមទារ",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "ល្បែងផ្គុំរូបត្រូវបានបង្កើតឡើង",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "ល្បែងផ្គុំរូបបានធ្វើបច្ចុប្បន្នភាព",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "បានបរាជ័យក្នុងការរក្សាទុកល្បែងផ្គុំរូប",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "ស្រេចចិត្ត",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "វឌ្ឍនភាពរបស់អ្នក។",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "ឈប់",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "ទាំងអស់។",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "មកដល់ឆាប់ៗនេះ",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "ល្បែងផ្គុំរូបប្រចាំថ្ងៃ",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "ដោះស្រាយល្បែងផ្គុំរូបថ្មីជារៀងរាល់ថ្ងៃ",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "ថ្ងៃ #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "ស្ទ្រីក",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "ជួរថ្ងៃ",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "ថ្ងៃ",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "ល្អបំផុត៖ {longestStreak} ថ្ងៃ។",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "ចាប់ផ្តើមល្បែងផ្គុំរូបប្រចាំថ្ងៃ",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "បំពេញល្បែងផ្គុំរូបប្រចាំថ្ងៃដើម្បីបង្កើតការផ្សាយរបស់អ្នក!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "ចរន្តបច្ចុប្បន្ន",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "ស្ទ្រីមវែងបំផុត។",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "សរុបបានបញ្ចប់",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "ដោះស្រាយល្បែងផ្គុំរូបជារៀងរាល់ថ្ងៃដើម្បីរក្សាកម្រិតរបស់អ្នក។ខកខានមួយថ្ងៃនឹងកំណត់វាឡើងវិញ!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "ល្បែងផ្គុំរូបទាំងអស់។",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "រកមើលល្បែងផ្គុំរូបដែលមានទាំងអស់។",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "ប្រញាប់ប្រញាល់ល្បែងផ្គុំរូប",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "ដោះស្រាយល្បែងផ្គុំរូបប្រឆាំងនឹងនាឡិកា",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "ដោះស្រាយល្បែងផ្គុំរូបឱ្យបានច្រើនតាមដែលអ្នកអាចធ្វើបានក្នុងរយៈពេល 5 នាទី!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "ច្បាប់",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 នាទីតាមទ្រនិចនាឡិកា",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 ជីវិត - 1 បាត់បង់ក្នុងមួយកំហុស",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 បង្កើនពិន្ទុរបស់អ្នក!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "ចាប់ផ្តើមប្រញាប់",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "ឈប់ប្រញាប់?វឌ្ឍនភាពនឹងត្រូវបាត់បង់។",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "លទ្ធផលប្រញាប់ប្រញាល់",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "ដល់ម៉ោងហើយ!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "ចេញពីជីវិត",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "ប្រញាប់ឡើង!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "ដោះស្រាយ",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "បរាជ័យ",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "ភាពត្រឹមត្រូវ",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "លេងម្តងទៀត",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "ល្បែងផ្គុំរូប",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "ប្រកួតប្រជែងជាមួយអ្នកលេងផ្សេងទៀត។",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "មកដល់ឆាប់ៗនេះ!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "មុខងារនេះកំពុងស្ថិតក្នុងការអភិវឌ្ឍន៍។ចាំមើល!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ ល្បែងផ្គុំរូប 1v1",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 ការផ្គូផ្គងគូប្រជែងផ្ទាល់",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 ប្រព័ន្ធវាយតម្លៃ",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆តារាងពិន្ទុ",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "ល្បែងផ្គុំរូបផ្ទាល់ខ្លួន",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "បង្កើត និងគ្រប់គ្រងល្បែងផ្គុំរូបរបស់អ្នក។",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "របៀបជ្រើសរើសច្រើន។",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "បង្កើតល្បែងផ្គុំរូប",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "ល្បែងផ្គុំរូប",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "ដោះស្រាយជាបន្តបន្ទាប់ដោយគ្មានកំហុស",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "តើអ្នកអាចដោះស្រាយបានប៉ុន្មានក្នុងមួយជួរ?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "ច្បាប់",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 ដោះស្រាយល្បែងផ្គុំរូបឱ្យបានច្រើនតាមដែលអាចធ្វើទៅបាន។",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌កំហុសមួយចប់ហើយ",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 បំបែកកំណត់ត្រាផ្ទាល់ខ្លួនរបស់អ្នក។",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "ចាប់ផ្តើម Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "បច្ចុប្បន្ន",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "ល្អបំផុត",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "លទ្ធផល Streak",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "វគ្គបញ្ចប់",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "កំណត់ត្រាថ្មី!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "ពិន្ទុចុងក្រោយ",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "ព្យាយាមម្តងទៀត",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "តើអ្នកប្រាកដថាអ្នកចង់ចាកចេញទេ?វគ្គរបស់អ្នកនឹងត្រូវបាត់បង់។",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "ប្រវត្តិសាស្ត្រ",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "មើលការព្យាយាមផ្ដុំរូបរបស់អ្នក។",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "មិនមានប្រវត្តិរូបផ្គុំទេ។",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "ចាប់ផ្តើមដោះស្រាយល្បែងផ្គុំរូប ដើម្បីមើលប្រវត្តិរបស់អ្នកនៅទីនេះ",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "ជោគជ័យតែប៉ុណ្ណោះ",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "បរាជ័យតែប៉ុណ្ណោះ",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "ល្បែងផ្គុំរូបមិនស្គាល់",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "ព័ត៌មានជំនួយ",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "មើលការវិភាគលម្អិត",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "ការវាយតម្លៃល្បែងផ្គុំរូបរបស់អ្នក។",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "បណ្តោះអាសន្ន ({gamesLeft} ហ្គេមនៅសល់)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "ហ្គេមបានលេង",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "គម្លាត",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "ទិដ្ឋភាពទូទៅនៃការអនុវត្ត",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "អត្រាជោគជ័យ",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "មធ្យមពេលវេលា",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "ដោះស្រាយ",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "បរាជ័យ",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "ជោគជ័យដោយភាពលំបាក",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "ជោគជ័យតាមប្រភេទ",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "សកម្មភាពថ្មីៗ",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "មិនមានសកម្មភាពថ្មីៗទេ។",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "កែសម្រួល",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "រក្សាទុក",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "មិនមានល្បែងផ្គុំរូបផ្ទាល់ខ្លួនទេ។",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "បង្កើតល្បែងផ្គុំរូបផ្ទាល់ខ្លួនរបស់អ្នកដើម្បីអនុវត្តមុខតំណែងជាក់លាក់",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "មុខងារនេះត្រូវបានគ្រោងសម្រាប់ការចេញផ្សាយនាពេលអនាគត",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "ទីតាំងមិនត្រឹមត្រូវ",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "បើកក្រុមប្រឹក្សាភិបាល (ទីតាំងដំឡើង)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "បើកក្តារ (លេងផ្លាស់ទី)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "ប្រើប៊ូតុងខាងក្រោមដើម្បីបើកបន្ទះ បន្ទាប់មកចុច ថយក្រោយ ដើម្បីត្រឡប់។",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "ទម្រង់ទីតាំងមិនត្រឹមត្រូវ។សូមពិនិត្យមើលក្តារហ្គេម។",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "បានបរាជ័យក្នុងការផ្ទុកទីតាំង។សូមថតឡើងវិញ។",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "ទម្រង់ទីតាំងមិនត្រឹមត្រូវ។សូម​ថត​ទីតាំង​ឡើងវិញ។",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "បង្ហាញលំហូរការងារលម្អិត",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "ដំណើរការបង្កើតល្បែងផ្គុំរូប",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "កំណត់ទីតាំង",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "បើកក្តារ, ទីតាំងដំឡើង, រូបថត",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "ដំណោះស្រាយកំណត់ត្រា",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "ចាប់ផ្តើមថត លេងចលនា បញ្ឈប់",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "បន្ថែមព័ត៌មានលម្អិត",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "បំពេញចំណងជើង, ប្រភេទ, ការលំបាក",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "រក្សាទុកល្បែងផ្គុំរូប",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "ចុចប៊ូតុងរក្សាទុក",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "គន្លឹះ៖ អ្នកនឹងរុករករវាងទំព័រនេះ និងក្តារហ្គេម។វឌ្ឍនភាពរបស់អ្នកត្រូវបានរក្សាទុក!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "ជំនួយរូបថតទីតាំង",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "របៀបថតរូបទីតាំងចាប់ផ្តើមផ្ដុំរូប៖ __SANMILL_NL_SANMILL_NL__1 ។ចុច \"Open Board (Setup Position)\" ដើម្បីដាក់បំណែកដោយដៃ ឬចុច \"Open Board (Play Moves)\" ដើម្បីទៅដល់ទីតាំងដោយធ្វើការផ្លាស់ទី\n\n2។រៀបចំក្តារទៅទីតាំងចាប់ផ្តើមល្បែងផ្គុំរូបដែលអ្នកចង់បាន\n\n3។ចុចប៊ូតុងថយក្រោយដើម្បីត្រឡប់ទៅទំព័រនេះ __SANMILL_NL_SANMILL_NL__4 ។ទីតាំងនឹងត្រូវបានថតដោយស្វ័យប្រវត្តិ និងរក្សាទុក__SANMILL_NL_SANMILL_NL__ទីតាំងរូបថតនេះនឹងត្រូវបានប្រើជាចំណុចចាប់ផ្តើមសម្រាប់ល្បែងផ្គុំរូបរបស់អ្នក។",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "ដំណោះស្រាយជំនួយការកត់ត្រា",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "របៀបកត់ត្រាចលនានៃដំណោះស្រាយ៖",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "ថតរូបទីតាំងចាប់ផ្តើមជាមុនសិន",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "ចុចប៊ូតុង \"ចាប់ផ្តើមថត\" (វាកំណត់បន្ទះឡើងវិញទៅទីតាំងថតរបស់អ្នក)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "ត្រឡប់មកទីនេះហើយចុច \"បញ្ឈប់ការថត\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "គន្លឹះ៖ បន្ទះនឹងកំណត់ឡើងវិញដោយស្វ័យប្រវត្តិទៅទីតាំងថតរបស់អ្នកនៅពេលអ្នកចាប់ផ្តើមថត។",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "អ្នកអាចបន្ថែមដំណោះស្រាយជាច្រើន (គ្មានដែនកំណត់)។សម្គាល់ខ្លីបំផុត/ល្អបំផុតថាល្អបំផុត។",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "បង្ហាញជំនួយរូបថតទីតាំង",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "បង្ហាញដំណោះស្រាយការកត់ត្រាជំនួយ",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "មិនមានការណែនាំទៀតទេ",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "ព័ត៌មានជំនួយ",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "ដំណោះស្រាយល្អបំផុត ({moves} ផ្លាស់ទី)៖",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "កំហុសក្នុងការផ្ទៀងផ្ទាត់",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "រួមចំណែកល្បែងផ្គុំរូបទៅ Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "តើមានអ្វីកើតឡើងបន្ទាប់៖",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. ល្បែងផ្គុំរូបរបស់អ្នកនឹងត្រូវបាននាំចេញទៅឯកសារ JSON",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. អ្នកអាចចែករំលែកឯកសារនេះតាមរយៈប្រអប់ចែករំលែក",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. ល្បែងផ្គុំរូបនឹងត្រូវបានពិនិត្យដោយអ្នកថែទាំ",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. នៅពេលដែលបានអនុម័ត ពួកគេក្លាយជាល្បែងផ្គុំរូបដែលភ្ជាប់មកជាមួយ!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "នាំចេញសម្រាប់ការរួមចំណែក",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "ចាប់ផ្តើមការរួមចំណែក",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "ការចាប់ផ្តើមរហ័ស៖",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "បង្កើតល្បែងផ្គុំរូបដែលមានគុណភាព",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "ត្រូវប្រាកដថាល្បែងផ្គុំរូបរបស់អ្នកមានដំណោះស្រាយច្បាស់លាស់ ទិន្នន័យមេតាល្អ និងបង្រៀនអ្វីមួយដែលមានតម្លៃ។",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "បន្ថែមឈ្មោះរបស់អ្នក។",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "កែសម្រួលរូបផ្គុំរបស់អ្នក ហើយបន្ថែមឈ្មោះរបស់អ្នកជាអ្នកនិពន្ធ ដើម្បីទទួលបានឥណទាន។",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "នាំចេញសម្រាប់ការរួមចំណែក",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "ជ្រើសរើសល្បែងផ្គុំរូបរបស់អ្នក ហើយចុចលើរូបតំណាងផ្ទុកឡើង ដើម្បីនាំចេញក្នុងទម្រង់ត្រឹមត្រូវ។",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "ដាក់ស្នើ",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "ចែករំលែកឯកសារដែលបាននាំចេញតាមរយៈ GitHub Pull Request, Issue ឬអ៊ីមែល។",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "ឯកសារពេញលេញ",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "សូមមើល PUZZLE_CONTRIBUTION_GUIDE.md នៅក្នុងឃ្លាំងសម្រាប់ការណែនាំពេញលេញ គោលការណ៍ណែនាំគុណភាព និងជម្រើសនៃការដាក់ស្នើ។",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "តម្រូវការគុណភាព៖",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ ដំណោះស្រាយតែមួយគត់",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ បំពេញទិន្នន័យមេតា (ចំណងជើង ការពិពណ៌នា។ល។)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ គុណលក្ខណៈអ្នកនិពន្ធ",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ការវាយតម្លៃការលំបាកត្រឹមត្រូវ។",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ ការណែនាំ ឬកម្សាន្ត",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "ចលនាបន្ទាប់៖ {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "ដំណោះស្រាយពេញលេញ៖ {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "យកចិត្តទុកដាក់លើមុខតំណែងទាំងនេះ",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "មិនមានដំណោះស្រាយទេ។",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "បន្ត!គោលដៅមិនទាន់បានសម្រេចនៅឡើយទេ។",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "ល្អឥតខ្ចោះ!ដោះស្រាយក្នុងចលនាល្អបំផុត!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "ត្រឹមត្រូវ!({count} ផ្លាស់ទី ល្អបំផុត៖ {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "ត្រឹមត្រូវ!អ្នកបានរកឃើញដំណោះស្រាយជំនួស!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "ឥឡូវនេះ",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}នាទីមុន។",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}ម៉ោងមុន។",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}ថ្ងៃមុន។",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "ល្បែងផ្គុំរូបមិនត្រឹមត្រូវ",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "ល្បែងផ្គុំរូបនេះមានទម្រង់ទីតាំងមិនត្រឹមត្រូវ ហើយមិនអាចផ្ទុកបានទេ។សូមទាក់ទងអ្នកនិពន្ធល្បែងផ្គុំរូប ឬសាកល្បងល្បែងផ្គុំរូបផ្សេង។",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "បន្តព្យាយាម!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "ឧទាហរណ៍",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "ជំនួយការ AI",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "សួស្តី!ខ្ញុំជាជំនួយការហ្គេម Mill របស់អ្នក។សួរខ្ញុំអំពីយុទ្ធសាស្ត្រ មុខតំណែង ឬសំណួរណាមួយអំពីហ្គេមបច្ចុប្បន្ន។",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "សួរស្តីហ្គេម...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "សូមអភ័យទោស ខ្ញុំបានជួបប្រទះបញ្ហាមួយ។សូមព្យាយាមម្តងទៀត។",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "ជំនួយការ AI មិនត្រូវបានកំណត់រចនាសម្ព័ន្ធទេ។សូមកំណត់រចនាសម្ព័ន្ធ LLM ជាមុនសិន។",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "ជជែកជាមួយជំនួយការ AI",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "សម្អាតប្រវត្តិជជែក",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "សម្អាតប្រវត្តិជជែក?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "វានឹងលុបសារទាំងអស់ ហើយចាប់ផ្តើមការសន្ទនាថ្មី។សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "បានជម្រះប្រវត្តិជជែក",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "កំណត់ហេតុ",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "ទាញយកកំណត់ហេតុ",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "មិនមានកំណត់ហេតុទេ។",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "កំណត់ហេតុនឹងបង្ហាញនៅទីនេះ នៅពេលដែលកម្មវិធីដំណើរការ។សាកល្បងប្រើកម្មវិធី ហើយត្រលប់មកវិញដើម្បីមើលកំណត់ហេតុ។",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "មិនមានកំណត់ហេតុដែលអាចទាញយកបានទេ។",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "ការទាញយកបរាជ័យ",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "ធ្វើឱ្យស្រស់",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "ចែករំលែកកំណត់ហេតុ",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "បានទាញយកទៅ {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "ជ្រើសរើសរបៀប",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "បានជ្រើសរើសចម្លង",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "ប៉ះដើម្បីជ្រើសរើសចំណុចចាប់ផ្តើម",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "ប៉ះដើម្បីជ្រើសរើសចំណុចបញ្ចប់",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "មិនបានជ្រើសរើសកំណត់ហេតុទេ។",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "រំកិលទៅកំពូល (ចាស់ជាងគេ)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "រំកិលចុះក្រោម (ថ្មីបំផុត)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "កំណត់ហេតុថ្មីបំផុតនៅខាងក្រោម",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "កំណត់ហេតុ៖ {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "កំណត់ហេតុបណ្តោះអាសន្នពេញ ({current}/{max}) ។កំណត់ហេតុចាស់កំពុងត្រូវបានដកចេញ។",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "ជម្រះកំណត់ហេតុ",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "តើអ្នកប្រាកដថាចង់លុបកំណត់ហេតុទាំងអស់មែនទេ?សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "ច្បាស់",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "កំណត់ហេតុត្រូវបានសម្អាត",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "ល្បែងផ្គុំរូបមិនត្រឹមត្រូវ",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "ល្បែងផ្គុំរូបនេះមានទម្រង់ទីតាំងមិនត្រឹមត្រូវ ហើយមិនអាចផ្ទុកបានទេ។សូមទាក់ទងអ្នកនិពន្ធល្បែងផ្គុំរូប ឬសាកល្បងល្បែងផ្គុំរូបផ្សេង។",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "ត្រឡប់ទៅ បញ្ជី វិញ",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "ចលនាខុស។ព្យាយាមម្តងទៀត។",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "ចលនានេះមិនត្រូវគ្នានឹងដំណោះស្រាយទេ។អ្នកអាចព្យាយាមម្តងទៀត ឬមើលដំណោះស្រាយត្រឹមត្រូវ។",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "បង្ហាញដំណោះស្រាយ",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "លេងដំណោះស្រាយ...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "ដំណោះស្រាយការចាក់សារថ្មីបានបញ្ចប់",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "មិនមានដំណោះស្រាយសម្រាប់ល្បែងផ្គុំរូបនេះទេ។",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "ដំណោះស្រាយបានមើល (គ្មានផ្កាយ)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{ការប៉ុនប៉ង៖ {count}} other{ការប៉ុនប៉ង៖ {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "មិនមានការណែនាំទៀតទេ",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "ព័ត៌មានជំនួយ",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "កំហុសក្នុងការផ្ទៀងផ្ទាត់",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "ល្បែងផ្គុំរូបខាងក្រោមត្រូវជួសជុលមុនពេលចូលរួមចំណែក៖",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "រួមចំណែកល្បែងផ្គុំរូបទៅ Sanmill",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "អ្នកហៀបនឹងនាំចេញ {count} puzzle(s) សម្រាប់ការរួមចំណែក។",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "តើមានអ្វីកើតឡើងបន្ទាប់៖",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. ល្បែងផ្គុំរូបរបស់អ្នកនឹងត្រូវបាននាំចេញទៅឯកសារ JSON",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. អ្នកអាចចែករំលែកឯកសារនេះតាមរយៈប្រអប់ចែករំលែក",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. ដាក់ស្នើតាមរយៈ GitHub អ៊ីមែល ឬបញ្ហា GitHub (សូមមើលការណែនាំ)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. ល្បែងផ្គុំរូបនឹងត្រូវបានពិនិត្យដោយអ្នកថែទាំ",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. នៅពេលដែលបានអនុម័ត ពួកគេក្លាយជាល្បែងផ្គុំរូបដែលភ្ជាប់មកជាមួយ!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "តាមរយៈការចូលរួមចំណែក អ្នកយល់ព្រមផ្តល់អាជ្ញាប័ណ្ណមាតិកាផ្ដុំរូបរបស់អ្នកក្រោម CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike)។",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "នាំចេញសម្រាប់ការរួមចំណែក",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "ចាប់ផ្តើមការរួមចំណែក",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "របៀបចូលរួមល្បែងផ្គុំរូប",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "ពិនិត្យមើល {count} ល្បែងផ្គុំរូបទាំងនេះ!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "ល្បែងផ្គុំរូប ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "ការរួមចំណែកនៃល្បែងផ្គុំរូប។__SANMILL_NL_SANMILL_NL__មើល PUZZLE_CONTRIBUTION_GUIDE.md សម្រាប់ការណែនាំអំពីការបញ្ជូន។",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "ការរួមចំណែកនៃល្បែងផ្គុំរូប៖ {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "ការរួមចំណែកនៃល្បែងផ្គុំរូប។__SANMILL_NL_SANMILL_NL__មើល PUZZLE_CONTRIBUTION_GUIDE.md សម្រាប់ការណែនាំអំពីការដាក់ស្នើ។",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "ការរួមចំណែកនៃល្បែងផ្គុំរូប ({count} ល្បែងផ្គុំរូប)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "ជួយធ្វើឱ្យកម្មវិធីនេះកាន់តែប្រសើរឡើងដោយការរួមចំណែកល្បែងផ្គុំរូបរបស់អ្នក!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "ការចាប់ផ្តើមរហ័ស៖",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "បង្កើតល្បែងផ្គុំរូបដែលមានគុណភាព",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "ត្រូវប្រាកដថាល្បែងផ្គុំរូបរបស់អ្នកមានដំណោះស្រាយច្បាស់លាស់ ទិន្នន័យមេតាល្អ និងបង្រៀនអ្វីមួយដែលមានតម្លៃ។",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "បន្ថែមឈ្មោះរបស់អ្នក។",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "កែសម្រួលរូបផ្គុំរបស់អ្នក ហើយបន្ថែមឈ្មោះរបស់អ្នកជាអ្នកនិពន្ធ ដើម្បីទទួលបានឥណទាន។",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "នាំចេញសម្រាប់ការរួមចំណែក",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "ជ្រើសរើសល្បែងផ្គុំរូបរបស់អ្នក ហើយចុចលើរូបតំណាងផ្ទុកឡើង ដើម្បីនាំចេញក្នុងទម្រង់ត្រឹមត្រូវ។",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "ដាក់ស្នើ",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "ចែករំលែកឯកសារដែលបាននាំចេញតាមរយៈ GitHub Pull Request, Issue ឬអ៊ីមែល។",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "ឯកសារពេញលេញ",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "សូមមើល PUZZLE_CONTRIBUTION_GUIDE.md នៅក្នុងឃ្លាំងសម្រាប់ការណែនាំពេញលេញ គោលការណ៍ណែនាំគុណភាព និងជម្រើសនៃការដាក់ស្នើ។",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "តម្រូវការគុណភាព៖",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ ដំណោះស្រាយតែមួយគត់",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ បំពេញទិន្នន័យមេតា (ចំណងជើង ការពិពណ៌នា។ល។)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ គុណលក្ខណៈអ្នកនិពន្ធ",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ការវាយតម្លៃការលំបាកត្រឹមត្រូវ។",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ ការណែនាំ ឬកម្សាន្ត",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "មករា",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "ខែកុម្ភៈ",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "ខែមីនា",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "មេសា",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "ឧសភា",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "ខែមិថុនា",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "ខែកក្កដា",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "សីហា",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "ខែកញ្ញា",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "តុលា",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "ខែវិច្ឆិកា",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "ខែធ្នូ",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

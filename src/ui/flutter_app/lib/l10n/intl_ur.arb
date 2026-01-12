@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "وائس اسسٹنٹ کی ترتیبات",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "ماڈل، زبان اور رویہ کو ترتیب دیں",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "ایل ایل ایم کی مدد سے ترقی",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "اس کام کی وضاحت کریں جس کے ساتھ آپ ایل ایل ایم کی مدد کرنا چاہتے ہیں ...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "ڈاؤن لوڈ",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "حیثیت",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "نامعلوم",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI چیٹ کو فعال کریں",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "اے آئی اسسٹنٹ (تجرباتی) کے ساتھ چیٹنگ کی اجازت دیں",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "ٹکڑا پک اپ حرکت پذیری کو فعال کریں",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "پہیلیاں",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "پہیلی",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "کوئی پہیلیاں دستیاب نہیں ہیں",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "فلٹر",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "زمرہ",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "صاف فلٹر",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "پہیلی کے اعدادوشمار",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "کل پہیلیاں",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "مکمل",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "کل ستارے",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "تکمیل",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "ابتدائی",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "آسان",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "میڈیم",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "مشکل",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "ماہر",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "ماسٹر",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "فارم مل",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "گرفتاری",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "جیت کا کھیل",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "دفاع",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "بہترین اقدام",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "اینڈگیم",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "افتتاحی",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "مخلوط",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "پہیلی سے باہر نکلیں؟",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "پیشرفت ختم ہوجائے گی۔جاری رکھیں؟",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "چالیں",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "زیادہ سے زیادہ",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "حل چیک کریں",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "ترک کرو",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "پہیلی حل!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "اشارے استعمال ہوتے ہیں",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "دوبارہ کوشش کریں",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "فہرست میں واپس",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "حل",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "نئی پہیلی بنائیں",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "پہیلی میں ترمیم کریں",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "رواج",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "رولز مماثل ہیں",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "__ph0__ کے لئے ، فی الحال __ph1__",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "جاری رکھیں",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "صرف مطابقت پذیر",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "پہیلیاں منتخب کریں",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "__ph0__ منتخب کیا گیا",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "سب کو منتخب کریں",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "برآمد",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "درآمد",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{کامیابی کے ساتھ __ph0__ پہیلی برآمد کی گئی} other{کامیابی کے ساتھ __ph0__ پہیلیاں برآمد کی گئیں}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "پہیلیاں برآمد کرنے میں ناکام",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{کامیابی کے ساتھ درآمد شدہ __ph0__ پہیلی} other{کامیابی کے ساتھ درآمد شدہ __ph0__ پہیلیاں}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "پہیلیاں درآمد کرنے میں ناکام",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "کوئی فائل منتخب نہیں ہے",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "غلط فائل کا راستہ",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "فائل اٹھانے میں غلطی: __ph0__",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "فائل موجود نہیں ہے",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "غلط فائل فارمیٹ: لاپتہ پہیلیاں فیلڈ",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "متضاد فائل فارمیٹ ورژن: __ph0__ (متوقع __ph1__)",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "پہیلی __ph0__ (\"__ph1__\") میں غلط فین فارمیٹ ہے",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "پہیلی __ph0__ (\"__ph1__\") مختلف قواعد استعمال کرتا ہے: __ph2__ (موجودہ: __ph3__)۔یہ پہیلی آپ کی موجودہ ترتیبات کے ساتھ صحیح طریقے سے کام نہیں کرسکتا ہے۔",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "پہیلی کو پارس کرنے میں ناکام __ph0__: __ph1__",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "غلطیاں:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "انتباہ:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "فائل پڑھنے میں غلطی: __ph0__",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "پہیلی کا عنوان ہونا چاہئے",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "پہیلی میں ایک تفصیل ہونی چاہئے",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "پہیلی میں ایک درست پوزیشن ہونی چاہئے",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "پہیلی میں غلط فین فارمیٹ ہے۔براہ کرم پوزیشن چیک کریں۔",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "پہیلی کا حل ہونا ضروری ہے",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "عنوان بہت مختصر (کم از کم 5 حروف)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "عنوان بہت لمبا (زیادہ سے زیادہ 100 حروف)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "تفصیل بہت مختصر (کم از کم 10 حرف)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "تفصیل بہت لمبا (زیادہ سے زیادہ 500 حروف)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "براہ کرم تعاون کرنے سے پہلے مصنف کی حیثیت سے اپنا نام شامل کریں",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{__ph0__ پہیلی حذف کریں؟} other{__ph0__ پہیلیاں حذف کریں؟}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{حذف شدہ __ph0__ پہیلی} other{حذف شدہ __ph0__ پہیلیاں}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "بلٹ ان پہیلیاں حذف نہیں کرسکتے ہیں",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "ایک پہیلی بنانے کا طریقہ",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. سیٹ اپ بورڈ __sanmill_nl__2.اسنیپ شاٹ پوزیشن __sanmill_nl__3۔ریکارڈ چالیں __sanmill_nl__4۔تفصیلات __sanmill_nl__5 کو پُر کریں۔بچت کریں",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "سیٹ اپ پوزیشن",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "پوزیشن سنیپ شاٹڈ",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "ابتدائی پوزیشن",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "حتمی پوزیشن",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "ابھی تک کوئی سنیپ شاٹ نہیں ہے",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "پہلے سنیپ شاٹ پوزیشن",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "ریکارڈ حل",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "ریکارڈنگ شروع کریں",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "ریکارڈنگ بند کرو",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "ریکارڈنگ ...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "ریکارڈنگ شروع ہوئی",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{ریکارڈ شدہ __ph0__ اقدام} other{ریکارڈ شدہ __ph0__ چالیں}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{حل: __ph0__ اقدام} other{حل: __ph0__ چالیں}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "ابھی تک کوئی حل نہیں ہے",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "واضح حل",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "حل __ph0__",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "ایک اور حل شامل کریں",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "اس حل کو ہٹا دیں",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ زیادہ سے زیادہ",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "متبادل",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "زیادہ سے زیادہ نشان زد کریں",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 حل} other{__ph0__ حل}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "اس حل کو ہٹا دیں؟",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "کم از کم ایک حل درکار ہے",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "پہیلی کی تفصیلات",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "عنوان",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "تفصیل",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "زمرہ",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "مشکل",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "اشارہ",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "ٹیگز",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "کوما الگ",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "مصنف",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "تکمیل کا پیغام",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "حکمت عملی کی وضاحت کریں یا حل کرنے والے کو مبارکباد دیں",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "عنوان کی ضرورت ہے",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "تفصیل ضروری ہے",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "پوزیشن کی ضرورت ہے",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "حل کی ضرورت ہے",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "پہیلی بنائی گئی",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "پہیلی تازہ کاری",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "پہیلی کو بچانے میں ناکام",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "اختیاری",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "آپ کی پیشرفت",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "چھوڑ دیں",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "سب",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "جلد آرہا ہے",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "روزانہ پہیلی",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "ہر دن ایک نئی پہیلی حل کریں",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "دن #__ ph0__",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "اسٹریک",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "دن کا سلسلہ",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "دن",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "بہترین: __ph0__ دن",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "روزانہ پہیلی شروع کریں",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "اپنی سلسلہ تیار کرنے کے لئے روزانہ پہیلیاں مکمل کریں!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "موجودہ اسٹریک",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "سب سے طویل سلسلہ",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "کل مکمل",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "اپنی لکیر کو برقرار رکھنے کے لئے ہر دن پہیلیاں حل کریں۔ایک دن کی کمی اسے دوبارہ ترتیب دے گی!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "تمام پہیلیاں",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "تمام دستیاب پہیلیاں براؤز کریں",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "پہیلی رش",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "گھڑی کے خلاف پہیلیاں حل کریں",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 منٹ میں زیادہ سے زیادہ پہیلیاں حل کریں!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "قواعد",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "گھڑی پر 5 منٹ",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤ 3 زندگی - 1 فی غلطی کھو گئی",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 اپنے اسکور کو زیادہ سے زیادہ بنائیں!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "رش شروع کریں",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "رش چھوڑ دو؟پیشرفت ختم ہوجائے گی۔",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "رش کے نتائج",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "وقت ختم!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "زندگی سے باہر",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "رش مکمل!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "حل",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "ناکام",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "درستگی",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "ایک بار پھر کھیلو",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "پہیلی جنگ",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "دوسرے کھلاڑیوں کے ساتھ مقابلہ کریں",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "جلد آرہا ہے!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "یہ خصوصیت فی الحال ترقی میں ہے۔بنتے رہیں!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔ 1V1 پہیلی ریس",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 براہ راست مخالف ملاپ",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 درجہ بندی کا نظام",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 لیڈر بورڈز",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "کسٹم پہیلیاں",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "اپنی پہیلیاں بنائیں اور ان کا نظم کریں",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "ملٹی سلیکٹ وضع",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "پہیلی بنائیں",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "پہیلی کی لکیر",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "غلطیوں کے بغیر مسلسل حل کریں",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "آپ لگاتار کتنے حل کرسکتے ہیں؟",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "قواعد",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "as ہر ممکن حد تک زیادہ سے زیادہ پہیلیاں حل کریں",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ ایک غلطی اور یہ ختم ہوچکی ہے",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "your اپنے ذاتی ریکارڈ کو شکست دیں",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "اسٹریک شروع کریں",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "موجودہ",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "بہترین",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "اسٹریک نتائج",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "اسٹریک ختم ہوا",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "نیا ریکارڈ!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "آخری اسکور",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "دوبارہ کوشش کریں",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "کیا آپ واقعی چھوڑنا چاہتے ہیں؟آپ کا سلسلہ ختم ہوجائے گا۔",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "تاریخ",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "اپنی پہیلی کی کوششوں کو دیکھیں",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "کوئی پہیلی کی تاریخ نہیں ہے",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "اپنی تاریخ کو یہاں دیکھنے کے لئے پہیلیاں حل کرنا شروع کریں",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "صرف کامیابی",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "صرف ناکام",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "نامعلوم پہیلی",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "اشارے",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "تفصیلی تجزیات دیکھیں",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "آپ کی پہیلی کی درجہ بندی",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "عارضی (__ph0__ کھیل باقی)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "کھیل کھیلا گیا",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "انحراف",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "کارکردگی کا جائزہ",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "کامیابی کی شرح",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "اوسطوقت",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "حل",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "ناکام",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "مشکل سے کامیابی",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "زمرہ کے لحاظ سے کامیابی",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "حالیہ سرگرمی",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "کوئی حالیہ سرگرمی نہیں ہے",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "ترمیم کریں",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "بچت کریں",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "کوئی کسٹم پہیلیاں نہیں",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "مخصوص پوزیشنوں پر عمل کرنے کے لئے اپنی پہیلیاں بنائیں",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "اس خصوصیت کا مستقبل کی رہائی کے لئے منصوبہ بنایا گیا ہے",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "غلط پوزیشن",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "اوپن بورڈ (سیٹ اپ پوزیشن)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "اوپن بورڈ (پلے چالیں)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "بورڈ کھولنے کے لئے نیچے دیئے گئے بٹن کا استعمال کریں ، پھر واپس آنے کے لئے واپس دبائیں۔",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "غلط پوزیشن فارمیٹ۔براہ کرم گیم بورڈ چیک کریں۔",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "پوزیشن لوڈ کرنے میں ناکام۔براہ کرم ریسناپ شاٹ",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "غلط پوزیشن فارمیٹ۔برائے مہربانی پوزیشن کو دوبارہ منتخب کریں۔",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "تفصیلی ورک فلو دکھائیں",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "پہیلی تخلیق ورک فلو",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "سیٹ اپ پوزیشن",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "اوپن بورڈ ، سیٹ اپ پوزیشن ، اسنیپ شاٹ",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "ریکارڈ حل",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "ریکارڈنگ شروع کریں ، کھیلوں کی چالیں ، رکیں",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "تفصیلات شامل کریں",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "عنوان ، زمرہ ، مشکل کو پُر کریں",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "پہیلی کو بچائیں",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "محفوظ کریں بٹن پر کلک کریں",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "اشارہ: آپ اس صفحے اور گیم بورڈ کے مابین تشریف لے جائیں گے۔آپ کی پیشرفت بچ گئی ہے!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "پوزیشن سنیپ شاٹ مدد",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "پہیلی کو شروع کرنے والی پوزیشن کو سنیپ شاٹ کیسے کریں: __ SANMILL_NL__\n1۔ٹکڑوں کو دستی طور پر رکھنے کے لئے \"اوپن بورڈ (سیٹ اپ پوزیشن)\" پر کلک کریں ، یا چالوں کو __sanmill_nl____sanmill_nl__2 بنا کر پوزیشن تک پہنچنے کے لئے \"اوپن بورڈ (پلے چالیں)\" پر کلک کریں۔بورڈ کو اپنی مطلوبہ پہیلی سے شروع کرنے والی پوزیشن __sanmill_nl____Sanmill_nl__3 پر بندوبست کریں۔اس صفحے پر واپس آنے کے لئے بیک بٹن دبائیںاس پوزیشن کو خود بخود سنیپ شاٹ اور محفوظ کیا جائے گا __sanmill_nl____sanmill_nl__ یہ اسنیپ شاٹڈ پوزیشن آپ کی پہیلی کے نقطہ آغاز کے طور پر استعمال ہوگی۔",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "حل ریکارڈنگ مدد",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "حل کی چالوں کو کیسے ریکارڈ کریں:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "پہلے ابتدائی پوزیشن کو سنیپ شاٹ کریں",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"ریکارڈنگ شروع کریں\" کے بٹن پر کلک کریں (یہ بورڈ کو آپ کی سنیپ شاٹ پوزیشن پر دوبارہ سیٹ کرتا ہے)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "یہاں واپس جائیں اور \"ریکارڈنگ بند کرو\" پر کلک کریں۔",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "اشارہ: جب آپ ریکارڈنگ شروع کرتے ہیں تو بورڈ خود بخود آپ کے اسنیپ شاٹ پوزیشن پر دوبارہ سیٹ ہوجائے گا۔",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "آپ متعدد حل شامل کرسکتے ہیں (کوئی حد نہیں)۔کم سے کم/بہترین کو زیادہ سے زیادہ نشان زد کریں۔",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "اسنیپ شاٹ مدد کی پوزیشن دکھائیں",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "حل ریکارڈنگ مدد دکھائیں",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "مزید اشارے دستیاب نہیں ہیں",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "اشارہ",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "زیادہ سے زیادہ حل (__ph0__ چالیں):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "توثیق کی غلطیاں",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "سنمل میں پہیلیاں شراکت کریں",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "آگے کیا ہوتا ہے:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. آپ کی پہیلیاں JSON فائل میں برآمد کی جائیں گی",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. آپ اس فائل کو شیئر ڈائیلاگ کے ذریعے شیئر کرسکتے ہیں",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. پہیلیاں دیکھ بھال کرنے والوں کے ذریعہ جائزہ لیں گے",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. ایک بار منظور ہوجانے کے بعد ، وہ بلٹ ان پہیلیاں بن جاتے ہیں!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "شراکت کے لئے برآمد",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "تعاون کرنا شروع کریں",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "فوری آغاز:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "معیاری پہیلیاں بنائیں",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "یقینی بنائیں کہ آپ کی پہیلی کا واضح حل ہے ، اچھا میٹا ڈیٹا ہے ، اور کوئی قیمتی چیز سکھاتا ہے۔",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "اپنا نام شامل کریں",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "اپنی پہیلی میں ترمیم کریں اور کریڈٹ حاصل کرنے کے لئے مصنف کی حیثیت سے اپنا نام شامل کریں۔",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "شراکت کے لئے برآمد",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "اپنے پہیلیاں منتخب کریں اور صحیح شکل میں برآمد کرنے کے لئے اپ لوڈ آئیکن کو تھپتھپائیں۔",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "پیش کریں",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "گٹ ہب پل کی درخواست ، مسئلہ ، یا ای میل کے ذریعے برآمد شدہ فائل کا اشتراک کریں۔",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "مکمل دستاویزات",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "مکمل ہدایات ، معیار کے رہنما خطوط ، اور جمع کرانے کے اختیارات کے لئے ذخیرہ میں puale_contribition_guide.md دیکھیں۔",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "معیار کی ضروریات:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ واضح ، انوکھا حل",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "met مکمل میٹا ڈیٹا (عنوان ، تفصیل ، وغیرہ)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ مصنف انتساب",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ درست دشواری کی درجہ بندی",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ تدریسی یا دل لگی",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "اگلا اقدام: __ph0__",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "مکمل حل: __ph0__",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "ان عہدوں پر دھیان دیں",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "کوئی حل دستیاب نہیں ہے",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "چلتے رہیں!مقصد ابھی تک حاصل نہیں کیا گیا ہے۔",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "مکمل!زیادہ سے زیادہ چالوں میں حل!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "درست!(__ph0__ چالیں ، زیادہ سے زیادہ: __ph1__)",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "درست!آپ کو ایک متبادل حل ملا!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "ابھی ابھی",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "__ph0__m پہلے",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "__ph0__H پہلے",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "__ph0__d پہلے",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "غلط پہیلی",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "اس پہیلی میں ایک غلط پوزیشن کی شکل ہے اور اسے لوڈ نہیں کیا جاسکتا ہے۔براہ کرم پہیلی مصنف سے رابطہ کریں یا ایک مختلف پہیلی آزمائیں۔",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "کوشش کرتے رہیں!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "مثالوں",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI اسسٹنٹ",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "ہیلو!میں آپ کا مل گیم اسسٹنٹ ہوں۔مجھ سے حکمت عملی ، پوزیشنوں ، یا موجودہ کھیل کے بارے میں کسی بھی سوال کے بارے میں پوچھیں۔",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "کھیل کے بارے میں پوچھیں ...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "معذرت ، مجھے ایک غلطی کا سامنا کرنا پڑا۔براہ کرم دوبارہ کوشش کریں۔",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "اے آئی اسسٹنٹ کو تشکیل نہیں دیا گیا ہے۔براہ کرم پہلے ایل ایل ایم کی ترتیبات کو تشکیل دیں۔",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "اے آئی اسسٹنٹ کے ساتھ چیٹ کریں",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "واضح چیٹ کی تاریخ",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "واضح چیٹ کی تاریخ؟",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "اس سے تمام پیغامات حذف ہوں گے اور ایک نئی گفتگو شروع ہوگی۔اس عمل کو ختم نہیں کیا جاسکتا۔",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "چیٹ کی تاریخ صاف ہوگئی",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "نوشتہ جات",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "نوشتہ جات ڈاؤن لوڈ کریں",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "کوئی نوشتہ دستیاب نہیں ہے",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "ایپ کے چلتے ہی یہاں نوشتہ جات نمودار ہوں گے۔ایپ کو استعمال کرنے کی کوشش کریں اور نوشتہ جات دیکھنے کے لئے واپس آئیں۔",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "ڈاؤن لوڈ کرنے کے لئے کوئی نوشتہ دستیاب نہیں ہے",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "ڈاؤن لوڈ ناکام",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "ریفریش",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "نوشتہ جات شیئر کریں",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "__ph0__ پر ڈاؤن لوڈ کیا گیا",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "موڈ منتخب کریں",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "کاپی منتخب",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "اسٹارٹ پوائنٹ کو منتخب کرنے کے لئے ٹیپ کریں",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "اختتامی نقطہ کو منتخب کرنے کے لئے ٹیپ کریں",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "کوئی نوشتہ منتخب نہیں کیا گیا",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "اوپر سے سکرول (قدیم ترین)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "نیچے تک اسکرول (تازہ ترین)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "نچلے حصے میں تازہ ترین نوشتہ جات",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "نوشتہ جات: __ph0__ / __ph1__",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "لاگ بفر مکمل (__ph0 __/__ ph1__)۔پرانے نوشتہ جات کو ہٹا دیا جارہا ہے۔",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "واضح نوشتہ جات",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "کیا آپ واقعی تمام نوشتہ جات صاف کرنا چاہتے ہیں؟اس عمل کو ختم نہیں کیا جاسکتا۔",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "صاف",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "نوشتہ جات صاف ہوگئے",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "غلط پہیلی",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "اس پہیلی میں ایک غلط پوزیشن کی شکل ہے اور اسے لوڈ نہیں کیا جاسکتا ہے۔براہ کرم پہیلی مصنف سے رابطہ کریں یا ایک مختلف پہیلی آزمائیں۔",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "فہرست میں واپس",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "غلط اقدامدوبارہ کوشش کریں۔",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "یہ اقدام حل سے مماثل نہیں ہے۔آپ دوبارہ کوشش کر سکتے ہیں یا صحیح حل دیکھ سکتے ہیں۔",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "حل دکھائیں",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "حل کھیلنا ...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "حل پلے بیک مکمل",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "اس پہیلی کے لئے کوئی حل دستیاب نہیں ہے",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "حل دیکھا (کوئی ستارے نہیں)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{کوشش: __ph0__} other{کوششیں: __ph0__}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "مزید اشارے دستیاب نہیں ہیں",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "اشارہ",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "توثیق کی غلطیاں",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "شراکت سے پہلے درج ذیل پہیلیاں طے کرنے کی ضرورت ہے:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "سنمل میں پہیلیاں شراکت کریں",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "آپ شراکت کے لئے __ph0__ پہیلی (s) برآمد کرنے والے ہیں۔",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "آگے کیا ہوتا ہے:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. آپ کی پہیلیاں JSON فائل میں برآمد کی جائیں گی",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. آپ اس فائل کو شیئر ڈائیلاگ کے ذریعے شیئر کرسکتے ہیں",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. گٹ ہب ، ای میل ، یا گٹ ہب کے مسئلے کے ذریعے جمع کروائیں (گائیڈ دیکھیں)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. پہیلیاں دیکھ بھال کرنے والوں کے ذریعہ جائزہ لیں گے",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. ایک بار منظور ہوجانے کے بعد ، وہ بلٹ ان پہیلیاں بن جاتے ہیں!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "تعاون کرنے سے ، آپ سی سی بائی-ایس اے 4.0 (تخلیقی العام انتساب-شیئرلائیک) کے تحت اپنے پہیلی مواد کو لائسنس دینے سے اتفاق کرتے ہیں۔",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "شراکت کے لئے برآمد",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "تعاون کرنا شروع کریں",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "پہیلیاں کس طرح تعاون کریں",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "ان __ph0__ پہیلیاں چیک کریں!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "پہیلیاں (__ph0__)",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "پہیلی شراکت .__ SANMILL_NL__\nSEE پہیلی_کونٹریبیسیشن_گائڈ.یم ڈی۔ جمع کرانے کی ہدایات کے لئے۔",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "پہیلی شراکت: __ph0__",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "پہیلی شراکت .__ sanmill_nl____sanmill_nl__see puale_contribity_guide.md جمع کرانے کی ہدایات کے لئے۔",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "پہیلی شراکت (__ph0__ پہیلیاں)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "اپنی پہیلیاں میں حصہ ڈال کر اس پروگرام کو بہتر بنانے میں مدد کریں!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "فوری آغاز:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "معیاری پہیلیاں بنائیں",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "یقینی بنائیں کہ آپ کی پہیلی کا واضح حل ہے ، اچھا میٹا ڈیٹا ہے ، اور کوئی قیمتی چیز سکھاتا ہے۔",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "اپنا نام شامل کریں",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "اپنی پہیلی میں ترمیم کریں اور کریڈٹ حاصل کرنے کے لئے مصنف کی حیثیت سے اپنا نام شامل کریں۔",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "شراکت کے لئے برآمد",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "اپنے پہیلیاں منتخب کریں اور صحیح شکل میں برآمد کرنے کے لئے اپ لوڈ آئیکن کو تھپتھپائیں۔",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "پیش کریں",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "گٹ ہب پل کی درخواست ، مسئلہ ، یا ای میل کے ذریعے برآمد شدہ فائل کا اشتراک کریں۔",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "مکمل دستاویزات",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "مکمل ہدایات ، معیار کے رہنما خطوط ، اور جمع کرانے کے اختیارات کے لئے ذخیرہ میں puale_contribition_guide.md دیکھیں۔",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "معیار کی ضروریات:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ واضح ، انوکھا حل",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "met مکمل میٹا ڈیٹا (عنوان ، تفصیل ، وغیرہ)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ مصنف انتساب",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ درست دشواری کی درجہ بندی",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ تدریسی یا دل لگی",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "جنوری",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "فروری",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "مارچ",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "اپریل",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "مئی",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "جون",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "جولائی",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "اگست",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "ستمبر",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "اکتوبر",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "نومبر",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "دسمبر",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

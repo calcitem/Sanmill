@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "વૉઇસ સહાયક સેટિંગ્સ",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "મૉડેલ, ભાષા અને વર્તન ગોઠવો",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "એલએલએમ-સહાયિત વિકાસ",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "તમે જે કાર્યમાં LLM મદદ કરવા માંગો છો તેનું વર્ણન કરો...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "ડાઉનલોડ કરો",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "સ્થિતિ",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "અજ્ઞાત",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI ચેટ સક્ષમ કરો",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "AI સહાયક (પ્રાયોગિક) સાથે ચેટ કરવાની મંજૂરી આપો",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "પીસ પિક-અપ એનિમેશન સક્ષમ કરો",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "કોયડા",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "કોયડો",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "કોઈ કોયડા ઉપલબ્ધ નથી",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "ફિલ્ટર કરો",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "શ્રેણી",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "ફિલ્ટર સાફ કરો",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "પઝલ આંકડા",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "કુલ કોયડા",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "પૂર્ણ થયું",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "કુલ સ્ટાર્સ",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "પૂર્ણતા",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "શિખાઉ માણસ",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "સરળ",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "મધ્યમ",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "કઠણ",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "નિષ્ણાત",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "માસ્ટર",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "ફોર્મ મિલ",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "કેપ્ચર",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "વિન ગેમ",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "સંરક્ષણ",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "શ્રેષ્ઠ ચાલ",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "એન્ડગેમ",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "ઓપનિંગ",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "મિશ્ર",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "પઝલમાંથી બહાર નીકળીએ?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "પ્રગતિ ખોવાઈ જશે.ચાલુ રાખીએ?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "ચાલ",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "શ્રેષ્ઠ",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "ઉકેલ તપાસો",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "ગીવ અપ",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "કોયડો ઉકેલાઈ ગયો!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "ઉપયોગ સંકેતો",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "ફરી પ્રયાસ કરો",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "યાદી પર પાછા",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "ઉકેલ",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "નવી પઝલ બનાવો",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "પઝલ સંપાદિત કરો",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "કસ્ટમ",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "નિયમો મેળ ખાતા નથી",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules} માટે, હાલમાં {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "ચાલુ રાખો",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "માત્ર સુસંગત",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "કોયડાઓ પસંદ કરો",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} પસંદ કરેલ",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "બધા પસંદ કરો",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "નિકાસ કરો",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "આયાત કરો",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{{count} પઝલ સફળતાપૂર્વક નિકાસ કરી} other{{count} કોયડાઓ સફળતાપૂર્વક નિકાસ કરી}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "કોયડાઓ નિકાસ કરવામાં નિષ્ફળ",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{{count} પઝલ સફળતાપૂર્વક આયાત કરી} other{{count} કોયડાઓ સફળતાપૂર્વક આયાત કરી}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "કોયડાઓ આયાત કરવામાં નિષ્ફળ",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "કોઈ ફાઇલ પસંદ કરી નથી",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "અમાન્ય ફાઇલ પાથ",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "ફાઇલ પસંદ કરવામાં ભૂલ: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ફાઇલ અસ્તિત્વમાં નથી",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "અમાન્ય ફાઇલ ફોર્મેટ: કોયડાઓનું ક્ષેત્ર ખૂટે છે",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "અસંગત ફાઇલ ફોર્મેટ સંસ્કરણ: {version} (અપેક્ષિત {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "પઝલ {index} (\"{title}\") અમાન્ય FEN ફોર્મેટ ધરાવે છે",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "કોયડો {index} (\"{title}\") વિવિધ નિયમોનો ઉપયોગ કરે છે: {puzzleRules} (વર્તમાન: {currentRules}).આ પઝલ તમારી વર્તમાન સેટિંગ્સ સાથે યોગ્ય રીતે કામ કરી શકશે નહીં.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "પઝલ {index}: {error} વિશ્લેષિત કરવામાં નિષ્ફળ",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "ભૂલો:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "ચેતવણીઓ:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "ફાઇલ વાંચવામાં ભૂલ: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "પઝલનું શીર્ષક હોવું આવશ્યક છે",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "પઝલમાં વર્ણન હોવું આવશ્યક છે",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "પઝલમાં માન્ય સ્થિતિ હોવી આવશ્યક છે",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "પઝલ અમાન્ય FEN ફોર્મેટ ધરાવે છે.કૃપા કરીને સ્થિતિ તપાસો.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "કોયડાનો ઉકેલ હોવો જ જોઈએ",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "શીર્ષક ખૂબ નાનું (ઓછામાં ઓછા 5 અક્ષરો)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "શીર્ષક ખૂબ લાંબુ છે (મહત્તમ 100 અક્ષરો)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "વર્ણન ખૂબ નાનું છે (ઓછામાં ઓછા 10 અક્ષરો)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "વર્ણન ખૂબ લાંબુ છે (મહત્તમ 500 અક્ષરો)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "કૃપા કરીને યોગદાન આપતા પહેલા લેખક તરીકે તમારું નામ ઉમેરો",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} પઝલ કાઢી નાખીએ?} other{{count} કોયડાઓ કાઢી નાખીએ?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} પઝલ કાઢી નાખી} other{{count} કોયડા કાઢી નાખ્યા}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "બિલ્ટ-ઇન કોયડાઓ કાઢી શકતા નથી",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "પઝલ કેવી રીતે બનાવવી",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. સેટઅપ બોર્ડ\n2.સ્નેપશોટ સ્થિતિ\n3.રેકોર્ડ મૂવ્સ\n4.વિગતો ભરો\n5.સાચવો",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "સેટઅપ પોઝિશન",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "પોઝિશન સ્નેપશોટ",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "પ્રારંભિક સ્થિતિ",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "અંતિમ સ્થિતિ",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "હજુ સુધી કોઈ સ્નેપશોટ નથી",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "સ્નેપશોટ સ્થિતિ પ્રથમ",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "રેકોર્ડ સોલ્યુશન",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "રેકોર્ડિંગ શરૂ કરો",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "રેકોર્ડિંગ બંધ કરો",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "રેકોર્ડિંગ...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "રેકોર્ડિંગ શરૂ થયું",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{રેકોર્ડ કરેલ {count} ચાલ} other{રેકોર્ડ કરેલ {count} ચાલ}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{ઉકેલ: {count} ખસેડો} other{ઉકેલ: {count} ચાલ}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "હજુ સુધી કોઈ ઉકેલ નથી",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "સ્પષ્ટ ઉકેલ",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "ઉકેલ {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "બીજો ઉકેલ ઉમેરો",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "આ ઉકેલ દૂર કરો",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ શ્રેષ્ઠ",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "વૈકલ્પિક",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "શ્રેષ્ઠ તરીકે ચિહ્નિત કરો",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 ઉકેલ} other{{count} ઉકેલો}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "આ ઉકેલ દૂર કરીએ?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "ઓછામાં ઓછું એક ઉકેલ જરૂરી છે",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "પઝલ વિગતો",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "શીર્ષક",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "વર્ણન",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "શ્રેણી",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "મુશ્કેલી",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "સંકેત",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "ટૅગ્સ",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "અલ્પવિરામ અલગ",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "લેખક",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "પૂર્ણતા સંદેશ",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "યુક્તિ સમજાવો અથવા ઉકેલનારને અભિનંદન આપો",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "શીર્ષક આવશ્યક છે",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "વર્ણન જરૂરી છે",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "પોઝિશન જરૂરી છે",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "ઉકેલ જરૂરી છે",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "કોયડો બનાવ્યો",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "પઝલ અપડેટ",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "પઝલ સાચવવામાં નિષ્ફળ",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "વૈકલ્પિક",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "તમારી પ્રગતિ",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "છોડો",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "બધા",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "ટૂંક સમયમાં આવી રહ્યું છે",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "દૈનિક પઝલ",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "દરરોજ એક નવી કોયડો ઉકેલો",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "દિવસ #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "સ્ટ્રીક",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "દિવસનો દોર",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "દિવસો",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "શ્રેષ્ઠ: {longestStreak} દિવસ",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "દૈનિક પઝલ શરૂ કરો",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "તમારી સ્ટ્રીક બનાવવા માટે દૈનિક કોયડાઓ પૂર્ણ કરો!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "વર્તમાન સ્ટ્રીક",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "સૌથી લાંબી સ્ટ્રીક",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "કુલ પૂર્ણ",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "તમારી સ્ટ્રીક જાળવી રાખવા માટે દરરોજ કોયડાઓ ઉકેલો.એક દિવસ ખૂટે છે તે ફરીથી સેટ કરશે!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "બધા કોયડા",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "બધી ઉપલબ્ધ કોયડાઓ બ્રાઉઝ કરો",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "પઝલ રશ",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "ઘડિયાળ સામે કોયડાઓ ઉકેલો",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 મિનિટમાં તમે કરી શકો તેટલા કોયડાઓ ઉકેલો!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "નિયમો",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ ઘડિયાળમાં 5 મિનિટ",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 જીવો - 1 ભૂલ દીઠ ગુમાવ્યો",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 તમારો સ્કોર મહત્તમ કરો!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "રશ શરૂ કરો",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "ધસારો છોડો?પ્રગતિ ખોવાઈ જશે.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "રશ પરિણામો",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "સમય પૂરો થયો!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "જીવનની બહાર",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "રશ પૂર્ણ!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "ઉકેલી",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "નિષ્ફળ",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "ચોકસાઈ",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "ફરી રમો",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "પઝલ યુદ્ધ",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "અન્ય ખેલાડીઓ સાથે સ્પર્ધા કરો",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "ટૂંક સમયમાં આવી રહ્યું છે!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "આ સુવિધા હાલમાં વિકાસમાં છે.ટ્યુન રહો!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 પઝલ રેસ",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 જીવંત વિરોધી મેચિંગ",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 રેટિંગ સિસ્ટમ",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 લીડરબોર્ડ",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "કસ્ટમ કોયડાઓ",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "તમારી કોયડાઓ બનાવો અને મેનેજ કરો",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "મલ્ટિ-સિલેક્ટ મોડ",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "પઝલ બનાવો",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "પઝલ સ્ટ્રીક",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "ભૂલો વિના સળંગ ઉકેલો",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "તમે સળંગ કેટલા હલ કરી શકો છો?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "નિયમો",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 શક્ય તેટલી કોયડાઓ ઉકેલો",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ એક ભૂલ અને તે સમાપ્ત",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 તમારા વ્યક્તિગત રેકોર્ડને હરાવો",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "સ્ટ્રીક શરૂ કરો",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "વર્તમાન",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "શ્રેષ્ઠ",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "સ્ટ્રીક પરિણામો",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "સ્ટ્રીક સમાપ્ત",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "નવો રેકોર્ડ!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "અંતિમ સ્કોર",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "ફરી પ્રયાસ કરો",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "શું તમે ખરેખર છોડવા માંગો છો?તમારો દોર ખોવાઈ જશે.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "ઈતિહાસ",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "તમારા પઝલ પ્રયાસો જુઓ",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "કોઈ પઝલ ઇતિહાસ નથી",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "તમારો ઇતિહાસ અહીં જોવા માટે કોયડાઓ ઉકેલવાનું શરૂ કરો",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "માત્ર સફળતા",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "માત્ર નિષ્ફળ",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "અજ્ઞાત પઝલ",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "સંકેતો",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "વિગતવાર વિશ્લેષણ જુઓ",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "તમારી પઝલ રેટિંગ",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "કામચલાઉ ({gamesLeft} રમતો બાકી)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "રમતો રમી",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "વિચલન",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "પ્રદર્શન ઝાંખી",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "સફળતા દર",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "સરેરાશસમય",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "ઉકેલી",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "નિષ્ફળ",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "મુશ્કેલી દ્વારા સફળતા",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "શ્રેણી દ્વારા સફળતા",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "તાજેતરની પ્રવૃત્તિ",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "કોઈ તાજેતરની પ્રવૃત્તિ નથી",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "સંપાદિત કરો",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "સાચવો",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "કોઈ કસ્ટમ પઝલ નથી",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "ચોક્કસ સ્થિતિનો અભ્યાસ કરવા માટે તમારી પોતાની કોયડાઓ બનાવો",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "આ સુવિધા ભવિષ્યના પ્રકાશન માટે આયોજિત છે",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "અમાન્ય સ્થિતિ",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "ઓપન બોર્ડ (સેટઅપ પોઝિશન)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "ઓપન બોર્ડ (પ્લે મૂવ્સ)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "બોર્ડ ખોલવા માટે નીચેના બટનનો ઉપયોગ કરો, પછી પાછા આવવા માટે પાછા દબાવો.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "અમાન્ય સ્થિતિ ફોર્મેટ.કૃપા કરીને રમત બોર્ડ તપાસો.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "સ્થિતિ લોડ કરવામાં નિષ્ફળ.કૃપા કરીને રિનેપશોટ કરો.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "અમાન્ય સ્થિતિ ફોર્મેટ.કૃપા કરીને પોઝિશનનો રિનેપશોટ કરો.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "વિગતવાર વર્કફ્લો બતાવો",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "પઝલ સર્જન વર્કફ્લો",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "સેટઅપ પોઝિશન",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "ઓપન બોર્ડ, સેટઅપ પોઝિશન, સ્નેપશોટ",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "રેકોર્ડ સોલ્યુશન",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "રેકોર્ડિંગ શરૂ કરો, ચાલ ચલાવો, રોકો",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "વિગતો ઉમેરો",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "શીર્ષક, શ્રેણી, મુશ્કેલી ભરો",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "પઝલ સાચવો",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "સેવ બટન પર ક્લિક કરો",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "ટીપ: તમે આ પૃષ્ઠ અને રમત બોર્ડ વચ્ચે નેવિગેટ કરશો.તમારી પ્રગતિ સાચવવામાં આવી છે!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "સ્થિતિ સ્નેપશોટ મદદ",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "પઝલની શરૂઆતની સ્થિતિનો સ્નેપશોટ કેવી રીતે કરવો:\n\n1.મેન્યુઅલી ટુકડાઓ મૂકવા માટે \"ઓપન બોર્ડ (સેટઅપ પોઝિશન)\" પર ક્લિક કરો, અથવા મૂવ્સ કરીને સ્થાન પર પહોંચવા માટે \"ઓપન બોર્ડ (પ્લે મૂવ્સ)\" પર ક્લિક કરો\n\n2.બોર્ડને તમારી ઇચ્છિત પઝલ શરૂઆતની સ્થિતિમાં ગોઠવો\n\n3.આ પૃષ્ઠ પર પાછા આવવા માટે પાછળનું બટન દબાવો\n_SANMILL_NL__4.સ્થિતિ આપમેળે સ્નેપશોટ કરવામાં આવશે અને સાચવવામાં આવશે\n\nઆ સ્નેપશોટ કરેલ સ્થિતિનો ઉપયોગ તમારા કોયડાના પ્રારંભિક બિંદુ તરીકે કરવામાં આવશે.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "ઉકેલ રેકોર્ડિંગ મદદ",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "ઉકેલની ચાલ કેવી રીતે રેકોર્ડ કરવી:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "પહેલા શરૂઆતની સ્થિતિને સ્નેપશોટ કરો",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"રેકોર્ડિંગ શરૂ કરો\" બટનને ક્લિક કરો (આ બોર્ડને તમારી સ્નેપશોટ કરેલી સ્થિતિ પર ફરીથી સેટ કરે છે)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "અહીં પાછા ફરો અને \"રેકોર્ડિંગ રોકો\" ક્લિક કરો",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "ટીપ: જ્યારે તમે રેકોર્ડિંગ શરૂ કરશો ત્યારે બોર્ડ આપમેળે તમારી સ્નેપશોટ કરેલી સ્થિતિ પર ફરીથી સેટ થશે.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "તમે બહુવિધ ઉકેલો ઉમેરી શકો છો (કોઈ મર્યાદા નથી).સૌથી ટૂંકી/શ્રેષ્ઠને શ્રેષ્ઠ તરીકે ચિહ્નિત કરો.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "સ્થિતિ સ્નેપશોટ મદદ બતાવો",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "ઉકેલ રેકોર્ડિંગ મદદ બતાવો",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "કોઈ વધુ સંકેતો ઉપલબ્ધ નથી",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "સંકેત",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "શ્રેષ્ઠ ઉકેલ ({moves} ચાલ):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "માન્યતા ભૂલો",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "સેનમિલમાં કોયડાઓનું યોગદાન આપો",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "આગળ શું થાય છે:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. તમારી કોયડાઓ JSON ફાઇલમાં નિકાસ કરવામાં આવશે",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. તમે આ ફાઇલને શેર સંવાદ દ્વારા શેર કરી શકો છો",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. જાળવણીકારો દ્વારા કોયડાઓની સમીક્ષા કરવામાં આવશે",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. એકવાર મંજૂર થયા પછી, તેઓ બિલ્ટ-ઇન કોયડાઓ બની જાય છે!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "યોગદાન માટે નિકાસ",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "ફાળો આપવાનું શરૂ કરો",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "ઝડપી શરૂઆત:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "ગુણવત્તાયુક્ત કોયડાઓ બનાવો",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "ખાતરી કરો કે તમારી પઝલમાં સ્પષ્ટ ઉકેલ છે, સારો મેટાડેટા છે અને કંઈક મૂલ્યવાન શીખવે છે.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "તમારું નામ ઉમેરો",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "તમારી પઝલ સંપાદિત કરો અને ક્રેડિટ મેળવવા માટે લેખક તરીકે તમારું નામ ઉમેરો.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "યોગદાન માટે નિકાસ",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "તમારી કોયડાઓ પસંદ કરો અને યોગ્ય ફોર્મેટમાં નિકાસ કરવા માટે અપલોડ આઇકનને ટેપ કરો.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "સબમિટ કરો",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "નિકાસ કરેલી ફાઇલને GitHub પુલ રિક્વેસ્ટ, ઇશ્યૂ અથવા ઇમેઇલ દ્વારા શેર કરો.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "સંપૂર્ણ દસ્તાવેજીકરણ",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "સંપૂર્ણ સૂચનાઓ, ગુણવત્તા માર્ગદર્શિકા અને સબમિશન વિકલ્પો માટે ભંડારમાં PUZZLE_CONTRIBUTION_GUIDE.md જુઓ.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "ગુણવત્તા જરૂરિયાતો:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ સ્પષ્ટ, અનન્ય ઉકેલ",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ સંપૂર્ણ મેટાડેટા (શીર્ષક, વર્ણન, વગેરે)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ લેખક એટ્રિબ્યુશન",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ ચોક્કસ મુશ્કેલી રેટિંગ",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ ઉપદેશક અથવા મનોરંજક",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "આગલી ચાલ: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "સંપૂર્ણ ઉકેલ: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "આ સ્થિતિઓ પર ધ્યાન આપો",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "કોઈ ઉકેલ ઉપલબ્ધ નથી",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "ચાલુ રાખો!ધ્યેય હજુ હાંસલ થયો નથી.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "પરફેક્ટ!શ્રેષ્ઠ ચાલમાં ઉકેલાઈ!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "સાચું!({count} ચાલ, શ્રેષ્ઠ: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "સાચું!તમને વૈકલ્પિક ઉકેલ મળ્યો!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "હમણાં જ",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}મિ પહેલા",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours} કલાક પહેલા",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days} દિવસ પહેલા",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "અમાન્ય પઝલ",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "આ પઝલ અમાન્ય સ્થિતિ ફોર્મેટ ધરાવે છે અને લોડ કરી શકાતી નથી.કૃપા કરીને પઝલ લેખકનો સંપર્ક કરો અથવા કોઈ અલગ પઝલ અજમાવો.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "પ્રયાસ કરતા રહો!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "ઉદાહરણો",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "એઆઈ સહાયક",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "હેલો!હું તમારો મિલ રમત સહાયક છું.મને વ્યૂહરચનાઓ, સ્થિતિઓ અથવા વર્તમાન રમત વિશેના કોઈપણ પ્રશ્નો વિશે પૂછો.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "રમત વિશે પૂછો...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "માફ કરશો, મને એક ભૂલ આવી.કૃપા કરીને ફરી પ્રયાસ કરો.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI સહાયક ગોઠવેલ નથી.કૃપા કરીને પહેલા LLM સેટિંગ્સ ગોઠવો.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "AI સહાયક સાથે ચેટ કરો",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "ચેટ ઇતિહાસ સાફ કરો",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "ચેટ ઇતિહાસ સાફ કરીએ?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "આ બધા સંદેશાઓ કાઢી નાખશે અને નવી વાતચીત શરૂ કરશે.આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "ચેટ ઇતિહાસ સાફ કર્યો",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "લોગ્સ",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "લોગ્સ ડાઉનલોડ કરો",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "કોઈ લૉગ્સ ઉપલબ્ધ નથી",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "એપ ચાલતી વખતે લોગ્સ અહીં દેખાશે.એપ્લિકેશનનો ઉપયોગ કરવાનો પ્રયાસ કરો અને લોગ જોવા માટે પાછા આવો.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "ડાઉનલોડ કરવા માટે કોઈ લૉગ્સ ઉપલબ્ધ નથી",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "ડાઉનલોડ નિષ્ફળ થયું",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "તાજું કરો",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "શેર લોગ",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "{path} પર ડાઉનલોડ કરેલ",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "મોડ પસંદ કરો",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "પસંદ કરેલ કૉપિ કરો",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "પ્રારંભ બિંદુ પસંદ કરવા માટે ટૅપ કરો",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "અંતિમ બિંદુ પસંદ કરવા માટે ટૅપ કરો",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "કોઈ લૉગ પસંદ કર્યા નથી",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "ટોચ પર સ્ક્રોલ કરો (સૌથી જૂની)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "નીચે સુધી સ્ક્રોલ કરો (નવીનતમ)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "તળિયે નવીનતમ લૉગ્સ",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "લૉગ્સ: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "લોગ બફર ફુલ ({current}/{max}).જૂના લોગ દૂર કરવામાં આવી રહ્યા છે.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "લોગ સાફ કરો",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "શું તમે ખરેખર બધા લોગ સાફ કરવા માંગો છો?આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "સાફ કરો",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "લોગ સાફ કર્યા",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "અમાન્ય પઝલ",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "આ પઝલ અમાન્ય સ્થિતિ ફોર્મેટ ધરાવે છે અને લોડ કરી શકાતી નથી.કૃપા કરીને પઝલ લેખકનો સંપર્ક કરો અથવા કોઈ અલગ પઝલ અજમાવો.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "યાદી પર પાછા",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "ખોટી ચાલ.ફરી પ્રયાસ કરો.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "તે ચાલ ઉકેલ સાથે મેળ ખાતી નથી.તમે ફરી પ્રયાસ કરી શકો છો અથવા સાચો ઉકેલ જોઈ શકો છો.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "ઉકેલ બતાવો",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "ઉકેલ વગાડી રહ્યાં છીએ...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "ઉકેલ પ્લેબેક પૂર્ણ",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "આ કોયડા માટે કોઈ ઉકેલ ઉપલબ્ધ નથી",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "ઉકેલ જોવામાં આવ્યો (કોઈ સ્ટાર્સ નથી)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{પ્રયાસ: {count}} other{પ્રયાસો: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "કોઈ વધુ સંકેતો ઉપલબ્ધ નથી",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "સંકેત",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "માન્યતા ભૂલો",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "યોગદાન આપતા પહેલા નીચેની કોયડાઓ ઠીક કરવી જરૂરી છે:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "સેનમિલમાં કોયડાઓનું યોગદાન આપો",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "તમે યોગદાન માટે {count} પઝલ નિકાસ કરવા જઈ રહ્યાં છો.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "આગળ શું થાય છે:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. તમારી કોયડાઓ JSON ફાઇલમાં નિકાસ કરવામાં આવશે",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. તમે આ ફાઇલને શેર સંવાદ દ્વારા શેર કરી શકો છો",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. GitHub, ઇમેઇલ અથવા GitHub સમસ્યા દ્વારા સબમિટ કરો (માર્ગદર્શિકા જુઓ)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. જાળવણીકારો દ્વારા કોયડાઓની સમીક્ષા કરવામાં આવશે",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. એકવાર મંજૂર થયા પછી, તેઓ બિલ્ટ-ઇન કોયડાઓ બની જાય છે!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "યોગદાન આપીને, તમે CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike) હેઠળ તમારી પઝલ સામગ્રીને લાઇસન્સ આપવા માટે સંમત થાઓ છો.",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "યોગદાન માટે નિકાસ",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "ફાળો આપવાનું શરૂ કરો",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "કોયડાઓનું યોગદાન કેવી રીતે આપવું",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "આ {count} કોયડાઓ તપાસો!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "કોયડાઓ ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "પઝલ યોગદાન.\n\nજુઓ PUZZLE_CONTRIBUTION_GUIDE.md સબમિશન સૂચનાઓ માટે.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "પઝલ યોગદાન: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "પઝલ યોગદાન.\n\nજુઓ PUZZLE_CONTRIBUTION_GUIDE.md સબમિશન સૂચનાઓ માટે.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "પઝલ યોગદાન ({count} કોયડાઓ)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "તમારી કોયડાઓનું યોગદાન આપીને આ પ્રોગ્રામને બહેતર બનાવવામાં મદદ કરો!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "ઝડપી શરૂઆત:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "ગુણવત્તાયુક્ત કોયડાઓ બનાવો",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "ખાતરી કરો કે તમારી પઝલમાં સ્પષ્ટ ઉકેલ છે, સારો મેટાડેટા છે અને કંઈક મૂલ્યવાન શીખવે છે.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "તમારું નામ ઉમેરો",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "તમારી પઝલ સંપાદિત કરો અને ક્રેડિટ મેળવવા માટે લેખક તરીકે તમારું નામ ઉમેરો.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "યોગદાન માટે નિકાસ",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "તમારી કોયડાઓ પસંદ કરો અને યોગ્ય ફોર્મેટમાં નિકાસ કરવા માટે અપલોડ આઇકનને ટેપ કરો.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "સબમિટ કરો",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "નિકાસ કરેલી ફાઇલને GitHub પુલ રિક્વેસ્ટ, ઇશ્યૂ અથવા ઇમેઇલ દ્વારા શેર કરો.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "સંપૂર્ણ દસ્તાવેજીકરણ",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "સંપૂર્ણ સૂચનાઓ, ગુણવત્તા માર્ગદર્શિકા અને સબમિશન વિકલ્પો માટે ભંડારમાં PUZZLE_CONTRIBUTION_GUIDE.md જુઓ.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "ગુણવત્તા જરૂરિયાતો:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ સ્પષ્ટ, અનન્ય ઉકેલ",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ સંપૂર્ણ મેટાડેટા (શીર્ષક, વર્ણન, વગેરે)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ લેખક એટ્રિબ્યુશન",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ ચોક્કસ મુશ્કેલી રેટિંગ",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ ઉપદેશક અથવા મનોરંજક",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "જાન્યુઆરી",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "ફેબ્રુઆરી",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "માર્ચ",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "એપ્રિલ",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "મે",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "જૂન",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "જુલાઈ",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "ઓગસ્ટ",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "સપ્ટેમ્બર",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "ઓક્ટોબર",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "નવેમ્બર",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "ડિસેમ્બર",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

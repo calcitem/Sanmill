@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "వాయిస్ అసిస్టెంట్ సెట్టింగ్‌లు",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "మోడల్, భాష మరియు ప్రవర్తనను కాన్ఫిగర్ చేయండి",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM-సహాయక అభివృద్ధి",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "మీరు LLM సహాయం చేయాలనుకుంటున్న పనిని వివరించండి...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "డౌన్‌లోడ్ చేయండి",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "స్థితి",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "తెలియదు",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI చాట్‌ని ప్రారంభించండి",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "AI అసిస్టెంట్‌తో చాటింగ్‌ను అనుమతించండి (ప్రయోగాత్మకం)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "పీస్ పిక్-అప్ యానిమేషన్‌ను ప్రారంభించండి",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "పజిల్స్",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "పజిల్",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "పజిల్స్ ఏవీ అందుబాటులో లేవు",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "ఫిల్టర్ చేయండి",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "వర్గం",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "ఫిల్టర్‌ని క్లియర్ చేయండి",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "పజిల్ గణాంకాలు",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "మొత్తం పజిల్స్",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "పూర్తయింది",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "మొత్తం నక్షత్రాలు",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "పూర్తి చేయడం",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "అనుభవశూన్యుడు",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "సులువు",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "మధ్యస్థం",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "హార్డ్",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "నిపుణుడు",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "మాస్టర్",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "ఫారమ్ మిల్",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "సంగ్రహించు",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "గేమ్ విన్",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "రక్షణ",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "బెస్ట్ మూవ్",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "ముగింపు గేమ్",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "తెరవడం",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "మిక్స్డ్",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "పజిల్ నుండి నిష్క్రమించాలా?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "పురోగతి పోతుంది.కొనసాగించాలా?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "కదులుతుంది",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "ఆప్టిమల్",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "పరిష్కారాన్ని తనిఖీ చేయండి",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "వదులుకో",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "పజిల్ పరిష్కరించబడింది!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "ఉపయోగించిన సూచనలు",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "మళ్లీ ప్రయత్నించండి",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "జాబితాకు తిరిగి వెళ్ళు",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "పరిష్కారం",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "కొత్త పజిల్ సృష్టించండి",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "పజిల్‌ని సవరించండి",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "కస్టమ్",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "నియమాలు సరిపోలలేదు",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules} కోసం, ప్రస్తుతం {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "కొనసాగించు",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "అనుకూలత మాత్రమే",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "పజిల్స్ ఎంచుకోండి",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} ఎంచుకోబడింది",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "అన్నీ ఎంచుకోండి",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "ఎగుమతి చేయండి",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "దిగుమతి",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{{count} పజిల్ విజయవంతంగా ఎగుమతి చేయబడింది} other{{count} పజిల్‌లు విజయవంతంగా ఎగుమతి చేయబడ్డాయి}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "పజిల్‌లను ఎగుమతి చేయడంలో విఫలమైంది",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{{count} పజిల్ విజయవంతంగా దిగుమతి చేయబడింది} other{{count} పజిల్‌లు విజయవంతంగా దిగుమతి చేయబడ్డాయి}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "పజిల్‌లను దిగుమతి చేయడంలో విఫలమైంది",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "ఫైల్ ఏదీ ఎంచుకోబడలేదు",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "చెల్లని ఫైల్ మార్గం",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "ఫైల్‌ను ఎంచుకోవడంలో లోపం: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ఫైల్ ఉనికిలో లేదు",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "చెల్లని ఫైల్ ఫార్మాట్: పజిల్స్ ఫీల్డ్ లేదు",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "అననుకూల ఫైల్ ఫార్మాట్ వెర్షన్: {version} (అంచనా {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "పజిల్ {index} (\"{title}\") చెల్లని FEN ఆకృతిని కలిగి ఉంది",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "పజిల్ {index} (\"{title}\") విభిన్న నియమాలను ఉపయోగిస్తుంది: {puzzleRules} (ప్రస్తుతం: {currentRules}).ఈ పజిల్ మీ ప్రస్తుత సెట్టింగ్‌లతో సరిగ్గా పని చేయకపోవచ్చు.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "పజిల్ {index}: {error}ని అన్వయించడంలో విఫలమైంది",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "లోపాలు:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "హెచ్చరికలు:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "ఫైల్ చదవడంలో లోపం: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "పజిల్‌కు తప్పనిసరిగా శీర్షిక ఉండాలి",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "పజిల్ తప్పనిసరిగా వివరణను కలిగి ఉండాలి",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "పజిల్ తప్పనిసరిగా చెల్లుబాటు అయ్యే స్థానాన్ని కలిగి ఉండాలి",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "పజిల్ చెల్లని FEN ఆకృతిని కలిగి ఉంది.దయచేసి స్థానాన్ని తనిఖీ చేయండి.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "పజిల్ తప్పనిసరిగా పరిష్కారం కలిగి ఉండాలి",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "శీర్షిక చాలా చిన్నది (కనీసం 5 అక్షరాలు)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "శీర్షిక చాలా పొడవుగా ఉంది (గరిష్టంగా 100 అక్షరాలు)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "వివరణ చాలా చిన్నది (కనీసం 10 అక్షరాలు)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "వివరణ చాలా పొడవుగా ఉంది (గరిష్టంగా 500 అక్షరాలు)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "దయచేసి సహకరించే ముందు మీ పేరును రచయితగా జోడించండి",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} పజిల్‌ని తొలగించాలా?} other{{count} పజిల్‌లను తొలగించాలా?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} పజిల్ తొలగించబడింది} other{{count} పజిల్స్ తొలగించబడ్డాయి}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "అంతర్నిర్మిత పజిల్‌లను తొలగించలేరు",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "ఒక పజిల్ ఎలా సృష్టించాలి",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. సెటప్ బోర్డ్\n2.స్నాప్‌షాట్ స్థానం\n3.రికార్డ్ కదలికలు\n4.వివరాలను పూరించండి\n5.సేవ్ చేయండి",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "సెటప్ స్థానం",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "స్థానం స్నాప్‌షాట్ చేయబడింది",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "ప్రారంభ స్థానం",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "తుది స్థానం",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "ఇంకా స్నాప్‌షాట్ లేదు",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "ముందుగా స్నాప్‌షాట్ స్థానం",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "రికార్డ్ సొల్యూషన్",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "రికార్డింగ్ ప్రారంభించండి",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "రికార్డింగ్ ఆపివేయండి",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "రికార్డింగ్...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "రికార్డింగ్ ప్రారంభమైంది",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{రికార్డ్ చేయబడింది {count} తరలింపు} other{రికార్డ్ చేయబడిన {count} కదలికలు}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{పరిష్కారం: {count} తరలింపు} other{పరిష్కారం: {count} కదలికలు}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "ఇంకా పరిష్కారం లేదు",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "స్పష్టమైన పరిష్కారం",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "పరిష్కారం {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "మరొక పరిష్కారాన్ని జోడించండి",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "ఈ పరిష్కారాన్ని తీసివేయండి",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ ఆప్టిమల్",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "ప్రత్యామ్నాయం",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "ఆప్టిమల్‌గా గుర్తించండి",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 పరిష్కారం} other{{count} పరిష్కారాలు}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "ఈ పరిష్కారాన్ని తీసివేయాలా?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "కనీసం ఒక పరిష్కారం అవసరం",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "పజిల్ వివరాలు",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "శీర్షిక",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "వివరణ",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "వర్గం",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "కష్టం",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "సూచన",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "ట్యాగ్‌లు",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "కామా వేరు చేయబడింది",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "రచయిత",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "పూర్తి సందేశం",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "వ్యూహాన్ని వివరించండి లేదా పరిష్కరించేవారిని అభినందించండి",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "శీర్షిక అవసరం",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "వివరణ అవసరం",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "స్థానం అవసరం",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "పరిష్కారం కావాలి",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "పజిల్ సృష్టించబడింది",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "పజిల్ నవీకరించబడింది",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "పజిల్‌ని సేవ్ చేయడంలో విఫలమైంది",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "ఐచ్ఛికం",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "మీ పురోగతి",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "నిష్క్రమించు",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "అన్నీ",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "త్వరలో వస్తుంది",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "రోజువారీ పజిల్",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "ప్రతిరోజూ కొత్త పజిల్‌ని పరిష్కరించండి",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "రోజు #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "స్ట్రీక్",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "రోజు పరంపర",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "రోజులు",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "ఉత్తమమైనది: {longestStreak} రోజులు",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "రోజువారీ పజిల్ ప్రారంభించండి",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "మీ పరంపరను నిర్మించడానికి రోజువారీ పజిల్‌లను పూర్తి చేయండి!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "కరెంట్ స్ట్రీక్",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "పొడవైన స్ట్రీక్",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "మొత్తం పూర్తయింది",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "మీ పరంపరను కొనసాగించడానికి ప్రతిరోజూ పజిల్స్ పరిష్కరించండి.ఒక రోజు మిస్ అయితే అది రీసెట్ చేయబడుతుంది!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "అన్ని పజిల్స్",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "అందుబాటులో ఉన్న అన్ని పజిల్‌లను బ్రౌజ్ చేయండి",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "పజిల్ రష్",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "గడియారానికి వ్యతిరేకంగా పజిల్స్ పరిష్కరించండి",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 నిమిషాల్లో మీకు వీలైనన్ని పజిల్‌లను పరిష్కరించండి!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "నియమాలు",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ గడియారంలో 5 నిమిషాలు",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 ప్రాణాలు - ఒక పొరపాటుకు 1 కోల్పోయింది",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 మీ స్కోర్‌ను పెంచుకోండి!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "రష్ ప్రారంభించండి",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "హడావిడి విరమించాలా?పురోగతి పోతుంది.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "రష్ ఫలితాలు",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "సమయం ముగిసింది!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "అవుట్ ఆఫ్ లైవ్స్",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "రష్ కంప్లీట్!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "పరిష్కరించబడింది",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "విఫలమైంది",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "ఖచ్చితత్వం",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "మళ్లీ ఆడండి",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "పజిల్ యుద్ధం",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "ఇతర ఆటగాళ్లతో పోటీపడండి",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "త్వరలో వస్తుంది!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "ఈ ఫీచర్ ప్రస్తుతం అభివృద్ధిలో ఉంది.చూస్తూ ఉండండి!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 పజిల్ రేసులు",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 ప్రత్యక్ష ప్రత్యర్థి సరిపోలిక",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 రేటింగ్ సిస్టమ్",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 లీడర్‌బోర్డ్‌లు",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "కస్టమ్ పజిల్స్",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "మీ పజిల్‌లను సృష్టించండి మరియు నిర్వహించండి",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "బహుళ-ఎంపిక మోడ్",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "పజిల్ సృష్టించండి",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "పజిల్ స్ట్రీక్",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "తప్పులు లేకుండా వరుసగా పరిష్కరించండి",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "మీరు వరుసగా ఎన్ని పరిష్కరించగలరు?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "నియమాలు",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 వీలైనన్ని ఎక్కువ పజిల్స్ పరిష్కరించండి",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ ఒక తప్పు మరియు అది ముగిసింది",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 మీ వ్యక్తిగత రికార్డును బీట్ చేయండి",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "స్ట్రీక్ ప్రారంభించండి",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "ప్రస్తుత",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "ఉత్తమమైనది",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "స్ట్రీక్ ఫలితాలు",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "పరంపర ముగిసింది",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "కొత్త రికార్డు!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "చివరి స్కోరు",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "మళ్లీ ప్రయత్నించండి",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "మీరు ఖచ్చితంగా నిష్క్రమించాలనుకుంటున్నారా?మీ పరంపర పోతుంది.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "చరిత్ర",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "మీ పజిల్ ప్రయత్నాలను వీక్షించండి",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "పజిల్ చరిత్ర లేదు",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "మీ చరిత్రను ఇక్కడ చూడడానికి పజిల్‌లను పరిష్కరించడం ప్రారంభించండి",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "విజయం మాత్రమే",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "విఫలమైంది మాత్రమే",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "తెలియని పజిల్",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "సూచనలు",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "వివరణాత్మక విశ్లేషణలను వీక్షించండి",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "మీ పజిల్ రేటింగ్",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "తాత్కాలిక ({gamesLeft} గేమ్‌లు మిగిలి ఉన్నాయి)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "ఆడిన ఆటలు",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "విచలనం",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "పనితీరు అవలోకనం",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "విజయం రేటు",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "సగటుసమయం",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "పరిష్కరించబడింది",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "విఫలమైంది",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "కష్టం ద్వారా విజయం",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "వర్గం వారీగా విజయం",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "ఇటీవలి కార్యాచరణ",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "ఇటీవలి కార్యాచరణ లేదు",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "సవరించు",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "సేవ్ చేయండి",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "కస్టమ్ పజిల్స్ లేవు",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "నిర్దిష్ట స్థానాలను సాధన చేయడానికి మీ స్వంత పజిల్‌లను సృష్టించండి",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "ఈ ఫీచర్ భవిష్యత్తులో విడుదల చేయడానికి ప్లాన్ చేయబడింది",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "చెల్లని స్థానం",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "ఓపెన్ బోర్డ్ (సెటప్ స్థానం)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "ఓపెన్ బోర్డ్ (ప్లే మూవ్స్)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "బోర్డ్‌ను తెరవడానికి దిగువ బటన్‌ను ఉపయోగించండి, ఆపై తిరిగి రావడానికి వెనుకకు నొక్కండి.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "చెల్లని స్థానం ఫార్మాట్.దయచేసి గేమ్ బోర్డ్‌ను తనిఖీ చేయండి.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "స్థానం లోడ్ చేయడంలో విఫలమైంది.దయచేసి రెస్నాప్‌షాట్ చేయండి.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "చెల్లని స్థానం ఫార్మాట్.దయచేసి స్థానాన్ని మళ్లీ చిత్రీకరించండి.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "వివరణాత్మక వర్క్‌ఫ్లో చూపించు",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "పజిల్ క్రియేషన్ వర్క్‌ఫ్లో",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "సెటప్ స్థానం",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "ఓపెన్ బోర్డ్, సెటప్ పొజిషన్, స్నాప్‌షాట్",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "రికార్డ్ సొల్యూషన్",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "రికార్డింగ్ ప్రారంభించండి, కదలికలను ప్లే చేయండి, ఆపండి",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "వివరాలను జోడించండి",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "శీర్షిక, వర్గం, కష్టాన్ని పూరించండి",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "పజిల్‌ను సేవ్ చేయండి",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "సేవ్ బటన్ క్లిక్ చేయండి",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "చిట్కా: మీరు ఈ పేజీ మరియు గేమ్ బోర్డ్ మధ్య నావిగేట్ చేస్తారు.మీ పురోగతి సేవ్ చేయబడింది!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "స్నాప్‌షాట్ సహాయాన్ని ఉంచండి",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "పజిల్ ప్రారంభ స్థానం ఎలా స్నాప్‌షాట్ చేయాలి:\n\n1.ముక్కలను మాన్యువల్‌గా ఉంచడానికి \"ఓపెన్ బోర్డ్ (సెటప్ పొజిషన్)\" క్లిక్ చేయండి లేదా కదలికలు చేయడం ద్వారా స్థానానికి చేరుకోవడానికి \"ఓపెన్ బోర్డ్ (ప్లే మూవ్స్)\" క్లిక్ చేయండి\n\n2.బోర్డుని మీకు కావలసిన పజిల్ ప్రారంభ స్థానానికి అమర్చండి\n\n3.ఈ పేజీకి తిరిగి రావడానికి వెనుకకు బటన్‌ను నొక్కండి\n\n4.స్థానం స్వయంచాలకంగా స్నాప్‌షాట్ చేయబడుతుంది మరియు సేవ్ చేయబడుతుంది\n\nఈ స్నాప్‌షాట్ చేయబడిన స్థానం మీ పజిల్‌కు ప్రారంభ బిందువుగా ఉపయోగించబడుతుంది.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "సొల్యూషన్ రికార్డింగ్ సహాయం",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "పరిష్కారం కదలికలను ఎలా రికార్డ్ చేయాలి:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "ముందుగా ప్రారంభ స్థానాన్ని స్నాప్‌షాట్ చేయండి",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"రికార్డింగ్ ప్రారంభించు\" బటన్‌ను క్లిక్ చేయండి (ఇది మీ స్నాప్‌షాట్ చేసిన స్థానానికి బోర్డ్‌ను రీసెట్ చేస్తుంది)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "ఇక్కడకు తిరిగి వచ్చి, \"రికార్డింగ్ ఆపివేయి\" క్లిక్ చేయండి",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "చిట్కా: మీరు రికార్డింగ్ ప్రారంభించినప్పుడు బోర్డ్ స్వయంచాలకంగా మీ స్నాప్‌షాట్ చేసిన స్థానానికి రీసెట్ చేయబడుతుంది.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "మీరు బహుళ పరిష్కారాలను జోడించవచ్చు (పరిమితి లేదు).చిన్నది/ఉత్తమమైనది సరైనదిగా గుర్తించండి.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "స్థానం స్నాప్‌షాట్ సహాయాన్ని చూపండి",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "పరిష్కార రికార్డింగ్ సహాయాన్ని చూపండి",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "మరిన్ని సూచనలు అందుబాటులో లేవు",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "సూచన",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "సరైన పరిష్కారం ({moves} కదలికలు):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "ధ్రువీకరణ లోపాలు",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Sanmillకు పజిల్స్‌ను అందించండి",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "తర్వాత ఏమి జరుగుతుంది:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. మీ పజిల్స్ JSON ఫైల్‌కి ఎగుమతి చేయబడతాయి",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. మీరు ఈ ఫైల్‌ను షేర్ డైలాగ్ ద్వారా షేర్ చేయవచ్చు",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. పజిల్స్ నిర్వహణదారులచే సమీక్షించబడతాయి",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. ఆమోదించబడిన తర్వాత, అవి అంతర్నిర్మిత పజిల్‌లుగా మారతాయి!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "సహకారం కోసం ఎగుమతి చేయండి",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "సహకరించడం ప్రారంభించండి",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "త్వరిత ప్రారంభం:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "నాణ్యమైన పజిల్స్ సృష్టించండి",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "మీ పజిల్‌కు స్పష్టమైన పరిష్కారం, మంచి మెటాడేటా మరియు విలువైనదేదో బోధిస్తున్నట్లు నిర్ధారించుకోండి.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "మీ పేరును జోడించండి",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "క్రెడిట్ పొందడానికి మీ పజిల్‌ని సవరించండి మరియు మీ పేరును రచయితగా జోడించండి.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "సహకారం కోసం ఎగుమతి చేయండి",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "సరైన ఫార్మాట్‌లో ఎగుమతి చేయడానికి మీ పజిల్‌లను ఎంచుకుని, అప్‌లోడ్ చిహ్నాన్ని నొక్కండి.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "సమర్పించండి",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "ఎగుమతి చేసిన ఫైల్‌ను GitHub పుల్ అభ్యర్థన, సమస్య లేదా ఇమెయిల్ ద్వారా భాగస్వామ్యం చేయండి.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "పూర్తి డాక్యుమెంటేషన్",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "పూర్తి సూచనలు, నాణ్యత మార్గదర్శకాలు మరియు సమర్పణ ఎంపికల కోసం రిపోజిటరీలో PUZZLE_CONTRIBUTION_GUIDE.mdని చూడండి.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "నాణ్యత అవసరాలు:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ స్పష్టమైన, ఏకైక పరిష్కారం",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ పూర్తి మెటాడేటా (శీర్షిక, వివరణ, మొదలైనవి)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ రచయిత అట్రిబ్యూషన్",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ ఖచ్చితమైన కష్టాల రేటింగ్",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ సూచనాత్మకం లేదా వినోదాత్మకం",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "తదుపరి తరలింపు: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "పూర్తి పరిష్కారం: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "ఈ స్థానాలపై శ్రద్ధ వహించండి",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "పరిష్కారం అందుబాటులో లేదు",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "కొనసాగించు!లక్ష్యం ఇంకా నెరవేరలేదు.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "పర్ఫెక్ట్!సరైన కదలికలలో పరిష్కరించబడింది!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "కరెక్ట్!({count} కదలికలు, అనుకూలం: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "కరెక్ట్!మీరు ప్రత్యామ్నాయ పరిష్కారాన్ని కనుగొన్నారు!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "ఇప్పుడే",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}నిమి క్రితం",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}గం క్రితం",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}d క్రితం",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "చెల్లని పజిల్",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "ఈ పజిల్ చెల్లని స్థాన ఆకృతిని కలిగి ఉంది మరియు లోడ్ చేయడం సాధ్యపడదు.దయచేసి పజిల్ రచయితను సంప్రదించండి లేదా వేరే పజిల్‌ని ప్రయత్నించండి.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "ప్రయత్నిస్తూ ఉండండి!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "ఉదాహరణలు",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI అసిస్టెంట్",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "హలో!నేను మీ మిల్ గేమ్ అసిస్టెంట్‌ని.వ్యూహాలు, స్థానాలు లేదా ప్రస్తుత గేమ్ గురించి ఏవైనా ప్రశ్నలు ఉంటే నన్ను అడగండి.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "ఆట గురించి అడగండి...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "క్షమించండి, నేను ఒక లోపాన్ని ఎదుర్కొన్నాను.దయచేసి మళ్లీ ప్రయత్నించండి.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI అసిస్టెంట్ కాన్ఫిగర్ చేయబడలేదు.దయచేసి ముందుగా LLM సెట్టింగ్‌లను కాన్ఫిగర్ చేయండి.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "AI అసిస్టెంట్‌తో చాట్ చేయండి",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "చాట్ చరిత్రను క్లియర్ చేయండి",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "చాట్ చరిత్రను క్లియర్ చేయాలా?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "ఇది అన్ని సందేశాలను తొలగిస్తుంది మరియు కొత్త సంభాషణను ప్రారంభిస్తుంది.ఈ చర్య రద్దు చేయబడదు.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "చాట్ చరిత్ర క్లియర్ చేయబడింది",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "లాగ్‌లు",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "లాగ్‌లను డౌన్‌లోడ్ చేయండి",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "లాగ్‌లు ఏవీ అందుబాటులో లేవు",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "యాప్ రన్ అవుతున్నప్పుడు లాగ్‌లు ఇక్కడ కనిపిస్తాయి.యాప్‌ని ఉపయోగించి ప్రయత్నించండి మరియు లాగ్‌లను చూడటానికి తిరిగి రండి.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "డౌన్‌లోడ్ చేయడానికి లాగ్‌లు ఏవీ అందుబాటులో లేవు",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "డౌన్‌లోడ్ విఫలమైంది",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "రిఫ్రెష్ చేయండి",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "లాగ్‌లను భాగస్వామ్యం చేయండి",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "{path}కి డౌన్‌లోడ్ చేయబడింది",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "మోడ్‌ని ఎంచుకోండి",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "కాపీ ఎంపిక చేయబడింది",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "ప్రారంభ బిందువును ఎంచుకోవడానికి నొక్కండి",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "ముగింపు పాయింట్‌ని ఎంచుకోవడానికి నొక్కండి",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "లాగ్‌లు ఏవీ ఎంచుకోబడలేదు",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "పైకి స్క్రోల్ చేయండి (పురాతనమైనది)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "క్రిందికి స్క్రోల్ చేయండి (కొత్తది)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "దిగువన సరికొత్త లాగ్‌లు",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "లాగ్‌లు: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "లాగ్ బఫర్ నిండింది ({current}/{max}).పాత చెక్కలను తొలగిస్తున్నారు.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "లాగ్‌లను క్లియర్ చేయండి",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "మీరు ఖచ్చితంగా అన్ని లాగ్‌లను క్లియర్ చేయాలనుకుంటున్నారా?ఈ చర్య రద్దు చేయబడదు.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "క్లియర్",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "లాగ్‌లు క్లియర్ చేయబడ్డాయి",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "చెల్లని పజిల్",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "ఈ పజిల్ చెల్లని స్థాన ఆకృతిని కలిగి ఉంది మరియు లోడ్ చేయడం సాధ్యపడదు.దయచేసి పజిల్ రచయితను సంప్రదించండి లేదా వేరే పజిల్‌ని ప్రయత్నించండి.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "జాబితాకు తిరిగి వెళ్ళు",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "తప్పు ఎత్తుగడ.మళ్లీ ప్రయత్నించండి.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "ఆ చర్య పరిష్కారంతో సరిపోలడం లేదు.మీరు మళ్లీ ప్రయత్నించవచ్చు లేదా సరైన పరిష్కారాన్ని చూడవచ్చు.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "సొల్యూషన్ చూపించు",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "పరిష్కారాన్ని ప్లే చేస్తోంది...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "పరిష్కారం ప్లేబ్యాక్ పూర్తయింది",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "ఈ పజిల్‌కు పరిష్కారం అందుబాటులో లేదు",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "పరిష్కారం వీక్షించబడింది (నక్షత్రాలు లేవు)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{ప్రయత్నం: {count}} other{ప్రయత్నాలు: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "మరిన్ని సూచనలు అందుబాటులో లేవు",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "సూచన",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "ధ్రువీకరణ లోపాలు",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "కంట్రిబ్యూట్ చేయడానికి ముందు కింది పజిల్స్‌ని పరిష్కరించాలి:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Sanmillకు పజిల్స్‌ను అందించండి",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "మీరు సహకారం కోసం {count} పజిల్(లు)ని ఎగుమతి చేయబోతున్నారు.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "తర్వాత ఏమి జరుగుతుంది:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. మీ పజిల్స్ JSON ఫైల్‌కి ఎగుమతి చేయబడతాయి",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. మీరు ఈ ఫైల్‌ను షేర్ డైలాగ్ ద్వారా షేర్ చేయవచ్చు",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. GitHub, ఇమెయిల్ లేదా GitHub సమస్య ద్వారా సమర్పించండి (గైడ్ చూడండి)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. పజిల్స్ నిర్వహణదారులచే సమీక్షించబడతాయి",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. ఆమోదించబడిన తర్వాత, అవి అంతర్నిర్మిత పజిల్‌లుగా మారతాయి!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "సహకారం అందించడం ద్వారా, మీరు CC BY-SA 4.0 (క్రియేటివ్ కామన్స్ అట్రిబ్యూషన్-షేర్అలైక్) కింద మీ పజిల్ కంటెంట్‌కి లైసెన్స్ ఇవ్వడానికి అంగీకరిస్తున్నారు.",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "సహకారం కోసం ఎగుమతి చేయండి",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "సహకరించడం ప్రారంభించండి",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "పజిల్‌లను ఎలా అందించాలి",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "ఈ {count} పజిల్‌లను చూడండి!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "పజిల్స్ ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "పజిల్ సహకారం.\n\nసమర్పణ సూచనల కోసం PUZZLE_CONTRIBUTION_GUIDE.mdని చూడండి.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "పజిల్ సహకారం: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "పజిల్ రచనలు.\n\nసమర్పణ సూచనల కోసం PUZZLE_CONTRIBUTION_GUIDE.mdని చూడండి.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "పజిల్ రచనలు ({count} పజిల్స్)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "మీ పజిల్స్‌ని అందించడం ద్వారా ఈ ప్రోగ్రామ్‌ను మెరుగుపరచడంలో సహాయపడండి!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "త్వరిత ప్రారంభం:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "నాణ్యమైన పజిల్స్ సృష్టించండి",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "మీ పజిల్‌కు స్పష్టమైన పరిష్కారం, మంచి మెటాడేటా మరియు విలువైనదేదో బోధిస్తున్నట్లు నిర్ధారించుకోండి.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "మీ పేరును జోడించండి",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "క్రెడిట్ పొందడానికి మీ పజిల్‌ని సవరించండి మరియు మీ పేరును రచయితగా జోడించండి.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "సహకారం కోసం ఎగుమతి చేయండి",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "సరైన ఫార్మాట్‌లో ఎగుమతి చేయడానికి మీ పజిల్‌లను ఎంచుకుని, అప్‌లోడ్ చిహ్నాన్ని నొక్కండి.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "సమర్పించండి",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "ఎగుమతి చేసిన ఫైల్‌ను GitHub పుల్ అభ్యర్థన, సమస్య లేదా ఇమెయిల్ ద్వారా భాగస్వామ్యం చేయండి.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "పూర్తి డాక్యుమెంటేషన్",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "పూర్తి సూచనలు, నాణ్యత మార్గదర్శకాలు మరియు సమర్పణ ఎంపికల కోసం రిపోజిటరీలో PUZZLE_CONTRIBUTION_GUIDE.mdని చూడండి.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "నాణ్యత అవసరాలు:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ స్పష్టమైన, ఏకైక పరిష్కారం",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ పూర్తి మెటాడేటా (శీర్షిక, వివరణ, మొదలైనవి)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ రచయిత అట్రిబ్యూషన్",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ ఖచ్చితమైన కష్టాల రేటింగ్",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ సూచనాత్మకం లేదా వినోదాత్మకం",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "జనవరి",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "ఫిబ్రవరి",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "మార్చి",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "ఏప్రిల్",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "మే",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "జూన్",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "జూలై",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "ఆగస్టు",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "సెప్టెంబర్",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "అక్టోబర్",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "నవంబర్",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "డిసెంబర్",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }
