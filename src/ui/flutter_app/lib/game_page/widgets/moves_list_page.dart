@@ -25,6 +25,7 @@ import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dar
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
+import 'active_line_gutter_painter.dart';
 import 'branch_tree_painter.dart';
 import 'cat_fishing_game.dart';
 import 'mini_board.dart';
@@ -1474,6 +1475,11 @@ class MovesListPageState extends State<MovesListPage> {
     // Build main move text (could include multiple moves if followed by remove moves)
     final String mainMoveText = _buildMoveText(rowData.node);
 
+    // Gutter: combine "branch structure cue" with the standard chips-based list view.
+    final bool isOnVariationBranch = _isNodeOnVariationBranch(rowData.node);
+    final bool isVariationStart = _isVariationStartNode(rowData.node);
+    final bool hasAlternatives = rowData.siblings.isNotEmpty;
+
     // Maximum number of chips to show before using "+K" overflow
     const int maxChipsToShow = 3;
     final bool hasOverflow = rowData.siblings.length > maxChipsToShow;
@@ -1481,47 +1487,63 @@ class MovesListPageState extends State<MovesListPage> {
         ? rowData.siblings.sublist(0, maxChipsToShow)
         : rowData.siblings;
 
+    const double gutterWidth = 14.0;
+
     return GestureDetector(
       onTap: () => _navigateToNode(rowData.node),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // Main move text
-            Text(
-              mainMoveText,
-              style: TextStyle(
-                color: rowData.isActiveNode
-                    ? DB().colorSettings.pieceHighlightColor
-                    : DB().colorSettings.messageColor,
-                fontFamily: 'monospace',
-                fontSize: 14,
-                fontWeight: rowData.isActiveNode
-                    ? FontWeight.bold
-                    : FontWeight.normal,
-              ),
-            ),
-            // Variation chips (if any siblings exist)
-            if (rowData.siblings.isNotEmpty) ...<Widget>[
-              const SizedBox(height: 4),
-              Wrap(
-                spacing: 4,
-                runSpacing: 4,
-                children: <Widget>[
-                  ...visibleSiblings.map((PgnNode<ExtMove> sibling) {
-                    return _buildVariationChip(sibling);
-                  }),
-                  if (hasOverflow)
-                    _buildOverflowChip(
-                      count: rowData.siblings.length - maxChipsToShow,
-                      allSiblings: rowData.siblings.sublist(maxChipsToShow),
-                    ),
+      child: CustomPaint(
+        foregroundPainter: ActiveLineGutterPainter(
+          gutterWidth: gutterWidth,
+          baseColor: DB().colorSettings.messageColor,
+          highlightColor: DB().colorSettings.pieceHighlightColor,
+          hasAlternatives: hasAlternatives,
+          isVariationStart: isVariationStart,
+          isOnVariationBranch: isOnVariationBranch,
+          isActiveNode: rowData.isActiveNode,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          child: Padding(
+            padding: const EdgeInsets.only(left: gutterWidth + 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                // Main move text
+                Text(
+                  mainMoveText,
+                  style: TextStyle(
+                    color: rowData.isActiveNode
+                        ? DB().colorSettings.pieceHighlightColor
+                        : DB().colorSettings.messageColor,
+                    fontFamily: 'monospace',
+                    fontSize: 14,
+                    fontWeight: rowData.isActiveNode
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                  ),
+                ),
+                // Variation chips (if any siblings exist)
+                if (rowData.siblings.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 4),
+                  Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    children: <Widget>[
+                      ...visibleSiblings.map((PgnNode<ExtMove> sibling) {
+                        return _buildVariationChip(sibling);
+                      }),
+                      if (hasOverflow)
+                        _buildOverflowChip(
+                          count: rowData.siblings.length - maxChipsToShow,
+                          allSiblings: rowData.siblings.sublist(maxChipsToShow),
+                        ),
+                    ],
+                  ),
                 ],
-              ),
-            ],
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -2056,6 +2078,31 @@ class MovesListPageState extends State<MovesListPage> {
     setState(() {
       // Rebuild to reflect the new active path and highlights.
     });
+  }
+
+  /// Whether the given node is located on a variation branch.
+  ///
+  /// A node is considered "on a variation branch" if, on the path to the root,
+  /// there exists any ancestor that is not the first child of its parent.
+  bool _isNodeOnVariationBranch(PgnNode<ExtMove> node) {
+    PgnNode<ExtMove>? current = node;
+    while (current != null && current.parent != null) {
+      final PgnNode<ExtMove> parent = current.parent!;
+      if (parent.children.isNotEmpty && parent.children.first != current) {
+        return true;
+      }
+      current = parent;
+    }
+    return false;
+  }
+
+  /// Whether this node is the first move of a variation (divergence point).
+  bool _isVariationStartNode(PgnNode<ExtMove> node) {
+    final PgnNode<ExtMove>? parent = node.parent;
+    if (parent == null || parent.children.isEmpty) {
+      return false;
+    }
+    return parent.children.first != node;
   }
 
   /// Checks if the current active node is on a variation branch (not mainline)
