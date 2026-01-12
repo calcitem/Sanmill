@@ -32,6 +32,8 @@ buildCache {
     local {
         enabled = true
         directory = new File(rootDir, 'build-cache')
-        removeUnusedEntriesAfterDays = 30
+        // removeUnusedEntriesAfterDays property is deprecated in Gradle 8.0+
+        // and will be removed in Gradle 9.0.
+        // removeUnusedEntriesAfterDays = 30
     }
 }
