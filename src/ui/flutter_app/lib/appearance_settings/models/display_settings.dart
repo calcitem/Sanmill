@@ -95,7 +95,7 @@ class DisplaySettings {
     this.boardShadowEnabled = false,
     this.isCapturablePiecesHighlightShown = false,
     this.isPiecePickUpAnimationEnabled = true,
-    this.showBranchTree = true,
+    this.showBranchTree = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -251,7 +251,7 @@ class DisplaySettings {
   final bool isPiecePickUpAnimationEnabled;
 
   /// Whether to show git-style branch tree for PGN variations
-  @HiveField(45, defaultValue: true)
+  @HiveField(45, defaultValue: false)
   final bool showBranchTree;
 
   /// Decodes a Json from a [DisplaySettings] object
