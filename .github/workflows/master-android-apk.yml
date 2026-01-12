@@ -21,6 +21,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      # Cache Gradle dependencies and wrapper for faster builds
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Decode signing key
         run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
         env:
@@ -30,6 +41,16 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.38.5'
+          cache: true  # Enable Flutter SDK caching
+
+      # Cache Pub dependencies for faster dependency resolution
+      - name: Cache Pub packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Export environment variables
         run: export
