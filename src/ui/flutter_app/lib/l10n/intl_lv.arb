@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "Veidot dzirnavu",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Skaidrs risinājums",
+    "puzzleClearSolution": "Notīrīt risinājumu",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

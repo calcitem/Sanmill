@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Јасно решење",
+    "puzzleClearSolution": "Обриши решење",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "གསུམ་སྒྲིལ་བཟོ་བ།",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2630,7 +2630,7 @@
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "Snapshot position first",
+    "puzzleSnapshotPositionFirst": "སྐར་མ་དང་པོར་གནས་ས་བླང་རོགས།",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Clear Solution",
+    "puzzleClearSolution": "གསལ་བའི་ཐབས་ལམ་གཙང་བཀྲོལ།",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

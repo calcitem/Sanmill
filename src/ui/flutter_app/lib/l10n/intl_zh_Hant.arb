@@ -2259,7 +2259,7 @@
     "@puzzleDifficultyMedium": {
         "description": "Medium difficulty"
     },
-    "puzzleDifficultyHard": "硬",
+    "puzzleDifficultyHard": "困難",
     "@puzzleDifficultyHard": {
         "description": "Hard difficulty"
     },
@@ -2271,7 +2271,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "成型銑床",
+    "puzzleCategoryFormMill": "成三",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2622,7 +2622,7 @@
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "快照位置優先",
+    "puzzleSnapshotPositionFirst": "請先快照局面",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2668,7 +2668,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "清晰的解決方案",
+    "puzzleClearSolution": "清除解答",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

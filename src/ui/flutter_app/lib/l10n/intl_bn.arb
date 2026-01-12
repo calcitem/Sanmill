@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ফর্ম মিল",
+    "puzzleCategoryFormMill": "মিল তৈরি করুন",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "পরিষ্কার সমাধান",
+    "puzzleClearSolution": "সমাধান সাফ করুন",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Vorm Meul",
+    "puzzleCategoryFormMill": "Vorm 'n meul",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2630,7 +2630,7 @@
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "Snapshot posisie eerste",
+    "puzzleSnapshotPositionFirst": "Neem eers 'n momentopname van die posisie",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Duidelike oplossing",
+    "puzzleClearSolution": "Verwyder oplossing",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

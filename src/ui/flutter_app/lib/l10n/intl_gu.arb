@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ફોર્મ મિલ",
+    "puzzleCategoryFormMill": "મિલ બનાવો",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "સ્પષ્ટ ઉકેલ",
+    "puzzleClearSolution": "ઉકેલ સાફ કરો",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "폼 밀",
+    "puzzleCategoryFormMill": "삼목 만들기",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2630,7 +2630,7 @@
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "스냅샷 위치 우선",
+    "puzzleSnapshotPositionFirst": "먼저 포지션을 스냅샷하세요",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "명확한 솔루션",
+    "puzzleClearSolution": "솔루션 지우기",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
@@ -2920,7 +2920,7 @@
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
-    "puzzleRushQuitConfirm": "서두르지 말라고?진행 상황이 손실됩니다.",
+    "puzzleRushQuitConfirm": "러시를 종료하시겠습니까? 진행 상황이 손실됩니다.",
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
@@ -3494,7 +3494,7 @@
             }
         }
     },
-    "daysAgo": "{days}d 전",
+    "daysAgo": "{days}일 전",
     "@daysAgo": {
         "description": "Relative time in days",
         "placeholders": {

@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ቅጽ Mill",
+    "puzzleCategoryFormMill": "ሚል ይመስርቱ",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "ግልጽ መፍትሔ",
+    "puzzleClearSolution": "መፍትሔን አፅዳ",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

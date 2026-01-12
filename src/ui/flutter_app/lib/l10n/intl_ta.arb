@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "படிவம் மில்",
+    "puzzleCategoryFormMill": "மில் உருவாக்கவும்",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "தெளிவான தீர்வு",
+    "puzzleClearSolution": "தீர்வை அழி",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

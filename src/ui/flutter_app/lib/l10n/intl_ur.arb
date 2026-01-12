@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "فارم مل",
+    "puzzleCategoryFormMill": "مل بنائیں",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "واضح حل",
+    "puzzleClearSolution": "حل صاف کریں",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

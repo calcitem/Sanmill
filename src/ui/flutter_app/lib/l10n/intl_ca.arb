@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Molí",
+    "puzzleCategoryFormMill": "Formar molí",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Solució clara",
+    "puzzleClearSolution": "Esborra la solució",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

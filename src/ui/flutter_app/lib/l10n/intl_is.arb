@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "Mynda myllu",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Tær lausn",
+    "puzzleClearSolution": "Hreinsa lausn",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

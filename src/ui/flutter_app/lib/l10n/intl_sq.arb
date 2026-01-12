@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Zgjidhje e qartë",
+    "puzzleClearSolution": "Pastro zgjidhjen",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

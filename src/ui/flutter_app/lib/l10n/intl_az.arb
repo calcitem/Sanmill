@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Forma dəyirmanı",
+    "puzzleCategoryFormMill": "Dəyirman yarat",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Təmiz həll",
+    "puzzleClearSolution": "Həlli təmizlə",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

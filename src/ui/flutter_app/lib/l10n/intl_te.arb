@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ఫారమ్ మిల్",
+    "puzzleCategoryFormMill": "మిల్ ఏర్పాటు చేయండి",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "స్పష్టమైన పరిష్కారం",
+    "puzzleClearSolution": "పరిష్కారాన్ని క్లియర్ చేయండి",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

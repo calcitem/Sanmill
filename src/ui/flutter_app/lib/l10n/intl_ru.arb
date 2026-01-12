@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Формовая мельница",
+    "puzzleCategoryFormMill": "Сформировать мельницу",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2630,7 +2630,7 @@
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "Позиция снимка первая",
+    "puzzleSnapshotPositionFirst": "Сначала сделайте снимок позиции",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Ясное решение",
+    "puzzleClearSolution": "Очистить решение",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

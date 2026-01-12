@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "Vytvořit mlýn",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Jasné řešení",
+    "puzzleClearSolution": "Vymazat řešení",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

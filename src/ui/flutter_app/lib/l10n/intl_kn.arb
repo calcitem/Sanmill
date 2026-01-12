@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ಫಾರ್ಮ್ ಮಿಲ್",
+    "puzzleCategoryFormMill": "ಮಿಲ್ ರಚಿಸಿ",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "ಸ್ಪಷ್ಟ ಪರಿಹಾರ",
+    "puzzleClearSolution": "ಪರಿಹಾರವನ್ನು ತೆರವುಗೊಳಿಸಿ",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

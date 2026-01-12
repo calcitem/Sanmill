@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ဖောင်ကြိတ်",
+    "puzzleCategoryFormMill": "သုံးတန်းဖြစ်အောင် ဖွဲ့စည်းရန်",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "ရှင်းလင်းဖြေရှင်းချက်",
+    "puzzleClearSolution": "ဖြေရှင်းချက်ကို ရှင်းလင်းရန်",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

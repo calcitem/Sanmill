@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Mulino a forma",
+    "puzzleCategoryFormMill": "Formare un tris",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Soluzione chiara",
+    "puzzleClearSolution": "Cancella soluzione",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Формирајте мелница",
+    "puzzleCategoryFormMill": "Формирај мелница",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Јасно решение",
+    "puzzleClearSolution": "Избриши решение",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

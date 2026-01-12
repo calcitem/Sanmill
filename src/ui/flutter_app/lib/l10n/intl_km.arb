@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "ទម្រង់រោងម៉ាស៊ីនកិនស្រូវ",
+    "puzzleCategoryFormMill": "បង្កើតជួរបី",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "ដំណោះស្រាយច្បាស់លាស់",
+    "puzzleClearSolution": "សម្អាតដំណោះស្រាយ",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Moulin à forme",
+    "puzzleCategoryFormMill": "Former un moulin",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2630,7 +2630,7 @@
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "Position de l'instantané en premier",
+    "puzzleSnapshotPositionFirst": "Veuillez d'abord capturer la position",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Solution claire",
+    "puzzleClearSolution": "Effacer la solution",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

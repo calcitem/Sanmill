@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "แบบฟอร์มโรงสี",
+    "puzzleCategoryFormMill": "สร้างแถวสาม",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "โซลูชั่นที่ชัดเจน",
+    "puzzleClearSolution": "ล้างโซลูชัน",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

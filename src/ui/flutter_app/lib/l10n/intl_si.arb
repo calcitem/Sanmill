@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "පෝරමය මෝල්",
+    "puzzleCategoryFormMill": "මෝල් නිර්මාණය කරන්න",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "පැහැදිලි විසඳුම",
+    "puzzleClearSolution": "විසඳුම ඉවත් කරන්න",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },

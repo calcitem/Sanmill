@@ -2279,7 +2279,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Formularz Młyn",
+    "puzzleCategoryFormMill": "Utworzyć młynek",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2676,7 +2676,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Jasne rozwiązanie",
+    "puzzleClearSolution": "Wyczyść rozwiązanie",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
