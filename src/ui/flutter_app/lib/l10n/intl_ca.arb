@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "Configuració de l'assistent de veu",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Configura el model, l'idioma i el comportament",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "Desenvolupament assistit per LLM",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Descriu la tasca amb la qual vols ajudar el LLM...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "Descarregar",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Estat",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Desconegut",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "Activa el xat AI",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Permet xatejar amb l'assistent d'IA (experimental)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Activa l'animació de recollida de peces",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "Trencaclosques",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Trencaclosques",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "No hi ha trencaclosques disponibles",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filtre",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Categoria",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Esborra el filtre",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Estadístiques de trencaclosques",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Puzles totals",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Completat",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Estrelles totals",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Finalització",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Principiant",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Fàcil",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Mitjana",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Dur",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Expert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Mestre",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Molí",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Captura",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Guanyar el joc",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Defensa",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Millor moviment",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Final del joc",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Obertura",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Mixt",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Sortir del trencaclosques?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "El progrés es perdrà.Continuar?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Es mou",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Òptima",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Comprova la solució",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Rendir",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Trencaclosques resolt!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Consells utilitzats",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Torna-ho a provar",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Tornar a la llista",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Solució",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Crea un nou trencaclosques",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Edita trencaclosques",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Personalitzat",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "Incompatibilitat de regles",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "Per a {puzzleRules}, actualment {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Continua",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "Només compatible",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "Seleccioneu Trencaclosques",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Seleccionat",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Seleccioneu Tot",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Exporta",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Importar",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{S'ha exportat correctament {count} trencaclosques} other{S'han exportat correctament {count} trencaclosques}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "No s'han pogut exportar els trencaclosques",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{S'ha importat correctament el trencaclosques {count}} other{S'han importat correctament {count} trencaclosques}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "No s'han pogut importar els trencaclosques",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "No s'ha seleccionat cap fitxer",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "Camí del fitxer no vàlid",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "S'ha produït un error en triar el fitxer: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "El fitxer no existeix",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "Format de fitxer no vàlid: falta el camp de trencaclosques",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "Versió de format de fitxer incompatible: {version} (s'esperava {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "El format FEN del trencaclosques {index} (\"{title}\") no és vàlid",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "Trencaclosques {index} (\"{title}\") utilitza diferents regles: {puzzleRules} (actual: {currentRules}).És possible que aquest trencaclosques no funcioni correctament amb la vostra configuració actual.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "No s'ha pogut analitzar el trencaclosques {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Errors:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Advertències:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Error en llegir el fitxer: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "El trencaclosques ha de tenir un títol",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "El trencaclosques ha de tenir una descripció",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "El trencaclosques ha de tenir una posició vàlida",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "El format FEN del trencaclosques no és vàlid.Si us plau, comproveu la posició.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "El trencaclosques ha de tenir una solució",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "Títol massa curt (mínim 5 caràcters)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Títol massa llarg (màxim 100 caràcters)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Descripció massa curta (mínim 10 caràcters)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Descripció massa llarga (màxim 500 caràcters)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Si us plau, afegiu el vostre nom com a autor abans de contribuir",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Vols suprimir el trencaclosques {count}?} other{Vols suprimir {count} trencaclosques?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{S'ha suprimit el trencaclosques {count}} other{S'han suprimit {count} trencaclosques}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "No es poden suprimir els trencaclosques integrats",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "Com crear un trencaclosques",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Tauler de configuració\n2.Posició de la instantània\n3.Enregistra els moviments\n4.Ompliu els detalls\n5.Desa",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Posició de configuració",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "Instantània de la posició",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "Posició inicial",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "Posició final",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "Encara no hi ha cap instantània",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Posició de la instantània primer",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Solució de registre",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Comença a gravar",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Atura la gravació",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Gravació...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "La gravació va començar",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{S'ha enregistrat el moviment {count}} other{{count} moviments enregistrats}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Solució: {count} moure's} other{Solució: {count} es mou}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "Encara no hi ha solució",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Solució clara",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "Solució {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "Afegiu una altra solució",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "Elimina aquesta solució",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ Òptim",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "Alternativa",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Marca com a òptim",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 solució} other{{count} solucions}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Eliminar aquesta solució?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "Es requereix almenys una solució",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "Detalls del trencaclosques",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Títol",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Descripció",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Categoria",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Dificultat",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Pista",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Etiquetes",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Separat per comes",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Autor",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "Missatge de finalització",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "Explica la tàctica o felicita el solucionador",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "El títol és obligatori",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "La descripció és necessària",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "El lloc és obligatori",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "La solució és necessària",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Trencaclosques creat",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Trencaclosques actualitzat",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "No s'ha pogut desar el trencaclosques",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "opcional",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "El teu progrés",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Surt",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Tots",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Aviat",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Trencaclosques diaris",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Resol un trencaclosques nou cada dia",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Dia #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Ratxa",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "ratxa de dia",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "dies",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Millor: {longestStreak} dies",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Comença el trencaclosques diari",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Completa trencaclosques diaris per crear la teva ratxa!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Ratxa actual",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Ratxa més llarga",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total completat",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Resol trencaclosques cada dia per mantenir la teva ratxa.Faltar un dia el reiniciarà!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "Tots els trencaclosques",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Exploreu tots els trencaclosques disponibles",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Trencaclosques Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Resol trencaclosques contra el rellotge",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Resoldre tants trencaclosques com puguis en 5 minuts!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Normes",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minuts al rellotge",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 vides - 1 perduda per error",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximitza la teva puntuació!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Comença Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Deixar de pressa?El progrés es perdrà.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Resultats Rush",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "S'ha acabat el temps!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Fora de Vides",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush completa!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Solucionat",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Ha fallat",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Precisió",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Juga de nou",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Batalla de trencaclosques",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Competiu amb altres jugadors",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Aviat!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Aquesta funció està actualment en desenvolupament.Estigueu atents!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ Curses de trencaclosques 1v1",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Coincidència del rival en directe",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Sistema de qualificació",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Taules de classificació",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Trencaclosques personalitzats",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Crea i gestiona els teus trencaclosques",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Mode de selecció múltiple",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Crea trencaclosques",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Trencaclosques",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Resol consecutivament sense errors",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "Quants en pots resoldre seguits?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Normes",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Resoldre tants trencaclosques com sigui possible",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ Un error i s'ha acabat",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Bateu el vostre rècord personal",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Inicia la ratxa",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Actual",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "El millor",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Ratxa de resultats",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Ratxa acabada",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "Nou rècord!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Puntuació final",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Torna-ho a provar",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Estàs segur que vols deixar-ho?La teva ratxa es perdrà.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "Història",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "Veure els teus intents de trencaclosques",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "Sense història de trencaclosques",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Comenceu a resoldre trencaclosques per veure la vostra història aquí",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Només èxit",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Només fallat",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Trencaclosques desconegut",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "pistes",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "Veure analítiques detallades",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "La teva puntuació de trencaclosques",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provisional ({gamesLeft} jocs restants)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "Jocs jugats",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Desviació",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Visió general del rendiment",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Taxa d'èxit",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "MitjanaTemps",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Solucionat",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Ha fallat",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Èxit per dificultat",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Èxit per categories",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Activitat recent",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Cap activitat recent",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Edita",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Desa",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "No hi ha trencaclosques personalitzats",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Crea els teus propis trencaclosques per practicar posicions específiques",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "Aquesta funció està prevista per a un llançament futur",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Posició no vàlida",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Tauler obert (posició de configuració)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Tauler obert (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Feu servir el botó següent per obrir el tauler i, a continuació, premeu Enrere per tornar.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Format de posició no vàlid.Si us plau, comproveu el tauler de joc.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "No s'ha pogut carregar la posició.Si us plau, torna a fer una captura.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Format de posició no vàlid.Si us plau, torna a capturar la posició.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "Mostra el flux de treball detallat",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Flux de treball de creació de trencaclosques",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Posició de configuració",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Tauler obert, posició de configuració, instantània",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Solució de registre",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Comenceu a gravar, reproduïu moviments, atureu-vos",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Afegeix detalls",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Omplir títol, categoria, dificultat",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Guarda trencaclosques",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Feu clic al botó desa",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Consell: navegaràs entre aquesta pàgina i el tauler de joc.El vostre progrés està guardat!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "Ajuda de la instantània de posició",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "Com capturar la posició inicial del trencaclosques:\n\n1.Fes clic a \"Obre el tauler (posició de configuració)\" per col·locar les peces manualment, O bé fes clic a \"Obre el tauler (juga els moviments)\" per arribar a la posició fent moviments\n\n2.Organitza el tauler a la posició inicial del trencaclosques que vulguis\n\n3.Premeu el botó enrere per tornar a aquesta pàgina\n\n4.La posició es capturarà i es desarà automàticament\n\nAquesta posició capturada s'utilitzarà com a punt de partida per al teu trencaclosques.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Ajuda de gravació de solucions",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "Com registrar els moviments de solució:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Feu una instantània de la posició inicial primer",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Feu clic al botó \"Comença a gravar\" (això restableix el tauler a la vostra posició de la instantània)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Torna aquí i fes clic a \"Atura la gravació\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Consell: el tauler es restablirà automàticament a la posició de la vostra instantània quan comenceu a gravar.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "Podeu afegir diverses solucions (sense límit).Marqueu el més curt/millor com a òptim.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "Mostra l'ajuda de la instantània de la posició",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Mostra l'ajuda d'enregistrament de la solució",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "No hi ha més pistes disponibles",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Pista",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Solució òptima ({moves} moviments):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "Errors de validació",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Aporta trencaclosques a Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "Què passa a continuació:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Els vostres trencaclosques s'exportaran a un fitxer JSON",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. Podeu compartir aquest fitxer mitjançant el diàleg per compartir",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Els trencaclosques seran revisats pels mantenedors",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Un cop aprovats, es converteixen en trencaclosques integrats!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Exportació per a aportació",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Comença a contribuir",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Inici ràpid:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Crea trencaclosques de qualitat",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Assegureu-vos que el vostre trencaclosques tingui una solució clara, bones metadades i que ensenyi alguna cosa valuosa.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Afegeix el teu nom",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Edita el teu trencaclosques i afegeix el teu nom com a autor per obtenir crèdit.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Exportació per aportació",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Seleccioneu els vostres trencaclosques i toqueu la icona de càrrega per exportar-los en el format correcte.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Envia",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Comparteix el fitxer exportat mitjançant la sol·licitud d'extracció de GitHub, el problema o el correu electrònic.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Documentació completa",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "Consulteu PUZZLE_CONTRIBUTION_GUIDE.md al repositori per obtenir instruccions completes, directrius de qualitat i opcions d'enviament.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Requisits de qualitat:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Solució clara i única",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Metadades completes (títol, descripció, etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Atribució d'autor",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Valoració precisa de la dificultat",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Instructiu o entretingut",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Proper moviment: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "Solució completa: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "Fixeu-vos en aquestes posicions",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "No hi ha solució disponible",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Segueix així!L'objectiu encara no s'ha assolit.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfecte!Solucionat en moviments òptims!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Correcte!({count} moviments, òptim: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "Correcte!Has trobat una solució alternativa!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Just ara",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "fa {minutes}m",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "fa {hours}h",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "fa {days}d",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "Trencaclosques no vàlid",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "Aquest trencaclosques té un format de posició no vàlid i no es pot carregar.Contacta amb l'autor del trencaclosques o prova un trencaclosques diferent.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Seguiu-ho!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Exemples",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "Assistent d'IA",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "hola!Sóc el teu assistent de joc de Mill.Pregunteu-me sobre estratègies, posicions o qualsevol pregunta sobre el joc actual.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "Pregunta pel joc...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "Ho sento, he trobat un error.Si us plau, torna-ho a provar.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "L'assistent d'IA no està configurat.Primer, configureu la configuració de LLM.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "Xateja amb AI Assistant",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "Esborra l'historial de xat",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "Esborrar l'historial de xat?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "Això suprimirà tots els missatges i començarà una conversa nova.Aquesta acció no es pot desfer.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "S'ha esborrat l'historial de xat",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "Registres",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "Descarrega els registres",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "No hi ha registres disponibles",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "Els registres apareixeran aquí mentre s'executa l'aplicació.Prova d'utilitzar l'aplicació i torna per veure els registres.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "No hi ha registres disponibles per descarregar",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "La baixada ha fallat",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "Actualitza",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "Comparteix registres",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "Descarregat a {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Seleccioneu Mode",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "Còpia seleccionada",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "Toqueu per seleccionar el punt d'inici",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "Toqueu per seleccionar el punt final",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "No s'han seleccionat registres",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "Desplaça't cap a dalt (el més antic)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "Desplaça't cap avall (el més recent)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "Els registres més recents a la part inferior",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "Registres: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "Buffer de registre ple ({current}/{max}).S'estan eliminant els registres antics.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "Esborra els registres",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "Esteu segur que voleu esborrar tots els registres?Aquesta acció no es pot desfer.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "Clar",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "Registres esborrats",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "Trencaclosques no vàlid",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "Aquest trencaclosques té un format de posició no vàlid i no es pot carregar.Contacta amb l'autor del trencaclosques o prova un trencaclosques diferent.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "Tornar a la llista",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "Moviment equivocat.Torna-ho a provar.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "Aquest moviment no coincideix amb la solució.Podeu tornar-ho a provar o veure la solució correcta.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "Mostra la solució",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "Jugant a la solució...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "S'ha completat la reproducció de la solució",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "No hi ha solució disponible per a aquest trencaclosques",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "S'ha vist la solució (sense estrelles)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{Intent: {count}} other{Intents: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "No hi ha més pistes disponibles",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "Pista",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "Errors de validació",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "Els trencaclosques següents s'han de solucionar abans de contribuir:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Aporta trencaclosques a Sanmill",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "Esteu a punt d'exportar {count} trencaclosques per a la contribució.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "Què passa a continuació:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. Els vostres trencaclosques s'exportaran a un fitxer JSON",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. Podeu compartir aquest fitxer mitjançant el diàleg per compartir",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. Envieu el problema mitjançant GitHub, correu electrònic o GitHub (vegeu la guia)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. Els trencaclosques seran revisats pels mantenedors",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. Un cop aprovats, es converteixen en trencaclosques integrats!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "En contribuir, acceptes la llicència del contingut del teu trencaclosques sota CC BY-SA 4.0 (Creative Commons Reconeixement-Compartir Igual).",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "Exportació per aportació",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "Comença a contribuir",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "Com aportar trencaclosques",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "Fes una ullada a aquests {count} trencaclosques!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "Trencaclosques ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "Contribució del trencaclosques.\n\nConsulteu PUZZLE_CONTRIBUTION_GUIDE.md per obtenir instruccions per a l'enviament.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "Contribució al trencaclosques: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "Contribucions del trencaclosques.\n\nConsulteu PUZZLE_CONTRIBUTION_GUIDE.md per obtenir instruccions d'enviament.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "Contribucions de trencaclosques ({count} trencaclosques)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "Ajuda a millorar aquest programa aportant els teus trencaclosques!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "Inici ràpid:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "Crea trencaclosques de qualitat",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "Assegureu-vos que el vostre trencaclosques tingui una solució clara, bones metadades i que ensenyi alguna cosa valuosa.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "Afegeix el teu nom",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "Edita el teu trencaclosques i afegeix el teu nom com a autor per obtenir crèdit.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "Exportació per aportació",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "Seleccioneu els vostres trencaclosques i toqueu la icona de càrrega per exportar-los en el format correcte.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "Envia",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "Comparteix el fitxer exportat mitjançant la sol·licitud d'extracció de GitHub, el problema o el correu electrònic.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "Documentació completa",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "Consulteu PUZZLE_CONTRIBUTION_GUIDE.md al repositori per obtenir instruccions completes, directrius de qualitat i opcions d'enviament.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "Requisits de qualitat:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ Solució clara i única",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ Metadades completes (títol, descripció, etc.)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ Atribució d'autor",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ Valoració precisa de la dificultat",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ Instructiu o entretingut",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "gener",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "febrer",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "març",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "Abril",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "maig",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "juny",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "juliol",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "Agost",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "setembre",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "Octubre",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "novembre",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "desembre",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

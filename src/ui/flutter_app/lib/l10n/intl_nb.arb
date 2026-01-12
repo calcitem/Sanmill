@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "Stemmeassistent-innstillinger",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Konfigurer modell, språk og oppførsel",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM-assistert utvikling",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Beskriv oppgaven du vil at LLM skal hjelpe med...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "Last ned",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Status",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Ukjent",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "Aktiver AI Chat",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Tillat chatting med AI-assistent (eksperimentell)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Aktiver animasjon for opptak av stykker",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "Gåter",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Puslespill",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "Ingen puslespill tilgjengelig",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filter",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Kategori",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Tøm filter",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Puslespillstatistikk",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Totale gåter",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Fullført",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Totalt stjerner",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Fullføring",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Nybegynner",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Enkelt",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Middels",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Hardt",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Ekspert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Mester",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Fangst",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Vinn spillet",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Forsvar",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Beste trekk",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Sluttspill",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Åpning",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Blandet",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Vil du avslutte puslespillet?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Fremskritt vil gå tapt.Fortsette?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Beveger seg",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Sjekk Løsning",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Gi opp",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Gåte løst!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Tips brukt",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Prøv igjen",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Tilbake til listen",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Løsning",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Lag nytt puslespill",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Rediger puslespill",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Egendefinert",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "Regler uoverensstemmelser",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "For {puzzleRules}, for øyeblikket {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Fortsett",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "Kun kompatibel",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "Velg Puslespill",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Valgt",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Velg alle",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Eksporter",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Importer",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Eksportert {count} puslespill} other{Eksporterte {count} puslespill}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "Kunne ikke eksportere puslespill",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Vellykket importert {count} puslespill} other{Vellykket importert {count} puslespill}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "Kunne ikke importere puslespill",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "Ingen fil er valgt",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "Ugyldig filbane",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "Feil ved valg av fil: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "Filen finnes ikke",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "Ugyldig filformat: manglende puslespillfelt",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "Inkompatibel filformatversjon: {version} (forventet {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "Puslespill {index} (\"{title}\") har ugyldig FEN-format",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "Puslespill {index} (\"{title}\") bruker forskjellige regler: {puzzleRules} (gjeldende: {currentRules}).Dette puslespillet fungerer kanskje ikke riktig med dine nåværende innstillinger.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "Kunne ikke analysere puslespillet {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Feil:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Advarsler:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Feil ved lesing av fil: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "Puslespillet må ha en tittel",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "Puslespillet må ha en beskrivelse",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "Puslespillet må ha en gyldig posisjon",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "Puslespillet har ugyldig FEN-format.Vennligst sjekk posisjonen.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "Puslespillet må ha en løsning",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "Tittelen er for kort (minimum 5 tegn)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Tittelen er for lang (maksimalt 100 tegn)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Beskrivelsen er for kort (minimum 10 tegn)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Beskrivelsen er for lang (maksimalt 500 tegn)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Vennligst legg til navnet ditt som forfatter før du bidrar",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Vil du slette puslespillet {count}?} other{Vil du slette {count} puslespill?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{Slettet {count} puslespill} other{Slettet {count} puslespill}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "Kan ikke slette innebygde puslespill",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "Hvordan lage et puslespill",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Oppsettkort\n2.Øyeblikksbildeposisjon\n3.Ta opp trekk\n4.Fyll ut detaljer\n5.Lagre",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Oppsettposisjon",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "Stillingsbilde tatt",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "Utgangsposisjon",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "Endelig posisjon",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "Ingen øyeblikksbilde ennå",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Øyeblikksbildeposisjon først",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Rekordløsning",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Start opptak",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Stopp opptak",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Tar opp...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Opptaket startet",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Innspilte {count} trekk} other{Innspilte {count} trekk}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Løsning: {count} flytt} other{Løsning: {count} beveger seg}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "Ingen løsning ennå",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Klar løsning",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "Løsning {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "Legg til en annen løsning",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "Fjern denne løsningen",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ Optimal",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "Alternativ",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Merk som Optimal",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 løsning} other{{count} løsninger}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Vil du fjerne denne løsningen?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "Minst én løsning kreves",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "Puslespilldetaljer",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Tittel",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Beskrivelse",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Kategori",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Vanskelighetsgrad",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Hint",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Tagger",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Komma skilt",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Forfatter",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "Fullføringsmelding",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "Forklar taktikken eller gratuler løseren",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "Tittel er påkrevd",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Beskrivelse er nødvendig",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Stilling er påkrevd",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Løsning er nødvendig",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puslespill opprettet",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puslespillet er oppdatert",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Kunne ikke lagre puslespillet",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "valgfritt",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Din fremgang",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Avslutt",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Alle",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Kommer snart",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Daglig puslespill",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Løs et nytt puslespill hver dag",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Dag #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Streke",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "dagsrekke",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "dager",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Best: {longestStreak} dager",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Start daglig puslespill",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Fullfør daglige gåter for å bygge streken din!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Nåværende strek",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Lengste strek",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Totalt fullført",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Løs gåter hver dag for å opprettholde streaken din.Å gå glipp av en dag vil tilbakestille den!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "Alle gåter",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Bla gjennom alle tilgjengelige oppgaver",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puslespill Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Løs gåter mot klokken",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Løs så mange gåter du kan på 5 minutter!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Regler",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minutter på klokken",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 liv - 1 tapt per feil",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maksimer poengsummen din!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Start Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Slutte å haste?Fremskritt vil gå tapt.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rush-resultater",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Tiden er ute!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Ute av liv",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush fullført!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Løst",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Mislyktes",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Nøyaktighet",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Spill igjen",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puslespillkamp",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Konkurrer med andre spillere",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Kommer snart!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Denne funksjonen er for tiden under utvikling.Følg med!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 puslespill",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Live motstandermatching",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Rangeringssystem",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Leaderboards",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Egendefinerte puslespill",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Lag og administrer gåtene dine",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Multi-Select-modus",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Lag puslespill",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Løs fortløpende uten feil",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "Hvor mange kan du løse på rad?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Regler",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Løs så mange gåter som mulig",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ En feil og det er over",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Slå din personlige rekord",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Start Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Gjeldende",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Best",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Strekresultater",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Rekke avsluttet",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "Ny rekord!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Sluttresultat",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Prøv igjen",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Er du sikker på at du vil slutte?Din rekke vil gå tapt.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "Historie",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "Se puslespillforsøkene dine",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "Ingen puslespillhistorie",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Begynn å løse gåter for å se historien din her",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Kun suksess",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Kun mislyktes",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Ukjent puslespill",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "hint",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "Se detaljerte analyser",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Din puslespillvurdering",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Foreløpig ({gamesLeft} spill igjen)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "Spill spilt",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Avvik",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Ytelsesoversikt",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Suksessrate",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Gj.sn.Tid",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Løst",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Mislyktes",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Suksess ved vanskelighetsgrad",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Suksess etter kategori",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Nylig aktivitet",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Ingen nylig aktivitet",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Rediger",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Lagre",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "Ingen tilpassede puslespill",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Lag dine egne oppgaver for å øve på bestemte posisjoner",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "Denne funksjonen er planlagt for en fremtidig utgivelse",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Ugyldig stilling",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Åpent bord (oppsettposisjon)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Åpent brett (spill trekk)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Bruk knappen nedenfor for å åpne brettet, og trykk deretter på Tilbake for å gå tilbake.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Ugyldig posisjonsformat.Vennligst sjekk spillebrettet.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Kunne ikke laste posisjon.Vennligst ta et nytt bilde.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Ugyldig posisjonsformat.Vennligst ta et nytt bilde av posisjonen.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "Vis detaljert arbeidsflyt",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Arbeidsflyt for å lage puslespill",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Oppsettposisjon",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Åpent bord, oppsettposisjon, øyeblikksbilde",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Rekordløsning",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Start opptak, spill trekk, stopp",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Legg til detaljer",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Fyll tittel, kategori, vanskelighetsgrad",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Lagre puslespill",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Klikk lagre-knappen",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Tips: Du skal navigere mellom denne siden og spillebrettet.Fremgangen din er lagret!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "Posisjonsbildehjelp",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "Hvordan ta et øyeblikksbilde av puslespillets startposisjon:\n\n1.Klikk \"Open Board (Setup Position)\" for å plassere brikker manuelt, ELLER klikk \"Open Board (Play Moves)\" for å nå posisjonen ved å gjøre trekk\n\n2.Plasser brettet til ønsket startposisjon for puslespill\n\n3.Trykk på tilbakeknappen for å gå tilbake til denne siden\n\n4.Posisjonen vil automatisk bli tatt og lagret\n\nDenne øyeblikksbildeposisjonen vil bli brukt som utgangspunkt for puslespillet ditt.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Løsning Hjelp for opptak",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "Slik registrerer du løsningsbevegelsene:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Snapshot startposisjonen først",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Klikk på \"Start opptak\"-knappen (dette tilbakestiller brettet til øyeblikksbildeposisjonen din)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Gå tilbake hit og klikk \"Stopp opptak\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Tips: Brettet vil automatisk tilbakestilles til posisjonen du har tatt når du starter opptaket.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "Du kan legge til flere løsninger (ingen grense).Merk den korteste/beste som optimal.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "Vis hjelp for øyeblikksbilde for posisjon",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Vis løsningsopptakshjelp",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "Ingen flere hint tilgjengelig",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Hint",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Optimal løsning ({moves} trekk):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "Valideringsfeil",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Bidra med puslespill til Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "Hva skjer videre:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Puslespillene dine vil bli eksportert til en JSON-fil",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. Du kan dele denne filen via delingsdialogen",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Puslespill vil bli vurdert av vedlikeholdere",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Når de er godkjent, blir de innebygde gåter!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Eksporter for bidrag",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Begynn å bidra",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Rask start:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Lag kvalitetsoppgaver",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Sørg for at puslespillet ditt har en klar løsning, gode metadata og lærer noe verdifullt.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Legg til ditt navn",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Rediger puslespillet ditt og legg til navnet ditt som forfatter for å få kreditt.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Eksporter for bidrag",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Velg puslespillene dine og trykk på opplastingsikonet for å eksportere i riktig format.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Send inn",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Del den eksporterte filen via GitHub Pull Request, Issue eller e-post.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Full dokumentasjon",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "Se PUZZLE_CONTRIBUTION_GUIDE.md i depotet for fullstendige instruksjoner, retningslinjer for kvalitet og innsendingsalternativer.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Kvalitetskrav:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Klar, unik løsning",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Komplett metadata (tittel, beskrivelse, etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Forfatterattribusjon",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Nøyaktig vanskelighetsgrad",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Lærerikt eller underholdende",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Neste trekk: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "Komplett løsning: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "Vær oppmerksom på disse stillingene",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "Ingen løsning tilgjengelig",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Fortsett!Målet er ikke nådd ennå.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfekt!Løst i optimale trekk!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Korrekt!({count} trekk, optimal: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "Riktig!Du fant en alternativ løsning!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Akkurat nå",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}m siden",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}t siden",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}d siden",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "Ugyldig puslespill",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "Dette puslespillet har et ugyldig posisjonsformat og kan ikke lastes.Ta kontakt med puslespillforfatteren eller prøv et annet puslespill.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Fortsett å prøve!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Eksempler",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI-assistent",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "Hei!Jeg er din Mill-spillassistent.Spør meg om strategier, posisjoner eller spørsmål om det gjeldende spillet.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "Spør om spillet...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "Beklager, jeg oppdaget en feil.Vennligst prøv igjen.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI-assistent er ikke konfigurert.Konfigurer LLM-innstillinger først.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "Chat med AI Assistant",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "Tøm chatteloggen",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "Vil du slette chatloggen?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "Dette vil slette alle meldinger og starte en ny samtale.Denne handlingen kan ikke angres.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "Chat-loggen er tømt",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "Logger",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "Last ned logger",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "Ingen logger tilgjengelig",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "Logger vises her mens appen kjører.Prøv å bruke appen og kom tilbake for å se loggene.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "Ingen logger tilgjengelig for nedlasting",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "Nedlasting mislyktes",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "Oppdater",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "Del logger",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "Lastet ned til {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Velg modus",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "Kopier valgt",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "Trykk for å velge startpunkt",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "Trykk for å velge sluttpunkt",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "Ingen logger er valgt",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "Rull til toppen (eldst)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "Rull til bunnen (nyeste)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "Nyeste logger nederst",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "Logger: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "Loggbuffer full ({current}/{max}).Gamle logger blir fjernet.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "Tøm logger",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "Er du sikker på at du vil slette alle logger?Denne handlingen kan ikke angres.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "Klart",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "Logger tømt",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "Ugyldig puslespill",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "Dette puslespillet har et ugyldig posisjonsformat og kan ikke lastes.Ta kontakt med puslespillforfatteren eller prøv et annet puslespill.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "Tilbake til listen",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "Feil trekk.Prøv igjen.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "Det trekket stemmer ikke med løsningen.Du kan prøve på nytt eller se den riktige løsningen.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "Vis løsning",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "Spiller løsningen...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "Løsningsavspilling fullført",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "Ingen løsning tilgjengelig for dette puslespillet",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "Løsning sett (ingen stjerner)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{Forsøk: {count}} other{Forsøk: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "Ingen flere hint tilgjengelig",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "Hint",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "Valideringsfeil",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "Følgende gåter må fikses før du bidrar:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Bidra med puslespill til Sanmill",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "Du er i ferd med å eksportere {count} puslespill(er) for bidrag.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "Hva skjer videre:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. Puslespillene dine vil bli eksportert til en JSON-fil",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. Du kan dele denne filen via delingsdialogen",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. Send inn via GitHub, e-post eller GitHub-problem (se veiledningen)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. Puslespill vil bli vurdert av vedlikeholdere",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. Når de er godkjent, blir de innebygde gåter!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "Ved å bidra godtar du å lisensiere puslespillinnholdet ditt under CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike).",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "Eksporter for bidrag",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "Begynn å bidra",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "Hvordan bidra med gåter",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "Sjekk ut disse {count} gåtene!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "Puslespill ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "Puslespillbidrag.\n\nSe PUZZLE_CONTRIBUTION_GUIDE.md for innleveringsinstruksjoner.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "Puslespillbidrag: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "Bidrag til puslespill.\n\nSe PUZZLE_CONTRIBUTION_GUIDE.md for innleveringsinstruksjoner.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "Puslespillbidrag ({count} puslespill)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "Bidra til å gjøre dette programmet bedre ved å bidra med gåtene dine!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "Rask start:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "Lag kvalitetsoppgaver",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "Sørg for at puslespillet ditt har en klar løsning, gode metadata og lærer noe verdifullt.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "Legg til ditt navn",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "Rediger puslespillet ditt og legg til navnet ditt som forfatter for å få kreditt.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "Eksporter for bidrag",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "Velg puslespillene dine og trykk på opplastingsikonet for å eksportere i riktig format.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "Send inn",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "Del den eksporterte filen via GitHub Pull Request, Issue eller e-post.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "Full dokumentasjon",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "Se PUZZLE_CONTRIBUTION_GUIDE.md i depotet for fullstendige instruksjoner, retningslinjer for kvalitet og innsendingsalternativer.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "Kvalitetskrav:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ Klar, unik løsning",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ Komplett metadata (tittel, beskrivelse, etc.)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ Forfatterattribusjon",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ Nøyaktig vanskelighetsgrad",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ Lærerikt eller underholdende",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "januar",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "februar",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "mars",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "april",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "mai",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "juni",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "juli",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "august",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "september",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "oktober",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "november",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "desember",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

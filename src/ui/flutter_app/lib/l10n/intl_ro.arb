@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "Setări asistent vocal",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Configurați modelul, limba și comportamentul",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "Dezvoltare asistată de LLM",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Descrieți sarcina cu care doriți să vă ajute LLM...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "Descărcați",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Stare",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Necunoscut",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "Activează AI Chat",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Permite conversația cu asistentul AI (experimental)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Activați animația de preluare a piesei",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "Puzzle-uri",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Puzzle",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "Nu există puzzle-uri disponibile",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Filtru",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "categorie",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Șterge filtrul",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Statistici puzzle",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Total puzzle-uri",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Terminat",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total de stele",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Finalizare",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "începător",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Ușor",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Mediu",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Greu",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Expert",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Maestre",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Captură",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Câștigă jocul",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Apărare",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Cea mai bună mișcare",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Finalul jocului",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Deschidere",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Mixt",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Ieși din Puzzle?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Progresul va fi pierdut.Continua?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Mișcări",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Optimal",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Verificați soluția",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Renunță",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Puzzle rezolvat!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Sfaturi folosite",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Încercați din nou",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Înapoi la listă",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Soluție",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Creați un nou puzzle",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Editați puzzle-ul",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Personalizat",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "Nepotrivirea regulilor",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "Pentru {puzzleRules}, în prezent {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Continuă",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "Doar compatibil",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "Selectați Puzzle-uri",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Selectat",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Selectați Toate",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Exportați",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Import",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{S-a exportat cu succes {count} puzzle} other{{count} puzzle-uri exportate cu succes}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "Nu s-au putut exporta puzzle-urile",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{S-a importat cu succes {count} puzzle} other{{count} puzzle-uri importate cu succes}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "Nu s-au putut importa puzzle-urile",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "Niciun fișier selectat",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "Cale de fișier nevalidă",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "Eroare la alegerea fișierului: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "Fișierul nu există",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "Format de fișier nevalid: câmpul puzzle-uri lipsește",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "Versiune de format de fișier incompatibilă: {version} (așteptată {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "Puzzle {index} (\"{title}\") are format FEN nevalid",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "Puzzle {index} (\"{title}\") folosește reguli diferite: {puzzleRules} (actual: {currentRules}).Este posibil ca acest puzzle să nu funcționeze corect cu setările dvs. actuale.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "Nu s-a putut analiza puzzle-ul {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Erori:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Avertismente:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Eroare la citirea fișierului: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "Puzzle-ul trebuie să aibă un titlu",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "Puzzle-ul trebuie să aibă o descriere",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "Puzzle-ul trebuie să aibă o poziție validă",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "Puzzle-ul are format FEN nevalid.Vă rugăm să verificați poziția.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "Puzzle-ul trebuie să aibă o soluție",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "Titlul prea scurt (minim 5 caractere)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Titlul prea lung (maximum 100 de caractere)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Descrierea prea scurtă (minim 10 caractere)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Descrierea prea lungă (maximum 500 de caractere)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Vă rugăm să adăugați numele dvs. ca autor înainte de a contribui",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Ștergeți puzzle-ul {count}?} other{Ștergeți {count} puzzle-uri?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{Puzzle-ul {count} a fost șters} other{{count} puzzle-uri șterse}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "Nu se pot șterge puzzle-urile încorporate",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "Cum se creează un puzzle",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Placă de configurare\n2.Poziția instantaneului\n3.Înregistrați mișcările\n4.Completați detalii\n5.Salvați",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Poziția de configurare",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "Poziție instantanee",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "Poziția inițială",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "Poziția finală",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "Niciun instantaneu încă",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Poziția instantaneului mai întâi",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Soluție de înregistrare",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Începeți înregistrarea",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Opriți înregistrarea",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Înregistrare...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Înregistrarea a început",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Mișcarea {count} înregistrată} other{{count} mișcări înregistrate}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Soluție: {count} mutare} other{Soluție: {count} se mută}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "Nicio soluție încă",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Soluție clară",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "Soluție {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "Adăugați o altă soluție",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "Eliminați această soluție",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ Optimal",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "alternativă",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Marcați ca optim",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 solutie} other{{count} soluții}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Eliminați această soluție?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "Este necesară cel puțin o soluție",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "Detalii puzzle",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Titlu",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Descriere",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "categorie",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Dificultate",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Sugestie",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Etichete",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Despărțite prin virgulă",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "autor",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "Mesaj de finalizare",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "Explicați tactica sau felicitați rezolvatorul",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "Titlul este obligatoriu",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Este necesară descrierea",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Poziția este necesară",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Este necesară soluția",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Puzzle creat",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Puzzle actualizat",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Nu s-a salvat puzzle-ul",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "opțional",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Progresul tău",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Renunță",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Toate",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "În curând",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Puzzle zilnic",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Rezolvă un nou puzzle în fiecare zi",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Ziua #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Streak",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "sira zilei",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "zile",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Cel mai bun: {longestStreak} zile",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Începe puzzle-ul zilnic",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Completează puzzle-uri zilnice pentru a-ți construi seria!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Serie curentă",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Cea mai lungă serie",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Total finalizat",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Rezolvă puzzle-uri în fiecare zi pentru a-ți menține succesul.Pierderea unei zile o va reseta!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "Toate puzzle-urile",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Răsfoiți toate puzzle-urile disponibile",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Rezolva puzzle-uri contra cronometru",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Rezolvă cât mai multe puzzle-uri în 5 minute!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Reguli",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 minute la ceas",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 vieți - 1 pierdută pentru fiecare greșeală",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Maximizează-ți scorul!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Începeți Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Renunță la graba?Progresul va fi pierdut.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Rezultate Rush",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Timpul a trecut!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Din vieți",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Rush Complete!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Rezolvat",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "A eșuat",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Precizie",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Joacă din nou",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Bătălia de puzzle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Concurează cu alți jucători",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "În curând!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Această caracteristică este în prezent în dezvoltare.Rămâneţi aproape!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ Curse puzzle 1v1",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Potriviri live ale adversarului",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Sistem de evaluare",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Clasamente",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Puzzle-uri personalizate",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Creați și gestionați-vă puzzle-urile",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Modul de selecție multiplă",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Creați puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Streak puzzle",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Rezolvați consecutiv fără greșeli",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "Câte poți rezolva la rând?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Reguli",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Rezolvă cât mai multe puzzle-uri",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ O greșeală și s-a terminat",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Bate-ți recordul personal",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Start Streak",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Curent",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Cel mai bun",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Rezultate streak",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Seria s-a încheiat",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "Record nou!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Scor final",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Încercați din nou",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Ești sigur că vrei să renunți?Drumul tău se va pierde.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "istorie",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "Vizualizați încercările dvs. de puzzle",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "Fără istoric de puzzle",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Începeți să rezolvați puzzle-uri pentru a vă vedea istoricul aici",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Doar Succes",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Numai eșuat",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Puzzle necunoscut",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "indicii",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "Vedeți analize detaliate",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Evaluarea dvs. de puzzle",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Provizoriu ({gamesLeft} jocuri rămase)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "Jocuri jucate",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Abatere",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Prezentare generală a performanței",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Rata de succes",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Mediutimpul",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Rezolvat",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "A eșuat",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Succes prin dificultate",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Succes pe categorii",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Activitate recentă",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Nicio activitate recentă",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Editați",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Salvați",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "Fără puzzle-uri personalizate",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Creează-ți propriile puzzle-uri pentru a exersa anumite poziții",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "Această funcție este planificată pentru o lansare viitoare",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Poziție nevalidă",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Deschidere panou (poziție de configurare)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Deschideți tabla (jucați mișcări)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Folosiți butonul de mai jos pentru a deschide panoul, apoi apăsați Înapoi pentru a reveni.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Format de poziție nevalid.Vă rugăm să verificați tabla de joc.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Poziția nu a fost încărcată.Vă rugăm să reînregistrați.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Format de poziție nevalid.Vă rugăm să reînregistrați poziția.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "Afișați fluxul de lucru detaliat",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Flux de lucru pentru crearea puzzle-urilor",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Poziția de configurare",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Deschideți placa, poziție de configurare, instantaneu",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Soluție de înregistrare",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Începeți înregistrarea, redați mișcările, opriți",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Adăugați detalii",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Completați titlul, categoria, dificultatea",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Salvează puzzle",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Faceți clic pe butonul de salvare",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Sfat: veți naviga între această pagină și tabla de joc.Progresul dvs. este salvat!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "Ajutor pentru instantaneu de poziție",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "Cum să instantaneu poziția de pornire a puzzle-ului:\n\n1.Faceți clic pe „Open Board (Setup Position)” pentru a plasa manual piesele, SAU faceți clic pe „Open Board (Play Moves)” pentru a ajunge la poziția făcând mișcări\n\n2.Aranjați tabla în poziția de pornire a puzzle-ului dorită\n\n3.Apăsați butonul Înapoi pentru a reveni la această pagină\n\n4.Poziția va fi instantanee și salvată automat\n\nAceastă poziție instantanee va fi folosită ca punct de plecare pentru puzzle-ul tău.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Ajutor pentru înregistrarea soluției",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "Cum să înregistrați mișcările soluției:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Înregistrați mai întâi poziția de pornire",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Faceți clic pe butonul „Începe înregistrarea” (aceasta resetează placa la poziția instantanee)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Reveniți aici și faceți clic pe „Opriți înregistrarea”",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Sfat: placa se va reseta automat la poziția instantanee când începeți înregistrarea.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "Puteți adăuga mai multe soluții (fără limită).Marcați cel mai scurt/cel mai bun drept optim.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "Afișați ajutorul pentru instantaneul de poziție",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Afișați ajutorul pentru înregistrarea soluției",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "Nu mai sunt disponibile indicii",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Sugestie",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Soluție optimă ({moves} mișcări):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "Erori de validare",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Contribuiți cu puzzle-uri la Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "Ce se întâmplă în continuare:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Puzzle-urile dvs. vor fi exportate într-un fișier JSON",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. Puteți partaja acest fișier prin dialogul de partajare",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Puzzle-urile vor fi revizuite de întreținători",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Odată aprobate, acestea devin puzzle-uri încorporate!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Export pentru contribuție",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Începeți să contribuiți",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Pornire rapidă:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Creați puzzle-uri de calitate",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Asigurați-vă că puzzle-ul are o soluție clară, metadate bune și învață ceva valoros.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Adăugați numele dvs",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Editează-ți puzzle-ul și adaugă-ți numele ca autor pentru a obține credit.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Export pentru contribuție",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Selectați puzzle-urile și atingeți pictograma de încărcare pentru a le exporta în formatul corect.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Trimiteți",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Partajați fișierul exportat prin Solicitare, Emisiune sau e-mail GitHub.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Documentație completă",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "Consultați PUZZLE_CONTRIBUTION_GUIDE.md în depozit pentru instrucțiuni complete, instrucțiuni de calitate și opțiuni de trimitere.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Cerințe de calitate:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Soluție clară, unică",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Metadate complete (titlu, descriere etc.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Atribuirea autorului",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Evaluare precisă a dificultății",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Instructiv sau distractiv",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Următoarea mișcare: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "Soluție completă: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "Atenție la aceste poziții",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "Nicio soluție disponibilă",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Continuă!Obiectivul nu a fost încă atins.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Perfect!Rezolvat în mișcări optime!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Corecta!({count} mișcări, optim: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "Corect!Ai găsit o soluție alternativă!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Chiar acum",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}min în urmă",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "acum {hours}h",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "acum {days}d",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "Puzzle nevalid",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "Acest puzzle are un format de poziție nevalid și nu poate fi încărcat.Contactați autorul puzzle-ului sau încercați un alt puzzle.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Continuați să încercați!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Exemple",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "Asistent AI",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "Bună ziua!Sunt asistentul tău de joc Mill.Întrebați-mă despre strategii, poziții sau orice întrebări despre jocul curent.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "Întrebați despre joc...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "Îmi pare rău, am întâmpinat o eroare.Vă rugăm să încercați din nou.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "Asistentul AI nu este configurat.Vă rugăm să configurați mai întâi setările LLM.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "Conversați cu Asistentul AI",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "Ștergeți istoricul chatului",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "Ștergeți istoricul chat-urilor?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "Aceasta va șterge toate mesajele și va începe o nouă conversație.Această acțiune nu poate fi anulată.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "Istoricul chatului a fost șters",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "Bușteni",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "Descărcați jurnalele",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "Nu există jurnalele disponibile",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "Jurnalele vor apărea aici pe măsură ce aplicația rulează.Încercați să utilizați aplicația și reveniți pentru a vedea jurnalele.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "Nu există jurnalele disponibile pentru descărcare",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "Descărcarea a eșuat",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "Reîmprospătați",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "Partajați jurnalele",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "Descărcat pe {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Selectați Modul",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "Copierea selectată",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "Atingeți pentru a selecta punctul de pornire",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "Atingeți pentru a selecta punctul final",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "Nu au fost selectate jurnalele",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "Derulați în sus (cel mai vechi)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "Derulați în jos (cel mai nou)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "Cele mai noi bușteni în partea de jos",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "Jurnale: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "Buffer de jurnal plin ({current}/{max}).Buștenii vechi sunt îndepărtați.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "Ștergeți jurnalele",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "Sigur doriți să ștergeți toate jurnalele?Această acțiune nu poate fi anulată.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "Clar",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "Jurnalele șterse",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "Puzzle nevalid",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "Acest puzzle are un format de poziție nevalid și nu poate fi încărcat.Contactați autorul puzzle-ului sau încercați un alt puzzle.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "Înapoi la listă",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "Mișcare greșită.Încearcă din nou.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "Această mișcare nu se potrivește cu soluția.Puteți încerca din nou sau puteți vizualiza soluția corectă.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "Afișează soluția",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "Jucând soluția...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "Redarea soluției s-a încheiat",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "Nu există nicio soluție disponibilă pentru acest puzzle",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "Soluție vizualizată (fără stele)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{Încercare: {count}} other{Încercări: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "Nu mai sunt disponibile indicii",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "Sugestie",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "Erori de validare",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "Următoarele puzzle-uri trebuie rezolvate înainte de a contribui:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Contribuiți cu puzzle-uri la Sanmill",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "Sunteți pe cale să exportați {count} puzzle(e) pentru contribuție.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "Ce se întâmplă în continuare:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. Puzzle-urile dvs. vor fi exportate într-un fișier JSON",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. Puteți partaja acest fișier prin dialogul de partajare",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. Trimiteți prin GitHub, e-mail sau problema GitHub (consultați ghidul)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. Puzzle-urile vor fi revizuite de întreținători",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. Odată aprobate, acestea devin puzzle-uri încorporate!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "Contribuind, sunteți de acord să acordați licență pentru conținutul puzzle-ului sub CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike).",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "Export pentru contribuție",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "Începeți să contribuiți",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "Cum să contribui la puzzle-uri",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "Consultați aceste {count} puzzle-uri!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "Puzzle-uri ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "Contribuție puzzle.\n\nConsultați PUZZLE_CONTRIBUTION_GUIDE.md pentru instrucțiuni de trimitere.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "Contribuție la puzzle: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "Contribuții puzzle.\n\nConsultați PUZZLE_CONTRIBUTION_GUIDE.md pentru instrucțiuni de trimitere.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "Contribuții la puzzle ({count} puzzle-uri)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "Ajută la îmbunătățirea acestui program contribuind cu puzzle-urile tale!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "Pornire rapidă:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "Creați puzzle-uri de calitate",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "Asigurați-vă că puzzle-ul are o soluție clară, metadate bune și învață ceva valoros.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "Adăugați numele dvs",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "Editează-ți puzzle-ul și adaugă-ți numele ca autor pentru a obține credit.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "Export pentru contribuție",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "Selectați puzzle-urile și atingeți pictograma de încărcare pentru a le exporta în formatul corect.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "Trimiteți",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "Partajați fișierul exportat prin Solicitare, Emisiune sau e-mail GitHub.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "Documentație completă",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "Consultați PUZZLE_CONTRIBUTION_GUIDE.md în depozit pentru instrucțiuni complete, instrucțiuni de calitate și opțiuni de trimitere.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "Cerințe de calitate:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ Soluție clară, unică",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ Metadate complete (titlu, descriere etc.)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ Atribuirea autorului",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ Evaluare precisă a dificultății",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ Instructiv sau distractiv",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "ianuarie",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "februarie",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "martie",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "aprilie",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "mai",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "iunie",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "iulie",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "august",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "septembrie",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "octombrie",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "noiembrie",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "decembrie",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

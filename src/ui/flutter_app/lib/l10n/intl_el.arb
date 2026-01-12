@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "Ρυθμίσεις φωνητικού βοηθού",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Διαμόρφωση μοντέλου, γλώσσας και συμπεριφοράς",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "Ανάπτυξη με τη βοήθεια LLM",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Περιγράψτε την εργασία στην οποία θέλετε να βοηθήσει το LLM...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "Λήψη",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Κατάσταση",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Άγνωστο",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "Ενεργοποίηση AI Chat",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Να επιτρέπεται η συνομιλία με τον βοηθό τεχνητής νοημοσύνης (πειραματικό)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Ενεργοποίηση κινούμενης εικόνας παραλαβής κομματιού",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "Παζλ",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Παζλ",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "Δεν υπάρχουν διαθέσιμα παζλ",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Φίλτρο",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Κατηγορία",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Διαγραφή φίλτρου",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Στατιστικά παζλ",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Σύνολο παζλ",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Ολοκληρώθηκε",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total Stars",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Ολοκλήρωση",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Αρχάριος",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Εύκολο",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Μεσαίο",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Σκληρό",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Εμπειρογνώμονας",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Δάσκαλος",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Λήψη",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Κερδίστε το παιχνίδι",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Άμυνας",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Καλύτερη κίνηση",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Τέλος παιχνιδιού",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Άνοιγμα",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Μικτή",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Έξοδος από το παζλ;",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Η πρόοδος θα χαθεί.Συνεχίζω;",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Κινήσεις",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Βέλτιστη",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Ελέγξτε τη λύση",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Παραιτηθείτε",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Λύθηκε ο γρίφος!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Συμβουλές που χρησιμοποιούνται",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Δοκιμάστε ξανά",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Επιστροφή στη λίστα",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Λύση",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Δημιουργία νέου παζλ",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Επεξεργασία παζλ",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Προσαρμοσμένο",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "Αναντιστοιχία κανόνων",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "Για {puzzleRules}, επί του παρόντος {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Συνέχεια",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "Συμβατό μόνο",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "Επιλέξτε παζλ",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Επιλέχτηκε",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Επιλέξτε Όλα",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Εξαγωγή",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Εισαγωγή",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Έγινε επιτυχής εξαγωγή του παζλ {count}} other{Έγινε επιτυχής εξαγωγή {count} παζλ}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "Αποτυχία εξαγωγής παζλ",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Έγινε επιτυχής εισαγωγή του παζλ {count}} other{Έγινε επιτυχής εισαγωγή {count} παζλ}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "Αποτυχία εισαγωγής παζλ",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "Δεν έχει επιλεγεί αρχείο",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "Μη έγκυρη διαδρομή αρχείου",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "Σφάλμα κατά την επιλογή αρχείου: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "Το αρχείο δεν υπάρχει",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "Μη έγκυρη μορφή αρχείου: λείπει το πεδίο παζλ",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "Μη συμβατή έκδοση μορφής αρχείου: {version} (αναμενόμενο {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "Το παζλ {index} (\"{title}\") έχει μη έγκυρη μορφή FEN",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "Το παζλ {index} (\"{title}\") χρησιμοποιεί διαφορετικούς κανόνες: {puzzleRules} (τρέχον: {currentRules}).Αυτό το παζλ ενδέχεται να μην λειτουργεί σωστά με τις τρέχουσες ρυθμίσεις σας.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "Απέτυχε η ανάλυση του παζλ {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Σφάλματα:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Προειδοποιήσεις:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Σφάλμα κατά την ανάγνωση του αρχείου: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "Το παζλ πρέπει να έχει τίτλο",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "Το παζλ πρέπει να έχει περιγραφή",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "Το παζλ πρέπει να έχει έγκυρη θέση",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "Το παζλ έχει μη έγκυρη μορφή FEN.Ελέγξτε τη θέση.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "Το παζλ πρέπει να έχει λύση",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "Ο τίτλος είναι πολύ σύντομος (τουλάχιστον 5 χαρακτήρες)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Υπερβολικά μεγάλος τίτλος (μέγιστο 100 χαρακτήρες)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Η περιγραφή είναι πολύ σύντομη (τουλάχιστον 10 χαρακτήρες)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Πολύ μεγάλη περιγραφή (μέγιστο 500 χαρακτήρες)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Προσθέστε το όνομά σας ως συγγραφέα πριν συνεισφέρετε",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Διαγραφή παζλ {count};} other{Διαγραφή {count} παζλ;}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{Διαγράφηκε {count} παζλ} other{Διαγράφηκαν {count} παζλ}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "Δεν είναι δυνατή η διαγραφή ενσωματωμένων παζλ",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "Πώς να δημιουργήσετε ένα παζλ",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Ρύθμιση πλακέτας\n2.Θέση στιγμιότυπου\n3.Καταγράψτε κινήσεις\n4.Συμπληρώστε τα στοιχεία\n5.Αποθήκευση",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Θέση εγκατάστασης",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "Στιγμιότυπο θέσης",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "Αρχική Θέση",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "Τελική Θέση",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "Δεν υπάρχει στιγμιότυπο ακόμα",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Πρώτη θέση στιγμιότυπου",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Λύση εγγραφής",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Ξεκινήστε την εγγραφή",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Διακοπή εγγραφής",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Ηχογράφηση...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Η ηχογράφηση ξεκίνησε",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Καταγράφηκε {count} κίνηση} other{Καταγράφηκαν {count} κινήσεις}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Λύση: {count} κίνηση} other{Λύση: {count} κινείται}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "Καμία λύση ακόμα",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Καθαρή Λύση",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "Λύση {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "Προσθέστε μια άλλη λύση",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "Καταργήστε αυτήν τη λύση",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ Βέλτιστο",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "Εναλλακτική",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Επισήμανση ως βέλτιστη",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 λύση} other{{count} λύσεις}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Κατάργηση αυτής της λύσης;",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "Απαιτείται τουλάχιστον μία λύση",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "Λεπτομέρειες παζλ",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Τίτλος",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Περιγραφή",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Κατηγορία",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Δυσκολία",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Υπόδειξη",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Ετικέτες",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Διαχωρίστηκε με κόμμα",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Συγγραφέας",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "Μήνυμα ολοκλήρωσης",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "Εξηγήστε την τακτική ή συγχαρείτε τον λύτη",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "Απαιτείται τίτλος",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Απαιτείται περιγραφή",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Απαιτείται θέση",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Απαιτείται λύση",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Δημιουργήθηκε παζλ",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Το παζλ ενημερώθηκε",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Αποτυχία αποθήκευσης παζλ",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "προαιρετική",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Η πρόοδός σας",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Κλείσε",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Όλα",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Προσεχώς",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Καθημερινό παζλ",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Λύστε ένα νέο παζλ κάθε μέρα",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Ημέρα #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Σερί",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "σερί ημέρας",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "ημέρες",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Καλύτερο: {longestStreak} ημέρες",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Ξεκινήστε το καθημερινό παζλ",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Ολοκληρώστε καθημερινά παζλ για να δημιουργήσετε το σερί σας!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Τρέχον σερί",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Το μεγαλύτερο σερί",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Συνολικά Ολοκληρώθηκε",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Λύστε γρίφους κάθε μέρα για να διατηρήσετε το σερί σας.Αν χάσετε μια μέρα, θα το επαναφέρετε!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "Όλα τα παζλ",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Περιηγηθείτε σε όλα τα διαθέσιμα παζλ",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Λύστε γρίφους ενάντια στο ρολόι",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "Λύσε όσους περισσότερους γρίφους μπορείς σε 5 λεπτά!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Κανόνες",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 λεπτά στο ρολόι",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 ζωές - 1 χαμένος ανά λάθος",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Μεγιστοποιήστε τη βαθμολογία σας!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Ξεκινήστε το Rush",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Να σταματήσω τη βιασύνη;Η πρόοδος θα χαθεί.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Αποτελέσματα βιασύνης",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Ο χρόνος τελειώνει!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Εκτός Ζωών",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Βιασύνη Ολοκληρώθηκε!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Λύθηκε",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Απέτυχε",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Ακρίβεια",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Παίξτε ξανά",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Μάχη παζλ",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Ανταγωνιστείτε με άλλους παίκτες",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Προσεχώς!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Αυτή η δυνατότητα βρίσκεται σε εξέλιξη.Μείνετε συντονισμένοι!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ Αγώνες παζλ 1v1",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Ζωντανή αντιστοιχία αντιπάλου",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Σύστημα αξιολόγησης",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Πίνακες κατάταξης",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Προσαρμοσμένα παζλ",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Δημιουργήστε και διαχειριστείτε τα παζλ σας",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Λειτουργία πολλαπλής επιλογής",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Δημιουργία παζλ",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle Streak",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Λύστε συνεχόμενα χωρίς λάθη",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "Πόσα μπορείτε να λύσετε στη σειρά;",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Κανόνες",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Λύστε όσο το δυνατόν περισσότερους γρίφους",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ Ένα λάθος και τελείωσε",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 Ξεπέρασε το προσωπικό σου ρεκόρ",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Ξεκινήστε το σερί",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Τρέχον",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Καλύτερο",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Αποτελέσματα σερί",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Το σερί έληξε",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "Νέο ρεκόρ!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Τελική βαθμολογία",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Δοκιμάστε ξανά",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Είστε σίγουροι ότι θέλετε να σταματήσετε;Το σερί σου θα χαθεί.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "Ιστορία",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "Δείτε τις προσπάθειες σας για παζλ",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "Χωρίς ιστορία παζλ",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Ξεκινήστε να λύνετε παζλ για να δείτε το ιστορικό σας εδώ",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Μόνο επιτυχία",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Μόνο απέτυχε",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Άγνωστο παζλ",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "υποδείξεις",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "Δείτε αναλυτικά αναλυτικά στοιχεία",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Η βαθμολογία σας στο παζλ",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Προσωρινά (απομένουν {gamesLeft} παιχνίδια)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "Παιχνίδια που παίχτηκαν",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Απόκλιση",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Επισκόπηση απόδοσης",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Ποσοστό επιτυχίας",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "Μέσος όροςΧρόνος",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Λύθηκε",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Απέτυχε",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Επιτυχία με Δυσκολία",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Επιτυχία ανά κατηγορία",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Πρόσφατη Δραστηριότητα",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Καμία πρόσφατη δραστηριότητα",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Επεξεργασία",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Αποθήκευση",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "Χωρίς προσαρμοσμένα παζλ",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Δημιουργήστε τα δικά σας παζλ για να εξασκηθείτε σε συγκεκριμένες θέσεις",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "Αυτή η δυνατότητα έχει προγραμματιστεί για μελλοντική κυκλοφορία",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Μη έγκυρη θέση",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Open Board (θέση εγκατάστασης)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Χρησιμοποιήστε το παρακάτω κουμπί για να ανοίξετε τον πίνακα και, στη συνέχεια, πατήστε Πίσω για να επιστρέψετε.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Μη έγκυρη μορφή θέσης.Ελέγξτε τον πίνακα παιχνιδιού.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Η θέση φόρτωσης απέτυχε.Παρακαλώ φωτογραφήστε ξανά.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Μη έγκυρη μορφή θέσης.Παρακαλώ κάντε μια νέα φωτογραφία της θέσης.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "Εμφάνιση λεπτομερούς ροής εργασιών",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Ροή εργασιών δημιουργίας παζλ",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Θέση εγκατάστασης",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Ανοικτή πλακέτα, θέση ρύθμισης, στιγμιότυπο",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Λύση εγγραφής",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Ξεκινήστε την εγγραφή, παίξτε κινήσεις, σταματήστε",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Προσθήκη λεπτομερειών",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Συμπλήρωση τίτλου, κατηγορίας, δυσκολίας",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Αποθήκευση παζλ",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Κάντε κλικ στο κουμπί αποθήκευση",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Συμβουλή: Θα πλοηγηθείτε μεταξύ αυτής της σελίδας και του πίνακα παιχνιδιού.Η πρόοδός σας αποθηκεύτηκε!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "Βοήθεια Στιγμιότυπου Θέσης",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "Τρόπος λήψης στιγμιότυπου της αρχικής θέσης του παζλ:\n\n1.Κάντε κλικ στο \"Open Board (Setup Position)\" για να τοποθετήσετε χειροκίνητα κομμάτια Ή κάντε κλικ στο \"Open Board (Play Moves)\" για να φτάσετε στη θέση κάνοντας κινήσεις\n\n2.Τοποθετήστε τον πίνακα στην αρχική θέση του παζλ που επιθυμείτε\n\n3.Πατήστε το κουμπί πίσω για να επιστρέψετε σε αυτήν τη σελίδα\n\n4.Η θέση θα αποθηκευτεί αυτόματα και θα αποθηκευτεί\n\nΑυτή η στιγμιότυπη θέση θα χρησιμοποιηθεί ως το σημείο εκκίνησης για το παζλ σας.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Βοήθεια εγγραφής λύσης",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "Πώς να καταγράψετε τις κινήσεις λύσης:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Φωτογραφίστε πρώτα την αρχική θέση",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Κάντε κλικ στο κουμπί \"Έναρξη εγγραφής\" (αυτό επαναφέρει τον πίνακα στη θέση του στιγμιότυπου)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Επιστρέψτε εδώ και κάντε κλικ στο \"Διακοπή εγγραφής\"",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Συμβουλή: Ο πίνακας θα επανέλθει αυτόματα στη θέση του στιγμιότυπου όταν ξεκινήσετε την εγγραφή.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "Μπορείτε να προσθέσετε πολλές λύσεις (χωρίς όριο).Επισημάνετε το συντομότερο/καλύτερο ως βέλτιστο.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "Εμφάνιση βοήθειας στιγμιότυπου θέσης",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Εμφάνιση βοήθειας καταγραφής λύσης",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "Δεν υπάρχουν άλλες συμβουλές",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Υπόδειξη",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Βέλτιστη λύση ({moves} κινήσεις):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "Σφάλματα επικύρωσης",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Συνεισφέρετε με παζλ στο Sanmill",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "Τι γίνεται μετά:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Τα παζλ σας θα εξαχθούν σε ένα αρχείο JSON",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. Μπορείτε να μοιραστείτε αυτό το αρχείο μέσω του διαλόγου κοινής χρήσης",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Τα παζλ θα ελέγχονται από τους συντηρητές",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Μόλις εγκριθούν, γίνονται ενσωματωμένοι γρίφοι!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Εξαγωγή για συνεισφορά",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Αρχίστε να συνεισφέρετε",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Γρήγορη εκκίνηση:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Δημιουργήστε ποιοτικά παζλ",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Βεβαιωθείτε ότι το παζλ σας έχει μια σαφή λύση, καλά μεταδεδομένα και διδάσκει κάτι πολύτιμο.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Προσθέστε το όνομά σας",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Επεξεργαστείτε το παζλ σας και προσθέστε το όνομά σας ως συγγραφέα για να λάβετε πίστωση.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Εξαγωγή για συνεισφορά",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Επιλέξτε τα παζλ σας και πατήστε το εικονίδιο μεταφόρτωσης για εξαγωγή στη σωστή μορφή.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Υποβολή",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Μοιραστείτε το εξαγόμενο αρχείο μέσω Αίτησης έλξης GitHub, Έκδοσης ή email.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Πλήρης Τεκμηρίωση",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "Δείτε το PUZZLE_CONTRIBUTION_GUIDE.md στο αποθετήριο για πλήρεις οδηγίες, οδηγίες ποιότητας και επιλογές υποβολής.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Απαιτήσεις ποιότητας:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Σαφής, μοναδική λύση",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Πλήρη μεταδεδομένα (τίτλος, περιγραφή κ.λπ.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Αναφορά συγγραφέα",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Ακριβής βαθμολογία δυσκολίας",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Διδακτική ή ψυχαγωγική",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Επόμενη κίνηση: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "Ολοκληρωμένη λύση: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "Δώστε προσοχή σε αυτές τις θέσεις",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "Δεν υπάρχει διαθέσιμη λύση",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Συνέχισε!Ο στόχος δεν έχει επιτευχθεί ακόμη.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Τέλειος!Λύθηκε σε βέλτιστες κινήσεις!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Σωστός!({count} κινήσεις, βέλτιστη: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "Σωστό!Βρήκες εναλλακτική λύση!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Μόλις τώρα",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "Πριν από {minutes}m",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "Πριν από {hours}h",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "Πριν από {days}ημ",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "Μη έγκυρο παζλ",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "Αυτό το παζλ έχει μη έγκυρη μορφή θέσης και δεν μπορεί να φορτωθεί.Επικοινωνήστε με τον συγγραφέα του παζλ ή δοκιμάστε ένα διαφορετικό παζλ.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Συνέχισε να προσπαθείς!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Παραδείγματα",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "Βοηθός AI",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "Γεια σας!Είμαι ο βοηθός σας στο παιχνίδι Mill.Ρωτήστε με για στρατηγικές, θέσεις ή οποιεσδήποτε ερωτήσεις σχετικά με το τρέχον παιχνίδι.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "Ρωτήστε για το παιχνίδι...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "Συγγνώμη, αντιμετώπισα ένα σφάλμα.Δοκιμάστε ξανά.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "Ο βοηθός AI δεν έχει ρυθμιστεί.Διαμορφώστε πρώτα τις ρυθμίσεις LLM.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "Συνομιλία με το AI Assistant",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "Εκκαθάριση ιστορικού συνομιλίας",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "Διαγραφή ιστορικού συνομιλίας;",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "Αυτό θα διαγράψει όλα τα μηνύματα και θα ξεκινήσει μια νέα συνομιλία.Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "Το ιστορικό συνομιλιών διαγράφηκε",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "κούτσουρα",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "Λήψη αρχείων καταγραφής",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "Δεν υπάρχουν διαθέσιμα αρχεία καταγραφής",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "Τα αρχεία καταγραφής θα εμφανίζονται εδώ καθώς εκτελείται η εφαρμογή.Δοκιμάστε να χρησιμοποιήσετε την εφαρμογή και επιστρέψτε για να δείτε τα αρχεία καταγραφής.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "Δεν υπάρχουν διαθέσιμα αρχεία καταγραφής για λήψη",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "Η λήψη απέτυχε",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "Ανανέωση",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "Κοινή χρήση αρχείων καταγραφής",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "Έγινε λήψη σε {path}",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Επιλέξτε Λειτουργία",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "Επιλέχθηκε η αντιγραφή",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "Πατήστε για να επιλέξετε σημείο εκκίνησης",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "Πατήστε για να επιλέξετε το τελικό σημείο",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "Δεν επιλέχθηκαν αρχεία καταγραφής",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "Κύλιση στην κορυφή (παλαιότερο)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "Κύλιση προς τα κάτω (νεότερο)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "Τα νεότερα κούτσουρα στο κάτω μέρος",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "Μητρώα: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "Πλήρες buffer καταγραφής ({current}/{max}).Τα παλιά κούτσουρα αφαιρούνται.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "Εκκαθάριση αρχείων καταγραφής",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα αρχεία καταγραφής;Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "Καθαρό",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "Τα αρχεία καταγραφής διαγράφηκαν",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "Μη έγκυρο παζλ",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "Αυτό το παζλ έχει μη έγκυρη μορφή θέσης και δεν μπορεί να φορτωθεί.Επικοινωνήστε με τον συγγραφέα του παζλ ή δοκιμάστε ένα διαφορετικό παζλ.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "Επιστροφή στη λίστα",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "Λάθος κίνηση.Προσπαθήστε ξανά.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "Αυτή η κίνηση δεν ταιριάζει με τη λύση.Μπορείτε να δοκιμάσετε ξανά ή να δείτε τη σωστή λύση.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "Εμφάνιση Λύσης",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "Παίζει η λύση...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "Η αναπαραγωγή της λύσης ολοκληρώθηκε",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "Δεν υπάρχει διαθέσιμη λύση για αυτό το παζλ",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "Προβλήθηκε η λύση (χωρίς αστέρια)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{Προσπάθεια: {count}} other{Προσπάθειες: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "Δεν υπάρχουν άλλες συμβουλές",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "Υπόδειξη",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "Σφάλματα επικύρωσης",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "Τα ακόλουθα παζλ πρέπει να διορθωθούν πριν συνεισφέρετε:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Συνεισφέρετε με παζλ στο Sanmill",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "Πρόκειται να εξάγετε {count} παζλ για συνεισφορά.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "Τι γίνεται μετά:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. Τα παζλ σας θα εξαχθούν σε ένα αρχείο JSON",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. Μπορείτε να μοιραστείτε αυτό το αρχείο μέσω του διαλόγου κοινής χρήσης",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. Υποβολή μέσω GitHub, email ή θέματος GitHub (δείτε τον οδηγό)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. Τα παζλ θα ελέγχονται από τους συντηρητές",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. Μόλις εγκριθούν, γίνονται ενσωματωμένοι γρίφοι!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "Συνεισφέροντας, συμφωνείτε να χορηγήσετε άδεια χρήσης του περιεχομένου του παζλ σας σύμφωνα με το CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike).",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "Εξαγωγή για συνεισφορά",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "Αρχίστε να συνεισφέρετε",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "Πώς να συνεισφέρετε παζλ",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "Δείτε αυτά τα {count} παζλ!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "Παζλ ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "Συνεισφορά παζλ.\n\nΑνατρέξτε στο PUZZLE_CONTRIBUTION_GUIDE.md για οδηγίες υποβολής.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "Συνεισφορά παζλ: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "Συνεισφορές παζλ.\n\nΑνατρέξτε στο PUZZLE_CONTRIBUTION_GUIDE.md για οδηγίες υποβολής.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "Συνεισφορές παζλ ({count} παζλ)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "Βοηθήστε να γίνει αυτό το πρόγραμμα καλύτερο, συνεισφέροντας τα παζλ σας!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "Γρήγορη εκκίνηση:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "Δημιουργήστε ποιοτικά παζλ",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "Βεβαιωθείτε ότι το παζλ σας έχει μια σαφή λύση, καλά μεταδεδομένα και διδάσκει κάτι πολύτιμο.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "Προσθέστε το όνομά σας",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "Επεξεργαστείτε το παζλ σας και προσθέστε το όνομά σας ως συγγραφέα για να λάβετε πίστωση.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "Εξαγωγή για συνεισφορά",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "Επιλέξτε τα παζλ σας και πατήστε το εικονίδιο μεταφόρτωσης για εξαγωγή στη σωστή μορφή.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "Υποβολή",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "Μοιραστείτε το εξαγόμενο αρχείο μέσω Αίτησης έλξης GitHub, Έκδοσης ή email.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "Πλήρης Τεκμηρίωση",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "Δείτε το PUZZLE_CONTRIBUTION_GUIDE.md στο αποθετήριο για πλήρεις οδηγίες, οδηγίες ποιότητας και επιλογές υποβολής.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "Απαιτήσεις ποιότητας:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ Σαφής, μοναδική λύση",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ Πλήρη μεταδεδομένα (τίτλος, περιγραφή κ.λπ.)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ Αναφορά συγγραφέα",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ Ακριβής βαθμολογία δυσκολίας",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ Διδακτική ή ψυχαγωγική",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "Ιανουάριος",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "Φεβρουάριος",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "Μάρτιος",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "Απρίλιος",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "Μάιος",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "Ιούνιος",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "Ιούλιος",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "Αύγουστος",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "Σεπτέμβριος",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "Οκτώβριος",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "Νοέμβριος",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "Δεκέμβριος",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

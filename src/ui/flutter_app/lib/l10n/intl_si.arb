@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "හඬ සහායක සැකසීම්",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "ආකෘතිය, භාෂාව සහ හැසිරීම වින්‍යාස කරන්න",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM ආධාරක සංවර්ධනය",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "ඔබට LLM උදව් කිරීමට අවශ්‍ය කාර්යය විස්තර කරන්න...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "බාගන්න",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "තත්ත්වය",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "නොදන්නා",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI කතාබස් සබල කරන්න",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "AI සහායක සමඟ කතාබස් කිරීමට ඉඩ දෙන්න (පර්යේෂණාත්මක)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "කෑලි පිකප් සජීවිකරණය සබල කරන්න",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "ප්රහේලිකා",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "ප්රහේලිකාව",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "ප්‍රහේලිකා නොමැත",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "පෙරහන",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "ප්රවර්ගය",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "පෙරහන හිස් කරන්න",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "ප්‍රහේලිකා සංඛ්‍යාලේඛන",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "සම්පූර්ණ ප්‍රහේලිකා",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "සම්පූර්ණ කළා",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "සම්පූර්ණ තරු",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "සම්පූර්ණ කිරීම",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "ආරම්භකයා",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "පහසුයි",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "මධ්යම",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "අමාරුයි",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "විශේෂඥ",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "මාස්ටර්",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "පෝරමය මෝල්",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "අල්ලා ගැනීම",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "ක්‍රීඩාව දිනන්න",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "ආරක්ෂක",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "හොඳම චලනය",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "අවසන් ක්රීඩාව",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "විවෘත කිරීම",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "මිශ්ර",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "ප්‍රහේලිකාවෙන් පිටවන්නද?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "දියුණුව නැති වේවි.දිගටම කරගෙන යන්නද?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "චලනය වේ",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "ප්රශස්ත",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "විසඳුම පරීක්ෂා කරන්න",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "අතහරින්න",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "ප්‍රහේලිකාව විසඳා ඇත!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "භාවිතා කළ ඉඟි",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "නැවත උත්සාහ කරන්න",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "ලැයිස්තුව වෙත ආපසු",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "විසඳුම",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "නව ප්‍රහේලිකාවක් සාදන්න",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "ප්‍රහේලිකාව සංස්කරණය කරන්න",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "අභිරුචි",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "නීති නොගැලපීම",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules} සඳහා, දැනට {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "දිගටම කරගෙන යන්න",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "ගැළපෙන පමණි",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "ප්‍රහේලිකා තෝරන්න",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} තෝරන ලදී",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "සියල්ල තෝරන්න",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "අපනයනය කරන්න",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "ආනයනය කරන්න",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{{count} ප්‍රහේලිකාව සාර්ථකව නිර්යාත කරන ලදී} other{{count} ප්‍රහේලිකා සාර්ථකව නිර්යාත කරන ලදී}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "ප්‍රහේලිකා අපනයනය කිරීමට අසමත් විය",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{{count} ප්‍රහේලිකාව සාර්ථකව ආයාත කරන ලදී} other{{count} ප්‍රහේලිකා සාර්ථකව ආයාත කරන ලදී}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "ප්‍රහේලිකා ආයාත කිරීමට අසමත් විය",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "ගොනුවක් තෝරා නැත",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "වලංගු නොවන ගොනු මාර්ගය",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "ගොනුව තෝරා ගැනීමේ දෝෂයකි: {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ගොනුව නොපවතී",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "වලංගු නොවන ගොනු ආකෘතිය: අතුරුදහන් වූ ප්‍රහේලිකා ක්ෂේත්‍රය",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "නොගැලපෙන ගොනු ආකෘති අනුවාදය: {version} (අපේක්ෂිත {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "ප්‍රහේලිකාව {index} (\"{title}\") වලංගු නොවන FEN ආකෘතියක් ඇත",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "ප්‍රහේලිකාව {index} (\"{title}\") විවිධ නීති භාවිතා කරයි: {puzzleRules} (වත්මන්: {currentRules}).මෙම ප්‍රහේලිකාව ඔබගේ වත්මන් සැකසුම් සමඟ නිවැරදිව ක්‍රියා නොකරනු ඇත.",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "ප්‍රහේලිකාව විග්‍රහ කිරීමට අසමත් විය {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "දෝෂ:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "අනතුරු ඇඟවීම්:",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "ගොනුව කියවීමේ දෝෂයකි: {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "ප්‍රහේලිකාවට මාතෘකාවක් තිබිය යුතුය",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "ප්‍රහේලිකාවට විස්තරයක් තිබිය යුතුය",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "ප්‍රහේලිකාවට වලංගු ස්ථානයක් තිබිය යුතුය",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "ප්‍රහේලිකාවට වලංගු නොවන FEN ආකෘතියක් ඇත.කරුණාකර ස්ථානය පරීක්ෂා කරන්න.",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "ප්‍රහේලිකාවට විසඳුමක් තිබිය යුතුය",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "මාතෘකාව ඉතා කෙටි (අවම වශයෙන් අක්ෂර 5)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "මාතෘකාව දිග වැඩියි (උපරිම අනුලකුණු 100)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "විස්තරය ඉතා කෙටි (අවම වශයෙන් අක්ෂර 10)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "විස්තරය දිග වැඩියි (උපරිම අක්ෂර 500)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "දායක වීමට පෙර ඔබේ නම කතෘ ලෙස එක් කරන්න",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} ප්‍රහේලිකාව මකන්නද?} other{{count} ප්‍රහේලිකා මකන්නද?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} ප්‍රහේලිකාව මකන ලදී} other{මකා දැමූ {count} ප්‍රහේලිකා}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "බිල්ට් ප්‍රහේලිකා මකා දැමිය නොහැක",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "ප්‍රහේලිකාවක් නිර්මාණය කරන්නේ කෙසේද",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. පිහිටුවීම් පුවරුව\n2.ස්නැප්ෂොට් පිහිටුම\n3.වාර්තා චලනයන්\n4.විස්තර පුරවන්න\n5.සුරකින්න",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "පිහිටුම් ස්ථානය",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "ස්ථානය Snapshot කර ඇත",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "ආරම්භක ස්ථානය",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "අවසාන ස්ථානය",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "තවම ස්නැප්ෂොට් නැත",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Snapshot ස්ථානය පළමුව",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "වාර්තා විසඳුම",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "පටිගත කිරීම ආරම්භ කරන්න",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "පටිගත කිරීම නවත්වන්න",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "පටිගත කරමින්...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "පටිගත කිරීම ආරම්භ විය",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{වාර්තාගත {count} චලනය} other{වාර්තාගත {count} චලනයන්}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{විසඳුම: {count} චලනය} other{විසඳුම: {count} චලනයන්}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "තවම විසඳුමක් නැහැ",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "පැහැදිලි විසඳුම",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "විසඳුම {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "තවත් විසඳුමක් එක් කරන්න",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "මෙම විසඳුම ඉවත් කරන්න",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ ප්රශස්ත",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "විකල්ප",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Optimal ලෙස ලකුණු කරන්න",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 විසඳුමක්} other{{count} විසඳුම්}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "මෙම විසඳුම ඉවත් කරන්නද?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "අවම වශයෙන් එක් විසඳුමක් අවශ්ය වේ",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "ප්‍රහේලිකා විස්තර",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "මාතෘකාව",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "විස්තරය",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "ප්රවර්ගය",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "දුෂ්කරතාව",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "ඉඟිය",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "ටැග්",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "කොමාව වෙන් කර ඇත",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "කර්තෘ",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "සම්පූර්ණ කිරීමේ පණිවිඩය",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "උපක්‍රමය පැහැදිලි කරන්න හෝ විසඳන්නාට සුබ පතන්න",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "මාතෘකාව අවශ්‍යයි",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "විස්තරය අවශ්ය වේ",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "තනතුර අවශ්ය වේ",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "විසඳුමක් අවශ්ය වේ",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "ප්‍රහේලිකාව නිර්මාණය කරන ලදී",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "ප්‍රහේලිකාව යාවත්කාලීන කරන ලදී",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "ප්‍රහේලිකාව සුරැකීමට අසමත් විය",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "විකල්ප",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "ඔබේ ප්‍රගතිය",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "ඉවත් වන්න",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "සියල්ල",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "ඉක්මනින් එනවා",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "ඩේලි ප්‍රහේලිකාව",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "සෑම දිනකම නව ප්‍රහේලිකාවක් විසඳන්න",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "දිනය #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "ස්ට්රීක්",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "දින ස්ට්රීක්",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "දින",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "හොඳම: {longestStreak} දින",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "ඩේලි ප්‍රහේලිකාව ආරම්භ කරන්න",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "ඔබේ රේඛාව ගොඩනැගීමට දිනපතා ප්‍රහේලිකා සම්පූර්ණ කරන්න!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "වත්මන් ස්ට්රීක්",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "දිගම ස්ට්රීක්",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "සම්පූර්ණයි",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "ඔබේ රේඛාව පවත්වා ගැනීමට සෑම දිනකම ප්‍රහේලිකා විසඳන්න.දිනක් මග හැරීම එය නැවත සකසනු ඇත!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "සියලුම ප්‍රහේලිකා",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "පවතින සියලුම ප්‍රහේලිකා පිරික්සන්න",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "ප්‍රහේලිකා රෂ්",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "ඔරලෝසුවට එරෙහිව ප්‍රහේලිකා විසඳන්න",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "මිනිත්තු 5 කින් ඔබට හැකි තරම් ප්‍රහේලිකා විසඳන්න!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "නීති",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ ඔරලෝසුවේ විනාඩි 5ක්",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ ජීවිත 3ක් - වැරදීමකින් 1ක් අහිමි වේ",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 ඔබේ ලකුණු උපරිම කරන්න!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "රෂ් ආරම්භ කරන්න",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "ඉක්මන් වීම අත්හරින්නද?දියුණුව නැති වේවි.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "කඩිමුඩියේ ප්‍රතිඵල",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "කාලය ඉවරයි!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "ජීවිතයෙන් බැහැර",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "කඩිමුඩියේ සම්පූර්ණයි!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "විසඳා ඇත",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "අසාර්ථකයි",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "නිරවද්යතාව",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "නැවත සෙල්ලම් කරන්න",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "ප්‍රහේලිකා සටන",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "අනෙකුත් ක්රීඩකයන් සමඟ තරඟ කරන්න",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "ඉක්මනින් එනවා!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "මෙම විශේෂාංගය දැනට සංවර්ධනය වෙමින් පවතී.සුසරව සිටින්න!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 ප්‍රහේලිකා ධාවන තරඟ",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 සජීවී ප්‍රතිවාදියා ගැලපීම",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 වර්ගීකරණ පද්ධතිය",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 ප්‍රමුඛ පුවරු",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "අභිරුචි ප්රහේලිකා",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "ඔබේ ප්‍රහේලිකා සාදන්න සහ කළමනාකරණය කරන්න",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "බහු-තේරීම මාදිලිය",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "ප්‍රහේලිකාවක් සාදන්න",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "ප්‍රහේලිකා ස්ට්‍රීක්",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "වැරදි නැතිව එක දිගට විසඳන්න",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "ඔබට පේළියකට කීයක් විසඳිය හැකිද?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "නීති",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 හැකි තරම් ප්‍රහේලිකා විසඳන්න",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ එක වැරැද්දක් ඉවරයි",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 ඔබේ පුද්ගලික වාර්තාව පරාජය කරන්න",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Streak ආරම්භ කරන්න",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "වත්මන්",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "හොඳම",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "ස්ට්රීක් ප්රතිඵල",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "ස්ට්රීක් ඉවරයි",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "නව වාර්තාවක්!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "අවසාන ලකුණු",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "නැවත උත්සාහ කරන්න",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "ඔබට ඉවත් වීමට අවශ්‍ය බව විශ්වාසද?ඔබේ ඉරි නැති වනු ඇත.",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "ඉතිහාසය",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "ඔබගේ ප්‍රහේලිකා උත්සාහයන් බලන්න",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "ප්‍රහේලිකා ඉතිහාසයක් නැත",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "ඔබේ ඉතිහාසය මෙතැනින් බැලීමට ප්‍රහේලිකා විසඳීම අරඹන්න",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "සාර්ථකත්වය පමණි",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "අසාර්ථක පමණි",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "නොදන්නා ප්‍රහේලිකාව",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "ඉඟි",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "සවිස්තරාත්මක විශ්ලේෂණ බලන්න",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "ඔබේ ප්‍රහේලිකා ශ්‍රේණිගත කිරීම",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "තාවකාලික ({gamesLeft} ක්‍රීඩා ඉතිරිව ඇත)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "ක්‍රීඩා කළා",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "අපගමනය",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "කාර්ය සාධන දළ විශ්ලේෂණය",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "සාර්ථකත්ව අනුපාතය",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "සාමාන්‍යකාලය",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "විසඳා ඇත",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "අසාර්ථකයි",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "දුෂ්කරතාවයෙන් සාර්ථකත්වය",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "කාණ්ඩය අනුව සාර්ථකත්වය",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "මෑත ක්රියාකාරිත්වය",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "මෑත ක්‍රියාකාරකමක් නැත",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "සංස්කරණය කරන්න",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "සුරකින්න",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "අභිරුචි ප්‍රහේලිකා නැත",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "නිශ්චිත තනතුරු පුහුණු කිරීම සඳහා ඔබේම ප්රහේලිකා සාදන්න",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "මෙම විශේෂාංගය ඉදිරි නිකුතුවක් සඳහා සැලසුම් කර ඇත",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "වලංගු නොවන ස්ථානය",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "විවෘත පුවරුව (සැකසුම් ස්ථානය)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "විවෘත පුවරුව (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "පුවරුව විවෘත කිරීමට පහත බොත්තම භාවිතා කරන්න, ඉන්පසු ආපසු යාමට Back ඔබන්න.",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "වලංගු නොවන ස්ථාන ආකෘතිය.කරුණාකර ක්‍රීඩා පුවරුව පරීක්ෂා කරන්න.",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "ස්ථානය පූරණය කිරීමට අසමත් විය.කරුණාකර නැවත රූගත කරන්න.",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "වලංගු නොවන ස්ථාන ආකෘතිය.කරුණාකර ස්ථානය නැවත සටහන් කරන්න.",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "සවිස්තරාත්මක කාර්ය ප්රවාහය පෙන්වන්න",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "ප්‍රහේලිකා නිර්මාණය කිරීමේ කාර්ය ප්‍රවාහය",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "පිහිටුම් ස්ථානය",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "විවෘත පුවරුව, ස්ථාපන ස්ථානය, ස්නැප්ෂොට්",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "වාර්තා විසඳුම",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "පටිගත කිරීම ආරම්භ කරන්න, චලනයන් වාදනය කරන්න, නවත්වන්න",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "විස්තර එකතු කරන්න",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "මාතෘකාව, කාණ්ඩය, දුෂ්කරතාවය පුරවන්න",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "ප්‍රහේලිකාව සුරකින්න",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "සුරකින්න බොත්තම ක්ලික් කරන්න",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "ඉඟිය: ඔබ මෙම පිටුව සහ ක්‍රීඩා පුවරුව අතර සංචාලනය කරනු ඇත.ඔබේ ප්‍රගතිය සුරැකේ!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "ස්නැප්ෂොට් උදව් ස්ථානගත කරන්න",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "ප්‍රහේලිකාව ආරම්භක ස්ථානය ස්නැප්ෂොට් කරන්නේ කෙසේද:\n\n1.කොටස් හස්තීයව තැබීමට \"විවෘත පුවරුව (සැකසුම් ස්ථානය)\" ක්ලික් කරන්න, නැතහොත් චලනයන් සිදු කිරීමෙන් ස්ථානයට පැමිණීමට \"විවෘත පුවරුව (ප්ලේ චලන)\" ක්ලික් කරන්න\n\n2.ඔබට අවශ්‍ය ප්‍රහේලිකාවේ ආරම්භක ස්ථානයට පුවරුව සකසන්න\n\n3.මෙම පිටුවට ආපසු යාමට ආපසු බොත්තම ඔබන්න\n\n4.ස්ථානය ස්වයංක්‍රීයව සැණ රූගත කර සුරකිනු ඇත\n\nමෙම ස්නැප්ෂොට් කරන ලද ස්ථානය ඔබේ ප්‍රහේලිකාව සඳහා ආරම්භක ලක්ෂ්‍යය ලෙස භාවිත කෙරේ.",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "විසඳුම් පටිගත කිරීමේ උපකාරය",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "විසඳුම චලනයන් වාර්තා කරන්නේ කෙසේද:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "මුලින්ම ආරම්භක ස්ථානය Snapshot කරන්න",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"පටිගත කිරීම අරඹන්න\" බොත්තම ක්ලික් කරන්න (මෙය ඔබගේ ස්නැප්ෂොට් ස්ථානයට පුවරුව නැවත සකසයි)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "මෙහි ආපසු ගොස් \"පටිගත කිරීම නවත්වන්න\" ක්ලික් කරන්න",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "ඉඟිය: ඔබ පටිගත කිරීම ආරම්භ කරන විට පුවරුව ස්වයංක්‍රීයව ඔබගේ ස්නැප්ෂොට් ස්ථානයට නැවත සකසනු ඇත.",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "ඔබට විසඳුම් කිහිපයක් එකතු කළ හැකිය (සීමාවක් නැත).කෙටිම/හොඳම එක ප්‍රශස්ත ලෙස ලකුණු කරන්න.",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "ස්ථාන ස්නැප්ෂොට් උදව් පෙන්වන්න",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "විසඳුම් පටිගත කිරීමේ උදවු පෙන්වන්න",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "තවත් ඉඟි නොමැත",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "ඉඟිය",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "ප්‍රශස්ත විසඳුම ({moves} චලනයන්):",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "වලංගු කිරීමේ දෝෂ",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Sanmill වෙත ප්‍රහේලිකා දායක වන්න",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "ඊළඟට සිදුවන්නේ කුමක්ද:",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. ඔබේ ප්‍රහේලිකා JSON ගොනුවකට නිර්යාත කෙරේ",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. ඔබට මෙම ගොනුව බෙදාගැනීමේ සංවාදය හරහා බෙදා ගත හැක",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. ප්‍රහේලිකා නඩත්තු කරන්නන් විසින් සමාලෝචනය කරනු ලැබේ",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. අනුමත වූ පසු, ඒවා ගොඩනඟන ලද ප්‍රහේලිකා බවට පත් වේ!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "දායකත්වය සඳහා අපනයනය",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "දායක වීම ආරම්භ කරන්න",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "ඉක්මන් ආරම්භය:",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "ගුණාත්මක ප්‍රහේලිකා සාදන්න",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "ඔබේ ප්‍රහේලිකාවට පැහැදිලි විසඳුමක්, හොඳ පාර-දත්ත සහ වටිනා යමක් උගන්වන බව සහතික කර ගන්න.",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "ඔබේ නම එකතු කරන්න",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "ණය ලබා ගැනීමට ඔබේ ප්‍රහේලිකාව සංස්කරණය කර කර්තෘ ලෙස ඔබේ නම එක් කරන්න.",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "දායකත්වය සඳහා අපනයනය",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "ඔබේ ප්‍රහේලිකා තෝරා නිවැරදි ආකෘතියෙන් අපනයනය කිරීමට උඩුගත කිරීමේ නිරූපකය තට්ටු කරන්න.",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "ඉදිරිපත් කරන්න",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "අපනයනය කළ ගොනුව GitHub Pull ඉල්ලීම, නිකුත් කිරීම හෝ විද්‍යුත් තැපෑල හරහා බෙදා ගන්න.",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "සම්පූර්ණ ලියකියවිලි",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "සම්පූර්ණ උපදෙස්, තත්ත්ව මාර්ගෝපදේශ සහ ඉදිරිපත් කිරීමේ විකල්ප සඳහා ගබඩාවේ PUZZLE_CONTRIBUTION_GUIDE.md බලන්න.",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "ගුණාත්මක අවශ්යතා:",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ පැහැදිලි, අද්විතීය විසඳුම",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ සම්පූර්ණ පාරදත්ත (මාතෘකාව, විස්තරය, ආදිය)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ කර්තෘ ආරෝපණය",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ නිරවද්‍ය දුෂ්කරතා ශ්‍රේණිගත කිරීම",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ උපදේශාත්මක හෝ විනෝදාත්මක",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "මීළඟ පියවර: {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "සම්පූර්ණ විසඳුම: {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "මෙම තනතුරු කෙරෙහි අවධානය යොමු කරන්න",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "විසඳුමක් නොමැත",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "දිගටම කරගෙන යන්න!තවම අරමුණ ඉටුවෙලා නැහැ.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "පරිපූර්ණයි!ප්‍රශස්ත චලනයන් තුළ විසඳා ඇත!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "නිවැරදියි!({count} චලනයන්, ප්‍රශස්ත: {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "නිවැරදියි!ඔබ විකල්ප විසඳුමක් සොයා ගත්තා!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "දැන් තමයි",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}m පෙර",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}පැයට පෙර",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}d පෙර",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "වලංගු නොවන ප්‍රහේලිකාව",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "මෙම ප්‍රහේලිකාව වලංගු නොවන ස්ථාන ආකෘතියක් ඇති අතර එය පූරණය කළ නොහැක.කරුණාකර ප්‍රහේලිකා කර්තෘ අමතන්න හෝ වෙනත් ප්‍රහේලිකාවක් උත්සාහ කරන්න.",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "දිගටම උත්සාහ කරන්න!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "උදාහරණ",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI සහකාර",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "ආයුබෝවන්!මම ඔබේ මිල් ක්‍රීඩා සහායකයා.උපාය මාර්ග, තනතුරු, හෝ වත්මන් ක්‍රීඩාව පිළිබඳ ඕනෑම ප්‍රශ්නයක් ගැන මගෙන් අසන්න.",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "ගේම් එක ගැන අහන්න...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "සමාවන්න, මට දෝෂයක් ඇති විය.කරුණාකර නැවත උත්සාහ කරන්න.",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI සහායක වින්‍යාස කර නැත.කරුණාකර පළමුව LLM සැකසුම් වින්‍යාස කරන්න.",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "AI සහායක සමඟ කතාබස් කරන්න",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "සංවාද ඉතිහාසය හිස් කරන්න",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "කතාබස් ඉතිහාසය හිස් කරන්නද?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "මෙය සියලු පණිවිඩ මකා නව සංවාදයක් ආරම්භ කරනු ඇත.මෙම ක්‍රියාව පසුගමනය කළ නොහැක.",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "කතාබස් ඉතිහාසය හිස් කරන ලදී",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "ලඝු-සටහන්",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "ලොග් බාගන්න",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "ලඝු-සටහන් නොමැත",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "යෙදුම ක්‍රියාත්මක වන විට ලොග මෙහි දිස්වනු ඇත.යෙදුම භාවිතා කිරීමට උත්සාහ කර ලොග බැලීමට ආපසු එන්න.",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "බාගැනීමට ලඝු සටහනක් නොමැත",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "බාගැනීම අසාර්ථක විය",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "නැවුම් කරන්න",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "ලොග් බෙදාගන්න",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "{path} වෙත බාගත කර ඇත",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "මාදිලිය තෝරන්න",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "පිටපත තෝරන ලදී",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "ආරම්භක ස්ථානය තේරීමට තට්ටු කරන්න",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "අවසන් ලක්ෂ්‍යය තේරීමට තට්ටු කරන්න",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "ලඝු-සටහන් තෝරාගෙන නැත",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "ඉහළට අනුචලනය කරන්න (පැරණිම)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "පහළට අනුචලනය කරන්න (නවතම)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "පහළින් නවතම ලොග",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "ලඝු-සටහන්: {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "ලොග් බෆරය පිරී ඇත ({current}/{max}).පැරණි ලොග් ඉවත් කරමින් පවතී.",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "ලඝු-සටහන් හිස් කරන්න",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "ඔබට සියලු ලොග ඉවත් කිරීමට අවශ්‍ය බව විශ්වාසද?මෙම ක්‍රියාව පසුගමනය කළ නොහැක.",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "පැහැදිලියි",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "ලඝු-සටහන් ඉවත් කරන ලදී",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "වලංගු නොවන ප්‍රහේලිකාව",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "මෙම ප්‍රහේලිකාව වලංගු නොවන ස්ථාන ආකෘතියක් ඇති අතර එය පූරණය කළ නොහැක.කරුණාකර ප්‍රහේලිකා කර්තෘ අමතන්න හෝ වෙනත් ප්‍රහේලිකාවක් උත්සාහ කරන්න.",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "ලැයිස්තුව වෙත ආපසු",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "වැරදි පියවරක්.නැවත උත්සාහ කරන්න.",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "එම පියවර විසඳුම සමඟ නොගැලපේ.ඔබට නැවත උත්සාහ කිරීමට හෝ නිවැරදි විසඳුම බැලීමට හැකිය.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "විසඳුම පෙන්වන්න",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "විසඳුම වාදනය කරමින්...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "විසඳුම නැවත ධාවනය සම්පූර්ණයි",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "මෙම ප්‍රහේලිකාව සඳහා විසඳුමක් නොමැත",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "විසඳුම බැලුවා (තරු නැත)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{උත්සාහය: {count}} other{උත්සාහයන්: {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "තවත් ඉඟි නොමැත",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "ඉඟිය",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "වලංගු කිරීමේ දෝෂ",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "දායක වීමට පෙර පහත ප්‍රහේලිකා නිවැරදි කළ යුතුය:",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Sanmill වෙත ප්‍රහේලිකා දායක වන්න",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "ඔබ දායකත්වය සඳහා {count} ප්‍රහේලිකාව(ය) නිර්යාත කිරීමට සූදානම් වේ.",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "ඊළඟට සිදුවන්නේ කුමක්ද:",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. ඔබේ ප්‍රහේලිකා JSON ගොනුවකට නිර්යාත කෙරේ",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. ඔබට මෙම ගොනුව බෙදාගැනීමේ සංවාදය හරහා බෙදා ගත හැක",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. GitHub, ඊමේල්, හෝ GitHub නිකුතුව හරහා ඉදිරිපත් කරන්න (මාර්ගෝපදේශය බලන්න)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. ප්‍රහේලිකා නඩත්තු කරන්නන් විසින් සමාලෝචනය කරනු ලැබේ",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. අනුමත වූ පසු, ඒවා ගොඩනඟන ලද ප්‍රහේලිකා බවට පත් වේ!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "දායක වීමෙන්, ඔබ CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike) යටතේ ඔබේ ප්‍රහේලිකා අන්තර්ගතයට බලපත්‍ර ලබා දීමට එකඟ වේ.",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "දායකත්වය සඳහා අපනයනය",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "දායක වීම ආරම්භ කරන්න",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "ප්‍රහේලිකා වලට දායක වන ආකාරය",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "මෙම {count} ප්‍රහේලිකා පරීක්ෂා කරන්න!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "ප්‍රහේලිකා ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "ප්‍රහේලිකා දායකත්වය.\n\n ඉදිරිපත් කිරීමේ උපදෙස් සඳහා PUZZLE_CONTRIBUTION_GUIDE.md බලන්න.",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "ප්‍රහේලිකා දායකත්වය: {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "ප්‍රහේලිකා දායකත්වය.\n\nඉදිරිපත් කිරීමේ උපදෙස් සඳහා PUZZLE_CONTRIBUTION_GUIDE.md බලන්න.",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "ප්‍රහේලිකා දායකත්වය ({count} ප්‍රහේලිකා)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "ඔබේ ප්‍රහේලිකා වලට දායක වීමෙන් මෙම වැඩසටහන වඩා හොඳ කිරීමට උදවු කරන්න!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "ඉක්මන් ආරම්භය:",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "ගුණාත්මක ප්‍රහේලිකා සාදන්න",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "ඔබේ ප්‍රහේලිකාවට පැහැදිලි විසඳුමක්, හොඳ පාර-දත්ත සහ වටිනා යමක් උගන්වන බව සහතික කර ගන්න.",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "ඔබේ නම එකතු කරන්න",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "ණය ලබා ගැනීමට ඔබේ ප්‍රහේලිකාව සංස්කරණය කර කර්තෘ ලෙස ඔබේ නම එක් කරන්න.",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "දායකත්වය සඳහා අපනයනය",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "ඔබේ ප්‍රහේලිකා තෝරා නිවැරදි ආකෘතියෙන් අපනයනය කිරීමට උඩුගත කිරීමේ නිරූපකය තට්ටු කරන්න.",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "ඉදිරිපත් කරන්න",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "අපනයනය කළ ගොනුව GitHub Pull ඉල්ලීම, නිකුත් කිරීම හෝ විද්‍යුත් තැපෑල හරහා බෙදා ගන්න.",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "සම්පූර්ණ ලියකියවිලි",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "සම්පූර්ණ උපදෙස්, තත්ත්ව මාර්ගෝපදේශ සහ ඉදිරිපත් කිරීමේ විකල්ප සඳහා ගබඩාවේ PUZZLE_CONTRIBUTION_GUIDE.md බලන්න.",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "ගුණාත්මක අවශ්යතා:",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ පැහැදිලි, අද්විතීය විසඳුම",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ සම්පූර්ණ පාරදත්ත (මාතෘකාව, විස්තරය, ආදිය)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ කර්තෘ ආරෝපණය",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ නිරවද්‍ය දුෂ්කරතා ශ්‍රේණිගත කිරීම",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ උපදේශාත්මක හෝ විනෝදාත්මක",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "ජනවාරි",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "පෙබරවාරි",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "මාර්තු",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "අප්රේල්",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "මැයි",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "ජූනි",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "ජූලි",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "අගෝස්තු",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "සැප්තැම්බර්",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "ඔක්තෝබර්",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "නොවැම්බර්",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "දෙසැම්බර්",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

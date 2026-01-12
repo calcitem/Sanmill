@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "Ձայնային օգնականի կարգավորումներ",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "Կարգավորել մոդելը, լեզուն և վարքագիծը",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "LLM-ի օգնությամբ զարգացում",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "Նկարագրեք առաջադրանքը, որը ցանկանում եք, որ LLM-ն օգնի...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "Բեռնել",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "Կարգավիճակ",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "Անհայտ",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "Միացնել AI Chat-ը",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "Թույլատրել զրույցը AI օգնականի հետ (փորձնական)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "Միացնել կտորների հավաքման անիմացիան",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "Փազլներ",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "Փազլներ",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "Փազլներ չկան",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "Զտել",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "Կարգավիճակ",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "Մաքրել զտիչը",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "Puzzle վիճակագրություն",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "Ընդհանուր հանելուկներ",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "Ավարտված",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "Total Stars",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "Ավարտում",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "Սկսնակ",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "Հեշտ",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "Միջին",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "Դժվար",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "Փորձագետ",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "Վարպետ",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "Form Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "Գրավել",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "Հաղթեք խաղ",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "Պաշտպանություն",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "Լավագույն շարժում",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "Վերջնախաղ",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "Բացում",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "Խառը",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "Դուրս գալ Puzzle?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "Առաջընթացը կկորչի.Շարունակե՞լ",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "Շարժումներ",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "Օպտիմալ",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "Ստուգեք լուծումը",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "Հանձնվիր",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "Փազլը լուծվեց:",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "Օգտագործված հուշումներ",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "Կրկին փորձեք",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "Վերադառնալ ցուցակին",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "Լուծում",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "Ստեղծեք նոր հանելուկ",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "Խմբագրել Puzzle",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "Պատվերով",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "Կանոնների անհամապատասխանություն",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "{puzzleRules}-ի համար, ներկայումս {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "Շարունակեք",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "Համատեղելի է միայն",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "Ընտրեք Փազլներ",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} Ընտրված է",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "Ընտրեք Բոլորը",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "Արտահանում",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "Ներմուծում",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{Հաջողությամբ արտահանվեց {count} հանելուկ} other{Հաջողությամբ արտահանվեցին {count} հանելուկներ}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "Չհաջողվեց արտահանել հանելուկներ",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{Հաջողությամբ ներմուծվեց {count} գլուխկոտրուկը} other{Հաջողությամբ ներմուծվեցին {count} հանելուկներ}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "Չհաջողվեց ներմուծել հանելուկներ",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "Ֆայլ ընտրված չէ",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "Անվավեր ֆայլի ուղի",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "Ֆայլի ընտրության սխալ՝ {error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "Ֆայլը գոյություն չունի",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "Ֆայլի անվավեր ձևաչափ. հանելուկների դաշտը բացակայում է",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "Ֆայլի անհամատեղելի ձևաչափի տարբերակ՝ {version} (ակնկալվում է {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "Puzzle {index} (\"{title}\") ունի անվավեր FEN ձևաչափ",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "Puzzle {index} (\"{title}\") օգտագործում է տարբեր կանոններ՝ {puzzleRules} (ընթացիկ՝ {currentRules}):Այս փազլը կարող է ճիշտ չաշխատել ձեր ընթացիկ կարգավորումների հետ:",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "Չհաջողվեց վերլուծել {index} հանելուկը՝ {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "Սխալներ:",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "Զգուշացումներ.",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "Ֆայլի ընթերցման սխալ՝ {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "Փազլը պետք է վերնագիր ունենա",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "Փազլը պետք է նկարագրություն ունենա",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "Փազլը պետք է վավեր դիրք ունենա",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "Puzzle-ն անվավեր FEN ձևաչափ ունի:Խնդրում ենք ստուգել դիրքը:",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "Փազլը պետք է լուծում ունենա",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "Վերնագիրը չափազանց կարճ է (նվազագույնը 5 նիշ)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "Վերնագիրը չափազանց երկար է (առավելագույնը 100 նիշ)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "Նկարագրությունը չափազանց կարճ է (նվազագույնը 10 նիշ)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "Նկարագրությունը չափազանց երկար է (առավելագույնը 500 նիշ)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "Խնդրում ենք ավելացնել ձեր անունը որպես հեղինակ՝ նախքան ներդրումը կատարելը",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{Ջնջե՞լ {count} գլուխկոտրուկը:} other{Ջնջե՞լ {count} հանելուկները:}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{Ջնջված {count} գլուխկոտրուկը} other{Ջնջված {count} հանելուկներ}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "Հնարավոր չէ ջնջել ներկառուցված հանելուկները",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "Ինչպես ստեղծել հանելուկ",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. Տեղադրեք տախտակը\n2:Պատկերի դիրքը\n3:Գրանցեք շարժումներ\n4:Լրացրեք մանրամասները\n5:Պահպանել",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "Կարգավորման դիրքը",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "Պաշտոնը պատկերված է",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "Սկզբնական դիրք",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "Վերջնական դիրք",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "Առայժմ ոչ մի լուսանկար",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "Առաջին լուսանկարի դիրքը",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "Գրանցման լուծում",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "Սկսեք ձայնագրումը",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "Դադարեցնել ձայնագրումը",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "Ձայնագրվում է...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "Ձայնագրումը սկսվեց",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{Արձանագրված {count} քայլ} other{Արձանագրված {count} շարժումներ}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{Լուծում. {count} շարժվել} other{Լուծում. {count} շարժվում է}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "Լուծում դեռ չկա",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "Հստակ լուծում",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "Լուծում {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "Ավելացնել ևս մեկ լուծում",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "Հեռացրեք այս լուծումը",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ Օպտիմալ",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "Այլընտրանք",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "Նշել որպես օպտիմալ",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 լուծում} other{{count} լուծումներ}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "Հեռացնե՞լ այս լուծումը:",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "Պահանջվում է առնվազն մեկ լուծում",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "Puzzle Մանրամասներ",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "Վերնագիր",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "Նկարագրություն",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "Կարգավիճակ",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "Դժվարություն",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "Հուշում",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "Պիտակներ",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "Ստորակետով բաժանված",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "Հեղինակ",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "Ավարտման հաղորդագրություն",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "Բացատրեք մարտավարությունը կամ շնորհավորեք լուծողին",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "Պահանջվում է վերնագիր",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "Պահանջվում է նկարագրություն",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "Պահանջվում է պաշտոն",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "Լուծումը պահանջվում է",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "Ստեղծվել է հանելուկ",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "Փազլը թարմացվել է",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "Չհաջողվեց պահել գլուխկոտրուկը",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "ընտրովի",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "Ձեր առաջընթացը",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "Դուրս գալ",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "Բոլորը",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "Շուտով",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "Ամենօրյա հանելուկ",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "Ամեն օր նոր հանելուկ լուծեք",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "Օր #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "Շերտ",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "օրվա շարանը",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "օրեր",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "Լավագույնը՝ {longestStreak} օր",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "Սկսեք ամենօրյա Puzzle",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "Լրացրեք ամենօրյա հանելուկներ՝ ձեր շարանը կառուցելու համար:",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "Ընթացիկ շարանը",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "Ամենաերկար շարանը",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "Ընդհանուր ավարտված է",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "Ամեն օր լուծեք գլուխկոտրուկներ՝ ձեր շարանը պահպանելու համար:Մեկ օր բաց թողնելը կզրոյացվի:",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "Բոլոր Փազլներ",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "Թերթիր բոլոր հասանելի հանելուկները",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "Puzzle Rush",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "Լուծեք հանելուկներ ժամացույցի դեմ",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "5 րոպեում լուծեք որքան հնարավոր է շատ հանելուկներ:",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "Կանոններ",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 րոպե ժամացույցով",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 կյանք - 1 կորցրած մեկ սխալի համար",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 Առավելագույնի հասցրե՛ք ձեր գնահատականը:",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "Սկսեք Rush-ը",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "Հրաժարե՞լ շտապելուց:Առաջընթացը կկորչի.",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "Շտապողականության արդյունքներ",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "Ժամանակը սպառվել է:",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "Կյանքից դուրս",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "Շտապեք ավարտվել:",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "Լուծված",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "Չհաջողվեց",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "Ճշգրտություն",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "Նորից խաղալ",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "Puzzle Battle",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "Մրցակցել այլ խաղացողների հետ",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "Շուտով!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "Այս հատկությունը ներկայումս մշակման փուլում է:Հետևե՛ք:",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 փազլ մրցավազք",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 Ուղիղ հակառակորդի համընկնում",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 Վարկանիշային համակարգ",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 Առաջատարներ",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "Պատվերով Փազլներ",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "Ստեղծեք և կառավարեք ձեր հանելուկները",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "Բազմակի ընտրության ռեժիմ",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "Ստեղծել Puzzle",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "Puzzle շերտ",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "Լուծեք հաջորդաբար առանց սխալների",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "Քանի՞սը կարող եք լուծել անընդմեջ:",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "Կանոններ",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 Լուծեք որքան հնարավոր է շատ հանելուկներ",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ Մեկ սխալ և վերջ",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 գերազանցեք ձեր անձնական ռեկորդը",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "Սկսել շարանը",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "Ընթացիկ",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "Լավագույնը",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "Շերտի արդյունքները",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "Շարքն ավարտվեց",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "Նոր ռեկորդ",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "Վերջնական հաշիվը",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "Կրկին փորձեք",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "Վստա՞հ եք, որ ցանկանում եք հեռանալ:Ձեր շարանը կկորչի:",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "Պատմություն",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "Դիտեք ձեր գլուխկոտրուկների փորձերը",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "Փազլների պատմություն չկա",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "Սկսեք գլուխկոտրուկներ լուծել՝ ձեր պատմությունն այստեղ տեսնելու համար",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "Միայն հաջողություն",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "Միայն ձախողվեց",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "Անհայտ հանելուկ",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "ակնարկներ",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "Դիտեք մանրամասն վերլուծություն",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "Ձեր գլուխկոտրուկների վարկանիշը",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "Նախնական (մնացել է {gamesLeft} խաղ)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "Խաղացած խաղեր",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "Շեղում",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "Կատարման ակնարկ",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "Հաջողության մակարդակը",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "ՄիջինԺամանակը",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "Լուծված",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "Չհաջողվեց",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "Հաջողություն ըստ դժվարության",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "Հաջողություն ըստ կատեգորիաների",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "Վերջին գործունեությունը",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "Վերջին գործողություններ չկան",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "Խմբագրել",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "Պահպանել",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "Պատվերով հանելուկներ չկան",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "Ստեղծեք ձեր սեփական հանելուկները՝ հատուկ դիրքեր վարելու համար",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "Այս գործառույթը նախատեսվում է ապագա թողարկման համար",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "Անվավեր դիրք",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "Բաց տախտակ (Կարգավորման դիրք)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "Բաց տախտակ (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "Օգտագործեք ստորև բերված կոճակը՝ տախտակը բացելու համար, այնուհետև սեղմեք Հետ՝ վերադառնալու համար:",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "Անվավեր դիրքի ձևաչափ:Խնդրում ենք ստուգել խաղատախտակը:",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "Չհաջողվեց բեռնել դիրքը:Խնդրում եմ վերանայել:",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "Անվավեր դիրքի ձևաչափ:Խնդրում ենք վերանայել դիրքը:",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "Ցույց տալ մանրամասն աշխատանքային ընթացքը",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "Փազլների ստեղծման աշխատանքային հոսք",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "Կարգավորման դիրքը",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "Բաց տախտակ, տեղադրման դիրք, լուսանկար",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "Գրանցման լուծում",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "Սկսեք ձայնագրել, նվագարկել շարժումները, դադարեցրեք",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "Ավելացնել մանրամասներ",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "Լրացրեք վերնագիրը, կատեգորիան, դժվարությունը",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "Save Puzzle",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "Սեղմեք պահպանել կոճակը",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "Հուշում. Դուք կանցնեք այս էջի և խաղատախտակի միջև:Ձեր առաջընթացը պահպանված է:",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "Պաշտոնական պատկերի օգնություն",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "Ինչպես նկարել հանելուկի մեկնարկային դիրքը՝\n\n1:Կտտացրեք «Բաց տախտակ (Կարգավորման դիրք)»՝ կտորները ձեռքով տեղադրելու համար, ԿԱՄ կտտացրեք «Բացել տախտակ (Խաղալ շարժումներ)»՝ դիրքին հասնելու համար՝ կատարելով շարժումներ\n\n2:Տեղադրեք տախտակը ձեր ուզած հանելուկի մեկնարկային դիրքում\n\n3:Սեղմեք «Հետ» կոճակը՝ այս էջ վերադառնալու համար\n\n4:Դիրքը ավտոմատ կերպով կփառագրվի և կպահվի\n\nԱյս պատկերված դիրքը կօգտագործվի որպես ձեր գլուխկոտրուկի մեկնարկային կետ:",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "Լուծումների ձայնագրման օգնություն",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "Ինչպես գրանցել լուծման շարժումները.",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "Սկզբում նկարեք մեկնարկային դիրքը",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "Սեղմեք «Սկսել ձայնագրումը» կոճակը (սա վերականգնում է տախտակը ձեր պատկերված դիրքին)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "Վերադարձեք այստեղ և սեղմեք «Դադարեցնել ձայնագրումը»",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "Հուշում. երբ սկսեք ձայնագրումը, տախտակն ինքնաբերաբար կվերակայվի ձեր պատկերված դիրքին:",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "Դուք կարող եք ավելացնել բազմաթիվ լուծումներ (առանց սահմանափակումների):Նշեք ամենակարճը/լավագույնը որպես օպտիմալ:",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "Ցույց տալ դիրքի պատկերի օգնությունը",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "Ցույց տալ լուծումների ձայնագրման օգնությունը",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "Այլևս ակնարկներ չկան",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "Հուշում",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "Օպտիմալ լուծում ({moves} շարժումներ).",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "Վավերացման սխալներ",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "Ներդրեք Փազլներ Sanmill-ին",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "Ինչ է տեղի ունենում հետո.",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. Ձեր հանելուկները կարտահանվեն JSON ֆայլ",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. Դուք կարող եք համօգտագործել այս ֆայլը համօգտագործման երկխոսության միջոցով",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. Փազլները կվերանայվեն սպասարկողների կողմից",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. Հաստատվելուց հետո դրանք դառնում են ներկառուցված հանելուկներ:",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "Արտահանում ներդրման համար",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "Սկսեք նպաստել",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "Արագ մեկնարկ.",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "Ստեղծեք որակյալ հանելուկներ",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "Համոզվեք, որ ձեր գլուխկոտրուկն ունի հստակ լուծում, լավ մետատվյալներ և ինչ-որ արժեքավոր բան է սովորեցնում:",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "Ավելացրե՛ք Ձեր անունը",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "Խմբագրեք ձեր գլուխկոտրուկը և ավելացրեք ձեր անունը որպես հեղինակ՝ վարկ ստանալու համար:",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "Արտահանում ներդրման համար",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "Ընտրեք ձեր հանելուկները և հպեք վերբեռնման պատկերակին՝ ճիշտ ձևաչափով արտահանելու համար:",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "Ներկայացրե՛ք",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "Կիսեք արտահանված ֆայլը GitHub Pull Request-ի, Issue-ի կամ էլփոստի միջոցով:",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "Ամբողջական Փաստաթղթեր",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "Ամբողջական հրահանգների, որակի ուղեցույցների և ներկայացման տարբերակների համար տես PUZZLE_CONTRIBUTION_GUIDE.md-ը պահոցում:",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "Որակի պահանջներ.",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ Հստակ, եզակի լուծում",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ Ամբողջական մետատվյալներ (վերնագիր, նկարագրություն և այլն)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ Հեղինակի վերագրում",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ Բարդության ճշգրիտ գնահատական",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ Ուսուցողական կամ զվարճալի",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "Հաջորդ քայլը՝ {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "Ամբողջական լուծում՝ {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "Ուշադրություն դարձրեք այս դիրքերին",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "Լուծում չկա",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "Շարունակի՛ր։Նպատակը դեռ չի հասել.",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "Կատարյալ!Լուծվում է օպտիմալ շարժումներով:",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "Ճիշտ!({count} շարժումներ, օպտիմալ՝ {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "Ճիշտ!Դուք գտել եք այլընտրանքային լուծում:",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "Հենց հիմա",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "{minutes}ր առաջ",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}ժ առաջ",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}օր առաջ",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "Անվավեր հանելուկ",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "Այս փազլն ունի անվավեր դիրքի ձևաչափ և չի կարող բեռնվել:Խնդրում ենք կապվել հանելուկի հեղինակի հետ կամ փորձեք այլ գլուխկոտրուկ:",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "Շարունակե՛ք փորձել:",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "Օրինակներ",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI օգնական",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "ՈղջույնԵս ձեր Mill խաղի օգնականն եմ:Հարցրեք ինձ ռազմավարությունների, դիրքերի կամ ընթացիկ խաղի վերաբերյալ որևէ հարցի մասին:",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "Հարցրեք խաղի մասին...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "Կներեք, ես սխալի հանդիպեցի:Խնդրում ենք կրկին փորձել:",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI օգնականը կազմաձևված չէ:Խնդրում ենք նախ կարգավորել LLM կարգավորումները:",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "Զրուցեք AI օգնականի հետ",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "Մաքրել զրույցի պատմությունը",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "Մաքրե՞լ զրույցի պատմությունը:",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "Սա կջնջի բոլոր հաղորդագրությունները և կսկսի նոր խոսակցություն:Այս գործողությունը հնարավոր չէ հետարկել:",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "Զրույցի պատմությունը մաքրվեց",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "Տեղեկամատյաններ",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "Ներբեռնեք տեղեկամատյանները",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "Տեղեկամատյաններ չկան",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "Գրանցամատյանները կհայտնվեն այստեղ՝ հավելվածի գործարկման ժամանակ:Փորձեք օգտագործել հավելվածը և վերադարձեք՝ տեղեկամատյանները տեսնելու համար:",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "Ներբեռնման համար հասանելի տեղեկամատյաններ չկան",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "Ներբեռնումը ձախողվեց",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "Թարմացնել",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "Համօգտագործել տեղեկամատյանները",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "Ներբեռնվել է {path} հասցեով",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "Ընտրեք ռեժիմ",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "Ընտրված է պատճենը",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "Հպեք՝ մեկնարկային կետն ընտրելու համար",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "Հպեք՝ վերջնակետն ընտրելու համար",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "Ընտրված տեղեկամատյաններ չկան",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "Ոլորել դեպի վերև (ամենահին)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "Ոլորել ներքև (նորագույն)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "Նորագույն տեղեկամատյանները ներքևում",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "Գրանցամատյաններ՝ {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "Մատյան բուֆերը լի է ({current}/{max}):Հին գերանները հեռացվում են:",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "Մաքրել տեղեկամատյանները",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "Իսկապե՞ս ուզում եք ջնջել բոլոր մատյանները:Այս գործողությունը հնարավոր չէ հետարկել:",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "Պարզ",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "Տեղեկամատյանները մաքրված են",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "Անվավեր հանելուկ",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "Այս փազլն ունի անվավեր դիրքի ձևաչափ և չի կարող բեռնվել:Խնդրում ենք կապվել հանելուկի հեղինակի հետ կամ փորձեք այլ գլուխկոտրուկ:",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "Վերադառնալ ցուցակին",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "Սխալ քայլ.Նորից փորձեք:",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "Այդ քայլը չի ​​համապատասխանում լուծմանը:Կարող եք նորից փորձել կամ դիտել ճիշտ լուծումը:",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "Ցույց տալ լուծումը",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "Խաղում է լուծումը...",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "Լուծման նվագարկումն ավարտված է",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "Այս հանելուկի լուծում չկա",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "Լուծումը դիտվել է (առանց աստղերի)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{Փորձ՝ {count}} other{Փորձեր՝ {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "Այլևս ակնարկներ չկան",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "Հուշում",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "Վավերացման սխալներ",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "Հետևյալ հանելուկները պետք է շտկվեն նախքան ներդրումը կատարելը.",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "Ներդրեք Փազլներ Sanmill-ին",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "Դուք պատրաստվում եք արտահանել {count} գլուխկոտրուկ(ներ) ներդրման համար:",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "Ինչ է տեղի ունենում հետո.",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. Ձեր հանելուկները կարտահանվեն JSON ֆայլ",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. Դուք կարող եք համօգտագործել այս ֆայլը համօգտագործման երկխոսության միջոցով",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. Ներկայացրեք GitHub-ի, էլփոստի կամ GitHub-ի խնդրի միջոցով (տես ուղեցույցը)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. Փազլները կվերանայվեն սպասարկողների կողմից",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. Հաստատվելուց հետո դրանք դառնում են ներկառուցված հանելուկներ:",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "Նպաստելով՝ դուք համաձայնում եք արտոնագրել ձեր գլուխկոտրուկի բովանդակությունը CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike) համաձայն:",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "Արտահանում ներդրման համար",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "Սկսեք նպաստել",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "Ինչպես կատարել հանելուկներ",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "Դիտեք այս {count} հանելուկները:",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "Փազլներ ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "Փազլների ներդրում.\n\nՏե՛ս PUZZLE_CONTRIBUTION_GUIDE.md՝ ներկայացնելու հրահանգների համար:",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "Փազլների ներդրում՝ {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "Փազլների ներդրումներ։\n\nՏե՛ս PUZZLE_CONTRIBUTION_GUIDE.md՝ ներկայացնելու հրահանգների համար:",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "Փազլներ ({count} հանելուկներ)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "Օգնեք ավելի լավ դարձնել այս ծրագիրը՝ նպաստելով ձեր հանելուկներին:",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "Արագ մեկնարկ.",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "Ստեղծեք որակյալ հանելուկներ",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "Համոզվեք, որ ձեր գլուխկոտրուկն ունի հստակ լուծում, լավ մետատվյալներ և ինչ-որ արժեքավոր բան է սովորեցնում:",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "Ավելացրե՛ք Ձեր անունը",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "Խմբագրեք ձեր գլուխկոտրուկը և ավելացրեք ձեր անունը որպես հեղինակ՝ վարկ ստանալու համար:",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "Արտահանում ներդրման համար",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "Ընտրեք ձեր հանելուկները և հպեք վերբեռնման պատկերակին՝ ճիշտ ձևաչափով արտահանելու համար:",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "Ներկայացրե՛ք",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "Կիսեք արտահանված ֆայլը GitHub Pull Request-ի, Issue-ի կամ էլփոստի միջոցով:",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "Ամբողջական Փաստաթղթեր",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "Ամբողջական հրահանգների, որակի ուղեցույցների և ներկայացման տարբերակների համար տես PUZZLE_CONTRIBUTION_GUIDE.md-ը պահոցում:",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "Որակի պահանջներ.",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ Հստակ, եզակի լուծում",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ Ամբողջական մետատվյալներ (վերնագիր, նկարագրություն և այլն)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ Հեղինակի վերագրում",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ Բարդության ճշգրիտ գնահատական",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ Ուսուցողական կամ զվարճալի",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "հունվար",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "փետրվար",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "մարտ",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "ապրիլ",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "մայիս",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "հունիս",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "հուլիս",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "օգոստոս",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "սեպտեմբեր",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "հոկտեմբեր",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "նոյեմբեր",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "դեկտեմբեր",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }

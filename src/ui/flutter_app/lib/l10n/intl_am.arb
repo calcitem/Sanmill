@@ -2182,5 +2182,1776 @@
     "voiceAssistantSettings": "የድምጽ ረዳት ቅንብሮች",
     "@voiceAssistantSettings": {},
     "voiceAssistantSettingsDescription": "ሞዴል፣ ቋንቋ እና ባህሪ ያዋቅሩ",
-    "@voiceAssistantSettingsDescription": {}
+    "@voiceAssistantSettingsDescription": {},
+    "llmAssistedDevelopment": "በኤልኤልኤም የታገዘ ልማት",
+    "@llmAssistedDevelopment": {
+        "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
+    },
+    "llmAssistedDevelopmentInputHint": "LLM እንዲረዳው የሚፈልጉትን ተግባር ያብራሩ...",
+    "@llmAssistedDevelopmentInputHint": {
+        "description": "Hint text for the LLM-assisted development input field"
+    },
+    "download": "አውርድ",
+    "@download": {
+        "description": "Download button text"
+    },
+    "status": "ሁኔታ",
+    "@status": {
+        "description": "Status label"
+    },
+    "unknown": "ያልታወቀ",
+    "@unknown": {
+        "description": "Unknown value"
+    },
+    "enableAiChat": "AI ውይይትን አንቃ",
+    "@enableAiChat": {},
+    "allowChatWithAiAssistant": "ከ AI ረዳት ጋር ማውራት ፍቀድ (የሙከራ)",
+    "@allowChatWithAiAssistant": {},
+    "enablePiecePickUpAnimation": "ቁራጭ ማንሳት እነማ አንቃ",
+    "@enablePiecePickUpAnimation": {
+        "description": "Enable piece pick-up and drop animation when moving"
+    },
+    "puzzles": "እንቆቅልሾች",
+    "@puzzles": {
+        "description": "Puzzles menu item"
+    },
+    "puzzle": "እንቆቅልሽ",
+    "@puzzle": {
+        "description": "Puzzle"
+    },
+    "noPuzzlesAvailable": "ምንም እንቆቅልሾች የሉም",
+    "@noPuzzlesAvailable": {
+        "description": "Message when no puzzles are available"
+    },
+    "filter": "አጣራ",
+    "@filter": {
+        "description": "Filter"
+    },
+    "category": "ምድብ",
+    "@category": {
+        "description": "Category"
+    },
+    "clearFilter": "ማጣሪያን አጽዳ",
+    "@clearFilter": {
+        "description": "Clear all filters"
+    },
+    "puzzleStatistics": "የእንቆቅልሽ ስታቲስቲክስ",
+    "@puzzleStatistics": {
+        "description": "Puzzle statistics"
+    },
+    "totalPuzzles": "ጠቅላላ እንቆቅልሾች",
+    "@totalPuzzles": {
+        "description": "Total puzzles"
+    },
+    "completed": "ተጠናቀቀ",
+    "@completed": {
+        "description": "Completed"
+    },
+    "totalStars": "ጠቅላላ ኮከቦች",
+    "@totalStars": {
+        "description": "Total stars earned"
+    },
+    "completionPercentage": "ማጠናቀቅ",
+    "@completionPercentage": {
+        "description": "Completion percentage"
+    },
+    "puzzleDifficultyBeginner": "ጀማሪ",
+    "@puzzleDifficultyBeginner": {
+        "description": "Beginner difficulty"
+    },
+    "puzzleDifficultyEasy": "ቀላል",
+    "@puzzleDifficultyEasy": {
+        "description": "Easy difficulty"
+    },
+    "puzzleDifficultyMedium": "መካከለኛ",
+    "@puzzleDifficultyMedium": {
+        "description": "Medium difficulty"
+    },
+    "puzzleDifficultyHard": "ከባድ",
+    "@puzzleDifficultyHard": {
+        "description": "Hard difficulty"
+    },
+    "puzzleDifficultyExpert": "ባለሙያ",
+    "@puzzleDifficultyExpert": {
+        "description": "Expert difficulty"
+    },
+    "puzzleDifficultyMaster": "መምህር",
+    "@puzzleDifficultyMaster": {
+        "description": "Master difficulty"
+    },
+    "puzzleCategoryFormMill": "ቅጽ Mill",
+    "@puzzleCategoryFormMill": {
+        "description": "Form a mill category"
+    },
+    "puzzleCategoryCapturePieces": "ያንሱ",
+    "@puzzleCategoryCapturePieces": {
+        "description": "Capture pieces category"
+    },
+    "puzzleCategoryWinGame": "ጨዋታ አሸንፉ",
+    "@puzzleCategoryWinGame": {
+        "description": "Win the game category"
+    },
+    "puzzleCategoryDefend": "መከላከያ",
+    "@puzzleCategoryDefend": {
+        "description": "Defense category"
+    },
+    "puzzleCategoryFindBestMove": "ምርጥ እንቅስቃሴ",
+    "@puzzleCategoryFindBestMove": {
+        "description": "Find best move category"
+    },
+    "puzzleCategoryEndgame": "የመጨረሻ ጨዋታ",
+    "@puzzleCategoryEndgame": {
+        "description": "Endgame category"
+    },
+    "puzzleCategoryOpening": "በመክፈት ላይ",
+    "@puzzleCategoryOpening": {
+        "description": "Opening category"
+    },
+    "puzzleCategoryMixed": "የተቀላቀለ",
+    "@puzzleCategoryMixed": {
+        "description": "Mixed tactics category"
+    },
+    "exitPuzzle": "ከእንቆቅልሽ ይውጡ?",
+    "@exitPuzzle": {
+        "description": "Exit puzzle confirmation"
+    },
+    "puzzleProgressWillBeLost": "መሻሻል ይጠፋል።ይቀጥል?",
+    "@puzzleProgressWillBeLost": {
+        "description": "Warning about losing puzzle progress"
+    },
+    "moves": "ይንቀሳቀሳል",
+    "@moves": {
+        "description": "Number of moves"
+    },
+    "optimal": "ምርጥ",
+    "@optimal": {
+        "description": "Optimal move count"
+    },
+    "checkSolution": "መፍትሄውን ይፈትሹ",
+    "@checkSolution": {
+        "description": "Check if solution is correct"
+    },
+    "giveUp": "ተስፋ ቁረጥ",
+    "@giveUp": {
+        "description": "Give up on puzzle"
+    },
+    "puzzleSolved": "እንቆቅልሽ ተፈቷል!",
+    "@puzzleSolved": {
+        "description": "Puzzle completion message"
+    },
+    "hintsUsed": "ጥቅም ላይ የዋሉ ፍንጮች",
+    "@hintsUsed": {
+        "description": "Hints were used"
+    },
+    "tryAgain": "እንደገና ይሞክሩ",
+    "@tryAgain": {
+        "description": "Try the puzzle again"
+    },
+    "backToList": "ወደ ዝርዝር ተመለስ",
+    "@backToList": {
+        "description": "Go back to puzzle list"
+    },
+    "solution": "መፍትሄ",
+    "@solution": {
+        "description": "Puzzle solution"
+    },
+    "puzzleCreateNew": "አዲስ እንቆቅልሽ ፍጠር",
+    "@puzzleCreateNew": {
+        "description": "Create a new custom puzzle"
+    },
+    "puzzleEdit": "እንቆቅልሽ አርትዕ",
+    "@puzzleEdit": {
+        "description": "Edit an existing puzzle"
+    },
+    "puzzleCustom": "ብጁ",
+    "@puzzleCustom": {
+        "description": "Custom puzzle badge"
+    },
+    "puzzleRuleMismatch": "ደንቦች አለመመጣጠን",
+    "@puzzleRuleMismatch": {
+        "description": "Badge shown when puzzle rules don't match current settings"
+    },
+    "puzzleRuleMismatchWarning": "ለ{puzzleRules}፣ በአሁኑ ጊዜ {currentRules}",
+    "@puzzleRuleMismatchWarning": {
+        "description": "Warning message when opening a puzzle with mismatched rules",
+        "placeholders": {
+            "puzzleRules": {
+                "type": "String",
+                "example": "Twelve Men's Morris"
+            },
+            "currentRules": {
+                "type": "String",
+                "example": "Nine Men's Morris"
+            }
+        }
+    },
+    "puzzleRuleMismatchContinue": "ቀጥል",
+    "@puzzleRuleMismatchContinue": {
+        "description": "Button to continue opening a puzzle despite rule mismatch"
+    },
+    "puzzleCompatibleOnly": "የሚስማማ ብቻ",
+    "@puzzleCompatibleOnly": {
+        "description": "Filter option to show only puzzles compatible with current rules"
+    },
+    "puzzleSelect": "እንቆቅልሾችን ይምረጡ",
+    "@puzzleSelect": {
+        "description": "Enter multi-select mode"
+    },
+    "puzzleSelectedCount": "{count} ተመርጧል",
+    "@puzzleSelectedCount": {
+        "description": "Number of selected puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSelectAll": "ሁሉንም ይምረጡ",
+    "@puzzleSelectAll": {
+        "description": "Select all puzzles"
+    },
+    "puzzleExport": "ወደ ውጪ ላክ",
+    "@puzzleExport": {
+        "description": "Export selected puzzles"
+    },
+    "puzzleImport": "አስመጣ",
+    "@puzzleImport": {
+        "description": "Import puzzles from file"
+    },
+    "puzzleExportSuccess": "{count,plural, =1{በተሳካ ሁኔታ {count} እንቆቅልሽ ወደ ውጭ ተልኳል።} other{{count} እንቆቅልሾችን በተሳካ ሁኔታ ወደ ውጭ ተልኳል።}}",
+    "@puzzleExportSuccess": {
+        "description": "Puzzle export success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleExportFailed": "እንቆቅልሾችን ወደ ውጭ መላክ አልተሳካም።",
+    "@puzzleExportFailed": {
+        "description": "Puzzle export failure message"
+    },
+    "puzzleImportSuccess": "{count,plural, =1{በተሳካ ሁኔታ {count} እንቆቅልሽ አስመጣ} other{በተሳካ ሁኔታ {count} እንቆቅልሾችን አስመጣ}}",
+    "@puzzleImportSuccess": {
+        "description": "Puzzle import success message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleImportFailed": "እንቆቅልሾችን ማስመጣት አልተሳካም።",
+    "@puzzleImportFailed": {
+        "description": "Puzzle import failure message"
+    },
+    "puzzleImportNoFileSelected": "ምንም ፋይል አልተመረጠም።",
+    "@puzzleImportNoFileSelected": {
+        "description": "Error when no file is selected for import"
+    },
+    "puzzleImportInvalidFilePath": "ልክ ያልሆነ የፋይል መንገድ",
+    "@puzzleImportInvalidFilePath": {
+        "description": "Error when file path is invalid"
+    },
+    "puzzleImportErrorPickingFile": "ፋይል መምረጥ ላይ ስህተት፡{error}",
+    "@puzzleImportErrorPickingFile": {
+        "description": "Error when picking file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportFileNotExist": "ፋይል የለም።",
+    "@puzzleImportFileNotExist": {
+        "description": "Error when file does not exist"
+    },
+    "puzzleImportInvalidFormat": "ልክ ያልሆነ የፋይል ቅርጸት፡ የእንቆቅልሽ መስክ ጠፍቷል",
+    "@puzzleImportInvalidFormat": {
+        "description": "Error when file format is invalid"
+    },
+    "puzzleImportIncompatibleVersion": "ተኳሃኝ ያልሆነ የፋይል ቅርጸት ስሪት፡ {version} (የተጠበቀው {expected})",
+    "@puzzleImportIncompatibleVersion": {
+        "description": "Error when file format version is incompatible",
+        "placeholders": {
+            "version": {
+                "type": "String"
+            },
+            "expected": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportInvalidFen": "እንቆቅልሽ {index} (\"{title}\") ልክ ያልሆነ የFEN ቅርጸት አለው።",
+    "@puzzleImportInvalidFen": {
+        "description": "Error when puzzle has invalid FEN",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportRuleMismatchWarning": "እንቆቅልሽ {index} (\"{title}\") የተለያዩ ደንቦችን ይጠቀማል፡ {puzzleRules} (የአሁኑ፡ {currentRules})።ይህ እንቆቅልሽ አሁን ካሉት ቅንብሮችዎ ጋር በትክክል ላይሰራ ይችላል።",
+    "@puzzleImportRuleMismatchWarning": {
+        "description": "Warning when puzzle uses different rule variant",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "title": {
+                "type": "String"
+            },
+            "puzzleRules": {
+                "type": "String"
+            },
+            "currentRules": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportParseFailed": "እንቆቅልሹን መተንተን አልተሳካም {index}: {error}",
+    "@puzzleImportParseFailed": {
+        "description": "Error when parsing puzzle fails",
+        "placeholders": {
+            "index": {
+                "type": "int"
+            },
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleImportErrors": "ስህተቶች፡-",
+    "@puzzleImportErrors": {
+        "description": "Label for error list"
+    },
+    "puzzleImportWarnings": "ማስጠንቀቂያዎች፡-",
+    "@puzzleImportWarnings": {
+        "description": "Label for warning list"
+    },
+    "puzzleImportErrorReading": "ፋይል በማንበብ ላይ ስህተት፦ {error}",
+    "@puzzleImportErrorReading": {
+        "description": "Error when reading file fails",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleValidationTitleRequired": "እንቆቅልሽ ርዕስ ሊኖረው ይገባል።",
+    "@puzzleValidationTitleRequired": {
+        "description": "Validation error: title required"
+    },
+    "puzzleValidationDescriptionRequired": "እንቆቅልሽ መግለጫ ሊኖረው ይገባል።",
+    "@puzzleValidationDescriptionRequired": {
+        "description": "Validation error: description required"
+    },
+    "puzzleValidationPositionRequired": "እንቆቅልሽ ትክክለኛ ቦታ ሊኖረው ይገባል።",
+    "@puzzleValidationPositionRequired": {
+        "description": "Validation error: position required"
+    },
+    "puzzleValidationInvalidFen": "እንቆቅልሽ ልክ ያልሆነ የFEN ቅርጸት አለው።እባክዎ ቦታውን ያረጋግጡ።",
+    "@puzzleValidationInvalidFen": {
+        "description": "Validation error: invalid FEN"
+    },
+    "puzzleValidationSolutionRequired": "እንቆቅልሽ መፍትሄ ሊኖረው ይገባል።",
+    "@puzzleValidationSolutionRequired": {
+        "description": "Validation error: solution required"
+    },
+    "puzzleValidationTitleTooShort": "ርዕስ በጣም አጭር (ቢያንስ 5 ቁምፊዎች)",
+    "@puzzleValidationTitleTooShort": {
+        "description": "Validation error: title too short"
+    },
+    "puzzleValidationTitleTooLong": "ርዕስ በጣም ረጅም (ቢበዛ 100 ቁምፊዎች)",
+    "@puzzleValidationTitleTooLong": {
+        "description": "Validation error: title too long"
+    },
+    "puzzleValidationDescriptionTooShort": "መግለጫው በጣም አጭር (ቢያንስ 10 ቁምፊዎች)",
+    "@puzzleValidationDescriptionTooShort": {
+        "description": "Validation error: description too short"
+    },
+    "puzzleValidationDescriptionTooLong": "መግለጫው በጣም ረጅም ነው (ቢበዛ 500 ቁምፊዎች)",
+    "@puzzleValidationDescriptionTooLong": {
+        "description": "Validation error: description too long"
+    },
+    "puzzleValidationAuthorRequired": "እባክዎን ከማበርከትዎ በፊት ስምዎን እንደ ደራሲ ያክሉ",
+    "@puzzleValidationAuthorRequired": {
+        "description": "Validation error: author required for contribution"
+    },
+    "puzzleDeleteConfirm": "{count,plural, =1{{count} እንቆቅልሽ ይሰረዝ?} other{{count} እንቆቅልሾች ይሰረዙ?}}",
+    "@puzzleDeleteConfirm": {
+        "description": "Confirm deletion of puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleDeleted": "{count,plural, =1{{count} እንቆቅልሽ ተሰርዟል።} other{{count} እንቆቅልሾች ተሰርዘዋል}}",
+    "@puzzleDeleted": {
+        "description": "Puzzles deleted message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleCannotDeleteBuiltIn": "አብሮ የተሰሩ እንቆቅልሾችን መሰረዝ አልተቻለም",
+    "@puzzleCannotDeleteBuiltIn": {
+        "description": "Error when trying to delete built-in puzzles"
+    },
+    "puzzleCreationInstructions": "እንቆቅልሽ እንዴት መፍጠር እንደሚቻል",
+    "@puzzleCreationInstructions": {
+        "description": "Puzzle creation instructions header"
+    },
+    "puzzleCreationSteps": "1. የማዋቀር ሰሌዳ\n2. ቅጽበታዊ አቀማመጥ\n3. እንቅስቃሴዎችን ይመዝግቡ\n4. ዝርዝሮችን ይሙሉ\n5. አስቀምጥ",
+    "@puzzleCreationSteps": {
+        "description": "Steps for creating a puzzle"
+    },
+    "puzzleSetupPosition": "አቀማመጥ አቀማመጥ",
+    "@puzzleSetupPosition": {
+        "description": "Setup the board position section"
+    },
+    "puzzlePositionSnapshotted2": "አቀማመጥ በቅጽበት ታይቷል።",
+    "@puzzlePositionSnapshotted2": {
+        "description": "Header showing position has been snapshotted (title case)"
+    },
+    "puzzleInitialPosition": "የመጀመሪያ አቀማመጥ",
+    "@puzzleInitialPosition": {
+        "description": "Label for initial puzzle position"
+    },
+    "puzzleFinalPosition": "የመጨረሻ አቀማመጥ",
+    "@puzzleFinalPosition": {
+        "description": "Label for final puzzle position after solution"
+    },
+    "puzzleNoPositionSnapshotted": "እስካሁን ምንም ቅጽበታዊ እይታ የለም።",
+    "@puzzleNoPositionSnapshotted": {
+        "description": "No position snapshotted message"
+    },
+    "puzzleSnapshotPositionFirst": "ቅጽበታዊ አቀማመጥ መጀመሪያ",
+    "@puzzleSnapshotPositionFirst": {
+        "description": "Error when trying to record without position"
+    },
+    "puzzleRecordSolution": "የመዝገብ መፍትሄ",
+    "@puzzleRecordSolution": {
+        "description": "Record solution moves section"
+    },
+    "puzzleStartRecording": "መቅዳት ጀምር",
+    "@puzzleStartRecording": {
+        "description": "Start recording solution moves"
+    },
+    "puzzleStopRecording": "መቅዳት አቁም",
+    "@puzzleStopRecording": {
+        "description": "Stop recording solution moves"
+    },
+    "puzzleRecording": "በመቅዳት ላይ...",
+    "@puzzleRecording": {
+        "description": "Currently recording moves"
+    },
+    "puzzleRecordingStarted": "መቅዳት ተጀመረ",
+    "@puzzleRecordingStarted": {
+        "description": "Recording started message"
+    },
+    "puzzleRecordingStopped": "{count,plural, =1{የተመዘገበ {count} እንቅስቃሴ} other{የተቀዳ {count} እንቅስቃሴዎች}}",
+    "@puzzleRecordingStopped": {
+        "description": "Recording stopped message",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleSolutionMoves": "{count,plural, =1{መፍትሄ፡ {count} ማንቀሳቀስ} other{መፍትሄ፡ {count} ይንቀሳቀሳል}}",
+    "@puzzleSolutionMoves": {
+        "description": "Number of solution moves",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoSolutionRecorded": "እስካሁን ምንም መፍትሄ የለም።",
+    "@puzzleNoSolutionRecorded": {
+        "description": "No solution recorded message"
+    },
+    "puzzleClearSolution": "ግልጽ መፍትሔ",
+    "@puzzleClearSolution": {
+        "description": "Clear recorded solution"
+    },
+    "puzzleSolutionTab": "መፍትሄ {number}",
+    "@puzzleSolutionTab": {
+        "description": "Tab label for solution number",
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleAddSolution": "ሌላ መፍትሄ ጨምር",
+    "@puzzleAddSolution": {
+        "description": "Button to add another solution"
+    },
+    "puzzleRemoveSolution": "ይህንን መፍትሄ ያስወግዱ",
+    "@puzzleRemoveSolution": {
+        "description": "Button to remove current solution"
+    },
+    "puzzleOptimalSolution": "⭐ ምርጥ",
+    "@puzzleOptimalSolution": {
+        "description": "Badge for optimal solution"
+    },
+    "puzzleAlternativeSolution": "አማራጭ",
+    "@puzzleAlternativeSolution": {
+        "description": "Badge for alternative solution"
+    },
+    "puzzleMarkAsOptimal": "ምርጥ እንደሆነ ምልክት አድርግበት",
+    "@puzzleMarkAsOptimal": {
+        "description": "Button to mark solution as optimal"
+    },
+    "puzzleSolutionCount": "{count,plural, =1{1 መፍትሄ} other{{count} መፍትሄዎች}}",
+    "@puzzleSolutionCount": {
+        "description": "Count of solutions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleRemoveSolutionConfirm": "ይህ መፍትሔ ይወገድ?",
+    "@puzzleRemoveSolutionConfirm": {
+        "description": "Confirmation dialog for removing solution"
+    },
+    "puzzleAtLeastOneSolution": "ቢያንስ አንድ መፍትሄ ያስፈልጋል",
+    "@puzzleAtLeastOneSolution": {
+        "description": "At least one solution required validation message"
+    },
+    "puzzleDetails": "የእንቆቅልሽ ዝርዝሮች",
+    "@puzzleDetails": {
+        "description": "Puzzle details section"
+    },
+    "puzzleTitle": "ርዕስ",
+    "@puzzleTitle": {
+        "description": "Puzzle title field"
+    },
+    "puzzleDescription": "መግለጫ",
+    "@puzzleDescription": {
+        "description": "Puzzle description field"
+    },
+    "puzzleCategory": "ምድብ",
+    "@puzzleCategory": {
+        "description": "Puzzle category field"
+    },
+    "puzzleDifficulty": "አስቸጋሪ",
+    "@puzzleDifficulty": {
+        "description": "Puzzle difficulty field"
+    },
+    "puzzleHint": "ፍንጭ",
+    "@puzzleHint": {
+        "description": "Puzzle hint field"
+    },
+    "puzzleTags": "መለያዎች",
+    "@puzzleTags": {
+        "description": "Puzzle tags field"
+    },
+    "puzzleTagsHint": "በነጠላ ሰረዝ ተለያይቷል።",
+    "@puzzleTagsHint": {
+        "description": "Hint for tags input"
+    },
+    "puzzleAuthor": "ደራሲ",
+    "@puzzleAuthor": {
+        "description": "Puzzle author field"
+    },
+    "puzzleCompletionMessage": "የማጠናቀቂያ መልእክት",
+    "@puzzleCompletionMessage": {
+        "description": "Completion message shown after solving puzzle"
+    },
+    "puzzleCompletionMessageHint": "ስልቱን ይግለጹ ወይም ፈቺውን እንኳን ደስ ያለዎት",
+    "@puzzleCompletionMessageHint": {
+        "description": "Hint text for completion message field"
+    },
+    "puzzleTitleRequired": "ርዕስ ያስፈልጋል",
+    "@puzzleTitleRequired": {
+        "description": "Title required error"
+    },
+    "puzzleDescriptionRequired": "መግለጫ ያስፈልጋል",
+    "@puzzleDescriptionRequired": {
+        "description": "Description required error"
+    },
+    "puzzlePositionRequired": "ቦታ ያስፈልጋል",
+    "@puzzlePositionRequired": {
+        "description": "Position required error"
+    },
+    "puzzleSolutionRequired": "መፍትሄ ያስፈልጋል",
+    "@puzzleSolutionRequired": {
+        "description": "Solution required error"
+    },
+    "puzzleCreated": "እንቆቅልሽ ተፈጠረ",
+    "@puzzleCreated": {
+        "description": "Puzzle created message"
+    },
+    "puzzleUpdated": "እንቆቅልሽ ተዘምኗል",
+    "@puzzleUpdated": {
+        "description": "Puzzle updated message"
+    },
+    "puzzleSaveFailed": "እንቆቅልሹን ማስቀመጥ አልተሳካም።",
+    "@puzzleSaveFailed": {
+        "description": "Puzzle save failed message"
+    },
+    "optional": "አማራጭ",
+    "@optional": {
+        "description": "Optional field indicator"
+    },
+    "yourProgress": "የእርስዎ እድገት",
+    "@yourProgress": {
+        "description": "Your progress header"
+    },
+    "quit": "አቁም",
+    "@quit": {
+        "description": "Quit button"
+    },
+    "all": "ሁሉም",
+    "@all": {
+        "description": "All option in filters"
+    },
+    "comingSoon": "በቅርብ ቀን",
+    "@comingSoon": {
+        "description": "Coming soon message"
+    },
+    "dailyPuzzle": "ዕለታዊ እንቆቅልሽ",
+    "@dailyPuzzle": {
+        "description": "Daily puzzle feature name"
+    },
+    "dailyPuzzleDesc": "በየቀኑ አዲስ እንቆቅልሽ ይፍቱ",
+    "@dailyPuzzleDesc": {
+        "description": "Daily puzzle description"
+    },
+    "dailyPuzzleNumber": "ቀን #{dayNumber}",
+    "@dailyPuzzleNumber": {
+        "description": "Daily puzzle day number",
+        "placeholders": {
+            "dayNumber": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStreak": "ጭረት",
+    "@dailyPuzzleStreak": {
+        "description": "Daily puzzle streak label"
+    },
+    "dailyPuzzleDayStreak": "የቀን ድግግሞሽ",
+    "@dailyPuzzleDayStreak": {
+        "description": "Day streak suffix"
+    },
+    "dailyPuzzleDays": "ቀናት",
+    "@dailyPuzzleDays": {
+        "description": "Days label"
+    },
+    "dailyPuzzleBestStreak": "ምርጥ፡{longestStreak} ቀናት",
+    "@dailyPuzzleBestStreak": {
+        "description": "Best streak display",
+        "placeholders": {
+            "longestStreak": {
+                "type": "int"
+            }
+        }
+    },
+    "dailyPuzzleStart": "ዕለታዊ እንቆቅልሽ ይጀምሩ",
+    "@dailyPuzzleStart": {
+        "description": "Start daily puzzle button"
+    },
+    "dailyPuzzleStreakHint": "መስመርዎን ለመገንባት ዕለታዊ እንቆቅልሾችን ያጠናቅቁ!",
+    "@dailyPuzzleStreakHint": {
+        "description": "Streak hint message"
+    },
+    "dailyPuzzleCurrentStreak": "የአሁኑ ጅረት",
+    "@dailyPuzzleCurrentStreak": {
+        "description": "Current streak label"
+    },
+    "dailyPuzzleLongestStreak": "ረጅሙ ጅምር",
+    "@dailyPuzzleLongestStreak": {
+        "description": "Longest streak label"
+    },
+    "dailyPuzzleTotalCompleted": "ጠቅላላ ተጠናቋል",
+    "@dailyPuzzleTotalCompleted": {
+        "description": "Total completed puzzles label"
+    },
+    "dailyPuzzleStreakInfo": "ርዝራዥዎን ለመጠበቅ በየቀኑ እንቆቅልሾችን ይፍቱ።አንድ ቀን ማጣት እንደገና ያስጀምረዋል!",
+    "@dailyPuzzleStreakInfo": {
+        "description": "Streak info message"
+    },
+    "allPuzzles": "ሁሉም እንቆቅልሾች",
+    "@allPuzzles": {
+        "description": "All puzzles mode name"
+    },
+    "allPuzzlesDesc": "ሁሉንም የሚገኙትን እንቆቅልሾች ያስሱ",
+    "@allPuzzlesDesc": {
+        "description": "All puzzles mode description"
+    },
+    "puzzleRush": "የእንቆቅልሽ ሩጫ",
+    "@puzzleRush": {
+        "description": "Puzzle rush mode name"
+    },
+    "puzzleRushDesc": "እንቆቅልሾችን በሰዓቱ ይፍቱ",
+    "@puzzleRushDesc": {
+        "description": "Puzzle rush mode description"
+    },
+    "puzzleRushTagline": "በ 5 ደቂቃዎች ውስጥ በተቻለዎት መጠን ብዙ እንቆቅልሾችን ይፍቱ!",
+    "@puzzleRushTagline": {
+        "description": "Puzzle rush tagline"
+    },
+    "puzzleRushRules": "ደንቦች",
+    "@puzzleRushRules": {
+        "description": "Puzzle rush rules header"
+    },
+    "puzzleRushRule1": "⏱️ 5 ደቂቃ በሰአት ላይ",
+    "@puzzleRushRule1": {
+        "description": "Puzzle rush rule 1"
+    },
+    "puzzleRushRule2": "❤️ 3 ህይወት - በአንድ ስህተት 1 ጠፍቷል",
+    "@puzzleRushRule2": {
+        "description": "Puzzle rush rule 2"
+    },
+    "puzzleRushRule3": "🏆 ነጥብዎን ያሳድጉ!",
+    "@puzzleRushRule3": {
+        "description": "Puzzle rush rule 3"
+    },
+    "puzzleRushStart": "መጣደፍ ጀምር",
+    "@puzzleRushStart": {
+        "description": "Start puzzle rush button"
+    },
+    "puzzleRushQuitConfirm": "መቸኮሉን ይተው?መሻሻል ይጠፋል።",
+    "@puzzleRushQuitConfirm": {
+        "description": "Quit rush confirmation message"
+    },
+    "puzzleRushResults": "የጥድፊያ ውጤቶች",
+    "@puzzleRushResults": {
+        "description": "Puzzle rush results header"
+    },
+    "puzzleRushTimeUp": "ጊዜው አልፏል!",
+    "@puzzleRushTimeUp": {
+        "description": "Time up message"
+    },
+    "puzzleRushOutOfLives": "ከህይወት ውጪ",
+    "@puzzleRushOutOfLives": {
+        "description": "Out of lives message"
+    },
+    "puzzleRushComplete": "መጣደፍ ተጠናቀቀ!",
+    "@puzzleRushComplete": {
+        "description": "Rush complete message"
+    },
+    "puzzleRushSolved": "ተፈቷል",
+    "@puzzleRushSolved": {
+        "description": "Puzzles solved label"
+    },
+    "puzzleRushFailed": "አልተሳካም።",
+    "@puzzleRushFailed": {
+        "description": "Puzzles failed label"
+    },
+    "puzzleRushAccuracy": "ትክክለኛነት",
+    "@puzzleRushAccuracy": {
+        "description": "Accuracy label"
+    },
+    "puzzleRushPlayAgain": "እንደገና ይጫወቱ",
+    "@puzzleRushPlayAgain": {
+        "description": "Play again button"
+    },
+    "puzzleBattle": "የእንቆቅልሽ ጦርነት",
+    "@puzzleBattle": {
+        "description": "Puzzle battle mode name"
+    },
+    "puzzleBattleDesc": "ከሌሎች ተጫዋቾች ጋር ይወዳደሩ",
+    "@puzzleBattleDesc": {
+        "description": "Puzzle battle mode description"
+    },
+    "puzzleBattleComingSoon": "በቅርብ ቀን!",
+    "@puzzleBattleComingSoon": {
+        "description": "Puzzle battle coming soon message"
+    },
+    "puzzleBattleStayTuned": "ይህ ባህሪ በአሁኑ ጊዜ በመገንባት ላይ ነው።ይከታተሉ!",
+    "@puzzleBattleStayTuned": {
+        "description": "Puzzle battle stay tuned message"
+    },
+    "puzzleBattleFeature1": "⚔️ 1v1 የእንቆቅልሽ ውድድር",
+    "@puzzleBattleFeature1": {
+        "description": "Puzzle battle feature 1"
+    },
+    "puzzleBattleFeature2": "🎯 የቀጥታ ተቃዋሚ ማዛመድ",
+    "@puzzleBattleFeature2": {
+        "description": "Puzzle battle feature 2"
+    },
+    "puzzleBattleFeature3": "📊 የደረጃ አሰጣጥ ስርዓት",
+    "@puzzleBattleFeature3": {
+        "description": "Puzzle battle feature 3"
+    },
+    "puzzleBattleFeature4": "🏆 የመሪዎች ሰሌዳዎች",
+    "@puzzleBattleFeature4": {
+        "description": "Puzzle battle feature 4"
+    },
+    "customPuzzles": "ብጁ እንቆቅልሾች",
+    "@customPuzzles": {
+        "description": "Custom puzzles mode name"
+    },
+    "customPuzzlesDesc": "እንቆቅልሾችዎን ይፍጠሩ እና ያስተዳድሩ",
+    "@customPuzzlesDesc": {
+        "description": "Custom puzzles mode description"
+    },
+    "puzzleMultiSelectMode": "ባለብዙ ምረጥ ሁነታ",
+    "@puzzleMultiSelectMode": {
+        "description": "Multi-select mode label"
+    },
+    "puzzleCreate": "እንቆቅልሽ ፍጠር",
+    "@puzzleCreate": {
+        "description": "Create puzzle button"
+    },
+    "puzzleStreak": "የእንቆቅልሽ ጭረት",
+    "@puzzleStreak": {
+        "description": "Puzzle streak mode name"
+    },
+    "puzzleStreakDesc": "ያለ ስህተቶች በተከታታይ ይፍቱ",
+    "@puzzleStreakDesc": {
+        "description": "Puzzle streak mode description"
+    },
+    "puzzleStreakTagline": "በአንድ ረድፍ ውስጥ ስንት መፍታት ይችላሉ?",
+    "@puzzleStreakTagline": {
+        "description": "Puzzle streak tagline"
+    },
+    "puzzleStreakRules": "ደንቦች",
+    "@puzzleStreakRules": {
+        "description": "Puzzle streak rules header"
+    },
+    "puzzleStreakRule1": "🎯 በተቻለ መጠን ብዙ እንቆቅልሾችን ይፍቱ",
+    "@puzzleStreakRule1": {
+        "description": "Puzzle streak rule 1"
+    },
+    "puzzleStreakRule2": "❌ አንድ ስህተት እና አብቅቷል።",
+    "@puzzleStreakRule2": {
+        "description": "Puzzle streak rule 2"
+    },
+    "puzzleStreakRule3": "🏆 የግል መዝገብህን አሸንፍ",
+    "@puzzleStreakRule3": {
+        "description": "Puzzle streak rule 3"
+    },
+    "puzzleStreakStart": "ጅምር ጅምር",
+    "@puzzleStreakStart": {
+        "description": "Start puzzle streak button"
+    },
+    "puzzleStreakCurrent": "የአሁኑ",
+    "@puzzleStreakCurrent": {
+        "description": "Current streak label"
+    },
+    "puzzleStreakBest": "ምርጥ",
+    "@puzzleStreakBest": {
+        "description": "Best streak label"
+    },
+    "puzzleStreakResults": "ተከታታይ ውጤቶች",
+    "@puzzleStreakResults": {
+        "description": "Streak results header"
+    },
+    "puzzleStreakEnded": "ጭረት አልቋል",
+    "@puzzleStreakEnded": {
+        "description": "Streak ended message"
+    },
+    "puzzleStreakNewRecord": "አዲስ መዝገብ!",
+    "@puzzleStreakNewRecord": {
+        "description": "New record message"
+    },
+    "puzzleStreakFinalScore": "የመጨረሻ ነጥብ",
+    "@puzzleStreakFinalScore": {
+        "description": "Final score label"
+    },
+    "puzzleStreakTryAgain": "እንደገና ይሞክሩ",
+    "@puzzleStreakTryAgain": {
+        "description": "Try again button"
+    },
+    "puzzleStreakQuitConfirm": "እርግጠኛ ነዎት ማቆም ይፈልጋሉ?የእርሶ መስመር ይጠፋል።",
+    "@puzzleStreakQuitConfirm": {
+        "description": "Quit streak confirmation"
+    },
+    "puzzleHistory": "ታሪክ",
+    "@puzzleHistory": {
+        "description": "Puzzle history page name"
+    },
+    "puzzleHistoryDesc": "የእርስዎን የእንቆቅልሽ ሙከራዎች ይመልከቱ",
+    "@puzzleHistoryDesc": {
+        "description": "Puzzle history description"
+    },
+    "puzzleHistoryEmpty": "የእንቆቅልሽ ታሪክ የለም።",
+    "@puzzleHistoryEmpty": {
+        "description": "Empty history message"
+    },
+    "puzzleHistoryEmptyHint": "ታሪክህን እዚህ ለማየት እንቆቅልሾችን መፍታት ጀምር",
+    "@puzzleHistoryEmptyHint": {
+        "description": "Empty history hint"
+    },
+    "puzzleHistorySuccess": "ስኬት ብቻ",
+    "@puzzleHistorySuccess": {
+        "description": "Success filter"
+    },
+    "puzzleHistoryFailed": "አልተሳካም ብቻ",
+    "@puzzleHistoryFailed": {
+        "description": "Failed filter"
+    },
+    "puzzleHistoryUnknown": "ያልታወቀ እንቆቅልሽ",
+    "@puzzleHistoryUnknown": {
+        "description": "Unknown puzzle label"
+    },
+    "puzzleHistoryHints": "ፍንጭ",
+    "@puzzleHistoryHints": {
+        "description": "Hints label"
+    },
+    "puzzleStatisticsDesc": "ዝርዝር ትንታኔዎችን ይመልከቱ",
+    "@puzzleStatisticsDesc": {
+        "description": "Statistics page description"
+    },
+    "puzzleStatsRating": "የእርስዎ የእንቆቅልሽ ደረጃ",
+    "@puzzleStatsRating": {
+        "description": "Puzzle rating header"
+    },
+    "puzzleStatsProvisional": "ጊዜያዊ ({gamesLeft} ጨዋታዎች ቀርተዋል)",
+    "@puzzleStatsProvisional": {
+        "description": "Provisional rating message",
+        "placeholders": {
+            "gamesLeft": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleStatsGamesPlayed": "የተጫወቱ ጨዋታዎች",
+    "@puzzleStatsGamesPlayed": {
+        "description": "Games played label"
+    },
+    "puzzleStatsDeviation": "ማፈንገጥ",
+    "@puzzleStatsDeviation": {
+        "description": "Rating deviation label"
+    },
+    "puzzleStatsPerformance": "የአፈጻጸም አጠቃላይ እይታ",
+    "@puzzleStatsPerformance": {
+        "description": "Performance overview header"
+    },
+    "puzzleStatsSuccessRate": "የስኬት መጠን",
+    "@puzzleStatsSuccessRate": {
+        "description": "Success rate label"
+    },
+    "puzzleStatsAvgTime": "አማካኝጊዜ",
+    "@puzzleStatsAvgTime": {
+        "description": "Average time label"
+    },
+    "puzzleStatsSolved": "ተፈቷል",
+    "@puzzleStatsSolved": {
+        "description": "Solved count label"
+    },
+    "puzzleStatsFailed": "አልተሳካም።",
+    "@puzzleStatsFailed": {
+        "description": "Failed count label"
+    },
+    "puzzleStatsByDifficulty": "ስኬት በችግር",
+    "@puzzleStatsByDifficulty": {
+        "description": "Success by difficulty header"
+    },
+    "puzzleStatsByCategory": "ስኬት በምድብ",
+    "@puzzleStatsByCategory": {
+        "description": "Success by category header"
+    },
+    "puzzleStatsRecentActivity": "የቅርብ ጊዜ እንቅስቃሴ",
+    "@puzzleStatsRecentActivity": {
+        "description": "Recent activity header"
+    },
+    "puzzleStatsNoActivity": "ምንም የቅርብ ጊዜ እንቅስቃሴ የለም።",
+    "@puzzleStatsNoActivity": {
+        "description": "No activity message"
+    },
+    "edit": "አርትዕ",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "save": "አስቀምጥ",
+    "@save": {
+        "description": "Save button"
+    },
+    "noCustomPuzzles": "ምንም ብጁ እንቆቅልሾች የሉም",
+    "@noCustomPuzzles": {
+        "description": "Message when there are no custom puzzles"
+    },
+    "noCustomPuzzlesHint": "የተወሰኑ ቦታዎችን ለመለማመድ የራስዎን እንቆቅልሽ ይፍጠሩ",
+    "@noCustomPuzzlesHint": {
+        "description": "Hint message for creating custom puzzles"
+    },
+    "plannedFeatures": "ይህ ባህሪ ለወደፊት ልቀት የታቀደ ነው።",
+    "@plannedFeatures": {
+        "description": "Message for features under development"
+    },
+    "puzzleInvalidPosition": "ልክ ያልሆነ ቦታ",
+    "@puzzleInvalidPosition": {
+        "description": "Error message when puzzle position is invalid"
+    },
+    "puzzleOpenBoardSetup": "ክፍት ሰሌዳ (የማዋቀር ቦታ)",
+    "@puzzleOpenBoardSetup": {
+        "description": "Open the game board in Setup Position mode to arrange the starting position."
+    },
+    "puzzleOpenBoardPlay": "ሰሌዳ ክፈት (Play Moves)",
+    "@puzzleOpenBoardPlay": {
+        "description": "Open the game board to play the solution moves while recording."
+    },
+    "puzzleRecordingHintUseButton": "ቦርዱን ለመክፈት ከዚህ በታች ያለውን ቁልፍ ይጠቀሙ እና ለመመለስ ተመለስን ይጫኑ።",
+    "@puzzleRecordingHintUseButton": {
+        "description": "Hint telling users to use the provided button to navigate to the board and return."
+    },
+    "puzzleInvalidPositionFormat": "ልክ ያልሆነ የአቀማመጥ ቅርጸት።እባክዎ የጨዋታ ሰሌዳውን ያረጋግጡ።",
+    "@puzzleInvalidPositionFormat": {
+        "description": "Error message when position format is invalid"
+    },
+    "puzzleFailedLoadPosition": "ቦታን መጫን አልተሳካም።እባኮትን እንደገና ያንሱ።",
+    "@puzzleFailedLoadPosition": {
+        "description": "Error message when failed to load position"
+    },
+    "puzzleInvalidPositionFormatRecapture": "ልክ ያልሆነ የአቀማመጥ ቅርጸት።እባክዎ ቦታውን እንደገና ያንሱ።",
+    "@puzzleInvalidPositionFormatRecapture": {
+        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+    },
+    "puzzleShowDetailedWorkflow": "ዝርዝር የስራ ፍሰት አሳይ",
+    "@puzzleShowDetailedWorkflow": {
+        "description": "Tooltip for showing detailed workflow"
+    },
+    "puzzleCreationWorkflow": "የእንቆቅልሽ ፈጠራ የስራ ፍሰት",
+    "@puzzleCreationWorkflow": {
+        "description": "Title for puzzle creation workflow dialog"
+    },
+    "puzzleWorkflowStepSetup": "አቀማመጥ አቀማመጥ",
+    "@puzzleWorkflowStepSetup": {
+        "description": "Workflow step: setup position"
+    },
+    "puzzleWorkflowStepSetupDesc": "ሰሌዳ ክፈት፣ የማዋቀር ቦታ፣ ቅጽበተ-ፎቶ",
+    "@puzzleWorkflowStepSetupDesc": {
+        "description": "Description for setup position workflow step"
+    },
+    "puzzleWorkflowStepRecord": "የመዝገብ መፍትሄ",
+    "@puzzleWorkflowStepRecord": {
+        "description": "Workflow step: record solution"
+    },
+    "puzzleWorkflowStepRecordDesc": "መቅዳት ይጀምሩ፣ እንቅስቃሴዎችን ይጫወቱ፣ ያቁሙ",
+    "@puzzleWorkflowStepRecordDesc": {
+        "description": "Description for record solution workflow step"
+    },
+    "puzzleWorkflowStepDetails": "ዝርዝሮችን ያክሉ",
+    "@puzzleWorkflowStepDetails": {
+        "description": "Workflow step: add details"
+    },
+    "puzzleWorkflowStepDetailsDesc": "ርዕስ፣ ምድብ፣ ችግር ይሙሉ",
+    "@puzzleWorkflowStepDetailsDesc": {
+        "description": "Description for add details workflow step"
+    },
+    "puzzleWorkflowStepSave": "እንቆቅልሽ አስቀምጥ",
+    "@puzzleWorkflowStepSave": {
+        "description": "Workflow step: save puzzle"
+    },
+    "puzzleWorkflowStepSaveDesc": "አስቀምጥ ቁልፍን ጠቅ ያድርጉ",
+    "@puzzleWorkflowStepSaveDesc": {
+        "description": "Description for save puzzle workflow step"
+    },
+    "puzzleWorkflowTip": "ጠቃሚ ምክር፡ በዚህ ገጽ እና በጨዋታ ሰሌዳው መካከል ትሄዳለህ።እድገትህ ተቀምጧል!",
+    "@puzzleWorkflowTip": {
+        "description": "Tip message for puzzle creation workflow"
+    },
+    "puzzlePositionSnapshotHelp": "አቀማመጥ ቅጽበታዊ እገዛ",
+    "@puzzlePositionSnapshotHelp": {
+        "description": "Title for position snapshot help dialog"
+    },
+    "puzzlePositionSnapshotHelpContent": "የእንቆቅልሹን የመነሻ ቦታ እንዴት ማንሳት እንደሚቻል:\n\n1. ቁርጥራጮችን በእጅ ለማስቀመጥ \"Open Board (Setup Position)\" ን ጠቅ ያድርጉ፣ ወይም \"Open Board (Play Moves)\" ን ጠቅ በማድረግ ቦታው ላይ እንቅስቃሴዎችን በማድረግ\n\n2. ሰሌዳውን ወደሚፈልጉት የእንቆቅልሽ መነሻ ቦታ ያዘጋጁ\n\n3. ወደዚህ ገጽ ለመመለስ የኋላ ቁልፍን ተጫን\n\n4. ቦታው በራስ-ሰር ይነሳል እና ይቀመጣል\n\nይህ ቅጽበታዊ ገጽ እይታ ለእንቆቅልሽ መነሻ ሆኖ ያገለግላል።",
+    "@puzzlePositionSnapshotHelpContent": {
+        "description": "Help content for snapshotting puzzle starting position"
+    },
+    "puzzleSolutionRecordingHelp": "የመፍትሄ ቀረጻ እገዛ",
+    "@puzzleSolutionRecordingHelp": {
+        "description": "Title for solution recording help dialog"
+    },
+    "puzzleSolutionRecordingHelpContent": "የመፍትሄውን እንቅስቃሴዎች እንዴት እንደሚመዘግቡ:",
+    "@puzzleSolutionRecordingHelpContent": {
+        "description": "Header text for solution recording help"
+    },
+    "puzzleSolutionStep1": "መጀመሪያ የመነሻ ቦታውን ያንሱ",
+    "@puzzleSolutionStep1": {
+        "description": "Step 1 for recording solution"
+    },
+    "puzzleSolutionStep2": "\"መቅዳት ጀምር\" ቁልፍን ጠቅ ያድርጉ (ይህ ቦርዱን ወደ እርስዎ ቅጽበታዊ ፎቶግራፍ ያስተካክለዋል)",
+    "@puzzleSolutionStep2": {
+        "description": "Step 2 for recording solution"
+    },
+    "puzzleSolutionStep4": "ወደዚህ ይመለሱ እና \"መቅዳት አቁም\" ን ጠቅ ያድርጉ።",
+    "@puzzleSolutionStep4": {
+        "description": "Step 4 for recording solution"
+    },
+    "puzzleSolutionRecordingTip": "ጠቃሚ ምክር: መቅዳት ሲጀምሩ ቦርዱ በራስ-ሰር ወደ ተነሳበት ቦታ ይመለሳል።",
+    "@puzzleSolutionRecordingTip": {
+        "description": "Tip message for solution recording"
+    },
+    "puzzleMultipleSolutionsSupported": "ብዙ መፍትሄዎችን ማከል ይችላሉ (ምንም ገደብ የለም).በጣም አጭሩን/ምርጡን እንደ ምርጥ ምልክት ያድርጉበት።",
+    "@puzzleMultipleSolutionsSupported": {
+        "description": "Information about multiple solutions support"
+    },
+    "puzzleShowPositionSnapshotHelp": "የአቀማመጥ ቅጽበታዊ እገዛን አሳይ",
+    "@puzzleShowPositionSnapshotHelp": {
+        "description": "Tooltip for position snapshot help button"
+    },
+    "puzzleShowSolutionRecordingHelp": "የመፍትሄ ቀረጻ እገዛን አሳይ",
+    "@puzzleShowSolutionRecordingHelp": {
+        "description": "Tooltip for solution recording help button"
+    },
+    "noMoreHintsAvailable": "ምንም ተጨማሪ ፍንጮች የሉም",
+    "@noMoreHintsAvailable": {
+        "description": "Message when no more hints are available"
+    },
+    "hintDialogTitle": "ፍንጭ",
+    "@hintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "optimalSolutionWithMoves": "ምርጥ መፍትሄ ({moves} ይንቀሳቀሳል)",
+    "@optimalSolutionWithMoves": {
+        "description": "Label showing optimal solution with number of moves",
+        "placeholders": {
+            "moves": {
+                "type": "int"
+            }
+        }
+    },
+    "validationErrors": "የማረጋገጫ ስህተቶች",
+    "@validationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "contributePuzzlesToSanmill": "ለሳንሚል እንቆቅልሾችን አበርክቱ",
+    "@contributePuzzlesToSanmill": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "whatHappensNext": "ቀጥሎ ምን ይሆናል፡-",
+    "@whatHappensNext": {
+        "description": "Label for what happens next section"
+    },
+    "contributionStep1": "1. የእርስዎ እንቆቅልሾች ወደ JSON ፋይል ይላካሉ",
+    "@contributionStep1": {
+        "description": "Step 1 in contribution process"
+    },
+    "contributionStep2": "2. ይህንን ፋይል በአጋራ ንግግር በኩል ማጋራት ይችላሉ።",
+    "@contributionStep2": {
+        "description": "Step 2 in contribution process"
+    },
+    "contributionStep4": "4. እንቆቅልሾች በጠባቂዎች ይገመገማሉ",
+    "@contributionStep4": {
+        "description": "Step 4 in contribution process"
+    },
+    "contributionStep5": "5. አንዴ ከፀደቁ በኋላ አብሮ የተሰሩ እንቆቅልሾች ይሆናሉ!",
+    "@contributionStep5": {
+        "description": "Step 5 in contribution process"
+    },
+    "exportForContribution": "ለአስተዋጽዖ ወደ ውጪ ላክ",
+    "@exportForContribution": {
+        "description": "Button text for exporting puzzles for contribution"
+    },
+    "startContributing": "ማበርከት ጀምር",
+    "@startContributing": {
+        "description": "Button text to start contributing puzzles"
+    },
+    "quickStart": "ፈጣን ጅምር፡",
+    "@quickStart": {
+        "description": "Label for quick start section"
+    },
+    "createQualityPuzzles": "ጥራት ያላቸው እንቆቅልሾችን ይፍጠሩ",
+    "@createQualityPuzzles": {
+        "description": "Title for creating quality puzzles step"
+    },
+    "createQualityPuzzlesDesc": "እንቆቅልሽ ግልጽ የሆነ መፍትሄ፣ ጥሩ ሜታዳታ እንዳለው እና የሆነ ጠቃሚ ነገር እንደሚያስተምር ያረጋግጡ።",
+    "@createQualityPuzzlesDesc": {
+        "description": "Description for creating quality puzzles"
+    },
+    "addYourName": "ስምህን ጨምር",
+    "@addYourName": {
+        "description": "Title for adding author name step"
+    },
+    "addYourNameDesc": "ክሬዲት ለማግኘት የእርስዎን እንቆቅልሽ ያርትዑ እና ስምዎን እንደ ደራሲ ያክሉ።",
+    "@addYourNameDesc": {
+        "description": "Description for adding author name"
+    },
+    "exportForContributionStep": "ለአስተዋጽዖ ወደ ውጪ ላክ",
+    "@exportForContributionStep": {
+        "description": "Title for export step"
+    },
+    "exportForContributionStepDesc": "በትክክለኛው ቅርጸት ወደ ውጭ ለመላክ እንቆቅልሾችዎን ይምረጡ እና የሰቀላ አዶውን ይንኩ።",
+    "@exportForContributionStepDesc": {
+        "description": "Description for export step"
+    },
+    "submitStep": "አስገባ",
+    "@submitStep": {
+        "description": "Title for submit step"
+    },
+    "submitStepDesc": "ወደ ውጭ የተላከውን ፋይል በGitHub Pull ጥያቄ፣ ጉዳይ ወይም በኢሜል ያጋሩ።",
+    "@submitStepDesc": {
+        "description": "Description for submit step"
+    },
+    "fullDocumentation": "ሙሉ ሰነድ",
+    "@fullDocumentation": {
+        "description": "Label for full documentation link"
+    },
+    "fullDocumentationDesc": "የተሟላ መመሪያዎችን፣ የጥራት መመሪያዎችን እና የማስረከቢያ አማራጮችን ለማግኘት PUZZLE_CONTRIBUTION_GUIDE.mdን በማከማቻው ውስጥ ይመልከቱ።",
+    "@fullDocumentationDesc": {
+        "description": "Description for full documentation"
+    },
+    "qualityRequirements": "የጥራት መስፈርቶች፡-",
+    "@qualityRequirements": {
+        "description": "Label for quality requirements section"
+    },
+    "qualityReqClearSolution": "✓ ግልጽ፣ ልዩ መፍትሄ",
+    "@qualityReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "qualityReqCompleteMetadata": "✓ የተሟላ ሜታዳታ (ርዕስ፣ መግለጫ፣ ወዘተ.)",
+    "@qualityReqCompleteMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "qualityReqAuthorAttribution": "✓ የደራሲ ባህሪ",
+    "@qualityReqAuthorAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "qualityReqAccurateDifficulty": "✓ ትክክለኛ የችግር ደረጃ",
+    "@qualityReqAccurateDifficulty": {
+        "description": "Quality requirement: accurate difficulty"
+    },
+    "qualityReqInstructive": "✓ አስተማሪ ወይም አዝናኝ",
+    "@qualityReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "nextMoveHint": "ቀጣይ እንቅስቃሴ፡ {move}",
+    "@nextMoveHint": {
+        "description": "Hint showing the next move in a puzzle",
+        "placeholders": {
+            "move": {
+                "description": "The next move notation",
+                "example": "a1-b2"
+            }
+        }
+    },
+    "completeSolutionHint": "የተሟላ መፍትሄ፡ {solution}",
+    "@completeSolutionHint": {
+        "description": "Hint showing the complete puzzle solution",
+        "placeholders": {
+            "solution": {
+                "description": "The complete solution sequence",
+                "example": "a1-b2 → c3-d4"
+            }
+        }
+    },
+    "payAttentionToPositions": "ለእነዚህ ቦታዎች ትኩረት ይስጡ",
+    "@payAttentionToPositions": {
+        "description": "Hint to focus on specific board positions"
+    },
+    "noSolutionAvailable": "ምንም መፍትሄ የለም።",
+    "@noSolutionAvailable": {
+        "description": "Message when no solution is available for a puzzle"
+    },
+    "keepGoingObjectiveNotAchieved": "ቀጥሉበት!ዓላማው ገና አልተሳካም።",
+    "@keepGoingObjectiveNotAchieved": {
+        "description": "Feedback message when puzzle objective is not yet met"
+    },
+    "perfectSolvedOptimal": "ፍጹም!በተመቻቸ እንቅስቃሴዎች ተፈቷል!",
+    "@perfectSolvedOptimal": {
+        "description": "Success message when puzzle is solved optimally"
+    },
+    "correctMovesOptimal": "ትክክል!({count} ይንቀሳቀሳል፣ ምርጥ፡ {optimal})",
+    "@correctMovesOptimal": {
+        "description": "Success message showing move count vs optimal",
+        "placeholders": {
+            "count": {
+                "description": "Number of moves taken",
+                "example": "5"
+            },
+            "optimal": {
+                "description": "Optimal number of moves",
+                "example": "3"
+            }
+        }
+    },
+    "correctAlternativeSolution": "ትክክል!አማራጭ መፍትሔ አግኝተዋል!",
+    "@correctAlternativeSolution": {
+        "description": "Success message for finding an alternative solution"
+    },
+    "justNow": "ልክ አሁን",
+    "@justNow": {
+        "description": "Time indicator for very recent activity"
+    },
+    "minutesAgo": "ከ {minutes}ደ በፊት",
+    "@minutesAgo": {
+        "description": "Relative time in minutes",
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    },
+    "hoursAgo": "{hours}ሰ በፊት",
+    "@hoursAgo": {
+        "description": "Relative time in hours",
+        "placeholders": {
+            "hours": {
+                "type": "int"
+            }
+        }
+    },
+    "daysAgo": "{days}d በፊት",
+    "@daysAgo": {
+        "description": "Relative time in days",
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "invalidPuzzle": "ልክ ያልሆነ እንቆቅልሽ",
+    "@invalidPuzzle": {
+        "description": "Title for invalid puzzle error"
+    },
+    "invalidPuzzleMessage": "ይህ እንቆቅልሽ ልክ ያልሆነ የአቀማመጥ ቅርጸት አለው እና ሊጫን አይችልም።እባክዎን የእንቆቅልሹን ደራሲ ያነጋግሩ ወይም ሌላ እንቆቅልሽ ይሞክሩ።",
+    "@invalidPuzzleMessage": {
+        "description": "Error message for invalid puzzle format"
+    },
+    "keepTrying": "መሞከርዎን ይቀጥሉ!",
+    "@keepTrying": {
+        "description": "Encouragement message to continue attempting puzzle"
+    },
+    "examples": "ምሳሌዎች",
+    "@examples": {
+        "description": "Examples label"
+    },
+    "aiChatTitle": "AI ረዳት",
+    "@aiChatTitle": {
+        "description": "AI chat assistant dialog title"
+    },
+    "aiChatWelcomeMessage": "ሀሎ!እኔ የአንተ ሚል ጨዋታ ረዳት ነኝ።ስለ ስልቶች፣ ቦታዎች፣ ወይም ስለአሁኑ ጨዋታ ማንኛቸውም ጥያቄዎች ጠይቁኝ።",
+    "@aiChatWelcomeMessage": {
+        "description": "Welcome message in AI chat"
+    },
+    "aiChatInputHint": "ስለ ጨዋታው ጠይቅ...",
+    "@aiChatInputHint": {
+        "description": "Hint text for AI chat input field"
+    },
+    "aiChatErrorMessage": "ይቅርታ፣ ስህተት አጋጥሞኛል።እባክዎ እንደገና ይሞክሩ።",
+    "@aiChatErrorMessage": {
+        "description": "Error message in AI chat"
+    },
+    "aiChatNotConfigured": "AI ረዳት አልተዋቀረም።እባክዎ መጀመሪያ የኤልኤልኤም ቅንብሮችን ያዋቅሩ።",
+    "@aiChatNotConfigured": {
+        "description": "Message when LLM is not configured"
+    },
+    "aiChatButtonTooltip": "ከ AI ረዳት ጋር ይወያዩ",
+    "@aiChatButtonTooltip": {
+        "description": "Tooltip for AI chat button"
+    },
+    "aiChatClearHistory": "የውይይት ታሪክ አጽዳ",
+    "@aiChatClearHistory": {
+        "description": "Tooltip for clear chat history button"
+    },
+    "aiChatClearHistoryConfirm": "የውይይት ታሪክ ይጽዳ?",
+    "@aiChatClearHistoryConfirm": {
+        "description": "Title for clear history confirmation dialog"
+    },
+    "aiChatClearHistoryMessage": "ይህ ሁሉንም መልዕክቶች ይሰርዛል እና አዲስ ውይይት ይጀምራል።ይህ እርምጃ ሊቀለበስ አይችልም።",
+    "@aiChatClearHistoryMessage": {
+        "description": "Message for clear history confirmation dialog"
+    },
+    "aiChatCleared": "የውይይት ታሪክ ጸድቷል።",
+    "@aiChatCleared": {
+        "description": "Message shown after clearing chat history"
+    },
+    "logs": "መዝገቦች",
+    "@logs": {
+        "description": "Label for the logs setting"
+    },
+    "downloadLogs": "የምዝግብ ማስታወሻዎችን አውርድ",
+    "@downloadLogs": {
+        "description": "Tooltip for the download logs button"
+    },
+    "noLogsAvailable": "ምንም ምዝግብ ማስታወሻዎች የሉም",
+    "@noLogsAvailable": {
+        "description": "Title shown when there are no logs to display"
+    },
+    "noLogsDescription": "መተግበሪያው ሲሄድ ምዝግብ ማስታወሻዎች እዚህ ይታያሉ።መተግበሪያውን ለመጠቀም ይሞክሩ እና መዝገቦቹን ለማየት ይመለሱ።",
+    "@noLogsDescription": {
+        "description": "Description shown when there are no logs"
+    },
+    "noLogsToDownload": "ለማውረድ ምንም ምዝግብ ማስታወሻዎች የሉም",
+    "@noLogsToDownload": {
+        "description": "Message shown when trying to download but no logs exist"
+    },
+    "downloadFailed": "ማውረድ አልተሳካም።",
+    "@downloadFailed": {
+        "description": "Message shown when log download fails"
+    },
+    "refresh": "አድስ",
+    "@refresh": {
+        "description": "Label for refresh action"
+    },
+    "shareLogs": "የምዝግብ ማስታወሻዎችን አጋራ",
+    "@shareLogs": {
+        "description": "Tooltip for the share logs button"
+    },
+    "downloadSuccess": "ወደ {path} ወርዷል",
+    "@downloadSuccess": {
+        "description": "Message shown when logs are successfully downloaded",
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "selectMode": "ሁነታን ይምረጡ",
+    "@selectMode": {
+        "description": "Label for selection mode"
+    },
+    "copySelected": "ቅዳ ተመርጧል",
+    "@copySelected": {
+        "description": "Label for copy selected action"
+    },
+    "selectStartPoint": "መነሻ ነጥብ ለመምረጥ መታ ያድርጉ",
+    "@selectStartPoint": {
+        "description": "Hint text for selecting start point"
+    },
+    "selectEndPoint": "የመጨረሻ ነጥብ ለመምረጥ መታ ያድርጉ",
+    "@selectEndPoint": {
+        "description": "Hint text for selecting end point"
+    },
+    "nothingSelected": "ምንም ምዝግብ ማስታወሻዎች አልተመረጡም።",
+    "@nothingSelected": {
+        "description": "Message shown when trying to copy but no logs are selected"
+    },
+    "scrollToTop": "ወደ ላይ ያሸብልሉ (የቀድሞው)",
+    "@scrollToTop": {
+        "description": "Tooltip for scroll to top button"
+    },
+    "scrollToBottom": "ወደ ታች ይሸብልሉ (አዲሱ)",
+    "@scrollToBottom": {
+        "description": "Tooltip for scroll to bottom button"
+    },
+    "newestLogsAtBottom": "ከታች ያሉት አዳዲስ ምዝግቦች",
+    "@newestLogsAtBottom": {
+        "description": "Hint text indicating log order"
+    },
+    "logsCount": "መዝገቦች፡ {current} / {max}",
+    "@logsCount": {
+        "description": "Display current log count and buffer size",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "logsBufferFull": "የምዝግብ ማስታወሻ ቋት ሙሉ ({current}/{max})።የድሮ ምዝግብ ማስታወሻዎች እየተወገዱ ነው።",
+    "@logsBufferFull": {
+        "description": "Warning message when log buffer is full",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "clearLogs": "ምዝግብ ማስታወሻዎችን አጽዳ",
+    "@clearLogs": {
+        "description": "Label for clear logs action"
+    },
+    "clearLogsConfirmation": "እርግጠኛ ነዎት ሁሉንም ምዝግብ ማስታወሻዎች ማጽዳት ይፈልጋሉ?ይህ እርምጃ ሊቀለበስ አይችልም።",
+    "@clearLogsConfirmation": {
+        "description": "Confirmation message for clearing logs"
+    },
+    "clear": "ግልጽ",
+    "@clear": {
+        "description": "Label for clear button"
+    },
+    "logsCleared": "የምዝግብ ማስታወሻዎች ጸድተዋል።",
+    "@logsCleared": {
+        "description": "Message shown when logs are cleared successfully"
+    },
+    "puzzleInvalidPuzzle": "ልክ ያልሆነ እንቆቅልሽ",
+    "@puzzleInvalidPuzzle": {
+        "description": "Title for invalid puzzle error dialog"
+    },
+    "puzzleInvalidPuzzleMessage": "ይህ እንቆቅልሽ ልክ ያልሆነ የአቀማመጥ ቅርጸት አለው እና ሊጫን አይችልም።እባክዎን የእንቆቅልሹን ደራሲ ያነጋግሩ ወይም ሌላ እንቆቅልሽ ይሞክሩ።",
+    "@puzzleInvalidPuzzleMessage": {
+        "description": "Message for invalid puzzle error dialog"
+    },
+    "puzzleBackToList": "ወደ ዝርዝር ተመለስ",
+    "@puzzleBackToList": {
+        "description": "Button to go back to puzzle list"
+    },
+    "puzzleWrongMove": "የተሳሳተ እርምጃ።እንደገና ይሞክሩ።",
+    "@puzzleWrongMove": {
+        "description": "Message shown when user makes wrong move"
+    },
+    "puzzleWrongMoveMessage": "ያ እርምጃ ከመፍትሔው ጋር አይጣጣምም።እንደገና መሞከር ወይም ትክክለኛውን መፍትሄ ማየት ይችላሉ.",
+    "@puzzleWrongMoveMessage": {
+        "description": "Detailed message in wrong move dialog"
+    },
+    "puzzleShowSolution": "መፍትሔ አሳይ",
+    "@puzzleShowSolution": {
+        "description": "Button to show the puzzle solution"
+    },
+    "puzzlePlayingSolution": "መፍትሄውን በመጫወት ላይ…",
+    "@puzzlePlayingSolution": {
+        "description": "Message shown while solution is being played"
+    },
+    "puzzleSolutionComplete": "የመፍትሄ መልሶ ማጫወት ተጠናቅቋል",
+    "@puzzleSolutionComplete": {
+        "description": "Message shown after solution playback finishes"
+    },
+    "puzzleNoSolutionAvailable": "ለዚህ እንቆቅልሽ ምንም መፍትሄ የለም።",
+    "@puzzleNoSolutionAvailable": {
+        "description": "Error message when puzzle has no solution"
+    },
+    "puzzleSolutionViewedNote": "መፍትሄው ታይቷል (ኮከቦች የሉም)",
+    "@puzzleSolutionViewedNote": {
+        "description": "Note shown in completion dialog when solution was viewed"
+    },
+    "puzzleAttempts": "{count,plural, =1{ሙከራ፡ {count}} other{ሙከራዎች፡ {count}}}",
+    "@puzzleAttempts": {
+        "description": "Number of attempts on current puzzle",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleNoMoreHints": "ምንም ተጨማሪ ፍንጮች የሉም",
+    "@puzzleNoMoreHints": {
+        "description": "Message shown when no more hints available"
+    },
+    "puzzleHintDialogTitle": "ፍንጭ",
+    "@puzzleHintDialogTitle": {
+        "description": "Title for hint dialog"
+    },
+    "puzzleValidationErrors": "የማረጋገጫ ስህተቶች",
+    "@puzzleValidationErrors": {
+        "description": "Title for validation errors dialog"
+    },
+    "puzzleValidationErrorsMessage": "አስተዋጽዖ ከማድረግዎ በፊት የሚከተሉት እንቆቅልሾች መስተካከል አለባቸው፡-",
+    "@puzzleValidationErrorsMessage": {
+        "description": "Message for validation errors dialog"
+    },
+    "puzzleContributeDialogTitle": "ለሳንሚል እንቆቅልሾችን አበርክቱ",
+    "@puzzleContributeDialogTitle": {
+        "description": "Title for contribute puzzles dialog"
+    },
+    "puzzleContributeCount": "ለመዋጮ {count} እንቆቅልሽ(ዎችን) ወደ ውጭ ሊልኩ ነው።",
+    "@puzzleContributeCount": {
+        "description": "Message showing number of puzzles to contribute",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeWhatNext": "ቀጥሎ ምን ይሆናል፡-",
+    "@puzzleContributeWhatNext": {
+        "description": "Label for what happens next section"
+    },
+    "puzzleContributeStep1": "1. የእርስዎ እንቆቅልሾች ወደ JSON ፋይል ይላካሉ",
+    "@puzzleContributeStep1": {
+        "description": "Contribution step 1"
+    },
+    "puzzleContributeStep2": "2. ይህንን ፋይል በአጋራ ንግግር በኩል ማጋራት ይችላሉ።",
+    "@puzzleContributeStep2": {
+        "description": "Contribution step 2"
+    },
+    "puzzleContributeStep3": "3. በ GitHub፣ በኢሜል ወይም በ GitHub ጉዳይ አስረክብ (መመሪያን ይመልከቱ)",
+    "@puzzleContributeStep3": {
+        "description": "Contribution step 3"
+    },
+    "puzzleContributeStep4": "4. እንቆቅልሾች በጠባቂዎች ይገመገማሉ",
+    "@puzzleContributeStep4": {
+        "description": "Contribution step 4"
+    },
+    "puzzleContributeStep5": "5. አንዴ ከፀደቁ በኋላ አብሮ የተሰሩ እንቆቅልሾች ይሆናሉ!",
+    "@puzzleContributeStep5": {
+        "description": "Contribution step 5"
+    },
+    "puzzleContributeLicense": "አስተዋጽዖ በማድረግ የእንቆቅልሽ ይዘትዎን በCC BY-SA 4.0 (Creative Commons Attribution-ShareAlike) ስር ፍቃድ ለመስጠት ተስማምተሃል።",
+    "@puzzleContributeLicense": {
+        "description": "License agreement message for contributions"
+    },
+    "puzzleExportForContribution": "ለአስተዋጽዖ ወደ ውጪ ላክ",
+    "@puzzleExportForContribution": {
+        "description": "Button label for exporting puzzles for contribution"
+    },
+    "puzzleStartContributing": "ማበርከት ጀምር",
+    "@puzzleStartContributing": {
+        "description": "Button label to start contributing"
+    },
+    "puzzleContributeInfo": "እንቆቅልሾችን እንዴት ማበርከት እንደሚቻል",
+    "@puzzleContributeInfo": {
+        "description": "Title for contribution info dialog"
+    },
+    "puzzleShareMessage": "እነዚህን {count} እንቆቅልሾችን ይመልከቱ!",
+    "@puzzleShareMessage": {
+        "description": "Message when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleShareSubject": "እንቆቅልሾች ({count})",
+    "@puzzleShareSubject": {
+        "description": "Subject line when sharing puzzles",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributionShareText": "የእንቆቅልሽ አስተዋጽዖ።\n\nየማስረከቢያ መመሪያዎችን ለማግኘት PUZZLE_CONTRIBUTION_GUIDE.md ይመልከቱ።",
+    "@puzzleContributionShareText": {
+        "description": "Message when sharing puzzle for contribution"
+    },
+    "puzzleContributionShareSubject": "የእንቆቅልሽ አስተዋጽዖ፡ {title}",
+    "@puzzleContributionShareSubject": {
+        "description": "Subject line when sharing puzzle contribution",
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "puzzleContributionsShareText": "የእንቆቅልሽ አስተዋጽዖዎች።\n\nየማስረከቢያ መመሪያዎችን ለማግኘት PUZZLE_CONTRIBUTION_GUIDE.md ይመልከቱ።",
+    "@puzzleContributionsShareText": {
+        "description": "Message when sharing multiple puzzles for contribution"
+    },
+    "puzzleContributionsShareSubject": "የእንቆቅልሽ አስተዋጽዖዎች ({count} እንቆቅልሾች)",
+    "@puzzleContributionsShareSubject": {
+        "description": "Subject line when sharing multiple puzzle contributions",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "puzzleContributeHelp": "የእርስዎን እንቆቅልሾች በማበርከት ይህን ፕሮግራም የተሻለ ለማድረግ ያግዙ!",
+    "@puzzleContributeHelp": {
+        "description": "Header text for contribution help dialog"
+    },
+    "puzzleContributeQuickStart": "ፈጣን ጅምር፡",
+    "@puzzleContributeQuickStart": {
+        "description": "Quick start section header"
+    },
+    "puzzleContributeStep1Title": "ጥራት ያላቸው እንቆቅልሾችን ይፍጠሩ",
+    "@puzzleContributeStep1Title": {
+        "description": "Step 1 title in contribution guide"
+    },
+    "puzzleContributeStep1Desc": "እንቆቅልሽ ግልጽ የሆነ መፍትሄ፣ ጥሩ ሜታዳታ እንዳለው እና የሆነ ጠቃሚ ነገር እንደሚያስተምር ያረጋግጡ።",
+    "@puzzleContributeStep1Desc": {
+        "description": "Step 1 description in contribution guide"
+    },
+    "puzzleContributeStep2Title": "ስምህን ጨምር",
+    "@puzzleContributeStep2Title": {
+        "description": "Step 2 title in contribution guide"
+    },
+    "puzzleContributeStep2Desc": "ክሬዲት ለማግኘት የእርስዎን እንቆቅልሽ ያርትዑ እና ስምዎን እንደ ደራሲ ያክሉ።",
+    "@puzzleContributeStep2Desc": {
+        "description": "Step 2 description in contribution guide"
+    },
+    "puzzleContributeStep3Title": "ለአስተዋጽዖ ወደ ውጪ ላክ",
+    "@puzzleContributeStep3Title": {
+        "description": "Step 3 title in contribution guide"
+    },
+    "puzzleContributeStep3Desc": "በትክክለኛው ቅርጸት ወደ ውጭ ለመላክ እንቆቅልሾችዎን ይምረጡ እና የሰቀላ አዶውን ይንኩ።",
+    "@puzzleContributeStep3Desc": {
+        "description": "Step 3 description in contribution guide"
+    },
+    "puzzleContributeStep4Title": "አስገባ",
+    "@puzzleContributeStep4Title": {
+        "description": "Step 4 title in contribution guide"
+    },
+    "puzzleContributeStep4Desc": "ወደ ውጭ የተላከውን ፋይል በGitHub Pull ጥያቄ፣ ጉዳይ ወይም በኢሜል ያጋሩ።",
+    "@puzzleContributeStep4Desc": {
+        "description": "Step 4 description in contribution guide"
+    },
+    "puzzleContributeFullDocs": "ሙሉ ሰነድ",
+    "@puzzleContributeFullDocs": {
+        "description": "Full documentation label"
+    },
+    "puzzleContributeDocsDesc": "የተሟላ መመሪያዎችን፣ የጥራት መመሪያዎችን እና የማስረከቢያ አማራጮችን ለማግኘት PUZZLE_CONTRIBUTION_GUIDE.mdን በማከማቻው ውስጥ ይመልከቱ።",
+    "@puzzleContributeDocsDesc": {
+        "description": "Description for full documentation"
+    },
+    "puzzleContributeQualityRequirements": "የጥራት መስፈርቶች፡-",
+    "@puzzleContributeQualityRequirements": {
+        "description": "Quality requirements section header"
+    },
+    "puzzleContributeReqClearSolution": "✓ ግልጽ፣ ልዩ መፍትሄ",
+    "@puzzleContributeReqClearSolution": {
+        "description": "Quality requirement: clear solution"
+    },
+    "puzzleContributeReqMetadata": "✓ የተሟላ ሜታዳታ (ርዕስ፣ መግለጫ፣ ወዘተ.)",
+    "@puzzleContributeReqMetadata": {
+        "description": "Quality requirement: complete metadata"
+    },
+    "puzzleContributeReqAttribution": "✓ የደራሲ ባህሪ",
+    "@puzzleContributeReqAttribution": {
+        "description": "Quality requirement: author attribution"
+    },
+    "puzzleContributeReqDifficulty": "✓ ትክክለኛ የችግር ደረጃ",
+    "@puzzleContributeReqDifficulty": {
+        "description": "Quality requirement: difficulty rating"
+    },
+    "puzzleContributeReqInstructive": "✓ አስተማሪ ወይም አዝናኝ",
+    "@puzzleContributeReqInstructive": {
+        "description": "Quality requirement: instructive or entertaining"
+    },
+    "monthJanuary": "ጥር",
+    "@monthJanuary": {
+        "description": "January month name"
+    },
+    "monthFebruary": "የካቲት",
+    "@monthFebruary": {
+        "description": "February month name"
+    },
+    "monthMarch": "መጋቢት",
+    "@monthMarch": {
+        "description": "March month name"
+    },
+    "monthApril": "ኤፕሪል",
+    "@monthApril": {
+        "description": "April month name"
+    },
+    "monthMay": "ግንቦት",
+    "@monthMay": {
+        "description": "May month name"
+    },
+    "monthJune": "ሰኔ",
+    "@monthJune": {
+        "description": "June month name"
+    },
+    "monthJuly": "ጁላይ",
+    "@monthJuly": {
+        "description": "July month name"
+    },
+    "monthAugust": "ነሐሴ",
+    "@monthAugust": {
+        "description": "August month name"
+    },
+    "monthSeptember": "መስከረም",
+    "@monthSeptember": {
+        "description": "September month name"
+    },
+    "monthOctober": "ጥቅምት",
+    "@monthOctober": {
+        "description": "October month name"
+    },
+    "monthNovember": "ህዳር",
+    "@monthNovember": {
+        "description": "November month name"
+    },
+    "monthDecember": "ታህሳስ",
+    "@monthDecember": {
+        "description": "December month name"
+    }
 }
