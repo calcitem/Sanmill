@@ -128,9 +128,8 @@ class PiecePainter extends CustomPainter {
       // Reduced lift height to 6.0
       lift = pickUpProgress * 6.0;
     } else if (isRemoving) {
-      // Removing effect: shrink and fade (handled in paint) while moving
-      // Scale down from 1.1 to 0.6
-      scale = 1.1 - (removeAnimationValue * 0.5);
+      // Removing effect: keep size same as placing/moving, fade handled in paint
+      scale = 1.1;
       shadowBlur = 6.0;
       lift = 6.0;
     } else if (isPlacing) {
@@ -533,8 +532,17 @@ class PiecePainter extends CustomPainter {
 
       if (isRemovingThisPiece &&
           DB().displaySettings.isPiecePickUpAnimationEnabled) {
-        // Fade out from 1.0 to 0.0
-        opacity = (1.0 - removeAnimationValue).clamp(0.0, 1.0);
+        // Delayed fade: stay opaque for first 60%, then fade out in last 40%
+        // This creates a "fly away and disappear" effect rather than "melt away"
+        final double fadeStart = 0.6;
+        if (removeAnimationValue <= fadeStart) {
+          opacity = 1.0;
+        } else {
+          // Map 0.6-1.0 to 0.0-1.0 for fade progress
+          final double fadeProgress =
+              (removeAnimationValue - fadeStart) / (1.0 - fadeStart);
+          opacity = (1.0 - fadeProgress).clamp(0.0, 1.0);
+        }
       }
 
       // Calculate animation effects for this piece
