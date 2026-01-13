@@ -162,23 +162,33 @@ class TapHandler {
         final int? currentSquareBeforePut = GameController()
             .position
             ._currentSquare[GameController().position.sideToMove];
+        final ExtMove? recordBeforePut = GameController().position._record;
         if (GameController().position._putPiece(sq)) {
-          // Stop timer when player makes a valid move
-          PlayerTimer().stop();
+          // Only treat it as a completed move if a NEW record was generated.
+          // In placing phase with mayMoveInPlacingPhase, selecting a piece returns
+          // true but generates no record (the old _record reference remains).
+          final bool generatedNewRecord =
+              GameController().position._record != null &&
+              GameController().position._record != recordBeforePut;
 
-          // Note: Move recording is handled by common code after switch (Line ~746)
+          if (generatedNewRecord) {
+            // Stop timer when player makes a valid move
+            PlayerTimer().stop();
 
-          // Trigger animation for human moves (AI moves trigger via doMove)
-          // Distinguish by checking if a piece was selected before the move
-          if (currentSquareBeforePut != null && currentSquareBeforePut != 0) {
-            // Moving: piece was moved from currentSquare to sq
-            // Set blurIndex for animation (focusIndex already set by handleMovingPhaseForPutPiece)
-            GameController().gameInstance.blurIndex =
-                squareToIndex[currentSquareBeforePut];
-            GameController().animationManager.animateMove();
-          } else {
-            // Placing: new piece from hand
-            GameController().animationManager.animatePlace();
+            // Note: Move recording is handled by common code after switch (Line ~746)
+
+            // Trigger animation for human moves (AI moves trigger via doMove)
+            // Distinguish by checking if a piece was selected before the move
+            if (currentSquareBeforePut != null && currentSquareBeforePut != 0) {
+              // Moving: piece was moved from currentSquare to sq
+              // Set blurIndex for animation (focusIndex already set by handleMovingPhaseForPutPiece)
+              GameController().gameInstance.blurIndex =
+                  squareToIndex[currentSquareBeforePut];
+              GameController().animationManager.animateMove();
+            } else {
+              // Placing: new piece from hand
+              GameController().animationManager.animatePlace();
+            }
           }
 
           if (GameController().position.action == Act.remove) {
