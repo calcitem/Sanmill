@@ -280,8 +280,12 @@ class PiecePainter extends CustomPainter {
           final double nLen = normal.distance;
           final Offset nUnit = nLen == 0 ? Offset.zero : normal / nLen;
 
-          // Stronger arc so it is visible to the eye.
-          final double arc = size.width * 0.18;
+          // Aesthetic, adaptive arc:
+          // - Cap by board size so it never looks cartoonish.
+          // - Also cap by flight distance so short flights don't look too curved.
+          final double maxByBoard = size.width * 0.10;
+          final double maxByDistance = dir.distance * 0.18;
+          final double arc = min(maxByBoard, maxByDistance);
           final double bend = sin(pi * t) * arc;
           final Offset arcOffset = nUnit * (isCapturerOpponent ? -bend : bend);
 
