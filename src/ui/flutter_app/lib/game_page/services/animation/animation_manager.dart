@@ -185,9 +185,12 @@ class AnimationManager {
 
   // Handler for place animation status changes
   void _onPlaceAnimationStatus(AnimationStatus status) {
-    // Note: Put-down animation is not triggered for place animation
-    // because pieces placed from hand don't need a landing bounce effect.
-    // Only moved pieces (which were picked up) get the bounce effect.
+    if (status == AnimationStatus.completed && !_isDisposed) {
+      // Trigger put-down animation when piece arrives at destination
+      if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        animatePutDown();
+      }
+    }
   }
 
   // Handler for move animation status changes

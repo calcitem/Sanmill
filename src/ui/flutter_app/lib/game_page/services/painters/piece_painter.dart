@@ -46,8 +46,16 @@ class PiecePainter extends CustomPainter {
     double shadowBlur = 2.0;
     double lift = 0.0;
 
-    // Pick-up and Put-down animations are only for Moving phase
-    if (GameController().position.phase != Phase.moving) {
+    final bool isMovingPhase = GameController().position.phase == Phase.moving;
+    final bool isPlacingPhase =
+        GameController().position.phase == Phase.placing;
+    final bool isAnimationEnabled =
+        DB().displaySettings.isPiecePickUpAnimationEnabled;
+
+    // Pick-up and Put-down animations are only for Moving phase,
+    // unless piece pickup animation is enabled for Placing phase.
+    if (!isMovingPhase &&
+        !(isAnimationEnabled && (isPlacingPhase || isPutDownAnimating))) {
       return <String, double>{
         'scale': scale,
         'shadowBlur': shadowBlur,
@@ -56,7 +64,7 @@ class PiecePainter extends CustomPainter {
     }
 
     // Check if piece pick-up animation is disabled in settings
-    if (!DB().displaySettings.isPiecePickUpAnimationEnabled) {
+    if (!isAnimationEnabled) {
       return <String, double>{
         'scale': scale,
         'shadowBlur': shadowBlur,
@@ -86,6 +94,13 @@ class PiecePainter extends CustomPainter {
     final bool isPuttingDown =
         isPutDownAnimating && focusIndex != null && index == focusIndex;
 
+    // Determine if this is a placing piece being animated
+    final bool isPlacing =
+        isPlacingPhase &&
+        focusIndex != null &&
+        index == focusIndex &&
+        placeAnimationValue < 1.0;
+
     if (isPuttingDown) {
       // Put-down effect: piece at focus position landing after place/move
       // Scale down from 1.1 to 1.0 (reverse of pick-up)
@@ -104,6 +119,11 @@ class PiecePainter extends CustomPainter {
       shadowBlur = 2.0 + (pickUpProgress * 4.0);
       // Reduced lift height to 6.0
       lift = pickUpProgress * 6.0;
+    } else if (isPlacing) {
+      // Placing effect: keep the piece lifted during flight
+      scale = 1.1;
+      shadowBlur = 6.0;
+      lift = 6.0;
     }
 
     return <String, double>{
@@ -168,18 +188,6 @@ class PiecePainter extends CustomPainter {
             (removeIndex != null) &&
             (index == removeIndex);
 
-        if (isPlacingPiece) {
-          pos = pointFromIndex(index, size);
-
-          placeEffectAnimation.draw(
-            canvas,
-            pos,
-            pieceWidth,
-            placeAnimationValue,
-          );
-          // Continue to draw the placing piece normally after the effect.
-        }
-
         if (isMovingPiece) {
           // Calculate interpolated position between blurIndex and focusIndex.
           final Offset fromPos = pointFromIndex(blurIndex, size);
@@ -189,9 +197,30 @@ class PiecePainter extends CustomPainter {
 
           // Store the moving piece's current position for highlight.
           movingPos = pos;
+        } else if (isPlacingPiece &&
+            DB().displaySettings.isPiecePickUpAnimationEnabled) {
+          // Calculate interpolated position from bottom right to focusIndex.
+          final Offset toPos = pointFromIndex(index, size);
+          // Start from bottom right corner (unplaced pieces area)
+          final Offset fromPos = Offset(size.width, size.height);
+
+          pos = Offset.lerp(fromPos, toPos, placeAnimationValue)!;
+
+          // Store the moving piece's current position for highlight.
+          movingPos = pos;
         } else {
           // Use the normal position.
           pos = pointFromIndex(index, size);
+        }
+
+        if (isPlacingPiece) {
+          // Draw place effect at the target position
+          placeEffectAnimation.draw(
+            canvas,
+            pointFromIndex(index, size),
+            pieceWidth,
+            placeAnimationValue,
+          );
         }
 
         if (isRemovingPiece) {
@@ -228,7 +257,10 @@ class PiecePainter extends CustomPainter {
         );
 
         // Add to the appropriate list based on whether it's moving.
-        if (isMovingPiece) {
+        // Include placing pieces if pickup animation is enabled
+        if (isMovingPiece ||
+            (isPlacingPiece &&
+                DB().displaySettings.isPiecePickUpAnimationEnabled)) {
           movingPiecesToDraw.add(piece);
         } else {
           normalPiecesToDraw.add(piece);
