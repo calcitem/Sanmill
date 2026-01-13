@@ -871,8 +871,23 @@ class GameController {
           break;
         }
 
+        // If AI is about to perform a remove move immediately after forming a
+        // mill, wait until the mill sound finishes to avoid overlapping audio
+        // and to keep the remove animation in sync.
+        final ExtMove nextMove = engineRet.extMove!;
+        if (nextMove.type == MoveType.remove) {
+          final Completer<void>? pendingMillSound =
+              gameInstance.pendingMillSoundCompleter;
+          if (pendingMillSound != null && !pendingMillSound.isCompleted) {
+            await pendingMillSound.future;
+          }
+          if (gameInstance.pendingMillSoundCompleter == pendingMillSound) {
+            gameInstance.pendingMillSoundCompleter = null;
+          }
+        }
+
         // TODO: Unify return and throw
-        if (!gameInstance.doMove(engineRet.extMove!)) {
+        if (!gameInstance.doMove(nextMove)) {
           // TODO: Should catch it and throw.
           isEngineRunning = false;
           return const EngineNoBestMove();

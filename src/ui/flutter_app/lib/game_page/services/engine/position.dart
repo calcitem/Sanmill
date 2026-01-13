@@ -1238,12 +1238,40 @@ class Position {
         }
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
-        // Play mill sound when piece lands (put-down animation completes).
-        // If pick-up animation is disabled, play immediately.
-        if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
-          GameController().gameInstance.playMillSoundOnLanding = true;
+        // Play mill sound when the piece lands (put-down completes) when
+        // animations are enabled; otherwise play immediately.
+        //
+        // Also create a one-shot barrier so AI can delay an immediate remove
+        // move until the mill sound has finished, avoiding overlapping audio.
+        final Game game = GameController().gameInstance;
+        final bool canDelayMillSoundToLanding =
+            DB().displaySettings.isPiecePickUpAnimationEnabled &&
+            DB().displaySettings.animationDuration > 0 &&
+            GameController().animationManager.allowAnimations;
+
+        final Completer<void>? prevBarrier = game.pendingMillSoundCompleter;
+        if (prevBarrier != null && !prevBarrier.isCompleted) {
+          logger.w(
+            "[position] pendingMillSoundCompleter was not completed; "
+            "completing defensively.",
+          );
+          prevBarrier.complete();
+        }
+
+        if (canDelayMillSoundToLanding) {
+          game.playMillSoundOnLanding = true;
+          game.pendingMillSoundCompleter = Completer<void>();
         } else {
-          SoundManager().playTone(Sound.mill);
+          final Completer<void> barrier = Completer<void>();
+          game.pendingMillSoundCompleter = barrier;
+          SoundManager().playToneAndWait(Sound.mill).whenComplete(() {
+            if (!barrier.isCompleted) {
+              barrier.complete();
+            }
+            if (game.pendingMillSoundCompleter == barrier) {
+              game.pendingMillSoundCompleter = null;
+            }
+          });
         }
 
         if ((DB().ruleSettings.millFormationActionInPlacingPhase ==
@@ -1665,12 +1693,40 @@ class Position {
       _updateKeyMisc();
       action = Act.remove;
       GameController().gameInstance.focusIndex = squareToIndex[s];
-      // Play mill sound when piece lands (put-down animation completes).
-      // If pick-up animation is disabled, play immediately.
-      if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
-        GameController().gameInstance.playMillSoundOnLanding = true;
+      // Play mill sound when the piece lands (put-down completes) when
+      // animations are enabled; otherwise play immediately.
+      //
+      // Also create a one-shot barrier so AI can delay an immediate remove
+      // move until the mill sound has finished, avoiding overlapping audio.
+      final Game game = GameController().gameInstance;
+      final bool canDelayMillSoundToLanding =
+          DB().displaySettings.isPiecePickUpAnimationEnabled &&
+          DB().displaySettings.animationDuration > 0 &&
+          GameController().animationManager.allowAnimations;
+
+      final Completer<void>? prevBarrier = game.pendingMillSoundCompleter;
+      if (prevBarrier != null && !prevBarrier.isCompleted) {
+        logger.w(
+          "[position] pendingMillSoundCompleter was not completed; "
+          "completing defensively.",
+        );
+        prevBarrier.complete();
+      }
+
+      if (canDelayMillSoundToLanding) {
+        game.playMillSoundOnLanding = true;
+        game.pendingMillSoundCompleter = Completer<void>();
       } else {
-        SoundManager().playTone(Sound.mill);
+        final Completer<void> barrier = Completer<void>();
+        game.pendingMillSoundCompleter = barrier;
+        SoundManager().playToneAndWait(Sound.mill).whenComplete(() {
+          if (!barrier.isCompleted) {
+            barrier.complete();
+          }
+          if (game.pendingMillSoundCompleter == barrier) {
+            game.pendingMillSoundCompleter = null;
+          }
+        });
       }
     }
 

@@ -3,6 +3,8 @@
 
 // animation_manager.dart
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../shared/database/database.dart';
@@ -67,6 +69,11 @@ class AnimationManager {
   // to prevent the next move's mill flag from being consumed by a previous
   // put-down completion.
   bool _playMillSoundForCurrentPutDown = false;
+
+  // If the current put-down is associated with a mill sound, this completer is
+  // completed only after the mill sound finishes playing. AI can await it
+  // before performing an immediate remove move to avoid overlapping audio.
+  Completer<void>? _millSoundBarrierForCurrentPutDown;
 
   // Initialize Place Animation
   void _initPlaceAnimation() {
@@ -200,6 +207,9 @@ class AnimationManager {
       if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
         _playMillSoundForCurrentPutDown =
             GameController().gameInstance.playMillSoundOnLanding;
+        _millSoundBarrierForCurrentPutDown = _playMillSoundForCurrentPutDown
+            ? GameController().gameInstance.pendingMillSoundCompleter
+            : null;
         GameController().gameInstance.playMillSoundOnLanding = false;
         animatePutDown();
       }
@@ -212,6 +222,9 @@ class AnimationManager {
       // Trigger put-down animation when piece arrives at destination
       _playMillSoundForCurrentPutDown =
           GameController().gameInstance.playMillSoundOnLanding;
+      _millSoundBarrierForCurrentPutDown = _playMillSoundForCurrentPutDown
+          ? GameController().gameInstance.pendingMillSoundCompleter
+          : null;
       GameController().gameInstance.playMillSoundOnLanding = false;
       animatePutDown();
     }
@@ -238,7 +251,17 @@ class AnimationManager {
       // audio and animation in sync, and avoid overlapping with the place sound.
       if (_playMillSoundForCurrentPutDown) {
         _playMillSoundForCurrentPutDown = false;
-        SoundManager().playTone(Sound.mill);
+        final Completer<void>? barrier = _millSoundBarrierForCurrentPutDown;
+        _millSoundBarrierForCurrentPutDown = null;
+        SoundManager().playToneAndWait(Sound.mill).whenComplete(() {
+          if (barrier != null && !barrier.isCompleted) {
+            barrier.complete();
+          }
+          if (GameController().gameInstance.pendingMillSoundCompleter ==
+              barrier) {
+            GameController().gameInstance.pendingMillSoundCompleter = null;
+          }
+        });
       } else {
         SoundManager().playTone(Sound.place);
       }

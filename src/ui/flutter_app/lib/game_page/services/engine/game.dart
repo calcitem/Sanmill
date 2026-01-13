@@ -42,6 +42,14 @@ class Game {
   /// before the piece is visually on the board.
   bool playMillSoundOnLanding = false;
 
+  /// One-shot barrier for sequencing follow-up actions after a mill is formed.
+  ///
+  /// When a mill is formed, AI may immediately perform a remove move on the
+  /// same turn. This barrier completes only after the mill sound effect has
+  /// finished playing, so AI can delay the remove animation/sound to avoid
+  /// overlapping audio.
+  Completer<void>? pendingMillSoundCompleter;
+
   final List<Player> players = <Player>[
     Player(color: PieceColor.white, isAi: false),
     Player(color: PieceColor.black, isAi: true),

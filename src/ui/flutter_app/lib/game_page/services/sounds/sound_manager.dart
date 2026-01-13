@@ -206,6 +206,66 @@ class SoundManager {
     }
   }
 
+  /// Play the given sound and wait until playback completes.
+  ///
+  /// This is intended for sequencing (e.g. ensure a "mill" sound finishes
+  /// before starting a subsequent capture animation/sound).
+  ///
+  /// Note: This waits for the underlying player's completion event and uses a
+  /// conservative timeout to avoid deadlocks on platforms where completion
+  /// callbacks may be unreliable.
+  Future<void> playToneAndWait(
+    Sound sound, {
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+      return;
+    }
+
+    if (DB().generalSettings.vibrationEnabled) {
+      await VibrationManager().vibrate(sound);
+    }
+
+    if (!DB().generalSettings.toneEnabled) {
+      return;
+    }
+
+    if (!_allSoundsLoaded) {
+      logger.w("Attempt to play sound before all sounds were loaded.");
+      return;
+    }
+
+    final SoundPlayer? soundPlayer = _players[sound];
+    if (soundPlayer == null) {
+      logger.e("No player found for sound $sound in theme $soundThemeName.");
+      return;
+    }
+
+    StreamSubscription<void>? sub;
+    final Completer<void> done = Completer<void>();
+    bool didTimeout = false;
+
+    try {
+      sub = soundPlayer.player.onPlayerComplete.listen((_) {
+        if (!done.isCompleted) {
+          done.complete();
+        }
+      });
+
+      await soundPlayer.player.play(AssetSource(soundPlayer.fileName));
+      await done.future.timeout(timeout, onTimeout: () {
+        didTimeout = true;
+      });
+    } catch (e) {
+      logger.e("$_logTag Error playing sound: $e");
+    } finally {
+      await sub?.cancel();
+      if (didTimeout) {
+        logger.w("$_logTag Timeout waiting for sound completion: $sound");
+      }
+    }
+  }
+
   void mute() {
     _isTemporaryMute = true;
   }
