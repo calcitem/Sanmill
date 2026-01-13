@@ -267,25 +267,25 @@ class PiecePainter extends CustomPainter {
             toPos = Offset(size.width + off, -off);
           }
 
-          // Smooth curve + slight arc to avoid a rigid straight-line flight.
+          // Make the flight path obviously non-linear:
+          // - base movement uses eased linear interpolation
+          // - add a sine-based lateral offset (0 at start/end, max at mid)
           final double t = Curves.easeInOutCubic.transform(
             removeAnimationValue,
           );
+          final Offset base = Offset.lerp(fromPos, toPos, t)!;
+
           final Offset dir = toPos - fromPos;
           final Offset normal = Offset(-dir.dy, dir.dx);
           final double nLen = normal.distance;
           final Offset nUnit = nLen == 0 ? Offset.zero : normal / nLen;
-          final double arc = size.width * 0.08;
-          final Offset mid = Offset(
-            (fromPos.dx + toPos.dx) / 2,
-            (fromPos.dy + toPos.dy) / 2,
-          );
-          final Offset control =
-              mid + nUnit * (isCapturerOpponent ? -arc : arc);
 
-          final double u = 1.0 - t;
-          pos =
-              (fromPos * (u * u)) + (control * (2 * u * t)) + (toPos * (t * t));
+          // Stronger arc so it is visible to the eye.
+          final double arc = size.width * 0.18;
+          final double bend = sin(pi * t) * arc;
+          final Offset arcOffset = nUnit * (isCapturerOpponent ? -bend : bend);
+
+          pos = base + arcOffset;
 
           // Store the moving piece's current position for highlight.
           movingPos = pos;
