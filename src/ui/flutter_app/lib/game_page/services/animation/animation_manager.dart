@@ -61,6 +61,13 @@ class AnimationManager {
       _putDownAnimationController;
   Animation<double> get putDownAnimation => _putDownAnimation;
 
+  // The landing sound decision for the *current* put-down animation.
+  //
+  // Important: we capture this at put-down start (after place/move completes)
+  // to prevent the next move's mill flag from being consumed by a previous
+  // put-down completion.
+  bool _playMillSoundForCurrentPutDown = false;
+
   // Initialize Place Animation
   void _initPlaceAnimation() {
     _placeAnimationController = AnimationController(
@@ -191,6 +198,9 @@ class AnimationManager {
     if (status == AnimationStatus.completed && !_isDisposed) {
       // Trigger put-down animation when piece arrives at destination
       if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        _playMillSoundForCurrentPutDown =
+            GameController().gameInstance.playMillSoundOnLanding;
+        GameController().gameInstance.playMillSoundOnLanding = false;
         animatePutDown();
       }
     }
@@ -200,6 +210,9 @@ class AnimationManager {
   void _onMoveAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed && !_isDisposed) {
       // Trigger put-down animation when piece arrives at destination
+      _playMillSoundForCurrentPutDown =
+          GameController().gameInstance.playMillSoundOnLanding;
+      GameController().gameInstance.playMillSoundOnLanding = false;
       animatePutDown();
     }
   }
@@ -223,8 +236,8 @@ class AnimationManager {
       //
       // If the move formed a mill, play the mill sound at landing time to keep
       // audio and animation in sync, and avoid overlapping with the place sound.
-      if (GameController().gameInstance.playMillSoundOnLanding) {
-        GameController().gameInstance.playMillSoundOnLanding = false;
+      if (_playMillSoundForCurrentPutDown) {
+        _playMillSoundForCurrentPutDown = false;
         SoundManager().playTone(Sound.mill);
       } else {
         SoundManager().playTone(Sound.place);
