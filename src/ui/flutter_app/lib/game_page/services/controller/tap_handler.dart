@@ -157,19 +157,19 @@ class TapHandler {
 
     // Human to go
     bool ret = false;
+    final ExtMove? recordBeforeTap = GameController().position._record;
     switch (GameController().position.action) {
       case Act.place:
         final int? currentSquareBeforePut = GameController()
             .position
             ._currentSquare[GameController().position.sideToMove];
-        final ExtMove? recordBeforePut = GameController().position._record;
         if (GameController().position._putPiece(sq)) {
           // Only treat it as a completed move if a NEW record was generated.
           // In placing phase with mayMoveInPlacingPhase, selecting a piece returns
           // true but generates no record (the old _record reference remains).
           final bool generatedNewRecord =
               GameController().position._record != null &&
-              GameController().position._record != recordBeforePut;
+              GameController().position._record != recordBeforeTap;
 
           if (generatedNewRecord) {
             // Stop timer when player makes a valid move
@@ -691,7 +691,18 @@ class TapHandler {
         }
     }
 
-    if (ret) {
+    // Treat a tap as an actual move only if it generated a NEW record.
+    // Selecting/deselecting a piece can return ret=true but should not:
+    // - increment ply counters
+    // - update position history
+    // - append moves to GameRecorder
+    // - trigger engine thinking
+    final bool didCommitMove =
+        ret &&
+        GameController().position._record != null &&
+        GameController().position._record != recordBeforeTap;
+
+    if (didCommitMove) {
       // TODO: Need Others?
       // Increment ply counters. In particular,
       // rule50 will be reset to zero later on
@@ -763,6 +774,12 @@ class TapHandler {
       } else {
         return const EngineResponseHumanOK();
       }
+    } else if (ret) {
+      // Selection/deselection succeeded but no move was committed.
+      // Do not treat this as an illegal action and do not advance history.
+      GameController().headerIconsNotifier.showIcons();
+      GameController().boardSemanticsNotifier.updateSemantics();
+      return const EngineResponseHumanOK();
     } else {
       SoundManager().playTone(Sound.illegal);
     }
