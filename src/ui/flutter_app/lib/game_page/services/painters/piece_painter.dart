@@ -127,8 +127,14 @@ class PiecePainter extends CustomPainter {
       shadowBlur = 2.0 + (pickUpProgress * 4.0);
       // Reduced lift height to 6.0
       lift = pickUpProgress * 6.0;
-    } else if (isPlacing || isRemoving) {
-      // Placing/Removing effect: keep the piece lifted during flight
+    } else if (isRemoving) {
+      // Removing effect: shrink and fade (handled in paint) while moving
+      // Scale down from 1.1 to 0.6
+      scale = 1.1 - (removeAnimationValue * 0.5);
+      shadowBlur = 6.0;
+      lift = 6.0;
+    } else if (isPlacing) {
+      // Placing effect: keep the piece lifted during flight
       scale = 1.1;
       shadowBlur = 6.0;
       lift = 6.0;
@@ -517,7 +523,19 @@ class PiecePainter extends CustomPainter {
     for (final Piece piece in movingPiecesToDraw) {
       blurPositionColor = piece.pieceColor.blurPositionColor;
 
-      const double opacity = 1.0;
+      double opacity = 1.0;
+
+      // Check if this specific piece is the one being removed
+      final bool isRemovingThisPiece =
+          (removeAnimationValue < 1.0) &&
+          (removeIndex != null) &&
+          (piece.index == removeIndex);
+
+      if (isRemovingThisPiece &&
+          DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        // Fade out from 1.0 to 0.0
+        opacity = (1.0 - removeAnimationValue).clamp(0.0, 1.0);
+      }
 
       // Calculate animation effects for this piece
       final Map<String, double> effects = _calculatePieceEffects(
@@ -540,6 +558,7 @@ class PiecePainter extends CustomPainter {
           rect: Rect.fromCircle(center: drawPos, radius: pieceInnerRadius),
           image: piece.image!,
           fit: BoxFit.cover,
+          opacity: opacity,
         );
       } else {
         // Draw border of the piece.
@@ -570,8 +589,8 @@ class PiecePainter extends CustomPainter {
             text: piece.squareAttribute?.placedPieceNumber.toString(),
             style: TextStyle(
               color: piece.pieceColor.mainColor.computeLuminance() > 0.5
-                  ? Colors.black
-                  : Colors.white,
+                  ? Colors.black.withValues(alpha: opacity)
+                  : Colors.white.withValues(alpha: opacity),
               fontSize: piece.diameter * 0.5,
             ),
           ),
