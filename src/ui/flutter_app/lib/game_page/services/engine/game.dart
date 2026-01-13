@@ -35,6 +35,13 @@ class Game {
   PieceColor? removePieceColor;
   PieceColor? removeByColor;
 
+  /// One-shot flag: if the last place/move formed a mill, play [Sound.mill]
+  /// when the piece lands (put-down completes).
+  ///
+  /// This keeps sound and animation in sync and avoids playing mill sound
+  /// before the piece is visually on the board.
+  bool playMillSoundOnLanding = false;
+
   final List<Player> players = <Player>[
     Player(color: PieceColor.white, isAi: false),
     Player(color: PieceColor.black, isAi: true),

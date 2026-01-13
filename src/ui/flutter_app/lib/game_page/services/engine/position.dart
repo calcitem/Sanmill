@@ -992,7 +992,10 @@ class Position {
             GameController().gameInstance.blurIndex = null;
             // Reverse the pick-up animation to animate piece going back down
             GameController().animationManager.reversePickUp();
-            SoundManager().playTone(Sound.mill);
+            // The piece is put back down (not a mill). Use the "place" sound.
+            if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
+              SoundManager().playTone(Sound.place);
+            }
           } else {
             _currentSquare[us] = s;
             GameController().gameInstance.focusIndex = squareToIndex[s];
@@ -1235,7 +1238,13 @@ class Position {
         }
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
-        SoundManager().playTone(Sound.mill);
+        // Play mill sound when piece lands (put-down animation completes).
+        // If pick-up animation is disabled, play immediately.
+        if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
+          GameController().gameInstance.playMillSoundOnLanding = true;
+        } else {
+          SoundManager().playTone(Sound.mill);
+        }
 
         if ((DB().ruleSettings.millFormationActionInPlacingPhase ==
                     MillFormationActionInPlacingPhase
@@ -1656,7 +1665,13 @@ class Position {
       _updateKeyMisc();
       action = Act.remove;
       GameController().gameInstance.focusIndex = squareToIndex[s];
-      SoundManager().playTone(Sound.mill);
+      // Play mill sound when piece lands (put-down animation completes).
+      // If pick-up animation is disabled, play immediately.
+      if (DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        GameController().gameInstance.playMillSoundOnLanding = true;
+      } else {
+        SoundManager().playTone(Sound.mill);
+      }
     }
 
     return true;

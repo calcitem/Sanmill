@@ -219,8 +219,16 @@ class AnimationManager {
   // Handler for put-down animation status changes
   void _onPutDownAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed && !_isDisposed) {
-      // Play the "land" sound when piece touches the board
-      SoundManager().playTone(Sound.place);
+      // Play sound when piece touches the board (put-down completes).
+      //
+      // If the move formed a mill, play the mill sound at landing time to keep
+      // audio and animation in sync, and avoid overlapping with the place sound.
+      if (GameController().gameInstance.playMillSoundOnLanding) {
+        GameController().gameInstance.playMillSoundOnLanding = false;
+        SoundManager().playTone(Sound.mill);
+      } else {
+        SoundManager().playTone(Sound.place);
+      }
     }
   }
 
