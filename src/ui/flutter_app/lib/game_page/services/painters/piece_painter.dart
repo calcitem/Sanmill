@@ -224,7 +224,14 @@ class PiecePainter extends CustomPainter {
           // Capturer's "bottom-left" in their own view:
           // - Local side: bottom-left (screen bottom-left)
           // - Opponent side: top-right (screen top-right)
-          Offset toPos = Offset(0, size.height); // Default: bottom-left
+          //
+          // To look more natural, we fly the removed piece slightly OUTSIDE the
+          // board canvas instead of stopping at the corner.
+          final double off = pieceWidth;
+          Offset toPos = Offset(
+            -off,
+            size.height + off,
+          ); // Default: bottom-left
 
           bool isCapturerOpponent = false;
           final GameMode mode = GameController().gameInstance.gameMode;
@@ -256,11 +263,29 @@ class PiecePainter extends CustomPainter {
           }
 
           if (isCapturerOpponent) {
-            // Opponent side captures: piece goes to top-right
-            toPos = Offset(size.width, 0);
+            // Opponent side captures: piece goes to top-right (outside)
+            toPos = Offset(size.width + off, -off);
           }
 
-          pos = Offset.lerp(fromPos, toPos, removeAnimationValue)!;
+          // Smooth curve + slight arc to avoid a rigid straight-line flight.
+          final double t = Curves.easeInOutCubic.transform(
+            removeAnimationValue,
+          );
+          final Offset dir = toPos - fromPos;
+          final Offset normal = Offset(-dir.dy, dir.dx);
+          final double nLen = normal.distance;
+          final Offset nUnit = nLen == 0 ? Offset.zero : normal / nLen;
+          final double arc = size.width * 0.08;
+          final Offset mid = Offset(
+            (fromPos.dx + toPos.dx) / 2,
+            (fromPos.dy + toPos.dy) / 2,
+          );
+          final Offset control =
+              mid + nUnit * (isCapturerOpponent ? -arc : arc);
+
+          final double u = 1.0 - t;
+          pos =
+              (fromPos * (u * u)) + (control * (2 * u * t)) + (toPos * (t * t));
 
           // Store the moving piece's current position for highlight.
           movingPos = pos;
@@ -534,14 +559,17 @@ class PiecePainter extends CustomPainter {
           DB().displaySettings.isPiecePickUpAnimationEnabled) {
         // Delayed fade: stay opaque for first 60%, then fade out in last 40%
         // This creates a "fly away and disappear" effect rather than "melt away"
-        final double fadeStart = 0.6;
+        final double fadeStart = 0.75;
         if (removeAnimationValue <= fadeStart) {
           opacity = 1.0;
         } else {
-          // Map 0.6-1.0 to 0.0-1.0 for fade progress
+          // Map 0.75-1.0 to 0.0-1.0 for fade progress
           final double fadeProgress =
               (removeAnimationValue - fadeStart) / (1.0 - fadeStart);
-          opacity = (1.0 - fadeProgress).clamp(0.0, 1.0);
+          final double eased = Curves.easeOutCubic.transform(
+            fadeProgress.clamp(0.0, 1.0),
+          );
+          opacity = (1.0 - eased).clamp(0.0, 1.0);
         }
       }
 
