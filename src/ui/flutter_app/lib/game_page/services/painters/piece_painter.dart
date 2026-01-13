@@ -201,8 +201,34 @@ class PiecePainter extends CustomPainter {
             DB().displaySettings.isPiecePickUpAnimationEnabled) {
           // Calculate interpolated position from bottom right to focusIndex.
           final Offset toPos = pointFromIndex(index, size);
-          // Start from bottom right corner (unplaced pieces area)
-          final Offset fromPos = Offset(size.width, size.height);
+
+          // Determine start position based on player side.
+          // By default, pieces appear from the bottom-right (local player area).
+          Offset fromPos = Offset(size.width, size.height);
+
+          bool isOpponent = false;
+          final GameMode mode = GameController().gameInstance.gameMode;
+
+          if (mode == GameMode.humanVsAi) {
+            final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
+            // If AI moves first, AI is White. If not, AI is Black.
+            final PieceColor aiColor = aiMovesFirst
+                ? PieceColor.white
+                : PieceColor.black;
+            if (pieceColor == aiColor) {
+              isOpponent = true;
+            }
+          } else if (mode == GameMode.humanVsLAN) {
+            final PieceColor localColor = GameController().getLocalColor();
+            if (pieceColor != localColor) {
+              isOpponent = true;
+            }
+          }
+
+          if (isOpponent) {
+            // Opponent pieces appear from top-left (opponent area)
+            fromPos = Offset.zero;
+          }
 
           pos = Offset.lerp(fromPos, toPos, placeAnimationValue)!;
 
