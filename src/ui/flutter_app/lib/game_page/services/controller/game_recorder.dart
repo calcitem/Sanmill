@@ -159,6 +159,12 @@ class GameRecorder {
       return;
     }
 
+    // Check if activeNode itself is already this move (avoid duplicate)
+    if (node.data?.move == newMove.move) {
+      // Already at this move, do nothing
+      return;
+    }
+
     // Check if there's already a child with this move
     final PgnNode<ExtMove>? existingChild = node.children
         .cast<PgnNode<ExtMove>?>()

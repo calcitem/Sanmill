@@ -159,18 +159,25 @@ class TapHandler {
     bool ret = false;
     switch (GameController().position.action) {
       case Act.place:
+        final int? currentSquareBeforePut = GameController()
+            .position
+            ._currentSquare[GameController().position.sideToMove];
         if (GameController().position._putPiece(sq)) {
           // Stop timer when player makes a valid move
           PlayerTimer().stop();
 
+          // Note: Move recording is handled by common code after switch (Line ~746)
+
           // Trigger animation for human moves (AI moves trigger via doMove)
-          // Check blurIndex to distinguish placing vs moving phase
-          if (GameController().gameInstance.blurIndex != null) {
-            // Moving phase: a piece was selected and is now being moved
-            GameController().gameInstance.focusIndex = squareToIndex[sq];
+          // Distinguish by checking if a piece was selected before the move
+          if (currentSquareBeforePut != null && currentSquareBeforePut != 0) {
+            // Moving: piece was moved from currentSquare to sq
+            // Set blurIndex for animation (focusIndex already set by handleMovingPhaseForPutPiece)
+            GameController().gameInstance.blurIndex =
+                squareToIndex[currentSquareBeforePut];
             GameController().animationManager.animateMove();
           } else {
-            // Placing phase: placing a new piece from hand
+            // Placing: new piece from hand
             GameController().animationManager.animatePlace();
           }
 
@@ -503,6 +510,9 @@ class TapHandler {
 
             ret = true;
             logger.i("$_logTag removePiece: [$sq]");
+
+            // Note: Move recording is handled by the common code after the switch
+            // (Line ~746: appendMoveIfDifferent)
 
             // Trigger remove animation for human moves (AI moves trigger via doMove)
             GameController().gameInstance.removeIndex = squareToIndex[sq];
