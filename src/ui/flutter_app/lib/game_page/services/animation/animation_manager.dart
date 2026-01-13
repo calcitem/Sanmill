@@ -205,6 +205,8 @@ class AnimationManager {
   void _onRemoveAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed && !_isDisposed) {
       GameController().gameInstance.removeIndex = null;
+      GameController().gameInstance.removePieceColor = null;
+      GameController().gameInstance.removeByColor = null;
       // Reset move animation indices after custodian capture removal
       GameController().gameInstance.focusIndex = null;
       GameController().gameInstance.blurIndex = null;

@@ -206,20 +206,26 @@ class PiecePainter extends CustomPainter {
           // Store the moving piece's current position for highlight.
           movingPos = pos;
         } else if (isRemovingPiece &&
-            DB().displaySettings.isPiecePickUpAnimationEnabled) {
-          // Calculate interpolated position from current position to capturer's corner
+            DB().displaySettings.isPiecePickUpAnimationEnabled &&
+            pieceColor == PieceColor.none) {
+          // Calculate interpolated position from current position to capturer's
+          // corner.
           final Offset fromPos = pointFromIndex(index, size);
 
-          // Determine destination based on which side is capturing (sideToMove)
-          // The capturing side is the current sideToMove
-          Offset toPos = Offset(
-            size.width,
-            size.height,
-          ); // Default: bottom-right
+          // Determine destination based on which side is capturing.
+          // NOTE: `position.sideToMove` may already have changed after applying
+          // the remove move, so we use the cached capturer color.
+          //
+          // Capturer's "bottom-left" in their own view:
+          // - Local side: bottom-left (screen bottom-left)
+          // - Opponent side: top-right (screen top-right)
+          Offset toPos = Offset(0, size.height); // Default: bottom-left
 
           bool isCapturerOpponent = false;
           final GameMode mode = GameController().gameInstance.gameMode;
-          final PieceColor capturerColor = GameController().position.sideToMove;
+          final PieceColor capturerColor =
+              GameController().gameInstance.removeByColor ??
+              GameController().position.sideToMove;
 
           if (mode == GameMode.humanVsAi) {
             final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
@@ -237,16 +243,16 @@ class PiecePainter extends CustomPainter {
             }
           } else if (mode == GameMode.aiVsAi || mode == GameMode.humanVsHuman) {
             // In AI vs AI or Human vs Human mode:
-            // White (first player) captures to bottom-right
-            // Black (second player) captures to top-left
+            // White (first player) captures to bottom-left
+            // Black (second player) captures to top-right
             if (capturerColor == PieceColor.black) {
               isCapturerOpponent = true;
             }
           }
 
           if (isCapturerOpponent) {
-            // Opponent side captures: piece goes to top-left
-            toPos = Offset.zero;
+            // Opponent side captures: piece goes to top-right
+            toPos = Offset(size.width, 0);
           }
 
           pos = Offset.lerp(fromPos, toPos, removeAnimationValue)!;
@@ -325,7 +331,15 @@ class PiecePainter extends CustomPainter {
           continue; // Skip normal drawing.
         }
 
-        if (pieceColor == PieceColor.none) {
+        final PieceColor drawPieceColor =
+            (isRemovingPiece &&
+                DB().displaySettings.isPiecePickUpAnimationEnabled &&
+                pieceColor == PieceColor.none)
+            ? (GameController().gameInstance.removePieceColor ??
+                  PieceColor.none)
+            : pieceColor;
+
+        if (drawPieceColor == PieceColor.none) {
           continue;
         }
 
@@ -335,12 +349,12 @@ class PiecePainter extends CustomPainter {
 
         final ui.Image? image = pieceImages == null
             ? null
-            : pieceImages?[pieceColor];
+            : pieceImages?[drawPieceColor];
 
         final double adjustedPieceWidth = pieceWidth;
 
         final Piece piece = Piece(
-          pieceColor: pieceColor,
+          pieceColor: drawPieceColor,
           pos: pos,
           diameter: adjustedPieceWidth,
           index: index,

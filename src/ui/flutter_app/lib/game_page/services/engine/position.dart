@@ -1825,6 +1825,12 @@ class Position {
       return const CanNotRemoveMill();
     }
 
+    // Cache remove animation info for UI.
+    // The piece is cleared from the board state before the remove animation
+    // begins, so the painter needs this cached color to draw the removed piece.
+    GameController().gameInstance.removePieceColor = _board[s];
+    GameController().gameInstance.removeByColor = sideToMove;
+
     _revertKey(s);
 
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
