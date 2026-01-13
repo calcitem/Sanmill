@@ -1122,7 +1122,11 @@ class Position {
         // Only play sound and set focus if no capture was triggered
         if (totalCaptureRemoval == 0) {
           GameController().gameInstance.focusIndex = squareToIndex[s];
-          SoundManager().playTone(Sound.place);
+          // Sound plays when piece lands (put-down animation completes)
+          // If pick-up animation is disabled, play immediately
+          if (!DB().displaySettings.isPiecePickUpAnimationEnabled) {
+            SoundManager().playTone(Sound.place);
+          }
         }
 
         if (DB().ruleSettings.millFormationActionInPlacingPhase ==
@@ -1571,7 +1575,11 @@ class Position {
 
       GameController().gameInstance.focusIndex = squareToIndex[s];
 
-      SoundManager().playTone(Sound.place);
+      // Sound plays when piece lands (put-down animation completes)
+      // If pick-up animation is disabled, play immediately
+      if (!DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        SoundManager().playTone(Sound.place);
+      }
     } else {
       // If forming mill during Moving phase
       if (DB().ruleSettings.restrictRepeatedMillsFormation) {

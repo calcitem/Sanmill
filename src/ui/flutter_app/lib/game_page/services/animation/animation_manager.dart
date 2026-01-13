@@ -181,6 +181,9 @@ class AnimationManager {
 
     // Clean up indices after remove animation completes
     _removeAnimationController.addStatusListener(_onRemoveAnimationStatus);
+
+    // Play sound when piece lands (put-down completes)
+    _putDownAnimationController.addStatusListener(_onPutDownAnimationStatus);
   }
 
   // Handler for place animation status changes
@@ -210,6 +213,14 @@ class AnimationManager {
       // Reset move animation indices after custodian capture removal
       GameController().gameInstance.focusIndex = null;
       GameController().gameInstance.blurIndex = null;
+    }
+  }
+
+  // Handler for put-down animation status changes
+  void _onPutDownAnimationStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && !_isDisposed) {
+      // Play the "land" sound when piece touches the board
+      SoundManager().playTone(Sound.place);
     }
   }
 
