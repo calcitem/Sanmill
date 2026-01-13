@@ -867,20 +867,22 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
         ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_place_effect_animation_settings_list_tile',
+        if (!displaySettings.isPiecePickUpAnimationEnabled)
+          SettingsListTile(
+            key: const Key(
+              'display_settings_card_place_effect_animation_settings_list_tile',
+            ),
+            titleString: S.of(context).placeEffectAnimation,
+            onTap: () => setPlaceEffectAnimation(context),
           ),
-          titleString: S.of(context).placeEffectAnimation,
-          onTap: () => setPlaceEffectAnimation(context),
-        ),
-        SettingsListTile(
-          key: const Key(
-            'display_settings_card_remove_effect_animation_settings_list_tile',
+        if (!displaySettings.isPiecePickUpAnimationEnabled)
+          SettingsListTile(
+            key: const Key(
+              'display_settings_card_remove_effect_animation_settings_list_tile',
+            ),
+            titleString: S.of(context).removeEffectAnimation,
+            onTap: () => setRemoveEffectAnimation(context),
           ),
-          titleString: S.of(context).removeEffectAnimation,
-          onTap: () => setRemoveEffectAnimation(context),
-        ),
         SettingsListTile.switchTile(
           key: const Key(
             'display_settings_card_piece_pick_up_animation_enabled_switch_tile',

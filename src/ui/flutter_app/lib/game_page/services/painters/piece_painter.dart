@@ -41,6 +41,7 @@ class PiecePainter extends CustomPainter {
     int index,
     int? focusIndex,
     int? blurIndex,
+    int? removeIndex,
   ) {
     double scale = 1.0;
     double shadowBlur = 2.0;
@@ -52,10 +53,17 @@ class PiecePainter extends CustomPainter {
     final bool isAnimationEnabled =
         DB().displaySettings.isPiecePickUpAnimationEnabled;
 
+    // Check if this piece is being removed
+    final bool isRemoving =
+        (removeAnimationValue < 1.0) &&
+        (removeIndex != null) &&
+        (index == removeIndex);
+
     // Pick-up and Put-down animations are only for Moving phase,
-    // unless piece pickup animation is enabled for Placing phase.
+    // unless piece pickup animation is enabled for Placing/Removing phase.
     if (!isMovingPhase &&
-        !(isAnimationEnabled && (isPlacingPhase || isPutDownAnimating))) {
+        !(isAnimationEnabled &&
+            (isPlacingPhase || isPutDownAnimating || isRemoving))) {
       return <String, double>{
         'scale': scale,
         'shadowBlur': shadowBlur,
@@ -119,8 +127,8 @@ class PiecePainter extends CustomPainter {
       shadowBlur = 2.0 + (pickUpProgress * 4.0);
       // Reduced lift height to 6.0
       lift = pickUpProgress * 6.0;
-    } else if (isPlacing) {
-      // Placing effect: keep the piece lifted during flight
+    } else if (isPlacing || isRemoving) {
+      // Placing/Removing effect: keep the piece lifted during flight
       scale = 1.1;
       shadowBlur = 6.0;
       lift = 6.0;
@@ -197,6 +205,54 @@ class PiecePainter extends CustomPainter {
 
           // Store the moving piece's current position for highlight.
           movingPos = pos;
+        } else if (isRemovingPiece &&
+            DB().displaySettings.isPiecePickUpAnimationEnabled) {
+          // Calculate interpolated position from current position to capturer's corner
+          final Offset fromPos = pointFromIndex(index, size);
+
+          // Determine destination based on which side is capturing (sideToMove)
+          // The capturing side is the current sideToMove
+          Offset toPos = Offset(
+            size.width,
+            size.height,
+          ); // Default: bottom-right
+
+          bool isCapturerOpponent = false;
+          final GameMode mode = GameController().gameInstance.gameMode;
+          final PieceColor capturerColor = GameController().position.sideToMove;
+
+          if (mode == GameMode.humanVsAi) {
+            final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
+            // If AI moves first, AI is White. If not, AI is Black.
+            final PieceColor aiColor = aiMovesFirst
+                ? PieceColor.white
+                : PieceColor.black;
+            if (capturerColor == aiColor) {
+              isCapturerOpponent = true;
+            }
+          } else if (mode == GameMode.humanVsLAN) {
+            final PieceColor localColor = GameController().getLocalColor();
+            if (capturerColor != localColor) {
+              isCapturerOpponent = true;
+            }
+          } else if (mode == GameMode.aiVsAi || mode == GameMode.humanVsHuman) {
+            // In AI vs AI or Human vs Human mode:
+            // White (first player) captures to bottom-right
+            // Black (second player) captures to top-left
+            if (capturerColor == PieceColor.black) {
+              isCapturerOpponent = true;
+            }
+          }
+
+          if (isCapturerOpponent) {
+            // Opponent side captures: piece goes to top-left
+            toPos = Offset.zero;
+          }
+
+          pos = Offset.lerp(fromPos, toPos, removeAnimationValue)!;
+
+          // Store the moving piece's current position for highlight.
+          movingPos = pos;
         } else if (isPlacingPiece &&
             DB().displaySettings.isPiecePickUpAnimationEnabled) {
           // Calculate interpolated position from bottom right to focusIndex.
@@ -246,8 +302,9 @@ class PiecePainter extends CustomPainter {
           pos = pointFromIndex(index, size);
         }
 
-        if (isPlacingPiece) {
-          // Draw place effect at the target position
+        if (isPlacingPiece &&
+            !DB().displaySettings.isPiecePickUpAnimationEnabled) {
+          // Draw place effect at the target position (only if pickup animation disabled)
           placeEffectAnimation.draw(
             canvas,
             pointFromIndex(index, size),
@@ -256,7 +313,9 @@ class PiecePainter extends CustomPainter {
           );
         }
 
-        if (isRemovingPiece) {
+        if (isRemovingPiece &&
+            !DB().displaySettings.isPiecePickUpAnimationEnabled) {
+          // Draw remove effect (only if pickup animation disabled)
           removeEffectAnimation.draw(
             canvas,
             pos,
@@ -290,9 +349,11 @@ class PiecePainter extends CustomPainter {
         );
 
         // Add to the appropriate list based on whether it's moving.
-        // Include placing pieces if pickup animation is enabled
+        // Include placing/removing pieces if pickup animation is enabled
         if (isMovingPiece ||
             (isPlacingPiece &&
+                DB().displaySettings.isPiecePickUpAnimationEnabled) ||
+            (isRemovingPiece &&
                 DB().displaySettings.isPiecePickUpAnimationEnabled)) {
           movingPiecesToDraw.add(piece);
         } else {
@@ -312,6 +373,7 @@ class PiecePainter extends CustomPainter {
           piece.index,
           focusIndex,
           blurIndex,
+          removeIndex,
         );
         final double scale = effects['scale']!;
         final double shadowBlur = effects['shadowBlur']!;
@@ -337,6 +399,7 @@ class PiecePainter extends CustomPainter {
           piece.index,
           focusIndex,
           blurIndex,
+          removeIndex,
         );
         final double scale = effects['scale']!;
         final double shadowBlur = effects['shadowBlur']!;
@@ -370,6 +433,7 @@ class PiecePainter extends CustomPainter {
         piece.index,
         focusIndex,
         blurIndex,
+        removeIndex,
       );
       final double scale = effects['scale']!;
       final double lift = effects['lift']!;
@@ -446,6 +510,7 @@ class PiecePainter extends CustomPainter {
         piece.index,
         focusIndex,
         blurIndex,
+        removeIndex,
       );
       final double scale = effects['scale']!;
       final double lift = effects['lift']!;
@@ -543,6 +608,7 @@ class PiecePainter extends CustomPainter {
         focusIndex,
         focusIndex,
         blurIndex,
+        removeIndex,
       );
       final double lift = effects['lift']!;
       final double scale = effects['scale']!;
@@ -562,6 +628,7 @@ class PiecePainter extends CustomPainter {
         blurIndex,
         focusIndex,
         blurIndex,
+        removeIndex,
       );
       final double lift = effects['lift']!;
 
