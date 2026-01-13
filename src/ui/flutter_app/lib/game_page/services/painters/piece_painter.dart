@@ -223,6 +223,13 @@ class PiecePainter extends CustomPainter {
             if (pieceColor != localColor) {
               isOpponent = true;
             }
+          } else if (mode == GameMode.aiVsAi || mode == GameMode.humanVsHuman) {
+            // In AI vs AI or Human vs Human mode:
+            // White (first player) pieces appear from bottom-right
+            // Black (second player) pieces appear from top-left
+            if (pieceColor == PieceColor.black) {
+              isOpponent = true;
+            }
           }
 
           if (isOpponent) {
