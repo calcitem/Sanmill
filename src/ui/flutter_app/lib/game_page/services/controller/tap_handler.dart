@@ -163,6 +163,17 @@ class TapHandler {
           // Stop timer when player makes a valid move
           PlayerTimer().stop();
 
+          // Trigger animation for human moves (AI moves trigger via doMove)
+          // Check blurIndex to distinguish placing vs moving phase
+          if (GameController().gameInstance.blurIndex != null) {
+            // Moving phase: a piece was selected and is now being moved
+            GameController().gameInstance.focusIndex = squareToIndex[sq];
+            GameController().animationManager.animateMove();
+          } else {
+            // Placing phase: placing a new piece from hand
+            GameController().animationManager.animatePlace();
+          }
+
           if (GameController().position.action == Act.remove) {
             // Track capture obligations for the side to move
             final Position position = GameController().position;
@@ -492,6 +503,12 @@ class TapHandler {
 
             ret = true;
             logger.i("$_logTag removePiece: [$sq]");
+
+            // Trigger remove animation for human moves (AI moves trigger via doMove)
+            GameController().gameInstance.removeIndex = squareToIndex[sq];
+            GameController().gameInstance.blurIndex = null;
+            GameController().gameInstance.focusIndex = null;
+            GameController().animationManager.animateRemove();
 
             //SoundManager().playTone(Sound.remove);
 
