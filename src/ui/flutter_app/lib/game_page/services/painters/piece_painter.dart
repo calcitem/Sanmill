@@ -128,10 +128,15 @@ class PiecePainter extends CustomPainter {
       // Reduced lift height to 6.0
       lift = pickUpProgress * 6.0;
     } else if (isRemoving) {
-      // Removing effect: keep size same as placing/moving, fade handled in paint
-      scale = 1.1;
-      shadowBlur = 6.0;
-      lift = 6.0;
+      // Removing effect: simulate a "toss" using height (lift) + slight scale.
+      // Top-down motion can be straight; realism comes from vertical dynamics.
+      final double t = removeAnimationValue.clamp(0.0, 1.0);
+      final double peak = 4.0 * t * (1.0 - t); // 0..1..0 (parabolic)
+
+      // Keep it subtle but noticeable.
+      scale = 1.1 + (0.03 * peak);
+      shadowBlur = 6.0 + (2.0 * peak);
+      lift = 6.0 + (16.0 * peak);
     } else if (isPlacing) {
       // Placing effect: keep the piece lifted during flight
       scale = 1.1;
@@ -267,29 +272,13 @@ class PiecePainter extends CustomPainter {
             toPos = Offset(size.width + off, -off);
           }
 
-          // Make the flight path obviously non-linear:
-          // - base movement uses eased linear interpolation
-          // - add a sine-based lateral offset (0 at start/end, max at mid)
+          // More physically plausible in a top-down view:
+          // - the projected path stays close to a straight line
+          // - "throw" feel comes from lift/scale (handled in _calculatePieceEffects)
           final double t = Curves.easeInOutCubic.transform(
             removeAnimationValue,
           );
-          final Offset base = Offset.lerp(fromPos, toPos, t)!;
-
-          final Offset dir = toPos - fromPos;
-          final Offset normal = Offset(-dir.dy, dir.dx);
-          final double nLen = normal.distance;
-          final Offset nUnit = nLen == 0 ? Offset.zero : normal / nLen;
-
-          // Aesthetic, adaptive arc:
-          // - Cap by board size so it never looks cartoonish.
-          // - Also cap by flight distance so short flights don't look too curved.
-          final double maxByBoard = size.width * 0.10;
-          final double maxByDistance = dir.distance * 0.18;
-          final double arc = min(maxByBoard, maxByDistance);
-          final double bend = sin(pi * t) * arc;
-          final Offset arcOffset = nUnit * (isCapturerOpponent ? -bend : bend);
-
-          pos = base + arcOffset;
+          pos = Offset.lerp(fromPos, toPos, t)!;
 
           // Store the moving piece's current position for highlight.
           movingPos = pos;
@@ -563,14 +552,15 @@ class PiecePainter extends CustomPainter {
           DB().displaySettings.isPiecePickUpAnimationEnabled) {
         // Delayed fade: stay opaque for first 60%, then fade out in last 40%
         // This creates a "fly away and disappear" effect rather than "melt away"
-        final double fadeStart = 0.75;
+        final double fadeStart = 0.82;
         if (removeAnimationValue <= fadeStart) {
           opacity = 1.0;
         } else {
-          // Map 0.75-1.0 to 0.0-1.0 for fade progress
+          // Map 0.82-1.0 to 0.0-1.0 for fade progress
           final double fadeProgress =
               (removeAnimationValue - fadeStart) / (1.0 - fadeStart);
-          final double eased = Curves.easeOutCubic.transform(
+          // Ease-in so it stays visible, then disappears quickly near the end.
+          final double eased = Curves.easeInCubic.transform(
             fadeProgress.clamp(0.0, 1.0),
           );
           opacity = (1.0 - eased).clamp(0.0, 1.0);
