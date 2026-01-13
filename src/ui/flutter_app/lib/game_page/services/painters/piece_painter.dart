@@ -582,6 +582,22 @@ class PiecePainter extends CustomPainter {
 
       final Offset drawPos = piece.pos - Offset(0, lift);
 
+      // For removed pieces, add a subtle rotation synchronized with the throw arc
+      // to simulate a natural tossing motion.
+      if (isRemovingThisPiece &&
+          DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        final double t = removeAnimationValue;
+        // peak = 4t(1-t), maxes at t=0.5
+        final double peak = 4.0 * t * (1.0 - t);
+        // Rotate up to ±18 degrees (0.314 radians)
+        final double angle = peak * 0.314;
+
+        canvas.save();
+        canvas.translate(drawPos.dx, drawPos.dy);
+        canvas.rotate(angle);
+        canvas.translate(-drawPos.dx, -drawPos.dy);
+      }
+
       if (piece.image != null) {
         paintImage(
           canvas: canvas,
@@ -636,6 +652,12 @@ class PiecePainter extends CustomPainter {
         );
 
         textPainter.paint(canvas, textOffset);
+      }
+
+      // Restore canvas if we applied rotation
+      if (isRemovingThisPiece &&
+          DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        canvas.restore();
       }
     }
 
