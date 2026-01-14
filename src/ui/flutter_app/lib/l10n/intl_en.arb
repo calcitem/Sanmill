@@ -3978,10 +3978,6 @@
     "@deleteCurrentBranch": {
         "description": "Delete current variation branch"
     },
-    "onVariationBranch": "Currently on variation branch",
-    "@onVariationBranch": {
-        "description": "Indicator that user is on a variation branch"
-    },
     "deleteCurrentBranchConfirm": "Are you sure you want to delete the current variation line and all its continuations?",
     "@deleteCurrentBranchConfirm": {
         "description": "Confirmation message for deleting current branch"

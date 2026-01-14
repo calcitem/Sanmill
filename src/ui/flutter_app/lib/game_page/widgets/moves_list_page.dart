@@ -2132,34 +2132,15 @@ class MovesListPageState extends State<MovesListPage> {
   Widget _buildVariationBanner() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      height: 6,
       decoration: BoxDecoration(
-        color: DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.15),
-        border: Border(
-          bottom: BorderSide(
-            color: DB().colorSettings.pieceHighlightColor.withValues(
-              alpha: 0.3,
-            ),
-          ),
+        gradient: LinearGradient(
+          colors: <Color>[
+            DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3),
+            DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.6),
+            DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3),
+          ],
         ),
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            FluentIcons.branch_fork_24_regular,
-            color: DB().colorSettings.pieceHighlightColor,
-            size: 16,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            S.of(context).onVariationBranch,
-            style: TextStyle(
-              color: DB().colorSettings.pieceHighlightColor,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
       ),
     );
   }
