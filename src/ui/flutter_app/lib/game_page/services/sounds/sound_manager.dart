@@ -253,9 +253,12 @@ class SoundManager {
       });
 
       await soundPlayer.player.play(AssetSource(soundPlayer.fileName));
-      await done.future.timeout(timeout, onTimeout: () {
-        didTimeout = true;
-      });
+      await done.future.timeout(
+        timeout,
+        onTimeout: () {
+          didTimeout = true;
+        },
+      );
     } catch (e) {
       logger.e("$_logTag Error playing sound: $e");
     } finally {
