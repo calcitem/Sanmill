@@ -3953,5 +3953,21 @@
     "monthDecember": "prosinca",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Skoči na glavnu liniju",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Izbriši ovu liniju",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Jeste li sigurni da želite izbrisati trenutnu liniju varijacije i sve njezine nastavke?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Upozorenje: Ovo će izbrisati vašu trenutnu poziciju. Bit ćete premješteni na roditeljsku poziciju.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

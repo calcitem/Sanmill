@@ -3953,5 +3953,21 @@
     "monthDecember": "դեկտեմբեր",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Անցնել հիմնական գծին",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Ջնջել այս գիծը",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Համոզվա՞ծ եք, որ ցանկանում եք ջնջել ընթացիկ վարիացիայի գիծը և դրա բոլոր շարունակությունները:",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Զգուշացում: Սա կջնջի ձեր ընթացիկ դիրքը: Դուք կտեղափոխվեք ծնող դիրքին:",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

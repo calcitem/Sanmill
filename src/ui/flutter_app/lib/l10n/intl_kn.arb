@@ -3953,5 +3953,21 @@
     "monthDecember": "ಡಿಸೆಂಬರ್",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "ಮುಖ್ಯ ಸಾಲಿಗೆ ಹೋಗಿ",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "ಈ ಸಾಲನ್ನು ಅಳಿಸಿ",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "ನೀವು ಪ್ರಸ್ತುತ ವ್ಯತ್ಯಾಸ ಸಾಲು ಮತ್ತು ಅದರ ಎಲ್ಲಾ ಮುಂದುವರಿಕೆಗಳನ್ನು ಅಳಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "ಎಚ್ಚರಿಕೆ: ಇದು ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸ್ಥಾನವನ್ನು ಅಳಿಸುತ್ತದೆ. ನಿಮ್ಮನ್ನು ಮೂಲ ಸ್ಥಾನಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಗುವುದು.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

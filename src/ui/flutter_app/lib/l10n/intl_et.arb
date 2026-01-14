@@ -3953,5 +3953,21 @@
     "monthDecember": "detsembril",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Hüppa pealinjale",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Kustuta see liin",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Kas olete kindel, et soovite kustutada praeguse variatsiooniliini ja kõik selle jätkud?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Hoiatus: See kustutab teie praeguse positsiooni. Teid teisaldatakse vanemapositsiooni.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

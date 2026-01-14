@@ -3969,5 +3969,21 @@
     "monthDecember": "十二月",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "跳转到主线",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "删除这条线",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "您确定要删除当前变着线及其所有后续着法吗？",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "警告：这将删除您的当前位置。您将移动到父位置。",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

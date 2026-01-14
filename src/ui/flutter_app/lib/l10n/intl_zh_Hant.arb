@@ -3945,5 +3945,21 @@
     "monthDecember": "十二月",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "跳轉到主線",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "刪除這條線",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "您確定要刪除當前變着線及其所有後續著法嗎？",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "警告：這將刪除您的當前位置。您將移動到父位置。",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

@@ -3953,5 +3953,21 @@
     "monthDecember": "ဒီဇင်ဘာ",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "ပင်မလိုင်းသို့ ခုန်သွားရန်",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "ဤလိုင်းကို ဖျက်ရန်",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "လက်ရှိ ပြောင်းလဲမှု လိုင်းနှင့် ၎င်း၏ ဆက်လက်မှုများအားလုံးကို ဖျက်လိုသည်မှာ သေချာပါသလား?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "သတိပေးချက်: ယင်းက သင်၏လက်ရှိ အနေအထားကို ဖျက်ပစ်ပါမည်။ မူလအနေအထားသို့ ရွှေ့သွားပါမည်။",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

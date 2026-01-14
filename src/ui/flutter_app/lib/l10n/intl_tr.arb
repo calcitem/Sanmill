@@ -3953,5 +3953,21 @@
     "monthDecember": "Aralık",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Ana hatta atla",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Bu satırı sil",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Mevcut varyasyon hattını ve tüm devamlarını silmek istediğinizden emin misiniz?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Uyarı: Bu, mevcut konumunuzu silecektir. Üst konuma taşınacaksınız.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

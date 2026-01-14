@@ -3953,5 +3953,21 @@
     "monthDecember": "dhjetor",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Kalo tek linja kryesore",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Fshi këtë linjë",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Jeni i sigurt që dëshironi të fshini linjën aktuale të variacionit dhe të gjitha vazhdimeve të saj?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Paralajmërim: Kjo do të fshijë pozicionin tuaj aktual. Do të zhvendoseni në pozicionin prind.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

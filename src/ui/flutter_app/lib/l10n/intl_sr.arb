@@ -3953,5 +3953,21 @@
     "monthDecember": "децембар",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Скочи на главну линију",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Обриши ову линију",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Да ли сте сигурни да желите да обришете тренутну линију варијације и све њене наставке?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Упозорење: Ово ће обрисати вашу тренутну позицију. Бићете премештени на родитељску позицију.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

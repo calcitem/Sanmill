@@ -3953,5 +3953,21 @@
     "monthDecember": "டிசம்பர்",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "முதன்மை வரிக்குச் செல்",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "இந்த வரியை நீக்கு",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "தற்போதைய மாறுபாடு வரி மற்றும் அதன் அனைத்து தொடர்ச்சிகளையும் நீக்க விரும்புகிறீர்களா?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "எச்சரிக்கை: இது உங்கள் தற்போதைய நிலையை நீக்கும். நீங்கள் பெற்றோர் நிலைக்கு நகர்த்தப்படுவீர்கள்.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

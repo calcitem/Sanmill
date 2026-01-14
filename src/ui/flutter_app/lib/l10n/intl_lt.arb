@@ -3953,5 +3953,21 @@
     "monthDecember": "gruodį",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Peršokti į pagrindinę liniją",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Ištrinti šią liniją",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Ar tikrai norite ištrinti dabartinę variacijų liniją ir visus jos tęsinius?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Įspėjimas: tai ištrins jūsų dabartinę poziciją. Būsite perkelti į pirminę poziciją.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

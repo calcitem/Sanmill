@@ -3953,5 +3953,21 @@
     "monthDecember": "דצמבר",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "קפוץ לקו הראשי",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "מחק קו זה",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "האם אתה בטוח שברצונך למחוק את קו הווריאציה הנוכחי ואת כל ההמשכים שלו?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "אזהרה: פעולה זו תמחק את המיקום הנוכחי שלך. תועבר למיקום ההורה.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

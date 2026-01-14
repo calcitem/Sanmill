@@ -3953,5 +3953,21 @@
     "monthDecember": "دسامبر",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "پرش به خط اصلی",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "حذف این خط",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "آیا مطمئن هستید که می‌خواهید خط تغییر فعلی و تمام ادامه‌های آن را حذف کنید؟",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "هشدار: این عمل موقعیت فعلی شما را حذف می‌کند. به موقعیت والد منتقل خواهید شد.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

@@ -3953,5 +3953,21 @@
     "monthDecember": "dekabr",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Əsas xəttə keç",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Bu xətti sil",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Cari variasiya xəttini və onun bütün davamlarını silmək istədiyinizə əminsiniz?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Xəbərdarlıq: Bu, cari mövqeyinizi siləcək. Əsas mövqeyə keçiriləcəksiniz.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

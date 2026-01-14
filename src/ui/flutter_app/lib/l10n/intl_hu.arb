@@ -3210,5 +3210,21 @@
     "monthNovember": "november",
     "@monthNovember": {},
     "monthDecember": "december",
-    "@monthDecember": {}
+    "@monthDecember": {},
+    "jumpToMainLine": "Ugrás a főágra",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Sor törlése",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Biztos, hogy törölni szeretné az aktuális variációs sort és annak minden folytatását?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Figyelmeztetés: Ez törli az aktuális pozícióját. A szülő pozícióba kerül.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
+    }
 }

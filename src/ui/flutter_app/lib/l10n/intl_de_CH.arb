@@ -3245,5 +3245,21 @@
     "monthNovember": "November",
     "@monthNovember": {},
     "monthDecember": "Dezember",
-    "@monthDecember": {}
+    "@monthDecember": {},
+    "jumpToMainLine": "Zur Hauptlinie springen",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Diese Linie löschen",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Sind Sie sicher, dass Sie die aktuelle Variationslinie und alle ihre Fortsetzungen löschen möchten?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Warnung: Dies löscht Ihre aktuelle Position. Sie werden zur übergeordneten Position verschoben.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
+    }
 }

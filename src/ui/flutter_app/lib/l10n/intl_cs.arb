@@ -3953,5 +3953,21 @@
     "monthDecember": "prosince",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Přejít na hlavní linii",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Smazat tuto linii",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Opravdu chcete smazat aktuální variační linii a všechna její pokračování?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Upozornění: Tím se smaže vaše aktuální pozice. Budete přesunuti na rodičovskou pozici.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

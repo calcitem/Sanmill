@@ -3953,5 +3953,21 @@
     "monthDecember": "December",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Spring naar hoofdlijn",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Deze lijn verwijderen",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Weet u zeker dat u de huidige variatielijn en alle voortzettingen ervan wilt verwijderen?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Waarschuwing: Dit verwijdert uw huidige positie. U wordt verplaatst naar de bovenliggende positie.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

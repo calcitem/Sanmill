@@ -3953,5 +3953,21 @@
     "monthDecember": "decembrie",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Salt la linia principală",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Șterge această linie",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Sigur doriți să ștergeți linia de variație curentă și toate continuările sale?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Avertisment: Acest lucru va șterge poziția dvs. curentă. Veți fi mutat la poziția părintească.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

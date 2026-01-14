@@ -3953,5 +3953,21 @@
     "monthDecember": "दिसंबर",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "मुख्य पंक्ति पर जाएं",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "इस पंक्ति को हटाएं",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "क्या आप वाकई वर्तमान भिन्नता पंक्ति और उसकी सभी निरंतरताओं को हटाना चाहते हैं?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "चेतावनी: यह आपकी वर्तमान स्थिति को हटा देगा। आपको मूल स्थिति पर ले जाया जाएगा।",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

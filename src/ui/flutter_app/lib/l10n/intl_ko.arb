@@ -3953,5 +3953,21 @@
     "monthDecember": "12월",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "메인 라인으로 이동",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "이 라인 삭제",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "현재 변형 라인과 모든 후속 수를 삭제하시겠습니까?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "경고: 현재 위치가 삭제됩니다. 상위 위치로 이동합니다.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

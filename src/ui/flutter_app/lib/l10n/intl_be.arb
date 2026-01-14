@@ -3953,5 +3953,21 @@
     "monthDecember": "Снежань",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Перайсці да галоўнай лініі",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Выдаліць гэтую лінію",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Вы ўпэўнены, што хочаце выдаліць бягучую варыяцыйную лінію і ўсе яе працягі?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Папярэджанне: Гэта выдаліць вашу бягучую пазіцыю. Вы будзеце перамешчаны ў бацькоўскую пазіцыю.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }

@@ -3953,5 +3953,21 @@
     "monthDecember": "грудень",
     "@monthDecember": {
         "description": "December month name"
+    },
+    "jumpToMainLine": "Перейти до головної лінії",
+    "@jumpToMainLine": {
+        "description": "Jump to main line action"
+    },
+    "deleteCurrentBranch": "Видалити цю лінію",
+    "@deleteCurrentBranch": {
+        "description": "Delete current variation branch"
+    },
+    "deleteCurrentBranchConfirm": "Ви впевнені, що хочете видалити поточну варіантну лінію та всі її продовження?",
+    "@deleteCurrentBranchConfirm": {
+        "description": "Confirmation message for deleting current branch"
+    },
+    "deleteCurrentBranchWarning": "Попередження: Це видалить вашу поточну позицію. Ви будете переміщені до батьківської позиції.",
+    "@deleteCurrentBranchWarning": {
+        "description": "Warning message when deleting branch containing current position"
     }
 }
