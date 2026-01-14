@@ -1199,6 +1199,10 @@
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
     },
+    "capturablePieceHighlightColor": "可吃掉棋子高亮顏色",
+    "@capturablePieceHighlightColor": {
+        "description": "Capturable piece highlight color"
+    },
     "algorithm": "算法",
     "@algorithm": {
         "description": "Algorithm"
@@ -2154,32 +2158,52 @@
         }
     },
     "configureRulesPrompt": "您現在想要配置遊戲規則嗎？",
-    "@configureRulesPrompt": {},
+    "@configureRulesPrompt": {
+        "description": "Prompt asking user if they want to configure game rules during onboarding"
+    },
     "configureRules": "配置規則",
-    "@configureRules": {},
+    "@configureRules": {
+        "description": "Button text for configuring rules"
+    },
     "algorithmSuggestionTitle": "演算法建議",
     "@algorithmSuggestionTitle": {},
     "switchToMctsSuggestion": "您在 1 級已經連續輸了多局棋。要切換到更簡單的 MCTS 演算法以降低難度嗎？",
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "恭喜您在 MCTS 30 級獲勝！要切換到 MTD(f) 演算法以迎接更大的挑戰嗎？",
     "@switchToMtdfSuggestion": {},
-    "capturablePieceHighlightColor": "可吃掉棋子高亮顏色",
-    "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
-    },
     "highlightCapturablePieces": "高亮可吃掉的棋子",
     "@highlightCapturablePieces": {
         "description": "Highlight capturable pieces"
     },
+    "undo": "撤銷",
+    "@undo": {
+        "description": "Undo last move"
+    },
+    "reset": "重置",
+    "@reset": {
+        "description": "Reset puzzle to initial state"
+    },
+    "allPuzzlesCompleted": "所有謎題都已完成！",
+    "@allPuzzlesCompleted": {
+        "description": "Message shown when all puzzles have been completed"
+    },
+    "back": "返回",
+    "@back": {
+        "description": "Back button tooltip"
+    },
     "voiceAssistantSettings": "語音助手設定",
-    "@voiceAssistantSettings": {},
+    "@voiceAssistantSettings": {
+        "description": "Voice assistant settings page title"
+    },
     "voiceAssistantSettingsDescription": "配置模型、語言和行為",
-    "@voiceAssistantSettingsDescription": {},
-    "llmAssistedDevelopment": "LLM輔助發展",
+    "@voiceAssistantSettingsDescription": {
+        "description": "Voice assistant settings description"
+    },
+    "llmAssistedDevelopment": "LLM 輔助開發",
     "@llmAssistedDevelopment": {
         "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
     },
-    "llmAssistedDevelopmentInputHint": "描述您希望法學碩士幫助完成的任務......",
+    "llmAssistedDevelopmentInputHint": "請輸入要讓 LLM 幫你完成的任務說明…",
     "@llmAssistedDevelopmentInputHint": {
         "description": "Hint text for the LLM-assisted development input field"
     },
@@ -2197,7 +2221,7 @@
     },
     "enableAiChat": "啟用人工智能聊天",
     "@enableAiChat": {},
-    "allowChatWithAiAssistant": "允許與AI助手聊天（實驗）",
+    "allowChatWithAiAssistant": "允許與 AI 助手聊天（實驗）",
     "@allowChatWithAiAssistant": {},
     "enablePiecePickUpAnimation": "啟用棋子拾取動畫",
     "@enablePiecePickUpAnimation": {
@@ -2207,7 +2231,7 @@
     "@puzzles": {
         "description": "Puzzles menu item"
     },
-    "puzzle": "拼圖",
+    "puzzle": "謎題",
     "@puzzle": {
         "description": "Puzzle"
     },
@@ -2303,7 +2327,7 @@
     "@puzzleCategoryMixed": {
         "description": "Mixed tactics category"
     },
-    "exitPuzzle": "退出拼圖？",
+    "exitPuzzle": "退出謎題？",
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
@@ -2351,7 +2375,7 @@
     "@puzzleCreateNew": {
         "description": "Create a new custom puzzle"
     },
-    "puzzleEdit": "編輯拼圖",
+    "puzzleEdit": "編輯謎題",
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
@@ -2385,7 +2409,7 @@
     "@puzzleCompatibleOnly": {
         "description": "Filter option to show only puzzles compatible with current rules"
     },
-    "puzzleSelect": "選擇拼圖",
+    "puzzleSelect": "選擇謎題",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"
     },
@@ -2410,7 +2434,7 @@
     "@puzzleImport": {
         "description": "Import puzzles from file"
     },
-    "puzzleExportSuccess": "{count,plural, =1{成功導出 {count} 拼圖} other{成功導出 {count} 拼圖}}",
+    "puzzleExportSuccess": "{count,plural, =1{成功導出 {count} 謎題} other{成功導出 {count} 謎題}}",
     "@puzzleExportSuccess": {
         "description": "Puzzle export success message",
         "placeholders": {
@@ -2419,11 +2443,11 @@
             }
         }
     },
-    "puzzleExportFailed": "導出拼圖失敗",
+    "puzzleExportFailed": "導出謎題失敗",
     "@puzzleExportFailed": {
         "description": "Puzzle export failure message"
     },
-    "puzzleImportSuccess": "{count,plural, =1{成功導入{count}拼圖} other{成功導入 {count} 拼圖}}",
+    "puzzleImportSuccess": "{count,plural, =1{成功導入{count}謎題} other{成功導入 {count} 謎題}}",
     "@puzzleImportSuccess": {
         "description": "Puzzle import success message",
         "placeholders": {
@@ -2432,7 +2456,7 @@
             }
         }
     },
-    "puzzleImportFailed": "導入拼圖失敗",
+    "puzzleImportFailed": "導入謎題失敗",
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
@@ -2457,7 +2481,7 @@
     "@puzzleImportFileNotExist": {
         "description": "Error when file does not exist"
     },
-    "puzzleImportInvalidFormat": "文件格式無效：缺少拼圖字段",
+    "puzzleImportInvalidFormat": "無效的文件格式：缺少謎題字段",
     "@puzzleImportInvalidFormat": {
         "description": "Error when file format is invalid"
     },
@@ -2485,7 +2509,7 @@
             }
         }
     },
-    "puzzleImportRuleMismatchWarning": "謎題 {index}（“{title}”）使用不同的規則：{puzzleRules}（當前：{currentRules}）。此拼圖可能無法在您當前的設置下正常工作。",
+    "puzzleImportRuleMismatchWarning": "謎題 {index}（\"{title}\"）使用不同的規則：{puzzleRules}（目前：{currentRules}）。此謎題可能無法在您目前的設定下正常運作。",
     "@puzzleImportRuleMismatchWarning": {
         "description": "Warning when puzzle uses different rule variant",
         "placeholders": {
@@ -2540,11 +2564,11 @@
     "@puzzleValidationDescriptionRequired": {
         "description": "Validation error: description required"
     },
-    "puzzleValidationPositionRequired": "拼圖必須有一個有效的位置",
+    "puzzleValidationPositionRequired": "謎題必須有一個有效的位置",
     "@puzzleValidationPositionRequired": {
         "description": "Validation error: position required"
     },
-    "puzzleValidationInvalidFen": "拼圖的 FEN 格式無效。請檢查位置。",
+    "puzzleValidationInvalidFen": "謎題的 FEN 格式無效。請檢查位置。",
     "@puzzleValidationInvalidFen": {
         "description": "Validation error: invalid FEN"
     },
@@ -2572,7 +2596,7 @@
     "@puzzleValidationAuthorRequired": {
         "description": "Validation error: author required for contribution"
     },
-    "puzzleDeleteConfirm": "{count,plural, =1{刪除 {count} 拼圖？} other{刪除 {count} 拼圖？}}",
+    "puzzleDeleteConfirm": "{count,plural, =1{刪除 {count} 謎題？} other{刪除 {count} 謎題？}}",
     "@puzzleDeleteConfirm": {
         "description": "Confirm deletion of puzzles",
         "placeholders": {
@@ -2581,7 +2605,7 @@
             }
         }
     },
-    "puzzleDeleted": "{count,plural, =1{已刪除 {count} 拼圖} other{已刪除 {count} 謎題}}",
+    "puzzleDeleted": "{count,plural, =1{已刪除 {count} 謎題} other{已刪除 {count} 謎題}}",
     "@puzzleDeleted": {
         "description": "Puzzles deleted message",
         "placeholders": {
@@ -2590,11 +2614,11 @@
             }
         }
     },
-    "puzzleCannotDeleteBuiltIn": "無法刪除內置拼圖",
+    "puzzleCannotDeleteBuiltIn": "無法刪除內置謎題",
     "@puzzleCannotDeleteBuiltIn": {
         "description": "Error when trying to delete built-in puzzles"
     },
-    "puzzleCreationInstructions": "如何創建拼圖",
+    "puzzleCreationInstructions": "如何創建謎題",
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
@@ -2626,27 +2650,27 @@
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
-    "puzzleRecordSolution": "記錄解決方案",
+    "puzzleRecordSolution": "錄製解答",
     "@puzzleRecordSolution": {
         "description": "Record solution moves section"
     },
-    "puzzleStartRecording": "開始錄音",
+    "puzzleStartRecording": "開始錄製",
     "@puzzleStartRecording": {
         "description": "Start recording solution moves"
     },
-    "puzzleStopRecording": "停止錄音",
+    "puzzleStopRecording": "停止錄製",
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
-    "puzzleRecording": "錄音...",
+    "puzzleRecording": "正在錄製...",
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
-    "puzzleRecordingStarted": "錄音開始",
+    "puzzleRecordingStarted": "開始錄製答案步驟",
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
-    "puzzleRecordingStopped": "{count,plural, =1{記錄 {count} 移動} other{記錄 {count} 動作}}",
+    "puzzleRecordingStopped": "{count,plural, other{已錄製 {count} 步}}",
     "@puzzleRecordingStopped": {
         "description": "Recording stopped message",
         "placeholders": {
@@ -2655,7 +2679,7 @@
             }
         }
     },
-    "puzzleSolutionMoves": "{count,plural, =1{解決方案：{count}移動} other{解決方案： {count} 移動}}",
+    "puzzleSolutionMoves": "{count,plural, other{解答：{count} 步}}",
     "@puzzleSolutionMoves": {
         "description": "Number of solution moves",
         "placeholders": {
@@ -2701,7 +2725,7 @@
     "@puzzleMarkAsOptimal": {
         "description": "Button to mark solution as optimal"
     },
-    "puzzleSolutionCount": "{count,plural, =1{1 解決方案} other{{count} 解決方案}}",
+    "puzzleSolutionCount": "{count} 個解答",
     "@puzzleSolutionCount": {
         "description": "Count of solutions",
         "placeholders": {
@@ -2786,7 +2810,7 @@
     "@puzzleUpdated": {
         "description": "Puzzle updated message"
     },
-    "puzzleSaveFailed": "保存拼圖失敗",
+    "puzzleSaveFailed": "保存謎題失敗",
     "@puzzleSaveFailed": {
         "description": "Puzzle save failed message"
     },
@@ -2810,7 +2834,7 @@
     "@comingSoon": {
         "description": "Coming soon message"
     },
-    "dailyPuzzle": "每日拼圖",
+    "dailyPuzzle": "每日謎題",
     "@dailyPuzzle": {
         "description": "Daily puzzle feature name"
     },
@@ -2848,7 +2872,7 @@
             }
         }
     },
-    "dailyPuzzleStart": "開始每日拼圖",
+    "dailyPuzzleStart": "開始每日謎題",
     "@dailyPuzzleStart": {
         "description": "Start daily puzzle button"
     },
@@ -2880,7 +2904,7 @@
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
-    "puzzleRush": "拼圖衝刺",
+    "puzzleRush": "謎題衝刺",
     "@puzzleRush": {
         "description": "Puzzle rush mode name"
     },
@@ -2912,7 +2936,7 @@
     "@puzzleRushStart": {
         "description": "Start puzzle rush button"
     },
-    "puzzleRushQuitConfirm": "放棄匆忙？進步將會丟失。",
+    "puzzleRushQuitConfirm": "您確定要退出快速解謎嗎？您的進度將會遺失。",
     "@puzzleRushQuitConfirm": {
         "description": "Quit rush confirmation message"
     },
@@ -2980,7 +3004,7 @@
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "定制拼圖",
+    "customPuzzles": "定制謎題",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
@@ -2992,11 +3016,11 @@
     "@puzzleMultiSelectMode": {
         "description": "Multi-select mode label"
     },
-    "puzzleCreate": "創建拼圖",
+    "puzzleCreate": "創建謎題",
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "拼圖連勝",
+    "puzzleStreak": "謎題連勝",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
@@ -3064,7 +3088,7 @@
     "@puzzleHistory": {
         "description": "Puzzle history page name"
     },
-    "puzzleHistoryDesc": "查看您的拼圖嘗試",
+    "puzzleHistoryDesc": "查看您的謎題嘗試",
     "@puzzleHistoryDesc": {
         "description": "Puzzle history description"
     },
@@ -3205,7 +3229,7 @@
     "@puzzleShowDetailedWorkflow": {
         "description": "Tooltip for showing detailed workflow"
     },
-    "puzzleCreationWorkflow": "拼圖創建工作流程",
+    "puzzleCreationWorkflow": "謎題創建工作流程",
     "@puzzleCreationWorkflow": {
         "description": "Title for puzzle creation workflow dialog"
     },
@@ -3233,7 +3257,7 @@
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "保存拼圖",
+    "puzzleWorkflowStepSave": "保存謎題",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
@@ -3310,7 +3334,7 @@
     "@validationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "contributePuzzlesToSanmill": "向 Sanmill 貢獻拼圖",
+    "contributePuzzlesToSanmill": "向 Sanmill 貢獻謎題",
     "@contributePuzzlesToSanmill": {
         "description": "Title for contribute puzzles dialog"
     },
@@ -3330,7 +3354,7 @@
     "@contributionStep4": {
         "description": "Step 4 in contribution process"
     },
-    "contributionStep5": "5. 一旦獲得批准，它們就會成為內置拼圖！",
+    "contributionStep5": "5. 一旦獲得批准，它們就會成為內置謎題！",
     "@contributionStep5": {
         "description": "Step 5 in contribution process"
     },
@@ -3495,11 +3519,11 @@
             }
         }
     },
-    "invalidPuzzle": "無效拼圖",
+    "invalidPuzzle": "無效謎題",
     "@invalidPuzzle": {
         "description": "Title for invalid puzzle error"
     },
-    "invalidPuzzleMessage": "該拼圖的位置格式無效，無法加載。請聯繫拼圖作者或嘗試其他拼圖。",
+    "invalidPuzzleMessage": "該謎題的位置格式無效，無法加載。請聯繫謎題作者或嘗試其他謎題。",
     "@invalidPuzzleMessage": {
         "description": "Error message for invalid puzzle format"
     },
@@ -3664,11 +3688,11 @@
     "@logsCleared": {
         "description": "Message shown when logs are cleared successfully"
     },
-    "puzzleInvalidPuzzle": "無效拼圖",
+    "puzzleInvalidPuzzle": "無效謎題",
     "@puzzleInvalidPuzzle": {
         "description": "Title for invalid puzzle error dialog"
     },
-    "puzzleInvalidPuzzleMessage": "該拼圖的位置格式無效，無法加載。請聯繫拼圖作者或嘗試其他拼圖。",
+    "puzzleInvalidPuzzleMessage": "該謎題的位置格式無效，無法加載。請聯繫謎題作者或嘗試其他謎題。",
     "@puzzleInvalidPuzzleMessage": {
         "description": "Message for invalid puzzle error dialog"
     },
@@ -3729,7 +3753,7 @@
     "@puzzleValidationErrorsMessage": {
         "description": "Message for validation errors dialog"
     },
-    "puzzleContributeDialogTitle": "向 Sanmill 貢獻拼圖",
+    "puzzleContributeDialogTitle": "向 Sanmill 貢獻謎題",
     "@puzzleContributeDialogTitle": {
         "description": "Title for contribute puzzles dialog"
     },
@@ -3762,11 +3786,11 @@
     "@puzzleContributeStep4": {
         "description": "Contribution step 4"
     },
-    "puzzleContributeStep5": "5. 一旦獲得批准，它們就會成為內置拼圖！",
+    "puzzleContributeStep5": "5. 一旦獲得批准，它們就會成為內置謎題！",
     "@puzzleContributeStep5": {
         "description": "Contribution step 5"
     },
-    "puzzleContributeLicense": "通過貢獻，您同意根據 CC BY-SA 4.0（知識共享署名-相同方式共享）許可您的拼圖內容。",
+    "puzzleContributeLicense": "通過貢獻，您同意根據 CC BY-SA 4.0（知識共享署名-相同方式共享）許可您的謎題內容。",
     "@puzzleContributeLicense": {
         "description": "License agreement message for contributions"
     },
@@ -3778,7 +3802,7 @@
     "@puzzleStartContributing": {
         "description": "Button label to start contributing"
     },
-    "puzzleContributeInfo": "如何貢獻拼圖",
+    "puzzleContributeInfo": "如何貢獻謎題",
     "@puzzleContributeInfo": {
         "description": "Title for contribution info dialog"
     },
