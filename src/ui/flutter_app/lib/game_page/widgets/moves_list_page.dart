@@ -2152,25 +2152,11 @@ class MovesListPageState extends State<MovesListPage> {
           ),
           const SizedBox(width: 8),
           Text(
-            'Currently on variation branch',
+            S.of(context).onVariationBranch,
             style: TextStyle(
               color: DB().colorSettings.pieceHighlightColor,
               fontSize: 13,
               fontWeight: FontWeight.w500,
-            ),
-          ),
-          const Spacer(),
-          TextButton(
-            onPressed: _jumpToMainLine,
-            style: TextButton.styleFrom(
-              foregroundColor: DB().colorSettings.pieceHighlightColor,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: const Text(
-              'Jump to main line',
-              style: TextStyle(fontSize: 12),
             ),
           ),
         ],
@@ -2205,6 +2191,112 @@ class MovesListPageState extends State<MovesListPage> {
     if (current != null && current != activeNode) {
       _navigateToNode(current);
     }
+  }
+
+  /// Shows confirmation dialog before deleting the current variation branch
+  void _confirmDeleteCurrentBranch() {
+    final PgnNode<ExtMove>? activeNode =
+        GameController().gameRecorder.activeNode;
+    if (activeNode == null) {
+      return;
+    }
+
+    // Find the variation start node (the first node that's not on mainline)
+    PgnNode<ExtMove>? variationStartNode = activeNode;
+    while (variationStartNode != null && variationStartNode.parent != null) {
+      final PgnNode<ExtMove> parent = variationStartNode.parent!;
+      if (parent.children.isNotEmpty &&
+          parent.children.first != variationStartNode) {
+        // Found the variation start
+        break;
+      }
+      variationStartNode = variationStartNode.parent;
+    }
+
+    if (variationStartNode == null || variationStartNode.parent == null) {
+      rootScaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(content: Text('Cannot delete: already on main line')),
+      );
+      return;
+    }
+
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).deleteCurrentBranch),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(S.of(context).deleteCurrentBranchConfirm),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.orange.shade700),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      FluentIcons.warning_24_regular,
+                      color: Colors.orange.shade700,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        S.of(context).deleteCurrentBranchWarning,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).cancel),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteCurrentBranch(variationStartNode!);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red.shade700,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Deletes the current variation branch
+  void _deleteCurrentBranch(PgnNode<ExtMove> variationNode) {
+    final PgnNode<ExtMove>? parent = variationNode.parent;
+    if (parent == null) {
+      return;
+    }
+
+    setState(() {
+      // Move activeNode to parent before deleting
+      GameController().gameRecorder.activeNode = parent;
+
+      // Remove the variation node from parent's children
+      parent.children.remove(variationNode);
+    });
+
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear('Branch deleted');
+
+    // Refresh the display
+    _refreshAllNodes();
   }
 
   /// Finds all branch points (nodes with multiple children) in the active path
@@ -2449,6 +2541,20 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
+          // Jump to main line (only show when on variation branch)
+          if (_isOnVariationBranch())
+            IconButton(
+              icon: const Icon(FluentIcons.arrow_reply_24_regular),
+              tooltip: S.of(context).jumpToMainLine,
+              onPressed: _jumpToMainLine,
+            ),
+          // Delete current branch (only show when on variation branch)
+          if (_isOnVariationBranch())
+            IconButton(
+              icon: const Icon(FluentIcons.delete_24_regular),
+              tooltip: S.of(context).deleteCurrentBranch,
+              onPressed: _confirmDeleteCurrentBranch,
+            ),
           // Branch tree toggle icon (hide in list view as it uses Active Path only)
           if (_currentLayout != MovesViewLayout.list)
             IconButton(
