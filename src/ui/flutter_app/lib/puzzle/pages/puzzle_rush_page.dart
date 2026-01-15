@@ -467,7 +467,7 @@ class _PuzzleRushPageState extends State<PuzzleRushPage> {
     // Get puzzles based on difficulty
     List<PuzzleInfo> puzzles;
     if (_selectedDifficulty == null) {
-      puzzles = _puzzleManager.getAllPuzzles();
+      puzzles = _puzzleManager.getAllPuzzles().toList();
     } else {
       puzzles = _puzzleManager.getPuzzlesByDifficulty(_selectedDifficulty!);
     }

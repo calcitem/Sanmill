@@ -241,9 +241,15 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     bool useDarkSettingsUi,
     ThemeData settingsTheme,
   ) {
+    if (_streakPuzzles.isEmpty) {
+      return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
+    }
     if (_currentPuzzleIndex >= _streakPuzzles.length) {
       // Need to load more puzzles
       _loadMorePuzzles();
+    }
+    if (_currentPuzzleIndex >= _streakPuzzles.length) {
+      return _buildSetupScreen(context, s, useDarkSettingsUi, settingsTheme);
     }
 
     final PuzzleInfo currentPuzzle = _streakPuzzles[_currentPuzzleIndex];
@@ -509,7 +515,13 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       return;
     }
     // Get all puzzles and shuffle
-    final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles();
+    final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles().toList();
+    if (puzzles.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).noPuzzlesAvailable)),
+      );
+      return;
+    }
     puzzles.shuffle();
 
     setState(() {
@@ -527,7 +539,10 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       return;
     }
     // If we're running out of puzzles, shuffle and add more
-    final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles();
+    final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles().toList();
+    if (puzzles.isEmpty) {
+      return;
+    }
     puzzles.shuffle();
     setState(() {
       _streakPuzzles.addAll(puzzles);
