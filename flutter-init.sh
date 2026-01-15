@@ -34,6 +34,40 @@ flutter config --no-analytics
 
 ( cd "${APP_DIR}" && flutter pub get )
 
+# Generate iOS and macOS Generated.xcconfig with correct build number
+PUBSPEC_VERSION_LINE=$(grep '^version:' "${APP_DIR}/pubspec.yaml" | sed 's/version:[[:space:]]*//')
+FLUTTER_BUILD_NAME="${PUBSPEC_VERSION_LINE%%+*}"
+FLUTTER_BUILD_NUMBER="${PUBSPEC_VERSION_LINE##*+}"
+FLUTTER_ROOT_PATH=$(flutter --version --machine 2>/dev/null | grep -o '"flutterRoot":"[^"]*"' | sed 's/"flutterRoot":"//;s/"$//' || echo "")
+
+generate_xcconfig() {
+    local PLATFORM_DIR="$1"
+    local XCCONFIG_FILE="${APP_DIR}/${PLATFORM_DIR}/Flutter/Generated.xcconfig"
+
+    if [ -n "${FLUTTER_BUILD_NAME}" ] && [ -n "${FLUTTER_BUILD_NUMBER}" ]; then
+        mkdir -p "$(dirname "${XCCONFIG_FILE}")"
+        cat > "${XCCONFIG_FILE}" << XCCONFIG_EOF
+// This is a generated file; do not edit or check into version control.
+FLUTTER_ROOT=${FLUTTER_ROOT_PATH}
+FLUTTER_APPLICATION_PATH=${APP_DIR}
+COCOAPODS_PARALLEL_CODE_SIGN=true
+FLUTTER_TARGET=lib/main.dart
+FLUTTER_BUILD_DIR=build
+FLUTTER_BUILD_NAME=${FLUTTER_BUILD_NAME}
+FLUTTER_BUILD_NUMBER=${FLUTTER_BUILD_NUMBER}
+EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
+DART_OBFUSCATION=false
+TRACK_WIDGET_CREATION=true
+TREE_SHAKE_ICONS=false
+PACKAGE_CONFIG=${APP_DIR}/.dart_tool/package_config.json
+XCCONFIG_EOF
+        echo "Generated ${PLATFORM_DIR} xcconfig: FLUTTER_BUILD_NAME=${FLUTTER_BUILD_NAME}, FLUTTER_BUILD_NUMBER=${FLUTTER_BUILD_NUMBER}"
+    fi
+}
+
+generate_xcconfig "ios"
+generate_xcconfig "macos"
+
 echo "const Map<String, String> flutterVersion =" > "${FLUTTER_VERSION_FILE}"
 flutter --version --machine | tee -a "${FLUTTER_VERSION_FILE}"
 sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "${FLUTTER_VERSION_FILE}" && rm "${FLUTTER_VERSION_FILE}.bak"
