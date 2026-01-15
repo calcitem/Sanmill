@@ -17,6 +17,12 @@ class MockAudios extends Mock implements SoundManager {
   Future<void> playTone(Sound sound) async {}
 
   @override
+  Future<void> playToneAndWait(
+    Sound sound, {
+    Duration timeout = const Duration(seconds: 10),
+  }) async {}
+
+  @override
   void mute() {}
 
   @override
