@@ -11,6 +11,14 @@ if [ "$(uname)" == "Darwin" ]; then
 	SED=gsed
 fi
 
+# Extract base app version from pubspec.yaml (X.Y.Z)
+PUBSPEC_VERSION_LINE="$($SED -n 's/^version:[[:space:]]*//p' ${PUBSPEC_YAML_FILE} | head -n 1)"
+APP_BASE_VERSION="${PUBSPEC_VERSION_LINE%%+*}"
+if [ -z "$APP_BASE_VERSION" ]; then
+	echo "Error: Missing version in ${PUBSPEC_YAML_FILE}"
+	exit 1
+fi
+
 # Remove existing VERSION_H file
 rm -f $VERSION_H
 
@@ -26,6 +34,7 @@ TAG="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 # Determine the version string based on the number of commits
 if [ "$LOCALVER" -gt "1" ] ; then
 	VER=$(git rev-list origin/$GIT_BRANCH | sort | join config.git-hash - | wc -l | awk '{print $1}')
+	APP_BUILD_NUMBER="$((LOCALVER-VER))"
 	if [ "$VER" != "$LOCALVER" ] ; then
 		VER="$VER+$((LOCALVER-VER))"
 	fi
@@ -34,7 +43,7 @@ if [ "$LOCALVER" -gt "1" ] ; then
 	fi
 	VER="$VER g$(git rev-list HEAD -n 1 | cut -c 1-7)"
 	GIT_VERSION="$TAG r$VER"
-	APP_VERSION="${TAG:1}+${LOCALVER-VER}"
+	APP_VERSION="${APP_BASE_VERSION}+${APP_BUILD_NUMBER}"
 else
 	DATE=$(date +%Y%m%d)
 	if [ -n "$GITHUB_RUN_NUMBER" ] ; then
@@ -44,7 +53,7 @@ else
 		VER="${DATE:2}"
 		GIT_VERSION="$TAG Build $VER"
 	fi
-	APP_VERSION="${TAG:1}+${VER}"
+	APP_VERSION="${APP_BASE_VERSION}+${VER}"
 fi
 
 # Remove the temporary git-hash file
