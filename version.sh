@@ -28,13 +28,15 @@ git rev-list HEAD | sort > config.git-hash
 # Calculate the number of commits in the repository
 LOCALVER="$(wc -l config.git-hash | awk '{print $1}')"
 
+# Use total commit count as build number
+APP_BUILD_NUMBER="$LOCALVER"
+
 # Get the latest git tag
 TAG="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 
 # Determine the version string based on the number of commits
 if [ "$LOCALVER" -gt "1" ] ; then
 	VER=$(git rev-list origin/$GIT_BRANCH | sort | join config.git-hash - | wc -l | awk '{print $1}')
-	APP_BUILD_NUMBER="$((LOCALVER-VER))"
 	if [ "$VER" != "$LOCALVER" ] ; then
 		VER="$VER+$((LOCALVER-VER))"
 	fi
@@ -43,7 +45,6 @@ if [ "$LOCALVER" -gt "1" ] ; then
 	fi
 	VER="$VER g$(git rev-list HEAD -n 1 | cut -c 1-7)"
 	GIT_VERSION="$TAG r$VER"
-	APP_VERSION="${APP_BASE_VERSION}+${APP_BUILD_NUMBER}"
 else
 	DATE=$(date +%Y%m%d)
 	if [ -n "$GITHUB_RUN_NUMBER" ] ; then
@@ -53,8 +54,10 @@ else
 		VER="${DATE:2}"
 		GIT_VERSION="$TAG Build $VER"
 	fi
-	APP_VERSION="${APP_BASE_VERSION}+${VER}"
 fi
+
+# Set app version with build number (total commit count)
+APP_VERSION="${APP_BASE_VERSION}+${APP_BUILD_NUMBER}"
 
 # Remove the temporary git-hash file
 rm -f config.git-hash
