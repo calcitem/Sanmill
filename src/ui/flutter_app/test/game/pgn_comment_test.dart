@@ -21,10 +21,7 @@ void main() {
       const String comment = '[%emt 0:00:05.500]';
       final PgnComment parsed = PgnComment.fromPgn(comment);
 
-      expect(
-        parsed.emt,
-        const Duration(seconds: 5, milliseconds: 500),
-      );
+      expect(parsed.emt, const Duration(seconds: 5, milliseconds: 500));
     });
 
     test('Parses evaluation with pawns [%eval]', () {
@@ -177,12 +174,9 @@ void main() {
     });
 
     test('PgnEvaluation equality works correctly', () {
-      const PgnEvaluation eval1 =
-          PgnEvaluation.pawns(pawns: 0.5, depth: 10);
-      const PgnEvaluation eval2 =
-          PgnEvaluation.pawns(pawns: 0.5, depth: 10);
-      const PgnEvaluation eval3 =
-          PgnEvaluation.pawns(pawns: 1.0, depth: 10);
+      const PgnEvaluation eval1 = PgnEvaluation.pawns(pawns: 0.5, depth: 10);
+      const PgnEvaluation eval2 = PgnEvaluation.pawns(pawns: 0.5, depth: 10);
+      const PgnEvaluation eval3 = PgnEvaluation.pawns(pawns: 1.0, depth: 10);
 
       expect(eval1, equals(eval2));
       expect(eval1, isNot(equals(eval3)));
@@ -221,15 +215,9 @@ void main() {
     });
 
     test('CommentShapeColor parses all colors', () {
-      expect(
-        CommentShapeColor.parseShapeColor('G'),
-        CommentShapeColor.green,
-      );
+      expect(CommentShapeColor.parseShapeColor('G'), CommentShapeColor.green);
       expect(CommentShapeColor.parseShapeColor('R'), CommentShapeColor.red);
-      expect(
-        CommentShapeColor.parseShapeColor('Y'),
-        CommentShapeColor.yellow,
-      );
+      expect(CommentShapeColor.parseShapeColor('Y'), CommentShapeColor.yellow);
       expect(CommentShapeColor.parseShapeColor('B'), CommentShapeColor.blue);
       expect(CommentShapeColor.parseShapeColor('X'), isNull); // Invalid
     });

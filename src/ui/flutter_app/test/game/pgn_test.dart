@@ -14,7 +14,10 @@ void main() {
       final PgnComment parsed = PgnComment.fromPgn(rawComment);
 
       expect(parsed.text, 'Nice');
-      expect(parsed.clock, const Duration(minutes: 1, seconds: 2, milliseconds: 500));
+      expect(
+        parsed.clock,
+        const Duration(minutes: 1, seconds: 2, milliseconds: 500),
+      );
       expect(parsed.emt, const Duration(seconds: 1));
       expect(parsed.eval, const PgnEvaluation.pawns(pawns: 0.34, depth: 12));
       expect(parsed.shapes.length, 2);
@@ -37,23 +40,27 @@ void main() {
     });
 
     test('Parses mainline moves and transforms nodes', () {
-      final PgnGame<PgnNodeData> game =
-          PgnGame.parsePgn('1. d6 f4 2. d7 *');
-      final List<String> mainlineSans =
-          game.moves.mainline().map((PgnNodeData d) => d.san).toList();
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6 f4 2. d7 *');
+      final List<String> mainlineSans = game.moves
+          .mainline()
+          .map((PgnNodeData d) => d.san)
+          .toList();
       expect(mainlineSans, <String>['d6', 'f4', 'd7']);
 
-      final PgnNode<PgnNodeData> transformed =
-          game.moves.transform<PgnNodeData, int>(
-        0,
-        (int ctx, PgnNodeData data, int childIndex) {
-          final int next = childIndex == -1 ? ctx : ctx + 1;
-          return (next, PgnNodeData(san: '${data.san}#$next'));
-        },
-      );
+      final PgnNode<PgnNodeData> transformed = game.moves
+          .transform<PgnNodeData, int>(0, (
+            int ctx,
+            PgnNodeData data,
+            int childIndex,
+          ) {
+            final int next = childIndex == -1 ? ctx : ctx + 1;
+            return (next, PgnNodeData(san: '${data.san}#$next'));
+          });
 
-      final List<String> transformedSans =
-          transformed.mainline().map((PgnNodeData d) => d.san).toList();
+      final List<String> transformedSans = transformed
+          .mainline()
+          .map((PgnNodeData d) => d.san)
+          .toList();
       expect(transformedSans, <String>['d6#1', 'f4#2', 'd7#3']);
     });
 
@@ -72,8 +79,9 @@ void main() {
 1. a1 g7 2. d2 *
 ''';
 
-      final List<PgnGame<PgnNodeData>> games =
-          PgnGame.parseMultiGamePgn(multiGamePgn);
+      final List<PgnGame<PgnNodeData>> games = PgnGame.parseMultiGamePgn(
+        multiGamePgn,
+      );
 
       // Verify we got 2 games
       expect(games.length, 2, reason: 'Should parse 2 games');
@@ -182,18 +190,18 @@ void main() {
 
     test('Parses all NAG symbols correctly', () {
       const String nagPgn =
-          '1. d6! f4? 2. d7!! g7?? 3. a1!? b2?! 4. c3\$10 d5 *';
+          r'1. d6! f4? 2. d7!! g7?? 3. a1!? b2?! 4. c3$10 d5 *';
 
       final PgnGame<PgnNodeData> game = PgnGame.parsePgn(nagPgn);
       final List<PgnNodeData> moves = game.moves.mainline().toList();
 
-      expect(moves[0].nags, [1]); // !
-      expect(moves[1].nags, [2]); // ?
-      expect(moves[2].nags, [3]); // !!
-      expect(moves[3].nags, [4]); // ??
-      expect(moves[4].nags, [5]); // !?
-      expect(moves[5].nags, [6]); // ?!
-      expect(moves[6].nags, [10]); // $10
+      expect(moves[0].nags, <int>[1]); // !
+      expect(moves[1].nags, <int>[2]); // ?
+      expect(moves[2].nags, <int>[3]); // !!
+      expect(moves[3].nags, <int>[4]); // ??
+      expect(moves[4].nags, <int>[5]); // !?
+      expect(moves[5].nags, <int>[6]); // ?!
+      expect(moves[6].nags, <int>[10]); // $10
     });
 
     test('Preserves move order with multiple variations', () {
@@ -255,9 +263,9 @@ void main() {
     });
 
     test('Handles escaped quotes in headers', () {
-      const String escapedPgn = '''
-[Event "Test \\"Quoted\\" Event"]
-[White "Player \\\\ Name"]
+      const String escapedPgn = r'''
+[Event "Test \"Quoted\" Event"]
+[White "Player \\ Name"]
 
 1. d6 *
 ''';
@@ -290,9 +298,9 @@ void main() {
 
     test('Handles variations at different depths', () {
       const String complexPgn = '''
-1. d6 f4 
-2. d7 (2. a7 {Var at move 2} g4 3. g7) 
-2... g7 (2... f6 {Var at move 2 black} 3. f2) 
+1. d6 f4
+2. d7 (2. a7 {Var at move 2} g4 3. g7)
+2... g7 (2... f6 {Var at move 2 black} 3. f2)
 3. f6 *
 ''';
 

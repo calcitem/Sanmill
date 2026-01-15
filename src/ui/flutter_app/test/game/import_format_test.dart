@@ -3,8 +3,8 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -204,10 +204,7 @@ void main() {
     test('Rejects invalid move notation', () {
       const String invalidPgn = '1. x1x2x3x4x5'; // Invalid square notation
 
-      expect(
-        () => ImportService.import(invalidPgn),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => ImportService.import(invalidPgn), throwsA(isA<Exception>()));
     });
 
     test('Imports PGN with comments and preserves them', () {
@@ -263,8 +260,8 @@ void main() {
 
     test('Handles whitespace variations in move notation', () {
       const String whitespacePgn = '''
-1.  d6    f4  
-2.   d7     g7   
+1.  d6    f4
+2.   d7     g7
 ''';
 
       ImportService.import(whitespacePgn);
@@ -279,9 +276,9 @@ void main() {
   group('Import with variations', () {
     test('Imports PGN with variations and preserves tree structure', () {
       const String variationPgn = '''
-1. d6 f4 
-2. d7 (2. a7 g4) 
-2... g7 
+1. d6 f4
+2. d7 (2. a7 g4)
+2... g7
 ''';
 
       ImportService.import(variationPgn);
@@ -292,8 +289,7 @@ void main() {
       expect(root, isNotNull);
 
       // Navigate to move 2 (after f4)
-      if (root!.children.isNotEmpty &&
-          root.children[0].children.isNotEmpty) {
+      if (root!.children.isNotEmpty && root.children[0].children.isNotEmpty) {
         final PgnNode<ExtMove> afterF4 = root.children[0].children[0];
 
         // Should have both d7 (mainline) and a7 (variation)
@@ -490,7 +486,7 @@ white win
       final GameController controller = GameController.instance;
       controller.gameInstance.gameMode = GameMode.humanVsAi;
 
-      final String moveList = '1. d6 f4';
+      const String moveList = '1. d6 f4';
       final String withTags = ImportService.addTagPairs(moveList);
 
       expect(withTags, contains('[Event "Sanmill-Game"]'));
@@ -500,9 +496,9 @@ white win
       expect(withTags, contains('[Result'));
     });
 
-    test('addTagPairs detects Nine Men\'s Morris variant', () {
+    test("addTagPairs detects Nine Men's Morris variant", () {
       // MockDB defaults to Nine Men's Morris (9 pieces, no diagonals)
-      final String moveList = '1. d6 f4';
+      const String moveList = '1. d6 f4';
       final String withTags = ImportService.addTagPairs(moveList);
 
       expect(withTags, contains('[Variant "Nine Men\'s Morris"]'));
@@ -513,7 +509,7 @@ white win
       controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
       controller.gameRecorder.appendMove(ExtMove('f4', side: PieceColor.black));
 
-      final String moveList = '1. d6 f4';
+      const String moveList = '1. d6 f4';
       final String withTags = ImportService.addTagPairs(moveList);
 
       expect(withTags, contains('[PlyCount "2"]'));

@@ -552,7 +552,7 @@ class PiecePainter extends CustomPainter {
           DB().displaySettings.isPiecePickUpAnimationEnabled) {
         // Delayed fade: stay opaque for first 60%, then fade out in last 40%
         // This creates a "fly away and disappear" effect rather than "melt away"
-        final double fadeStart = 0.82;
+        const double fadeStart = 0.82;
         if (removeAnimationValue <= fadeStart) {
           opacity = 1.0;
         } else {

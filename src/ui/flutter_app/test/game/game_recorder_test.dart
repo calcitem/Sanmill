@@ -3,8 +3,8 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -179,8 +179,8 @@ void main() {
       recorder.appendMove(ExtMove('b2', side: PieceColor.white));
 
       // Create second variation: f6 instead of g7
-      final PgnNode<ExtMove> d7Node = recorder.pgnRoot
-          .children.first.children.first.children.first;
+      final PgnNode<ExtMove> d7Node =
+          recorder.pgnRoot.children.first.children.first.children.first;
       recorder.activeNode = d7Node;
       recorder.appendMove(ExtMove('f6', side: PieceColor.black));
 
@@ -295,10 +295,7 @@ void main() {
     });
 
     test('ExtMove rejects same-square move', () {
-      expect(
-        () => ExtMove('d6-d6', side: PieceColor.white),
-        throwsException,
-      );
+      expect(() => ExtMove('d6-d6', side: PieceColor.white), throwsException);
     });
 
     test('ExtMove formats notation correctly', () {
@@ -404,10 +401,7 @@ void main() {
     });
 
     test('ExtMove handles variation metadata', () {
-      final ExtMove move = ExtMove(
-        'd6',
-        side: PieceColor.white,
-      );
+      final ExtMove move = ExtMove('d6', side: PieceColor.white);
 
       move.isVariation = true;
       move.variationDepth = 2;
@@ -428,12 +422,15 @@ void main() {
   group('PGN node operations', () {
     test('PgnNode mainline iteration works correctly', () {
       final PgnNode<PgnNodeData> root = PgnNode<PgnNodeData>();
-      final PgnNode<PgnNodeData> node1 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'd6'));
-      final PgnNode<PgnNodeData> node2 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'f4'));
-      final PgnNode<PgnNodeData> node3 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'd7'));
+      final PgnNode<PgnNodeData> node1 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'd6'),
+      );
+      final PgnNode<PgnNodeData> node2 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'f4'),
+      );
+      final PgnNode<PgnNodeData> node3 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'd7'),
+      );
 
       root.children.add(node1);
       node1.children.add(node2);
@@ -449,28 +446,32 @@ void main() {
 
     test('PgnNode transform skips nodes when callback returns null', () {
       final PgnNode<PgnNodeData> root = PgnNode<PgnNodeData>();
-      final PgnNode<PgnNodeData> node1 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'd6'));
-      final PgnNode<PgnNodeData> node2 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'SKIP'));
-      final PgnNode<PgnNodeData> node3 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'f4'));
+      final PgnNode<PgnNodeData> node1 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'd6'),
+      );
+      final PgnNode<PgnNodeData> node2 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'SKIP'),
+      );
+      final PgnNode<PgnNodeData> node3 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'f4'),
+      );
 
       root.children.add(node1);
       node1.children.add(node2);
       node2.children.add(node3);
 
       // Transform, skipping "SKIP" nodes
-      final PgnNode<PgnNodeData> transformed =
-          root.transform<PgnNodeData, void>(
-        null,
-        (void ctx, PgnNodeData data, int childIndex) {
-          if (data.san == 'SKIP') {
-            return null; // Skip this node
-          }
-          return (null, data);
-        },
-      );
+      final PgnNode<PgnNodeData> transformed = root
+          .transform<PgnNodeData, void>(null, (
+            void ctx,
+            PgnNodeData data,
+            int childIndex,
+          ) {
+            if (data.san == 'SKIP') {
+              return null; // Skip this node
+            }
+            return (null, data);
+          });
 
       final List<PgnNodeData> result = transformed.mainline().toList();
 
@@ -481,25 +482,23 @@ void main() {
 
     test('PgnNode transform updates context correctly', () {
       final PgnNode<PgnNodeData> root = PgnNode<PgnNodeData>();
-      final PgnNode<PgnNodeData> node1 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'd6'));
-      final PgnNode<PgnNodeData> node2 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'f4'));
+      final PgnNode<PgnNodeData> node1 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'd6'),
+      );
+      final PgnNode<PgnNodeData> node2 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'f4'),
+      );
 
       root.children.add(node1);
       node1.children.add(node2);
 
       // Transform with accumulating context
       // Note: childIndex=-1 for node.data transform, then children get sequential indices
-      final PgnNode<PgnNodeData> transformed =
-          root.transform<PgnNodeData, int>(
+      final PgnNode<PgnNodeData> transformed = root.transform<PgnNodeData, int>(
         0,
         (int ctx, PgnNodeData data, int childIndex) {
           final int newCtx = ctx + 1;
-          return (
-            newCtx,
-            PgnNodeData(san: '${data.san}[$newCtx]'),
-          );
+          return (newCtx, PgnNodeData(san: '${data.san}[$newCtx]'));
         },
       );
 
@@ -513,12 +512,15 @@ void main() {
 
     test('PgnNode handles multiple children (variations)', () {
       final PgnNode<PgnNodeData> root = PgnNode<PgnNodeData>();
-      final PgnNode<PgnNodeData> var1 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'd6'));
-      final PgnNode<PgnNodeData> var2 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'a1'));
-      final PgnNode<PgnNodeData> var3 =
-          PgnNode<PgnNodeData>(PgnNodeData(san: 'b2'));
+      final PgnNode<PgnNodeData> var1 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'd6'),
+      );
+      final PgnNode<PgnNodeData> var2 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'a1'),
+      );
+      final PgnNode<PgnNodeData> var3 = PgnNode<PgnNodeData>(
+        PgnNodeData(san: 'b2'),
+      );
 
       root.children.add(var1);
       root.children.add(var2);
@@ -549,10 +551,7 @@ void main() {
     test('MoveParser rejects invalid formats', () {
       final MoveParser parser = MoveParser();
 
-      expect(
-        () => parser.parseMoveType('invalid'),
-        throwsFormatException,
-      );
+      expect(() => parser.parseMoveType('invalid'), throwsFormatException);
       expect(
         () => parser.parseMoveType('h8'),
         throwsFormatException,

@@ -3,8 +3,8 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -60,10 +60,7 @@ void main() {
         startingComments: <String>['Start'],
         comments: <String>['After'],
       );
-      final ExtMove move2 = ExtMove(
-        'f4',
-        side: PieceColor.black,
-      );
+      final ExtMove move2 = ExtMove('f4', side: PieceColor.black);
       recorder.appendMove(move1);
       recorder.appendMove(move2);
 
@@ -134,8 +131,8 @@ void main() {
 
       // Now activeNode's parent has 2 children
       expect(recorder.hasVariationsAtActiveNode(), isTrue);
-      final List<PgnNode<ExtMove>> variations =
-          recorder.getVariationsAtActiveNode();
+      final List<PgnNode<ExtMove>> variations = recorder
+          .getVariationsAtActiveNode();
       expect(variations.length, 1);
       expect(variations.first.data?.move, 'f4');
     });
@@ -151,8 +148,8 @@ void main() {
       recorder.appendMove(ExtMove('a1', side: PieceColor.black));
 
       // Switch to first variation
-      final List<PgnNode<ExtMove>> variations =
-          recorder.getVariationsAtActiveNode();
+      final List<PgnNode<ExtMove>> variations = recorder
+          .getVariationsAtActiveNode();
       recorder.switchToVariation(variations.first);
 
       expect(recorder.activeNode?.data?.move, 'f4');
@@ -231,7 +228,9 @@ void main() {
       recorder.activeNode = recorder.pgnRoot.children.first;
       final int childCountBefore = recorder.activeNode!.children.length;
 
-      recorder.branchNewMoveFromActiveNode(ExtMove('f4', side: PieceColor.black));
+      recorder.branchNewMoveFromActiveNode(
+        ExtMove('f4', side: PieceColor.black),
+      );
 
       // Should not create duplicate branch
       expect(recorder.activeNode!.parent!.children.length, childCountBefore);
