@@ -117,7 +117,8 @@ class PuzzleRatingService {
   PuzzleRating getUserRating() {
     // Load from PuzzleSettings
     final int currentRating = DB().puzzleSettings.userRating;
-    final int gamesPlayed = DB().puzzleSettings.totalCompleted;
+    // Count total attempts from history
+    final int gamesPlayed = getAttemptHistory().length;
 
     return PuzzleRating(
       rating: currentRating,
@@ -126,6 +127,9 @@ class PuzzleRatingService {
       ratingDeviation: gamesPlayed < _provisionalGames ? _initialRD : _minRD,
     );
   }
+
+  /// Get user's current puzzle rating (alias for getUserRating)
+  PuzzleRating getCurrentRating() => getUserRating();
 
   /// Update rating based on puzzle result
   PuzzleAttemptResult updateRating({
@@ -150,7 +154,61 @@ class PuzzleRatingService {
 
     // Update user rating
     userRating.rating += ratingChange;
-    userRating.gamesPlayed++;
+
+    // Reduce rating deviation as user plays more
+    if (userRating.ratingDeviation > _minRD) {
+      userRating.ratingDeviation = max(
+        _minRD,
+        userRating.ratingDeviation - 5.0,
+      );
+    }
+
+    _saveUserRating(userRating);
+
+    final PuzzleAttemptResult result = PuzzleAttemptResult(
+      puzzleId: puzzleId,
+      success: success,
+      timeSpent: timeSpent,
+      hintsUsed: hintsUsed,
+      movesPlayed: movesPlayed,
+      timestamp: DateTime.now(),
+      oldRating: oldRating,
+      newRating: userRating.rating,
+      ratingChange: ratingChange,
+    );
+
+    _saveAttemptResult(result);
+
+    logger.i(
+      "$_tag Rating updated: $oldRating -> ${userRating.rating} (${ratingChange >= 0 ? '+' : ''}$ratingChange)",
+    );
+
+    return result;
+  }
+
+  /// Record a puzzle attempt with rating calculation
+  PuzzleAttemptResult recordAttempt({
+    required String puzzleId,
+    required int puzzleRating,
+    required bool success,
+    required Duration timeSpent,
+    required int hintsUsed,
+    required int movesPlayed,
+  }) {
+    final PuzzleRating userRating = getUserRating();
+    final int oldRating = userRating.rating;
+
+    // Calculate rating change using modified ELO formula
+    final int ratingChange = _calculateRatingChange(
+      userRating: userRating,
+      puzzleRating: puzzleRating,
+      success: success,
+      timeSpent: timeSpent,
+      hintsUsed: hintsUsed,
+    );
+
+    // Update user rating
+    userRating.rating += ratingChange;
 
     // Reduce rating deviation as user plays more
     if (userRating.ratingDeviation > _minRD) {
@@ -270,6 +328,14 @@ class PuzzleRatingService {
     );
 
     return limit == null ? results : results.take(limit).toList();
+  }
+
+  /// Get puzzle attempt history (alias for getAttemptHistory)
+  /// Returns results in chronological order (oldest first, newest last)
+  List<PuzzleAttemptResult> getHistory({int? limit}) {
+    final List<PuzzleAttemptResult> results = getAttemptHistory(limit: limit);
+    // Reverse to get chronological order (oldest first, newest last)
+    return results.reversed.toList();
   }
 
   /// Get rating history over time
