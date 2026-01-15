@@ -15,10 +15,12 @@ import 'package:sanmill/shared/services/environment_config.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const MethodChannel engineChannel =
-      MethodChannel('com.calcitem.sanmill/engine');
-  const MethodChannel pathProviderChannel =
-      MethodChannel('plugins.flutter.io/path_provider');
+  const MethodChannel engineChannel = MethodChannel(
+    'com.calcitem.sanmill/engine',
+  );
+  const MethodChannel pathProviderChannel = MethodChannel(
+    'plugins.flutter.io/path_provider',
+  );
 
   late Directory appDocDir;
   late PuzzleManager manager;
@@ -29,35 +31,35 @@ void main() {
     // Mock engine channel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'send':
-        case 'shutdown':
-        case 'startup':
-          return null;
-        case 'read':
-          return 'uciok';
-        case 'isThinking':
-          return false;
-        default:
-          return null;
-      }
-    });
+          switch (methodCall.method) {
+            case 'send':
+            case 'shutdown':
+            case 'startup':
+              return null;
+            case 'read':
+              return 'uciok';
+            case 'isThinking':
+              return false;
+            default:
+              return null;
+          }
+        });
 
     // Provide a stable documents directory for Hive/path_provider callers
     appDocDir = Directory.systemTemp.createTempSync('sanmill_manager_test_');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pathProviderChannel, (
-      MethodCall methodCall,
-    ) async {
-      switch (methodCall.method) {
-        case 'getApplicationDocumentsDirectory':
-        case 'getApplicationSupportDirectory':
-        case 'getTemporaryDirectory':
-          return appDocDir.path;
-        default:
-          return null;
-      }
-    });
+          MethodCall methodCall,
+        ) async {
+          switch (methodCall.method) {
+            case 'getApplicationDocumentsDirectory':
+            case 'getApplicationSupportDirectory':
+            case 'getTemporaryDirectory':
+              return appDocDir.path;
+            default:
+              return null;
+          }
+        });
 
     await DB.init();
     manager = PuzzleManager();

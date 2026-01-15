@@ -16,8 +16,12 @@ import 'package:sanmill/shared/services/environment_config.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const MethodChannel engineChannel = MethodChannel('com.calcitem.sanmill/engine');
-  const MethodChannel pathProviderChannel = MethodChannel('plugins.flutter.io/path_provider');
+  const MethodChannel engineChannel = MethodChannel(
+    'com.calcitem.sanmill/engine',
+  );
+  const MethodChannel pathProviderChannel = MethodChannel(
+    'plugins.flutter.io/path_provider',
+  );
 
   late Directory appDocDir;
 
@@ -27,33 +31,35 @@ void main() {
     // Mock engine channel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'send':
-        case 'shutdown':
-        case 'startup':
-          return null;
-        case 'read':
-          return 'uciok';
-        case 'isThinking':
-          return false;
-        default:
-          return null;
-      }
-    });
+          switch (methodCall.method) {
+            case 'send':
+            case 'shutdown':
+            case 'startup':
+              return null;
+            case 'read':
+              return 'uciok';
+            case 'isThinking':
+              return false;
+            default:
+              return null;
+          }
+        });
 
     // Provide a stable documents directory for Hive/path_provider callers
     appDocDir = Directory.systemTemp.createTempSync('sanmill_export_test_');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(pathProviderChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'getApplicationDocumentsDirectory':
-        case 'getApplicationSupportDirectory':
-        case 'getTemporaryDirectory':
-          return appDocDir.path;
-        default:
-          return null;
-      }
-    });
+        .setMockMethodCallHandler(pathProviderChannel, (
+          MethodCall methodCall,
+        ) async {
+          switch (methodCall.method) {
+            case 'getApplicationDocumentsDirectory':
+            case 'getApplicationSupportDirectory':
+            case 'getTemporaryDirectory':
+              return appDocDir.path;
+            default:
+              return null;
+          }
+        });
 
     await DB.init();
     initBitboards();
@@ -100,8 +106,9 @@ void main() {
 
     group('String Export/Import', () {
       test('exportPuzzleToString generates valid JSON', () {
-        final String jsonString =
-            PuzzleExportService.exportPuzzleToString(testPuzzle);
+        final String jsonString = PuzzleExportService.exportPuzzleToString(
+          testPuzzle,
+        );
         final Map<String, dynamic> json =
             jsonDecode(jsonString) as Map<String, dynamic>;
 
@@ -112,10 +119,12 @@ void main() {
       });
 
       test('importPuzzleFromString reconstructs puzzle correctly', () {
-        final String jsonString =
-            PuzzleExportService.exportPuzzleToString(testPuzzle);
-        final PuzzleInfo? imported =
-            PuzzleExportService.importPuzzleFromString(jsonString);
+        final String jsonString = PuzzleExportService.exportPuzzleToString(
+          testPuzzle,
+        );
+        final PuzzleInfo? imported = PuzzleExportService.importPuzzleFromString(
+          jsonString,
+        );
 
         expect(imported, isNotNull);
         expect(imported!.id, equals(testPuzzle.id));
@@ -126,8 +135,9 @@ void main() {
       });
 
       test('importPuzzleFromString handles invalid JSON', () {
-        final PuzzleInfo? imported =
-            PuzzleExportService.importPuzzleFromString('invalid json');
+        final PuzzleInfo? imported = PuzzleExportService.importPuzzleFromString(
+          'invalid json',
+        );
         expect(imported, isNull);
       });
 
@@ -136,8 +146,9 @@ void main() {
         json['initialPosition'] = 'invalid_fen';
         final String jsonString = jsonEncode(json);
 
-        final PuzzleInfo? imported =
-            PuzzleExportService.importPuzzleFromString(jsonString);
+        final PuzzleInfo? imported = PuzzleExportService.importPuzzleFromString(
+          jsonString,
+        );
 
         // Should return null due to FEN validation failure (assert in debug mode)
         // Note: assertions might be enabled in tests
@@ -147,8 +158,9 @@ void main() {
 
     group('Contribution Validation', () {
       test('valid puzzle passes validation', () {
-        final String? error =
-            PuzzleExportService.validateForContribution(testPuzzle);
+        final String? error = PuzzleExportService.validateForContribution(
+          testPuzzle,
+        );
         expect(error, isNull);
       });
 
@@ -173,8 +185,7 @@ void main() {
           equals('puzzleValidationDescriptionTooShort'),
         );
 
-        final PuzzleInfo longDesc =
-            testPuzzle.copyWith(description: 'A' * 501);
+        final PuzzleInfo longDesc = testPuzzle.copyWith(description: 'A' * 501);
         expect(
           PuzzleExportService.validateForContribution(longDesc),
           equals('puzzleValidationDescriptionTooLong'),
@@ -190,8 +201,9 @@ void main() {
       });
 
       test('validates solutions presence', () {
-        final PuzzleInfo noSolutions =
-            testPuzzle.copyWith(solutions: <PuzzleSolution>[]);
+        final PuzzleInfo noSolutions = testPuzzle.copyWith(
+          solutions: <PuzzleSolution>[],
+        );
         expect(
           PuzzleExportService.validateForContribution(noSolutions),
           equals('puzzleValidationSolutionRequired'),
@@ -201,8 +213,9 @@ void main() {
 
     group('Contribution Export', () {
       test('exportForContribution generates correct structure', () {
-        final String jsonString =
-            PuzzleExportService.exportForContribution(testPuzzle);
+        final String jsonString = PuzzleExportService.exportForContribution(
+          testPuzzle,
+        );
         final Map<String, dynamic> json =
             jsonDecode(jsonString) as Map<String, dynamic>;
 
