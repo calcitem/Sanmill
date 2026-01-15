@@ -30,7 +30,7 @@ void main() {
       });
 
       test('creates with all fields specified', () {
-        final DateTime created = DateTime(2025, 1, 1);
+        final DateTime created = DateTime(2025);
         final DateTime updated = DateTime(2026, 1, 15);
 
         final PuzzlePackMetadata metadata = PuzzlePackMetadata(
@@ -87,7 +87,7 @@ void main() {
       });
 
       test('preserves original values when not specified', () {
-        final DateTime created = DateTime(2025, 6, 1);
+        final DateTime created = DateTime(2025, 6);
 
         final PuzzlePackMetadata original = PuzzlePackMetadata(
           id: 'pack_004',
@@ -98,9 +98,7 @@ void main() {
           tags: const <String>['stable', 'tested'],
         );
 
-        final PuzzlePackMetadata updated = original.copyWith(
-          version: '1.0.1',
-        );
+        final PuzzlePackMetadata updated = original.copyWith(version: '1.0.1');
 
         expect(updated.id, equals('pack_004'));
         expect(updated.name, equals('Stable Pack'));
@@ -112,8 +110,8 @@ void main() {
       });
 
       test('can update dates independently', () {
-        final DateTime originalCreated = DateTime(2025, 1, 1);
-        final DateTime originalUpdated = DateTime(2025, 6, 1);
+        final DateTime originalCreated = DateTime(2025);
+        final DateTime originalUpdated = DateTime(2025, 6);
         final DateTime newUpdated = DateTime(2026, 1, 15);
 
         final PuzzlePackMetadata original = PuzzlePackMetadata(
@@ -135,7 +133,7 @@ void main() {
 
     group('JSON serialization', () {
       test('toJson serializes all fields correctly', () {
-        final DateTime created = DateTime.utc(2025, 1, 1, 12, 0);
+        final DateTime created = DateTime.utc(2025, 1, 1, 12);
         final DateTime updated = DateTime.utc(2026, 1, 15, 10, 30);
 
         final PuzzlePackMetadata metadata = PuzzlePackMetadata(
@@ -199,7 +197,6 @@ void main() {
           id: 'pack_008a',
           name: 'No Tags',
           description: 'Pack without tags',
-          tags: <String>[],
         );
 
         final Map<String, dynamic> jsonEmpty = metadataEmpty.toJson();
@@ -299,8 +296,8 @@ void main() {
       });
 
       test('round-trip serialization preserves all data', () {
-        final DateTime created = DateTime.utc(2025, 7, 4, 10, 0);
-        final DateTime updated = DateTime.utc(2026, 1, 1, 0, 0);
+        final DateTime created = DateTime.utc(2025, 7, 4, 10);
+        final DateTime updated = DateTime.utc(2026);
 
         final PuzzlePackMetadata original = PuzzlePackMetadata(
           id: 'pack_013',
@@ -311,7 +308,6 @@ void main() {
           createdDate: created,
           updatedDate: updated,
           tags: const <String>['roundtrip', 'test', 'serialization'],
-          isOfficial: false,
           requiredAppVersion: '7.0.5',
           ruleVariantId: 'custom_variant',
           coverImage: 'data/covers/roundtrip.png',
@@ -319,8 +315,9 @@ void main() {
         );
 
         final Map<String, dynamic> json = original.toJson();
-        final PuzzlePackMetadata deserialized =
-            PuzzlePackMetadata.fromJson(json);
+        final PuzzlePackMetadata deserialized = PuzzlePackMetadata.fromJson(
+          json,
+        );
 
         expect(deserialized.id, equals(original.id));
         expect(deserialized.name, equals(original.name));
@@ -385,8 +382,9 @@ void main() {
         expect(metadata.description, equals(longDescription));
 
         final Map<String, dynamic> json = metadata.toJson();
-        final PuzzlePackMetadata deserialized =
-            PuzzlePackMetadata.fromJson(json);
+        final PuzzlePackMetadata deserialized = PuzzlePackMetadata.fromJson(
+          json,
+        );
 
         expect(deserialized.name, equals(longName));
         expect(deserialized.description, equals(longDescription));
@@ -401,8 +399,9 @@ void main() {
         );
 
         final Map<String, dynamic> json = metadata.toJson();
-        final PuzzlePackMetadata deserialized =
-            PuzzlePackMetadata.fromJson(json);
+        final PuzzlePackMetadata deserialized = PuzzlePackMetadata.fromJson(
+          json,
+        );
 
         expect(deserialized.name, equals(metadata.name));
         expect(deserialized.description, equals(metadata.description));
@@ -426,8 +425,10 @@ void main() {
       });
 
       test('handles large number of tags', () {
-        final List<String> manyTags =
-            List<String>.generate(100, (int i) => 'tag$i');
+        final List<String> manyTags = List<String>.generate(
+          100,
+          (int i) => 'tag$i',
+        );
 
         final PuzzlePackMetadata metadata = PuzzlePackMetadata(
           id: 'pack_018',
@@ -439,8 +440,9 @@ void main() {
         expect(metadata.tags.length, equals(100));
 
         final Map<String, dynamic> json = metadata.toJson();
-        final PuzzlePackMetadata deserialized =
-            PuzzlePackMetadata.fromJson(json);
+        final PuzzlePackMetadata deserialized = PuzzlePackMetadata.fromJson(
+          json,
+        );
 
         expect(deserialized.tags.length, equals(100));
         expect(deserialized.tags, equals(manyTags));
@@ -451,13 +453,15 @@ void main() {
           id: 'pack_019',
           name: 'URL Test Pack',
           description: 'Testing various URL formats',
-          website: 'http://localhost:8080/path/to/resource?param=value&foo=bar#anchor',
+          website:
+              'http://localhost:8080/path/to/resource?param=value&foo=bar#anchor',
           coverImage: 'file:///absolute/path/to/image.png',
         );
 
         final Map<String, dynamic> json = metadata.toJson();
-        final PuzzlePackMetadata deserialized =
-            PuzzlePackMetadata.fromJson(json);
+        final PuzzlePackMetadata deserialized = PuzzlePackMetadata.fromJson(
+          json,
+        );
 
         expect(deserialized.website, equals(metadata.website));
         expect(deserialized.coverImage, equals(metadata.coverImage));

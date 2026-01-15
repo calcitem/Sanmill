@@ -517,9 +517,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     // Get all puzzles and shuffle
     final List<PuzzleInfo> puzzles = _puzzleManager.getAllPuzzles().toList();
     if (puzzles.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).noPuzzlesAvailable)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(S.of(context).noPuzzlesAvailable)));
       return;
     }
     puzzles.shuffle();

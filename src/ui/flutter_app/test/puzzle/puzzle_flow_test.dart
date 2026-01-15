@@ -11,7 +11,6 @@ import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/services/puzzle_auto_player.dart';
 import 'package:sanmill/puzzle/services/puzzle_manager.dart';
-import 'package:sanmill/puzzle/services/puzzle_rating_service.dart';
 import 'package:sanmill/puzzle/services/puzzle_validator.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
@@ -40,7 +39,6 @@ void main() {
   late Directory appDocDir;
   late GameController controller;
   late PuzzleManager puzzleManager;
-  late PuzzleRatingService ratingService;
 
   setUpAll(() async {
     EnvironmentConfig.catcher = false;
@@ -51,40 +49,39 @@ void main() {
     // Mock engine channel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'send':
-        case 'shutdown':
-        case 'startup':
-          return null;
-        case 'read':
-          return 'uciok';
-        case 'isThinking':
-          return false;
-        default:
-          return null;
-      }
-    });
+          switch (methodCall.method) {
+            case 'send':
+            case 'shutdown':
+            case 'startup':
+              return null;
+            case 'read':
+              return 'uciok';
+            case 'isThinking':
+              return false;
+            default:
+              return null;
+          }
+        });
 
     // Mock path provider
     appDocDir = Directory.systemTemp.createTempSync('sanmill_flow_test_');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pathProviderChannel, (
-      MethodCall methodCall,
-    ) async {
-      switch (methodCall.method) {
-        case 'getApplicationDocumentsDirectory':
-        case 'getApplicationSupportDirectory':
-        case 'getTemporaryDirectory':
-          return appDocDir.path;
-        default:
-          return null;
-      }
-    });
+          MethodCall methodCall,
+        ) async {
+          switch (methodCall.method) {
+            case 'getApplicationDocumentsDirectory':
+            case 'getApplicationSupportDirectory':
+            case 'getTemporaryDirectory':
+              return appDocDir.path;
+            default:
+              return null;
+          }
+        });
 
     await DB.init();
     SoundManager.instance = MockAudios();
     puzzleManager = PuzzleManager();
-    ratingService = PuzzleRatingService();
   });
 
   tearDownAll(() async {
@@ -163,7 +160,10 @@ void main() {
       // 4. Opponent Auto-Response (d1)
       // Simulate auto-player logic
       final List<List<String>> legacySolutions = puzzle.solutions
-          .map((PuzzleSolution s) => s.moves.map((m) => m.notation).toList())
+          .map(
+            (PuzzleSolution s) =>
+                s.moves.map((PuzzleMove m) => m.notation).toList(),
+          )
           .toList();
 
       // We expect the auto-player to find 'd1'
@@ -176,7 +176,7 @@ void main() {
         movesSoFar: () => <String>['a1'],
         applyMove: (String move) {
           expect(move, equals('d1'));
-          bool result = controller.applyMove(
+          final bool result = controller.applyMove(
             ExtMove(move, side: PieceColor.black),
           );
           validator.addMove(move);
@@ -190,9 +190,7 @@ void main() {
       await autoPlayCompleter.future;
 
       // 5. Player Move 2 (a4) - Winning move
-      moveResult = controller.applyMove(
-        ExtMove('a4', side: PieceColor.white),
-      );
+      moveResult = controller.applyMove(ExtMove('a4', side: PieceColor.white));
       expect(moveResult, isTrue);
       validator.addMove('a4');
 
@@ -255,13 +253,16 @@ void main() {
       validator.addMove('a4');
 
       // 4. Validate
-      final ValidationFeedback feedback = validator.validateSolution(
+      final ValidationFeedback _ = validator.validateSolution(
         controller.position,
       );
 
       // Check auto-player response for this wrong line
       final List<List<String>> legacySolutions = puzzle.solutions
-          .map((PuzzleSolution s) => s.moves.map((m) => m.notation).toList())
+          .map(
+            (PuzzleSolution s) =>
+                s.moves.map((PuzzleMove m) => m.notation).toList(),
+          )
           .toList();
 
       bool wrongMoveCallbackCalled = false;
@@ -326,7 +327,9 @@ void main() {
           final String square = move.substring(1);
           controller.applyMove(ExtMove(square, side: PieceColor.white));
         } else {
-          controller.applyMove(ExtMove(move, side: controller.position.sideToMove));
+          controller.applyMove(
+            ExtMove(move, side: controller.position.sideToMove),
+          );
         }
         validator.addMove(move);
       }

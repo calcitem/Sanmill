@@ -100,9 +100,10 @@ void main() {
 
     group('puzzle without textual hint', () {
       test('skips to next move hint when no textual hint', () {
-        final PuzzleInfo puzzleNoHint = testPuzzle.copyWith(hint: null);
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: puzzleNoHint);
+        final PuzzleInfo puzzleNoHint = testPuzzle.copyWith();
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: puzzleNoHint,
+        );
 
         final PuzzleHint? hint = service.getNextHint(0);
 
@@ -112,8 +113,9 @@ void main() {
 
       test('skips to next move hint when textual hint is empty', () {
         final PuzzleInfo puzzleEmptyHint = testPuzzle.copyWith(hint: '');
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: puzzleEmptyHint);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: puzzleEmptyHint,
+        );
 
         final PuzzleHint? hint = service.getNextHint(0);
 
@@ -124,8 +126,7 @@ void main() {
 
     group('getHintOfType', () {
       test('can request specific textual hint', () {
-        final PuzzleHint? hint =
-            hintService.getHintOfType(HintType.textual, 0);
+        final PuzzleHint? hint = hintService.getHintOfType(HintType.textual, 0);
 
         expect(hint, isNotNull);
         expect(hint!.type, equals(HintType.textual));
@@ -133,8 +134,10 @@ void main() {
       });
 
       test('can request specific next move hint', () {
-        final PuzzleHint? hint =
-            hintService.getHintOfType(HintType.nextMove, 0);
+        final PuzzleHint? hint = hintService.getHintOfType(
+          HintType.nextMove,
+          0,
+        );
 
         expect(hint, isNotNull);
         expect(hint!.type, equals(HintType.nextMove));
@@ -142,8 +145,10 @@ void main() {
       });
 
       test('can request full solution hint', () {
-        final PuzzleHint? hint =
-            hintService.getHintOfType(HintType.showSolution, 0);
+        final PuzzleHint? hint = hintService.getHintOfType(
+          HintType.showSolution,
+          0,
+        );
 
         expect(hint, isNotNull);
         expect(hint!.type, equals(HintType.showSolution));
@@ -151,9 +156,10 @@ void main() {
       });
 
       test('returns null for textual hint when not available', () {
-        final PuzzleInfo puzzleNoHint = testPuzzle.copyWith(hint: null);
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: puzzleNoHint);
+        final PuzzleInfo puzzleNoHint = testPuzzle.copyWith();
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: puzzleNoHint,
+        );
 
         final PuzzleHint? hint = service.getHintOfType(HintType.textual, 0);
 
@@ -183,26 +189,34 @@ void main() {
 
     group('player move progression', () {
       test('provides correct next move at different positions', () {
-        final PuzzleHint? hint1 =
-            hintService.getHintOfType(HintType.nextMove, 0);
+        final PuzzleHint? hint1 = hintService.getHintOfType(
+          HintType.nextMove,
+          0,
+        );
         expect(hint1, isNotNull);
         expect(hint1!.content, equals('a1'));
 
-        final PuzzleHint? hint2 =
-            hintService.getHintOfType(HintType.nextMove, 1);
+        final PuzzleHint? hint2 = hintService.getHintOfType(
+          HintType.nextMove,
+          1,
+        );
         expect(hint2, isNotNull);
         expect(hint2!.content, equals('a4'));
 
-        final PuzzleHint? hint3 =
-            hintService.getHintOfType(HintType.nextMove, 2);
+        final PuzzleHint? hint3 = hintService.getHintOfType(
+          HintType.nextMove,
+          2,
+        );
         expect(hint3, isNotNull);
         expect(hint3!.content, equals('a7'));
       });
 
       test('returns null for next move when beyond solution', () {
         // Player has already made all moves
-        final PuzzleHint? hint =
-            hintService.getHintOfType(HintType.nextMove, 10);
+        final PuzzleHint? hint = hintService.getHintOfType(
+          HintType.nextMove,
+          10,
+        );
 
         expect(hint, isNull);
       });
@@ -223,7 +237,6 @@ void main() {
               moves: <PuzzleMove>[
                 PuzzleMove(notation: 'a1', side: PieceColor.white),
               ],
-              isOptimal: true,
             ),
             PuzzleSolution(
               moves: <PuzzleMove>[
@@ -234,8 +247,9 @@ void main() {
           ],
         );
 
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: multiSolutionPuzzle);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: multiSolutionPuzzle,
+        );
         final PuzzleHint? hint = service.getHintOfType(HintType.nextMove, 0);
 
         expect(hint, isNotNull);
@@ -267,8 +281,9 @@ void main() {
           ],
         );
 
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: noOptimalPuzzle);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: noOptimalPuzzle,
+        );
         final PuzzleHint? hint = service.getHintOfType(HintType.nextMove, 0);
 
         expect(hint, isNotNull);
@@ -290,8 +305,9 @@ void main() {
           solutions: const <PuzzleSolution>[],
         );
 
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: emptyPuzzle);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: emptyPuzzle,
+        );
         final PuzzleHint? hint = service.getHintOfType(HintType.nextMove, 0);
 
         expect(hint, isNull);
@@ -311,8 +327,9 @@ void main() {
           ],
         );
 
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: emptyMovesPuzzle);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: emptyMovesPuzzle,
+        );
         final PuzzleHint? hint = service.getHintOfType(HintType.nextMove, 0);
 
         expect(hint, isNull);
@@ -337,8 +354,9 @@ void main() {
           ],
         );
 
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: opponentOnlyPuzzle);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: opponentOnlyPuzzle,
+        );
         final PuzzleHint? hint = service.getHintOfType(HintType.nextMove, 0);
 
         // Should return null since there are no player moves
@@ -348,8 +366,9 @@ void main() {
       test('handles very long hint text', () {
         final String longHint = 'A' * 10000;
         final PuzzleInfo longHintPuzzle = testPuzzle.copyWith(hint: longHint);
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: longHintPuzzle);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: longHintPuzzle,
+        );
 
         final PuzzleHint? hint = service.getHintOfType(HintType.textual, 0);
 
@@ -360,10 +379,12 @@ void main() {
       test('handles special characters in hint text', () {
         const String specialHint =
             'Try to form a mill 🎯\n使用特殊字符 "quotes" and \'apostrophes\'';
-        final PuzzleInfo specialHintPuzzle =
-            testPuzzle.copyWith(hint: specialHint);
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: specialHintPuzzle);
+        final PuzzleInfo specialHintPuzzle = testPuzzle.copyWith(
+          hint: specialHint,
+        );
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: specialHintPuzzle,
+        );
 
         final PuzzleHint? hint = service.getHintOfType(HintType.textual, 0);
 
@@ -372,8 +393,10 @@ void main() {
       });
 
       test('handles negative current player move index', () {
-        final PuzzleHint? hint =
-            hintService.getHintOfType(HintType.nextMove, -1);
+        final PuzzleHint? hint = hintService.getHintOfType(
+          HintType.nextMove,
+          -1,
+        );
 
         // Should handle gracefully - either return first move or null
         // depending on implementation
@@ -383,8 +406,10 @@ void main() {
 
     group('full solution generation', () {
       test('generates complete solution string', () {
-        final PuzzleHint? hint =
-            hintService.getHintOfType(HintType.showSolution, 0);
+        final PuzzleHint? hint = hintService.getHintOfType(
+          HintType.showSolution,
+          0,
+        );
 
         expect(hint, isNotNull);
         expect(hint!.content, contains('a1'));
@@ -418,10 +443,13 @@ void main() {
           ],
         );
 
-        final PuzzleHintService service =
-            PuzzleHintService(puzzle: complexPuzzle);
-        final PuzzleHint? hint =
-            service.getHintOfType(HintType.showSolution, 0);
+        final PuzzleHintService service = PuzzleHintService(
+          puzzle: complexPuzzle,
+        );
+        final PuzzleHint? hint = service.getHintOfType(
+          HintType.showSolution,
+          0,
+        );
 
         expect(hint, isNotNull);
         // Should include all white (player) moves

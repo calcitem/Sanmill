@@ -2,7 +2,6 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -337,9 +336,7 @@ void main() {
           ),
         ];
 
-        for (final PuzzleInfo p in puzzles) {
-          manager.addCustomPuzzle(p);
-        }
+        puzzles.forEach(manager.addCustomPuzzle);
 
         // Test with user rating 1450
         // Should recommend 1500 (diff 50) and maybe 1000 (diff 450 - outside default range 200?)
@@ -350,7 +347,6 @@ void main() {
 
         List<PuzzleInfo> recommended = manager.getRecommendedPuzzles(
           targetRating: 1450,
-          ratingRange: 200,
         );
 
         expect(recommended.length, equals(1));

@@ -5,17 +5,19 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/puzzle/services/puzzle_rating_service.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
-import 'package:sanmill/puzzle/services/puzzle_rating_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const MethodChannel engineChannel =
-      MethodChannel('com.calcitem.sanmill/engine');
-  const MethodChannel pathProviderChannel =
-      MethodChannel('plugins.flutter.io/path_provider');
+  const MethodChannel engineChannel = MethodChannel(
+    'com.calcitem.sanmill/engine',
+  );
+  const MethodChannel pathProviderChannel = MethodChannel(
+    'plugins.flutter.io/path_provider',
+  );
 
   late Directory appDocDir;
 
@@ -25,35 +27,35 @@ void main() {
     // Mock engine channel
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, (MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'send':
-        case 'shutdown':
-        case 'startup':
-          return null;
-        case 'read':
-          return 'uciok';
-        case 'isThinking':
-          return false;
-        default:
-          return null;
-      }
-    });
+          switch (methodCall.method) {
+            case 'send':
+            case 'shutdown':
+            case 'startup':
+              return null;
+            case 'read':
+              return 'uciok';
+            case 'isThinking':
+              return false;
+            default:
+              return null;
+          }
+        });
 
     // Provide a stable documents directory for Hive/path_provider callers
     appDocDir = Directory.systemTemp.createTempSync('sanmill_rating_test_');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pathProviderChannel, (
-      MethodCall methodCall,
-    ) async {
-      switch (methodCall.method) {
-        case 'getApplicationDocumentsDirectory':
-        case 'getApplicationSupportDirectory':
-        case 'getTemporaryDirectory':
-          return appDocDir.path;
-        default:
-          return null;
-      }
-    });
+          MethodCall methodCall,
+        ) async {
+          switch (methodCall.method) {
+            case 'getApplicationDocumentsDirectory':
+            case 'getApplicationSupportDirectory':
+            case 'getTemporaryDirectory':
+              return appDocDir.path;
+            default:
+              return null;
+          }
+        });
 
     await DB.init();
   });
@@ -256,7 +258,7 @@ void main() {
       });
 
       test('round-trip serialization preserves data', () {
-        final DateTime timestamp = DateTime.utc(2026, 1, 15, 12, 0);
+        final DateTime timestamp = DateTime.utc(2026, 1, 15, 12);
         final PuzzleAttemptResult original = PuzzleAttemptResult(
           puzzleId: 'test_007',
           success: true,
@@ -270,8 +272,9 @@ void main() {
         );
 
         final Map<String, dynamic> json = original.toJson();
-        final PuzzleAttemptResult deserialized =
-            PuzzleAttemptResult.fromJson(json);
+        final PuzzleAttemptResult deserialized = PuzzleAttemptResult.fromJson(
+          json,
+        );
 
         expect(deserialized.puzzleId, equals(original.puzzleId));
         expect(deserialized.success, equals(original.success));
@@ -333,8 +336,9 @@ void main() {
         expect(result.ratingChange, equals(-30));
 
         final Map<String, dynamic> json = result.toJson();
-        final PuzzleAttemptResult deserialized =
-            PuzzleAttemptResult.fromJson(json);
+        final PuzzleAttemptResult deserialized = PuzzleAttemptResult.fromJson(
+          json,
+        );
 
         expect(deserialized.ratingChange, equals(-30));
       });
@@ -363,10 +367,7 @@ void main() {
         };
 
         // Should assert in debug mode but we're testing the behavior
-        expect(
-          () => PuzzleAttemptResult.fromJson(json),
-          throwsAssertionError,
-        );
+        expect(() => PuzzleAttemptResult.fromJson(json), throwsAssertionError);
       });
 
       test('handles null timestamp in JSON', () {
@@ -376,10 +377,7 @@ void main() {
         };
 
         // Should assert because timestamp is null
-        expect(
-          () => PuzzleAttemptResult.fromJson(json),
-          throwsAssertionError,
-        );
+        expect(() => PuzzleAttemptResult.fromJson(json), throwsAssertionError);
       });
     });
   });
@@ -435,15 +433,15 @@ void main() {
         expect(history.first.success, isTrue);
         expect(history.first.hintsUsed, equals(0));
         expect(
-          history.first.timestamp.isAfter(before.subtract(
-            const Duration(seconds: 1),
-          )),
+          history.first.timestamp.isAfter(
+            before.subtract(const Duration(seconds: 1)),
+          ),
           isTrue,
         );
         expect(
-          history.first.timestamp.isBefore(after.add(
-            const Duration(seconds: 1),
-          )),
+          history.first.timestamp.isBefore(
+            after.add(const Duration(seconds: 1)),
+          ),
           isTrue,
         );
       });

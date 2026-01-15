@@ -32,7 +32,6 @@ void main() {
           bestMoveCount: 5,
           attempts: 3,
           hintsUsed: 1,
-          solutionViewed: false,
           lastAttemptDate: now,
           completionDate: earlier,
         );
@@ -51,11 +50,7 @@ void main() {
 
     group('copyWith', () {
       test('creates copy with updated fields', () {
-        final PuzzleProgress original = PuzzleProgress(
-          puzzleId: 'test_003',
-          completed: false,
-          stars: 0,
-        );
+        final PuzzleProgress original = PuzzleProgress(puzzleId: 'test_003');
 
         final PuzzleProgress updated = original.copyWith(
           completed: true,
@@ -171,8 +166,6 @@ void main() {
           stars: 3,
           bestMoveCount: 12,
           attempts: 2,
-          hintsUsed: 0,
-          solutionViewed: false,
           lastAttemptDate: now,
           completionDate: now,
         );
