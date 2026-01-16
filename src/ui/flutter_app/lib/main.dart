@@ -86,6 +86,23 @@ Future<void> main() async {
     await _initCatcher(catcher);
 
     PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+      // Filter known Flutter framework bugs that should not crash the app
+      final String stackTrace = stack.toString();
+
+      // Known bug: EditableText toolbar race condition
+      // See: Flutter framework editable_text.dart _handleContextMenuOnScroll
+      // The _dataWhenToolbarShowScheduled field can be null when
+      // addPostFrameCallback executes due to race condition
+      if (error is TypeError &&
+          error.toString().contains(
+            'Null check operator used on a null value',
+          ) &&
+          stackTrace.contains('EditableTextState._handleContextMenuOnScroll')) {
+        logger.w('Caught known Flutter framework bug in EditableText: $error');
+        logger.w('Stack trace: $stackTrace');
+        return true; // Suppress this known framework bug
+      }
+
       if (EnvironmentConfig.catcher == true) {
         Catcher2.reportCheckedError(error, stack);
       }
