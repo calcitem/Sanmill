@@ -16,7 +16,9 @@
 
 package com.calcitem.sanmill;
 
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 
@@ -25,16 +27,12 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
-import org.json.JSONObject;
-import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -42,6 +40,12 @@ public class MainActivity extends FlutterActivity {
 
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
     private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
+
+    // Background thread for engine operations to avoid blocking the main thread
+    private HandlerThread engineThread;
+    private Handler engineHandler;
+    private Handler mainHandler;
+    private MillEngine engine;
 
     // You do not need to override onCreate() in order to invoke
     // GeneratedPluginRegistrant. Flutter now does that on your behalf.
@@ -51,33 +55,84 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
+
+        // Initialize background thread for engine operations.
+        // Guard against accidental re-initialization if configureFlutterEngine()
+        // is called more than once for the same Activity instance.
+        if (engineThread == null) {
+            engineThread = new HandlerThread("MillEngineThread");
+            engineThread.start();
+            engineHandler = new Handler(engineThread.getLooper());
+        }
+
+        if (mainHandler == null) {
+            mainHandler = new Handler(Looper.getMainLooper());
+        }
+
+        if (engine == null) {
+            engine = new MillEngine();
+        }
+
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ENGINE_CHANNEL)
                 .setMethodCallHandler(
                     (call, result) -> {
-                        MillEngine engine = new MillEngine();
-                        switch (call.method) {
-                            case "startup":
-                                result.success(engine.startup());
-                                break;
-                            case "send":
-                                result.success(engine.send(call.arguments.toString()));
-                                break;
-                            case "read":
-                                result.success(engine.read());
-                                break;
-                            case "shutdown":
-                                result.success(engine.shutdown());
-                                break;
-                            case "isReady":
-                                result.success(engine.isReady());
-                                break;
-                            case "isThinking":
-                                result.success(engine.isThinking());
-                                break;
-                            default:
-                                result.notImplemented();
-                                break;
+                        // Execute all engine operations on background thread to avoid blocking the main thread,
+                        // then post the Result callback back to the main thread for safety.
+                        final Handler callbackHandler = mainHandler != null
+                                ? mainHandler
+                                : new Handler(Looper.getMainLooper());
+
+                        if (engineHandler == null || engine == null) {
+                            callbackHandler.post(
+                                    () -> result.error(
+                                            "ENGINE_THREAD_NOT_READY",
+                                            "Engine thread not ready.",
+                                            null
+                                    )
+                            );
+                            return;
                         }
+
+                        final String method = call.method;
+                        final Object args = call.arguments;
+
+                        engineHandler.post(() -> {
+                            try {
+                                switch (method) {
+                                    case "startup":
+                                        final int startupRet = engine.startup();
+                                        callbackHandler.post(() -> result.success(startupRet));
+                                        break;
+                                    case "send":
+                                        final int sendRet =
+                                                engine.send(args == null ? "" : args.toString());
+                                        callbackHandler.post(() -> result.success(sendRet));
+                                        break;
+                                    case "read":
+                                        final String readRet = engine.read();
+                                        callbackHandler.post(() -> result.success(readRet));
+                                        break;
+                                    case "shutdown":
+                                        final int shutdownRet = engine.shutdown();
+                                        callbackHandler.post(() -> result.success(shutdownRet));
+                                        break;
+                                    case "isReady":
+                                        final boolean isReadyRet = engine.isReady();
+                                        callbackHandler.post(() -> result.success(isReadyRet));
+                                        break;
+                                    case "isThinking":
+                                        final boolean isThinkingRet = engine.isThinking();
+                                        callbackHandler.post(() -> result.success(isThinkingRet));
+                                        break;
+                                    default:
+                                        callbackHandler.post(result::notImplemented);
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                final String message = e.getMessage() != null ? e.getMessage() : e.toString();
+                                callbackHandler.post(() -> result.error("ENGINE_ERROR", message, null));
+                            }
+                        });
                 }
         );
 
@@ -105,6 +160,24 @@ public class MainActivity extends FlutterActivity {
                   }
             }
         );
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Clean up background thread when activity is destroyed
+        if (engineThread != null) {
+            engineThread.quitSafely();
+            try {
+                engineThread.join(1000); // Wait up to 1 second for thread to finish
+            } catch (InterruptedException e) {
+                Log.w("MainActivity", "Engine thread interrupted during shutdown", e);
+            }
+            engineThread = null;
+            engineHandler = null;
+        }
+        mainHandler = null;
+        engine = null;
+        super.onDestroy();
     }
 
     @Override
