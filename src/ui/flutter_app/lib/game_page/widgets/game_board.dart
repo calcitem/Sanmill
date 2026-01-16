@@ -453,33 +453,6 @@ class _GameBoardState extends State<GameBoard>
                 key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
-                  // #region agent log
-                  developer.log(
-                    'DEBUG_TAP_START',
-                    name: 'sanmill.debug',
-                    error: jsonEncode({
-                      "hypothesisId": "D",
-                      "location": "game_board.dart:405",
-                      "message": "onTapUp triggered",
-                      "data": {
-                        "isControllerReady": GameController().isControllerReady,
-                        "isControllerActive":
-                            GameController().isControllerActive,
-                        "isEngineRunning": GameController().isEngineRunning,
-                        "isDisposed": GameController().isDisposed,
-                        "placeAnimating": animationManager
-                            .placeAnimationController
-                            .isAnimating,
-                        "moveAnimating": animationManager
-                            .moveAnimationController
-                            .isAnimating,
-                        "removeAnimating": animationManager
-                            .removeAnimationController
-                            .isAnimating,
-                      },
-                    }),
-                  );
-                  // #endregion
                   // Cache localized strings at the start to avoid BuildContext usage across async gaps
                   final String strNotYourTurn = S.of(context).notYourTurn;
                   final String strNoLanConnection = S
@@ -495,24 +468,10 @@ class _GameBoardState extends State<GameBoard>
                   );
 
                   if (square == null) {
-                    // #region agent log
-                    developer.log(
-                      'DEBUG_TAP_NULL_SQUARE',
-                      name: 'sanmill.debug',
-                    );
-                    // #endregion
                     return logger.t(
                       "${GameBoard._logTag} Tap not on a square, ignored.",
                     );
                   }
-
-                  // #region agent log
-                  developer.log(
-                    'DEBUG_TAP_SQUARE',
-                    name: 'sanmill.debug',
-                    error: jsonEncode({"square": square}),
-                  );
-                  // #endregion
 
                   logger.t("${GameBoard._logTag} Tap on square <$square>");
 
@@ -536,17 +495,6 @@ class _GameBoardState extends State<GameBoard>
                   final EngineResponse response = await tapHandler.onBoardTap(
                     square,
                   );
-
-                  // #region agent log
-                  developer.log(
-                    'DEBUG_TAP_RESPONSE',
-                    name: 'sanmill.debug',
-                    error: jsonEncode({
-                      "hypothesisId": "E",
-                      "responseType": response.runtimeType.toString(),
-                    }),
-                  );
-                  // #endregion
 
                   // Process engine response for displaying tips, etc.
                   switch (response) {

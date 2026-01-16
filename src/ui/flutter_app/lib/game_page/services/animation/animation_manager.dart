@@ -4,8 +4,6 @@
 // animation_manager.dart
 
 import 'dart:async';
-import 'dart:convert' show jsonEncode;
-import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 
