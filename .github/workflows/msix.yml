@@ -21,7 +21,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.6'
+          flutter-version: '3.38.7'
 
       - name: Export environment valuables
         run: export

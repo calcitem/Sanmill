@@ -71,9 +71,52 @@ for file in "${FILES_TO_UPDATE[@]}"; do
   fi
 done
 
+# --- Verification ---
+
+# Verify that all expected files were updated.
+echo "Verifying version updates..."
+VERIFICATION_FAILED=0
+
+# Check key files contain the new version.
+KEY_FILES=(
+  "scripts/ensure_flutter.sh"
+  "README.md"
+  "README-zh_CN.md"
+  "snap/snapcraft.yaml"
+)
+
+for file in "${KEY_FILES[@]}"; do
+  if [ -f "$file" ]; then
+    if grep -q "${OLD_FLUTTER_VERSION}" "$file"; then
+      echo " - Warning: ${file} still contains old version ${OLD_FLUTTER_VERSION}"
+      VERIFICATION_FAILED=1
+    else
+      echo " - ✓ ${file} updated successfully"
+    fi
+  fi
+done
+
+# Check GitHub Actions workflow files.
+WORKFLOW_FILES_WITH_OLD_VERSION=$(grep -l "${OLD_FLUTTER_VERSION}" .github/workflows/*.yml 2>/dev/null || true)
+if [ -n "$WORKFLOW_FILES_WITH_OLD_VERSION" ]; then
+  echo " - Warning: Some workflow files still contain old version:"
+  echo "$WORKFLOW_FILES_WITH_OLD_VERSION" | sed 's/^/   /'
+  VERIFICATION_FAILED=1
+else
+  echo " - ✓ All workflow files updated successfully"
+fi
+
+if [ $VERIFICATION_FAILED -eq 1 ]; then
+  echo ""
+  echo "Warning: Some files may not have been updated correctly."
+  echo "Please review the changes before committing."
+  exit 1
+fi
+
 # --- Git Operations ---
 
 # Stage all changes and commit them.
+echo ""
 echo "Staging and committing changes..."
 git add .
 git commit -m "ci: Upgrade Flutter to v${FLUTTER_VERSION}"
