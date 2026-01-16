@@ -246,18 +246,6 @@ class AnimationManager {
 
   // Handler for put-down animation status changes
   void _onPutDownAnimationStatus(AnimationStatus status) {
-    // #region agent log
-    developer.log(
-      'DEBUG_ANIM_PUTDOWN_STATUS',
-      name: 'sanmill.debug',
-      error: jsonEncode({
-        "hypothesisId": "A",
-        "status": status.toString(),
-        "isDisposed": _isDisposed,
-        "playMillSound": _playMillSoundForCurrentPutDown,
-      }),
-    );
-    // #endregion
     if (status == AnimationStatus.completed && !_isDisposed) {
       // Play sound when piece touches the board (put-down completes).
       //
@@ -268,12 +256,6 @@ class AnimationManager {
         final Completer<void>? barrier = _millSoundBarrierForCurrentPutDown;
         _millSoundBarrierForCurrentPutDown = null;
         SoundManager().playToneAndWait(Sound.mill).whenComplete(() {
-          // #region agent log
-          developer.log(
-            'DEBUG_ANIM_MILL_SOUND_COMPLETE',
-            name: 'sanmill.debug',
-          );
-          // #endregion
           if (barrier != null && !barrier.isCompleted) {
             barrier.complete();
           }
@@ -284,9 +266,6 @@ class AnimationManager {
         });
       } else {
         SoundManager().playTone(Sound.place);
-        // #region agent log
-        developer.log('DEBUG_ANIM_PLACE_SOUND', name: 'sanmill.debug');
-        // #endregion
       }
     }
   }
@@ -450,19 +429,6 @@ class AnimationManager {
   // Handle Put-down Animation with proper disposal check
   // This animates the piece landing effect when placed
   void animatePutDown() {
-    // #region agent log
-    developer.log(
-      'DEBUG_ANIM_PUTDOWN_START',
-      name: 'sanmill.debug',
-      error: jsonEncode({
-        "hypothesisId": "A",
-        "isDisposed": _isDisposed,
-        "allowAnimations": allowAnimations,
-        "controllerStatus": _putDownAnimationController.status.toString(),
-        "isAnimating": _putDownAnimationController.isAnimating,
-      }),
-    );
-    // #endregion
     if ( /* GameController().isDisposed == true || */ _isDisposed) {
       // Avoid animation when GameController or AnimationManager is disposed
       return;

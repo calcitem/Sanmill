@@ -106,6 +106,11 @@ class Game {
       "$_logTag White is AI? ${getPlayerByColor(PieceColor.white).isAi}\n"
       "$_logTag Black is AI? ${getPlayerByColor(PieceColor.black).isAi}\n",
     );
+
+    // Clear animation indices when switching game modes to prevent stale
+    // animation state from affecting piece rendering in the new mode.
+    focusIndex = null;
+    blurIndex = null;
   }
 
   void _select(int pos) {
