@@ -766,6 +766,19 @@ class GameController {
   }) async {
     const String tag = "[engineToGo]";
 
+    // #region agent log
+    developer.log(
+      'DEBUG_ENGINE_GO_START',
+      name: 'sanmill.debug',
+      error: jsonEncode({
+        "hypothesisId": "C",
+        "isMoveNow": isMoveNow,
+        "isEngineRunning": isEngineRunning,
+        "isControllerActive": isControllerActive,
+      }),
+    );
+    // #endregion
+
     if (gameInstance.gameMode == GameMode.humanVsLAN) {
       // In LAN mode, we don't use the engine; moves come from the network
       return const EngineResponseHumanOK();
@@ -796,17 +809,27 @@ class GameController {
     // }
 
     if (!isMoveNow && position._checkIfGameIsOver()) {
+      // #region agent log
+      developer.log('DEBUG_ENGINE_GAME_OVER', name: 'sanmill.debug');
+      // #endregion
       return const EngineGameIsOver();
     }
 
     if (isEngineRunning && !isMoveNow) {
       // TODO: Monkey test trigger
       logger.t("$tag engineToGo() is still running, skip.");
+      // #region agent log
+      developer.log('DEBUG_ENGINE_ALREADY_RUNNING', name: 'sanmill.debug');
+      // #endregion
       return const EngineResponseSkip();
     }
 
     isEngineRunning = true;
     isControllerActive = true;
+
+    // #region agent log
+    developer.log('DEBUG_ENGINE_STATE_SET', name: 'sanmill.debug');
+    // #endregion
 
     // Start AI's timer when AI starts thinking
     // This ensures the countdown appears during AI's turn

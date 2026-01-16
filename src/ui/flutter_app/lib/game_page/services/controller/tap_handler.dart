@@ -50,6 +50,19 @@ class TapHandler {
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
+    // #region agent log
+    developer.log(
+      'DEBUG_TAP_HANDLER_START',
+      name: 'sanmill.debug',
+      error: jsonEncode({
+        "hypothesisId": "E",
+        "square": sq,
+        "isAnalyzing": AnalysisMode.isAnalyzing,
+        "isControllerReady": GameController().isControllerReady,
+        "isControllerActive": GameController().isControllerActive,
+      }),
+    );
+    // #endregion
     // Prevent interaction when analysis is in progress
     if (AnalysisMode.isAnalyzing) {
       logger.i("$_logTag Analysis in progress, ignoring tap.");
@@ -61,6 +74,9 @@ class TapHandler {
 
     if (!GameController().isControllerReady) {
       logger.i("$_logTag Not ready, ignore tapping.");
+      // #region agent log
+      developer.log('DEBUG_TAP_NOT_READY', name: 'sanmill.debug');
+      // #endregion
       return const EngineResponseSkip();
     }
 
@@ -768,10 +784,19 @@ class TapHandler {
           // Puzzle mode: do not trigger native engine search here.
           // PuzzlePage will auto-play the opponent's forced responses from
           // the predefined solution line.
+          // #region agent log
+          developer.log('DEBUG_TAP_PUZZLE_MODE', name: 'sanmill.debug');
+          // #endregion
           return const EngineResponseHumanOK();
         }
+        // #region agent log
+        developer.log('DEBUG_TAP_ENGINE_GO', name: 'sanmill.debug');
+        // #endregion
         return GameController().engineToGo(context, isMoveNow: false);
       } else {
+        // #region agent log
+        developer.log('DEBUG_TAP_HUMAN_OK', name: 'sanmill.debug');
+        // #endregion
         return const EngineResponseHumanOK();
       }
     } else if (ret) {
@@ -779,6 +804,9 @@ class TapHandler {
       // Do not treat this as an illegal action and do not advance history.
       GameController().headerIconsNotifier.showIcons();
       GameController().boardSemanticsNotifier.updateSemantics();
+      // #region agent log
+      developer.log('DEBUG_TAP_SELECTION_OK', name: 'sanmill.debug');
+      // #endregion
       return const EngineResponseHumanOK();
     } else {
       SoundManager().playTone(Sound.illegal);
@@ -787,6 +815,9 @@ class TapHandler {
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
+    // #region agent log
+    developer.log('DEBUG_TAP_HANDLER_END', name: 'sanmill.debug');
+    // #endregion
     return const EngineResponseHumanOK();
   }
 }

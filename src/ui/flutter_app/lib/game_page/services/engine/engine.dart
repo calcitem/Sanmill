@@ -76,7 +76,11 @@ class Engine {
         await setOptions();
         _isSearchCancelled = false;
         await _send("isready");
-        await _waitResponse(<String>["readyok"], expectedEpoch: _searchEpoch);
+        await _waitResponse(
+          <String>["readyok"],
+          expectedEpoch: _searchEpoch,
+          isStartup: true,
+        );
         return;
       }
 
@@ -84,7 +88,11 @@ class Engine {
       await _platform.invokeMethod("startup");
       _isSearchCancelled = false;
       final int currentEpoch = _searchEpoch;
-      await _waitResponse(<String>["uciok"], expectedEpoch: currentEpoch);
+      await _waitResponse(
+        <String>["uciok"],
+        expectedEpoch: currentEpoch,
+        isStartup: true,
+      );
 
       await setOptions();
       _started = true;
@@ -190,6 +198,18 @@ class Engine {
   }
 
   Future<EngineRet> search({bool moveNow = false}) async {
+    // #region agent log
+    developer.log(
+      'DEBUG_ENGINE_SEARCH_START',
+      name: 'sanmill.debug',
+      error: jsonEncode({
+        "hypothesisId": "C",
+        "moveNow": moveNow,
+        "isSearchCancelled": _isSearchCancelled,
+      }),
+    );
+    // #endregion
+
     await ensureReady();
 
     // Clear any existing analysis markers when AI makes a move
@@ -203,6 +223,17 @@ class Engine {
 
     bool softWait = false;
     final bool currentlyThinking = await isThinking();
+
+    // #region agent log
+    developer.log(
+      'DEBUG_ENGINE_SEARCH_THINKING',
+      name: 'sanmill.debug',
+      error: jsonEncode({
+        "hypothesisId": "C",
+        "currentlyThinking": currentlyThinking,
+      }),
+    );
+    // #endregion
 
     logger.i(
       "$_logTag search() called. moveNow: $moveNow, currentlyThinking: $currentlyThinking",
@@ -320,11 +351,29 @@ class Engine {
       logger.i(
         "$_logTag Waiting for bestmove/nobestmove (attempt $attempt)...",
       );
+      // #region agent log
+      developer.log(
+        'DEBUG_ENGINE_WAIT_START',
+        name: 'sanmill.debug',
+        error: jsonEncode({
+          "hypothesisId": "C",
+          "attempt": attempt,
+          "currentEpoch": currentEpoch,
+        }),
+      );
+      // #endregion
       response = await _waitResponse(
         <String>["bestmove", "nobestmove"],
         expectedEpoch: currentEpoch,
         disableTimeout: softWait,
       );
+      // #region agent log
+      developer.log(
+        'DEBUG_ENGINE_WAIT_DONE',
+        name: 'sanmill.debug',
+        error: jsonEncode({"hypothesisId": "C", "response": response}),
+      );
+      // #endregion
       logger.i("$_logTag _waitResponse returned: $response");
 
       // If the engine restarted mid-wait (uciok seen), re-send position and go once
@@ -411,6 +460,7 @@ class Engine {
     int times = 0,
     int? expectedEpoch,
     bool disableTimeout = false,
+    bool isStartup = false,
   }) async {
     // Check if search has been cancelled or widget disposed
     if (_isSearchCancelled) {
@@ -420,6 +470,15 @@ class Engine {
 
     if (GameController().isDisposed) {
       logger.i("$_logTag GameController disposed, stopping wait for response");
+      return null;
+    }
+
+    // Check if controller is active (app may be in background)
+    // Skip this check during engine startup to allow initialization to complete
+    if (!isStartup && !GameController().isControllerActive) {
+      logger.i(
+        "$_logTag Controller inactive (app in background), stopping wait",
+      );
       return null;
     }
 
@@ -462,6 +521,22 @@ class Engine {
 
     final String? response = await _read();
 
+    // #region agent log
+    if (times % 50 == 0) {
+      // Log every 50th iteration to avoid log spam
+      developer.log(
+        'DEBUG_ENGINE_WAIT_LOOP',
+        name: 'sanmill.debug',
+        error: jsonEncode({
+          "hypothesisId": "C",
+          "times": times,
+          "response": response,
+          "isControllerActive": GameController().isControllerActive,
+        }),
+      );
+    }
+    // #endregion
+
     if (response != null && response.isNotEmpty) {
       logger.i("$_logTag read: $response");
     }
@@ -474,6 +549,13 @@ class Engine {
 
       final bool matched = prefixes.any(response.contains);
       if (matched) {
+        // #region agent log
+        developer.log(
+          'DEBUG_ENGINE_WAIT_MATCHED',
+          name: 'sanmill.debug',
+          error: jsonEncode({"response": response}),
+        );
+        // #endregion
         return response;
       }
 
@@ -496,6 +578,7 @@ class Engine {
         times: times + 1,
         expectedEpoch: expectedEpoch,
         disableTimeout: disableTimeout,
+        isStartup: isStartup,
       ),
     );
   }

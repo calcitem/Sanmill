@@ -34,13 +34,17 @@ class GameBoard extends StatefulWidget {
   State<GameBoard> createState() => _GameBoardState();
 }
 
-class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
+class _GameBoardState extends State<GameBoard>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   static const String _logTag = "[board]";
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
 
   // Flag to prevent duplicate dialog display in AI vs AI mode
   bool _isDialogShowing = false;
+
+  // Track if app is in background to handle lifecycle changes
+  bool _isAppInBackground = false;
 
   // Define a mapping of animation names to their corresponding constructors.
   final Map<String, PieceEffectAnimation Function()> animationMap =
@@ -89,6 +93,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     gameImagesFuture = _loadImages();
     animationManager = AnimationManager(this);
 
+    // Register lifecycle observer to handle app background/foreground transitions
+    WidgetsBinding.instance.addObserver(this);
+
     // Ensure controller is marked as active when a new board is mounted
     // so engine waits for responses instead of early-returning as disposed.
     GameController().isDisposed = false;
@@ -112,6 +119,49 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     });
 
     GameController().animationManager = animationManager;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
+        // App is going to background or becoming inactive
+        if (!_isAppInBackground) {
+          _isAppInBackground = true;
+          logger.i("$_logTag App going to background, stopping engine search");
+
+          // Stop any ongoing search to prevent hanging
+          // This will increment the search epoch and set cancellation flag
+          GameController().engine.stopSearching();
+
+          // Mark controller as inactive to prevent new searches
+          GameController().isControllerActive = false;
+        }
+        break;
+
+      case AppLifecycleState.resumed:
+        // App is coming back to foreground
+        if (_isAppInBackground) {
+          _isAppInBackground = false;
+          logger.i("$_logTag App resumed from background, resetting state");
+
+          // Reset engine state for fresh start
+          GameController().isControllerActive = true;
+          GameController().isEngineRunning = false;
+          GameController().isDisposed = false;
+        }
+        break;
+
+      case AppLifecycleState.detached:
+        // App is being terminated
+        logger.i("$_logTag App detached, cleaning up engine");
+        GameController().engine.stopSearching();
+        break;
+    }
   }
 
   Future<void> _setReadyState() async {
@@ -403,6 +453,33 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                 key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
+                  // #region agent log
+                  developer.log(
+                    'DEBUG_TAP_START',
+                    name: 'sanmill.debug',
+                    error: jsonEncode({
+                      "hypothesisId": "D",
+                      "location": "game_board.dart:405",
+                      "message": "onTapUp triggered",
+                      "data": {
+                        "isControllerReady": GameController().isControllerReady,
+                        "isControllerActive":
+                            GameController().isControllerActive,
+                        "isEngineRunning": GameController().isEngineRunning,
+                        "isDisposed": GameController().isDisposed,
+                        "placeAnimating": animationManager
+                            .placeAnimationController
+                            .isAnimating,
+                        "moveAnimating": animationManager
+                            .moveAnimationController
+                            .isAnimating,
+                        "removeAnimating": animationManager
+                            .removeAnimationController
+                            .isAnimating,
+                      },
+                    }),
+                  );
+                  // #endregion
                   // Cache localized strings at the start to avoid BuildContext usage across async gaps
                   final String strNotYourTurn = S.of(context).notYourTurn;
                   final String strNoLanConnection = S
@@ -418,10 +495,24 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                   );
 
                   if (square == null) {
+                    // #region agent log
+                    developer.log(
+                      'DEBUG_TAP_NULL_SQUARE',
+                      name: 'sanmill.debug',
+                    );
+                    // #endregion
                     return logger.t(
                       "${GameBoard._logTag} Tap not on a square, ignored.",
                     );
                   }
+
+                  // #region agent log
+                  developer.log(
+                    'DEBUG_TAP_SQUARE',
+                    name: 'sanmill.debug',
+                    error: jsonEncode({"square": square}),
+                  );
+                  // #endregion
 
                   logger.t("${GameBoard._logTag} Tap on square <$square>");
 
@@ -445,6 +536,17 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                   final EngineResponse response = await tapHandler.onBoardTap(
                     square,
                   );
+
+                  // #region agent log
+                  developer.log(
+                    'DEBUG_TAP_RESPONSE',
+                    name: 'sanmill.debug',
+                    error: jsonEncode({
+                      "hypothesisId": "E",
+                      "responseType": response.runtimeType.toString(),
+                    }),
+                  );
+                  // #endregion
 
                   // Process engine response for displaying tips, etc.
                   switch (response) {
@@ -564,6 +666,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    // Remove lifecycle observer
+    WidgetsBinding.instance.removeObserver(this);
+
     // Mark controller as disposed to cancel any pending engine responses
     GameController().isDisposed = true;
 
