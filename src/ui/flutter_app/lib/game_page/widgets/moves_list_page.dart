@@ -975,7 +975,9 @@ class MovesListPageState extends State<MovesListPage> {
       loadingTimer?.cancel();
     });
 
-    // Make sure to dispose of the controller
+    // Delay the release of the controller to prevent it from being accessed by the framework during the dialog's exit animation,
+    // which would trigger a "used after being disposed" assertion.
+    await Future<void>.delayed(const Duration(milliseconds: 350));
     controller.dispose();
   }
 
