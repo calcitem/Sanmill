@@ -186,6 +186,7 @@ class ScreenshotService {
     final ui.Codec codec = await ui.instantiateImageCodec(originalImage);
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     final ui.Image baseImage = frameInfo.image;
+    codec.dispose(); // Release native codec resources
     final int baseWidth = baseImage.width;
     final int baseHeight = baseImage.height;
 
@@ -287,8 +288,14 @@ class ScreenshotService {
     final ByteData? byteData = await newImage.toByteData(
       format: ui.ImageByteFormat.png,
     );
+    final Uint8List result = byteData!.buffer.asUint8List();
 
-    return byteData!.buffer.asUint8List();
+    // Release native resources
+    baseImage.dispose();
+    newImage.dispose();
+    picture.dispose();
+
+    return result;
   }
 
   /// Helper function to draw centered text on the canvas.

@@ -213,7 +213,9 @@ class Engine {
       return 0;
     }
 
-    final int? count = await _platform.invokeMethod<int>("getResponseDroppedCount");
+    final int? count = await _platform.invokeMethod<int>(
+      "getResponseDroppedCount",
+    );
     return count ?? 0;
   }
 
@@ -767,8 +769,7 @@ class Engine {
         custodianCaptureEnabled: ruleSettings.enableCustodianCapture,
         custodianCaptureOnSquareEdges:
             ruleSettings.custodianCaptureOnSquareEdges,
-        custodianCaptureOnCrossLines:
-            ruleSettings.custodianCaptureOnCrossLines,
+        custodianCaptureOnCrossLines: ruleSettings.custodianCaptureOnCrossLines,
         custodianCaptureOnDiagonalLines:
             ruleSettings.custodianCaptureOnDiagonalLines,
         custodianCaptureInPlacingPhase:

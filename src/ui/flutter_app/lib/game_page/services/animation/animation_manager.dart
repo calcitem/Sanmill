@@ -271,6 +271,13 @@ class AnimationManager {
   // Properly dispose of the animation controllers
   void dispose() {
     _isDisposed = true; // Mark as disposed
+
+    // Remove status listeners before disposing controllers to prevent memory leaks
+    _placeAnimationController.removeStatusListener(_onPlaceAnimationStatus);
+    _moveAnimationController.removeStatusListener(_onMoveAnimationStatus);
+    _removeAnimationController.removeStatusListener(_onRemoveAnimationStatus);
+    _putDownAnimationController.removeStatusListener(_onPutDownAnimationStatus);
+
     _placeAnimationController.dispose();
     _moveAnimationController.dispose();
     _removeAnimationController.dispose();

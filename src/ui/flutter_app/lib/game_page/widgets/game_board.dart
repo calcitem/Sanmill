@@ -241,7 +241,9 @@ class _GameBoardState extends State<GameBoard>
       data.buffer.asUint8List(),
     );
     final ui.FrameInfo frame = await codec.getNextFrame();
-    return frame.image;
+    final ui.Image image = frame.image;
+    codec.dispose(); // Release native codec resources
+    return image;
   }
 
   Future<ui.Image?> loadImageFromFilePath(String filePath) async {
@@ -254,7 +256,9 @@ class _GameBoardState extends State<GameBoard>
       final Uint8List imageData = await file.readAsBytes();
       final ui.Codec codec = await ui.instantiateImageCodec(imageData);
       final ui.FrameInfo frame = await codec.getNextFrame();
-      return frame.image;
+      final ui.Image image = frame.image;
+      codec.dispose(); // Release native codec resources
+      return image;
     } catch (e) {
       // Log the error for debugging
       logger.e("Error loading image from file path: $e");
