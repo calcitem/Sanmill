@@ -48,6 +48,9 @@ class GeneralSettingsPage extends StatelessWidget {
 
   static const String _logTag = "[general_settings_page]";
 
+  // Debounce timer for database copy operations
+  static Timer? _databaseCopyDebounce;
+
   // Restore
   void _restoreFactoryDefaultSettings(BuildContext context) => showDialog(
     context: context,
@@ -166,7 +169,25 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag usePerfectDatabase: $value");
 
     if (value == true) {
-      copyPerfectDatabaseFiles();
+      // Cancel any pending debounce timer
+      _databaseCopyDebounce?.cancel();
+
+      // Debounce the file copy operation with 1 second delay
+      _databaseCopyDebounce = Timer(const Duration(seconds: 1), () {
+        // Execute file copy in background to avoid blocking main thread
+        copyPerfectDatabaseFiles()
+            .then((bool success) {
+              if (!success) {
+                logger.w('$_logTag Failed to copy perfect database files');
+              }
+            })
+            .catchError((Object error) {
+              logger.e('$_logTag Error copying perfect database files: $error');
+            });
+      });
+    } else {
+      // Cancel debounce if switching back to false
+      _databaseCopyDebounce?.cancel();
     }
   }
 
