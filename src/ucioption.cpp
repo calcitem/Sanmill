@@ -13,6 +13,10 @@
 #include "mills.h"
 #include "search.h"
 
+#if defined(GABOR_MALOM_PERFECT_AI)
+#include "perfect_api.h"
+#endif
+
 using std::string;
 
 UCI::OptionsMap Options; // Global object
@@ -69,12 +73,34 @@ static void on_algorithm(const Option &o)
 
 static void on_usePerfectDatabase(const Option &o)
 {
-    gameOptions.setUsePerfectDatabase(static_cast<bool>(o));
+    const bool enabled = static_cast<bool>(o);
+    const bool wasEnabled = gameOptions.getUsePerfectDatabase();
+
+    gameOptions.setUsePerfectDatabase(enabled);
+
+#if defined(GABOR_MALOM_PERFECT_AI)
+    // Avoid keeping the perfect database in memory when disabled.
+    // Initialization is lazy and happens on demand when enabled.
+    if (!enabled && wasEnabled) {
+        MalomSolutionAccess::deinitialize_if_needed();
+    }
+#endif
 }
 
 static void on_perfectDatabasePath(const Option &o)
 {
-    gameOptions.setPerfectDatabasePath(static_cast<std::string>(o));
+    const std::string newPath = static_cast<std::string>(o);
+    const std::string oldPath = gameOptions.getPerfectDatabasePath();
+
+    gameOptions.setPerfectDatabasePath(newPath);
+
+#if defined(GABOR_MALOM_PERFECT_AI)
+    // If the database path changes while enabled, drop the current instance so
+    // the next query re-initializes from the new path.
+    if (gameOptions.getUsePerfectDatabase() && oldPath != newPath) {
+        MalomSolutionAccess::deinitialize_if_needed();
+    }
+#endif
 }
 
 static void on_drawOnHumanExperience(const Option &o)

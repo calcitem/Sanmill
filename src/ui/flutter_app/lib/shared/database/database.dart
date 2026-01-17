@@ -3,6 +3,7 @@
 
 // database.dart
 
+import 'dart:async' show Timer;
 import 'dart:convert' show jsonDecode;
 import 'dart:io' show Directory, File;
 
@@ -49,6 +50,15 @@ class Database {
 
   /// [GeneralSettings] Box reference
   static late final Box<GeneralSettings> _generalSettingsBox;
+
+  // Debounce engine option updates triggered by rapid settings changes.
+  // This is important for stress tests (e.g. Monkey) where sliders/toggles may
+  // fire in bursts and would otherwise spam `setoption` calls.
+  static const Duration _engineOptionsDebounceDuration = Duration(
+    milliseconds: 300,
+  );
+  static Timer? _engineOptionsDebounceTimer;
+  static Timer? _engineRuleOptionsDebounceTimer;
 
   /// Key at which the [GeneralSettings] will be saved in the [_generalSettingsBox]
   static const String generalSettingsKey = "settings";
@@ -184,7 +194,10 @@ class Database {
   /// Saves the given [generalSettings] to the settings Box
   set generalSettings(GeneralSettings generalSettings) {
     saveGeneralSettingsOnly(generalSettings);
-    GameController().engine.setGeneralOptions();
+    _engineOptionsDebounceTimer?.cancel();
+    _engineOptionsDebounceTimer = Timer(_engineOptionsDebounceDuration, () {
+      GameController().engine.setGeneralOptions();
+    });
   }
 
   /// Gets the given [GeneralSettings] from the settings Box
@@ -212,7 +225,13 @@ class Database {
   set _ruleSettings(RuleSettings? ruleSettings) {
     if (ruleSettings != null) {
       _ruleSettingsBox.put(ruleSettingsKey, ruleSettings);
-      GameController().engine.setRuleOptions();
+      _engineRuleOptionsDebounceTimer?.cancel();
+      _engineRuleOptionsDebounceTimer = Timer(
+        _engineOptionsDebounceDuration,
+        () {
+          GameController().engine.setRuleOptions();
+        },
+      );
     }
   }
 

@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
@@ -14,10 +14,7 @@
 #include <cctype>
 #include <string>
 #include <regex>
-
-#if defined(ENABLE_BENCHMARK)
 #include <mutex>
-#endif // ENABLE_BENCHMARK
 
 #if defined(__APPLE__)
 #include <unistd.h>
@@ -29,6 +26,11 @@ extern int perfect_init();
 
 PerfectPlayer *MalomSolutionAccess::perfectPlayer = nullptr;
 
+// Guard the lifetime and use of `perfectPlayer`.
+// - Prevent `deinitialize_if_needed()` from racing with in-flight queries.
+// - Allow nested locking (e.g. get_best_move -> initialize_if_needed).
+static std::recursive_mutex g_pd_mutex;
+
 // Error-code based implementation (no exceptions for performance)
 int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
                                        int whiteStonesToPlace,
@@ -37,6 +39,7 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
                                        const Move &refMove)
 {
     using namespace PerfectErrors;
+    std::lock_guard<std::recursive_mutex> lock(g_pd_mutex);
 
     clearError();
 
@@ -147,7 +150,9 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
     // optimized approach for initialization and deinitialization processes
     // should be explored to mitigate these costs.
     // https://github.com/ggevay/malom/pull/3#discussion_r1349745071
-    deinitialize_if_needed();
+    // Keep the perfect database initialized while it's enabled.
+    // The lifetime is controlled by the engine option `UsePerfectDatabase`
+    // (see UCI option hook) to avoid heavy init/deinit churn.
 #endif // ENABLE_BENCHMARK
 
     return ret;
@@ -159,6 +164,7 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
 bool MalomSolutionAccess::initialize_if_needed()
 {
     using namespace PerfectErrors;
+    std::lock_guard<std::recursive_mutex> lock(g_pd_mutex);
 
     // Fast path: if already initialized, return immediately
     if (perfectPlayer != nullptr) {
@@ -220,6 +226,7 @@ bool MalomSolutionAccess::initialize_if_needed()
 bool MalomSolutionAccess::initialize_if_needed()
 {
     using namespace PerfectErrors;
+    std::lock_guard<std::recursive_mutex> lock(g_pd_mutex);
 
     if (perfectPlayer != nullptr) {
         return true;
@@ -262,6 +269,7 @@ int MalomSolutionAccess::get_move_from_database(const GameState &s,
                                                 const Move &refMove)
 {
     using namespace PerfectErrors;
+    std::lock_guard<std::recursive_mutex> lock(g_pd_mutex);
 
     if (perfectPlayer == nullptr) {
         SET_ERROR_CODE(PE_RUNTIME_ERROR, "Perfect player not initialized");
@@ -289,6 +297,7 @@ PerfectEvaluation
 MalomSolutionAccess::get_detailed_evaluation(const GameState &gameState)
 {
     using namespace PerfectErrors;
+    std::lock_guard<std::recursive_mutex> lock(g_pd_mutex);
 
     if (perfectPlayer == nullptr) {
         SET_ERROR_CODE(PE_RUNTIME_ERROR, "Perfect player not initialized");
@@ -376,6 +385,8 @@ MalomSolutionAccess::get_detailed_evaluation(const GameState &gameState)
 
 void MalomSolutionAccess::deinitialize_if_needed()
 {
+    std::lock_guard<std::recursive_mutex> lock(g_pd_mutex);
+
     if (perfectPlayer == nullptr) {
         return;
     }
@@ -507,7 +518,9 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(
     // Same reasoning as in get_best_move() - prevents thread safety issues
     // deinitialize_if_needed(); // REMOVED for thread safety
 #else
-    deinitialize_if_needed();
+    // Keep the perfect database initialized while it's enabled.
+    // The lifetime is controlled by the engine option `UsePerfectDatabase`
+    // (see UCI option hook) to avoid heavy init/deinit churn.
 #endif // ENABLE_BENCHMARK
 
     return result;

@@ -22,38 +22,81 @@ class _MoveTimeSlider extends StatelessWidget {
             defaultValue: const GeneralSettings(),
           )!;
 
-          return Center(
-            key: const Key('move_time_slider_center'),
-            child: SizedBox(
-              key: const Key('move_time_slider_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('move_time_slider_slider'),
-                value: DB().generalSettings.moveTime.toDouble(),
-                max: 60,
-                divisions: 60,
-                label: DB().generalSettings.moveTime.toString(),
-                onChanged: (double value) {
-                  DB().generalSettings = generalSettings.copyWith(
-                    moveTime: value.toInt(),
-                  );
-
-                  if (DB().generalSettings.moveTime == 0) {
-                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).noTimeLimitForThinking,
-                    );
-                  } else {
-                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).noteAiThinkingTimeMayNotBePrecise,
-                    );
-                  }
-
-                  logger.t("Move time Slider value: $value");
-                },
-              ),
-            ),
+          return _MoveTimeSliderBody(
+            initialValue: generalSettings.moveTime.toDouble(),
           );
         },
+      ),
+    );
+  }
+}
+
+class _MoveTimeSliderBody extends StatefulWidget {
+  const _MoveTimeSliderBody({required this.initialValue});
+
+  final double initialValue;
+
+  @override
+  State<_MoveTimeSliderBody> createState() => _MoveTimeSliderBodyState();
+}
+
+class _MoveTimeSliderBodyState extends State<_MoveTimeSliderBody> {
+  late double _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.initialValue.clamp(0, 60);
+  }
+
+  @override
+  void didUpdateWidget(_MoveTimeSliderBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // If the settings were changed elsewhere while the bottom sheet is open,
+    // reflect the new value (we only commit to DB onChangeEnd).
+    if (oldWidget.initialValue != widget.initialValue) {
+      _value = widget.initialValue.clamp(0, 60);
+    }
+  }
+
+  void _commit(double value) {
+    final int intValue = value.toInt();
+    final GeneralSettings current = DB().generalSettings;
+    DB().generalSettings = current.copyWith(moveTime: intValue);
+
+    if (intValue == 0) {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).noTimeLimitForThinking,
+      );
+    } else {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).noteAiThinkingTimeMayNotBePrecise,
+      );
+    }
+
+    logger.t("Move time Slider committed value: $intValue");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      key: const Key('move_time_slider_center'),
+      child: SizedBox(
+        key: const Key('move_time_slider_sized_box'),
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: Slider(
+          key: const Key('move_time_slider_slider'),
+          value: _value,
+          max: 60,
+          divisions: 60,
+          label: _value.toInt().toString(),
+          onChanged: (double value) {
+            setState(() {
+              _value = value;
+            });
+          },
+          onChangeEnd: _commit,
+        ),
       ),
     );
   }
@@ -76,38 +119,80 @@ class _HumanMoveTimeSlider extends StatelessWidget {
             defaultValue: const GeneralSettings(),
           )!;
 
-          return Center(
-            key: const Key('human_move_time_slider_center'),
-            child: SizedBox(
-              key: const Key('human_move_time_slider_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('human_move_time_slider_slider'),
-                value: DB().generalSettings.humanMoveTime.toDouble(),
-                max: 60,
-                divisions: 60,
-                label: DB().generalSettings.humanMoveTime.toString(),
-                onChanged: (double value) {
-                  DB().generalSettings = generalSettings.copyWith(
-                    humanMoveTime: value.toInt(),
-                  );
-
-                  if (DB().generalSettings.humanMoveTime == 0) {
-                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).noTimeLimitForHumanMoves,
-                    );
-                  } else {
-                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).timeoutLoseWillBeApplied,
-                    );
-                  }
-
-                  logger.t("Human move time Slider value: $value");
-                },
-              ),
-            ),
+          return _HumanMoveTimeSliderBody(
+            initialValue: generalSettings.humanMoveTime.toDouble(),
           );
         },
+      ),
+    );
+  }
+}
+
+class _HumanMoveTimeSliderBody extends StatefulWidget {
+  const _HumanMoveTimeSliderBody({required this.initialValue});
+
+  final double initialValue;
+
+  @override
+  State<_HumanMoveTimeSliderBody> createState() =>
+      _HumanMoveTimeSliderBodyState();
+}
+
+class _HumanMoveTimeSliderBodyState extends State<_HumanMoveTimeSliderBody> {
+  late double _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget.initialValue.clamp(0, 60);
+  }
+
+  @override
+  void didUpdateWidget(_HumanMoveTimeSliderBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue) {
+      _value = widget.initialValue.clamp(0, 60);
+    }
+  }
+
+  void _commit(double value) {
+    final int intValue = value.toInt();
+    final GeneralSettings current = DB().generalSettings;
+    DB().generalSettings = current.copyWith(humanMoveTime: intValue);
+
+    if (intValue == 0) {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).noTimeLimitForHumanMoves,
+      );
+    } else {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        S.of(context).timeoutLoseWillBeApplied,
+      );
+    }
+
+    logger.t("Human move time Slider committed value: $intValue");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      key: const Key('human_move_time_slider_center'),
+      child: SizedBox(
+        key: const Key('human_move_time_slider_sized_box'),
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: Slider(
+          key: const Key('human_move_time_slider_slider'),
+          value: _value,
+          max: 60,
+          divisions: 60,
+          label: _value.toInt().toString(),
+          onChanged: (double value) {
+            setState(() {
+              _value = value;
+            });
+          },
+          onChangeEnd: _commit,
+        ),
       ),
     );
   }
