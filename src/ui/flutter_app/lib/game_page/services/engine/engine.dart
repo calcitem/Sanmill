@@ -454,7 +454,7 @@ class Engine {
       return EngineRet(
         value,
         aiMoveType,
-        ExtMove(best, side: GameController().position.sideToMove.opponent),
+        ExtMove(best, side: GameController().position.sideToMove),
       );
     }
 
