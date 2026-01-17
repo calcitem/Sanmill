@@ -175,9 +175,15 @@ class Database {
   ValueListenable<Box<GeneralSettings>> get listenGeneralSettings =>
       _generalSettingsBox.listenable(keys: <String>[generalSettingsKey]);
 
+  /// Saves settings to box without triggering engine update.
+  /// Used internally when engine needs to update settings during configuration.
+  void saveGeneralSettingsOnly(GeneralSettings generalSettings) {
+    _generalSettingsBox.put(generalSettingsKey, generalSettings);
+  }
+
   /// Saves the given [generalSettings] to the settings Box
   set generalSettings(GeneralSettings generalSettings) {
-    _generalSettingsBox.put(generalSettingsKey, generalSettings);
+    saveGeneralSettingsOnly(generalSettings);
     GameController().engine.setGeneralOptions();
   }
 

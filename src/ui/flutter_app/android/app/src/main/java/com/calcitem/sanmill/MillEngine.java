@@ -33,4 +33,6 @@ public class MillEngine {
     public native boolean isReady();
 
     public native boolean isThinking();
+
+    public native long getResponseDroppedCount();
 }

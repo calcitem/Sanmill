@@ -34,6 +34,13 @@ class Engine {
   // expected response (bestmove/readyok/uciok) and leaving the other waiting.
   Future<void>? _startupInProgress;
 
+  // Serialize option updates to keep command order stable.
+  Future<void> _optionsUpdateQueue = Future<void>.value();
+
+  // Cache last applied engine options to avoid redundant setoption calls.
+  _GeneralEngineOptions? _lastGeneralOptions;
+  _RuleEngineOptions? _lastRuleOptions;
+
   Future<void> ensureReady() async {
     if (!_isPlatformChannelAvailable) {
       return;
@@ -94,6 +101,8 @@ class Engine {
         isStartup: true,
       );
 
+      _lastGeneralOptions = null;
+      _lastRuleOptions = null;
       await setOptions();
       _started = true;
     }();
@@ -104,7 +113,11 @@ class Engine {
       await task;
     } finally {
       sw.stop();
-      logger.i("$_logTag startup finished in ${sw.elapsedMilliseconds}ms");
+      final int droppedCount = await getResponseDroppedCount();
+      logger.i(
+        "$_logTag startup finished in ${sw.elapsedMilliseconds}ms, "
+        "response queue dropped count: $droppedCount",
+      );
       // Only clear if we're still pointing at the same in-flight future.
       if (identical(_startupInProgress, task)) {
         _startupInProgress = null;
@@ -133,6 +146,26 @@ class Engine {
       final Catcher2Options options = catcher.getCurrentConfig()!;
       options.customParameters[name] = command;
     }
+  }
+
+  Future<void> _queueOptionsUpdate(Future<void> Function() action) {
+    _optionsUpdateQueue = _optionsUpdateQueue
+        .catchError((Object error, StackTrace _) {
+          logger.e("$_logTag Options update failed: $error");
+        })
+        .then((_) => action());
+    return _optionsUpdateQueue;
+  }
+
+  Future<void> _sendOptionIfChanged(
+    String name,
+    Object value,
+    Object? previousValue,
+  ) async {
+    if (previousValue == value) {
+      return;
+    }
+    await _sendOptions(name, value);
   }
 
   Future<String?> _read() async {
@@ -173,6 +206,15 @@ class Engine {
         "Invalid platform response. Expected a value of type bool",
       );
     }
+  }
+
+  Future<int> getResponseDroppedCount() async {
+    if (!_isPlatformChannelAvailable) {
+      return 0;
+    }
+
+    final int? count = await _platform.invokeMethod<int>("getResponseDroppedCount");
+    return count ?? 0;
   }
 
   /// Saves the given FEN string to a local file named 'fen.txt'.
@@ -355,6 +397,14 @@ class Engine {
 
     logger.t("$_logTag response: $response");
 
+    // Log queue statistics for debugging
+    final int droppedCount = await getResponseDroppedCount();
+    if (droppedCount > 0) {
+      logger.w(
+        "$_logTag [QUEUE_STATS] Response queue dropped $droppedCount messages so far",
+      );
+    }
+
     if (response.contains("bestmove")) {
       final RegExp regex = RegExp(
         r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)",
@@ -423,12 +473,20 @@ class Engine {
   }) async {
     // Check if search has been cancelled or widget disposed
     if (_isSearchCancelled) {
-      logger.i("$_logTag Search cancelled, stopping wait for response");
+      final int droppedCount = await getResponseDroppedCount();
+      logger.w(
+        "$_logTag [STATE_SNAPSHOT] Search cancelled, stopping wait | "
+        "droppedCount=$droppedCount",
+      );
       return null;
     }
 
     if (GameController().isDisposed) {
-      logger.i("$_logTag GameController disposed, stopping wait for response");
+      final int droppedCount = await getResponseDroppedCount();
+      logger.w(
+        "$_logTag [STATE_SNAPSHOT] GameController disposed, stopping wait | "
+        "droppedCount=$droppedCount",
+      );
       return null;
     }
 
@@ -443,8 +501,11 @@ class Engine {
 
     // Check if this response is from an outdated search session
     if (expectedEpoch != null && expectedEpoch != _searchEpoch) {
-      logger.i(
-        "$_logTag Search epoch mismatch (expected: $expectedEpoch, current: $_searchEpoch), discarding response",
+      final int droppedCount = await getResponseDroppedCount();
+      logger.w(
+        "$_logTag [STATE_SNAPSHOT] Search epoch mismatch | "
+        "expected=$expectedEpoch, current=$_searchEpoch | "
+        "droppedCount=$droppedCount",
       );
       return null;
     }
@@ -463,8 +524,14 @@ class Engine {
     // current iteration before producing a stable bestmove.
     final bool enforceTimeout = !disableTimeout || EnvironmentConfig.devMode;
     if (enforceTimeout && times > timeLimit) {
+      final int droppedCount = await getResponseDroppedCount();
+      final bool nativeThinking = await isThinking();
       logger.w(
-        "$_logTag Timeout. sleep = $sleep, times = $times, limit = $timeLimit",
+        "$_logTag [STATE_SNAPSHOT] Timeout | "
+        "sleep=$sleep, times=$times, limit=$timeLimit | "
+        "nativeThinking=$nativeThinking | "
+        "droppedCount=$droppedCount | "
+        "prefixes=${prefixes.join(', ')}",
       );
 
       // Note:
@@ -545,201 +612,404 @@ class Engine {
   bool _sawUciokDuringWait = false;
 
   Future<void> setGeneralOptions() async {
-    if (kIsWeb) {
-      return;
-    }
-
-    final GeneralSettings generalSettings = DB().generalSettings;
-
-    // First Move
-    // No need to tell engine.
-
-    // Difficulty
-    await _sendOptions("SkillLevel", generalSettings.skillLevel);
-    await _sendOptions("MoveTime", generalSettings.moveTime);
-
-    // AI's play style
-    await _sendOptions(
-      "Algorithm",
-      generalSettings.searchAlgorithm?.index ?? SearchAlgorithm.mtdf.index,
-    ); // TODO: enum
-
-    bool usePerfectDatabase = false;
-
-    if (isRuleSupportingPerfectDatabase()) {
-      usePerfectDatabase = generalSettings.usePerfectDatabase;
-    } else {
-      usePerfectDatabase = false;
-      if (generalSettings.usePerfectDatabase) {
-        DB().generalSettings = generalSettings.copyWith(
-          usePerfectDatabase: false,
-        );
+    return _queueOptionsUpdate(() async {
+      if (kIsWeb) {
+        return;
       }
-    }
 
-    await _sendOptions("UsePerfectDatabase", usePerfectDatabase);
+      final GeneralSettings generalSettings = DB().generalSettings;
 
-    final Directory? dir = (!kIsWeb && Platform.isAndroid)
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
-    await _sendOptions("PerfectDatabasePath", perfectDatabasePath);
-    await _sendOptions(
-      "DrawOnHumanExperience",
-      generalSettings.drawOnHumanExperience,
-    );
-    await _sendOptions("ConsiderMobility", generalSettings.considerMobility);
-    await _sendOptions(
-      "FocusOnBlockingPaths",
-      generalSettings.focusOnBlockingPaths,
-    );
-    await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
-    await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
-    await _sendOptions("TrapAwareness", generalSettings.trapAwareness);
+      // First Move
+      // No need to tell engine.
 
-    // Control via environment configuration
-    await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
+      bool usePerfectDatabase = false;
+
+      if (isRuleSupportingPerfectDatabase()) {
+        usePerfectDatabase = generalSettings.usePerfectDatabase;
+      } else {
+        usePerfectDatabase = false;
+        if (generalSettings.usePerfectDatabase) {
+          // Use direct save method to avoid triggering options update loops.
+          DB().saveGeneralSettingsOnly(
+            generalSettings.copyWith(usePerfectDatabase: false),
+          );
+        }
+      }
+
+      final Directory? dir = (!kIsWeb && Platform.isAndroid)
+          ? await getExternalStorageDirectory()
+          : await getApplicationDocumentsDirectory();
+      final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
+
+      final _GeneralEngineOptions nextOptions = _GeneralEngineOptions(
+        skillLevel: generalSettings.skillLevel,
+        moveTime: generalSettings.moveTime,
+        algorithmIndex:
+            generalSettings.searchAlgorithm?.index ??
+            SearchAlgorithm.mtdf.index,
+        usePerfectDatabase: usePerfectDatabase,
+        perfectDatabasePath: perfectDatabasePath,
+        drawOnHumanExperience: generalSettings.drawOnHumanExperience,
+        considerMobility: generalSettings.considerMobility,
+        focusOnBlockingPaths: generalSettings.focusOnBlockingPaths,
+        aiIsLazy: generalSettings.aiIsLazy,
+        shufflingEnabled: generalSettings.shufflingEnabled,
+        trapAwareness: generalSettings.trapAwareness,
+        developerMode: EnvironmentConfig.devMode,
+      );
+
+      final _GeneralEngineOptions? previous = _lastGeneralOptions;
+
+      // Difficulty
+      await _sendOptionIfChanged(
+        "SkillLevel",
+        nextOptions.skillLevel,
+        previous?.skillLevel,
+      );
+      await _sendOptionIfChanged(
+        "MoveTime",
+        nextOptions.moveTime,
+        previous?.moveTime,
+      );
+
+      // AI's play style
+      await _sendOptionIfChanged(
+        "Algorithm",
+        nextOptions.algorithmIndex,
+        previous?.algorithmIndex,
+      ); // TODO: enum
+
+      await _sendOptionIfChanged(
+        "UsePerfectDatabase",
+        nextOptions.usePerfectDatabase,
+        previous?.usePerfectDatabase,
+      );
+      await _sendOptionIfChanged(
+        "PerfectDatabasePath",
+        nextOptions.perfectDatabasePath,
+        previous?.perfectDatabasePath,
+      );
+      await _sendOptionIfChanged(
+        "DrawOnHumanExperience",
+        nextOptions.drawOnHumanExperience,
+        previous?.drawOnHumanExperience,
+      );
+      await _sendOptionIfChanged(
+        "ConsiderMobility",
+        nextOptions.considerMobility,
+        previous?.considerMobility,
+      );
+      await _sendOptionIfChanged(
+        "FocusOnBlockingPaths",
+        nextOptions.focusOnBlockingPaths,
+        previous?.focusOnBlockingPaths,
+      );
+      await _sendOptionIfChanged(
+        "AiIsLazy",
+        nextOptions.aiIsLazy,
+        previous?.aiIsLazy,
+      );
+      await _sendOptionIfChanged(
+        "Shuffling",
+        nextOptions.shufflingEnabled,
+        previous?.shufflingEnabled,
+      );
+      await _sendOptionIfChanged(
+        "TrapAwareness",
+        nextOptions.trapAwareness,
+        previous?.trapAwareness,
+      );
+
+      // Control via environment configuration
+      await _sendOptionIfChanged(
+        "DeveloperMode",
+        nextOptions.developerMode,
+        previous?.developerMode,
+      );
+
+      _lastGeneralOptions = nextOptions;
+    });
   }
 
   Future<void> setRuleOptions() async {
-    final RuleSettings ruleSettings = DB().ruleSettings;
+    return _queueOptionsUpdate(() async {
+      final RuleSettings ruleSettings = DB().ruleSettings;
 
-    // General
-    await _sendOptions("PiecesCount", ruleSettings.piecesCount);
-    await _sendOptions("HasDiagonalLines", ruleSettings.hasDiagonalLines);
-    await _sendOptions("NMoveRule", ruleSettings.nMoveRule);
-    await _sendOptions("EndgameNMoveRule", ruleSettings.endgameNMoveRule);
-    await _sendOptions(
-      "ThreefoldRepetitionRule",
-      ruleSettings.threefoldRepetitionRule,
-    );
-    // Not available to user settings
-    await _sendOptions("PiecesAtLeastCount", ruleSettings.piecesAtLeastCount);
+      final _RuleEngineOptions nextOptions = _RuleEngineOptions(
+        piecesCount: ruleSettings.piecesCount,
+        hasDiagonalLines: ruleSettings.hasDiagonalLines,
+        nMoveRule: ruleSettings.nMoveRule,
+        endgameNMoveRule: ruleSettings.endgameNMoveRule,
+        threefoldRepetitionRule: ruleSettings.threefoldRepetitionRule,
+        piecesAtLeastCount: ruleSettings.piecesAtLeastCount,
+        boardFullActionIndex:
+            ruleSettings.boardFullAction?.index ??
+            BoardFullAction.firstPlayerLose.index,
+        stopPlacingWhenTwoEmptySquares:
+            ruleSettings.stopPlacingWhenTwoEmptySquares,
+        millFormationActionIndex:
+            ruleSettings.millFormationActionInPlacingPhase?.index ??
+            MillFormationActionInPlacingPhase
+                .removeOpponentsPieceFromBoard
+                .index,
+        mayMoveInPlacingPhase: ruleSettings.mayMoveInPlacingPhase,
+        isDefenderMoveFirst: ruleSettings.isDefenderMoveFirst,
+        restrictRepeatedMillsFormation:
+            ruleSettings.restrictRepeatedMillsFormation,
+        stalemateActionIndex:
+            ruleSettings.stalemateAction?.index ??
+            StalemateAction.endWithStalemateLoss.index,
+        mayFly: ruleSettings.mayFly,
+        flyPieceCount: ruleSettings.flyPieceCount,
+        mayRemoveFromMillsAlways: ruleSettings.mayRemoveFromMillsAlways,
+        mayRemoveMultiple: ruleSettings.mayRemoveMultiple,
+        oneTimeUseMill: ruleSettings.oneTimeUseMill,
+        custodianCaptureEnabled: ruleSettings.enableCustodianCapture,
+        custodianCaptureOnSquareEdges:
+            ruleSettings.custodianCaptureOnSquareEdges,
+        custodianCaptureOnCrossLines:
+            ruleSettings.custodianCaptureOnCrossLines,
+        custodianCaptureOnDiagonalLines:
+            ruleSettings.custodianCaptureOnDiagonalLines,
+        custodianCaptureInPlacingPhase:
+            ruleSettings.custodianCaptureInPlacingPhase,
+        custodianCaptureInMovingPhase:
+            ruleSettings.custodianCaptureInMovingPhase,
+        custodianCaptureOnlyWhenOwnPiecesLeq3:
+            ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3,
+        interventionCaptureEnabled: ruleSettings.enableInterventionCapture,
+        interventionCaptureOnSquareEdges:
+            ruleSettings.interventionCaptureOnSquareEdges,
+        interventionCaptureOnCrossLines:
+            ruleSettings.interventionCaptureOnCrossLines,
+        interventionCaptureOnDiagonalLines:
+            ruleSettings.interventionCaptureOnDiagonalLines,
+        interventionCaptureInPlacingPhase:
+            ruleSettings.interventionCaptureInPlacingPhase,
+        interventionCaptureInMovingPhase:
+            ruleSettings.interventionCaptureInMovingPhase,
+        interventionCaptureOnlyWhenOwnPiecesLeq3:
+            ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
+        leapCaptureEnabled: ruleSettings.enableLeapCapture,
+        leapCaptureOnSquareEdges: ruleSettings.leapCaptureOnSquareEdges,
+        leapCaptureOnCrossLines: ruleSettings.leapCaptureOnCrossLines,
+        leapCaptureOnDiagonalLines: ruleSettings.leapCaptureOnDiagonalLines,
+        leapCaptureInPlacingPhase: ruleSettings.leapCaptureInPlacingPhase,
+        leapCaptureInMovingPhase: ruleSettings.leapCaptureInMovingPhase,
+        leapCaptureOnlyWhenOwnPiecesLeq3:
+            ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3,
+      );
 
-    // Placing
-    await _sendOptions(
-      "BoardFullAction",
-      ruleSettings.boardFullAction?.index ??
-          BoardFullAction.firstPlayerLose.index,
-    ); // TODO: enum
-    await _sendOptions(
-      "StopPlacingWhenTwoEmptySquares",
-      ruleSettings.stopPlacingWhenTwoEmptySquares,
-    );
-    await _sendOptions(
-      "MillFormationActionInPlacingPhase",
-      ruleSettings.millFormationActionInPlacingPhase?.index ??
-          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard.index,
-    ); // TODO: enum
-    await _sendOptions(
-      "MayMoveInPlacingPhase",
-      ruleSettings.mayMoveInPlacingPhase,
-    ); // Not yet implemented
+      final _RuleEngineOptions? previous = _lastRuleOptions;
 
-    // Moving
-    await _sendOptions("IsDefenderMoveFirst", ruleSettings.isDefenderMoveFirst);
-    await _sendOptions(
-      "RestrictRepeatedMillsFormation",
-      ruleSettings.restrictRepeatedMillsFormation,
-    );
-    await _sendOptions(
-      "StalemateAction",
-      ruleSettings.stalemateAction?.index ??
-          StalemateAction.endWithStalemateLoss.index,
-    ); // TODO: enum
+      // General
+      await _sendOptionIfChanged(
+        "PiecesCount",
+        nextOptions.piecesCount,
+        previous?.piecesCount,
+      );
+      await _sendOptionIfChanged(
+        "HasDiagonalLines",
+        nextOptions.hasDiagonalLines,
+        previous?.hasDiagonalLines,
+      );
+      await _sendOptionIfChanged(
+        "NMoveRule",
+        nextOptions.nMoveRule,
+        previous?.nMoveRule,
+      );
+      await _sendOptionIfChanged(
+        "EndgameNMoveRule",
+        nextOptions.endgameNMoveRule,
+        previous?.endgameNMoveRule,
+      );
+      await _sendOptionIfChanged(
+        "ThreefoldRepetitionRule",
+        nextOptions.threefoldRepetitionRule,
+        previous?.threefoldRepetitionRule,
+      );
+      // Not available to user settings
+      await _sendOptionIfChanged(
+        "PiecesAtLeastCount",
+        nextOptions.piecesAtLeastCount,
+        previous?.piecesAtLeastCount,
+      );
 
-    // Flying
-    await _sendOptions("MayFly", ruleSettings.mayFly);
-    await _sendOptions("FlyPieceCount", ruleSettings.flyPieceCount);
+      // Placing
+      await _sendOptionIfChanged(
+        "BoardFullAction",
+        nextOptions.boardFullActionIndex,
+        previous?.boardFullActionIndex,
+      ); // TODO: enum
+      await _sendOptionIfChanged(
+        "StopPlacingWhenTwoEmptySquares",
+        nextOptions.stopPlacingWhenTwoEmptySquares,
+        previous?.stopPlacingWhenTwoEmptySquares,
+      );
+      await _sendOptionIfChanged(
+        "MillFormationActionInPlacingPhase",
+        nextOptions.millFormationActionIndex,
+        previous?.millFormationActionIndex,
+      ); // TODO: enum
+      await _sendOptionIfChanged(
+        "MayMoveInPlacingPhase",
+        nextOptions.mayMoveInPlacingPhase,
+        previous?.mayMoveInPlacingPhase,
+      ); // Not yet implemented
 
-    // Removing
-    await _sendOptions(
-      "MayRemoveFromMillsAlways",
-      ruleSettings.mayRemoveFromMillsAlways,
-    );
-    await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
-    await _sendOptions("OneTimeUseMill", ruleSettings.oneTimeUseMill);
-    await _sendOptions(
-      "CustodianCaptureEnabled",
-      ruleSettings.enableCustodianCapture,
-    );
-    await _sendOptions(
-      "CustodianCaptureOnSquareEdges",
-      ruleSettings.custodianCaptureOnSquareEdges,
-    );
-    await _sendOptions(
-      "CustodianCaptureOnCrossLines",
-      ruleSettings.custodianCaptureOnCrossLines,
-    );
-    await _sendOptions(
-      "CustodianCaptureOnDiagonalLines",
-      ruleSettings.custodianCaptureOnDiagonalLines,
-    );
-    await _sendOptions(
-      "CustodianCaptureInPlacingPhase",
-      ruleSettings.custodianCaptureInPlacingPhase,
-    );
-    await _sendOptions(
-      "CustodianCaptureInMovingPhase",
-      ruleSettings.custodianCaptureInMovingPhase,
-    );
-    await _sendOptions(
-      "CustodianCaptureOnlyWhenOwnPiecesLeq3",
-      ruleSettings.custodianCaptureOnlyWhenOwnPiecesLeq3,
-    );
-    await _sendOptions(
-      "InterventionCaptureEnabled",
-      ruleSettings.enableInterventionCapture,
-    );
-    await _sendOptions(
-      "InterventionCaptureOnSquareEdges",
-      ruleSettings.interventionCaptureOnSquareEdges,
-    );
-    await _sendOptions(
-      "InterventionCaptureOnCrossLines",
-      ruleSettings.interventionCaptureOnCrossLines,
-    );
-    await _sendOptions(
-      "InterventionCaptureOnDiagonalLines",
-      ruleSettings.interventionCaptureOnDiagonalLines,
-    );
-    await _sendOptions(
-      "InterventionCaptureInPlacingPhase",
-      ruleSettings.interventionCaptureInPlacingPhase,
-    );
-    await _sendOptions(
-      "InterventionCaptureInMovingPhase",
-      ruleSettings.interventionCaptureInMovingPhase,
-    );
-    await _sendOptions(
-      "InterventionCaptureOnlyWhenOwnPiecesLeq3",
-      ruleSettings.interventionCaptureOnlyWhenOwnPiecesLeq3,
-    );
-    await _sendOptions("LeapCaptureEnabled", ruleSettings.enableLeapCapture);
-    await _sendOptions(
-      "LeapCaptureOnSquareEdges",
-      ruleSettings.leapCaptureOnSquareEdges,
-    );
-    await _sendOptions(
-      "LeapCaptureOnCrossLines",
-      ruleSettings.leapCaptureOnCrossLines,
-    );
-    await _sendOptions(
-      "LeapCaptureOnDiagonalLines",
-      ruleSettings.leapCaptureOnDiagonalLines,
-    );
-    await _sendOptions(
-      "LeapCaptureInPlacingPhase",
-      ruleSettings.leapCaptureInPlacingPhase,
-    );
-    await _sendOptions(
-      "LeapCaptureInMovingPhase",
-      ruleSettings.leapCaptureInMovingPhase,
-    );
-    await _sendOptions(
-      "LeapCaptureOnlyWhenOwnPiecesLeq3",
-      ruleSettings.leapCaptureOnlyWhenOwnPiecesLeq3,
-    );
+      // Moving
+      await _sendOptionIfChanged(
+        "IsDefenderMoveFirst",
+        nextOptions.isDefenderMoveFirst,
+        previous?.isDefenderMoveFirst,
+      );
+      await _sendOptionIfChanged(
+        "RestrictRepeatedMillsFormation",
+        nextOptions.restrictRepeatedMillsFormation,
+        previous?.restrictRepeatedMillsFormation,
+      );
+      await _sendOptionIfChanged(
+        "StalemateAction",
+        nextOptions.stalemateActionIndex,
+        previous?.stalemateActionIndex,
+      ); // TODO: enum
+
+      // Flying
+      await _sendOptionIfChanged(
+        "MayFly",
+        nextOptions.mayFly,
+        previous?.mayFly,
+      );
+      await _sendOptionIfChanged(
+        "FlyPieceCount",
+        nextOptions.flyPieceCount,
+        previous?.flyPieceCount,
+      );
+
+      // Removing
+      await _sendOptionIfChanged(
+        "MayRemoveFromMillsAlways",
+        nextOptions.mayRemoveFromMillsAlways,
+        previous?.mayRemoveFromMillsAlways,
+      );
+      await _sendOptionIfChanged(
+        "MayRemoveMultiple",
+        nextOptions.mayRemoveMultiple,
+        previous?.mayRemoveMultiple,
+      );
+      await _sendOptionIfChanged(
+        "OneTimeUseMill",
+        nextOptions.oneTimeUseMill,
+        previous?.oneTimeUseMill,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureEnabled",
+        nextOptions.custodianCaptureEnabled,
+        previous?.custodianCaptureEnabled,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureOnSquareEdges",
+        nextOptions.custodianCaptureOnSquareEdges,
+        previous?.custodianCaptureOnSquareEdges,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureOnCrossLines",
+        nextOptions.custodianCaptureOnCrossLines,
+        previous?.custodianCaptureOnCrossLines,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureOnDiagonalLines",
+        nextOptions.custodianCaptureOnDiagonalLines,
+        previous?.custodianCaptureOnDiagonalLines,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureInPlacingPhase",
+        nextOptions.custodianCaptureInPlacingPhase,
+        previous?.custodianCaptureInPlacingPhase,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureInMovingPhase",
+        nextOptions.custodianCaptureInMovingPhase,
+        previous?.custodianCaptureInMovingPhase,
+      );
+      await _sendOptionIfChanged(
+        "CustodianCaptureOnlyWhenOwnPiecesLeq3",
+        nextOptions.custodianCaptureOnlyWhenOwnPiecesLeq3,
+        previous?.custodianCaptureOnlyWhenOwnPiecesLeq3,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureEnabled",
+        nextOptions.interventionCaptureEnabled,
+        previous?.interventionCaptureEnabled,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureOnSquareEdges",
+        nextOptions.interventionCaptureOnSquareEdges,
+        previous?.interventionCaptureOnSquareEdges,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureOnCrossLines",
+        nextOptions.interventionCaptureOnCrossLines,
+        previous?.interventionCaptureOnCrossLines,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureOnDiagonalLines",
+        nextOptions.interventionCaptureOnDiagonalLines,
+        previous?.interventionCaptureOnDiagonalLines,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureInPlacingPhase",
+        nextOptions.interventionCaptureInPlacingPhase,
+        previous?.interventionCaptureInPlacingPhase,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureInMovingPhase",
+        nextOptions.interventionCaptureInMovingPhase,
+        previous?.interventionCaptureInMovingPhase,
+      );
+      await _sendOptionIfChanged(
+        "InterventionCaptureOnlyWhenOwnPiecesLeq3",
+        nextOptions.interventionCaptureOnlyWhenOwnPiecesLeq3,
+        previous?.interventionCaptureOnlyWhenOwnPiecesLeq3,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureEnabled",
+        nextOptions.leapCaptureEnabled,
+        previous?.leapCaptureEnabled,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureOnSquareEdges",
+        nextOptions.leapCaptureOnSquareEdges,
+        previous?.leapCaptureOnSquareEdges,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureOnCrossLines",
+        nextOptions.leapCaptureOnCrossLines,
+        previous?.leapCaptureOnCrossLines,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureOnDiagonalLines",
+        nextOptions.leapCaptureOnDiagonalLines,
+        previous?.leapCaptureOnDiagonalLines,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureInPlacingPhase",
+        nextOptions.leapCaptureInPlacingPhase,
+        previous?.leapCaptureInPlacingPhase,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureInMovingPhase",
+        nextOptions.leapCaptureInMovingPhase,
+        previous?.leapCaptureInMovingPhase,
+      );
+      await _sendOptionIfChanged(
+        "LeapCaptureOnlyWhenOwnPiecesLeq3",
+        nextOptions.leapCaptureOnlyWhenOwnPiecesLeq3,
+        previous?.leapCaptureOnlyWhenOwnPiecesLeq3,
+      );
+
+      _lastRuleOptions = nextOptions;
+    });
   }
 
   Future<void> setOptions() async {
@@ -1070,6 +1340,120 @@ class Engine {
 
     return result;
   }
+}
+
+class _GeneralEngineOptions {
+  _GeneralEngineOptions({
+    required this.skillLevel,
+    required this.moveTime,
+    required this.algorithmIndex,
+    required this.usePerfectDatabase,
+    required this.perfectDatabasePath,
+    required this.drawOnHumanExperience,
+    required this.considerMobility,
+    required this.focusOnBlockingPaths,
+    required this.aiIsLazy,
+    required this.shufflingEnabled,
+    required this.trapAwareness,
+    required this.developerMode,
+  });
+
+  final int skillLevel;
+  final int moveTime;
+  final int algorithmIndex;
+  final bool usePerfectDatabase;
+  final String perfectDatabasePath;
+  final bool drawOnHumanExperience;
+  final bool considerMobility;
+  final bool focusOnBlockingPaths;
+  final bool aiIsLazy;
+  final bool shufflingEnabled;
+  final bool trapAwareness;
+  final bool developerMode;
+}
+
+class _RuleEngineOptions {
+  _RuleEngineOptions({
+    required this.piecesCount,
+    required this.hasDiagonalLines,
+    required this.nMoveRule,
+    required this.endgameNMoveRule,
+    required this.threefoldRepetitionRule,
+    required this.piecesAtLeastCount,
+    required this.boardFullActionIndex,
+    required this.stopPlacingWhenTwoEmptySquares,
+    required this.millFormationActionIndex,
+    required this.mayMoveInPlacingPhase,
+    required this.isDefenderMoveFirst,
+    required this.restrictRepeatedMillsFormation,
+    required this.stalemateActionIndex,
+    required this.mayFly,
+    required this.flyPieceCount,
+    required this.mayRemoveFromMillsAlways,
+    required this.mayRemoveMultiple,
+    required this.oneTimeUseMill,
+    required this.custodianCaptureEnabled,
+    required this.custodianCaptureOnSquareEdges,
+    required this.custodianCaptureOnCrossLines,
+    required this.custodianCaptureOnDiagonalLines,
+    required this.custodianCaptureInPlacingPhase,
+    required this.custodianCaptureInMovingPhase,
+    required this.custodianCaptureOnlyWhenOwnPiecesLeq3,
+    required this.interventionCaptureEnabled,
+    required this.interventionCaptureOnSquareEdges,
+    required this.interventionCaptureOnCrossLines,
+    required this.interventionCaptureOnDiagonalLines,
+    required this.interventionCaptureInPlacingPhase,
+    required this.interventionCaptureInMovingPhase,
+    required this.interventionCaptureOnlyWhenOwnPiecesLeq3,
+    required this.leapCaptureEnabled,
+    required this.leapCaptureOnSquareEdges,
+    required this.leapCaptureOnCrossLines,
+    required this.leapCaptureOnDiagonalLines,
+    required this.leapCaptureInPlacingPhase,
+    required this.leapCaptureInMovingPhase,
+    required this.leapCaptureOnlyWhenOwnPiecesLeq3,
+  });
+
+  final int piecesCount;
+  final bool hasDiagonalLines;
+  final int nMoveRule;
+  final int endgameNMoveRule;
+  final bool threefoldRepetitionRule;
+  final int piecesAtLeastCount;
+  final int boardFullActionIndex;
+  final bool stopPlacingWhenTwoEmptySquares;
+  final int millFormationActionIndex;
+  final bool mayMoveInPlacingPhase;
+  final bool isDefenderMoveFirst;
+  final bool restrictRepeatedMillsFormation;
+  final int stalemateActionIndex;
+  final bool mayFly;
+  final int flyPieceCount;
+  final bool mayRemoveFromMillsAlways;
+  final bool mayRemoveMultiple;
+  final bool oneTimeUseMill;
+  final bool custodianCaptureEnabled;
+  final bool custodianCaptureOnSquareEdges;
+  final bool custodianCaptureOnCrossLines;
+  final bool custodianCaptureOnDiagonalLines;
+  final bool custodianCaptureInPlacingPhase;
+  final bool custodianCaptureInMovingPhase;
+  final bool custodianCaptureOnlyWhenOwnPiecesLeq3;
+  final bool interventionCaptureEnabled;
+  final bool interventionCaptureOnSquareEdges;
+  final bool interventionCaptureOnCrossLines;
+  final bool interventionCaptureOnDiagonalLines;
+  final bool interventionCaptureInPlacingPhase;
+  final bool interventionCaptureInMovingPhase;
+  final bool interventionCaptureOnlyWhenOwnPiecesLeq3;
+  final bool leapCaptureEnabled;
+  final bool leapCaptureOnSquareEdges;
+  final bool leapCaptureOnCrossLines;
+  final bool leapCaptureOnDiagonalLines;
+  final bool leapCaptureInPlacingPhase;
+  final bool leapCaptureInMovingPhase;
+  final bool leapCaptureOnlyWhenOwnPiecesLeq3;
 }
 
 enum GameMode {

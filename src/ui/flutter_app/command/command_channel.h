@@ -23,6 +23,7 @@ public:
     bool pushResponse(const char *resp);
     bool popupResponse(char *buffer);
     void clearQueues();
+    unsigned long getResponseDroppedCount() const;
 
 private:
     static CommandChannel *instance;

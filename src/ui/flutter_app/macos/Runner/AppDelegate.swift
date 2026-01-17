@@ -60,6 +60,8 @@ class AppDelegate: FlutterAppDelegate {
                 result(strongEngine.isReady())
             case "isThinking":
                 result(strongEngine.isThinking())
+            case "getResponseDroppedCount":
+                result(strongEngine.getResponseDroppedCount())
             default:
                 result(FlutterMethodNotImplemented)
             }

@@ -89,6 +89,8 @@ void FlutterWindow::HandleMethodCall(
         result->Success(engine->isReady());
     } else if (method.compare("isThinking") == 0) {
         result->Success(engine->isThinking());
+    } else if (method.compare("getResponseDroppedCount") == 0) {
+        result->Success(static_cast<int64_t>(engine->getResponseDroppedCount()));
     } else {
         result->NotImplemented();
     }

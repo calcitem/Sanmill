@@ -60,7 +60,16 @@ class TapHandler {
     AnalysisMode.disable();
 
     if (!GameController().isControllerReady) {
-      logger.i("$_logTag Not ready, ignore tapping.");
+      logger.w(
+        "$_logTag [STATE_SNAPSHOT] Tap ignored: isControllerReady=false | "
+        "isEngineRunning=${GameController().isEngineRunning} | "
+        "isControllerActive=${GameController().isControllerActive} | "
+        "isDisposed=${GameController().isDisposed} | "
+        "gameMode=${GameController().gameInstance.gameMode} | "
+        "phase=${GameController().position.phase} | "
+        "sideToMove=${GameController().position.sideToMove} | "
+        "action=${GameController().position.action}",
+      );
       return const EngineResponseSkip();
     }
 
@@ -151,7 +160,18 @@ class TapHandler {
 
     if (isAiSideToMove &&
         GameController().gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.i("$_logTag AI's turn, skip tapping.");
+      // Check if engine is actually thinking
+      final bool nativeThinking = await GameController().engine.isThinking();
+      logger.w(
+        "$_logTag [STATE_SNAPSHOT] Tap ignored: AI's turn | "
+        "isEngineRunning=${GameController().isEngineRunning} | "
+        "isControllerActive=${GameController().isControllerActive} | "
+        "nativeIsThinking=$nativeThinking | "
+        "gameMode=${GameController().gameInstance.gameMode} | "
+        "phase=${GameController().position.phase} | "
+        "sideToMove=${GameController().position.sideToMove} | "
+        "action=${GameController().position.action}",
+      );
       return const EngineResponseSkip();
     }
 

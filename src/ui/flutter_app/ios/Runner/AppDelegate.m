@@ -91,6 +91,9 @@
         else if ([@"isThinking" isEqualToString:call.method]) {
             result(@([strongEngine isThinking]));
         }
+        else if ([@"getResponseDroppedCount" isEqualToString:call.method]) {
+            result([strongEngine getResponseDroppedCount]);
+        }
         else {
             result(FlutterMethodNotImplemented);
         }

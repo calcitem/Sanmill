@@ -12,8 +12,8 @@ CommandChannel *CommandChannel::instance = nullptr;
 
 CommandChannel::CommandChannel()
 {
-    commandQueue = new CommandQueue();
-    responseQueue = new CommandQueue();
+    commandQueue = new CommandQueue(false);
+    responseQueue = new CommandQueue(true);
 }
 
 CommandChannel *CommandChannel::getInstance()
@@ -75,4 +75,12 @@ void CommandChannel::clearQueues()
     if (responseQueue != nullptr) {
         responseQueue->clear();
     }
+}
+
+unsigned long CommandChannel::getResponseDroppedCount() const
+{
+    if (responseQueue != nullptr) {
+        return responseQueue->getDroppedCount();
+    }
+    return 0;
 }

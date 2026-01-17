@@ -19,4 +19,6 @@ public:
     bool isReady();
 
     bool isThinking();
+
+    unsigned long getResponseDroppedCount();
 };

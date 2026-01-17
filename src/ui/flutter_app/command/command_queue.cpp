@@ -9,7 +9,7 @@
 #include "base.h"
 #include "command_queue.h"
 
-CommandQueue::CommandQueue()
+CommandQueue::CommandQueue(bool dropOldestOnFull)
 {
     for (int i = 0; i < MAX_COMMAND_COUNT; i++) {
         commands[i][0] = '\0';
@@ -17,6 +17,8 @@ CommandQueue::CommandQueue()
 
     writeIndex = 0;
     readIndex = -1;
+    this->dropOldestOnFull = dropOldestOnFull;
+    droppedCount = 0;
 }
 
 bool CommandQueue::write(const char *command)
@@ -24,7 +26,21 @@ bool CommandQueue::write(const char *command)
     std::unique_lock<std::mutex> lk(mutex);
 
     if (strlen(commands[writeIndex]) != 0) {
-        return false;
+        if (!dropOldestOnFull) {
+            return false;
+        }
+
+        // Queue is full. Drop the oldest entry so we can accept the new one.
+        // In a full ring buffer, writeIndex equals readIndex and points to the
+        // oldest slot.
+        if (readIndex == writeIndex) {
+            droppedCount++;
+            if (++readIndex == MAX_COMMAND_COUNT) {
+                readIndex = 0;
+            }
+        }
+
+        commands[writeIndex][0] = '\0';
     }
 
 #ifdef _MSC_VER
@@ -85,4 +101,10 @@ void CommandQueue::clear()
     // Reset queue pointers to initial state
     writeIndex = 0;
     readIndex = -1;
+    droppedCount = 0;
+}
+
+unsigned long CommandQueue::getDroppedCount() const
+{
+    return droppedCount;
 }

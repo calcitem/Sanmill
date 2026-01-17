@@ -135,4 +135,10 @@
     return state == ENGINE_STATE_THINKING;
 }
 
+-(NSNumber *) getResponseDroppedCount {
+    CommandChannel *channel = CommandChannel::getInstance();
+    unsigned long count = channel->getResponseDroppedCount();
+    return [NSNumber numberWithUnsignedLong:count];
+}
+
 @end

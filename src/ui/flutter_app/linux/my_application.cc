@@ -63,6 +63,9 @@ static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
     } else if (g_strcmp0(method, "isThinking") == 0) {
         FlValue* value = fl_value_new_bool(engine->isThinking());
         fl_method_call_respond_success(method_call, value, nullptr);
+    } else if (g_strcmp0(method, "getResponseDroppedCount") == 0) {
+        FlValue* value = fl_value_new_int(engine->getResponseDroppedCount());
+        fl_method_call_respond_success(method_call, value, nullptr);
     } else {
         g_autoptr(FlMethodResponse) response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
         g_autoptr(GError) error = nullptr;

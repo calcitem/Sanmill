@@ -19,13 +19,16 @@ class CommandQueue
     int readIndex, writeIndex;
 
     std::mutex mutex;
+    bool dropOldestOnFull;
+    unsigned long droppedCount;
 
 public:
-    CommandQueue();
+    explicit CommandQueue(bool dropOldestOnFull = false);
 
     bool write(const char *command);
     bool read(char *dest);
     void clear();
+    unsigned long getDroppedCount() const;
 };
 
 #endif /* COMMAND_QUEUE_H */

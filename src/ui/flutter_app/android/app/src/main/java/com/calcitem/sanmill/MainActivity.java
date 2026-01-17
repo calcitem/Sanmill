@@ -124,6 +124,10 @@ public class MainActivity extends FlutterActivity {
                                         final boolean isThinkingRet = engine.isThinking();
                                         callbackHandler.post(() -> result.success(isThinkingRet));
                                         break;
+                                    case "getResponseDroppedCount":
+                                        final long droppedCount = engine.getResponseDroppedCount();
+                                        callbackHandler.post(() -> result.success(droppedCount));
+                                        break;
                                     default:
                                         callbackHandler.post(result::notImplemented);
                                         break;

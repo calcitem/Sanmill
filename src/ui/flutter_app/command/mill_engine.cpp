@@ -178,6 +178,13 @@ Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
     return static_cast<jboolean>(state == ENGINE_STATE_THINKING);
 }
 
+JNIEXPORT jlong JNICALL
+Java_com_calcitem_sanmill_MillEngine_getResponseDroppedCount(JNIEnv *, jobject)
+{
+    CommandChannel *channel = CommandChannel::getInstance();
+    return static_cast<jlong>(channel->getResponseDroppedCount());
+}
+
 #else
 
 bool MillEngine::isReady()
@@ -188,6 +195,12 @@ bool MillEngine::isReady()
 bool MillEngine::isThinking()
 {
     return state == ENGINE_STATE_THINKING;
+}
+
+unsigned long MillEngine::getResponseDroppedCount()
+{
+    CommandChannel *channel = CommandChannel::getInstance();
+    return channel->getResponseDroppedCount();
 }
 #endif // __ANDROID__
 }
