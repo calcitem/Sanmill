@@ -3611,7 +3611,20 @@ class Position {
     // Build the move list up to (and including) the activeNode, not beyond it.
     final List<ExtMove> pathMoves = <ExtMove>[];
     PgnNode<ExtMove>? cur = recorder.activeNode;
+
+    // Guard against circular references in PGN tree
+    final Set<PgnNode<ExtMove>> visitedNodes = <PgnNode<ExtMove>>{};
+
     while (cur != null && cur.parent != null) {
+      // Detecting circular references: If the current node has already been visited, it indicates a cycle in the tree, and the process should be terminated immediately.
+      if (visitedNodes.contains(cur)) {
+        logger.e(
+          "[position] Circular reference detected in PGN tree during movesSinceLastRemove traversal",
+        );
+        break;
+      }
+      visitedNodes.add(cur);
+
       if (cur.data != null) {
         pathMoves.add(cur.data!);
       }

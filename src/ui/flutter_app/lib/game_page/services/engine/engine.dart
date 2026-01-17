@@ -1056,8 +1056,36 @@ class Engine {
 
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
 
-    if (moves != null) {
-      posFenStr.write(" moves $moves");
+    if (moves != null && moves.isNotEmpty) {
+      // Validate moves sequence for duplicates (protection against PGN tree corruption)
+      final List<String> moveList = moves.trim().split(RegExp(r'\s+'));
+      final Set<String> seenMoves = <String>{};
+      bool hasDuplicate = false;
+
+      for (final String move in moveList) {
+        if (!move.startsWith('x') && seenMoves.contains(move)) {
+          // Non-remove move appears twice - PGN tree corruption detected
+          logger.e(
+            "[engine] Duplicate move detected in sequence: $move (full: $moves)",
+          );
+          hasDuplicate = true;
+          break;
+        }
+        seenMoves.add(move);
+      }
+
+      if (!hasDuplicate) {
+        posFenStr.write(" moves $moves");
+      } else {
+        // Fall back to current FEN without moves to prevent engine confusion
+        logger.w(
+          "[engine] Skipping corrupted moves, using current FEN directly",
+        );
+        final String? currentFen = GameController().position.fen;
+        if (currentFen != null) {
+          return "position fen $currentFen";
+        }
+      }
     }
 
     final String ret = posFenStr.toString();
