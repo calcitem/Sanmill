@@ -51,7 +51,7 @@ class GameController {
   late Game gameInstance;
   late Position position;
   late Position setupPosition;
-  late Engine engine;
+  final Engine engine = Engine();
 
   /// Remembers whether the host chose White; used for header icon arrangement.
   bool? lanHostPlaysWhite;
@@ -431,7 +431,6 @@ class GameController {
     position = Position();
     position.reset();
     gameInstance = Game(gameMode: mode);
-    engine = Engine();
     gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
 
     _startGame();

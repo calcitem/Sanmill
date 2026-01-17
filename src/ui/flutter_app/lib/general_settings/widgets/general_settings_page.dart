@@ -16,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
+import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
@@ -487,6 +488,11 @@ class GeneralSettingsPage extends StatelessWidget {
     );
 
     logger.t("$_logTag gameScreenRecorderSupport: $value");
+
+    // Free captured frames immediately when the feature is disabled.
+    if (value == false) {
+      GifShare().releaseData();
+    }
   }
 
   void _setGameScreenRecorderDuration(

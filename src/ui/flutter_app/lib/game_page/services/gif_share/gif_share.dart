@@ -33,6 +33,40 @@ class GifShare {
   // 300 frames can record approximately 300 moves, sufficient for most games.
   static const int maxFrames = 300;
 
+  // Additional hard cap on buffered PNG bytes to prevent extreme memory growth
+  // on high-resolution devices or under stress tests (e.g. Monkey).
+  static const int maxBufferedBytes = 128 * 1024 * 1024; // 128 MiB
+
+  int _bufferedBytes = 0;
+
+  void _evictOldestFrame() {
+    if (pngs.isEmpty) {
+      return;
+    }
+    final Uint8List removed = pngs.removeAt(0);
+    _bufferedBytes -= removed.length;
+    if (_bufferedBytes < 0) {
+      _bufferedBytes = 0;
+    }
+  }
+
+  void _addFrame(Uint8List frameBytes) {
+    for (int i = 0; i < frameRate; i++) {
+      // Frame count cap (circular buffer).
+      if (pngs.length >= maxFrames) {
+        _evictOldestFrame();
+      }
+
+      pngs.add(frameBytes);
+      _bufferedBytes += frameBytes.length;
+
+      // Total bytes cap (drop oldest until under limit).
+      while (pngs.isNotEmpty && _bufferedBytes > maxBufferedBytes) {
+        _evictOldestFrame();
+      }
+    }
+  }
+
   Future<void> captureView({bool first = false}) async {
     if (DB().generalSettings.gameScreenRecorderSupport == false) {
       return;
@@ -44,19 +78,14 @@ class GifShare {
 
     final Uint8List? bytes = await controller.capture();
     if (bytes != null) {
-      for (int i = 0; i < frameRate; i++) {
-        // Use circular buffer: when limit is reached, discard oldest frame
-        if (pngs.length >= maxFrames) {
-          pngs.removeAt(0);
-        }
-        pngs.add(bytes);
-      }
+      _addFrame(bytes);
     }
   }
 
   void releaseData() {
     bytes = null;
     pngs.clear();
+    _bufferedBytes = 0;
   }
 
   /// Call when "Share GIF" is tapped.
@@ -70,7 +99,7 @@ class GifShare {
     }
 
     if (pngs.isNotEmpty) {
-      pngs.removeRange(0, 1); // TODO: WAR
+      _evictOldestFrame(); // TODO: WAR
     }
 
     final img.GifEncoder encoder = img.GifEncoder(

@@ -10,6 +10,13 @@ class GameImages {
   ui.Image? blackPieceImage;
   ui.Image? markedPieceImage;
   ui.Image? boardImage;
+
+  void dispose() {
+    whitePieceImage?.dispose();
+    blackPieceImage?.dispose();
+    markedPieceImage?.dispose();
+    boardImage?.dispose();
+  }
 }
 
 /// Game Board
@@ -39,6 +46,9 @@ class _GameBoardState extends State<GameBoard>
   static const String _logTag = "[board]";
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
+  GameImages? _cachedGameImages;
+  ImageProvider? _cachedBoardImageProvider;
+  int _imageLoadEpoch = 0;
 
   // Flag to prevent duplicate dialog display in AI vs AI mode
   bool _isDialogShowing = false;
@@ -190,7 +200,39 @@ class _GameBoardState extends State<GameBoard>
   }
 
   Future<GameImages> _loadImages() async {
-    return loadGameImages();
+    final int epoch = ++_imageLoadEpoch;
+    final GameImages images = await loadGameImages();
+
+    // If a newer load has started or the widget is no longer mounted, dispose
+    // immediately to avoid leaking native GPU textures (EGL/GL mtrack).
+    if (!mounted || epoch != _imageLoadEpoch) {
+      images.dispose();
+      return images;
+    }
+
+    // Replace cached images (dispose old first).
+    _cachedGameImages?.dispose();
+    _cachedGameImages = images;
+    _cachedBoardImageProvider = widget.boardImage;
+    return images;
+  }
+
+  void _reloadImagesIfNeeded({required ImageProvider? oldProvider}) {
+    // Evict old provider from ImageCache to avoid reusing a disposed ui.Image.
+    oldProvider?.evict();
+
+    setState(() {
+      gameImagesFuture = _loadImages();
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant GameBoard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.boardImage != widget.boardImage) {
+      _reloadImagesIfNeeded(oldProvider: oldWidget.boardImage);
+    }
   }
 
   void processInitialSharingMoveList() {
@@ -629,6 +671,14 @@ class _GameBoardState extends State<GameBoard>
     GameController().engine.stopSearching();
 
     //GameController().engine.shutdown();
+
+    // Ensure any loaded images are released promptly to avoid native GPU
+    // memory growth during repeated page navigation (Monkey tests).
+    _cachedBoardImageProvider?.evict();
+    _cachedBoardImageProvider = null;
+    _cachedGameImages?.dispose();
+    _cachedGameImages = null;
+
     animationManager.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
     _removeValueNotifierListener();
