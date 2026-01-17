@@ -156,6 +156,16 @@ class Game {
       GameController().gameRecorder.appendMove(finalMove);
     }
 
+    // Keep the engine's incremental position reconstruction consistent.
+    // The native engine input builder uses:
+    //   lastPositionWithRemove + movesSinceLastRemove
+    // so we must update lastPositionWithRemove whenever a remove is executed,
+    // regardless of whether the move came from UI tapping or from the engine.
+    if (finalMove.type == MoveType.remove) {
+      GameController().gameRecorder.lastPositionWithRemove =
+          GameController().position.fen;
+    }
+
     // 3) If the game is still running, check for results
     if (GameController().position.phase != Phase.gameOver) {
       GameController().gameResultNotifier.showResult();

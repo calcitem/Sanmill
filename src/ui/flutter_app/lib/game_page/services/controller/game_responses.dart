@@ -85,6 +85,12 @@ class EngineTimeOut implements EngineResponse, Exception {
   const EngineTimeOut();
 }
 
+/// Engine search was cancelled (e.g. stopSearching, history navigation,
+/// controller deactivated) and should not be treated as a user-visible timeout.
+class EngineCancelled implements EngineResponse, Exception {
+  const EngineCancelled();
+}
+
 class EngineDummy implements EngineResponse {
   const EngineDummy();
 }

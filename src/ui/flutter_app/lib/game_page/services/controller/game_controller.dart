@@ -908,6 +908,10 @@ class GameController {
         logger.i("$tag Engine response type: timeout");
         isEngineRunning = false;
         return const EngineTimeOut();
+      } on EngineCancelled {
+        logger.i("$tag Engine response type: cancelled");
+        isEngineRunning = false;
+        return const EngineCancelled();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
         isEngineRunning = false;
@@ -1004,8 +1008,11 @@ class GameController {
       case EngineNoBestMove():
         headerTipNotifier.showTip(strNoBestMoveErr);
         break;
+      case EngineCancelled():
+        // Cancelled by navigation/reset/app lifecycle; do not show a user tip.
+        break;
       case EngineResponseSkip():
-        headerTipNotifier.showTip("Error: Skip"); // TODO
+        // Skipped due to in-progress engine or non-AI turn; keep silent.
         break;
       default:
         logger.e("$tag Unknown engine response type.");

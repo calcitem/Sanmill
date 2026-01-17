@@ -394,6 +394,19 @@ class Engine {
     }
 
     if (response == null) {
+      // `_waitResponse` returns null for multiple reasons:
+      // - real timeout (production returns null instead of throwing)
+      // - search cancelled via stopSearching()
+      // - controller disposed / inactive
+      // - epoch mismatch (stale search)
+      //
+      // Only real timeouts should surface to the user.
+      if (_isSearchCancelled ||
+          GameController().isDisposed ||
+          !GameController().isControllerActive ||
+          currentEpoch != _searchEpoch) {
+        throw const EngineCancelled();
+      }
       throw const EngineTimeOut();
     }
 
