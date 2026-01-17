@@ -493,6 +493,9 @@ class _LogsPageState extends State<LogsPage> {
     return ListView.builder(
       controller: _scrollController,
       itemCount: _logs.length,
+      // Limit the cache extent to reduce memory usage during stress testing.
+      // Only pre-render a small amount of off-screen content.
+      cacheExtent: 100,
       itemBuilder: (BuildContext context, int index) {
         return _LogItem(
           log: _logs[index],
@@ -824,7 +827,7 @@ class _LogItem extends StatelessWidget {
             // Log content
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 12, 12),
-              child: SelectableText(
+              child: Text(
                 log.lines
                     .map(_stripAnsiCodes)
                     .where((String line) => line.trim().isNotEmpty)

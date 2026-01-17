@@ -10,10 +10,11 @@ import 'package:logger/logger.dart';
 import 'environment_config.dart';
 
 class MemoryOutput extends LogOutput {
-  MemoryOutput({this.bufferSize = 4000})
+  MemoryOutput({this.bufferSize = 1000})
     : _buffer = ListQueue<OutputEvent>(bufferSize);
 
-  /// Maximum number of logs to keep in memory
+  /// Maximum number of logs to keep in memory.
+  /// Reduced from 4000 to 1000 to prevent memory bloat during stress testing.
   final int bufferSize;
 
   final ListQueue<OutputEvent> _buffer;
