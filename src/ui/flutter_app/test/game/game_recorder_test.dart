@@ -116,8 +116,39 @@ void main() {
       recorder.reset();
 
       expect(recorder.mainlineMoves.length, 0);
-      expect(recorder.activeNode, isNull);
+      // activeNode should be reset to pgnRoot (not null) to maintain invariants
+      expect(recorder.activeNode, recorder.pgnRoot);
       expect(recorder.pgnRoot.children.length, 0);
+    });
+
+    test('appendMove does not append to tail when activeNode is null', () {
+      final GameRecorder recorder = GameRecorder();
+
+      // Build a simple mainline: d6, f4
+      recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+
+      // Simulate a broken state (e.g. after history navigation bug):
+      // activeNode is null while the tree still has moves.
+      recorder.activeNode = null;
+
+      // Appending from "root" should create a new root child, not extend the tail.
+      recorder.appendMove(ExtMove('a1', side: PieceColor.white));
+
+      // Root should now have 2 first-move options: d6 (existing) and a1 (new).
+      expect(recorder.pgnRoot.children.length, 2);
+      expect(
+        recorder.pgnRoot.children.any(
+          (PgnNode<ExtMove> n) => n.data?.move == 'a1',
+        ),
+        isTrue,
+      );
+
+      // Ensure the new node is properly parented to root.
+      final PgnNode<ExtMove> a1Node = recorder.pgnRoot.children.firstWhere(
+        (PgnNode<ExtMove> n) => n.data?.move == 'a1',
+      );
+      expect(a1Node.parent, recorder.pgnRoot);
     });
 
     test('moveCountNotifier fires on move changes', () {
@@ -265,6 +296,33 @@ void main() {
       final String text = recorder.moveHistoryText;
       expect(text, contains('[FEN'));
       expect(text, contains('[SetUp "1"]'));
+    });
+  });
+
+  group('History navigation invariants', () {
+    test('takeBackAll keeps activeNode at pgnRoot (not null)', () async {
+      final GameController controller = GameController.instance;
+
+      // Make some moves so the history tree is non-empty.
+      controller.gameInstance.doMove(ExtMove('d6', side: PieceColor.white));
+      controller.gameInstance.doMove(ExtMove('f4', side: PieceColor.black));
+
+      expect(controller.gameRecorder.pgnRoot.children, isNotEmpty);
+      expect(controller.gameRecorder.activeNode, isNotNull);
+
+      // Navigate back to the start position via HistoryNavigator.
+      final HistoryResponse resp = await HistoryNavigator.doEachMove(
+        HistoryNavMode.takeBackAll,
+      );
+      expect(resp, const HistoryOK());
+
+      // Invariants:
+      // - Root position is represented by pgnRoot, not null.
+      // - Keeping this invariant prevents future moves from being appended to the tail.
+      expect(
+        controller.gameRecorder.activeNode,
+        controller.gameRecorder.pgnRoot,
+      );
     });
   });
 

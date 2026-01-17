@@ -6,7 +6,9 @@ part of '../mill.dart';
 /// GameRecorder holds the move history and maintains
 /// a PGN tree internally. It now provides PGN-based APIs.
 class GameRecorder {
-  GameRecorder({this.lastPositionWithRemove, this.setupPosition});
+  GameRecorder({this.lastPositionWithRemove, this.setupPosition}) {
+    activeNode = _pgnRoot;
+  }
 
   /// The user's last position with remove operation, if any.
   String? lastPositionWithRemove;
@@ -86,8 +88,10 @@ class GameRecorder {
   /// Returns whether we are at the end of the move history.
   bool isAtEnd() {
     final PgnNode<ExtMove>? node = activeNode;
-    if (node == null) {
-      return true;
+    // If activeNode is null or pgnRoot, check if there are any children.
+    // Otherwise check if the current node has children.
+    if (node == null || node == _pgnRoot) {
+      return _pgnRoot.children.isEmpty;
     }
     return node.children.isEmpty;
   }
@@ -95,7 +99,9 @@ class GameRecorder {
   /// Resets the game recorder by clearing all moves and resetting the active node.
   void reset() {
     _pgnRoot.children.clear();
-    activeNode = null;
+    // Set activeNode to pgnRoot (root position) instead of null
+    // to maintain consistency with history navigation behavior.
+    activeNode = _pgnRoot;
     lastPositionWithRemove = null;
     moveCountNotifier.value = 0;
   }
@@ -105,14 +111,27 @@ class GameRecorder {
   /// creates a new variation branch.
   void appendMove(ExtMove move, {bool createVariation = true}) {
     if (activeNode == null) {
-      // No moves yet or just reset. Walk down the mainline from root to the last child.
-      PgnNode<ExtMove> tail = _pgnRoot;
-      while (tail.children.isNotEmpty) {
-        tail = tail.children.first;
+      // Treat null as "at root". Never walk to the tail here:
+      // - When users navigate back to the start position, the head is pgnRoot.
+      // - If a bug ever sets activeNode=null while moves exist, appending to the
+      //   tail will silently corrupt history by duplicating moves at the end.
+      final PgnNode<ExtMove> where = _pgnRoot;
+
+      if (where.children.isNotEmpty && createVariation) {
+        // Follow an existing matching first move when possible.
+        for (final PgnNode<ExtMove> child in where.children) {
+          if (child.data != null && child.data!.move == move.move) {
+            activeNode = child;
+            moveCountNotifier.value = currentPath.length;
+            return;
+          }
+        }
       }
+
       final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
-      newChild.parent = tail; // Set parent pointer.
-      tail.children.add(newChild);
+      newChild.parent = where;
+      // Keep newest line as mainline by default.
+      where.children.insert(0, newChild);
       activeNode = newChild;
     } else {
       // Check if active node already has children

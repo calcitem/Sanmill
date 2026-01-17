@@ -1057,27 +1057,34 @@ class Engine {
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
 
     if (moves != null && moves.isNotEmpty) {
-      // Validate moves sequence for duplicates (protection against PGN tree corruption)
+      // Defensive validation against history corruption:
+      // A pure placement token like "b4" should never appear twice in a valid game
+      // segment (after the last remove), because the square becomes occupied.
+      //
+      // Do NOT treat repeated step moves like "d6-f4" as corruption; they can be
+      // legal over the course of a game.
+      final RegExp placementRe = RegExp(r'^[a-g][1-7]$');
       final List<String> moveList = moves.trim().split(RegExp(r'\s+'));
-      final Set<String> seenMoves = <String>{};
-      bool hasDuplicate = false;
+      final Set<String> seenPlacements = <String>{};
+      bool hasImpossibleDuplicatePlacement = false;
 
-      for (final String move in moveList) {
-        if (!move.startsWith('x') && seenMoves.contains(move)) {
-          // Non-remove move appears twice - PGN tree corruption detected
+      for (final String token in moveList) {
+        if (!placementRe.hasMatch(token)) {
+          continue;
+        }
+        if (!seenPlacements.add(token)) {
           logger.e(
-            "[engine] Duplicate move detected in sequence: $move (full: $moves)",
+            "[engine] Duplicate placement detected: $token (full: $moves)",
           );
-          hasDuplicate = true;
+          hasImpossibleDuplicatePlacement = true;
           break;
         }
-        seenMoves.add(move);
       }
 
-      if (!hasDuplicate) {
+      if (!hasImpossibleDuplicatePlacement) {
         posFenStr.write(" moves $moves");
       } else {
-        // Fall back to current FEN without moves to prevent engine confusion
+        // Fall back to current FEN without moves to avoid confusing the native engine.
         logger.w(
           "[engine] Skipping corrupted moves, using current FEN directly",
         );

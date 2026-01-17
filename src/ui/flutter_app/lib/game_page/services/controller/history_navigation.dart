@@ -383,7 +383,12 @@ class HistoryNavigator {
 
     // Update activeNode to point to the correct node in the original tree
     if (activePath.isEmpty) {
-      GameController().gameRecorder.activeNode = null;
+      // The root position should be represented by pgnRoot, not null.
+      // Using null here makes subsequent moves append to the tail (see
+      // GameRecorder.appendMove), which can create duplicate nodes and
+      // break history navigation invariants.
+      GameController().gameRecorder.activeNode =
+          GameController().gameRecorder.pgnRoot;
     } else {
       GameController().gameRecorder.activeNode = targetNode;
     }

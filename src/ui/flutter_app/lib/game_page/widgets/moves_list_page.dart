@@ -2404,10 +2404,10 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Builds the main body widget according to the chosen view layout.
   Widget _buildBody() {
-    // Check if there are any moves by looking at activeNode or root children
-    // This ensures we show moves even if _allNodes hasn't been populated yet
+    // Check if there are any moves by looking at root children.
+    // Since activeNode is now always non-null (at least pgnRoot),
+    // we only need to check if the tree has any moves.
     final bool hasMoves =
-        GameController().gameRecorder.activeNode != null ||
         GameController().gameRecorder.pgnRoot.children.isNotEmpty;
     if (!hasMoves) {
       return _buildEmptyState();
