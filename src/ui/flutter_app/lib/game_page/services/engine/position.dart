@@ -330,12 +330,19 @@ class Position {
     // Action
     if (action == Act.remove) {
       if (pieceToRemoveCount[_sideToMove] == 0) {
-        logger.e("Invalid FEN: No piece to remove.");
+        // Only log in debug mode to avoid log spam during rapid state changes
+        assert(() {
+          logger.e("Invalid FEN: No piece to remove.");
+          return true;
+        }());
       }
       if (pieceOnBoardCount[_sideToMove.opponent] == 0 &&
           DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase.opponentRemovesOwnPiece) {
-        logger.e("Invalid FEN: No piece to remove.");
+        assert(() {
+          logger.e("Invalid FEN: No piece to remove.");
+          return true;
+        }());
       }
     }
     buffer.writeSpace(action.fen);
@@ -423,8 +430,12 @@ class Position {
 
     final String fen = buffer.toString();
 
+    // Only log validation errors in debug mode to prevent log spam
     if (validateFen(fen) == false) {
-      logger.e("Invalid FEN: $fen");
+      assert(() {
+        logger.e("Invalid FEN: $fen");
+        return true;
+      }());
     }
 
     return fen;
@@ -690,14 +701,21 @@ class Position {
     final int whitePieceOnBoard = int.parse(parts[4]);
     if (phrase == 'm' &&
         whitePieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
-      logger.e(
-        'Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
-      );
+      // Use assert to reduce log spam in release builds
+      assert(() {
+        logger.e(
+          'Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
+        );
+        return true;
+      }());
       return false;
     }
     if (whitePieceOnBoard < 0 ||
         whitePieceOnBoard > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid white piece on board. Must be between 0 and 12.');
+      assert(() {
+        logger.e('Invalid white piece on board. Must be between 0 and 12.');
+        return true;
+      }());
       return false;
     }
 
@@ -705,14 +723,20 @@ class Position {
     final int whitePieceInHand = int.parse(parts[5]);
     if (whitePieceInHand < 0 ||
         whitePieceInHand > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid white piece in hand. Must be between 0 and 12.');
+      assert(() {
+        logger.e('Invalid white piece in hand. Must be between 0 and 12.');
+        return true;
+      }());
       return false;
     }
     if (activeColor == 'w' &&
         phrase == 'p' &&
         action != 'r' &&
         whitePieceInHand == 0) {
-      logger.e('Invalid white piece in hand. Must be greater than 0.');
+      assert(() {
+        logger.e('Invalid white piece in hand. Must be greater than 0.');
+        return true;
+      }());
       return false;
     }
 
@@ -720,14 +744,20 @@ class Position {
     final int blackPieceOnBoard = int.parse(parts[6]);
     if (phrase == 'm' &&
         blackPieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
-      logger.e(
-        'Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
-      );
+      assert(() {
+        logger.e(
+          'Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.',
+        );
+        return true;
+      }());
       return false;
     }
     if (blackPieceOnBoard < 0 ||
         blackPieceOnBoard > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid black piece on board. Must be between 0 and 12.');
+      assert(() {
+        logger.e('Invalid black piece on board. Must be between 0 and 12.');
+        return true;
+      }());
       return false;
     }
 
@@ -735,7 +765,10 @@ class Position {
     final int blackPieceInHand = int.parse(parts[7]);
     if (blackPieceInHand < 0 ||
         blackPieceInHand > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid black piece in hand. Must be between 0 and 12.');
+      assert(() {
+        logger.e('Invalid black piece in hand. Must be between 0 and 12.');
+        return true;
+      }());
       return false;
     }
 

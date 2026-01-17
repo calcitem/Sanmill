@@ -8,9 +8,21 @@ part of '../mill.dart';
 class SetupPositionNotifier with ChangeNotifier {
   SetupPositionNotifier();
 
+  Timer? _debounceTimer;
+  static const Duration _debounceDuration = Duration(milliseconds: 100);
+
   void updateIcons() {
-    Future<void>.delayed(Duration.zero, () {
+    // Debounce to prevent excessive notifications during rapid state changes
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(_debounceDuration, () {
       notifyListeners();
     });
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _debounceTimer = null;
+    super.dispose();
   }
 }

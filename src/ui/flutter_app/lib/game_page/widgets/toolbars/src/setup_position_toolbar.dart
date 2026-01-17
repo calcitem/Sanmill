@@ -30,6 +30,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   final Position position = GameController().position;
   late Position positionBackup;
 
+  // Debounce timer for state updates
+  Timer? _updateDebounceTimer;
+
   void initContext() {
     gameModeBackup = GameController().gameInstance.gameMode;
     GameController().gameInstance.gameMode = GameMode.setupPosition;
@@ -349,7 +352,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       if (GameController().position.setFen(transformedFen) == true) {
         GameController().headerTipNotifier.showTip(S.of(context).transformed);
         initContext();
-        _updateSetupPositionIcons();
+        // Use debounced version to prevent excessive updates during rapid operations
+        _updateSetupPositionIconsDebounced();
       } else {
         GameController().headerTipNotifier.showTip(
           S.of(context).cannotTransform,
@@ -552,6 +556,16 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
   }
 
+  // Debounced version of _updateSetupPositionIcons to prevent excessive updates
+  void _updateSetupPositionIconsDebounced() {
+    _updateDebounceTimer?.cancel();
+    _updateDebounceTimer = Timer(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        _updateSetupPositionIcons();
+      }
+    });
+  }
+
   void _updateSetupPositionIcons() {
     setSetupPositionPlacedUpdateBegin();
     if (newPieceColor == PieceColor.white ||
@@ -575,28 +589,23 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final int piecesCount = DB().ruleSettings.piecesCount;
 
+    // Ensure newPlaced is within valid range to prevent negative calculations
+    newPlaced = newPlaced.clamp(0, piecesCount);
+
     // TODO: Update dynamically and adapt BoardFullAction = 1
     if (newPhase == Phase.placing) {
+      // Calculate pieces in hand, ensuring non-negative values
+      final int blackInHand = (piecesCount - newPlaced).clamp(0, piecesCount);
       GameController().position.pieceInHandCount[PieceColor.black] =
-          piecesCount - newPlaced;
-      if (GameController().position.pieceInHandCount[PieceColor.black]! < 0) {
-        logger.e("Error: pieceInHandCount[black] < 0");
-        GameController().position.pieceInHandCount[PieceColor.black] = 0;
-      }
+          blackInHand;
+
       if (GameController().position.sideToMove == PieceColor.white) {
         GameController().position.pieceInHandCount[PieceColor.white] =
-            GameController().position.pieceInHandCount[PieceColor.black]!;
-        if (GameController().position.pieceInHandCount[PieceColor.white]! < 0) {
-          logger.e("Error: pieceInHandCount[white] < 0");
-          GameController().position.pieceInHandCount[PieceColor.white] = 0;
-        }
+            blackInHand;
       } else if (GameController().position.sideToMove == PieceColor.black) {
+        final int whiteInHand = (blackInHand - 1).clamp(0, piecesCount);
         GameController().position.pieceInHandCount[PieceColor.white] =
-            GameController().position.pieceInHandCount[PieceColor.black]! - 1;
-        if (GameController().position.pieceInHandCount[PieceColor.white]! < 0) {
-          logger.e("Error: pieceInHandCount[white] < 0");
-          GameController().position.pieceInHandCount[PieceColor.white] = 0;
-        }
+            whiteInHand;
       } else {
         logger.e("Error: sideToMove is not white or black");
       }
@@ -1039,6 +1048,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   @override
   void dispose() {
+    _updateDebounceTimer?.cancel();
+    _updateDebounceTimer = null;
     super.dispose();
   }
 }
