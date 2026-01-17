@@ -200,6 +200,12 @@ class MovesListPageState extends State<MovesListPage> {
         continue;
       }
 
+      // Skip remove moves as they are displayed as part of the preceding move
+      // in _buildMoveText() which automatically includes following remove moves
+      if (data.type == MoveType.remove) {
+        continue;
+      }
+
       // Update roundIndex based on side transitions
       if (data.type != MoveType.remove) {
         if (lastNonRemoveSide == PieceColor.black &&
@@ -1567,7 +1573,7 @@ class MovesListPageState extends State<MovesListPage> {
       }
     }
 
-    return moves.join(' ');
+    return moves.join();
   }
 
   /// Generates a preview summary for a branch (up to 2 moves or more if includes remove)
