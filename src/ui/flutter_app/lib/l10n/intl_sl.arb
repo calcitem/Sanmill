@@ -3993,5 +3993,29 @@
     "layoutSelection": "Postavitev",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Ni aktivne pozicije",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Najdenih ni točk razvejanja",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Skočeno na prejšnjo točko razvejanja",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Ni prejšnje točke razvejanja",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Skočeno na naslednjo točko razvejanja",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Ni naslednje točke razvejanja",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

@@ -3993,5 +3993,29 @@
     "layoutSelection": "Layout",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Ingen aktiv position",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Inga förgreningspunkter hittades",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Hoppade till föregående förgreningspunkt",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Ingen föregående förgreningspunkt",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Hoppade till nästa förgreningspunkt",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Ingen nästa förgreningspunkt",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

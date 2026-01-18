@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Skift til aktiv linjevisning",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Skift til fuld trævisning",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Omvend rækkefølge",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Forrige forgreningspunkt",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Layout",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Ingen aktiv position",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Ingen forgreningspunkter fundet",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Sprunget til forrige forgreningspunkt",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Intet forrige forgreningspunkt",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Sprunget til næste forgreningspunkt",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Intet næste forgreningspunkt",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

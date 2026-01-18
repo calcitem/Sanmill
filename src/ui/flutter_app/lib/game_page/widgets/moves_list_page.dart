@@ -2308,7 +2308,7 @@ class MovesListPageState extends State<MovesListPage> {
         GameController().gameRecorder.activeNode;
     if (activeNode == null) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('No active position')),
+        SnackBar(content: Text(S.of(context).noActivePosition)),
       );
       return;
     }
@@ -2316,7 +2316,7 @@ class MovesListPageState extends State<MovesListPage> {
     final List<PgnNode<ExtMove>> branchPoints = _findBranchPoints();
     if (branchPoints.isEmpty) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('No branch points found')),
+        SnackBar(content: Text(S.of(context).noBranchPointsFound)),
       );
       return;
     }
@@ -2335,11 +2335,11 @@ class MovesListPageState extends State<MovesListPage> {
     if (previousBranch != null) {
       _navigateToNode(previousBranch);
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        'Jumped to previous branch point',
+        S.of(context).jumpedToPreviousBranchPoint,
       );
     } else {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('No previous branch point')),
+        SnackBar(content: Text(S.of(context).noPreviousBranchPoint)),
       );
     }
   }
@@ -2350,7 +2350,7 @@ class MovesListPageState extends State<MovesListPage> {
         GameController().gameRecorder.activeNode;
     if (activeNode == null) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('No active position')),
+        SnackBar(content: Text(S.of(context).noActivePosition)),
       );
       return;
     }
@@ -2358,7 +2358,7 @@ class MovesListPageState extends State<MovesListPage> {
     final List<PgnNode<ExtMove>> branchPoints = _findBranchPoints();
     if (branchPoints.isEmpty) {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('No branch points found')),
+        SnackBar(content: Text(S.of(context).noBranchPointsFound)),
       );
       return;
     }
@@ -2376,11 +2376,11 @@ class MovesListPageState extends State<MovesListPage> {
     if (nextBranch != null) {
       _navigateToNode(nextBranch);
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        'Jumped to next branch point',
+        S.of(context).jumpedToNextBranchPoint,
       );
     } else {
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text('No next branch point')),
+        SnackBar(content: Text(S.of(context).noNextBranchPoint)),
       );
     }
   }

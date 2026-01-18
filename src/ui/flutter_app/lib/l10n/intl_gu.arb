@@ -3982,30 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "સક્રિય લાઇન દૃશ્યમાં સ્વિચ કરો",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "સંપૂર્ણ ટ્રી દૃશ્યમાં સ્વિચ કરો",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "ક્રમ ઉલટાવો",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "સક્રિય લાઇન દૃશ્યમાં સ્વિચ કરો",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "સંપૂર્ણ ટ્રી દૃશ્યમાં સ્વિચ કરો",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "ક્રમ ઉલટાવો",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "પાછલો શાખા બિંદુ",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4017,5 +3993,29 @@
     "layoutSelection": "લેઆઉટ",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "કોઈ સક્રિય સ્થિતિ નથી",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "કોઈ શાખા બિંદુઓ મળ્યા નહીં",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "પાછલા શાખા બિંદુ પર કૂદી ગયા",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "કોઈ પાછલો શાખા બિંદુ નથી",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "આગળના શાખા બિંદુ પર કૂદી ગયા",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "કોઈ આગળનો શાખા બિંદુ નથી",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

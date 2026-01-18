@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Canvia a la vista de línia activa",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Canvia a la vista d'arbre complet",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Inverteix l'ordre",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Punt de ramificació anterior",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Disposició",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "No hi ha cap posició activa",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "No s'han trobat punts de ramificació",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "S'ha saltat al punt de ramificació anterior",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "No hi ha punt de ramificació anterior",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "S'ha saltat al punt de ramificació següent",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "No hi ha punt de ramificació següent",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

@@ -3993,5 +3993,29 @@
     "layoutSelection": "Layout",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Sem posição ativa",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Nenhum ponto de ramificação encontrado",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Pulou para o ponto de ramificação anterior",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Sem ponto de ramificação anterior",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Pulou para o próximo ponto de ramificação",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Sem próximo ponto de ramificação",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

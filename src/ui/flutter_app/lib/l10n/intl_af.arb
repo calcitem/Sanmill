@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Skakel na Aktiewe Lynweergawe",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Skakel na Volledige Boomweergawe",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Keer Volgorde Om",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Vorige vertakpunt",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Uitleg",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Geen aktiewe posisie",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Geen vertakpunte gevind",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Gespring na vorige vertakpunt",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Geen vorige vertakpunt",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Gespring na volgende vertakpunt",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Geen volgende vertakpunt",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

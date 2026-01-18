@@ -3982,30 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "सक्रिय लाइन व्यू पर स्विच करें",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "पूर्ण ट्री व्यू पर स्विच करें",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "क्रम उलटें",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "सक्रिय लाइन व्यू पर स्विच करें",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "पूर्ण ट्री व्यू पर स्विच करें",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "क्रम उलटें",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "पिछला शाखा बिंदु",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4017,5 +3993,29 @@
     "layoutSelection": "लेआउट",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "कोई सक्रिय स्थिति नहीं",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "कोई शाखा बिंदु नहीं मिला",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "पिछले शाखा बिंदु पर कूद गए",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "कोई पिछला शाखा बिंदु नहीं",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "अगले शाखा बिंदु पर कूद गए",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "कोई अगला शाखा बिंदु नहीं",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

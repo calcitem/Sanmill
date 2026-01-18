@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Превключи към изглед на активна линия",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Превключи към изглед на пълно дърво",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Обърни реда",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Предишна точка на разклонение",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Оформление",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Няма активна позиция",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Не са намерени точки на разклонение",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Преминато към предишна точка на разклонение",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Няма предишна точка на разклонение",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Преминато към следваща точка на разклонение",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Няма следваща точка на разклонение",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

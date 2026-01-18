@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Пераключыць на рэжым актыўнай лініі",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Пераключыць на поўны від дрэва",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Адмяніць парадак",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Папярэдняя кропка разгалінавання",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Макет",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Няма актыўнай пазіцыі",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Кропкі разгалінавання не знойдзены",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Пераход да папярэдняй кропкі разгалінавання",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Няма папярэдняй кропкі разгалінавання",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Пераход да наступнай кропкі разгалінавання",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Няма наступнай кропкі разгалінавання",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

@@ -3993,5 +3993,29 @@
     "layoutSelection": "පිරිසැලසුම",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "සක්‍රීය ස්ථානයක් නැත",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "ශාඛා ලක්ෂ්‍ය හමු නොවීය",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "පෙර ශාඛා ලක්ෂ්‍යයට පැන්නේය",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "පෙර ශාඛා ලක්ෂ්‍යයක් නැත",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "ඊළඟ ශාඛා ලක්ෂ්‍යයට පැන්නේය",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "ඊළඟ ශාඛා ලක්ෂ්‍යයක් නැත",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

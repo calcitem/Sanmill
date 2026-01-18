@@ -3993,5 +3993,29 @@
     "layoutSelection": "Susun atur",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Tiada kedudukan aktif",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Tiada titik cabangan dijumpai",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Melompat ke titik cabangan sebelumnya",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Tiada titik cabangan sebelumnya",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Melompat ke titik cabangan seterusnya",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Tiada titik cabangan seterusnya",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

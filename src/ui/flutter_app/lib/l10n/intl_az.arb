@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Aktiv Xətt Görünüşünə Keç",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Tam Ağac Görünüşünə Keç",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Sıranı Tərsinə Çevir",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Əvvəlki budaqlanma nöqtəsi",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Tərtibat",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Aktiv mövqe yoxdur",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Budaqlanma nöqtələri tapılmadı",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Əvvəlki budaqlanma nöqtəsinə keçildi",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Əvvəlki budaqlanma nöqtəsi yoxdur",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Növbəti budaqlanma nöqtəsinə keçildi",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Növbəti budaqlanma nöqtəsi yoxdur",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

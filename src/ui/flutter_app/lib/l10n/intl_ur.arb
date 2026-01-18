@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "فعال لائن ویو میں تبدیل کریں",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "مکمل ٹری ویو میں تبدیل کریں",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "ترتیب الٹائیں",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "پچھلا شاخ نقطہ",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "ترتیب",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "کوئی فعال پوزیشن نہیں",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "کوئی شاخ نقاط نہیں ملے",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "پچھلے شاخ نقطہ پر کود گیا",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "کوئی پچھلا شاخ نقطہ نہیں",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "اگلے شاخ نقطہ پر کود گیا",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "کوئی اگلا شاخ نقطہ نہیں",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

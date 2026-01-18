@@ -3982,30 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Beralih ke tampilan garis aktif",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Beralih ke tampilan pohon penuh",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Balik urutan",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "Beralih ke tampilan garis aktif",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Beralih ke tampilan pohon penuh",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Balik urutan",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Titik percabangan sebelumnya",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4017,5 +3993,29 @@
     "layoutSelection": "Tata letak",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Tidak ada posisi aktif",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Tidak ada titik percabangan ditemukan",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Melompat ke titik percabangan sebelumnya",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Tidak ada titik percabangan sebelumnya",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Melompat ke titik percabangan berikutnya",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Tidak ada titik percabangan berikutnya",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

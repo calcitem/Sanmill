@@ -3239,30 +3239,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Váltás aktív vonal nézetre",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Váltás teljes fa nézetre",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Sorrend megfordítása",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "Váltás aktív vonal nézetre",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Váltás teljes fa nézetre",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Sorrend megfordítása",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Előző elágazási pont",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -3274,5 +3250,29 @@
     "layoutSelection": "Elrendezés",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Nincs aktív pozíció",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Nem találhatók elágazási pontok",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Ugrás az előző elágazási pontra",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Nincs előző elágazási pont",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Ugrás a következő elágazási pontra",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Nincs következő elágazási pont",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

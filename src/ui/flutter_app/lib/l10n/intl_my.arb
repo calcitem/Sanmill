@@ -3993,5 +3993,29 @@
     "layoutSelection": "အပြင်အဆင်",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "တက်ကြွသောအနေအထားမရှိပါ",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "ဌာနခွဲမှတ်တမ်းများမတွေ့ရှိပါ",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "ယခင်ဌာနခွဲမှတ်တမ်းသို့ခုန်ခဲ့သည်",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "ယခင်ဌာနခွဲမှတ်တမ်းမရှိပါ",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "နောက်ဌာနခွဲမှတ်တမ်းသို့ခုန်ခဲ့သည်",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "နောက်ဌာနခွဲမှတ်တမ်းမရှိပါ",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

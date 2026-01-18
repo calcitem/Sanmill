@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "క్రియాశీల లైన్ వీక్షణకు మారండి",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "పూర్తి ట్రీ వీక్షణకు మారండి",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "క్రమాన్ని తిరగవండి",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "మునుపటి శాఖ పాయింట్",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "లేఅవుట్",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "చురుకైన స్థానం లేదు",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "శాఖ పాయింట్లు కనుగొనబడలేదు",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "మునుపటి శాఖ పాయింట్‌కు దూకింది",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "మునుపటి శాఖ పాయింట్ లేదు",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "తదుపరి శాఖ పాయింట్‌కు దూకింది",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "తదుపరి శాఖ పాయింట్ లేదు",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

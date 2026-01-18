@@ -3993,5 +3993,29 @@
     "layoutSelection": "Rozloženie",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Žiadna aktívna pozícia",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Nenašli sa žiadne body vetvenia",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Preskočilo sa na predchádzajúci bod vetvenia",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Žiadny predchádzajúci bod vetvenia",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Preskočilo sa na ďalší bod vetvenia",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Žiadny ďalší bod vetvenia",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

@@ -3982,30 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Shintshela ekubukeni komugqa osebenzayo",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Shintshela ekubukeni komuthi ogcwele",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Phendula uhlelo",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "Shintshela ekubukeni komugqa osebenzayo",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Shintshela ekubukeni komuthi ogcwele",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Phendula uhlelo",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Indawo yokugatsha edlule",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4017,5 +3993,29 @@
     "layoutSelection": "Isakhiwo",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Ayikho indawo esebenzayo",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Azitholakali izindawo zokugatsha",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Yeqele endaweni yokugatsha edlule",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Ayikho indawo yokugatsha edlule",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Yeqele endaweni yokugatsha elandelayo",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Ayikho indawo yokugatsha elandelayo",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

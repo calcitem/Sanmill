@@ -4009,5 +4009,29 @@
     "layoutSelection": "佈局",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "沒有活動位置",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "未找到分支點",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "已跳轉到上一個分支點",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "沒有上一個分支點",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "已跳轉到下一個分支點",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "沒有下一個分支點",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

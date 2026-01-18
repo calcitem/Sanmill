@@ -3982,30 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Անցնել ակտիվ գծի դիտման ռեժիմ",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Անցնել ամբողջական ծառի դիտման ռեժիմ",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Շրջել հերթականությունը",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "Անցնել ակտիվ գծի դիտման ռեժիմ",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Անցնել ամբողջական ծառի դիտման ռեժիմ",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Շրջել հերթականությունը",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Նախորդ ճյուղավորման կետ",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4017,5 +3993,29 @@
     "layoutSelection": "Դասավորություն",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Ակտիվ դիրք չկա",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Ճյուղավորման կետեր չեն գտնվել",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Անցում նախորդ ճյուղավորման կետին",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Նախորդ ճյուղավորման կետ չկա",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Անցում հաջորդ ճյուղավորման կետին",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Հաջորդ ճյուղավորման կետ չկա",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

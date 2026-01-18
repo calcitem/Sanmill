@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "সক্রিয় লাইন ভিউতে পরিবর্তন করুন",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "সম্পূর্ণ ট্রি ভিউতে পরিবর্তন করুন",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "ক্রম উল্টান",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "পূর্ববর্তী শাখা বিন্দু",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "বিন্যাস",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "কোনও সক্রিয় অবস্থান নেই",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "কোনও শাখা বিন্দু পাওয়া যায়নি",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "পূর্ববর্তী শাখা বিন্দুতে লাফিয়েছে",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "কোনও পূর্ববর্তী শাখা বিন্দু নেই",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "পরবর্তী শাখা বিন্দুতে লাফিয়েছে",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "কোনও পরবর্তী শাখা বিন্দু নেই",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

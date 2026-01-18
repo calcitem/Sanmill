@@ -3274,18 +3274,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Zur Aktiven-Linie-Ansicht wechseln",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Zur Vollständigen-Baum-Ansicht wechseln",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Reihenfolge umkehren",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Vorheriger Verzweigungspunkt",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -3297,5 +3285,29 @@
     "layoutSelection": "Layout",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Keine aktive Position",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Keine Verzweigungspunkte gefunden",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Zum vorherigen Verzweigungspunkt gesprungen",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Kein vorheriger Verzweigungspunkt",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Zum nächsten Verzweigungspunkt gesprungen",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Kein nächster Verzweigungspunkt",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

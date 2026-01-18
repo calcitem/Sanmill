@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "ወደ ገባሪ መስመር እይታ ቀይር",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "ወደ ሙሉ ዛፍ እይታ ቀይር",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "ቅደም ተከተል አስገላብጥ",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "ቀዳሚ ቅርንጫፍ ነጥብ",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "አቀማመጥ",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "ምንም ንቁ አቀማመጥ የለም",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "ምንም የቅርንጫፍ ነጥቦች አልተገኙም",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "ወደ ቀዳሚ ቅርንጫፍ ነጥብ ዘለለ",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "ምንም ቀዳሚ ቅርንጫፍ ነጥብ የለም",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "ወደ ቀጣይ ቅርንጫፍ ነጥብ ዘለለ",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "ምንም ቀጣይ ቅርንጫፍ ነጥብ የለም",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

@@ -3993,5 +3993,29 @@
     "layoutSelection": "Макет",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Нет активной позиции",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Точки ветвления не найдены",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Перейдено к предыдущей точке ветвления",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Нет предыдущей точки ветвления",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Перейдено к следующей точке ветвления",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Нет следующей точки ветвления",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

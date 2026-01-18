@@ -3982,30 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Faol chiziq ko'rinishiga o'tish",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "To'liq daraxt ko'rinishiga o'tish",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Tartibni teskari aylantirish",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
-    "switchToActiveLineView": "Faol chiziq ko'rinishiga o'tish",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "To'liq daraxt ko'rinishiga o'tish",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Tartibni teskari aylantirish",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Oldingi tarmoqlanish nuqtasi",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4017,5 +3993,29 @@
     "layoutSelection": "Tartib",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Faol pozitsiya yo'q",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Tarmoqlanish nuqtalari topilmadi",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Oldingi tarmoqlanish nuqtasiga o'tildi",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Oldingi tarmoqlanish nuqtasi yo'q",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Keyingi tarmoqlanish nuqtasiga o'tildi",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Keyingi tarmoqlanish nuqtasi yo'q",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

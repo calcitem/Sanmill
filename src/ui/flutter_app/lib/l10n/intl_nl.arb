@@ -3993,5 +3993,29 @@
     "layoutSelection": "Indeling",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Geen actieve positie",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Geen vertakkingspunten gevonden",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Gesprongen naar vorig vertakkingspunt",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Geen vorig vertakkingspunt",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Gesprongen naar volgend vertakkingspunt",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Geen volgend vertakkingspunt",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

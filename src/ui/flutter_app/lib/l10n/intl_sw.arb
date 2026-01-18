@@ -3993,5 +3993,29 @@
     "layoutSelection": "Mpangilio",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Hakuna nafasi inayofanya kazi",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Hakuna vituo vya tawi vilivyopatikana",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Imekwenda kwenye kituo cha tawi kilichotangulia",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Hakuna kituo cha tawi kilichotangulia",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Imekwenda kwenye kituo cha tawi kinachofuata",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Hakuna kituo cha tawi kinachofuata",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }

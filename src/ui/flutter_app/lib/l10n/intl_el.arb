@@ -3982,18 +3982,6 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "switchToActiveLineView": "Εναλλαγή σε προβολή ενεργής γραμμής",
-    "@switchToActiveLineView": {
-        "description": "Switch to active line view mode"
-    },
-    "switchToFullTreeView": "Εναλλαγή σε προβολή πλήρους δέντρου",
-    "@switchToFullTreeView": {
-        "description": "Switch to full tree view mode"
-    },
-    "reverseMoveOrder": "Αντιστροφή σειράς",
-    "@reverseMoveOrder": {
-        "description": "Reverse the order of moves in the list"
-    },
     "previousBranchPoint": "Προηγούμενο σημείο διακλάδωσης",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
@@ -4005,5 +3993,29 @@
     "layoutSelection": "Διάταξη",
     "@layoutSelection": {
         "description": "Select move list layout"
+    },
+    "noActivePosition": "Δεν υπάρχει ενεργή θέση",
+    "@noActivePosition": {
+        "description": "Message when there is no active position"
+    },
+    "noBranchPointsFound": "Δεν βρέθηκαν σημεία διακλάδωσης",
+    "@noBranchPointsFound": {
+        "description": "Message when no branch points are found"
+    },
+    "jumpedToPreviousBranchPoint": "Μετάβαση στο προηγούμενο σημείο διακλάδωσης",
+    "@jumpedToPreviousBranchPoint": {
+        "description": "Message when jumped to previous branch point"
+    },
+    "noPreviousBranchPoint": "Δεν υπάρχει προηγούμενο σημείο διακλάδωσης",
+    "@noPreviousBranchPoint": {
+        "description": "Message when there is no previous branch point"
+    },
+    "jumpedToNextBranchPoint": "Μετάβαση στο επόμενο σημείο διακλάδωσης",
+    "@jumpedToNextBranchPoint": {
+        "description": "Message when jumped to next branch point"
+    },
+    "noNextBranchPoint": "Δεν υπάρχει επόμενο σημείο διακλάδωσης",
+    "@noNextBranchPoint": {
+        "description": "Message when there is no next branch point"
     }
 }
