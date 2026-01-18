@@ -90,6 +90,11 @@ class MockAnimationManager extends Mock implements AnimationManager {
   void forwardRemoveAnimation() {
     // No-op for mock
   }
+
+  @override
+  void completeAllAnimations() {
+    // No-op for mock
+  }
 }
 
 /// Mock AnimationController that doesn't require a TickerProvider

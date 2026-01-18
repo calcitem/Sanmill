@@ -182,6 +182,10 @@ class PlayAreaState extends State<PlayArea> {
             // On screen readers, use a bottom sheet.
             _openModal(context, _buildMoveModal(context));
           } else {
+            // Complete all ongoing animations before navigating to ensure
+            // pieces are in their final positions when user returns
+            GameController().animationManager.completeAllAnimations();
+
             // Otherwise, open a dedicated MovesListPage.
             Navigator.push(
               context,

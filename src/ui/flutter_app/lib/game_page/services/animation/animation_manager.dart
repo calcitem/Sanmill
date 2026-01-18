@@ -268,6 +268,54 @@ class AnimationManager {
     }
   }
 
+  // Complete all ongoing animations immediately
+  // This is called when the page becomes invisible (e.g., when navigating to
+  // another page) to ensure pieces are in their final positions when the user
+  // returns to the board.
+  void completeAllAnimations() {
+    if (_isDisposed) {
+      return;
+    }
+
+    // Complete place animation if it's running
+    if (_placeAnimationController.isAnimating) {
+      _placeAnimationController.stop();
+      _placeAnimationController.value = 1.0;
+      // Manually trigger the status listener to start put-down animation
+      _onPlaceAnimationStatus(AnimationStatus.completed);
+    }
+
+    // Complete move animation if it's running
+    if (_moveAnimationController.isAnimating) {
+      _moveAnimationController.stop();
+      _moveAnimationController.value = 1.0;
+      // Manually trigger the status listener to start put-down animation
+      _onMoveAnimationStatus(AnimationStatus.completed);
+    }
+
+    // Complete remove animation if it's running
+    if (_removeAnimationController.isAnimating) {
+      _removeAnimationController.stop();
+      _removeAnimationController.value = 1.0;
+      // Manually trigger the status listener to clean up indices
+      _onRemoveAnimationStatus(AnimationStatus.completed);
+    }
+
+    // Complete pick-up animation if it's running
+    if (_pickUpAnimationController.isAnimating) {
+      _pickUpAnimationController.stop();
+      _pickUpAnimationController.value = 1.0;
+    }
+
+    // Complete put-down animation if it's running
+    if (_putDownAnimationController.isAnimating) {
+      _putDownAnimationController.stop();
+      _putDownAnimationController.value = 1.0;
+      // Manually trigger the status listener to play sound
+      _onPutDownAnimationStatus(AnimationStatus.completed);
+    }
+  }
+
   // Properly dispose of the animation controllers
   void dispose() {
     _isDisposed = true; // Mark as disposed

@@ -71,6 +71,10 @@ class MoveOptionsModal extends StatelessWidget {
           SimpleDialogOption(
             key: const Key('show_move_list_option'),
             onPressed: () {
+              // Complete all ongoing animations before showing move list to ensure
+              // pieces are in their final positions and game state is consistent
+              GameController().animationManager.completeAllAnimations();
+
               if (DB().generalSettings.screenReaderSupport) {
                 _showMoveList(context);
               } else {

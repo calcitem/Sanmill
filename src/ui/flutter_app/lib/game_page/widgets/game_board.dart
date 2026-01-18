@@ -144,6 +144,10 @@ class _GameBoardState extends State<GameBoard>
           _isAppInBackground = true;
           logger.i("$_logTag App going to background, stopping engine search");
 
+          // Complete all ongoing animations immediately to ensure pieces are in
+          // their final positions when the user returns to the board
+          animationManager.completeAllAnimations();
+
           // Stop any ongoing search to prevent hanging
           // This will increment the search epoch and set cancellation flag
           GameController().engine.stopSearching();
