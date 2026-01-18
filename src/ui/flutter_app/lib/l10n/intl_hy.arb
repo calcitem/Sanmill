@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Շրջել հերթականությունը",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Նախորդ ճյուղավորման կետ",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Հաջորդ ճյուղավորման կետ",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Դասավորություն",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

@@ -3981,5 +3981,17 @@
     "reverseMoveOrder": "අනුපිළිවෙල ආපස්සට කරන්න",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "පෙර ශාඛා ලක්ෂ්‍යය",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "ඊළඟ ශාඛා ලක්ෂ්‍යය",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "පිරිසැලසුම",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

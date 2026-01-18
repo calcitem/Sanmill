@@ -2592,6 +2592,7 @@ class MovesListPageState extends State<MovesListPage> {
           // Tapping it opens a popup with a horizontal row of icons.
           PopupMenuButton<void>(
             icon: Icon(_iconForLayout(_currentLayout)),
+            tooltip: S.of(context).layoutSelection,
             onSelected: (_) {},
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry<void>>[
@@ -2683,29 +2684,29 @@ class MovesListPageState extends State<MovesListPage> {
               if (_currentLayout ==
                   MovesViewLayout.list) ...<PopupMenuEntry<String>>[
                 const PopupMenuDivider(),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'prev_branch',
                   child: Row(
                     children: <Widget>[
-                      Icon(
-                        FluentIcons.branch_fork_24_regular,
+                      const Icon(
+                        FluentIcons.arrow_up_24_regular,
                         color: Colors.black54,
                       ),
-                      SizedBox(width: 8),
-                      Text('Previous branch point'),
+                      const SizedBox(width: 8),
+                      Text(S.of(context).previousBranchPoint),
                     ],
                   ),
                 ),
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   value: 'next_branch',
                   child: Row(
                     children: <Widget>[
-                      Icon(
-                        FluentIcons.branch_fork_24_regular,
+                      const Icon(
+                        FluentIcons.arrow_down_24_regular,
                         color: Colors.black54,
                       ),
-                      SizedBox(width: 8),
-                      Text('Next branch point'),
+                      const SizedBox(width: 8),
+                      Text(S.of(context).nextBranchPoint),
                     ],
                   ),
                 ),

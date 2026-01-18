@@ -3981,5 +3981,17 @@
     "reverseMoveOrder": "ត្រឡប់លំដាប់",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "ចំណុចស្រាយមុន",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "ចំណុចស្រាយបន្ទាប់",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "ប្លង់",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Обрни редослед",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Претходна точка на гранење",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Следна точка на гранење",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Распоред",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

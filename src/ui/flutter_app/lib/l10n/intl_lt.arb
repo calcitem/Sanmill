@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Apversti tvarką",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Ankstesnis šakojimosi taškas",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Kitas šakojimosi taškas",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Išdėstymas",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

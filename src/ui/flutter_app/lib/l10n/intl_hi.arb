@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "क्रम उलटें",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "पिछला शाखा बिंदु",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "अगला शाखा बिंदु",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "लेआउट",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

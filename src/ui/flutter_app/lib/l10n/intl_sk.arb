@@ -3981,5 +3981,17 @@
     "reverseMoveOrder": "Obrátiť poradie",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Predchádzajúci bod vetvenia",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Ďalší bod vetvenia",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Rozloženie",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

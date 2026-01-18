@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Змінити порядок",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Попередня точка розгалуження",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Наступна точка розгалуження",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Макет",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

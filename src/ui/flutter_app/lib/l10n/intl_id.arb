@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Balik urutan",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Titik percabangan sebelumnya",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Titik percabangan berikutnya",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Tata letak",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

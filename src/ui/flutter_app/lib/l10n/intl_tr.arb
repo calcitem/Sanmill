@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Sırayı Tersine Çevir",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Önceki dal noktası",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Sonraki dal noktası",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Düzen",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

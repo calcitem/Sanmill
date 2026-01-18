@@ -3285,5 +3285,17 @@
     "reverseMoveOrder": "Reihenfolge umkehren",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Vorheriger Verzweigungspunkt",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Nächster Verzweigungspunkt",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Layout",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

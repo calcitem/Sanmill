@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Apgriezt secību",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Iepriekšējais sazarošanās punkts",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Nākamais sazarošanās punkts",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Izkārtojums",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

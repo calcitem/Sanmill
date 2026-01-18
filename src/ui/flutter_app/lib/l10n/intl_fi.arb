@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Käännä järjestys",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Edellinen haarautumispiste",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Seuraava haarautumispiste",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Asettelu",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

@@ -3262,5 +3262,17 @@
     "reverseMoveOrder": "Sorrend megfordítása",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Előző elágazási pont",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Következő elágazási pont",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Elrendezés",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

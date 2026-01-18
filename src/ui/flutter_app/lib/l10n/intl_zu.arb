@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Phendula uhlelo",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Indawo yokugatsha edlule",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Indawo yokugatsha elandelayo",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Isakhiwo",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

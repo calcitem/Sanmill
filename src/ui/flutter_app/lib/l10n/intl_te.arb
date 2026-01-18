@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "క్రమాన్ని తిరగవండి",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "మునుపటి శాఖ పాయింట్",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "తదుపరి శాఖ పాయింట్",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "లేఅవుట్",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

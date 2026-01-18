@@ -3981,5 +3981,17 @@
     "reverseMoveOrder": "Inversați ordinea",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Punct de ramificare anterior",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Următorul punct de ramificare",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Aspect",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

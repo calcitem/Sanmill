@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Snúa við röð",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Fyrri greiningarpunktur",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Næsti greiningarpunktur",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Útlit",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

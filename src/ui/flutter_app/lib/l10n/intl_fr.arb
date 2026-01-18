@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Inverser l'ordre",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Point de ramification précédent",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Point de ramification suivant",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Disposition",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

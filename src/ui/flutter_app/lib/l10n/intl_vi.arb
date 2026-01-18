@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Đảo ngược thứ tự",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Điểm rẽ nhánh trước",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Điểm rẽ nhánh tiếp theo",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Bố cục",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

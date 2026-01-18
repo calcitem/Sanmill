@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Tartibni teskari aylantirish",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Oldingi tarmoqlanish nuqtasi",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Keyingi tarmoqlanish nuqtasi",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Tartib",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

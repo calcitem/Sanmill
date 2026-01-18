@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Sıranı Tərsinə Çevir",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Əvvəlki budaqlanma nöqtəsi",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Növbəti budaqlanma nöqtəsi",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Tərtibat",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

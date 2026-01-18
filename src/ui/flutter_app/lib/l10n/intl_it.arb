@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "Inverti ordine",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Punto di ramificazione precedente",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Punto di ramificazione successivo",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Layout",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

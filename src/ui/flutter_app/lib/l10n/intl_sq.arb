@@ -3981,5 +3981,17 @@
     "reverseMoveOrder": "Ktheje rendin",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Pika e degëzimit të mëparshëm",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Pika e degëzimit të ardhshëm",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Paraqitja",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

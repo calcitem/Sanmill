@@ -3981,5 +3981,17 @@
     "reverseMoveOrder": "အစီအစဉ်ပြောင်းပြန်လှန်ရန်",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "ယခင်ဌာနခွဲမှတ်တမ်း",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "နောက်ဌာနခွဲမှတ်တမ်း",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "အပြင်အဆင်",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

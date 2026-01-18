@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "順序を反転",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "前の分岐点",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "次の分岐点",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "レイアウト",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

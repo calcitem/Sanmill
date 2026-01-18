@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "வரிசையை தலைகீழாக்கு",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "முந்தைய கிளை புள்ளி",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "அடுத்த கிளை புள்ளி",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "அமைப்பு",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

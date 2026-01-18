@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Αντιστροφή σειράς",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Προηγούμενο σημείο διακλάδωσης",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Επόμενο σημείο διακλάδωσης",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Διάταξη",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

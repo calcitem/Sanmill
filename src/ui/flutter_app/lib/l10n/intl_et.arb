@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Pööra järjekord",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Eelmine harunemispunkt",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Järgmine harunemispunkt",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Paigutus",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

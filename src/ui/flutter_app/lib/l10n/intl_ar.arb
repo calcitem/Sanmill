@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "عكس الترتيب",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "نقطة التفرع السابقة",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "نقطة التفرع التالية",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "التخطيط",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

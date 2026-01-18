@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "ቅደም ተከተል አስገላብጥ",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "ቀዳሚ ቅርንጫፍ ነጥብ",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "ቀጣይ ቅርንጫፍ ነጥብ",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "አቀማመጥ",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

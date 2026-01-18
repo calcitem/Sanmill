@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Keer Volgorde Om",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Vorige vertakpunt",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Volgende vertakpunt",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Uitleg",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

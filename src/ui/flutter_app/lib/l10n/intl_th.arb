@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "กลับลำดับ",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "จุดแยกก่อนหน้า",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "จุดแยกถัดไป",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "รูปแบบ",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

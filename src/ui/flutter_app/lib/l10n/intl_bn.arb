@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "ক্রম উল্টান",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "পূর্ববর্তী শাখা বিন্দু",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "পরবর্তী শাখা বিন্দু",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "বিন্যাস",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

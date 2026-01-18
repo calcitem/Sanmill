@@ -4005,5 +4005,17 @@
     "reverseMoveOrder": "הפוך סדר",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "נקודת התפצלות קודמת",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "נקודת התפצלות הבאה",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "פריסה",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

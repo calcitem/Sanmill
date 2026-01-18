@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "Omvend rækkefølge",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Forrige forgreningspunkt",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Næste forgreningspunkt",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Layout",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

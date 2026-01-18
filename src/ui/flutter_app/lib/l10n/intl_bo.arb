@@ -3993,5 +3993,17 @@
     "reverseMoveOrder": "གོ་རིམ་ལྡོག་པ།",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "སྔོན་མའི་ཡལ་ག་ས་ཚིགས།",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "རྗེས་མའི་ཡལ་ག་ས་ཚིགས།",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "སྒྲིག་བཀོད།",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }

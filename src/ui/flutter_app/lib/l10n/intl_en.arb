@@ -3997,5 +3997,17 @@
     "reverseMoveOrder": "Reverse Order",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
+    },
+    "previousBranchPoint": "Previous branch point",
+    "@previousBranchPoint": {
+        "description": "Navigate to previous branch point"
+    },
+    "nextBranchPoint": "Next branch point",
+    "@nextBranchPoint": {
+        "description": "Navigate to next branch point"
+    },
+    "layoutSelection": "Layout",
+    "@layoutSelection": {
+        "description": "Select move list layout"
     }
 }
