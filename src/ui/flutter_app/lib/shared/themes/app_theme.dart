@@ -88,7 +88,19 @@ class AppTheme {
     checkboxTheme: _buildCheckboxTheme(_colorScheme),
     radioTheme: _buildRadioTheme(_colorScheme),
     // Other theme settings...
+    pageTransitionsTheme: _pageTransitionsTheme,
   );
+
+  static const PageTransitionsTheme _pageTransitionsTheme =
+      PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+        },
+      );
 
   /// Dark theme
   static final ColorScheme _darkColorScheme = _colorScheme.copyWith(
@@ -121,6 +133,7 @@ class AppTheme {
     checkboxTheme: _buildCheckboxTheme(_darkColorScheme),
     radioTheme: _buildRadioTheme(_darkColorScheme),
     // Other theme settings...
+    pageTransitionsTheme: _pageTransitionsTheme,
   );
 
   // Color
@@ -525,6 +538,7 @@ class AppTheme {
           color: onSurfaceVariant,
         ),
       ),
+      pageTransitionsTheme: _pageTransitionsTheme,
     );
   }
 
