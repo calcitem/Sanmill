@@ -592,8 +592,11 @@ class _GameBoardState extends State<GameBoard>
 
     final GameMode gameMode = GameController().gameInstance.gameMode;
     final PieceColor winner = GameController().position.winner;
-    final String? message = winner.getWinString(context);
+    final GameOverReason? reason = GameController().position.reason;
     final bool force = GameController().gameResultNotifier.force;
+
+    // Header tip shows simple win/lose message
+    final String? message = winner.getWinString(context);
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
       if (GameController().position.action == Act.remove) {
@@ -606,6 +609,14 @@ class _GameBoardState extends State<GameBoard>
         GameController().headerTipNotifier.showTip(message, snackBar: false);
       } else {
         GameController().headerTipNotifier.showTip(message, snackBar: false);
+      }
+
+      // Show detailed reason in SnackBar
+      if (reason != null) {
+        final String detailedMessage = reason.getName(context, winner);
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          detailedMessage,
+        );
       }
     }
 

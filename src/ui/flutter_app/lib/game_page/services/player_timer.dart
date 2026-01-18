@@ -174,10 +174,7 @@ class PlayerTimer {
         GameOverReason.loseTimeout,
       );
 
-      // Update UI
-      gameController.headerTipNotifier.showTip(
-        "Time is over, ${position.sideToMove == PieceColor.white ? 'Player 1' : 'Player 2'} lost.",
-      );
+      // Trigger result display (header tip + snackbar will be shown by _showResult)
       gameController.gameResultNotifier.showResult(force: true);
 
       // Play sound

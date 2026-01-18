@@ -361,24 +361,44 @@ class HeaderTipState extends State<HeaderTip> {
                     );
                     tp.layout(maxWidth: constraints.maxWidth);
 
-                    // If text doesn't exceed max width, center it; otherwise left-align.
+                    // If text doesn't exceed max width, center it; otherwise use marquee.
                     final bool fits = !tp.didExceedMaxLines;
 
-                    return Text(
-                      textToShow,
-                      key: const Key('header_tip_text'),
-                      maxLines: 1,
-                      textAlign: fits ? TextAlign.center : TextAlign.left,
-                      style: TextStyle(
-                        color: displayColor,
-                        fontSize: AppTheme.textScaler.scale(
-                          AppTheme.defaultFontSize,
+                    if (fits) {
+                      return Text(
+                        textToShow,
+                        key: const Key('header_tip_text'),
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: displayColor,
+                          fontSize: AppTheme.textScaler.scale(
+                            AppTheme.defaultFontSize,
+                          ),
+                          fontFeatures: const <FontFeature>[
+                            FontFeature.tabularFigures(),
+                          ],
                         ),
-                        fontFeatures: const <FontFeature>[
-                          FontFeature.tabularFigures(),
-                        ],
-                      ),
-                    );
+                      );
+                    } else {
+                      // Use marquee for scrolling text
+                      return Marquee(
+                        key: const Key('header_tip_marquee'),
+                        text: textToShow,
+                        style: TextStyle(
+                          color: displayColor,
+                          fontSize: AppTheme.textScaler.scale(
+                            AppTheme.defaultFontSize,
+                          ),
+                          fontFeatures: const <FontFeature>[
+                            FontFeature.tabularFigures(),
+                          ],
+                        ),
+                        blankSpace: 40.0,
+                        velocity: 30.0,
+                        pauseAfterRound: const Duration(seconds: 1),
+                      );
+                    }
                   }
                 },
               ),
