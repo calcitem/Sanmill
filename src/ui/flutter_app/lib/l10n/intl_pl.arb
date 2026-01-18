@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Ostrzeżenie: To usunie twoją bieżącą pozycję. Zostaniesz przeniesiony do pozycji nadrzędnej.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Przełącz na widok aktywnej linii",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Przełącz na widok pełnego drzewa",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Odwróć kolejność",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

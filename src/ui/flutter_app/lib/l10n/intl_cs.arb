@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Upozornění: Tím se smaže vaše aktuální pozice. Budete přesunuti na rodičovskou pozici.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Přepnout na zobrazení aktivní linie",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Přepnout na zobrazení úplného stromu",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Obrátit pořadí",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Přepnout na zobrazení aktivní linie",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Přepnout na zobrazení úplného stromu",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Obrátit pořadí",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Προειδοποίηση: Αυτό θα διαγράψει την τρέχουσα θέση σας. Θα μεταφερθείτε στη γονική θέση.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Εναλλαγή σε προβολή ενεργής γραμμής",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Εναλλαγή σε προβολή πλήρους δέντρου",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Αντιστροφή σειράς",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Εναλλαγή σε προβολή ενεργής γραμμής",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Εναλλαγή σε προβολή πλήρους δέντρου",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Αντιστροφή σειράς",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

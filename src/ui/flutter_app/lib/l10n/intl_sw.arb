@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Onyo: Hii itafuta nafasi yako ya sasa. Utahamishiwa kwenye nafasi ya mzazi.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Badili kwenda kwenye mtazamo wa mstari unaofanya kazi",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Badili kwenda kwenye mtazamo wa mti kamili",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Geuza mpangilio",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

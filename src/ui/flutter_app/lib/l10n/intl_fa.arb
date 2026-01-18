@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "هشدار: این عمل موقعیت فعلی شما را حذف می‌کند. به موقعیت والد منتقل خواهید شد.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "تغییر به نمای خط فعال",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "تغییر به نمای درخت کامل",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "معکوس کردن ترتیب",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "تغییر به نمای خط فعال",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "تغییر به نمای درخت کامل",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "معکوس کردن ترتیب",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

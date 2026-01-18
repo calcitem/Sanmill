@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Avertisment: Acest lucru va șterge poziția dvs. curentă. Veți fi mutat la poziția părintească.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Comutați la vizualizarea liniei active",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Comutați la vizualizarea arborelui complet",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Inversați ordinea",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Предупреждение: Это удалит вашу текущую позицию. Вы будете перемещены на родительскую позицию.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Переключиться на вид активной линии",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Переключиться на вид полного дерева",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Обратить порядок",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

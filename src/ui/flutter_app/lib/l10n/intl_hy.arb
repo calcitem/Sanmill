@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "Զգուշացում: Սա կջնջի ձեր ընթացիկ դիրքը: Դուք կտեղափոխվեք ծնող դիրքին:",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Անցնել ակտիվ գծի դիտման ռեժիմ",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Անցնել ամբողջական ծառի դիտման ռեժիմ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Շրջել հերթականությունը",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Անցնել ակտիվ գծի դիտման ռեժիմ",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Անցնել ամբողջական ծառի դիտման ռեժիմ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Շրջել հերթականությունը",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Անցնել ակտիվ գծի դիտման ռեժիմ",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Անցնել ամբողջական ծառի դիտման ռեժիմ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Շրջել հերթականությունը",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

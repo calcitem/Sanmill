@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "انتباہ: یہ آپ کی موجودہ پوزیشن کو حذف کر دے گا۔ آپ کو بنیادی پوزیشن پر منتقل کر دیا جائے گا۔",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "فعال لائن ویو میں تبدیل کریں",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "مکمل ٹری ویو میں تبدیل کریں",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ترتیب الٹائیں",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "فعال لائن ویو میں تبدیل کریں",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "مکمل ٹری ویو میں تبدیل کریں",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ترتیب الٹائیں",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

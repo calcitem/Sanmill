@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Waarschuwing: Dit verwijdert uw huidige positie. U wordt verplaatst naar de bovenliggende positie.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Schakel over naar actieve lijnweergave",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Schakel over naar volledige boomweergave",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Volgorde omkeren",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

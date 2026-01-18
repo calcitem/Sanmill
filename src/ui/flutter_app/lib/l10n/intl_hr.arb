@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "Upozorenje: Ovo će izbrisati vašu trenutnu poziciju. Bit ćete premješteni na roditeljsku poziciju.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Prebaci na prikaz aktivne linije",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Prebaci na prikaz cijelog stabla",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Obrni redoslijed",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Prebaci na prikaz aktivne linije",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Prebaci na prikaz cijelog stabla",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Obrni redoslijed",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Prebaci na prikaz aktivne linije",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Prebaci na prikaz cijelog stabla",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Obrni redoslijed",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

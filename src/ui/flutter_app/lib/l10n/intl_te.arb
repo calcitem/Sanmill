@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "హెచ్చరిక: ఇది మీ ప్రస్తుత స్థానాన్ని తొలగిస్తుంది. మీరు మూల స్థానానికి తరలించబడతారు.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "క్రియాశీల లైన్ వీక్షణకు మారండి",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "పూర్తి ట్రీ వీక్షణకు మారండి",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "క్రమాన్ని తిరగవండి",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "క్రియాశీల లైన్ వీక్షణకు మారండి",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "పూర్తి ట్రీ వీక్షణకు మారండి",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "క్రమాన్ని తిరగవండి",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "คำเตือน: การดำเนินการนี้จะลบตำแหน่งปัจจุบันของคุณ คุณจะถูกย้ายไปยังตำแหน่งหลัก",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "สลับไปยังมุมมองเส้นที่ใช้งานอยู่",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "สลับไปยังมุมมองต้นไม้ทั้งหมด",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "กลับลำดับ",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "สลับไปยังมุมมองเส้นที่ใช้งานอยู่",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "สลับไปยังมุมมองต้นไม้ทั้งหมด",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "กลับลำดับ",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

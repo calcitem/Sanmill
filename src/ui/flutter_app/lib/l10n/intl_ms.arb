@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Amaran: Ini akan memadam kedudukan semasa anda. Anda akan dipindahkan ke kedudukan induk.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Tukar ke paparan garis aktif",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Tukar ke paparan pokok penuh",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Terbalikkan urutan",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

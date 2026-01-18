@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "ཉེན་བརྡ། འདིས་ཁྱོད་ཀྱི་ད་ལྟའི་གནས་ས་སུབ་པར་བྱེད། ཁྱོད་ཕ་མའི་གནས་སར་སྤོ་བརྒྱབ་པར་འགྱུར།",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "བྱེད་སྒོའི་རྒྱུ་འབྲེལ་མཐོང་སྣང་ལ་བརྗེ།",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ཡོངས་རྫོགས་ལྗོན་ཤིང་མཐོང་སྣང་ལ་བརྗེ།",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "གོ་རིམ་ལྡོག་པ།",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "བྱེད་སྒོའི་རྒྱུ་འབྲེལ་མཐོང་སྣང་ལ་བརྗེ།",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ཡོངས་རྫོགས་ལྗོན་ཤིང་མཐོང་སྣང་ལ་བརྗེ།",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "གོ་རིམ་ལྡོག་པ།",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

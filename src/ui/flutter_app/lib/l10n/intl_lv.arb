@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Brīdinājums: tas dzēsīs jūsu pašreizējo pozīciju. Jūs tiksiet pārvietots uz vecāka pozīciju.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Pārslēgties uz aktīvās līnijas skatu",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Pārslēgties uz pilna koka skatu",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Apgriezt secību",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Pārslēgties uz aktīvās līnijas skatu",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Pārslēgties uz pilna koka skatu",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Apgriezt secību",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "Cảnh báo: Thao tác này sẽ xóa vị trí hiện tại của bạn. Bạn sẽ được chuyển đến vị trí cha.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Chuyển sang chế độ xem dòng hoạt động",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Chuyển sang chế độ xem cây đầy đủ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Đảo ngược thứ tự",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Chuyển sang chế độ xem dòng hoạt động",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Chuyển sang chế độ xem cây đầy đủ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Đảo ngược thứ tự",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Chuyển sang chế độ xem dòng hoạt động",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Chuyển sang chế độ xem cây đầy đủ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Đảo ngược thứ tự",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

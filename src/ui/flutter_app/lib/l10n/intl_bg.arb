@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Предупреждение: Това ще изтрие текущата ви позиция. Ще бъдете преместени към родителската позиция.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Превключи към изглед на активна линия",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Превключи към изглед на пълно дърво",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Обърни реда",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Превключи към изглед на активна линия",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Превключи към изглед на пълно дърво",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Обърни реда",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

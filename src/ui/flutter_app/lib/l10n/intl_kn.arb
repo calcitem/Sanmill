@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "ಎಚ್ಚರಿಕೆ: ಇದು ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸ್ಥಾನವನ್ನು ಅಳಿಸುತ್ತದೆ. ನಿಮ್ಮನ್ನು ಮೂಲ ಸ್ಥಾನಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಗುವುದು.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "ಸಕ್ರಿಯ ಲೈನ್ ವೀಕ್ಷಣೆಗೆ ಬದಲಿಸಿ",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ಸಂಪೂರ್ಣ ಟ್ರೀ ವೀಕ್ಷಣೆಗೆ ಬದಲಿಸಿ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ಕ್ರಮ ವಿಲೋಮಗೊಳಿಸಿ",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "ಸಕ್ರಿಯ ಲೈನ್ ವೀಕ್ಷಣೆಗೆ ಬದಲಿಸಿ",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ಸಂಪೂರ್ಣ ಟ್ರೀ ವೀಕ್ಷಣೆಗೆ ಬದಲಿಸಿ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ಕ್ರಮ ವಿಲೋಮಗೊಳಿಸಿ",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

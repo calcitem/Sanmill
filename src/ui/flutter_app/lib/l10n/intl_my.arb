@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "သတိပေးချက်: ယင်းက သင်၏လက်ရှိ အနေအထားကို ဖျက်ပစ်ပါမည်။ မူလအနေအထားသို့ ရွှေ့သွားပါမည်။",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "လက်ရှိလိုင်းမြင်ကွင်းသို့ပြောင်းရန်",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "အပြည့်အစုံသစ်ပင်မြင်ကွင်းသို့ပြောင်းရန်",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "အစီအစဉ်ပြောင်းပြန်လှန်ရန်",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

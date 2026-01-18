@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Paralajmërim: Kjo do të fshijë pozicionin tuaj aktual. Do të zhvendoseni në pozicionin prind.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Kalo në pamjen e linjës aktive",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Kalo në pamjen e pemës së plotë",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Ktheje rendin",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

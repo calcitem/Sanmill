@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Uyarı: Bu, mevcut konumunuzu silecektir. Üst konuma taşınacaksınız.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Aktif Satır Görünümüne Geç",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Tam Ağaç Görünümüne Geç",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Sırayı Tersine Çevir",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Aktif Satır Görünümüne Geç",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Tam Ağaç Görünümüne Geç",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Sırayı Tersine Çevir",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

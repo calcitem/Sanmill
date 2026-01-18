@@ -3226,5 +3226,41 @@
     "deleteCurrentBranchWarning": "Figyelmeztetés: Ez törli az aktuális pozícióját. A szülő pozícióba kerül.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Váltás aktív vonal nézetre",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Váltás teljes fa nézetre",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Sorrend megfordítása",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Váltás aktív vonal nézetre",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Váltás teljes fa nézetre",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Sorrend megfordítása",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Váltás aktív vonal nézetre",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Váltás teljes fa nézetre",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Sorrend megfordítása",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

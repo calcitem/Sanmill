@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Varoitus: Tämä poistaa nykyisen sijaintisi. Sinut siirretään vanhempaan sijaintiin.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Vaihda aktiivisen rivin näkymään",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Vaihda koko puun näkymään",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Käännä järjestys",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Vaihda aktiivisen rivin näkymään",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Vaihda koko puun näkymään",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Käännä järjestys",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

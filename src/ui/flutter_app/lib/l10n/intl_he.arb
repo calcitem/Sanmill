@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "אזהרה: פעולה זו תמחק את המיקום הנוכחי שלך. תועבר למיקום ההורה.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "עבור לתצוגת קו פעיל",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "עבור לתצוגת עץ מלא",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "הפוך סדר",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "עבור לתצוגת קו פעיל",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "עבור לתצוגת עץ מלא",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "הפוך סדר",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "עבור לתצוגת קו פעיל",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "עבור לתצוגת עץ מלא",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "הפוך סדר",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

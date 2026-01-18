@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "경고: 현재 위치가 삭제됩니다. 상위 위치로 이동합니다.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "활성 라인 뷰로 전환",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "전체 트리 뷰로 전환",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "순서 반전",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "활성 라인 뷰로 전환",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "전체 트리 뷰로 전환",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "순서 반전",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

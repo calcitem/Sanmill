@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "Peringatan: Ini akan menghapus posisi Anda saat ini. Anda akan dipindahkan ke posisi induk.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Beralih ke tampilan garis aktif",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Beralih ke tampilan pohon penuh",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Balik urutan",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Beralih ke tampilan garis aktif",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Beralih ke tampilan pohon penuh",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Balik urutan",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Beralih ke tampilan garis aktif",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Beralih ke tampilan pohon penuh",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Balik urutan",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

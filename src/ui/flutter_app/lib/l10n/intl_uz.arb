@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "Ogohlantirish: Bu sizning joriy pozitsiyangizni o'chiradi. Siz asosiy pozitsiyaga ko'chirilasiz.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Faol chiziq ko'rinishiga o'tish",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "To'liq daraxt ko'rinishiga o'tish",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Tartibni teskari aylantirish",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Faol chiziq ko'rinishiga o'tish",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "To'liq daraxt ko'rinishiga o'tish",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Tartibni teskari aylantirish",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Faol chiziq ko'rinishiga o'tish",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "To'liq daraxt ko'rinishiga o'tish",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Tartibni teskari aylantirish",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "අවවාදය: මෙය ඔබගේ වත්මන් ස්ථානය මකා දමනු ඇත. ඔබ මව් ස්ථානයට ගෙන යනු ලැබේ.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "ක්‍රියාකාරී රේඛා දර්ශනයට මාරු වන්න",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "සම්පූර්ණ ගස් දර්ශනයට මාරු වන්න",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "අනුපිළිවෙල ආපස්සට කරන්න",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

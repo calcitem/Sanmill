@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "ચેતવણી: આ તમારી વર્તમાન સ્થિતિ કાઢી નાખશે. તમને મૂળ સ્થિતિમાં ખસેડવામાં આવશે.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "સક્રિય લાઇન દૃશ્યમાં સ્વિચ કરો",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "સંપૂર્ણ ટ્રી દૃશ્યમાં સ્વિચ કરો",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ક્રમ ઉલટાવો",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "સક્રિય લાઇન દૃશ્યમાં સ્વિચ કરો",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "સંપૂર્ણ ટ્રી દૃશ્યમાં સ્વિચ કરો",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ક્રમ ઉલટાવો",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "સક્રિય લાઇન દૃશ્યમાં સ્વિચ કરો",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "સંપૂર્ણ ટ્રી દૃશ્યમાં સ્વિચ કરો",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ક્રમ ઉલટાવો",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

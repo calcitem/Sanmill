@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Папярэджанне: Гэта выдаліць вашу бягучую пазіцыю. Вы будзеце перамешчаны ў бацькоўскую пазіцыю.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Пераключыць на рэжым актыўнай лініі",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Пераключыць на поўны від дрэва",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Адмяніць парадак",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Пераключыць на рэжым актыўнай лініі",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Пераключыць на поўны від дрэва",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Адмяніць парадак",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

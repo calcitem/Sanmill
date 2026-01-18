@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Advertència: Això suprimirà la vostra posició actual. Us moureu a la posició pare.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Canvia a la vista de línia activa",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Canvia a la vista d'arbre complet",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Inverteix l'ordre",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Canvia a la vista de línia activa",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Canvia a la vista d'arbre complet",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Inverteix l'ordre",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

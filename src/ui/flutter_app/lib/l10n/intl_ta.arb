@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "எச்சரிக்கை: இது உங்கள் தற்போதைய நிலையை நீக்கும். நீங்கள் பெற்றோர் நிலைக்கு நகர்த்தப்படுவீர்கள்.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "செயலில் உள்ள வரி காட்சிக்கு மாறவும்",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "முழு மர காட்சிக்கு மாறவும்",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "வரிசையை தலைகீழாக்கு",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "செயலில் உள்ள வரி காட்சிக்கு மாறவும்",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "முழு மர காட்சிக்கு மாறவும்",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "வரிசையை தலைகீழாக்கு",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

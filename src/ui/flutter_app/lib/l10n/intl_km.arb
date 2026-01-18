@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "ការព្រមាន៖ វានឹងលុបទីតាំងបច្ចុប្បន្នរបស់អ្នក។ អ្នកនឹងត្រូវផ្លាស់ទៅទីតាំងមេ។",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "ប្តូរទៅទិដ្ឋភាពបន្ទាត់សកម្ម",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ប្តូរទៅទិដ្ឋភាពដើមឈើពេញលេញ",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ត្រឡប់លំដាប់",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

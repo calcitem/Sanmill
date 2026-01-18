@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Varning: Detta raderar din nuvarande position. Du kommer att flyttas till föräldrarpositionen.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Byt till aktiv linjevy",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Byt till full trädvy",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Omvänd ordning",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3985,5 +3985,17 @@
     "deleteCurrentBranchWarning": "警告：這將刪除您的當前位置。您將移動到父位置。",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "切換到主線視圖",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "切換到完整樹視圖",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "反轉順序",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

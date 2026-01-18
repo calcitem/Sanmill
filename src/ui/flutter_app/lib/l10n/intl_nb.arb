@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Advarsel: Dette vil slette din nåværende posisjon. Du vil bli flyttet til foreldreposisjonen.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Bytt til aktiv linjevisning",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Bytt til full trevisning",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Reverser rekkefølge",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

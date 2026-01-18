@@ -2553,8 +2553,8 @@ class MovesListPageState extends State<MovesListPage> {
                     : FluentIcons.branch_24_regular,
               ),
               tooltip: DB().displaySettings.showBranchTree
-                  ? 'Switch to Active Line View'
-                  : 'Switch to Full Tree View',
+                  ? S.of(context).switchToActiveLineView
+                  : S.of(context).switchToFullTreeView,
               onPressed: () {
                 setState(() {
                   DB().displaySettings = DB().displaySettings.copyWith(
@@ -2580,6 +2580,7 @@ class MovesListPageState extends State<MovesListPage> {
                       key: ValueKey<String>('ascending'),
                     ),
             ),
+            tooltip: S.of(context).reverseMoveOrder,
             onPressed: () {
               setState(() {
                 // Only toggle the flag; do not physically reverse _allNodes.

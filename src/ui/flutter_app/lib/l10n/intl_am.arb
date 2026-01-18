@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "ማስጠንቀቂያ: ይህ የአሁኑን ቦታዎን ይሰርዛል። ወደ የወላጅ ቦታ ይንቀሳቀሳሉ።",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "ወደ ገባሪ መስመር እይታ ቀይር",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ወደ ሙሉ ዛፍ እይታ ቀይር",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ቅደም ተከተል አስገላብጥ",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "ወደ ገባሪ መስመር እይታ ቀይር",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "ወደ ሙሉ ዛፍ እይታ ቀይር",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ቅደም ተከተል አስገላብጥ",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

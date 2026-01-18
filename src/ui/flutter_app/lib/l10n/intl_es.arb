@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "Advertencia: Esto eliminará su posición actual. Será movido a la posición padre.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Cambiar a vista de línea activa",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Cambiar a vista de árbol completo",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Invertir orden",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Cambiar a vista de línea activa",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Cambiar a vista de árbol completo",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Invertir orden",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

@@ -3969,5 +3969,41 @@
     "deleteCurrentBranchWarning": "Viðvörun: Þetta mun eyða núverandi stöðu þinni. Þú verður færður í foreldrisstöðu.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Skipta yfir í virka línusýn",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Skipta yfir í fulla trjásýn",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Snúa við röð",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Skipta yfir í virka línusýn",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Skipta yfir í fulla trjásýn",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Snúa við röð",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "Skipta yfir í virka línusýn",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Skipta yfir í fulla trjásýn",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Snúa við röð",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

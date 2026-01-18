@@ -3969,5 +3969,17 @@
     "deleteCurrentBranchWarning": "Opozorilo: To bo izbrisalo vašo trenutno pozicijo. Premaknjeni boste na starševsko pozicijo.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "Preklopi na pogled aktivne črte",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "Preklopi na pogled celotnega drevesa",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "Obrni vrstni red",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

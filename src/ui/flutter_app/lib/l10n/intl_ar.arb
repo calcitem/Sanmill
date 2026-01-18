@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "تحذير: سيؤدي هذا إلى حذف موضعك الحالي. سيتم نقلك إلى الموضع الأصلي.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "التبديل إلى عرض الخط النشط",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "التبديل إلى عرض الشجرة الكاملة",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "عكس الترتيب",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "التبديل إلى عرض الخط النشط",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "التبديل إلى عرض الشجرة الكاملة",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "عكس الترتيب",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }

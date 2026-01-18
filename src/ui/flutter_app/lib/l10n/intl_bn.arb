@@ -3969,5 +3969,29 @@
     "deleteCurrentBranchWarning": "সতর্কতা: এটি আপনার বর্তমান অবস্থান মুছে ফেলবে। আপনাকে প্যারেন্ট অবস্থানে সরিয়ে দেওয়া হবে।",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
+    },
+    "switchToActiveLineView": "সক্রিয় লাইন ভিউতে পরিবর্তন করুন",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "সম্পূর্ণ ট্রি ভিউতে পরিবর্তন করুন",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ক্রম উল্টান",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
+    },
+    "switchToActiveLineView": "সক্রিয় লাইন ভিউতে পরিবর্তন করুন",
+    "@switchToActiveLineView": {
+        "description": "Switch to active line view mode"
+    },
+    "switchToFullTreeView": "সম্পূর্ণ ট্রি ভিউতে পরিবর্তন করুন",
+    "@switchToFullTreeView": {
+        "description": "Switch to full tree view mode"
+    },
+    "reverseMoveOrder": "ক্রম উল্টান",
+    "@reverseMoveOrder": {
+        "description": "Reverse the order of moves in the list"
     }
 }
