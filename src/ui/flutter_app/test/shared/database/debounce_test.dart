@@ -2,8 +2,6 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/general_settings/models/general_settings.dart';
-import 'package:sanmill/shared/database/database.dart';
 
 /// Test to verify debouncing behavior when settings are changed rapidly
 void main() {
@@ -11,8 +9,6 @@ void main() {
     test('Rapid settings changes should be debounced', () async {
       // Simulate rapid settings changes like in Monkey test
       // Each change schedules an engine update, but only the last one should execute
-
-      int engineUpdateCount = 0;
 
       // Mock the engine.setGeneralOptions() call
       // In real scenario, this would be called after debounce period
