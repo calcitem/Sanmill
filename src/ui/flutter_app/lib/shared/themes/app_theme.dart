@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../database/database.dart';
+import 'custom_page_transitions.dart';
 import 'ui_colors.dart';
 
 /// The Apps Theme
@@ -91,16 +92,16 @@ class AppTheme {
     pageTransitionsTheme: _pageTransitionsTheme,
   );
 
-  static const PageTransitionsTheme _pageTransitionsTheme =
-      PageTransitionsTheme(
-        builders: <TargetPlatform, PageTransitionsBuilder>{
-          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-          TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-        },
-      );
+  static const PageTransitionsTheme
+  _pageTransitionsTheme = PageTransitionsTheme(
+    builders: <TargetPlatform, PageTransitionsBuilder>{
+      TargetPlatform.android: SlideLeftFixedBackgroundPageTransitionsBuilder(),
+      TargetPlatform.iOS: SlideLeftFixedBackgroundPageTransitionsBuilder(),
+      TargetPlatform.macOS: SlideLeftFixedBackgroundPageTransitionsBuilder(),
+      TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
+      TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
+    },
+  );
 
   /// Dark theme
   static final ColorScheme _darkColorScheme = _colorScheme.copyWith(
