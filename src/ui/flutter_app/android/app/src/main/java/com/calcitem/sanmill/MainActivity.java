@@ -34,6 +34,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends FlutterActivity {
@@ -159,6 +160,16 @@ public class MainActivity extends FlutterActivity {
                       } else {
                           result.error("UNAVAILABLE", "Data not available.", null);
                       }
+                  } else if (call.method.equals("writeContentUri")) {
+                      String uriString = call.argument("uri");
+                      String content = call.argument("content");
+                      Uri uri = Uri.parse(uriString);
+                      boolean success = writeContentUri(uri, content, this);
+                      if (success) {
+                          result.success(true);
+                      } else {
+                          result.error("WRITE_FAILED", "Failed to write content URI.", null);
+                      }
                   } else {
                       result.notImplemented();
                   }
@@ -212,6 +223,21 @@ public class MainActivity extends FlutterActivity {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean writeContentUri(Uri uri, String content, Context context) {
+        try (OutputStream outputStream = context.getContentResolver().openOutputStream(uri)) {
+            if (outputStream == null) {
+                return false;
+            }
+            byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
+            outputStream.write(bytes);
+            outputStream.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

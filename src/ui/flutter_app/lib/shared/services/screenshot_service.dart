@@ -104,26 +104,56 @@ class ScreenshotService {
     }
 
     try {
+      // Logic for Mobile Platforms (Android/iOS)
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+        bool savedToFile = false;
+
+        // 1. Try to save to the same directory as the file (User preference)
+        // We only attempt this if it's not a content URI and not a default screenshot name
+        if (!filename.startsWith('content://') &&
+            !filename.startsWith('sanmill-screenshot')) {
+          try {
+            final File file = File(filename);
+            await file.writeAsBytes(image);
+            savedToFile = true;
+            logger.i("$_logTag Image saved to file: $filename");
+            SnackBarService.showRootSnackBar(filename);
+          } catch (e) {
+            // Expected failure on modern Android (Scoped Storage)
+            logger.i(
+              "Cannot save to file path ($filename) due to permissions, falling back to gallery. Error: $e",
+            );
+          }
+        }
+
+        // 2. Fallback to Gallery if file save failed or was skipped
+        if (!savedToFile) {
+          // Use basename to avoid path issues when saving to gallery
+          final String baseName = path.basename(filename);
+          final FutureOr<dynamic> result =
+              await ImageGallerySaverPlus.saveImage(image, name: baseName);
+          handleSaveImageResult(result, filename);
+        }
+        return;
+      }
+
+      // Logic for Desktop/Web
       if (filename.startsWith('sanmill-screenshot')) {
-        // For mobile platforms, save directly to the gallery
+        // ... (rest of the desktop logic remains unchanged)
         if (kIsWeb) {
           logger.e("Saving images to the gallery is not supported on the web");
           SnackBarService.showRootSnackBar(
             "Saving images to the gallery is not supported on the web",
           );
           return;
-        } else if (Platform.isAndroid || Platform.isIOS) {
-          final FutureOr<dynamic> result =
-              await ImageGallerySaverPlus.saveImage(image, name: filename);
-          handleSaveImageResult(result, filename);
         } else {
           // For desktop platforms, save to the 'screenshots' directory
-          final String? path = await getFilePath('screenshots/$filename');
-          if (path != null) {
-            final File file = File(path);
+          final String? filePath = await getFilePath('screenshots/$filename');
+          if (filePath != null) {
+            final File file = File(filePath);
             await file.writeAsBytes(image);
-            logger.i("$_logTag Image saved to $path");
-            SnackBarService.showRootSnackBar(path);
+            logger.i("$_logTag Image saved to $filePath");
+            SnackBarService.showRootSnackBar(filePath);
           }
         }
       } else {

@@ -20,3 +20,16 @@ Future<String?> readContentUri(Uri uri) async {
     return null;
   }
 }
+
+Future<bool> writeContentUri(Uri uri, String content) async {
+  try {
+    final bool? result = await _platform.invokeMethod<bool>(
+      'writeContentUri',
+      <String, String>{'uri': uri.toString(), 'content': content},
+    );
+    return result ?? false;
+  } on PlatformException catch (e) {
+    logger.e("Failed to write content URI: ${e.message}");
+    return false;
+  }
+}

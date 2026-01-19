@@ -11,13 +11,17 @@ class LoadService {
 
   static const String _logTag = "[Loader]";
 
-  /// Retrieves the file path.
-  static Future<String?> getFilePath(BuildContext context) async {
+  /// Retrieves the file path with optional content bytes for Android/iOS.
+  static Future<String?> getFilePath(
+    BuildContext context, {
+    Uint8List? bytes,
+  }) async {
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: S.of(context).saveGame,
       fileName: 'game.pgn',
       type: FileType.custom,
-      allowedExtensions: ['pgn'],
+      allowedExtensions: <String>['pgn'],
+      bytes: bytes,
     );
 
     if (outputFile == null) {
@@ -28,8 +32,9 @@ class LoadService {
       outputFile = '$outputFile.pgn';
     }
 
-    GameController().loadedGameFilenamePrefix =
-        extractPgnFilenamePrefix(outputFile);
+    GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
+      outputFile,
+    );
 
     return outputFile;
   }
@@ -79,7 +84,7 @@ class LoadService {
 
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pgn'],
+      allowedExtensions: <String>['pgn'],
     );
 
     if (result != null && result.files.single.path != null) {
@@ -108,17 +113,55 @@ class LoadService {
       return null;
     }
 
-    final String? filename = await getFilePath(context);
+    // Generate content first before calling getFilePath
+    final String content = ImportService.addTagPairs(
+      GameController().gameRecorder.moveHistoryText,
+    );
+
+    // On mobile platforms, provide bytes to FilePicker for automatic saving
+    // On desktop platforms, we'll save manually after getting the path
+    final bool isMobilePlatform =
+        !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+    final Uint8List? contentBytes = isMobilePlatform
+        ? Uint8List.fromList(utf8.encode(content))
+        : null;
+
+    final String? filename = await getFilePath(context, bytes: contentBytes);
 
     if (filename == null) {
       safePop();
       return null;
     }
 
-    final File file = File(filename);
-    await file.writeAsString(
-      ImportService.addTagPairs(GameController().gameRecorder.moveHistoryText),
-    );
+    // On Android/iOS with bytes provided, file is already saved by FilePicker
+    // On desktop platforms, we need to write the file manually
+    if (!isMobilePlatform) {
+      if (filename.startsWith('content://')) {
+        // Handle content:// URIs via platform channel (should not happen on desktop)
+        final bool success = await writeContentUri(
+          Uri.parse(filename),
+          content,
+        );
+
+        if (!success) {
+          if (!context.mounted) {
+            return null;
+          }
+          // TODO: Add saveFailed localization string
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            S.of(context).loadFailed,
+          );
+          if (shouldPop) {
+            safePop();
+          }
+          return null;
+        }
+      } else {
+        // Use regular file I/O for desktop filesystem paths
+        final File file = File(filename);
+        await file.writeAsString(content);
+      }
+    }
 
     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
       "$strGameSavedTo $filename",
