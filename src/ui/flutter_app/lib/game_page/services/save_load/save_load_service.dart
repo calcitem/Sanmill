@@ -13,77 +13,63 @@ class LoadService {
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
-    Directory? dir = (!kIsWeb && Platform.isAndroid)
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    final String path = '${dir?.path ?? ""}/records';
+    String? outputFile = await FilePicker.platform.saveFile(
+      dialogTitle: S.of(context).saveGame,
+      fileName: 'game.pgn',
+      type: FileType.custom,
+      allowedExtensions: ['pgn'],
+    );
 
-    // Ensure the folder exists
-    dir = Directory(path);
-    if (!dir.existsSync()) {
-      await dir.create(recursive: true);
-    }
-
-    if (!context.mounted) {
+    if (outputFile == null) {
       return null;
     }
 
-    String? resultLabel = await _showTextInputDialog(context);
-
-    if (resultLabel == null) {
-      return null;
+    if (!outputFile.toLowerCase().endsWith('.pgn')) {
+      outputFile = '$outputFile.pgn';
     }
 
-    GameController().loadedGameFilenamePrefix = resultLabel;
+    GameController().loadedGameFilenamePrefix =
+        extractPgnFilenamePrefix(outputFile);
 
-    if (resultLabel.endsWith(".pgn") == false) {
-      resultLabel = "$resultLabel.pgn";
-    }
-
-    final String filePath = resultLabel.startsWith(path)
-        ? resultLabel
-        : "$path/$resultLabel";
-
-    return filePath;
+    return outputFile;
   }
 
   /// Picks file.
   static Future<String?> pickFile(BuildContext context) async {
-    late Directory? dir;
-
-    dir = (!kIsWeb && Platform.isAndroid)
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    final String path = '${dir?.path ?? ""}/records';
-
-    // Ensure the folder exists
-    dir = Directory(path);
-    if (!dir.existsSync()) {
-      await dir.create(recursive: true);
-    }
-
     // Copy PGN files recursively from ApplicationDocumentsDirectory to
     // ExternalStorageDirectory without overwriting existing files.
     // This is done for compatibility with version 3.x.
     if (!kIsWeb && Platform.isAndroid) {
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String appDocPath = appDocDir.path;
-      final List<FileSystemEntity> entities = appDocDir.listSync(
-        recursive: true,
-      );
+      try {
+        final Directory appDocDir = await getApplicationDocumentsDirectory();
+        final String appDocPath = appDocDir.path;
+        final Directory? extDir = await getExternalStorageDirectory();
+        final String path = '${extDir?.path ?? ""}/records';
 
-      for (final FileSystemEntity entity in entities) {
-        if (entity is File && entity.path.endsWith('.pgn')) {
-          final String newPath = entity.path.replaceAll(appDocPath, path);
-          final File newFile = File(newPath);
-
-          if (!newFile.existsSync()) {
-            await newFile.create(recursive: true);
-            await entity.copy(newPath);
-          }
-
-          await entity.delete();
+        final Directory dir = Directory(path);
+        if (!dir.existsSync()) {
+          await dir.create(recursive: true);
         }
+
+        final List<FileSystemEntity> entities = appDocDir.listSync(
+          recursive: true,
+        );
+
+        for (final FileSystemEntity entity in entities) {
+          if (entity is File && entity.path.endsWith('.pgn')) {
+            final String newPath = entity.path.replaceAll(appDocPath, path);
+            final File newFile = File(newPath);
+
+            if (!newFile.existsSync()) {
+              await newFile.create(recursive: true);
+              await entity.copy(newPath);
+            }
+
+            await entity.delete();
+          }
+        }
+      } catch (e) {
+        logger.e('$_logTag Error migrating files: $e');
       }
     }
 
@@ -91,23 +77,16 @@ class LoadService {
       return null;
     }
 
-    final String? result = await FilesystemPicker.openDialog(
-      context: context,
-      rootDirectory: dir,
-      rootName: S.of(context).gameFiles,
-      fsType: FilesystemType.file,
-      showGoUp: !kIsWeb && !Platform.isLinux,
-      allowedExtensions: <String>[".pgn"],
-      fileTileSelectMode: FileTileSelectMode.checkButton,
-      // TODO: whole tile is better.
-      theme: const FilesystemPickerTheme(backgroundColor: Colors.greenAccent),
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pgn'],
     );
 
-    if (result == null) {
-      return null;
+    if (result != null && result.files.single.path != null) {
+      return result.files.single.path;
     }
 
-    return result;
+    return null;
   }
 
   /// Saves the game to the file.
@@ -137,7 +116,7 @@ class LoadService {
     }
 
     final File file = File(filename);
-    file.writeAsString(
+    await file.writeAsString(
       ImportService.addTagPairs(GameController().gameRecorder.moveHistoryText),
     );
 
@@ -248,7 +227,7 @@ class LoadService {
 
   static String? extractPgnFilenamePrefix(String path) {
     // Check if the string ends with '.pgn'
-    if (path.endsWith('.pgn')) {
+    if (path.toLowerCase().endsWith('.pgn')) {
       try {
         // Decode the entire URI before extraction
         final String decodedPath;
@@ -261,7 +240,7 @@ class LoadService {
         // Find the last index of '/'
         final int lastIndex = decodedPath.lastIndexOf('/');
         if (lastIndex == -1) {
-          return null;
+          return decodedPath.substring(0, decodedPath.length - 4);
         }
         // Extract the substring from the character after '/' to the start of '.pgn'
         return decodedPath.substring(lastIndex + 1, decodedPath.length - 4);
@@ -373,67 +352,5 @@ class LoadService {
       rethrow;
     }
     return str;
-  }
-
-  static Future<String?> _showTextInputDialog(BuildContext context) async {
-    final TextEditingController textFieldController =
-        SafeTextEditingController();
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            S.of(context).filename,
-            style: TextStyle(
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-            ),
-          ),
-          content: TextField(
-            controller: textFieldController,
-            decoration: const InputDecoration(suffixText: ".pgn"),
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              child: Text(
-                S.of(context).browse,
-                style: TextStyle(
-                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                ),
-              ),
-              onPressed: () async {
-                final String? result = await pickFile(context);
-                if (result == null) {
-                  return;
-                }
-                textFieldController.text = result;
-                if (!context.mounted) {
-                  return;
-                }
-                Navigator.pop(context, textFieldController.text);
-              },
-            ),
-            ElevatedButton(
-              child: Text(
-                S.of(context).cancel,
-                style: TextStyle(
-                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                ),
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-            ElevatedButton(
-              child: Text(
-                S.of(context).ok,
-                style: TextStyle(
-                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                ),
-              ),
-              onPressed: () => Navigator.pop(context, textFieldController.text),
-            ),
-          ],
-        );
-      },
-      barrierDismissible: false,
-    );
   }
 }
