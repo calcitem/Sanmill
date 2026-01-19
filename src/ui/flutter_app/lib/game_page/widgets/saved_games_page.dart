@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -524,6 +525,86 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     }
   }
 
+  Future<void> _pickAndPreview() async {
+    try {
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: <String>['pgn'],
+      );
+
+      if (result == null || result.files.single.path == null) {
+        return;
+      }
+
+      final String path = result.files.single.path!;
+      final File file = File(path);
+      final String content = await file.readAsString();
+
+      // Compute layout
+      final String? layout = await _computeFinalBoardLayout(content);
+
+      if (!mounted) {
+        return;
+      }
+
+      // Show dialog
+      await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(p.basename(path)),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  AspectRatio(
+                    aspectRatio: 1.0,
+                    child: MiniBoard(boardLayout: layout ?? ''),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    path,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: DB().colorSettings.messageColor.withValues(
+                            alpha: 0.7,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(S.of(context).cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _openGame(
+                    SavedGameEntry(
+                      path: path,
+                      filename: p.basename(path),
+                      modified: file.lastModifiedSync(),
+                    ),
+                  );
+                },
+                child: Text(S.of(context).ok),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).error(e.toString()))),
+        );
+      }
+    }
+  }
+
   Future<void> _openGame(SavedGameEntry e) async {
     await LoadService.loadGame(context, e.path, isRunning: true);
     // Close the SavedGamesPage after loading the game
@@ -542,6 +623,12 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
+          // Browse button
+          IconButton(
+            icon: const Icon(Icons.folder_open),
+            tooltip: S.of(context).loadGame,
+            onPressed: _pickAndPreview,
+          ),
           // Sort order button
           IconButton(
             icon: AnimatedSwitcher(
