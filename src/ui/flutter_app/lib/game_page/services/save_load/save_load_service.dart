@@ -22,12 +22,15 @@ class LoadService {
         '${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
     final String defaultFileName = '$formattedDate.pgn';
 
+    final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: S.of(context).saveGame,
       fileName: defaultFileName,
       type: FileType.custom,
       allowedExtensions: <String>['pgn'],
       bytes: bytes,
+      initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
     );
 
     if (outputFile == null) {
@@ -138,6 +141,9 @@ class LoadService {
       safePop();
       return null;
     }
+
+    // Save the directory path for next time
+    _saveLastPgnDirectory(filename);
 
     // On Android/iOS with bytes provided, file is already saved by FilePicker
     // On desktop platforms, we need to write the file manually
@@ -271,6 +277,35 @@ class LoadService {
       Future<void>.delayed(Duration.zero, () {
         GameController().headerTipNotifier.showTip(loadedGameFilenamePrefix);
       });
+    }
+  }
+
+  /// Saves the directory path of the given file path.
+  static void _saveLastPgnDirectory(String filePath) {
+    try {
+      // Skip saving for content:// URIs and file:// URIs
+      if (filePath.startsWith('content://') || filePath.startsWith('file://')) {
+        return;
+      }
+
+      final String decodedPath;
+      if (filePath.startsWith("/")) {
+        decodedPath = filePath;
+      } else {
+        decodedPath = Uri.decodeComponent(filePath);
+      }
+
+      // Extract directory path
+      final int lastIndex = decodedPath.lastIndexOf('/');
+      if (lastIndex != -1) {
+        final String directoryPath = decodedPath.substring(0, lastIndex);
+        // Save to settings
+        DB().generalSettings = DB().generalSettings.copyWith(
+          lastPgnSaveDirectory: directoryPath,
+        );
+      }
+    } catch (e) {
+      logger.e('$_logTag Error saving last PGN directory: $e');
     }
   }
 

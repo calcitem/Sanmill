@@ -164,6 +164,7 @@ class GeneralSettings {
     this.trapAwareness = false,
     this.backgroundMusicEnabled = false,
     this.backgroundMusicFilePath = '',
+    this.lastPgnSaveDirectory = '',
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -318,6 +319,10 @@ class GeneralSettings {
   // Local background music file path.
   @HiveField(42, defaultValue: "")
   final String backgroundMusicFilePath;
+
+  // Last directory where PGN file was saved.
+  @HiveField(44, defaultValue: "")
+  final String lastPgnSaveDirectory;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
