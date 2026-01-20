@@ -12,110 +12,144 @@ class LoadService {
   static const String _logTag = "[Loader]";
 
   /// Retrieves the file path with optional content bytes for Android/iOS.
-  static Future<String?> getFilePath(
-    BuildContext context, {
-    Uint8List? bytes,
-  }) async {
-    final DateTime now = DateTime.now();
-    final String formattedDate =
-        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_'
-        '${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
-    final String defaultFileName = '$formattedDate.pgn';
-
-    // On desktop platforms, use last saved directory as initial directory.
-    // On mobile, don't set initialDirectory (SAF limitation).
+  static Future<String?> getFilePath(BuildContext context) async {
     final bool isMobilePlatform =
         !kIsWeb && (Platform.isAndroid || Platform.isIOS);
-    final String lastDirectory = isMobilePlatform
-        ? ''
-        : DB().generalSettings.lastPgnSaveDirectory;
 
-    String? outputFile = await FilePicker.platform.saveFile(
-      dialogTitle: S.of(context).saveGame,
-      fileName: defaultFileName,
-      type: FileType.custom,
-      allowedExtensions: <String>['pgn'],
-      bytes: bytes,
-      initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
-    );
+    if (isMobilePlatform) {
+      // On mobile platforms, use text input dialog and save to records directory
+      Directory? dir = (!kIsWeb && Platform.isAndroid)
+          ? await getExternalStorageDirectory()
+          : await getApplicationDocumentsDirectory();
+      final String path = '${dir?.path ?? ""}/records';
 
-    if (outputFile == null) {
-      return null;
+      // Ensure the folder exists
+      dir = Directory(path);
+      if (!dir.existsSync()) {
+        await dir.create(recursive: true);
+      }
+
+      if (!context.mounted) {
+        return null;
+      }
+
+      String? resultLabel = await _showTextInputDialog(context);
+
+      if (resultLabel == null) {
+        return null;
+      }
+
+      GameController().loadedGameFilenamePrefix = resultLabel;
+
+      if (resultLabel.endsWith(".pgn") == false) {
+        resultLabel = "$resultLabel.pgn";
+      }
+
+      final String filePath = resultLabel.startsWith(path)
+          ? resultLabel
+          : "$path/$resultLabel";
+
+      return filePath;
+    } else {
+      // On desktop platforms, use FilePicker with last saved directory
+      final DateTime now = DateTime.now();
+      final String formattedDate =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_'
+          '${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
+      final String defaultFileName = '$formattedDate.pgn';
+
+      final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+
+      String? outputFile = await FilePicker.platform.saveFile(
+        dialogTitle: S.of(context).saveGame,
+        fileName: defaultFileName,
+        type: FileType.custom,
+        allowedExtensions: <String>['pgn'],
+        initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
+      );
+
+      if (outputFile == null) {
+        return null;
+      }
+
+      if (!outputFile.toLowerCase().endsWith('.pgn')) {
+        outputFile = '$outputFile.pgn';
+      }
+
+      GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
+        outputFile,
+      );
+
+      return outputFile;
     }
-
-    if (!outputFile.toLowerCase().endsWith('.pgn')) {
-      outputFile = '$outputFile.pgn';
-    }
-
-    GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
-      outputFile,
-    );
-
-    return outputFile;
   }
 
   /// Picks file.
   static Future<String?> pickFile(BuildContext context) async {
-    // Copy PGN files recursively from ApplicationDocumentsDirectory to
-    // ExternalStorageDirectory without overwriting existing files.
-    // This is done for compatibility with version 3.x.
-    if (!kIsWeb && Platform.isAndroid) {
-      try {
-        final Directory appDocDir = await getApplicationDocumentsDirectory();
-        final String appDocPath = appDocDir.path;
-        final Directory? extDir = await getExternalStorageDirectory();
-        final String path = '${extDir?.path ?? ""}/records';
-
-        final Directory dir = Directory(path);
-        if (!dir.existsSync()) {
-          await dir.create(recursive: true);
-        }
-
-        final List<FileSystemEntity> entities = appDocDir.listSync(
-          recursive: true,
-        );
-
-        for (final FileSystemEntity entity in entities) {
-          if (entity is File && entity.path.endsWith('.pgn')) {
-            final String newPath = entity.path.replaceAll(appDocPath, path);
-            final File newFile = File(newPath);
-
-            if (!newFile.existsSync()) {
-              await newFile.create(recursive: true);
-              await entity.copy(newPath);
-            }
-
-            await entity.delete();
-          }
-        }
-      } catch (e) {
-        logger.e('$_logTag Error migrating files: $e');
-      }
-    }
-
-    if (!context.mounted) {
-      return null;
-    }
-
-    // On desktop platforms, use last saved directory as initial directory.
-    // On mobile, don't set initialDirectory (SAF limitation).
     final bool isMobilePlatform =
         !kIsWeb && (Platform.isAndroid || Platform.isIOS);
-    final String lastDirectory = isMobilePlatform
-        ? ''
-        : DB().generalSettings.lastPgnSaveDirectory;
 
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: <String>['pgn'],
-      initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
-    );
+    if (isMobilePlatform) {
+      // On mobile platforms, use SavedGamesPage instead of FilePicker
+      // Copy PGN files recursively from ApplicationDocumentsDirectory to
+      // ExternalStorageDirectory without overwriting existing files.
+      // This is done for compatibility with version 3.x.
+      if (!kIsWeb && Platform.isAndroid) {
+        try {
+          final Directory appDocDir = await getApplicationDocumentsDirectory();
+          final String appDocPath = appDocDir.path;
+          final Directory? extDir = await getExternalStorageDirectory();
+          final String path = '${extDir?.path ?? ""}/records';
 
-    if (result != null && result.files.single.path != null) {
-      return result.files.single.path;
+          final Directory dir = Directory(path);
+          if (!dir.existsSync()) {
+            await dir.create(recursive: true);
+          }
+
+          final List<FileSystemEntity> entities = appDocDir.listSync(
+            recursive: true,
+          );
+
+          for (final FileSystemEntity entity in entities) {
+            if (entity is File && entity.path.endsWith('.pgn')) {
+              final String newPath = entity.path.replaceAll(appDocPath, path);
+              final File newFile = File(newPath);
+
+              if (!newFile.existsSync()) {
+                await newFile.create(recursive: true);
+                await entity.copy(newPath);
+              }
+
+              await entity.delete();
+            }
+          }
+        } catch (e) {
+          logger.e('$_logTag Error migrating files: $e');
+        }
+      }
+
+      // Return null - mobile platforms should use SavedGamesPage for browsing
+      return null;
+    } else {
+      // On desktop platforms, use FilePicker with last saved directory
+      if (!context.mounted) {
+        return null;
+      }
+
+      final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: <String>['pgn'],
+        initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
+      );
+
+      if (result != null && result.files.single.path != null) {
+        return result.files.single.path;
+      }
+
+      return null;
     }
-
-    return null;
   }
 
   /// Saves the game to the file.
@@ -137,58 +171,21 @@ class LoadService {
       return null;
     }
 
-    // Generate content first before calling getFilePath
-    final String content = ImportService.addTagPairs(
-      GameController().gameRecorder.moveHistoryText,
-    );
-
-    // On mobile platforms, provide bytes to FilePicker for automatic saving
-    // On desktop platforms, we'll save manually after getting the path
-    final bool isMobilePlatform =
-        !kIsWeb && (Platform.isAndroid || Platform.isIOS);
-    final Uint8List? contentBytes = isMobilePlatform
-        ? Uint8List.fromList(utf8.encode(content))
-        : null;
-
-    final String? filename = await getFilePath(context, bytes: contentBytes);
+    final String? filename = await getFilePath(context);
 
     if (filename == null) {
       safePop();
       return null;
     }
 
-    // Save the directory path for next time
+    // Save the directory path for next time (desktop only)
     _saveLastPgnDirectory(filename);
 
-    // On Android/iOS with bytes provided, file is already saved by FilePicker
-    // On desktop platforms, we need to write the file manually
-    if (!isMobilePlatform) {
-      if (filename.startsWith('content://')) {
-        // Handle content:// URIs via platform channel (should not happen on desktop)
-        final bool success = await writeContentUri(
-          Uri.parse(filename),
-          content,
-        );
-
-        if (!success) {
-          if (!context.mounted) {
-            return null;
-          }
-          // TODO: Add saveFailed localization string
-          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            S.of(context).loadFailed,
-          );
-          if (shouldPop) {
-            safePop();
-          }
-          return null;
-        }
-      } else {
-        // Use regular file I/O for desktop filesystem paths
-        final File file = File(filename);
-        await file.writeAsString(content);
-      }
-    }
+    // Write file content
+    final File file = File(filename);
+    await file.writeAsString(
+      ImportService.addTagPairs(GameController().gameRecorder.moveHistoryText),
+    );
 
     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
       "$strGameSavedTo $filename",
@@ -462,5 +459,57 @@ class LoadService {
       rethrow;
     }
     return str;
+  }
+
+  /// Shows a text input dialog for entering filename on mobile platforms.
+  static Future<String?> _showTextInputDialog(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final String formattedDate =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_'
+        '${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
+
+    final TextEditingController textFieldController = SafeTextEditingController(
+      text: formattedDate,
+    );
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            S.of(context).filename,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
+          ),
+          content: TextField(
+            controller: textFieldController,
+            decoration: const InputDecoration(suffixText: ".pgn"),
+            autofocus: true,
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text(
+                S.of(context).cancel,
+                style: TextStyle(
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: Text(
+                S.of(context).ok,
+                style: TextStyle(
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context, textFieldController.text),
+            ),
+          ],
+        );
+      },
+      barrierDismissible: false,
+    );
   }
 }
