@@ -235,14 +235,23 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     try {
       // First, try to use the last saved directory if it exists
       final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+      debugPrint('[SavedGamesPage] lastPgnSaveDirectory: "$lastDirectory"');
+
       if (lastDirectory.isNotEmpty) {
         final Directory lastDir = Directory(lastDirectory);
-        if (lastDir.existsSync()) {
+        final bool exists = lastDir.existsSync();
+        debugPrint('[SavedGamesPage] Directory exists: $exists');
+
+        if (exists) {
+          debugPrint(
+            '[SavedGamesPage] Using last saved directory: $lastDirectory',
+          );
           return lastDir;
         }
       }
 
       // Fallback to default records directory
+      debugPrint('[SavedGamesPage] Falling back to default records directory');
       Directory? base;
       if (!kIsWeb && Platform.isAndroid) {
         base = await getExternalStorageDirectory();
@@ -256,8 +265,10 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (!records.existsSync()) {
         records.createSync(recursive: true);
       }
+      debugPrint('[SavedGamesPage] Using records directory: ${records.path}');
       return records;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[SavedGamesPage] Error: $e');
       return null;
     }
   }

@@ -35,7 +35,6 @@ import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/native_methods.dart';
-import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/array_helpers/array_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';

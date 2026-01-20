@@ -284,8 +284,11 @@ class LoadService {
   /// Saves the directory path of the given file path.
   static void _saveLastPgnDirectory(String filePath) {
     try {
+      logger.i('$_logTag _saveLastPgnDirectory called with: $filePath');
+
       // Skip saving for content:// URIs (platform-managed, no filesystem path).
       if (filePath.startsWith('content://')) {
+        logger.i('$_logTag Skipping content:// URI');
         return;
       }
 
@@ -304,8 +307,15 @@ class LoadService {
         }
       }
 
+      // Convert Android SAF document path to real filesystem path.
+      // e.g., /document/primary:Download/... -> /storage/emulated/0/Download/...
+      localPath = _convertDocumentPathToFilesystemPath(localPath);
+
       final String directoryPath = File(localPath).parent.path;
+      logger.i('$_logTag Extracted directory: $directoryPath');
+
       if (directoryPath.isEmpty) {
+        logger.w('$_logTag Directory path is empty, not saving');
         return;
       }
 
@@ -313,9 +323,21 @@ class LoadService {
       DB().generalSettings = DB().generalSettings.copyWith(
         lastPgnSaveDirectory: directoryPath,
       );
+      logger.i('$_logTag Saved lastPgnSaveDirectory: $directoryPath');
     } catch (e) {
       logger.e('$_logTag Error saving last PGN directory: $e');
     }
+  }
+
+  /// Converts Android SAF document path to real filesystem path.
+  /// e.g., /document/primary:Download/1/104 -> /storage/emulated/0/Download/1/104
+  static String _convertDocumentPathToFilesystemPath(String path) {
+    // Handle Android SAF document paths like /document/primary:Download/...
+    if (path.startsWith('/document/primary:')) {
+      final String relativePath = path.substring('/document/primary:'.length);
+      return '/storage/emulated/0/$relativePath';
+    }
+    return path;
   }
 
   static String? extractPgnFilenamePrefix(String path) {
