@@ -289,27 +289,35 @@ class LoadService {
   /// Saves the directory path of the given file path.
   static void _saveLastPgnDirectory(String filePath) {
     try {
-      // Skip saving for content:// URIs and file:// URIs
-      if (filePath.startsWith('content://') || filePath.startsWith('file://')) {
+      // Skip saving for content:// URIs (platform-managed, no filesystem path).
+      if (filePath.startsWith('content://')) {
         return;
       }
 
-      final String decodedPath;
-      if (filePath.startsWith("/")) {
-        decodedPath = filePath;
+      // Normalize to a filesystem path (supports Windows '\' paths and file:// URIs).
+      String localPath = filePath;
+      if (localPath.startsWith('file://')) {
+        localPath = Uri.parse(localPath).toFilePath();
       } else {
-        decodedPath = Uri.decodeComponent(filePath);
+        // Only decode when it actually looks like an encoded path.
+        if (localPath.contains('%')) {
+          try {
+            localPath = Uri.decodeFull(localPath);
+          } catch (_) {
+            // Keep original if decoding fails.
+          }
+        }
       }
 
-      // Extract directory path
-      final int lastIndex = decodedPath.lastIndexOf('/');
-      if (lastIndex != -1) {
-        final String directoryPath = decodedPath.substring(0, lastIndex);
-        // Save to settings
-        DB().generalSettings = DB().generalSettings.copyWith(
-          lastPgnSaveDirectory: directoryPath,
-        );
+      final String directoryPath = File(localPath).parent.path;
+      if (directoryPath.isEmpty) {
+        return;
       }
+
+      // Save to settings
+      DB().generalSettings = DB().generalSettings.copyWith(
+        lastPgnSaveDirectory: directoryPath,
+      );
     } catch (e) {
       logger.e('$_logTag Error saving last PGN directory: $e');
     }
@@ -319,21 +327,19 @@ class LoadService {
     // Check if the string ends with '.pgn'
     if (path.toLowerCase().endsWith('.pgn')) {
       try {
-        // Decode the entire URI before extraction
-        final String decodedPath;
-        if (path.startsWith("/")) {
-          decodedPath = path;
-        } else {
-          decodedPath = Uri.decodeComponent(path);
+        // Decode the entire URI before extraction.
+        String decodedPath = path;
+        if (decodedPath.startsWith('file://')) {
+          decodedPath = Uri.parse(decodedPath).toFilePath();
+        } else if (!decodedPath.startsWith("/")) {
+          decodedPath = Uri.decodeComponent(decodedPath);
         }
 
-        // Find the last index of '/'
-        final int lastIndex = decodedPath.lastIndexOf('/');
-        if (lastIndex == -1) {
-          return decodedPath.substring(0, decodedPath.length - 4);
+        final String filename = decodedPath.split(RegExp(r'[\\/]+')).last;
+        if (!filename.toLowerCase().endsWith('.pgn')) {
+          return null;
         }
-        // Extract the substring from the character after '/' to the start of '.pgn'
-        return decodedPath.substring(lastIndex + 1, decodedPath.length - 4);
+        return filename.substring(0, filename.length - 4);
       } catch (e) {
         // In case of any error, return null
         return null;
