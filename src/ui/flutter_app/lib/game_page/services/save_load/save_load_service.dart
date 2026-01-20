@@ -91,9 +91,12 @@ class LoadService {
       return null;
     }
 
+    final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: <String>['pgn'],
+      initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
     );
 
     if (result != null && result.files.single.path != null) {
@@ -269,6 +272,9 @@ class LoadService {
     GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
       filePath,
     );
+
+    // Save the directory path for next time
+    _saveLastPgnDirectory(filePath);
 
     // Delay to show the tip after the navigation tip is shown
     if (GameController().loadedGameFilenamePrefix != null) {
