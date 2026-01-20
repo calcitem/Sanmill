@@ -641,6 +641,86 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     }
   }
 
+  /// Batch import PGN files from a zip archive
+  Future<void> _batchImportFromZip() async {
+    try {
+      // Use FilePicker to select a zip file
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: <String>['zip'],
+      );
+
+      if (result == null || result.files.single.path == null) {
+        return;
+      }
+
+      final String zipPath = result.files.single.path!;
+      final File zipFile = File(zipPath);
+
+      if (!zipFile.existsSync()) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context).error('File not found'))),
+          );
+        }
+        return;
+      }
+
+      // Read and decode the zip file
+      final List<int> zipBytes = await zipFile.readAsBytes();
+      final Archive archive = ZipDecoder().decodeBytes(zipBytes);
+
+      // Get the records directory
+      final Directory? recordsDir = await _recordsDirectory();
+      if (recordsDir == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).error('Records directory not found')),
+            ),
+          );
+        }
+        return;
+      }
+
+      int importedCount = 0;
+
+      // Extract all PGN files from the archive
+      for (final ArchiveFile file in archive) {
+        if (file.isFile && file.name.toLowerCase().endsWith('.pgn')) {
+          // Extract filename from path (in case zip contains directories)
+          final String filename = p.basename(file.name);
+          final String targetPath = p.join(recordsDir.path, filename);
+          final File targetFile = File(targetPath);
+
+          // Write the file content
+          final List<int> content = file.content as List<int>;
+          await targetFile.writeAsBytes(content);
+          importedCount++;
+        }
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${S.of(context).done}: $importedCount PGN files imported',
+            ),
+          ),
+        );
+
+        // Refresh the list to show newly imported files
+        _refresh();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).error(e.toString()))),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -656,6 +736,12 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
             icon: const Icon(Icons.folder_open),
             tooltip: S.of(context).loadGame,
             onPressed: _pickAndPreview,
+          ),
+          // Batch import button
+          IconButton(
+            icon: const Icon(Icons.file_upload),
+            tooltip: S.of(context).import,
+            onPressed: _batchImportFromZip,
           ),
           // Sort order button
           IconButton(
