@@ -16,9 +16,15 @@ class LoadService {
     BuildContext context, {
     Uint8List? bytes,
   }) async {
+    final DateTime now = DateTime.now();
+    final String formattedDate =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}_'
+        '${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
+    final String defaultFileName = '$formattedDate.pgn';
+
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: S.of(context).saveGame,
-      fileName: 'game.pgn',
+      fileName: defaultFileName,
       type: FileType.custom,
       allowedExtensions: <String>['pgn'],
       bytes: bytes,

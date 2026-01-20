@@ -567,8 +567,8 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                     style: TextStyle(
                       fontSize: 12,
                       color: DB().colorSettings.messageColor.withValues(
-                            alpha: 0.7,
-                          ),
+                        alpha: 0.7,
+                      ),
                     ),
                   ),
                 ],
