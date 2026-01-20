@@ -157,9 +157,6 @@ class LoadService {
       return null;
     }
 
-    logger.i('$_logTag saveGame got filename: $filename');
-    logger.i('$_logTag isMobilePlatform: $isMobilePlatform');
-
     // Save the directory path for next time
     _saveLastPgnDirectory(filename);
 
@@ -190,7 +187,6 @@ class LoadService {
         // Use regular file I/O for desktop filesystem paths
         final File file = File(filename);
         await file.writeAsString(content);
-        logger.i('$_logTag File written to: ${file.path}');
       }
     }
 
@@ -300,20 +296,14 @@ class LoadService {
   /// Saves the directory path of the given file path.
   static void _saveLastPgnDirectory(String filePath) {
     try {
-      logger.i('$_logTag _saveLastPgnDirectory called with: $filePath');
-
       // Skip on Android/iOS: SAF paths can't be enumerated via Directory.listSync()
       // due to Scoped Storage restrictions in Android 11+.
       if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-        logger.i(
-          '$_logTag Skipping on mobile platform (Scoped Storage limitation)',
-        );
         return;
       }
 
       // Skip saving for content:// URIs (platform-managed, no filesystem path).
       if (filePath.startsWith('content://')) {
-        logger.i('$_logTag Skipping content:// URI');
         return;
       }
 
@@ -333,10 +323,8 @@ class LoadService {
       }
 
       final String directoryPath = File(localPath).parent.path;
-      logger.i('$_logTag Extracted directory: $directoryPath');
 
       if (directoryPath.isEmpty) {
-        logger.w('$_logTag Directory path is empty, not saving');
         return;
       }
 
@@ -344,7 +332,6 @@ class LoadService {
       DB().generalSettings = DB().generalSettings.copyWith(
         lastPgnSaveDirectory: directoryPath,
       );
-      logger.i('$_logTag Saved lastPgnSaveDirectory: $directoryPath');
     } catch (e) {
       logger.e('$_logTag Error saving last PGN directory: $e');
     }

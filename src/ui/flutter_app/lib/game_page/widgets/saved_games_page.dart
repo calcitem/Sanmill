@@ -143,20 +143,11 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       return;
     }
 
-    final List<FileSystemEntity> allEntities = dir.listSync(recursive: true);
-    debugPrint(
-      '[SavedGamesPage] Total entities in directory: ${allEntities.length}',
-    );
-
-    final List<File> files = allEntities.whereType<File>().where((File f) {
-      final bool isPgn = f.path.toLowerCase().endsWith('.pgn');
-      if (isPgn) {
-        debugPrint('[SavedGamesPage] Found PGN file: ${f.path}');
-      }
-      return isPgn;
-    }).toList();
-
-    debugPrint('[SavedGamesPage] Total PGN files found: ${files.length}');
+    final List<File> files = dir
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((File f) => f.path.toLowerCase().endsWith('.pgn'))
+        .toList();
 
     files.sort((File a, File b) {
       final DateTime am = a.lastModifiedSync();
@@ -251,24 +242,17 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (!isMobilePlatform) {
         // On desktop platforms, try to use the last saved directory if it exists
         final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
-        debugPrint('[SavedGamesPage] lastPgnSaveDirectory: "$lastDirectory"');
 
         if (lastDirectory.isNotEmpty) {
           final Directory lastDir = Directory(lastDirectory);
-          final bool exists = lastDir.existsSync();
-          debugPrint('[SavedGamesPage] Directory exists: $exists');
 
-          if (exists) {
-            debugPrint(
-              '[SavedGamesPage] Using last saved directory: $lastDirectory',
-            );
+          if (lastDir.existsSync()) {
             return lastDir;
           }
         }
       }
 
       // Fallback to default records directory
-      debugPrint('[SavedGamesPage] Using default records directory');
       Directory? base;
       if (!kIsWeb && Platform.isAndroid) {
         base = await getExternalStorageDirectory();
@@ -282,10 +266,8 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (!records.existsSync()) {
         records.createSync(recursive: true);
       }
-      debugPrint('[SavedGamesPage] Records directory: ${records.path}');
       return records;
-    } catch (e) {
-      debugPrint('[SavedGamesPage] Error: $e');
+    } catch (_) {
       return null;
     }
   }
