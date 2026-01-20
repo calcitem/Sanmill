@@ -18,6 +18,34 @@ class AnimationManager {
     _initPickUpAnimation();
     _initPutDownAnimation();
     _setupStatusListeners();
+    _syncAnimationStateWithGame();
+  }
+
+  /// Synchronize animation state with the current game state.
+  ///
+  /// This handles the case where AnimationManager is recreated (e.g., due to
+  /// widget rebuild) while a game is in progress. Without this, animation
+  /// values default to 0.0, which can cause pieces to be drawn at incorrect
+  /// positions (e.g., at board corners) if focusIndex is still set from a
+  /// previous move.
+  void _syncAnimationStateWithGame() {
+    final int? focusIndex = GameController().gameInstance.focusIndex;
+    final int? blurIndex = GameController().gameInstance.blurIndex;
+
+    // If there's a focusIndex but no ongoing animation (indicated by blurIndex
+    // being null for place, or both being set for move), the animations should
+    // be in their completed state (value = 1.0).
+    if (focusIndex != null) {
+      // For placing phase: focusIndex set, blurIndex null means place completed
+      if (blurIndex == null) {
+        _placeAnimationController.value = 1.0;
+        _putDownAnimationController.value = 1.0;
+      } else {
+        // For moving phase: both set means move completed
+        _moveAnimationController.value = 1.0;
+        _putDownAnimationController.value = 1.0;
+      }
+    }
   }
 
   final TickerProvider vsync;
