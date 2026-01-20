@@ -186,16 +186,11 @@ class LoadService {
       safePop();
     }
 
-    // Wait for the dialog to disappear before taking a screenshot
-    Future<void>.delayed(const Duration(milliseconds: 500), () {
-      ScreenshotService.takeScreenshot("records", "$filename.jpg");
-
-      if (GameController().loadedGameFilenamePrefix != null) {
-        GameController().headerTipNotifier.showTip(
-          GameController().loadedGameFilenamePrefix!,
-        );
-      }
-    });
+    if (GameController().loadedGameFilenamePrefix != null) {
+      GameController().headerTipNotifier.showTip(
+        GameController().loadedGameFilenamePrefix!,
+      );
+    }
 
     return filename;
   }
