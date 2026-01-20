@@ -233,6 +233,16 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   /// Determine the records directory. Mirrors LoadService behavior.
   Future<Directory?> _recordsDirectory() async {
     try {
+      // First, try to use the last saved directory if it exists
+      final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+      if (lastDirectory.isNotEmpty) {
+        final Directory lastDir = Directory(lastDirectory);
+        if (lastDir.existsSync()) {
+          return lastDir;
+        }
+      }
+
+      // Fallback to default records directory
       Directory? base;
       if (!kIsWeb && Platform.isAndroid) {
         base = await getExternalStorageDirectory();
@@ -527,9 +537,12 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   Future<void> _pickAndPreview() async {
     try {
+      final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>['pgn'],
+        initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
       );
 
       if (result == null || result.files.single.path == null) {
