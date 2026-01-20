@@ -143,11 +143,20 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       return;
     }
 
-    final List<File> files = dir
-        .listSync(recursive: true)
-        .whereType<File>()
-        .where((File f) => f.path.toLowerCase().endsWith('.pgn'))
-        .toList();
+    final List<FileSystemEntity> allEntities = dir.listSync(recursive: true);
+    debugPrint(
+      '[SavedGamesPage] Total entities in directory: ${allEntities.length}',
+    );
+
+    final List<File> files = allEntities.whereType<File>().where((File f) {
+      final bool isPgn = f.path.toLowerCase().endsWith('.pgn');
+      if (isPgn) {
+        debugPrint('[SavedGamesPage] Found PGN file: ${f.path}');
+      }
+      return isPgn;
+    }).toList();
+
+    debugPrint('[SavedGamesPage] Total PGN files found: ${files.length}');
 
     files.sort((File a, File b) {
       final DateTime am = a.lastModifiedSync();
@@ -233,25 +242,33 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   /// Determine the records directory. Mirrors LoadService behavior.
   Future<Directory?> _recordsDirectory() async {
     try {
-      // First, try to use the last saved directory if it exists
-      final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
-      debugPrint('[SavedGamesPage] lastPgnSaveDirectory: "$lastDirectory"');
+      // On Android/iOS, always use the app's private records directory.
+      // User-selected directories (via SAF) cannot be enumerated with
+      // Directory.listSync() due to Scoped Storage restrictions in Android 11+.
+      final bool isMobilePlatform =
+          !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
-      if (lastDirectory.isNotEmpty) {
-        final Directory lastDir = Directory(lastDirectory);
-        final bool exists = lastDir.existsSync();
-        debugPrint('[SavedGamesPage] Directory exists: $exists');
+      if (!isMobilePlatform) {
+        // On desktop platforms, try to use the last saved directory if it exists
+        final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+        debugPrint('[SavedGamesPage] lastPgnSaveDirectory: "$lastDirectory"');
 
-        if (exists) {
-          debugPrint(
-            '[SavedGamesPage] Using last saved directory: $lastDirectory',
-          );
-          return lastDir;
+        if (lastDirectory.isNotEmpty) {
+          final Directory lastDir = Directory(lastDirectory);
+          final bool exists = lastDir.existsSync();
+          debugPrint('[SavedGamesPage] Directory exists: $exists');
+
+          if (exists) {
+            debugPrint(
+              '[SavedGamesPage] Using last saved directory: $lastDirectory',
+            );
+            return lastDir;
+          }
         }
       }
 
       // Fallback to default records directory
-      debugPrint('[SavedGamesPage] Falling back to default records directory');
+      debugPrint('[SavedGamesPage] Using default records directory');
       Directory? base;
       if (!kIsWeb && Platform.isAndroid) {
         base = await getExternalStorageDirectory();
@@ -265,7 +282,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (!records.existsSync()) {
         records.createSync(recursive: true);
       }
-      debugPrint('[SavedGamesPage] Using records directory: ${records.path}');
+      debugPrint('[SavedGamesPage] Records directory: ${records.path}');
       return records;
     } catch (e) {
       debugPrint('[SavedGamesPage] Error: $e');
@@ -548,7 +565,12 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
   Future<void> _pickAndPreview() async {
     try {
-      final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+      // On desktop platforms, use last saved directory as initial directory
+      final bool isMobilePlatform =
+          !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+      final String lastDirectory = isMobilePlatform
+          ? ''
+          : DB().generalSettings.lastPgnSaveDirectory;
 
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,

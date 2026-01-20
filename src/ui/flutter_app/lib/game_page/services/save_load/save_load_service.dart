@@ -22,7 +22,13 @@ class LoadService {
         '${now.hour.toString().padLeft(2, '0')}-${now.minute.toString().padLeft(2, '0')}-${now.second.toString().padLeft(2, '0')}';
     final String defaultFileName = '$formattedDate.pgn';
 
-    final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+    // On desktop platforms, use last saved directory as initial directory.
+    // On mobile, don't set initialDirectory (SAF limitation).
+    final bool isMobilePlatform =
+        !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+    final String lastDirectory = isMobilePlatform
+        ? ''
+        : DB().generalSettings.lastPgnSaveDirectory;
 
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: S.of(context).saveGame,
@@ -91,7 +97,13 @@ class LoadService {
       return null;
     }
 
-    final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
+    // On desktop platforms, use last saved directory as initial directory.
+    // On mobile, don't set initialDirectory (SAF limitation).
+    final bool isMobilePlatform =
+        !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+    final String lastDirectory = isMobilePlatform
+        ? ''
+        : DB().generalSettings.lastPgnSaveDirectory;
 
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -145,6 +157,9 @@ class LoadService {
       return null;
     }
 
+    logger.i('$_logTag saveGame got filename: $filename');
+    logger.i('$_logTag isMobilePlatform: $isMobilePlatform');
+
     // Save the directory path for next time
     _saveLastPgnDirectory(filename);
 
@@ -175,6 +190,7 @@ class LoadService {
         // Use regular file I/O for desktop filesystem paths
         final File file = File(filename);
         await file.writeAsString(content);
+        logger.i('$_logTag File written to: ${file.path}');
       }
     }
 
@@ -286,6 +302,15 @@ class LoadService {
     try {
       logger.i('$_logTag _saveLastPgnDirectory called with: $filePath');
 
+      // Skip on Android/iOS: SAF paths can't be enumerated via Directory.listSync()
+      // due to Scoped Storage restrictions in Android 11+.
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+        logger.i(
+          '$_logTag Skipping on mobile platform (Scoped Storage limitation)',
+        );
+        return;
+      }
+
       // Skip saving for content:// URIs (platform-managed, no filesystem path).
       if (filePath.startsWith('content://')) {
         logger.i('$_logTag Skipping content:// URI');
@@ -307,10 +332,6 @@ class LoadService {
         }
       }
 
-      // Convert Android SAF document path to real filesystem path.
-      // e.g., /document/primary:Download/... -> /storage/emulated/0/Download/...
-      localPath = _convertDocumentPathToFilesystemPath(localPath);
-
       final String directoryPath = File(localPath).parent.path;
       logger.i('$_logTag Extracted directory: $directoryPath');
 
@@ -327,17 +348,6 @@ class LoadService {
     } catch (e) {
       logger.e('$_logTag Error saving last PGN directory: $e');
     }
-  }
-
-  /// Converts Android SAF document path to real filesystem path.
-  /// e.g., /document/primary:Download/1/104 -> /storage/emulated/0/Download/1/104
-  static String _convertDocumentPathToFilesystemPath(String path) {
-    // Handle Android SAF document paths like /document/primary:Download/...
-    if (path.startsWith('/document/primary:')) {
-      final String relativePath = path.substring('/document/primary:'.length);
-      return '/storage/emulated/0/$relativePath';
-    }
-    return path;
   }
 
   static String? extractPgnFilenamePrefix(String path) {
