@@ -440,8 +440,23 @@ class GameRecorder {
         }
       }
 
-      // Write the move notation
-      sb.write(move.notation);
+      // Write the move notation.
+      //
+      // If a variation starts with a remove move (e.g. "(xd1 ...)"), it is a
+      // shorthand for "same base move, different remove target". Most PGN
+      // consumers (and older Sanmill versions) treat a standalone remove token
+      // as an illegal full move. To make exported PGN self-contained and
+      // round-trippable, expand it to "base+remove" (e.g. "(f4-g4xd1 ...)").
+      String notationToWrite = move.notation;
+      if (isFirstMove && move.type == MoveType.remove) {
+        final ExtMove? parentMove = current.parent?.data;
+        if (parentMove != null &&
+            (parentMove.type == MoveType.place ||
+                parentMove.type == MoveType.move)) {
+          notationToWrite = '${parentMove.notation}$notationToWrite';
+        }
+      }
+      sb.write(notationToWrite);
 
       // Write NAG symbols
       if (move.nags != null && move.nags!.isNotEmpty) {

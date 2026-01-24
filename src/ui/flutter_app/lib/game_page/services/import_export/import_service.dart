@@ -258,6 +258,9 @@ class ImportService {
       };
 
       ml = processOutsideBrackets(ml, replacements);
+      // Expand shorthand capture-only alternatives in variations, e.g.
+      // "f4-g4xe4 (xd1 ...)" -> "f4-g4xe4 (f4-g4xd1 ...)".
+      ml = expandShorthandCaptureVariations(ml);
       _importPgn(ml);
     } catch (e) {
       // Log the specific error for debugging

@@ -104,3 +104,113 @@ String removeTagPairs(String pgn) {
   // Extract the substring after the last ']' and trim leading whitespace
   return pgn.substring(lastBracketPos + 1).trimLeft();
 }
+
+/// Expand shorthand capture-only alternatives in PGN variations.
+///
+/// Some move lists (often copied from analysis tools) abbreviate an alternative
+/// remove target after a combined move by writing only the remove part in the
+/// variation, for example:
+///
+/// - Mainline: `f4-g4xe4`
+/// - Variation: `(xd1 ...)`  (meaning: `(f4-g4xd1 ...)`)
+///
+/// Sanmill encodes remove actions as standalone moves (e.g. `xd1`). When the
+/// move list is parsed as PGN, a standalone `xd1` at the start of a variation
+/// is treated as a full move and is usually illegal (because no removal is
+/// pending). This helper expands the shorthand to a full combined token so the
+/// importer can replay the variation correctly.
+String expandShorthandCaptureVariations(String pgnText) {
+  // Keep this tokenization in sync with `pgn.dart` so indices align.
+  final RegExp tokenRegex = RegExp(
+    r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
+    r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2',
+  );
+
+  final Iterable<RegExpMatch> matches = tokenRegex.allMatches(pgnText);
+  if (matches.isEmpty) {
+    return pgnText;
+  }
+
+  bool isMoveToken(String token) {
+    if (token == 'p') {
+      return true;
+    }
+    if (token.startsWith('x')) {
+      return true;
+    }
+    final int c = token.codeUnitAt(0);
+    return c >= 97 && c <= 103; // 'a'..'g'
+  }
+
+  String? basePrefixFromMoveToken(String moveToken) {
+    final int firstX = moveToken.indexOf('x');
+    if (firstX > 0) {
+      return moveToken.substring(0, firstX);
+    }
+    return null;
+  }
+
+  // Track the most recent move token in the current parentheses scope.
+  String? lastMoveToken;
+  // Restore lastMoveToken when leaving a variation.
+  final List<String?> lastMoveTokenStack = <String?>[];
+  // For each active '(' scope, store a pending base prefix that should only be
+  // considered for the FIRST move token inside that scope.
+  final List<String?> pendingPrefixStack = <String?>[];
+
+  final StringBuffer out = StringBuffer();
+  int lastIndex = 0;
+
+  for (final RegExpMatch match in matches) {
+    final String token = match.group(0)!;
+
+    // Preserve original spacing / text between tokens.
+    out.write(pgnText.substring(lastIndex, match.start));
+
+    if (token == '(') {
+      // Enter a variation: save the current move-token context so we can restore
+      // it on ')'. Determine the base prefix from the move token right before '('.
+      lastMoveTokenStack.add(lastMoveToken);
+      pendingPrefixStack.add(
+        lastMoveToken == null ? null : basePrefixFromMoveToken(lastMoveToken),
+      );
+      out.write(token);
+    } else if (token == ')') {
+      // Exit a variation: restore the parent context.
+      out.write(token);
+      if (pendingPrefixStack.isNotEmpty) {
+        pendingPrefixStack.removeLast();
+      }
+      if (lastMoveTokenStack.isNotEmpty) {
+        lastMoveToken = lastMoveTokenStack.removeLast();
+      }
+    } else {
+      // If we're at the start of the current variation scope, and the first move
+      // token is capture-only (starts with 'x'), prefix it with the base segment
+      // of the move that the variation is an alternative to.
+      if (pendingPrefixStack.isNotEmpty) {
+        final String? pendingBase = pendingPrefixStack.last;
+        if (pendingBase != null && isMoveToken(token)) {
+          if (token.startsWith('x')) {
+            out.write(pendingBase);
+          }
+          // Consume pending prefix once the first move token is seen (either used
+          // or discarded if the variation starts with a normal move).
+          pendingPrefixStack[pendingPrefixStack.length - 1] = null;
+        }
+      }
+
+      out.write(token);
+
+      if (isMoveToken(token)) {
+        lastMoveToken = token;
+      }
+    }
+
+    lastIndex = match.end;
+  }
+
+  // Append trailing text after the last token.
+  out.write(pgnText.substring(lastIndex));
+  return out.toString();
+}

@@ -11,7 +11,7 @@ Usage:
 Options:
     --check-only    Only check for issues without fixing them
     --file FILE     Only process the specified ARB file
-    
+
 Example:
     python fix_arb_placeholders.py                    # Fix all ARB files
     python fix_arb_placeholders.py --check-only       # Check all files
@@ -49,14 +49,14 @@ def save_arb_file(file_path, data):
 def find_keys_with_missing_metadata(arb_data):
     """Find keys that have placeholders but missing or empty metadata."""
     problematic_keys = []
-    
+
     for key in arb_data:
         if key.startswith('@'):
             continue
-        
+
         meta_key = '@' + key
         text = str(arb_data[key])
-        
+
         # Check if text has placeholders
         if '{' in text and '}' in text:
             # Check if metadata is missing or empty
@@ -70,7 +70,7 @@ def find_keys_with_missing_metadata(arb_data):
                 placeholders = re.findall(r'\{(\w+)(?:,|\})', text)
                 if placeholders:
                     problematic_keys.append(key)
-    
+
     return problematic_keys
 
 
@@ -79,15 +79,15 @@ def fix_arb_file(file_path, en_data, check_only=False):
     arb_data = load_arb_file(file_path)
     if arb_data is None:
         return False
-    
+
     problematic_keys = find_keys_with_missing_metadata(arb_data)
-    
+
     if not problematic_keys:
         print(f"  [OK] No issues found")
         return True
-    
+
     print(f"  Found {len(problematic_keys)} keys with missing metadata:")
-    
+
     if check_only:
         for key in problematic_keys[:10]:
             text = str(arb_data[key])[:60]
@@ -95,12 +95,12 @@ def fix_arb_file(file_path, en_data, check_only=False):
         if len(problematic_keys) > 10:
             print(f"    ... and {len(problematic_keys) - 10} more")
         return False
-    
+
     # Fix the issues
     fixed_count = 0
     for key in problematic_keys:
         meta_key = '@' + key
-        
+
         # Copy metadata from English file if available
         if meta_key in en_data and en_data[meta_key] != {}:
             arb_data[meta_key] = en_data[meta_key]
@@ -108,7 +108,7 @@ def fix_arb_file(file_path, en_data, check_only=False):
             print(f"    [+] Fixed: {key}")
         else:
             print(f"    [-] No metadata in English file for: {key}")
-    
+
     if fixed_count > 0:
         if save_arb_file(file_path, arb_data):
             print(f"  [OK] Successfully fixed {fixed_count} keys")
@@ -135,21 +135,21 @@ def main():
         type=str,
         help='Only process the specified ARB file'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Get script directory
     script_dir = Path(__file__).parent
-    
+
     # Load English ARB file as reference
     en_file = script_dir / 'intl_en.arb'
     print(f"Loading reference file: {en_file}")
     en_data = load_arb_file(en_file)
-    
+
     if en_data is None:
         print("Error: Cannot load English ARB file")
         sys.exit(1)
-    
+
     # Get list of ARB files to process
     if args.file:
         arb_files = [script_dir / args.file]
@@ -160,9 +160,9 @@ def main():
         # Process all ARB files except English
         arb_files = sorted(script_dir.glob('intl_*.arb'))
         arb_files = [f for f in arb_files if f.name != 'intl_en.arb']
-    
+
     print(f"\n{'Checking' if args.check_only else 'Processing'} {len(arb_files)} ARB file(s)...\n")
-    
+
     # Process each file
     results = {}
     for arb_file in arb_files:
@@ -170,25 +170,25 @@ def main():
         success = fix_arb_file(arb_file, en_data, args.check_only)
         results[arb_file.name] = success
         print()
-    
+
     # Print summary
     print("=" * 60)
     print("SUMMARY")
     print("=" * 60)
-    
+
     ok_files = [f for f, s in results.items() if s]
     issue_files = [f for f, s in results.items() if not s]
-    
+
     if ok_files:
         print(f"\n[OK] Valid files ({len(ok_files)}):")
         for f in ok_files:
             print(f"  - {f}")
-    
+
     if issue_files:
         print(f"\n[ISSUES] Files with issues ({len(issue_files)}):")
         for f in issue_files:
             print(f"  - {f}")
-        
+
         if args.check_only:
             print("\nRun without --check-only to fix the issues.")
             sys.exit(1)
@@ -197,7 +197,7 @@ def main():
             print("\n[SUCCESS] All files processed successfully!")
         else:
             print("\n[SUCCESS] All files are valid!")
-    
+
     print()
 
 
