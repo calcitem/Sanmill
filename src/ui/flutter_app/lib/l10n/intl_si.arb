@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "ඊළඟ ශාඛා ලක්ෂ්‍යයක් නැත",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "විචල්‍යතා අනාවරණය විය",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "චලන ලැයිස්තුවේ විචල්‍යතා අඩංගුය.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "විචල්‍යතා ඇතුළත් කරන්නද?",
+    "@includeVariations": {},
+    "includeVariationsYes": "ඔව්, විචල්‍යතා ඇතුළත් කරන්න",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "නැත, ප්‍රධාන රේඛාව පමණයි",
+    "@includeVariationsNo": {}
 }

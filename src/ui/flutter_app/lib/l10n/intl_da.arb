@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Intet næste forgreningspunkt",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variationer opdaget",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Træklisten indeholder variationer.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Inkluder variationer?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ja, inkluder variationer",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nej, kun hovedlinjen",
+    "@includeVariationsNo": {}
 }

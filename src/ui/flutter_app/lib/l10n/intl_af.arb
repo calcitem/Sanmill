@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Geen volgende vertakpunt",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variasies opgespoor",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Die skuiflys bevat variasies.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Sluit variasies in?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ja, sluit variasies in",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nee, slegs hooflijn",
+    "@includeVariationsNo": {}
 }

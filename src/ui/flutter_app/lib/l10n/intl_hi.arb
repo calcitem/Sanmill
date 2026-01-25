@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "कोई अगला शाखा बिंदु नहीं",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "भिन्नताएं पाई गईं",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "चाल सूची में भिन्नताएं हैं।",
+    "@moveListContainsVariations": {},
+    "includeVariations": "भिन्नताएं शामिल करें?",
+    "@includeVariations": {},
+    "includeVariationsYes": "हां, भिन्नताएं शामिल करें",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "नहीं, केवल मुख्य लाइन",
+    "@includeVariationsNo": {}
 }

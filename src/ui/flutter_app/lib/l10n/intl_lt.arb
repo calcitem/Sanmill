@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Nėra kito šakojimosi taško",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Aptiktos variacijos",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Ėjimų sąraše yra variacijų.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Įtraukti variacijas?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Taip, įtraukti variacijas",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Ne, tik pagrindinė linija",
+    "@includeVariationsNo": {}
 }

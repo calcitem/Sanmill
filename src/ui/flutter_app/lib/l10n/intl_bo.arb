@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "རྗེས་མའི་ཡལ་ག་ས་ཚིགས་མེད།",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "འགྱུར་བ་རྙེད་པ།",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "འགུལ་སྐྱོད་ཀྱི་ཐོ་ཡིག་ལ་འགྱུར་བ་ཡོད།",
+    "@moveListContainsVariations": {},
+    "includeVariations": "འགྱུར་བ་ཚུད་པ་བྱེད་དགོས་སམ།",
+    "@includeVariations": {},
+    "includeVariationsYes": "ཡིན་༎ འགྱུར་བ་ཚུད་པ་བྱེད།",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "མིན་༎ གཙོ་བོའི་ལམ་ཁོ་ན།",
+    "@includeVariationsNo": {}
 }

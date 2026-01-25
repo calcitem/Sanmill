@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Sin punto de ramificación siguiente",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variaciones detectadas",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "La lista de movimientos contiene variaciones.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "¿Incluir variaciones?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Sí, incluir variaciones",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "No, solo línea principal",
+    "@includeVariationsNo": {}
 }

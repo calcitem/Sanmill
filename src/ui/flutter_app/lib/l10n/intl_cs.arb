@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Žádný další bod větvení",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Zjištěny variace",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Seznam tahů obsahuje variace.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Zahrnout variace?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ano, zahrnout variace",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Ne, pouze hlavní linie",
+    "@includeVariationsNo": {}
 }

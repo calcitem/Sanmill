@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Ei seuraavaa haarautumispistettä",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variaatioita havaittu",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Siirtoluettelo sisältää variaatioita.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Sisällytä variaatiot?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Kyllä, sisällytä variaatiot",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Ei, vain päälinja",
+    "@includeVariationsNo": {}
 }

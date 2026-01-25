@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "తదుపరి శాఖ పాయింట్ లేదు",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "వైవిధ్యాలు గుర్తించబడ్డాయి",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "కదలిక జాబితా వైవిధ్యాలను కలిగి ఉంది.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "వైవిధ్యాలను చేర్చాలా?",
+    "@includeVariations": {},
+    "includeVariationsYes": "అవును, వైవిధ్యాలను చేర్చండి",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "కాదు, ప్రధాన రేఖ మాత్రమే",
+    "@includeVariationsNo": {}
 }

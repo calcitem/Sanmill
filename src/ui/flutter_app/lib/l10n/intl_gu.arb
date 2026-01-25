@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "કોઈ આગળનો શાખા બિંદુ નથી",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "વિવિધતા શોધી કાઢી",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "ચાલની સૂચિમાં વિવિધતાઓ છે.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "વિવિધતા શામેલ કરીએ?",
+    "@includeVariations": {},
+    "includeVariationsYes": "હા, વિવિધતા શામેલ કરો",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "ના, ફક્ત મુખ્ય રેખા",
+    "@includeVariationsNo": {}
 }

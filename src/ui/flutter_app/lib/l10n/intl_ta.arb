@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "அடுத்த கிளை புள்ளி இல்லை",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "மாறுபாடுகள் கண்டறியப்பட்டன",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "நகர்வுப் பட்டியலில் மாறுபாடுகள் உள்ளன.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "மாறுபாடுகளைச் சேர்க்கவா?",
+    "@includeVariations": {},
+    "includeVariationsYes": "ஆம், மாறுபாடுகளைச் சேர்",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "இல்லை, பிரதான வரி மட்டும்",
+    "@includeVariationsNo": {}
 }

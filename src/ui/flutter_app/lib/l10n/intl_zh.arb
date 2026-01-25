@@ -4033,5 +4033,15 @@
     "noNextBranchPoint": "没有下一个分支点",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "检测到变着",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "棋谱包含变着。",
+    "@moveListContainsVariations": {},
+    "includeVariations": "是否包含变着？",
+    "@includeVariations": {},
+    "includeVariationsYes": "是，包含变着",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "否，仅主线",
+    "@includeVariationsNo": {}
 }

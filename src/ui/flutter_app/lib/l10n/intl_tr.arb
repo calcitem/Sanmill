@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Sonraki dal noktası yok",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Varyasyonlar tespit edildi",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Hamle listesi varyasyonlar içeriyor.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Varyasyonlar dahil edilsin mi?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Evet, varyasyonları dahil et",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Hayır, sadece ana hat",
+    "@includeVariationsNo": {}
 }

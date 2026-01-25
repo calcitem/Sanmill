@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "نقطه شاخه‌بندی بعدی وجود ندارد",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "تنوع‌ها شناسایی شد",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "لیست حرکات شامل تنوع‌ها است.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "تنوع‌ها را شامل شود؟",
+    "@includeVariations": {},
+    "includeVariationsYes": "بله، تنوع‌ها را شامل کن",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "خیر، فقط خط اصلی",
+    "@includeVariationsNo": {}
 }

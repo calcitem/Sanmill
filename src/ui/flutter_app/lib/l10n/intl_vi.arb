@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Không có điểm rẽ nhánh tiếp theo",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Đã phát hiện biến thể",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Danh sách nước đi có chứa biến thể.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Bao gồm biến thể?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Có, bao gồm biến thể",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Không, chỉ đường chính",
+    "@includeVariationsNo": {}
 }

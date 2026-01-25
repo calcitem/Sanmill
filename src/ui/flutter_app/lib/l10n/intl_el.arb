@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Δεν υπάρχει επόμενο σημείο διακλάδωσης",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Εντοπίστηκαν παραλλαγές",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Η λίστα κινήσεων περιέχει παραλλαγές.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Συμπερίληψη παραλλαγών;",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ναι, συμπερίληψη παραλλαγών",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Όχι, μόνο κύρια γραμμή",
+    "@includeVariationsNo": {}
 }

@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Geen volgend vertakkingspunt",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variaties gedetecteerd",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "De zettenlijst bevat variaties.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Variaties opnemen?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ja, variaties opnemen",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nee, alleen hoofdlijn",
+    "@includeVariationsNo": {}
 }

@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Нет следующей точки ветвления",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Обнаружены варианты",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Список ходов содержит варианты.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Включить варианты?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Да, включить варианты",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Нет, только основная линия",
+    "@includeVariationsNo": {}
 }

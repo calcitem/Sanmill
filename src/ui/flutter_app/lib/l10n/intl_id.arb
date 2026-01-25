@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Tidak ada titik percabangan berikutnya",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variasi terdeteksi",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Daftar gerakan mengandung variasi.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Sertakan variasi?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ya, sertakan variasi",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Tidak, hanya garis utama",
+    "@includeVariationsNo": {}
 }

@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Няма следваща точка на разклонение",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Открити са вариации",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Списъкът с ходове съдържа вариации.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Да се включат ли вариациите?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Да, включи вариациите",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Не, само основна линия",
+    "@includeVariationsNo": {}
 }

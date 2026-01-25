@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "다음 분기점이 없습니다",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "변화가 감지됨",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "수순 목록에 변화가 포함되어 있습니다.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "변화를 포함하시겠습니까?",
+    "@includeVariations": {},
+    "includeVariationsYes": "예, 변화 포함",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "아니요, 본선만",
+    "@includeVariationsNo": {}
 }

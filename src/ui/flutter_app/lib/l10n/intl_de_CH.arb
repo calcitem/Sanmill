@@ -3309,5 +3309,15 @@
     "noNextBranchPoint": "Kein nächster Verzweigungspunkt",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Varianten erkannt",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Die Zugliste enthält Varianten.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Varianten einschliessen?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ja, Varianten einschliessen",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nein, nur Hauptlinie",
+    "@includeVariationsNo": {}
 }

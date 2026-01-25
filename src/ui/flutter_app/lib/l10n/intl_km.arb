@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "គ្មានចំណុចស្រាយបន្ទាប់",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "រកឃើញការប្រែប្រួល",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "បញ្ជីចលនាមានការប្រែប្រួល។",
+    "@moveListContainsVariations": {},
+    "includeVariations": "រួមបញ្ចូលការប្រែប្រួល?",
+    "@includeVariations": {},
+    "includeVariationsYes": "បាទ/ចាស រួមបញ្ចូលការប្រែប្រួល",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "ទេ គ្រាន់តែខ្សែបន្ទាត់ចម្បង",
+    "@includeVariationsNo": {}
 }

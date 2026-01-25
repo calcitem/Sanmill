@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "ಮುಂದಿನ ಶಾಖೆ ಬಿಂದು ಇಲ್ಲ",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "ವ್ಯತ್ಯಾಸಗಳು ಪತ್ತೆಯಾಗಿವೆ",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "ಚಲನೆ ಪಟ್ಟಿಯು ವ್ಯತ್ಯಾಸಗಳನ್ನು ಹೊಂದಿದೆ.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "ವ್ಯತ್ಯಾಸಗಳನ್ನು ಸೇರಿಸುವುದೇ?",
+    "@includeVariations": {},
+    "includeVariationsYes": "ಹೌದು, ವ್ಯತ್ಯಾಸಗಳನ್ನು ಸೇರಿಸಿ",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "ಇಲ್ಲ, ಮುಖ್ಯ ಮಾರ್ಗ ಮಾತ್ರ",
+    "@includeVariationsNo": {}
 }

@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Žiadny ďalší bod vetvenia",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Zistené variácie",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Zoznam ťahov obsahuje variácie.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Zahrnúť variácie?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Áno, zahrnúť variácie",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nie, len hlavná línia",
+    "@includeVariationsNo": {}
 }

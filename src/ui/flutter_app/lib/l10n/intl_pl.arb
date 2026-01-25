@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Brak następnego punktu rozgałęzienia",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Wykryto warianty",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Lista ruchów zawiera warianty.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Uwzględnić warianty?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Tak, uwzględnij warianty",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nie, tylko linia główna",
+    "@includeVariationsNo": {}
 }

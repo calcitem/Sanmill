@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Нема следна точка на гранење",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Откриени се варијации",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Листата на потези содржи варијации.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Да се вклучат варијациите?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Да, вклучи варијации",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Не, само главна линија",
+    "@includeVariationsNo": {}
 }

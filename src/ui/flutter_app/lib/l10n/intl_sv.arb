@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Ingen nästa förgreningspunkt",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variationer upptäckta",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Draglistan innehåller variationer.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Inkludera variationer?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ja, inkludera variationer",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nej, endast huvudlinje",
+    "@includeVariationsNo": {}
 }

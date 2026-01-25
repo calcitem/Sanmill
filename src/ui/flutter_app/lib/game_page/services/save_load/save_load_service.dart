@@ -153,6 +153,7 @@ class LoadService {
   }
 
   /// Saves the game to the file.
+  /// If the game contains variations, asks the user whether to include them.
   static Future<String?> saveGame(
     BuildContext context, {
     bool shouldPop = true,
@@ -162,12 +163,31 @@ class LoadService {
     }
 
     final String strGameSavedTo = S.of(context).gameSavedTo;
+    final String strExperimental = S.of(context).experimental;
+    final GameRecorder recorder = GameController().gameRecorder;
 
-    if (!(GameController().gameRecorder.activeNode?.parent != null ||
+    if (!(recorder.activeNode?.parent != null ||
         GameController().isPositionSetup == true)) {
       if (shouldPop) {
         Navigator.pop(context);
       }
+      return null;
+    }
+
+    // Check if the game has variations and ask user
+    String moveHistoryText = recorder.moveHistoryText;
+    bool includedVariations = false;
+    if (recorder.hasVariations()) {
+      final bool includeVariations =
+          await _showVariationsDialog(context) ?? false;
+      if (!includeVariations) {
+        moveHistoryText = recorder.moveHistoryTextWithoutVariations;
+      } else {
+        includedVariations = true;
+      }
+    }
+
+    if (!context.mounted) {
       return null;
     }
 
@@ -183,13 +203,13 @@ class LoadService {
 
     // Write file content
     final File file = File(filename);
-    await file.writeAsString(
-      ImportService.addTagPairs(GameController().gameRecorder.moveHistoryText),
-    );
+    await file.writeAsString(ImportService.addTagPairs(moveHistoryText));
 
-    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-      "$strGameSavedTo $filename",
-    );
+    // Show success message with experimental warning if variations included
+    final String message = includedVariations
+        ? '$strGameSavedTo $filename $strExperimental'
+        : '$strGameSavedTo $filename';
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(message);
 
     if (shouldPop) {
       safePop();
@@ -202,6 +222,38 @@ class LoadService {
     }
 
     return filename;
+  }
+
+  /// Shows a dialog asking the user whether to include variations.
+  /// Returns true if user wants to include variations, false if mainline only.
+  static Future<bool?> _showVariationsDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).variationsDetected),
+          content: Text(
+            '${S.of(context).moveListContainsVariations}\n\n'
+            '${S.of(context).includeVariations}',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).includeVariationsNo),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
+              child: Text(S.of(context).includeVariationsYes),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Main function to load game from a file.
@@ -246,12 +298,16 @@ class LoadService {
         if (!context.mounted) {
           return;
         }
-        final bool importSuccess = await importGameData(context, fileContent);
-        if (importSuccess) {
+        final ({bool success, bool includedVariations}) importResult =
+            await importGameData(context, fileContent);
+        if (importResult.success) {
           if (!context.mounted) {
             return;
           }
-          await handleHistoryNavigation(context);
+          await handleHistoryNavigation(
+            context,
+            includedVariations: importResult.includedVariations,
+          );
         }
         if (!context.mounted) {
           return;
@@ -379,12 +435,27 @@ class LoadService {
   }
 
   /// Import game data from file content.
-  static Future<bool> importGameData(
+  /// If the file contains variations, asks the user whether to include them.
+  /// Returns a record with (success, includedVariations).
+  static Future<({bool success, bool includedVariations})> importGameData(
     BuildContext context,
     String fileContent,
   ) async {
+    // Check if the file contains variations before importing
+    bool includeVariations = true;
+    bool includedVariations = false;
     try {
-      ImportService.import(fileContent);
+      if (_pgnContainsVariations(fileContent)) {
+        // Ask user whether to include variations
+        includeVariations = await _showVariationsDialog(context) ?? false;
+        includedVariations = includeVariations;
+      }
+
+      if (!context.mounted) {
+        return (success: false, includedVariations: false);
+      }
+
+      ImportService.import(fileContent, includeVariations: includeVariations);
       logger.t('$_logTag File Content: $fileContent');
       final String tagPairs = getTagPairs(fileContent);
 
@@ -394,20 +465,42 @@ class LoadService {
         );
       }
 
-      return true;
+      return (success: true, includedVariations: includedVariations);
     } catch (exception) {
       // Extract the specific error message instead of showing entire file content
       final String errorMessage = exception.toString();
-      final String tip = S.of(context).cannotImport(errorMessage);
+      final String errorMsg = S.of(context).cannotImport(errorMessage);
+      // Include experimental warning in error message if variations were selected
+      final String tip = includedVariations
+          ? '$errorMsg ${S.of(context).experimental}'
+          : errorMsg;
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
       GameController().headerTipNotifier.showTip(tip);
 
+      return (success: false, includedVariations: false);
+    }
+  }
+
+  /// Checks if the PGN text contains variations (without fully importing).
+  static bool _pgnContainsVariations(String text) {
+    try {
+      // Quick check: variations in PGN are denoted by parentheses
+      if (!text.contains('(')) {
+        return false;
+      }
+      // Parse the PGN to accurately detect variations
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(text);
+      return game.hasVariations();
+    } catch (_) {
       return false;
     }
   }
 
   /// Handle game history navigation.
-  static Future<void> handleHistoryNavigation(BuildContext context) async {
+  static Future<void> handleHistoryNavigation(
+    BuildContext context, {
+    bool includedVariations = false,
+  }) async {
     await HistoryNavigator.takeBackAll(context, pop: false);
 
     if (!context.mounted) {
@@ -420,12 +513,12 @@ class LoadService {
         return;
       }
 
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        S.of(context).done,
-      );
-      GameController().headerTipNotifier.showTip(
-        S.of(context).done,
-      ); // "Game loaded."
+      // Show success message with experimental warning if variations included
+      final String message = includedVariations
+          ? '${S.of(context).done} ${S.of(context).experimental}'
+          : S.of(context).done;
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
+      GameController().headerTipNotifier.showTip(message);
     } else {
       if (!context.mounted) {
         return;

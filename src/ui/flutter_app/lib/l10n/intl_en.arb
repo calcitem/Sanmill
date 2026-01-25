@@ -4033,5 +4033,15 @@
     "noNextBranchPoint": "No next branch point",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variations detected",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "The move list contains variations.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Include variations?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Yes, include variations",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "No, mainline only",
+    "@includeVariationsNo": {}
 }

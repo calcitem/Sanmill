@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Hakuna kituo cha tawi kinachofuata",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Tofauti zimegunduliwa",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Orodha ya harakati ina tofauti.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Jumuisha tofauti?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ndio, jumuisha tofauti",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Hapana, mstari mkuu tu",
+    "@includeVariationsNo": {}
 }

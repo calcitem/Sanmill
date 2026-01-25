@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "אין נקודת התפצלות הבאה",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "זוהו וריאציות",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "רשימת המהלכים מכילה וריאציות.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "האם לכלול וריאציות?",
+    "@includeVariations": {},
+    "includeVariationsYes": "כן, כלול וריאציות",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "לא, קו ראשי בלבד",
+    "@includeVariationsNo": {}
 }

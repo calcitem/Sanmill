@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Keyingi tarmoqlanish nuqtasi yo'q",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variantlar aniqlandi",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Harakatlar ro'yxatida variantlar mavjud.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Variantlarni kiritish?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Ha, variantlarni kiriting",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Yo'q, faqat asosiy chiziq",
+    "@includeVariationsNo": {}
 }

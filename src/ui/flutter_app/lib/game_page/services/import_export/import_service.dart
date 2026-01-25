@@ -11,6 +11,7 @@ class ImportService {
   static const String _logTag = "[Importer]";
 
   /// Tries to import the game saved in the device's clipboard.
+  /// If the PGN contains variations, asks the user whether to include them.
   static Future<void> importGame(
     BuildContext context, {
     bool shouldPop = true,
@@ -58,15 +59,32 @@ class ImportService {
       return;
     }
 
+    // Check if the PGN contains variations before importing
+    bool includeVariations = true;
+    bool hasVariations = false;
+    if (_pgnContainsVariations(text)) {
+      hasVariations = true;
+      // Ask user whether to include variations
+      includeVariations = await _showVariationsDialog(context) ?? false;
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
     // Perform import logic
     try {
-      import(text); // GameController().newRecorder = newHistory;
+      import(text, includeVariations: includeVariations);
     } catch (exception) {
       if (!context.mounted) {
         return;
       }
 
-      final String tip = s.cannotImport(exception.toString());
+      // Include experimental warning in error message if variations were selected
+      final String errorMsg = s.cannotImport(exception.toString());
+      final String tip = (hasVariations && includeVariations)
+          ? '$errorMsg ${s.experimental}'
+          : errorMsg;
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
       GameController().headerTipNotifier.showTip(tip);
 
@@ -96,8 +114,12 @@ class ImportService {
     }
 
     if (historyResult == const HistoryOK()) {
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(s.gameImported);
-      GameController().headerTipNotifier.showTip(s.gameImported);
+      // Include experimental warning in success message if variations were selected
+      final String message = (hasVariations && includeVariations)
+          ? '${s.gameImported} ${s.experimental}'
+          : s.gameImported;
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
+      GameController().headerTipNotifier.showTip(message);
     } else {
       final String tip = s.cannotImport(HistoryNavigator.importFailedStr);
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
@@ -109,6 +131,55 @@ class ImportService {
     if (shouldPop) {
       navigator.pop();
     }
+  }
+
+  /// Checks if the PGN text contains variations (without fully importing).
+  static bool _pgnContainsVariations(String text) {
+    try {
+      // Quick check: variations in PGN are denoted by parentheses
+      // This is a fast pre-check before full parsing
+      if (!text.contains('(')) {
+        return false;
+      }
+
+      // Parse the PGN to accurately detect variations
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(text);
+      return game.hasVariations();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Shows a dialog asking the user whether to include variations.
+  /// Returns true if user wants to include variations, false if mainline only.
+  static Future<bool?> _showVariationsDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).variationsDetected),
+          content: Text(
+            '${S.of(context).moveListContainsVariations}\n\n'
+            '${S.of(context).includeVariations}',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).includeVariationsNo),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
+              child: Text(S.of(context).includeVariationsYes),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   static String addTagPairs(String moveList) {
@@ -190,7 +261,7 @@ class ImportService {
     return tagPairs + moveList;
   }
 
-  static void import(String moveList) {
+  static void import(String moveList, {bool includeVariations = true}) {
     moveList = moveList.trim();
     String ml = moveList;
 
@@ -258,7 +329,7 @@ class ImportService {
       };
 
       ml = processOutsideBrackets(ml, replacements);
-      _importPgn(ml);
+      _importPgn(ml, includeVariations: includeVariations);
     } catch (e) {
       // Log the specific error for debugging
       logger.e("$_logTag Import failed: $e");
@@ -412,9 +483,15 @@ class ImportService {
 
   /// For standard PGN strings containing headers and moves, parse them
   /// with the pgn.dart parser, convert SAN moves to UCI notation, and store.
-  static void _importPgn(String moveList) {
+  /// If [includeVariations] is false, only the mainline will be imported.
+  static void _importPgn(String moveList, {bool includeVariations = true}) {
     // Parse entire PGN (including headers)
-    final PgnGame<PgnNodeData> game = PgnGame.parsePgn(moveList);
+    PgnGame<PgnNodeData> game = PgnGame.parsePgn(moveList);
+
+    // If user chose not to include variations, strip them
+    if (!includeVariations && game.hasVariations()) {
+      game = game.withoutVariations();
+    }
 
     // Check if parsed game is empty or invalid
     final bool hasValidMoves = game.moves.mainline().isNotEmpty;

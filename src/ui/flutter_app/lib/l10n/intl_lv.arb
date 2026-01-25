@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Nav nākamā sazarošanās punkta",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Konstatētas variācijas",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Gājienu sarakstā ir variācijas.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Iekļaut variācijas?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Jā, iekļaut variācijas",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nē, tikai galvenā līnija",
+    "@includeVariationsNo": {}
 }

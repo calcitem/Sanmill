@@ -9,25 +9,76 @@ class ExportService {
   const ExportService._();
 
   /// Exports the game to the device's clipboard.
+  /// If the game contains variations, asks the user whether to include them.
   static Future<void> exportGame(
     BuildContext context, {
     bool shouldPop = true,
   }) async {
-    await Clipboard.setData(
-      ClipboardData(text: GameController().gameRecorder.moveHistoryText),
-    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    String exportText = recorder.moveHistoryText;
+    bool includedVariations = false;
+
+    // Check if the game has variations
+    if (recorder.hasVariations()) {
+      // Ask user whether to include variations
+      final bool includeVariations =
+          await _showVariationsDialog(context) ?? false;
+
+      if (!includeVariations) {
+        // User chose mainline only
+        exportText = recorder.moveHistoryTextWithoutVariations;
+      } else {
+        includedVariations = true;
+      }
+    }
+
+    await Clipboard.setData(ClipboardData(text: exportText));
 
     if (!context.mounted) {
       return;
     }
 
-    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-      S.of(context).moveHistoryCopied,
-    );
+    // Show success message with experimental warning if variations included
+    final String message = includedVariations
+        ? '${S.of(context).moveHistoryCopied} ${S.of(context).experimental}'
+        : S.of(context).moveHistoryCopied;
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear(message);
 
     if (shouldPop) {
       Navigator.pop(context);
     }
+  }
+
+  /// Shows a dialog asking the user whether to include variations.
+  /// Returns true if user wants to include variations, false if mainline only.
+  static Future<bool?> _showVariationsDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).variationsDetected),
+          content: Text(
+            '${S.of(context).moveListContainsVariations}\n\n'
+            '${S.of(context).includeVariations}',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).includeVariationsNo),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
+              child: Text(S.of(context).includeVariationsYes),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Export game with move quality symbols included

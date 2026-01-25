@@ -3274,5 +3274,15 @@
     "noNextBranchPoint": "Nincs következő elágazási pont",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variációk észlelve",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "A lépéslista variációkat tartalmaz.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Variációk tartalmazása?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Igen, variációk tartalmazása",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nem, csak fővonalas",
+    "@includeVariationsNo": {}
 }

@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Enginn næsti greiningarpunktur",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Afbrigði greind",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Hreyfingalisti inniheldur afbrigði.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Taka með afbrigði?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Já, taka með afbrigði",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nei, aðeins aðallína",
+    "@includeVariationsNo": {}
 }

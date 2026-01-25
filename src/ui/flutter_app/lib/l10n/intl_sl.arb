@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Ni naslednje točke razvejanja",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Zaznane variacije",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Seznam potez vsebuje variacije.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Vključi variacije?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Da, vključi variacije",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Ne, samo glavna linija",
+    "@includeVariationsNo": {}
 }

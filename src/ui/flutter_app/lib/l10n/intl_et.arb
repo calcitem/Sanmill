@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Järgmist harunemispunkti pole",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variatsioonid tuvastatud",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Käikude loend sisaldab variatsioone.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Kaasa variatsioonid?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Jah, kaasa variatsioonid",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Ei, ainult põhiliin",
+    "@includeVariationsNo": {}
 }

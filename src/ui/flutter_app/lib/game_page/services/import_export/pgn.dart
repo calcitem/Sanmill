@@ -194,6 +194,45 @@ class PgnGame<T extends PgnNodeData> {
     return pos;
   }
 
+  /// Checks if the parsed PGN game tree contains any variations.
+  /// Returns true if any node has more than one child (indicating branches).
+  bool hasVariations() {
+    return _hasVariationsInNode(moves);
+  }
+
+  /// Recursively checks if a node or its descendants have variations.
+  static bool _hasVariationsInNode<U extends PgnNodeData>(PgnNode<U> node) {
+    // If this node has more than one child, it has variations
+    if (node.children.length > 1) {
+      return true;
+    }
+    // Check all children recursively
+    for (final PgnNode<U> child in node.children) {
+      if (_hasVariationsInNode(child)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Creates a new PgnGame with only the mainline moves (no variations).
+  PgnGame<T> withoutVariations() {
+    final PgnNode<T> newMoves = _stripVariations(moves);
+    return PgnGame<T>(headers: headers, moves: newMoves, comments: comments);
+  }
+
+  /// Recursively strips variations from a node, keeping only the mainline.
+  static PgnNode<U> _stripVariations<U extends PgnNodeData>(PgnNode<U> node) {
+    final PgnNode<U> newNode = PgnNode<U>(node.data);
+    if (node.children.isNotEmpty) {
+      // Only keep the first child (mainline)
+      final PgnNode<U> mainlineChild = _stripVariations(node.children.first);
+      mainlineChild.parent = newNode;
+      newNode.children.add(mainlineChild);
+    }
+    return newNode;
+  }
+
   String makePgn() {
     final StringBuffer builder = StringBuffer();
     final StringBuffer token = StringBuffer();

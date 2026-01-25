@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Niciun punct de ramificare următor",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variații detectate",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Lista de mutări conține variații.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Includeți variațiile?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Da, includeți variațiile",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Nu, doar linia principală",
+    "@includeVariationsNo": {}
 }

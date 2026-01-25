@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "কোনও পরবর্তী শাখা বিন্দু নেই",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "বৈচিত্র সনাক্ত করা হয়েছে",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "চাল তালিকায় বৈচিত্র রয়েছে।",
+    "@moveListContainsVariations": {},
+    "includeVariations": "বৈচিত্র অন্তর্ভুক্ত করবেন?",
+    "@includeVariations": {},
+    "includeVariationsYes": "হ্যাঁ, বৈচিত্র অন্তর্ভুক্ত করুন",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "না, শুধুমাত্র মূল লাইন",
+    "@includeVariationsNo": {}
 }

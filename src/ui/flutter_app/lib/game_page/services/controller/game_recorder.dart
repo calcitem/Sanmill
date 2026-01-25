@@ -1303,6 +1303,117 @@ class GameRecorder {
     return nodes;
   }
 
+  /// Checks if the game tree contains any variations (branches).
+  /// Returns true if any node in the tree has more than one child.
+  bool hasVariations() {
+    return _hasVariationsRecursive(_pgnRoot);
+  }
+
+  /// Recursively checks if any node in the tree has variations.
+  bool _hasVariationsRecursive(PgnNode<ExtMove> node) {
+    // If this node has more than one child, it has variations
+    if (node.children.length > 1) {
+      return true;
+    }
+    // Check all children recursively
+    for (final PgnNode<ExtMove> child in node.children) {
+      if (_hasVariationsRecursive(child)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Gets the move history text without variations (mainline only).
+  String get moveHistoryTextWithoutVariations {
+    // Helper to build tag pair header (e.g. FEN, SetUp).
+    String buildTagPairs() {
+      if (setupPosition != null) {
+        return '[FEN "$setupPosition"]\r\n[SetUp "1"]\r\n\r\n';
+      }
+      return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
+    }
+
+    final List<PgnNode<ExtMove>> nodes = mainlineNodes;
+
+    if (nodes.isEmpty) {
+      if (GameController().isPositionSetup) {
+        return buildTagPairs();
+      }
+      return "";
+    }
+
+    final StringBuffer sb = StringBuffer();
+    int num = 1;
+    int i = 0;
+
+    // Build one step of notation (up to two moves per line) - mainline only
+    void buildStandardNotation() {
+      const String sep = "    ";
+      if (i < nodes.length) {
+        final PgnNode<ExtMove> currentNode = nodes[i];
+        sb.write(sep);
+        sb.write(_formatMoveWithAnnotationsMainlineOnly(currentNode));
+        i++;
+      }
+      // Process subsequent removal moves (up to 3) if present.
+      for (int round = 0; round < 3; round++) {
+        if (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
+          final PgnNode<ExtMove> currentNode = nodes[i];
+          sb.write(_formatMoveWithAnnotationsMainlineOnly(currentNode));
+          i++;
+        }
+      }
+    }
+
+    // Write FEN tag pairs if a custom position is set.
+    if (GameController().isPositionSetup) {
+      sb.write(buildTagPairs());
+    }
+
+    // Walk through the moves in pairs (like typical chess notation).
+    while (i < nodes.length) {
+      sb.writeNumber(num++);
+      buildStandardNotation();
+      buildStandardNotation();
+      if (i < nodes.length) {
+        sb.writeln();
+      }
+    }
+
+    return sb.toString();
+  }
+
+  /// Formats a single move with annotations but without variations.
+  String _formatMoveWithAnnotationsMainlineOnly(PgnNode<ExtMove> node) {
+    final ExtMove move = node.data!;
+    final StringBuffer sb = StringBuffer();
+
+    // Write starting comments if present
+    if (move.startingComments != null && move.startingComments!.isNotEmpty) {
+      for (final String comment in move.startingComments!) {
+        sb.write('{$comment} ');
+      }
+    }
+
+    // Write the move notation
+    sb.write(move.notation);
+
+    // Write NAG symbols
+    if (move.nags != null && move.nags!.isNotEmpty) {
+      sb.write(_nagsToString(move.nags!));
+    }
+
+    // Write after-move comments
+    if (move.comments != null && move.comments!.isNotEmpty) {
+      for (final String comment in move.comments!) {
+        sb.write(' {$comment}');
+      }
+    }
+
+    return sb.toString();
+  }
+
   /// Build a compact dynamic context block derived from current engine state.
   @visibleForTesting
   String buildGlobalDynamicContextForTesting(

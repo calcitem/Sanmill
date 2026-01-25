@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "ไม่มีจุดแยกถัดไป",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "ตรวจพบรูปแบบที่แตกต่าง",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "รายการการเคลื่อนที่มีรูปแบบที่แตกต่าง",
+    "@moveListContainsVariations": {},
+    "includeVariations": "รวมรูปแบบที่แตกต่างหรือไม่?",
+    "@includeVariations": {},
+    "includeVariationsYes": "ใช่ รวมรูปแบบที่แตกต่าง",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "ไม่ เฉพาะเส้นหลักเท่านั้น",
+    "@includeVariationsNo": {}
 }

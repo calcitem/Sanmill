@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "နောက်ဌာနခွဲမှတ်တမ်းမရှိပါ",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "ကွဲပြားမှုများကို ထောက်လှမ်းတွေ့ရှိခဲ့သည်",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "ရွှေ့လျားမှုစာရင်းတွင် ကွဲပြားမှုများပါရှိသည်။",
+    "@moveListContainsVariations": {},
+    "includeVariations": "ကွဲပြားမှုများပါဝင်စေမလား?",
+    "@includeVariations": {},
+    "includeVariationsYes": "ဟုတ်ကဲ့၊ ကွဲပြားမှုများပါဝင်စေမည်",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "မလိုပါ၊ ပင်မလမ်းကြောင်းသာ",
+    "@includeVariationsNo": {}
 }

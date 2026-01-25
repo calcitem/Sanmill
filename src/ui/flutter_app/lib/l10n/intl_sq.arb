@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Asnjë pikë degëzimi e ardhshme",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Janë zbuluar variacione",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Lista e lëvizjeve përmban variacione.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Përfshi variacionet?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Po, përfshi variacionet",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Jo, vetëm linja kryesore",
+    "@includeVariationsNo": {}
 }

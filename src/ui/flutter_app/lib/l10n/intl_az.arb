@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Növbəti budaqlanma nöqtəsi yoxdur",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Variasiyalar aşkar edildi",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Hərəkət siyahısı variasiyalar ehtiva edir.",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Variasiyaları daxil et?",
+    "@includeVariations": {},
+    "includeVariationsYes": "Bəli, variasiyaları daxil et",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Xeyr, yalnız əsas xətt",
+    "@includeVariationsNo": {}
 }

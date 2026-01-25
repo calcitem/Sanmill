@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "次の分岐点がありません",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "変化が検出されました",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "手順リストに変化が含まれています。",
+    "@moveListContainsVariations": {},
+    "includeVariations": "変化を含めますか？",
+    "@includeVariations": {},
+    "includeVariationsYes": "はい、変化を含める",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "いいえ、本線のみ",
+    "@includeVariationsNo": {}
 }

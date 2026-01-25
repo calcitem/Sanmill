@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "ምንም ቀጣይ ቅርንጫፍ ነጥብ የለም",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "ልዩነቶች ተገኝተዋል",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "የእንቅስቃሴ ዝርዝሩ ልዩነቶችን ይዟል።",
+    "@moveListContainsVariations": {},
+    "includeVariations": "ልዩነቶችን ያካትቱ?",
+    "@includeVariations": {},
+    "includeVariationsYes": "አዎ፣ ልዩነቶችን ያካትቱ",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "አይ፣ ዋና መስመር ብቻ",
+    "@includeVariationsNo": {}
 }

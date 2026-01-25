@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "کوئی اگلا شاخ نقطہ نہیں",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "تغیرات کا پتہ چلا",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "چالوں کی فہرست میں تغیرات ہیں۔",
+    "@moveListContainsVariations": {},
+    "includeVariations": "تغیرات شامل کریں؟",
+    "@includeVariations": {},
+    "includeVariationsYes": "ہاں، تغیرات شامل کریں",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "نہیں، صرف مرکزی لائن",
+    "@includeVariationsNo": {}
 }

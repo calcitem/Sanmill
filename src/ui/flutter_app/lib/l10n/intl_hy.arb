@@ -4017,5 +4017,15 @@
     "noNextBranchPoint": "Հաջորդ ճյուղավորման կետ չկա",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
-    }
+    },
+    "variationsDetected": "Տարբերակներ հայտնաբերվել են",
+    "@variationsDetected": {},
+    "moveListContainsVariations": "Քայլերի ցանկը պարունակում է տարբերակներ։",
+    "@moveListContainsVariations": {},
+    "includeVariations": "Ներառե՞լ տարբերակները:",
+    "@includeVariations": {},
+    "includeVariationsYes": "Այո, ներառել տարբերակները",
+    "@includeVariationsYes": {},
+    "includeVariationsNo": "Ոչ, միայն հիմնական գիծ",
+    "@includeVariationsNo": {}
 }
