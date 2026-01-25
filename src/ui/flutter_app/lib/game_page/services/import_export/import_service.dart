@@ -506,12 +506,14 @@ class ImportService {
       Position position,
     ) {
       // Process all children (mainline first, then variations)
-      for (final PgnNode<PgnNodeData> child in sourceNode.children) {
+      for (int childIndex = 0; childIndex < sourceNode.children.length;
+          childIndex++) {
+        final PgnNode<PgnNodeData> child = sourceNode.children[childIndex];
         if (child.data == null) {
           continue;
         }
 
-        final String san = child.data!.san.trim().toLowerCase();
+        String san = child.data!.san.trim().toLowerCase();
         if (san.isEmpty ||
             san == "*" ||
             san == "x" ||
@@ -524,8 +526,44 @@ class ImportService {
 
         // Clone position for this variation to avoid state interference
         final Position branchPos = position.clone();
+
+        // Runtime fix for non-standard shorthand capture in variations:
+        // If this node is a standalone remove (e.g. "xd1") but the position has
+        // no pending removal (pieceToRemoveCount == 0), it's likely a shorthand
+        // for "same base move but different remove target". Try to reconstruct
+        // the full move from sibling nodes.
+        if (san.startsWith('x') &&
+            san.length == 3 &&
+            branchPos.pieceToRemoveCount[branchPos.sideToMove] == 0) {
+          // Look for a sibling node with a composite move (e.g. "f4-g4xe4")
+          String? basePrefix;
+          for (final PgnNode<PgnNodeData> sibling in sourceNode.children) {
+            if (sibling == child || sibling.data == null) {
+              continue;
+            }
+            final String sibSan = sibling.data!.san.trim().toLowerCase();
+            final int firstX = sibSan.indexOf('x');
+            if (firstX > 0) {
+              // Found a composite move like "f4-g4xe4"
+              basePrefix = sibSan.substring(0, firstX);
+              break;
+            }
+          }
+          if (basePrefix != null) {
+            // Reconstruct the full move: "f4-g4" + "xd1" → "f4-g4xd1"
+            san = basePrefix + san;
+          }
+        }
+
         final List<String> segments = splitSan(san);
         PgnNode<ExtMove>? lastAddedNode = targetParent;
+
+        // When a SAN is split into multiple segments (e.g., "f4-g4xd1" → ["f4-g4", "xd1"]),
+        // all segments belong to the SAME player's move. We must capture the side BEFORE
+        // processing any segment, because branchPos.doMove() will switch sides after each
+        // segment. Using the post-switch side for the next segment would incorrectly assign
+        // it to the opponent.
+        final PieceColor moveOwnerSide = branchPos.sideToMove;
 
         // Process all segments of this move
         for (int i = 0; i < segments.length; i++) {
@@ -562,9 +600,36 @@ class ImportService {
                 ? child.data!.comments
                 : null;
 
+            // For resilient import, determine the correct side by inspecting the
+            // actual piece on the board (for move-type moves), rather than strictly
+            // trusting the PGN tree structure which may have incorrect move numbers.
+            PieceColor actualSide = moveOwnerSide;
+            if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(uciMove)) {
+              // This is a move-type operation (from-to). Check which color piece
+              // is on the "from" square to determine the actual side.
+              final List<String> parts = uciMove.split('-');
+              final int fromSq = ExtMove._standardNotationToSquare(parts[0]);
+              if (fromSq >= 0 && fromSq < branchPos.board.length) {
+                final PieceColor pieceAtFrom = branchPos.board[fromSq];
+                if (pieceAtFrom == PieceColor.white ||
+                    pieceAtFrom == PieceColor.black) {
+                  actualSide = pieceAtFrom;
+                }
+              }
+            } else if (segment.startsWith('x')) {
+              // Remove move: use the side that has a pending removal count.
+              if (branchPos.pieceToRemoveCount[PieceColor.white]! > 0) {
+                actualSide = PieceColor.white;
+              } else if (branchPos.pieceToRemoveCount[PieceColor.black]! > 0) {
+                actualSide = PieceColor.black;
+              }
+              // Otherwise keep moveOwnerSide
+            }
+            // For place moves, trust moveOwnerSide (can't infer from board state)
+
             final ExtMove extMove = ExtMove(
               uciMove,
-              side: branchPos.sideToMove,
+              side: actualSide,
               // Carry preferredRemoveTarget only for the place segment when followed by remove
               preferredRemoveTarget:
                   (!segment.startsWith('x') &&
@@ -585,7 +650,22 @@ class ImportService {
             lastAddedNode!.children.add(newNode);
             lastAddedNode = newNode;
 
+            // If actualSide differs from branchPos.sideToMove, temporarily switch
+            // the position's side to match the actual piece owner. This allows
+            // importing PGN with incorrect move numbering but correct move sequences.
+            final PieceColor originalSide = branchPos.sideToMove;
+            if (actualSide != originalSide) {
+              branchPos.setSideToMove(actualSide);
+            }
+
             final bool ok = branchPos.doMove(uciMove);
+
+            // Restore original side after doMove (doMove will switch it anyway)
+            // This is a safety measure in case doMove failed.
+            if (!ok && actualSide != originalSide) {
+              branchPos.setSideToMove(originalSide);
+            }
+
             if (!ok) {
               throw ImportFormatException(" $segment → $uciMove");
             }

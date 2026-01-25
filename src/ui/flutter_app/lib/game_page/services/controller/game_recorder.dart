@@ -492,6 +492,29 @@ class GameRecorder {
         lastSide = move.side;
       }
 
+      // Check if this move resulted in pending removal (incomplete node).
+      // If the move's boardLayout FEN shows action='r' (remove) but there's no
+      // remove-type child, truncate the variation here to avoid exporting invalid PGN.
+      bool hasPendingRemoval = false;
+      if (move.boardLayout != null && move.boardLayout!.isNotEmpty) {
+        final List<String> parts = move.boardLayout!.split(' ');
+        if (parts.length >= 4 && parts[3] == 'r') {
+          hasPendingRemoval = true;
+        }
+      }
+
+      if (hasPendingRemoval) {
+        // Check if there's a remove child to satisfy the pending removal
+        final bool hasRemoveChild = current.children.any(
+          (PgnNode<ExtMove> child) => child.data?.type == MoveType.remove,
+        );
+        if (!hasRemoveChild) {
+          // Incomplete variation: stop here and add a comment
+          sb.write(' {incomplete: pending removal}');
+          break;
+        }
+      }
+
       // Move to next node
       if (current.children.isNotEmpty) {
         current = current.children[0];

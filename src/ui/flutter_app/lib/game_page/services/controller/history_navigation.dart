@@ -484,6 +484,40 @@ class HistoryNavigator {
       if (node.parent == null) {
         break;
       }
+
+      // Clean up incomplete nodes: If the current node has a boardLayout showing
+      // pending removal (action='r' in FEN) but no remove-type child node exists,
+      // this node is incomplete (user took back before completing the removal).
+      // Remove it from the tree to prevent exporting invalid PGN.
+      if (node.data != null && node.data!.boardLayout != null) {
+        final String? fen = node.data!.boardLayout;
+        if (fen != null && fen.isNotEmpty) {
+          // Extract action field from FEN (format: "... w/b m/p/g s/r/p ...")
+          final List<String> parts = fen.split(' ');
+          if (parts.length >= 4) {
+            final String action = parts[3]; // s (select) / r (remove) / p (place)
+            if (action == 'r') {
+              // This node ended with pending removal. Check if any child is a remove.
+              final bool hasRemoveChild = node.children.any(
+                (PgnNode<ExtMove> child) =>
+                    child.data?.type == MoveType.remove,
+              );
+              if (!hasRemoveChild) {
+                // Incomplete node: remove it from parent's children
+                final PgnNode<ExtMove>? parent = node.parent;
+                if (parent != null) {
+                  parent.children.remove(node);
+                  logger.w(
+                    "[HistoryNavigator] Removed incomplete node: ${node.data!.notation} "
+                    "(had pending removal but no remove child)",
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+
       // Just move activeNode to parent
       GameController().gameRecorder.activeNode = node.parent;
     }

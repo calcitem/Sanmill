@@ -158,10 +158,13 @@ String expandShorthandCaptureVariations(String pgnText) {
   // considered for the FIRST move token inside that scope.
   final List<String?> pendingPrefixStack = <String?>[];
 
+  // Build a list of all tokens first so we can peek ahead.
+  final List<RegExpMatch> matchList = matches.toList();
   final StringBuffer out = StringBuffer();
   int lastIndex = 0;
 
-  for (final RegExpMatch match in matches) {
+  for (int i = 0; i < matchList.length; i++) {
+    final RegExpMatch match = matchList[i];
     final String token = match.group(0)!;
 
     // Preserve original spacing / text between tokens.
@@ -192,7 +195,25 @@ String expandShorthandCaptureVariations(String pgnText) {
         final String? pendingBase = pendingPrefixStack.last;
         if (pendingBase != null && isMoveToken(token)) {
           if (token.startsWith('x')) {
-            out.write(pendingBase);
+            // Check if this variation contains nested variations (another '(' ahead).
+            // If so, do NOT expand, because the splitSan logic in import_service
+            // would split "f4-g4xd1" into two segments that each switch sides,
+            // breaking nested variation structure.
+            bool hasNestedVariation = false;
+            for (int j = i + 1; j < matchList.length; j++) {
+              final String futureToken = matchList[j].group(0)!;
+              if (futureToken == '(') {
+                hasNestedVariation = true;
+                break;
+              } else if (futureToken == ')') {
+                // Reached end of current variation without finding nested '('
+                break;
+              }
+            }
+
+            if (!hasNestedVariation) {
+              out.write(pendingBase);
+            }
           }
           // Consume pending prefix once the first move token is seen (either used
           // or discarded if the variation starts with a normal move).

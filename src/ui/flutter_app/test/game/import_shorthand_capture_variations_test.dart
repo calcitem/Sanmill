@@ -7,19 +7,38 @@ import 'package:sanmill/game_page/services/import_export/pgn.dart';
 
 void main() {
   group('Import pre-processing', () {
-    test('Expands shorthand capture-only alternatives in variations', () {
-      const String original = '1. f4-g4xe4 (xd1 21. e4-f4xd2) *';
+    test('Expands shorthand capture in variations', () {
+      // When parent move is composite (e.g. "f4-g4xe4"), a variation starting
+      // with "xd1" is shorthand for "same base move but different remove target",
+      // so expand it to "f4-g4xd1".
+      const String original = '1. f4-g4xe4 (xd1) *';
 
       final String expanded = expandShorthandCaptureVariations(original);
 
-      // The first move in the variation should be expanded to include the base
-      // segment of the preceding combined move.
       expect(expanded, contains('(f4-g4xd1'));
 
       final PgnGame<PgnNodeData> game = PgnGame.parsePgn(expanded);
       final PgnNode<PgnNodeData> root = game.moves;
 
-      // Root should have mainline + at least one variation.
+      expect(root.children.length, greaterThanOrEqualTo(2));
+      expect(root.children[0].data?.san, 'f4-g4xe4');
+      expect(root.children[1].data?.san, 'f4-g4xd1');
+    });
+
+    test('Expands shorthand capture even when followed by move number', () {
+      // Even if "xd1" is followed by a move number marker (e.g. "21."),
+      // it's still shorthand when the parent is a composite move.
+      // The "21." just indicates the next move number in the variation.
+      const String original = '1. f4-g4xe4 (xd1 2. e4-f4) *';
+
+      final String expanded = expandShorthandCaptureVariations(original);
+
+      // Should be expanded to include base prefix.
+      expect(expanded, contains('(f4-g4xd1 2.'));
+
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(expanded);
+      final PgnNode<PgnNodeData> root = game.moves;
+
       expect(root.children.length, greaterThanOrEqualTo(2));
       expect(root.children[0].data?.san, 'f4-g4xe4');
       expect(root.children[1].data?.san, 'f4-g4xd1');
