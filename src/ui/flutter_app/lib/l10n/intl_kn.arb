@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "ವ್ಯತ್ಯಾಸಗಳನ್ನು ಸೇರಿಸುವುದೇ?",
     "@includeVariations": {},
-    "includeVariationsYes": "ಹೌದು, ವ್ಯತ್ಯಾಸಗಳನ್ನು ಸೇರಿಸಿ",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "ಇಲ್ಲ, ಮುಖ್ಯ ಮಾರ್ಗ ಮಾತ್ರ",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "ಹೌದು, ಎಲ್ಲಾ ವ್ಯತ್ಯಾಸಗಳನ್ನು ಸೇರಿಸಿ",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "ಪ್ರಸ್ತುತ ಮಾರ್ಗ ಮಾತ್ರ",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "ಇಲ್ಲ, ಮುಖ್ಯ ಮಾರ್ಗ ಮಾತ್ರ",
+    "@includeVariationsMainline": {}
 }

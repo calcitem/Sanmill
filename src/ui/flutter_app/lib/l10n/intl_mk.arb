@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Да се вклучат варијациите?",
     "@includeVariations": {},
-    "includeVariationsYes": "Да, вклучи варијации",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Не, само главна линија",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Да, вклучи ги сите варијации",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Само тековна линија",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Не, само главна линија",
+    "@includeVariationsMainline": {}
 }

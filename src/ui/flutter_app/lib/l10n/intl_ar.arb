@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "هل تريد تضمين التباينات؟",
     "@includeVariations": {},
-    "includeVariationsYes": "نعم، تضمين التباينات",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "لا، الخط الرئيسي فقط",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "نعم، تضمين جميع التباينات",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "الخط الحالي فقط",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "لا، الخط الرئيسي فقط",
+    "@includeVariationsMainline": {}
 }

@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Συμπερίληψη παραλλαγών;",
     "@includeVariations": {},
-    "includeVariationsYes": "Ναι, συμπερίληψη παραλλαγών",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Όχι, μόνο κύρια γραμμή",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ναι, συμπερίληψη όλων των παραλλαγών",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Μόνο τρέχουσα γραμμή",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Όχι, μόνο κύρια γραμμή",
+    "@includeVariationsMainline": {}
 }

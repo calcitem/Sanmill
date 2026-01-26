@@ -3281,8 +3281,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Variációk tartalmazása?",
     "@includeVariations": {},
-    "includeVariationsYes": "Igen, variációk tartalmazása",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nem, csak fővonalas",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Igen, minden variáció tartalmazása",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Csak jelenlegi vonal",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nem, csak fővonalas",
+    "@includeVariationsMainline": {}
 }

@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "వైవిధ్యాలను చేర్చాలా?",
     "@includeVariations": {},
-    "includeVariationsYes": "అవును, వైవిధ్యాలను చేర్చండి",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "కాదు, ప్రధాన రేఖ మాత్రమే",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "అవును, అన్ని వైవిధ్యాలను చేర్చండి",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "ప్రస్తుత రేఖ మాత్రమే",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "కాదు, ప్రధాన రేఖ మాత్రమే",
+    "@includeVariationsMainline": {}
 }

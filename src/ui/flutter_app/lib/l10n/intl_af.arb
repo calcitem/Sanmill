@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Sluit variasies in?",
     "@includeVariations": {},
-    "includeVariationsYes": "Ja, sluit variasies in",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nee, slegs hooflijn",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ja, sluit alle variasies in",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Huidige lyn slegs",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nee, slegs hooflijn",
+    "@includeVariationsMainline": {}
 }

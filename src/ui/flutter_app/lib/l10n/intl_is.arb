@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Taka með afbrigði?",
     "@includeVariations": {},
-    "includeVariationsYes": "Já, taka með afbrigði",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nei, aðeins aðallína",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Já, taka með öll afbrigði",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Aðeins núverandi lína",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nei, aðeins aðallína",
+    "@includeVariationsMainline": {}
 }

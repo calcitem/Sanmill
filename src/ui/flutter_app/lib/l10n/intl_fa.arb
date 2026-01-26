@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "تنوع‌ها را شامل شود؟",
     "@includeVariations": {},
-    "includeVariationsYes": "بله، تنوع‌ها را شامل کن",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "خیر، فقط خط اصلی",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "بله، همه تنوع‌ها را شامل کن",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "فقط خط فعلی",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "خیر، فقط خط اصلی",
+    "@includeVariationsMainline": {}
 }

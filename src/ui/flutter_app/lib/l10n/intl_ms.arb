@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Sertakan variasi?",
     "@includeVariations": {},
-    "includeVariationsYes": "Ya, sertakan variasi",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Tidak, garis utama sahaja",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ya, sertakan semua variasi",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Hanya garis semasa",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Tidak, garis utama sahaja",
+    "@includeVariationsMainline": {}
 }

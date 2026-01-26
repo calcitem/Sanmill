@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Incluir variações?",
     "@includeVariations": {},
-    "includeVariationsYes": "Sim, incluir variações",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Não, apenas linha principal",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Sim, incluir todas as variações",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Apenas linha atual",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Não, apenas linha principal",
+    "@includeVariationsMainline": {}
 }

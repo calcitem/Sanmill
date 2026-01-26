@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Varyasyonlar dahil edilsin mi?",
     "@includeVariations": {},
-    "includeVariationsYes": "Evet, varyasyonları dahil et",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Hayır, sadece ana hat",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Evet, tüm varyasyonları dahil et",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Sadece mevcut hat",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Hayır, sadece ana hat",
+    "@includeVariationsMainline": {}
 }

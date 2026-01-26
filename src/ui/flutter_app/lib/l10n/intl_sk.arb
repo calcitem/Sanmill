@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Zahrnúť variácie?",
     "@includeVariations": {},
-    "includeVariationsYes": "Áno, zahrnúť variácie",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nie, len hlavná línia",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Áno, zahrnúť všetky variácie",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Len aktuálna línia",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nie, len hlavná línia",
+    "@includeVariationsMainline": {}
 }

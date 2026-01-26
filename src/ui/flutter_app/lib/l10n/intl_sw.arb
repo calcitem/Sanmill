@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Jumuisha tofauti?",
     "@includeVariations": {},
-    "includeVariationsYes": "Ndio, jumuisha tofauti",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Hapana, mstari mkuu tu",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ndio, jumuisha tofauti zote",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Mstari wa sasa tu",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Hapana, mstari mkuu tu",
+    "@includeVariationsMainline": {}
 }

@@ -3316,8 +3316,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Varianten einschliessen?",
     "@includeVariations": {},
-    "includeVariationsYes": "Ja, Varianten einschliessen",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nein, nur Hauptlinie",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ja, alle Varianten einschliessen",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Nur aktuelle Linie",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nein, nur Hauptlinie",
+    "@includeVariationsMainline": {}
 }

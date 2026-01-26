@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "भिन्नताएं शामिल करें?",
     "@includeVariations": {},
-    "includeVariationsYes": "हां, भिन्नताएं शामिल करें",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "नहीं, केवल मुख्य लाइन",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "हां, सभी भिन्नताएं शामिल करें",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "केवल वर्तमान लाइन",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "नहीं, केवल मुख्य लाइन",
+    "@includeVariationsMainline": {}
 }

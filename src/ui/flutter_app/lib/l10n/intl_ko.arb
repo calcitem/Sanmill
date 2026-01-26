@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "변화를 포함하시겠습니까?",
     "@includeVariations": {},
-    "includeVariationsYes": "예, 변화 포함",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "아니요, 본선만",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "예, 모든 변화 포함",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "현재 라인만",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "아니요, 본선만",
+    "@includeVariationsMainline": {}
 }

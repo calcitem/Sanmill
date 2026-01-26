@@ -153,7 +153,7 @@ class LoadService {
   }
 
   /// Saves the game to the file.
-  /// If the game contains variations, asks the user whether to include them.
+  /// If the game contains variations, asks the user what to save.
   static Future<String?> saveGame(
     BuildContext context, {
     bool shouldPop = true,
@@ -176,14 +176,21 @@ class LoadService {
 
     // Check if the game has variations and ask user
     String moveHistoryText = recorder.moveHistoryText;
-    bool includedVariations = false;
+    bool showExperimentalWarning = false;
     if (recorder.hasVariations()) {
-      final bool includeVariations =
-          await _showVariationsDialog(context) ?? false;
-      if (!includeVariations) {
-        moveHistoryText = recorder.moveHistoryTextWithoutVariations;
-      } else {
-        includedVariations = true;
+      final ExportVariationOption option = await _showVariationsDialog(context);
+
+      switch (option) {
+        case ExportVariationOption.all:
+          moveHistoryText = recorder.moveHistoryText;
+          showExperimentalWarning = true;
+          break;
+        case ExportVariationOption.currentLine:
+          moveHistoryText = recorder.moveHistoryTextCurrentLine;
+          break;
+        case ExportVariationOption.mainline:
+          moveHistoryText = recorder.moveHistoryTextWithoutVariations;
+          break;
       }
     }
 
@@ -205,8 +212,8 @@ class LoadService {
     final File file = File(filename);
     await file.writeAsString(ImportService.addTagPairs(moveHistoryText));
 
-    // Show success message with experimental warning if variations included
-    final String message = includedVariations
+    // Show success message with experimental warning if all variations included
+    final String message = showExperimentalWarning
         ? '$strGameSavedTo $filename $strExperimental'
         : '$strGameSavedTo $filename';
     rootScaffoldMessengerKey.currentState!.showSnackBarClear(message);
@@ -224,36 +231,64 @@ class LoadService {
     return filename;
   }
 
-  /// Shows a dialog asking the user whether to include variations.
-  /// Returns true if user wants to include variations, false if mainline only.
-  static Future<bool?> _showVariationsDialog(BuildContext context) async {
-    return showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(S.of(context).variationsDetected),
-          content: Text(
-            '${S.of(context).moveListContainsVariations}\n\n'
-            '${S.of(context).includeVariations}',
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(S.of(context).includeVariationsNo),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+  /// Shows a dialog asking the user what to save/load.
+  /// Returns the selected export option.
+  static Future<ExportVariationOption> _showVariationsDialog(
+    BuildContext context,
+  ) async {
+    final ExportVariationOption? result =
+        await showDialog<ExportVariationOption>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(S.of(context).variationsDetected),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(S.of(context).moveListContainsVariations),
+                  const SizedBox(height: 16),
+                  Text(S.of(context).includeVariations),
+                  const SizedBox(height: 20),
+              SizedBox(
+                width: double.maxFinite,
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.of(
+                    context,
+                  ).pop(ExportVariationOption.mainline),
+                  icon: const Icon(Icons.show_chart),
+                  label: Text(S.of(context).includeVariationsMainline),
+                ),
               ),
-              child: Text(S.of(context).includeVariationsYes),
-            ),
-          ],
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.of(
+                        context,
+                      ).pop(ExportVariationOption.currentLine),
+                      icon: const Icon(Icons.trending_flat),
+                      label: Text(S.of(context).includeVariationsCurrentLine),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton.icon(
+                      onPressed: () =>
+                          Navigator.of(context).pop(ExportVariationOption.all),
+                      icon: const Icon(Icons.account_tree),
+                      label: Text(S.of(context).includeVariationsAll),
+                    ),
+                  ),
+                ],
+              ),
+              actions: const <Widget>[],
+            );
+          },
         );
-      },
-    );
+    return result ?? ExportVariationOption.currentLine;
   }
 
   /// Main function to load game from a file.
@@ -446,8 +481,13 @@ class LoadService {
     bool includedVariations = false;
     try {
       if (_pgnContainsVariations(fileContent)) {
-        // Ask user whether to include variations
-        includeVariations = await _showVariationsDialog(context) ?? false;
+        // Ask user what to import
+        final ExportVariationOption option = await _showVariationsDialog(
+          context,
+        );
+
+        // For import, we only use all or mainline (currentLine doesn't apply)
+        includeVariations = (option == ExportVariationOption.all);
         includedVariations = includeVariations;
       }
 

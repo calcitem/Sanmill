@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Bao gồm biến thể?",
     "@includeVariations": {},
-    "includeVariationsYes": "Có, bao gồm biến thể",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Không, chỉ đường chính",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Có, bao gồm tất cả biến thể",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Chỉ đường hiện tại",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Không, chỉ đường chính",
+    "@includeVariationsMainline": {}
 }

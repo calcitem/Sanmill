@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Sisällytä variaatiot?",
     "@includeVariations": {},
-    "includeVariationsYes": "Kyllä, sisällytä variaatiot",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Ei, vain päälinja",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Kyllä, sisällytä kaikki variaatiot",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Vain nykyinen linja",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Ei, vain päälinja",
+    "@includeVariationsMainline": {}
 }

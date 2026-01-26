@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "ልዩነቶችን ያካትቱ?",
     "@includeVariations": {},
-    "includeVariationsYes": "አዎ፣ ልዩነቶችን ያካትቱ",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "አይ፣ ዋና መስመር ብቻ",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "አዎ፣ ሁሉንም ልዩነቶች ያካትቱ",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "የአሁኑ መስመር ብቻ",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "አይ፣ ዋና መስመር ብቻ",
+    "@includeVariationsMainline": {}
 }

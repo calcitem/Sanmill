@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "រួមបញ្ចូលការប្រែប្រួល?",
     "@includeVariations": {},
-    "includeVariationsYes": "បាទ/ចាស រួមបញ្ចូលការប្រែប្រួល",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "ទេ គ្រាន់តែខ្សែបន្ទាត់ចម្បង",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "បាទ/ចាស រួមបញ្ចូលការប្រែប្រួលទាំងអស់",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "បន្ទាត់បច្ចុប្បន្នប៉ុណ្ណោះ",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "ទេ គ្រាន់តែខ្សែបន្ទាត់ចម្បង",
+    "@includeVariationsMainline": {}
 }

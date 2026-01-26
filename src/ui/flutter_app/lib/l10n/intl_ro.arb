@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Includeți variațiile?",
     "@includeVariations": {},
-    "includeVariationsYes": "Da, includeți variațiile",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nu, doar linia principală",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Da, includeți toate variațiile",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Doar linia curentă",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nu, doar linia principală",
+    "@includeVariationsMainline": {}
 }

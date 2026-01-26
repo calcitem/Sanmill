@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Përfshi variacionet?",
     "@includeVariations": {},
-    "includeVariationsYes": "Po, përfshi variacionet",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Jo, vetëm linja kryesore",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Po, përfshi të gjitha variacionet",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Vetëm linja aktuale",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Jo, vetëm linja kryesore",
+    "@includeVariationsMainline": {}
 }

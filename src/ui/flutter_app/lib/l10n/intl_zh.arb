@@ -4038,10 +4038,12 @@
     "@variationsDetected": {},
     "moveListContainsVariations": "棋谱包含变着。",
     "@moveListContainsVariations": {},
-    "includeVariations": "是否包含变着？",
+    "includeVariations": "导出选项：",
     "@includeVariations": {},
-    "includeVariationsYes": "是，包含变着",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "否，仅主线",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "所有变着",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "仅当前路径",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "仅主线",
+    "@includeVariationsMainline": {}
 }

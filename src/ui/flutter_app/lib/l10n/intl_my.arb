@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "ကွဲပြားမှုများပါဝင်စေမလား?",
     "@includeVariations": {},
-    "includeVariationsYes": "ဟုတ်ကဲ့၊ ကွဲပြားမှုများပါဝင်စေမည်",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "မလိုပါ၊ ပင်မလမ်းကြောင်းသာ",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "ဟုတ်ကဲ့၊ ကွဲပြားမှုအားလုံးပါဝင်စေမည်",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "လက်ရှိလမ်းကြောင်းသာ",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "မလိုပါ၊ ပင်မလမ်းကြောင်းသာ",
+    "@includeVariationsMainline": {}
 }

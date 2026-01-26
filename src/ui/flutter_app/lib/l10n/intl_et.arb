@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Kaasa variatsioonid?",
     "@includeVariations": {},
-    "includeVariationsYes": "Jah, kaasa variatsioonid",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Ei, ainult põhiliin",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Jah, kaasa kõik variatsioonid",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Ainult praegune joon",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Ei, ainult põhiliin",
+    "@includeVariationsMainline": {}
 }

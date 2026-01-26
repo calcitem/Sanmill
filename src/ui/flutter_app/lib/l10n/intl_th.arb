@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "รวมรูปแบบที่แตกต่างหรือไม่?",
     "@includeVariations": {},
-    "includeVariationsYes": "ใช่ รวมรูปแบบที่แตกต่าง",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "ไม่ เฉพาะเส้นหลักเท่านั้น",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "ใช่ รวมรูปแบบที่แตกต่างทั้งหมด",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "เฉพาะเส้นปัจจุบัน",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "ไม่ เฉพาะเส้นหลักเท่านั้น",
+    "@includeVariationsMainline": {}
 }

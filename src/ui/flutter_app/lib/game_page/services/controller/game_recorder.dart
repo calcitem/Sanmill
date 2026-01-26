@@ -1324,6 +1324,94 @@ class GameRecorder {
     return false;
   }
 
+  /// Gets the move history text for current path only (from root to activeNode).
+  String get moveHistoryTextCurrentLine {
+    // Helper to build tag pair header (e.g. FEN, SetUp).
+    String buildTagPairs() {
+      if (setupPosition != null) {
+        return '[FEN "$setupPosition"]\r\n[SetUp "1"]\r\n\r\n';
+      }
+      return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
+    }
+
+    final List<ExtMove> path = currentPath;
+
+    if (path.isEmpty) {
+      if (GameController().isPositionSetup) {
+        return buildTagPairs();
+      }
+      return "";
+    }
+
+    final StringBuffer sb = StringBuffer();
+    int num = 1;
+    int i = 0;
+
+    // Build one step of notation (up to two moves per line) - current path only
+    void buildStandardNotation() {
+      const String sep = "    ";
+      if (i < path.length) {
+        final ExtMove move = path[i];
+        sb.write(sep);
+        sb.write(_formatMoveSimple(move));
+        i++;
+      }
+      // Process subsequent removal moves (up to 3) if present.
+      for (int round = 0; round < 3; round++) {
+        if (i < path.length && path[i].type == MoveType.remove) {
+          sb.write(_formatMoveSimple(path[i]));
+          i++;
+        }
+      }
+    }
+
+    // Write FEN tag pairs if a custom position is set.
+    if (GameController().isPositionSetup) {
+      sb.write(buildTagPairs());
+    }
+
+    // Walk through the moves in pairs (like typical chess notation).
+    while (i < path.length) {
+      sb.writeNumber(num++);
+      buildStandardNotation();
+      buildStandardNotation();
+      if (i < path.length) {
+        sb.writeln();
+      }
+    }
+
+    return sb.toString();
+  }
+
+  /// Formats a single move with annotations (simple version without variations).
+  String _formatMoveSimple(ExtMove move) {
+    final StringBuffer sb = StringBuffer();
+
+    // Write starting comments if present
+    if (move.startingComments != null && move.startingComments!.isNotEmpty) {
+      for (final String comment in move.startingComments!) {
+        sb.write('{$comment} ');
+      }
+    }
+
+    // Write the move notation
+    sb.write(move.notation);
+
+    // Write NAG symbols
+    if (move.nags != null && move.nags!.isNotEmpty) {
+      sb.write(_nagsToString(move.nags!));
+    }
+
+    // Write after-move comments
+    if (move.comments != null && move.comments!.isNotEmpty) {
+      for (final String comment in move.comments!) {
+        sb.write(' {$comment}');
+      }
+    }
+
+    return sb.toString();
+  }
+
   /// Gets the move history text without variations (mainline only).
   String get moveHistoryTextWithoutVariations {
     // Helper to build tag pair header (e.g. FEN, SetUp).

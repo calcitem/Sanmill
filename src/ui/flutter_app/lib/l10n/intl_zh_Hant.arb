@@ -4040,8 +4040,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "是否包含變著？",
     "@includeVariations": {},
-    "includeVariationsYes": "是，包含變著",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "否，僅主線",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "是，包含所有變著",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "僅當前路徑",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "否，僅主線",
+    "@includeVariationsMainline": {}
 }

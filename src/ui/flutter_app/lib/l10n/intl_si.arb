@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "විචල්‍යතා ඇතුළත් කරන්නද?",
     "@includeVariations": {},
-    "includeVariationsYes": "ඔව්, විචල්‍යතා ඇතුළත් කරන්න",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "නැත, ප්‍රධාන රේඛාව පමණයි",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "ඔව්, සියලු විචල්‍යතා ඇතුළත් කරන්න",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "වත්මන් රේඛාව පමණයි",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "නැත, ප්‍රධාන රේඛාව පමණයි",
+    "@includeVariationsMainline": {}
 }

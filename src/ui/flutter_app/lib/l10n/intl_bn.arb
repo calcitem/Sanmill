@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "বৈচিত্র অন্তর্ভুক্ত করবেন?",
     "@includeVariations": {},
-    "includeVariationsYes": "হ্যাঁ, বৈচিত্র অন্তর্ভুক্ত করুন",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "না, শুধুমাত্র মূল লাইন",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "হ্যাঁ, সমস্ত বৈচিত্র অন্তর্ভুক্ত করুন",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "শুধুমাত্র বর্তমান লাইন",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "না, শুধুমাত্র মূল লাইন",
+    "@includeVariationsMainline": {}
 }

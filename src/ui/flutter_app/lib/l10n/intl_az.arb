@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Variasiyaları daxil et?",
     "@includeVariations": {},
-    "includeVariationsYes": "Bəli, variasiyaları daxil et",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Xeyr, yalnız əsas xətt",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Bəli, bütün variasiyaları daxil et",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Yalnız cari xətt",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Xeyr, yalnız əsas xətt",
+    "@includeVariationsMainline": {}
 }

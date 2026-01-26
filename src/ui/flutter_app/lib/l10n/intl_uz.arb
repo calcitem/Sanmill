@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Variantlarni kiritish?",
     "@includeVariations": {},
-    "includeVariationsYes": "Ha, variantlarni kiriting",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Yo'q, faqat asosiy chiziq",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ha, barcha variantlarni kiriting",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Faqat joriy chiziq",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Yo'q, faqat asosiy chiziq",
+    "@includeVariationsMainline": {}
 }

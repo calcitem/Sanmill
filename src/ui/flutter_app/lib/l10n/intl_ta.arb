@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "மாறுபாடுகளைச் சேர்க்கவா?",
     "@includeVariations": {},
-    "includeVariationsYes": "ஆம், மாறுபாடுகளைச் சேர்",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "இல்லை, பிரதான வரி மட்டும்",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "ஆம், அனைத்து மாறுபாடுகளும் சேர்",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "தற்போதைய வரி மட்டும்",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "இல்லை, பிரதான வரி மட்டும்",
+    "@includeVariationsMainline": {}
 }

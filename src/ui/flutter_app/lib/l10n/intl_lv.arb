@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Iekļaut variācijas?",
     "@includeVariations": {},
-    "includeVariationsYes": "Jā, iekļaut variācijas",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nē, tikai galvenā līnija",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Jā, iekļaut visas variācijas",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Tikai pašreizējā līnija",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nē, tikai galvenā līnija",
+    "@includeVariationsMainline": {}
 }

@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Уключыць варыяцыі?",
     "@includeVariations": {},
-    "includeVariationsYes": "Так, уключыць варыяцыі",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Не, толькі галоўная лінія",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Так, уключыць усе варыяцыі",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Толькі бягучая лінія",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Не, толькі галоўная лінія",
+    "@includeVariationsMainline": {}
 }

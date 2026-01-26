@@ -65,7 +65,7 @@ class ImportService {
     if (_pgnContainsVariations(text)) {
       hasVariations = true;
       // Ask user whether to include variations
-      includeVariations = await _showVariationsDialog(context) ?? false;
+      includeVariations = await _showVariationsDialog(context);
     }
 
     if (!context.mounted) {
@@ -152,34 +152,45 @@ class ImportService {
 
   /// Shows a dialog asking the user whether to include variations.
   /// Returns true if user wants to include variations, false if mainline only.
-  static Future<bool?> _showVariationsDialog(BuildContext context) async {
-    return showDialog<bool>(
+  static Future<bool> _showVariationsDialog(BuildContext context) async {
+    final bool? result = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(S.of(context).variationsDetected),
-          content: Text(
-            '${S.of(context).moveListContainsVariations}\n\n'
-            '${S.of(context).includeVariations}',
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(S.of(context).includeVariationsNo),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(S.of(context).moveListContainsVariations),
+              const SizedBox(height: 16),
+              Text(S.of(context).includeVariations),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.maxFinite,
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  icon: const Icon(Icons.show_chart),
+                  label: Text(S.of(context).includeVariationsMainline),
+                ),
               ),
-              child: Text(S.of(context).includeVariationsYes),
-            ),
-          ],
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.maxFinite,
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  icon: const Icon(Icons.account_tree),
+                  label: Text(S.of(context).includeVariationsAll),
+                ),
+              ),
+            ],
+          ),
+          actions: const <Widget>[],
         );
       },
     );
+    return result ?? false;
   }
 
   static String addTagPairs(String moveList) {

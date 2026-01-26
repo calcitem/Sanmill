@@ -4038,10 +4038,12 @@
     "@variationsDetected": {},
     "moveListContainsVariations": "The move list contains variations.",
     "@moveListContainsVariations": {},
-    "includeVariations": "Include variations?",
+    "includeVariations": "What to export?",
     "@includeVariations": {},
-    "includeVariationsYes": "Yes, include variations",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "No, mainline only",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "All variations",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Current line only",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Mainline only",
+    "@includeVariationsMainline": {}
 }

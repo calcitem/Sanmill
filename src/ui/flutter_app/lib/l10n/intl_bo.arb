@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "འགྱུར་བ་ཚུད་པ་བྱེད་དགོས་སམ།",
     "@includeVariations": {},
-    "includeVariationsYes": "ཡིན་༎ འགྱུར་བ་ཚུད་པ་བྱེད།",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "མིན་༎ གཙོ་བོའི་ལམ་ཁོ་ན།",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "ཡིན་༎ འགྱུར་བ་ཚང་མ་ཚུད་པ་བྱེད།",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "མིག་སྔའི་ལམ་ཁོ་ན།",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "མིན་༎ གཙོ་བོའི་ལམ་ཁོ་ན།",
+    "@includeVariationsMainline": {}
 }

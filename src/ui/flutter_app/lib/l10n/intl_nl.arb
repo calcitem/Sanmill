@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Variaties opnemen?",
     "@includeVariations": {},
-    "includeVariationsYes": "Ja, variaties opnemen",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Nee, alleen hoofdlijn",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Ja, alle variaties opnemen",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Alleen huidige lijn",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Nee, alleen hoofdlijn",
+    "@includeVariationsMainline": {}
 }

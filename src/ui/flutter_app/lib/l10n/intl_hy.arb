@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Ներառե՞լ տարբերակները:",
     "@includeVariations": {},
-    "includeVariationsYes": "Այո, ներառել տարբերակները",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Ոչ, միայն հիմնական գիծ",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Այո, ներառել բոլոր տարբերակները",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Միայն ընթացիկ գիծ",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Ոչ, միայն հիմնական գիծ",
+    "@includeVariationsMainline": {}
 }

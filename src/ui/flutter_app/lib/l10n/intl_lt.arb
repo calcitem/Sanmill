@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Įtraukti variacijas?",
     "@includeVariations": {},
-    "includeVariationsYes": "Taip, įtraukti variacijas",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Ne, tik pagrindinė linija",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Taip, įtraukti visas variacijas",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Tik dabartinė linija",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Ne, tik pagrindinė linija",
+    "@includeVariationsMainline": {}
 }

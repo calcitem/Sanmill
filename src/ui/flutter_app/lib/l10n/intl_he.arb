@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "האם לכלול וריאציות?",
     "@includeVariations": {},
-    "includeVariationsYes": "כן, כלול וריאציות",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "לא, קו ראשי בלבד",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "כן, כלול את כל הוריאציות",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "קו נוכחי בלבד",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "לא, קו ראשי בלבד",
+    "@includeVariationsMainline": {}
 }

@@ -4024,8 +4024,10 @@
     "@moveListContainsVariations": {},
     "includeVariations": "Faka ukuhluka?",
     "@includeVariations": {},
-    "includeVariationsYes": "Yebo, faka ukuhluka",
-    "@includeVariationsYes": {},
-    "includeVariationsNo": "Cha, umugqa oyinhloko kuphela",
-    "@includeVariationsNo": {}
+    "includeVariationsAll": "Yebo, faka zonke izinguquko",
+    "@includeVariationsAll": {},
+    "includeVariationsCurrentLine": "Umugqa wamanje kuphela",
+    "@includeVariationsCurrentLine": {},
+    "includeVariationsMainline": "Cha, umugqa oyinhloko kuphela",
+    "@includeVariationsMainline": {}
 }
