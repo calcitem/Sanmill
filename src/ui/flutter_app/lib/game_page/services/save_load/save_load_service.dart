@@ -251,16 +251,16 @@ class LoadService {
                   const SizedBox(height: 16),
                   Text(S.of(context).includeVariations),
                   const SizedBox(height: 20),
-              SizedBox(
-                width: double.maxFinite,
-                child: ElevatedButton.icon(
-                  onPressed: () => Navigator.of(
-                    context,
-                  ).pop(ExportVariationOption.mainline),
-                  icon: const Icon(Icons.show_chart),
-                  label: Text(S.of(context).includeVariationsMainline),
-                ),
-              ),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.of(
+                        context,
+                      ).pop(ExportVariationOption.mainline),
+                      icon: const Icon(Icons.show_chart),
+                      label: Text(S.of(context).includeVariationsMainline),
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   SizedBox(
                     width: double.maxFinite,
