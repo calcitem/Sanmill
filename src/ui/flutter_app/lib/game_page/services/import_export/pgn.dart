@@ -842,9 +842,17 @@ String _escapeHeader(String value) =>
 /// Remove '}' from the comment string
 String _safeComment(String value) => value.replaceAll(RegExp(r'\}'), '');
 
-/// For Nine Men's Morris, we don't do advanced FEN parsing for ply. Return 0 here.
+/// Parse the NMM FEN to determine the initial half-move (ply) index.
+///
+/// NMM FEN format: "<board> <side> <phase> <action> ..."
+/// where <side> is 'w' (white, ply 0) or 'b' (black, ply 1).
 int _getPlyFromSetup(String fen) {
-  return 0; // Minimal stub
+  final List<String> fields = fen.trim().split(RegExp(r'\s+'));
+  // Black to move → odd ply; white to move (default) → even ply.
+  if (fields.length >= 2 && fields[1] == 'b') {
+    return 1;
+  }
+  return 0;
 }
 
 /// Check if a SAN string represents a Nine Men's Morris removal move.

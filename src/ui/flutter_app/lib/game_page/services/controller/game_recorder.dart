@@ -274,6 +274,13 @@ class GameRecorder {
     // output so the next mainline move can restate its move number.
     bool hadVariation = false;
 
+    // Detect if the first non-removal move is black's (e.g., from a
+    // FEN setup where black moves first).
+    final bool startsWithBlack = nodes.isNotEmpty &&
+        nodes[0].data != null &&
+        nodes[0].data!.side == PieceColor.black &&
+        nodes[0].data!.type != MoveType.remove;
+
     // Build one step of notation (up to two moves per line).
     void buildStandardNotation() {
       const String sep = " ";
@@ -298,10 +305,8 @@ class GameRecorder {
               varIdx++
             ) {
               sb.write(' (');
-              // Use num-1 because num was already incremented in sb.writeNumber(num++)
-              // The variation should use the same move number as the mainline move
               sb.write(
-                _formatVariation(currentNode.parent!.children[varIdx], num - 1),
+                _formatVariation(currentNode.parent!.children[varIdx], num),
               );
               sb.write(')');
             }
@@ -330,12 +335,10 @@ class GameRecorder {
                 varIdx++
               ) {
                 sb.write(' (');
-                // Use num-1 because num was already incremented in sb.writeNumber(num++)
-                // The variation should use the same move number as the mainline move
                 sb.write(
                   _formatVariation(
                     currentNode.parent!.children[varIdx],
-                    num - 1,
+                    num,
                   ),
                 );
                 sb.write(')');
@@ -354,17 +357,37 @@ class GameRecorder {
       sb.write(buildTagPairs());
     }
 
-    // Walk through the moves in pairs (like typical chess notation).
+    // PGN standard: if the game starts with black's move, output the
+    // initial black half-move with "N..." notation before entering
+    // the standard white-black pair loop.
+    if (startsWithBlack && i < nodes.length) {
+      sb.write('$num...');
+      hadVariation = false;
+      buildStandardNotation();
+      // PGN 8.2.5: if black's initial move had a variation, the
+      // forced move number for white's next move is naturally
+      // provided by sb.writeNumber(num) at the next iteration.
+      num++;
+      if (i < nodes.length) {
+        sb.writeln();
+      }
+    }
+
+    // Walk through the remaining moves in white-black pairs.
     while (i < nodes.length) {
-      sb.writeNumber(num++);
+      sb.writeNumber(num);
       hadVariation = false;
       buildStandardNotation();
       // PGN standard 8.2.5: restate move number after RAV close.
       if (hadVariation && i < nodes.length) {
-        sb.write(' ${num - 1}...');
+        sb.write(' $num...');
       }
       hadVariation = false;
       buildStandardNotation();
+      // PGN 8.2.5: after black's RAV close, the forced move number
+      // for the next white move is provided by sb.writeNumber(num)
+      // at the top of the next iteration.
+      num++;
       if (i < nodes.length) {
         sb.writeln();
       }
@@ -1433,16 +1456,33 @@ class GameRecorder {
       }
     }
 
+    // Detect if the first non-removal move is black's (e.g., FEN setup).
+    final bool startsWithBlack = path.isNotEmpty &&
+        path[0].side == PieceColor.black &&
+        path[0].type != MoveType.remove;
+
     // Write FEN tag pairs if a custom position is set.
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
 
-    // Walk through the moves in pairs (like typical chess notation).
+    // PGN standard: if the game starts with black's move, output the
+    // initial black half-move with "N..." notation.
+    if (startsWithBlack && i < path.length) {
+      sb.write('$num...');
+      buildStandardNotation();
+      num++;
+      if (i < path.length) {
+        sb.writeln();
+      }
+    }
+
+    // Walk through the remaining moves in white-black pairs.
     while (i < path.length) {
-      sb.writeNumber(num++);
+      sb.writeNumber(num);
       buildStandardNotation();
       buildStandardNotation();
+      num++;
       if (i < path.length) {
         sb.writeln();
       }
@@ -1533,16 +1573,34 @@ class GameRecorder {
       }
     }
 
+    // Detect if the first non-removal move is black's (e.g., FEN setup).
+    final bool startsWithBlack = nodes.isNotEmpty &&
+        nodes[0].data != null &&
+        nodes[0].data!.side == PieceColor.black &&
+        nodes[0].data!.type != MoveType.remove;
+
     // Write FEN tag pairs if a custom position is set.
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
 
-    // Walk through the moves in pairs (like typical chess notation).
+    // PGN standard: if the game starts with black's move, output the
+    // initial black half-move with "N..." notation.
+    if (startsWithBlack && i < nodes.length) {
+      sb.write('$num...');
+      buildStandardNotation();
+      num++;
+      if (i < nodes.length) {
+        sb.writeln();
+      }
+    }
+
+    // Walk through the remaining moves in white-black pairs.
     while (i < nodes.length) {
-      sb.writeNumber(num++);
+      sb.writeNumber(num);
       buildStandardNotation();
       buildStandardNotation();
+      num++;
       if (i < nodes.length) {
         sb.writeln();
       }
