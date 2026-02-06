@@ -269,6 +269,11 @@ class GameRecorder {
     int num = 1;
     int i = 0;
 
+    // PGN standard 8.2.5: A move number indication is forced after
+    // the close of a RAV. This flag tracks whether any variation was
+    // output so the next mainline move can restate its move number.
+    bool hadVariation = false;
+
     // Build one step of notation (up to two moves per line).
     void buildStandardNotation() {
       const String sep = "    "; // For formatting alignment.
@@ -300,6 +305,7 @@ class GameRecorder {
               );
               sb.write(')');
             }
+            hadVariation = true;
           }
         }
 
@@ -334,6 +340,7 @@ class GameRecorder {
                 );
                 sb.write(')');
               }
+              hadVariation = true;
             }
           }
 
@@ -350,11 +357,22 @@ class GameRecorder {
     // Walk through the moves in pairs (like typical chess notation).
     while (i < nodes.length) {
       sb.writeNumber(num++);
+      hadVariation = false;
       buildStandardNotation();
+      // PGN standard 8.2.5: restate move number after RAV close.
+      if (hadVariation && i < nodes.length) {
+        sb.write(' ${num - 1}...');
+      }
+      hadVariation = false;
       buildStandardNotation();
       if (i < nodes.length) {
         sb.writeln();
       }
+    }
+
+    // PGN standard: append game termination marker.
+    if (sb.isNotEmpty) {
+      sb.write(' *');
     }
 
     return sb.toString();
@@ -391,11 +409,37 @@ class GameRecorder {
   }
 
   /// Formats a variation branch in compact notation.
+  ///
+  /// When a variation starts with a removal move, the preceding
+  /// placement/movement from the parent node is prepended so the
+  /// output always carries full move context (e.g. "1. d6xc3"
+  /// instead of bare "xc3").
   String _formatVariation(PgnNode<ExtMove> start, int moveNumber) {
     final StringBuffer sb = StringBuffer();
     PgnNode<ExtMove>? current = start;
     int currentMove = moveNumber;
     PieceColor? lastSide;
+
+    // PGN standard 8.2.5: track whether a nested RAV was just closed
+    // so the next move restates its move number.
+    bool hadNestedVariation = false;
+
+    // If the variation begins with a removal move, prefix with the
+    // parent's placement/movement notation for complete context.
+    if (start.data != null &&
+        start.data!.type == MoveType.remove &&
+        start.parent != null &&
+        start.parent!.data != null) {
+      final ExtMove parentMove = start.parent!.data!;
+      if (parentMove.side == PieceColor.white) {
+        sb.write('$currentMove. ');
+      } else {
+        sb.write('$currentMove... ');
+      }
+      sb.write(parentMove.notation);
+      // Initialise lastSide so subsequent moves get correct numbering.
+      lastSide = parentMove.side;
+    }
 
     while (current != null && current.data != null) {
       final ExtMove move = current.data!;
@@ -409,10 +453,11 @@ class GameRecorder {
 
       // Write move number following PGN standard:
       // 1. White's move: always show "N."
-      // 2. Black's move: only show "N..." if:
-      //    a) First move in variation AND it's black's move (variation starts with black)
-      //    b) Previous move was also black (consecutive black moves, e.g. after removal)
-      // 3. Black's move right after white's move (same turn): omit "N..." for brevity
+      // 2. Black's move: show "N..." if:
+      //    a) First move in variation AND it's black's move
+      //    b) Previous move was also black (consecutive black moves)
+      //    c) A nested RAV was just closed (PGN 8.2.5)
+      // 3. Black's move right after white's move (same turn): omit for brevity
       final bool isFirstMove = current == start;
       final bool isWhiteMove = move.side == PieceColor.white;
       final bool isNonRemoveMove =
@@ -425,11 +470,21 @@ class GameRecorder {
           // Always show move number for white
           showMoveNumber = true;
         } else {
-          // For black, only show if variation starts with black OR previous was also black
+          // For black, show when variation starts with black,
+          // after consecutive black moves, or after a nested RAV.
           final bool variationStartsWithBlack = isFirstMove;
           final bool consecutiveBlackMoves = lastSide == PieceColor.black;
-          showMoveNumber = variationStartsWithBlack || consecutiveBlackMoves;
+          showMoveNumber = variationStartsWithBlack ||
+              consecutiveBlackMoves ||
+              hadNestedVariation;
         }
+      }
+
+      // Reset nested-variation flag after it has been consumed by a
+      // non-removal move (removal moves are concatenated and do not
+      // represent a new half-move).
+      if (isNonRemoveMove) {
+        hadNestedVariation = false;
       }
 
       if (showMoveNumber) {
@@ -467,6 +522,7 @@ class GameRecorder {
           );
           sb.write(')');
         }
+        hadNestedVariation = true;
       }
 
       // Update move number and track last side
@@ -1380,6 +1436,11 @@ class GameRecorder {
       }
     }
 
+    // PGN standard: append game termination marker.
+    if (sb.isNotEmpty) {
+      sb.write(' *');
+    }
+
     return sb.toString();
   }
 
@@ -1467,6 +1528,11 @@ class GameRecorder {
       if (i < nodes.length) {
         sb.writeln();
       }
+    }
+
+    // PGN standard: append game termination marker.
+    if (sb.isNotEmpty) {
+      sb.write(' *');
     }
 
     return sb.toString();

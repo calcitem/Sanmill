@@ -415,9 +415,17 @@ List<String> lexTokens(String moveHistoryText) {
     if (trimmed.isEmpty) {
       continue;
     }
-    // 2) Skip if the token matches "digits + '.' + optional whitespace".
-    //    Example matches: "1.", "12.", "3.   "
-    if (RegExp(r'^\d+\.\s*$').hasMatch(trimmed)) {
+    // 2) Skip move number indications:
+    //    - White format "N." (e.g. "1.", "12.")
+    //    - Black format "N..." (e.g. "1...", "12...")
+    if (RegExp(r'^\d+\.{1,3}\s*$').hasMatch(trimmed)) {
+      continue;
+    }
+    // 3) Skip PGN game termination markers.
+    if (trimmed == '*' ||
+        trimmed == '1-0' ||
+        trimmed == '0-1' ||
+        trimmed == '1/2-1/2') {
       continue;
     }
 

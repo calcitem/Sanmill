@@ -44,7 +44,7 @@ class WinLessThanThreeGame extends TestGame {
       '22.    d1-d2    b4-d6xd2\n'
       '23.    g4-f4    d5-g4\n'
       '24.    b2-d2    g4-d5xd2\n'
-      '25.    g1-g4xd6';
+      '25.    g1-g4xd6 *';
 
   @override
   String? get movesSinceRemove => null;
