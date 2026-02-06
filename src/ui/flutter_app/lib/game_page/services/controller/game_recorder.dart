@@ -276,7 +276,7 @@ class GameRecorder {
 
     // Build one step of notation (up to two moves per line).
     void buildStandardNotation() {
-      const String sep = "    "; // For formatting alignment.
+      const String sep = " ";
       if (i < nodes.length) {
         // Retrieve current node
         final PgnNode<ExtMove> currentNode = nodes[i];
@@ -395,7 +395,13 @@ class GameRecorder {
 
     // Write NAG symbols
     if (move.nags != null && move.nags!.isNotEmpty) {
-      sb.write(_nagsToString(move.nags!));
+      final String nagStr = _nagsToString(move.nags!);
+      // Numeric NAGs ($N) need a preceding space per PGN standard;
+      // symbolic NAGs (!, ?, etc.) attach directly to the move.
+      if (nagStr.startsWith(r'$')) {
+        sb.write(' ');
+      }
+      sb.write(nagStr);
     }
 
     // Write after-move comments
@@ -500,7 +506,13 @@ class GameRecorder {
 
       // Write NAG symbols
       if (move.nags != null && move.nags!.isNotEmpty) {
-        sb.write(_nagsToString(move.nags!));
+        final String nagStr = _nagsToString(move.nags!);
+        // Numeric NAGs ($N) need a preceding space per PGN standard;
+        // symbolic NAGs (!, ?, etc.) attach directly to the move.
+        if (nagStr.startsWith(r'$')) {
+          sb.write(' ');
+        }
+        sb.write(nagStr);
       }
 
       // Write after-move comments
@@ -1405,7 +1417,7 @@ class GameRecorder {
 
     // Build one step of notation (up to two moves per line) - current path only
     void buildStandardNotation() {
-      const String sep = "    ";
+      const String sep = " ";
       if (i < path.length) {
         final ExtMove move = path[i];
         sb.write(sep);
@@ -1460,7 +1472,13 @@ class GameRecorder {
 
     // Write NAG symbols
     if (move.nags != null && move.nags!.isNotEmpty) {
-      sb.write(_nagsToString(move.nags!));
+      final String nagStr = _nagsToString(move.nags!);
+      // Numeric NAGs ($N) need a preceding space per PGN standard;
+      // symbolic NAGs (!, ?, etc.) attach directly to the move.
+      if (nagStr.startsWith(r'$')) {
+        sb.write(' ');
+      }
+      sb.write(nagStr);
     }
 
     // Write after-move comments
@@ -1498,7 +1516,7 @@ class GameRecorder {
 
     // Build one step of notation (up to two moves per line) - mainline only
     void buildStandardNotation() {
-      const String sep = "    ";
+      const String sep = " ";
       if (i < nodes.length) {
         final PgnNode<ExtMove> currentNode = nodes[i];
         sb.write(sep);
@@ -1555,7 +1573,13 @@ class GameRecorder {
 
     // Write NAG symbols
     if (move.nags != null && move.nags!.isNotEmpty) {
-      sb.write(_nagsToString(move.nags!));
+      final String nagStr = _nagsToString(move.nags!);
+      // Numeric NAGs ($N) need a preceding space per PGN standard;
+      // symbolic NAGs (!, ?, etc.) attach directly to the move.
+      if (nagStr.startsWith(r'$')) {
+        sb.write(' ');
+      }
+      sb.write(nagStr);
     }
 
     // Write after-move comments

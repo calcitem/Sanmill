@@ -17,7 +17,6 @@ extension CustomStringBuffer on StringBuffer {
 
   void writeSpace([Object? content = ""]) => write("$content ");
 
-  /// Writes the given number to the buffer.
-  /// It will add an extra space in front of single digit numbers but wont fix three digit cases.
-  void writeNumber(int number) => write(number < 10 ? " $number." : "$number.");
+  /// Writes the given number followed by a period to the buffer.
+  void writeNumber(int number) => write("$number.");
 }

@@ -288,7 +288,12 @@ class PgnGame<T extends PgnNodeData> {
               }
               forceMoveNumber = true;
             }
-            if (forceMoveNumber || frame.ply.isEven) {
+            // Nine Men's Morris: removal moves (san starts with 'x')
+            // are sub-parts of the same turn and should not get a
+            // separate move number indication.
+            final bool isRemoval = _isRemovalSan(frame.node.data?.san);
+
+            if (!isRemoval && (forceMoveNumber || frame.ply.isEven)) {
               token.write(
                 '${(frame.ply / 2).floor() + 1}'
                 '${frame.ply.isOdd ? "..." : "."} ',
@@ -309,6 +314,13 @@ class PgnGame<T extends PgnNodeData> {
                 }
               }
             }
+
+            // After a removal, force the move number for the next
+            // non-removal move so the reader can track the turn.
+            if (isRemoval) {
+              forceMoveNumber = true;
+            }
+
             frame.state = _PgnState.sidelines;
             continue;
           }
@@ -335,10 +347,17 @@ class PgnGame<T extends PgnNodeData> {
                 final Iterator<PgnNode<PgnNodeData>> variations =
                     frame.node.children.iterator;
                 variations.moveNext();
+
+                // Nine Men's Morris: don't increment ply for removal
+                // moves since they belong to the same turn.
+                final bool nextIsRemoval = _isRemovalSan(
+                  variations.current.data?.san,
+                );
+
                 stack.add(
                   _PgnFrame(
                     state: _PgnState.pre,
-                    ply: frame.ply + 1,
+                    ply: frame.ply + (nextIsRemoval ? 0 : 1),
                     node: variations.current,
                     sidelines: variations,
                     startsVariation: false,
@@ -826,6 +845,15 @@ String _safeComment(String value) => value.replaceAll(RegExp(r'\}'), '');
 /// For Nine Men's Morris, we don't do advanced FEN parsing for ply. Return 0 here.
 int _getPlyFromSetup(String fen) {
   return 0; // Minimal stub
+}
+
+/// Check if a SAN string represents a Nine Men's Morris removal move.
+/// Removal moves start with 'x' (e.g., 'xf4', 'xa1').
+bool _isRemovalSan(String? san) {
+  if (san == null || san.isEmpty) {
+    return false;
+  }
+  return san.startsWith('x');
 }
 
 const String _bom = '\ufeff';
