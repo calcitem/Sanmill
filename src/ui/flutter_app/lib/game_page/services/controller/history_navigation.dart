@@ -350,48 +350,13 @@ class HistoryNavigator {
     final String? lastPosWithRemove =
         GameController().gameRecorder.lastPositionWithRemove;
 
-    // CRITICAL: Build the path of moves to relocate activeNode in original tree
-    final List<ExtMove> activePath = <ExtMove>[];
-    PgnNode<ExtMove>? cur = GameController().gameRecorder.activeNode;
-    while (cur != null && cur.data != null) {
-      activePath.insert(0, cur.data!);
-      cur = cur.parent;
-    }
-
-    GameController().gameRecorder = tempRec; // Restore the original recorder
+    // Restore the original recorder.  Its activeNode was correctly adjusted
+    // by the nav-mode functions in step 1 (_takeBack, _stepForward, etc.)
+    // and was NOT modified during the replay (which operates on the
+    // separate recorder created by reset()).  No re-location is needed.
+    GameController().gameRecorder = tempRec;
     GameController().gameRecorder.lastPositionWithRemove = lastPosWithRemove;
     GameController().newGameRecorder = null;
-
-    // CRITICAL: Re-locate activeNode in the original tree by walking the path
-    PgnNode<ExtMove> targetNode = GameController().gameRecorder.pgnRoot;
-    for (final ExtMove moveInPath in activePath) {
-      // Find the child that matches this move
-      PgnNode<ExtMove>? matchingChild;
-      for (final PgnNode<ExtMove> child in targetNode.children) {
-        if (child.data != null && child.data!.move == moveInPath.move) {
-          matchingChild = child;
-          break;
-        }
-      }
-      if (matchingChild != null) {
-        targetNode = matchingChild;
-      } else {
-        // Path not found in original tree - should not happen
-        break;
-      }
-    }
-
-    // Update activeNode to point to the correct node in the original tree
-    if (activePath.isEmpty) {
-      // The root position should be represented by pgnRoot, not null.
-      // Using null here makes subsequent moves append to the tail (see
-      // GameRecorder.appendMove), which can create duplicate nodes and
-      // break history navigation invariants.
-      GameController().gameRecorder.activeNode =
-          GameController().gameRecorder.pgnRoot;
-    } else {
-      GameController().gameRecorder.activeNode = targetNode;
-    }
 
     return success ? const HistoryOK() : const HistoryRule();
   }
@@ -457,9 +422,9 @@ class HistoryNavigator {
 
     // Update the active node to the target
     GameController().gameRecorder.activeNode = targetNode;
-    // Notify move count change
+    // Notify move count change using currentPath to reflect actual position
     GameController().gameRecorder.moveCountNotifier.value =
-        GameController().gameRecorder.mainlineMoves.length;
+        GameController().gameRecorder.currentPath.length;
 
     // Re-enable the controller
     GameController().isControllerActive = true;
@@ -473,83 +438,101 @@ class HistoryNavigator {
     return success ? const HistoryOK() : const HistoryRule();
   }
 
-  /// Move HEAD up by `n` steps if possible
+  /// Move HEAD up by `n` steps if possible.
+  /// Records the child we came from at each step so that subsequent forward
+  /// navigation can resume along the same variation branch.
   static void _takeBack(int n) {
+    final GameRecorder rec = GameController().gameRecorder;
     while (n-- > 0) {
-      final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
-      if (node == null) {
+      final PgnNode<ExtMove>? node = rec.activeNode;
+      if (node == null || node.parent == null) {
         break;
       }
-      // If parent is null => at the root, cannot go further
-      if (node.parent == null) {
-        break;
+      // Record the preferred child before moving up so that _stepForward
+      // knows which branch to resume.
+      final PgnNode<ExtMove> parent = node.parent!;
+      final int childIdx = parent.children.indexOf(node);
+      if (childIdx >= 0) {
+        rec.setPreferredChild(parent, childIdx);
       }
-      // Just move activeNode to parent
-      GameController().gameRecorder.activeNode = node.parent;
+      rec.activeNode = parent;
     }
 
-    // Notify move count change after all steps
-    GameController().gameRecorder.moveCountNotifier.value =
-        GameController().gameRecorder.mainlineMoves.length;
+    // Notify move count change — use currentPath for variation correctness.
+    rec.moveCountNotifier.value = rec.currentPath.length;
   }
 
-  /// Move HEAD to the root
+  /// Move HEAD to the root.
+  /// Records preferred children along the full path so that a subsequent
+  /// _stepForwardAll can retrace the exact same variation.
   static void _takeBackAll() {
-    // HEAD => pgnRoot
-    GameController().gameRecorder.activeNode =
-        GameController().gameRecorder.pgnRoot;
-    // Notify move count change
-    GameController().gameRecorder.moveCountNotifier.value = 0;
-  }
-
-  /// Move HEAD forward by `n` steps along the first child
-  static void _stepForward(int n, {int variationIndex = 0}) {
-    while (n-- > 0) {
-      final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
-      if (node == null) {
-        final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
-        if (root.children.isNotEmpty) {
-          // Use variationIndex to select which child to follow
-          final int index = variationIndex.clamp(0, root.children.length - 1);
-          GameController().gameRecorder.activeNode = root.children[index];
-        } else {
-          break;
-        }
-      } else {
-        if (node.children.isNotEmpty) {
-          // Use variationIndex to select which child to follow
-          final int index = variationIndex.clamp(0, node.children.length - 1);
-          GameController().gameRecorder.activeNode = node.children[index];
-        } else {
-          break;
-        }
+    final GameRecorder rec = GameController().gameRecorder;
+    // Walk from current position to root, recording preferred child at every
+    // branching point.
+    PgnNode<ExtMove>? node = rec.activeNode;
+    while (node != null && node.parent != null) {
+      final PgnNode<ExtMove> parent = node.parent!;
+      final int childIdx = parent.children.indexOf(node);
+      if (childIdx >= 0) {
+        rec.setPreferredChild(parent, childIdx);
       }
+      node = parent;
     }
-    // Notify move count change after all steps
-    GameController().gameRecorder.moveCountNotifier.value =
-        GameController().gameRecorder.currentPath.length;
+    // HEAD => pgnRoot
+    rec.activeNode = rec.pgnRoot;
+    rec.moveCountNotifier.value = 0;
   }
 
-  /// Move HEAD forward to the very end of the main child path
-  static void _stepForwardAll() {
-    while (true) {
-      final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
-      if (node == null) {
-        final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
-        if (root.children.isNotEmpty) {
-          GameController().gameRecorder.activeNode = root.children.first;
-        } else {
-          break;
-        }
-      } else if (node.children.isNotEmpty) {
-        GameController().gameRecorder.activeNode = node.children.first;
-      } else {
+  /// Move HEAD forward by `n` steps.
+  /// When [explicitVariationIndex] is provided it overrides the preferred
+  /// child lookup; otherwise the recorder's preferred-child map is consulted
+  /// so that forward navigation resumes along the variation the user was in.
+  static void _stepForward(int n, {int? explicitVariationIndex}) {
+    final GameRecorder rec = GameController().gameRecorder;
+    while (n-- > 0) {
+      final PgnNode<ExtMove> current = rec.activeNode ?? rec.pgnRoot;
+      if (current.children.isEmpty) {
         break;
       }
+      final int index = _resolveChildIndex(
+        rec,
+        current,
+        explicitVariationIndex,
+      );
+      rec.activeNode = current.children[index];
     }
-    // Notify move count change
-    GameController().gameRecorder.moveCountNotifier.value =
-        GameController().gameRecorder.mainlineMoves.length;
+    rec.moveCountNotifier.value = rec.currentPath.length;
+  }
+
+  /// Move HEAD forward to the very end along the current variation path.
+  /// At every branching point the recorder's preferred-child map is consulted
+  /// so that the navigation retraces the exact variation the user was in
+  /// before taking back.
+  static void _stepForwardAll() {
+    final GameRecorder rec = GameController().gameRecorder;
+    while (true) {
+      final PgnNode<ExtMove> current = rec.activeNode ?? rec.pgnRoot;
+      if (current.children.isEmpty) {
+        break;
+      }
+      final int index = _resolveChildIndex(rec, current, null);
+      rec.activeNode = current.children[index];
+    }
+    rec.moveCountNotifier.value = rec.currentPath.length;
+  }
+
+  /// Determines which child to follow at [node].
+  /// Priority: explicit override > preferred child from takeBack history > 0.
+  static int _resolveChildIndex(
+    GameRecorder rec,
+    PgnNode<ExtMove> node,
+    int? explicitIndex,
+  ) {
+    if (explicitIndex != null) {
+      return explicitIndex.clamp(0, node.children.length - 1);
+    }
+    final int preferred = rec.getPreferredChildIndex(node);
+    return preferred.clamp(0, node.children.length - 1);
   }
 
   /// Collect all moves from HEAD up to the root

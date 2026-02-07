@@ -185,7 +185,8 @@ class ExportService {
 
     // Detect if the first non-removal move is Black's (e.g., from a
     // FEN setup where Black moves first).
-    final bool startsWithBlack = nodes.isNotEmpty &&
+    final bool startsWithBlack =
+        nodes.isNotEmpty &&
         nodes[0].data != null &&
         nodes[0].data!.side == PieceColor.black &&
         nodes[0].data!.type != MoveType.remove;

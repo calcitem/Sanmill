@@ -28,6 +28,29 @@ class GameRecorder {
   /// If null, no moves have been made yet (or we are at root with no child).
   PgnNode<ExtMove>? activeNode;
 
+  /// Tracks which child was last navigated through at each branching node.
+  /// When taking back from a child, the child's index is recorded so that
+  /// stepping forward can resume along the same variation instead of always
+  /// defaulting to children[0] (mainline).
+  /// Cleared when the tree structure changes (new moves, reset).
+  final Map<PgnNode<ExtMove>, int> _preferredChildIndex =
+      <PgnNode<ExtMove>, int>{};
+
+  /// Records the preferred forward child at [parent].
+  void setPreferredChild(PgnNode<ExtMove> parent, int childIndex) {
+    _preferredChildIndex[parent] = childIndex;
+  }
+
+  /// Returns the preferred child index at [node], or 0 (mainline) if none.
+  int getPreferredChildIndex(PgnNode<ExtMove> node) {
+    return _preferredChildIndex[node] ?? 0;
+  }
+
+  /// Clears all preferred child records.
+  void clearPreferredChildren() {
+    _preferredChildIndex.clear();
+  }
+
   /// Getter to expose the root node.
   PgnNode<ExtMove> get pgnRoot => _pgnRoot;
 
@@ -122,6 +145,7 @@ class GameRecorder {
     // to maintain consistency with history navigation behavior.
     activeNode = _pgnRoot;
     lastPositionWithRemove = null;
+    _preferredChildIndex.clear();
     moveCountNotifier.value = 0;
   }
 
@@ -136,6 +160,7 @@ class GameRecorder {
       //   tail will silently corrupt history by duplicating moves at the end.
       final PgnNode<ExtMove> where = _pgnRoot;
 
+      bool isNewVariation = false;
       if (where.children.isNotEmpty && createVariation) {
         // Follow an existing matching first move when possible.
         for (final PgnNode<ExtMove> child in where.children) {
@@ -145,12 +170,22 @@ class GameRecorder {
             return;
           }
         }
+        // No match found among existing children — this is a new variation.
+        isNewVariation = true;
       }
+
+      // New node creation invalidates preferred-child navigation state.
+      _preferredChildIndex.clear();
 
       final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
       newChild.parent = where;
-      // Keep newest line as mainline by default.
-      where.children.insert(0, newChild);
+      if (isNewVariation) {
+        // Append as variation to preserve existing mainline order.
+        where.children.add(newChild);
+      } else {
+        // No existing children or createVariation=false: first child = mainline.
+        where.children.insert(0, newChild);
+      }
       activeNode = newChild;
     } else {
       // Check if active node already has children
@@ -171,7 +206,9 @@ class GameRecorder {
           // Found matching move in existing children - follow it
           activeNode = matchingChild;
         } else {
-          // No matching child found - create new variation
+          // No matching child found - create new variation.
+          // Append (not insert at 0) to preserve existing mainline order.
+          _preferredChildIndex.clear();
           final PgnNode<ExtMove> variationNode = PgnNode<ExtMove>(move);
           variationNode.parent = activeNode;
           activeNode!.children.add(variationNode);
@@ -179,6 +216,7 @@ class GameRecorder {
         }
       } else {
         // Extend the active line by inserting new move at the front of children.
+        _preferredChildIndex.clear();
         final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
         newChild.parent = activeNode;
         activeNode!.children.insert(0, newChild);
@@ -239,6 +277,7 @@ class GameRecorder {
 
   /// Creates a new branch node under the current activeNode and sets it as active.
   /// IMPORTANT: Now checks if the move already exists in children to avoid duplicates.
+  /// New branches are appended (not inserted at position 0) to preserve mainline stability.
   void branchNewMoveFromActiveNode(ExtMove newMove) {
     final PgnNode<ExtMove> where = activeNode ?? _pgnRoot;
 
@@ -253,10 +292,12 @@ class GameRecorder {
       }
     }
 
-    // No matching child found - create new branch
+    // No matching child found - create new branch.
+    // Use add() instead of insert(0, ...) to preserve existing mainline order.
+    _preferredChildIndex.clear();
     final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(newMove);
     newChild.parent = where;
-    where.children.insert(0, newChild);
+    where.children.add(newChild);
     activeNode = newChild;
     moveCountNotifier.value = currentPath.length;
   }
@@ -295,7 +336,8 @@ class GameRecorder {
 
     // Detect if the first non-removal move is black's (e.g., from a
     // FEN setup where black moves first).
-    final bool startsWithBlack = nodes.isNotEmpty &&
+    final bool startsWithBlack =
+        nodes.isNotEmpty &&
         nodes[0].data != null &&
         nodes[0].data!.side == PieceColor.black &&
         nodes[0].data!.type != MoveType.remove;
@@ -339,9 +381,7 @@ class GameRecorder {
               varIdx++
             ) {
               sb.write(' (');
-              sb.write(
-                _formatVariation(node.parent!.children[varIdx], num),
-              );
+              sb.write(_formatVariation(node.parent!.children[varIdx], num));
               sb.write(')');
             }
             hadVariation = true;
@@ -507,7 +547,8 @@ class GameRecorder {
           // after consecutive black moves, or after a nested RAV.
           final bool variationStartsWithBlack = isFirstMove;
           final bool consecutiveBlackMoves = lastSide == PieceColor.black;
-          showMoveNumber = variationStartsWithBlack ||
+          showMoveNumber =
+              variationStartsWithBlack ||
               consecutiveBlackMoves ||
               hadNestedVariation;
         }
@@ -553,8 +594,9 @@ class GameRecorder {
       // They will be emitted after all removal moves in this turn
       // have been written (see deferred output below).
       if (current.children.length > 1) {
-        final int varMoveNum =
-            move.side == PieceColor.black ? currentMove + 1 : currentMove;
+        final int varMoveNum = move.side == PieceColor.black
+            ? currentMove + 1
+            : currentMove;
         for (int i = 1; i < current.children.length; i++) {
           deferredVarNodes.add(current.children[i]);
           deferredVarMoveNums.add(varMoveNum);
@@ -570,7 +612,8 @@ class GameRecorder {
       }
 
       // Determine whether the next mainline node is a removal.
-      final bool nextIsRemoval = current.children.isNotEmpty &&
+      final bool nextIsRemoval =
+          current.children.isNotEmpty &&
           current.children[0].data != null &&
           current.children[0].data!.type == MoveType.remove;
 
@@ -1480,7 +1523,8 @@ class GameRecorder {
     }
 
     // Detect if the first non-removal move is black's (e.g., FEN setup).
-    final bool startsWithBlack = path.isNotEmpty &&
+    final bool startsWithBlack =
+        path.isNotEmpty &&
         path[0].side == PieceColor.black &&
         path[0].type != MoveType.remove;
 
@@ -1597,7 +1641,8 @@ class GameRecorder {
     }
 
     // Detect if the first non-removal move is black's (e.g., FEN setup).
-    final bool startsWithBlack = nodes.isNotEmpty &&
+    final bool startsWithBlack =
+        nodes.isNotEmpty &&
         nodes[0].data != null &&
         nodes[0].data!.side == PieceColor.black &&
         nodes[0].data!.type != MoveType.remove;

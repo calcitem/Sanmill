@@ -285,54 +285,75 @@ class MoveListDialog extends StatelessWidget {
     String? fen,
     int clickedIndex,
   ) async {
-    String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
-    if (fen != null) {
-      ml = '$fen $ml';
-    }
-    final SnackBar snackBar = SnackBar(
-      key: const Key('move_list_dialog_import_snack_bar'),
-      content: Text(ml),
-      duration: const Duration(seconds: 2),
-    );
-    if (!ScaffoldMessenger.of(context).mounted) {
+    // Navigate to the clicked position using direct node navigation
+    // to preserve the variation tree instead of destroying it via re-import.
+    final GameController controller = GameController();
+    final List<PgnNode<ExtMove>> mainlineNodes =
+        controller.gameRecorder.mainlineNodes;
+
+    // Handle FEN-only click (clickedIndex == -1) — go to root.
+    if (clickedIndex == -1) {
+      await HistoryNavigator.takeBackAll(context, pop: false);
       return;
     }
-    if (EnvironmentConfig.devMode) {
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-    try {
-      ImportService.import(ml);
-    } catch (exception) {
-      if (!context.mounted) {
-        return;
+
+    // Count mainline display items up to clickedIndex, skipping variation
+    // blocks (everything between '(' and ')') and non-move tokens.
+    int mainlineDisplayItems = 0;
+    int nestingDepth = 0;
+    for (int i = 0; i <= clickedIndex && i < mergedMoves.length; i++) {
+      final String token = mergedMoves[i];
+      if (token == '(') {
+        nestingDepth++;
+        continue;
       }
-      final String tip = S.of(context).cannotImport(ml);
-      GameController().headerTipNotifier.showTip(tip);
-      Navigator.pop(context);
-      return;
-    }
-    if (!context.mounted) {
-      return;
-    }
-    await HistoryNavigator.takeBackAll(context, pop: false);
-    if (!context.mounted) {
-      return;
-    }
-    if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
-        const HistoryOK()) {
-      if (!context.mounted) {
-        return;
+      if (token == ')') {
+        nestingDepth--;
+        continue;
       }
-    } else {
-      if (!context.mounted) {
-        return;
+      if (token.isEmpty || token.startsWith('[')) {
+        continue;
       }
-      final String tip = S
-          .of(context)
-          .cannotImport(HistoryNavigator.importFailedStr);
-      GameController().headerTipNotifier.showTip(tip);
-      HistoryNavigator.importFailedStr = "";
+      // Only count moves at nesting depth 0 (mainline).
+      if (nestingDepth == 0) {
+        mainlineDisplayItems++;
+      }
     }
+
+    if (mainlineDisplayItems <= 0 || mainlineNodes.isEmpty) {
+      await HistoryNavigator.takeBackAll(context, pop: false);
+      return;
+    }
+
+    // Map the Nth mainline display item to the corresponding PGN node.
+    // Each display item is a "merged move" that groups a placement/movement
+    // with its trailing removal(s) (e.g. "d6xc3" = 2 nodes in mainlineNodes).
+    int displayGroup = 0;
+    int lastNodeIdx = 0;
+    int nodeIdx = 0;
+    while (nodeIdx < mainlineNodes.length) {
+      displayGroup++;
+      lastNodeIdx = nodeIdx;
+      nodeIdx++;
+      // Include following removal nodes in the same display group.
+      while (nodeIdx < mainlineNodes.length &&
+          mainlineNodes[nodeIdx].data?.type == MoveType.remove) {
+        lastNodeIdx = nodeIdx;
+        nodeIdx++;
+      }
+      if (displayGroup >= mainlineDisplayItems) {
+        break;
+      }
+    }
+
+    // Clamp to valid range.
+    if (lastNodeIdx >= mainlineNodes.length) {
+      lastNodeIdx = mainlineNodes.length - 1;
+    }
+
+    // Navigate to the target node directly to preserve variations.
+    final PgnNode<ExtMove> targetNode = mainlineNodes[lastNodeIdx];
+    await HistoryNavigator.gotoNode(context, targetNode, pop: false);
   }
 
   TextStyle _getTitleTextStyle(BuildContext context) {
