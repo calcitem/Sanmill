@@ -566,8 +566,17 @@ List<String> mergeMoves(List<String> tokens) {
 }
 
 /// Merge all moves, preserving optional [FEN] block (if present) as the first item.
+///
+/// Uses [moveHistoryTextWithoutVariations] (mainline only) instead of
+/// [moveHistoryText] because the two-column display layout and the
+/// click-to-navigate logic in [_importGame] only support mainline nodes.
+/// Variation parentheses would otherwise appear as broken move tokens
+/// and navigation would jump to wrong positions.
+/// The full variation tree is still preserved in [GameRecorder] and
+/// can be exported via [ExportService].
 List<String> getMergedMoves(GameController controller) {
-  final String moveHistoryText = controller.gameRecorder.moveHistoryText;
+  final String moveHistoryText =
+      controller.gameRecorder.moveHistoryTextWithoutVariations;
   final List<String> mergedMoves = <String>[];
   String remainingText = moveHistoryText;
 

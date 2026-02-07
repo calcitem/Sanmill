@@ -1612,7 +1612,15 @@ class MovesListPageState extends State<MovesListPage> {
       }
     }
 
-    return moves.join(' ');
+    // Concatenate removal moves directly (e.g. "f2xe4 a1" not "f2 xe4 a1")
+    final StringBuffer sb = StringBuffer();
+    for (final String notation in moves) {
+      if (sb.isNotEmpty && !notation.startsWith('x')) {
+        sb.write(' ');
+      }
+      sb.write(notation);
+    }
+    return sb.toString();
   }
 
   /// Builds a variation chip for an alternative move
@@ -3204,7 +3212,15 @@ class MoveListItemState extends State<MoveListItem> {
       }
     }
 
-    return moves.join(' ');
+    // Concatenate removal moves directly (e.g. "f2xe4 a1" not "f2 xe4 a1")
+    final StringBuffer sb = StringBuffer();
+    for (final String notation in moves) {
+      if (sb.isNotEmpty && !notation.startsWith('x')) {
+        sb.write(' ');
+      }
+      sb.write(notation);
+    }
+    return sb.toString();
   }
 
   Widget _buildChildBranchChip(PgnNode<ExtMove> child) {
