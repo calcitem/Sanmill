@@ -221,9 +221,10 @@ class ExportService {
       }
     }
 
-    // PGN standard: append game termination marker.
+    // PGN standard: append game termination marker consistent with
+    // the [Result] header written by addTagPairs().
     if (sb.isNotEmpty) {
-      sb.write(' *');
+      sb.write(' ${GameController().gameRecorder.gameResultPgn}');
     }
 
     return sb.toString().trim();
@@ -275,7 +276,7 @@ class ExportService {
 
     // Add comments if present
     if (move.comments != null && move.comments!.isNotEmpty) {
-      sb.write(' {${move.comments!.join(' ')}}');
+      sb.write(' {${safeComment(move.comments!.join(' '))}}');
     }
 
     return sb.toString();

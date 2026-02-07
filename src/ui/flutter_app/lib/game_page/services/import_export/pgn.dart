@@ -245,7 +245,7 @@ class PgnGame<T extends PgnNodeData> {
     }
 
     for (final String comment in comments) {
-      builder.writeln('{ ${_safeComment(comment)} }');
+      builder.writeln('{ ${safeComment(comment)} }');
     }
 
     final String? fen = headers['FEN'];
@@ -292,7 +292,7 @@ class PgnGame<T extends PgnNodeData> {
             // If data is not null, we can read the stored info
             if (frame.node.data?.startingComments != null) {
               for (final String comment in frame.node.data!.startingComments!) {
-                token.write('{ ${_safeComment(comment)} } ');
+                token.write('{ ${safeComment(comment)} } ');
               }
               forceMoveNumber = true;
               lastTokenWasSan = false;
@@ -333,7 +333,7 @@ class PgnGame<T extends PgnNodeData> {
               }
               if (frame.node.data!.comments != null) {
                 for (final String comment in frame.node.data!.comments!) {
-                  token.write('{ ${_safeComment(comment)} } ');
+                  token.write('{ ${safeComment(comment)} } ');
                 }
                 lastTokenWasSan = false;
               }
@@ -859,7 +859,7 @@ String _escapeHeader(String value) =>
     value.replaceAll(RegExp(r'\\'), r'\\').replaceAll(RegExp('"'), r'\"');
 
 /// Remove '}' from the comment string
-String _safeComment(String value) => value.replaceAll(RegExp(r'\}'), '');
+String safeComment(String value) => value.replaceAll(RegExp(r'\}'), '');
 
 /// Parse the NMM FEN to determine the initial half-move (ply) index.
 ///

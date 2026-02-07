@@ -31,6 +31,25 @@ class GameRecorder {
   /// Getter to expose the root node.
   PgnNode<ExtMove> get pgnRoot => _pgnRoot;
 
+  /// Returns the PGN game termination marker matching the current game result.
+  ///
+  /// This ensures the movetext termination marker is consistent with the
+  /// `[Result]` header written by [ImportService.addTagPairs].
+  String get gameResultPgn {
+    switch (GameController().position.winner) {
+      case PieceColor.white:
+        return '1-0';
+      case PieceColor.black:
+        return '0-1';
+      case PieceColor.draw:
+        return '1/2-1/2';
+      case PieceColor.marked:
+      case PieceColor.none:
+      case PieceColor.nobody:
+        return '*';
+    }
+  }
+
   /// Returns all the moves from the main line (children[0] chain) as a list.
   List<ExtMove> get mainlineMoves => _pgnRoot.mainline().toList();
 
@@ -374,7 +393,7 @@ class GameRecorder {
 
     // PGN standard: append game termination marker.
     if (sb.isNotEmpty) {
-      sb.write(' *');
+      sb.write(' $gameResultPgn');
     }
 
     return sb.toString();
@@ -388,7 +407,7 @@ class GameRecorder {
     // Write starting comments if present
     if (move.startingComments != null && move.startingComments!.isNotEmpty) {
       for (final String comment in move.startingComments!) {
-        sb.write('{$comment} ');
+        sb.write('{${safeComment(comment)}} ');
       }
     }
 
@@ -409,7 +428,7 @@ class GameRecorder {
     // Write after-move comments
     if (move.comments != null && move.comments!.isNotEmpty) {
       for (final String comment in move.comments!) {
-        sb.write(' {$comment}');
+        sb.write(' {${safeComment(comment)}}');
       }
     }
 
@@ -461,7 +480,7 @@ class GameRecorder {
       // Write starting comments
       if (move.startingComments != null && move.startingComments!.isNotEmpty) {
         for (final String comment in move.startingComments!) {
-          sb.write('{$comment} ');
+          sb.write('{${safeComment(comment)}} ');
         }
       }
 
@@ -526,7 +545,7 @@ class GameRecorder {
       // Write after-move comments
       if (move.comments != null && move.comments!.isNotEmpty) {
         for (final String comment in move.comments!) {
-          sb.write(' {$comment}');
+          sb.write(' {${safeComment(comment)}}');
         }
       }
 
@@ -1494,7 +1513,7 @@ class GameRecorder {
 
     // PGN standard: append game termination marker.
     if (sb.isNotEmpty) {
-      sb.write(' *');
+      sb.write(' $gameResultPgn');
     }
 
     return sb.toString();
@@ -1507,7 +1526,7 @@ class GameRecorder {
     // Write starting comments if present
     if (move.startingComments != null && move.startingComments!.isNotEmpty) {
       for (final String comment in move.startingComments!) {
-        sb.write('{$comment} ');
+        sb.write('{${safeComment(comment)}} ');
       }
     }
 
@@ -1528,7 +1547,7 @@ class GameRecorder {
     // Write after-move comments
     if (move.comments != null && move.comments!.isNotEmpty) {
       for (final String comment in move.comments!) {
-        sb.write(' {$comment}');
+        sb.write(' {${safeComment(comment)}}');
       }
     }
 
@@ -1612,7 +1631,7 @@ class GameRecorder {
 
     // PGN standard: append game termination marker.
     if (sb.isNotEmpty) {
-      sb.write(' *');
+      sb.write(' $gameResultPgn');
     }
 
     return sb.toString();
@@ -1626,7 +1645,7 @@ class GameRecorder {
     // Write starting comments if present
     if (move.startingComments != null && move.startingComments!.isNotEmpty) {
       for (final String comment in move.startingComments!) {
-        sb.write('{$comment} ');
+        sb.write('{${safeComment(comment)}} ');
       }
     }
 
@@ -1647,7 +1666,7 @@ class GameRecorder {
     // Write after-move comments
     if (move.comments != null && move.comments!.isNotEmpty) {
       for (final String comment in move.comments!) {
-        sb.write(' {$comment}');
+        sb.write(' {${safeComment(comment)}}');
       }
     }
 
