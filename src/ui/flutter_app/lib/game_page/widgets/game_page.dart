@@ -1045,20 +1045,23 @@ class _GamePageInnerState extends State<_GamePageInner> {
     }
   }
 
-  /// Determine if the AI chat button should be visible
-  /// Shows when the game board is active (not in setup mode) and AI chat is enabled
+  /// Determine if the AI chat button should be visible.
+  ///
+  /// The button is shown when AI chat is enabled in settings and the current
+  /// game mode supports it.  We intentionally do NOT gate on
+  /// [GameController.isDisposed] here because the controller's disposed flag
+  /// is an engine-lifecycle concern that can be `true` during the first build
+  /// frame when navigating via the drawer (the old GameBoard's dispose sets
+  /// it before the new GameBoard's initState resets it).  Checking it here
+  /// would hide the button on initial drawer navigation, which is the bug
+  /// this change fixes.
   bool _shouldShowAiChatButton(GeneralSettings settings) {
     // Check if AI chat feature is enabled in settings
     if (!settings.aiChatEnabled) {
       return false;
     }
 
-    final GameController controller = GameController();
-    // Only show button if controller is not disposed and in appropriate game mode
-    if (controller.isDisposed) {
-      return false;
-    }
-    final GameMode mode = controller.gameInstance.gameMode;
+    final GameMode mode = GameController().gameInstance.gameMode;
     return mode == GameMode.humanVsAi ||
         mode == GameMode.humanVsHuman ||
         mode == GameMode.aiVsAi;
