@@ -282,72 +282,51 @@ class GameRecorder {
         nodes[0].data!.type != MoveType.remove;
 
     // Build one step of notation (up to two moves per line).
+    // Variations are deferred until after the complete turn
+    // (placement/movement + removals) so the full mainline move
+    // is shown before any alternative branches.
     void buildStandardNotation() {
       const String sep = " ";
+      // Collect all nodes in this turn for deferred variation output.
+      final List<PgnNode<ExtMove>> turnNodes = <PgnNode<ExtMove>>[];
+
       if (i < nodes.length) {
-        // Retrieve current node
         final PgnNode<ExtMove> currentNode = nodes[i];
         sb.write(sep);
-        final String moveText = _formatMoveWithAnnotations(currentNode);
-        sb.write(moveText);
-
-        // Check for variations after this move
-        if (currentNode.parent != null &&
-            currentNode.parent!.children.length > 1) {
-          final int currentIndex = currentNode.parent!.children.indexOf(
-            currentNode,
-          );
-          if (currentIndex == 0) {
-            // This is mainline; output variations
-            for (
-              int varIdx = 1;
-              varIdx < currentNode.parent!.children.length;
-              varIdx++
-            ) {
-              sb.write(' (');
-              sb.write(
-                _formatVariation(currentNode.parent!.children[varIdx], num),
-              );
-              sb.write(')');
-            }
-            hadVariation = true;
-          }
-        }
-
+        sb.write(_formatMoveWithAnnotations(currentNode));
+        turnNodes.add(currentNode);
         i++;
       }
+
       // Process subsequent removal moves (up to 3) if present.
       for (int round = 0; round < 3; round++) {
         if (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
           final PgnNode<ExtMove> currentNode = nodes[i];
           sb.write(_formatMoveWithAnnotations(currentNode));
-
-          // Check for variations after removal move
-          if (currentNode.parent != null &&
-              currentNode.parent!.children.length > 1) {
-            final int currentIndex = currentNode.parent!.children.indexOf(
-              currentNode,
-            );
-            if (currentIndex == 0) {
-              for (
-                int varIdx = 1;
-                varIdx < currentNode.parent!.children.length;
-                varIdx++
-              ) {
-                sb.write(' (');
-                sb.write(
-                  _formatVariation(
-                    currentNode.parent!.children[varIdx],
-                    num,
-                  ),
-                );
-                sb.write(')');
-              }
-              hadVariation = true;
-            }
-          }
-
+          turnNodes.add(currentNode);
           i++;
+        }
+      }
+
+      // Output all variations AFTER the complete turn so readers
+      // see the full mainline move (e.g. "d6xc3") before branches.
+      for (final PgnNode<ExtMove> node in turnNodes) {
+        if (node.parent != null && node.parent!.children.length > 1) {
+          final int currentIndex = node.parent!.children.indexOf(node);
+          if (currentIndex == 0) {
+            for (
+              int varIdx = 1;
+              varIdx < node.parent!.children.length;
+              varIdx++
+            ) {
+              sb.write(' (');
+              sb.write(
+                _formatVariation(node.parent!.children[varIdx], num),
+              );
+              sb.write(')');
+            }
+            hadVariation = true;
+          }
         }
       }
     }

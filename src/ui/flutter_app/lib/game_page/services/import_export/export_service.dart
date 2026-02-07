@@ -176,9 +176,9 @@ class ExportService {
       sb.write(_formatMoveWithQuality(firstNode.data!));
       i++;
 
-      // Handle subsequent remove moves
+      // Handle subsequent remove moves (concatenated directly
+      // to the preceding placement/movement, e.g. "d6xc3").
       while (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
-        sb.write(' ');
         sb.write(_formatMoveWithQuality(nodes[i].data!));
         i++;
       }
@@ -189,9 +189,8 @@ class ExportService {
         sb.write(_formatMoveWithQuality(nodes[i].data!));
         i++;
 
-        // Handle subsequent remove moves
+        // Handle subsequent remove moves (concatenated directly).
         while (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
-          sb.write(' ');
           sb.write(_formatMoveWithQuality(nodes[i].data!));
           i++;
         }

@@ -269,6 +269,13 @@ class PgnGame<T extends PgnNodeData> {
     }
 
     bool forceMoveNumber = true;
+    // Track whether the last written token was a move SAN so that
+    // a following removal SAN can be concatenated directly without
+    // a space (e.g. "d6xc3" instead of "d6 xc3").  When a comment,
+    // NAG, or variation parenthesis intervenes, the flag is cleared
+    // so the space is preserved for readability.
+    bool lastTokenWasSan = false;
+
     while (stack.isNotEmpty) {
       final _PgnFrame frame = stack.last;
 
@@ -276,6 +283,7 @@ class PgnGame<T extends PgnNodeData> {
         token.write(') ');
         frame.inVariation = false;
         forceMoveNumber = true;
+        lastTokenWasSan = false;
       }
 
       switch (frame.state) {
@@ -287,6 +295,7 @@ class PgnGame<T extends PgnNodeData> {
                 token.write('{ ${_safeComment(comment)} } ');
               }
               forceMoveNumber = true;
+              lastTokenWasSan = false;
             }
             // Nine Men's Morris: removal moves (san starts with 'x')
             // are sub-parts of the same turn and should not get a
@@ -301,17 +310,32 @@ class PgnGame<T extends PgnNodeData> {
               forceMoveNumber = false;
             }
             if (frame.node.data != null) {
+              // Removal moves concatenate directly to the preceding
+              // placement/movement SAN (e.g. "d6xc3" not "d6 xc3").
+              // Only strip the trailing space when the previous token
+              // was indeed a SAN; if a variation, comment, or NAG
+              // intervened, keep the space for readability.
+              if (isRemoval && lastTokenWasSan) {
+                final String s = token.toString();
+                if (s.endsWith(' ')) {
+                  token.clear();
+                  token.write(s.substring(0, s.length - 1));
+                }
+              }
               token.write('${frame.node.data!.san} ');
+              lastTokenWasSan = true;
               if (frame.node.data!.nags != null) {
                 for (final int nag in frame.node.data!.nags!) {
                   token.write('\$$nag ');
                 }
                 forceMoveNumber = true;
+                lastTokenWasSan = false;
               }
               if (frame.node.data!.comments != null) {
                 for (final String comment in frame.node.data!.comments!) {
                   token.write('{ ${_safeComment(comment)} } ');
                 }
+                lastTokenWasSan = false;
               }
             }
 
@@ -331,6 +355,7 @@ class PgnGame<T extends PgnNodeData> {
             if (child) {
               token.write('( ');
               forceMoveNumber = true;
+              lastTokenWasSan = false;
               stack.add(
                 _PgnFrame(
                   state: _PgnState.pre,
