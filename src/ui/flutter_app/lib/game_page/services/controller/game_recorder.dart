@@ -449,6 +449,12 @@ class GameRecorder {
       lastSide = parentMove.side;
     }
 
+    // Collect nested variations for deferred output so the full
+    // mainline turn (placement/movement + removals) is shown before
+    // any alternative branches.
+    final List<PgnNode<ExtMove>> deferredVarNodes = <PgnNode<ExtMove>>[];
+    final List<int> deferredVarMoveNums = <int>[];
+
     while (current != null && current.data != null) {
       final ExtMove move = current.data!;
 
@@ -465,7 +471,7 @@ class GameRecorder {
       //    a) First move in variation AND it's black's move
       //    b) Previous move was also black (consecutive black moves)
       //    c) A nested RAV was just closed (PGN 8.2.5)
-      // 3. Black's move right after white's move (same turn): omit for brevity
+      // 3. Black's move right after white's move (same turn): omit
       final bool isFirstMove = current == start;
       final bool isWhiteMove = move.side == PieceColor.white;
       final bool isNonRemoveMove =
@@ -524,19 +530,16 @@ class GameRecorder {
         }
       }
 
-      // Handle nested variations
+      // Collect nested variations instead of outputting them now.
+      // They will be emitted after all removal moves in this turn
+      // have been written (see deferred output below).
       if (current.children.length > 1) {
+        final int varMoveNum =
+            move.side == PieceColor.black ? currentMove + 1 : currentMove;
         for (int i = 1; i < current.children.length; i++) {
-          sb.write(' (');
-          sb.write(
-            _formatVariation(
-              current.children[i],
-              move.side == PieceColor.black ? currentMove + 1 : currentMove,
-            ),
-          );
-          sb.write(')');
+          deferredVarNodes.add(current.children[i]);
+          deferredVarMoveNums.add(varMoveNum);
         }
-        hadNestedVariation = true;
       }
 
       // Update move number and track last side
@@ -545,6 +548,28 @@ class GameRecorder {
       }
       if (move.type != MoveType.remove) {
         lastSide = move.side;
+      }
+
+      // Determine whether the next mainline node is a removal.
+      final bool nextIsRemoval = current.children.isNotEmpty &&
+          current.children[0].data != null &&
+          current.children[0].data!.type == MoveType.remove;
+
+      // Output all deferred variations once the turn is complete
+      // (i.e. when the next node is not a removal, or there are no
+      // more children).  This ensures the full mainline move such
+      // as "f2xf4" is shown before branches like "(3. f2xb6)".
+      if (!nextIsRemoval && deferredVarNodes.isNotEmpty) {
+        for (int j = 0; j < deferredVarNodes.length; j++) {
+          sb.write(' (');
+          sb.write(
+            _formatVariation(deferredVarNodes[j], deferredVarMoveNums[j]),
+          );
+          sb.write(')');
+        }
+        deferredVarNodes.clear();
+        deferredVarMoveNums.clear();
+        hadNestedVariation = true;
       }
 
       // Move to next node
