@@ -550,8 +550,8 @@ void main() {
       root.children.add(node1);
       node1.children.add(node2);
 
-      // Transform with accumulating context
-      // Note: childIndex=-1 for node.data transform, then children get sequential indices
+      // Transform with accumulating context.
+      // Each node is processed exactly once; context increments per node.
       final PgnNode<PgnNodeData> transformed = root.transform<PgnNodeData, int>(
         0,
         (int ctx, PgnNodeData data, int childIndex) {
@@ -563,9 +563,9 @@ void main() {
       final List<PgnNodeData> result = transformed.mainline().toList();
 
       expect(result.length, 2);
-      // Context increments with each node processed
-      expect(result[0].san, contains('d6'));
-      expect(result[1].san, contains('f4'));
+      // Context increments exactly once per node: d6→1, f4→2
+      expect(result[0].san, 'd6[1]');
+      expect(result[1].san, 'f4[2]');
     });
 
     test('PgnNode handles multiple children (variations)', () {

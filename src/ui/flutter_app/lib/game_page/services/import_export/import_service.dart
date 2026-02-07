@@ -597,13 +597,10 @@ class ImportService {
         }
 
         final String san = child.data!.san.trim().toLowerCase();
-        if (san.isEmpty ||
-            san == "*" ||
-            san == "x" ||
-            san == "xx" ||
-            san == "xxx" ||
-            san == "p") {
-          // Skip pass moves or asterisks
+        if (san.isEmpty || san == "p") {
+          // Skip empty or pass moves.
+          // Note: "*", "x", "xx", "xxx" are not produced by the PGN
+          // parser's token regex so they do not need to be checked here.
           continue;
         }
 

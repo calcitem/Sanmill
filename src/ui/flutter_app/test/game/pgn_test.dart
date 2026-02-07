@@ -47,13 +47,14 @@ void main() {
           .toList();
       expect(mainlineSans, <String>['d6', 'f4', 'd7']);
 
+      // Each node is transformed exactly once; context increments per node.
       final PgnNode<PgnNodeData> transformed = game.moves
           .transform<PgnNodeData, int>(0, (
             int ctx,
             PgnNodeData data,
             int childIndex,
           ) {
-            final int next = childIndex == -1 ? ctx : ctx + 1;
+            final int next = ctx + 1;
             return (next, PgnNodeData(san: '${data.san}#$next'));
           });
 

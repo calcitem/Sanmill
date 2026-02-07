@@ -509,18 +509,16 @@ List<String> mergeMoves(List<String> tokens) {
     }
 
     // (C) If token starts with 'x', treat it as a capture.
+    // Merge it into the current move text (e.g. "d6" + "xc3" → "d6xc3").
+    // Preserve any existing NAGs and comments from the preceding
+    // placement/movement so that annotations are not lost.
     if (token.startsWith('x')) {
       if (current == null) {
         current = TempMove()
           ..moveText = token
           ..hasX = true;
       } else {
-        // If previous move did not have 'x', discard previous annotations/NAGs.
-        if (!current!.hasX) {
-          current!.comments.clear();
-          current!.nags.clear(); // Discard NAGs if a new 'x' appears
-        }
-        // Merge capture into the moveText
+        // Merge capture into the moveText, keeping existing annotations.
         current!.moveText += token;
         current!.hasX = true;
       }

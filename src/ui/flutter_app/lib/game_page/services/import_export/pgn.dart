@@ -459,8 +459,9 @@ class PgnNode<T extends PgnNodeData> {
 
   /// Transform this node into a [PgnNode<U>] tree.
   ///
-  /// The callback function [f] is called for each node in the tree. If the
-  /// callback returns null, the node is not added to the result tree.
+  /// The callback function [f] is called exactly once for each node in the
+  /// tree. If the callback returns null, the node (and its subtree) is not
+  /// added to the result tree.
   /// The callback should return a tuple of the updated context and node data.
   PgnNode<U> transform<U extends PgnNodeData, C>(
     C context,
@@ -479,23 +480,25 @@ class PgnNode<T extends PgnNodeData> {
     while (stack.isNotEmpty) {
       final _TransformStackFrame<U, T, C> frame = stack.removeLast();
 
-      // If the current 'before' node has data, try to transform it
+      // If the current 'before' node has data, try to transform it.
+      // This is the single place where f() is called for each node.
       if (frame.before.data != null) {
         final T originalData = frame.before.data!;
-        // We pass childIdx = -1 here, but we can keep it if we want to differentiate
         final (C, U)? result = f(frame.context, originalData, -1);
         if (result == null) {
           // If it's null, skip the node entirely (including its subtree).
           continue;
         }
         final (C newCtx, U data) = result;
-        frame.context = newCtx; // We can set .context on our class
+        frame.context = newCtx;
 
         // Put this data on 'after' node
         frame.after.data = data;
       }
 
-      // Now transform children
+      // Enqueue children for processing. Do NOT call f() here; each
+      // child will be transformed by Block A when its own stack frame
+      // is popped, ensuring f() is invoked exactly once per node.
       for (
         int childIdx = 0;
         childIdx < frame.before.children.length;
@@ -503,28 +506,19 @@ class PgnNode<T extends PgnNodeData> {
       ) {
         final PgnNode<T> childBefore = frame.before.children[childIdx];
         if (childBefore.data == null) {
-          // If child has no data, it may be just a root-like subnode. Skip or handle differently.
           continue;
         }
-        final (C, U)? transformData = f(
-          frame.context,
-          childBefore.data!,
-          childIdx,
-        );
-        if (transformData != null) {
-          final (C newCtx, U data) = transformData;
-          final PgnNode<U> childAfter = PgnNode<U>(data);
-          childAfter.parent = frame.after;
-          frame.after.children.add(childAfter);
+        final PgnNode<U> childAfter = PgnNode<U>();
+        childAfter.parent = frame.after;
+        frame.after.children.add(childAfter);
 
-          stack.add(
-            _TransformStackFrame<U, T, C>(
-              after: childAfter,
-              before: childBefore,
-              context: newCtx,
-            ),
-          );
-        }
+        stack.add(
+          _TransformStackFrame<U, T, C>(
+            after: childAfter,
+            before: childBefore,
+            context: frame.context,
+          ),
+        );
       }
     }
     return root;
@@ -869,8 +863,8 @@ String _safeComment(String value) => value.replaceAll(RegExp(r'\}'), '');
 
 /// Parse the NMM FEN to determine the initial half-move (ply) index.
 ///
-/// NMM FEN format: "<board> <side> <phase> <action> ..."
-/// where <side> is 'w' (white, ply 0) or 'b' (black, ply 1).
+/// NMM FEN format: "`<board> <side> <phase> <action>` ..."
+/// where `<side>` is 'w' (white, ply 0) or 'b' (black, ply 1).
 int _getPlyFromSetup(String fen) {
   final List<String> fields = fen.trim().split(RegExp(r'\s+'));
   // Black to move → odd ply; white to move (default) → even ply.
@@ -881,12 +875,12 @@ int _getPlyFromSetup(String fen) {
 }
 
 /// Check if a SAN string represents a Nine Men's Morris removal move.
-/// Removal moves start with 'x' (e.g., 'xf4', 'xa1').
+/// Removal moves start with 'x' or 'X' (e.g., 'xf4', 'Xa1').
 bool _isRemovalSan(String? san) {
   if (san == null || san.isEmpty) {
     return false;
   }
-  return san.startsWith('x');
+  return san.startsWith('x') || san.startsWith('X');
 }
 
 const String _bom = '\ufeff';
@@ -1025,10 +1019,13 @@ class _PgnParser {
                 return;
               }
             }
-            // Adapted Nine Men's Morris token regex:
+            // Adapted Nine Men's Morris token regex.
+            // Case-insensitive so that uppercase notation (e.g. from
+            // screenReaderSupport or external sources) is also accepted.
             final RegExp tokenRegex = RegExp(
               r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
               r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2',
+              caseSensitive: false,
             );
             final Iterable<RegExpMatch> matches = tokenRegex.allMatches(line);
             for (final RegExpMatch match in matches) {

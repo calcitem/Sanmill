@@ -167,13 +167,12 @@ class ExportService {
     int moveNumber = 1;
     int i = 0;
 
-    // Process moves with quality symbols
-    while (i < nodes.length) {
-      sb.write("$moveNumber. ");
-
-      // Process first move (usually White)
-      final PgnNode<ExtMove> firstNode = nodes[i];
-      sb.write(_formatMoveWithQuality(firstNode.data!));
+    // Helper: process one half-move (placement/movement + trailing removals).
+    void writeHalfMove() {
+      if (i >= nodes.length) {
+        return;
+      }
+      sb.write(_formatMoveWithQuality(nodes[i].data!));
       i++;
 
       // Handle subsequent remove moves (concatenated directly
@@ -182,22 +181,49 @@ class ExportService {
         sb.write(_formatMoveWithQuality(nodes[i].data!));
         i++;
       }
+    }
+
+    // Detect if the first non-removal move is Black's (e.g., from a
+    // FEN setup where Black moves first).
+    final bool startsWithBlack = nodes.isNotEmpty &&
+        nodes[0].data != null &&
+        nodes[0].data!.side == PieceColor.black &&
+        nodes[0].data!.type != MoveType.remove;
+
+    // PGN standard: if the game starts with Black's move, output the
+    // initial black half-move with "N..." notation before entering
+    // the standard white-black pair loop.
+    if (startsWithBlack && i < nodes.length) {
+      sb.write('$moveNumber... ');
+      writeHalfMove();
+      moveNumber++;
+      if (i < nodes.length) {
+        sb.writeln();
+      }
+    }
+
+    // Process moves in white-black pairs with quality symbols
+    while (i < nodes.length) {
+      sb.write("$moveNumber. ");
+
+      // Process first move (usually White)
+      writeHalfMove();
 
       // Process second move (usually Black) if exists
       if (i < nodes.length) {
         sb.write(' ');
-        sb.write(_formatMoveWithQuality(nodes[i].data!));
-        i++;
-
-        // Handle subsequent remove moves (concatenated directly).
-        while (i < nodes.length && nodes[i].data!.type == MoveType.remove) {
-          sb.write(_formatMoveWithQuality(nodes[i].data!));
-          i++;
-        }
+        writeHalfMove();
       }
 
-      sb.writeln();
       moveNumber++;
+      if (i < nodes.length) {
+        sb.writeln();
+      }
+    }
+
+    // PGN standard: append game termination marker.
+    if (sb.isNotEmpty) {
+      sb.write(' *');
     }
 
     return sb.toString().trim();
