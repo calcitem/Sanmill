@@ -96,9 +96,9 @@ target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")
 if(MSVC)
   target_compile_options(${BINARY_NAME} PRIVATE /MP)
   
-  # Enable fast linking for Debug builds to significantly reduce link time.
-  # /DEBUG:FASTLINK creates smaller PDB files by referencing object files.
-  target_link_options(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FASTLINK>")
+  # Enable full debug info for Debug builds.
+  # /DEBUG:FULL embeds all debug info into the PDB file.
+  target_link_options(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FULL>")
   
   # Enable incremental linking for Debug builds to speed up recompilation.
   target_link_options(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:/INCREMENTAL>")

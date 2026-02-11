@@ -37,9 +37,9 @@ function(APPLY_STANDARD_SETTINGS TARGET)
   target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
   target_compile_definitions(${TARGET} PRIVATE "$<$<CONFIG:Debug>:_DEBUG>")
   
-  # Enable fast linking for Debug builds to significantly reduce link time.
-  # /DEBUG:FASTLINK creates smaller PDB files by referencing object files.
-  target_link_options(${TARGET} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FASTLINK>")
+  # Enable full debug info for Debug builds.
+  # /DEBUG:FULL embeds all debug info into the PDB file.
+  target_link_options(${TARGET} PRIVATE "$<$<CONFIG:Debug>:/DEBUG:FULL>")
   
   # Enable incremental linking for Debug builds to speed up recompilation.
   target_link_options(${TARGET} PRIVATE "$<$<CONFIG:Debug>:/INCREMENTAL>")
