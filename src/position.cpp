@@ -584,6 +584,11 @@ Position &Position::set(const string &fenStr)
         }
     };
 
+    // Reset stalemate removal flags (will be set from FEN if present,
+    // or remain false for backward compatibility)
+    isStalemateRemoving = false;
+    isBothStalemateRemoving = false;
+
     std::string trailing;
     std::getline(ss >> std::ws, trailing);
 
@@ -615,6 +620,18 @@ Position &Position::set(const string &fenStr)
                 if (parseInt(value, targetSquare) && targetSquare >= SQ_BEGIN &&
                     targetSquare < SQ_END) {
                     preferredRemoveTarget = static_cast<Square>(targetSquare);
+                }
+            } else if (extraToken[0] == 's') {
+                // Parse stalemate removal state
+                // Format: "s:1" for isStalemateRemoving,
+                //         "s:2" for isBothStalemateRemoving
+                int stalemateFlag = 0;
+                if (parseInt(value, stalemateFlag)) {
+                    if (stalemateFlag == 1) {
+                        isStalemateRemoving = true;
+                    } else if (stalemateFlag == 2) {
+                        isBothStalemateRemoving = true;
+                    }
                 }
             }
         }
@@ -783,6 +800,15 @@ string Position::fen() const
     // This is appended at the end for backward compatibility
     if (preferredRemoveTarget != SQ_NONE) {
         ss << " p:" << static_cast<int>(preferredRemoveTarget);
+    }
+
+    // Append stalemate removal state if active
+    // Format: " s:1" for isStalemateRemoving,
+    //         " s:2" for isBothStalemateRemoving
+    if (isStalemateRemoving) {
+        ss << " s:1";
+    } else if (isBothStalemateRemoving) {
+        ss << " s:2";
     }
 
     return ss.str();

@@ -430,6 +430,15 @@ class Position {
       buffer.write(' p:$preferredRemoveTarget');
     }
 
+    // Append stalemate removal state if active
+    // Format: " s:1" for isStalemateRemoving,
+    //         " s:2" for isBothStalemateRemoving
+    if (isStalemateRemoving) {
+      buffer.write(' s:1');
+    } else if (isBothStalemateRemoving) {
+      buffer.write(' s:2');
+    }
+
     logger.t("FEN is $buffer");
 
     final String fen = buffer.toString();
@@ -453,6 +462,7 @@ class Position {
       trimmedFen.indexOf(' i:'),
       trimmedFen.indexOf(' l:'),
       trimmedFen.indexOf(' p:'),
+      trimmedFen.indexOf(' s:'),
     ].where((int index) => index >= 0).toList();
 
     int firstExtra = trimmedFen.length;
@@ -473,6 +483,7 @@ class Position {
     String interventionData = '';
     String leapData = '';
     int? preferredTarget;
+    int? stalemateRemovalFlag;
     if (extras.isNotEmpty) {
       final List<String> tokens = extras.split(RegExp(r'\s+'));
       for (final String token in tokens) {
@@ -486,6 +497,11 @@ class Position {
           // Parse preferredRemoveTarget
           final String targetStr = token.substring(2);
           preferredTarget = int.tryParse(targetStr);
+        } else if (token.startsWith('s:')) {
+          // Parse stalemate removal state
+          // Format: "s:1" for isStalemateRemoving,
+          //         "s:2" for isBothStalemateRemoving
+          stalemateRemovalFlag = int.tryParse(token.substring(2));
         }
       }
     }
@@ -624,6 +640,10 @@ class Position {
       preferredRemoveTarget = preferredTarget;
     }
 
+    // Set stalemate removal flags from FEN (default false)
+    isStalemateRemoving = stalemateRemovalFlag == 1;
+    isBothStalemateRemoving = stalemateRemovalFlag == 2;
+
     return ret;
   }
 
@@ -635,6 +655,7 @@ class Position {
       trimmedFen.indexOf(' i:'),
       trimmedFen.indexOf(' l:'),
       trimmedFen.indexOf(' p:'),
+      trimmedFen.indexOf(' s:'),
     ].where((int index) => index >= 0).toList();
 
     int firstExtra = trimmedFen.length;
